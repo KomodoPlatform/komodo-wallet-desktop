@@ -73,12 +73,6 @@ Item {
         multi_order_switch.checked = false
     }
 
-    // Price
-    property string cex_price
-    function updateCexPrice(base, rel) {
-        cex_price = API.app.get_cex_rates(base, rel)
-    }
-
     readonly property var preffered_order: API.app.trading_pg.preffered_order
 
     function orderIsSelected() {
