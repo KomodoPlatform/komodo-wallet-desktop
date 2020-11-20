@@ -23,7 +23,7 @@ jobs:
             osx-qt-5-15-0,
             osx-qt-5-15-1,
             windows-10-qt-5-15-0,
-            windows-10-qt-5-15-1
+            #windows-10-qt-5-15-1
         ]
 
         include:
@@ -47,9 +47,9 @@ jobs:
             os: windows-latest
             qt: '5.15.0'
 
-          - name: windows-10-qt-5-15-1
-            os: windows-latest
-            qt: '5.15.1'
+          #- name: windows-10-qt-5-15-1
+          #  os: windows-latest
+          #  qt: '5.15.1'
 
     steps:
       - uses: actions/checkout@v2
