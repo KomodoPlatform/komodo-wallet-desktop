@@ -64,17 +64,10 @@ namespace atomic_dex
         /// \brief Creates a new contact.
         /// \param contact_name The name of the contact.
         Q_INVOKABLE void add_contact(const QString& contact_name);
-        Q_INVOKABLE void add_contact(QString contact_name, QVariantList addresses);
-        
-        /// \brief Creates a new contact.
-        /// \param contact_name The name of the contact.
-        /// \param addresses    The address information list of the contact.
-        /// \param categories   The categories of the contact.
-        Q_INVOKABLE void add_contact(QString contact_name, QVariantList addresses, QStringList categories);
-        
+
         /// \brief Removes a contact.
         /// \param contact_name The name of the targeted contact.
-        Q_INVOKABLE void remove_contact(QString contact_name);
+        Q_INVOKABLE void remove_contact(const QString& contact_name);
         
         /// \brief Removes every contact.
         Q_INVOKABLE void remove_all_contacts();

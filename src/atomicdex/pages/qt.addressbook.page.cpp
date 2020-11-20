@@ -39,12 +39,7 @@ namespace atomic_dex
         m_addressbook_model->add_contact_entry(contact_name);
     }
     
-    void addressbook_page::add_contact(QString contact_name, QVariantList addresses, QStringList categories)
-    {
-    
-    }
-    
-    void addressbook_page::remove_contact(QString contact_name)
+    void addressbook_page::remove_contact(const QString& contact_name)
     {
     
     }
