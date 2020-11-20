@@ -61,12 +61,10 @@ namespace atomic_dex
             return {};
         }
         
-        const nlohmann::json& contacts = m_addressbook_manager.get_contacts();
-        
         switch (static_cast<AddressBookRoles>(role))
         {
-        case NameRole:
-            return QString::fromStdString(contacts.at(index.row()).at("name").get<std::string>());
+        case SubModelRole:
+            return QVariant::fromValue(m_contact_models.at(index.row()));
         default:
             return {};
         }

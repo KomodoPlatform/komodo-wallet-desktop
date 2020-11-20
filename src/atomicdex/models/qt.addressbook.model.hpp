@@ -77,8 +77,8 @@ namespace atomic_dex
         void addressbookProxyChanged();
 
     private:
-        addressbook_manager&                  m_addressbook_manager;
-        addressbook_proxy_model*              m_addressbook_proxy;
-        //QVector<addressbook_contact_model*> m_contact_models;
+        addressbook_manager&                m_addressbook_manager;
+        addressbook_proxy_model*            m_addressbook_proxy;
+        QVector<addressbook_contact_model*> m_contact_models;
     };
 } // namespace atomic_dex
