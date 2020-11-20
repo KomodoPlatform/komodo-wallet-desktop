@@ -278,13 +278,7 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
-        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp
-        ##! QRC
-        ${CMAKE_SOURCE_DIR}/qml.qrc
-
-        ##! Linguistic
-        ${QM_FILES}
-        ${TS_FILES})
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomicdex-desktop
         PUBLIC
@@ -295,7 +289,7 @@ target_include_directories(atomicdex-desktop PUBLIC src)
 
 target_link_libraries(atomicdex-desktop_tests
         PUBLIC
-        atomicdex-desktop_shared_deps
+        #atomicdex-desktop_shared_deps
         doctest::doctest)
 
 ##! Setting output directory
