@@ -65,7 +65,9 @@ namespace atomic_dex
         
         /// @} End of QAbstractListModel implementation section.
         
-        void       init_from_manager();
+        void init_from_manager();
+        
+        void remove_at(int position);
         
         void add_contact_entry(const QString& name);
 

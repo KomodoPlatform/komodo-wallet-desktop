@@ -127,7 +127,7 @@ ColumnLayout {
                                 font.pixelSize: Style.textSizeSmall3
 
                                 onClicked: {
-                                    page_api.remove_contact(modelData.name)
+                                    page_api.remove_contact(index)
                                 }
                             }
                         }

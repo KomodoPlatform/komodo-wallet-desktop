@@ -60,7 +60,7 @@ namespace atomic_dex
         {
             return {};
         }
-        
+
         switch (static_cast<AddressBookRoles>(role))
         {
         case SubModelRole:
@@ -69,7 +69,7 @@ namespace atomic_dex
             return {};
         }
     }
-    
+
     bool
     atomic_dex::addressbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
@@ -78,7 +78,7 @@ namespace atomic_dex
         for (int row = 0; row < rows; ++row)
         {
             auto* contact_model = m_contact_models.at(position);
-        
+            
             if (not contact_model->get_name().isEmpty())
             {
                 m_addressbook_manager.remove_contact(contact_model->get_name().toStdString());
@@ -121,19 +121,22 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::addressbook_model::add_contact_entry()
+    addressbook_model::remove_at(int position)
     {
-        insertRow(0);
+        auto* contact_model = m_contact_models.at(position);
+        
+        m_addressbook_manager.remove_contact(contact_model->get_name().toStdString());
+        removeRow(position);
     }
-
+    
     void
     addressbook_model::add_contact_entry(const QString& name)
     {
         if (m_addressbook_manager.has_contact(name.toStdString()))
         {
             return;
-    }
-
+        }
+        
         auto* contact_model = new addressbook_contact_model(m_addressbook_manager, name, nullptr);
         
         m_addressbook_manager.add_contact(name.toStdString());

@@ -68,6 +68,10 @@ namespace atomic_dex
         /// \brief Removes a contact.
         /// \param contact_name The name of the targeted contact.
         Q_INVOKABLE void remove_contact(const QString& contact_name);
+    
+        /// \brief Removes a contact.
+        /// \param position Position of the contact in the list.
+        Q_INVOKABLE void remove_contact(int position);
         
         /// \brief Removes every contact.
         Q_INVOKABLE void remove_all_contacts();

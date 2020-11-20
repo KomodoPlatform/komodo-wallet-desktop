@@ -41,7 +41,11 @@ namespace atomic_dex
     
     void addressbook_page::remove_contact(const QString& contact_name)
     {
+    }
     
+    void addressbook_page::remove_contact(int position)
+    {
+        m_addressbook_model->remove_at(position);
     }
     
     void addressbook_page::remove_all_contacts()
