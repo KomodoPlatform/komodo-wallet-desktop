@@ -47,7 +47,10 @@ namespace atomic_dex
         /// \defgroup Constructors
         /// {@
         
-        explicit addressbook_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
+        explicit addressbook_page(entt::registry& registry,
+                                  ag::ecs::system_manager& system_manager,
+                                  addressbook_model* addressbook_model,
+                                  QObject* parent = nullptr);
         ~addressbook_page() noexcept final = default;
         
         /// @} End of Constructors section.

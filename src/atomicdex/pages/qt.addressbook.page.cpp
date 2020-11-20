@@ -20,8 +20,9 @@
 
 namespace atomic_dex
 {
-    addressbook_page::addressbook_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager), m_addressbook_model(nullptr)
+    addressbook_page::addressbook_page(entt::registry& registry, ag::ecs::system_manager& system_manager,
+                                       addressbook_model* addressbook_model, QObject* parent) :
+        QObject(parent), system(registry), m_system_manager(system_manager), m_addressbook_model(addressbook_model)
     {}
     
     void addressbook_page::update() noexcept

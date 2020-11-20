@@ -363,7 +363,7 @@ namespace atomic_dex
         system_manager_.create_system<update_service_checker>();
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
-        system_manager_.create_system<addressbook_page>(system_manager_);
+        system_manager_.create_system<addressbook_page>(system_manager_, qobject_cast<addressbook_model*>(m_manager_models.at("addressbook")));
 
         connect_signals();
         if (is_there_a_default_wallet())
