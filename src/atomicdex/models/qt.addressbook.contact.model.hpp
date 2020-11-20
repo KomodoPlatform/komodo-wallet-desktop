@@ -44,14 +44,13 @@ namespace atomic_dex
         
         QStringList          m_categories;
 
-        QVector<QJsonObject> m_wallets_info;
-    
         /// @} End of Members section.
         
+        Q_ENUMS(ContactRoles)
     public:
-        enum contact_wallet_info_role
+        enum ContactRoles
         {
-            TypeRole = Qt::UserRole + 1,
+            TypeRole,
             AddressesRole
         };
         
@@ -86,12 +85,12 @@ namespace atomic_dex
         /// \defgroup QML API.
         /// {@
         
-      private:
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
         
       signals:
         void nameChanged();
         void categoriesChanged();
+        void walletsInfoChanged();
         
         /// @} End of QML API section.
     };

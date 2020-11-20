@@ -43,7 +43,7 @@ namespace atomic_dex
             return {};
         }
     
-        const auto& wallet_info = m_w.at(index.row());
+        const auto& wallets_info = m_addressbook_manager.get_contact(m_name.toStdString()).at("wallets_info");
         switch (role)
         {
         default:
@@ -98,7 +98,7 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            m_wallets_info.insert(position, );
+        //    m_wallets_info.insert(position, );
         }
         endInsertRows();
         //emit addressesChanged();
