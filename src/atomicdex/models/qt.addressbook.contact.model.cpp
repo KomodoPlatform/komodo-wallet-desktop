@@ -130,15 +130,13 @@ namespace atomic_dex
     
     void addressbook_contact_model::set_name(const QString& name) noexcept
     {
-        if (m_name == name)
+        if (name != m_name)
         {
-            return;
-        }
-        spdlog::trace("name {} changed to {}", m_name.toStdString(), name.toStdString());
         m_addressbook_manager.change_contact_name(m_name.toStdString(), name.toStdString());
-        m_addressbook_manager.update_configuration();
+            m_addressbook_manager.save_configuration();
         m_name = name;
         emit nameChanged();
+    }
     }
     
     const QStringList& addressbook_contact_model::get_categories() const noexcept
