@@ -71,20 +71,6 @@ namespace atomic_dex
     }
     
     bool
-    atomic_dex::addressbook_model::insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
-    {
-        spdlog::trace("(addressbook_model::insertRows) inserting {} elements at position {}", rows, position);
-        beginInsertRows(QModelIndex(), position, position + rows - 1);
-        
-        for (int row = 0; row < rows; ++row)
-        {
-        }
-        
-        endInsertRows();
-        return true;
-    }
-    
-    bool
     atomic_dex::addressbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
         spdlog::trace("(addressbook_model::removeRows) removing {} elements at position {}", rows, position);

@@ -59,7 +59,6 @@ namespace atomic_dex
         QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]]
         int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
-        bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
         bool                   removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
         [[nodiscard]]
         QHash<int, QByteArray> roleNames() const final;
