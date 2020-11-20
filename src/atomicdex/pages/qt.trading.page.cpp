@@ -1080,6 +1080,7 @@ namespace atomic_dex
             emit cexPriceChanged();
             emit invalidCexPriceChanged();
             emit cexPriceReversedChanged();
+            emit cexPriceDiffChanged();
         }
     }
 
