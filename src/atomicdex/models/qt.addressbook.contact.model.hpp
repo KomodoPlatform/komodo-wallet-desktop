@@ -54,6 +54,7 @@ namespace atomic_dex
             AddressesRole
         };
         
+    public:
         /// \defgroup Constructors
         /// {@
         
@@ -80,7 +81,7 @@ namespace atomic_dex
         void set_name(const QString& name) noexcept;
         
         [[nodiscard]]
-        const QJsonArray& get_categories() const noexcept;
+        const QStringList& get_categories() const noexcept;
         
         /// \defgroup QML API.
         /// {@

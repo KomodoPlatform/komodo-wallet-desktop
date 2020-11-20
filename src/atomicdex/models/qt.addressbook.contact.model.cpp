@@ -141,7 +141,7 @@ namespace atomic_dex
         emit nameChanged();
     }
     
-    const QJsonArray& addressbook_contact_model::get_categories() const noexcept
+    const QStringList& addressbook_contact_model::get_categories() const noexcept
     {
         return m_categories;
     }
