@@ -103,6 +103,23 @@ namespace atomic_dex
 //! Other member functions
 namespace atomic_dex
 {
+    void addressbook_model::init_from_manager()
+    {
+        for (std::size_t i = 0; i < m_addressbook_manager.get_contacts().size(); i++)
+        {
+            int   rows          = 1;
+            auto  contact_name  = m_addressbook_manager.get_contacts().at(i).at("name").get<std::string>();
+            auto* contact_model = new addressbook_contact_model(m_addressbook_manager, QString::fromStdString(contact_name), nullptr);
+    
+            beginInsertRows(QModelIndex(), m_contact_models.count(), m_contact_models.count());
+            for (int row = 0; row < rows; ++row)
+            {
+                m_contact_models.push_back(contact_model);
+            }
+            endInsertRows();
+        }
+    }
+
     void
     atomic_dex::addressbook_model::add_contact_entry()
     {
