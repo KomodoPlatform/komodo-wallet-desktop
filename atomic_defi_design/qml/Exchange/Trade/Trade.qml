@@ -85,10 +85,10 @@ Item {
         return preffered_order.price !== undefined
     }
 
-    function selectOrder(is_asks, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
+    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
-        API.app.trading_pg.preffered_order = { price, quantity, price_denom, price_numer, quantity_denom, quantity_numer }
+        API.app.trading_pg.preffered_order = { price, coin, quantity, price_denom, price_numer, quantity_denom, quantity_numer }
 
         form_base.field.forceActiveFocus()
     }
