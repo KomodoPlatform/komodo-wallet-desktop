@@ -583,7 +583,7 @@ namespace atomic_dex
     void
     trading_page::set_price(QString price) noexcept
     {
-        if (m_price != price)
+        if (m_price != price && not price.isEmpty())
         {
             m_price = std::move(price);
             if (this->m_preffered_order.has_value() && this->m_preffered_order->contains("locked"))
@@ -638,7 +638,7 @@ namespace atomic_dex
     void
     trading_page::set_volume(QString volume) noexcept
     {
-        if (m_volume != volume)
+        if (m_volume != volume && not volume.isEmpty())
         {
             m_volume = std::move(volume);
             spdlog::trace("volume is [{}]", m_volume.toStdString());
