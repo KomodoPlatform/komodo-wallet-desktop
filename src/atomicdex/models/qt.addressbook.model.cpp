@@ -75,11 +75,18 @@ namespace atomic_dex
     {
         spdlog::trace("(addressbook_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
-        
         for (int row = 0; row < rows; ++row)
         {
-        }
+            auto* contact_model = m_contact_models.at(position);
         
+            if (not contact_model->get_name().isEmpty())
+            {
+                m_addressbook_manager.remove_contact(contact_model->get_name().toStdString());
+                m_addressbook_manager.save_configuration();
+            }
+            delete contact_model;
+            m_contact_models.removeAt(position);
+        }
         endRemoveRows();
         return true;
     }
