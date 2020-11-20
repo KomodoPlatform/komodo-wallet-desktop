@@ -11,8 +11,6 @@ import "../../Wallet"
 Item {
     id: exchange_trade
 
-    property string action_result
-
     readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
@@ -21,6 +19,13 @@ Item {
     signal prepareMultiOrder()
     property bool multi_order_values_are_valid: true
 
+    readonly property string non_null_price: backend_price === '' ? '0' : backend_price
+    readonly property string non_null_volume: backend_volume === '' ? '0' : backend_volume
+
+    readonly property string backend_price: API.app.trading_pg.price
+    function setPrice(v) {
+        API.app.trading_pg.price = v
+    }
     readonly property int last_trading_error: API.app.trading_pg.last_trading_error
     readonly property string max_volume: API.app.trading_pg.max_volume
     readonly property string backend_volume: API.app.trading_pg.volume
@@ -59,118 +64,26 @@ Item {
 
     function fullReset() {
         initialized_orderbook_pair = false
-        reset(true)
+        reset()
     }
 
-    function reset(reset_result=true, is_base) {
-        // Will move to backend
-//        if(reset_result) action_result = ""
-//        resetPreferredPrice()
-//        form_base.reset()
-//        resetTradeInfo()
-//        multi_order_switch.checked = false
-
+    function reset() {
         multi_order_switch.checked = false
     }
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
-
-    function orderIsSelected() {
-        return preffered_order.price !== undefined
-    }
 
     function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = { coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer }
 
-        form_base.field.forceActiveFocus()
-    }
-
-    function getCalculatedPrice() {
-        let price = form_base.price_field.text
-        return General.isZero(price) ? "0" : price
-    }
-
-    // Will move to backend
-    function getCurrentPrice() {
-        return orderIsSelected() ? preffered_order.price : getCalculatedPrice()
-    }
-
-    function hasValidPrice() {
-        return orderIsSelected() || !General.isZero(getCalculatedPrice())
+        form_base.focusVolumeField()
     }
 
     // Cache Trade Info
-    property bool valid_trade_info: API.app.trading_pg.fees.base_transaction_fees !== undefined
-    readonly property var curr_trade_info: API.app.trading_pg.fees
-
-    function resetTradeInfo() {
-        valid_trade_info = false
-    }
-
-    // Will move to backend
-//    Timer {
-//        id: trade_info_timer
-//        repeat: true
-//        running: true
-//        interval: 500
-//        onTriggered: {
-//            if(inCurrentPage() && !valid_trade_info) {
-//                updateTradeInfo()
-//            }
-//        }
-//    }
-
-    function notEnoughBalanceForFees() {
-        // Will move to backend
-//        return valid_trade_info && curr_trade_info.not_enough_balance_to_pay_the_fees
-        return false
-    }
-
-    function notEnoughBalance() {
-        return form_base.notEnoughBalance()
-    }
-
-
-    function getTradeInfo(base, rel, amount, set_as_current=true) {
-        // Will move to backend
-        /*if(inCurrentPage()) {
-            let info = API.app.get_trade_infos(base, rel, amount)
-
-            console.log("Getting Trade info with parameters: ", base, rel, amount, " -  Result: ", JSON.stringify(info))
-
-            if(info.input_final_value === undefined || info.input_final_value === "nan" || info.input_final_value === "NaN") {
-                info = default_curr_trade_info
-                valid_trade_info = false
-            }
-            else valid_trade_info = true
-
-            if(set_as_current) {
-                curr_trade_info = info
-            }
-
-            return info
-        }
-        else */return curr_trade_info
-    }
-
-
-
-    // Orderbook
-    function updateTradeInfo(force=false) {
-        const base = base_ticker
-        const rel = rel_ticker
-        const amount = sell_mode ? form_base.getVolume() :
-                                   General.formatDouble(form_base.getNeededAmountToSpend(form_base.getVolume()))
-        if(force || (General.isFilled(base) && General.isFilled(rel) && !General.isZero(amount))) {
-            getTradeInfo(base, rel, amount)
-
-            // Since new implementation does not update fees instantly, re-cap the volume every time, just in case
-            form_base.capVolume()
-        }
-    }
-
+    property bool valid_fee_info: API.app.trading_pg.fees.base_transaction_fees !== undefined
+    readonly property var curr_fee_info: API.app.trading_pg.fees
 
     property bool initialized_orderbook_pair: false
     readonly property string default_base: "KMD"
@@ -187,7 +100,7 @@ Item {
             API.app.trading_pg.set_current_orderbook(default_base, default_rel)
         }
 
-        reset(true)
+        reset()
         setPair(true, ticker)
     }
 
@@ -198,20 +111,13 @@ Item {
         swap_cooldown.restart()
 
         if(API.app.trading_pg.set_pair(is_left_side, changed_ticker)) {
-//            reset(true, is_left_side)
-//            updateTradeInfo()
-//            updateCexPrice(base, rel)
-
-            // Will move to backend
             pairChanged(base_ticker, rel_ticker)
             exchange.onTradeTickerChanged(base_ticker)
         }
     }
 
     function trade(options, default_config) {
-        console.log("Trade config: ", JSON.stringify(options))
-        console.log("Default config: ", JSON.stringify(default_config))
-
+        // Will move to backend - nota, conf
         let nota = ""
         let confs = ""
 
@@ -234,9 +140,6 @@ Item {
             }
         }
 
-        const is_created_order = !orderIsSelected()
-        console.log("QML place order: params:", "  /  is_created_order:", is_created_order, " / nota:", nota, "  /  confs:", confs)
-
         if(sell_mode)
             API.app.trading_pg.place_sell_order(nota, confs)
         else
@@ -252,16 +155,12 @@ Item {
         if(response.error_code) {
             confirm_trade_modal.close()
 
-            action_result = "error"
-
             toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, response.error_message)
 
             return
         }
         else if(response.result && response.result.uuid) { // Make sure there is information
             confirm_trade_modal.close()
-
-            action_result = "success"
 
             toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(response.result), false)
 
@@ -441,7 +340,7 @@ Item {
                                 text: qsTr("Multi-Order")
                                 enabled: !block_everything
                                 onCheckedChanged: {
-                                    if(checked) form_base.field.text = max_volume
+                                    if(checked) setVolume(max_volume)
                                 }
                             }
 

@@ -182,11 +182,10 @@ ColumnLayout {
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: {
-                        // Will move to backend
-//                        if(!is_mine) return
+                        if(!is_mine) return
 
-//                        cancel_button_text.requested_cancel = true
-//                        cancelOrder(uuid)
+                        cancel_button_text.requested_cancel = true
+                        cancelOrder(uuid)
                     }
                 }
             }

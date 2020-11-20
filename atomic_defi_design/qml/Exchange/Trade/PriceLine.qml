@@ -7,13 +7,13 @@ import "../../Constants"
 
 // Price
 RowLayout {
-    readonly property string price: API.app.trading_pg.price
+    readonly property string price: non_null_price
     readonly property string price_reversed: API.app.trading_pg.price_reversed
     readonly property string cex_price: API.app.trading_pg.cex_price
     readonly property string cex_price_reversed: API.app.trading_pg.cex_price_reversed
     readonly property string cex_price_diff: API.app.trading_pg.cex_price_diff
     readonly property bool invalid_cex_price: API.app.trading_pg.invalid_cex_price
-    readonly property bool price_entered: hasValidPrice()
+    readonly property bool price_entered: !General.isZero(non_null_price)
 
     readonly property int fontSize: Style.textSizeSmall1
     readonly property int fontSizeBigger: Style.textSizeSmall2
@@ -41,7 +41,7 @@ RowLayout {
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: qsTr("Exchange rate") + (orderIsSelected() ? (" (" + qsTr("Selected") + ")") : "")
+            text_value: qsTr("Exchange rate") + (preffered_order.price !== undefined ? (" (" + qsTr("Selected") + ")") : "")
             font.pixelSize: fontSize
         }
 

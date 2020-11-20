@@ -31,7 +31,7 @@ InnerBackground {
                     readonly property string rel: sell_mode ? model.ticker : left_ticker
 
                     readonly property string auto_price: {
-                        const current_price = parseFloat(getCurrentPrice())
+                        const current_price = parseFloat(non_null_price)
                         if(rel === right_ticker) return current_price
                         const rel_price_for_one_unit = parseFloat(model.main_fiat_price_for_one_unit)
                         const price_field_fiat = current_price * API.app.get_fiat_from_amount(rel_ticker, "1")
@@ -43,7 +43,7 @@ InnerBackground {
 
                     property string price: auto_price
 
-                    readonly property double volume: parseFloat(form_base.getVolume()) * parseFloat(price)
+                    readonly property double volume: parseFloat(non_null_volume) * parseFloat(price)
 
                     function resetData() {
                         model.multi_ticker_data = {}
@@ -91,7 +91,7 @@ InnerBackground {
                         params.base = left_ticker
                         params.rel = model.ticker
                         params.price = multi_order_line.price
-                        params.volume = form_base.getVolume()
+                        params.volume = non_null_volume
                         params.is_created_order = true
                         params.base_nota = ""
                         params.base_confs = ""

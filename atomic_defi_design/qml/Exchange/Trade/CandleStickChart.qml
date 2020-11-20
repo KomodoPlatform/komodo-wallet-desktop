@@ -53,66 +53,65 @@ Item {
     property string chart_rel
     property string loaded_symbol
     function loadChart(base, rel, force=false) {
-        // Will move to backend
-//        const pair = base + "/" + rel
-//        const pair_reversed = rel + "/" + base
+        const pair = base + "/" + rel
+        const pair_reversed = rel + "/" + base
 
-//        console.log("Will try to load TradingView chart", pair)
+        console.log("Will try to load TradingView chart", pair)
 
-//        // Normal pair
-//        let symbol = General.supported_pairs[pair]
-//        if(!symbol) {
-//            console.log("Symbol not found for", pair)
-//            symbol = General.supported_pairs[pair_reversed]
-//        }
+        // Normal pair
+        let symbol = General.supported_pairs[pair]
+        if(!symbol) {
+            console.log("Symbol not found for", pair)
+            symbol = General.supported_pairs[pair_reversed]
+        }
 
-//        // Reversed pair
-//        if(!symbol) {
-//            console.log("Symbol not found for", pair_reversed)
-//            pair_supported = false
-//            return
-//        }
+        // Reversed pair
+        if(!symbol) {
+            console.log("Symbol not found for", pair_reversed)
+            pair_supported = false
+            return
+        }
 
-//        pair_supported = true
+        pair_supported = true
 
-//        // Load HTML
-//        if(!force && symbol === loaded_symbol) {
-//            console.log("Chart is already loaded,", symbol)
-//            return
-//        }
+        // Load HTML
+        if(!force && symbol === loaded_symbol) {
+            console.log("Chart is already loaded,", symbol)
+            return
+        }
 
-//        loaded_symbol = symbol
-//        console.log("Loading TradingView chart", symbol, " theme: ", theme)
+        loaded_symbol = symbol
+        console.log("Loading TradingView chart", symbol, " theme: ", theme)
 
-//        chart_base = base
-//        chart_rel = rel
+        chart_base = base
+        chart_rel = rel
 
-//        chart.loadHtml(`
-//<style>
-//body { margin: 0; background: ${ graph_bg.color } }
-//</style>
+        chart.loadHtml(`
+<style>
+body { margin: 0; background: ${ graph_bg.color } }
+</style>
 
-//<!-- TradingView Widget BEGIN -->
-//<div class="tradingview-widget-container">
-//<div id="tradingview_af406"></div>
-//<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-//<script type="text/javascript">
-//new TradingView.widget(
-//{
-//"timezone": "Etc/UTC",
-//"locale": "en",
-//"autosize": true,
-//"symbol": "${symbol}",
-//"interval": "D",
-//"theme": "${theme}",
-//"style": "1",
-//"enable_publishing": false,
-//"save_image": false
-//}
-//);
-//</script>
-//</div>
-//<!-- TradingView Widget END -->`)
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<div id="tradingview_af406"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+new TradingView.widget(
+{
+"timezone": "Etc/UTC",
+"locale": "en",
+"autosize": true,
+"symbol": "${symbol}",
+"interval": "D",
+"theme": "${theme}",
+"style": "1",
+"enable_publishing": false,
+"save_image": false
+}
+);
+</script>
+</div>
+<!-- TradingView Widget END -->`)
     }
 
     WebEngineView {
