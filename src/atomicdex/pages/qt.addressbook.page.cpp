@@ -34,9 +34,9 @@ namespace atomic_dex
 //! QML API.
 namespace atomic_dex
 {
-    void addressbook_page::add_contact(QString contact_name, QVariantList addresses)
+    void addressbook_page::add_contact(const QString& contact_name)
     {
-    
+        m_addressbook_model->add_contact_entry(contact_name);
     }
     
     void addressbook_page::add_contact(QString contact_name, QVariantList addresses, QStringList categories)
