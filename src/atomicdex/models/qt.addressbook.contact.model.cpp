@@ -19,8 +19,8 @@
 //! Constructors.
 namespace atomic_dex
 {
-    addressbook_contact_model::addressbook_contact_model(addressbook_manager& addrbook_manager, QObject* parent) :
-        QAbstractListModel(parent), m_addressbook_manager(addrbook_manager)
+    addressbook_contact_model::addressbook_contact_model(addressbook_manager& addrbook_manager, QString name, QObject* parent) :
+        QAbstractListModel(parent), m_addressbook_manager(addrbook_manager), m_name(std::move(name))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("addressbook contact model created");

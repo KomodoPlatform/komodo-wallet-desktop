@@ -57,7 +57,7 @@ namespace atomic_dex
         /// \defgroup Constructors
         /// {@
         
-        explicit addressbook_contact_model(addressbook_manager& addrbook_manager, QObject* parent = nullptr);
+        explicit addressbook_contact_model(addressbook_manager& addrbook_manager, QString name, QObject* parent = nullptr);
         ~addressbook_contact_model() noexcept;
     
         /// @} End of Constructors section.
