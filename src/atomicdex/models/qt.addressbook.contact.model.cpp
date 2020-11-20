@@ -60,7 +60,7 @@ namespace atomic_dex
             return false;
         }
     
-        auto& wallet_info = m_wallets_info[index.row()];
+        auto& wallet_info = m_addressbook_manager.get_contacts().at(index.row());
         switch (role)
         {
         case TypeRole:
