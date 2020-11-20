@@ -91,7 +91,7 @@ namespace atomic_dex
     
     int addressbook_contact_model::rowCount(const QModelIndex& parent) const
     {
-        return m_wallets_info.size();
+        return m_addressbook_manager.get_wallets_info(m_name.toStdString()).size();
     }
     
     bool addressbook_contact_model::insertRows(int position, int rows, const QModelIndex& parent)
