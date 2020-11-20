@@ -1278,7 +1278,13 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "95.217.83.126:10001"
+        "url": "electrum1.cipig.net:10071"
+      },
+      {
+        "url": "electrum2.cipig.net:10071"
+      },
+      {
+        "url": "electrum3.cipig.net:10071"
       }
     ],
     "explorer_url": [
@@ -1286,5 +1292,28 @@
     ],
     "name": "QRC20 (testnet)",
     "type": "QRC-20"
-  }
+  },
+  "tQTUM": {
+    "active": false,
+    "coin": "tQTUM",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10071"
+      },
+      {
+        "url": "electrum2.cipig.net:10071"
+      },
+      {
+        "url": "electrum3.cipig.net:10071"
+      }
+    ],
+    "explorer_url": [
+      "https://testnet.qtum.info/"
+    ],
+    "name": "QTUM (testnet)",
+    "type": "QRC-20"
+  },
 }
