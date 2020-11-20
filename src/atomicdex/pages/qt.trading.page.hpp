@@ -59,6 +59,11 @@ namespace atomic_dex
         Q_PROPERTY(QString rel_amount READ get_rel_amount NOTIFY relAmountChanged)
         Q_PROPERTY(QVariantMap fees READ get_fees WRITE set_fees NOTIFY feesChanged)
         Q_PROPERTY(QVariantMap preffered_order READ get_preffered_order WRITE set_preffered_order NOTIFY prefferedOrderChanged)
+        Q_PROPERTY(QString price_reversed READ get_price_reversed NOTIFY priceReversedChanged)
+        Q_PROPERTY(QString cex_price READ get_cex_price NOTIFY cexPriceChanged)
+        Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
+        Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
+        Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
 
 
         //! Private enum
@@ -103,6 +108,7 @@ namespace atomic_dex
         QString                       m_volume{""};
         QString                       m_max_volume{"0"};
         QString                       m_total_amount{"0"};
+        QString                       m_cex_price{"0"};
         std::optional<nlohmann::json> m_preffered_order;
         QVariantMap                   m_fees;
 
@@ -113,6 +119,7 @@ namespace atomic_dex
         void determine_fees() noexcept;
         void determine_total_amount() noexcept;
         void determine_error_cases() noexcept;
+        void determine_cex_rates() noexcept;
         void cap_volume() noexcept;
 
       public:
@@ -164,6 +171,7 @@ namespace atomic_dex
         void                       set_market_mode(MarketMode market_mode) noexcept;
         [[nodiscard]] TradingError get_trading_error() const noexcept;
         void                       set_trading_error(TradingError trading_error) noexcept;
+        [[nodiscard]] QString      get_price_reversed() const noexcept;
         [[nodiscard]] QString      get_price() const noexcept;
         void                       set_price(QString price) noexcept;
         [[nodiscard]] QString      get_volume() const noexcept;
@@ -174,6 +182,10 @@ namespace atomic_dex
         void                       set_total_amount(QString total_amount) noexcept;
         [[nodiscard]] QString      get_base_amount() const noexcept;
         [[nodiscard]] QString      get_rel_amount() const noexcept;
+        [[nodiscard]] QString      get_cex_price() const noexcept;
+        [[nodiscard]] QString      get_cex_price_reversed() const noexcept;
+        [[nodiscard]] QString      get_cex_price_diff() const noexcept;
+        [[nodiscard]] bool         get_invalid_cex_price() const noexcept;
         [[nodiscard]] QVariantMap  get_preffered_order() noexcept;
         void                       set_preffered_order(QVariantMap price_object) noexcept;
         [[nodiscard]] QVariantMap  get_fees() const noexcept;
@@ -210,6 +222,11 @@ namespace atomic_dex
         void baseAmountChanged();
         void relAmountChanged();
         void feesChanged();
+        void cexPriceChanged();
+        void cexPriceReversedChanged();
+        void cexPriceDiffChanged();
+        void invalidCexPriceChanged();
+        void priceReversedChanged();
     };
 } // namespace atomic_dex
 

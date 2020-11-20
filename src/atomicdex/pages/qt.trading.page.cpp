@@ -22,8 +22,9 @@
 //! Project Headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/ohlc/ohlc.provider.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.trading.page.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
 
 //! Consttructor / Destructor
 namespace atomic_dex
@@ -310,7 +311,7 @@ namespace atomic_dex
         batch.push_back(sell_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
-        //spdlog::info("batch sell request: {}", batch.dump(4));
+        // spdlog::info("batch sell request: {}", batch.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -604,7 +605,9 @@ namespace atomic_dex
             {
                 this->m_preffered_order.value()["locked"] = true;
             }
+            this->determine_cex_rates();
             emit priceChanged();
+            emit priceReversedChanged();
         }
     }
 
@@ -619,6 +622,10 @@ namespace atomic_dex
         this->set_trading_error(TradingError::None);
         this->m_preffered_order = std::nullopt;
         this->m_fees            = QVariantMap();
+        this->m_cex_price       = "0";
+        emit cexPriceChanged();
+        emit invalidCexPriceChanged();
+        emit cexPriceReversedChanged();
         emit feesChanged();
         emit prefferedOrderChanged();
     }
@@ -1056,5 +1063,68 @@ namespace atomic_dex
 
         //! Check for base coin
         this->set_trading_error(current_trading_error);
+    }
+
+    void
+    trading_page::determine_cex_rates() noexcept
+    {
+        std::error_code ec;
+        const auto&     price_service   = m_system_manager.get_system<global_price_service>();
+        const auto*     market_selector = get_market_pairs_mdl();
+        const auto&     base            = market_selector->get_left_selected_coin();
+        const auto&     rel             = market_selector->get_right_selected_coin();
+        const auto      cex_price       = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString(), ec));
+        if (cex_price != m_cex_price && !ec)
+        {
+            m_cex_price = std::move(cex_price);
+            emit cexPriceChanged();
+            emit invalidCexPriceChanged();
+            emit cexPriceReversedChanged();
+        }
+    }
+
+    QString
+    trading_page::get_cex_price() const noexcept
+    {
+        return m_cex_price;
+    }
+
+    bool
+    trading_page::get_invalid_cex_price() const noexcept
+    {
+        return m_cex_price == "0" || m_cex_price == "0.00" || m_cex_price.isEmpty();
+    }
+
+    QString
+    trading_page::get_price_reversed() const noexcept
+    {
+        if (not m_price.isEmpty() && t_float_50(m_price.toStdString()) > 0)
+        {
+            t_float_50 reversed_price = t_float_50(1) / t_float_50(m_price.toStdString());
+            return QString::fromStdString(utils::format_float(reversed_price));
+        }
+
+        return "0";
+    }
+
+    QString
+    trading_page::get_cex_price_reversed() const noexcept
+    {
+        if (not get_invalid_cex_price())
+        {
+            t_float_50 reversed_cex_price = t_float_50(1) / t_float_50(m_cex_price.toStdString());
+            return QString::fromStdString(utils::format_float(reversed_cex_price));
+        }
+        return "0";
+    }
+
+    QString
+    trading_page::get_cex_price_diff() const noexcept
+    {
+        t_float_50 price_diff = get_invalid_cex_price()
+                                    ? t_float_50(0)
+                                    : t_float_50(100) * (t_float_50(1) - t_float_50(m_price.toStdString()) / t_float_50(m_cex_price.toStdString())) *
+                                          (m_market_mode == MarketMode::Sell ? t_float_50(1) : t_float_50(-1));
+        return QString::fromStdString(utils::format_float(price_diff));
     }
 } // namespace atomic_dex
