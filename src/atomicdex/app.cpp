@@ -804,13 +804,13 @@ namespace atomic_dex
 //! Trading functions
 namespace atomic_dex
 {
-    QString
+    /*QString
     application::get_cex_rates(const QString& base, const QString& rel)
     {
         std::error_code ec;
         const auto&     price_service = system_manager_.get_system<global_price_service>();
         return QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString(), ec));
-    }
+    }*/
 
     QString
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
