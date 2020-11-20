@@ -76,8 +76,8 @@ namespace atomic_dex
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).price);
         case CoinRole:
-            m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).coin)
-                                                   : QString::fromStdString(m_model_data.bids.at(index.row()).coin);
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).coin)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).coin);
         case PriceDenomRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price_fraction_denom)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).price_fraction_denom);

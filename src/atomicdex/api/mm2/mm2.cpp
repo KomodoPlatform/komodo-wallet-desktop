@@ -575,6 +575,9 @@ namespace mm2::api
             j["price"]                         = price_fraction_repr;
             if (request.is_exact_selected_order_volume)
             {
+                spdlog::info(
+                    "The order is exact selected order volume, setting volume_numer and volume_denom from it {}, {}", request.volume_numer,
+                    request.volume_denom);
                 nlohmann::json volume_fraction_repr = nlohmann::json::object();
                 volume_fraction_repr["numer"]       = request.volume_numer;
                 volume_fraction_repr["denom"]       = request.volume_denom;
@@ -616,6 +619,9 @@ namespace mm2::api
             j["price"]                         = price_fraction_repr;
             if (request.is_exact_selected_order_volume)
             {
+                spdlog::info(
+                    "The order is exact selected order volume, setting volume_numer and volume_denom from it {}, {}", request.volume_numer,
+                    request.volume_denom);
                 nlohmann::json volume_fraction_repr = nlohmann::json::object();
                 volume_fraction_repr["numer"]       = request.volume_numer;
                 volume_fraction_repr["denom"]       = request.volume_denom;

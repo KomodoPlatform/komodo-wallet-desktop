@@ -230,7 +230,10 @@ namespace atomic_dex
             .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
             .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
             .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume = false,
+            .is_exact_selected_order_volume =
+                (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString())
+                    ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+                    : false,
             .base_nota  = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
         nlohmann::json batch;
@@ -295,7 +298,10 @@ namespace atomic_dex
             .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
             .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
             .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume = false,
+            .is_exact_selected_order_volume =
+                (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString())
+                    ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+                    : false,
             .rel_nota  = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
             .rel_confs = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
         nlohmann::json batch;
@@ -304,7 +310,7 @@ namespace atomic_dex
         batch.push_back(sell_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
-        spdlog::info("batch sell request: {}", batch.dump(4));
+        //spdlog::info("batch sell request: {}", batch.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
