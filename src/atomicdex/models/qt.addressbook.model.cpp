@@ -127,9 +127,19 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::addressbook_model::remove_at(int position)
+    addressbook_model::add_contact_entry(const QString& name)
     {
-        removeRow(position);
+        if (m_addressbook_manager.has_contact(name.toStdString()))
+        {
+            return;
+    }
+
+        auto* contact_model = new addressbook_contact_model(m_addressbook_manager, name, nullptr);
+        
+        m_addressbook_manager.add_contact(name.toStdString());
+        beginInsertRows(QModelIndex(), m_contact_models.count(), m_contact_models.count());
+        m_contact_models.push_back(contact_model);
+        endInsertRows();
     }
 
     addressbook_proxy_model*
