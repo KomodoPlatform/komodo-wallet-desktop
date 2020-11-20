@@ -27,6 +27,7 @@
 //! Project include
 #include "atomicdex/managers/addressbook.manager.hpp"             //> addressbook_manager.
 #include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
+#include "qt.addressbook.contact.model.hpp"
 
 namespace ag = antara::gaming;
 
@@ -38,6 +39,7 @@ namespace atomic_dex
         Q_OBJECT
         
         Q_PROPERTY(addressbook_proxy_model* addressbook_proxy_mdl READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
+        
         Q_ENUMS(AddressBookRoles)
 
     public:
