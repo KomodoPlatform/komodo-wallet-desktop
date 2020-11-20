@@ -46,6 +46,8 @@ namespace atomic_dex
         const auto& wallets_info = m_addressbook_manager.get_contact(m_name.toStdString()).at("wallets_info");
         switch (role)
         {
+        case ContactRoles::TypeRole:
+            return QString::fromStdString(wallets_info.at(index.row()).at("type").get<std::string>());
         default:
             return {};
         }
