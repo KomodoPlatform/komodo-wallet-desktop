@@ -68,7 +68,6 @@ namespace atomic_dex
         void       init_from_manager();
         
         void add_contact_entry(const QString& name);
-        Q_INVOKABLE void add_contact_entry(const QString& name);
 
         //! Properties
         [[nodiscard]]
