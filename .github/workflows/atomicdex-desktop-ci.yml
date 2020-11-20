@@ -69,8 +69,10 @@ jobs:
           Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
           Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
-          .\ngrok\ngrok.exe tcp 3389
 
+      - name: launch rdp (Windows)
+        if: runner.os == 'Windows'
+        run: .\ngrok\ngrok.exe tcp 3389
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
