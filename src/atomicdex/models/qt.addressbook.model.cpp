@@ -95,9 +95,7 @@ namespace atomic_dex
     atomic_dex::addressbook_model::roleNames() const
     {
         return {
-            {NameRole, "name"},
-            {WalletsInfoRole, "wallets_info"},
-            {CategoriesRole, "categories"}
+            {SubModelRole, "contacts"}
         };
     }
 }
