@@ -251,6 +251,7 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
+                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
@@ -319,6 +320,7 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
+                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));

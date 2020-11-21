@@ -19,11 +19,11 @@ jobs:
       matrix:
         name: [
             ubuntu-qt-5-15-0,
-            ubuntu-qt-5-15-1,
+            ubuntu-qt-5-15-2,
             osx-qt-5-15-0,
-            osx-qt-5-15-1,
+            osx-qt-5-15-2,
             windows-10-qt-5-15-0,
-            windows-10-qt-5-15-1
+            windows-10-qt-5-15-2
         ]
 
         include:
@@ -31,25 +31,25 @@ jobs:
             os: ubuntu-16.04
             qt: '5.15.0'
 
-          - name: ubuntu-qt-5-15-1
+          - name: ubuntu-qt-5-15-2
             os: ubuntu-16.04
-            qt: '5.15.1'
+            qt: '5.15.2'
 
           - name: osx-qt-5-15-0
             os: macos-latest
             qt: '5.15.0'
 
-          - name: osx-qt-5-15-1
+          - name: osx-qt-5-15-2
             os: macos-latest
-            qt: '5.15.1'
+            qt: '5.15.2'
 
           - name: windows-10-qt-5-15-0
             os: windows-latest
             qt: '5.15.0'
 
-          - name: windows-10-qt-5-15-1
+          - name: windows-10-qt-5-15-2
             os: windows-latest
-            qt: '5.15.1'
+            qt: '5.15.2'
 
     steps:
       - uses: actions/checkout@v2
