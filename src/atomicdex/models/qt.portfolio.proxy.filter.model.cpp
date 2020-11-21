@@ -115,11 +115,7 @@ namespace atomic_dex
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
         QString ticker = this->sourceModel()->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
         QString type   = this->sourceModel()->data(idx, atomic_dex::portfolio_model::CoinType).toString();
-        //! TODO: Remove when QRC-20 swap is supported
-        if (am_i_a_market_selector && ticker != "QTUM" && type == "QRC-20")
-        {
-            return false;
-        }
+
         if (this->filterRole() == atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled)
         {
             bool is_enabled = this->sourceModel()->data(idx, atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled).toBool();

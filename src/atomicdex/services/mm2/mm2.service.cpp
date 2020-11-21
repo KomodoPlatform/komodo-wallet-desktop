@@ -491,7 +491,7 @@ namespace atomic_dex
                 continue;
             }
 
-            if (coin_info.need_electrum || coin_info.coin_type == UTXO || coin_info.coin_type == SmartChain)
+            if (!(coin_info.coin_type == ERC20))
             {
                 t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
                 nlohmann::json     j = ::mm2::api::template_request("electrum");

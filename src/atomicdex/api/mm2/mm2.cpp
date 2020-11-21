@@ -85,10 +85,6 @@ namespace mm2::api
             j["swap_contract_address"] = cfg.erc_swap_contract_address;
             j["urls"]                  = cfg.urls;
         }
-        else if (cfg.coin_type == atomic_dex::QRC20)
-        {
-            j["swap_contract_address"] = cfg.qrc_swap_contract_address;
-        }
         j["tx_history"] = cfg.with_tx_history;
     }
 
@@ -112,6 +108,10 @@ namespace mm2::api
         j["coin"]       = cfg.coin_name;
         j["servers"]    = cfg.servers;
         j["tx_history"] = cfg.with_tx_history;
+        if (cfg.coin_type == atomic_dex::QRC20)
+        {
+            j["swap_contract_address"] = cfg.qrc_swap_contract_address;
+        }
     }
 
     //! Deserialization

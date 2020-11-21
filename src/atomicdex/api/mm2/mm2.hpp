@@ -80,7 +80,6 @@ namespace mm2::api
         std::vector<std::string> urls;
         atomic_dex::coin_type    coin_type;
         const std::string        erc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
-        const std::string        qrc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
         std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
         std::string              type; ///< QRC-20 ?
         bool                     with_tx_history{true};
@@ -105,7 +104,9 @@ namespace mm2::api
     {
         std::string                              coin_name;
         std::vector<atomic_dex::electrum_server> servers;
+        atomic_dex::coin_type                    coin_type;
         bool                                     with_tx_history{true};
+        const std::string                        qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
     };
 
     struct electrum_answer
