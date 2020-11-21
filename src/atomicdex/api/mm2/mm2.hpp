@@ -529,6 +529,7 @@ namespace mm2::api
         bool                       is_exact_selected_order_volume;
         std::optional<bool>        rel_nota;
         std::optional<std::size_t> rel_confs;
+        bool                       is_max;
     };
 
     void to_json(nlohmann::json& j, const sell_request& request);

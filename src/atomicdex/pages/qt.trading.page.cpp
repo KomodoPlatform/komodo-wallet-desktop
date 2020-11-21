@@ -289,23 +289,30 @@ namespace atomic_dex
         const auto& base              = market_selector->get_left_selected_coin();
         const auto& rel               = market_selector->get_right_selected_coin();
         const bool  is_selected_order = m_preffered_order.has_value();
+        const bool  is_max            = m_max_volume == m_volume;
 
         t_sell_request req{
-            .base             = base.toStdString(),
-            .rel              = rel.toStdString(),
-            .price            = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
-            .volume           = m_volume.toStdString(),
-            .is_created_order = not is_selected_order,
-            .price_denom      = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
-            .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
-            .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
-            .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume =
-                (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString())
-                    ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
-                    : false,
-            .rel_nota  = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
-            .rel_confs = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
+            .base                           = base.toStdString(),
+            .rel                            = rel.toStdString(),
+            .price                          = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
+            .volume                         = m_volume.toStdString(),
+            .is_created_order               = not is_selected_order,
+            .price_denom                    = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
+            .price_numer                    = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
+            .volume_denom                   = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
+            .volume_numer                   = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
+            .is_exact_selected_order_volume = (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_max : false,
+            .rel_nota                       = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs                      = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
+            .is_max                         = is_max};
+
+        if (req.is_max)
+        {
+            //! If it's max
+            auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
+            req.volume_denom            = max_taker_vol_json_obj["denom"].toString().toStdString();
+            req.volume_numer            = max_taker_vol_json_obj["numer"].toString().toStdString();
+        }
         nlohmann::json batch;
         nlohmann::json sell_request = ::mm2::api::template_request("sell");
         ::mm2::api::to_json(sell_request, req);
@@ -699,7 +706,7 @@ namespace atomic_dex
         }
         else
         {
-            //! In MarketMode::Buy mode the max volume is base_max_taker_vol / price
+            //! In MarketMode::Buy mode the max volume is rel_max_taker_vol / price
             if (not m_price.isEmpty())
             {
                 t_float_50 max_vol(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
