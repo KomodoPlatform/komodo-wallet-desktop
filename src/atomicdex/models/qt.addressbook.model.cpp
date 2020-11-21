@@ -69,6 +69,23 @@ namespace atomic_dex
             return {};
         }
     }
+    
+    bool
+    atomic_dex::addressbook_model::insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
+    {
+        spdlog::trace("(addressbook_model::insertRows) inserting {} elements at position {}", rows, position);
+        beginInsertRows(QModelIndex(), position, position + rows - 1);
+        
+        for (int row = 0; row < rows; ++row)
+        {
+            const auto& contact = m_addressbook_manager.get_contacts().at(position);
+            this->m_contact_models.insert(
+                position, new addressbook_contact_model(m_addressbook_manager, QString::fromStdString(contact.at("name")), this));
+        }
+        
+        endInsertRows();
+        return true;
+    }
 
     bool
     atomic_dex::addressbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
@@ -129,20 +146,17 @@ namespace atomic_dex
         removeRow(position);
     }
     
-    void
+    bool
     addressbook_model::add_contact_entry(const QString& name)
     {
         if (m_addressbook_manager.has_contact(name.toStdString()))
         {
-            return;
+            return false;
         }
         
-        auto* contact_model = new addressbook_contact_model(m_addressbook_manager, name, nullptr);
-        
         m_addressbook_manager.add_contact(name.toStdString());
-        beginInsertRows(QModelIndex(), m_contact_models.count(), m_contact_models.count());
-        m_contact_models.push_back(contact_model);
-        endInsertRows();
+        insertRow(m_contact_models.size());
+        return true;
     }
 
     addressbook_proxy_model*

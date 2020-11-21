@@ -63,7 +63,7 @@ namespace atomic_dex
         
         /// \brief Creates a new contact.
         /// \param contact_name The name of the contact.
-        Q_INVOKABLE void add_contact(const QString& contact_name);
+        Q_INVOKABLE bool add_contact(const QString& contact_name);
 
         /// \brief Removes a contact.
         /// \param contact_name The name of the targeted contact.
@@ -103,14 +103,13 @@ namespace atomic_dex
         /// \param contact_name The name of the contact.
         /// \param category     The name of the category. (e.g. "Friend")
         Q_INVOKABLE void remove_contact_category(QString contact_name, QString category);
-        
+
     private:
-        Q_PROPERTY(addressbook_model* addressbook_model READ get_addressbook_model NOTIFY addressbookChanged)
-    public:
+        Q_PROPERTY(addressbook_model* addressbook_model READ get_addressbook_model NOTIFY addressbookModelChanged)
         [[nodiscard]]
         addressbook_model* get_addressbook_model() const noexcept;
     signals:
-        void addressbookChanged();
+        void addressbookModelChanged();
     
         /// @} End of QML API section.
     };

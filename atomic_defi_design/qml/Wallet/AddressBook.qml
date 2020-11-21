@@ -140,4 +140,9 @@ ColumnLayout {
             }
         }
     }
+
+    //! Panel to create new contact
+    AddressBookNewContact {
+        id: addressbook_new_contact
+    }
 }
