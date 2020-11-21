@@ -22,6 +22,7 @@
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
+#include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace mm2::api
@@ -77,8 +78,11 @@ namespace mm2::api
     {
         std::string              coin_name;
         std::vector<std::string> urls;
-        std::string              swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
+        atomic_dex::coin_type    coin_type;
+        const std::string        erc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
+        const std::string        qrc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
         std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
+        std::string              type; ///< QRC-20 ?
         bool                     with_tx_history{true};
     };
 

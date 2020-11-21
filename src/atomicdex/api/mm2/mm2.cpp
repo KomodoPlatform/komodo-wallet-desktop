@@ -78,11 +78,18 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const enable_request& cfg)
     {
-        j["coin"]                  = cfg.coin_name;
-        j["gas_station_url"]       = cfg.gas_station_url;
-        j["swap_contract_address"] = cfg.swap_contract_address;
-        j["urls"]                  = cfg.urls;
-        j["tx_history"]            = cfg.with_tx_history;
+        j["coin"] = cfg.coin_name;
+        if (cfg.coin_type == atomic_dex::ERC20)
+        {
+            j["gas_station_url"]       = cfg.gas_station_url;
+            j["swap_contract_address"] = cfg.erc_swap_contract_address;
+            j["urls"]                  = cfg.urls;
+        }
+        else if (cfg.coin_type == atomic_dex::QRC20)
+        {
+            j["swap_contract_address"] = cfg.qrc_swap_contract_address;
+        }
+        j["tx_history"] = cfg.with_tx_history;
     }
 
     //! Deserialization

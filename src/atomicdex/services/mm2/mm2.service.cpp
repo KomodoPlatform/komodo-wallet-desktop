@@ -405,7 +405,7 @@ namespace atomic_dex
         std::vector<std::string> tickers_idx;
         std::vector<std::string> erc_to_fetch;
         const auto&              ticker = get_current_ticker();
-        if (not get_coin_info(ticker).is_erc_20)
+        if (!(get_coin_info(ticker).coin_type == ERC20))
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -491,7 +491,7 @@ namespace atomic_dex
                 continue;
             }
 
-            if (not coin_info.is_erc_20)
+            if (coin_info.need_electrum || coin_info.coin_type == UTXO || coin_info.coin_type == SmartChain)
             {
                 t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
                 nlohmann::json     j = ::mm2::api::template_request("electrum");
@@ -500,8 +500,12 @@ namespace atomic_dex
             }
             else
             {
-                t_enable_request request{.coin_name = coin_info.ticker, .urls = coin_info.eth_urls.value(), .with_tx_history = false};
-                nlohmann::json   j = ::mm2::api::template_request("enable");
+                t_enable_request request{
+                    .coin_name       = coin_info.ticker,
+                    .urls            = (coin_info.coin_type == ERC20) ? coin_info.eth_urls.value() : std::vector<std::string>(),
+                    .coin_type       = coin_info.coin_type,
+                    .with_tx_history = false};
+                nlohmann::json j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
                 //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
@@ -518,7 +522,7 @@ namespace atomic_dex
             }
         }
 
-        //spdlog::trace("{}", batch_array.dump(4));
+        // spdlog::trace("{}", batch_array.dump(4));
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
             ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client, m_token_source.get_token())
                 .then([this, tickers](web::http::http_response resp) mutable {
@@ -867,7 +871,7 @@ namespace atomic_dex
     {
         const auto& ticker = get_current_ticker();
         spdlog::trace("asking history of ticker: {}", ticker);
-        if (not get_coin_info(ticker).is_erc_20)
+        if (!(get_coin_info(ticker).coin_type == ERC20))
         {
             if (m_tx_informations.find("result") == m_tx_informations.cend())
             {
@@ -1127,7 +1131,7 @@ namespace atomic_dex
     mm2_service::get_tx_state(t_mm2_ec& ec) const
     {
         const auto& ticker = get_current_ticker();
-        if (not get_coin_info(ticker).is_erc_20)
+        if (!(get_coin_info(ticker).coin_type == ERC20))
         {
             if (m_tx_state.find("result") == m_tx_state.cend())
             {
@@ -1165,7 +1169,7 @@ namespace atomic_dex
     std::string
     mm2_service::apply_specific_fees(const std::string& ticker, t_float_50& value) const
     {
-        if (auto coin_info = get_coin_info(ticker); coin_info.is_erc_20 || coin_info.is_qrc_20)
+        if (auto coin_info = get_coin_info(ticker); (coin_info.coin_type == ERC20) || (coin_info.coin_type == QRC20))
         {
             spdlog::info("Calculating specific fees of rel ticker: {}", ticker);
             const auto& answer = get_transaction_fees(ticker);
