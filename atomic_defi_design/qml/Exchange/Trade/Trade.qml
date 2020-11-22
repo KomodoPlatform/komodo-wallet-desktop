@@ -338,7 +338,7 @@ Item {
                                 Layout.fillWidth: true
 
                                 text: qsTr("Multi-Order")
-                                enabled: !block_everything
+                                enabled: !block_everything && parseFloat(non_null_price) > 0
                                 onCheckedChanged: {
                                     if(checked) setVolume(max_volume)
                                 }
