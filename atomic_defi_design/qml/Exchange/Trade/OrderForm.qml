@@ -316,33 +316,7 @@ FloatingBackground {
                 font.pixelSize: Style.textSizeSmall4
                 color: Style.colorRed
 
-                text_value: {
-                    switch(last_trading_error) {
-                    case TradingError.None:
-                        return ""
-                    case TradingError.TradingFeesNotEnoughFunds:
-                        return qsTr("Not enough balance for trading fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_fee_info.trading_fee, curr_fee_info.trading_fee_ticker))
-                    case TradingError.BaseNotEnoughFunds:
-                        return qsTr("Not enough balance for fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_fee_info.total_base_fees, base_ticker))
-                    case TradingError.BaseTransactionFeesNotEnough:
-                        return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_fee_info.base_transaction_fees, curr_fee_info.base_transaction_fees_ticker))
-                    case TradingError.RelTransactionFeesNotEnough:
-                        return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_fee_info.rel_transaction_fees, curr_fee_info.rel_transaction_fee_ticker))
-                    case TradingError.BalanceIsLessThanTheMinimalTradingAmount:
-                        return qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
-                    case TradingError.PriceFieldNotFilled:
-                        return qsTr("Please fill the price field")
-                    case TradingError.VolumeFieldNotFilled:
-                        return qsTr("Please fill the volume field")
-                    case TradingError.VolumeIsLowerThanTheMinimum:
-                        return qsTr("%1 volume is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
-                    case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
-                        return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getMinTradeAmount()
-                    default:
-                        return qsTr("Unknown Error") + ": " + last_trading_error
-                    }
-                }
-                          
+                text_value: General.getTradingError(last_trading_error, curr_fee_info, base_ticker, rel_ticker)
             }
         }
     }

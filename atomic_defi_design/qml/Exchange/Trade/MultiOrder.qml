@@ -118,6 +118,34 @@ InnerBackground {
                         bottom_text: qsTr("You'll receive %1", "AMOUNT TICKER").arg(General.formatCrypto("", multi_order_line.volume, multi_order_line.rel))
                     }
 
+                    DefaultMouseArea {
+                        id: mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: enabled
+                    }
+
+                    // Recoverable
+                    DefaultText {
+                        font.pixelSize: Style.textSizeSmall4
+                        visible: model.multi_ticker_error >= 0
+                        anchors.verticalCenter: input_price.verticalCenter
+                        anchors.right: input_price.left
+                        anchors.rightMargin: 40
+                        text_value: Style.warningCharacter
+                        color: Style.colorYellow
+
+                        DefaultTooltip {
+                            visible: parent.visible && mouse_area.containsMouse
+
+                            contentItem: ColumnLayout {
+                                DefaultText {
+                                    text_value: General.getTradingError(model.multi_ticker_error, model.multi_ticker_fees_info, base_ticker, model.ticker)
+                                    font.pixelSize: Style.textSizeSmall2
+                                }
+                            }
+                        }
+                    }
+
                     AmountFieldWithInfo {
                         id: input_price
                         width: 220
