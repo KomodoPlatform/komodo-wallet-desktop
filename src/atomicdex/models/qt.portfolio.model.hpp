@@ -53,8 +53,10 @@ namespace atomic_dex
             Excluded,
             Display,
             NameAndTicker,
-            IsMultiTickerCurrentlyEnabled,
-            MultiTickerData,
+            MultiTickerCurrentlyEnabled, ///< If set to true multi ticker is enabled
+            MultiTickerData,               ///< Multi ticker data for the confirm model
+            MultiTickerError,              ///< In case of error code will be stored
+            MultiTickerPrice,              ///< The price field of multi ticker
             CoinType
         };
         Q_ENUM(PortfolioRoles)
