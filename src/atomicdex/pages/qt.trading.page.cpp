@@ -1174,14 +1174,28 @@ namespace atomic_dex
     void
     trading_page::determine_multi_ticker_total_amount(const QString& ticker, [[maybe_unused]] const QString& price)
     {
-        if (ticker != get_market_pairs_mdl()->get_left_selected_coin())
+        if (m_market_mode == MarketMode::Sell)
         {
-            spdlog::warn("{} not implemented yet", __FUNCTION__);
-            this->determine_multi_ticker_fees(ticker);
+            if (ticker != get_market_pairs_mdl()->get_left_selected_coin())
+            {
+                spdlog::warn("{} not implemented yet", __FUNCTION__);
+                this->determine_multi_ticker_fees(ticker);
+                this->determine_multi_ticker_error_cases(ticker);
+            }
+            else
+            {
+                spdlog::warn("Skipping for first multi-ticker element, it's the main trade info");
+            }
         }
         else
         {
-            spdlog::warn("Skipping for first multi-ticker element, it's the main trade info");
+            spdlog::error("multi_ticker order are not available in buy mode");
         }
+    }
+
+    void
+    trading_page::determine_multi_ticker_error_cases(const QString& ticker)
+    {
+        spdlog::warn("{} not implemented yet", __FUNCTION__);
     }
 } // namespace atomic_dex
