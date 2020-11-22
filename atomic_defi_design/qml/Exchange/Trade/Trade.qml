@@ -338,7 +338,7 @@ Item {
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true
 
-                                text: qsTr("Multi-Order") + (price_is_empty ? " (" + qsTr("Fill the price") + ")" : '')
+                                text: qsTr("Multi-Order")
                                 enabled: !block_everything && form_base.can_submit_trade
 
                                 checked: API.app.trading_pg.multi_order_enabled
