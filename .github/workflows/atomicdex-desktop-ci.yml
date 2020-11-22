@@ -18,34 +18,19 @@ jobs:
     strategy:
       matrix:
         name: [
-            ubuntu-qt-5-15-0,
             ubuntu-qt-5-15-2,
-            osx-qt-5-15-0,
             osx-qt-5-15-2,
-            windows-10-qt-5-15-0,
             windows-10-qt-5-15-2
         ]
 
         include:
-          - name: ubuntu-qt-5-15-0
-            os: ubuntu-16.04
-            qt: '5.15.0'
-
           - name: ubuntu-qt-5-15-2
             os: ubuntu-16.04
             qt: '5.15.2'
 
-          - name: osx-qt-5-15-0
-            os: macos-latest
-            qt: '5.15.0'
-
           - name: osx-qt-5-15-2
             os: macos-latest
             qt: '5.15.2'
-
-          - name: windows-10-qt-5-15-0
-            os: windows-latest
-            qt: '5.15.0'
 
           - name: windows-10-qt-5-15-2
             os: windows-latest
@@ -95,8 +80,8 @@ jobs:
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-           python3  -m aqt tool mac tools_ifw 4.0 qt.tools.ifw.40 --outputdir ${{ github.workspace }}/Qt
-           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
+          python3  -m aqt tool mac tools_ifw 4.0 qt.tools.ifw.40 --outputdir ${{ github.workspace }}/Qt
+          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
@@ -108,7 +93,7 @@ jobs:
           arch: 'win64_msvc2019_64'
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
-      
+
       - name: Install QT IFW (Windows)
         if: runner.os == 'Windows'
         run: |
@@ -319,7 +304,7 @@ jobs:
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/osx/atomicdex_desktop_installer.7z
-          
+
       - name: Upload env variable for artifacts (Windows)
         if: runner.os == 'Windows'
         run: |
@@ -333,7 +318,7 @@ jobs:
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/windows/bin.zip
-      
+
       - name: Upload artifacts (Windows installer)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v2
