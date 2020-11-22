@@ -29,20 +29,9 @@ InnerBackground {
                     readonly property string base: sell_mode ? left_ticker : model.ticker
                     readonly property string rel: sell_mode ? model.ticker : left_ticker
 
-                    readonly property string auto_price: {
-                        const current_price = parseFloat(non_null_price)
-                        if(rel === right_ticker) return current_price
-                        const rel_price_for_one_unit = parseFloat(model.main_fiat_price_for_one_unit)
-                        const price_field_fiat = current_price * API.app.get_fiat_from_amount(rel_ticker, "1")
-                        const rel_price_relative = rel_price_for_one_unit === 0 ? 0 : price_field_fiat / rel_price_for_one_unit
-                        return General.formatDouble(rel_price_relative)
-                    }
+                    readonly property string price: model.multi_ticker_price
 
-                    onAuto_priceChanged: price = auto_price
-
-                    property string price: auto_price
-
-                    readonly property double volume: parseFloat(non_null_volume) * parseFloat(price)
+                    readonly property double volume: model.multi_ticker_receive_amount
 
                     function resetData() {
                         model.multi_ticker_data = {}
@@ -63,8 +52,6 @@ InnerBackground {
                             // Retrigger the data changes
                             enable_ticker.checked = true
                         }
-
-                        price = auto_price
                     }
 
                     function setMultiTickerData() {
@@ -86,42 +73,30 @@ InnerBackground {
                             return
                         }
 
+                        if(model.multi_ticker_error > 0) {
+                            toast.show(qsTr("Error:", model.multi_ticker_error))
+
+                            console.log("Multi order error for", model.ticker, ":", model.multi_ticker_error)
+                            multi_order_values_are_valid = false
+                            return
+                        }
+
+
                         let params = getData()
                         params.base = left_ticker
                         params.rel = model.ticker
-                        params.price = multi_order_line.price
+                        params.price = price
                         params.volume = non_null_volume
                         params.is_created_order = true
                         params.base_nota = ""
                         params.base_confs = ""
                         params.rel_nota = ""
                         params.rel_confs = ""
+                        params.trade_info = model.multi_ticker_fees_info
 
                         params.rel_volume = "" + multi_order_line.volume
 
                         setData(params)
-                    }
-
-                    function updateTradeInfo() {
-                        if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return
-                        if(!model.multi_ticker_data.info_needs_update) return
-
-                        const base = multi_order_line.base
-                        const rel = multi_order_line.rel
-
-                        const amt = API.app.get_balance(base)
-                        console.log("Updating trading info for ", base, "/", rel, " with amount:", amt)
-                        let info = API.app.get_trade_infos(base, rel, amt)
-                        console.log(General.prettifyJSON(info))
-                        if(info.input_final_value === undefined || info.input_final_value === "nan" || info.input_final_value === "NaN") {
-                            console.log("Bad trade info!")
-                            return
-                        }
-
-                        let d = getData()
-                        d.info_needs_update = false
-                        d.trade_info = info
-                        setData(d)
                     }
 
                     Connections {
@@ -133,10 +108,6 @@ InnerBackground {
 
                         function onPrepareMultiOrder() {
                             multi_order_line.setMultiTickerData()
-                        }
-
-                        function onFetching_multi_ticker_fees_busyChanged() {
-                            multi_order_line.updateTradeInfo()
                         }
                     }
 
@@ -156,9 +127,9 @@ InnerBackground {
 
                         field.left_text: qsTr("Price")
                         field.right_text: model.ticker + "/" + multi_order_line.base
-                        field.onTextChanged: multi_order_line.price = field.text
+                        field.onTextChanged: model.multi_ticker_price = field.text
 
-                        field.text: multi_order_line.price
+                        field.text: price
                         field.enabled: !is_parent_coin
                     }
 

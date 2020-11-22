@@ -338,26 +338,14 @@ Item {
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true
 
-                                text: qsTr("Multi-Order")
+                                text: qsTr("Multi-Order") + (price_is_empty ? " (" + qsTr("Fill the price") + ")" : '')
                                 enabled: !block_everything && !price_is_empty
+
+                                checked: API.app.trading_pg.multi_order_enabled
                                 onCheckedChanged: {
-                                    if(checked) setVolume(max_volume)
-                                }
-                            }
-
-                            DefaultMouseArea {
-                                id: mouse_area
-                                anchors.fill: multi_order_switch
-                                hoverEnabled: true
-
-                                DefaultTooltip {
-                                    visible: price_is_empty && mouse_area.containsMouse
-
-                                    contentItem: ColumnLayout {
-                                        DefaultText {
-                                            id: tooltip_text
-                                            text_value: qsTr("Please fill the price field first")
-                                        }
+                                    if(checked) {
+                                        setVolume(max_volume)
+                                        API.app.trading_pg.multi_order_enabled = checked
                                     }
                                 }
                             }

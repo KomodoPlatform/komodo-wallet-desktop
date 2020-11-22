@@ -64,7 +64,7 @@ namespace atomic_dex
         Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
         Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
-        Q_PROPERTY(bool multi_order_enabled READ get_multi_order_enabled NOTIFY multiOrderEnabledChanged)
+        Q_PROPERTY(bool multi_order_enabled READ get_multi_order_enabled WRITE set_multi_order_enabled NOTIFY multiOrderEnabledChanged)
 
 
         //! Private enum
