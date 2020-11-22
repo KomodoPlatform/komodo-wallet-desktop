@@ -193,8 +193,6 @@ namespace atomic_dex
         }
 #endif
 
-        ::mm2::api::reset_client();
-
         if (m_mm2_init_thread.joinable())
         {
             m_mm2_init_thread.join();
@@ -929,26 +927,6 @@ namespace atomic_dex
                 }
             })
             .then(&handle_exception_pplx_task);
-    }
-
-    void
-    mm2_service::process_swaps()
-    {
-        std::size_t               total = this->m_swaps_registry.at("result").total;
-        t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
-        auto                      answer = rpc_my_recent_swaps(std::move(request), m_mm2_client);
-        if (answer.result.has_value())
-        {
-            m_swaps_registry.insert_or_assign("result", answer.result.value());
-            this->dispatcher_.trigger<process_swaps_finished>();
-        }
-    }
-
-    void
-    mm2_service::process_orders()
-    {
-        m_orders_registry.insert_or_assign("result", ::mm2::api::rpc_my_orders(m_mm2_client));
-        this->dispatcher_.trigger<process_orders_finished>();
     }
 
     void

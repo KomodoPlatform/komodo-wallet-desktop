@@ -32,11 +32,6 @@ namespace mm2::api
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
 
-    static inline void
-    reset_client()
-    {
-    }
-
     nlohmann::json rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
     pplx::task<web::http::http_response>
                    async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client, pplx::cancellation_token token);
@@ -641,8 +636,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, my_orders_answer& answer);
 
-    my_orders_answer rpc_my_orders(std::shared_ptr<t_http_client> mm2_client) noexcept;
-
     struct my_recent_swaps_request
     {
         std::size_t                limit{50ull};
@@ -650,47 +643,6 @@ namespace mm2::api
     };
 
     void to_json(nlohmann::json& j, const my_recent_swaps_request& request);
-
-    struct finished_event
-    {
-        std::size_t timestamp;
-        std::string human_date;
-    };
-
-    struct started_data
-    {
-        std::size_t lock_duration;
-    };
-
-    void from_json(const nlohmann::json& j, started_data& contents);
-
-    struct started_event
-    {
-        std::size_t  timestamp;
-        std::string  human_date;
-        started_data data;
-    };
-
-    struct error_data
-    {
-        std::string error_message;
-    };
-
-    void from_json(const nlohmann::json& j, error_data& contents);
-
-    struct start_failed_event
-    {
-        std::size_t timestamp;
-        std::string human_date;
-        error_data  data;
-    };
-
-    struct negotiate_failed_event
-    {
-        std::size_t timestamp;
-        std::string human_date;
-        error_data  data;
-    };
 
     struct swap_contents
     {
@@ -732,8 +684,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer& answer);
 
-    my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
     struct kmd_rewards_info_answer
     {
         nlohmann::json result;
@@ -742,9 +692,6 @@ namespace mm2::api
 
     // kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
     kmd_rewards_info_answer process_kmd_rewards_answer(nlohmann::json result);
-
-    nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests, std::shared_ptr<t_http_client> mm2_client);
-    nlohmann::json rpc_batch_enable(std::vector<enable_request> requests, std::shared_ptr<t_http_client> mm2_client);
 
     template <typename T>
     using have_error_field = decltype(std::declval<T&>().error.has_value());

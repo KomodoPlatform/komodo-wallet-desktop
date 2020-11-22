@@ -165,9 +165,6 @@ namespace atomic_dex
         //! Destructor
         ~mm2_service() noexcept final;
 
-        //! Refresh the orders registry (internal)
-        void process_orders();
-
         //! Events
         void on_refresh_orderbook(const orderbook_refresh& evt);
 
@@ -180,9 +177,6 @@ namespace atomic_dex
 
         //! Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
-
-        //! Refresh the swaps history
-        void process_swaps();
 
         //! Enable coins
         bool enable_default_coins() noexcept;

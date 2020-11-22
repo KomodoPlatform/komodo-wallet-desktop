@@ -767,18 +767,6 @@ namespace mm2::api
     }
 
     void
-    from_json(const nlohmann::json& j, started_data& contents)
-    {
-        j.at("lock_duration").get_to(contents.lock_duration);
-    }
-
-    void
-    from_json(const nlohmann::json& j, error_data& contents)
-    {
-        j.at("error").get_to(contents.error_message);
-    }
-
-    void
     from_json(const nlohmann::json& j, swap_contents& contents)
     {
         using namespace date;
@@ -918,12 +906,6 @@ namespace mm2::api
         }
     }
 
-    my_recent_swaps_answer
-    rpc_my_recent_swaps(my_recent_swaps_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<my_recent_swaps_request, my_recent_swaps_answer>(std::forward<my_recent_swaps_request>(request), "my_recent_swaps", mm2_client);
-    }
-
     enable_answer
     rpc_enable(enable_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
@@ -1011,26 +993,6 @@ namespace mm2::api
     {
         return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(
             std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap", mm2_client);
-    }
-
-    my_orders_answer
-    rpc_my_orders(std::shared_ptr<t_http_client> mm2_http_client) noexcept
-    {
-        nlohmann::json json_data = template_request("my_orders");
-
-        spdlog::info("Processing rpc call: rpc my_orders");
-
-
-        if (mm2_http_client != nullptr)
-        {
-            web::http::http_request request(web::http::methods::POST);
-            request.headers().set_content_type(FROM_STD_STR("application/json"));
-            request.set_body(json_data.dump());
-            auto resp = mm2_http_client->request(request).get();
-            return rpc_process_answer<my_orders_answer>(resp, "my_orders");
-        }
-
-        return {};
     }
 
     template <typename TRequest, typename TAnswer>
