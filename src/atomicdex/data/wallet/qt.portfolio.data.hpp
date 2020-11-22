@@ -68,5 +68,7 @@ namespace atomic_dex
         std::optional<QJsonObject>  multi_ticker_data{std::nullopt};
         std::optional<TradingError> multi_ticker_error;
         std::optional<QString>      multi_ticker_price;
+        std::optional<QString>      multi_ticker_receive_amount;
+        std::optional<QJsonObject>  multi_ticker_fees_info;
     };
 } // namespace atomic_dex

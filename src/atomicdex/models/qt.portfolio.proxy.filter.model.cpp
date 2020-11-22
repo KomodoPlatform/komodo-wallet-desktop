@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
 
 namespace atomic_dex
 {
@@ -74,6 +74,8 @@ namespace atomic_dex
         {
         case atomic_dex::portfolio_model::TickerRole:
             return left_data.toString() > right_data.toString();
+        case atomic_dex::portfolio_model::NameRole:
+            return left_data.toString().toLower() < right_data.toString().toLower();
         case atomic_dex::portfolio_model::BalanceRole:
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::MainCurrencyBalanceRole:
@@ -87,27 +89,18 @@ namespace atomic_dex
             return left_data.toFloat() < right_data.toFloat();
         case atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit:
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
-        case atomic_dex::portfolio_model::NameRole:
-            return left_data.toString().toLower() < right_data.toString().toLower();
-        case portfolio_model::Trend7D:
-            return false;
-        case portfolio_model::Excluded:
-            return false;
-        case portfolio_model::Display:
-            return false;
-        case portfolio_model::NameAndTicker:
-            return false;
-        case portfolio_model::MultiTickerCurrentlyEnabled:
-            return false;
-        case portfolio_model::MultiTickerData:
-            return false;
         case portfolio_model::MainFiatPriceForOneUnit:
-            return false;
-        case portfolio_model::CoinType:
-            return false;
+        case portfolio_model::Trend7D:
+        case portfolio_model::Excluded:
+        case portfolio_model::Display:
+        case portfolio_model::NameAndTicker:
+        case portfolio_model::MultiTickerCurrentlyEnabled:
+        case portfolio_model::MultiTickerData:
         case portfolio_model::MultiTickerError:
-            return false;
         case portfolio_model::MultiTickerPrice:
+        case portfolio_model::MultiTickerReceiveAmount:
+        case portfolio_model::MultiTickerFeesInfo:
+        case portfolio_model::CoinType:
             return false;
         }
     }
