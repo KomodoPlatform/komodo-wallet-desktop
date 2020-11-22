@@ -21,6 +21,7 @@ Item {
 
     readonly property string non_null_price: backend_price === '' ? '0' : backend_price
     readonly property string non_null_volume: backend_volume === '' ? '0' : backend_volume
+    readonly property bool price_is_empty: parseFloat(non_null_price) <= 0
 
     readonly property string backend_price: API.app.trading_pg.price
     function setPrice(v) {
@@ -338,9 +339,26 @@ Item {
                                 Layout.fillWidth: true
 
                                 text: qsTr("Multi-Order")
-                                enabled: !block_everything && parseFloat(non_null_price) > 0
+                                enabled: !block_everything && !price_is_empty
                                 onCheckedChanged: {
                                     if(checked) setVolume(max_volume)
+                                }
+                            }
+
+                            DefaultMouseArea {
+                                id: mouse_area
+                                anchors.fill: multi_order_switch
+                                hoverEnabled: true
+
+                                DefaultTooltip {
+                                    visible: price_is_empty && mouse_area.containsMouse
+
+                                    contentItem: ColumnLayout {
+                                        DefaultText {
+                                            id: tooltip_text
+                                            text_value: qsTr("Please fill the price field first")
+                                        }
+                                    }
                                 }
                             }
 
