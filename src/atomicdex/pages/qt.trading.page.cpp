@@ -607,7 +607,11 @@ namespace atomic_dex
     void
     trading_page::set_price(QString price) noexcept
     {
-        if (m_price != price && not price.isEmpty())
+        if (price.isEmpty())
+        {
+            price = "0";
+        }
+        if (m_price != price)
         {
             m_price = std::move(price);
             if (this->m_preffered_order.has_value() && this->m_preffered_order->contains("locked"))
