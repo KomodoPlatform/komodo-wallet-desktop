@@ -371,11 +371,10 @@ Item {
                                 Layout.fillWidth: true
                                 enabled: multi_order_enabled && form_base.can_submit_trade
                                 onClicked: {
-                                    // Will move to backend
-//                                    multi_order_values_are_valid = true
-//                                    prepareMultiOrder()
-//                                    if(multi_order_values_are_valid)
-//                                        confirm_multi_order_trade_modal.open()
+                                    multi_order_values_are_valid = true
+                                    prepareMultiOrder()
+                                    if(multi_order_values_are_valid)
+                                        confirm_multi_order_trade_modal.open()
                                 }
                             }
                         }
