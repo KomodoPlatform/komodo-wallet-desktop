@@ -1212,4 +1212,19 @@ namespace atomic_dex
     {
         spdlog::warn("{} not implemented yet", __FUNCTION__);
     }
+
+    bool
+    trading_page::get_multi_order_enabled() const noexcept
+    {
+        return m_multi_order_enabled;
+    }
+    void
+    trading_page::set_multi_order_enabled(bool multi_order_enabled) noexcept
+    {
+        if (m_multi_order_enabled != multi_order_enabled)
+        {
+            this->m_multi_order_enabled = multi_order_enabled;
+            emit multiOrderEnabledChanged();
+        }
+    }
 } // namespace atomic_dex
