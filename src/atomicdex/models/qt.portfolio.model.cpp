@@ -23,6 +23,7 @@
 //! Project Headers
 #include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -255,12 +256,16 @@ namespace atomic_dex
             return item.display;
         case NameAndTicker:
             return item.ticker_and_name;
-        case IsMultiTickerCurrentlyEnabled:
+        case MultiTickerCurrentlyEnabled:
             return item.is_multi_ticker_enabled;
         case MultiTickerData:
             return item.multi_ticker_data.has_value() ? item.multi_ticker_data.value() : QJsonObject{};
         case CoinType:
             return item.coin_type;
+        case MultiTickerError:
+            return static_cast<qint32>(item.multi_ticker_error.value_or(TradingError::None));
+        case MultiTickerPrice:
+            return item.multi_ticker_price.value_or("0");
         }
         return {};
     }
@@ -306,7 +311,7 @@ namespace atomic_dex
         case NameAndTicker:
             item.ticker_and_name = value.toString();
             break;
-        case IsMultiTickerCurrentlyEnabled:
+        case MultiTickerCurrentlyEnabled:
             if (item.is_multi_ticker_enabled != value.toBool())
             {
                 item.is_multi_ticker_enabled = value.toBool();
@@ -318,12 +323,19 @@ namespace atomic_dex
             break;
         case MultiTickerData:
             item.multi_ticker_data = QJsonObject::fromVariantMap(value.value<QVariantMap>());
-            // qDebug() << value;
-            /*if (value.isValid())
-            {
-                item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
-            }*/
             break;
+        case MultiTickerError:
+            if (item.is_multi_ticker_enabled)
+            {
+                item.multi_ticker_error = static_cast<TradingError>(value.toInt());
+            }
+            break;
+        case MultiTickerPrice:
+            if (item.is_multi_ticker_enabled)
+            {
+                item.multi_ticker_price = value.toString();
+                this->m_system_manager.get_system<trading_page>().determine_multi_ticker_total_amount(item.ticker, item.multi_ticker_price.value());
+            }
         default:
             return false;
         }
@@ -385,7 +397,7 @@ namespace atomic_dex
             {Excluded, "excluded"},
             {Display, "display"},
             {NameAndTicker, "name_and_ticker"},
-            {IsMultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"},
+            {MultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"},
             {MultiTickerData, "multi_ticker_data"}};
     }
 

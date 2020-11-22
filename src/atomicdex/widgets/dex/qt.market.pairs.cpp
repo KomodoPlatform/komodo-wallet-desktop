@@ -53,7 +53,7 @@ namespace atomic_dex
         m_multi_order_coins->setSourceModel(portfolio_mdl);
         m_multi_order_coins->setDynamicSortFilter(true);
         m_multi_order_coins->sort_by_name(true);
-        this->m_multi_order_coins->setFilterRole(portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled);
+        this->m_multi_order_coins->setFilterRole(portfolio_model::PortfolioRoles::MultiTickerCurrentlyEnabled);
         this->m_multiple_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 

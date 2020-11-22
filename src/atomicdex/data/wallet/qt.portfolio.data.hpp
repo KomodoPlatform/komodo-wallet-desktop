@@ -24,6 +24,8 @@
 //! STD
 #include <optional>
 
+#include "atomicdex/constants/qt.trading.enums.hpp"
+
 namespace atomic_dex
 {
     struct portfolio_data
@@ -61,8 +63,10 @@ namespace atomic_dex
 
         QString ticker_and_name;
 
-        bool is_multi_ticker_enabled{false};
-
-        std::optional<QJsonObject> multi_ticker_data{std::nullopt};
+        //! Multi ticker
+        bool                        is_multi_ticker_enabled{false};
+        std::optional<QJsonObject>  multi_ticker_data{std::nullopt};
+        std::optional<TradingError> multi_ticker_error;
+        std::optional<QString>      multi_ticker_price;
     };
 } // namespace atomic_dex

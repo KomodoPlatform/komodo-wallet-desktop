@@ -97,13 +97,17 @@ namespace atomic_dex
             return false;
         case portfolio_model::NameAndTicker:
             return false;
-        case portfolio_model::IsMultiTickerCurrentlyEnabled:
+        case portfolio_model::MultiTickerCurrentlyEnabled:
             return false;
         case portfolio_model::MultiTickerData:
             return false;
         case portfolio_model::MainFiatPriceForOneUnit:
             return false;
         case portfolio_model::CoinType:
+            return false;
+        case portfolio_model::MultiTickerError:
+            return false;
+        case portfolio_model::MultiTickerPrice:
             return false;
         }
     }
@@ -116,9 +120,9 @@ namespace atomic_dex
         QString ticker = this->sourceModel()->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
         QString type   = this->sourceModel()->data(idx, atomic_dex::portfolio_model::CoinType).toString();
 
-        if (this->filterRole() == atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled)
+        if (this->filterRole() == atomic_dex::portfolio_model::MultiTickerCurrentlyEnabled)
         {
-            bool is_enabled = this->sourceModel()->data(idx, atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled).toBool();
+            bool is_enabled = this->sourceModel()->data(idx, atomic_dex::portfolio_model::MultiTickerCurrentlyEnabled).toBool();
             if (not is_enabled)
             {
                 return false;

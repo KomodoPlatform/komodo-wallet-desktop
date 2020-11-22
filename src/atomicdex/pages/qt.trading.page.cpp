@@ -21,7 +21,6 @@
 
 //! Project Headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/services/ohlc/ohlc.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.trading.page.hpp"
@@ -514,7 +513,7 @@ namespace atomic_dex
         for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
         {
             QModelIndex idx                  = model->index(cur_idx, 0);
-            bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled).toBool();
+            bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerCurrentlyEnabled).toBool();
             std::string ticker               = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString().toStdString();
             if (multi_ticker_enabled)
             {
@@ -1164,5 +1163,39 @@ namespace atomic_dex
                                     : t_float_50(100) * (t_float_50(1) - t_float_50(m_price.toStdString()) / t_float_50(m_cex_price.toStdString())) *
                                           (m_market_mode == MarketMode::Sell ? t_float_50(1) : t_float_50(-1));
         return QString::fromStdString(utils::format_float(price_diff));
+    }
+
+    void
+    trading_page::determine_multi_ticker_fees([[maybe_unused]] const QString& ticker)
+    {
+        spdlog::warn("{} not implemented yet", __FUNCTION__);
+    }
+
+    void
+    trading_page::determine_multi_ticker_total_amount(const QString& ticker, [[maybe_unused]] const QString& price)
+    {
+        if (m_market_mode == MarketMode::Sell)
+        {
+            if (ticker != get_market_pairs_mdl()->get_left_selected_coin())
+            {
+                spdlog::warn("{} not implemented yet", __FUNCTION__);
+                this->determine_multi_ticker_fees(ticker);
+                this->determine_multi_ticker_error_cases(ticker);
+            }
+            else
+            {
+                spdlog::warn("Skipping for first multi-ticker element, it's the main trade info");
+            }
+        }
+        else
+        {
+            spdlog::error("multi_ticker order are not available in buy mode");
+        }
+    }
+
+    void
+    trading_page::determine_multi_ticker_error_cases(const QString& ticker)
+    {
+        spdlog::warn("{} not implemented yet", __FUNCTION__);
     }
 } // namespace atomic_dex
