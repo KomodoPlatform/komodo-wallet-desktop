@@ -182,7 +182,7 @@ namespace atomic_dex
             obj["fee_ticker"]                         = QString::fromStdString(ticker);
             if (coin_info.coin_type == coin_type::QRC20)
             {
-                obj["fee_ticker"] = "QTUM";
+                obj["fee_ticker"] = (coin_info.is_testnet) ? "tQTUM" : "QTUM";
             }
             else if (coin_info.coin_type == coin_type::ERC20)
             {
@@ -386,7 +386,7 @@ namespace atomic_dex
                 auto&       mm2_system = m_system_manager.get_system<mm2_service>();
                 const auto& ticker     = mm2_system.get_current_ticker();
                 auto        answers    = nlohmann::json::parse(body);
-                //spdlog::info("broadcast answer: {}", answers.dump(4));
+                // spdlog::info("broadcast answer: {}", answers.dump(4));
                 if (answers[0].contains("tx_hash"))
                 {
                     this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));

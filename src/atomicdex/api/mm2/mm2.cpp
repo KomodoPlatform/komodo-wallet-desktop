@@ -44,7 +44,8 @@ namespace mm2::api
     to_json(nlohmann::json& j, const max_taker_vol_request& cfg)
     {
         j["coin"] = cfg.coin;
-        if (cfg.trade_with.has_value()) {
+        if (cfg.trade_with.has_value())
+        {
             j["trade_with"] = cfg.trade_with.value();
         }
     }
@@ -210,7 +211,7 @@ namespace mm2::api
             cfg.erc_fees = fee_erc_coin{};
             from_json(j, cfg.erc_fees.value());
         }
-        else if (j.at("coin").get<std::string>() == "QTUM")
+        else if (j.at("coin").get<std::string>() == "QTUM" || j.at("coin").get<std::string>() == "tQTUM")
         {
             cfg.qrc_fees = fee_qrc_coin{};
             from_json(j, cfg.qrc_fees.value());

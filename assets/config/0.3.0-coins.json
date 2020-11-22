@@ -1245,6 +1245,7 @@
     "currently_enabled": false
   },
   "tBTC": {
+    "is_testnet": true,
     "active": false,
     "coin": "tBTC",
     "coingecko_id": "test-coin",
@@ -1272,6 +1273,7 @@
     "type": "UTXO"
   },
   "QRC20": {
+    "is_testnet": true,
     "active": false,
     "coin": "QRC20",
     "coingecko_id": "test-coin",
@@ -1296,6 +1298,7 @@
   },
   "tQTUM": {
     "need_electrum": true,
+    "is_testnet": true,
     "active": false,
     "coin": "tQTUM",
     "coingecko_id": "test-coin",

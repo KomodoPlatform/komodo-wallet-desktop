@@ -1269,8 +1269,7 @@ namespace atomic_dex
                 .my_balance_change = current.my_balance_change,
                 .total_amount      = current.total_amount,
                 .block_height      = current.block_height,
-
-                .ec = dextop_error::success,
+                .ec                = dextop_error::success,
             };
             if (current.fee_details.normal_fees.has_value())
             {
