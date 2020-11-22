@@ -386,16 +386,24 @@ namespace atomic_dex
                 auto&       mm2_system = m_system_manager.get_system<mm2_service>();
                 const auto& ticker     = mm2_system.get_current_ticker();
                 auto        answers    = nlohmann::json::parse(body);
-                this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
-                if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && is_max))
+                //spdlog::info("broadcast answer: {}", answers.dump(4));
+                if (answers[0].contains("tx_hash"))
                 {
-                    mm2_system.reset_fake_balance_to_zero(ticker);
+                    this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
+                    if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && is_max))
+                    {
+                        mm2_system.reset_fake_balance_to_zero(ticker);
+                    }
+                    else if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && not is_max))
+                    {
+                        mm2_system.decrease_fake_balance(ticker, amount.toStdString());
+                    }
+                    mm2_system.fetch_infos_thread();
                 }
-                else if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && not is_max))
+                else
                 {
-                    mm2_system.decrease_fake_balance(ticker, amount.toStdString());
+                    this->set_rpc_broadcast_data(QString::fromStdString(body));
                 }
-                mm2_system.fetch_infos_thread();
             }
             else
             {
