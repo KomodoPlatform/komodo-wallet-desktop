@@ -491,8 +491,13 @@ namespace atomic_dex
 
             if (!(coin_info.coin_type == ERC20))
             {
-                t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
-                nlohmann::json     j = ::mm2::api::template_request("electrum");
+                t_electrum_request request{
+                    .coin_name       = coin_info.ticker,
+                    .servers         = coin_info.electrum_urls.value(),
+                    .coin_type       = coin_info.coin_type,
+                    .is_testnet      = coin_info.is_testnet.value_or(false),
+                    .with_tx_history = true};
+                nlohmann::json j = ::mm2::api::template_request("electrum");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
             }

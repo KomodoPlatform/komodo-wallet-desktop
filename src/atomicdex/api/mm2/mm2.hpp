@@ -42,7 +42,7 @@ namespace mm2::api
     //! max taker vol
     struct max_taker_vol_request
     {
-        std::string coin;
+        std::string                coin;
         std::optional<std::string> trade_with;
     };
 
@@ -101,7 +101,9 @@ namespace mm2::api
         std::string                              coin_name;
         std::vector<atomic_dex::electrum_server> servers;
         atomic_dex::coin_type                    coin_type;
+        bool                                     is_testnet{false};
         bool                                     with_tx_history{true};
+        const std::string                        testnet_qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
         const std::string                        qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
     };
 

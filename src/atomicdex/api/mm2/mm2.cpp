@@ -114,7 +114,7 @@ namespace mm2::api
         j["tx_history"] = cfg.with_tx_history;
         if (cfg.coin_type == atomic_dex::QRC20)
         {
-            j["swap_contract_address"] = cfg.qrc_swap_contract_address;
+            j["swap_contract_address"] = cfg.is_testnet ? cfg.testnet_qrc_swap_contract_address : cfg.qrc_swap_contract_address;
         }
     }
 
