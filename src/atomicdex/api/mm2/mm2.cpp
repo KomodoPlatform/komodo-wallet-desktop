@@ -44,6 +44,9 @@ namespace mm2::api
     to_json(nlohmann::json& j, const max_taker_vol_request& cfg)
     {
         j["coin"] = cfg.coin;
+        if (cfg.trade_with.has_value()) {
+            j["trade_with"] = cfg.trade_with.value();
+        }
     }
 
     //! Deserialization
@@ -557,8 +560,6 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const buy_request& request)
     {
-        spdlog::debug("price: {}, volume: {}", request.price, request.volume);
-
         j["base"]   = request.base;
         j["price"]  = request.price;
         j["rel"]    = request.rel;
@@ -573,8 +574,6 @@ namespace mm2::api
         }
         if (not request.is_created_order)
         {
-            spdlog::info(
-                "The order is picked from the orderbook, setting price_numer and price_denom from it {}, {}", request.price_numer, request.price_denom);
             //! From orderbook
             nlohmann::json price_fraction_repr = nlohmann::json::object();
             price_fraction_repr["numer"]       = request.price_numer;
@@ -582,18 +581,16 @@ namespace mm2::api
             j["price"]                         = price_fraction_repr;
             if (request.is_exact_selected_order_volume)
             {
-                spdlog::info(
-                    "The order is exact selected order volume, setting volume_numer and volume_denom from it {}, {}", request.volume_numer,
-                    request.volume_denom);
                 nlohmann::json volume_fraction_repr = nlohmann::json::object();
                 volume_fraction_repr["numer"]       = request.volume_numer;
                 volume_fraction_repr["denom"]       = request.volume_denom;
                 j["volume"]                         = volume_fraction_repr;
             }
+            spdlog::info("The order is picked from the orderbook price: {}, volume: {}", j.at("price").dump(4), j.at("volume").dump(4));
         }
         else
         {
-            spdlog::info("The order is not picked from orderbook we create it volume = {}, price = {}", request.volume, request.price);
+            spdlog::info("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
         }
     }
 

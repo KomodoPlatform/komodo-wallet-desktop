@@ -220,6 +220,7 @@ namespace atomic_dex
         const auto& base              = market_selector->get_left_selected_coin();
         const auto& rel               = market_selector->get_right_selected_coin();
         const bool  is_selected_order = m_preffered_order.has_value();
+        const bool  is_selected_max = QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume;
 
         t_buy_request req{
             .base             = base.toStdString(),
@@ -232,9 +233,7 @@ namespace atomic_dex
             .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
             .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
             .is_exact_selected_order_volume =
-                (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString())
-                    ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
-                    : false,
+                (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false,
             .base_nota  = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
         nlohmann::json batch;
@@ -262,6 +261,7 @@ namespace atomic_dex
                 else
                 {
                     auto error_json = QJsonObject({{"error_code", -1}, {"error_message", QString::fromStdString(body)}});
+                    spdlog::error("error place_buy_order: {}", body);
                     this->set_buy_sell_last_rpc_data(error_json);
                 }
             }
@@ -290,21 +290,23 @@ namespace atomic_dex
         const auto& rel               = market_selector->get_right_selected_coin();
         const bool  is_selected_order = m_preffered_order.has_value();
         const bool  is_max            = m_max_volume == m_volume;
+        const bool  is_selected_max = QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume;
 
         t_sell_request req{
-            .base                           = base.toStdString(),
-            .rel                            = rel.toStdString(),
-            .price                          = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
-            .volume                         = m_volume.toStdString(),
-            .is_created_order               = not is_selected_order,
-            .price_denom                    = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
-            .price_numer                    = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
-            .volume_denom                   = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
-            .volume_numer                   = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume = (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_max : false,
-            .rel_nota                       = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
-            .rel_confs                      = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
-            .is_max                         = is_max};
+            .base             = base.toStdString(),
+            .rel              = rel.toStdString(),
+            .price            = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
+            .volume           = m_volume.toStdString(),
+            .is_created_order = not is_selected_order,
+            .price_denom      = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
+            .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
+            .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
+            .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
+            .is_exact_selected_order_volume =
+                (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false,
+            .rel_nota  = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
+            .is_max    = is_max};
 
         if (req.is_max)
         {
@@ -709,12 +711,38 @@ namespace atomic_dex
             //! In MarketMode::Buy mode the max volume is rel_max_taker_vol / price
             if (not m_price.isEmpty())
             {
-                t_float_50 max_vol(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
-                max_vol = std::max(t_float_50(0), max_vol);
                 t_float_50 price_f(m_price.toStdString());
-                t_float_50 res = price_f > t_float_50(0) ? max_vol / price_f : t_float_50(0);
-                this->set_max_volume(QString::fromStdString(utils::format_float(res)));
-                this->cap_volume();
+                //! It's selected let's use rat price
+                if (m_preffered_order.has_value())
+                {
+                    const auto& rel_max_taker_json_obj = get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject();
+                    const auto& denom                  = rel_max_taker_json_obj["denom"].toString().toStdString();
+                    const auto& numer                  = rel_max_taker_json_obj["numer"].toString().toStdString();
+                    t_rational  rel_max_taker_rat((boost::multiprecision::cpp_int(numer)), boost::multiprecision::cpp_int(denom));
+                    t_float_50  res_f = t_float_50(0);
+                    if (price_f > t_float_50(0))
+                    {
+                        const auto price_denom = m_preffered_order->at("price_denom").get<std::string>();
+                        const auto price_numer = m_preffered_order->at("price_numer").get<std::string>();
+                        t_rational price_orderbook_rat((boost::multiprecision::cpp_int(price_numer)), (boost::multiprecision::cpp_int(price_denom)));
+
+                        t_rational res = rel_max_taker_rat / price_orderbook_rat;
+                        spdlog::info(
+                            "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
+                            boost::multiprecision::denominator(res).str());
+                        res_f = res.convert_to<t_float_50>();
+                    }
+                    this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
+                    this->cap_volume();
+                }
+                else
+                {
+                    t_float_50 max_vol(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                    max_vol        = std::max(t_float_50(0), max_vol);
+                    t_float_50 res = price_f > t_float_50(0) ? max_vol / price_f : t_float_50(0);
+                    this->set_max_volume(QString::fromStdString(utils::format_float(res)));
+                    this->cap_volume();
+                }
             }
         }
     }

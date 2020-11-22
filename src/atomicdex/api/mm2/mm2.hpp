@@ -43,6 +43,7 @@ namespace mm2::api
     struct max_taker_vol_request
     {
         std::string coin;
+        std::optional<std::string> trade_with;
     };
 
     void to_json(nlohmann::json& j, const max_taker_vol_request& cfg);

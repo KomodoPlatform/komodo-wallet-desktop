@@ -1343,11 +1343,11 @@ namespace atomic_dex
         ::mm2::api::to_json(current_request, req_orderbook);
         batch.push_back(current_request);
         current_request = ::mm2::api::template_request("max_taker_vol");
-        ::mm2::api::max_taker_vol_request req_base_max_taker_vol{.coin = orderbook_ticker_base};
+        ::mm2::api::max_taker_vol_request req_base_max_taker_vol{.coin = orderbook_ticker_base, .trade_with = orderbook_ticker_rel};
         ::mm2::api::to_json(current_request, req_base_max_taker_vol);
         batch.push_back(current_request);
         current_request = ::mm2::api::template_request("max_taker_vol");
-        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = orderbook_ticker_rel};
+        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = orderbook_ticker_rel, .trade_with = orderbook_ticker_rel};
         ::mm2::api::to_json(current_request, req_rel_max_taker_vol);
         batch.push_back(current_request);
         return batch;
