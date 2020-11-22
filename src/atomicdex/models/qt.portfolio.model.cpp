@@ -266,6 +266,10 @@ namespace atomic_dex
             return static_cast<qint32>(item.multi_ticker_error.value_or(TradingError::None));
         case MultiTickerPrice:
             return item.multi_ticker_price.value_or("0");
+        case MultiTickerReceiveAmount:
+            return item.multi_ticker_receive_amount.value_or("0");
+        case MultiTickerFeesInfo:
+            return item.multi_ticker_fees_info.value_or(QJsonObject());
         }
         return {};
     }
@@ -336,6 +340,19 @@ namespace atomic_dex
                 item.multi_ticker_price = value.toString();
                 this->m_system_manager.get_system<trading_page>().determine_multi_ticker_total_amount(item.ticker, item.multi_ticker_price.value());
             }
+            break;
+        case MultiTickerReceiveAmount:
+            if (item.is_multi_ticker_enabled)
+            {
+                item.multi_ticker_receive_amount = value.toString();
+            }
+            break;
+        case MultiTickerFeesInfo:
+            if (item.is_multi_ticker_enabled)
+            {
+                item.multi_ticker_fees_info = QJsonObject::fromVariantMap(value.value<QVariantMap>());
+            }
+            break;
         default:
             return false;
         }
@@ -398,7 +415,11 @@ namespace atomic_dex
             {Display, "display"},
             {NameAndTicker, "name_and_ticker"},
             {MultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"},
-            {MultiTickerData, "multi_ticker_data"}};
+            {MultiTickerData, "multi_ticker_data"},
+            {MultiTickerPrice, "multi_ticker_price"},
+            {MultiTickerError, "multi_ticker_error"},
+            {MultiTickerReceiveAmount, "multi_ticker_receive_amount"},
+            {MultiTickerFeesInfo, "multi_ticker_fees_info"}};
     }
 
     portfolio_proxy_model*

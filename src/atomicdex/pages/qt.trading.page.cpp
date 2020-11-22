@@ -25,6 +25,20 @@
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.trading.page.hpp"
 
+namespace
+{
+    void
+    set_multi_ticker_data(
+        const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, QVariant data, atomic_dex::portfolio_model* multi_ticker_model)
+    {
+        if (const auto res = multi_ticker_model->match(multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker); not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            multi_ticker_model->setData(idx, data, role);
+        }
+    }
+} // namespace
+
 //! Consttructor / Destructor
 namespace atomic_dex
 {
@@ -1194,7 +1208,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_multi_ticker_error_cases(const QString& ticker)
+    trading_page::determine_multi_ticker_error_cases([[maybe_unused]] const QString& ticker)
     {
         spdlog::warn("{} not implemented yet", __FUNCTION__);
     }
