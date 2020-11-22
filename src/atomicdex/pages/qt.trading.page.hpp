@@ -64,6 +64,7 @@ namespace atomic_dex
         Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
         Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
+        Q_PROPERTY(bool multi_order_enabled READ get_multi_order_enabled NOTIFY multiOrderEnabledChanged)
 
 
         //! Private enum
@@ -111,6 +112,7 @@ namespace atomic_dex
         QString                       m_cex_price{"0"};
         std::optional<nlohmann::json> m_preffered_order;
         QVariantMap                   m_fees;
+        bool                          m_multi_order_enabled{false};
 
         //! Private function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -190,6 +192,8 @@ namespace atomic_dex
         void                       set_preffered_order(QVariantMap price_object) noexcept;
         [[nodiscard]] QVariantMap  get_fees() const noexcept;
         void                       set_fees(QVariantMap fees) noexcept;
+        [[nodiscard]] bool         get_multi_order_enabled() const noexcept;
+        void                       set_multi_order_enabled(bool multi_order_enabled) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -230,6 +234,7 @@ namespace atomic_dex
         void cexPriceDiffChanged();
         void invalidCexPriceChanged();
         void priceReversedChanged();
+        void multiOrderEnabledChanged();
     };
 } // namespace atomic_dex
 
