@@ -27,7 +27,7 @@ BasicModal {
         if(fields.type === "ERC-20") {
             API.app.settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
         }
-        else if(fields.type === "ERC-20") {
+        else if(fields.type === "QRC-20") {
             API.app.settings_pg.process_qrc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
         }
     }
