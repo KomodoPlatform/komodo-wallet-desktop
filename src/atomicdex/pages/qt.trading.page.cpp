@@ -287,6 +287,7 @@ namespace atomic_dex
                 mm2_system.add_get_trade_fee_answer(ticker_std, trade_fee_base_answer);
             }
             this->set_fetching_multi_ticker_fees_busy(false);
+            this->determine_multi_ticker_fees(QString::fromStdString(ticker_std));
         };
 
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
