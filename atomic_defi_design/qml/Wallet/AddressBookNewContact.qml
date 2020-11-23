@@ -11,15 +11,14 @@ BasicModal {
     ModalContent {
         Layout.topMargin: 5
         Layout.fillWidth: true
-        Layout.leftMargin: 15
 
         title: qsTr("Choose a contact name")
 
         //! Contact name input.
         DefaultTextField {
             id: name_input
-            Layout.topMargin: 20
-            Layout.leftMargin: 5
+            Layout.topMargin: 4
+            Layout.leftMargin: 20
             placeholderText: qsTr("Enter the contact name")
             width: 150
             onTextChanged: {
@@ -60,7 +59,7 @@ BasicModal {
             //! Validate button.
             PrimaryButton {
                 text: qsTr("Validate")
-
+                enabled: name_input.text.length > 0
                 onClicked: {
                     if (name_input.text.length == 0)
                     {

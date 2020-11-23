@@ -75,7 +75,7 @@ ColumnLayout {
             }
 
             Connections {
-                target: address_book
+                target: addressbook
             }
 
             FloatingBackground {

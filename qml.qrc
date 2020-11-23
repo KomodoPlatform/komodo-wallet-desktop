@@ -242,6 +242,7 @@
         <file>atomic_defi_design/qml/Wallet/Sidebar.qml</file>
         <file>atomic_defi_design/qml/Wallet/Main.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBook.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookNewContact.qml</file>
         <file>atomic_defi_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_defi_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressList.qml</file>
