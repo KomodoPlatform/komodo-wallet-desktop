@@ -149,7 +149,7 @@ BasicModal {
             content: DefaultAnimatedImage {
                 visible: input_contract_address.visible
                 playing: root.visible && visible
-                source: General.image_path + "guide_contract_address.gif"
+                source: General.image_path + "guide_contract_address_" + (is_erc20 ? "erc" : "qrc") + ".gif"
             }
         }
 
