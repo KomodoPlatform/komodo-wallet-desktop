@@ -27,6 +27,10 @@ BasicModal {
             console.log("Fetching asset data:", JSON.stringify(fields))
             API.app.settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
         }
+        else if(fields.type === "ERC-20") {
+            console.log("Fetching asset data:", JSON.stringify(fields))
+//            API.app.settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
+        }
     }
 
     onCustom_erc_token_dataChanged: {
@@ -85,7 +89,7 @@ BasicModal {
             id: input_type
             Layout.fillWidth: true
             title: qsTr("Type")
-            model: ["ERC-20"]//, "QRC-20", "UTXO", "Smart Chain"]
+            model: ["ERC-20", "QRC-20"]//, "UTXO", "Smart Chain"]
             currentIndex: 0
         }
 
@@ -133,7 +137,10 @@ BasicModal {
         DefaultText {
             visible: input_contract_address.visible
             Layout.fillWidth: true
-            text_value: General.cex_icon + ' <a href="https://etherscan.io/tokens">' + qsTr('Get the contract address from Etherscan') + '</a>'
+            text_value: General.cex_icon + (
+                            is_erc20 ? ' <a href="https://etherscan.io/tokens">' + qsTr('Get the contract address from Etherscan') + '</a>'
+                                     : ' <a href="https://explorer.qtum.org/tokens/search">' + qsTr('Get the contract address from QTUM Insight') + '</a>'
+                            )
         }
 
 
