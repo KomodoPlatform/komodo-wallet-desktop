@@ -1229,6 +1229,11 @@ namespace atomic_dex
                 }
                 else
                 {
+                    //! Use trade with later (instead of m_volume, use a fresh volume from max_taker_vol)
+                    const auto total_amount = calculate_total_amount(price, m_volume);
+                    spdlog::info("new total_amount: {}", total_amount.toStdString());
+                    set_multi_ticker_data(
+                        ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, get_market_pairs_mdl()->get_multiple_selection_box());
                     //! Here we need to use the real volume with trade_with
                     this->determine_multi_ticker_fees(ticker);
                     this->determine_multi_ticker_error_cases(ticker);
