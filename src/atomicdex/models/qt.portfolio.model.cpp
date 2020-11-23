@@ -329,29 +329,18 @@ namespace atomic_dex
             item.multi_ticker_data = QJsonObject::fromVariantMap(value.value<QVariantMap>());
             break;
         case MultiTickerError:
-            if (item.is_multi_ticker_enabled)
-            {
-                item.multi_ticker_error = static_cast<TradingError>(value.toInt());
-            }
+            item.multi_ticker_error = static_cast<TradingError>(value.toInt());
             break;
         case MultiTickerPrice:
-            if (item.is_multi_ticker_enabled)
-            {
-                item.multi_ticker_price = value.toString();
-                this->m_system_manager.get_system<trading_page>().determine_multi_ticker_total_amount(item.ticker, item.multi_ticker_price.value());
-            }
+            item.multi_ticker_price = value.toString();
+            this->m_system_manager.get_system<trading_page>().determine_multi_ticker_total_amount(
+                item.ticker, item.multi_ticker_price.value(), item.is_multi_ticker_enabled);
             break;
         case MultiTickerReceiveAmount:
-            if (item.is_multi_ticker_enabled)
-            {
-                item.multi_ticker_receive_amount = value.toString();
-            }
+            item.multi_ticker_receive_amount = value.toString();
             break;
         case MultiTickerFeesInfo:
-            if (item.is_multi_ticker_enabled)
-            {
-                item.multi_ticker_fees_info = QJsonObject::fromVariantMap(value.value<QVariantMap>());
-            }
+            item.multi_ticker_fees_info = QJsonObject::fromVariantMap(value.value<QVariantMap>());
             break;
         default:
             return false;

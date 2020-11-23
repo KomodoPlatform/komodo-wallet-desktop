@@ -199,15 +199,15 @@ namespace atomic_dex
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
         void               set_fetching_multi_ticker_fees_busy(bool status) noexcept;
         void               determine_multi_ticker_fees(const QString& ticker);
-        void               determine_multi_ticker_total_amount(const QString& ticker, const QString& input_price);
+        void               determine_multi_ticker_total_amount(const QString& ticker, const QString& input_price, bool is_enabled);
         void               determine_multi_ticker_error_cases(const QString& ticker);
+        void               determine_all_multi_ticker_forms() noexcept;
 
         [[nodiscard]] QVariant get_buy_sell_last_rpc_data() const noexcept;
         void                   set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept;
-        void on_refresh_ohlc_event(const refresh_ohlc_needed& evt) noexcept;
         void on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept;
 
       signals:

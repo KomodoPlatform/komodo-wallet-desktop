@@ -20,6 +20,7 @@
 #include "src/atomicdex/pch.hpp"
 
 //! Project Headers
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -29,13 +30,23 @@ namespace
 {
     void
     set_multi_ticker_data(
-        const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, QVariant data, atomic_dex::portfolio_model* multi_ticker_model)
+        const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, QVariant data, atomic_dex::portfolio_proxy_model* multi_ticker_model)
     {
-        if (const auto res = multi_ticker_model->match(multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker); not res.isEmpty())
+        if (const auto res = multi_ticker_model->sourceModel()->match(multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker);
+            not res.isEmpty())
         {
             const QModelIndex& idx = res.at(0);
-            multi_ticker_model->setData(idx, data, role);
+            multi_ticker_model->sourceModel()->setData(idx, data, role);
         }
+    }
+
+    QString
+    calculate_total_amount(QString price, QString volume)
+    {
+        t_float_50 price_f(price.toStdString());
+        t_float_50 volume_f(volume.toStdString());
+        t_float_50 total_amount_f = volume_f * price_f;
+        return QString::fromStdString(atomic_dex::utils::format_float(total_amount_f));
     }
 } // namespace
 
@@ -249,6 +260,13 @@ namespace atomic_dex
                 (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false,
             .base_nota  = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
+
+        if (m_preffered_order->contains("max_volume_denom"))
+        {
+            req.volume_numer                   = m_preffered_order->at("max_volume_numer").get<std::string>();
+            req.volume_denom                   = m_preffered_order->at("max_volume_denom").get<std::string>();
+            req.is_exact_selected_order_volume = true;
+        }
         nlohmann::json batch;
         nlohmann::json buy_request = ::mm2::api::template_request("buy");
         ::mm2::api::to_json(buy_request, req);
@@ -636,6 +654,10 @@ namespace atomic_dex
             this->determine_cex_rates();
             emit priceChanged();
             emit priceReversedChanged();
+            if (this->m_last_trading_error == TradingError::None)
+            {
+                this->determine_all_multi_ticker_forms();
+            }
         }
     }
 
@@ -648,6 +670,7 @@ namespace atomic_dex
         this->set_max_volume("0");
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
+        this->set_multi_order_enabled(false);
         this->m_preffered_order = std::nullopt;
         this->m_fees            = QVariantMap();
         this->m_cex_price       = "0";
@@ -747,7 +770,9 @@ namespace atomic_dex
                         spdlog::info(
                             "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
                             boost::multiprecision::denominator(res).str());
-                        res_f = res.convert_to<t_float_50>();
+                        res_f                                               = res.convert_to<t_float_50>();
+                        this->m_preffered_order.value()["max_volume_denom"] = boost::multiprecision::denominator(res).str();
+                        this->m_preffered_order.value()["max_volume_numer"] = boost::multiprecision::numerator(res).str();
                     }
                     this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
                     this->cap_volume();
@@ -936,10 +961,7 @@ namespace atomic_dex
     {
         if (not m_price.isEmpty() && not m_volume.isEmpty())
         {
-            t_float_50 price(m_price.toStdString());
-            t_float_50 volume(m_volume.toStdString());
-            t_float_50 total_amount_f = volume * price;
-            this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
+            this->set_total_amount(calculate_total_amount(m_price, m_volume));
             this->determine_fees();
             if (const std::string max_dust_str =
                     ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
@@ -1190,15 +1212,27 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_multi_ticker_total_amount(const QString& ticker, [[maybe_unused]] const QString& price)
+    trading_page::determine_multi_ticker_total_amount(const QString& ticker, [[maybe_unused]] const QString& price, bool enabled)
     {
-        if (m_market_mode == MarketMode::Sell)
+        if (m_market_mode == MarketMode::Sell && not price.isEmpty() && not m_volume.isEmpty())
         {
             if (ticker != get_market_pairs_mdl()->get_left_selected_coin())
             {
-                spdlog::warn("{} not implemented yet", __FUNCTION__);
-                this->determine_multi_ticker_fees(ticker);
-                this->determine_multi_ticker_error_cases(ticker);
+                spdlog::info("setting total amount of {}", ticker.toStdString());
+                //! If not enabled use generic volume
+                if (not !enabled)
+                {
+                    const auto total_amount = calculate_total_amount(price, m_volume);
+                    spdlog::info("new total_amount: {}", total_amount.toStdString());
+                    set_multi_ticker_data(
+                        ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, get_market_pairs_mdl()->get_multiple_selection_box());
+                }
+                else
+                {
+                    //! Here we need to use the real volume with trade_with
+                    this->determine_multi_ticker_fees(ticker);
+                    this->determine_multi_ticker_error_cases(ticker);
+                }
             }
             else
             {
@@ -1222,13 +1256,56 @@ namespace atomic_dex
     {
         return m_multi_order_enabled;
     }
+
     void
     trading_page::set_multi_order_enabled(bool multi_order_enabled) noexcept
     {
         if (m_multi_order_enabled != multi_order_enabled)
         {
             this->m_multi_order_enabled = multi_order_enabled;
+            if (m_multi_order_enabled == true)
+            {
+                this->determine_all_multi_ticker_forms();
+            }
             emit multiOrderEnabledChanged();
+        }
+    }
+
+    void
+    trading_page::determine_all_multi_ticker_forms() noexcept
+    {
+        spdlog::info("determine all multi ticker forms");
+        portfolio_proxy_model* model         = this->get_market_pairs_mdl()->get_multiple_selection_box();
+        const auto&            price_service = this->m_system_manager.get_system<global_price_service>();
+        const auto&            config        = this->m_system_manager.get_system<settings_page>().get_cfg();
+        const auto             rel_ticker    = get_market_pairs_mdl()->get_right_selected_coin();
+        int                    nb_items      = model->rowCount();
+
+        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
+        {
+            //!
+            QModelIndex idx    = model->index(cur_idx, 0);
+            const auto  ticker = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString();
+
+            spdlog::info("setting info form ticker: {}", ticker.toStdString());
+            if (ticker == rel_ticker)
+            {
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerCurrentlyEnabled, true, model);
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerPrice, m_price, model);
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, m_total_amount, model);
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerFeesInfo, m_fees, model);
+            }
+            else
+            {
+                t_float_50      rel_price_for_one_unit(model->data(idx, portfolio_model::PortfolioRoles::MainFiatPriceForOneUnit).toString().toStdString());
+                std::error_code ec;
+                t_float_50      price_as_currency_from_amount(
+                    price_service.get_price_as_currency_from_amount(config.current_fiat, rel_ticker.toStdString(), "1", ec));
+                t_float_50 price_field_fiat       = t_float_50(m_price.toStdString()) * price_as_currency_from_amount;
+                t_float_50 rel_price_relative     = rel_price_for_one_unit == t_float_50(0) ? t_float_50(0) : price_field_fiat / rel_price_for_one_unit;
+                const auto rel_price_relative_str = QString::fromStdString(utils::format_float(rel_price_relative));
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerPrice, rel_price_relative_str, model);
+            }
         }
     }
 } // namespace atomic_dex
