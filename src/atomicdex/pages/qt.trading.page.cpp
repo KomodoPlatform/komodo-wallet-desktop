@@ -1089,7 +1089,6 @@ namespace atomic_dex
 
         //! Check minimal trading amount
         const std::string base                     = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
-        const auto&       mm2                      = this->m_system_manager.get_system<mm2_service>();
         t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
 
         if (max_balance_without_dust < utils::minimal_trade_amount()) //<! Checking balance < minimal_trading_amount
@@ -1239,13 +1238,17 @@ namespace atomic_dex
     void
     trading_page::determine_multi_ticker_error_cases([[maybe_unused]] const QString& ticker, QVariantMap fees)
     {
-        spdlog::warn("{} not implemented yet", __FUNCTION__);
-        auto*        selection_box      = get_market_pairs_mdl()->get_multiple_selection_box();
-        TradingError last_trading_error = TradingError::None;
-        QString      input_price        = get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerPrice, selection_box);
+        auto*        selection_box        = get_market_pairs_mdl()->get_multiple_selection_box();
+        TradingError last_trading_error   = TradingError::None;
+        QString      input_price          = get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerPrice, selection_box);
+        QString      total_receive_amount = get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerReceiveAmount, selection_box);
         if (input_price.isEmpty() || input_price == "0") ///< Price is not set correctly
         {
             last_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
+        }
+        else if (t_float_50(total_receive_amount.toStdString()) < utils::minimal_trade_amount())
+        {
+            last_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
         else
         {
