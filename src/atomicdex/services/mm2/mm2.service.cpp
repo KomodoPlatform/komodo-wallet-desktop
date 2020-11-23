@@ -493,7 +493,7 @@ namespace atomic_dex
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
-                    .servers         = coin_info.electrum_urls.value(),
+                    .servers         = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
                     .coin_type       = coin_info.coin_type,
                     .is_testnet      = coin_info.is_testnet.value_or(false),
                     .with_tx_history = true};
@@ -1533,5 +1533,24 @@ namespace atomic_dex
     mm2_service::add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept
     {
         this->m_trade_fees_registry.insert_or_assign(ticker, answer);
+    }
+
+    std::vector<electrum_server>
+    mm2_service::get_electrum_server_from_token(const std::string& ticker)
+    {
+        std::vector<electrum_server> servers;
+        const coin_config            cfg = this->get_coin_info(ticker);
+        if (cfg.coin_type == QRC20)
+        {
+            if (cfg.is_testnet)
+            {
+                servers = std::move(get_coin_info("tQTUM").electrum_urls.value());
+            }
+            else
+            {
+                servers = std::move(get_coin_info("QTUM").electrum_urls.value());
+            }
+        }
+        return servers;
     }
 } // namespace atomic_dex

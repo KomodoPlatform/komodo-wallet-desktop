@@ -151,6 +151,7 @@ namespace atomic_dex
 
         //!
         std::pair<bool, std::string> process_batch_enable_answer(const nlohmann::json& answer);
+        std::vector<electrum_server> get_electrum_server_from_token(const std::string& ticker);
 
       public:
         //! Constructor

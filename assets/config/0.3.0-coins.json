@@ -1279,17 +1279,6 @@
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "currently_enabled": false,
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10071"
-      },
-      {
-        "url": "electrum2.cipig.net:10071"
-      },
-      {
-        "url": "electrum3.cipig.net:10071"
-      }
-    ],
     "explorer_url": [
       "https://testnet.qtum.info/"
     ],

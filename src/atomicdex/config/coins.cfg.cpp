@@ -63,11 +63,11 @@ namespace atomic_dex
         {
             cfg.custom_backup = j.at("mm2_backup");
         }
-        if (j.count("electrum") > 0)
+        if (j.contains("electrum"))
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();
         }
-        if (j.count("eth_nodes") > 0)
+        if (j.contains("eth_nodes"))
         {
             cfg.eth_urls = j.at("eth_nodes").get<std::vector<std::string>>();
         }
