@@ -288,7 +288,7 @@ namespace atomic_dex
                     out["mm2_cfg"]["protocol"]["type"]                              = "QRC20";
                     out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
                     out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = "QTUM";
-                    std::string out_address                                         = "Ox" + contract_address.toStdString();
+                    std::string out_address                                         = "0x" + contract_address.toStdString();
                     out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
                     out["mm2_cfg"]["coin"]                                          = ticker;
                     out["mm2_cfg"]["mm2"]                                           = 1;
@@ -301,7 +301,7 @@ namespace atomic_dex
                     out["mm2_cfg"]["p2shtype"]               = qtum_cfg["p2shtype"];
                     out["mm2_cfg"]["wiftype"]                = qtum_cfg["wiftype"];
                     out["mm2_cfg"]["name"]                   = qtum_cfg["name"];
-                    out["mm2_cfg"]["rpc_port"]               = qtum_cfg["rpc_port"];
+                    out["mm2_cfg"]["rpcport"]                = qtum_cfg["rpcport"];
                     out["mm2_cfg"]["segwit"]                 = qtum_cfg["segwit"];
                     out["mm2_cfg"]["required_confirmations"] = 3;
                     out["mm2_cfg"]["fname"]                  = boost::algorithm::to_lower_copy(body_json.at("qrc20").at("name").get<std::string>());
@@ -360,7 +360,7 @@ namespace atomic_dex
                     boost::algorithm::to_lower(out_address);
                     utils::to_eth_checksum(out_address);
                     out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
-                    out["mm2_cfg"]["rpc_port"]                                      = 80;
+                    out["mm2_cfg"]["rpcport"]                                       = 80;
                     out["mm2_cfg"]["coin"]                                          = ticker;
                     out["mm2_cfg"]["mm2"]                                           = 1;
                     out["mm2_cfg"]["decimals"]                                      = std::stoi(body_json.at("divisor").get<std::string>());
