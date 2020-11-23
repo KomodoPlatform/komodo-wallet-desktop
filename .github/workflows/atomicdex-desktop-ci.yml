@@ -57,6 +57,10 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
 
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2.9.0
