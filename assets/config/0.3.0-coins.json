@@ -1311,7 +1311,7 @@
     "type": "QRC-20"
   },
   "QC": {
-    "active": true,
+    "active": false,
     "coin": "QC",
     "coingecko_id": "qcash",
     "coinpaprika_id": "test-coin",
@@ -1321,5 +1321,28 @@
     ],
     "name": "Qcash",
     "type": "QRC-20"
+  },
+  "PBC": {
+    "coin": "PBC",
+    "name": "Power Block Coin",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10070"
+      },
+      {
+        "url": "electrum2.cipig.net:10070"
+      },
+      {
+        "url": "electrum3.cipig.net:10070"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.pbc.kmd.sh/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
   }
 }

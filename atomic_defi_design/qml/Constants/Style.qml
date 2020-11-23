@@ -291,6 +291,8 @@ QtObject {
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
                                           "VRA": "#D70A41",
-                                          "SPACE": "#E44C65"
+                                          "SPACE": "#E44C65",
+                                          "QC": "#00D7B3",
+                                          "PBC": "#64A3CB"
                                       })
 }
