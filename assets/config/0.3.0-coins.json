@@ -1309,5 +1309,17 @@
     ],
     "name": "QTUM (testnet)",
     "type": "QRC-20"
+  },
+  "QC": {
+    "active": true,
+    "coin": "QC",
+    "coingecko_id": "qcash",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://explorer.qtum.org/"
+    ],
+    "name": "Qcash",
+    "type": "QRC-20"
   }
 }

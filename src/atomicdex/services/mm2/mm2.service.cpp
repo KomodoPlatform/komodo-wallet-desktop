@@ -1542,12 +1542,14 @@ namespace atomic_dex
         const coin_config            cfg = this->get_coin_info(ticker);
         if (cfg.coin_type == QRC20)
         {
-            if (cfg.is_testnet)
+            if (cfg.is_testnet.value())
             {
+                spdlog::info("{} is from testnet picking tQTUM electrum", ticker);
                 servers = std::move(get_coin_info("tQTUM").electrum_urls.value());
             }
             else
             {
+                spdlog::info("{} is from mainnet picking QTUM electrum", ticker);
                 servers = std::move(get_coin_info("QTUM").electrum_urls.value());
             }
         }
