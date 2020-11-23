@@ -1195,6 +1195,7 @@ namespace atomic_dex
         auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, total_amount, mm2);
         qDebug() << "fees multi_ticker: " << fees;
         set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
+        this->determine_multi_ticker_error_cases(ticker, fees);
     }
 
     void
@@ -1222,7 +1223,6 @@ namespace atomic_dex
                         ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, get_market_pairs_mdl()->get_multiple_selection_box());
                     //! Here we need to use the real volume with trade_with
                     this->determine_multi_ticker_fees(ticker);
-                    this->determine_multi_ticker_error_cases(ticker);
                 }
             }
             else
@@ -1237,9 +1237,21 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_multi_ticker_error_cases([[maybe_unused]] const QString& ticker)
+    trading_page::determine_multi_ticker_error_cases([[maybe_unused]] const QString& ticker, QVariantMap fees)
     {
         spdlog::warn("{} not implemented yet", __FUNCTION__);
+        auto*        selection_box      = get_market_pairs_mdl()->get_multiple_selection_box();
+        TradingError last_trading_error = TradingError::None;
+        QString      input_price        = get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerPrice, selection_box);
+        if (input_price.isEmpty() || input_price == "0") ///< Price is not set correctly
+        {
+            last_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
+        }
+        else
+        {
+            last_trading_error = generate_fees_error(fees, get_max_balance_without_dust());
+        }
+        set_multi_ticker_data(ticker, portfolio_model::MultiTickerError, static_cast<qint32>(last_trading_error), selection_box);
     }
 
     bool
@@ -1304,16 +1316,21 @@ namespace atomic_dex
     }
 
     t_float_50
-    trading_page::get_max_balance_without_dust() const noexcept
+    trading_page::get_max_balance_without_dust(std::optional<QString> trade_with) const noexcept
     {
-        const std::string max_dust_str =
-            ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
-                .toJsonObject()["decimal"]
-                .toString()
-                .toStdString();
-        assert(not max_dust_str.empty());
-        t_float_50 max_balance_without_dust(max_dust_str);
-        return max_balance_without_dust;
+        if (!trade_with.has_value())
+        {
+            const std::string max_dust_str =
+                ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
+                    .toJsonObject()["decimal"]
+                    .toString()
+                    .toStdString();
+            assert(not max_dust_str.empty());
+            t_float_50 max_balance_without_dust(max_dust_str);
+            return max_balance_without_dust;
+        }
+        //! if trade_with has value check in mm2 registry the base_max_taker_vol trade_with equivalent and process the same calculation;
+        return t_float_50(0);
     }
 
     TradingError

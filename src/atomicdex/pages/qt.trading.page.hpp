@@ -115,15 +115,15 @@ namespace atomic_dex
         bool                          m_multi_order_enabled{false};
 
         //! Private function
-        void                     common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
-        void                     clear_forms() noexcept;
-        void                     determine_max_volume() noexcept;
-        void                     determine_fees() noexcept;
-        void                     determine_total_amount() noexcept;
-        void                     determine_error_cases() noexcept;
-        void                     determine_cex_rates() noexcept;
-        void                     cap_volume() noexcept;
-        [[nodiscard]] t_float_50 get_max_balance_without_dust() const noexcept;
+        void                       common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
+        void                       clear_forms() noexcept;
+        void                       determine_max_volume() noexcept;
+        void                       determine_fees() noexcept;
+        void                       determine_total_amount() noexcept;
+        void                       determine_error_cases() noexcept;
+        void                       determine_cex_rates() noexcept;
+        void                       cap_volume() noexcept;
+        [[nodiscard]] t_float_50   get_max_balance_without_dust(std::optional<QString> trade_with = std::nullopt) const noexcept;
         [[nodiscard]] TradingError generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const noexcept;
 
       public:
@@ -202,7 +202,7 @@ namespace atomic_dex
         void               set_fetching_multi_ticker_fees_busy(bool status) noexcept;
         void               determine_multi_ticker_fees(const QString& ticker);
         void               determine_multi_ticker_total_amount(const QString& ticker, const QString& input_price, bool is_enabled);
-        void               determine_multi_ticker_error_cases(const QString& ticker);
+        void               determine_multi_ticker_error_cases(const QString& ticker, QVariantMap fees);
         void               determine_all_multi_ticker_forms() noexcept;
 
         [[nodiscard]] QVariant get_buy_sell_last_rpc_data() const noexcept;
