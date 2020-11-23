@@ -175,25 +175,17 @@ InnerBackground {
                         onCheckedChanged: {
                             model.is_multi_ticker_currently_enabled = checked
 
-                            if(checked) {
-                                let d = getData()
-                                if(!d.trade_info) {
-                                    d.info_needs_update = true
-                                    setData(d)
-                                }
-                            }
-                            else if(!checked) {
-                                resetData()
-                            }
+                            if(!checked) resetData()
                         }
                     }
 
                     FeeIcon {
                         id: fee_info_button
+                        visible: model.multi_ticker_fees_info.trading_fee !== undefined
                         anchors.verticalCenter: enable_ticker.verticalCenter
                         anchors.right: enable_ticker.left
                         anchors.rightMargin: 10
-                        trade_info: model.multi_ticker_data.trade_info
+                        trade_info: model.multi_ticker_fees_info
                         base: multi_order_line.base
                     }
 
