@@ -40,6 +40,19 @@ namespace
         }
     }
 
+    template <typename T>
+    T
+    get_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, atomic_dex::portfolio_proxy_model* multi_ticker_model)
+    {
+        if (const auto res = multi_ticker_model->sourceModel()->match(multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker);
+            not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            return multi_ticker_model->sourceModel()->data(idx, role).value<T>();
+        }
+        return T{};
+    }
+
     QString
     calculate_total_amount(QString price, QString volume)
     {
@@ -47,6 +60,53 @@ namespace
         t_float_50 volume_f(volume.toStdString());
         t_float_50 total_amount_f = volume_f * price_f;
         return QString::fromStdString(atomic_dex::utils::format_float(total_amount_f));
+    }
+
+    QVariantMap
+    generate_fees_infos(const QString& base, const QString& rel, bool is_max, const QString& total_amount, const atomic_dex::mm2_service& mm2)
+    {
+        //! 1 / 777 * total_amount (if max is true, total_amount will be the balance);
+        const t_float_50 trade_fee_f = mm2.get_trading_fees(base.toStdString(), total_amount.toStdString(), is_max);
+
+        //! Transaction Fees
+        const auto answer   = mm2.get_transaction_fees(base.toStdString());
+        t_float_50 tx_fee_f = 0;
+
+        //! If answer is valid
+        if (!answer.amount.empty())
+        {
+            tx_fee_f = t_float_50(answer.amount) * 2;
+        }
+
+        t_float_50        specific_fees(0);
+        const std::string extra_fees_ticker = mm2.apply_specific_fees(rel.toStdString(), specific_fees);
+
+        //! Write output
+        QVariantMap fees;
+
+        fees["trading_fee"] = QString::fromStdString(atomic_dex::utils::format_float(trade_fee_f));
+
+        //! for BCH <-> ETH, trading_fee_ticker will be BCH
+        fees["trading_fee_ticker"] = base;
+
+        //! Base transaction fees
+        fees["base_transaction_fees"]        = QString::fromStdString(atomic_dex::utils::format_float(tx_fee_f));
+        fees["base_transaction_fees_ticker"] = QString::fromStdString(answer.coin);
+
+        if (not extra_fees_ticker.empty())
+        {
+            fees["rel_transaction_fees"]        = QString::fromStdString(atomic_dex::utils::format_float(specific_fees));
+            fees["rel_transaction_fees_ticker"] = QString::fromStdString(extra_fees_ticker);
+        }
+
+        if (base.toStdString() == answer.coin)
+        {
+            //! It's the same coin for trading_fees and transaction fees let's add a total
+            t_float_50 total_base_fees_f = trade_fee_f + tx_fee_f;
+            fees["total_base_fees"]      = QString::fromStdString(atomic_dex::utils::format_float(total_base_fees_f));
+            fees["total_base_fees_fp"]   = QString::fromStdString(total_base_fees_f.str(50, std::ios_base::fixed));
+        }
+        return fees;
     }
 } // namespace
 
@@ -1009,7 +1069,6 @@ namespace atomic_dex
     {
         const auto* market_pair = get_market_pairs_mdl();
         const auto& mm2         = this->m_system_manager.get_system<mm2_service>();
-
         //! Send
         const auto base = market_pair->get_base_selected_coin();
 
@@ -1017,62 +1076,9 @@ namespace atomic_dex
         const auto rel = market_pair->get_rel_selected_coin();
 
         //! (send) BCH <-> ETH (receive)
-        bool is_max = false;
+        const bool is_max = m_market_mode == MarketMode::Sell && m_volume == m_max_volume;
 
-        //! If We are in sell mode check if it's max
-        if (m_market_mode == MarketMode::Sell)
-        {
-            if (m_volume == m_max_volume) //! It's capped, means max_trade_vol means all the fees are included
-            {
-                is_max = true;
-            }
-        }
-
-        //! Trading fees
-
-        //! 1 / 777 * total_amount (if max is true, total_amount will be the balance);
-        const t_float_50 trade_fee_f = mm2.get_trading_fees(base.toStdString(), m_total_amount.toStdString(), is_max);
-
-        //! Transaction Fees
-        const auto answer   = mm2.get_transaction_fees(base.toStdString());
-        t_float_50 tx_fee_f = 0;
-
-        //! If answer is valid
-        if (!answer.amount.empty())
-        {
-            tx_fee_f = t_float_50(answer.amount) * 2;
-        }
-
-        t_float_50        specific_fees(0);
-        const std::string extra_fees_ticker = mm2.apply_specific_fees(rel.toStdString(), specific_fees);
-
-        //! Write output
-        QVariantMap fees;
-
-        fees["trading_fee"] = QString::fromStdString(utils::format_float(trade_fee_f));
-
-        //! for BCH <-> ETH, trading_fee_ticker will be BCH
-        fees["trading_fee_ticker"] = base;
-
-        //! Base transaction fees
-        fees["base_transaction_fees"]        = QString::fromStdString(utils::format_float(tx_fee_f));
-        fees["base_transaction_fees_ticker"] = QString::fromStdString(answer.coin);
-
-        if (not extra_fees_ticker.empty())
-        {
-            fees["rel_transaction_fees"]        = QString::fromStdString(utils::format_float(specific_fees));
-            fees["rel_transaction_fees_ticker"] = QString::fromStdString(extra_fees_ticker);
-        }
-
-        if (base.toStdString() == answer.coin)
-        {
-            //! It's the same coin for trading_fees and transaction fees let's add a total
-            t_float_50 total_base_fees_f = trade_fee_f + tx_fee_f;
-            fees["total_base_fees"]      = QString::fromStdString(utils::format_float(total_base_fees_f));
-            fees["total_base_fees_fp"]   = QString::fromStdString(total_base_fees_f.str(50, std::ios_base::fixed));
-        }
-
-        this->set_fees(fees);
+        this->set_fees(generate_fees_infos(base, rel, is_max, m_total_amount, mm2));
     }
 
     void
@@ -1208,7 +1214,13 @@ namespace atomic_dex
     void
     trading_page::determine_multi_ticker_fees([[maybe_unused]] const QString& ticker)
     {
-        spdlog::warn("{} not implemented yet", __FUNCTION__);
+        const auto* market_selector = get_market_pairs_mdl();
+        auto*       selection_box   = market_selector->get_multiple_selection_box();
+        const auto& mm2             = m_system_manager.get_system<mm2_service>();
+        auto        total_amount    = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
+        auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, total_amount, mm2);
+        qDebug() << "fees multi_ticker: " << fees;
+        set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
     }
 
     void
@@ -1220,7 +1232,7 @@ namespace atomic_dex
             {
                 spdlog::info("setting total amount of {}", ticker.toStdString());
                 //! If not enabled use generic volume
-                if (not !enabled)
+                if (not enabled)
                 {
                     const auto total_amount = calculate_total_amount(price, m_volume);
                     spdlog::info("new total_amount: {}", total_amount.toStdString());
@@ -1309,7 +1321,10 @@ namespace atomic_dex
                 t_float_50 price_field_fiat       = t_float_50(m_price.toStdString()) * price_as_currency_from_amount;
                 t_float_50 rel_price_relative     = rel_price_for_one_unit == t_float_50(0) ? t_float_50(0) : price_field_fiat / rel_price_for_one_unit;
                 const auto rel_price_relative_str = QString::fromStdString(utils::format_float(rel_price_relative));
-                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerPrice, rel_price_relative_str, model);
+                if (rel_price_relative > 0) //< if there is no fiat data don't override it
+                {
+                    set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerPrice, rel_price_relative_str, model);
+                }
             }
         }
     }
