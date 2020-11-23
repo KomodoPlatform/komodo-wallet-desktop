@@ -182,7 +182,7 @@ namespace atomic_dex
             obj["fee_ticker"]                         = QString::fromStdString(ticker);
             if (coin_info.coin_type == coin_type::QRC20)
             {
-                obj["fee_ticker"] = (coin_info.is_testnet) ? "tQTUM" : "QTUM";
+                obj["fee_ticker"] = (coin_info.is_testnet.value_or(false)) ? "tQTUM" : "QTUM";
             }
             else if (coin_info.coin_type == coin_type::ERC20)
             {
