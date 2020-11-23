@@ -339,7 +339,7 @@ Item {
                                 Layout.fillWidth: true
 
                                 text: qsTr("Multi-Order")
-                                enabled: !block_everything && form_base.can_submit_trade
+                                enabled: !block_everything && (form_base.can_submit_trade || checked)
 
                                 checked: API.app.trading_pg.multi_order_enabled
                                 onCheckedChanged: {
