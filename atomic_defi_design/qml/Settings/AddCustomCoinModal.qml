@@ -131,6 +131,7 @@ BasicModal {
             Layout.fillWidth: true
             title: qsTr("Contract Address")
             field.placeholderText: qsTr("Enter the contract address")
+            field.left_text: is_qrc20 ? "0x" : ""
         }
 
         DefaultText {
