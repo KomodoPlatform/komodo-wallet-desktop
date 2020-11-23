@@ -124,10 +124,10 @@ InnerBackground {
                         hoverEnabled: enabled
                     }
 
-                    // Recoverable
+                    // Error
                     DefaultText {
                         font.pixelSize: Style.textSizeSmall4
-                        visible: model.multi_ticker_error >= 0
+                        visible: model.multi_ticker_error > 0
                         anchors.verticalCenter: input_price.verticalCenter
                         anchors.right: input_price.left
                         anchors.rightMargin: 40
@@ -155,7 +155,10 @@ InnerBackground {
 
                         field.left_text: qsTr("Price")
                         field.right_text: model.ticker + "/" + multi_order_line.base
-                        field.onTextChanged: model.multi_ticker_price = field.text
+                        field.onTextChanged: {
+                            if(model.multi_ticker_price !== field.text)
+                                model.multi_ticker_price = field.text
+                        }
 
                         field.text: price
                         field.enabled: !is_parent_coin
