@@ -115,14 +115,16 @@ namespace atomic_dex
         bool                          m_multi_order_enabled{false};
 
         //! Private function
-        void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
-        void clear_forms() noexcept;
-        void determine_max_volume() noexcept;
-        void determine_fees() noexcept;
-        void determine_total_amount() noexcept;
-        void determine_error_cases() noexcept;
-        void determine_cex_rates() noexcept;
-        void cap_volume() noexcept;
+        void                     common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
+        void                     clear_forms() noexcept;
+        void                     determine_max_volume() noexcept;
+        void                     determine_fees() noexcept;
+        void                     determine_total_amount() noexcept;
+        void                     determine_error_cases() noexcept;
+        void                     determine_cex_rates() noexcept;
+        void                     cap_volume() noexcept;
+        [[nodiscard]] t_float_50 get_max_balance_without_dust() const noexcept;
+        [[nodiscard]] TradingError generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const noexcept;
 
       public:
         //! Constructor

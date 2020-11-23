@@ -1152,7 +1152,7 @@ namespace atomic_dex
     std::string
     mm2_service::apply_specific_fees(const std::string& ticker, t_float_50& value) const
     {
-        if (auto coin_info = get_coin_info(ticker); (coin_info.coin_type == ERC20) || (coin_info.coin_type == QRC20))
+        if (auto coin_info = get_coin_info(ticker); (coin_info.coin_type == ERC20) || (coin_info.coin_type == QRC20 && !coin_info.electrum_urls.has_value()))
         {
             spdlog::info("Calculating specific fees of rel ticker: {}", ticker);
             const auto& answer = get_transaction_fees(ticker);

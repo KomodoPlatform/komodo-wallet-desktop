@@ -1088,15 +1088,9 @@ namespace atomic_dex
         TradingError current_trading_error = TradingError::None;
 
         //! Check minimal trading amount
-        const std::string base = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
-        const auto&       mm2  = this->m_system_manager.get_system<mm2_service>();
-        const std::string max_dust_str =
-            ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
-                .toJsonObject()["decimal"]
-                .toString()
-                .toStdString();
-        assert(not max_dust_str.empty());
-        t_float_50 max_balance_without_dust(max_dust_str);
+        const std::string base                     = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+        const auto&       mm2                      = this->m_system_manager.get_system<mm2_service>();
+        t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
 
         if (max_balance_without_dust < utils::minimal_trade_amount()) //<! Checking balance < minimal_trading_amount
         {
@@ -1108,7 +1102,7 @@ namespace atomic_dex
         }
         else if (m_price.isEmpty() || m_price == "0") ///< Price is not set correctly
         {
-            current_trading_error = TradingError::PriceFieldNotFilled;
+            current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
         }
         else if (t_float_50(get_base_amount().toStdString()) < utils::minimal_trade_amount())
         {
@@ -1116,32 +1110,11 @@ namespace atomic_dex
         }
         else if (t_float_50(get_rel_amount().toStdString()) < utils::minimal_trade_amount())
         {
-            current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum;
+            current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
-        else if (const auto trading_fee_ticker = m_fees["trading_fee_ticker"].toString();
-                 m_fees["trading_fee_ticker"] != m_fees["base_transaction_fees_ticker"] &&
-                 t_float_50(m_fees["trading_fee"].toString().toStdString()) > max_balance_without_dust)
+        else
         {
-            current_trading_error = TradingError::TradingFeesNotEnoughFunds;
-        }
-        else if (const auto transaction_fee_ticker = m_fees["trading_fee_ticker"].toString();
-                 m_fees["trading_fee_ticker"] != m_fees["base_transaction_fees_ticker"] &&
-                 not mm2.do_i_have_enough_funds(transaction_fee_ticker.toStdString(), t_float_50(m_fees["base_transaction_fees"].toString().toStdString())))
-        {
-            current_trading_error = TradingError::BaseTransactionFeesNotEnough;
-        }
-        else if (m_fees.contains("total_base_fees") && t_float_50(m_fees["total_base_fees_fp"].toString().toStdString()) > max_balance_without_dust)
-        {
-            current_trading_error = TradingError::BaseNotEnoughFunds;
-        }
-        else if (m_fees.contains("rel_transaction_fees_ticker")) //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
-        {
-            const auto rel_ticker = m_fees["rel_transaction_fees_ticker"].toString().toStdString();
-            t_float_50 rel_amount(m_fees["rel_transaction_fees"].toString().toStdString());
-            if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
-            {
-                current_trading_error = TradingError::RelTransactionFeesNotEnough;
-            }
+            current_trading_error = generate_fees_error(m_fees, max_balance_without_dust);
         }
 
         //! Check for base coin
@@ -1328,5 +1301,51 @@ namespace atomic_dex
                 }
             }
         }
+    }
+
+    t_float_50
+    trading_page::get_max_balance_without_dust() const noexcept
+    {
+        const std::string max_dust_str =
+            ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
+                .toJsonObject()["decimal"]
+                .toString()
+                .toStdString();
+        assert(not max_dust_str.empty());
+        t_float_50 max_balance_without_dust(max_dust_str);
+        return max_balance_without_dust;
+    }
+
+    TradingError
+    trading_page::generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const noexcept
+    {
+        TradingError last_trading_error = TradingError::None;
+        const auto&  mm2                = m_system_manager.get_system<mm2_service>();
+        if (const auto trading_fee_ticker = fees["trading_fee_ticker"].toString();
+            fees["trading_fee_ticker"] != fees["base_transaction_fees_ticker"] &&
+            t_float_50(fees["trading_fee"].toString().toStdString()) > max_balance_without_dust)
+        {
+            last_trading_error = TradingError::TradingFeesNotEnoughFunds; ///< need to have for multi ticker check
+        }
+        else if (const auto transaction_fee_ticker = fees["trading_fee_ticker"].toString();
+                 fees["trading_fee_ticker"] != fees["base_transaction_fees_ticker"] &&
+                 not mm2.do_i_have_enough_funds(transaction_fee_ticker.toStdString(), t_float_50(fees["base_transaction_fees"].toString().toStdString())))
+        {
+            last_trading_error = TradingError::BaseTransactionFeesNotEnough; ///< need to have for multi ticker check
+        }
+        else if (fees.contains("total_base_fees") && t_float_50(fees["total_base_fees_fp"].toString().toStdString()) > max_balance_without_dust)
+        {
+            last_trading_error = TradingError::BaseNotEnoughFunds; ///< need to have for multi ticker check
+        }
+        else if (fees.contains("rel_transaction_fees_ticker")) //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
+        {
+            const auto rel_ticker = fees["rel_transaction_fees_ticker"].toString().toStdString();
+            t_float_50 rel_amount(fees["rel_transaction_fees"].toString().toStdString());
+            if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
+            {
+                last_trading_error = TradingError::RelTransactionFeesNotEnough; ///< need to have for multi ticker check
+            }
+        }
+        return last_trading_error;
     }
 } // namespace atomic_dex
