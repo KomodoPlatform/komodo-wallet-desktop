@@ -33,6 +33,21 @@
 #include "atomicdex/utilities/qt.bindings.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
+namespace
+{
+    void
+    copy_icon(const QString icon_filepath, const QString icons_path_directory, const std::string& ticker)
+    {
+        if (not icon_filepath.isEmpty())
+        {
+            const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
+            fs::copy_file(
+                icon_filepath.toStdString(), fs::path(icons_path_directory.toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
+                get_override_options());
+        }
+    }
+} // namespace
+
 //! Constructo destructor
 namespace atomic_dex
 {
@@ -250,9 +265,78 @@ namespace atomic_dex
     }
 
     void
+    settings_page::process_qrc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath)
+    {
+        this->set_fetching_custom_token_data_busy(true);
+        using namespace std::string_literals;
+        std::string url            = "/contract/"s + contract_address.toStdString();
+        auto        answer_functor = [this, contract_address, coinpaprika_id, icon_filepath](web::http::http_response resp) {
+            std::string    body = TO_STD_STR(resp.extract_string(true).get());
+            nlohmann::json out  = nlohmann::json::object();
+            out["mm2_cfg"]      = nlohmann::json::object();
+            out["adex_cfg"]     = nlohmann::json::object();
+            if (resp.status_code() == 200)
+            {
+                nlohmann::json body_json = nlohmann::json::parse(body);
+                const auto     ticker    = body_json.at("qrc20").at("symbol").get<std::string>();
+                copy_icon(icon_filepath, get_custom_coins_icons_path(), ticker);
+                const auto&    mm2      = this->m_system_manager.get_system<mm2_service>();
+                nlohmann::json qtum_cfg = mm2.get_raw_mm2_ticker_cfg("QTUM");
+                if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
+                {
+                    out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["type"]                              = "QRC20";
+                    out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = "QTUM";
+                    std::string out_address                                         = "Ox" + contract_address.toStdString();
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
+                    out["mm2_cfg"]["coin"]                                          = ticker;
+                    out["mm2_cfg"]["mm2"]                                           = 1;
+                    if (body_json.at("qrc20").contains("decimals"))
+                    {
+                        out["mm2_cfg"]["decimals"] = body_json.at("qrc20").at("decimals").get<int>();
+                    }
+                    out["mm2_cfg"]["txfee"]                  = qtum_cfg["txfee"];
+                    out["mm2_cfg"]["pubtype"]                = qtum_cfg["pubtype"];
+                    out["mm2_cfg"]["p2shtype"]               = qtum_cfg["p2shtype"];
+                    out["mm2_cfg"]["wiftype"]                = qtum_cfg["wiftype"];
+                    out["mm2_cfg"]["name"]                   = qtum_cfg["name"];
+                    out["mm2_cfg"]["rpc_port"]               = qtum_cfg["rpc_port"];
+                    out["mm2_cfg"]["segwit"]                 = qtum_cfg["segwit"];
+                    out["mm2_cfg"]["required_confirmations"] = 3;
+                    out["mm2_cfg"]["fname"]                  = boost::algorithm::to_lower_copy(body_json.at("qrc20").at("name").get<std::string>());
+                }
+                if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
+                {
+                    //!
+                    out["adex_cfg"][ticker]                      = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["coin"]              = ticker;
+                    out["adex_cfg"][ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
+                    out["adex_cfg"][ticker]["coinpaprika_id"]    = coinpaprika_id.toStdString();
+                    out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
+                    out["adex_cfg"][ticker]["type"]              = "QRC-20";
+                    out["adex_cfg"][ticker]["active"]            = false;
+                    out["adex_cfg"][ticker]["currently_enabled"] = false;
+                    out["adex_cfg"][ticker]["is_custom_coin"]    = true;
+                    out["adex_cfg"][ticker]["mm2_backup"]        = out["mm2_cfg"];
+                }
+            }
+            else
+            {
+                out["error_message"] = body;
+                out["error_code"]    = resp.status_code();
+            }
+            spdlog::trace("result json of fetch qrc infos from contract address is: {}", out.dump(4));
+            this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
+            this->set_fetching_custom_token_data_busy(false);
+        };
+        ::mm2::api::async_process_rpc_get(::mm2::api::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+    }
+
+    void
     settings_page::process_erc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath)
     {
-        this->set_fetching_erc_data_busy(true);
+        this->set_fetching_custom_token_data_busy(true);
         using namespace std::string_literals;
         std::string url            = "/api/v1/erc_infos/"s + contract_address.toStdString();
         auto        answer_functor = [this, contract_address, coinpaprika_id, icon_filepath](web::http::http_response resp) {
@@ -265,14 +349,7 @@ namespace atomic_dex
             {
                 nlohmann::json body_json = nlohmann::json::parse(body).at("result")[0];
                 auto           ticker    = body_json.at("symbol").get<std::string>();
-                if (not icon_filepath.isEmpty())
-                {
-                    const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
-                    fs::copy_file(
-                        icon_filepath.toStdString(),
-                        fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
-                        get_override_options());
-                }
+                copy_icon(icon_filepath, get_custom_coins_icons_path(), ticker);
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
                     out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
@@ -314,49 +391,49 @@ namespace atomic_dex
                 out["error_code"]    = resp.status_code();
             }
             spdlog::trace("result json of fetch erc infos from contract address is: {}", out.dump(4));
-            this->set_custom_erc_token_data(nlohmann_json_object_to_qt_json_object(out));
-            this->set_fetching_erc_data_busy(false);
+            this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
+            this->set_fetching_custom_token_data_busy(false);
         };
-        ::mm2::api::async_process_rpc_get("erc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+        ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "erc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     bool
-    settings_page::is_fetching_erc_data_busy() const noexcept
+    settings_page::is_fetching_custom_token_data_busy() const noexcept
     {
         return m_fetching_erc_data_busy.load();
     }
 
     void
-    settings_page::set_fetching_erc_data_busy(bool status) noexcept
+    settings_page::set_fetching_custom_token_data_busy(bool status) noexcept
     {
         if (m_fetching_erc_data_busy != status)
         {
             m_fetching_erc_data_busy = status;
-            emit ercDataStatusChanged();
+            emit customTokenDataStatusChanged();
         }
     }
 
     QVariant
-    settings_page::get_custom_erc_token_data() const noexcept
+    settings_page::get_custom_token_data() const noexcept
     {
-        return nlohmann_json_object_to_qt_json_object(m_custom_erc_token_data.get());
+        return nlohmann_json_object_to_qt_json_object(m_custom_token_data.get());
     }
 
     void
-    settings_page::set_custom_erc_token_data(QVariant rpc_data) noexcept
+    settings_page::set_custom_token_data(QVariant rpc_data) noexcept
     {
-        nlohmann::json out      = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
-        m_custom_erc_token_data = out;
-        emit customErcTokenDataChanged();
+        nlohmann::json out  = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
+        m_custom_token_data = out;
+        emit customTokenDataChanged();
     }
 
     void
     settings_page::submit()
     {
         spdlog::trace("submit whole cfg");
-        nlohmann::json out = m_custom_erc_token_data.get();
+        nlohmann::json out = m_custom_token_data.get();
         this->m_system_manager.get_system<mm2_service>().add_new_coin(out.at("adex_cfg"), out.at("mm2_cfg"));
-        this->set_custom_erc_token_data(QJsonObject{{}});
+        this->set_custom_token_data(QJsonObject{{}});
     }
 
     void

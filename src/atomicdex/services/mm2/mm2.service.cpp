@@ -943,7 +943,7 @@ namespace atomic_dex
         using namespace std::string_literals;
         std::string url =
             (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec) : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
-        ::mm2::api::async_process_rpc_get("tx_history", url)
+        ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "tx_history", url)
             .then([this, ticker](web::http::http_response resp) {
                 auto answer = ::mm2::api::rpc_process_answer<::mm2::api::tx_history_answer>(resp, "tx_history");
 
@@ -1555,4 +1555,5 @@ namespace atomic_dex
         }
         return servers;
     }
+
 } // namespace atomic_dex

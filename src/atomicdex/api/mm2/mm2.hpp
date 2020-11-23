@@ -31,6 +31,8 @@ namespace mm2::api
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
+    inline std::unique_ptr<web::http::client::http_client> g_qtum_proxy_http_client{
+        std::make_unique<web::http::client::http_client>(FROM_STD_STR(::atomic_dex::g_qtum_infos_endpoint))};
 
     nlohmann::json rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
     pplx::task<web::http::http_response>
@@ -774,14 +776,17 @@ namespace mm2::api
     }
 
     static inline pplx::task<web::http::http_response>
-    async_process_rpc_get(std::string rpc_command, const std::string& url)
+    async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url)
     {
-        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
+        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, TO_STD_STR(client->base_uri().to_string()));
 
-        web::http::http_request request;
-        request.set_method(web::http::methods::GET);
-        request.set_request_uri(FROM_STD_STR(url));
-        return g_etherscan_proxy_http_client->request(request);
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        if (not url.empty())
+        {
+            req.set_request_uri(FROM_STD_STR(url));
+        }
+        return client->request(req);
     }
 
     template <typename TAnswer>

@@ -20,14 +20,13 @@
 #include <antara/gaming/ecs/system.hpp>
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/synchronized_value.hpp>
-#include <folly/Memory.h>
-#include <folly/concurrency/ConcurrentHashMap.h>
 #include <reproc++/reproc.hpp>
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
+#include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/constants/mm2.error.code.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -63,9 +62,6 @@ namespace atomic_dex
         std::size_t transactions_left;
     };
 
-    using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
-    template <typename Key, typename Value>
-    using t_concurrent_reg      = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
     using t_ticker              = std::string;
     using t_tx_state            = tx_state;
     using t_coins_registry      = t_concurrent_reg<t_ticker, coin_config>;
