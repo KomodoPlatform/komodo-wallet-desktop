@@ -378,19 +378,25 @@ namespace atomic_dex
         using namespace std::string_literals;
         const std::string wallet_name     = qt_wallet_manager::get_default_wallet_name().toStdString();
         const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name + ".json"s;
-        const fs::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
-        if (fs::exists(wallet_cfg_path))
-        {
-            fs_error_code ec;
-            fs::remove(wallet_cfg_path, ec);
-            if (ec)
+        const fs::path    wallet_cfg_path{utils::get_atomic_dex_config_folder() / wallet_cfg_file};
+        const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+        const auto        functor_remove = [](const auto&& path_to_remove) {
+            if (fs::exists(path_to_remove))
             {
-                spdlog::error("error when removing {}: {}", wallet_cfg_path.string(), ec.message());
+                fs_error_code ec;
+                fs::remove(path_to_remove, ec);
+                if (ec)
+                {
+                    spdlog::error("error when removing {}: {}", path_to_remove.string(), ec.message());
+                }
+                else
+                {
+                    spdlog::info("Successfully removed {}", path_to_remove.string());
+                }
             }
-            else
-            {
-                spdlog::info("Successfully removed {}", wallet_cfg_path.string());
-            }
-        }
+        };
+
+        functor_remove(std::move(wallet_cfg_path));
+        functor_remove(std::move(mm2_coins_file_path));
     }
 } // namespace atomic_dex

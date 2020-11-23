@@ -25,6 +25,9 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
+//! Project
+#include "atomicdex/constants/mm2.constants.hpp"
+
 namespace atomic_dex
 {
     struct electrum_server
@@ -52,14 +55,16 @@ namespace atomic_dex
         bool                            currently_enabled{false};
         bool                            active{false};
         std::string                     coinpaprika_id;
-        bool                            is_erc_20{false};
-        bool                            is_qrc_20{false};
         bool                            is_custom_coin{false};
         std::string                     type;
         std::vector<std::string>        explorer_url; ///< usefull for transaction, take this url and append transaction id
         std::string                     tx_uri{"tx/"};
         std::string                     address_url{"address/"};
         std::optional<nlohmann::json>   custom_backup;
+        std::optional<bool>             need_electrum; ///< If this is set to true even if we have a specific tag we force electrum call
+        std::optional<bool>             is_testnet; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
+        coin_type                       coin_type;
+
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);

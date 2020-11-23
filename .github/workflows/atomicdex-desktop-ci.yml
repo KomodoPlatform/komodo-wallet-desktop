@@ -18,38 +18,23 @@ jobs:
     strategy:
       matrix:
         name: [
-            ubuntu-qt-5-15-0,
-            ubuntu-qt-5-15-1,
-            osx-qt-5-15-0,
-            osx-qt-5-15-1,
-            windows-10-qt-5-15-0,
-            windows-10-qt-5-15-1
+            ubuntu-qt-5-15-2,
+            osx-qt-5-15-2,
+            windows-10-qt-5-15-2
         ]
 
         include:
-          - name: ubuntu-qt-5-15-0
+          - name: ubuntu-qt-5-15-2
             os: ubuntu-16.04
-            qt: '5.15.0'
+            qt: '5.15.2'
 
-          - name: ubuntu-qt-5-15-1
-            os: ubuntu-16.04
-            qt: '5.15.1'
-
-          - name: osx-qt-5-15-0
+          - name: osx-qt-5-15-2
             os: macos-latest
-            qt: '5.15.0'
+            qt: '5.15.2'
 
-          - name: osx-qt-5-15-1
-            os: macos-latest
-            qt: '5.15.1'
-
-          - name: windows-10-qt-5-15-0
+          - name: windows-10-qt-5-15-2
             os: windows-latest
-            qt: '5.15.0'
-
-          - name: windows-10-qt-5-15-1
-            os: windows-latest
-            qt: '5.15.1'
+            qt: '5.15.2'
 
     steps:
       - uses: actions/checkout@v2
@@ -57,9 +42,23 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
 
+
       - uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+
+      #- name: setup rdp (Windows)
+      #  if: runner.os == 'Windows'
+      #  env:
+      #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      #  run: |
+      #    Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+      #    Expand-Archive ngrok.zip
+      #    .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      #    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+      #    Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+      #    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+      #    Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
@@ -86,8 +85,8 @@ jobs:
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-           python3  -m aqt tool mac tools_ifw 4.0 qt.tools.ifw.40 --outputdir ${{ github.workspace }}/Qt
-           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
+          python3  -m aqt tool mac tools_ifw 4.0 qt.tools.ifw.40 --outputdir ${{ github.workspace }}/Qt
+          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
@@ -99,7 +98,7 @@ jobs:
           arch: 'win64_msvc2019_64'
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
-      
+
       - name: Install QT IFW (Windows)
         if: runner.os == 'Windows'
         run: |
@@ -193,6 +192,10 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
+
+      #- name: launch rdp (Windows)
+      #  if: runner.os == 'Windows'
+      #  run: .\ngrok\ngrok.exe tcp 3389
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
@@ -306,7 +309,7 @@ jobs:
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/osx/atomicdex_desktop_installer.7z
-          
+
       - name: Upload env variable for artifacts (Windows)
         if: runner.os == 'Windows'
         run: |
@@ -320,7 +323,7 @@ jobs:
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/windows/bin.zip
-      
+
       - name: Upload artifacts (Windows installer)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v2

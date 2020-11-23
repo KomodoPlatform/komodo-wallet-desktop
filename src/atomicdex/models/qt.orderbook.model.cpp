@@ -75,6 +75,9 @@ namespace atomic_dex
         case PriceRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).price);
+        case CoinRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).coin)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).coin);
         case PriceDenomRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price_fraction_denom)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).price_fraction_denom);
@@ -95,6 +98,12 @@ namespace atomic_dex
         case PercentDepthRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).depth_percent)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).depth_percent);
+        case QuantityDenomRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).max_volume_fraction_denom)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).max_volume_fraction_denom);
+        case QuantityNumerRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).max_volume_fraction_numer)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).max_volume_fraction_numer);
         }
     }
 
@@ -132,6 +141,15 @@ namespace atomic_dex
         case PercentDepthRole:
             order.depth_percent = value.toString().toStdString();
             break;
+        case QuantityDenomRole:
+            order.max_volume_fraction_denom = value.toString().toStdString();
+            break;
+        case QuantityNumerRole:
+            order.max_volume_fraction_numer = value.toString().toStdString();
+            break;
+        case CoinRole:
+            order.coin = value.toString().toStdString();
+            break;
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -142,12 +160,15 @@ namespace atomic_dex
     {
         return {
             {PriceRole, "price"},
+            {CoinRole, "coin"},
             {QuantityRole, "quantity"},
             {TotalRole, "total"},
             {UUIDRole, "uuid"},
             {IsMineRole, "is_mine"},
             {PriceDenomRole, "price_denom"},
             {PriceNumerRole, "price_numer"},
+            {QuantityDenomRole, "quantity_denom"},
+            {QuantityNumerRole, "quantity_numer"},
             {PercentDepthRole, "depth"}};
     }
 

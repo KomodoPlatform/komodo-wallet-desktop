@@ -22,6 +22,7 @@
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
+#include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace mm2::api
@@ -30,11 +31,6 @@ namespace mm2::api
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
-
-    static inline void
-    reset_client()
-    {
-    }
 
     nlohmann::json rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
     pplx::task<web::http::http_response>
@@ -46,7 +42,8 @@ namespace mm2::api
     //! max taker vol
     struct max_taker_vol_request
     {
-        std::string coin;
+        std::string                coin;
+        std::optional<std::string> trade_with;
     };
 
     void to_json(nlohmann::json& j, const max_taker_vol_request& cfg);
@@ -77,8 +74,10 @@ namespace mm2::api
     {
         std::string              coin_name;
         std::vector<std::string> urls;
-        std::string              swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
+        atomic_dex::coin_type    coin_type;
+        const std::string        erc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
         std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
+        std::string              type; ///< QRC-20 ?
         bool                     with_tx_history{true};
     };
 
@@ -101,7 +100,11 @@ namespace mm2::api
     {
         std::string                              coin_name;
         std::vector<atomic_dex::electrum_server> servers;
+        atomic_dex::coin_type                    coin_type;
+        bool                                     is_testnet{false};
         bool                                     with_tx_history{true};
+        const std::string                        testnet_qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
+        const std::string                        qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
     };
 
     struct electrum_answer
@@ -412,6 +415,8 @@ namespace mm2::api
         std::string price;
         std::string price_fraction_numer;
         std::string price_fraction_denom;
+        std::string max_volume_fraction_numer;
+        std::string max_volume_fraction_denom;
         std::string maxvolume;
         std::string pubkey;
         std::size_t age;
@@ -473,6 +478,9 @@ namespace mm2::api
         bool                       is_created_order;
         std::string                price_denom;
         std::string                price_numer;
+        std::string                volume_denom;
+        std::string                volume_numer;
+        bool                       is_exact_selected_order_volume;
         std::optional<bool>        base_nota{std::nullopt};
         std::optional<std::size_t> base_confs{std::nullopt};
     };
@@ -519,8 +527,12 @@ namespace mm2::api
         bool                       is_created_order;
         std::string                price_denom;
         std::string                price_numer;
+        std::string                volume_denom;
+        std::string                volume_numer;
+        bool                       is_exact_selected_order_volume;
         std::optional<bool>        rel_nota;
         std::optional<std::size_t> rel_confs;
+        bool                       is_max;
     };
 
     void to_json(nlohmann::json& j, const sell_request& request);
@@ -604,17 +616,17 @@ namespace mm2::api
     struct my_order_contents
     {
         //! New
-        std::string                order_id;
-        std::string                price;
-        std::string                base;
-        std::string                rel;
-        bool                       cancellable;
-        std::size_t                timestamp;
-        std::string                order_type;
-        std::string                base_amount;
-        std::string                rel_amount;
-        std::string                human_timestamp;
-        std::string                action;
+        std::string order_id;
+        std::string price;
+        std::string base;
+        std::string rel;
+        bool        cancellable;
+        std::size_t timestamp;
+        std::string order_type;
+        std::string base_amount;
+        std::string rel_amount;
+        std::string human_timestamp;
+        std::string action;
     };
 
     struct my_orders_answer
@@ -627,8 +639,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, my_orders_answer& answer);
 
-    my_orders_answer rpc_my_orders(std::shared_ptr<t_http_client> mm2_client) noexcept;
-
     struct my_recent_swaps_request
     {
         std::size_t                limit{50ull};
@@ -636,47 +646,6 @@ namespace mm2::api
     };
 
     void to_json(nlohmann::json& j, const my_recent_swaps_request& request);
-
-    struct finished_event
-    {
-        std::size_t timestamp;
-        std::string human_date;
-    };
-
-    struct started_data
-    {
-        std::size_t lock_duration;
-    };
-
-    void from_json(const nlohmann::json& j, started_data& contents);
-
-    struct started_event
-    {
-        std::size_t  timestamp;
-        std::string  human_date;
-        started_data data;
-    };
-
-    struct error_data
-    {
-        std::string error_message;
-    };
-
-    void from_json(const nlohmann::json& j, error_data& contents);
-
-    struct start_failed_event
-    {
-        std::size_t timestamp;
-        std::string human_date;
-        error_data  data;
-    };
-
-    struct negotiate_failed_event
-    {
-        std::size_t timestamp;
-        std::string human_date;
-        error_data  data;
-    };
 
     struct swap_contents
     {
@@ -718,8 +687,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer& answer);
 
-    my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
     struct kmd_rewards_info_answer
     {
         nlohmann::json result;
@@ -728,9 +695,6 @@ namespace mm2::api
 
     // kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
     kmd_rewards_info_answer process_kmd_rewards_answer(nlohmann::json result);
-
-    nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests, std::shared_ptr<t_http_client> mm2_client);
-    nlohmann::json rpc_batch_enable(std::vector<enable_request> requests, std::shared_ptr<t_http_client> mm2_client);
 
     template <typename T>
     using have_error_field = decltype(std::declval<T&>().error.has_value());

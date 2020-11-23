@@ -28,6 +28,8 @@ if (WIN32)
 else()
     set(CMAKE_PREFIX_PATH "$ENV{QT_INSTALL_CMAKE_PATH}" CACHE STRING "")
 endif()
+message(STATUS "CMake Prefix path is: ${CMAKE_PREFIX_PATH}")
+
 if (APPLE)
     set(VCPKG_APPLOCAL_DEPS OFF CACHE BOOL "")
 endif ()
@@ -74,13 +76,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2422/mm2-31d1803b0-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2712/mm2-91fcacc33-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2422/mm2-31d1803b0-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2712/mm2-91fcacc33-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2422/mm2-31d1803b0-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2712/mm2-91fcacc33-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
@@ -153,6 +155,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
 
         ##! Constants
         ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/mm2.error.code.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/qt.trading.enums.cpp
 
         ##! Config
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
@@ -281,13 +284,7 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
-        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp
-        ##! QRC
-        ${CMAKE_SOURCE_DIR}/qml.qrc
-
-        ##! Linguistic
-        ${QM_FILES}
-        ${TS_FILES})
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomicdex-desktop
         PUBLIC
@@ -298,7 +295,7 @@ target_include_directories(atomicdex-desktop PUBLIC src)
 
 target_link_libraries(atomicdex-desktop_tests
         PUBLIC
-        atomicdex-desktop_shared_deps
+        #atomicdex-desktop_shared_deps
         doctest::doctest)
 
 ##! Setting output directory
@@ -356,7 +353,7 @@ if (LINUX)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/64x64/apps/${app_icon} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/default/64x64/apps/${app_icon} COPYONLY)
-    include (data/linux/atomicdex_install.cmake)
+    include(data/linux/atomicdex_install.cmake)
 endif ()
 
 if (WIN32)

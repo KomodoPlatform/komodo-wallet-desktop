@@ -21,8 +21,11 @@
 #include <sodium/core.h>
 #include <wally.hpp>
 
-#if defined(linux)
+#if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
+#    if defined(__APPLE__)
+#        define _GNU_SOURCE
+#    endif
 #    include <boost/stacktrace.hpp>
 #endif
 
@@ -46,7 +49,7 @@ signal_handler(int signal)
 {
     spdlog::trace("sigabort received, cleaning mm2.service");
     atomic_dex::kill_executable("mm2.service");
-#if defined(linux)
+#if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
 #endif
     std::exit(signal);
@@ -56,7 +59,7 @@ static void
 connect_signals_handler()
 {
     spdlog::info("connecting signal SIGABRT to the signal handler");
-#if defined(linux)
+#if defined(linux) || defined(__APPLE__)
     if (fs::exists("./backtrace.dump"))
     {
         // there is a backtrace
@@ -200,6 +203,11 @@ run_app(int argc, char** argv)
     engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
+    qRegisterMetaType<MarketMode>("MarketMode");
+    qmlRegisterUncreatableType<atomic_dex::MarketModeGadget>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
+    qRegisterMetaType<TradingError>("TradingError");
+    qmlRegisterUncreatableType<atomic_dex::TradingErrorGadget>("AtomicDEX.TradingError", 1, 0, "TradingError", "Not creatable as it is an enum type");
+
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     // Load Qaterial.
 

@@ -80,8 +80,6 @@ namespace atomic_dex
         {
             cfg.is_custom_coin = true;
         }
-        cfg.is_erc_20 = cfg.type == "ERC-20";
-        cfg.is_qrc_20 = cfg.type == "QRC-20";
         spdlog::debug("coin: {} is of type: {}", cfg.ticker, cfg.type);
         // j.at("is_erc_20").get_to(cfg.is_erc_20);
         j.at("explorer_url").get_to(cfg.explorer_url);
@@ -92,6 +90,30 @@ namespace atomic_dex
         if (j.contains("explorer_address_url"))
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
+        }
+        if (j.contains("need_electrum"))
+        {
+            cfg.need_electrum = j.at("need_electrum").get<bool>();
+        }
+        if (j.contains("is_testnet"))
+        {
+            cfg.is_testnet = j.at("is_testnet").get<bool>();
+        }
+        if (cfg.type == "QRC-20")
+        {
+            cfg.coin_type = coin_type::QRC20;
+        }
+        else if (cfg.type == "ERC-20")
+        {
+            cfg.coin_type = coin_type::ERC20;
+        }
+        else if (cfg.type == "UTXO")
+        {
+            cfg.coin_type = coin_type::UTXO;
+        }
+        else if (cfg.type == "Smart Chain")
+        {
+            cfg.coin_type = coin_type::SmartChain;
         }
     }
 } // namespace atomic_dex
