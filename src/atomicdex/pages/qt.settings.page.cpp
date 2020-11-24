@@ -279,6 +279,7 @@ namespace atomic_dex
             {
                 nlohmann::json body_json = nlohmann::json::parse(body);
                 const auto     ticker    = body_json.at("qrc20").at("symbol").get<std::string>();
+                const auto     adex_ticker    = ticker + "-QRC";
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), ticker);
                 const auto&    mm2      = this->m_system_manager.get_system<mm2_service>();
                 nlohmann::json qtum_cfg = mm2.get_raw_mm2_ticker_cfg("QTUM");
@@ -290,7 +291,8 @@ namespace atomic_dex
                     out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = "QTUM";
                     std::string out_address                                         = "0x" + contract_address.toStdString();
                     out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
-                    out["mm2_cfg"]["coin"]                                          = ticker;
+                    out["mm2_cfg"]["coin"]                                          = adex_ticker;
+                    out["mm2_cfg"]["gui_coin"]                                      = ticker;
                     out["mm2_cfg"]["mm2"]                                           = 1;
                     if (body_json.at("qrc20").contains("decimals"))
                     {
@@ -309,16 +311,17 @@ namespace atomic_dex
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
                     //!
-                    out["adex_cfg"][ticker]                      = nlohmann::json::object();
-                    out["adex_cfg"][ticker]["coin"]              = ticker;
-                    out["adex_cfg"][ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
-                    out["adex_cfg"][ticker]["coinpaprika_id"]    = coinpaprika_id.toStdString();
-                    out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
-                    out["adex_cfg"][ticker]["type"]              = "QRC-20";
-                    out["adex_cfg"][ticker]["active"]            = false;
-                    out["adex_cfg"][ticker]["currently_enabled"] = false;
-                    out["adex_cfg"][ticker]["is_custom_coin"]    = true;
-                    out["adex_cfg"][ticker]["mm2_backup"]        = out["mm2_cfg"];
+                    out["adex_cfg"][adex_ticker]                      = nlohmann::json::object();
+                    out["adex_cfg"][adex_ticker]["coin"]              = adex_ticker;
+                    out["adex_cfg"][adex_ticker]["gui_coin"]          = ticker;
+                    out["adex_cfg"][adex_ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
+                    out["adex_cfg"][adex_ticker]["coinpaprika_id"]    = coinpaprika_id.toStdString();
+                    out["adex_cfg"][adex_ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
+                    out["adex_cfg"][adex_ticker]["type"]              = "QRC-20";
+                    out["adex_cfg"][adex_ticker]["active"]            = false;
+                    out["adex_cfg"][adex_ticker]["currently_enabled"] = false;
+                    out["adex_cfg"][adex_ticker]["is_custom_coin"]    = true;
+                    out["adex_cfg"][adex_ticker]["mm2_backup"]        = out["mm2_cfg"];
                 }
             }
             else

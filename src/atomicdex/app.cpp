@@ -138,8 +138,9 @@ namespace atomic_dex
         std::vector<std::string> coins_std;
 
         coins_std.reserve(coins.size());
-        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         atomic_dex::mm2_service& mm2 = get_mm2();
+        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
+
         mm2.enable_multiple_coins(coins_std);
 
         return true;
