@@ -305,7 +305,9 @@ namespace atomic_dex
         const auto& base              = market_selector->get_left_selected_coin();
         const auto& rel               = market_selector->get_right_selected_coin();
         const bool  is_selected_order = m_preffered_order.has_value();
-        const bool  is_selected_max = QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume;
+        const bool  is_selected_max =
+            is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+                               : false;
 
         t_buy_request req{
             .base             = base.toStdString(),
@@ -382,7 +384,9 @@ namespace atomic_dex
         const auto& rel               = market_selector->get_right_selected_coin();
         const bool  is_selected_order = m_preffered_order.has_value();
         const bool  is_max            = m_max_volume == m_volume;
-        const bool  is_selected_max = QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume;
+        const bool  is_selected_max =
+            is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+                               : false;
 
         t_sell_request req{
             .base             = base.toStdString(),

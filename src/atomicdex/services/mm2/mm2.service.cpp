@@ -477,6 +477,7 @@ namespace atomic_dex
         nlohmann::json batch_array = nlohmann::json::array();
 
         std::vector<std::string> copy_tickers;
+
         for (const auto& ticker: tickers)
         {
             if (ticker == "BTC" || ticker == "KMD")
