@@ -285,6 +285,7 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp
+        src/atomicdex/tests/utilities/qt.utilities.tests.cpp
         ##! QRC
         ${CMAKE_SOURCE_DIR}/qml.qrc
 

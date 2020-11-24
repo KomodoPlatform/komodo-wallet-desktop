@@ -66,4 +66,17 @@ namespace atomic_dex
         for (auto&& cur: vec) { out.append(QString::fromStdString(cur)); }
         return out;
     }
+    
+    QStringList qt_variant_list_to_qt_string_list(const QVariantList& variant_list)
+    {
+        QStringList out;
+        
+        out.reserve(variant_list.size());
+        for (auto&& cur: variant_list)
+        {
+            out.append(cur.value<QString>());
+        }
+        return out;
+    }
+    
 } // namespace atomic_dex
