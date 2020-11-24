@@ -283,7 +283,7 @@ namespace atomic_dex
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), ticker);
                 const auto&    mm2      = this->m_system_manager.get_system<mm2_service>();
                 nlohmann::json qtum_cfg = mm2.get_raw_mm2_ticker_cfg("QTUM");
-                if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
+                if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(adex_ticker)))
                 {
                     out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
                     out["mm2_cfg"]["protocol"]["type"]                              = "QRC20";
@@ -308,7 +308,7 @@ namespace atomic_dex
                     out["mm2_cfg"]["required_confirmations"] = 3;
                     out["mm2_cfg"]["fname"]                  = boost::algorithm::to_lower_copy(body_json.at("qrc20").at("name").get<std::string>());
                 }
-                if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
+                if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(adex_ticker)))
                 {
                     //!
                     out["adex_cfg"][adex_ticker]                      = nlohmann::json::object();
