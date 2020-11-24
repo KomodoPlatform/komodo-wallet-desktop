@@ -47,7 +47,8 @@ namespace atomic_dex
         using electrum_servers                        = std::vector<electrum_server>;
         using eth_nodes                               = std::vector<std::string>;
         std::string                     ticker;
-        std::string                     name; ///< nice name
+        std::string                     gui_ticker; ///< Ticker displayed in the gui
+        std::string                     name;       ///< nice name
         std::optional<electrum_servers> electrum_urls;
         std::optional<eth_nodes>        eth_urls;
         bool                            is_claimable{false};
@@ -61,10 +62,9 @@ namespace atomic_dex
         std::string                     tx_uri{"tx/"};
         std::string                     address_url{"address/"};
         std::optional<nlohmann::json>   custom_backup;
-        std::optional<bool>             need_electrum; ///< If this is set to true even if we have a specific tag we force electrum call
+        std::optional<bool>             need_electrum;     ///< If this is set to true even if we have a specific tag we force electrum call
         std::optional<bool>             is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
         coin_type                       coin_type;
-
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);

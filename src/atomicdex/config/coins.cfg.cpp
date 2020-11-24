@@ -57,6 +57,7 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         j.at("coin").get_to(cfg.ticker);
+        cfg.gui_ticker = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
         j.at("name").get_to(cfg.name);
         j.at("type").get_to(cfg.type);
         if (j.contains("mm2_backup"))
