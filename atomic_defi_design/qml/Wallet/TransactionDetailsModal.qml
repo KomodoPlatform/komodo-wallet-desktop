@@ -37,7 +37,9 @@ BasicModal {
         TextEditWithTitle {
             title: qsTr("Fees")
             text: !details ? "" :
-                    General.formatCrypto("", details.fees, current_ticker_infos.fee_ticker)
+                    General.formatCrypto(parseFloat(details.fees) < 0, Math.abs(parseFloat(details.fees)), current_ticker_infos.fee_ticker)
+            value_color: !details ? "white" :
+                         parseFloat(details.fees) > 0 ? Style.colorRed : Style.colorGreen
             privacy: true
         }
 

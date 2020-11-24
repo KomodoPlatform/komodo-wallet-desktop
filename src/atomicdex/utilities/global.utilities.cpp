@@ -16,6 +16,14 @@ namespace atomic_dex::utils
         return ss.str();
     }
 
+    std::string format_float(t_float_50 value)
+    {
+        std::string result = value.str(8, std::ios_base::fixed);
+        boost::trim_right_if(result, boost::is_any_of("0"));
+        boost::trim_right_if(result, boost::is_any_of("."));
+        return result;
+    }
+
     std::string
     adjust_precision(const std::string& current)
     {

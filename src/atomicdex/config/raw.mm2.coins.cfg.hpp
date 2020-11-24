@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project
+#include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 #ifndef NLOHMANN_OPT_HELPER
@@ -114,7 +115,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     using t_mm2_raw_coins          = std::vector<coin_element>;
-    using t_mm2_raw_coins_registry = std::unordered_map<std::string, coin_element>;
+    using t_mm2_raw_coins_registry = t_concurrent_reg<std::string, coin_element>;
 } // namespace atomic_dex
 
 namespace atomic_dex
@@ -211,8 +212,7 @@ namespace atomic_dex
     parse_raw_mm2_coins_file()
     {
         t_mm2_raw_coins_registry out;
-        // fs::path                 file_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
-        fs::path file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+        fs::path                 file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
         if (not fs::exists(file_path))
         {
             fs::path original_mm2_coins_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
@@ -229,7 +229,7 @@ namespace atomic_dex
             ifs >> j;
             t_mm2_raw_coins coins = j;
             out.reserve(coins.size());
-            for (auto&& coin: coins) { out[coin.coin] = coin; }
+            for (auto&& coin: coins) { out.insert(coin.coin, coin); }
             spdlog::info("successfully parsed: {}, nb_coins: {}", file_path.string(), out.size());
         }
         catch (const std::exception& error)

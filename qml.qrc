@@ -16,7 +16,8 @@
         <file>atomic_defi_design/assets/fonts/Ubuntu-R.ttf</file>
         <file>atomic_defi_design/assets/fonts/Ubuntu-RI.ttf</file>
         <file>atomic_defi_design/assets/fonts/Ubuntu-Th.ttf</file>
-        <file>atomic_defi_design/assets/images/guide_contract_address.gif</file>
+        <file>atomic_defi_design/assets/images/guide_contract_address_qrc.gif</file>
+        <file>atomic_defi_design/assets/images/guide_contract_address_erc.gif</file>
         <file>atomic_defi_design/assets/images/guide_coinpaprika_id.gif</file>
         <file>atomic_defi_design/assets/images/icon-discord.png</file>
         <file>atomic_defi_design/assets/images/icon-twitter.png</file>
@@ -99,6 +100,7 @@
         <file>atomic_defi_design/assets/images/coins/rfox.png</file>
         <file>atomic_defi_design/assets/images/coins/qtum.png</file>
         <file>atomic_defi_design/assets/images/coins/qrc20.png</file>
+        <file>atomic_defi_design/assets/images/coins/tqtum.png</file>
         <file>atomic_defi_design/assets/images/coins/rvn.png</file>
         <file>atomic_defi_design/assets/images/coins/space.png</file>
         <file>atomic_defi_design/assets/images/coins/supernet.png</file>
@@ -106,6 +108,8 @@
         <file>atomic_defi_design/assets/images/coins/usdc.png</file>
         <file>atomic_defi_design/assets/images/coins/vra.png</file>
         <file>atomic_defi_design/assets/images/coins/vrsc.png</file>
+        <file>atomic_defi_design/assets/images/coins/qc.png</file>
+        <file>atomic_defi_design/assets/images/coins/pbc.png</file>
         <file>atomic_defi_design/assets/images/coins/vote2020.png</file>
         <file>atomic_defi_design/assets/images/coins/wlc.png</file>
         <file>atomic_defi_design/assets/images/coins/tusd.png</file>
@@ -200,6 +204,7 @@
         <file>atomic_defi_design/qml/Components/DefaultTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultListView.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultFlickable.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSwitch.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultCheckBox.qml</file>

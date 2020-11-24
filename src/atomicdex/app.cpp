@@ -139,8 +139,9 @@ namespace atomic_dex
         std::vector<std::string> coins_std;
 
         coins_std.reserve(coins.size());
-        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         atomic_dex::mm2_service& mm2 = get_mm2();
+        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
+
         mm2.enable_multiple_coins(coins_std);
 
         return true;
@@ -584,7 +585,7 @@ namespace atomic_dex
         return QString(::atomic_dex::get_regex_password_policy());
     }
 
-    QVariantMap
+    /*QVariantMap
     application::get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -604,7 +605,7 @@ namespace atomic_dex
         t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
 
         //! Get the transaction fees (from mm2)
-        auto answer = get_mm2().get_trade_fixed_fee(ticker.toStdString());
+        auto answer = get_mm2().get_transaction_fees(ticker.toStdString());
 
         //! Is fixed fee are available
         if (!answer.amount.empty())
@@ -618,7 +619,7 @@ namespace atomic_dex
             //! If receive ticker exist we try to apply erc fees
             if (receive_ticker != "")
             {
-                get_mm2().apply_erc_fees(receive_ticker.toStdString(), erc_fees);
+                get_mm2().apply_specific_fees(receive_ticker.toStdString(), erc_fees);
             }
 
             auto tx_fee_value = QString::fromStdString(utils::get_formated_float(tx_fee_f));
@@ -641,7 +642,7 @@ namespace atomic_dex
             }
             auto final_balance_qt = QString::fromStdString(final_balance);
 
-            out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
+            out.insert("trade_fee", QString::fromStdString(get_mm2().get_trading_fees_str(ticker.toStdString(), amount.toStdString(), false)));
             out.insert("tx_fee", tx_fee_value);
             if (erc_fees > 0)
             {
@@ -652,7 +653,7 @@ namespace atomic_dex
             out.insert("input_final_value", final_balance_qt);
         }
         return out;
-    }
+    }*/
 
     void
     application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* engine) noexcept
@@ -821,13 +822,13 @@ namespace atomic_dex
 //! Trading functions
 namespace atomic_dex
 {
-    QString
+    /*QString
     application::get_cex_rates(const QString& base, const QString& rel)
     {
         std::error_code ec;
         const auto&     price_service = system_manager_.get_system<global_price_service>();
         return QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString(), ec));
-    }
+    }*/
 
     QString
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
