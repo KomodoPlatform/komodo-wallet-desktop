@@ -36,7 +36,7 @@ namespace
         using namespace std::string_literals;
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        fs::path    cfg_path                   = get_atomic_dex_config_folder();
+        fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
         fs::path    precedent_version_cfg_path = cfg_path / filename;
 
@@ -77,7 +77,7 @@ namespace
             ofs << actual_config_data;
 
             //! Delete old cfg
-            boost::system::error_code ec;
+            fs_error_code ec;
             fs::remove(precedent_version_cfg_path, ec);
             if (ec)
             {
@@ -89,7 +89,7 @@ namespace
     void
     update_coin_status(const std::string& wallet_name, const std::vector<std::string> tickers, bool status = true)
     {
-        fs::path       cfg_path = get_atomic_dex_config_folder();
+        fs::path       cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::ifstream  ifs((cfg_path / filename).c_str());
         nlohmann::json config_json_data;
@@ -113,7 +113,7 @@ namespace
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         check_for_reconfiguration(wallet_name);
-        const auto  cfg_path = get_atomic_dex_config_folder();
+        const auto  cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         spdlog::info("Retrieving Wallet information of {}", (cfg_path / filename).string());
         if (exists(cfg_path / filename))
@@ -189,11 +189,9 @@ namespace atomic_dex
 
         if (ec)
         {
-            spdlog::error("error: {}", ec.message());
+            // std::cerr << "error: " << ec.message() << std::endl;
         }
 #endif
-
-        ::mm2::api::reset_client();
 
         if (m_mm2_init_thread.joinable())
         {
@@ -405,7 +403,7 @@ namespace atomic_dex
         std::vector<std::string> tickers_idx;
         std::vector<std::string> erc_to_fetch;
         const auto&              ticker = get_current_ticker();
-        if (not get_coin_info(ticker).is_erc_20)
+        if (!(get_coin_info(ticker).coin_type == ERC20))
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -479,6 +477,7 @@ namespace atomic_dex
         nlohmann::json batch_array = nlohmann::json::array();
 
         std::vector<std::string> copy_tickers;
+
         for (const auto& ticker: tickers)
         {
             if (ticker == "BTC" || ticker == "KMD")
@@ -491,17 +490,26 @@ namespace atomic_dex
                 continue;
             }
 
-            if (not coin_info.is_erc_20)
+            if (!(coin_info.coin_type == ERC20))
             {
-                t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
-                nlohmann::json     j = ::mm2::api::template_request("electrum");
+                t_electrum_request request{
+                    .coin_name       = coin_info.ticker,
+                    .servers         = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
+                    .coin_type       = coin_info.coin_type,
+                    .is_testnet      = coin_info.is_testnet.value_or(false),
+                    .with_tx_history = true};
+                nlohmann::json j = ::mm2::api::template_request("electrum");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
             }
             else
             {
-                t_enable_request request{.coin_name = coin_info.ticker, .urls = coin_info.eth_urls.value(), .with_tx_history = false};
-                nlohmann::json   j = ::mm2::api::template_request("enable");
+                t_enable_request request{
+                    .coin_name       = coin_info.ticker,
+                    .urls            = (coin_info.coin_type == ERC20) ? coin_info.eth_urls.value() : std::vector<std::string>(),
+                    .coin_type       = coin_info.coin_type,
+                    .with_tx_history = false};
+                nlohmann::json j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
                 //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
@@ -548,8 +556,10 @@ namespace atomic_dex
 
                             for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
 
-                            batch_balance_and_tx(false, tickers, true);
-                            //! At this point, task is finished, let's refresh.
+                            if (not tickers.empty())
+                            {
+                                batch_balance_and_tx(false, tickers, true);
+                            }
                         }
                     }
                     catch (const std::exception& error)
@@ -763,7 +773,7 @@ namespace atomic_dex
     void
     mm2_service::spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg)
     {
-        this->m_balance_factor = determine_balance_factor(with_pin_cfg);
+        this->m_balance_factor = utils::determine_balance_factor(with_pin_cfg);
         spdlog::trace("balance factor is: {}", m_balance_factor);
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
@@ -778,19 +788,18 @@ namespace atomic_dex
 
         std::ofstream ofs(mm2_cfg_path.string());
         ofs << json_cfg.dump();
+        // std::cout << json_cfg.dump() << std::endl;
         ofs.close();
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
         options.redirect.parent = true;
-#if defined(WIN32)
-        std::ostringstream env_mm2;
-        env_mm2 << "MM_CONF_PATH=" << mm2_cfg_path.string();
-        _putenv(env_mm2.str().c_str());
-        spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
-#else
-        options.environment =
-            std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}, {"MM_LOG", get_mm2_atomic_dex_current_log_file().string()}};
-#endif
+
+        options.env.behavior = reproc::env::extend;
+        options.env.extra    = std::unordered_map<std::string, std::string>{
+            {"MM_CONF_PATH", mm2_cfg_path.string()},
+            {"MM_LOG", utils::get_mm2_atomic_dex_current_log_file().string()},
+            {"MM_COINS_PATH", (utils::get_current_configs_path() / "coins.json").string()}};
+
         options.working_directory = strdup(tools_path.string().c_str());
 
         spdlog::debug("command line: {}, from directory: {}", args[0], options.working_directory);
@@ -866,7 +875,7 @@ namespace atomic_dex
     {
         const auto& ticker = get_current_ticker();
         spdlog::trace("asking history of ticker: {}", ticker);
-        if (not get_coin_info(ticker).is_erc_20)
+        if (!(get_coin_info(ticker).coin_type == ERC20))
         {
             if (m_tx_informations.find("result") == m_tx_informations.cend())
             {
@@ -927,26 +936,6 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::process_swaps()
-    {
-        std::size_t               total = this->m_swaps_registry.at("result").total;
-        t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
-        auto                      answer = rpc_my_recent_swaps(std::move(request), m_mm2_client);
-        if (answer.result.has_value())
-        {
-            m_swaps_registry.insert_or_assign("result", answer.result.value());
-            this->dispatcher_.trigger<process_swaps_finished>();
-        }
-    }
-
-    void
-    mm2_service::process_orders()
-    {
-        m_orders_registry.insert_or_assign("result", ::mm2::api::rpc_my_orders(m_mm2_client));
-        this->dispatcher_.trigger<process_orders_finished>();
-    }
-
-    void
     mm2_service::process_tx_etherscan(const std::string& ticker, [[maybe_unused]] bool is_a_refresh)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -955,7 +944,7 @@ namespace atomic_dex
         using namespace std::string_literals;
         std::string url =
             (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec) : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
-        ::mm2::api::async_process_rpc_get("tx_history", url)
+        ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "tx_history", url)
             .then([this, ticker](web::http::http_response resp) {
                 auto answer = ::mm2::api::rpc_process_answer<::mm2::api::tx_history_answer>(resp, "tx_history");
 
@@ -1126,7 +1115,7 @@ namespace atomic_dex
     mm2_service::get_tx_state(t_mm2_ec& ec) const
     {
         const auto& ticker = get_current_ticker();
-        if (not get_coin_info(ticker).is_erc_20)
+        if (!(get_coin_info(ticker).coin_type == ERC20))
         {
             if (m_tx_state.find("result") == m_tx_state.cend())
             {
@@ -1149,9 +1138,9 @@ namespace atomic_dex
     }
 
     t_float_50
-    mm2_service::get_trade_fee(const std::string& ticker, const std::string& amount, bool is_max) const
+    mm2_service::get_trading_fees(const std::string& ticker, const std::string& sell_amount, bool is_max) const
     {
-        t_float_50 sell_amount_f(amount);
+        t_float_50 sell_amount_f(sell_amount);
         if (is_max)
         {
             std::error_code ec;
@@ -1162,32 +1151,25 @@ namespace atomic_dex
     }
 
     std::string
-    mm2_service::get_trade_fee_str(const std::string& ticker, const std::string& sell_amount, bool is_max) const
+    mm2_service::apply_specific_fees(const std::string& ticker, t_float_50& value) const
     {
-        std::stringstream ss;
-        ss.precision(8);
-        ss << std::fixed << get_trade_fee(ticker, sell_amount, is_max);
-        return ss.str();
-    }
-
-    void
-    mm2_service::apply_erc_fees(const std::string& ticker, t_float_50& value)
-    {
-        if (get_coin_info(ticker).is_erc_20)
+        if (auto coin_info = get_coin_info(ticker); (coin_info.coin_type == ERC20) || (coin_info.coin_type == QRC20 && !coin_info.electrum_urls.has_value()))
         {
-            spdlog::info("Calculating erc fees of rel ticker: {}", ticker);
-            t_get_trade_fee_request rec_req{.coin = ticker};
-            auto                    amount = get_trade_fixed_fee(ticker).amount;
-            if (!amount.empty())
+            spdlog::info("Calculating specific fees of rel ticker: {}", ticker);
+            const auto& answer = get_transaction_fees(ticker);
+            const auto  amount = answer.amount;
+            if (not amount.empty())
             {
-                t_float_50 rec_amount = t_float_50(amount);
-                value += rec_amount;
+                value += t_float_50(amount);
             }
+            return answer.coin;
         }
+
+        return "";
     }
 
     t_get_trade_fee_answer
-    mm2_service::get_trade_fixed_fee(const std::string& ticker) const
+    mm2_service::get_transaction_fees(const std::string& ticker) const
     {
         return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
     }
@@ -1293,8 +1275,7 @@ namespace atomic_dex
                 .my_balance_change = current.my_balance_change,
                 .total_amount      = current.total_amount,
                 .block_height      = current.block_height,
-
-                .ec = dextop_error::success,
+                .ec                = dextop_error::success,
             };
             if (current.fee_details.normal_fees.has_value())
             {
@@ -1313,7 +1294,7 @@ namespace atomic_dex
             {
                 using namespace std::chrono;
                 current_info.timestamp   = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                current_info.date        = to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
+                current_info.date        = utils::to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
                 current_info.unconfirmed = true;
             }
 
@@ -1367,11 +1348,11 @@ namespace atomic_dex
         ::mm2::api::to_json(current_request, req_orderbook);
         batch.push_back(current_request);
         current_request = ::mm2::api::template_request("max_taker_vol");
-        ::mm2::api::max_taker_vol_request req_base_max_taker_vol{.coin = orderbook_ticker_base};
+        ::mm2::api::max_taker_vol_request req_base_max_taker_vol{.coin = orderbook_ticker_base, .trade_with = orderbook_ticker_rel};
         ::mm2::api::to_json(current_request, req_base_max_taker_vol);
         batch.push_back(current_request);
         current_request = ::mm2::api::template_request("max_taker_vol");
-        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = orderbook_ticker_rel};
+        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = orderbook_ticker_rel, .trade_with = orderbook_ticker_rel};
         ::mm2::api::to_json(current_request, req_rel_max_taker_vol);
         batch.push_back(current_request);
         return batch;
@@ -1421,7 +1402,7 @@ namespace atomic_dex
         if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
         {
             spdlog::trace("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
-            fs::path       cfg_path = get_atomic_dex_config_folder();
+            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
             nlohmann::json config_json_data;
@@ -1431,9 +1412,7 @@ namespace atomic_dex
             ifs >> config_json_data;
 
             //! Modify contents
-            // config_json_data
             config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
-            // config_json_data.push_back(coin_cfg_json);
 
             //! Close
             ifs.close();
@@ -1445,7 +1424,7 @@ namespace atomic_dex
         }
         if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
         {
-            fs::path mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            const fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             spdlog::trace("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
             std::ifstream  ifs(mm2_cfg_path.c_str());
             nlohmann::json config_json_data;
@@ -1504,7 +1483,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
             spdlog::trace("remove it from normal cfg: {}", ticker);
-            fs::path       cfg_path = get_atomic_dex_config_folder();
+            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
             nlohmann::json config_json_data;
@@ -1529,7 +1508,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
             spdlog::trace("remove it from mm2 cfg: {}", ticker);
-            fs::path       mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            fs::path       mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             std::ifstream  ifs(mm2_cfg_path.c_str());
             nlohmann::json config_json_data;
             assert(ifs.is_open());
@@ -1556,4 +1535,26 @@ namespace atomic_dex
     {
         this->m_trade_fees_registry.insert_or_assign(ticker, answer);
     }
+
+    std::vector<electrum_server>
+    mm2_service::get_electrum_server_from_token(const std::string& ticker)
+    {
+        std::vector<electrum_server> servers;
+        const coin_config            cfg = this->get_coin_info(ticker);
+        if (cfg.coin_type == QRC20)
+        {
+            if (cfg.is_testnet.value())
+            {
+                spdlog::info("{} is from testnet picking tQTUM electrum", ticker);
+                servers = std::move(get_coin_info("tQTUM").electrum_urls.value());
+            }
+            else
+            {
+                spdlog::info("{} is from mainnet picking QTUM electrum", ticker);
+                servers = std::move(get_coin_info("QTUM").electrum_urls.value());
+            }
+        }
+        return servers;
+    }
+
 } // namespace atomic_dex

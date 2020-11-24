@@ -14,11 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
-#include "mm2.error.code.hpp"
+#include "atomicdex/constants/mm2.error.code.hpp"
 
 namespace
 {

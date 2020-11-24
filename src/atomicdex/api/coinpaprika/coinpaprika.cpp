@@ -14,15 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
+#include <nlohmann/json.hpp>
 #include <range/v3/view.hpp>
 
 //! Project Headers
-#include "coinpaprika.hpp"
-#include "src/atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/api/coinpaprika/coinpaprika.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace
 {
@@ -122,7 +120,7 @@ namespace atomic_dex
             web::http::http_request req;
             req.set_method(web::http::methods::GET);
             auto&& [ticker_id, timestamp, interval] = request;
-            const auto url = "/tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
+            const auto url                          = "/tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
             spdlog::info("url: {}", url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);

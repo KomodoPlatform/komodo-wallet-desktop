@@ -24,7 +24,7 @@
 
 //! Project
 #include "atomicdex/api/mm2/mm2.hpp"
-#include "qt.orderbook.proxy.model.hpp"
+#include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 
 namespace atomic_dex
 {
@@ -43,12 +43,15 @@ namespace atomic_dex
         enum OrderbookRoles
         {
             PriceRole,
+            CoinRole,
             QuantityRole,
             TotalRole,
             UUIDRole,
             IsMineRole,
             PriceDenomRole,
             PriceNumerRole,
+            QuantityDenomRole,
+            QuantityNumerRole,
             PercentDepthRole
         };
 

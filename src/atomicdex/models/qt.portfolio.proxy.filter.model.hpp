@@ -16,6 +16,7 @@
 
 #pragma once
 
+//! Qt
 #include <QSortFilterProxyModel>
 
 namespace atomic_dex
@@ -25,6 +26,7 @@ namespace atomic_dex
         Q_OBJECT
         QString m_excluded_coin{""};
         bool    am_i_a_market_selector{false};
+
       public:
         //! Constructor
         portfolio_proxy_model(QObject* parent);

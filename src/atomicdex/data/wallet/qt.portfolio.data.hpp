@@ -16,9 +16,15 @@
 
 #pragma once
 
+//! Qt
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QString>
+
+//! STD
+#include <optional>
+
+#include "atomicdex/constants/qt.trading.enums.hpp"
 
 namespace atomic_dex
 {
@@ -57,8 +63,12 @@ namespace atomic_dex
 
         QString ticker_and_name;
 
-        bool is_multi_ticker_enabled{false};
-
-        std::optional<QJsonObject> multi_ticker_data{std::nullopt};
+        //! Multi ticker
+        bool                        is_multi_ticker_enabled{false};
+        std::optional<QJsonObject>  multi_ticker_data{std::nullopt};
+        std::optional<TradingError> multi_ticker_error;
+        std::optional<QString>      multi_ticker_price;
+        std::optional<QString>      multi_ticker_receive_amount;
+        std::optional<QJsonObject>  multi_ticker_fees_info;
     };
 } // namespace atomic_dex

@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! QT Headers
 #include <QAbstractListModel>
 #include <QApplication>
@@ -31,6 +28,7 @@
 #include <QVariantMap>
 
 //! Deps
+#include <entt/core/attribute.h>
 #include <antara/gaming/world/world.app.hpp>
 
 //! Project Headers
@@ -59,7 +57,7 @@ Q_DECLARE_METATYPE(portfolio_page_ptr)
 
 namespace atomic_dex
 {
-    struct application : public QObject, public ag::world::app
+    struct ENTT_API application : public QObject, public ag::world::app
     {
         Q_OBJECT
 
@@ -196,13 +194,13 @@ namespace atomic_dex
         Q_INVOKABLE bool           do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool           disable_coins(const QStringList& coins);
 
-        Q_INVOKABLE QString        get_cex_rates(const QString& base, const QString& rel);
+        //Q_INVOKABLE QString        get_cex_rates(const QString& base, const QString& rel);
         Q_INVOKABLE QString        get_fiat_from_amount(const QString& ticker, const QString& amount);
         Q_INVOKABLE QVariant       get_coin_info(const QString& ticker);
         Q_INVOKABLE bool           export_swaps(const QString& csv_filename) noexcept;
         Q_INVOKABLE bool           export_swaps_json() noexcept;
         Q_INVOKABLE static QString get_regex_password_policy() noexcept;
-        Q_INVOKABLE QVariantMap    get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
+        //Q_INVOKABLE QVariantMap    get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
         Q_INVOKABLE QVariantList   get_all_coins() const noexcept;
 
       signals:

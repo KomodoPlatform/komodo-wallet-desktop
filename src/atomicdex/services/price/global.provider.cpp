@@ -289,15 +289,15 @@ namespace atomic_dex
     global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const noexcept
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
-
+    
+        if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+        {
+            return "0.00";
+        }
+        
         if (m_supported_fiat_registry.count(fiat) == 0u)
         {
             ec = dextop_error::invalid_fiat_for_rate_conversion;
-            return "0.00";
-        }
-
-        if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
-        {
             return "0.00";
         }
 

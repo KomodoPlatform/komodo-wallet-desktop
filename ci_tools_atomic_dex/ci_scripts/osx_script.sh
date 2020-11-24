@@ -18,7 +18,7 @@ export CXX=clang++
 export MACOSX_DEPLOYMENT_TARGET=10.14
 
 # get curl
-git clone https://github.com/curl/curl.git
+git clone https://github.com/KomodoPlatform/curl.git
 cd curl
 git checkout curl-7_70_0
 ./buildconf
@@ -32,4 +32,4 @@ cd libwally-core
 sudo make -j3 install
 cd ..
 # get SDKs 
-git clone https://github.com/phracker/MacOSX-SDKs $HOME/sdk
+git clone https://github.com/KomodoPlatform/MacOSX-SDKs $HOME/sdk

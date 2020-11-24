@@ -14,12 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project
-#include "qt.orderbook.model.hpp"
-#include "qt.orderbook.proxy.model.hpp"
+#include "atomicdex/models/qt.orderbook.proxy.model.hpp"
+#include "atomicdex/models/qt.orderbook.model.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -58,6 +56,12 @@ namespace atomic_dex
         case orderbook_model::PriceNumerRole:
             break;
         case orderbook_model::PercentDepthRole:
+            break;
+        case orderbook_model::QuantityDenomRole:
+            break;
+        case orderbook_model::QuantityNumerRole:
+            break;
+        case orderbook_model::CoinRole:
             break;
         }
         return true;

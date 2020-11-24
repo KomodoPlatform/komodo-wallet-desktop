@@ -33,6 +33,7 @@ DefaultComboBox {
 
             if(idx === -1) return prev_details
 
+            // Update count triggers the change for auto-update
             const new_details = {
                 update_count:           line.update_count,
                 ticker:                 model.data(model.index(idx, 0), 257),
@@ -79,8 +80,6 @@ DefaultComboBox {
                 function reset() {
                     text = ""
                     renewIndex()
-
-                    //applyCurrentSort()
                 }
 
                 Connections {
@@ -105,7 +104,9 @@ DefaultComboBox {
 
                 Keys.onPressed: {
                     if(event.key === Qt.Key_Return) {
-                        control.currentIndex = 0
+                        if(control.count > 0) {
+                            control.currentIndex = 0
+                        }
                         popup.close()
                         event.accepted = true
                     }

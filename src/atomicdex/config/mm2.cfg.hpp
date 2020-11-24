@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include "src/atomicdex/utilities/global.utilities.hpp"
-#include "src/atomicdex/version/version.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/version/version.hpp"
 
 namespace atomic_dex
 {
@@ -35,7 +35,7 @@ namespace atomic_dex
         std::string userhome{std::getenv("HOME")};
 #endif
         std::string passphrase;
-        std::string dbdir{(get_atomic_dex_data_folder() / "mm2" / "DB").string()};
+        std::string dbdir{(utils::get_atomic_dex_data_folder() / "mm2" / "DB").string()};
         std::string rpc_password{"atomic_dex_mm2_passphrase"};
     };
 

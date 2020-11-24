@@ -14,34 +14,20 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Qt
 #include <QJSValue>
+
+//! Deps
 #include <taskflow/taskflow.hpp>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
+#include "atomicdex/events/qt.events.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
+#include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
-#include "qt.portfolio.model.hpp"
-#include "src/atomicdex/events/qt.events.hpp"
-#include "src/atomicdex/pages/qt.wallet.page.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
-
-//! Utils
-namespace
-{
-    template <typename TModel>
-    auto
-    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
-    {
-        if (auto prev_value = model.data(idx, role); value != prev_value)
-        {
-            model.setData(idx, value, role);
-            return std::make_tuple(prev_value, value, true);
-        }
-        return std::make_tuple(value, value, false);
-    }
-} // namespace
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -83,7 +69,7 @@ namespace atomic_dex
             const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
             portfolio_data  data{
                 .ticker                = QString::fromStdString(coin.ticker),
-                .coin_type = QString::fromStdString(coin.type),
+                .coin_type             = QString::fromStdString(coin.type),
                 .name                  = QString::fromStdString(coin.name),
                 .balance               = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
                 .main_currency_balance = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
@@ -162,7 +148,7 @@ namespace atomic_dex
                         QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
                         using namespace std::chrono;
                         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                         spdlog::debug(
                             "balance update notification from update_currency_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
                             new_balance.toString().toStdString());
@@ -222,7 +208,7 @@ namespace atomic_dex
                     QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
                     using namespace std::chrono;
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                    QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                    QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                     spdlog::debug(
                         "balance update notification from update_balance_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
                         new_balance.toString().toStdString());
@@ -270,12 +256,20 @@ namespace atomic_dex
             return item.display;
         case NameAndTicker:
             return item.ticker_and_name;
-        case IsMultiTickerCurrentlyEnabled:
+        case MultiTickerCurrentlyEnabled:
             return item.is_multi_ticker_enabled;
         case MultiTickerData:
             return item.multi_ticker_data.has_value() ? item.multi_ticker_data.value() : QJsonObject{};
         case CoinType:
             return item.coin_type;
+        case MultiTickerError:
+            return static_cast<qint32>(item.multi_ticker_error.value_or(TradingError::None));
+        case MultiTickerPrice:
+            return item.multi_ticker_price.value_or("0");
+        case MultiTickerReceiveAmount:
+            return item.multi_ticker_receive_amount.value_or("0");
+        case MultiTickerFeesInfo:
+            return item.multi_ticker_fees_info.value_or(QJsonObject());
         }
         return {};
     }
@@ -321,7 +315,7 @@ namespace atomic_dex
         case NameAndTicker:
             item.ticker_and_name = value.toString();
             break;
-        case IsMultiTickerCurrentlyEnabled:
+        case MultiTickerCurrentlyEnabled:
             if (item.is_multi_ticker_enabled != value.toBool())
             {
                 item.is_multi_ticker_enabled = value.toBool();
@@ -333,11 +327,20 @@ namespace atomic_dex
             break;
         case MultiTickerData:
             item.multi_ticker_data = QJsonObject::fromVariantMap(value.value<QVariantMap>());
-            // qDebug() << value;
-            /*if (value.isValid())
-            {
-                item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
-            }*/
+            break;
+        case MultiTickerError:
+            item.multi_ticker_error = static_cast<TradingError>(value.toInt());
+            break;
+        case MultiTickerPrice:
+            item.multi_ticker_price = value.toString();
+            this->m_system_manager.get_system<trading_page>().determine_multi_ticker_total_amount(
+                item.ticker, item.multi_ticker_price.value(), item.is_multi_ticker_enabled);
+            break;
+        case MultiTickerReceiveAmount:
+            item.multi_ticker_receive_amount = value.toString();
+            break;
+        case MultiTickerFeesInfo:
+            item.multi_ticker_fees_info = QJsonObject::fromVariantMap(value.value<QVariantMap>());
             break;
         default:
             return false;
@@ -370,7 +373,7 @@ namespace atomic_dex
         for (auto&& coin: coins)
         {
             auto res = this->match(this->index(0, 0), TickerRole, coin);
-            //assert(not res.empty());
+            // assert(not res.empty());
             if (not res.empty())
             {
                 this->removeRow(res.at(0).row());
@@ -400,8 +403,12 @@ namespace atomic_dex
             {Excluded, "excluded"},
             {Display, "display"},
             {NameAndTicker, "name_and_ticker"},
-            {IsMultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"},
-            {MultiTickerData, "multi_ticker_data"}};
+            {MultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"},
+            {MultiTickerData, "multi_ticker_data"},
+            {MultiTickerPrice, "multi_ticker_price"},
+            {MultiTickerError, "multi_ticker_error"},
+            {MultiTickerReceiveAmount, "multi_ticker_receive_amount"},
+            {MultiTickerFeesInfo, "multi_ticker_fees_info"}};
     }
 
     portfolio_proxy_model*

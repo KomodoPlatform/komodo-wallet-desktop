@@ -14,13 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Qt
 #include <QJsonDocument>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project headers
-#include "qt.addressbook.model.hpp"
+#include "atomicdex/models/qt.addressbook.model.hpp"
 
 //! Addressbook model
 namespace atomic_dex

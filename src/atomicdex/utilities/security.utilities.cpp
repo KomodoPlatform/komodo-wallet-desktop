@@ -17,6 +17,10 @@
 //! PCH Headers
 #include "atomicdex/pch.hpp"
 
+//! STD Headers
+#include <fstream>
+#include <sstream>
+
 //! Deps
 #include <boost/random/random_device.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
