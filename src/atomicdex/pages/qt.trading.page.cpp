@@ -324,7 +324,7 @@ namespace atomic_dex
             .base_nota  = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
 
-        if (m_preffered_order->contains("max_volume_denom"))
+        if (m_preffered_order.has_value() && m_preffered_order->contains("max_volume_denom"))
         {
             req.volume_numer                   = m_preffered_order->at("max_volume_numer").get<std::string>();
             req.volume_denom                   = m_preffered_order->at("max_volume_denom").get<std::string>();
