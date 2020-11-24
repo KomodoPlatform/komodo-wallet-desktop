@@ -74,6 +74,8 @@ namespace atomic_dex
         {
         case atomic_dex::portfolio_model::TickerRole:
             return left_data.toString() > right_data.toString();
+        case atomic_dex::portfolio_model::GuiTickerRole:
+            return left_data.toString() > right_data.toString();
         case atomic_dex::portfolio_model::NameRole:
             return left_data.toString().toLower() < right_data.toString().toLower();
         case atomic_dex::portfolio_model::BalanceRole:

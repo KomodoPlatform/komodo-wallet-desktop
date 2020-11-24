@@ -69,6 +69,7 @@ namespace atomic_dex
             const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
             portfolio_data  data{
                 .ticker                = QString::fromStdString(coin.ticker),
+                .gui_ticker            = QString::fromStdString(coin.gui_ticker),
                 .coin_type             = QString::fromStdString(coin.type),
                 .name                  = QString::fromStdString(coin.name),
                 .balance               = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
@@ -80,11 +81,9 @@ namespace atomic_dex
                 .trend_7d                     = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
                 .is_excluded                  = false,
             };
-            data.display         = data.ticker + " (" + data.balance + ")";
-            data.ticker_and_name = data.ticker + data.name;
-            spdlog::trace(
-                "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
-                data.main_currency_balance.toStdString());
+            data.display         = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
+            data.ticker_and_name = QString::fromStdString(coin.gui_ticker) + data.name;
+            spdlog::trace("inserting ticker {}", coin.ticker);
             datas.push_back(std::move(data));
             m_ticker_registry.emplace(ticker);
         }
@@ -236,6 +235,8 @@ namespace atomic_dex
         {
         case TickerRole:
             return item.ticker;
+        case GuiTickerRole:
+            return item.gui_ticker;
         case BalanceRole:
             return item.balance;
         case MainCurrencyBalanceRole:
@@ -392,6 +393,7 @@ namespace atomic_dex
     {
         return {
             {TickerRole, "ticker"},
+            {GuiTickerRole, "gui_ticker"},
             {CoinType, "type"},
             {NameRole, "name"},
             {BalanceRole, "balance"},

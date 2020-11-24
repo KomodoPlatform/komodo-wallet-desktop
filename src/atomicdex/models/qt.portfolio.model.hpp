@@ -43,6 +43,7 @@ namespace atomic_dex
         enum PortfolioRoles
         {
             TickerRole = Qt::UserRole + 1,
+            GuiTickerRole,
             NameRole,
             BalanceRole,
             MainCurrencyBalanceRole,
