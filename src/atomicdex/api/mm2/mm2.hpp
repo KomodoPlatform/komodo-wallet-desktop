@@ -758,6 +758,10 @@ namespace mm2::api
     RpcReturnType static inline rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
     {
         RpcReturnType answer;
+        /*if (rpc_command == "my_orders")
+        {
+            spdlog::info("my_orders answer {}", json_answer.dump(4));
+        }*/
 
         try
         {

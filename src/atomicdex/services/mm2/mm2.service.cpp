@@ -925,7 +925,7 @@ namespace atomic_dex
                 auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
                 m_orders_registry.insert_or_assign("result", my_orders_answer);
                 this->dispatcher_.trigger<process_orders_finished>();
-                auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_orders");
+                auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_recent_swaps");
                 if (swap_answer.result.has_value())
                 {
                     m_swaps_registry.insert_or_assign("result", swap_answer.result.value());
