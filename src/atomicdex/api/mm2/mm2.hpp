@@ -483,6 +483,7 @@ namespace mm2::api
         std::string                volume_denom;
         std::string                volume_numer;
         bool                       is_exact_selected_order_volume;
+        bool                       selected_order_use_input_volume{false};
         std::optional<bool>        base_nota{std::nullopt};
         std::optional<std::size_t> base_confs{std::nullopt};
     };

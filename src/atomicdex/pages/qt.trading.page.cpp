@@ -309,42 +309,50 @@ namespace atomic_dex
             is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
                                : false;
         const bool is_my_max = m_volume == m_max_volume;
-        const bool is_exact_selected_order_volume = (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
+        const bool is_exact_selected_order_volume =
+            (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
 
         /*spdlog::info(
-            "volume: {} max_volume: {} is_selecter_order: {}, is_selected_max: {}, is_my_max: {}, is_exact_selected_order_volume {}", m_volume.toStdString(), m_max_volume.toStdString(), is_selected_order,
-            is_selected_max, is_my_max, is_exact_selected_order_volume);
-        if (is_selected_order)
+            "volume: {} max_volume: {} is_selecter_order: {}, is_selected_max: {}, is_my_max: {}, is_exact_selected_order_volume {}", m_volume.toStdString(),
+        m_max_volume.toStdString(), is_selected_order, is_selected_max, is_my_max, is_exact_selected_order_volume); if (is_selected_order)
         {
             spdlog::info("selected order infos: {}", m_preffered_order.value().dump(4));
         }*/
         t_buy_request req{
-            .base             = base.toStdString(),
-            .rel              = rel.toStdString(),
-            .price            = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
-            .volume           = m_volume.toStdString(),
-            .is_created_order = not is_selected_order,
-            .price_denom      = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
-            .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
-            .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
-            .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
+            .base                           = base.toStdString(),
+            .rel                            = rel.toStdString(),
+            .price                          = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
+            .volume                         = m_volume.toStdString(),
+            .is_created_order               = not is_selected_order,
+            .price_denom                    = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
+            .price_numer                    = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
+            .volume_denom                   = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
+            .volume_numer                   = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
             .is_exact_selected_order_volume = is_exact_selected_order_volume,
-            .base_nota  = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
-            .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
+            .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
+            .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
 
-        if (m_preffered_order.has_value() && m_preffered_order->contains("quantity_denom") && req.is_exact_selected_order_volume)
+        if (m_preffered_order.has_value())
         {
-            //! Selected order and we keep the exact volume (Basically swallow the order)
-            spdlog::info("swallowing the order from the orderbook");
-            req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
-            req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
-        }
-        else if (m_preffered_order.has_value() && m_preffered_order->contains("max_volume_denom") && is_my_max && !req.is_exact_selected_order_volume)
-        {
-            spdlog::info("cannot swallow the selected order from the orderbook, use our theorical max_volume for it");
-            //! Selected order but we cannot swallow (not enough funds) set our theorical max_volume_numer and max_volume_denom
-            req.volume_numer = m_preffered_order->at("max_volume_numer").get<std::string>();
-            req.volume_denom = m_preffered_order->at("max_volume_denom").get<std::string>();
+            if (req.is_exact_selected_order_volume)
+            {
+                //! Selected order and we keep the exact volume (Basically swallow the order)
+                spdlog::info("swallowing the order from the orderbook");
+                req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
+                req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
+            }
+            else if (is_my_max && !req.is_exact_selected_order_volume)
+            {
+                spdlog::info("cannot swallow the selected order from the orderbook, use our theorical max_volume for it");
+                //! Selected order but we cannot swallow (not enough funds) set our theorical max_volume_numer and max_volume_denom
+                req.volume_numer = m_preffered_order->at("max_volume_numer").get<std::string>();
+                req.volume_denom = m_preffered_order->at("max_volume_denom").get<std::string>();
+            }
+            else
+            {
+                spdlog::info("Selected order, but changing manually the volume, use input_volume");
+                req.selected_order_use_input_volume = true;
+            }
         }
         nlohmann::json batch;
         nlohmann::json buy_request = ::mm2::api::template_request("buy");
@@ -353,7 +361,7 @@ namespace atomic_dex
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
         //! Answer
-        // spdlog::info("buy_request is : {}", batch.dump(4));
+        //spdlog::info("buy_request is : {}", batch.dump(4));
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)

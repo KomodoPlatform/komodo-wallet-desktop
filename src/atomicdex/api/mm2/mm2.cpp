@@ -581,9 +581,12 @@ namespace mm2::api
             price_fraction_repr["denom"]       = request.price_denom;
             j["price"]                         = price_fraction_repr;
             nlohmann::json volume_fraction_repr = nlohmann::json::object();
-            volume_fraction_repr["numer"]       = request.volume_numer;
-            volume_fraction_repr["denom"]       = request.volume_denom;
-            j["volume"]                         = volume_fraction_repr;
+            if (not request.selected_order_use_input_volume)
+            {
+                volume_fraction_repr["numer"] = request.volume_numer;
+                volume_fraction_repr["denom"] = request.volume_denom;
+                j["volume"]                   = volume_fraction_repr;
+            }
             spdlog::info("The order is picked from the orderbook price: {}, volume: {}", j.at("price").dump(4), j.at("volume").dump(4));
         }
         else
