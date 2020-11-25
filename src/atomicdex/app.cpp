@@ -1013,6 +1013,8 @@ namespace atomic_dex
     application::exit_handler()
     {
         spdlog::trace("will quit app, prevent all threading event");
+        this->system_manager_.mark_system<mm2_service>();
+        this->process_one_frame();
         m_event_actions[events_action::about_to_exit_app] = true;
     }
 
@@ -1112,6 +1114,7 @@ namespace atomic_dex
     void
     application::restart()
     {
+        spdlog::info("restarting the application");
         const char* appimage = nullptr;
         if (appimage = std::getenv("APPIMAGE"); appimage)
         {

@@ -47,7 +47,7 @@ inline constexpr size_t g_spdlog_max_file_rotation = 3;
 void
 signal_handler(int signal)
 {
-    spdlog::trace("sigabort received, cleaning mm2.service");
+    spdlog::trace("sigabort received, cleaning mm2");
     atomic_dex::kill_executable("mm2.service");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");

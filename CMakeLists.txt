@@ -76,13 +76,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-907308a2e-Darwin-Release.zip)
+            URL http://195.201.0.6/mm2.1/mm2-032a12f61-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-907308a2e-Linux-Release.zip)
+            URL http://195.201.0.6/mm2.1/mm2-032a12f61-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-907308a2e-Windows_NT-Release.zip)
+            URL http://195.201.0.6/mm2.1/mm2-032a12f61-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)

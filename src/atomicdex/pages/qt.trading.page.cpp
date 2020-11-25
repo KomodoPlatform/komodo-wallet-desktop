@@ -309,6 +309,10 @@ namespace atomic_dex
             is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
                                : false;
 
+        spdlog::info("volume: {} max_volume: {} is_selecter_order: {}, is_selected_max: {}", m_volume.toStdString(), m_max_volume.toStdString(), is_selected_order, is_selected_max);
+        if (is_selected_order) {
+            spdlog::info("selected order infos: {}", m_preffered_order.value().dump(4));
+        }
         t_buy_request req{
             .base             = base.toStdString(),
             .rel              = rel.toStdString(),
@@ -324,10 +328,10 @@ namespace atomic_dex
             .base_nota  = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
 
-        if (m_preffered_order.has_value() && m_preffered_order->contains("max_volume_denom") && req.is_exact_selected_order_volume)
+        if (m_preffered_order.has_value() && m_preffered_order->contains("quantity_denom") && req.is_exact_selected_order_volume)
         {
-            req.volume_numer = m_preffered_order->at("max_volume_numer").get<std::string>();
-            req.volume_denom = m_preffered_order->at("max_volume_denom").get<std::string>();
+            req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
+            req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
         }
         nlohmann::json batch;
         nlohmann::json buy_request = ::mm2::api::template_request("buy");
@@ -336,7 +340,7 @@ namespace atomic_dex
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
         //! Answer
-        spdlog::info("buy_request is : {}", batch.dump(4));
+        //spdlog::info("buy_request is : {}", batch.dump(4));
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
