@@ -298,7 +298,7 @@ target_include_directories(atomicdex-desktop PUBLIC src)
 
 target_link_libraries(atomicdex-desktop_tests
         PUBLIC
-        #atomicdex-desktop_shared_deps
+        atomicdex-desktop_shared_deps
         doctest::doctest)
 
 ##! Setting output directory
