@@ -805,6 +805,10 @@ namespace atomic_dex
     {
         if (m_volume != volume && not volume.isEmpty())
         {
+            if (t_float_50(volume.toStdString()) < 0)
+            {
+                volume = "0";
+            }
             m_volume = std::move(volume);
             spdlog::trace("volume is [{}]", m_volume.toStdString());
             this->determine_total_amount();
@@ -888,6 +892,10 @@ namespace atomic_dex
                         this->m_preffered_order.value()["max_volume_denom"] = boost::multiprecision::denominator(res).str();
                         this->m_preffered_order.value()["max_volume_numer"] = boost::multiprecision::numerator(res).str();
                     }
+                    if (res_f < 0)
+                    {
+                        res_f = 0;
+                    }
                     this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
                     this->cap_volume();
                 }
@@ -896,6 +904,10 @@ namespace atomic_dex
                     t_float_50 max_vol(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
                     max_vol        = std::max(t_float_50(0), max_vol);
                     t_float_50 res = price_f > t_float_50(0) ? max_vol / price_f : t_float_50(0);
+                    if (res < 0)
+                    {
+                        res = 0;
+                    }
                     this->set_max_volume(QString::fromStdString(utils::format_float(res)));
                     this->cap_volume();
                 }
