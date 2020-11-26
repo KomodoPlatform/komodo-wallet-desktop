@@ -174,33 +174,59 @@ namespace atomic_dex
 
     mm2_service::~mm2_service() noexcept
     {
-        m_token_source.cancel();
-        m_mm2_running = false;
-
-#if defined(_WIN32) || defined(WIN32)
-        atomic_dex::kill_executable("mm2");
-#else
-        const reproc::stop_actions stop_actions = {
-            {reproc::stop::terminate, reproc::milliseconds(2000)},
-            {reproc::stop::kill, reproc::milliseconds(5000)},
-            {reproc::stop::wait, reproc::milliseconds(2000)}};
-
-        const auto ec = m_mm2_instance.stop(stop_actions).second;
-
-        if (ec)
+        spdlog::info("destroying mm2 service...");
+        dispatcher_.sink<gui_enter_trading>().disconnect<&mm2_service::on_gui_enter_trading>(*this);
+        dispatcher_.sink<gui_leave_trading>().disconnect<&mm2_service::on_gui_leave_trading>(*this);
+        dispatcher_.sink<orderbook_refresh>().disconnect<&mm2_service::on_refresh_orderbook>(*this);
+        spdlog::info("mm2 signals successfully disconnected");
+        bool mm2_stopped = false;
+        if (m_mm2_running)
         {
-            // std::cerr << "error: " << ec.message() << std::endl;
+            spdlog::info("preparing mm2 stop batch request");
+            nlohmann::json stop_request = ::mm2::api::template_request("stop");
+            nlohmann::json batch        = nlohmann::json::array();
+            batch.push_back(stop_request);
+            spdlog::info("processing mm2 stop batch request");
+            pplx::task<web::http::http_response> resp_task = ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token());
+            web::http::http_response             resp      = resp_task.get();
+            spdlog::info("mm2 stop batch answer received");
+            auto                                 answers   = ::mm2::api::basic_batch_answer(resp);
+            if (answers[0].contains("result"))
+            {
+                mm2_stopped = answers[0].at("result").get<std::string>() == "success";
+                spdlog::info("mm2 successfully stopped with rpc stop");
+            }
         }
+        m_mm2_running = false;
+        m_token_source.cancel();
+
+        if (!mm2_stopped)
+        {
+            spdlog::info("mm2 didn't stop yet with rpc stop, stopping process manually");
+#if defined(_WIN32) || defined(WIN32)
+            atomic_dex::kill_executable("mm2");
+#else
+            const reproc::stop_actions stop_actions = {
+                {reproc::stop::terminate, reproc::milliseconds(2000)},
+                {reproc::stop::kill, reproc::milliseconds(5000)},
+                {reproc::stop::wait, reproc::milliseconds(2000)}};
+
+            const auto ec = m_mm2_instance.stop(stop_actions).second;
+
+            if (ec)
+            {
+                spdlog::error("error when stopping mm2 by process: {}", ec.message());
+                // std::cerr << "error: " << ec.message() << std::endl;
+            }
 #endif
+        }
 
         if (m_mm2_init_thread.joinable())
         {
             m_mm2_init_thread.join();
+            spdlog::info("mm2 init thread destroyed");
         }
-
-        dispatcher_.sink<gui_enter_trading>().disconnect<&mm2_service::on_gui_enter_trading>(*this);
-        dispatcher_.sink<gui_leave_trading>().disconnect<&mm2_service::on_gui_leave_trading>(*this);
-        dispatcher_.sink<orderbook_refresh>().disconnect<&mm2_service::on_refresh_orderbook>(*this);
+        spdlog::info("mm2 service fully destroyed");
     }
 
     const std::atomic_bool&
@@ -788,11 +814,11 @@ namespace atomic_dex
 
         std::ofstream ofs(mm2_cfg_path.string());
         ofs << json_cfg.dump();
-        // std::cout << json_cfg.dump() << std::endl;
+        //std::cout << json_cfg.dump() << std::endl;
         ofs.close();
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
-        options.redirect.parent = true;
+        options.redirect.parent = false;
 
         options.env.behavior = reproc::env::extend;
         options.env.extra    = std::unordered_map<std::string, std::string>{
