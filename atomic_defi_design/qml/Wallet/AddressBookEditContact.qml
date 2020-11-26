@@ -41,8 +41,6 @@ BasicModal {
                 id: wallets_info_control
 
                 Layout.alignment: Qt.AlignHCenter
-
-                mainBorderColor: Style.getCoinColor(ticker)
             }
         }
 
@@ -50,7 +48,12 @@ BasicModal {
         ModalContent {
             title: qsTr("Tags")
 
-            //! New category form opening button
+            //! Category adding form
+            AddressBookNewContactCategory {
+                id: add_category
+            }
+
+            //! Category adding form opening button
             PrimaryButton {
                 text: qsTr("Add tag")
 
@@ -78,22 +81,14 @@ BasicModal {
                 }
             }
         }
-
-        //! New category form
-        BasicModal {
-            id: add_category
-
-            enabled: false
-            visible: false
         }
-
 
         HorizontalLine {
             Layout.fillWidth: true
             color: Style.colorWhite8
         }
 
-        //! Buttons
+        //! Validate contact changes and cancel buttons
         RowLayout {
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.rightMargin: 15
