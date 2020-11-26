@@ -199,7 +199,6 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.settings.page.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.portfolio.page.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.wallet.page.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.addressbook.page.cpp
 
         ##! Services
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/global.provider.cpp

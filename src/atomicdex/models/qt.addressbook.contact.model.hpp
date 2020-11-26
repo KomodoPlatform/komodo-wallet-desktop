@@ -18,7 +18,7 @@
 
 //! Qt
 #include <QAbstractListModel> //> QAbstractListModel.
-#include <QObject>            //> Q_OBJECT, Q_PROPERTY, QObject.
+#include <QObject>            //> Q_OBJECT, Q_PROPERTY.
 
 //! Deps
 #include <spdlog/spdlog.h>
@@ -30,36 +30,32 @@ namespace atomic_dex
 {
     class addressbook_contact_model final : public QAbstractListModel
     {
-        friend class addressbook_model;
-        
         /// \brief Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
-        
-        /// \defgroup Members
-        /// {@
-        
-        addressbook_manager& m_addressbook_manager;
-        
-        QString              m_name;
-        
-        QStringList          m_categories;
+      
+        friend class addressbook_model;
+    
+      public:
+        /// \brief Represents a wallet info.
+        struct wallet_info
+        {
+            QString type;
+            QMap<QString, QString> addresses;
+        };
 
-        /// @} End of Members section.
-        
-        Q_ENUMS(ContactRoles)
-    public:
         enum ContactRoles
         {
+            CategoriesRole,
             TypeRole,
             AddressesRole
         };
-        
-    public:
+        Q_ENUMS(ContactRoles)
+
         /// \defgroup Constructors
         /// {@
         
-        explicit addressbook_contact_model(addressbook_manager& addrbook_manager, QString name, QObject* parent = nullptr);
-        ~addressbook_contact_model() noexcept;
+        explicit addressbook_contact_model(addressbook_manager& addrbook_manager, QObject* parent = nullptr);
+        ~addressbook_contact_model() noexcept final;
     
         /// @} End of Constructors section.
     
@@ -74,19 +70,33 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
     
         /// @} End of QAbstractListModel implementation section.
-    
-        [[nodiscard]]
-        const QString& get_name() const noexcept;
-        
-        void set_name(const QString& name) noexcept;
-        
-        [[nodiscard]]
-        const QStringList& get_categories() const noexcept;
         
         /// \defgroup QML API.
         /// {@
         
+        [[nodiscard]]
+        const QString& get_name() const noexcept;
+    
+        void set_name(const QString& name) noexcept;
+        
+        [[nodiscard]]
+        const QStringList& get_categories() const noexcept;
+    
+        void set_categories(QStringList categories) noexcept;
+        
+        Q_INVOKABLE bool add_category(const QString& category) noexcept;
+        
+        Q_INVOKABLE void remove_category(const QString& category) noexcept;
+        
+        [[nodiscard]]
+        QVariantList get_wallets_info() noexcept;
+        
+        void set_wallets_info(QList<wallet_info> wallets_info);
+        
+      private:
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
+        Q_PROPERTY(QStringList categories READ get_categories NOTIFY categoriesChanged)
+        Q_PROPERTY(QVariantList wallets_info READ get_wallets_info NOTIFY walletsInfoChanged)
         
       signals:
         void nameChanged();
@@ -94,5 +104,19 @@ namespace atomic_dex
         void walletsInfoChanged();
         
         /// @} End of QML API section.
+    
+        /// \defgroup Members
+        /// {@
+        
+      private:
+        addressbook_manager& m_addressbook_manager;
+    
+        QString              m_name;
+    
+        QStringList          m_categories;
+    
+        QList<wallet_info>   m_wallets_info;
+    
+        /// @} End of Members section.
     };
 }

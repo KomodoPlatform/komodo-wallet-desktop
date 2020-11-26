@@ -29,6 +29,87 @@ namespace atomic_dex
     {}
 }
 
+//! Element access
+namespace atomic_dex
+{
+    const nlohmann::json& addressbook_manager::at(std::size_t pos) const
+    {
+        return m_data.at(pos);
+    }
+    
+    nlohmann::json& addressbook_manager::at(std::size_t pos)
+    {
+        return m_data.at(pos);
+    }
+    
+    inline const nlohmann::json& addressbook_manager::data() const noexcept
+    {
+        return m_data;
+    }
+    
+    inline nlohmann::json& addressbook_manager::data() noexcept
+    {
+        return m_data;
+    }
+    
+    const nlohmann::json& addressbook_manager::get_contacts() const noexcept
+    {
+        return data();
+    }
+    
+    nlohmann::json& addressbook_manager::get_contacts() noexcept
+    {
+        return data();
+    }
+    
+    const nlohmann::json& addressbook_manager::get_contact(const std::string& name) const
+    {
+        for (auto it = m_data.begin(); it != m_data.end(); ++it)
+        {
+            if (it.value().at("name") == name)
+            {
+                return it.value();
+            }
+        }
+        throw std::invalid_argument("(addressbook_manager) given contact name does not exist");
+    }
+    
+    nlohmann::json& addressbook_manager::get_contact(const std::string& name)
+    {
+        return const_cast<nlohmann::json&>(std::as_const(*this).get_contact(name));
+    }
+    
+    const nlohmann::json& addressbook_manager::get_wallets_info(const std::string& name) const
+    {
+        return get_contact(name).at("wallets_info");
+    }
+    
+    nlohmann::json& addressbook_manager::get_wallets_info(const std::string& name)
+    {
+        return const_cast<nlohmann::json&>(std::as_const(*this).get_wallets_info(name));
+    }
+    
+    const nlohmann::json& addressbook_manager::get_wallet_info(const std::string& name, const std::string& type) const
+    {
+        return get_wallets_info(name).at(type);
+    }
+    
+    nlohmann::json& addressbook_manager::get_wallet_info(const std::string& name, const std::string& type)
+    {
+        return const_cast<nlohmann::json&>(std::as_const(*this).get_wallet_info(name, type));
+    }
+    
+    const nlohmann::json& addressbook_manager::get_categories(const std::string& name) const
+    {
+        return get_contact(name).at("categories");
+    }
+    
+    nlohmann::json& addressbook_manager::get_categories(const std::string& name)
+    {
+        return const_cast<nlohmann::json&>(std::as_const(*this).get_categories(name));
+    }
+}
+
 //! Modifiers
 namespace atomic_dex
 {
@@ -124,65 +205,14 @@ namespace atomic_dex
     }
 }
 
-//! Accessors
-namespace atomic_dex
-{
-    const nlohmann::json& addressbook_manager::get_contact(const std::string& name) const
-    {
-        for (auto it = m_data.begin(); it != m_data.end(); ++it)
-        {
-            if (it.value().at("name") == name)
-            {
-                return it.value();
-            }
-        }
-        throw std::invalid_argument("(addressbook_manager) given contact name does not exist");
-    }
-    
-    nlohmann::json& addressbook_manager::get_contact(const std::string& name)
-    {
-        return const_cast<nlohmann::json&>(std::as_const(*this).get_contact(name));
-    }
-    
-    const nlohmann::json& addressbook_manager::get_contacts() const noexcept
-    {
-        return m_data;
-    }
-    
-    const nlohmann::json& addressbook_manager::get_wallets_info(const std::string& name) const
-    {
-        return get_contact(name).at("wallets_info");
-    }
-    
-    nlohmann::json& addressbook_manager::get_wallets_info(const std::string& name)
-    {
-        return const_cast<nlohmann::json&>(std::as_const(*this).get_wallets_info(name));
-    }
-    
-    const nlohmann::json& addressbook_manager::get_wallet_info(const std::string& name, const std::string& type) const
-    {
-        return get_wallets_info(name).at(type);
-    }
-    
-    nlohmann::json& addressbook_manager::get_wallet_info(const std::string& name, const std::string& type)
-    {
-        return const_cast<nlohmann::json&>(std::as_const(*this).get_wallet_info(name, type));
-    }
-    
-    const nlohmann::json& addressbook_manager::get_categories(const std::string& name) const
-    {
-        return get_contact(name).at("categories");
-    }
-    
-    nlohmann::json& addressbook_manager::get_categories(const std::string& name)
-    {
-        return const_cast<nlohmann::json&>(std::as_const(*this).get_categories(name));
-    }
-}
-
 //! Lookup
 namespace atomic_dex
 {
+    std::size_t addressbook_manager::nb_contacts() const noexcept
+    {
+        return get_contacts().size();
+    }
+    
     bool addressbook_manager::has_contact(const std::string& name) const noexcept
     {
         for (auto it = m_data.begin(); it != m_data.end(); ++it)
@@ -230,6 +260,6 @@ namespace atomic_dex
     
     void addressbook_manager::save_configuration() const
     {
-        update_addressbook_cfg(m_data, m_system_manager.get_system<qt_wallet_manager>().get_wallet_default_name().toStdString());
+        //TODO: update_addressbook_cfg(m_data, m_system_manager.get_system<qt_wallet_manager>().get_wallet_default_name().toStdString());
     }
 }

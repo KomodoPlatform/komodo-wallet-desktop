@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import "../Components"
+import "../Constants"
 
 BasicModal {
     id: root
@@ -47,15 +48,6 @@ BasicModal {
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.bottomMargin: 5
 
-            //! Cancel button.
-            DefaultButton {
-                text: qsTr("Cancel")
-
-                onClicked: {
-                    root.close()
-                }
-            }
-
             //! Validate button.
             PrimaryButton {
                 text: qsTr("Validate")
@@ -66,7 +58,8 @@ BasicModal {
                         return;
                     }
 
-                    var create_contact_result = addressbook.page_api.add_contact(name_input.text.toString());
+                    var create_contact_result =
+                            addressbook.api.addressbook_mdl.add_contact(name_input.text.toString());
 
                     if (create_contact_result === false)
                     {
@@ -78,6 +71,20 @@ BasicModal {
                     }
                 }
             }
+
+            //! Cancel button.
+            DefaultButton {
+                text: qsTr("Cancel")
+
+                onClicked: {
+                    name_input.text = "";
+                    root.close();
+                }
+            }
         }
+    }
+
+    Component.onDestruction: {
+        name_input.text = "";
     }
 }

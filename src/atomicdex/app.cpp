@@ -364,7 +364,6 @@ namespace atomic_dex
         system_manager_.create_system<update_service_checker>();
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
-        system_manager_.create_system<addressbook_page>(system_manager_, qobject_cast<addressbook_model*>(m_manager_models.at("addressbook")));
 
         connect_signals();
         if (is_there_a_default_wallet())
@@ -509,7 +508,7 @@ namespace atomic_dex
         }
 
         //! Clears models
-        addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
+        addressbook_model* addressbook = get_addressbook_model();
         if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
         {
             addressbook->removeRows(0, count, QModelIndex());
@@ -956,7 +955,7 @@ namespace atomic_dex
         if (res)
         {
             system_manager_.get_system<addressbook_manager>().load_configuration();
-            qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"))->init_from_manager();
+            qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"))->populate();
         }
         return res;
     }
@@ -1084,10 +1083,10 @@ namespace atomic_dex
 //! Addressbook
 namespace atomic_dex
 {
-    addressbook_page*
-    application::get_addressbook_page() const noexcept
+    addressbook_model*
+    application::get_addressbook_model() const noexcept
     {
-        auto* ptr = const_cast<addressbook_page*>(std::addressof(system_manager_.get_system<addressbook_page>()));
+        auto* ptr = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
         assert(ptr);
         return ptr;
     }

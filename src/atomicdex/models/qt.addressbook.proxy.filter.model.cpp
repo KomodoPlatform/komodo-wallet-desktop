@@ -38,7 +38,7 @@ namespace atomic_dex
     bool
     addressbook_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
-        int      role       = this->sortRole();
+        int      role       = sortRole();
         QVariant left_data  = sourceModel()->data(source_left, role);
         QVariant right_data = sourceModel()->data(source_right, role);
 

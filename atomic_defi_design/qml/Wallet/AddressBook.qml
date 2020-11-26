@@ -12,7 +12,7 @@ ColumnLayout {
     Layout.fillWidth: true
     spacing: 20
 
-    readonly property var page_api: API.app.addressbook_pg
+    readonly property var api: API.app
 
     //! This variable represents a margin size.
     readonly property int layout_margin: 30
@@ -57,7 +57,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: page_api.addressbook_model.addressbook_proxy_mdl
+        model: api.addressbook_mdl.addressbook_proxy_mdl
 
         //! Contact card
         delegate: Item {
@@ -116,7 +116,7 @@ ColumnLayout {
                                 font.pixelSize: Style.textSizeSmall3
 
                                 onClicked: {
-                                    addressbook_edit_contact.open();
+                                    edit_contact.open();
                                 }
                             }
 
@@ -127,7 +127,7 @@ ColumnLayout {
                                 font.pixelSize: Style.textSizeSmall3
 
                                 onClicked: {
-                                    page_api.remove_contact(index)
+                                    api.addressbook_mdl.remove_contact(index, modelData.name)
                                 }
                             }
                         }
@@ -136,6 +136,10 @@ ColumnLayout {
 
                 HorizontalLine {
                     Layout.fillWidth: true
+                }
+
+                AddressBookEditContact {
+                    id: edit_contact
                 }
             }
         }

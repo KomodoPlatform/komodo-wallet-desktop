@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 //! Qt
+#include <QJsonArray>
 #include <QJsonDocument>
 
 //! Project headers
@@ -31,10 +32,10 @@ namespace atomic_dex
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("addressbook model created");
-        this->m_addressbook_proxy->setSourceModel(this);
-        this->m_addressbook_proxy->setSortRole(SubModelRole);
-        this->m_addressbook_proxy->setDynamicSortFilter(true);
-        this->m_addressbook_proxy->sort(0);
+        m_addressbook_proxy->setSourceModel(this);
+        m_addressbook_proxy->setSortRole(SubModelRole);
+        m_addressbook_proxy->setDynamicSortFilter(true);
+        m_addressbook_proxy->sort(0);
     }
     
     addressbook_model::~addressbook_model() noexcept
@@ -50,7 +51,7 @@ namespace atomic_dex
     int
     atomic_dex::addressbook_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_contact_models.size();
+        return m_contact_models.count();
     }
     
     QVariant
@@ -71,37 +72,33 @@ namespace atomic_dex
     }
     
     bool
-    atomic_dex::addressbook_model::insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
+    atomic_dex::addressbook_model::insertRows(int position, int rows, const QModelIndex& parent)
     {
-        spdlog::trace("(addressbook_model::insertRows) inserting {} elements at position {}", rows, position);
-        beginInsertRows(QModelIndex(), position, position + rows - 1);
-        
+        spdlog::trace("(addressbook_model::insertRows) inserting {} contact(s) at position {}", rows, position);
+        beginInsertRows(parent, position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            const auto& contact = m_addressbook_manager.get_contacts().at(position);
-            this->m_contact_models.insert(
-                position, new addressbook_contact_model(m_addressbook_manager, QString::fromStdString(contact.at("name")), this));
+            auto* contact_model = new addressbook_contact_model(m_addressbook_manager, this);
+            auto  contact_name  = m_addressbook_manager.at(m_addressbook_manager.nb_contacts() - 1 + row).at("name").get<std::string>();
+            auto  contact_categ =
+                nlohmann_json_array_to_qt_json_array(m_addressbook_manager.at(m_addressbook_manager.nb_contacts() - 1 + row).at("categories"));
+            
+            contact_model->set_name(QString::fromStdString(contact_name));
+            contact_model->set_categories(qt_variant_list_to_qt_string_list(contact_categ.toVariantList()));
+            m_contact_models.insert(position, contact_model);
         }
-        
         endInsertRows();
         return true;
     }
 
     bool
-    atomic_dex::addressbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
+    atomic_dex::addressbook_model::removeRows(int position, int rows, const QModelIndex& parent)
     {
         spdlog::trace("(addressbook_model::removeRows) removing {} elements at position {}", rows, position);
-        beginRemoveRows(QModelIndex(), position, position + rows - 1);
+        beginRemoveRows(parent, position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            auto* contact_model = m_contact_models.at(position);
-            
-            if (not contact_model->get_name().isEmpty())
-            {
-                m_addressbook_manager.remove_contact(contact_model->get_name().toStdString());
-                m_addressbook_manager.save_configuration();
-            }
-            delete contact_model;
+            delete m_contact_models.at(position);
             m_contact_models.removeAt(position);
         }
         endRemoveRows();
@@ -117,51 +114,84 @@ namespace atomic_dex
     }
 }
 
+//! QML API
+namespace atomic_dex
+{
+    addressbook_proxy_model* addressbook_model::get_addressbook_proxy_mdl() const noexcept
+    {
+        return m_addressbook_proxy;
+    }
+}
+
 //! Other member functions
 namespace atomic_dex
 {
-    void addressbook_model::init_from_manager()
+    void addressbook_model::populate()
     {
-        for (std::size_t i = 0; i < m_addressbook_manager.get_contacts().size(); i++)
+        beginInsertRows(QModelIndex(), 0, m_addressbook_manager.nb_contacts() - 1);
+        for (auto& contact : m_addressbook_manager.get_contacts())
         {
-            int   rows          = 1;
-            auto  contact_name  = m_addressbook_manager.get_contacts().at(i).at("name").get<std::string>();
-            auto* contact_model = new addressbook_contact_model(m_addressbook_manager, QString::fromStdString(contact_name), nullptr);
+            auto* contact_model = new addressbook_contact_model(m_addressbook_manager, this);
+            auto  contact_name  = contact.at("name").get<std::string>();
+            auto  contact_categ = vector_std_string_to_qt_string_list(contact.at("categories"));
     
-            beginInsertRows(QModelIndex(), m_contact_models.count(), m_contact_models.count());
-            for (int row = 0; row < rows; ++row)
-            {
-                m_contact_models.push_back(contact_model);
-            }
-            endInsertRows();
+            contact_model->set_name(QString::fromStdString(contact_name));
+            contact_model->set_categories(contact_categ);
+            m_contact_models.push_back(contact_model);
         }
+        endInsertRows();
+    }
+    
+    void addressbook_model::remove_contact(int row, const QString& name)
+    {
+        spdlog::debug("(addressbook_model::remove_contact) removing {} contact at row {}", name.toStdString(), row);
+        for (auto* it = m_contact_models.begin(); it != m_contact_models.end(); ++it)
+        {
+            if ((*it)->get_name() == name)
+            {
+                m_addressbook_manager.remove_contact(name.toStdString());
+                m_addressbook_manager.save_configuration();
+                beginRemoveRows(QModelIndex(), row, row);
+                delete *it;
+                m_contact_models.erase(it);
+                endRemoveRows();
+                return;
+            }
+        }
+        spdlog::error("(addressbook_model::remove_contact) Cannot remove contact with name {} since it does not exist", name.toStdString());
+    }
+    
+    void addressbook_model::remove_all_contacts()
+    {
+        spdlog::debug("(addressbook_model::remove_all_contacts) removing every contact");
+        m_addressbook_manager.remove_all_contacts();
+        m_addressbook_manager.save_configuration();
+        beginRemoveRows(QModelIndex(), 0, rowCount());
+        for (auto& contact_model : m_contact_models)
+        {
+            delete contact_model;
+        }
+        m_contact_models.clear();
+        endRemoveRows();
     }
 
-    void
-    addressbook_model::remove_at(int position)
+    bool addressbook_model::add_contact(const QString& name)
     {
-        auto* contact_model = m_contact_models.at(position);
-        
-        m_addressbook_manager.remove_contact(contact_model->get_name().toStdString());
-        removeRow(position);
-    }
-    
-    bool
-    addressbook_model::add_contact_entry(const QString& name)
-    {
+        spdlog::trace("(addressbook_model::add_contact) adding {} contact", name.toStdString());
         if (m_addressbook_manager.has_contact(name.toStdString()))
         {
+            spdlog::error("(addressbook_model::add_contact) cannot add {} contact because it already exists", name.toStdString());
             return false;
         }
         
         m_addressbook_manager.add_contact(name.toStdString());
-        insertRow(m_contact_models.size());
+        m_addressbook_manager.save_configuration();
+        insertRow(rowCount());
         return true;
     }
 
-    addressbook_proxy_model*
-    addressbook_model::get_addressbook_proxy_mdl() const noexcept
+    void addressbook_model::clear()
     {
-        return m_addressbook_proxy;
+        removeRows(0, rowCount());
     }
 } // namespace atomic_dex

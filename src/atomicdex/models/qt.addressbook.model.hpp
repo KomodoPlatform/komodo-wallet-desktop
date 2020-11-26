@@ -19,7 +19,6 @@
 //! Qt
 #include <QAbstractListModel> //> QAbstractListModel
 #include <QObject>            //> QObject
-#include <QVariantList>
 
 //! Deps
 #include <antara/gaming/ecs/system.manager.hpp> //> antara::gaming, ag::ecs::system_manager.
@@ -37,9 +36,6 @@ namespace atomic_dex
     {
         /// \brief Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
-        
-        Q_PROPERTY(addressbook_proxy_model* addressbook_proxy_mdl READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
-        
         Q_ENUMS(AddressBookRoles)
 
     public:
@@ -48,7 +44,6 @@ namespace atomic_dex
             SubModelRole = Qt::UserRole + 1,
         };
 
-    public:
         explicit addressbook_model(ag::ecs::system_manager& system_registry, QObject* parent = nullptr) noexcept;
         ~addressbook_model() noexcept final;
         
@@ -59,23 +54,36 @@ namespace atomic_dex
         QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]]
         int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        bool insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent) final;
         bool                   removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
         [[nodiscard]]
         QHash<int, QByteArray> roleNames() const final;
         
         /// @} End of QAbstractListModel implementation section.
         
-        void init_from_manager();
+        /// \brief Loads model from the addressbook_manager current data.
+        void populate();
         
-        void remove_at(int position);
+        /// \defgroup QML API
+        /// {@
         
-        void add_contact_entry(const QString& name);
+        Q_INVOKABLE bool add_contact(const QString& name);
+        
+        Q_INVOKABLE void remove_contact(int row, const QString& name);
+        
+        Q_INVOKABLE void remove_all_contacts();
 
+        void clear();
+
+    private:
+        Q_PROPERTY(addressbook_proxy_model* addressbook_proxy_mdl READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
         //! Properties
         [[nodiscard]]
         addressbook_proxy_model* get_addressbook_proxy_mdl() const noexcept;
     signals:
         void addressbookProxyChanged();
+        
+        /// @} End of QML API section.
 
     private:
         addressbook_manager&                m_addressbook_manager;

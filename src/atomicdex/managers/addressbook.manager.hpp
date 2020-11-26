@@ -44,6 +44,63 @@ namespace atomic_dex
         /// \brief pre_update_system implementation.
         void update() noexcept final;
         
+        /// \defgroup Element access
+        /// {@
+        
+        [[nodiscard]]
+        const nlohmann::json& at(std::size_t pos) const;
+        
+        [[nodiscard]]
+        nlohmann::json& at(std::size_t pos);
+        
+        [[nodiscard]]
+        const nlohmann::json& data() const noexcept;
+        
+        [[nodiscard]]
+        nlohmann::json& data() noexcept;
+    
+        [[nodiscard]]
+        /// \brief  Gets the existing contacts.
+        ///         This call is equivalent to data().
+        const nlohmann::json& get_contacts() const noexcept;
+    
+        [[nodiscard]]
+        /// \brief  Gets the existing contacts.
+        ///         This call is equivalent to data().
+        nlohmann::json& get_contacts() noexcept;
+    
+        /// \brief   Gets a contact from its name.
+        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \param   name Name of the contact.
+        [[nodiscard]]
+        const nlohmann::json& get_contact(const std::string& name) const;
+    
+        /// \brief   Gets a contact from its name.
+        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \param   name Name of the contact.
+        [[nodiscard]]
+        nlohmann::json& get_contact(const std::string& name);
+    
+        [[nodiscard]]
+        const nlohmann::json& get_wallets_info(const std::string& name) const;
+    
+        [[nodiscard]]
+        nlohmann::json& get_wallets_info(const std::string& name);
+    
+        [[nodiscard]]
+        const nlohmann::json& get_wallet_info(const std::string& name, const std::string& type) const;
+    
+        [[nodiscard]]
+        nlohmann::json& get_wallet_info(const std::string& name, const std::string& type);
+    
+        [[nodiscard]]
+        const nlohmann::json& get_categories(const std::string& name) const;
+    
+        [[nodiscard]]
+        nlohmann::json& get_categories(const std::string& name);
+        
+        /// @} End of Element access section.
+        
         /// \defgroup Modifiers
         /// {@
     
@@ -104,48 +161,12 @@ namespace atomic_dex
         void remove_contact_category(const std::string& name, const std::string& category);
         
         /// @} End of Modifiers section.
-        
-        /// \defgroup Accessors.
-        /// {@
-        
-        /// \brief   Gets a contact from its name.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
-        /// \param   name Name of the contact.
-        [[nodiscard]]
-        const nlohmann::json& get_contact(const std::string& name) const;
-        
-        /// \brief   Gets a contact from its name.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
-        /// \param   name Name of the contact.
-        [[nodiscard]]
-        nlohmann::json& get_contact(const std::string& name);
 
-        [[nodiscard]]
-        /// \brief  Gets the existing contacts.
-        const nlohmann::json& get_contacts() const noexcept;
-    
-        [[nodiscard]]
-        const nlohmann::json& get_wallets_info(const std::string& name) const;
-        
-        [[nodiscard]]
-        nlohmann::json& get_wallets_info(const std::string& name);
-    
-        [[nodiscard]]
-        const nlohmann::json& get_wallet_info(const std::string& name, const std::string& type) const;
-        
-        [[nodiscard]]
-        nlohmann::json& get_wallet_info(const std::string& name, const std::string& type);
-        
-        [[nodiscard]]
-        const nlohmann::json& get_categories(const std::string& name) const;
-        
-        [[nodiscard]]
-        nlohmann::json& get_categories(const std::string& name);
-        
-        /// @} End of Accessors section.
-        
         /// \defgroup Lookup
         /// {@
+        
+        [[nodiscard]]
+        std::size_t nb_contacts() const noexcept;
         
         /// \brief  Tells if a contact exists.
         /// \param  name Name of the contact.
