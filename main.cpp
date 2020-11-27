@@ -18,6 +18,7 @@
 #include "QZXing.h"
 
 //! Deps
+#include <folly/init/Init.h>
 #include <sodium/core.h>
 #include <wally.hpp>
 
@@ -176,6 +177,7 @@ init_timezone_db()
 int
 run_app(int argc, char** argv)
 {
+    folly::init(&argc, &argv, false);
     init_logging();
     connect_signals_handler();
     init_timezone_db();
