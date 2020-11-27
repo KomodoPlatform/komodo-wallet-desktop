@@ -23,5 +23,13 @@ Component.prototype.createOperations = function()
                             "workingDirectory=@TargetDir@",
                             "iconPath=@TargetDir@/atomicdex-desktop.ico", "iconId=0",
                             "description=Start AtomicDEX Desktop");
+
+		// Maintenance Tool Start Menu Shortcut
+        component.addOperation("CreateShortcut", 
+                               "@TargetDir@/AtomicDEX Maintenance Tool.exe", 
+                               "@StartMenuDir@/AtomicDEX Maintenance Tool.lnk",
+                               "workingDirectory=@TargetDir@", 
+                               "iconPath=@TargetDir@/atomicdex-desktop.ico", "iconId=0",
+                               "description=Start AtomicDEX Maintenance Tool");
     }
 }
