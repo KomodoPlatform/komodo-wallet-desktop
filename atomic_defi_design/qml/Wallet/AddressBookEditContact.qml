@@ -1,7 +1,12 @@
+//! Qt
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+//! Deps
+import Qaterial 1.0 as Qaterial
+
+//! Project
 import "../Components"
 import "../Constants"
 
@@ -15,21 +20,16 @@ BasicModal {
 
         title: qsTr("Edit contact")
 
-        //! Contact name section
-        ModalContent {
+        TextFieldWithTitle {
+            id: name_input
+            width: 30
             title: qsTr("Contact Name")
-
-            //! Contact name input.
-            DefaultTextField {
-                id: name_input
-                placeholderText: qsTr("Enter a contact name")
-                text: modelData.name
-                width: 150
-                onTextChanged: {
-                    const max_length = 50
-                    if(text.length > max_length)
-                        text = text.substring(0, max_length)
-                }
+            field.placeholderText: qsTr("Enter a contact name")
+            field.text: modelData.name
+            field.onTextChanged: {
+                const max_length = 50
+                if (field.text.length > max_length)
+                    field.text = field.text.substring(0, max_length)
             }
         }
 
@@ -64,23 +64,29 @@ BasicModal {
 
             RowLayout {
                 Repeater {
+                    id: category_repeater
                     model: modelData.categories
 
-                    FloatingBackground {
-                        width: category_name.width
-                        height: category_name.font.pixelSize + 5
-                        Layout.leftMargin: 5
+                    property var contactModel: modelData
 
-                        DefaultText {
-                            id: category_name
+                        Qaterial.OutlineButton {
+                            Layout.alignment: Qt.AlignLeft
+                            Layout.leftMargin: 4
+
                             text: modelData
-                            color: Style.colorText
-                            anchors.centerIn: parent
+                            icon.source: Qaterial.Icons.closeOctagon
+
+                            onClicked: {
+                                category_repeater.contactModel.remove_category(modelData);
+                            }
+
+                            Component.onCompleted: {
+                                category_repeater.currentLayoutLeftMargin += 5;
+                                category_repeater.width = width;
+                            }
                         }
-                    }
                 }
             }
-        }
         }
 
         HorizontalLine {
@@ -97,7 +103,8 @@ BasicModal {
             PrimaryButton {
                 text: qsTr("Validate")
                 onClicked: {
-                    modelData.name = name_input.text
+                    modelData.name = name_input.field.text
+                    modelData.save_contact();
                     root.close();
                 }
             }
