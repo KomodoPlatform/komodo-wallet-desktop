@@ -35,7 +35,7 @@ if (APPLE)
 endif ()
 ############################ END VCPKG PREREQUISITES ##############################
 
-project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
+project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.1)
 
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)

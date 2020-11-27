@@ -68,6 +68,15 @@ namespace
                 }
             }
 
+            for (auto& [key, value]: precedent_config_json_data.items())
+            {
+                if (value.contains("is_custom_coin") && value.at("is_custom_coin").get<bool>() == true)
+                {
+                    SPDLOG_INFO("{} is a custom coin, copying to new cfg", key);
+                    actual_config_data[key] = value;
+                }
+            }
+
             ifs.close();
             actual_version_ifs.close();
 
@@ -190,7 +199,7 @@ namespace atomic_dex
             pplx::task<web::http::http_response> resp_task = ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token());
             web::http::http_response             resp      = resp_task.get();
             SPDLOG_INFO("mm2 stop batch answer received");
-            auto                                 answers   = ::mm2::api::basic_batch_answer(resp);
+            auto answers = ::mm2::api::basic_batch_answer(resp);
             if (answers[0].contains("result"))
             {
                 mm2_stopped = answers[0].at("result").get<std::string>() == "success";
@@ -538,16 +547,16 @@ namespace atomic_dex
                 nlohmann::json j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
-                //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
-                if (coin_info.is_custom_coin && !this->is_this_ticker_present_in_raw_cfg(coin_info.ticker))
+            }
+            //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
+            if (coin_info.is_custom_coin && !this->is_this_ticker_present_in_raw_cfg(coin_info.ticker))
+            {
+                nlohmann::json empty = "{}"_json;
+                if (coin_info.custom_backup.has_value())
                 {
-                    nlohmann::json empty = "{}"_json;
-                    if (coin_info.custom_backup.has_value())
-                    {
-                        SPDLOG_WARN("Configuration mismatch between mm2 cfg and coin cfg for ticker {}, readjusting...", coin_info.ticker);
-                        this->add_new_coin(empty, coin_info.custom_backup.value());
-                        this->dispatcher_.trigger<mismatch_configuration_custom_coin>(coin_info.ticker);
-                    }
+                    SPDLOG_WARN("Configuration mismatch between mm2 cfg and coin cfg for ticker {}, readjusting...", coin_info.ticker);
+                    this->add_new_coin(empty, coin_info.custom_backup.value());
+                    this->dispatcher_.trigger<mismatch_configuration_custom_coin>(coin_info.ticker);
                 }
             }
         }
@@ -814,7 +823,7 @@ namespace atomic_dex
 
         std::ofstream ofs(mm2_cfg_path.string());
         ofs << json_cfg.dump();
-        //std::cout << json_cfg.dump() << std::endl;
+        // std::cout << json_cfg.dump() << std::endl;
         ofs.close();
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
