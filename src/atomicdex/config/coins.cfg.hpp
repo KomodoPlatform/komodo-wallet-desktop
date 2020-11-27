@@ -23,7 +23,7 @@
 #include <optional>
 
 //! Deps
-#include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project
 #include "atomicdex/constants/mm2.constants.hpp"

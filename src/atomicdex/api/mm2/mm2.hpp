@@ -24,6 +24,7 @@
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
+#include "atomicdex/pch.hpp"
 
 namespace mm2::api
 {
