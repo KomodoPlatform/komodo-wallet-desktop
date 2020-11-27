@@ -189,7 +189,7 @@ namespace atomic_dex
     {
         auto& categories = get_categories(name);
         
-        if (categories.contains(category))
+        if (has_category(name, category))
         {
             return false;
         }
@@ -241,17 +241,24 @@ namespace atomic_dex
     
     bool addressbook_manager::has_category(const std::string& name, const std::string& category) const noexcept
     {
-        return get_categories(name).contains(category);
+        const auto& categories = get_categories(name);
+        
+        for (auto it = categories.begin(); it != categories.end(); ++it)
+        {
+            if (it.value().get<std::string>() == category)
+            {
+                return true;
     }
+}
+        return false;
+}
 }
 
 //! Misc
 namespace atomic_dex
 {
     void addressbook_manager::update() noexcept
-    {
-        // TODO: Maybe add an auto save each X minutes ?
-    }
+    { }
     
     void addressbook_manager::load_configuration()
     {
