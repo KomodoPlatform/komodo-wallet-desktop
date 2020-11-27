@@ -34,20 +34,11 @@ namespace atomic_dex
     portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
         QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new portfolio_proxy_model(parent))
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("portfolio model created");
-
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->sort_by_currency_balance(false);
         this->m_model_proxy->setFilterRole(NameAndTicker);
         this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    }
-
-    portfolio_model::~portfolio_model() noexcept
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("portfolio model destroyed");
     }
 
     void
@@ -83,7 +74,6 @@ namespace atomic_dex
             };
             data.display         = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
             data.ticker_and_name = QString::fromStdString(coin.gui_ticker) + data.name;
-            spdlog::trace("inserting ticker {}", coin.ticker);
             datas.push_back(std::move(data));
             m_ticker_registry.emplace(ticker);
         }
@@ -92,7 +82,7 @@ namespace atomic_dex
             beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + tickers.size() - 1);
             this->m_model_data.append(datas);
             endInsertRows();
-            spdlog::trace("size of the portfolio {}", this->get_length());
+            spdlog::info("size of the portfolio after batch inserted: {}", this->get_length());
             emit lengthChanged();
         }
     }
@@ -100,6 +90,7 @@ namespace atomic_dex
     void
     portfolio_model::update_currency_values()
     {
+        using namespace std::chrono;
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
         const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
@@ -110,10 +101,9 @@ namespace atomic_dex
         tf::Taskflow       taskflow;
         for (auto&& coin: coins)
         {
-            // spdlog::trace("trying updating currency values of: {}", coin.ticker);
             if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
             {
-                spdlog::debug("ticker: {} not inserted yet in the model, skipping", coin.ticker);
+                spdlog::warn("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 continue;
             }
             auto update_functor = [coin, &paprika, &mm2_system, &price_service, currency, fiat, this]() {
@@ -145,12 +135,8 @@ namespace atomic_dex
                         }
                         t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
                         QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                        using namespace std::chrono;
                         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                         QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                        spdlog::debug(
-                            "balance update notification from update_currency_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
-                            new_balance.toString().toStdString());
                         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
                     // spdlog::trace("updated currency values of: {}", ticker);
@@ -164,11 +150,12 @@ namespace atomic_dex
     void
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers) noexcept
     {
+        using namespace std::chrono;
         for (auto&& ticker: tickers)
         {
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
-                spdlog::debug("ticker: {} not inserted yet in the model, skipping", ticker);
+                spdlog::warn("ticker: {} not inserted yet in the model, skipping", ticker);
                 continue;
             }
             // spdlog::trace("trying updating balance values of: {}", ticker);
@@ -205,12 +192,8 @@ namespace atomic_dex
                     }
                     t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
                     QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                    using namespace std::chrono;
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                     QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                    spdlog::debug(
-                        "balance update notification from update_balance_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
-                        new_balance.toString().toStdString());
                     this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     emit portfolioItemDataChanged();
                 }
@@ -354,8 +337,6 @@ namespace atomic_dex
     bool
     portfolio_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
-        spdlog::trace("(portfolio_model::removeRows) removing {} elements at position {}", rows, position);
-
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {

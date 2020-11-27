@@ -26,18 +26,10 @@ namespace atomic_dex
     transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
         QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new transactions_proxy_model(this))
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("transactions model created");
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(TimestampRole);
         this->m_model_proxy->sort(0);
-    }
-
-    transactions_model::~transactions_model() noexcept
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("transactions model destroyed");
     }
 
     QHash<int, QByteArray>

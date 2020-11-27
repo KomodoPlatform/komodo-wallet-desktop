@@ -28,14 +28,6 @@ namespace atomic_dex
         QObject(parent), m_system_manager(system_manager), m_asks(new orderbook_model(orderbook_model::kind::asks, this)),
         m_bids(new orderbook_model(orderbook_model::kind::bids, this))
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("orderbook wrapper object created");
-    }
-
-    qt_orderbook_wrapper::~qt_orderbook_wrapper() noexcept
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("orderbook wrapper object destroyed");
     }
 
     atomic_dex::orderbook_model*

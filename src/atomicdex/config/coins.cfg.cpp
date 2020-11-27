@@ -25,7 +25,6 @@ namespace atomic_dex
     void
     to_json(nlohmann::json& j, const electrum_server& cfg)
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         j["url"] = cfg.url;
         if (cfg.protocol.has_value())
         {
@@ -40,7 +39,6 @@ namespace atomic_dex
     void
     from_json(const nlohmann::json& j, electrum_server& cfg)
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (j.count("protocol") == 1)
         {
             cfg.protocol = j.at("protocol").get<std::string>();
@@ -55,7 +53,6 @@ namespace atomic_dex
     void
     from_json(const nlohmann::json& j, coin_config& cfg)
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         j.at("coin").get_to(cfg.ticker);
         cfg.gui_ticker = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
         j.at("name").get_to(cfg.name);
@@ -81,8 +78,7 @@ namespace atomic_dex
         {
             cfg.is_custom_coin = true;
         }
-        spdlog::debug("coin: {} is of type: {}", cfg.ticker, cfg.type);
-        // j.at("is_erc_20").get_to(cfg.is_erc_20);
+        
         j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {

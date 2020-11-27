@@ -26,14 +26,7 @@ namespace atomic_dex
 {
     orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("orders proxy model created");
-    }
-
-    orders_proxy_model::~orders_proxy_model()
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("orders proxy model destroyed");
+        
     }
 
     bool

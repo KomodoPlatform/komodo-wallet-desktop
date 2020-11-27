@@ -88,7 +88,6 @@ namespace atomic_dex
         TAnswer static inline process_generic_resp(web::http::http_response resp)
         {
             TAnswer answer;
-            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.status_code());
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == e_http_code::bad_request)
             {
@@ -113,7 +112,8 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                spdlog::warn("{}", error.what());
+                spdlog::error("exception caught in func[{}] line[{}] file[{}] error[{}]", 
+                        __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }

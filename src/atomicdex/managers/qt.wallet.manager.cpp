@@ -113,7 +113,6 @@ namespace atomic_dex
             }
         }
 
-        qDebug() << out;
         return out;
     }
 

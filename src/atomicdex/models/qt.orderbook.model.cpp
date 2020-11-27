@@ -35,9 +35,6 @@ namespace atomic_dex
     orderbook_model::orderbook_model(kind orderbook_kind, QObject* parent) :
         QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_model_proxy(new orderbook_proxy_model(this))
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("orderbook model created");
-
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(PriceRole);
@@ -49,12 +46,6 @@ namespace atomic_dex
         {
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
         }
-    }
-
-    orderbook_model::~orderbook_model() noexcept
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("orderbook model destroyed");
     }
 
     int

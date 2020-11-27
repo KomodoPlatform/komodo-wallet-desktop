@@ -72,7 +72,7 @@ namespace atomic_dex
       public:
         //! Constructor / Destructor
         explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
-        ~portfolio_model() noexcept final;
+        ~portfolio_model() noexcept final = default;
 
         //! Overrides
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;

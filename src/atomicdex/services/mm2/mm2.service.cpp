@@ -1340,7 +1340,6 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
-        spdlog::trace("{} address = {}", answer_r.coin, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             if (m_balance_informations.find(answer_r.coin) != m_balance_informations.end())

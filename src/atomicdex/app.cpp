@@ -111,7 +111,7 @@ namespace atomic_dex
     atomic_dex::application::change_state([[maybe_unused]] int visibility)
     {
 #ifdef __APPLE__
-        qDebug() << visibility;
+        //qDebug() << visibility;
         {
             QWindowList windows = QGuiApplication::allWindows();
             QWindow*    win     = windows.first();
@@ -306,7 +306,6 @@ namespace atomic_dex
                 }
                 break;
             case action::refresh_update_status:
-                spdlog::trace("refreshing update status in GUI");
                 const auto&   update_service_sys = this->system_manager_.get_system<update_service_checker>();
                 QJsonDocument doc                = QJsonDocument::fromJson(QString::fromStdString(update_service_sys.get_update_status().dump()).toUtf8());
                 this->m_update_status            = doc.toVariant();
@@ -447,7 +446,6 @@ namespace atomic_dex
     void
     application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_update_status);
@@ -864,7 +862,6 @@ namespace atomic_dex
     void
     application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt) noexcept
     {
-        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::post_process_swaps_finished);
@@ -874,7 +871,6 @@ namespace atomic_dex
     void
     application::on_process_orders_finished_event([[maybe_unused]] const process_orders_finished& evt) noexcept
     {
-        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::post_process_orders_finished);

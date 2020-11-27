@@ -209,7 +209,6 @@ namespace atomic_dex
 
     coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2_service& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();
         dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
@@ -223,7 +222,6 @@ namespace atomic_dex
 
     coinpaprika_provider::~coinpaprika_provider() noexcept
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         dispatcher_.sink<mm2_started>().disconnect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().disconnect<&coinpaprika_provider::on_coin_enabled>(*this);
         dispatcher_.sink<coin_disabled>().disconnect<&coinpaprika_provider::on_coin_disabled>(*this);
@@ -232,10 +230,9 @@ namespace atomic_dex
     void
     coinpaprika_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
         update_ticker_and_provider();
     }
+
     void
     coinpaprika_provider::update_ticker_and_provider()
     {
@@ -311,7 +308,7 @@ namespace atomic_dex
     void
     coinpaprika_provider::on_coin_disabled(const coin_disabled& evt) noexcept
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::info("{} disabled, removing from paprika provider", evt.ticker);
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         m_usd_rate_providers.erase(config.ticker);

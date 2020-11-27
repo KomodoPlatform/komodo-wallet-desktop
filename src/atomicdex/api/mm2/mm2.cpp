@@ -1089,8 +1089,6 @@ namespace mm2::api
     nlohmann::json
     basic_batch_answer(const web::http::http_response& resp)
     {
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
-
         nlohmann::json answer;
         std::string    body = TO_STD_STR(resp.extract_string(true).get());
         try
@@ -1099,7 +1097,7 @@ namespace mm2::api
         }
         catch (const nlohmann::detail::parse_error& err)
         {
-            spdlog::error("{}, body: {}", err.what(), body);
+            spdlog::error("exception caught {}, body: {}", err.what(), body);
             answer["error"] = body;
         }
         return answer;
