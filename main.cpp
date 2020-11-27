@@ -101,10 +101,13 @@ static void
 init_logging()
 {
     auto logger = atomic_dex::utils::register_logger();
-    spdlog::register_logger(logger);
-    spdlog::set_default_logger(logger);
-    spdlog::set_level(spdlog::level::trace);
-    spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
+    if (spdlog::get("log_mt") == nullptr)
+    {
+        spdlog::register_logger(logger);
+        spdlog::set_default_logger(logger);
+        spdlog::set_level(spdlog::level::trace);
+        spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
+    }
 }
 
 static void
