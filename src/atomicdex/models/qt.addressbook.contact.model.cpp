@@ -193,6 +193,7 @@ namespace atomic_dex
     void addressbook_contact_model::remove_category(const QString& category) noexcept
     {
         spdlog::debug("(addressbook_contact_model::remove_category) Removing {} category for {}", category.toStdString(), m_name.toStdString());
+        m_addressbook_manager.remove_contact_category(m_name.toStdString(), category.toStdString());
         m_categories.removeOne(category);
         emit categoriesChanged();
     }
