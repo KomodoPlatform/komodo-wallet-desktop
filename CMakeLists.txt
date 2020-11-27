@@ -35,7 +35,7 @@ if (APPLE)
 endif ()
 ############################ END VCPKG PREREQUISITES ##############################
 
-project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
+project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.1)
 
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
@@ -76,13 +76,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-54d206fb0-Darwin-Release.zip)
+            URL http://195.201.0.6/mm2.1/mm2-1a6082121-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-54d206fb0-Linux-Release.zip)
+            URL http://195.201.0.6/mm2.1/mm2-1a6082121-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-54d206fb0-Windows_NT-Release.zip)
+            URL http://195.201.0.6/mm2.1/mm2-1a6082121-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)

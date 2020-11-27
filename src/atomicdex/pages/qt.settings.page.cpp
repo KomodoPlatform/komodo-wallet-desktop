@@ -278,10 +278,10 @@ namespace atomic_dex
             out["adex_cfg"]     = nlohmann::json::object();
             if (resp.status_code() == 200)
             {
-                nlohmann::json body_json = nlohmann::json::parse(body);
-                const auto     ticker    = body_json.at("qrc20").at("symbol").get<std::string>();
-                const auto     adex_ticker    = ticker + "-QRC";
-                copy_icon(icon_filepath, get_custom_coins_icons_path(), ticker);
+                nlohmann::json body_json   = nlohmann::json::parse(body);
+                const auto     ticker      = body_json.at("qrc20").at("symbol").get<std::string>();
+                const auto     adex_ticker = ticker + "-QRC";
+                copy_icon(icon_filepath, get_custom_coins_icons_path(), adex_ticker);
                 const auto&    mm2      = this->m_system_manager.get_system<mm2_service>();
                 nlohmann::json qtum_cfg = mm2.get_raw_mm2_ticker_cfg("QTUM");
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(adex_ticker)))
@@ -322,7 +322,19 @@ namespace atomic_dex
                     out["adex_cfg"][adex_ticker]["active"]            = false;
                     out["adex_cfg"][adex_ticker]["currently_enabled"] = false;
                     out["adex_cfg"][adex_ticker]["is_custom_coin"]    = true;
-                    out["adex_cfg"][adex_ticker]["mm2_backup"]        = out["mm2_cfg"];
+                    if (not out.at("mm2_cfg").empty())
+                    {
+                        SPDLOG_INFO("mm2_cfg found, backup from new cfg");
+                        out["adex_cfg"][adex_ticker]["mm2_backup"] = out["mm2_cfg"];
+                    }
+                    else
+                    {
+                        if (mm2.is_this_ticker_present_in_raw_cfg(adex_ticker))
+                        {
+                            SPDLOG_INFO("mm2_cfg not found backup {} cfg from current cfg", adex_ticker);
+                            out["adex_cfg"][adex_ticker]["mm2_backup"] = mm2.get_raw_mm2_ticker_cfg(adex_ticker);
+                        }
+                    }
                 }
             }
             else

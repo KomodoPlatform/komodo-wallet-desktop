@@ -80,33 +80,33 @@ namespace atomic_dex
     struct coin_element
     {
         std::string                   coin;
-        std::optional<std::string>    name;
-        std::optional<std::string>    fname;
-        std::optional<std::string>    etomic;
-        std::optional<int64_t>        rpcport;
-        std::optional<int64_t>        pubtype;
-        std::optional<int64_t>        p2_shtype;
-        std::optional<int64_t>        wiftype;
-        std::optional<int64_t>        txfee;
-        std::optional<std::string>    confpath;
-        std::optional<int64_t>        mm2;
-        std::optional<int64_t>        required_confirmations;
-        std::optional<std::string>    asset;
-        std::optional<int64_t>        txversion;
-        std::optional<int64_t>        overwintered;
-        std::optional<bool>           requires_notarization;
-        std::optional<int64_t>        is_po_s;
-        std::optional<bool>           segwit;
-        std::optional<address_format> address_format;
-        std::optional<std::string>    estimate_fee_mode;
-        std::optional<int64_t>        taddr;
-        std::optional<int64_t>        decimals;
-        std::optional<bool>           force_min_relay_fee;
-        std::optional<int64_t>        p2_p;
-        std::optional<std::string>    magic;
-        std::optional<std::string>    n_spv;
-        std::optional<std::string>    version_group_id;
-        std::optional<std::string>    consensus_branch_id;
+        std::optional<std::string>    name{std::nullopt};
+        std::optional<std::string>    fname{std::nullopt};
+        std::optional<std::string>    etomic{std::nullopt};
+        std::optional<int64_t>        rpcport{std::nullopt};
+        std::optional<int64_t>        pubtype{std::nullopt};
+        std::optional<int64_t>        p2_shtype{std::nullopt};
+        std::optional<int64_t>        wiftype{std::nullopt};
+        std::optional<int64_t>        txfee{std::nullopt};
+        std::optional<std::string>    confpath{std::nullopt};
+        std::optional<int64_t>        mm2{std::nullopt};
+        std::optional<int64_t>        required_confirmations{std::nullopt};
+        std::optional<std::string>    asset{std::nullopt};
+        std::optional<int64_t>        txversion{std::nullopt};
+        std::optional<int64_t>        overwintered{std::nullopt};
+        std::optional<bool>           requires_notarization{std::nullopt};
+        std::optional<int64_t>        is_po_s{std::nullopt};
+        std::optional<bool>           segwit{std::nullopt};
+        std::optional<address_format> address_format{std::nullopt};
+        std::optional<std::string>    estimate_fee_mode{std::nullopt};
+        std::optional<int64_t>        taddr{std::nullopt};
+        std::optional<int64_t>        decimals{std::nullopt};
+        std::optional<bool>           force_min_relay_fee{std::nullopt};
+        std::optional<int64_t>        p2_p{std::nullopt};
+        std::optional<std::string>    magic{std::nullopt};
+        std::optional<std::string>    n_spv{std::nullopt};
+        std::optional<std::string>    version_group_id{std::nullopt};
+        std::optional<std::string>    consensus_branch_id{std::nullopt};
     };
 
     using coins = std::vector<coin_element>;
@@ -177,35 +177,43 @@ namespace atomic_dex
     inline void
     to_json(json& j, const atomic_dex::coin_element& x)
     {
-        j                           = json::object();
-        j["coin"]                   = x.coin;
-        j["name"]                   = x.name;
-        j["fname"]                  = x.fname;
-        j["etomic"]                 = x.etomic;
-        j["rpcport"]                = x.rpcport;
-        j["pubtype"]                = x.pubtype;
-        j["p2shtype"]               = x.p2_shtype;
-        j["wiftype"]                = x.wiftype;
-        j["txfee"]                  = x.txfee;
-        j["confpath"]               = x.confpath;
-        j["mm2"]                    = x.mm2;
-        j["required_confirmations"] = x.required_confirmations;
-        j["asset"]                  = x.asset;
-        j["txversion"]              = x.txversion;
-        j["overwintered"]           = x.overwintered;
-        j["requires_notarization"]  = x.requires_notarization;
-        j["isPoS"]                  = x.is_po_s;
-        j["segwit"]                 = x.segwit;
-        j["address_format"]         = x.address_format;
-        j["estimate_fee_mode"]      = x.estimate_fee_mode;
-        j["taddr"]                  = x.taddr;
-        j["decimals"]               = x.decimals;
-        j["force_min_relay_fee"]    = x.force_min_relay_fee;
-        j["p2p"]                    = x.p2_p;
-        j["magic"]                  = x.magic;
-        j["nSPV"]                   = x.n_spv;
-        j["version_group_id"]       = x.version_group_id;
-        j["consensus_branch_id"]    = x.consensus_branch_id;
+        j                    = json::object();
+        auto to_json_functor = [&j](const std::string field_name, const auto& field) {
+            if (field.has_value())
+            {
+                j[field_name] = field.value();
+            }
+        };
+
+        j["coin"] = x.coin;
+        to_json_functor("name", x.name);
+        to_json_functor("fname", x.fname);
+        to_json_functor("etomic", x.etomic);
+        to_json_functor("rpcport", x.rpcport);
+        to_json_functor("pubtype", x.pubtype);
+        to_json_functor("p2shtype", x.p2_shtype);
+        to_json_functor("wiftype", x.wiftype);
+        to_json_functor("txfee", x.txfee);
+        to_json_functor("confpath", x.confpath);
+        to_json_functor("mm2", x.mm2);
+        to_json_functor("required_confirmations", x.required_confirmations);
+        to_json_functor("asset", x.asset);
+        to_json_functor("txversion", x.txversion);
+        to_json_functor("overwintered", x.overwintered);
+        to_json_functor("requires_notarization", x.overwintered);
+        to_json_functor("overwintered", x.overwintered);
+        to_json_functor("isPoS", x.is_po_s);
+        to_json_functor("segwit", x.segwit);
+        to_json_functor("address_format", x.address_format);
+        to_json_functor("estimate_fee_mode", x.estimate_fee_mode);
+        to_json_functor("taddr", x.taddr);
+        to_json_functor("decimals", x.decimals);
+        to_json_functor("force_min_relay_fee", x.force_min_relay_fee);
+        to_json_functor("p2p", x.p2_p);
+        to_json_functor("magic", x.magic);
+        to_json_functor("nSPV", x.n_spv);
+        to_json_functor("version_group_id", x.version_group_id);
+        to_json_functor("consensus_branch_id", x.consensus_branch_id);
     }
 
     inline t_mm2_raw_coins_registry
