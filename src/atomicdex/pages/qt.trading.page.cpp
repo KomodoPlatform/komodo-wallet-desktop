@@ -441,7 +441,7 @@ namespace atomic_dex
             else if (is_max && !req.is_exact_selected_order_volume)
             {
                 SPDLOG_INFO("cannot swallow the selected order from the orderbook, use max_taker_volume for it");
-                //! Selected order but we cannot swallow (not enough funds) set our theorical max_volume_numer and max_volume_denom
+                //! Selected order but we cannot swallow (not enough funds) set our max_volume_numer and max_volume_denom
                 req.volume_denom = max_taker_vol_json_obj["denom"].toString().toStdString();
                 req.volume_numer = max_taker_vol_json_obj["numer"].toString().toStdString();
             }
@@ -466,7 +466,7 @@ namespace atomic_dex
         batch.push_back(sell_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
-        // SPDLOG_INFO("batch sell request: {}", batch.dump(4));
+        SPDLOG_INFO("batch sell request: {}", batch.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());

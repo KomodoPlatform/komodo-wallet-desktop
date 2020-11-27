@@ -192,6 +192,12 @@ namespace atomic_dex::utils
         create_if_doesnt_exist(fs_raw_mm2_shared_folder);
         return fs_raw_mm2_shared_folder;
     }
+    void
+    register_logger(std::shared_ptr<spdlog::logger> logger)
+    {
+        spdlog::register_logger(logger);
+        SPDLOG_INFO("Logger Successfully registered in DLL");
+    }
 } // namespace atomic_dex::utils
 
 namespace atomic_dex::utils

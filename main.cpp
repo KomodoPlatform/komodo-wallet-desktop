@@ -119,7 +119,12 @@ init_logging()
     spdlog::set_level(spdlog::level::trace);
     spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
     SPDLOG_INFO("Logger successfully initialized");
-}
+
+#if defined(_WIN32) || defined(WIN32)
+    SPDLOG_INFO("Register logger in the windows DLL");
+    atomic_dex::utils::register_logger(logger);
+#endif
+    }
 
 static void
 init_dpi()
@@ -177,7 +182,9 @@ init_timezone_db()
 int
 run_app(int argc, char** argv)
 {
+#ifdef __APPLE__
     folly::init(&argc, &argv, false);
+#endif
     init_logging();
     connect_signals_handler();
     init_timezone_db();
