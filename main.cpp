@@ -39,11 +39,6 @@
 #    include "atomicdex/platform/osx/manager.hpp"
 #endif
 
-inline constexpr size_t g_qsize_spdlog             = 10240;
-inline constexpr size_t g_spdlog_thread_count      = 2;
-inline constexpr size_t g_spdlog_max_file_size     = 7777777;
-inline constexpr size_t g_spdlog_max_file_rotation = 3;
-
 
 void
 signal_handler(int signal)
@@ -105,26 +100,12 @@ clean_previous_run()
 static void
 init_logging()
 {
-    //! Log Initialization
-    std::string path = atomic_dex::utils::get_atomic_dex_current_log_file().string();
-    spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
-    auto tp            = spdlog::thread_pool();
-    auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.c_str(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
-
-    std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
-    auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
+    auto logger = atomic_dex::utils::register_logger();
     spdlog::register_logger(logger);
     spdlog::set_default_logger(logger);
     spdlog::set_level(spdlog::level::trace);
     spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
-    SPDLOG_INFO("Logger successfully initialized");
-
-#if defined(_WIN32) || defined(WIN32)
-    SPDLOG_INFO("Register logger in the windows DLL");
-    atomic_dex::utils::register_logger(logger);
-#endif
-    }
+}
 
 static void
 init_dpi()
