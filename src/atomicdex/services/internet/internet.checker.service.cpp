@@ -130,7 +130,7 @@ namespace atomic_dex
                 } 
                 else 
                 {
-                    spdlog::warn("Connectivity is false for: {}", base_uri);
+                    SPDLOG_WARN("Connectivity is false for: {}", base_uri);
                 }
             })
             .then([this, base_uri](pplx::task<void> previous_task) {
@@ -140,7 +140,7 @@ namespace atomic_dex
                 }
                 catch (const std::exception& e)
                 {
-                    spdlog::warn("pplx task error: {}, setting internet to false\n Connectivity is false for: {}", e.what(), base_uri);
+                    SPDLOG_WARN("pplx task error: {}, setting internet to false\n Connectivity is false for: {}", e.what(), base_uri);
                     this->dispatcher_.trigger<endpoint_nonreacheable>(base_uri);
                     this->set_internet_alive(false);
                 }

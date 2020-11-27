@@ -82,7 +82,7 @@ namespace atomic_dex
             beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + tickers.size() - 1);
             this->m_model_data.append(datas);
             endInsertRows();
-            spdlog::info("size of the portfolio after batch inserted: {}", this->get_length());
+            SPDLOG_INFO("size of the portfolio after batch inserted: {}", this->get_length());
             emit lengthChanged();
         }
     }
@@ -103,7 +103,7 @@ namespace atomic_dex
         {
             if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
             {
-                spdlog::warn("ticker: {} not inserted yet in the model, skipping", coin.ticker);
+                SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 continue;
             }
             auto update_functor = [coin, &paprika, &mm2_system, &price_service, currency, fiat, this]() {
@@ -139,7 +139,7 @@ namespace atomic_dex
                         QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
-                    // spdlog::trace("updated currency values of: {}", ticker);
+                    // SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
             };
             taskflow.emplace(update_functor);
@@ -155,10 +155,10 @@ namespace atomic_dex
         {
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
-                spdlog::warn("ticker: {} not inserted yet in the model, skipping", ticker);
+                SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", ticker);
                 continue;
             }
-            // spdlog::trace("trying updating balance values of: {}", ticker);
+            // SPDLOG_DEBUG("trying updating balance values of: {}", ticker);
             if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
             {
                 const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();

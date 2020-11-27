@@ -364,7 +364,7 @@ namespace atomic_dex
     void
     atomic_dex::application::on_enabled_coins_event([[maybe_unused]] const enabled_coins_event& evt) noexcept
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_enabled_coin);
@@ -374,7 +374,7 @@ namespace atomic_dex
     void
     application::on_enabled_default_coins_event([[maybe_unused]] const enabled_default_coins_event& evt) noexcept
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_enabled_coin);
@@ -387,7 +387,7 @@ namespace atomic_dex
         //! This event is called when a call is enabled and cex provider finished fetch datas
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+            SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
             for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
         }
     }
@@ -408,7 +408,7 @@ namespace atomic_dex
     void
     application::on_coin_disabled_event([[maybe_unused]] const coin_disabled& evt) noexcept
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_enabled_coin);
@@ -439,7 +439,7 @@ namespace atomic_dex
     void
     application::on_mm2_initialized_event([[maybe_unused]] const mm2_initialized& evt) noexcept
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         this->set_status("enabling_coins");
     }
 
@@ -479,7 +479,7 @@ namespace atomic_dex
     bool
     application::disconnect()
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
 
         //! Clear pending events
         while (not this->m_actions_queue.empty())
@@ -546,7 +546,7 @@ namespace atomic_dex
     void
     application::connect_signals()
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->connect_signals();
         system_manager_.get_system<trading_page>().connect_signals();
         get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
@@ -569,7 +569,7 @@ namespace atomic_dex
     /*QVariantMap
     application::get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount)
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         QVariantMap out;
 
         //! If the initial amount is < minimal trade amount it's not required to continue
@@ -609,7 +609,7 @@ namespace atomic_dex
                 t_float_50(amount.toStdString()) < utils::minimal_trade_amount() ? utils::minimal_trade_amount_str() : amount.toStdString();
             t_float_50  final_balance_f = t_float_50(amount_std) - (trade_fee_f + tx_fee_f);
             std::string final_balance   = amount.toStdString();
-            // spdlog::trace("{} = {} - ({} + {})", final_balance_f.str(8), amount_std, trade_fee_f.str(8), tx_fee_f.str(8));
+            // SPDLOG_DEBUG("{} = {} - ({} + {})", final_balance_f.str(8), amount_std, trade_fee_f.str(8), tx_fee_f.str(8));
             if (final_balance_f.convert_to<float>() > 0.0)
             {
                 final_balance = utils::get_formated_float(final_balance_f);
@@ -654,7 +654,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            spdlog::warn("{}", ec.message());
+            SPDLOG_WARN("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return "wrong password";
@@ -665,7 +665,7 @@ namespace atomic_dex
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
-            spdlog::warn("{}", ec.message());
+            SPDLOG_WARN("{}", ec.message());
             return "wrong password";
         }
         return QString::fromStdString(seed);
@@ -741,7 +741,7 @@ namespace atomic_dex
 
         std::stringstream ss;
         ss << std::fixed << std::setprecision(50) << final;
-        spdlog::info("base_amount = {}, rel_amount = {}, final_amount = {}", base_amount.toStdString(), rel_amount.toStdString(), ss.str());
+        SPDLOG_INFO("base_amount = {}, rel_amount = {}, final_amount = {}", base_amount.toStdString(), rel_amount.toStdString(), ss.str());
         return QString::fromStdString(ss.str());
     }
 } // namespace atomic_dex
@@ -827,14 +827,14 @@ namespace atomic_dex
     void
     application::on_fiat_rate_updated(const fiat_rate_updated&) noexcept
     {
-        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         this->dispatcher_.trigger<update_portfolio_values>();
     }
 
     void
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt) noexcept
     {
-        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             if (not evt.tickers.empty())
@@ -1008,7 +1008,7 @@ namespace atomic_dex
     void
     application::exit_handler()
     {
-        spdlog::trace("will quit app, prevent all threading event");
+        SPDLOG_DEBUG("will quit app, prevent all threading event");
         this->system_manager_.mark_system<mm2_service>();
         this->process_one_frame();
         m_event_actions[events_action::about_to_exit_app] = true;
@@ -1020,16 +1020,16 @@ namespace atomic_dex
         switch (m_app->applicationState())
         {
         case Qt::ApplicationSuspended:
-            spdlog::info("Application suspended");
+            SPDLOG_INFO("Application suspended");
             break;
         case Qt::ApplicationHidden:
-            spdlog::info("Application hidden");
+            SPDLOG_INFO("Application hidden");
             break;
         case Qt::ApplicationInactive:
-            spdlog::info("Application inactive");
+            SPDLOG_INFO("Application inactive");
             break;
         case Qt::ApplicationActive:
-            spdlog::info("Application active");
+            SPDLOG_INFO("Application active");
             break;
         }
     }
@@ -1110,11 +1110,11 @@ namespace atomic_dex
     void
     application::restart()
     {
-        spdlog::info("restarting the application");
+        SPDLOG_INFO("restarting the application");
         const char* appimage = nullptr;
         if (appimage = std::getenv("APPIMAGE"); appimage)
         {
-            spdlog::info("APPIMAGE path is {}", appimage);
+            SPDLOG_INFO("APPIMAGE path is {}", appimage);
         }
 
         qApp->quit();

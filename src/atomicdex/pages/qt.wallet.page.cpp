@@ -137,7 +137,7 @@ namespace atomic_dex
     QVariant
     wallet_page::get_ticker_infos() const noexcept
     {
-        spdlog::trace("get_ticker_infos");
+        SPDLOG_DEBUG("get_ticker_infos");
         QJsonObject obj{
             {"balance", "0"},
             {"name", "Komodo"},
@@ -257,7 +257,7 @@ namespace atomic_dex
     void
     wallet_page::refresh_ticker_infos() noexcept
     {
-        spdlog::trace("refresh ticker infos");
+        SPDLOG_DEBUG("refresh ticker infos");
         emit tickerInfosChanged();
     }
 
@@ -291,7 +291,7 @@ namespace atomic_dex
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw");
         ::mm2::api::to_json(json_data, withdraw_req);
-        // spdlog::trace("final json: {}", json_data.dump(4));
+        // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
         std::string amount_std = amount.toStdString();
         if (max)
@@ -307,7 +307,7 @@ namespace atomic_dex
             const auto&     current_fiat        = settings_system.get_current_fiat().toStdString();
             std::error_code ec;
             std::string     body = TO_STD_STR(resp.extract_string(true).get());
-            spdlog::trace("resp: {}", body);
+            SPDLOG_DEBUG("resp: {}", body);
             if (resp.status_code() == 200 && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
@@ -386,7 +386,7 @@ namespace atomic_dex
                 auto&       mm2_system = m_system_manager.get_system<mm2_service>();
                 const auto& ticker     = mm2_system.get_current_ticker();
                 auto        answers    = nlohmann::json::parse(body);
-                // spdlog::info("broadcast answer: {}", answers.dump(4));
+                // SPDLOG_INFO("broadcast answer: {}", answers.dump(4));
                 if (answers[0].contains("tx_hash"))
                 {
                     this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
@@ -433,7 +433,7 @@ namespace atomic_dex
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then([this](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
-                // spdlog::trace("resp claiming: {}", body);
+                // SPDLOG_DEBUG("resp claiming: {}", body);
                 if (resp.status_code() == e_http_code::ok)
                 {
                     auto           answers              = nlohmann::json::parse(body);
@@ -494,7 +494,7 @@ namespace atomic_dex
         else
         {
             //! Update tx (only unconfirmed) or insert (new tx)
-            spdlog::trace("updating / insert tx");
+            SPDLOG_DEBUG("updating / insert tx");
             m_transactions_mdl->update_or_insert_transactions(transactions);
         }
         this->set_tx_fetching_busy(false);

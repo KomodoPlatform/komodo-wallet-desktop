@@ -1,3 +1,6 @@
+//! PCH Headers
+#include "atomicdex/pch.hpp"
+
 #include <csignal>
 
 #include <QApplication>
@@ -13,9 +16,6 @@
 #define QZXING_QML
 
 #include "QZXing.h"
-
-//! PCH Headers
-#include "atomicdex/pch.hpp"
 
 //! Deps
 #include <sodium/core.h>
@@ -58,7 +58,7 @@ signal_handler(int signal)
 static void
 connect_signals_handler()
 {
-    spdlog::info("connecting signal SIGABRT to the signal handler");
+    SPDLOG_INFO("connecting signal SIGABRT to the signal handler");
 #if defined(linux) || defined(__APPLE__)
     if (fs::exists("./backtrace.dump"))
     {
@@ -82,7 +82,7 @@ init_wally()
 {
     [[maybe_unused]] auto wally_res = wally_init(0);
     assert(wally_res == WALLY_OK);
-    spdlog::info("wally successfully initialized");
+    SPDLOG_INFO("wally successfully initialized");
 }
 
 static void
@@ -91,13 +91,13 @@ init_sodium()
     //! Sodium Initialization
     [[maybe_unused]] auto sodium_return_value = sodium_init();
     assert(sodium_return_value == 0); //< This is not executed when build = Release
-    spdlog::info("libsodium successfully initialized");
+    SPDLOG_INFO("libsodium successfully initialized");
 }
 
 static void
 clean_previous_run()
 {
-    spdlog::info("cleaning previous mm2 instance");
+    SPDLOG_INFO("cleaning previous mm2 instance");
     atomic_dex::kill_executable("mm2");
 }
 
@@ -116,14 +116,14 @@ init_logging()
     spdlog::register_logger(logger);
     spdlog::set_default_logger(logger);
     spdlog::set_level(spdlog::level::trace);
-    spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
-    spdlog::info("Logger successfully initialized");
+    spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
+    SPDLOG_INFO("Logger successfully initialized");
 }
 
 static void
 init_dpi()
 {
-    spdlog::info("initializing high dpi support");
+    SPDLOG_INFO("initializing high dpi support");
     bool should_floor = false;
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
     {
@@ -158,13 +158,13 @@ clean_wally()
 {
     [[maybe_unused]] auto wallet_exit_res = wally_cleanup(0);
     assert(wallet_exit_res == WALLY_OK);
-    spdlog::info("wally successfully cleaned");
+    SPDLOG_INFO("wally successfully cleaned");
 }
 
 static void
 init_timezone_db()
 {
-    spdlog::info("Init timezone db");
+    SPDLOG_INFO("Init timezone db");
 #if defined(_WIN32) || defined(WIN32)
     using namespace std::string_literals;
     auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
@@ -262,7 +262,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     //! run app
     int res = run_app(argc, argv);
-    spdlog::info("Shutdown all loggers");
+    SPDLOG_INFO("Shutdown all loggers");
     spdlog::drop_all();
     return res;
 }

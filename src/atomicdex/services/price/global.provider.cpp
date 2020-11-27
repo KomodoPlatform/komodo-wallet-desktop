@@ -28,7 +28,7 @@ namespace
             return answer;
         }
 
-        spdlog::warn("unable to fetch last open rates");
+        SPDLOG_WARN("unable to fetch last open rates");
         return answer;
     }
 } // namespace
@@ -240,7 +240,7 @@ namespace atomic_dex
 
                 if (ec)
                 {
-                    //spdlog::warn("error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
+                    //SPDLOG_WARN("error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
                     ec.clear(); //! Reset
                     continue;
                 }
@@ -262,7 +262,7 @@ namespace atomic_dex
         }
         catch (const std::exception& error)
         {
-            spdlog::error("exception caught in func[{}] line[{}] file[{}] error[{}]", 
+            SPDLOG_ERROR("exception caught in func[{}] line[{}] file[{}] error[{}]", 
                         __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what());
             return "0.00";
         }
@@ -318,7 +318,7 @@ namespace atomic_dex
         if (t_ec)
         {
             ec = t_ec;
-            spdlog::error("my_balance error: {}", t_ec.message());
+            SPDLOG_ERROR("my_balance error: {}", t_ec.message());
             return "0.00";
         }
 

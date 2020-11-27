@@ -214,7 +214,7 @@ namespace atomic_dex
     bool
     orders_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
-        spdlog::trace("(orders_model::removeRows) removing {} elements at position {}", rows, position);
+        SPDLOG_DEBUG("(orders_model::removeRows) removing {} elements at position {}", rows, position);
 
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
@@ -392,7 +392,7 @@ namespace atomic_dex
         else
         {
             bool is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
-            spdlog::error(
+            SPDLOG_ERROR(
                 "swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid,
                 is_maker ? contents.maker_coin : contents.taker_coin);
             initialize_swap(contents);
@@ -575,7 +575,7 @@ namespace atomic_dex
     void
     orders_model::clear_registry() noexcept
     {
-        spdlog::trace("clearing orders");
+        SPDLOG_DEBUG("clearing orders");
         this->beginResetModel();
         this->m_swaps_id_registry.clear();
         this->m_orders_id_registry.clear();

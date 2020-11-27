@@ -91,14 +91,14 @@ namespace atomic_dex
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == e_http_code::bad_request)
             {
-                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", body);
+                SPDLOG_WARN("rpc answer code is 400 (Bad Parameters), body: {}", body);
                 answer.rpc_result_code = resp.status_code();
                 answer.raw_result      = body;
                 return answer;
             }
             if (resp.status_code() == e_http_code::too_many_requests)
             {
-                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", body);
+                SPDLOG_WARN("rpc answer code is 429 (Too Many requests), body: {}", body);
                 answer.rpc_result_code = resp.status_code();
                 answer.raw_result      = body;
                 return answer;
@@ -112,7 +112,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                spdlog::error("exception caught in func[{}] line[{}] file[{}] error[{}]", 
+                SPDLOG_ERROR("exception caught in func[{}] line[{}] file[{}] error[{}]", 
                         __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();

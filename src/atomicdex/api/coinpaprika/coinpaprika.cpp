@@ -103,7 +103,7 @@ namespace atomic_dex
                     url.append(",");
                 }
             }
-            spdlog::info("url: {}", url);
+            SPDLOG_INFO("url: {}", url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);
         }
@@ -116,7 +116,7 @@ namespace atomic_dex
             req.set_method(web::http::methods::GET);
             auto&& [ticker_id, timestamp, interval] = request;
             const auto url                          = "/tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
-            spdlog::info("url: {}", url);
+            SPDLOG_INFO("url: {}", url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);
         }

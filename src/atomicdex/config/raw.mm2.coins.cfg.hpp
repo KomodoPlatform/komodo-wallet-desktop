@@ -217,7 +217,7 @@ namespace atomic_dex
         {
             fs::path original_mm2_coins_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
             //! Copy our json to current version
-            spdlog::info("Copying mm2 coins cfg: {} to {}", original_mm2_coins_path.string(), file_path.string());
+            SPDLOG_INFO("Copying mm2 coins cfg: {} to {}", original_mm2_coins_path.string(), file_path.string());
 
             fs::copy_file(original_mm2_coins_path, file_path, get_override_options());
         }
@@ -230,11 +230,11 @@ namespace atomic_dex
             t_mm2_raw_coins coins = j;
             out.reserve(coins.size());
             for (auto&& coin: coins) { out.insert(coin.coin, coin); }
-            spdlog::info("successfully parsed: {}, nb_coins: {}", file_path.string(), out.size());
+            SPDLOG_INFO("successfully parsed: {}, nb_coins: {}", file_path.string(), out.size());
         }
         catch (const std::exception& error)
         {
-            spdlog::error("cannot parse mm2 raw cfg file: {} {}", file_path.string(), error.what());
+            SPDLOG_ERROR("cannot parse mm2 raw cfg file: {} {}", file_path.string(), error.what());
         }
         return out;
     }

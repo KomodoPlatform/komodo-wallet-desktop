@@ -110,9 +110,9 @@ namespace atomic_dex
         };
 
         qDebug() << "locale before: " << QLocale().name();
-        spdlog::info("Locale before parsing AtomicDEX settings: {}", QLocale().name().toStdString());
+        SPDLOG_INFO("Locale before parsing AtomicDEX settings: {}", QLocale().name().toStdString());
         QLocale::setDefault(get_locale(m_config.current_lang));
-        spdlog::info("Locale after parsing AtomicDEX settings: {}", QLocale().name().toStdString());
+        SPDLOG_INFO("Locale after parsing AtomicDEX settings: {}", QLocale().name().toStdString());
         [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/atomic_defi_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
@@ -160,7 +160,7 @@ namespace atomic_dex
     {
         if (current_currency.toStdString() != m_config.current_currency)
         {
-            spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
+            SPDLOG_INFO("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
             this->dispatcher_.trigger<update_portfolio_values>();
             this->dispatcher_.trigger<current_currency_changed>();
@@ -181,7 +181,7 @@ namespace atomic_dex
     {
         if (current_fiat.toStdString() != m_config.current_fiat)
         {
-            spdlog::info("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
+            SPDLOG_INFO("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
             atomic_dex::change_fiat(m_config, current_fiat.toStdString());
             emit onFiatChanged();
         }
@@ -330,7 +330,7 @@ namespace atomic_dex
                 out["error_message"] = body;
                 out["error_code"]    = resp.status_code();
             }
-            spdlog::trace("result json of fetch qrc infos from contract address is: {}", out.dump(4));
+            SPDLOG_DEBUG("result json of fetch qrc infos from contract address is: {}", out.dump(4));
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
@@ -394,7 +394,7 @@ namespace atomic_dex
                 out["error_message"] = body;
                 out["error_code"]    = resp.status_code();
             }
-            spdlog::trace("result json of fetch erc infos from contract address is: {}", out.dump(4));
+            SPDLOG_DEBUG("result json of fetch erc infos from contract address is: {}", out.dump(4));
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
@@ -434,7 +434,7 @@ namespace atomic_dex
     void
     settings_page::submit()
     {
-        spdlog::trace("submit whole cfg");
+        SPDLOG_DEBUG("submit whole cfg");
         nlohmann::json out = m_custom_token_data.get();
         this->m_system_manager.get_system<mm2_service>().add_new_coin(out.at("adex_cfg"), out.at("mm2_cfg"));
         this->set_custom_token_data(QJsonObject{{}});
@@ -443,7 +443,7 @@ namespace atomic_dex
     void
     settings_page::remove_custom_coin(const QString& ticker) noexcept
     {
-        spdlog::trace("remove ticker: {}", ticker.toStdString());
+        SPDLOG_DEBUG("remove ticker: {}", ticker.toStdString());
         this->m_system_manager.get_system<mm2_service>().remove_custom_coin(ticker.toStdString());
     }
 
@@ -468,11 +468,11 @@ namespace atomic_dex
                 fs::remove(path_to_remove, ec);
                 if (ec)
                 {
-                    spdlog::error("error when removing {}: {}", path_to_remove.string(), ec.message());
+                    SPDLOG_ERROR("error when removing {}: {}", path_to_remove.string(), ec.message());
                 }
                 else
                 {
-                    spdlog::info("Successfully removed {}", path_to_remove.string());
+                    SPDLOG_INFO("Successfully removed {}", path_to_remove.string());
                 }
             }
         };

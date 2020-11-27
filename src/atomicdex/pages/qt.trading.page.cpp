@@ -129,7 +129,7 @@ namespace atomic_dex
     void
     trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt) noexcept
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (not m_about_to_exit_the_app)
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
@@ -208,7 +208,7 @@ namespace atomic_dex
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);
                 auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[answers.size() - 1], "my_orders");
                 mm2_system.add_orders_answer(my_orders_answer);
-                // spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
+                // SPDLOG_DEBUG("refreshing orderbook after cancelling order: {}", answers.dump(4));
                 mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
@@ -312,11 +312,11 @@ namespace atomic_dex
         const bool is_exact_selected_order_volume =
             (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
 
-        /*spdlog::info(
+        /*SPDLOG_INFO(
             "volume: {} max_volume: {} is_selecter_order: {}, is_selected_max: {}, is_my_max: {}, is_exact_selected_order_volume {}", m_volume.toStdString(),
         m_max_volume.toStdString(), is_selected_order, is_selected_max, is_my_max, is_exact_selected_order_volume); if (is_selected_order)
         {
-            spdlog::info("selected order infos: {}", m_preffered_order.value().dump(4));
+            SPDLOG_INFO("selected order infos: {}", m_preffered_order.value().dump(4));
         }*/
         t_buy_request req{
             .base                           = base.toStdString(),
@@ -337,20 +337,20 @@ namespace atomic_dex
             if (req.is_exact_selected_order_volume)
             {
                 //! Selected order and we keep the exact volume (Basically swallow the order)
-                spdlog::info("swallowing the order from the orderbook");
+                SPDLOG_INFO("swallowing the order from the orderbook");
                 req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
                 req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
             }
             else if (is_my_max && !req.is_exact_selected_order_volume)
             {
-                spdlog::info("cannot swallow the selected order from the orderbook, use our theorical max_volume for it");
+                SPDLOG_INFO("cannot swallow the selected order from the orderbook, use our theorical max_volume for it");
                 //! Selected order but we cannot swallow (not enough funds) set our theorical max_volume_numer and max_volume_denom
                 req.volume_numer = m_preffered_order->at("max_volume_numer").get<std::string>();
                 req.volume_denom = m_preffered_order->at("max_volume_denom").get<std::string>();
             }
             else
             {
-                spdlog::info("Selected order, but changing manually the volume, use input_volume");
+                SPDLOG_INFO("Selected order, but changing manually the volume, use input_volume");
                 req.selected_order_use_input_volume = true;
             }
         }
@@ -361,7 +361,7 @@ namespace atomic_dex
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
         //! Answer
-        // spdlog::info("buy_request is : {}", batch.dump(4));
+        // SPDLOG_INFO("buy_request is : {}", batch.dump(4));
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
@@ -373,13 +373,13 @@ namespace atomic_dex
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
-                    spdlog::trace("order successfully placed, refreshing orders and swap");
+                    SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
                 }
                 else
                 {
                     auto error_json = QJsonObject({{"error_code", -1}, {"error_message", QString::fromStdString(body)}});
-                    spdlog::error("error place_buy_order: {}", body);
+                    SPDLOG_ERROR("error place_buy_order: {}", body);
                     this->set_buy_sell_last_rpc_data(error_json);
                 }
             }
@@ -434,20 +434,20 @@ namespace atomic_dex
             if (req.is_exact_selected_order_volume)
             {
                 //! Selected order and we keep the exact volume (Basically swallow the order)
-                spdlog::info("swallowing the order from the orderbook");
+                SPDLOG_INFO("swallowing the order from the orderbook");
                 req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
                 req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
             }
             else if (is_max && !req.is_exact_selected_order_volume)
             {
-                spdlog::info("cannot swallow the selected order from the orderbook, use max_taker_volume for it");
+                SPDLOG_INFO("cannot swallow the selected order from the orderbook, use max_taker_volume for it");
                 //! Selected order but we cannot swallow (not enough funds) set our theorical max_volume_numer and max_volume_denom
                 req.volume_denom = max_taker_vol_json_obj["denom"].toString().toStdString();
                 req.volume_numer = max_taker_vol_json_obj["numer"].toString().toStdString();
             }
             else
             {
-                spdlog::info("Selected order, but changing manually the volume, use input_volume");
+                SPDLOG_INFO("Selected order, but changing manually the volume, use input_volume");
                 req.selected_order_use_input_volume = true;
             }
         }
@@ -466,7 +466,7 @@ namespace atomic_dex
         batch.push_back(sell_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
-        // spdlog::info("batch sell request: {}", batch.dump(4));
+        // SPDLOG_INFO("batch sell request: {}", batch.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -479,7 +479,7 @@ namespace atomic_dex
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
-                    spdlog::trace("order successfully placed, refreshing orders and swap");
+                    SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
                 }
                 else
@@ -683,7 +683,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    spdlog::error("empty json send from the front end for ticker: {} - ignoring", ticker);
+                    SPDLOG_ERROR("empty json send from the front end for ticker: {} - ignoring", ticker);
                 }
             }
         }
@@ -723,7 +723,7 @@ namespace atomic_dex
         if (this->m_market_mode != market_mode)
         {
             this->m_market_mode = market_mode;
-            spdlog::info("switching market_mode, new mode: {}", m_market_mode == MarketMode::Buy ? "buy" : "sell");
+            SPDLOG_INFO("switching market_mode, new mode: {}", m_market_mode == MarketMode::Buy ? "buy" : "sell");
             this->clear_forms();
             auto* market_selector_mdl = get_market_pairs_mdl();
             set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
@@ -748,11 +748,11 @@ namespace atomic_dex
             m_price = std::move(price);
             if (this->m_preffered_order.has_value() && this->m_preffered_order->contains("locked"))
             {
-                spdlog::warn("releasing preffered order because price has been modified");
+                SPDLOG_WARN("releasing preffered order because price has been modified");
                 this->m_preffered_order = std::nullopt;
                 emit prefferedOrderChanged();
             }
-            spdlog::trace("price is [{}]", m_price.toStdString());
+            SPDLOG_DEBUG("price is [{}]", m_price.toStdString());
 
             //! When price change in MarketMode::Buy you want to redetermine max_volume
             if (m_market_mode == MarketMode::Buy)
@@ -778,7 +778,7 @@ namespace atomic_dex
     void
     trading_page::clear_forms() noexcept
     {
-        spdlog::info("clearing forms");
+        SPDLOG_INFO("clearing forms");
         this->set_price("0");
         this->set_volume("0");
         this->set_max_volume("0");
@@ -810,7 +810,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            spdlog::trace("volume is [{}]", m_volume.toStdString());
+            SPDLOG_DEBUG("volume is [{}]", m_volume.toStdString());
             this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
@@ -829,7 +829,7 @@ namespace atomic_dex
         if (m_max_volume != max_volume)
         {
             m_max_volume = std::move(max_volume);
-            spdlog::trace("max_volume is [{}]", m_max_volume.toStdString());
+            SPDLOG_DEBUG("max_volume is [{}]", m_max_volume.toStdString());
             emit maxVolumeChanged();
         }
     }
@@ -843,7 +843,7 @@ namespace atomic_dex
             const auto max_taker_vol = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
             if (not max_taker_vol.empty())
             {
-                spdlog::info("max_taker_vol is valid, processing...");
+                SPDLOG_INFO("max_taker_vol is valid, processing...");
                 if (t_float_50(max_taker_vol) < 0)
                 {
                     this->set_max_volume("0");
@@ -861,7 +861,7 @@ namespace atomic_dex
             }
             else
             {
-                spdlog::warn("max_taker_vol cannot be empty, is it called before being determinated ?");
+                SPDLOG_WARN("max_taker_vol cannot be empty, is it called before being determinated ?");
             }
         }
         else
@@ -885,7 +885,7 @@ namespace atomic_dex
                         t_rational price_orderbook_rat((boost::multiprecision::cpp_int(price_numer)), (boost::multiprecision::cpp_int(price_denom)));
 
                         t_rational res = rel_max_taker_rat / price_orderbook_rat;
-                        spdlog::info(
+                        SPDLOG_INFO(
                             "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
                             boost::multiprecision::denominator(res).str());
                         res_f                                               = res.convert_to<t_float_50>();
@@ -946,34 +946,34 @@ namespace atomic_dex
             switch (m_last_trading_error)
             {
             case TradingErrorGadget::None:
-                spdlog::info("last_trading_error is None");
+                SPDLOG_INFO("last_trading_error is None");
                 break;
             case TradingErrorGadget::BaseNotEnoughFunds:
-                spdlog::warn("last_trading_error is BaseNotEnoughFunds");
+                SPDLOG_WARN("last_trading_error is BaseNotEnoughFunds");
                 break;
             case TradingErrorGadget::RelTransactionFeesNotEnough:
-                spdlog::warn("last_trading_error is RelTransactionFeesNotEnough");
+                SPDLOG_WARN("last_trading_error is RelTransactionFeesNotEnough");
                 break;
             case TradingErrorGadget::BalanceIsLessThanTheMinimalTradingAmount:
-                spdlog::warn("last_trading_error is BalanceIsLessThanTheMinimalTradingAmount");
+                SPDLOG_WARN("last_trading_error is BalanceIsLessThanTheMinimalTradingAmount");
                 break;
             case TradingErrorGadget::TradingFeesNotEnoughFunds:
-                spdlog::warn("last_trading_error is TradingFeesNotEnoughFunds");
+                SPDLOG_WARN("last_trading_error is TradingFeesNotEnoughFunds");
                 break;
             case TradingErrorGadget::BaseTransactionFeesNotEnough:
-                spdlog::warn("last_trading_error is BaseTransactionFeesNotEnough");
+                SPDLOG_WARN("last_trading_error is BaseTransactionFeesNotEnough");
                 break;
             case TradingErrorGadget::PriceFieldNotFilled:
-                spdlog::warn("last_trading_error is PriceFieldNotFilled");
+                SPDLOG_WARN("last_trading_error is PriceFieldNotFilled");
                 break;
             case TradingErrorGadget::VolumeFieldNotFilled:
-                spdlog::warn("last_trading_error is VolumeFieldNotFilled");
+                SPDLOG_WARN("last_trading_error is VolumeFieldNotFilled");
                 break;
             case TradingErrorGadget::VolumeIsLowerThanTheMinimum:
-                spdlog::warn("last_trading_error is VolumeIsLowerThanTheMinimum");
+                SPDLOG_WARN("last_trading_error is VolumeIsLowerThanTheMinimum");
                 break;
             case TradingErrorGadget::ReceiveVolumeIsLowerThanTheMinimum:
-                spdlog::warn("last_trading_error is ReceiveVolumeIsLowerThanTheMinimum");
+                SPDLOG_WARN("last_trading_error is ReceiveVolumeIsLowerThanTheMinimum");
                 break;
             }
             emit tradingErrorChanged();
@@ -1075,7 +1075,7 @@ namespace atomic_dex
         if (m_total_amount != total_amount)
         {
             m_total_amount = std::move(total_amount);
-            spdlog::trace("total_amount is [{}]", m_total_amount.toStdString());
+            SPDLOG_DEBUG("total_amount is [{}]", m_total_amount.toStdString());
             emit totalAmountChanged();
             emit baseAmountChanged();
             emit relAmountChanged();
@@ -1269,12 +1269,12 @@ namespace atomic_dex
         {
             if (ticker != get_market_pairs_mdl()->get_left_selected_coin())
             {
-                spdlog::info("setting total amount of {}", ticker.toStdString());
+                SPDLOG_INFO("setting total amount of {}", ticker.toStdString());
                 //! If not enabled use generic volume
                 if (not enabled)
                 {
                     const auto total_amount = calculate_total_amount(price, m_volume);
-                    spdlog::info("new total_amount: {}", total_amount.toStdString());
+                    SPDLOG_INFO("new total_amount: {}", total_amount.toStdString());
                     set_multi_ticker_data(
                         ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, get_market_pairs_mdl()->get_multiple_selection_box());
                 }
@@ -1282,7 +1282,7 @@ namespace atomic_dex
                 {
                     //! Use trade with later (instead of m_volume, use a fresh volume from max_taker_vol)
                     const auto total_amount = calculate_total_amount(price, m_volume);
-                    spdlog::info("new total_amount: {}", total_amount.toStdString());
+                    SPDLOG_INFO("new total_amount: {}", total_amount.toStdString());
                     set_multi_ticker_data(
                         ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, get_market_pairs_mdl()->get_multiple_selection_box());
                     //! Here we need to use the real volume with trade_with
@@ -1291,12 +1291,12 @@ namespace atomic_dex
             }
             else
             {
-                spdlog::warn("Skipping for first multi-ticker element, it's the main trade info");
+                SPDLOG_WARN("Skipping for first multi-ticker element, it's the main trade info");
             }
         }
         else
         {
-            spdlog::error("multi_ticker order are not available in buy mode");
+            SPDLOG_ERROR("multi_ticker order are not available in buy mode");
         }
     }
 
@@ -1345,7 +1345,7 @@ namespace atomic_dex
     void
     trading_page::determine_all_multi_ticker_forms() noexcept
     {
-        spdlog::info("determine all multi ticker forms");
+        SPDLOG_INFO("determine all multi ticker forms");
         portfolio_proxy_model* model         = this->get_market_pairs_mdl()->get_multiple_selection_box();
         const auto&            price_service = this->m_system_manager.get_system<global_price_service>();
         const auto&            config        = this->m_system_manager.get_system<settings_page>().get_cfg();
@@ -1358,7 +1358,7 @@ namespace atomic_dex
             QModelIndex idx    = model->index(cur_idx, 0);
             const auto  ticker = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString();
 
-            spdlog::info("setting info form ticker: {}", ticker.toStdString());
+            SPDLOG_INFO("setting info form ticker: {}", ticker.toStdString());
             if (ticker == rel_ticker)
             {
                 set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerCurrentlyEnabled, true, model);
