@@ -286,7 +286,16 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
+
+        ##! Utilities
         src/atomicdex/tests/utilities/qt.utilities.tests.cpp
+
+        ##! Managers
+        src/atomicdex/tests/managers/addressbook.manager.tests.cpp
+
+        ##! Models
+        src/atomicdex/tests/models/qt.addressbook.contact.model.tests.cpp
+
         src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomicdex-desktop
