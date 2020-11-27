@@ -201,7 +201,14 @@ namespace atomic_dex
     {
         auto& categories = get_categories(name);
         
-        categories.erase(category);
+        for (auto i = 0U; i < categories.size(); i++)
+        {
+            if (categories[i].get<std::string>() == category)
+            {
+                categories.erase(i);
+                return;
+            }
+        }
     }
 }
 
@@ -248,10 +255,10 @@ namespace atomic_dex
             if (it.value().get<std::string>() == category)
             {
                 return true;
-    }
-}
+            }
+        }
         return false;
-}
+    }
 }
 
 //! Misc
