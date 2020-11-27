@@ -43,7 +43,7 @@
 void
 signal_handler(int signal)
 {
-    spdlog::trace("sigabort received, cleaning mm2");
+    SPDLOG_DEBUG("sigabort received, cleaning mm2");
     atomic_dex::kill_executable("mm2.service");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
@@ -123,17 +123,17 @@ init_dpi()
         auto         screens         = tmp.screens();
         for (auto&& cur_screen: screens)
         {
-            spdlog::trace("physical dpi: {}", cur_screen->physicalDotsPerInch());
-            spdlog::trace("logical dpi: {}", cur_screen->logicalDotsPerInch());
+            SPDLOG_DEBUG("physical dpi: {}", cur_screen->physicalDotsPerInch());
+            SPDLOG_DEBUG("logical dpi: {}", cur_screen->logicalDotsPerInch());
             double scale = cur_screen->logicalDotsPerInch() / 96.0;
-            spdlog::trace("scale: {}", scale);
+            SPDLOG_DEBUG("scale: {}", scale);
 
             double height = cur_screen->availableSize().height();
-            spdlog::trace("height: {}", height);
+            SPDLOG_DEBUG("height: {}", height);
             if (scale * min_window_size > height)
             {
                 should_floor = true;
-                spdlog::trace("should floor");
+                SPDLOG_DEBUG("should floor");
             }
         }
     }
