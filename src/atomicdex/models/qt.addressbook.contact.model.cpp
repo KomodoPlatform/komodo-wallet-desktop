@@ -211,6 +211,7 @@ namespace atomic_dex
             QJsonDocument  q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
             out.push_back(q_json.toVariant());
         }
+        return out;
     }
     
     void addressbook_contact_model::set_wallets_info(QList<wallet_info> wallets_info)
