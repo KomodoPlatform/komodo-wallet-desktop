@@ -30,8 +30,6 @@ namespace atomic_dex
         m_addressbook_manager(system_registry.get_system<addressbook_manager>()),
         m_addressbook_proxy(new addressbook_proxy_model(this))
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("addressbook model created");
         m_addressbook_proxy->setSourceModel(this);
         m_addressbook_proxy->setSortRole(SubModelRole);
         m_addressbook_proxy->setDynamicSortFilter(true);
@@ -40,8 +38,6 @@ namespace atomic_dex
     
     addressbook_model::~addressbook_model() noexcept
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("addressbook model destroyed");
     }
 }
 
@@ -74,7 +70,6 @@ namespace atomic_dex
     bool
     atomic_dex::addressbook_model::insertRows(int position, int rows, const QModelIndex& parent)
     {
-        spdlog::trace("(addressbook_model::insertRows) inserting {} contact(s) at position {}", rows, position);
         beginInsertRows(parent, position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
@@ -94,7 +89,6 @@ namespace atomic_dex
     bool
     atomic_dex::addressbook_model::removeRows(int position, int rows, const QModelIndex& parent)
     {
-        spdlog::trace("(addressbook_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(parent, position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {

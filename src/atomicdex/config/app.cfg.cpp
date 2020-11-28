@@ -101,7 +101,7 @@ namespace atomic_dex
         {
             fs::path original_cfg_path{ag::core::assets_real_path() / "config" / "cfg.json"};
             //! Copy our json to current version
-            spdlog::info("Copying app cfg: {} to {}", original_cfg_path.string(), cfg_path.string());
+            SPDLOG_INFO("Copying app cfg: {} to {}", original_cfg_path.string(), cfg_path.string());
 
             fs::copy_file(original_cfg_path, cfg_path, get_override_options());
         }
@@ -130,7 +130,7 @@ namespace atomic_dex
         //! If it's fiat, i set the first element of the possible currencies to the new currency (the new fiat here) and i also set the current fiat
         if (is_this_currency_a_fiat(config, new_currency))
         {
-            spdlog::info("{} is fiat, setting it as current fiat and possible currencies", new_currency);
+            SPDLOG_INFO("{} is fiat, setting it as current fiat and possible currencies", new_currency);
             config.current_fiat           = new_currency;
             config.current_fiat_sign      = config.current_currency_sign;
             config.possible_currencies[0] = new_currency;

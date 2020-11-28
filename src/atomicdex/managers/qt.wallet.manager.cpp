@@ -61,7 +61,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            spdlog::warn("{}", ec.message());
+            SPDLOG_WARN("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return false;
@@ -113,7 +113,6 @@ namespace atomic_dex
             }
         }
 
-        qDebug() << out;
         return out;
     }
 
@@ -150,7 +149,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            spdlog::debug("{}", ec.message());
+            SPDLOG_DEBUG("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return false;
@@ -161,7 +160,7 @@ namespace atomic_dex
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
-            spdlog::warn("{}", ec.message());
+            SPDLOG_WARN("{}", ec.message());
             return false;
         }
         return true;

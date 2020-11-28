@@ -37,9 +37,9 @@ DefaultComboBox {
             const new_details = {
                 update_count:           line.update_count,
                 ticker:                 model.data(model.index(idx, 0), 257),
-                name:                   model.data(model.index(idx, 0), 258),
-                balance:                model.data(model.index(idx, 0), 259),
-                main_currency_balance:  model.data(model.index(idx, 0), 260)
+                name:                   model.data(model.index(idx, 0), 259),
+                balance:                model.data(model.index(idx, 0), 260),
+                main_currency_balance:  model.data(model.index(idx, 0), 261)
             }
 
             prev_details = new_details

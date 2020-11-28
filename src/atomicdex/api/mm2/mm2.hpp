@@ -484,6 +484,7 @@ namespace mm2::api
         std::string                volume_denom;
         std::string                volume_numer;
         bool                       is_exact_selected_order_volume;
+        bool                       selected_order_use_input_volume{false};
         std::optional<bool>        base_nota{std::nullopt};
         std::optional<std::size_t> base_confs{std::nullopt};
     };
@@ -533,6 +534,7 @@ namespace mm2::api
         std::string                volume_denom;
         std::string                volume_numer;
         bool                       is_exact_selected_order_volume;
+        bool                       selected_order_use_input_volume{false};
         std::optional<bool>        rel_nota;
         std::optional<std::size_t> rel_confs;
         bool                       is_max;
@@ -706,20 +708,20 @@ namespace mm2::api
     RpcReturnType static inline rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept
     {
         std::string body = TO_STD_STR(resp.extract_string(true).get());
-        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
+        SPDLOG_INFO("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
         RpcReturnType answer;
 
         try
         {
             if (resp.status_code() not_eq 200)
             {
-                spdlog::warn("rpc answer code is not 200, body : {}", body);
+                SPDLOG_WARN("rpc answer code is not 200, body : {}", body);
                 if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
                 {
-                    spdlog::debug("error field detected inside the RpcReturnType");
+                    SPDLOG_DEBUG("error field detected inside the RpcReturnType");
                     if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
                     {
-                        spdlog::debug("The error field type is string, parsing it from the response body");
+                        SPDLOG_DEBUG("The error field type is string, parsing it from the response body");
                         if (auto json_data = nlohmann::json::parse(body); json_data.at("error").is_string())
                         {
                             answer.error = json_data.at("error").get<std::string>();
@@ -728,7 +730,7 @@ namespace mm2::api
                         {
                             answer.error = body;
                         }
-                        spdlog::debug("The error after getting extracted is: {}", answer.error.value());
+                        SPDLOG_DEBUG("The error after getting extracted is: {}", answer.error.value());
                     }
                 }
                 answer.rpc_result_code = resp.status_code();
@@ -745,7 +747,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            spdlog::error(
+            SPDLOG_ERROR(
                 "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(),
                 rpc_command, body);
             answer.rpc_result_code = -1;
@@ -759,6 +761,10 @@ namespace mm2::api
     RpcReturnType static inline rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
     {
         RpcReturnType answer;
+        /*if (rpc_command == "my_orders")
+        {
+            SPDLOG_INFO("my_orders answer {}", json_answer.dump(4));
+        }*/
 
         try
         {
@@ -767,7 +773,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            spdlog::error(
+            SPDLOG_ERROR(
                 "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
@@ -779,7 +785,7 @@ namespace mm2::api
     static inline pplx::task<web::http::http_response>
     async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url)
     {
-        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, TO_STD_STR(client->base_uri().to_string()));
+        SPDLOG_INFO("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, TO_STD_STR(client->base_uri().to_string()));
 
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
@@ -794,7 +800,7 @@ namespace mm2::api
     TAnswer
     process_rpc_get(std::string rpc_command, const std::string& url)
     {
-        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
+        SPDLOG_INFO("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
 
         web::http::http_request request;
         request.set_method(web::http::methods::GET);

@@ -66,6 +66,7 @@ namespace atomic_dex::utils
     fs::path get_atomic_dex_logs_folder() noexcept;
 
     ENTT_API fs::path get_atomic_dex_current_log_file();
+    ENTT_API std::shared_ptr<spdlog::logger> register_logger();
 
     fs::path get_current_configs_path();
 

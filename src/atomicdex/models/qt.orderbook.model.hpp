@@ -56,7 +56,7 @@ namespace atomic_dex
         };
 
         orderbook_model(kind orderbook_kind, QObject* parent = nullptr);
-        ~orderbook_model() noexcept final;
+        ~orderbook_model() noexcept final = default;
 
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
