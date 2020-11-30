@@ -57,36 +57,27 @@ BasicModal {
                 textRole: "type"
                 mainLineText: currentValue.type
             }
+            //! Wallet information edition
+            TableView {
+                id: wallet_info_table
+                model: wallet_info_type_select.currentValue
 
-            //! Wallets information edition
-            Repeater {
-                model: modelData
+                Layout.fillWidth: true
 
-                //! Wallet information edition
-                TableView {
-                    id: wallet_info_table
-                    model: modelData
+                style: TableViewStyle {
+                    backgroundColor: Style.colorTheme5
+                    textColor: Style.colorWhite1
+                }
 
-                    Layout.fillWidth: true
-
-                    enabled: wallet_info_type_select.currentIndex == currentIndex
-                    visible: wallet_info_type_select.currentIndex == currentIndex
-
-                    style: TableViewStyle {
-                        backgroundColor: Style.colorTheme5
-                        textColor: Style.colorWhite1
-                    }
-
-                    TableViewColumn {
-                        role: "key"
-                        title: "Key"
-                        width: parent.width / 2
-                    }
-                    TableViewColumn {
-                        role: "value"
-                        title: "Address";
-                        width: parent.width / 2
-                    }
+                TableViewColumn {
+                    role: "key"
+                    title: "Key"
+                    width: parent.width / 2
+                }
+                TableViewColumn {
+                    role: "value"
+                    title: "Address";
+                    width: parent.width / 2
                 }
             }
         }
