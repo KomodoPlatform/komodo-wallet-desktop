@@ -55,7 +55,7 @@ BasicModal {
 
                 model: modelData
                 textRole: "type"
-
+                mainLineText: currentValue.type
             }
 
             //! Wallets information edition
