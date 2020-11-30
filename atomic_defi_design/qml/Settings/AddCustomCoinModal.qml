@@ -38,7 +38,7 @@ BasicModal {
 
         var fields = General.clone(config_fields)
 
-        fields.ticker = data.coin
+        fields.ticker = data.ticker
         fields.name = data.name
         fields.error_code = data.error_code
 
