@@ -399,6 +399,7 @@ if (APPLE)
 endif ()
 
 if (WITH_HOTRELOAD)
+    add_compile_definitions(ATOMICDEX_HOT_RELOAD)
     message(STATUS "Hot reload enabled")
     include(hot_reload/cmake/Configuration.cmake)
     include(hot_reload/cmake/FetchDependencies.cmake)
@@ -462,34 +463,5 @@ if (WITH_HOTRELOAD)
         qt_generate_plugin_import(${QATERIALHOTRELOAD_LIB})
     endif ()
 
-    # ───── HOTRELOAD APPLICATION ─────
-
-    if (QATERIALHOTRELOAD_ENABLE_HOTRELOAD_APP)
-
-        set(QATERIALHOTRELOAD_APP QaterialHotReloadApp)
-        set(QATERIALHOTRELOAD_APP_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/hot_reload/src/Qaterial/HotReloadApp)
-        set(QATERIALHOTRELOAD_APP_SRCS
-                ${QATERIALHOTRELOAD_APP_SRC_DIR}/Main.cpp
-                ${CMAKE_SOURCE_DIR}/qml.qrc
-                )
-
-        if (QATERIALHOTRELOAD_BUILD_SHARED)
-            add_library(${QATERIALHOTRELOAD_APP} SHARED ${QATERIALHOTRELOAD_APP_SRCS})
-        else ()
-            add_executable(${QATERIALHOTRELOAD_APP} ${QATERIALHOTRELOAD_APP_SRCS})
-        endif ()
-
-        target_link_libraries(${QATERIALHOTRELOAD_APP} PRIVATE
-                Qaterial::HotReload
-                )
-
-        if (QATERIALHOTRELOAD_ENABLE_PCH AND COMMAND target_precompile_headers)
-            target_precompile_headers(${QATERIALHOTRELOAD_APP} PRIVATE ${PROJECT_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload/Pch/Pch.hpp)
-        endif ()
-
-        if (QATERIALHOTRELOAD_IGNORE_ENV)
-            message(STATUS "The executable will discard every ")
-            target_compile_definitions(${QATERIALHOTRELOAD_APP} PRIVATE -DQATERIALHOTRELOAD_IGNORE_ENV)
-        endif ()
-    endif ()
+    target_link_libraries(atomicdex-desktop PRIVATE Qaterial::HotReload)
 endif ()
