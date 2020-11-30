@@ -66,12 +66,6 @@ qtMsgOutput(QtMsgType type, const QMessageLogContext& context, const QString& ms
         qaterial::Logger::QATERIAL->error(localMsg.constData());
         abort();
     }
-
-#    if defined(Q_OS_WIN)
-    // OutputDebugStringW(reinterpret_cast<const wchar_t*>(msg.utf16()));
-#    elif defined(Q_OS_ANDROID)
-    android_default_message_handler(type, context, msg);
-#    endif
 }
 
 void
