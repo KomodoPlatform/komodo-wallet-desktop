@@ -278,9 +278,13 @@ namespace atomic_dex
             out["adex_cfg"]     = nlohmann::json::object();
             if (resp.status_code() == 200)
             {
-                nlohmann::json body_json   = nlohmann::json::parse(body);
-                const auto     ticker      = body_json.at("qrc20").at("symbol").get<std::string>();
-                const auto     adex_ticker = ticker + "-QRC";
+                nlohmann::json body_json      = nlohmann::json::parse(body);
+                const auto     ticker         = body_json.at("qrc20").at("symbol").get<std::string>();
+                const auto     adex_ticker    = ticker + "-QRC";
+                const auto     name_lowercase = boost::algorithm::to_lower_copy(body_json.at("qrc20").at("name").get<std::string>());
+                out["adex_ticker"]            = adex_ticker;
+                out["ticker"]                 = ticker;
+                out["name"]                   = name_lowercase;
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), adex_ticker);
                 const auto&    mm2      = this->m_system_manager.get_system<mm2_service>();
                 nlohmann::json qtum_cfg = mm2.get_raw_mm2_ticker_cfg("QTUM");
@@ -307,7 +311,7 @@ namespace atomic_dex
                     out["mm2_cfg"]["rpcport"]                = qtum_cfg["rpcport"];
                     out["mm2_cfg"]["segwit"]                 = qtum_cfg["segwit"];
                     out["mm2_cfg"]["required_confirmations"] = 3;
-                    out["mm2_cfg"]["fname"]                  = boost::algorithm::to_lower_copy(body_json.at("qrc20").at("name").get<std::string>());
+                    out["mm2_cfg"]["fname"]                  = name_lowercase;
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(adex_ticker)))
                 {
@@ -363,8 +367,11 @@ namespace atomic_dex
             out["adex_cfg"]     = nlohmann::json::object();
             if (resp.status_code() == 200)
             {
-                nlohmann::json body_json = nlohmann::json::parse(body).at("result")[0];
-                auto           ticker    = body_json.at("symbol").get<std::string>();
+                nlohmann::json body_json      = nlohmann::json::parse(body).at("result")[0];
+                const auto     ticker         = body_json.at("symbol").get<std::string>();
+                const auto     name_lowercase = body_json.at("tokenName").get<std::string>();
+                out["ticker"]                 = ticker;
+                out["name"]                   = name_lowercase;
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), ticker);
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
@@ -382,14 +389,14 @@ namespace atomic_dex
                     out["mm2_cfg"]["decimals"]                                      = std::stoi(body_json.at("divisor").get<std::string>());
                     out["mm2_cfg"]["avg_blocktime"]                                 = 0.25;
                     out["mm2_cfg"]["required_confirmations"]                        = 3;
-                    out["mm2_cfg"]["name"]                                          = body_json.at("tokenName").get<std::string>();
+                    out["mm2_cfg"]["name"]                                          = name_lowercase;
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
                     //!
                     out["adex_cfg"][ticker]                   = nlohmann::json::object();
                     out["adex_cfg"][ticker]["coin"]           = ticker;
-                    out["adex_cfg"][ticker]["name"]           = body_json.at("tokenName").get<std::string>();
+                    out["adex_cfg"][ticker]["name"]           = name_lowercase;
                     out["adex_cfg"][ticker]["coinpaprika_id"] = coinpaprika_id.toStdString();
                     out["adex_cfg"][ticker]["eth_nodes"] =
                         nlohmann::json::array({"http://eth1.cipig.net:8555", "http://eth2.cipig.net:8555", "http://eth3.cipig.net:8555"});
