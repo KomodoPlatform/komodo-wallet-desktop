@@ -34,13 +34,12 @@ BasicModal {
 
     onCustom_token_dataChanged: {
         const data = custom_token_data
-        const mm2_cfg = custom_token_data.mm2_cfg
-        if(!mm2_cfg) return
+        if(!data.mm2_cfg) return
 
         var fields = General.clone(config_fields)
 
-        fields.ticker = mm2_cfg.coin
-        fields.name = mm2_cfg.name
+        fields.ticker = data.coin
+        fields.name = data.name
         fields.error_code = data.error_code
 
         config_fields = General.clone(fields)
