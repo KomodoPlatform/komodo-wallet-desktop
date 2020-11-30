@@ -466,7 +466,7 @@ namespace atomic_dex
         batch.push_back(sell_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
-        SPDLOG_INFO("batch sell request: {}", batch.dump(4));
+        //SPDLOG_INFO("batch sell request: {}", batch.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
