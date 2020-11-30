@@ -246,7 +246,7 @@ run_app(int argc, char** argv)
 
 #ifdef __APPLE__
 #    if defined(NDEBUG)
-    folly::init(&argc, &argv, false);
+        //folly::init(&argc, &argv, false);
 #    endif
 #endif
     init_logging();
