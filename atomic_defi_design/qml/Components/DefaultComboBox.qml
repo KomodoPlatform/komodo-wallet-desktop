@@ -21,7 +21,7 @@ ComboBox {
     Behavior on lineHoverColor { ColorAnimation { duration: Style.animationDuration } }
     Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
 
-    property string mainLineText: control.currentValue
+    property string mainLineText: control.currentText
     property var dropdownLineText: m => textRole === "" ? m.modelData : m.modelData[textRole]
 
     readonly property bool disabled: !enabled

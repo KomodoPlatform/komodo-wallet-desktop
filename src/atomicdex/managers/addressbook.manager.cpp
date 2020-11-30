@@ -74,7 +74,7 @@ namespace atomic_dex
         throw std::invalid_argument("(addressbook_manager::get_contact) given contact name does not exist");
     }
     
-    inline nlohmann::json& addressbook_manager::get_contact(const std::string& name)
+    nlohmann::json& addressbook_manager::get_contact(const std::string& name)
     {
         return const_cast<nlohmann::json&>(std::as_const(*this).get_contact(name));
     }

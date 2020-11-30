@@ -183,7 +183,9 @@ namespace atomic_dex
         //! Loads categories.
         {
             auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-            set_categories(vector_std_string_to_qt_string_list(addrbook_manager.get_contact(m_name.toStdString()).at("categories")));
+            auto& contact          = addrbook_manager.get_contact(m_name.toStdString());
+            
+            set_categories(vector_std_string_to_qt_string_list(contact.at("categories")));
         }
         //! Loads inner model data (wallets info).
         {

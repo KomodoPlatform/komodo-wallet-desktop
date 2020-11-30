@@ -40,6 +40,8 @@ namespace atomic_dex
         const auto& data = m_model_data.at(index.row());
         switch (role)
         {
+        case TypeRole:
+            return m_type;
         case KeyRole:
             return data.key;
         case AddressRole:
@@ -111,7 +113,7 @@ namespace atomic_dex
     
     QHash<int, QByteArray> addressbook_contact_addresses_model::roleNames() const
     {
-        return {{KeyRole, "key"}, {AddressRole, "value"}};
+        return {{TypeRole, "type"}, {KeyRole, "key"}, {AddressRole, "value"}};
     }
 }
 

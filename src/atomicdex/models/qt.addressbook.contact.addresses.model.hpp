@@ -41,7 +41,8 @@ namespace atomic_dex
       public:
         enum AddressesRole
         {
-            KeyRole = Qt::UserRole + 1,
+            TypeRole = Qt::UserRole + 1,
+            KeyRole,
             AddressRole
         };
         Q_ENUMS(ContactRoles)
