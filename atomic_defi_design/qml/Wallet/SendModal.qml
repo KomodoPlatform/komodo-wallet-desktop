@@ -60,8 +60,13 @@ BasicModal {
     }
 
     onBroadcast_resultChanged: {
-        if(root.visible && broadcast_result !== "")
-            root.currentIndex = 2
+        if(root.visible && broadcast_result !== "") {
+            if(broadcast_result.indexOf("error") !== -1) {
+                reset()
+                showError(qsTr("Failed to Send"), General.prettifyJSON(broadcast_result))
+            }
+            else root.currentIndex = 2
+        }
     }
 
     function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price) {

@@ -5,6 +5,12 @@
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/version/version.hpp"
 
+namespace {
+    constexpr size_t g_qsize_spdlog             = 10240;
+    constexpr size_t g_spdlog_thread_count      = 2;
+    constexpr size_t g_spdlog_max_file_size     = 7777777;
+    constexpr size_t g_spdlog_max_file_rotation = 3;
+}
 namespace atomic_dex::utils
 {
     std::string
@@ -14,6 +20,14 @@ namespace atomic_dex::utils
         ss.precision(8);
         ss << std::fixed << value;
         return ss.str();
+    }
+
+    std::string format_float(t_float_50 value)
+    {
+        std::string result = value.str(8, std::ios_base::fixed);
+        boost::trim_right_if(result, boost::is_any_of("0"));
+        boost::trim_right_if(result, boost::is_any_of("."));
+        return result;
     }
 
     std::string
@@ -183,6 +197,26 @@ namespace atomic_dex::utils
         const auto fs_raw_mm2_shared_folder = get_atomic_dex_data_folder() / get_raw_version() / "configs";
         create_if_doesnt_exist(fs_raw_mm2_shared_folder);
         return fs_raw_mm2_shared_folder;
+    }
+    std::shared_ptr<spdlog::logger>
+    register_logger()
+    {
+        //! Log Initialization
+        std::string path = atomic_dex::utils::get_atomic_dex_current_log_file().string();
+        spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
+        auto tp            = spdlog::thread_pool();
+        auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+        auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.c_str(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
+
+        std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
+        auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
+        spdlog::register_logger(logger);
+        spdlog::set_default_logger(logger);
+        spdlog::set_level(spdlog::level::trace);
+        spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
+        SPDLOG_INFO("Logger successfully initialized");
+
+        return logger;
     }
 } // namespace atomic_dex::utils
 

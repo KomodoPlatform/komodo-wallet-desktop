@@ -1,3 +1,6 @@
+//! PCH Headers
+#include "atomicdex/pch.hpp"
+
 #include <csignal>
 
 #include <QApplication>
@@ -14,15 +17,16 @@
 
 #include "QZXing.h"
 
-//! PCH Headers
-#include "atomicdex/pch.hpp"
-
 //! Deps
+#include <folly/init/Init.h>
 #include <sodium/core.h>
 #include <wally.hpp>
 
-#if defined(linux)
+#if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
+#    if defined(__APPLE__)
+#        define _GNU_SOURCE
+#    endif
 #    include <boost/stacktrace.hpp>
 #endif
 
@@ -35,18 +39,13 @@
 #    include "atomicdex/platform/osx/manager.hpp"
 #endif
 
-inline constexpr size_t g_qsize_spdlog             = 10240;
-inline constexpr size_t g_spdlog_thread_count      = 2;
-inline constexpr size_t g_spdlog_max_file_size     = 7777777;
-inline constexpr size_t g_spdlog_max_file_rotation = 3;
-
 
 void
 signal_handler(int signal)
 {
-    spdlog::trace("sigabort received, cleaning mm2.service");
+    SPDLOG_DEBUG("sigabort received, cleaning mm2");
     atomic_dex::kill_executable("mm2.service");
-#if defined(linux)
+#if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
 #endif
     std::exit(signal);
@@ -55,8 +54,8 @@ signal_handler(int signal)
 static void
 connect_signals_handler()
 {
-    spdlog::info("connecting signal SIGABRT to the signal handler");
-#if defined(linux)
+    SPDLOG_INFO("connecting signal SIGABRT to the signal handler");
+#if defined(linux) || defined(__APPLE__)
     if (fs::exists("./backtrace.dump"))
     {
         // there is a backtrace
@@ -79,7 +78,7 @@ init_wally()
 {
     [[maybe_unused]] auto wally_res = wally_init(0);
     assert(wally_res == WALLY_OK);
-    spdlog::info("wally successfully initialized");
+    SPDLOG_INFO("wally successfully initialized");
 }
 
 static void
@@ -88,39 +87,33 @@ init_sodium()
     //! Sodium Initialization
     [[maybe_unused]] auto sodium_return_value = sodium_init();
     assert(sodium_return_value == 0); //< This is not executed when build = Release
-    spdlog::info("libsodium successfully initialized");
+    SPDLOG_INFO("libsodium successfully initialized");
 }
 
 static void
 clean_previous_run()
 {
-    spdlog::info("cleaning previous mm2 instance");
+    SPDLOG_INFO("cleaning previous mm2 instance");
     atomic_dex::kill_executable("mm2");
 }
 
 static void
 init_logging()
 {
-    //! Log Initialization
-    std::string path = atomic_dex::utils::get_atomic_dex_current_log_file().string();
-    spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
-    auto tp            = spdlog::thread_pool();
-    auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.c_str(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
-
-    std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
-    auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
-    spdlog::register_logger(logger);
-    spdlog::set_default_logger(logger);
-    spdlog::set_level(spdlog::level::trace);
-    spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
-    spdlog::info("Logger successfully initialized");
+    auto logger = atomic_dex::utils::register_logger();
+    if (spdlog::get("log_mt") == nullptr)
+    {
+        spdlog::register_logger(logger);
+        spdlog::set_default_logger(logger);
+        spdlog::set_level(spdlog::level::trace);
+        spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
+    }
 }
 
 static void
 init_dpi()
 {
-    spdlog::info("initializing high dpi support");
+    SPDLOG_INFO("initializing high dpi support");
     bool should_floor = false;
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
     {
@@ -130,17 +123,17 @@ init_dpi()
         auto         screens         = tmp.screens();
         for (auto&& cur_screen: screens)
         {
-            spdlog::trace("physical dpi: {}", cur_screen->physicalDotsPerInch());
-            spdlog::trace("logical dpi: {}", cur_screen->logicalDotsPerInch());
+            SPDLOG_DEBUG("physical dpi: {}", cur_screen->physicalDotsPerInch());
+            SPDLOG_DEBUG("logical dpi: {}", cur_screen->logicalDotsPerInch());
             double scale = cur_screen->logicalDotsPerInch() / 96.0;
-            spdlog::trace("scale: {}", scale);
+            SPDLOG_DEBUG("scale: {}", scale);
 
             double height = cur_screen->availableSize().height();
-            spdlog::trace("height: {}", height);
+            SPDLOG_DEBUG("height: {}", height);
             if (scale * min_window_size > height)
             {
                 should_floor = true;
-                spdlog::trace("should floor");
+                SPDLOG_DEBUG("should floor");
             }
         }
     }
@@ -155,13 +148,13 @@ clean_wally()
 {
     [[maybe_unused]] auto wallet_exit_res = wally_cleanup(0);
     assert(wallet_exit_res == WALLY_OK);
-    spdlog::info("wally successfully cleaned");
+    SPDLOG_INFO("wally successfully cleaned");
 }
 
 static void
 init_timezone_db()
 {
-    spdlog::info("Init timezone db");
+    SPDLOG_INFO("Init timezone db");
 #if defined(_WIN32) || defined(WIN32)
     using namespace std::string_literals;
     auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
@@ -173,6 +166,9 @@ init_timezone_db()
 int
 run_app(int argc, char** argv)
 {
+#ifdef __APPLE__
+    folly::init(&argc, &argv, false);
+#endif
     init_logging();
     connect_signals_handler();
     init_timezone_db();
@@ -200,6 +196,11 @@ run_app(int argc, char** argv)
     engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
+    qRegisterMetaType<MarketMode>("MarketMode");
+    qmlRegisterUncreatableType<atomic_dex::MarketModeGadget>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
+    qRegisterMetaType<TradingError>("TradingError");
+    qmlRegisterUncreatableType<atomic_dex::TradingErrorGadget>("AtomicDEX.TradingError", 1, 0, "TradingError", "Not creatable as it is an enum type");
+
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     // Load Qaterial.
 
@@ -254,7 +255,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     //! run app
     int res = run_app(argc, argv);
-    spdlog::info("Shutdown all loggers");
+    SPDLOG_INFO("Shutdown all loggers");
     spdlog::drop_all();
     return res;
 }

@@ -2,11 +2,6 @@ import os
 import osproc
 import vcpkg
 import dependencies
-
-proc get_windows_deploy_cmd*() : string =
-    let windeploypath = os.getEnv("QT_INSTALL_CMAKE_PATH").joinPath("bin").joinPath("windeployqt.exe")
-    result = windeploypath & " bin --qmldir " & os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
-    echo result
     
 proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path: string) =
     download_packages()
