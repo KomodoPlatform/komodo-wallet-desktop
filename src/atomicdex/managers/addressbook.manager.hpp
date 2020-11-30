@@ -160,6 +160,11 @@ namespace atomic_dex
         /// \param   category The name of the category. (e.g. "Friend")
         void remove_contact_category(const std::string& name, const std::string& category);
         
+        /// \brief   Resets categories list of a contact.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
+        /// \param   name Name of the contact.
+        void reset_contact_categories(const std::string& name);
+        
         /// @} End of Modifiers section.
 
         /// \defgroup Lookup

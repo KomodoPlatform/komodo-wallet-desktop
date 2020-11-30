@@ -210,6 +210,13 @@ namespace atomic_dex
             }
         }
     }
+    
+    void addressbook_manager::reset_contact_categories(const std::string& name)
+    {
+        auto& contact = get_contact(name);
+    
+        contact["categories"] = nlohmann::json::array();
+}
 }
 
 //! Lookup
