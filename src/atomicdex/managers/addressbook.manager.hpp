@@ -70,7 +70,7 @@ namespace atomic_dex
         nlohmann::json& get_contacts() noexcept;
     
         /// \brief   Gets a contact from its name.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   name Name of the contact.
         [[nodiscard]]
         const nlohmann::json& get_contact(const std::string& name) const;
@@ -92,6 +92,12 @@ namespace atomic_dex
     
         [[nodiscard]]
         nlohmann::json& get_wallet_info(const std::string& name, const std::string& type);
+    
+        [[nodiscard]]
+        const nlohmann::json& get_wallet_info_address(const std::string& name, const std::string& type, const std::string& key) const;
+        
+        [[nodiscard]]
+        nlohmann::json& get_wallet_info_address(const std::string& name, const std::string& type, const std::string& key);
     
         [[nodiscard]]
         const nlohmann::json& get_categories(const std::string& name) const;
@@ -118,13 +124,13 @@ namespace atomic_dex
         void remove_all_contacts();
         
         /// \brief   Changes the name of a contact.
-        /// \warning If the contact does not exist, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   name     Current name of the contact.
         /// \param   new_name New name to use.
         void change_contact_name(const std::string& name, const std::string& new_name);
     
         /// \brief   Sets or creates wallet information for a contact.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   name    The name of the contact.
         /// \param   type    The type of wallet. (e.g. BTC, erc-20)
         /// \param   key     A key for the address.
@@ -135,27 +141,29 @@ namespace atomic_dex
                                      const std::string& address);
     
         /// \brief   Removes wallet information from a contact.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   contact_name The name of the contact.
         /// \param   type         The type of wallet.
         void remove_contact_wallet_info(const std::string& name, const std::string& type);
     
         /// \brief   Removes wallet information from a contact.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact and/or the wallet type do(es) not exist, it throws an std::invalid_argument exception.
+        /// \warning If the key does not exist, the behavior is undefined.
         /// \param   name The name of the contact.
         /// \param   type The type of wallet.
         /// \param   key  The key to remove.
         void remove_contact_wallet_info(const std::string& name, const std::string& type, const std::string& key);
     
         /// \brief   Adds a contact to a category.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   name     The name of the contact.
         /// \param   category The name of the category. (e.g. "Employer")
         /// \return  False if this category is already associated to the given contact, true otherwise.
         bool add_contact_category(const std::string& name, const std::string& category);
     
         /// \brief   Removes a contact from a category.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
+        /// \note    If the given category does not exist it does nothing.
         /// \param   name     The name of the contact.
         /// \param   category The name of the category. (e.g. "Friend")
         void remove_contact_category(const std::string& name, const std::string& category);
@@ -170,6 +178,8 @@ namespace atomic_dex
         /// \defgroup Lookup
         /// {@
         
+        /// \brief  Gets the current number of existing contacts.
+        /// \return The number of existing contacts.
         [[nodiscard]]
         std::size_t nb_contacts() const noexcept;
         
@@ -180,7 +190,7 @@ namespace atomic_dex
         bool has_contact(const std::string& name) const noexcept;
         
         /// \brief   Tells if a contact name possesses wallet information.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   name Name of the contact.
         /// \param   type Type of wallet.
         /// \return  True if the contact possesses the wallet, false otherwise.
@@ -188,7 +198,7 @@ namespace atomic_dex
         bool has_wallet_info(const std::string& name, const std::string& type) const noexcept;
         
         /// \brief   Tells if a contact belong to a category.
-        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   name     Contact name.
         /// \param   category A category.
         /// \return  True if the contact belongs to the category, false otherwise.

@@ -2,6 +2,9 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Universal 2.15
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
 //! Deps
 import Qaterial 1.0 as Qaterial
@@ -20,6 +23,7 @@ BasicModal {
 
         title: qsTr("Edit contact")
 
+        //! Contact name section
         TextFieldWithTitle {
             id: name_input
             width: 30
@@ -33,58 +37,102 @@ BasicModal {
             }
         }
 
-        //! Wallets info section
-        ModalContent {
-            title: qsTr("Wallets Information")
+        //! Wallets information
+        ColumnLayout {
+            Layout.fillWidth: true
 
+            //! Title
+            TitleText {
+                text: qsTr("Wallets Information")
+            }
+
+            //! Wallets information type selection list
             DefaultComboBox {
-                id: wallets_info_control
+                id: wallet_info_type_select
 
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
+
+                model: modelData
+                textRole: "type"
+
+            }
+
+            //! Wallets information edition
+            Repeater {
+                model: modelData
+
+                //! Wallet information edition
+                TableView {
+                    id: wallet_info_table
+                    model: modelData
+
+                    Layout.fillWidth: true
+
+                    enabled: wallet_info_type_select.currentIndex == currentIndex
+                    visible: wallet_info_type_select.currentIndex == currentIndex
+
+                    style: TableViewStyle {
+                        backgroundColor: Style.colorTheme5
+                        textColor: Style.colorWhite1
+                    }
+
+                    TableViewColumn {
+                        role: "key"
+                        title: "Key"
+                        width: parent.width / 2
+                    }
+                    TableViewColumn {
+                        role: "value"
+                        title: "Address";
+                        width: parent.width / 2
+                    }
+                }
             }
         }
 
-        //! Categories section
-        ModalContent {
-            title: qsTr("Tags")
+        //! Categories section title
+        TitleText {
+            text: qsTr("Tags")
+        }
 
-            //! Category adding form
-            AddressBookNewContactCategory {
-                id: add_category
-            }
+        //! Category adding form
+        AddressBookNewContactCategory {
+            id: add_category
+        }
 
-            //! Category adding form opening button
-            PrimaryButton {
-                text: qsTr("Add tag")
+        //! Categories list
+        Flow {
+            Layout.fillWidth: true
 
-                onClicked: {
-                    add_category.open();
+            Repeater {
+                id: category_repeater
+                model: modelData.categories
+
+                property var contactModel: modelData
+
+                Qaterial.OutlineButton {
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.leftMargin: 4
+
+                    text: modelData
+                    icon.source: Qaterial.Icons.closeOctagon
+
+                    onClicked: {
+                        category_repeater.contactModel.remove_category(modelData);
+                    }
                 }
             }
 
-            RowLayout {
-                Repeater {
-                    id: category_repeater
-                    model: modelData.categories
 
-                    property var contactModel: modelData
+            //! Category adding form opening button
+            Qaterial.OutlineButton {
+                Layout.leftMargin: 10
 
-                        Qaterial.OutlineButton {
-                            Layout.alignment: Qt.AlignLeft
-                            Layout.leftMargin: 4
+                text: qsTr("+")
 
-                            text: modelData
-                            icon.source: Qaterial.Icons.closeOctagon
-
-                            onClicked: {
-                                category_repeater.contactModel.remove_category(modelData);
-                            }
-
-                            Component.onCompleted: {
-                                category_repeater.currentLayoutLeftMargin += 5;
-                                category_repeater.width = width;
-                            }
-                        }
+                onClicked: {
+                    add_category.open();
                 }
             }
         }
@@ -104,7 +152,7 @@ BasicModal {
                 text: qsTr("Validate")
                 onClicked: {
                     modelData.name = name_input.field.text
-                    modelData.save_contact();
+                    modelData.save();
                     root.close();
                 }
             }
@@ -113,7 +161,9 @@ BasicModal {
             DefaultButton {
                 text: qsTr("Cancel")
                 onClicked: {
-                    root.close()
+                    name_input.field.text = modelData.name
+                    modelData.reset();
+                    root.close();
                 }
             }
         }

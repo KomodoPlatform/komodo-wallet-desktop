@@ -48,7 +48,7 @@ namespace atomic_dex
             }
             catch ([[maybe_unused]] nlohmann::json::parse_error& ex)
             {
-                spdlog::warn("Addressbook config file was invalid, its content will be cleaned.");
+                //spdlog::warn("Addressbook config file was invalid, its content will be cleaned.");
                 out = nlohmann::json::array();
             }
             return out;

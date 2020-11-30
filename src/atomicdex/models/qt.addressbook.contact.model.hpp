@@ -16,15 +16,9 @@
 
 #pragma once
 
-//! Qt
-#include <QAbstractListModel> //> QAbstractListModel.
-#include <QObject>            //> Q_OBJECT, Q_PROPERTY.
-
-//! Deps
-#include <spdlog/spdlog.h>
-
 //! Project Headers
 #include "atomicdex/managers/addressbook.manager.hpp" //> addressbook_manager.
+#include "qt.addressbook.contact.addresses.model.hpp"
 
 namespace atomic_dex
 {
@@ -36,25 +30,16 @@ namespace atomic_dex
         friend class addressbook_model;
     
       public:
-        /// \brief Represents a wallet info.
-        struct wallet_info
-        {
-            QString type;
-            QMap<QString, QString> addresses;
-        };
-
         enum ContactRoles
         {
-            CategoriesRole,
-            TypeRole,
-            AddressesRole
+            WalletInfoRole = Qt::UserRole + 1
         };
         Q_ENUMS(ContactRoles)
 
         /// \defgroup Constructors
         /// {@
         
-        explicit addressbook_contact_model(addressbook_manager& addrbook_manager, QObject* parent = nullptr);
+        explicit addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent = nullptr);
         ~addressbook_contact_model() noexcept final;
     
         /// @} End of Constructors section.
@@ -63,10 +48,7 @@ namespace atomic_dex
         /// {@
     
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
-        bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
-        bool                                 insertRows(int position, int rows, const QModelIndex& parent) final;
-        bool                                 removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
     
         /// @} End of QAbstractListModel implementation section.
@@ -74,48 +56,47 @@ namespace atomic_dex
         /// \defgroup QML API.
         /// {@
         
-        [[nodiscard]]
-        const QString& get_name() const noexcept;
-    
-        void set_name(const QString& name) noexcept;
-        
-        [[nodiscard]]
-        const QStringList& get_categories() const noexcept;
-    
-        void set_categories(QStringList categories) noexcept;
-        
         Q_INVOKABLE bool add_category(const QString& category) noexcept;
         
         Q_INVOKABLE void remove_category(const QString& category) noexcept;
         
-        [[nodiscard]]
-        QVariantList get_wallets_info() noexcept;
-        
-        void set_wallets_info(QList<wallet_info> wallets_info);
-        
-      private:
+        /// \brief Resets this model then reloads its data from the persistent data.
+        Q_INVOKABLE void reset();
+    
+        /// \brief Saves the model modifications in the persistent data.
+        Q_INVOKABLE void save();
+    
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
-        Q_PROPERTY(QStringList categories READ get_categories NOTIFY categoriesChanged)
-        Q_PROPERTY(QVariantList wallets_info READ get_wallets_info NOTIFY walletsInfoChanged)
+        [[nodiscard]]
+        const QString& get_name() const noexcept;
+        void set_name(const QString& name) noexcept;
+    
+        Q_PROPERTY(QStringList categories READ get_categories WRITE set_categories NOTIFY categoriesChanged)
+        [[nodiscard]]
+        const QStringList& get_categories() const noexcept;
+        void set_categories(QStringList categories) noexcept;
         
       signals:
         void nameChanged();
         void categoriesChanged();
-        void walletsInfoChanged();
         
         /// @} End of QML API section.
+
+      private:
+        /// \brief Loads this model data from the persistent data.
+        void populate();
     
         /// \defgroup Members
         /// {@
         
       private:
-        addressbook_manager& m_addressbook_manager;
+        ag::ecs::system_manager&                      m_system_manager;
     
-        QString              m_name;
+        QString                                       m_name;
     
-        QStringList          m_categories;
-    
-        QList<wallet_info>   m_wallets_info;
+        QStringList                                   m_categories;
+        
+        QVector<addressbook_contact_addresses_model*> m_model_data;
     
         /// @} End of Members section.
     };

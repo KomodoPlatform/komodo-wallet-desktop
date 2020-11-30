@@ -181,6 +181,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.contact.addresses.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.model.cpp

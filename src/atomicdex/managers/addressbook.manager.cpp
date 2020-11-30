@@ -71,10 +71,10 @@ namespace atomic_dex
                 return it.value();
             }
         }
-        throw std::invalid_argument("(addressbook_manager) given contact name does not exist");
+        throw std::invalid_argument("(addressbook_manager::get_contact) given contact name does not exist");
     }
     
-    nlohmann::json& addressbook_manager::get_contact(const std::string& name)
+    inline nlohmann::json& addressbook_manager::get_contact(const std::string& name)
     {
         return const_cast<nlohmann::json&>(std::as_const(*this).get_contact(name));
     }
@@ -91,12 +91,29 @@ namespace atomic_dex
     
     const nlohmann::json& addressbook_manager::get_wallet_info(const std::string& name, const std::string& type) const
     {
-        return get_wallets_info(name).at(type);
+        for (const auto& wallet_info : get_wallets_info(name))
+        {
+            if (wallet_info.at("type").get<std::string>() == type)
+            {
+                return wallet_info;
+            }
+        }
+        throw std::invalid_argument("(addressbook_manager::get_wallet_info) given wallet info type does not exist");
     }
     
     nlohmann::json& addressbook_manager::get_wallet_info(const std::string& name, const std::string& type)
     {
         return const_cast<nlohmann::json&>(std::as_const(*this).get_wallet_info(name, type));
+    }
+    
+    const nlohmann::json& addressbook_manager::get_wallet_info_address(const std::string& name, const std::string& type, const std::string& key) const
+    {
+        return get_wallet_info(name, type).at("addresses").at(key);
+    }
+    
+    nlohmann::json& addressbook_manager::get_wallet_info_address(const std::string& name, const std::string& type, const std::string& key)
+    {
+        return const_cast<nlohmann::json&>(std::as_const(*this).get_wallet_info_address(name, type, key));
     }
     
     const nlohmann::json& addressbook_manager::get_categories(const std::string& name) const
@@ -216,7 +233,7 @@ namespace atomic_dex
         auto& contact = get_contact(name);
     
         contact["categories"] = nlohmann::json::array();
-}
+    }
 }
 
 //! Lookup

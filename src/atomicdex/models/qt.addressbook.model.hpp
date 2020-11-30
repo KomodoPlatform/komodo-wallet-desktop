@@ -45,7 +45,7 @@ namespace atomic_dex
         };
 
         explicit addressbook_model(ag::ecs::system_manager& system_registry, QObject* parent = nullptr) noexcept;
-        ~addressbook_model() noexcept final;
+        ~addressbook_model() noexcept final = default;
         
         /// \defgroup QAbstractListModel implementation.
         /// {@
@@ -54,8 +54,6 @@ namespace atomic_dex
         QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]]
         int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
-        bool insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent) final;
-        bool                   removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
         [[nodiscard]]
         QHash<int, QByteArray> roleNames() const final;
         
@@ -63,6 +61,8 @@ namespace atomic_dex
         
         /// \brief Loads model from the addressbook_manager current data.
         void populate();
+        
+        void clear();
         
         /// \defgroup QML API
         /// {@
@@ -72,8 +72,6 @@ namespace atomic_dex
         Q_INVOKABLE void remove_contact(int row, const QString& name);
         
         Q_INVOKABLE void remove_all_contacts();
-
-        void clear();
 
     private:
         Q_PROPERTY(addressbook_proxy_model* addressbook_proxy_mdl READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
@@ -86,8 +84,10 @@ namespace atomic_dex
         /// @} End of QML API section.
 
     private:
-        addressbook_manager&                m_addressbook_manager;
+        ag::ecs::system_manager&            m_system_manager;
+        
         addressbook_proxy_model*            m_addressbook_proxy;
-        QVector<addressbook_contact_model*> m_contact_models;
+        
+        QVector<addressbook_contact_model*> m_model_data;
     };
 } // namespace atomic_dex

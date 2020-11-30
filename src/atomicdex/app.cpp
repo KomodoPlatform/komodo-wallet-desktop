@@ -509,7 +509,7 @@ namespace atomic_dex
         addressbook_model* addressbook = get_addressbook_model();
         if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
         {
-            addressbook->removeRows(0, count, QModelIndex());
+            addressbook->clear();
         }
 
         orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
