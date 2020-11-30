@@ -213,7 +213,9 @@ inline int
 run_app(int argc, char** argv)
 {
 #ifdef __APPLE__
-    // folly::init(&argc, &argv, false);
+#    if defined(NDEBUG)
+    folly::init(&argc, &argv, false);
+#    endif
 #endif
     init_logging();
     connect_signals_handler();
