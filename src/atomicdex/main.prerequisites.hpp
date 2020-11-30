@@ -1,27 +1,31 @@
 //! PCH Headers
 #include "atomicdex/pch.hpp"
 
+//! C Headers
 #include <csignal>
 
+//! Qt
 #include <QApplication>
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QQmlApplicationEngine>
 #include <QScreen>
 #include <QWindow>
+#include <QtGlobal>
+#include <QtQml>
+#include <QtWebEngine>
+
+//! Qaterial
 #include <Qaterial/Qaterial.hpp>
 #if defined(ATOMICDEX_HOT_RELOAD)
 #    include <Qaterial/HotReload/HotReload.hpp>
 #    include <SortFilterProxyModel/SortFilterProxyModel.hpp>
 #endif
-#include <QtQml>
-#include <QtWebEngine>
 
-#define QZXING_QML
-
-#include "QZXing.h"
 
 //! Deps
+#define QZXING_QML
+#include "QZXing.h"
 #include <folly/init/Init.h>
 #include <sodium/core.h>
 #include <wally.hpp>
@@ -85,6 +89,29 @@ installLoggers()
 }
 #endif
 
+static void
+qt_message_handler(QtMsgType type, [[maybe_unused]] const QMessageLogContext& context, const QString& msg)
+{
+    const auto localMsg = msg.toLocal8Bit();
+    switch (type)
+    {
+    case QtDebugMsg:
+        SPDLOG_DEBUG("{}", localMsg.constData());
+        break;
+    case QtInfoMsg:
+        SPDLOG_INFO("{}", localMsg.constData());
+        break;
+    case QtWarningMsg:
+        SPDLOG_WARN("{}", localMsg.constData());
+        break;
+    case QtCriticalMsg:
+        SPDLOG_ERROR("{}", localMsg.constData());
+        break;
+    case QtFatalMsg:
+        SPDLOG_ERROR("{}", localMsg.constData());
+        abort();
+    }
+}
 
 void
 signal_handler(int signal)
@@ -212,6 +239,11 @@ init_timezone_db()
 inline int
 run_app(int argc, char** argv)
 {
+#if !defined(ATOMICDEX_HOT_RELOAD)
+    SPDLOG_INFO("Installing qt_message_handler");
+    qInstallMessageHandler(&qt_message_handler);
+#endif
+
 #ifdef __APPLE__
 #    if defined(NDEBUG)
     folly::init(&argc, &argv, false);
@@ -234,6 +266,7 @@ run_app(int argc, char** argv)
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
+
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
     QQmlApplicationEngine engine;
