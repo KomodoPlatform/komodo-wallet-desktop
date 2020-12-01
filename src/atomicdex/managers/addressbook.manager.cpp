@@ -25,7 +25,7 @@
 namespace atomic_dex
 {
     addressbook_manager::addressbook_manager(entt::registry& entity_registry, const ag::ecs::system_manager& system_manager) noexcept :
-        system(entity_registry), m_system_manager(system_manager)
+        system(entity_registry), m_system_manager(system_manager), m_data(nlohmann::json::array())
     {}
 }
 
