@@ -137,6 +137,8 @@ BasicModal {
     function onEndpointNonReacheableStatus(base_uri, human_date, timestamp) {
         const title = qsTr("Endpoint not reachable")
 
+        const error = qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri
+
         newNotification("onEndpointNonReacheableStatus",
                         { base_uri, human_date, timestamp },
                         timestamp,
@@ -146,7 +148,7 @@ BasicModal {
                         "open_log_modal",
                         error)
 
-        toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
+        toast.show(title, General.time_toast_important_error, error)
     }
 
     function onMismatchCustomCoinConfiguration(asset, human_date, timestamp) {
