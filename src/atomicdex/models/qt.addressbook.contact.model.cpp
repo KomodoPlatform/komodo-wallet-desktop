@@ -45,11 +45,6 @@ namespace atomic_dex
             populate();
         }
     }
-    
-    addressbook_contact_model::~addressbook_contact_model() noexcept
-    {
-        save();
-    }
 }
 
 //! QAbstractListModel implementation
@@ -195,10 +190,7 @@ namespace atomic_dex
             const auto coins_type_nb = 3;
             const auto create_addresses_model = [this](const QString& type)
             {
-                auto* data = new addressbook_contact_addresses_model(m_system_manager, m_name, type, this);
-
-                data->populate();
-                m_model_data.push_back(data);
+                m_model_data.push_back(new addressbook_contact_addresses_model(m_system_manager, m_name, type, this));
             };
             
             beginInsertRows(QModelIndex(), 0, coins_nb + coins_type_nb);

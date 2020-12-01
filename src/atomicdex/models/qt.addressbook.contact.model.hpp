@@ -40,7 +40,7 @@ namespace atomic_dex
         /// {@
         
         explicit addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent = nullptr);
-        ~addressbook_contact_model() noexcept final;
+        ~addressbook_contact_model() noexcept final = default;
     
         /// @} End of Constructors section.
     

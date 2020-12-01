@@ -22,6 +22,7 @@ namespace atomic_dex
     addressbook_contact_addresses_model::addressbook_contact_addresses_model(ag::ecs::system_manager& system_manager, const QString& name, QString type, QObject* parent) :
         QAbstractTableModel(parent), m_system_manager(system_manager), m_name(name), m_type(std::move(type))
     {
+        populate();
     }
     
     addressbook_contact_addresses_model::~addressbook_contact_addresses_model() noexcept = default;
