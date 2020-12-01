@@ -19,7 +19,7 @@ BasicModal {
     // Local
     readonly property var default_send_result: ({ has_error: false, error_message: "",
                                                     withdraw_answer: {
-                                                        tx_hex: "", date: "", "fee_details": { total_fee: "" }
+                                                        total_amount_fiat: "", tx_hex: "", date: "", "fee_details": { total_fee: "" }
                                                     },
                                                     explorer_url: "", max: false })
     property var send_result: default_send_result
@@ -33,10 +33,8 @@ BasicModal {
     property bool async_param_max: false
 
     onSend_rpc_resultChanged: {
-        send_result = General.clone(send_rpc_result)
-
         // Local var, faster
-        const result = send_result
+        const result = General.clone(send_rpc_result)
 
         if(result.error_code) {
             root.close()
@@ -44,7 +42,7 @@ BasicModal {
             toast.show(qsTr("Failed to send"), General.time_toast_important_error, result.error_message)
         }
         else {
-            if(!result.withdraw_answer) {
+            if(!result || !result.withdraw_answer) {
                 reset()
                 return
             }
@@ -57,6 +55,8 @@ BasicModal {
             // Change page
             root.currentIndex = 1
         }
+
+        send_result = result
     }
 
     onBroadcast_resultChanged: {
@@ -372,7 +372,8 @@ BasicModal {
         // Amount
         TextEditWithTitle {
             title: qsTr("Amount")
-            text: General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
+            text: empty_data ? "" :
+                  General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
         }
 
         // Fees
