@@ -109,7 +109,6 @@ namespace atomic_dex
             return QLocale::Language::AnyLanguage;
         };
 
-        qDebug() << "locale before: " << QLocale().name();
         SPDLOG_INFO("Locale before parsing AtomicDEX settings: {}", QLocale().name().toStdString());
         QLocale::setDefault(get_locale(m_config.current_lang));
         SPDLOG_INFO("Locale after parsing AtomicDEX settings: {}", QLocale().name().toStdString());
