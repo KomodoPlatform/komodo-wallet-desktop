@@ -463,7 +463,10 @@ namespace atomic_dex
     application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();
-        mm2.batch_fetch_orders_and_swap();
+        if (mm2.is_mm2_running())
+        {
+            mm2.batch_fetch_orders_and_swap();
+        }
     }
 
     QVariant
