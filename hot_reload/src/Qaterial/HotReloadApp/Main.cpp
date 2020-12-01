@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
     //! Load Qaterial
-    qaterial::loadQmlResources(false);
+    qaterial::loadQmlResources();
     qaterial::registerQmlTypes();
     qaterial::HotReload::registerSingleton();
     qqsfpm::registerQmlTypes();
