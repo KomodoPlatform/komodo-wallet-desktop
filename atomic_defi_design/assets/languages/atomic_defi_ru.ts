@@ -4,149 +4,154 @@
 <context>
     <name>AddCustomCoinModal</name>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="82"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="85"/>
         <source>Choose the asset type</source>
         <translation>Выберите тип монеты</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="87"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="90"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="95"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="98"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="101"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="158"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="217"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="104"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="165"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="224"/>
         <source>Next</source>
         <translation>Далее</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="130"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="116"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="133"/>
         <source>Enter the contract address</source>
         <translation>Введите адрес контракта</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="116"/>
         <source>Choose the asset ticker</source>
         <translation>Введите тикер монеты</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="120"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="123"/>
         <source>Ticker</source>
         <translation>Тикер</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="121"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="124"/>
         <source>Enter the ticker</source>
         <translation>Введите тикер</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="129"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="132"/>
         <source>Contract Address</source>
         <translation>Адрес контракта</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="136"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="141"/>
         <source>Get the contract address from Etherscan</source>
         <translation>Найти адрес контракта на Etherscan</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="152"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="211"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="282"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="377"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="142"/>
+        <source>Get the contract address from QTUM Insight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="159"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="218"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="289"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="384"/>
         <source>Previous</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="169"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="176"/>
         <source>Choose the asset logo</source>
         <translation>Загрузите логотип монеты</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="173"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="180"/>
         <source>Browse</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="185"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="192"/>
         <source>Please choose the asset logo</source>
         <translation>Выберите логотип монеты</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="227"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="234"/>
         <source>Configuration</source>
         <translation>Конфигурация</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="232"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="239"/>
         <source>All configuration fields will be fetched using the contract address you provided.</source>
         <translation>Все параметры конфигурации будут получены с помощью адреса контракта.</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="240"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="247"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="241"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="248"/>
         <source>Enter the name</source>
         <translation>Введите название</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="247"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="254"/>
         <source>Coinpaprika ID</source>
         <translation>Coinpaprika ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="248"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="255"/>
         <source>Enter the Coinpaprika ID</source>
         <translation>Введите Coinpaprika ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="254"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="261"/>
         <source>Get the Coinpaprika ID</source>
         <translation>Получить Coinpaprika ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="271"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="278"/>
         <source>Active</source>
         <translation>Активно</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="288"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="304"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="295"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="311"/>
         <source>Preview</source>
         <translation>Превью</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="310"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="317"/>
         <source>WARNING: Application will restart immidiately to apply the changes!</source>
         <translation>ПРЕДУПРЕЖДЕНИЕ: Приложение будет перезапущено, чтобы применить изменения!</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="334"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="341"/>
         <source>Asset not found, please go back and make sure Contract Address is correct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="353"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="360"/>
         <source>Config Fields</source>
         <translation>Параметры конфигурации</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="366"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="373"/>
         <source>Fetched Data</source>
         <translation>Полученные данные</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="383"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="390"/>
         <source>Submit &amp; Restart</source>
         <translation>Отправить и перезапустить приложение</translation>
     </message>

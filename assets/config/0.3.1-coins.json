@@ -1153,9 +1153,9 @@
     "active": false,
     "currently_enabled": false
   },
-  "XZC": {
-    "coin": "XZC",
-    "name": "Zcoin",
+  "FIRO": {
+    "coin": "FIRO",
+    "name": "Firo",
     "coinpaprika_id": "xzc-zcoin",
     "electrum": [
       {
