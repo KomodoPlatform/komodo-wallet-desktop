@@ -112,6 +112,8 @@ namespace atomic_dex
         {
             if ((*it)->get_name() == name)
             {
+                addrbook_manager.remove_contact(name.toStdString());
+                addrbook_manager.save_configuration();
                 beginRemoveRows(QModelIndex(), row, row);
                 delete *it;
                 m_model_data.erase(it);
@@ -128,6 +130,8 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), 0, rowCount());
         for (auto& contact_model : m_model_data)
         {
+            addrbook_manager.remove_contact(contact_model->get_name().toStdString());
+            addrbook_manager.save_configuration();
             delete contact_model;
         }
         m_model_data.clear();
