@@ -254,7 +254,7 @@ QtObject {
                                           "DASH": "#008CE7",
                                           "RVN": "#384182",
                                           "DGB": "#006AD2",
-                                          "XZC": "#23B852",
+                                          "FIRO": "#BB2100",
                                           "LTC": "#BFBBBB",
                                           "ZEC": "#ECB244",
                                           "ZER": "#FFFFFF",
