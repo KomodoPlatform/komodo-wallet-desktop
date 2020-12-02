@@ -14,16 +14,14 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Qt
 #include <QDebug>
-
-//! PCH
-#include "src/atomicdex/pch.hpp"
 
 //! Deps
 #include <sodium/utils.h>
 
 //! Project Headers
-#include "qt.wallet.manager.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
@@ -39,17 +37,17 @@ namespace atomic_dex
         using namespace std::string_literals;
         if (wallet_name == "")
         {
-            fs::remove(get_atomic_dex_config_folder() / "default.wallet");
+            fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
             return;
         }
-        if (not fs::exists(get_atomic_dex_config_folder() / "default.wallet"s))
+        if (not fs::exists(utils::get_atomic_dex_config_folder() / "default.wallet"s))
         {
-            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string());
+            std::ofstream ofs((utils::get_atomic_dex_config_folder() / "default.wallet"s).string());
             ofs << wallet_name.toStdString();
         }
         else
         {
-            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
+            std::ofstream ofs((utils::get_atomic_dex_config_folder() / "default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
             ofs << wallet_name.toStdString();
         }
 
@@ -63,7 +61,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            spdlog::warn("{}", ec.message());
+            SPDLOG_WARN("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return false;
@@ -72,10 +70,10 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const fs::path    seed_path          = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
-            const fs::path    wallet_object_path = get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
+            const fs::path    seed_path          = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            const fs::path    wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
             const std::string wallet_cfg_file    = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
-            const fs::path    wallet_cfg_path    = get_atomic_dex_config_folder() / wallet_cfg_file;
+            const fs::path    wallet_cfg_path    = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
 
 
             if (not fs::exists(wallet_cfg_path))
@@ -89,11 +87,6 @@ namespace atomic_dex
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
             // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
-
-            // std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
-            // ofs << wallet_name.toStdString();
-
-            // set_wallet_default_name(wallet_name);
 
             std::ofstream  wallet_object(wallet_object_path.string());
             nlohmann::json wallet_object_json;
@@ -112,7 +105,7 @@ namespace atomic_dex
     {
         QStringList out;
 
-        for (auto&& p: fs::directory_iterator((get_atomic_dex_config_folder())))
+        for (auto&& p: fs::directory_iterator((utils::get_atomic_dex_config_folder())))
         {
             if (p.path().extension().string() == ".seed")
             {
@@ -120,14 +113,13 @@ namespace atomic_dex
             }
         }
 
-        qDebug() << out;
         return out;
     }
 
     bool
     qt_wallet_manager::is_there_a_default_wallet() noexcept
     {
-        return fs::exists(get_atomic_dex_config_folder() / "default.wallet");
+        return fs::exists(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
 
     QString
@@ -135,7 +127,7 @@ namespace atomic_dex
     {
         if (is_there_a_default_wallet())
         {
-            std::ifstream ifs((get_atomic_dex_config_folder() / "default.wallet").c_str());
+            std::ifstream ifs((utils::get_atomic_dex_config_folder() / "default.wallet").c_str());
             assert(ifs);
             std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
             return QString::fromStdString(str);
@@ -147,7 +139,7 @@ namespace atomic_dex
     qt_wallet_manager::delete_wallet(const QString& wallet_name) noexcept
     {
         using namespace std::string_literals;
-        return fs::remove(get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
+        return fs::remove(utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
     }
 
     bool
@@ -157,18 +149,18 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            spdlog::debug("{}", ec.message());
+            SPDLOG_DEBUG("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return false;
             }
         }
         using namespace std::string_literals;
-        const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+        const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
-            spdlog::warn("{}", ec.message());
+            SPDLOG_WARN("{}", ec.message());
             return false;
         }
         return true;
@@ -178,7 +170,7 @@ namespace atomic_dex
     qt_wallet_manager::load_wallet_cfg(const std::string& wallet_name)
     {
         using namespace std::string_literals;
-        const fs::path wallet_object_path = get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
+        const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
         std::ifstream  ifs(wallet_object_path.string());
 
         if (not ifs.is_open())
@@ -201,7 +193,7 @@ namespace atomic_dex
     qt_wallet_manager::update_wallet_cfg() noexcept
     {
         using namespace std::string_literals;
-        const fs::path wallet_object_path = get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
+        const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
         std::ofstream  ofs(wallet_object_path.string(), std::ios::trunc);
         if (not ofs.is_open())
         {
@@ -228,7 +220,7 @@ namespace atomic_dex
             if (it != m_wallet_cfg.address_book.end())
             {
                 //! Find this contact already exist do nothing
-                spdlog::trace("contact {} already exist, skipping", contact_name_str);
+                SPDLOG_DEBUG("contact {} already exist, skipping", contact_name_str);
                 return;
             }
             m_wallet_cfg.address_book.push_back(contact{.name = std::move(contact_name_str)});
@@ -240,7 +232,7 @@ namespace atomic_dex
             });
             if (it != m_wallet_cfg.address_book.end())
             {
-                spdlog::trace("old contact {} found, changing the contact name to: {}", old_contact_name_str, contact_name_str);
+                SPDLOG_DEBUG("old contact {} found, changing the contact name to: {}", old_contact_name_str, contact_name_str);
                 it->name = contact_name_str;
             }
         }
@@ -269,7 +261,7 @@ namespace atomic_dex
 
             if (it != m_wallet_cfg.address_book.end())
             {
-                spdlog::trace("add for contact {}, ticker {} entry", contact_name_str, new_ticker.toStdString());
+                SPDLOG_DEBUG("add for contact {}, ticker {} entry", contact_name_str, new_ticker.toStdString());
                 it->contents.emplace_back(contact_contents{.type = new_ticker.toStdString()});
             }
         }
@@ -294,7 +286,7 @@ namespace atomic_dex
     void
     qt_wallet_manager::update_contact_address(const QString& contact_name, const QString& ticker, const QString& address)
     {
-        spdlog::trace("update contact {} with ticker {} with the new address {}", contact_name.toStdString(), ticker.toStdString(), address.toStdString());
+        SPDLOG_DEBUG("update contact {} with ticker {} with the new address {}", contact_name.toStdString(), ticker.toStdString(), address.toStdString());
         std::string contact_name_str = contact_name.toStdString();
         auto        it               = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
             return cur_contact.name == contact_name_str;

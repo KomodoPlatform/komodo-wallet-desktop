@@ -20,6 +20,7 @@ namespace atomic_dex
 {
     enum e_http_code
     {
+        ok                = 200,
         bad_request       = 400,
         too_many_requests = 429
     };

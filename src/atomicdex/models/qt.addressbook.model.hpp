@@ -16,15 +16,16 @@
 
 #pragma once
 
+//! Qt
 #include <QAbstractListModel>
 #include <QObject> //! QObject
 #include <QVariantList>
 
 //! Project include
-#include "qt.addressbook.proxy.filter.model.hpp"
-#include "qt.contact.model.hpp"
-#include "src/atomicdex/data/wallet/qt.addressbook.contact.contents.hpp"
-#include "src/atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/data/wallet/qt.addressbook.contact.contents.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
+#include "atomicdex/models/qt.contact.model.hpp"
 
 namespace atomic_dex
 {
@@ -43,14 +44,14 @@ namespace atomic_dex
       public:
         explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
         ~addressbook_model() noexcept final;
-        [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
-        [[nodiscard]] int      rowCount(const QModelIndex& parent = QModelIndex()) const final;
-        bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
-        bool                   removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
-        void                   initializeFromCfg();
-        Q_INVOKABLE void       add_contact_entry();
-        Q_INVOKABLE void       remove_at(int position);
-        Q_INVOKABLE void       cleanup();
+        [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
+        [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        bool                                 insertRows(int position, int rows, const QModelIndex& parent) final;
+        bool                                 removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
+        void                                 initializeFromCfg();
+        Q_INVOKABLE void                     add_contact_entry();
+        Q_INVOKABLE void                     remove_at(int position);
+        Q_INVOKABLE void                     cleanup();
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
         //! Properties

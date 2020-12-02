@@ -14,14 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "wallet.cfg.hpp"
+#include "atomicdex/config/wallet.cfg.hpp"
 
 namespace atomic_dex
 {

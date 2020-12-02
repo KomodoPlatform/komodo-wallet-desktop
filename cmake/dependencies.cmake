@@ -84,7 +84,7 @@ FetchContent_Declare(
 
 FetchContent_Declare(
         reproc
-        URL https://github.com/KomodoPlatform/reproc/archive/v13.0.1.zip
+        URL https://github.com/KomodoPlatform/reproc/archive/v14.2.1.zip
 )
 
 set(EXPECTED_ENABLE_TESTS OFF CACHE BOOL "Override option" FORCE)
@@ -153,8 +153,8 @@ add_library(komodo-sodium::sodium ALIAS komodo-sodium)
 ## Unofficial BTC
 add_library(unofficial-bitcoin INTERFACE)
 if (WIN32)
-    target_link_directories(unofficial-bitcoin INTERFACE ${PROJECT_SOURCE_DIR}/wally)
-    target_link_libraries(unofficial-bitcoin INTERFACE wally)
+    #target_link_directories(unofficial-	bitcoin INTERFACE ${PROJECT_SOURCE_DIR}/wally)
+    target_link_libraries(unofficial-bitcoin INTERFACE ${PROJECT_SOURCE_DIR}/wally/wally.lib)
     target_include_directories(unofficial-bitcoin INTERFACE ${PROJECT_SOURCE_DIR}/wally)
 else ()
     find_library(unofficial-secp secp256k1)

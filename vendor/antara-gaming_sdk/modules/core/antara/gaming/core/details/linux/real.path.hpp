@@ -16,19 +16,20 @@
 
 #pragma once
 
-#include <boost/filesystem.hpp>
 #include <string>
 #include <unistd.h> //! getpid()
 
+#include "../../portable.filesystem.hpp"
+
 namespace antara::gaming::core::details
 {
-    boost::filesystem::path
+    fs::path
     binary_real_path() noexcept
     {
-        return boost::filesystem::read_symlink("/proc/" + std::to_string(getpid()) + "/exe");
+        return fs::read_symlink("/proc/" + std::to_string(getpid()) + "/exe");
     }
 
-    boost::filesystem::path
+    fs::path
     assets_real_path() noexcept
     {
         return binary_real_path().parent_path().parent_path() / "share/assets/";

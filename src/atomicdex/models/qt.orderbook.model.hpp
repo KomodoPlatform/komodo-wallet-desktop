@@ -24,7 +24,7 @@
 
 //! Project
 #include "atomicdex/api/mm2/mm2.hpp"
-#include "qt.orderbook.proxy.model.hpp"
+#include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 
 namespace atomic_dex
 {
@@ -43,17 +43,20 @@ namespace atomic_dex
         enum OrderbookRoles
         {
             PriceRole,
+            CoinRole,
             QuantityRole,
             TotalRole,
             UUIDRole,
             IsMineRole,
             PriceDenomRole,
             PriceNumerRole,
+            QuantityDenomRole,
+            QuantityNumerRole,
             PercentDepthRole
         };
 
         orderbook_model(kind orderbook_kind, QObject* parent = nullptr);
-        ~orderbook_model() noexcept final;
+        ~orderbook_model() noexcept final = default;
 
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;

@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include "src/atomicdex/utilities/global.utilities.hpp"
-#include "src/atomicdex/version/version.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/version/version.hpp"
 
 namespace atomic_dex
 {
@@ -26,15 +26,16 @@ namespace atomic_dex
 
     struct mm2_config
     {
-        std::string gui{"AtomicDex Desktop "s + atomic_dex::get_version()};
-        int64_t     netid{9999};
+        std::string              gui{"AtomicDex Desktop "s + atomic_dex::get_version()};
+        int64_t                  netid{7777};
+        std::vector<std::string> seednodes{"195.201.91.96", "195.201.91.53", "168.119.174.126"};
 #ifdef _WIN32
         std::string userhome{std::getenv("HOMEPATH")};
 #else
         std::string userhome{std::getenv("HOME")};
 #endif
         std::string passphrase;
-        std::string dbdir{(get_atomic_dex_data_folder() / "mm2" / "DB").string()};
+        std::string dbdir{(utils::get_atomic_dex_data_folder() / "mm2" / "DB").string()};
         std::string rpc_password{"atomic_dex_mm2_passphrase"};
     };
 
@@ -63,5 +64,9 @@ namespace atomic_dex
         j["passphrase"]   = cfg.passphrase;
         j["rpc_password"] = cfg.rpc_password;
         j["dbdir"]        = cfg.dbdir;
+        if (not cfg.seednodes.empty())
+        {
+            j["seednodes"] = cfg.seednodes;
+        }
     }
 } // namespace atomic_dex

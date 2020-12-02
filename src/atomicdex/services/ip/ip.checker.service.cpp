@@ -26,17 +26,17 @@
 
 namespace
 {
-    web::http::client::http_client_config g_cfg{[]() {
+    web::http::client::http_client_config g_ip_cfg{[]() {
         web::http::client::http_client_config cfg;
         cfg.set_timeout(std::chrono::seconds(5));
         return cfg;
     }()};
 
-    t_http_client_ptr g_ip_proxy_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3335"), g_cfg)};
-    t_http_client_ptr g_ipify_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.ipify.org"), g_cfg)};
+    t_http_client_ptr g_ip_proxy_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3335"), g_ip_cfg)};
+    t_http_client_ptr g_ipify_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.ipify.org"), g_ip_cfg)};
 
     pplx::task<web::http::http_response>
-    async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
+    async_check_retrieve_ip(t_http_client_ptr& client, const std::string& uri)
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
@@ -54,14 +54,14 @@ namespace atomic_dex
     ip_service_checker::ip_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
     {
         using namespace std::chrono_literals;
-        m_update_clock            = std::chrono::high_resolution_clock::now();
+        m_update_clock = std::chrono::high_resolution_clock::now();
 #if !defined(DISABLE_GEOBLOCKING)
         auto ip_validator_functor = [this](std::string ip) {
-            async_check_retrieve(g_ip_proxy_client, "/api/v1/ip_infos/" + ip)
+            async_check_retrieve_ip(g_ip_proxy_client, "/api/v1/ip_infos/" + ip)
                 .then([this, ip](web::http::http_response resp) {
                     if (resp.status_code() == 200)
                     {
-                        spdlog::info("Successfully retrieve ip informations of {}", ip);
+                        SPDLOG_INFO("Successfully retrieve ip informations of {}", ip);
                         std::string body   = TO_STD_STR(resp.extract_string(true).get());
                         auto        answer = nlohmann::json::parse(body);
                         this->m_country    = answer.at("country").get<std::string>();
@@ -70,23 +70,23 @@ namespace atomic_dex
                             this->m_external_ip_authorized = false;
                             emit this->ipCountryChanged();
                             emit this->ipAuthorizedStatusChanged();
-                            spdlog::error("ip {} is not authorized in your country: {}", ip, m_country.get());
+                            SPDLOG_ERROR("ip {} is not authorized in your country: {}", ip, m_country.get());
                         }
                         else
                         {
-                            spdlog::info("ip {} is authorized in your country -> {}", ip, m_country.get());
+                            SPDLOG_INFO("ip {} is authorized in your country -> {}", ip, m_country.get());
                         }
                     }
                 })
                 .then(&handle_exception_pplx_task);
         };
-        async_check_retrieve(g_ipify_client, "")
+        async_check_retrieve_ip(g_ipify_client, "")
             .then([this, ip_validator_functor](web::http::http_response resp) {
                 if (resp.status_code() == 200)
                 {
                     std::string ip      = TO_STD_STR(resp.extract_string(true).get());
                     this->m_external_ip = ip;
-                    spdlog::info("my ip address is: [{}]", ip);
+                    SPDLOG_INFO("my ip address is: [{}]", ip);
                     ip_validator_functor(ip);
                 }
             })

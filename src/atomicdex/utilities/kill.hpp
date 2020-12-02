@@ -16,7 +16,9 @@
 
 #pragma once
 
+#include <entt/core/attribute.h>
+
 namespace atomic_dex
 {
-    void kill_executable(const char* exec_name);
+    ENTT_API void kill_executable(const char* exec_name);
 }

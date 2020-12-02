@@ -21,11 +21,7 @@ target_compile_options(
 ##! We are using C++ 17 for all of our targets
 add_library(antara_defaults_features INTERFACE)
 add_library(antara::defaults_features ALIAS antara_defaults_features)
-if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    target_compile_features(antara_defaults_features INTERFACE cxx_std_17)
-else()
-    target_compile_features(antara_defaults_features INTERFACE cxx_std_20)
-endif()
+target_compile_features(antara_defaults_features INTERFACE cxx_std_17)
 
 add_library(antara_optimize_settings INTERFACE)
 add_library(antara::optimize_settings ALIAS antara_optimize_settings)
@@ -51,6 +47,14 @@ target_compile_options(antara_optimize_settings INTERFACE
         $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/Zi /FS /DEBUG /Od /MDd /Oy->
         $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:MSVC>>:/Ox -DNDEBUG>
         $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Windows>,$<BOOL:${ClangCL}>>:/Ox -DNDEBUG>
+        )
+target_compile_definitions(antara_optimize_settings INTERFACE
+        $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Linux>>:NDEBUG>
+        $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Linux>>:DEBUG>
+        $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Darwin>>:NDEBUG>
+        $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Darwin>>:-DEBUG>
+        $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:AppleClang>,$<PLATFORM_ID:Darwin>>:NDEBUG>
+        $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:AppleClang>,$<PLATFORM_ID:Darwin>>:DEBUG>
         )
 
 add_library(antara_default_settings INTERFACE)

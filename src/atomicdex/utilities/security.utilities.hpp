@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! Deps
 #include <sodium/crypto_secretstream_xchacha20poly1305.h>
 

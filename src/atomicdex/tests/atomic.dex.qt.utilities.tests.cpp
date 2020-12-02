@@ -14,8 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Deps
+/*#include <nlohmann/json.hpp>
+
 #include "src/atomicdex/pch.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
+#include "src/atomicdex/utilities/qt.utilities.hpp"*/
 #include <doctest/doctest.h>
 
 TEST_CASE("simple ping")

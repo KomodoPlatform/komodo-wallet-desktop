@@ -14,15 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
+#include <nlohmann/json.hpp>
 #include <range/v3/view.hpp>
 
 //! Project Headers
-#include "coinpaprika.hpp"
-#include "src/atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/api/coinpaprika/coinpaprika.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace
 {
@@ -38,8 +36,6 @@ namespace atomic_dex
         void
         to_json(nlohmann::json& j, const price_converter_request& evt)
         {
-            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
             j["base_currency_id"]  = evt.base_currency_id;
             j["quote_currency_id"] = evt.quote_currency_id;
             j["amount"]            = 1;
@@ -48,8 +44,6 @@ namespace atomic_dex
         void
         from_json(const nlohmann::json& j, price_converter_answer& evt)
         {
-            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
             utils::my_json_sax sx;
             nlohmann::json::sax_parse(j.dump(), &sx);
 
@@ -85,7 +79,6 @@ namespace atomic_dex
             req.set_method(web::http::methods::GET);
             auto&& [base_id, quote_id] = request;
             const auto url             = "/price-converter?base_currency_id="s + base_id + "&quote_currency_id="s + quote_id + "&amount=1"s;
-            spdlog::info("url: {}", url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);
         }
@@ -110,7 +103,7 @@ namespace atomic_dex
                     url.append(",");
                 }
             }
-            spdlog::info("url: {}", url);
+            SPDLOG_INFO("url: {}", url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);
         }
@@ -122,8 +115,8 @@ namespace atomic_dex
             web::http::http_request req;
             req.set_method(web::http::methods::GET);
             auto&& [ticker_id, timestamp, interval] = request;
-            const auto url = "/tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
-            spdlog::info("url: {}", url);
+            const auto url                          = "/tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
+            SPDLOG_INFO("url: {}", url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);
         }

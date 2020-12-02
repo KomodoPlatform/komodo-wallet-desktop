@@ -17,25 +17,18 @@
 //! QT
 #include <QJsonDocument>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project
-#include "qt.contact.model.hpp"
+#include "atomicdex/models/qt.contact.model.hpp"
 
 namespace atomic_dex
 {
     contact_model::contact_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent) noexcept :
         QAbstractListModel(parent), m_wallet_manager(wallet_manager_)
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("contact model created");
     }
 
     contact_model::~contact_model() noexcept
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("contact model destroyed");
     }
 
     QString
@@ -49,7 +42,6 @@ namespace atomic_dex
     {
         if (name != m_name)
         {
-            spdlog::trace("name {} changed to {}", m_name.toStdString(), name.toStdString());
             this->m_wallet_manager.update_or_insert_contact_name(m_name, name);
             this->m_wallet_manager.update_wallet_cfg();
             m_name = name;
@@ -91,7 +83,6 @@ namespace atomic_dex
         case TypeRole:
             if (value.toString() != item.type)
             {
-                spdlog::trace("changing contact {} ticker {} to {}", this->m_name.toStdString(), item.type.toStdString(), value.toString().toStdString());
                 this->m_wallet_manager.update_contact_ticker(this->m_name, item.type, value.toString());
                 this->m_wallet_manager.update_wallet_cfg();
                 item.type = value.toString();
@@ -101,7 +92,6 @@ namespace atomic_dex
             if (value.toString() != item.address)
             {
                 item.address = value.toString();
-                spdlog::trace("changing contact {} ticker {} to address {}", this->m_name.toStdString(), item.type.toStdString(), item.address.toStdString());
                 this->m_wallet_manager.update_contact_address(this->m_name, item.type, item.address);
                 this->m_wallet_manager.update_wallet_cfg();
                 emit addressesChanged();
@@ -132,7 +122,6 @@ namespace atomic_dex
     bool
     atomic_dex::contact_model::insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
-        spdlog::trace("(contact_model::insertRows) inserting {} elements at position {}", rows, position);
         beginInsertRows(QModelIndex(), position, position + rows - 1);
 
         for (int row = 0; row < rows; ++row) { this->m_addresses.insert(position, qt_contact_address_contents{}); }
@@ -145,7 +134,6 @@ namespace atomic_dex
     bool
     atomic_dex::contact_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
-        spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
         for (int row = 0; row < rows; ++row)

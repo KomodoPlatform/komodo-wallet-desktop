@@ -18,26 +18,26 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
+//! Deps
+#include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "qt.candlestick.charts.model.hpp"
-#include "src/atomicdex/services/ohlc/ohlc.provider.hpp"
+#include "atomicdex/models/qt.candlestick.charts.model.hpp"
+#include "atomicdex/services/ohlc/ohlc.provider.hpp"
 
 namespace atomic_dex
 {
     candlestick_charts_model::candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent) :
         QAbstractTableModel(parent), m_system_manager(system_manager)
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("candlestick charts model created");
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("candlestick charts model created");
     }
 
     candlestick_charts_model::~candlestick_charts_model() noexcept
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("candlestick charts model destroyed");
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("candlestick charts model destroyed");
     }
 
     int
@@ -140,8 +140,9 @@ namespace atomic_dex
         }
         emit chartFullyModelReset();
 
-        if (m_model_data.empty()) {
-            //this->set_is_currently_fetching(false);
+        if (m_model_data.empty())
+        {
+            // this->set_is_currently_fetching(false);
             return;
         }
         double max_value = std::numeric_limits<double>::min();
@@ -158,7 +159,7 @@ namespace atomic_dex
                 max_value = max_to_compare;
             }
         }
-        spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
+        SPDLOG_DEBUG("new range value IS: min: {} / max: {}", min_value, max_value);
         this->set_global_min_value(min_value);
         this->set_global_max_value(max_value);
 
@@ -202,11 +203,11 @@ namespace atomic_dex
         //! If it's already empty dont reset the model
         if (this->m_model_data.empty())
         {
-            spdlog::trace("already empty, skipping");
+            SPDLOG_DEBUG("already empty, skipping");
             return;
         }
 
-        spdlog::trace("clearing the chart candlestick model");
+        SPDLOG_DEBUG("clearing the chart candlestick model");
         beginResetModel();
         this->m_model_data.clear();
         this->set_min_value(0);
@@ -486,8 +487,8 @@ namespace atomic_dex
         QVariantMap out;
 
         auto it = std::lower_bound(rbegin(m_model_data), rend(m_model_data), timestamp, [](const nlohmann::json& current_json, int timestamp) {
-          int res = current_json.at("timestamp").get<int>();
-          return timestamp < res;
+            int res = current_json.at("timestamp").get<int>();
+            return timestamp < res;
         });
 
         if (it != m_model_data.rend())

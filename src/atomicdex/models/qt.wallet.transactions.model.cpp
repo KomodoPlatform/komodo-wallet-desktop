@@ -1,44 +1,35 @@
-//! PCH
-#include "src/atomicdex/pch.hpp"
+/******************************************************************************
+ * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
 
 //! Project Headers
+#include "atomicdex/models/qt.wallet.transactions.model.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
-#include "qt.wallet.transactions.model.hpp"
-#include "src/atomicdex/managers/qt.wallet.manager.hpp"
-#include "src/atomicdex/pages/qt.settings.page.hpp"
-
-namespace
-{
-    template <typename TModel>
-    auto
-    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
-    {
-        if (auto prev_value = model.data(idx, role); value != prev_value)
-        {
-            model.setData(idx, value, role);
-            return std::make_tuple(prev_value, value, true);
-        }
-        return std::make_tuple(value, value, false);
-    }
-} // namespace
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
     transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
         QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new transactions_proxy_model(this))
     {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("transactions model created");
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(TimestampRole);
         this->m_model_proxy->sort(0);
-    }
-
-    transactions_model::~transactions_model() noexcept
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("transactions model destroyed");
     }
 
     QHash<int, QByteArray>
@@ -191,7 +182,7 @@ namespace atomic_dex
     {
         if (m_model_data.size() == 0)
         {
-            spdlog::trace("first time initialization, inserting {} transactions", transactions.size());
+            SPDLOG_DEBUG("first time initialization, inserting {} transactions", transactions.size());
             //! First time insertion
             beginResetModel();
             m_model_data = transactions;
@@ -201,7 +192,7 @@ namespace atomic_dex
         else
         {
             //! Other time insertion
-            spdlog::trace("other time insertion, from {} to {}", m_file_count, m_file_count + transactions.size());
+            SPDLOG_DEBUG("other time insertion, from {} to {}", m_file_count, m_file_count + transactions.size());
             beginInsertRows(QModelIndex(), m_file_count, m_file_count + transactions.size() - 1);
             m_file_count += transactions.size();
             if (m_model_data.size() < 50)
@@ -218,7 +209,7 @@ namespace atomic_dex
                 this->fetchMore(QModelIndex());
             }
         }
-        spdlog::trace("transactions model size: {}", rowCount());
+        SPDLOG_DEBUG("transactions model size: {}", rowCount());
         emit lengthChanged();
     }
 
@@ -241,13 +232,13 @@ namespace atomic_dex
     {
         if (m_model_data.size() > transactions.size())
         {
-            spdlog::warn("old model data already bigger than the new one, bypassing");
+            SPDLOG_WARN("old model data already bigger than the new one, bypassing");
             return;
         }
         t_transactions to_init;
         auto           difference = transactions.size() - this->m_model_data.size();
-        spdlog::trace("difference between old transactions call and new transactions is: {}", difference);
-        spdlog::trace("new transactions size is: {}, old one is: {}", transactions.size(), m_model_data.size());
+        SPDLOG_DEBUG("difference between old transactions call and new transactions is: {}", difference);
+        SPDLOG_DEBUG("new transactions size is: {}, old one is: {}", transactions.size(), m_model_data.size());
         if (difference > 0)
         {
             //! Take all the unconfirmed transaction
@@ -272,12 +263,12 @@ namespace atomic_dex
             //! There is new transactions take the diff
             // to_init = t_transactions(transactions.begin(), transactions.begin() + difference);
         }
-        spdlog::trace("updating transactions");
+        SPDLOG_DEBUG("updating transactions");
         std::for_each(begin(transactions) + difference, end(transactions), [this](const tx_infos& tx) { this->update_transaction(tx); });
         if (not to_init.empty())
         {
-            spdlog::trace("to init transactions started: {}", to_init.size());
-            spdlog::trace("hash: {}", to_init[0].tx_hash);
+            SPDLOG_DEBUG("to init transactions started: {}", to_init.size());
+            SPDLOG_DEBUG("hash: {}", to_init[0].tx_hash);
             this->init_transactions(to_init);
         }
     }
@@ -307,7 +298,7 @@ namespace atomic_dex
         {
             return;
         }
-        spdlog::trace("fetching {} transactions, total tx: {}", items_to_fetch, m_model_data.size());
+        SPDLOG_DEBUG("fetching {} transactions, total tx: {}", items_to_fetch, m_model_data.size());
         beginInsertRows(QModelIndex(), m_file_count, m_file_count + items_to_fetch - 1);
         m_file_count += items_to_fetch;
         endInsertRows();

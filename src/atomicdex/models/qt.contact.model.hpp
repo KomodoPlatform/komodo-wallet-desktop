@@ -22,7 +22,7 @@
 #include <QVariantList>
 
 //! Project
-#include "src/atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
