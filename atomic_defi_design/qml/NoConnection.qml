@@ -8,7 +8,6 @@ import "Components"
 
 Rectangle {
     id: app
-    visible: !API.app.internet_checker.internet_reacheable
     color: Style.colorTheme8
 
     ColumnLayout {

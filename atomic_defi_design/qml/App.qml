@@ -17,18 +17,13 @@ Rectangle {
         return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
     }
 
-    function cleanApp() {
-        dashboard.reset()
-    }
 
     function onDisconnect() { openFirstLaunch() }
 
     function openFirstLaunch(force=false, set_wallet_name=true) {
         if(set_wallet_name) selected_wallet_name = API.app.wallet_default_name
-        cleanApp()
 
         current_page = force ? idx_first_launch : firstPage()
-        first_launch.updateWallets()
     }
 
     Component.onCompleted: openFirstLaunch()
@@ -41,62 +36,85 @@ Rectangle {
     readonly property int idx_dashboard: 5
     property int current_page
 
-    onCurrent_pageChanged: {
-        if(current_page === idx_new_user) {
-            new_user.onOpened()
-        }
+    Component {
+        id: no_connection
+
+        NoConnection {}
     }
 
-    NoConnection {
-        id: no_connection_page
-        anchors.fill: parent
-    }
-
-    StackLayout {
-        visible: !no_connection_page.visible
-
-        anchors.fill: parent
-
-        currentIndex: current_page
-        onCurrentIndexChanged: {
-            if(current_page === idx_login)
-                login.forceActiveFocus()
-        }
+    Component {
+        id: first_launch
 
         FirstLaunch {
-            id: first_launch
             onClickedNewUser: () => { current_page = idx_new_user }
             onClickedRecoverSeed: () => { current_page = idx_recover_seed }
             onClickedWallet: () => { current_page = idx_login }
         }
+    }
+
+    Component {
+        id: recover_seed
 
         RecoverSeed {
             onClickedBack: () => { openFirstLaunch() }
             postConfirmSuccess: () => { openFirstLaunch(false, false) }
         }
+    }
+
+    Component {
+        id: new_user
 
         NewUser {
-            id: new_user
             onClickedBack: () => { openFirstLaunch() }
             postCreateSuccess: () => { openFirstLaunch(false, false) }
+            Component.onCompleted: console.log("Initialized new user")
         }
+    }
+
+    Component {
+        id: login
 
         Login {
-            id: login
             onClickedBack: () => { openFirstLaunch(true) }
             postLoginSuccess: () => {
                 current_page = idx_initial_loading
                 cleanApp()
             }
+            Component.onCompleted: console.log("Initialized login")
         }
+    }
+
+    Component {
+        id: initial_loading
 
         InitialLoading {
-            id: initial_loading
             onLoaded: () => { current_page = idx_dashboard }
         }
+    }
 
-        Dashboard {
-            id: dashboard
+
+    Component {
+        id: dashboard
+
+        Dashboard {}
+    }
+
+    Loader {
+        id: loader
+        anchors.fill: parent
+        sourceComponent: {
+            if(!API.app.internet_checker.internet_reacheable)
+                return no_connection
+
+            switch(current_page) {
+            case idx_dashboard: return dashboard
+            case idx_first_launch: return first_launch
+            case idx_initial_loading: return initial_loading
+            case idx_login: return login
+            case idx_new_user: return new_user
+            case idx_recover_seed: return recover_seed
+            default: return undefined
+            }
         }
     }
 

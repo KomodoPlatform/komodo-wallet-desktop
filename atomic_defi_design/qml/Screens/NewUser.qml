@@ -20,6 +20,12 @@ SetupPage {
     property int current_word_idx: 0
     property int guess_count: 1
 
+    Component.onCompleted: onOpened()
+
+    function onOpened() {
+        current_mnemonic = API.app.get_mnemonic()
+    }
+
     function getWords() {
         return current_mnemonic.split(" ")
     }
@@ -58,10 +64,6 @@ SetupPage {
 
     function isFinalGuess() {
         return guess_count === 3
-    }
-
-    function onOpened() {
-        current_mnemonic = API.app.get_mnemonic()
     }
 
     // Local

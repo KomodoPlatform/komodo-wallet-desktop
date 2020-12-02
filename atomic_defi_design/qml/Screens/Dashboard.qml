@@ -38,6 +38,8 @@ Item {
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
 
+    Component.onCompleted: reset()
+
     function reset() {
         // Fill all coins list
         General.all_coins = API.app.get_all_coins()

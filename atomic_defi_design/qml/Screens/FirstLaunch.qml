@@ -12,6 +12,8 @@ SetupPage {
     property var onClickedRecoverSeed: () => {}
     property var onClickedWallet: () => {}
 
+    Component.onCompleted: updateWallets()
+
     // Local
     function updateWallets() {
         wallets = API.app.get_wallets()
