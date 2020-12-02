@@ -27,7 +27,7 @@
 
 namespace atomic_dex
 {
-    class addressbook_contact_addresses_model : public QAbstractTableModel
+    class addressbook_contact_addresses_model final : public QAbstractTableModel
     {
         /// \brief Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
@@ -51,7 +51,7 @@ namespace atomic_dex
         /// {@
     
         explicit addressbook_contact_addresses_model(ag::ecs::system_manager& system_manager, const QString& name, QString type, QObject* parent = nullptr);
-        ~addressbook_contact_addresses_model() noexcept final;
+        ~addressbook_contact_addresses_model() noexcept;
     
         /// @} End of Constructors section.
     

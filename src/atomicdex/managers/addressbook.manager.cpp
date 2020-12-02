@@ -42,12 +42,12 @@ namespace atomic_dex
         return m_data.at(pos);
     }
     
-    inline const nlohmann::json& addressbook_manager::data() const noexcept
+    const nlohmann::json& addressbook_manager::data() const noexcept
     {
         return m_data;
     }
     
-    inline nlohmann::json& addressbook_manager::data() noexcept
+    nlohmann::json& addressbook_manager::data() noexcept
     {
         return m_data;
     }
