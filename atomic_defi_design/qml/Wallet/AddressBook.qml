@@ -127,7 +127,7 @@ ColumnLayout {
                                 font.pixelSize: Style.textSizeSmall3
 
                                 onClicked: {
-                                    api.addressbook_mdl.remove_contact(index, modelData.name)
+                                    api.model.remove_contact(index, modelData.name)
                                 }
                             }
                         }

@@ -84,7 +84,6 @@ BasicModal {
                         text: styleData.value
                         font.pixelSize: Style.textSizeSmall4
                         width: styleData.column === 0 ? wallet_info_key_column.width : wallet_info_value_column.width
-                        height: wallet_info_row_rect.implicitHeight
                     }
                 }
 
@@ -121,7 +120,10 @@ BasicModal {
                     text: qsTr("Remove")
 
                     onClicked: {
-                        modelData[wallet_info_type_select.currentIndex].remove_address_entry(wallet_info_table.currentRow)
+                        if (wallet_info_table.currentRow >= 0)
+                        {
+                            wallet_info_type_select.currentValue.remove_address_entry(wallet_info_table.currentRow)
+                        }
                     }
                 }
             }
@@ -130,7 +132,7 @@ BasicModal {
             BasicModal {
                 id: wallet_info_address_creation
 
-                width: 400
+                width: 500
 
                 ModalContent {
                     Layout.topMargin: 5
@@ -140,6 +142,8 @@ BasicModal {
 
                     TextFieldWithTitle {
                         id: contact_new_address_key
+
+                        width: 100
 
                         title: qsTr("Key")
 
@@ -153,7 +157,7 @@ BasicModal {
                     TextFieldWithTitle {
                         id: contact_new_address_value
 
-                        Layout.fillWidth: true
+                        width: 100
 
                         title: qsTr("Value")
 
@@ -174,7 +178,7 @@ BasicModal {
 
                             onClicked: {
                                 wallet_info_address_creation.close();
-                                modelData[wallet_info_type_select.currentIndex].add_address_entry(contact_new_address_key.field.text, contact_new_address_value.field.text)
+                                wallet_info_type_select.currentValue.add_address_entry(contact_new_address_key.field.text, contact_new_address_value.field.text);
                                 contact_new_address_key.field.text = "";
                                 contact_new_address_value.field.text = "";
                             }
@@ -184,9 +188,9 @@ BasicModal {
                             text: qsTr("Cancel")
 
                             onClicked: {
+                                wallet_info_address_creation.close();
                                 contact_new_address_key.field.text = "";
                                 contact_new_address_value.field.text = "";
-                                wallet_info_address_creation.close();
                             }
                         }
                     }
