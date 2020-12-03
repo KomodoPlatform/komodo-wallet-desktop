@@ -162,10 +162,12 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/coins.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/wallet.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/addressbook.cfg.cpp
 
         ##! Managers
         ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/notification.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/qt.wallet.manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/addressbook.manager.cpp
 
         ##! API
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
@@ -179,7 +181,8 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.candlestick.charts.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.contact.addresses.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.model.cpp
@@ -285,6 +288,16 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
+
+        ##! Utilities
+        src/atomicdex/tests/utilities/qt.utilities.tests.cpp
+
+        ##! Managers
+        src/atomicdex/tests/managers/addressbook.manager.tests.cpp
+
+        ##! Models
+        src/atomicdex/tests/models/qt.addressbook.contact.model.tests.cpp
+
         src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomicdex-desktop
@@ -296,7 +309,7 @@ target_include_directories(atomicdex-desktop PUBLIC src)
 
 target_link_libraries(atomicdex-desktop_tests
         PUBLIC
-        #atomicdex-desktop_shared_deps
+        atomicdex-desktop_shared_deps
         doctest::doctest)
 
 ##! Setting output directory

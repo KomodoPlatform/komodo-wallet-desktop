@@ -39,6 +39,7 @@
 #include "atomicdex/models/qt.addressbook.model.hpp"
 #include "atomicdex/models/qt.candlestick.charts.model.hpp"
 #include "atomicdex/models/qt.orders.model.hpp"
+#include "atomicdex/models/qt.addressbook.model.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
@@ -63,7 +64,6 @@ namespace atomic_dex
 
         //! Properties
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
-        Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
@@ -73,6 +73,7 @@ namespace atomic_dex
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
+        Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook_model NOTIFY addressbookModelChanged)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
 
@@ -127,13 +128,13 @@ namespace atomic_dex
         mm2_service&               get_mm2() noexcept;
         const mm2_service&         get_mm2() const noexcept;
         entt::dispatcher&          get_dispatcher() noexcept;
-        addressbook_model*         get_addressbook() const noexcept;
         portfolio_page*            get_portfolio_page() const noexcept;
         wallet_page*               get_wallet_page() const noexcept;
         orders_model*              get_orders() const noexcept;
         notification_manager*      get_notification_manager() const noexcept;
         trading_page*              get_trading_page() const noexcept;
         settings_page*             get_settings_page() const noexcept;
+        addressbook_model*         get_addressbook_model() const noexcept;
         internet_service_checker*  get_internet_checker() const noexcept;
         ip_service_checker*        get_ip_checker() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
@@ -193,13 +194,13 @@ namespace atomic_dex
         void onStatusChanged();
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();
-        void addressbookChanged();
         void portfolioPageChanged();
         void walletPageChanged();
         void updateStatusChanged();
         void ordersChanged();
         void tradingPageChanged();
         void settingsPageChanged();
+        void addressbookModelChanged();
         void internetCheckerChanged();
         void ipCheckerChanged();
       public slots:

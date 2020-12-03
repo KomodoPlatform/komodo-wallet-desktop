@@ -14,31 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
 //! Deps
-#include <nlohmann/json_fwd.hpp>
-#include <boost/thread/synchronized_value.hpp>
+#include <doctest/doctest.h>
 
-namespace atomic_dex
+#include "atomicdex/utilities/qt.utilities.hpp"
+
+TEST_CASE("qt_variant_list_to_qt_string_list")
 {
-    struct transactions_contents
-    {
-        std::string note;
-        std::string category;
-    };
-
-    void to_json(nlohmann::json& j, const transactions_contents& cfg);
-    void from_json(const nlohmann::json& j, transactions_contents& cfg);
-
-    struct wallet_cfg
-    {
-        using t_synchronized_transactions_details = boost::synchronized_value<std::unordered_map<std::string, transactions_contents>>;
-        std::string                         name{};
-        std::string                         protection_pass{"default_protection_pass"};
-        t_synchronized_transactions_details transactions_details;
-    };
-
-    void from_json(const nlohmann::json& j, wallet_cfg& cfg);
-    void to_json(nlohmann::json& j, const wallet_cfg& cfg);
-} // namespace atomic_dex
+    QVariantList variant_list;
+    
+    variant_list.append(QString{"one"});
+    variant_list.append(QString{"two"});
+    variant_list.append(QString{"three"});
+    
+    QStringList result = atomic_dex::qt_variant_list_to_qt_string_list(variant_list);
+    
+    CHECK(result.size() == 3);
+    CHECK(result[0] == "one");
+    CHECK(result[1] == "two");
+    CHECK(result[2] == "three");
+}
