@@ -16,13 +16,14 @@
 
 #pragma once
 
-#include <entt/core/type_traits.hpp>
 #include <entt/core/hashed_string.hpp>
 #include <entt/core/type_info.hpp>
+#include <entt/core/type_traits.hpp>
 
 namespace atomic_dex
 {
     using mm2_started                   = entt::tag<"mm2_started"_hs>;
+    using post_login                    = entt::tag<"post_login"_hs>;
     using gui_enter_trading             = entt::tag<"gui_enter_trading"_hs>;
     using gui_leave_trading             = entt::tag<"gui_leave_trading"_hs>;
     using mm2_initialized               = entt::tag<"mm2_running_and_enabling"_hs>;
@@ -32,7 +33,6 @@ namespace atomic_dex
     using refresh_update_status         = entt::tag<"gui_refresh_update_status"_hs>;
     using process_orders_finished       = entt::tag<"gui_process_orders_finished"_hs>;
     using process_swaps_finished        = entt::tag<"gui_process_swaps_finished"_hs>;
-    using refresh_all_portfolio_balance = entt::tag<"refresh_all_portfolio_balance"_hs>;
     using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;
     using current_currency_changed      = entt::tag<"update_orders_and_swap_values"_hs>;
 
@@ -56,7 +56,7 @@ namespace atomic_dex
     {
         bool with_update_model{true};
     };
-    
+
     struct process_orderbook_finished
     {
         bool is_a_reset;

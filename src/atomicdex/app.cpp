@@ -679,18 +679,18 @@ namespace atomic_dex
         return wallet_manager.create(password, seed, wallet_name);
     }
 
-    bool
+    /*bool
     application::login(const QString& password, const QString& wallet_name)
     {
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
         bool  res            = wallet_manager.login(password, wallet_name);
-        /*if (res)
+        if (res)
         {
             system_manager_.get_system<addressbook_manager>().load_configuration();
             qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"))->populate();
-        }*/
+        }
         return res;
-    }
+    }*/
 
     bool
     application::confirm_password(const QString& wallet_name, const QString& password)
