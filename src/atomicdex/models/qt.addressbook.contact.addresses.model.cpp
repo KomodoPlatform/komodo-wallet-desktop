@@ -121,9 +121,10 @@ namespace atomic_dex
 //! QML API implementation.
 namespace atomic_dex
 {
-    void addressbook_contact_addresses_model::add_address_entry()
+    void addressbook_contact_addresses_model::add_address_entry(QString key, QString value)
     {
         insertRow(rowCount());
+        m_model_data[rowCount() - 1] = address{.key = std::move(key), .value = std::move(value)};
     }
     
     void addressbook_contact_addresses_model::remove_address_entry(int row)

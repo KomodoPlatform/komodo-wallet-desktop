@@ -32,18 +32,7 @@ namespace atomic_dex
     addressbook_contact_model::addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent) :
         QAbstractListModel(parent), m_system_manager(system_manager), m_name(std::move(name))
     {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-        
-        if (!addrbook_manager.has_contact(m_name.toStdString()))
-        {
-            // Creates contact in persistent data if it's a new contact
-            addrbook_manager.add_contact(m_name.toStdString());
-        }
-        else
-        {
-            // Otherwise, loads existing data from persistent data.
-            populate();
-        }
+        populate();
     }
 }
 

@@ -147,6 +147,7 @@ namespace atomic_dex
             return false;
         }
     
+        addrbook_manager.add_contact(name.toStdString());
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         m_model_data.push_back(new addressbook_contact_model(m_system_manager, name, this));
         endInsertRows();

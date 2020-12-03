@@ -71,7 +71,7 @@ namespace atomic_dex
         /// \defgroup QML API.
         /// {@
         
-        Q_INVOKABLE void add_address_entry();
+        Q_INVOKABLE void add_address_entry(QString key, QString value);
 
         Q_INVOKABLE void remove_address_entry(int row);
         

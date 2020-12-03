@@ -57,29 +57,146 @@ BasicModal {
                 textRole: "type"
                 mainLineText: currentValue.type
             }
+
             //! Wallet information edition
             TableView {
                 id: wallet_info_table
                 model: wallet_info_type_select.currentValue
 
+                Layout.topMargin: 15
                 Layout.fillWidth: true
 
-                style: TableViewStyle {
-                    backgroundColor: Style.colorTheme5
-                    textColor: Style.colorWhite1
+                backgroundVisible: false
+
+                headerDelegate: DefaultRectangle {
                 }
 
+                rowDelegate: DefaultRectangle {
+                    id: wallet_info_row_rect
+
+                    radius: 0
+                    color: styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
+                }
+
+                itemDelegate: Item {
+                    DefaultText {
+                        Layout.alignment: Qt.AlignVCenter
+                        text: styleData.value
+                        font.pixelSize: Style.textSizeSmall4
+                        width: styleData.column === 0 ? wallet_info_key_column.width : wallet_info_value_column.width
+                        height: wallet_info_row_rect.implicitHeight
+                    }
+                }
+
+                //! Key column
                 TableViewColumn {
+                    id: wallet_info_key_column
+
                     role: "key"
                     title: "Key"
-                    width: parent.width / 2
+                    width: 200
                 }
+                //! Address column
                 TableViewColumn {
+                    id: wallet_info_value_column
+
                     role: "value"
-                    title: "Address";
-                    width: parent.width / 2
+                    title: "Address"
                 }
             }
+
+            //! Wallet information buttons
+            RowLayout {
+                //! Wallet address creation
+                PrimaryButton {
+                    text: qsTr("Add")
+
+                    onClicked: {
+                        wallet_info_address_creation.open();
+                    }
+                }
+
+                //! Wallet address deletion
+                DangerButton {
+                    text: qsTr("Remove")
+
+                    onClicked: {
+                        modelData[wallet_info_type_select.currentIndex].remove_address_entry(wallet_info_table.currentRow)
+                    }
+                }
+            }
+
+            //! Wallet information address creation modal
+            BasicModal {
+                id: wallet_info_address_creation
+
+                width: 400
+
+                ModalContent {
+                    Layout.topMargin: 5
+                    Layout.fillWidth: true
+
+                    title: qsTr("Add new address")
+
+                    TextFieldWithTitle {
+                        id: contact_new_address_key
+
+                        title: qsTr("Key")
+
+                        field.onTextChanged: {
+                            const max_length = 50
+                            if (field.text.length > max_length)
+                                field.text = field.text.substring(0, max_length)
+                        }
+                    }
+
+                    TextFieldWithTitle {
+                        id: contact_new_address_value
+
+                        Layout.fillWidth: true
+
+                        title: qsTr("Value")
+
+                        field.onTextChanged: {
+                            const max_length = 50
+                            if (field.text.length > max_length)
+                                field.text = field.text.substring(0, max_length)
+                        }
+                    }
+
+                    HorizontalLine {
+                        Layout.fillWidth: true
+                    }
+
+                    RowLayout {
+                        PrimaryButton {
+                            text: qsTr("Ok")
+
+                            onClicked: {
+                                wallet_info_address_creation.close();
+                                modelData[wallet_info_type_select.currentIndex].add_address_entry(contact_new_address_key.field.text, contact_new_address_value.field.text)
+                                contact_new_address_key.field.text = "";
+                                contact_new_address_value.field.text = "";
+                            }
+                        }
+
+                        DefaultButton {
+                            text: qsTr("Cancel")
+
+                            onClicked: {
+                                contact_new_address_key.field.text = "";
+                                contact_new_address_value.field.text = "";
+                                wallet_info_address_creation.close();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+            color: Style.colorWhite8
         }
 
         //! Categories section title

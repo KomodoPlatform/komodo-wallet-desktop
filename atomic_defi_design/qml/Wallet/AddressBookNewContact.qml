@@ -59,7 +59,7 @@ BasicModal {
                     }
 
                     var create_contact_result =
-                            addressbook.api.addressbook_mdl.add_contact(name_input.text.toString());
+                            addressbook.api.model.add_contact(name_input.text.toString());
 
                     if (create_contact_result === false)
                     {

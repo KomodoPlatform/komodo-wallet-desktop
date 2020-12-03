@@ -12,7 +12,7 @@ ColumnLayout {
     Layout.fillWidth: true
     spacing: 20
 
-    readonly property var api: API.app
+    readonly property var api: API.app.addressbook_pg
 
     //! This variable represents a margin size.
     readonly property int layout_margin: 30
@@ -57,7 +57,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: api.addressbook_mdl.addressbook_proxy_mdl
+        model: api.model.addressbook_proxy_mdl
 
         //! Contact card
         delegate: Item {
