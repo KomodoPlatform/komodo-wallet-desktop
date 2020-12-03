@@ -45,6 +45,16 @@ namespace atomic_dex
         
         /// \brief ag::ecs::pre_update_system implem
         void update() noexcept final;
+
+        //! Signals
+        void connect_signals() noexcept;
+        void disconnect_signals() noexcept;
+
+        //! Events
+        void on_post_login([[maybe_unused]] const post_login& evt) noexcept;
+
+        //! Public members functions
+        void clear() noexcept;
         
         /// \defgroup QML API
 

@@ -44,4 +44,34 @@ namespace atomic_dex
     {
         return m_model;
     }
+
+    void
+    addressbook_page::connect_signals() noexcept
+    {
+        SPDLOG_INFO("connecting addressbook signals");
+        dispatcher_.sink<post_login>().connect<&addressbook_page::on_post_login>(*this);
+    }
+
+    void
+    addressbook_page::disconnect_signals() noexcept
+    {
+        SPDLOG_INFO("disconnecting addressbook signals");
+        dispatcher_.sink<post_login>().disconnect<&addressbook_page::on_post_login>(*this);
+    }
+
+    void
+    addressbook_page::on_post_login([[maybe_unused]] const post_login& evt) noexcept
+    {
+        SPDLOG_INFO("post_login: filling addressbook from cfg");
+        m_system_manager.get_system<addressbook_manager>().load_configuration();
+        m_model->populate();
+    }
+
+    void
+    addressbook_page::clear() noexcept
+    {
+        SPDLOG_INFO("clear addressbook page");
+        m_system_manager.get_system<addressbook_manager>().save_configuration();
+        // m_model->reset();
+    }
 } // namespace atomic_dex

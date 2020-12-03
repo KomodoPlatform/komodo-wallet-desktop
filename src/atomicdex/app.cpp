@@ -41,9 +41,9 @@
 //! Project Headers
 #include "atomicdex/app.hpp"
 #include "atomicdex/managers/addressbook.manager.hpp"
+#include "atomicdex/pages/qt.addressbook.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
-#include "atomicdex/pages/qt.addressbook.page.hpp"
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
@@ -270,7 +270,7 @@ application::application(QObject* pParent) noexcept :
 
     //! Creates models
     {
-        //m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
+        // m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
         m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
         m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this)));
         m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
@@ -399,7 +399,7 @@ application::get_coin_info(const QString& ticker)
 bool
 application::disconnect()
 {
-    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+    SPDLOG_INFO("disconnecting every models");
 
     //! Clears pending events
     while (not this->m_actions_queue.empty())
@@ -415,13 +415,8 @@ application::disconnect()
         free((void*)ticker);
     }
 
-    //! Clears models
-    //get_addressbook_page()->clear();
-    /*addressbook_model* addressbook = get_addressbook_model();
-    if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
-    {
-        addressbook->clear();
-    }*/
+    auto* addressbook_pg = get_addressbook_page();
+    addressbook_pg->clear();
 
     orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
     if (auto count = orders->rowCount(QModelIndex()); count > 0)
@@ -437,27 +432,22 @@ application::disconnect()
     //! Mark systems
     system_manager_.mark_system<mm2_service>();
     system_manager_.mark_system<coinpaprika_provider>();
-    // system_manager_.mark_system<ohlc_provider>();
 
     //! Disconnect signals
-    system_manager_.get_system<trading_page>().disconnect_signals();
+    get_trading_page()->disconnect_signals();
+    addressbook_pg->disconnect_signals();
     qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->disconnect_signals();
-    get_dispatcher().sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
-    get_dispatcher().sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
-    get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
-    get_dispatcher().sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
-    get_dispatcher().sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
-    get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
-    get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
-    get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
-    get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
+    dispatcher_.sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
+    dispatcher_.sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
+    dispatcher_.sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
+    dispatcher_.sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
+    dispatcher_.sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
+    dispatcher_.sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
+    dispatcher_.sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
+    dispatcher_.sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
+    dispatcher_.sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
     m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
-
-    //! Saves and clear addressbook.
-    auto& addrbook_manager = this->system_manager_.get_system<addressbook_manager>();
-    addrbook_manager.save_configuration();
-    addrbook_manager.remove_all_contacts();
 
     //! Resets wallet name.
     auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
@@ -473,9 +463,10 @@ application::disconnect()
 void
 application::connect_signals()
 {
-    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+    SPDLOG_INFO("connecting signals");
     qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->connect_signals();
     system_manager_.get_system<trading_page>().connect_signals();
+    system_manager_.get_system<addressbook_page>().connect_signals();
     get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
     get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
     get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
