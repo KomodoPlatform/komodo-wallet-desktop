@@ -20,7 +20,6 @@
 #include <QAbstractListModel> //> QAbstractListModel.
 #include <QObject>            //> Q_OBJECT, Q_PROPERTY.
 #include <QMap>               //> QMap.
-#include <QVariant>
 
 //! Project
 #include "atomicdex/managers/addressbook.manager.hpp"
@@ -51,7 +50,7 @@ namespace atomic_dex
         /// {@
     
         explicit addressbook_contact_addresses_model(ag::ecs::system_manager& system_manager, const QString& name, QString type, QObject* parent = nullptr);
-        ~addressbook_contact_addresses_model() noexcept;
+        ~addressbook_contact_addresses_model() noexcept final = default;
     
         /// @} End of Constructors section.
     

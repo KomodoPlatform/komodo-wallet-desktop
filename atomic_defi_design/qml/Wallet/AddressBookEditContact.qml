@@ -274,7 +274,7 @@ BasicModal {
                 text: qsTr("Cancel")
                 onClicked: {
                     name_input.field.text = modelData.name
-                    modelData.reset();
+                    modelData.reload();
                     root.close();
                 }
             }

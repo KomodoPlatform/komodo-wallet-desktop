@@ -24,8 +24,6 @@ namespace atomic_dex
     {
         populate();
     }
-    
-    addressbook_contact_addresses_model::~addressbook_contact_addresses_model() noexcept = default;
 }
 
 //! QAbstractListModel implementation.
@@ -123,6 +121,9 @@ namespace atomic_dex
 {
     void addressbook_contact_addresses_model::add_address_entry(QString key, QString value)
     {
+        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+    
+        addrbook_manager.set_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), key.toStdString(), value.toStdString());
         insertRow(rowCount());
         m_model_data[rowCount() - 1] = address{.key = std::move(key), .value = std::move(value)};
     }

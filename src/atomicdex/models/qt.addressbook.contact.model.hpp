@@ -40,7 +40,7 @@ namespace atomic_dex
         /// {@
         
         explicit addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent = nullptr);
-        ~addressbook_contact_model() noexcept final = default;
+        ~addressbook_contact_model() noexcept final;
     
         /// @} End of Constructors section.
     
@@ -61,7 +61,7 @@ namespace atomic_dex
         Q_INVOKABLE void remove_category(const QString& category) noexcept;
         
         /// \brief Resets this model then reloads its data from the persistent data.
-        Q_INVOKABLE void reset();
+        Q_INVOKABLE void reload();
     
         /// \brief Saves the model modifications in the persistent data.
         Q_INVOKABLE void save();
@@ -85,6 +85,9 @@ namespace atomic_dex
       private:
         /// \brief Loads this model data from the persistent data.
         void populate();
+        
+        /// \brief Unload this model data.
+        void clear();
     
         /// \defgroup Members
         /// {@

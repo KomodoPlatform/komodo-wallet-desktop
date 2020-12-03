@@ -79,6 +79,57 @@ namespace atomic_dex
     {
         return m_addressbook_proxy;
     }
+    
+    void addressbook_model::remove_contact(int row, const QString& name)
+    {
+        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        
+        for (auto* it = m_model_data.begin(); it != m_model_data.end(); ++it)
+        {
+            if ((*it)->get_name() == name)
+            {
+                addrbook_manager.remove_contact(name.toStdString());
+                addrbook_manager.save_configuration();
+                beginRemoveRows(QModelIndex(), row, row);
+                delete *it;
+                m_model_data.erase(it);
+                endRemoveRows();
+                return;
+            }
+        }
+    }
+    
+    void addressbook_model::remove_all_contacts()
+    {
+        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        
+        beginRemoveRows(QModelIndex(), 0, rowCount());
+        for (auto& contact_model : m_model_data)
+        {
+            addrbook_manager.remove_contact(contact_model->get_name().toStdString());
+            addrbook_manager.save_configuration();
+            delete contact_model;
+        }
+        m_model_data.clear();
+        endRemoveRows();
+    }
+    
+    bool addressbook_model::add_contact(const QString& name)
+    {
+        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        
+        if (addrbook_manager.has_contact(name.toStdString()))
+        {
+            return false;
+        }
+        
+        addrbook_manager.add_contact(name.toStdString());
+        addrbook_manager.save_configuration();
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        m_model_data.push_back(new addressbook_contact_model(m_system_manager, name, this));
+        endInsertRows();
+        return true;
+    }
 }
 
 //! Other member functions
@@ -101,57 +152,12 @@ namespace atomic_dex
     
     void addressbook_model::clear()
     {
-        remove_all_contacts();
-    }
-    
-    void addressbook_model::remove_contact(int row, const QString& name)
-    {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-    
-        for (auto* it = m_model_data.begin(); it != m_model_data.end(); ++it)
+        beginResetModel();
+        for (auto&& model : m_model_data)
         {
-            if ((*it)->get_name() == name)
-            {
-                addrbook_manager.remove_contact(name.toStdString());
-                addrbook_manager.save_configuration();
-                beginRemoveRows(QModelIndex(), row, row);
-                delete *it;
-                m_model_data.erase(it);
-                endRemoveRows();
-                return;
-            }
-        }
-    }
-    
-    void addressbook_model::remove_all_contacts()
-    {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-
-        beginRemoveRows(QModelIndex(), 0, rowCount());
-        for (auto& contact_model : m_model_data)
-        {
-            addrbook_manager.remove_contact(contact_model->get_name().toStdString());
-            addrbook_manager.save_configuration();
-            delete contact_model;
+            delete model;
         }
         m_model_data.clear();
-        endRemoveRows();
-    }
-
-    bool addressbook_model::add_contact(const QString& name)
-    {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-    
-        if (addrbook_manager.has_contact(name.toStdString()))
-        {
-            return false;
-        }
-    
-        addrbook_manager.add_contact(name.toStdString());
-        addrbook_manager.save_configuration();
-        beginInsertRows(QModelIndex(), rowCount(), rowCount());
-        m_model_data.push_back(new addressbook_contact_model(m_system_manager, name, this));
-        endInsertRows();
-        return true;
+        endResetModel();
     }
 } // namespace atomic_dex

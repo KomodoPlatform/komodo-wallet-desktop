@@ -14,6 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Project
 #include "qt.addressbook.page.hpp"
 
 //! Constructor(s)/destructor
@@ -72,6 +73,6 @@ namespace atomic_dex
     {
         SPDLOG_INFO("clear addressbook page");
         m_system_manager.get_system<addressbook_manager>().save_configuration();
-        // m_model->reset();
+        m_model->clear();
     }
 } // namespace atomic_dex

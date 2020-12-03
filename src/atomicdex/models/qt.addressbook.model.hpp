@@ -62,6 +62,7 @@ namespace atomic_dex
         /// \brief Loads model from the addressbook_manager current data.
         void populate();
         
+        /// \brief Unloads model data.
         void clear();
         
         /// \defgroup QML API

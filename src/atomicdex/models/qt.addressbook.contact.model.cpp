@@ -34,6 +34,11 @@ namespace atomic_dex
     {
         populate();
     }
+    
+    addressbook_contact_model::~addressbook_contact_model() noexcept
+    {
+        clear();
+    }
 }
 
 //! QAbstractListModel implementation
@@ -130,14 +135,10 @@ namespace atomic_dex
     }
 
     void
-    addressbook_contact_model::reset()
+    addressbook_contact_model::reload()
     {
-        // Clears categories.
-        m_categories.clear();
-
-        // Clears inner model data.
-        for (auto& inner_model: m_model_data) { delete inner_model; }
-        m_model_data.clear();
+        // Clears model
+        clear();
         
         // Repopulates inner model data.
         populate();
@@ -192,5 +193,17 @@ namespace atomic_dex
             create_addresses_model("SmartChain");
             endInsertRows();
         }
+    }
+    
+    void addressbook_contact_model::clear()
+    {
+        // Clears categories.
+        m_categories.clear();
+    
+        beginResetModel();
+        // Clears inner model data.
+        for (auto& inner_model: m_model_data) { delete inner_model; }
+        m_model_data.clear();
+        endResetModel();
     }
 }
