@@ -98,16 +98,6 @@ Item {
         prev_page = current_page
     }
 
-    Timer {
-        running: inCurrentPage()
-        interval: 1000
-        repeat: true
-        onTriggered: {
-            General.enableParentCoinIfNeeded("ETH", "ERC-20")
-            General.enableParentCoinIfNeeded("QTUM", "QRC-20")
-        }
-    }
-
     // Right side
     AnimatedRectangle {
         color: Style.colorTheme8

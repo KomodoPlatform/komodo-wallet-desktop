@@ -324,22 +324,6 @@ QtObject {
         return "?"
     }
 
-    function isCoinEnabled(ticker) {
-        for(const c of API.app.enabled_coins)
-            if(c.ticker === ticker) return true
-
-        return false
-    }
-
-    function enableParentCoinIfNeeded(ticker, type) {
-        if(!isCoinEnabled(ticker) && isParentCoinNeeded(ticker, type)) {
-            API.app.enable_coins([ticker])
-            return true
-        }
-
-        return false
-    }
-
     function getRandomInt(min, max) {
         min = Math.ceil(min)
         max = Math.floor(max)

@@ -63,7 +63,7 @@ namespace atomic_dex
 
         //! Properties
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
-        Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
+        Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook_model NOTIFY addressbookModelChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
@@ -73,8 +73,8 @@ namespace atomic_dex
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
+        Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
-        Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
 
         //! Private function
         void connect_signals();
@@ -100,7 +100,6 @@ namespace atomic_dex
         t_portfolio_coins_to_initialize_queue m_portfolio_queue{g_max_actions_size};
         QVariantList                          m_enableable_coins;
         QVariant                              m_update_status;
-        QString                               m_current_status{"None"};
         t_manager_model_registry              m_manager_models;
         t_events_actions                      m_event_actions{{false}};
         std::atomic_bool                      m_btc_fully_enabled{false};
@@ -124,26 +123,26 @@ namespace atomic_dex
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
-        mm2_service&               get_mm2() noexcept;
-        const mm2_service&         get_mm2() const noexcept;
-        entt::dispatcher&          get_dispatcher() noexcept;
-        addressbook_model*         get_addressbook() const noexcept;
-        portfolio_page*            get_portfolio_page() const noexcept;
-        wallet_page*               get_wallet_page() const noexcept;
-        orders_model*              get_orders() const noexcept;
-        notification_manager*      get_notification_manager() const noexcept;
-        trading_page*              get_trading_page() const noexcept;
-        settings_page*             get_settings_page() const noexcept;
-        internet_service_checker*  get_internet_checker() const noexcept;
-        ip_service_checker*        get_ip_checker() const noexcept;
-        QVariantList               get_enableable_coins() const noexcept;
-        QString                    get_wallet_default_name() const noexcept;
-        QString                    get_status() const noexcept;
-        QVariant                   get_update_status() const noexcept;
+        mm2_service&              get_mm2() noexcept;
+        const mm2_service&        get_mm2() const noexcept;
+        entt::dispatcher&         get_dispatcher() noexcept;
+        addressbook_model*        get_addressbook_model() const noexcept;
+        portfolio_page*           get_portfolio_page() const noexcept;
+        wallet_page*              get_wallet_page() const noexcept;
+        orders_model*             get_orders() const noexcept;
+        notification_manager*     get_notification_manager() const noexcept;
+        trading_page*             get_trading_page() const noexcept;
+        settings_page*            get_settings_page() const noexcept;
+        qt_wallet_manager*        get_wallet_mgr() const noexcept;
+        internet_service_checker* get_internet_checker() const noexcept;
+        ip_service_checker*       get_ip_checker() const noexcept;
+        QVariantList              get_enableable_coins() const noexcept;
+        QString                   get_wallet_default_name() const noexcept;
+
+        QVariant                  get_update_status() const noexcept;
 
         //! Properties Setter
         void set_wallet_default_name(QString wallet_default_name) noexcept;
-        void set_status(QString status) noexcept;
         void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) noexcept;
 
         //! Launch the internal loop for the SDK.
@@ -172,7 +171,6 @@ namespace atomic_dex
 
         //! Others
         Q_INVOKABLE static bool    mnemonic_validate(const QString& entropy);
-        Q_INVOKABLE static QString retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void           refresh_orders_and_swaps();
         Q_INVOKABLE static QString get_mnemonic();
         Q_INVOKABLE static bool    first_run();
@@ -188,12 +186,12 @@ namespace atomic_dex
 
       signals:
         //! Signals to the QML Worlds
+        void walletMgrChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
-        void onStatusChanged();
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();
-        void addressbookChanged();
+        void addressbookModelChanged();
         void portfolioPageChanged();
         void walletPageChanged();
         void updateStatusChanged();

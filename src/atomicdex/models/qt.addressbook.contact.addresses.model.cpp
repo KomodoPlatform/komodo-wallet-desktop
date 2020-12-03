@@ -75,7 +75,7 @@ namespace atomic_dex
         return true;
     }
     
-    int addressbook_contact_addresses_model::columnCount(const QModelIndex& parent) const
+    int addressbook_contact_addresses_model::columnCount([[maybe_unused]] const QModelIndex& parent) const
     {
         return 2;
     }

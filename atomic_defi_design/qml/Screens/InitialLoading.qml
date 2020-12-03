@@ -12,7 +12,7 @@ SetupPage {
     // Override
     property var onLoaded: () => {}
 
-    readonly property string current_status: API.app.initial_loading_status
+    readonly property string current_status: API.app.wallet_mgr.initial_loading_status
 
     onCurrent_statusChanged: {
         if(current_status === "complete")

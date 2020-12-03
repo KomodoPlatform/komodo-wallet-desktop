@@ -234,9 +234,14 @@ namespace atomic_dex
     void
     qt_wallet_manager::update() noexcept
     {
+        //! Disabled system
     }
 
-    qt_wallet_manager::qt_wallet_manager(entt::registry& registry) : system(registry) {}
+    qt_wallet_manager::qt_wallet_manager(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
+        QObject(parent), system(registry), m_system_manager(system_manager)
+    {
+        this->disable();
+    }
 
     std::string
     qt_wallet_manager::retrieve_transactions_notes(const std::string& tx_hash) const
@@ -248,5 +253,72 @@ namespace atomic_dex
             note = registry.at(tx_hash).note;
         }
         return note;
+    }
+
+    bool
+    qt_wallet_manager::login(const QString& password, const QString& wallet_name)
+    {
+        load_wallet_cfg(wallet_name.toStdString());
+        std::error_code ec;
+        std::string     password_std = password.toStdString();
+        bool            with_pin_cfg = false;
+        if (password.contains(QString::fromStdString(m_wallet_cfg.protection_pass)))
+        {
+            password_std = password_std.substr(0, password.size() - m_wallet_cfg.protection_pass.size());
+
+            with_pin_cfg = true;
+        }
+        auto key = atomic_dex::derive_password(password_std, ec);
+        if (ec)
+        {
+            SPDLOG_WARN("{}", ec.message());
+            if (ec == dextop_error::derive_password_failed)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            using namespace std::string_literals;
+
+            const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
+            const fs::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
+
+
+            if (not fs::exists(wallet_cfg_path))
+            {
+                const auto  cfg_path = ag::core::assets_real_path() / "config";
+                std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
+                fs::copy(cfg_path / filename, wallet_cfg_path);
+            }
+
+            const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+            if (ec == dextop_error::corrupted_file_or_wrong_password)
+            {
+                SPDLOG_WARN("{}", ec.message());
+                return false;
+            }
+
+            this->set_wallet_default_name(wallet_name);
+            this->set_status("initializing_mm2");
+            auto& mm2_system = m_system_manager.get_system<mm2_service>();
+            mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed, with_pin_cfg);
+            return true;
+        }
+        return false;
+    }
+
+    QString
+    qt_wallet_manager::get_status() const noexcept
+    {
+        return m_current_status;
+    }
+
+    void
+    qt_wallet_manager::set_status(QString status) noexcept
+    {
+        this->m_current_status = std::move(status);
+        emit onStatusChanged();
     }
 } // namespace atomic_dex

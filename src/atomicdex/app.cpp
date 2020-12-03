@@ -29,16 +29,6 @@
 #include <QProcess>
 #include <QTimer>
 
-#if defined(_WIN32) || defined(WIN32)
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    define NOMINMAX
-#    include <windows.h>
-
-#    include <wincrypt.h>
-#endif
-
 #ifdef __APPLE__
 
 #    include <QGuiApplication>
@@ -50,568 +40,497 @@
 
 //! Project Headers
 #include "atomicdex/app.hpp"
+#include "atomicdex/managers/addressbook.manager.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-//#include "atomicdex/services/ohlc/ohlc.provider.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.bindings.hpp"
-#include "atomicdex/utilities/security.utilities.hpp"
-#include "atomicdex/version/version.hpp"
-#include "atomicdex/managers/addressbook.manager.hpp"
 
 namespace
 {
     constexpr std::size_t g_timeout_q_timer_ms = 16;
-
-#if defined(_WIN32) || defined(WIN32)
-    bool
-    acquire_context(HCRYPTPROV* ctx)
-    {
-        if (!CryptAcquireContext(ctx, nullptr, nullptr, PROV_RSA_FULL, 0))
-        {
-            return CryptAcquireContext(ctx, nullptr, nullptr, PROV_RSA_FULL, CRYPT_NEWKEYSET);
-        }
-        return true;
-    }
-
-
-    size_t
-    sysrandom(void* dst, size_t dstlen)
-    {
-        HCRYPTPROV ctx;
-        if (!acquire_context(&ctx))
-        {
-            throw std::runtime_error("Unable to initialize Win32 crypt library.");
-        }
-
-        BYTE* buffer = reinterpret_cast<BYTE*>(dst);
-        if (!CryptGenRandom(ctx, dstlen, buffer))
-        {
-            throw std::runtime_error("Unable to generate random bytes.");
-        }
-
-        if (!CryptReleaseContext(ctx, 0))
-        {
-            throw std::runtime_error("Unable to release Win32 crypt library.");
-        }
-
-        return dstlen;
-    }
-#endif
-} // namespace
+}
 
 namespace atomic_dex
 {
-    void
-    atomic_dex::application::change_state([[maybe_unused]] int visibility)
-    {
+    void atomic_dex::application::change_state([[maybe_unused]] int visibility){
 #ifdef __APPLE__
-        //qDebug() << visibility;
-        {
-            QWindowList windows = QGuiApplication::allWindows();
-            QWindow*    win     = windows.first();
-            atomic_dex::mac_window_setup(win->winId(), visibility == QWindow::FullScreen);
-        }
+        {QWindowList windows = QGuiApplication::allWindows();
+    QWindow* win = windows.first();
+    atomic_dex::mac_window_setup(win->winId(), visibility == QWindow::FullScreen);
+}
 #endif
-    }
+}
 
-    QVariantList
-    atomic_dex::application::get_enableable_coins() const noexcept
+QVariantList
+atomic_dex::application::get_enableable_coins() const noexcept
+{
+    return m_enableable_coins;
+}
+
+bool
+atomic_dex::application::enable_coins(const QStringList& coins)
+{
+    std::vector<std::string> coins_std;
+
+    coins_std.reserve(coins.size());
+    atomic_dex::mm2_service& mm2 = get_mm2();
+    for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
+
+    mm2.enable_multiple_coins(coins_std);
+
+    return true;
+}
+
+bool
+application::disable_coins(const QStringList& coins)
+{
+    QStringList coins_copy;
+    for (auto&& coin: coins)
     {
-        return m_enableable_coins;
+        if (not get_orders()->swap_is_in_progress(coin) && coin != "KMD" && coin != "BTC")
+        {
+            if (coin == "ETH" || coin == "QTUM")
+            {
+                coins_copy.push_back(coin);
+            }
+            else
+            {
+                coins_copy.push_front(coin);
+            }
+        }
     }
 
-    bool
-    atomic_dex::application::enable_coins(const QStringList& coins)
+    if (not coins_copy.empty())
     {
         std::vector<std::string> coins_std;
-
-        coins_std.reserve(coins.size());
-        atomic_dex::mm2_service& mm2 = get_mm2();
-        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
-
-        mm2.enable_multiple_coins(coins_std);
-
-        return true;
-    }
-
-    bool
-    application::disable_coins(const QStringList& coins)
-    {
-        QStringList coins_copy;
-        for (auto&& coin: coins)
+        system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins_copy);
+        system_manager_.get_system<trading_page>().disable_coins(coins_copy);
+        coins_std.reserve(coins_copy.size());
+        for (auto&& coin: coins_copy)
         {
-            if (not get_orders()->swap_is_in_progress(coin) && coin != "KMD" && coin != "BTC")
+            if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_kmd_fully_enabled)
             {
-                if (coin == "ETH" || coin == "QTUM")
-                {
-                    coins_copy.push_back(coin);
-                }
-                else
-                {
-                    coins_copy.push_front(coin);
-                }
+                system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
             }
+            coins_std.push_back(coin.toStdString());
         }
-
-        if (not coins_copy.empty())
-        {
-            std::vector<std::string> coins_std;
-            system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins_copy);
-            system_manager_.get_system<trading_page>().disable_coins(coins_copy);
-            coins_std.reserve(coins_copy.size());
-            for (auto&& coin: coins_copy)
-            {
-                if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_kmd_fully_enabled)
-                {
-                    system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
-                }
-                coins_std.push_back(coin.toStdString());
-            }
-            get_mm2().disable_multiple_coins(coins_std);
-            this->dispatcher_.trigger<update_portfolio_values>(false);
-        }
-
-        return true;
+        get_mm2().disable_multiple_coins(coins_std);
+        this->dispatcher_.trigger<update_portfolio_values>(false);
     }
 
-    bool
-    atomic_dex::application::first_run()
+    return true;
+}
+
+bool
+atomic_dex::application::first_run()
+{
+    return get_wallets().empty();
+}
+
+void
+application::launch()
+{
+    this->system_manager_.start();
+    auto* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &application::tick);
+    timer->start(g_timeout_q_timer_ms);
+}
+
+QString
+atomic_dex::application::get_mnemonic()
+{
+    std::array<unsigned char, WALLY_SECP_RANDOMIZE_LEN> data{};
+    boost::random_device                                device;
+    device.generate(data.begin(), data.end());
+    char*  output       = nullptr;
+    words* output_words = nullptr;
+    bip39_get_wordlist(nullptr, &output_words);
+    bip39_mnemonic_from_bytes(output_words, data.data(), data.size(), &output);
+    bip39_mnemonic_validate(output_words, output);
+    return output;
+}
+
+void
+application::tick()
+{
+    this->process_one_frame();
+    if (m_event_actions[events_action::need_a_full_refresh_of_mm2])
     {
-        return get_wallets().empty();
-    }
+        auto& mm2_s = system_manager_.create_system<mm2_service>(system_manager_);
 
-    void
-    application::launch()
-    {
-        this->system_manager_.start();
-        auto* timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &application::tick);
-        timer->start(g_timeout_q_timer_ms);
-    }
-
-    QString
-    atomic_dex::application::get_mnemonic()
-    {
-#if defined(_WIN32) || defined(WIN32)
-        std::array<unsigned char, WALLY_SECP_RANDOMIZE_LEN> data;
-        sysrandom(data.data(), data.size());
-        char*  output;
-        words* output_words;
-        bip39_get_wordlist(NULL, &output_words);
-        bip39_mnemonic_from_bytes(output_words, data.data(), data.size(), &output);
-        bip39_mnemonic_validate(output_words, output);
-        return output;
-#else
-        std::array<unsigned char, WALLY_SECP_RANDOMIZE_LEN> data{};
-        boost::random_device                                device;
-        device.generate(data.begin(), data.end());
-        char*  output       = nullptr;
-        words* output_words = nullptr;
-        bip39_get_wordlist(nullptr, &output_words);
-        bip39_mnemonic_from_bytes(output_words, data.data(), data.size(), &output);
-        bip39_mnemonic_validate(output_words, output);
-        return output;
-#endif
-    }
-
-    void
-    application::tick()
-    {
-        this->process_one_frame();
-        if (m_event_actions[events_action::need_a_full_refresh_of_mm2])
-        {
-            auto& mm2_s = system_manager_.create_system<mm2_service>(system_manager_);
-
-            system_manager_.create_system<coinpaprika_provider>(mm2_s);
-            // system_manager_.create_system<ohlc_provider>(mm2_s);
-
-            connect_signals();
-            m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
-        }
-        auto& mm2 = get_mm2();
-        if (mm2.is_mm2_running())
-        {
-            std::vector<std::string> to_init;
-            while (not m_portfolio_queue.empty())
-            {
-                const char* ticker_cstr = nullptr;
-                m_portfolio_queue.pop(ticker_cstr);
-                std::string ticker(ticker_cstr);
-                if (ticker == "KMD")
-                {
-                    this->m_kmd_fully_enabled = true;
-                }
-                if (ticker == "BTC")
-                {
-                    this->m_btc_fully_enabled = true;
-                }
-                to_init.push_back(ticker);
-                std::free((void*)ticker_cstr);
-            }
-
-            if (not to_init.empty())
-            {
-                system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(to_init);
-                if (m_kmd_fully_enabled && m_btc_fully_enabled)
-                {
-                    if (std::find(to_init.begin(), to_init.end(), "KMD") != to_init.end())
-                    {
-                        get_wallet_page()->get_transactions_mdl()->reset();
-                        this->dispatcher_.trigger<tx_fetch_finished>();
-                    }
-                    get_wallet_page()->refresh_ticker_infos();
-                    this->set_status("complete");
-                }
-                this->dispatcher_.trigger<update_portfolio_values>();
-            }
-        }
-
-        system_manager_.get_system<trading_page>().process_action();
-        while (not this->m_actions_queue.empty())
-        {
-            if (m_event_actions[events_action::about_to_exit_app])
-                break;
-            action last_action;
-            this->m_actions_queue.pop(last_action);
-            switch (last_action)
-            {
-            case action::refresh_enabled_coin:
-                if (mm2.is_mm2_running())
-                {
-                    this->process_refresh_enabled_coin_action();
-                }
-                break;
-            case action::post_process_orders_finished:
-                if (mm2.is_mm2_running())
-                {
-                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_orders();
-                }
-                break;
-            case action::post_process_swaps_finished:
-                if (mm2.is_mm2_running())
-                {
-                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
-                }
-                break;
-            case action::refresh_update_status:
-                const auto&   update_service_sys = this->system_manager_.get_system<update_service_checker>();
-                QJsonDocument doc                = QJsonDocument::fromJson(QString::fromStdString(update_service_sys.get_update_status().dump()).toUtf8());
-                this->m_update_status            = doc.toVariant();
-                emit updateStatusChanged();
-                break;
-            }
-        }
-    }
-
-    mm2_service&
-    application::get_mm2() noexcept
-    {
-        return this->system_manager_.get_system<mm2_service>();
-    }
-
-    entt::dispatcher&
-    application::get_dispatcher() noexcept
-    {
-        return this->dispatcher_;
-    }
-
-    application::application(QObject* pParent) noexcept :
-        QObject(pParent),
-        m_update_status(QJsonObject{
-            {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}})
-    {
-        //! Creates managers
-        {
-            system_manager_.create_system<qt_wallet_manager>();
-            system_manager_.create_system<addressbook_manager>(system_manager_);
-        }
-        
-        //! Creates models
-        {
-            m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
-            m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
-            m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this)));
-            m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
-        }
-        
-        get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
-        //! MM2 system need to be created before the GUI and give the instance to the gui
-        system_manager_.create_system<ip_service_checker>();
-        auto& mm2_system           = system_manager_.create_system<mm2_service>(system_manager_);
-        auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
-        auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
-        portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
-
-        system_manager_.create_system<wallet_page>(system_manager_, this);
-        system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
-        system_manager_.create_system<band_oracle_price_service>();
-        system_manager_.create_system<coinpaprika_provider>(mm2_system);
-        // system_manager_.create_system<ohlc_provider>(mm2_system);
-        system_manager_.create_system<update_service_checker>();
-        system_manager_.create_system<trading_page>(
-            system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
-
+        system_manager_.create_system<coinpaprika_provider>(mm2_s);
         connect_signals();
-        if (is_there_a_default_wallet())
+        m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
+    }
+    auto& mm2 = get_mm2();
+    if (mm2.is_mm2_running())
+    {
+        std::vector<std::string> to_init;
+        while (not m_portfolio_queue.empty())
         {
-            set_wallet_default_name(get_default_wallet_name());
+            const char* ticker_cstr = nullptr;
+            m_portfolio_queue.pop(ticker_cstr);
+            std::string ticker(ticker_cstr);
+            if (ticker == "KMD")
+            {
+                this->m_kmd_fully_enabled = true;
+            }
+            if (ticker == "BTC")
+            {
+                this->m_btc_fully_enabled = true;
+            }
+            to_init.push_back(ticker);
+            std::free((void*)ticker_cstr);
+        }
+
+        if (not to_init.empty())
+        {
+            system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(to_init);
+            if (m_kmd_fully_enabled && m_btc_fully_enabled)
+            {
+                if (std::find(to_init.begin(), to_init.end(), "KMD") != to_init.end())
+                {
+                    get_wallet_page()->get_transactions_mdl()->reset();
+                    this->dispatcher_.trigger<tx_fetch_finished>();
+                }
+                get_wallet_page()->refresh_ticker_infos();
+                system_manager_.get_system<qt_wallet_manager>().set_status("complete");
+            }
+            this->dispatcher_.trigger<update_portfolio_values>();
         }
     }
 
-    void
-    atomic_dex::application::on_enabled_coins_event([[maybe_unused]] const enabled_coins_event& evt) noexcept
+    system_manager_.get_system<trading_page>().process_action();
+    while (not this->m_actions_queue.empty())
+    {
+        if (m_event_actions[events_action::about_to_exit_app])
+            break;
+        action last_action;
+        this->m_actions_queue.pop(last_action);
+        switch (last_action)
+        {
+        case action::refresh_enabled_coin:
+            if (mm2.is_mm2_running())
+            {
+                this->process_refresh_enabled_coin_action();
+            }
+            break;
+        case action::post_process_orders_finished:
+            if (mm2.is_mm2_running())
+            {
+                qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_orders();
+            }
+            break;
+        case action::post_process_swaps_finished:
+            if (mm2.is_mm2_running())
+            {
+                qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
+            }
+            break;
+        case action::refresh_update_status:
+            const auto&   update_service_sys = this->system_manager_.get_system<update_service_checker>();
+            QJsonDocument doc                = QJsonDocument::fromJson(QString::fromStdString(update_service_sys.get_update_status().dump()).toUtf8());
+            this->m_update_status            = doc.toVariant();
+            emit updateStatusChanged();
+            break;
+        }
+    }
+}
+
+mm2_service&
+application::get_mm2() noexcept
+{
+    return this->system_manager_.get_system<mm2_service>();
+}
+
+entt::dispatcher&
+application::get_dispatcher() noexcept
+{
+    return this->dispatcher_;
+}
+
+application::application(QObject* pParent) noexcept :
+    QObject(pParent),
+    m_update_status(QJsonObject{
+        {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}})
+{
+    //! Creates managers
+    {
+        system_manager_.create_system<qt_wallet_manager>(system_manager_);
+        system_manager_.create_system<addressbook_manager>(system_manager_);
+    }
+
+    //! Creates models
+    {
+        m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
+        m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
+        m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this)));
+        m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
+    }
+
+    get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
+    //! MM2 system need to be created before the GUI and give the instance to the gui
+    system_manager_.create_system<ip_service_checker>();
+    auto& mm2_system           = system_manager_.create_system<mm2_service>(system_manager_);
+    auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
+    auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
+    portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
+
+    system_manager_.create_system<wallet_page>(system_manager_, this);
+    system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
+    system_manager_.create_system<band_oracle_price_service>();
+    system_manager_.create_system<coinpaprika_provider>(mm2_system);
+    system_manager_.create_system<update_service_checker>();
+    system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
+
+    connect_signals();
+    if (is_there_a_default_wallet())
+    {
+        set_wallet_default_name(get_default_wallet_name());
+    }
+}
+
+void
+atomic_dex::application::on_enabled_coins_event([[maybe_unused]] const enabled_coins_event& evt) noexcept
+{
+    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+    if (not m_event_actions[events_action::about_to_exit_app])
+    {
+        this->m_actions_queue.push(action::refresh_enabled_coin);
+    }
+}
+
+void
+application::on_enabled_default_coins_event([[maybe_unused]] const enabled_default_coins_event& evt) noexcept
+{
+    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+    if (not m_event_actions[events_action::about_to_exit_app])
+    {
+        this->m_actions_queue.push(action::refresh_enabled_coin);
+    }
+}
+
+void
+application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
+{
+    //! This event is called when a call is enabled and cex provider finished fetch datas
+    if (not m_event_actions[events_action::about_to_exit_app])
     {
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_event_actions[events_action::about_to_exit_app])
-        {
-            this->m_actions_queue.push(action::refresh_enabled_coin);
-        }
+        for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
     }
+}
 
-    void
-    application::on_enabled_default_coins_event([[maybe_unused]] const enabled_default_coins_event& evt) noexcept
+bool
+application::do_i_have_enough_funds(const QString& ticker, const QString& amount) const
+{
+    t_float_50 amount_f(amount.toStdString());
+    return get_mm2().do_i_have_enough_funds(ticker.toStdString(), amount_f);
+}
+
+const mm2_service&
+application::get_mm2() const noexcept
+{
+    return this->system_manager_.get_system<mm2_service>();
+}
+
+void
+application::on_coin_disabled_event([[maybe_unused]] const coin_disabled& evt) noexcept
+{
+    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+    if (not m_event_actions[events_action::about_to_exit_app])
     {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_event_actions[events_action::about_to_exit_app])
-        {
-            this->m_actions_queue.push(action::refresh_enabled_coin);
-        }
+        this->m_actions_queue.push(action::refresh_enabled_coin);
     }
+}
 
-    void
-    application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
+QString
+application::get_balance(const QString& coin)
+{
+    std::error_code ec;
+    auto            res = get_mm2().my_balance(coin.toStdString(), ec);
+    return QString::fromStdString(res);
+}
+
+void
+application::on_mm2_initialized_event([[maybe_unused]] const mm2_initialized& evt) noexcept
+{
+    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+    system_manager_.get_system<qt_wallet_manager>().set_status("enabling_coins");
+}
+
+void
+application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
+{
+    if (not m_event_actions[events_action::about_to_exit_app])
     {
-        //! This event is called when a call is enabled and cex provider finished fetch datas
-        if (not m_event_actions[events_action::about_to_exit_app])
-        {
-            SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
-        }
+        this->m_actions_queue.push(action::refresh_update_status);
     }
+}
 
-    bool
-    application::do_i_have_enough_funds(const QString& ticker, const QString& amount) const
+void
+application::refresh_orders_and_swaps()
+{
+    auto& mm2 = get_mm2();
+    if (mm2.is_mm2_running())
     {
-        t_float_50 amount_f(amount.toStdString());
-        return get_mm2().do_i_have_enough_funds(ticker.toStdString(), amount_f);
+        mm2.batch_fetch_orders_and_swap();
     }
+}
 
-    const mm2_service&
-    application::get_mm2() const noexcept
+QVariant
+application::get_coin_info(const QString& ticker)
+{
+    QVariant       out;
+    nlohmann::json j      = to_qt_binding(get_mm2().get_coin_info(ticker.toStdString()));
+    QJsonDocument  q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+    out                   = q_json.toVariant();
+    return out;
+}
+
+bool
+application::disconnect()
+{
+    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+
+    //! Clears pending events
+    while (not this->m_actions_queue.empty())
     {
-        return this->system_manager_.get_system<mm2_service>();
+        [[maybe_unused]] action act;
+        this->m_actions_queue.pop(act);
     }
 
-    void
-    application::on_coin_disabled_event([[maybe_unused]] const coin_disabled& evt) noexcept
+    while (not this->m_portfolio_queue.empty())
     {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_event_actions[events_action::about_to_exit_app])
-        {
-            this->m_actions_queue.push(action::refresh_enabled_coin);
-        }
+        const char* ticker;
+        m_portfolio_queue.pop(ticker);
+        free((void*)ticker);
     }
 
-    QString
-    application::get_balance(const QString& coin)
+    //! Clears models
+    addressbook_model* addressbook = get_addressbook_model();
+    if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
     {
-        std::error_code ec;
-        auto            res = get_mm2().my_balance(coin.toStdString(), ec);
-        return QString::fromStdString(res);
+        addressbook->clear();
     }
 
-    QString
-    application::get_status() const noexcept
+    orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
+    if (auto count = orders->rowCount(QModelIndex()); count > 0)
     {
-        return m_current_status;
+        orders->removeRows(0, count, QModelIndex());
     }
+    orders->clear_registry();
 
-    void
-    application::set_status(QString status) noexcept
+    system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
+    system_manager_.get_system<trading_page>().clear_models();
+    get_wallet_page()->get_transactions_mdl()->reset();
+
+    //! Mark systems
+    system_manager_.mark_system<mm2_service>();
+    system_manager_.mark_system<coinpaprika_provider>();
+    // system_manager_.mark_system<ohlc_provider>();
+
+    //! Disconnect signals
+    system_manager_.get_system<trading_page>().disconnect_signals();
+    qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->disconnect_signals();
+    get_dispatcher().sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
+    get_dispatcher().sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
+    get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
+    get_dispatcher().sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
+    get_dispatcher().sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
+    get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
+    get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
+    get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
+    get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
+
+    m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
+
+    //! Saves and clear addressbook.
+    auto& addrbook_manager = this->system_manager_.get_system<addressbook_manager>();
+    addrbook_manager.save_configuration();
+    addrbook_manager.remove_all_contacts();
+
+    //! Resets wallet name.
+    auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
+    wallet_manager.just_set_wallet_name("");
+    emit onWalletDefaultNameChanged();
+
+    this->m_btc_fully_enabled = false;
+    this->m_kmd_fully_enabled = false;
+    system_manager_.get_system<qt_wallet_manager>().set_status("None");
+    return fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
+}
+
+void
+application::connect_signals()
+{
+    SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+    qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->connect_signals();
+    system_manager_.get_system<trading_page>().connect_signals();
+    get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
+    get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
+    get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
+    get_dispatcher().sink<enabled_default_coins_event>().connect<&application::on_enabled_default_coins_event>(*this);
+    get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
+    get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
+    get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
+    get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
+    get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
+}
+
+void
+application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* engine) noexcept
+{
+    this->m_app = app;
+    connect(m_app.get(), SIGNAL(aboutToQuit()), this, SLOT(exit_handler()));
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, &application::app_state_changed);
+    auto& settings_system = system_manager_.get_system<settings_page>();
+    settings_system.set_qml_engine(engine);
+    settings_system.init_lang();
+}
+
+bool
+application::mnemonic_validate(const QString& entropy)
+{
+    return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
+}
+
+bool
+application::export_swaps_json() noexcept
+{
+    auto swaps = get_mm2().get_swaps().raw_result;
+
+    if (not swaps.empty())
     {
-        this->m_current_status = std::move(status);
-        emit onStatusChanged();
+        auto export_file_path = utils::get_atomic_dex_current_export_recent_swaps_file();
+
+        std::ofstream ofs(export_file_path.string(), std::ios::out | std::ios::trunc);
+        auto          j = nlohmann::json::parse(swaps);
+        ofs << std::setw(4) << j;
+        ofs.close();
+        return true;
     }
+    return false;
+}
 
-    void
-    application::on_mm2_initialized_event([[maybe_unused]] const mm2_initialized& evt) noexcept
-    {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-        this->set_status("enabling_coins");
-    }
+QString
+application::recover_fund(const QString& uuid)
+{
+    QString result;
 
-    void
-    application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
-    {
-        if (not m_event_actions[events_action::about_to_exit_app])
-        {
-            this->m_actions_queue.push(action::refresh_update_status);
-        }
-    }
+    ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
+    auto                                      res = ::mm2::api::rpc_recover_funds(std::move(request), get_mm2().get_mm2_client());
+    result                                        = QString::fromStdString(res.raw_result);
 
-    void
-    application::refresh_orders_and_swaps()
-    {
-        auto& mm2 = get_mm2();
-        if (mm2.is_mm2_running())
-        {
-            mm2.batch_fetch_orders_and_swap();
-        }
-    }
-
-    QVariant
-    application::get_coin_info(const QString& ticker)
-    {
-        QVariant       out;
-        nlohmann::json j      = to_qt_binding(get_mm2().get_coin_info(ticker.toStdString()));
-        QJsonDocument  q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
-        out                   = q_json.toVariant();
-        return out;
-    }
-
-    bool
-    application::disconnect()
-    {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-
-        //! Clears pending events
-        while (not this->m_actions_queue.empty())
-        {
-            [[maybe_unused]] action act;
-            this->m_actions_queue.pop(act);
-        }
-
-        while (not this->m_portfolio_queue.empty())
-        {
-            const char* ticker;
-            m_portfolio_queue.pop(ticker);
-            free((void*)ticker);
-        }
-
-        //! Clears models
-        addressbook_model* addressbook = get_addressbook_model();
-        if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
-        {
-            addressbook->clear();
-        }
-
-        orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
-        if (auto count = orders->rowCount(QModelIndex()); count > 0)
-        {
-            orders->removeRows(0, count, QModelIndex());
-        }
-        orders->clear_registry();
-
-        system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
-        system_manager_.get_system<trading_page>().clear_models();
-        get_wallet_page()->get_transactions_mdl()->reset();
-
-        //! Mark systems
-        system_manager_.mark_system<mm2_service>();
-        system_manager_.mark_system<coinpaprika_provider>();
-        // system_manager_.mark_system<ohlc_provider>();
-
-        //! Disconnect signals
-        system_manager_.get_system<trading_page>().disconnect_signals();
-        qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->disconnect_signals();
-        get_dispatcher().sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
-        get_dispatcher().sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
-        get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
-        get_dispatcher().sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
-        get_dispatcher().sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
-        get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
-        get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
-        get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
-        get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
-
-        m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
-    
-        //! Saves and clear addressbook.
-        auto& addrbook_manager = this->system_manager_.get_system<addressbook_manager>();
-        addrbook_manager.save_configuration();
-        addrbook_manager.remove_all_contacts();
-        
-        //! Resets wallet name.
-        auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        wallet_manager.just_set_wallet_name("");
-        emit onWalletDefaultNameChanged();
-
-        this->m_btc_fully_enabled = false;
-        this->m_kmd_fully_enabled = false;
-        this->set_status("None");
-        return fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
-    }
-
-    void
-    application::connect_signals()
-    {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-        qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->connect_signals();
-        system_manager_.get_system<trading_page>().connect_signals();
-        get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
-        get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
-        get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
-        get_dispatcher().sink<enabled_default_coins_event>().connect<&application::on_enabled_default_coins_event>(*this);
-        get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
-        get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
-        get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
-        get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
-        get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
-    }
-
-    void
-    application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* engine) noexcept
-    {
-        this->m_app = app;
-        connect(m_app.get(), SIGNAL(aboutToQuit()), this, SLOT(exit_handler()));
-        connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, &application::app_state_changed);
-        auto& settings_system = system_manager_.get_system<settings_page>();
-        settings_system.set_qml_engine(engine);
-        settings_system.init_lang();
-    }
-
-    bool
-    application::mnemonic_validate(const QString& entropy)
-    {
-        return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
-    }
-
-    bool
-    application::export_swaps_json() noexcept
-    {
-        auto swaps = get_mm2().get_swaps().raw_result;
-
-        if (not swaps.empty())
-        {
-            auto export_file_path = utils::get_atomic_dex_current_export_recent_swaps_file();
-
-            std::ofstream ofs(export_file_path.string(), std::ios::out | std::ios::trunc);
-            auto          j = nlohmann::json::parse(swaps);
-            ofs << std::setw(4) << j;
-            ofs.close();
-            return true;
-        }
-        return false;
-    }
-
-    QString
-    application::recover_fund(const QString& uuid)
-    {
-        QString result;
-
-        ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
-        auto                                      res = ::mm2::api::rpc_recover_funds(std::move(request), get_mm2().get_mm2_client());
-        result                                        = QString::fromStdString(res.raw_result);
-
-        return result;
-    }
+    return result;
+}
 } // namespace atomic_dex
 
 //! Constructor / Destructor
@@ -764,15 +683,12 @@ namespace atomic_dex
     application::login(const QString& password, const QString& wallet_name)
     {
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        bool  res            = wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
-            this->set_wallet_default_name(wallet_name);
-            this->set_status("initializing_mm2");
-        });
-        if (res)
+        bool  res            = wallet_manager.login(password, wallet_name);
+        /*if (res)
         {
             system_manager_.get_system<addressbook_manager>().load_configuration();
             qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"))->populate();
-        }
+        }*/
         return res;
     }
 
@@ -903,7 +819,7 @@ namespace atomic_dex
         assert(ptr);
         return ptr;
     }
-}
+} // namespace atomic_dex
 
 //! Notification
 namespace atomic_dex
@@ -932,6 +848,18 @@ namespace atomic_dex
     application::get_ip_checker() const noexcept
     {
         ip_service_checker* ptr = const_cast<ip_service_checker*>(std::addressof(system_manager_.get_system<ip_service_checker>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+} // namespace atomic_dex
+
+//! Wallet_mgr
+namespace atomic_dex
+{
+    qt_wallet_manager*
+    application::get_wallet_mgr() const noexcept
+    {
+        qt_wallet_manager* ptr = const_cast<qt_wallet_manager*>(std::addressof(system_manager_.get_system<qt_wallet_manager>()));
         assert(ptr != nullptr);
         return ptr;
     }
