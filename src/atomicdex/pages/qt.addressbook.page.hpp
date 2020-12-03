@@ -50,7 +50,7 @@ namespace atomic_dex
 
       private:
         Q_PROPERTY(addressbook_model* model READ get_model)
-        [[nodiscard]] addressbook_model* get_model();
+        [[nodiscard]] addressbook_model* get_model() const noexcept;
         
         /// @} End of QML API section
     };

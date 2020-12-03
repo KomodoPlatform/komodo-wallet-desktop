@@ -20,24 +20,28 @@
 namespace atomic_dex
 {
     addressbook_page::addressbook_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager)
+        QObject(parent), system(registry), m_system_manager(system_manager), m_model(new addressbook_model(system_manager, this))
     {
+        m_system_manager.create_system<addressbook_manager>(m_system_manager);
         disable();
     }
-}
+} // namespace atomic_dex
 
 //! ag::ecs::pre_update_system implem
 namespace atomic_dex
 {
-    void addressbook_page::update() noexcept
-    { }
-}
+    void
+    addressbook_page::update() noexcept
+    {
+    }
+} // namespace atomic_dex
 
 //! QML API
 namespace atomic_dex
 {
-    addressbook_model* addressbook_page::get_model()
+    addressbook_model*
+    addressbook_page::get_model() const noexcept
     {
         return m_model;
     }
-}
+} // namespace atomic_dex

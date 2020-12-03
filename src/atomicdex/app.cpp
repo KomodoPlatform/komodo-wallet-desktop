@@ -43,6 +43,7 @@
 #include "atomicdex/managers/addressbook.manager.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
+#include "atomicdex/pages/qt.addressbook.page.hpp"
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
@@ -264,12 +265,12 @@ application::application(QObject* pParent) noexcept :
     //! Creates managers
     {
         system_manager_.create_system<qt_wallet_manager>(system_manager_);
-        system_manager_.create_system<addressbook_manager>(system_manager_);
+        system_manager_.create_system<addressbook_page>(system_manager_);
     }
 
     //! Creates models
     {
-        m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
+        //m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
         m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
         m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this)));
         m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
@@ -415,11 +416,12 @@ application::disconnect()
     }
 
     //! Clears models
-    addressbook_model* addressbook = get_addressbook_model();
+    //get_addressbook_page()->clear();
+    /*addressbook_model* addressbook = get_addressbook_model();
     if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
     {
         addressbook->clear();
-    }
+    }*/
 
     orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
     if (auto count = orders->rowCount(QModelIndex()); count > 0)
@@ -812,11 +814,11 @@ namespace atomic_dex
 //! Addressbook
 namespace atomic_dex
 {
-    addressbook_model*
-    application::get_addressbook_model() const noexcept
+    addressbook_page*
+    application::get_addressbook_page() const noexcept
     {
-        auto* ptr = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
-        assert(ptr);
+        addressbook_page* ptr = const_cast<addressbook_page*>(std::addressof(system_manager_.get_system<addressbook_page>()));
+        assert(ptr != nullptr);
         return ptr;
     }
 } // namespace atomic_dex
