@@ -121,12 +121,6 @@ namespace atomic_dex
     }
 
     QVariantList
-    atomic_dex::application::get_enabled_coins() const noexcept
-    {
-        return m_enabled_coins;
-    }
-
-    QVariantList
     atomic_dex::application::get_enableable_coins() const noexcept
     {
         return m_enableable_coins;
@@ -996,11 +990,6 @@ namespace atomic_dex
             coins_list = to_qt_binding(std::move(coins_container));
         };
 
-        {
-            auto coins = mm2.get_enabled_coins();
-            refresh_coin(coins, m_enabled_coins);
-            emit enabledCoinsChanged();
-        }
         {
             auto coins = mm2.get_enableable_coins();
             refresh_coin(coins, m_enableable_coins);

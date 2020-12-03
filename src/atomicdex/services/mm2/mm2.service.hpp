@@ -28,6 +28,7 @@
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/constants/mm2.error.code.hpp"
+#include "atomicdex/data/wallet/tx.data.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
@@ -36,38 +37,9 @@ namespace atomic_dex
     namespace bm = boost::multiprecision;
     namespace ag = antara::gaming;
 
-    struct tx_infos
-    {
-        bool                     am_i_sender;
-        std::size_t              confirmations;
-        std::vector<std::string> from;
-        std::vector<std::string> to;
-        std::string              date;
-        std::size_t              timestamp;
-        std::string              tx_hash;
-        std::string              fees;
-        std::string              my_balance_change;
-        std::string              total_amount;
-        std::size_t              block_height;
-        t_mm2_ec                 ec{dextop_error::success};
-        bool                     unconfirmed{false};
-        std::string              transaction_note{""};
-    };
-
-    struct tx_state
-    {
-        std::string state;
-        std::size_t current_block;
-        std::size_t blocks_left;
-        std::size_t transactions_left;
-    };
-
-    using t_ticker              = std::string;
-    using t_tx_state            = tx_state;
-    using t_coins_registry      = t_concurrent_reg<t_ticker, coin_config>;
-    using t_wallet_cfg_registry = t_concurrent_reg<std::string, t_coins_registry>;
-    using t_transactions        = std::vector<tx_infos>;
-    using t_coins               = std::vector<coin_config>;
+    using t_ticker         = std::string;
+    using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
+    using t_coins          = std::vector<coin_config>;
 
     //! Constants
     inline constexpr const std::size_t g_tx_max_limit{50_sz};
@@ -119,7 +91,7 @@ namespace atomic_dex
 
         //! Concurrent Registry.
         t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
-        t_balance_registry&      m_balance_informations{entity_registry_.set<t_balance_registry>()};
+        t_balance_registry       m_balance_informations;
         t_tx_history_registry    m_tx_informations;
         t_tx_state_registry      m_tx_state;
         t_my_orders              m_orders_registry;
