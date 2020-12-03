@@ -78,7 +78,7 @@ Rectangle {
             onClickedBack: () => { openFirstLaunch(true) }
             postLoginSuccess: () => {
                 current_page = idx_initial_loading
-                cleanApp()
+                //cleanApp()
             }
             Component.onCompleted: console.log("Initialized login")
         }

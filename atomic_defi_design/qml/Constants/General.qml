@@ -286,7 +286,7 @@ QtObject {
     }
 
     function isParentCoinNeeded(ticker, type) {
-        for(const c of API.app.enabled_coins)
+        for(const c of API.app.portfolio_pg.get_all_enabled_coins())
             if(c.type === type && c.ticker !== ticker) return true
 
         return false

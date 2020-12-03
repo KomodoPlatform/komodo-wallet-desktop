@@ -159,46 +159,118 @@
 <context>
     <name>AddressBook</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="55"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="32"/>
         <source>Address Book</source>
         <translation>Adres Defteri</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="64"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="42"/>
         <source>New Contact</source>
         <translation>Yeni Kişi</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="164"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="115"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="126"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddressBookEditContact</name>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="24"/>
+        <source>Edit contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="30"/>
+        <source>Contact Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="31"/>
+        <source>Enter a contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="46"/>
+        <source>Wallets Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="87"/>
+        <source>Tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="123"/>
+        <source>+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="143"/>
+        <source>Validate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="153"/>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
+    </message>
+</context>
+<context>
+    <name>AddressBookNewContact</name>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="16"/>
+        <source>Choose a contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="23"/>
         <source>Enter the contact name</source>
-        <translation>Kişi ismini girin</translation>
+        <translation type="unfinished">Kişi ismini girin</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="208"/>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="421"/>
-        <source>Save</source>
-        <translation>Kaydet</translation>
+        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="36"/>
+        <source>This contact name already exists.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="235"/>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="464"/>
-        <source>Delete</source>
-        <translation>Sil</translation>
+        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="53"/>
+        <source>Validate</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="406"/>
-        <source>Enter the address</source>
-        <translation>Adresi girin</translation>
+        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="77"/>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
+    </message>
+</context>
+<context>
+    <name>AddressBookNewContactCategory</name>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="22"/>
+        <source>Enter the tag name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="435"/>
-        <source>Explorer</source>
-        <translation>Web&apos;de Göster</translation>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="35"/>
+        <source>This contact already has this tag</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="446"/>
-        <source>Send</source>
-        <translation>Gönder</translation>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="47"/>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="63"/>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
     </message>
 </context>
 <context>
@@ -542,8 +614,8 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="154"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="165"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="144"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="155"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation>Bu kısmın içeriği daha sonra eklenecektir. Takipte kalın!</translation>
     </message>
@@ -1000,63 +1072,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="371"/>
+        <location filename="../../qml/Constants/General.qml" line="355"/>
         <source>Transaction Fee</source>
         <translation type="unfinished">İşlem Ücreti</translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="386"/>
+        <location filename="../../qml/Constants/General.qml" line="370"/>
         <source>Trading Fee</source>
         <translation type="unfinished">Al-Sat Ücreti</translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="396"/>
+        <location filename="../../qml/Constants/General.qml" line="380"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="406"/>
+        <location filename="../../qml/Constants/General.qml" line="390"/>
         <source>Not enough balance for trading fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="408"/>
+        <location filename="../../qml/Constants/General.qml" line="392"/>
         <source>Not enough balance for fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="410"/>
-        <location filename="../../qml/Constants/General.qml" line="412"/>
+        <location filename="../../qml/Constants/General.qml" line="394"/>
+        <location filename="../../qml/Constants/General.qml" line="396"/>
         <source>Not enough balance for transaction fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="414"/>
+        <location filename="../../qml/Constants/General.qml" line="398"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="416"/>
+        <location filename="../../qml/Constants/General.qml" line="400"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="418"/>
+        <location filename="../../qml/Constants/General.qml" line="402"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="420"/>
-        <location filename="../../qml/Constants/General.qml" line="422"/>
+        <location filename="../../qml/Constants/General.qml" line="404"/>
+        <location filename="../../qml/Constants/General.qml" line="406"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="424"/>
+        <location filename="../../qml/Constants/General.qml" line="408"/>
         <source>Unknown Error</source>
         <translation type="unfinished"></translation>
     </message>
