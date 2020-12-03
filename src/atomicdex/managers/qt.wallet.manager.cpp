@@ -300,11 +300,13 @@ namespace atomic_dex
                 return false;
             }
 
+
             this->set_wallet_default_name(wallet_name);
             this->set_status("initializing_mm2");
-            this->dispatcher_.trigger<post_login>();
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
             mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed, with_pin_cfg);
+            this->dispatcher_.trigger<post_login>();
+
             return true;
         }
         return false;
