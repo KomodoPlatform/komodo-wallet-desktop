@@ -15,14 +15,14 @@
  ******************************************************************************/
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Project Headers
+#include "atomicdex/pages/qt.portfolio.page.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
+#include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
-#include "qt.portfolio.page.hpp"
-#include "qt.settings.page.hpp"
-#include "qt.wallet.page.hpp"
 
 namespace atomic_dex
 {
@@ -101,5 +101,31 @@ namespace atomic_dex
         {
             set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
         }
+    }
+
+    QStringList
+    atomic_dex::portfolio_page::get_all_enabled_coins() const noexcept
+    {
+        return get_all_coins_by_type("All");
+    }
+
+    QStringList
+    atomic_dex::portfolio_page::get_all_coins_by_type(const QString& coin_type) const noexcept
+    {
+        QStringList enabled_coins;
+        const auto& portfolio_list = this->get_portfolio()->get_underlying_data();
+        enabled_coins.reserve(portfolio_list.count());
+        for (auto&& cur_coin: portfolio_list)
+        {
+            if (coin_type == "All")
+            {
+                enabled_coins.push_back(cur_coin.ticker);
+            }
+            else if (cur_coin.coin_type == coin_type)
+            {
+                enabled_coins.push_back(cur_coin.ticker);
+            }
+        }
+        return enabled_coins;
     }
 } // namespace atomic_dex

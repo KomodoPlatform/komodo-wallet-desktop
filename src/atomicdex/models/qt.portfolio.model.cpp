@@ -420,4 +420,10 @@ namespace atomic_dex
         this->m_model_data.clear();
         this->endResetModel();
     }
+
+    portfolio_model::t_portfolio_datas
+    portfolio_model::get_underlying_data() const noexcept
+    {
+        return m_model_data;
+    }
 } // namespace atomic_dex

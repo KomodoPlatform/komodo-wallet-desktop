@@ -49,16 +49,18 @@ namespace atomic_dex
         //! Public override
         void update() noexcept final;
 
-        [[nodiscard]] portfolio_model* get_portfolio() const noexcept;
-        [[nodiscard]] QString          get_oracle_last_price_reference() const noexcept;
-        [[nodiscard]] QStringList      get_oracle_price_supported_pairs() const noexcept;
+        [[nodiscard]] portfolio_model*        get_portfolio() const noexcept;
+        [[nodiscard]] QString                 get_oracle_last_price_reference() const noexcept;
+        [[nodiscard]] QStringList             get_oracle_price_supported_pairs() const noexcept;
+        [[nodiscard]] Q_INVOKABLE QStringList get_all_enabled_coins() const noexcept;
+        [[nodiscard]] Q_INVOKABLE QStringList get_all_coins_by_type(const QString& coin_type) const noexcept;
 
         [[nodiscard]] QString get_balance_fiat_all() const noexcept;
         void                  set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
 
         //! Events
         void on_band_oracle_refreshed([[maybe_unused]] const band_oracle_refreshed& evt);
-        void on_update_portfolio_values_event(const update_portfolio_values&) noexcept;;
+        void on_update_portfolio_values_event(const update_portfolio_values&) noexcept;
 
       signals:
         void portfolioChanged();

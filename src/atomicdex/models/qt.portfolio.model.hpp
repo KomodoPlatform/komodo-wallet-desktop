@@ -66,10 +66,11 @@ namespace atomic_dex
 
       private:
         //! Typedef
-        using t_portfolio_datas = QVector<portfolio_data>;
         using t_ticker_registry = std::unordered_set<std::string>;
 
       public:
+        using t_portfolio_datas = QVector<portfolio_data>;
+
         //! Constructor / Destructor
         explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~portfolio_model() noexcept final = default;
@@ -87,6 +88,7 @@ namespace atomic_dex
         void update_balance_values(const std::vector<std::string>& tickers) noexcept;
         void disable_coins(const QStringList& coins);
         void set_cfg(atomic_dex::cfg& cfg) noexcept;
+        [[nodiscard]] t_portfolio_datas get_underlying_data() const noexcept;
 
         //! Properties
         [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
