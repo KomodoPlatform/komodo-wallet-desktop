@@ -24,7 +24,6 @@ ComboBox {
     property string mainLineText: control.displayText
     property var dropdownLineText: m => textRole === "" ? m.modelData : m.modelData[textRole]
 
-
     readonly property bool disabled: !enabled
 
     hoverEnabled: true

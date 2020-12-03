@@ -24,7 +24,6 @@
 
 //! Project Headers
 #include "atomicdex/config/wallet.cfg.hpp"
-#include "atomicdex/data/wallet/qt.addressbook.contact.contents.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/security.utilities.hpp"
 #include "atomicdex/version/version.hpp"
@@ -60,16 +59,12 @@ namespace atomic_dex
 
         bool update_wallet_cfg() noexcept;
 
-        std::string                     retrieve_transactions_notes(const std::string& tx_hash) const;
-        void                            update_transactions_notes(const std::string& tx_hash, const std::string& notes);
-        void                            update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
-        void                            update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);
-        void                            update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
-        void                            set_emergency_password(const QString& emergency_password);
-        void                            remove_address_entry(const QString& contact_name, const QString& ticker);
-        void                            delete_contact(const QString& contact_name);
-        [[nodiscard]] const wallet_cfg& get_wallet_cfg() const noexcept;
-        const wallet_cfg&               get_wallet_cfg() noexcept;
+        std::string       retrieve_transactions_notes(const std::string& tx_hash) const;
+        void              update_transactions_notes(const std::string& tx_hash, const std::string& notes);
+        void              set_emergency_password(const QString& emergency_password);
+        [[nodiscard]]
+        const wallet_cfg& get_wallet_cfg() const noexcept;
+        const wallet_cfg& get_wallet_cfg() noexcept;
 
       private:
         wallet_cfg m_wallet_cfg;

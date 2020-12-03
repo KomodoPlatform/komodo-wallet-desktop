@@ -34,17 +34,17 @@ namespace atomic_dex
     bool
     addressbook_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
-        int      role       = this->sortRole();
+        int      role       = sortRole();
         QVariant left_data  = sourceModel()->data(source_left, role);
         QVariant right_data = sourceModel()->data(source_right, role);
 
         switch (static_cast<atomic_dex::addressbook_model::AddressBookRoles>(role))
         {
         case addressbook_model::SubModelRole:
-            QObject*       left_obj      = qvariant_cast<QObject*>(left_data);
-            contact_model* left_contact  = qobject_cast<contact_model*>(left_obj);
-            QObject*       right_obj     = qvariant_cast<QObject*>(right_data);
-            contact_model* right_contact = qobject_cast<contact_model*>(right_obj);
+            auto* left_obj      = qvariant_cast<QObject*>(left_data);
+            auto* left_contact  = qobject_cast<addressbook_contact_model*>(left_obj);
+            auto* right_obj     = qvariant_cast<QObject*>(right_data);
+            auto* right_contact = qobject_cast<addressbook_contact_model*>(right_obj);
             return left_contact->get_name().toLower() < right_contact->get_name().toLower();
         }
         return false;

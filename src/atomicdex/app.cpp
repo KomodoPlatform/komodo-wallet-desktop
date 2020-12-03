@@ -63,6 +63,7 @@
 #include "atomicdex/utilities/qt.bindings.hpp"
 #include "atomicdex/utilities/security.utilities.hpp"
 #include "atomicdex/version/version.hpp"
+#include "atomicdex/managers/addressbook.manager.hpp"
 
 namespace
 {
@@ -324,13 +325,22 @@ namespace atomic_dex
     application::application(QObject* pParent) noexcept :
         QObject(pParent),
         m_update_status(QJsonObject{
-            {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
-        m_manager_models{
-            {"addressbook", new addressbook_model(system_manager_.create_system<qt_wallet_manager>(), this)},
-            {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
-            {"internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this))},
-            {"notifications", new notification_manager(this->dispatcher_, this)}}
+            {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}})
     {
+        //! Creates managers
+        {
+            system_manager_.create_system<qt_wallet_manager>();
+            system_manager_.create_system<addressbook_manager>(system_manager_);
+        }
+        
+        //! Creates models
+        {
+            m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
+            m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
+            m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this)));
+            m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
+        }
+        
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
         system_manager_.create_system<ip_service_checker>();
@@ -471,7 +481,7 @@ namespace atomic_dex
     {
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
 
-        //! Clear pending events
+        //! Clears pending events
         while (not this->m_actions_queue.empty())
         {
             [[maybe_unused]] action act;
@@ -485,11 +495,11 @@ namespace atomic_dex
             free((void*)ticker);
         }
 
-        //! Clear models
-        addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
-        if (auto count = addressbook->rowCount(); count > 0)
+        //! Clears models
+        addressbook_model* addressbook = get_addressbook_model();
+        if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
         {
-            addressbook->removeRows(0, count);
+            addressbook->clear();
         }
 
         orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
@@ -522,7 +532,13 @@ namespace atomic_dex
         get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
         m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
-
+    
+        //! Saves and clear addressbook.
+        auto& addrbook_manager = this->system_manager_.get_system<addressbook_manager>();
+        addrbook_manager.save_configuration();
+        addrbook_manager.remove_all_contacts();
+        
+        //! Resets wallet name.
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
         wallet_manager.just_set_wallet_name("");
         emit onWalletDefaultNameChanged();
@@ -666,16 +682,6 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! Addressbook
-namespace atomic_dex
-{
-    addressbook_model*
-    application::get_addressbook() const noexcept
-    {
-        return qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
-    }
-} // namespace atomic_dex
-
 //! Orders
 namespace atomic_dex
 {
@@ -764,8 +770,8 @@ namespace atomic_dex
         });
         if (res)
         {
-            addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
-            addressbook->initializeFromCfg();
+            system_manager_.get_system<addressbook_manager>().load_configuration();
+            qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"))->populate();
         }
         return res;
     }
@@ -886,6 +892,18 @@ namespace atomic_dex
         return ptr;
     }
 } // namespace atomic_dex
+
+//! Addressbook
+namespace atomic_dex
+{
+    addressbook_model*
+    application::get_addressbook_model() const noexcept
+    {
+        auto* ptr = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
+        assert(ptr);
+        return ptr;
+    }
+}
 
 //! Notification
 namespace atomic_dex

@@ -16,6 +16,10 @@
 
 #pragma once
 
+//! Deps
+#include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
+
 //! Project Headers
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/constants/http.code.hpp"
