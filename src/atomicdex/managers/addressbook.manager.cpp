@@ -298,6 +298,6 @@ namespace atomic_dex
     
     void addressbook_manager::save_configuration() const
     {
-        //TODO: update_addressbook_cfg(m_data, m_system_manager.get_system<qt_wallet_manager>().get_wallet_default_name().toStdString());
+        update_addressbook_cfg(m_data, m_system_manager.get_system<qt_wallet_manager>().get_wallet_default_name().toStdString());
     }
 }
