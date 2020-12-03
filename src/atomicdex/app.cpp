@@ -447,13 +447,6 @@ namespace atomic_dex
     }
 
     void
-    application::refresh_infos()
-    {
-        auto& mm2 = get_mm2();
-        mm2.fetch_infos_thread();
-    }
-
-    void
     application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();
@@ -557,82 +550,6 @@ namespace atomic_dex
         get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
     }
 
-    QString
-    atomic_dex::application::get_regex_password_policy() noexcept
-    {
-        return QString(::atomic_dex::get_regex_password_policy());
-    }
-
-    /*QVariantMap
-    application::get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount)
-    {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        QVariantMap out;
-
-        //! If the initial amount is < minimal trade amount it's not required to continue
-        if (t_float_50(amount.toStdString()) < t_float_50("0.00777"))
-        {
-            out.insert("not_enough_balance_to_pay_the_fees", true);
-            out.insert("trade_fee", "0");
-            out.insert("input_final_value", "0");
-            out.insert("tx_fee", "0");
-            return out;
-        }
-
-        //! Get the trading fee -> 1 / (777 * amount);
-        t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
-
-        //! Get the transaction fees (from mm2)
-        auto answer = get_mm2().get_transaction_fees(ticker.toStdString());
-
-        //! Is fixed fee are available
-        if (!answer.amount.empty())
-        {
-            //! ERC fees will be use only if rel is an ERC-20 token
-            t_float_50 erc_fees = 0;
-
-            // > mm2
-            t_float_50 tx_fee_f = t_float_50(answer.amount) * 2;
-
-            //! If receive ticker exist we try to apply erc fees
-            if (receive_ticker != "")
-            {
-                get_mm2().apply_specific_fees(receive_ticker.toStdString(), erc_fees);
-            }
-
-            auto tx_fee_value = QString::fromStdString(utils::get_formated_float(tx_fee_f));
-
-            const std::string amount_std =
-                t_float_50(amount.toStdString()) < utils::minimal_trade_amount() ? utils::minimal_trade_amount_str() : amount.toStdString();
-            t_float_50  final_balance_f = t_float_50(amount_std) - (trade_fee_f + tx_fee_f);
-            std::string final_balance   = amount.toStdString();
-            // SPDLOG_DEBUG("{} = {} - ({} + {})", final_balance_f.str(8), amount_std, trade_fee_f.str(8), tx_fee_f.str(8));
-            if (final_balance_f.convert_to<float>() > 0.0)
-            {
-                final_balance = utils::get_formated_float(final_balance_f);
-                out.insert("not_enough_balance_to_pay_the_fees", false);
-            }
-            else
-            {
-                out.insert("not_enough_balance_to_pay_the_fees", true);
-                t_float_50 amount_needed = utils::minimal_trade_amount() - final_balance_f;
-                out.insert("amount_needed", QString::fromStdString(utils::get_formated_float(amount_needed)));
-            }
-            auto final_balance_qt = QString::fromStdString(final_balance);
-
-            out.insert("trade_fee", QString::fromStdString(get_mm2().get_trading_fees_str(ticker.toStdString(), amount.toStdString(), false)));
-            out.insert("tx_fee", tx_fee_value);
-            if (erc_fees > 0)
-            {
-                auto erc_value = QString::fromStdString(utils::get_formated_float(erc_fees));
-                out.insert("erc_fees", erc_value);
-            }
-            out.insert("is_ticker_of_fees_eth", get_mm2().get_coin_info(ticker.toStdString()).is_erc_20);
-            out.insert("input_final_value", final_balance_qt);
-        }
-        return out;
-    }*/
-
     void
     application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* engine) noexcept
     {
@@ -693,30 +610,6 @@ namespace atomic_dex
         return false;
     }
 
-    bool
-    application::export_swaps(const QString& csv_filename) noexcept
-    {
-        auto           swaps    = get_mm2().get_swaps();
-        const fs::path csv_path = utils::get_atomic_dex_export_folder() / (csv_filename.toStdString() + std::string(".csv"));
-
-        std::ofstream ofs(csv_path.string(), std::ios::out | std::ios::trunc);
-        ofs << "Maker Coin, Taker Coin, Maker Amount, Taker Amount, Type, Events, My Info, Is Recoverable" << std::endl;
-        for (auto&& swap: swaps.swaps)
-        {
-            ofs << swap.maker_coin << ",";
-            ofs << swap.taker_coin << ",";
-            ofs << swap.maker_amount << ",";
-            ofs << swap.taker_amount << ",";
-            ofs << swap.type << ",";
-            ofs << "not supported yet,"; //! This contains many events, what do we want to export here?
-            ofs << "not supported yet,"; //! This is a big json object, need to choose which information we need to export ?
-            ofs << (swap.funds_recoverable ? "True," : "False,");
-            ofs << std::endl;
-        }
-        ofs.close();
-        return true;
-    }
-
     QString
     application::recover_fund(const QString& uuid)
     {
@@ -727,19 +620,6 @@ namespace atomic_dex
         result                                        = QString::fromStdString(res.raw_result);
 
         return result;
-    }
-
-    QString
-    application::get_price_amount(const QString& base_amount, const QString& rel_amount)
-    {
-        t_float_50 base_amount_f(base_amount.toStdString());
-        t_float_50 rel_amount_f(rel_amount.toStdString());
-        auto       final = (rel_amount_f / base_amount_f);
-
-        std::stringstream ss;
-        ss << std::fixed << std::setprecision(50) << final;
-        SPDLOG_INFO("base_amount = {}, rel_amount = {}, final_amount = {}", base_amount.toStdString(), rel_amount.toStdString(), ss.str());
-        return QString::fromStdString(ss.str());
     }
 } // namespace atomic_dex
 
