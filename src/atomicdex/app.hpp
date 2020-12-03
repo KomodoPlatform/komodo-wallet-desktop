@@ -84,10 +84,8 @@ namespace atomic_dex
         enum events_action
         {
             need_a_full_refresh_of_mm2 = 0,
-            candlestick_need_a_reset   = 1,
-            orderbook_need_a_reset     = 2,
-            about_to_exit_app          = 3,
-            size                       = 4
+            about_to_exit_app          = 1,
+            size                       = 2
         };
 
         //! Private typedefs
@@ -142,7 +140,6 @@ namespace atomic_dex
         QString                    get_wallet_default_name() const noexcept;
         QString                    get_status() const noexcept;
         QVariant                   get_update_status() const noexcept;
-        Q_INVOKABLE static QString get_version() noexcept;
 
         //! Properties Setter
         void set_wallet_default_name(QString wallet_default_name) noexcept;
@@ -168,9 +165,6 @@ namespace atomic_dex
 
         //! Miscs
         Q_INVOKABLE static QString to_eth_checksum_qt(const QString& eth_lowercase_address);
-        Q_INVOKABLE static QString get_mm2_version();
-        Q_INVOKABLE static QString get_log_folder();
-        Q_INVOKABLE static QString get_export_folder();
         Q_INVOKABLE static void    change_state(int visibility);
 
         //! Portfolio QML API Bindings

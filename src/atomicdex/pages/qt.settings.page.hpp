@@ -107,6 +107,12 @@ namespace atomic_dex
         Q_INVOKABLE void submit();
         Q_INVOKABLE void reset_coin_cfg();
 
+        //! Infos
+        Q_INVOKABLE static QString get_mm2_version();
+        Q_INVOKABLE static QString get_log_folder();
+        Q_INVOKABLE static QString get_export_folder();
+        Q_INVOKABLE static QString get_version() noexcept;
+
       signals:
         void onLangChanged();
         void langChanged();

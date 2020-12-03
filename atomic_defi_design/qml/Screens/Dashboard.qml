@@ -26,7 +26,7 @@ Item {
 
     function openLogsFolder() {
         API.app.export_swaps_json()
-        Qt.openUrlExternally(General.os_file_prefix + API.app.get_log_folder())
+        Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
 
     readonly property var api_wallet_page: API.app.wallet_pg

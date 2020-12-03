@@ -199,7 +199,7 @@ Item {
                     text: qsTr("Export CSV")
                     enabled: list_model.length > 0
                     onClicked: {
-                        export_csv_dialog.folder = General.os_file_prefix + API.app.get_export_folder()
+                        export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
                         export_csv_dialog.open()
                     }
                 }

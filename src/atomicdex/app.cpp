@@ -645,30 +645,6 @@ namespace atomic_dex
     }
 
     QString
-    application::get_version() noexcept
-    {
-        return QString::fromStdString(atomic_dex::get_version());
-    }
-
-    QString
-    application::get_log_folder()
-    {
-        return QString::fromStdString(utils::get_atomic_dex_logs_folder().string());
-    }
-
-    QString
-    application::get_mm2_version()
-    {
-        return QString::fromStdString(::mm2::api::rpc_version());
-    }
-
-    QString
-    application::get_export_folder()
-    {
-        return QString::fromStdString(utils::get_atomic_dex_export_folder().string());
-    }
-
-    QString
     application::to_eth_checksum_qt(const QString& eth_lowercase_address)
     {
         auto str = eth_lowercase_address.toStdString();
@@ -680,14 +656,6 @@ namespace atomic_dex
 //! Trading functions
 namespace atomic_dex
 {
-    /*QString
-    application::get_cex_rates(const QString& base, const QString& rel)
-    {
-        std::error_code ec;
-        const auto&     price_service = system_manager_.get_system<global_price_service>();
-        return QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString(), ec));
-    }*/
-
     QString
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
     {

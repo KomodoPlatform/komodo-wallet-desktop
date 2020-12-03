@@ -18,7 +18,7 @@ Item {
     }
 
     function onOpened() {
-        if(mm2_version === '') mm2_version = API.app.get_mm2_version()
+        if(mm2_version === '') mm2_version = API.app.settings_pg.get_mm2_version()
     }
 
     property string mm2_version: ''

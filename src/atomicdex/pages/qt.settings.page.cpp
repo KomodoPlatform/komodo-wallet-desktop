@@ -498,4 +498,28 @@ namespace atomic_dex
         functor_remove(std::move(wallet_cfg_path));
         functor_remove(std::move(mm2_coins_file_path));
     }
+
+    QString
+    settings_page::get_version() noexcept
+    {
+        return QString::fromStdString(atomic_dex::get_version());
+    }
+
+    QString
+    settings_page::get_log_folder()
+    {
+        return QString::fromStdString(utils::get_atomic_dex_logs_folder().string());
+    }
+
+    QString
+    settings_page::get_mm2_version()
+    {
+        return QString::fromStdString(::mm2::api::rpc_version());
+    }
+
+    QString
+    settings_page::get_export_folder()
+    {
+        return QString::fromStdString(utils::get_atomic_dex_export_folder().string());
+    }
 } // namespace atomic_dex
