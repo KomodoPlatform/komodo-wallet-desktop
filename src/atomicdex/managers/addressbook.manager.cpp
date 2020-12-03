@@ -174,7 +174,7 @@ namespace atomic_dex
         auto& wallets_info = get_wallets_info(name);
         if (!has_wallet_info(name, key))
         {
-            wallets_info.push_back(nlohmann::json::object({"type", type}));
+            wallets_info.push_back({{"type", type}});
         }
         auto& wallet_info = get_wallet_info(name, type);
     
