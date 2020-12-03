@@ -108,6 +108,7 @@ namespace atomic_dex
         Q_INVOKABLE void reset_coin_cfg();
 
         //! Infos
+        Q_INVOKABLE static QString retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE static QString get_mm2_version();
         Q_INVOKABLE static QString get_log_folder();
         Q_INVOKABLE static QString get_export_folder();

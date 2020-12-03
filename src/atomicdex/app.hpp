@@ -124,22 +124,22 @@ namespace atomic_dex
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
-        mm2_service&               get_mm2() noexcept;
-        const mm2_service&         get_mm2() const noexcept;
-        entt::dispatcher&          get_dispatcher() noexcept;
-        addressbook_model*         get_addressbook() const noexcept;
-        portfolio_page*            get_portfolio_page() const noexcept;
-        wallet_page*               get_wallet_page() const noexcept;
-        orders_model*              get_orders() const noexcept;
-        notification_manager*      get_notification_manager() const noexcept;
-        trading_page*              get_trading_page() const noexcept;
-        settings_page*             get_settings_page() const noexcept;
-        internet_service_checker*  get_internet_checker() const noexcept;
-        ip_service_checker*        get_ip_checker() const noexcept;
-        QVariantList               get_enableable_coins() const noexcept;
-        QString                    get_wallet_default_name() const noexcept;
-        QString                    get_status() const noexcept;
-        QVariant                   get_update_status() const noexcept;
+        mm2_service&              get_mm2() noexcept;
+        const mm2_service&        get_mm2() const noexcept;
+        entt::dispatcher&         get_dispatcher() noexcept;
+        addressbook_model*        get_addressbook() const noexcept;
+        portfolio_page*           get_portfolio_page() const noexcept;
+        wallet_page*              get_wallet_page() const noexcept;
+        orders_model*             get_orders() const noexcept;
+        notification_manager*     get_notification_manager() const noexcept;
+        trading_page*             get_trading_page() const noexcept;
+        settings_page*            get_settings_page() const noexcept;
+        internet_service_checker* get_internet_checker() const noexcept;
+        ip_service_checker*       get_ip_checker() const noexcept;
+        QVariantList              get_enableable_coins() const noexcept;
+        QString                   get_wallet_default_name() const noexcept;
+        QString                   get_status() const noexcept;
+        QVariant                  get_update_status() const noexcept;
 
         //! Properties Setter
         void set_wallet_default_name(QString wallet_default_name) noexcept;
@@ -172,7 +172,6 @@ namespace atomic_dex
 
         //! Others
         Q_INVOKABLE static bool    mnemonic_validate(const QString& entropy);
-        Q_INVOKABLE static QString retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void           refresh_orders_and_swaps();
         Q_INVOKABLE static QString get_mnemonic();
         Q_INVOKABLE static bool    first_run();
