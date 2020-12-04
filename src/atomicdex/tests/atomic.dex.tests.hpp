@@ -14,25 +14,36 @@
  *                                                                            *
  ******************************************************************************/
 
-#define DOCTEST_CONFIG_IMPLEMENT
-#include <doctest/doctest.h>
+//! Deps
+#include <antara/gaming/world/world.app.hpp>
 
-#include "atomic.dex.tests.hpp"
+//! Project
+#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
 
-tests_context g_context;
-
-int main(int argc, char** argv)
+struct tests_context : public antara::gaming::world::app
 {
-    doctest::Context context;
-
-    context.applyCommandLine(argc, argv);
-    
-    int res = context.run();
-    
-    if (context.shouldExit()) // important - query flags (and --exit) rely on the user doing this
+    tests_context()
     {
-        return res; // propagate the result of the tests
+        //! Creates mm2 service.
+        const auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
+        
+        //! Creates special wallet for the unit tests then logs to it.
+        auto& wallet_manager = system_manager_.create_system<atomic_dex::qt_wallet_manager>(system_manager_);
+        wallet_manager.create("atomicdex-desktop_tests", "asdkl lkdsa", "atomicdex-desktop_tests");
+        wallet_manager.login("atomicdex-desktop_tests", "atomicdex-desktop_tests");
+    
+        //! Waits for mm2 to be initialized before running tests
+        while (!mm2.is_mm2_running())
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
-    return res; // the result from doctest is propagated here as well
-}
+    antara::gaming::ecs::system_manager& system_manager() noexcept
+    {
+        return system_manager_;
+    }
+};
+
+extern tests_context g_context;

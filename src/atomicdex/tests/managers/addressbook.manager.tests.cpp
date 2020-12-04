@@ -20,20 +20,20 @@
 //! Project Headers
 #include "atomicdex/managers/addressbook.manager.hpp"
 
+#include "../atomic.dex.tests.hpp"
+
 TEST_CASE("addressbook_manager with 4 contacts")
 {
-    using namespace atomic_dex;
+    auto addrbook = g_context.system_manager().create_system<atomic_dex::addressbook_manager>(g_context.system_manager());
+
+    addrbook.remove_all_contacts();
     
-    entt::registry entity_registry;
-    {
-        entity_registry.set<entt::dispatcher>();
-    }
-    ag::ecs::system_manager system_manager{entity_registry};
-    addressbook_manager addrbook{entity_registry, system_manager};
-    
+    //! Contacts creation
     addrbook.add_contact("one");
     addrbook.add_contact("two");
+    CHECK(addrbook.nb_contacts() == 2);
     addrbook.add_contact("three");
+    CHECK(addrbook.nb_contacts() == 3);
     addrbook.add_contact("four");
     CHECK(addrbook.data().at(0).at("name") == "one");
     CHECK(addrbook.has_contact("one"));
@@ -45,17 +45,24 @@ TEST_CASE("addressbook_manager with 4 contacts")
     CHECK(addrbook.has_contact("four"));
     CHECK(addrbook.nb_contacts() == 4);
     
-    SUBCASE("Adding categories")
-    {
-        CHECK(!addrbook.has_category("one", "friend"));
-        CHECK(addrbook.add_contact_category("one", "friend"));
-        CHECK(!addrbook.add_contact_category("one", "friend"));
-        CHECK(addrbook.has_category("one", "friend"));
-        
-        WHEN("Removing categories")
-        {
-            addrbook.remove_contact_category("one", "friend");
-            CHECK(!addrbook.has_category("one", "friend"));
-        }
-    }
+    //! Categories
+    CHECK(!addrbook.has_category("one", "friend"));
+    CHECK(addrbook.add_contact_category("one", "friend"));
+    CHECK(!addrbook.add_contact_category("one", "friend"));
+    CHECK(addrbook.has_category("one", "friend"));
+    addrbook.remove_contact_category("one", "friend");
+    CHECK(!addrbook.has_category("one", "friend"));
+    
+    //! Wallets information
+    addrbook.set_contact_wallet_info("one", "BTC", "home", "value");
+    CHECK(addrbook.has_wallet_info("one", "BTC"));
+    CHECK(addrbook.has_wallet_info("one", "BTC", "home"));
+    addrbook.remove_contact_wallet_info("one", "BTC", "home");
+    //CHECK(!addrbook.has_wallet_info("one", "BTC"));
+    
+    //! Contacts removal
+    addrbook.remove_contact("one");
+    CHECK(addrbook.nb_contacts() == 3);
+    addrbook.remove_all_contacts();
+    CHECK(addrbook.nb_contacts() == 0);
 }
