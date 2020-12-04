@@ -48,6 +48,9 @@ BasicModal {
 
             title: qsTr("Value")
 
+
+            field.placeholderText: qsTr("Enter the address")
+
             field.onTextChanged: {
                 const max_length = 50
                 if (field.text.length > max_length)
@@ -76,6 +79,8 @@ BasicModal {
                         key_already_exists_tooltip.visible = true
                     }
                 }
+
+                enabled: contact_new_address_key.field.text.length > 0 && contact_new_address_value.field.text.length > 0
             }
 
             DefaultButton {

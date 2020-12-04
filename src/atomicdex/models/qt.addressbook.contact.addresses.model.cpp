@@ -103,11 +103,7 @@ namespace atomic_dex
         {
             return elem.key == key;
         });
-        
-        if (it == m_model_data.end())
-        {
-            return false;
-        }
+
         addrbook_manager.set_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), key.toStdString(), value.toStdString());
         beginInsertRows(QModelIndex(), m_model_data.count(), m_model_data.count());
         m_model_data.push_back(address{.key = std::move(key), .value = std::move(value)});
