@@ -76,7 +76,6 @@ namespace atomic_dex
 
       private:
         Q_PROPERTY(QString type READ get_type NOTIFY typeChanged)
-        [[nodiscard]]
         Q_INVOKABLE const QString& get_type() const noexcept;
         
       signals:
