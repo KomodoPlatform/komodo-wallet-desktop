@@ -78,7 +78,10 @@ Rectangle {
             onClickedBack: () => { openFirstLaunch(true) }
             postLoginSuccess: () => {
                 current_page = idx_initial_loading
-                //cleanApp()
+
+                // Fill all coins list
+                General.all_coins = API.app.get_all_coins()
+
             }
             Component.onCompleted: console.log("Initialized login")
         }

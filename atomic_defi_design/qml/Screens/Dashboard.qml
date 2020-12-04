@@ -41,9 +41,6 @@ Item {
     Component.onCompleted: reset()
 
     function reset() {
-        // Fill all coins list
-        General.all_coins = API.app.get_all_coins()
-
         current_page = getMainPage()
         prev_page = -1
 
