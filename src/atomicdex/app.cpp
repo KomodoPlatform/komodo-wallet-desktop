@@ -63,7 +63,7 @@ namespace atomic_dex
     void atomic_dex::application::change_state([[maybe_unused]] int visibility){
 #ifdef __APPLE__
         {QWindowList windows = QGuiApplication::allWindows();
-    QWindow* win = windows.first();
+    auto win = windows.first();
     atomic_dex::mac_window_setup(win->winId(), visibility == QWindow::FullScreen);
 }
 #endif
@@ -78,7 +78,7 @@ atomic_dex::application::get_enableable_coins() const noexcept
 bool
 atomic_dex::application::enable_coins(const QStringList& coins)
 {
-    std::vector<std::string> coins_std;
+    std::vector<std::string> coins_std{};
 
     coins_std.reserve(coins.size());
     atomic_dex::mm2_service& mm2 = get_mm2();
@@ -110,7 +110,7 @@ application::disable_coins(const QStringList& coins)
 
     if (not coins_copy.empty())
     {
-        std::vector<std::string> coins_std;
+        std::vector<std::string> coins_std{};
         system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins_copy);
         system_manager_.get_system<trading_page>().disable_coins(coins_copy);
         coins_std.reserve(coins_copy.size());
@@ -139,7 +139,7 @@ void
 application::launch()
 {
     this->system_manager_.start();
-    auto* timer = new QTimer(this);
+    auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &application::tick);
     timer->start(g_timeout_q_timer_ms);
 }
@@ -292,9 +292,11 @@ application::application(QObject* pParent) noexcept :
     system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
 
     connect_signals();
-    if (is_there_a_default_wallet())
+    if (qt_wallet_manager::is_there_a_default_wallet())
     {
-        set_wallet_default_name(get_default_wallet_name());
+        auto* wallet_mgr = get_wallet_mgr();
+        wallet_mgr->set_wallet_default_name(wallet_mgr->get_default_wallet_name());
+        //set_wallet_default_name(get_default_wallet_name());
     }
 }
 
@@ -321,7 +323,7 @@ application::on_enabled_default_coins_event([[maybe_unused]] const enabled_defau
 void
 application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
 {
-    //! This event is called when a call is enabled and cex provider finished fetch datas
+    //! This event is called when a call is enabled and cex provider finished fetch data
     if (not m_event_actions[events_action::about_to_exit_app])
     {
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
@@ -650,21 +652,6 @@ namespace atomic_dex
         wallet_manager.set_emergency_password(emergency_password);
     }
 
-    QString
-    application::get_wallet_default_name() const noexcept
-    {
-        const auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        return wallet_manager.get_wallet_default_name();
-    }
-
-    void
-    application::set_wallet_default_name(QString wallet_name) noexcept
-    {
-        auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        wallet_manager.set_wallet_default_name(std::move(wallet_name));
-        emit onWalletDefaultNameChanged();
-    }
-
     bool
     application::confirm_password(const QString& wallet_name, const QString& password)
     {
@@ -675,18 +662,6 @@ namespace atomic_dex
     application::delete_wallet(const QString& wallet_name)
     {
         return qt_wallet_manager::delete_wallet(wallet_name);
-    }
-
-    QString
-    application::get_default_wallet_name()
-    {
-        return atomic_dex::qt_wallet_manager::get_default_wallet_name();
-    }
-
-    bool
-    application::is_there_a_default_wallet()
-    {
-        return atomic_dex::qt_wallet_manager::is_there_a_default_wallet();
     }
 } // namespace atomic_dex
 
@@ -758,7 +733,7 @@ namespace atomic_dex
     wallet_page*
     application::get_wallet_page() const noexcept
     {
-        wallet_page* ptr = const_cast<wallet_page*>(std::addressof(system_manager_.get_system<wallet_page>()));
+        auto ptr = const_cast<wallet_page*>(std::addressof(system_manager_.get_system<wallet_page>()));
         assert(ptr != nullptr);
         return ptr;
     }
@@ -770,7 +745,7 @@ namespace atomic_dex
     settings_page*
     application::get_settings_page() const noexcept
     {
-        settings_page* ptr = const_cast<settings_page*>(std::addressof(system_manager_.get_system<settings_page>()));
+        auto ptr = const_cast<settings_page*>(std::addressof(system_manager_.get_system<settings_page>()));
         assert(ptr != nullptr);
         return ptr;
     }
@@ -782,7 +757,7 @@ namespace atomic_dex
     addressbook_page*
     application::get_addressbook_page() const noexcept
     {
-        addressbook_page* ptr = const_cast<addressbook_page*>(std::addressof(system_manager_.get_system<addressbook_page>()));
+        auto ptr = const_cast<addressbook_page*>(std::addressof(system_manager_.get_system<addressbook_page>()));
         assert(ptr != nullptr);
         return ptr;
     }
@@ -814,7 +789,7 @@ namespace atomic_dex
     ip_service_checker*
     application::get_ip_checker() const noexcept
     {
-        ip_service_checker* ptr = const_cast<ip_service_checker*>(std::addressof(system_manager_.get_system<ip_service_checker>()));
+        auto ptr = const_cast<ip_service_checker*>(std::addressof(system_manager_.get_system<ip_service_checker>()));
         assert(ptr != nullptr);
         return ptr;
     }
@@ -826,7 +801,7 @@ namespace atomic_dex
     qt_wallet_manager*
     application::get_wallet_mgr() const noexcept
     {
-        qt_wallet_manager* ptr = const_cast<qt_wallet_manager*>(std::addressof(system_manager_.get_system<qt_wallet_manager>()));
+        auto ptr = const_cast<qt_wallet_manager*>(std::addressof(system_manager_.get_system<qt_wallet_manager>()));
         assert(ptr != nullptr);
         return ptr;
     }
@@ -839,8 +814,8 @@ namespace atomic_dex
     application::restart()
     {
         SPDLOG_INFO("restarting the application");
-        const char* appimage = nullptr;
-        if (appimage = std::getenv("APPIMAGE"); appimage)
+        const char* appimage{nullptr};
+        if (appimage = std::getenv("APPIMAGE"); appimage != nullptr)
         {
             SPDLOG_INFO("APPIMAGE path is {}", appimage);
         }

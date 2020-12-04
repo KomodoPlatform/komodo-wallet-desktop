@@ -13,7 +13,7 @@ BasicModal {
     function tryViewSeed() {
         if(!submit_button.enabled) return
 
-        const result = API.app.settings_pg.retrieve_seed(API.app.wallet_default_name, input_password.field.text)
+        const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, input_password.field.text)
 
         if(result !== 'wrong password') {
             seed_text.field.text = result

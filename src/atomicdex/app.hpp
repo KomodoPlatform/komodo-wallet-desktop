@@ -75,7 +75,6 @@ namespace atomic_dex
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
-        Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
 
         //! Private function
         void connect_signals();
@@ -124,43 +123,38 @@ namespace atomic_dex
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
-        mm2_service&              get_mm2() noexcept;
-        const mm2_service&        get_mm2() const noexcept;
-        entt::dispatcher&         get_dispatcher() noexcept;
-        addressbook_page*         get_addressbook_page() const noexcept;
-        portfolio_page*           get_portfolio_page() const noexcept;
-        wallet_page*              get_wallet_page() const noexcept;
-        orders_model*             get_orders() const noexcept;
-        notification_manager*     get_notification_manager() const noexcept;
-        trading_page*             get_trading_page() const noexcept;
-        settings_page*            get_settings_page() const noexcept;
-        qt_wallet_manager*        get_wallet_mgr() const noexcept;
-        internet_service_checker* get_internet_checker() const noexcept;
-        ip_service_checker*       get_ip_checker() const noexcept;
-        QVariantList              get_enableable_coins() const noexcept;
-        QString                   get_wallet_default_name() const noexcept;
-
-        QVariant get_update_status() const noexcept;
+        mm2_service&                     get_mm2() noexcept;
+        [[nodiscard]] const mm2_service& get_mm2() const noexcept;
+        entt::dispatcher&                get_dispatcher() noexcept;
+        [[nodiscard]] addressbook_page*  get_addressbook_page() const noexcept;
+        [[nodiscard]] portfolio_page*    get_portfolio_page() const noexcept;
+        [[nodiscard]] wallet_page*       get_wallet_page() const noexcept;
+        orders_model*                    get_orders() const noexcept;
+        notification_manager*            get_notification_manager() const noexcept;
+        trading_page*                    get_trading_page() const noexcept;
+        settings_page*                   get_settings_page() const noexcept;
+        qt_wallet_manager*               get_wallet_mgr() const noexcept;
+        internet_service_checker*        get_internet_checker() const noexcept;
+        ip_service_checker*              get_ip_checker() const noexcept;
+        QVariantList                     get_enableable_coins() const noexcept;
+        [[nodiscard]] QVariant           get_update_status() const noexcept;
 
         //! Properties Setter
-        void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) noexcept;
 
         //! Launch the internal loop for the SDK.
         void launch();
 
         //! Bind to the QML Worlds
-        Q_INVOKABLE void restart();
+        Q_INVOKABLE static void restart();
 
         //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
-        Q_INVOKABLE static bool        is_there_a_default_wallet();
-        Q_INVOKABLE static QString     get_default_wallet_name();
-        Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name);
-        Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
-        Q_INVOKABLE void               set_emergency_password(const QString& emergency_password);
-        Q_INVOKABLE bool               is_pin_cfg_enabled() const noexcept;
+        Q_INVOKABLE static bool    delete_wallet(const QString& wallet_name);
+        Q_INVOKABLE static bool    confirm_password(const QString& wallet_name, const QString& password);
+        Q_INVOKABLE void           set_emergency_password(const QString& emergency_password);
+        Q_INVOKABLE bool           is_pin_cfg_enabled() const noexcept;
 
-        //! Miscs
+        //! Misc
         Q_INVOKABLE static QString to_eth_checksum_qt(const QString& eth_lowercase_address);
         Q_INVOKABLE static void    change_state(int visibility);
 
@@ -168,19 +162,19 @@ namespace atomic_dex
         Q_INVOKABLE QString recover_fund(const QString& uuid);
 
         //! Others
-        Q_INVOKABLE static bool    mnemonic_validate(const QString& entropy);
-        Q_INVOKABLE void           refresh_orders_and_swaps();
-        Q_INVOKABLE static QString get_mnemonic();
-        Q_INVOKABLE static bool    first_run();
-        Q_INVOKABLE bool           disconnect();
-        Q_INVOKABLE bool           enable_coins(const QStringList& coins);
-        Q_INVOKABLE QString        get_balance(const QString& coin);
-        Q_INVOKABLE bool           do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
-        Q_INVOKABLE bool           disable_coins(const QStringList& coins);
-        Q_INVOKABLE QString        get_fiat_from_amount(const QString& ticker, const QString& amount);
-        Q_INVOKABLE QVariant       get_coin_info(const QString& ticker);
-        Q_INVOKABLE bool           export_swaps_json() noexcept;
-        Q_INVOKABLE QVariantList   get_all_coins() const noexcept;
+        Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
+        Q_INVOKABLE void               refresh_orders_and_swaps();
+        Q_INVOKABLE static QString     get_mnemonic();
+        Q_INVOKABLE static bool        first_run();
+        Q_INVOKABLE bool               disconnect();
+        Q_INVOKABLE bool               enable_coins(const QStringList& coins);
+        Q_INVOKABLE QString            get_balance(const QString& coin);
+        Q_INVOKABLE [[nodiscard]] bool do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
+        Q_INVOKABLE bool               disable_coins(const QStringList& coins);
+        Q_INVOKABLE QString            get_fiat_from_amount(const QString& ticker, const QString& amount);
+        Q_INVOKABLE QVariant           get_coin_info(const QString& ticker);
+        Q_INVOKABLE bool               export_swaps_json() noexcept;
+        Q_INVOKABLE QVariantList       get_all_coins() const noexcept;
 
       signals:
         //! Signals to the QML Worlds

@@ -52,6 +52,7 @@ namespace atomic_dex
         }
 
         this->m_current_default_wallet = std::move(wallet_name);
+        emit onWalletDefaultNameChanged();
     }
 
     bool

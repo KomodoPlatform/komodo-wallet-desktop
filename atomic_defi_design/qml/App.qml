@@ -21,7 +21,7 @@ Rectangle {
     function onDisconnect() { openFirstLaunch() }
 
     function openFirstLaunch(force=false, set_wallet_name=true) {
-        if(set_wallet_name) selected_wallet_name = API.app.wallet_default_name
+        if(set_wallet_name) selected_wallet_name = API.app.wallet_mgr.wallet_default_name
 
         current_page = force ? idx_first_launch : firstPage()
     }
