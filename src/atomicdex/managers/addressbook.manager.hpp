@@ -189,14 +189,24 @@ namespace atomic_dex
         /// \return True if the contact exists, false otherwise.
         [[nodiscard]]
         bool has_contact(const std::string& name) const noexcept;
-        
+    
         /// \brief   Tells if a contact name possesses wallet information.
         /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
         /// \param   name Name of the contact.
         /// \param   type Type of wallet.
         /// \return  True if the contact possesses the wallet, false otherwise.
         [[nodiscard]]
-        bool has_wallet_info(const std::string& name, const std::string& type) const noexcept;
+        bool has_wallet_info(const std::string& name, const std::string& type) const;
+        
+        /// \brief   Tells if a contact name possesses wallet information.
+        /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
+        /// \warning If the wallet does not exist, it throws an std::invalid_argument exception.
+        /// \param   name Name of the contact.
+        /// \param   type Wallet type.
+        /// \param   key  Address key.
+        /// \return  True if the contact possesses the wallet, false otherwise.
+        [[nodiscard]]
+        bool has_wallet_info(const std::string& name, const std::string& type, const std::string& key) const;
 
         /// \brief   Tells if a contact belong to a category.
         /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
