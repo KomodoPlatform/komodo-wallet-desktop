@@ -273,7 +273,7 @@ ColumnLayout {
                     if (mouse.button === Qt.RightButton) context_menu.popup()
                     else {
                         api_wallet_page.ticker = ticker
-                        dashboard.current_page = General.idx_dashboard_wallet
+                        dashboard.current_page = idx_dashboard_wallet
                     }
                 }
                 onPressAndHold: {

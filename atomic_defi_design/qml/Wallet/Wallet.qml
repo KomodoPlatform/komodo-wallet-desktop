@@ -13,13 +13,13 @@ RowLayout {
 
     function inCurrentPage() {
         return  dashboard.inCurrentPage() &&
-                dashboard.current_page === General.idx_dashboard_wallet
+                dashboard.current_page === idx_dashboard_wallet
     }
 
     // Local
     function onClickedSwap() {
-        dashboard.current_page = General.idx_dashboard_exchange
-        exchange.current_page = General.idx_exchange_trade
+        dashboard.current_page = idx_dashboard_exchange
+        exchange.current_page = idx_exchange_trade
         exchange.openTradeView(api_wallet_page.ticker)
     }
 

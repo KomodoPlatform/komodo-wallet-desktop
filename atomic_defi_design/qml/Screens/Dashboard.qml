@@ -17,11 +17,26 @@ import "../Sidebar"
 Item {
     id: dashboard
 
+    readonly property int idx_dashboard_portfolio: 0
+    readonly property int idx_dashboard_wallet: 1
+    readonly property int idx_dashboard_exchange: 2
+    readonly property int idx_dashboard_addressbook: 3
+    readonly property int idx_dashboard_news: 4
+    readonly property int idx_dashboard_dapps: 5
+    readonly property int idx_dashboard_settings: 6
+    readonly property int idx_dashboard_support: 7
+    readonly property int idx_dashboard_light_ui: 8
+    readonly property int idx_dashboard_privacy_mode: 9
+
+    readonly property int idx_exchange_trade: 0
+    readonly property int idx_exchange_orders: 1
+    readonly property int idx_exchange_history: 2
+
     property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
     function getMainPage() {
-        return General.idx_dashboard_portfolio
+        return idx_dashboard_portfolio
     }
 
     function openLogsFolder() {
@@ -69,25 +84,25 @@ Item {
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
             // Handle DEX enter/exit
-            if(current_page === General.idx_dashboard_exchange) {
+            if(current_page === idx_dashboard_exchange) {
                 API.app.trading_pg.on_gui_enter_dex()
                 exchange.onOpened()
             }
-            else if(prev_page === General.idx_dashboard_exchange) {
+            else if(prev_page === idx_dashboard_exchange) {
                 API.app.trading_pg.on_gui_leave_dex()
             }
 
             // Opening of other pages
-            if(current_page === General.idx_dashboard_portfolio) {
+            if(current_page === idx_dashboard_portfolio) {
                 portfolio.onOpened()
             }
-            else if(current_page === General.idx_dashboard_wallet) {
+            else if(current_page === idx_dashboard_wallet) {
                 wallet.onOpened()
             }
-            else if(current_page === General.idx_dashboard_settings) {
+            else if(current_page === idx_dashboard_settings) {
                 settings.onOpened()
             }
-            else if(current_page === General.idx_dashboard_support) {
+            else if(current_page === idx_dashboard_support) {
                 support.onOpened()
             }
         }

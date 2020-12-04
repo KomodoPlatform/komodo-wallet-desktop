@@ -13,14 +13,14 @@ Item {
     readonly property int layout_margin: 15
 
     property int prev_page: -1
-    property int current_page: General.idx_exchange_trade
+    property int current_page: idx_exchange_trade
 
     function cancelOrder(order_id) {
         API.app.trading_pg.cancel_order(order_id)
     }
 
     function reset() {
-        current_page = General.idx_exchange_trade
+        current_page = idx_exchange_trade
         prev_page = -1
         exchange_trade.fullReset()
         exchange_history.reset()
@@ -29,7 +29,7 @@ Item {
 
     function inCurrentPage() {
         return  dashboard.inCurrentPage() &&
-                dashboard.current_page === General.idx_dashboard_exchange
+                dashboard.current_page === idx_dashboard_exchange
     }
 
     function openTradeView(ticker) {
@@ -43,19 +43,19 @@ Item {
     function onOpened() {
         if(prev_page !== current_page) {
             // Handle DEX enter/exit
-            if(current_page === General.idx_exchange_trade) {
+            if(current_page === idx_exchange_trade) {
                 API.app.trading_pg.on_gui_enter_dex()
                 exchange_trade.onOpened()
             }
-            else if(prev_page === General.idx_exchange_trade) {
+            else if(prev_page === idx_exchange_trade) {
                 API.app.trading_pg.on_gui_leave_dex()
             }
 
             // Opening of other pages
-            if(current_page === General.idx_exchange_orders) {
+            if(current_page === idx_exchange_orders) {
                 exchange_orders.onOpened()
             }
-            else if(current_page === General.idx_exchange_history) {
+            else if(current_page === idx_exchange_history) {
                 exchange_history.onOpened()
             }
         }
@@ -95,7 +95,7 @@ Item {
                     spacing: 30
 
                     ExchangeTab {
-                        dashboard_index: General.idx_exchange_trade
+                        dashboard_index: idx_exchange_trade
                         text_value: qsTr("Trade")
                     }
 
@@ -106,7 +106,7 @@ Item {
                     }
 
                     ExchangeTab {
-                        dashboard_index: General.idx_exchange_orders
+                        dashboard_index: idx_exchange_orders
                         text_value: qsTr("Orders")
                     }
 
@@ -116,7 +116,7 @@ Item {
                     }
 
                     ExchangeTab {
-                        dashboard_index: General.idx_exchange_history
+                        dashboard_index: idx_exchange_history
                         text_value: qsTr("History")
                     }
                 }
@@ -138,7 +138,7 @@ Item {
                 onOrderSuccess: () => {
                     General.prevent_coin_disabling.restart()
                     exchange_trade.reset(false)
-                    exchange.current_page = General.idx_exchange_orders
+                    exchange.current_page = idx_exchange_orders
                 }
             }
 
