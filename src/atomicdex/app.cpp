@@ -657,12 +657,6 @@ namespace atomic_dex
     {
         return atomic_dex::qt_wallet_manager::confirm_password(wallet_name, password);
     }
-
-    bool
-    application::delete_wallet(const QString& wallet_name)
-    {
-        return qt_wallet_manager::delete_wallet(wallet_name);
-    }
 } // namespace atomic_dex
 
 //! Actions implementation

@@ -84,7 +84,7 @@ BasicModal {
                         root.close()
                         wrong_password = false
 
-                        API.app.delete_wallet(API.app.wallet_mgr.wallet_default_name)
+                        API.app.wallet_mgr.delete_wallet(API.app.wallet_mgr.wallet_default_name)
                         disconnect()
                     }
                     else {
