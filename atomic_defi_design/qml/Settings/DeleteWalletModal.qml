@@ -80,7 +80,7 @@ BasicModal {
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    if(API.app.confirm_password(API.app.wallet_mgr.wallet_default_name, input_password.field.text)) {
+                    if(API.app.wallet_mgr.confirm_password(API.app.wallet_mgr.wallet_default_name, input_password.field.text)) {
                         root.close()
                         wrong_password = false
 

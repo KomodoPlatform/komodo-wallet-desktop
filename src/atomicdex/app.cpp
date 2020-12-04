@@ -296,7 +296,7 @@ application::application(QObject* pParent) noexcept :
     {
         auto* wallet_mgr = get_wallet_mgr();
         wallet_mgr->set_wallet_default_name(wallet_mgr->get_default_wallet_name());
-        //set_wallet_default_name(get_default_wallet_name());
+        // set_wallet_default_name(get_default_wallet_name());
     }
 }
 
@@ -643,19 +643,6 @@ namespace atomic_dex
     application::is_pin_cfg_enabled() const noexcept
     {
         return get_mm2().is_pin_cfg_enabled();
-    }
-
-    void
-    application::set_emergency_password(const QString& emergency_password)
-    {
-        auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        wallet_manager.set_emergency_password(emergency_password);
-    }
-
-    bool
-    application::confirm_password(const QString& wallet_name, const QString& password)
-    {
-        return atomic_dex::qt_wallet_manager::confirm_password(wallet_name, password);
     }
 } // namespace atomic_dex
 

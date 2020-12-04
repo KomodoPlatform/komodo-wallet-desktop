@@ -149,8 +149,6 @@ namespace atomic_dex
         Q_INVOKABLE static void restart();
 
         //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
-        Q_INVOKABLE static bool    confirm_password(const QString& wallet_name, const QString& password);
-        Q_INVOKABLE void           set_emergency_password(const QString& emergency_password);
         Q_INVOKABLE bool           is_pin_cfg_enabled() const noexcept;
 
         //! Misc
