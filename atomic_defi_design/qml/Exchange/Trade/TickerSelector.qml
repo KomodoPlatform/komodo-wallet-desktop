@@ -22,6 +22,8 @@ RowLayout {
 
     onTickerChanged: renewIndex()
 
+    Component.onCompleted: renewIndex()
+
     DexComboBox {
         id: combo
 

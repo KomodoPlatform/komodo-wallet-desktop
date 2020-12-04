@@ -17,10 +17,6 @@ ColumnLayout {
     //! This variable represents a margin size.
     readonly property int layout_margin: 30
 
-    function reset() {
-
-    }
-
     //! Page header
     RowLayout {
         Layout.topMargin: layout_margin

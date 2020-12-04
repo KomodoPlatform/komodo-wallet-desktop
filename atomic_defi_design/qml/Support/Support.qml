@@ -9,14 +9,6 @@ import "../Constants"
 Item {
     id: root
 
-    function reset() {
-
-    }
-
-    function onOpened() {
-
-    }
-
     DefaultFlickable {
         id: layout_background
 

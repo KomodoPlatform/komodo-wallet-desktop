@@ -17,6 +17,8 @@ import "../Sidebar"
 Item {
     id: dashboard
 
+    readonly property alias current_component: loader.item
+
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
     readonly property int idx_dashboard_exchange: 2
@@ -35,10 +37,6 @@ Item {
     property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
-    function getMainPage() {
-        return idx_dashboard_portfolio
-    }
-
     function openLogsFolder() {
         API.app.export_swaps_json()
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
@@ -49,26 +47,11 @@ Item {
     readonly property bool can_change_ticker: !api_wallet_page.tx_fetching_busy
 
     property int prev_page: -1
-    property int current_page: getMainPage()
+    property int current_page: idx_dashboard_portfolio
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
 
-    Component.onCompleted: reset()
-
-    function reset() {
-        current_page = getMainPage()
-        prev_page = -1
-
-        // Reset all sections
-        portfolio.reset()
-        wallet.reset()
-        exchange.reset()
-        addressbook.reset()
-        news.reset()
-        dapps.reset()
-        settings.reset()
-        notifications_modal.reset()
-    }
+    Component.onCompleted: notifications_modal.reset()
 
     function inCurrentPage() {
         return app.current_page === idx_dashboard
@@ -79,35 +62,6 @@ Item {
 
     function resetCoinFilter() {
         portfolio_coins.setFilterFixedString("")
-    }
-
-    onCurrent_pageChanged: {
-        if(prev_page !== current_page) {
-            // Handle DEX enter/exit
-            if(current_page === idx_dashboard_exchange) {
-                API.app.trading_pg.on_gui_enter_dex()
-                exchange.onOpened()
-            }
-            else if(prev_page === idx_dashboard_exchange) {
-                API.app.trading_pg.on_gui_leave_dex()
-            }
-
-            // Opening of other pages
-            if(current_page === idx_dashboard_portfolio) {
-                portfolio.onOpened()
-            }
-            else if(current_page === idx_dashboard_wallet) {
-                wallet.onOpened()
-            }
-            else if(current_page === idx_dashboard_settings) {
-                settings.onOpened()
-            }
-            else if(current_page === idx_dashboard_support) {
-                support.onOpened()
-            }
-        }
-
-        prev_page = current_page
     }
 
     // Right side
@@ -123,32 +77,34 @@ Item {
             anchors.centerIn: Overlay.overlay
         }
 
-        StackLayout {
-            currentIndex: current_page
+        Component {
+            id: portfolio
 
-            anchors.fill: parent
+            Portfolio {}
+        }
 
-            transformOrigin: Item.Center
+        Component {
+            id: wallet
 
-            Portfolio {
-                id: portfolio
-            }
+            Wallet {}
+        }
 
-            Wallet {
-                id: wallet
-            }
+        Component {
+            id: exchange
 
-            Exchange {
-                id: exchange
-            }
+            Exchange {}
+        }
 
-            AddressBook {
-                id: addressbook
-            }
+        Component {
+            id: addressbook
+
+            AddressBook {}
+        }
+
+        Component {
+            id: news
 
             Item {
-                id: news
-                function reset() { }
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 DefaultText {
@@ -156,10 +112,12 @@ Item {
                     text_value: qsTr("Content for this section will be added later. Stay tuned!")
                 }
             }
+        }
+
+        Component {
+            id: dapps
 
             Item {
-                id: dapps
-                function reset() { }
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 DefaultText {
@@ -167,15 +125,41 @@ Item {
                     text_value: qsTr("Content for this section will be added later. Stay tuned!")
                 }
             }
+        }
+
+        Component {
+            id: settings
 
             Settings {
-                id: settings
                 Layout.alignment: Qt.AlignCenter
             }
+        }
+
+        Component {
+            id: support
 
             Support {
-                id: support
                 Layout.alignment: Qt.AlignCenter
+            }
+        }
+
+        Loader {
+            id: loader
+            anchors.fill: parent
+            transformOrigin: Item.Center
+
+            sourceComponent: {
+                switch(current_page) {
+                case idx_dashboard_portfolio: return portfolio
+                case idx_dashboard_wallet: return wallet
+                case idx_dashboard_exchange: return exchange
+                case idx_dashboard_addressbook: return addressbook
+                case idx_dashboard_news: return news
+                case idx_dashboard_dapps: return dapps
+                case idx_dashboard_settings: return settings
+                case idx_dashboard_support: return support
+                default: return undefined
+                }
             }
         }
     }
@@ -247,6 +231,129 @@ Item {
 
     RestartModal {
         id: restart_modal
+    }
+
+    function getStatusColor(status) {
+        switch(status) {
+            case "matching":
+                return Style.colorYellow
+            case "matched":
+            case "ongoing":
+            case "refunding":
+                return Style.colorOrange
+            case "successful":
+                return Style.colorGreen
+            case "failed":
+            default:
+                return Style.colorRed
+        }
+    }
+
+    function getStatusText(status, short_text=false) {
+        switch(status) {
+            case "matching":
+                return short_text ? qsTr("Matching") : qsTr("Order Matching")
+            case "matched":
+                return short_text ? qsTr("Matched") : qsTr("Order Matched")
+            case "ongoing":
+                return short_text ? qsTr("Ongoing") : qsTr("Swap Ongoing")
+            case "successful":
+                return short_text ? qsTr("Successful") : qsTr("Swap Successful")
+            case "refunding":
+                return short_text ? qsTr("Refunding") : qsTr("Refunding")
+            case "failed":
+                return short_text ? qsTr("Failed") : qsTr("Swap Failed")
+            default:
+                return short_text ? qsTr("Unknown") : qsTr("Unknown State")
+        }
+    }
+
+    function isSwapDone(status) {
+        switch(status) {
+            case "matching":
+            case "matched":
+            case "ongoing":
+                return false
+            case "successful":
+            case "refunding":
+            case "failed":
+            default:
+                return true
+        }
+    }
+
+    function getStatusStep(status) {
+        switch(status) {
+            case "matching":
+                return "0/3"
+            case "matched":
+                return "1/3"
+            case "ongoing":
+                return "2/3"
+            case "successful":
+                return Style.successCharacter
+            case "refunding":
+                return Style.warningCharacter
+            case "failed":
+                return Style.failureCharacter
+            default:
+                return "?"
+        }
+    }
+
+    function getStatusTextWithPrefix(status, short_text=false) {
+        return getStatusStep(status) + " " + getStatusText(status, short_text)
+    }
+
+    function getEventText(event_name) {
+        switch(event_name) {
+            case "Started":
+                return qsTr("Started")
+            case "Negotiated":
+                return qsTr("Negotiated")
+            case "TakerFeeSent":
+                return qsTr("Taker fee sent")
+            case "MakerPaymentReceived":
+                return qsTr("Maker payment received")
+            case "MakerPaymentWaitConfirmStarted":
+                return qsTr("Maker payment wait confirm started")
+            case "MakerPaymentValidatedAndConfirmed":
+                return qsTr("Maker payment validated and confirmed")
+            case "TakerPaymentSent":
+                return qsTr("Taker payment sent")
+            case "TakerPaymentSpent":
+                return qsTr("Taker payment spent")
+            case "MakerPaymentSpent":
+                return qsTr("Maker payment spent")
+            case "Finished":
+                return qsTr("Finished")
+            case "StartFailed":
+                return qsTr("Start failed")
+            case "NegotiateFailed":
+                return qsTr("Negotiate failed")
+            case "TakerFeeValidateFailed":
+                return qsTr("Taker fee validate failed")
+            case "MakerPaymentTransactionFailed":
+                return qsTr("Maker payment transaction failed")
+            case "MakerPaymentDataSendFailed":
+                return qsTr("Maker payment Data send failed")
+            case "MakerPaymentWaitConfirmFailed":
+                return qsTr("Maker payment wait confirm failed")
+            case "TakerPaymentValidateFailed":
+                return qsTr("Taker payment validate failed")
+            case "TakerPaymentWaitConfirmFailed":
+                return qsTr("Taker payment wait confirm failed")
+            case "TakerPaymentSpendFailed":
+                return qsTr("Taker payment spend failed")
+            case "MakerPaymentWaitRefundStarted":
+                return qsTr("Maker payment wait refund started")
+            case "MakerPaymentRefunded":
+                return qsTr("Maker payment refunded")
+            case "MakerPaymentRefundFailed":
+                return qsTr("Maker payment refund failed")
+            default:
+                return qsTr(event_name)
+        }
     }
 }
 

@@ -13,15 +13,7 @@ Item {
         onDisconnect()
     }
 
-    function reset() {
-
-    }
-
-    function onOpened() {
-        if(mm2_version === '') mm2_version = API.app.settings_pg.get_mm2_version()
-    }
-
-    property string mm2_version: ''
+    readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var fiats: API.app.settings_pg.get_available_fiats()
 
     InnerBackground {

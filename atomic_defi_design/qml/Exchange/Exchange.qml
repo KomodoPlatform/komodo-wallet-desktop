@@ -19,13 +19,12 @@ Item {
         API.app.trading_pg.cancel_order(order_id)
     }
 
-    function reset() {
-        current_page = idx_exchange_trade
-        prev_page = -1
-        exchange_trade.fullReset()
-        exchange_history.reset()
-        exchange_orders.reset()
+    Component.onCompleted: {
+        API.app.trading_pg.on_gui_enter_dex()
+        onOpened()
     }
+
+    Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
 
     function inCurrentPage() {
         return  dashboard.inCurrentPage() &&
@@ -33,6 +32,7 @@ Item {
     }
 
     function openTradeView(ticker) {
+        current_page = idx_exchange_trade
         exchange_trade.open(ticker)
     }
 
@@ -149,129 +149,6 @@ Item {
             History {
                 id: exchange_history
             }
-        }
-    }
-
-    function getStatusColor(status) {
-        switch(status) {
-            case "matching":
-                return Style.colorYellow
-            case "matched":
-            case "ongoing":
-            case "refunding":
-                return Style.colorOrange
-            case "successful":
-                return Style.colorGreen
-            case "failed":
-            default:
-                return Style.colorRed
-        }
-    }
-
-    function getStatusText(status, short_text=false) {
-        switch(status) {
-            case "matching":
-                return short_text ? qsTr("Matching") : qsTr("Order Matching")
-            case "matched":
-                return short_text ? qsTr("Matched") : qsTr("Order Matched")
-            case "ongoing":
-                return short_text ? qsTr("Ongoing") : qsTr("Swap Ongoing")
-            case "successful":
-                return short_text ? qsTr("Successful") : qsTr("Swap Successful")
-            case "refunding":
-                return short_text ? qsTr("Refunding") : qsTr("Refunding")
-            case "failed":
-                return short_text ? qsTr("Failed") : qsTr("Swap Failed")
-            default:
-                return short_text ? qsTr("Unknown") : qsTr("Unknown State")
-        }
-    }
-
-    function isSwapDone(status) {
-        switch(status) {
-            case "matching":
-            case "matched":
-            case "ongoing":
-                return false
-            case "successful":
-            case "refunding":
-            case "failed":
-            default:
-                return true
-        }
-    }
-
-    function getStatusStep(status) {
-        switch(status) {
-            case "matching":
-                return "0/3"
-            case "matched":
-                return "1/3"
-            case "ongoing":
-                return "2/3"
-            case "successful":
-                return Style.successCharacter
-            case "refunding":
-                return Style.warningCharacter
-            case "failed":
-                return Style.failureCharacter
-            default:
-                return "?"
-        }
-    }
-
-    function getStatusTextWithPrefix(status, short_text=false) {
-        return getStatusStep(status) + " " + getStatusText(status, short_text)
-    }
-
-    function getEventText(event_name) {
-        switch(event_name) {
-            case "Started":
-                return qsTr("Started")
-            case "Negotiated":
-                return qsTr("Negotiated")
-            case "TakerFeeSent":
-                return qsTr("Taker fee sent")
-            case "MakerPaymentReceived":
-                return qsTr("Maker payment received")
-            case "MakerPaymentWaitConfirmStarted":
-                return qsTr("Maker payment wait confirm started")
-            case "MakerPaymentValidatedAndConfirmed":
-                return qsTr("Maker payment validated and confirmed")
-            case "TakerPaymentSent":
-                return qsTr("Taker payment sent")
-            case "TakerPaymentSpent":
-                return qsTr("Taker payment spent")
-            case "MakerPaymentSpent":
-                return qsTr("Maker payment spent")
-            case "Finished":
-                return qsTr("Finished")
-            case "StartFailed":
-                return qsTr("Start failed")
-            case "NegotiateFailed":
-                return qsTr("Negotiate failed")
-            case "TakerFeeValidateFailed":
-                return qsTr("Taker fee validate failed")
-            case "MakerPaymentTransactionFailed":
-                return qsTr("Maker payment transaction failed")
-            case "MakerPaymentDataSendFailed":
-                return qsTr("Maker payment Data send failed")
-            case "MakerPaymentWaitConfirmFailed":
-                return qsTr("Maker payment wait confirm failed")
-            case "TakerPaymentValidateFailed":
-                return qsTr("Taker payment validate failed")
-            case "TakerPaymentWaitConfirmFailed":
-                return qsTr("Taker payment wait confirm failed")
-            case "TakerPaymentSpendFailed":
-                return qsTr("Taker payment spend failed")
-            case "MakerPaymentWaitRefundStarted":
-                return qsTr("Maker payment wait refund started")
-            case "MakerPaymentRefunded":
-                return qsTr("Maker payment refunded")
-            case "MakerPaymentRefundFailed":
-                return qsTr("Maker payment refund failed")
-            default:
-                return qsTr(event_name)
         }
     }
 }

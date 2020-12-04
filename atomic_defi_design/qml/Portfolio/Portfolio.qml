@@ -34,11 +34,9 @@ ColumnLayout {
         }
     }
 
-    function reset() {
-        input_coin_filter.reset()
-    }
+    Component.onCompleted: reset()
 
-    function onOpened() {
+    function reset() {
         // Reset the coin name filter
         input_coin_filter.reset()
     }

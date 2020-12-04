@@ -48,7 +48,7 @@ BasicModal {
             break
         case "open_swaps_page":
             dashboard.current_page = idx_dashboard_exchange
-            exchange.current_page = exchange.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
+            current_component.current_page = current_component.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
             break
         case "open_log_modal":
             showError(notification.title, notification.long_message)
@@ -91,7 +91,7 @@ BasicModal {
                         { old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date },
                         swap_uuid,
                         base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
-                        exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
+                        getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + getStatusText(new_swap_status),
                         human_date,
                         "open_swaps_page")
     }
