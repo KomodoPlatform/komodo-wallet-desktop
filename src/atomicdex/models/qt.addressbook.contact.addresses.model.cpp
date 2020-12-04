@@ -99,12 +99,11 @@ namespace atomic_dex
     bool addressbook_contact_addresses_model::add_address_entry(QString key, QString value)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-        const auto* it = std::find_if(m_model_data.begin(), m_model_data.end(), [key](auto&& elem)
-        {
-            return elem.key == key;
-        });
 
-        addrbook_manager.set_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), key.toStdString(), value.toStdString());
+        if (addrbook_manager.has_wallet_info(m_name.toStdString(), m_type.toStdString(), key.toStdString()))
+        {
+            return false;
+        }
         beginInsertRows(QModelIndex(), m_model_data.count(), m_model_data.count());
         m_model_data.push_back(address{.key = std::move(key), .value = std::move(value)});
         endInsertRows();
@@ -115,15 +114,9 @@ namespace atomic_dex
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         
-        addrbook_manager.remove_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), m_model_data[row].key.toStdString());
         beginRemoveRows(QModelIndex(), row, row);
         m_model_data.removeAt(row);
         endRemoveRows();
-    }
-    
-    void addressbook_contact_addresses_model::remove_address_entries()
-    {
-        removeRows(0, rowCount(), QModelIndex());
     }
     
     const QString& addressbook_contact_addresses_model::get_type() const noexcept
@@ -153,23 +146,23 @@ namespace atomic_dex
         endInsertRows();
     }
     
+    void addressbook_contact_addresses_model::clear()
+    {
+        beginResetModel();
+        m_model_data.clear();
+        endResetModel();
+    }
+    
     void addressbook_contact_addresses_model::save()
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         
         // Cleans existing wallet info persistent data before.
-        if (addrbook_manager.has_wallet_info(m_name.toStdString(), m_type.toStdString()))
-        {
-            addrbook_manager.remove_contact_wallet_info(m_name.toStdString(), m_type.toStdString());
-        }
+        addrbook_manager.remove_every_wallet_info(m_name.toStdString());
         
         // Replace the persistent data by the model one.
         for (const auto& address : m_model_data)
         {
-            if (address.key.isEmpty() || address.value.isEmpty())
-            {
-                continue;
-            }
             addrbook_manager.set_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), address.key.toStdString(), address.value.toStdString());
         }
     }

@@ -183,41 +183,36 @@
     <name>AddressBookAddContactAddress</name>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="17"/>
-        <source>Add new address</source>
+        <source>Address Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="24"/>
-        <source>Key</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="26"/>
         <source>Enter the key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="39"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="37"/>
         <source>This key already exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="49"/>
-        <source>Value</source>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="47"/>
+        <source>Address Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="52"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="54"/>
         <source>Enter the address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="67"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="71"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="87"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="91"/>
         <source>Cancel</source>
         <translation type="unfinished">Annuler</translation>
     </message>

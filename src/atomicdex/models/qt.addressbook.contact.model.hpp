@@ -86,7 +86,7 @@ namespace atomic_dex
         /// \brief Loads this model data from the persistent data.
         void populate();
         
-        /// \brief Unload this model data.
+        /// \brief Clears this model data.
         void clear();
     
         /// \defgroup Members

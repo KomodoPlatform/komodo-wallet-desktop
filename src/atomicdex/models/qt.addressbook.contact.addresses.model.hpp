@@ -71,8 +71,6 @@ namespace atomic_dex
         Q_INVOKABLE bool add_address_entry(QString key, QString value);
 
         Q_INVOKABLE void remove_address_entry(int row);
-        
-        Q_INVOKABLE void remove_address_entries();
 
       private:
         Q_PROPERTY(QString type READ get_type NOTIFY typeChanged)
@@ -86,6 +84,9 @@ namespace atomic_dex
       public:
         /// \brief Loads this model data from the persistent data.
         void populate();
+        
+        /// \brief Unload this model data.
+        void clear();
         
         /// \brief Saves this model data to the persistent data.
         void save();

@@ -154,6 +154,10 @@ namespace atomic_dex
         /// \param   type The type of wallet.
         /// \param   key  The key to remove.
         void remove_contact_wallet_info(const std::string& name, const std::string& type, const std::string& key);
+        
+        /// \brief Removes every wallet information from a contact
+        /// \param name Contact name
+        void remove_every_wallet_info(const std::string& name);
     
         /// \brief   Adds a contact to a category.
         /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
@@ -200,7 +204,6 @@ namespace atomic_dex
         
         /// \brief   Tells if a contact name possesses wallet information.
         /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
-        /// \warning If the wallet does not exist, it throws an std::invalid_argument exception.
         /// \param   name Name of the contact.
         /// \param   type Wallet type.
         /// \param   key  Address key.

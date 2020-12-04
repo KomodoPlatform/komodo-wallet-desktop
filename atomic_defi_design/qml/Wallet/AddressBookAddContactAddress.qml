@@ -14,21 +14,19 @@ BasicModal {
         Layout.topMargin: 5
         Layout.fillWidth: true
 
-        title: qsTr("Add new address")
+        title: qsTr("Create a new address")
 
-        TextFieldWithTitle {
+        DefaultTextField {
             id: contact_new_address_key
 
             width: 100
 
-            title: qsTr("Key")
+            placeholderText: qsTr("Enter the key")
 
-            field.placeholderText: qsTr("Enter the key")
-
-            field.onTextChanged: {
+            onTextChanged: {
                 const max_length = 50
-                if (field.text.length > max_length)
-                    field.text = field.text.substring(0, max_length)
+                if (text.length > max_length)
+                    text = text.substring(0, max_length)
             }
 
             //! Error tooltip when key already exists.
@@ -41,20 +39,17 @@ BasicModal {
             }
         }
 
-        TextFieldWithTitle {
+        DefaultTextField {
             id: contact_new_address_value
 
             width: 100
 
-            title: qsTr("Value")
+            placeholderText: qsTr("Enter the address")
 
-
-            field.placeholderText: qsTr("Enter the address")
-
-            field.onTextChanged: {
+            onTextChanged: {
                 const max_length = 50
-                if (field.text.length > max_length)
-                    field.text = field.text.substring(0, max_length)
+                if (text.length > max_length)
+                    text = text.substring(0, max_length)
             }
         }
 
@@ -68,19 +63,19 @@ BasicModal {
 
                 onClicked: {
 
-                    var create_address_result = wallet_info_type_select.currentValue.add_address_entry(contact_new_address_key.field.text, contact_new_address_value.field.text);
+                    var create_address_result = wallet_info_type_select.currentValue.add_address_entry(contact_new_address_key.text, contact_new_address_value.text);
 
                     if (create_address_result === true) {
                         root.close();
-                        contact_new_address_key.field.text = "";
-                        contact_new_address_value.field.text = "";
+                        contact_new_address_key.text = "";
+                        contact_new_address_value.text = "";
                     }
                     else {
                         key_already_exists_tooltip.visible = true
                     }
                 }
 
-                enabled: contact_new_address_key.field.text.length > 0 && contact_new_address_value.field.text.length > 0
+                enabled: contact_new_address_key.text.length > 0 && contact_new_address_value.text.length > 0
             }
 
             DefaultButton {
@@ -88,8 +83,8 @@ BasicModal {
 
                 onClicked: {
                     root.close();
-                    contact_new_address_key.field.text = "";
-                    contact_new_address_value.field.text = "";
+                    contact_new_address_key.text = "";
+                    contact_new_address_value.text = "";
                 }
             }
         }

@@ -165,14 +165,14 @@ namespace atomic_dex
     {
         auto& contact = get_contact(name);
         
-        contact["name"] = new_name;
+        contact.at("name") = new_name;
     }
     
     void addressbook_manager::set_contact_wallet_info(
         const std::string& name, const std::string& type, const std::string& key, const std::string& address)
     {
         auto& wallets_info = get_wallets_info(name);
-        if (!has_wallet_info(name, key))
+        if (!has_wallet_info(name, type))
         {
             wallets_info.push_back({{"type", type}});
         }
@@ -187,7 +187,7 @@ namespace atomic_dex
 
         wallets_info.erase(std::remove_if(begin(wallets_info), end(wallets_info), [type](const auto& wallet_info)
         {
-            return wallet_info["type"] == type;
+            return wallet_info.at("type") == type;
         }));
     }
     
@@ -200,6 +200,13 @@ namespace atomic_dex
         {
             remove_contact_wallet_info(name, type);
         }
+    }
+    
+    void addressbook_manager::remove_every_wallet_info(const std::string& name)
+    {
+        auto& contact = get_contact(name);
+        
+        contact.at("wallets_info") = nlohmann::json::array();
     }
     
     bool addressbook_manager::add_contact_category(const std::string& name, const std::string& category)
@@ -268,9 +275,13 @@ namespace atomic_dex
     
     bool addressbook_manager::has_wallet_info(const std::string& name, const std::string& type, const std::string& key) const
     {
-        const auto& wallet_info = get_wallet_info(name, type);
-        
-        return wallet_info.at("addresses").contains(key);
+        if (has_wallet_info(name, type))
+        {
+            const auto& wallet_info = get_wallet_info(name, type);
+
+            return wallet_info.at("addresses").contains(key);
+        }
+        return false;
     }
     
     bool addressbook_manager::has_category(const std::string& name, const std::string& category) const noexcept
