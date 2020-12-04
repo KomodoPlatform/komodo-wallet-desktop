@@ -58,7 +58,7 @@ TEST_CASE("addressbook_manager with 4 contacts")
     CHECK(addrbook.has_wallet_info("one", "BTC"));
     CHECK(addrbook.has_wallet_info("one", "BTC", "home"));
     addrbook.remove_contact_wallet_info("one", "BTC", "home");
-    //CHECK(!addrbook.has_wallet_info("one", "BTC"));
+    CHECK(!addrbook.has_wallet_info("one", "BTC"));
     
     //! Contacts removal
     addrbook.remove_contact("one");

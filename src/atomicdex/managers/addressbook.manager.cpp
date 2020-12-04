@@ -196,7 +196,7 @@ namespace atomic_dex
         auto& wallet_info = get_wallet_info(name, type);
         
         wallet_info.at("addresses").erase(key);
-        if (wallet_info.empty())
+        if (wallet_info.at("addresses").empty())
         {
             remove_contact_wallet_info(name, type);
         }
