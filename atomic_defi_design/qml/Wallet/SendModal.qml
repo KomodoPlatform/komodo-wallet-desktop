@@ -216,7 +216,7 @@ BasicModal {
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                 text: qsTr("Address Book")
                 onClicked: {
-                    dashboard.current_page = General.idx_dashboard_addressbook
+                    dashboard.current_page = idx_dashboard_addressbook
                     root.close()
                 }
                 enabled: !root.is_send_busy

@@ -44,11 +44,11 @@ BasicModal {
             break
         case "open_wallet_page":
             api_wallet_page.ticker = notification.params.ticker
-            dashboard.current_page = General.idx_dashboard_wallet
+            dashboard.current_page = idx_dashboard_wallet
             break
         case "open_swaps_page":
-            dashboard.current_page = General.idx_dashboard_exchange
-            exchange.current_page = exchange.isSwapDone(notification.params.new_swap_status) ? General.idx_exchange_history : General.idx_exchange_orders
+            dashboard.current_page = idx_dashboard_exchange
+            exchange.current_page = exchange.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
             break
         case "open_log_modal":
             showError(notification.title, notification.long_message)

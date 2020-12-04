@@ -60,7 +60,7 @@ Item {
     // Local
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
-                exchange.current_page === General.idx_exchange_trade
+                exchange.current_page === idx_exchange_trade
     }
 
     function fullReset() {
