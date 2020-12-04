@@ -61,8 +61,6 @@ namespace atomic_dex
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
         [[nodiscard]] int                    columnCount(const QModelIndex &parent = QModelIndex()) const final;
         [[nodiscard]] int                    rowCount([[maybe_unused]] const QModelIndex& parent = QModelIndex()) const final;
-        bool                                 insertRows(int position, int rows, const QModelIndex& parent) final;
-        bool                                 removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
     
         /// @} End of QAbstractListModel implementation section.
@@ -70,7 +68,7 @@ namespace atomic_dex
         /// \defgroup QML API.
         /// {@
         
-        Q_INVOKABLE void add_address_entry(QString key, QString value);
+        Q_INVOKABLE bool add_address_entry(QString key, QString value);
 
         Q_INVOKABLE void remove_address_entry(int row);
         

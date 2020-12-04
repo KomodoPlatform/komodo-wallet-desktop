@@ -14,6 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Std
+#include <algorithm>
+
+//! Project
 #include "qt.addressbook.contact.addresses.model.hpp"
 
 //! Constructors.
@@ -82,34 +86,7 @@ namespace atomic_dex
     {
         return m_model_data.count();
     }
-    
-    bool addressbook_contact_addresses_model::insertRows(int position, int rows, const QModelIndex& parent)
-    {
-        beginInsertRows(parent, position, position + rows);
-        for (int row = 0; row < rows; row++)
-        {
-            m_model_data.push_back({"", ""});
-        }
-        endInsertRows();
-        return true;
-    }
 
-    bool addressbook_contact_addresses_model::removeRows(int position, int rows, const QModelIndex& parent)
-    {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-        
-        beginRemoveRows(parent, position, position + rows);
-        for (int row = 0; row < rows; row++)
-        {
-            const auto& data = m_model_data.at(position);
-    
-            addrbook_manager.remove_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), data.key.toStdString());
-            m_model_data.removeAt(position);
-        }
-        endRemoveRows();
-        return true;
-    }
-    
     QHash<int, QByteArray> addressbook_contact_addresses_model::roleNames() const
     {
         return {{TypeRole, "type"}, {KeyRole, "key"}, {AddressRole, "value"}};
@@ -119,18 +96,33 @@ namespace atomic_dex
 //! QML API implementation.
 namespace atomic_dex
 {
-    void addressbook_contact_addresses_model::add_address_entry(QString key, QString value)
+    bool addressbook_contact_addresses_model::add_address_entry(QString key, QString value)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-    
+        const auto* it = std::find_if(m_model_data.begin(), m_model_data.end(), [key](auto&& elem)
+        {
+            return elem.key == key;
+        });
+        
+        if (it == m_model_data.end())
+        {
+            return false;
+        }
         addrbook_manager.set_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), key.toStdString(), value.toStdString());
-        insertRow(rowCount());
-        m_model_data[rowCount() - 1] = address{.key = std::move(key), .value = std::move(value)};
+        beginInsertRows(QModelIndex(), m_model_data.count(), m_model_data.count());
+        m_model_data.push_back(address{.key = std::move(key), .value = std::move(value)});
+        endInsertRows();
+        return true;
     }
     
     void addressbook_contact_addresses_model::remove_address_entry(int row)
     {
-        removeRow(row);
+        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        
+        addrbook_manager.remove_contact_wallet_info(m_name.toStdString(), m_type.toStdString(), m_model_data[row].key.toStdString());
+        beginRemoveRows(QModelIndex(), row, row);
+        m_model_data.removeAt(row);
+        endRemoveRows();
     }
     
     void addressbook_contact_addresses_model::remove_address_entries()

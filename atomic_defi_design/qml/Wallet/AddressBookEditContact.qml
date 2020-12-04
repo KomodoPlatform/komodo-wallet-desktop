@@ -128,73 +128,8 @@ BasicModal {
                 }
             }
 
-            //! Wallet information address creation modal
-            BasicModal {
+            AddressBookAddContactAddress {
                 id: wallet_info_address_creation
-
-                width: 500
-
-                ModalContent {
-                    Layout.topMargin: 5
-                    Layout.fillWidth: true
-
-                    title: qsTr("Add new address")
-
-                    TextFieldWithTitle {
-                        id: contact_new_address_key
-
-                        width: 100
-
-                        title: qsTr("Key")
-
-                        field.onTextChanged: {
-                            const max_length = 50
-                            if (field.text.length > max_length)
-                                field.text = field.text.substring(0, max_length)
-                        }
-                    }
-
-                    TextFieldWithTitle {
-                        id: contact_new_address_value
-
-                        width: 100
-
-                        title: qsTr("Value")
-
-                        field.onTextChanged: {
-                            const max_length = 50
-                            if (field.text.length > max_length)
-                                field.text = field.text.substring(0, max_length)
-                        }
-                    }
-
-                    HorizontalLine {
-                        Layout.fillWidth: true
-                    }
-
-                    RowLayout {
-                        PrimaryButton {
-                            text: qsTr("Ok")
-
-                            onClicked: {
-                                wallet_info_address_creation.close();
-                                wallet_info_type_select.currentValue.add_address_entry(contact_new_address_key.field.text, contact_new_address_value.field.text);
-                                contact_new_address_key.field.text = "";
-                                contact_new_address_value.field.text = "";
-                            }
-                        }
-
-                        DefaultButton {
-                            text: qsTr("Cancel")
-
-                            onClicked: {
-                                wallet_info_address_creation.close();
-                                contact_new_address_key.field.text = "";
-                                contact_new_address_value.field.text = "";
-                            }
-                        }
-                    }
-                }
             }
         }
 

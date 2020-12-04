@@ -185,14 +185,10 @@ namespace atomic_dex
     {
         auto& wallets_info = get_wallets_info(name);
 
-        for (auto it = wallets_info.begin(); it != wallets_info.end(); ++it)
+        wallets_info.erase(std::remove_if(begin(wallets_info), end(wallets_info), [type](const auto& wallet_info)
         {
-            if (it.value().at("type") == type)
-            {
-                wallets_info.erase(it);
-                return;
-            }
-        }
+            return wallet_info["type"] == type;
+        }));
     }
     
     void addressbook_manager::remove_contact_wallet_info(const std::string& name, const std::string& type, const std::string& key)
@@ -200,6 +196,10 @@ namespace atomic_dex
         auto& wallet_info = get_wallet_info(name, type);
         
         wallet_info.at("addresses").erase(key);
+        if (wallet_info.size() == 0)
+        {
+            remove_contact_wallet_info(name, type);
+        }
     }
     
     bool addressbook_manager::add_contact_category(const std::string& name, const std::string& category)

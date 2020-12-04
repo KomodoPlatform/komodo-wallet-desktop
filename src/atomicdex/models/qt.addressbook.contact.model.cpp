@@ -202,7 +202,7 @@ namespace atomic_dex
     
         beginResetModel();
         // Clears inner model data.
-        for (auto& inner_model: m_model_data) { delete inner_model; }
+        for (auto* inner_model: m_model_data) { delete inner_model; }
         m_model_data.clear();
         endResetModel();
     }
