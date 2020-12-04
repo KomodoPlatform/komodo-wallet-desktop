@@ -54,18 +54,19 @@ namespace atomic_dex
 
         //! Q_INVOKABLE (QML API)
         Q_INVOKABLE bool login(const QString& password, const QString& wallet_name);
+        Q_INVOKABLE bool create(const QString& password, const QString& seed, const QString& wallet_name);
+        Q_INVOKABLE static QStringList get_wallets() noexcept;
 
+        //! Constructor
         qt_wallet_manager(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
+
+        //! Others
         QString get_wallet_default_name() const noexcept;
         void    just_set_wallet_name(QString wallet_name);
 
         void set_wallet_default_name(QString wallet_name) noexcept;
 
-        bool create(const QString& password, const QString& seed, const QString& wallet_name);
-
         bool load_wallet_cfg(const std::string& wallet_name);
-
-        static QStringList get_wallets() noexcept;
 
         static bool is_there_a_default_wallet() noexcept;
 

@@ -376,9 +376,8 @@ QtObject {
     }
 
     function checkIfWalletExists(name) {
-        if(API.app.get_wallets().indexOf(name) !== -1)
+        if(API.app.wallet_mgr.get_wallets().indexOf(name) !== -1)
             return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
-
         return ""
     }
 

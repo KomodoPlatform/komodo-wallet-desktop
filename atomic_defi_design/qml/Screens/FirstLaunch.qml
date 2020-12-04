@@ -16,7 +16,7 @@ SetupPage {
 
     // Local
     function updateWallets() {
-        wallets = API.app.get_wallets()
+        wallets = API.app.wallet_mgr.get_wallets()
     }
 
     property var wallets: ([])

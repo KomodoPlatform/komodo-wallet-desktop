@@ -77,7 +77,7 @@ SetupPage {
     }
 
     function onClickedCreate(password, generated_seed, wallet_name) {
-        if(API.app.create(password, generated_seed, wallet_name)) {
+        if(API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
             console.log("Success: Create wallet")
             selected_wallet_name = wallet_name
             postCreateSuccess()

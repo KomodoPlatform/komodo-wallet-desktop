@@ -300,7 +300,6 @@ namespace atomic_dex
                 return false;
             }
 
-
             this->set_wallet_default_name(wallet_name);
             this->set_status("initializing_mm2");
             auto& mm2_system = m_system_manager.get_system<mm2_service>();

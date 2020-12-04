@@ -132,7 +132,7 @@ application::disable_coins(const QStringList& coins)
 bool
 atomic_dex::application::first_run()
 {
-    return get_wallets().empty();
+    return qt_wallet_manager::get_wallets().empty();
 }
 
 void
@@ -666,26 +666,6 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::application::create(const QString& password, const QString& seed, const QString& wallet_name)
-    {
-        auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        return wallet_manager.create(password, seed, wallet_name);
-    }
-
-    /*bool
-    application::login(const QString& password, const QString& wallet_name)
-    {
-        auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        bool  res            = wallet_manager.login(password, wallet_name);
-        if (res)
-        {
-            system_manager_.get_system<addressbook_manager>().load_configuration();
-            qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"))->populate();
-        }
-        return res;
-    }*/
-
-    bool
     application::confirm_password(const QString& wallet_name, const QString& password)
     {
         return atomic_dex::qt_wallet_manager::confirm_password(wallet_name, password);
@@ -701,12 +681,6 @@ namespace atomic_dex
     application::get_default_wallet_name()
     {
         return atomic_dex::qt_wallet_manager::get_default_wallet_name();
-    }
-
-    QStringList
-    application::get_wallets()
-    {
-        return atomic_dex::qt_wallet_manager::get_wallets();
     }
 
     bool
