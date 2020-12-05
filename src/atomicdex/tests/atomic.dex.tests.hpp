@@ -16,6 +16,7 @@
 
 //! Deps
 #include <antara/gaming/world/world.app.hpp>
+#include <folly/init/Init.h>
 
 //! Project
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -23,8 +24,13 @@
 
 struct tests_context : public antara::gaming::world::app
 {
-    tests_context()
+    tests_context(char** argv)
     {
+#ifdef BOOST_OS_LINUX
+        int realargs = 1; // workaround to ignore doct
+        folly::init(&realargs, &argv, false);
+#endif
+
         //! Creates mm2 service.
         const auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
         
@@ -46,4 +52,4 @@ struct tests_context : public antara::gaming::world::app
     }
 };
 
-extern tests_context g_context;
+extern std::unique_ptr<tests_context> g_context;

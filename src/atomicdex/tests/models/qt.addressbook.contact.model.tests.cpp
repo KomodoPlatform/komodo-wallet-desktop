@@ -27,7 +27,7 @@
 
 TEST_CASE("addressbook_contact_model")
 {
-    auto& addressbook_manager = g_context.system_manager().create_system<atomic_dex::addressbook_manager>(g_context.system_manager());
+    auto& addressbook_manager = g_context->system_manager().create_system<atomic_dex::addressbook_manager>(g_context->system_manager());
     {
         addressbook_manager.load_configuration();
     }
@@ -39,7 +39,7 @@ TEST_CASE("addressbook_contact_model")
         addressbook_manager.add_contact_category(contact_name, "QA");
         addressbook_manager.add_contact_category(contact_name, "CTO");
     }
-    atomic_dex::addressbook_contact_model contact_model{g_context.system_manager(), contact_name};
+    atomic_dex::addressbook_contact_model contact_model{g_context->system_manager(), contact_name};
 
     THEN("get_categories should return 4 categories")
     {

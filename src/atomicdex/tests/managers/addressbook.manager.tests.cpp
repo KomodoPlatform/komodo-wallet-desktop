@@ -24,7 +24,7 @@
 
 TEST_CASE("addressbook_manager with 4 contacts")
 {
-    auto addrbook = g_context.system_manager().create_system<atomic_dex::addressbook_manager>(g_context.system_manager());
+    auto addrbook = g_context->system_manager().create_system<atomic_dex::addressbook_manager>(g_context->system_manager());
 
     addrbook.remove_all_contacts();
     

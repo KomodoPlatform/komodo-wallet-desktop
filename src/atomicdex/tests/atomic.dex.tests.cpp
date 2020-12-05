@@ -19,13 +19,15 @@
 
 #include "atomic.dex.tests.hpp"
 
-tests_context g_context;
+std::unique_ptr<tests_context> g_context{nullptr};
 
 int main(int argc, char** argv)
 {
     doctest::Context context;
 
     context.applyCommandLine(argc, argv);
+
+    g_context = std::make_unique<tests_context>(argv);
     
     int res = context.run();
     
