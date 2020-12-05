@@ -45,11 +45,18 @@ namespace atomic_dex
         QString                  m_current_default_wallet{""};
         QString                  m_current_status{"None"};
 
+        //! Private functions
+        bool load_wallet_cfg(const std::string& wallet_name);
+        bool update_wallet_cfg() noexcept;
+
       signals:
         void onStatusChanged();
         void onWalletDefaultNameChanged();
 
       public:
+        //! Constructor
+        qt_wallet_manager(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
+
         //! Properties
         QString        get_status() const noexcept;
         void           set_status(QString status) noexcept;
@@ -64,26 +71,16 @@ namespace atomic_dex
         Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name) noexcept;
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void               set_emergency_password(const QString& emergency_password);
+        Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
 
         //! API
         static bool is_there_a_default_wallet() noexcept;
+        void        just_set_wallet_name(QString wallet_name);
+        std::string retrieve_transactions_notes(const std::string& tx_hash) const;
+        void        update_transactions_notes(const std::string& tx_hash, const std::string& notes);
 
-        //! Constructor
-        qt_wallet_manager(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
-
-        //! Others
-        void just_set_wallet_name(QString wallet_name);
-
-        bool load_wallet_cfg(const std::string& wallet_name);
-
+        //! Override
         void update() noexcept override;
-
-        bool update_wallet_cfg() noexcept;
-
-        std::string                     retrieve_transactions_notes(const std::string& tx_hash) const;
-        void                            update_transactions_notes(const std::string& tx_hash, const std::string& notes);
-        [[nodiscard]] const wallet_cfg& get_wallet_cfg() const noexcept;
-        const wallet_cfg&               get_wallet_cfg() noexcept;
     };
 } // namespace atomic_dex
 

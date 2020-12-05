@@ -19,5 +19,5 @@
 
 namespace atomic_dex
 {
-    qt_send_answer::qt_send_answer(QObject* parent) : QObject(parent) {}
+
 } // namespace atomic_dex

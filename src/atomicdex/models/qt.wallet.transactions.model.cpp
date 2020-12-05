@@ -103,7 +103,6 @@ namespace atomic_dex
             item.transaction_note = value.toString().toStdString();
             auto& wallet_manager  = this->m_system_manager.get_system<qt_wallet_manager>();
             wallet_manager.update_transactions_notes(item.tx_hash, item.transaction_note);
-            wallet_manager.update_wallet_cfg();
             break;
         }
         }

@@ -19,6 +19,7 @@
 
 //! Deps
 #include <sodium/utils.h>
+#include <wally_bip39.h>
 
 //! Project Headers
 #include "atomicdex/managers/qt.wallet.manager.hpp"
@@ -188,6 +189,7 @@ namespace atomic_dex
     qt_wallet_manager::update_transactions_notes(const std::string& tx_hash, const std::string& notes)
     {
         m_wallet_cfg.transactions_details->operator[](tx_hash).note = notes;
+        this->update_wallet_cfg();
     }
 
     bool
@@ -207,22 +209,11 @@ namespace atomic_dex
         return true;
     }
 
-    const wallet_cfg&
-    qt_wallet_manager::get_wallet_cfg() const noexcept
-    {
-        return m_wallet_cfg;
-    }
-
-    const wallet_cfg&
-    qt_wallet_manager::get_wallet_cfg() noexcept
-    {
-        return m_wallet_cfg;
-    }
-
     void
     qt_wallet_manager::just_set_wallet_name(QString wallet_name)
     {
         this->m_current_default_wallet = wallet_name;
+        emit onWalletDefaultNameChanged();
     }
 
     void
@@ -323,5 +314,11 @@ namespace atomic_dex
     {
         this->m_current_status = std::move(status);
         emit onStatusChanged();
+    }
+
+    bool
+    qt_wallet_manager::mnemonic_validate(const QString& entropy)
+    {
+        return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
     }
 } // namespace atomic_dex

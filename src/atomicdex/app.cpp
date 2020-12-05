@@ -454,7 +454,6 @@ application::disconnect()
     //! Resets wallet name.
     auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
     wallet_manager.just_set_wallet_name("");
-    emit onWalletDefaultNameChanged();
 
     this->m_btc_fully_enabled = false;
     this->m_kmd_fully_enabled = false;
@@ -489,12 +488,6 @@ application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine
     auto& settings_system = system_manager_.get_system<settings_page>();
     settings_system.set_qml_engine(engine);
     settings_system.init_lang();
-}
-
-bool
-application::mnemonic_validate(const QString& entropy)
-{
-    return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
 }
 
 bool

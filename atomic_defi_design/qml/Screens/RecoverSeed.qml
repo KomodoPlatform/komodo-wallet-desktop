@@ -151,7 +151,7 @@ SetupPage {
                              input_wallet_name.field.acceptableInput === true &&
                              input_seed.field.text !== '' &&
                              input_password.isValid() &&
-                             (allow_custom_seed.checked || API.app.mnemonic_validate(input_seed.field.text))
+                             (allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(input_seed.field.text))
             }
         }
 

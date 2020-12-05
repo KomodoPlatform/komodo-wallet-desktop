@@ -159,7 +159,7 @@ namespace atomic_dex
         Q_INVOKABLE QString recover_fund(const QString& uuid);
 
         //! Others
-        Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
+        //Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
         Q_INVOKABLE void               refresh_orders_and_swaps();
         Q_INVOKABLE static QString     get_mnemonic();
         Q_INVOKABLE static bool        first_run();

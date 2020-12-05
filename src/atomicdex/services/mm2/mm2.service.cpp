@@ -1029,7 +1029,7 @@ namespace atomic_dex
                             .ec                = dextop_error::success,
                         };
 
-                        auto& wallet_manager          = this->m_system_manager.get_system<qt_wallet_manager>();
+                        const auto& wallet_manager    = this->m_system_manager.get_system<qt_wallet_manager>();
                         current_info.transaction_note = wallet_manager.retrieve_transactions_notes(current_info.tx_hash);
                         out.push_back(std::move(current_info));
                     });
@@ -1333,7 +1333,7 @@ namespace atomic_dex
                 current_info.unconfirmed = true;
             }
 
-            auto& wallet_manager          = this->m_system_manager.get_system<qt_wallet_manager>();
+            const auto& wallet_manager    = this->m_system_manager.get_system<qt_wallet_manager>();
             current_info.transaction_note = wallet_manager.retrieve_transactions_notes(current_info.tx_hash);
 
             out.push_back(std::move(current_info));
