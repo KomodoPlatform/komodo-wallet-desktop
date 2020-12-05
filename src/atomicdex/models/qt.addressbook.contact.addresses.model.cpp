@@ -112,8 +112,6 @@ namespace atomic_dex
     
     void addressbook_contact_addresses_model::remove_address_entry(int row)
     {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-        
         beginRemoveRows(QModelIndex(), row, row);
         m_model_data.removeAt(row);
         endRemoveRows();
