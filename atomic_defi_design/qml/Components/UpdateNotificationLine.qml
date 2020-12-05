@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15
 import "../Constants"
 
 AnimatedRectangle {
-    visible: update_modal.update_needed && update_modal.status_good
+    visible: update_needed && status_good
 
     color: Style.colorGreen
     height: 30 + radius

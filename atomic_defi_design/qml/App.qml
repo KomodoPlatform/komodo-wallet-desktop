@@ -122,15 +122,16 @@ Rectangle {
     }
 
     // Error Modal
-    LogModal {
+    ModalLoader {
         id: error_log_modal
+        sourceComponent: LogModal {}
     }
 
     function showError(title, content) {
         if(content === undefined || content === null) return
-        error_log_modal.header = title
-        error_log_modal.field.text = content
         error_log_modal.open()
+        error_log_modal.item.header = title
+        error_log_modal.item.field.text = content
     }
 
     // Toast
@@ -139,8 +140,11 @@ Rectangle {
     }
 
     // Update Modal
-    UpdateModal {
+    readonly property bool status_good: API.app.update_status.rpc_code === 200
+    readonly property bool update_needed: status_good && API.app.update_status.update_needed
+    ModalLoader {
         id: update_modal
+        sourceComponent: UpdateModal {}
     }
 
     UpdateNotificationLine {

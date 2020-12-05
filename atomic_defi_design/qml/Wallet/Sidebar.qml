@@ -109,7 +109,7 @@ Item {
             // Add button
             PlusButton {
                 id: add_coin_button
-                onClicked: enable_coin_modal.prepareAndOpen()
+                onClicked: enable_coin_modal.open()
 
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: parent.width * 0.5 - height * 0.5
@@ -149,8 +149,6 @@ Item {
 
                                 if (mouse.button === Qt.RightButton) context_menu.popup()
                                 else api_wallet_page.ticker = ticker
-
-                                main.send_modal.reset()
                             }
                             onPressAndHold: {
                                 if(!can_change_ticker) return

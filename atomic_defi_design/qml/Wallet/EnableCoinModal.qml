@@ -40,11 +40,6 @@ BasicModal {
         reset()
     }
 
-    function prepareAndOpen() {
-        reset()
-        root.open()
-    }
-
     function markToEnable(ticker, enabled) {
         if(enabled) selected_to_enable[ticker] = true
         else delete selected_to_enable[ticker]

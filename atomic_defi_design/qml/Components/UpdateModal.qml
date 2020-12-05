@@ -7,8 +7,6 @@ import "../Constants"
 BasicModal {
     id: root
 
-    readonly property bool status_good: API.app.update_status.rpc_code === 200
-    readonly property bool update_needed: status_good && API.app.update_status.update_needed
     readonly property bool required_update: update_needed && (API.app.update_status.status === "required")
     readonly property bool suggest_update: update_needed && (required_update || API.app.update_status.status === "recommended")
 

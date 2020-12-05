@@ -130,17 +130,20 @@ SetupPage {
 
         function tryGuess() {
             // Open EULA if it's the final one
-            if(submitGuess(input_seed_word.field)) eula.open()
+            if(submitGuess(input_seed_word.field)) eula_modal.open()
         }
 
-        EulaModal {
-            id: eula
-            onConfirm: () => {
-               if(onClickedCreate(input_password.field.text,
-                                   input_generated_seed.field.text,
-                                   input_wallet_name.field.text)) reset()
+        ModalLoader {
+            id: eula_modal
+            sourceComponent: EulaModal {
+                onConfirm: () => {
+                   if(onClickedCreate(input_password.field.text,
+                                       input_generated_seed.field.text,
+                                       input_wallet_name.field.text)) reset()
+                }
             }
         }
+
 
         // First page, fill the form
         ColumnLayout {

@@ -391,13 +391,13 @@ Item {
             }
         }
 
-        ConfirmTradeModal {
+        ModalLoader {
             id: confirm_trade_modal
+            sourceComponent: ConfirmTradeModal {}
         }
 
         ModalLoader {
             id: confirm_multi_order_trade_modal
-
             sourceComponent: ConfirmMultiOrderTradeModal {}
         }
     }

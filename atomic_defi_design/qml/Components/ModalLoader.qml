@@ -12,6 +12,11 @@ Loader {
         else active = true
     }
 
+    function close() {
+        if(active) item.close()
+        else active = false
+    }
+
     active: false
 
     onLoaded: item.open()

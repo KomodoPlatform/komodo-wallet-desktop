@@ -246,18 +246,20 @@ Item {
             }
         }
 
-        OrderModal {
+        ModalLoader {
             id: order_modal
+            sourceComponent: OrderModal {}
         }
     }
 
-    LogModal {
+    ModalLoader {
         id: recover_funds_modal
+        sourceComponent: LogModal {
+            header: qsTr("Recover Funds Result")
+            field.text: General.prettifyJSON(recover_funds_result)
 
-        header: qsTr("Recover Funds Result")
-        field.text: General.prettifyJSON(recover_funds_result)
-
-        onClosed: recover_funds_result = "{}"
+            onClosed: recover_funds_result = "{}"
+        }
     }
 }
 

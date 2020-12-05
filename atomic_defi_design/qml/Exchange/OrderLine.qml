@@ -62,8 +62,8 @@ AnimatedRectangle {
         anchors.fill: parent
         hoverEnabled: enabled
         onClicked: {
-            order_modal.details = details
             order_modal.open()
+            order_modal.item.details = details
         }
     }
 

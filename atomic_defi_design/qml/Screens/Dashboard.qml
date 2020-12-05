@@ -49,11 +49,11 @@ Item {
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
 
-    Component.onCompleted: notifications_modal.reset()
-
     function inCurrentPage() {
         return app.current_page === idx_dashboard
     }
+
+    property var notifications_list: ([])
 
     readonly property var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
     property var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
@@ -70,9 +70,11 @@ Item {
         x: sidebar.width
 
         // Modals
-        EnableCoinModal {
+        ModalLoader {
             id: enable_coin_modal
-            anchors.centerIn: Overlay.overlay
+            sourceComponent: EnableCoinModal {
+                anchors.centerIn: Overlay.overlay
+            }
         }
 
         Component {
@@ -176,15 +178,15 @@ Item {
 
         x: sidebar.app_logo.x + sidebar.app_logo.width - 20
         y: sidebar.app_logo.y
-        color: Qt.lighter(notifications_modal.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
+        color: Qt.lighter(notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
 
         DefaultText {
             id: count_text
             anchors.centerIn: parent
-            text_value: notifications_modal.notifications_list.length
+            text_value: notifications_list.length
             font.pixelSize: Style.textSizeSmall1
             font.weight: Font.Medium
-            color: notifications_modal.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
+            color: notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
         }
     }
 
@@ -218,17 +220,20 @@ Item {
         smooth: true
     }
 
-    AddCustomCoinModal {
+    ModalLoader {
         id: add_custom_coin_modal
+        sourceComponent: AddCustomCoinModal {}
     }
 
     // CEX Rates info
-    CexInfoModal {
+    ModalLoader {
         id: cex_rates_modal
+        sourceComponent: CexInfoModal {}
     }
 
-    RestartModal {
+    ModalLoader {
         id: restart_modal
+        sourceComponent: RestartModal {}
     }
 
     function getStatusColor(status) {

@@ -11,7 +11,6 @@ BasicModal {
     id: root
 
     width: 900
-    property var notifications_list: ([])
 
     function reset() {
         notifications_list = []

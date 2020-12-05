@@ -25,7 +25,6 @@ RowLayout {
     function reset() {
         main.reset()
         sidebar.reset()
-        enable_coin_modal.reset()
     }
 
     Component.onCompleted: reset()

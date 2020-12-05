@@ -89,8 +89,9 @@ Item {
                 onClicked: recover_seed_modal.open()
             }
 
-            RecoverSeedModal {
+            ModalLoader {
                 id: recover_seed_modal
+                sourceComponent: RecoverSeedModal {}
             }
 
             HorizontalLine {
@@ -104,12 +105,14 @@ Item {
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Disclaimer and ToS")
-                onClicked: eula.open()
+                onClicked: eula_modal.open()
             }
 
-            EulaModal {
-                id: eula
-                close_only: true
+            ModalLoader {
+                id: eula_modal
+                sourceComponent: EulaModal {
+                    close_only: true
+                }
             }
 
             HorizontalLine {
@@ -127,8 +130,9 @@ Item {
                 onClicked: camouflage_password_modal.open()
             }
 
-            CamouflagePasswordModal {
+            ModalLoader {
                 id: camouflage_password_modal
+                sourceComponent: CamouflagePasswordModal {}
             }
 
             DangerButton {
@@ -137,8 +141,8 @@ Item {
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Reset assets configuration")
                 onClicked: {
-                    restart_modal.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                     restart_modal.open()
+                    restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                 }
             }
 
@@ -150,8 +154,9 @@ Item {
                 onClicked: delete_wallet_modal.open()
             }
 
-            DeleteWalletModal {
+            ModalLoader {
                 id: delete_wallet_modal
+                sourceComponent: DeleteWalletModal {}
             }
 
             DefaultButton {

@@ -64,14 +64,17 @@ SetupPage {
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
             if(text_error !== "") return
 
-            eula.open()
+            eula_modal.open()
         }
 
-        EulaModal {
-            id: eula
-            onConfirm: () => {
-               if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
-                   reset()
+
+        ModalLoader {
+            id: eula_modal
+            sourceComponent: EulaModal {
+                onConfirm: () => {
+                   if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
+                       reset()
+                }
             }
         }
 

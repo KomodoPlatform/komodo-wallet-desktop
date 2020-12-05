@@ -122,9 +122,9 @@ BasicModal {
                     const address = details.from[0]
                     const amount = details.amount
                     root.close()
-                    send_modal.address_field.text = address
-                    send_modal.amount_field.text = amount
                     send_modal.open()
+                    send_modal.item.address_field.text = address
+                    send_modal.item.amount_field.text = amount
                 }
             },
 
