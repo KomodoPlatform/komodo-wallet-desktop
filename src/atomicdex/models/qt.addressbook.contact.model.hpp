@@ -18,11 +18,11 @@
 
 //! Project Headers
 #include "atomicdex/managers/addressbook.manager.hpp" //> addressbook_manager.
-#include "qt.addressbook.contact.addresses.model.hpp"
+#include "atomicdex/models/qt.addressbook.contact.addresses.model.hpp"
 
 namespace atomic_dex
 {
-    class addressbook_contact_model final : public QAbstractListModel
+    class ENTT_API addressbook_contact_model final : public QAbstractListModel
     {
         /// \brief Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
