@@ -44,7 +44,7 @@ namespace atomic_dex
     //! Constants
     inline constexpr const std::size_t g_tx_max_limit{50_sz};
 
-    class mm2_service final : public ag::ecs::pre_update_system<mm2_service>
+    class ENTT_API mm2_service final : public ag::ecs::pre_update_system<mm2_service>
     {
       public:
         using t_pair_max_vol = std::pair<::mm2::api::max_taker_vol_answer_success, ::mm2::api::max_taker_vol_answer_success>;

@@ -30,7 +30,7 @@
 
 namespace atomic_dex
 {
-    class qt_wallet_manager final : public QObject, public ag::ecs::pre_update_system<qt_wallet_manager>
+    class ENTT_API qt_wallet_manager final : public QObject, public ag::ecs::pre_update_system<qt_wallet_manager>
     {
         //! Q_OBJECT Declaration
         Q_OBJECT
