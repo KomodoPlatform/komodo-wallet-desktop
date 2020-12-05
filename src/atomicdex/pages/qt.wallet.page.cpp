@@ -6,6 +6,9 @@
 //! PCH
 #include "src/atomicdex/pch.hpp"
 
+//! Deps
+#include <QrCode.hpp>
+
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -155,7 +158,8 @@ namespace atomic_dex
             {"blocks_left", 1},
             {"transactions_left", 0},
             {"current_block", 1},
-            {"is_smartchain_test_coin", false}};
+            {"is_smartchain_test_coin", false},
+            {"qrcode_address", ""}};
         std::error_code ec;
         auto&           mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
@@ -192,8 +196,11 @@ namespace atomic_dex
             obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
             obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
             obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
+            std::error_code   ec;
+            qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
+            std::string       svg = qr0.toSvgString(2);
+            obj["qrcode_address"] = QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
         }
-        // qDebug() << obj;
         return obj;
     }
 

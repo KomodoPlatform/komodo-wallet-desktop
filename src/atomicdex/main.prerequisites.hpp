@@ -24,8 +24,6 @@
 
 
 //! Deps
-#define QZXING_QML
-#include "QZXing.h"
 #include <folly/init/Init.h>
 #include <sodium/core.h>
 #include <wally.hpp>
@@ -275,8 +273,6 @@ run_app(int argc, char** argv)
 
     //! QT QML
     engine.addImportPath("qrc:///");
-    QZXing::registerQMLTypes();
-    QZXing::registerQMLImageProvider(engine);
     qRegisterMetaType<MarketMode>("MarketMode");
     qmlRegisterUncreatableType<atomic_dex::MarketModeGadget>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
     qRegisterMetaType<TradingError>("TradingError");

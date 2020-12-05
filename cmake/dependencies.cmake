@@ -112,20 +112,6 @@ add_library(refl-cpp INTERFACE)
 target_include_directories(refl-cpp INTERFACE ${refl-cpp_SOURCE_DIR})
 add_library(antara::refl-cpp ALIAS refl-cpp)
 
-FetchContent_Declare(libqr_code
-        URL https://github.com/KomodoPlatform/qzxing/archive/master.zip)
-
-
-FetchContent_GetProperties(libqr_code)
-if (NOT libqr_code_POPULATED)
-    FetchContent_Populate(libqr_code)
-    add_subdirectory(${libqr_code_SOURCE_DIR}/src ${libqr_code_BINARY_DIR} EXCLUDE_FROM_ALL)
-    if (UNIX AND NOT APPLE)
-        target_compile_options(qzxing PRIVATE -stdlib=libc++)
-        target_link_options(qzxing PRIVATE -stdlib=libc++ -lc++abi)
-    endif()
-endif ()
-
 FetchContent_GetProperties(reproc)
 if (NOT reproc_POPULATED)
     FetchContent_Populate(reproc)

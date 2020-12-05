@@ -233,6 +233,10 @@ if (DISABLE_GEOBLOCKING)
 endif ()
 #target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
 
+add_library(antara_qrcode STATIC)
+target_sources(antara_qrcode PRIVATE vendor/qrcode/QrCode.cpp)
+target_include_directories(antara_qrcode PUBLIC vendor/qrcode)
+
 target_link_libraries(atomicdex-desktop_shared_deps
         PUBLIC
         Qt::Core
@@ -243,7 +247,6 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qt::WebEngineCore
         Qt::WebEngineWidgets
         Qt::Widgets
-        qzxing
         antara::world
         Boost::random
         Boost::filesystem
@@ -254,6 +257,7 @@ target_link_libraries(atomicdex-desktop_shared_deps
         komodo-folly::folly
         komodo-taskflow::taskflow
         nlohmann_json::nlohmann_json
+        antara_qrcode
         #spdlog::spdlog
         #spdlog::spdlog_header_only
         cpprestsdk::cpprest
