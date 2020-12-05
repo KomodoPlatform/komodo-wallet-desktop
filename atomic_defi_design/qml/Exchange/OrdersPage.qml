@@ -60,7 +60,7 @@ Item {
 
     function reset() {  }
 
-    function onOpened() {
+    Component.onCompleted: {
         applyFilter()
         list_model_proxy.is_history = root.is_history
         API.app.refresh_orders_and_swaps()

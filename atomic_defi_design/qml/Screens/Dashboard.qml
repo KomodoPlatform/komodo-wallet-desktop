@@ -17,8 +17,6 @@ import "../Sidebar"
 Item {
     id: dashboard
 
-    readonly property alias current_component: loader.item
-
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
     readonly property int idx_dashboard_exchange: 2
@@ -46,7 +44,7 @@ Item {
     readonly property var current_ticker_infos: api_wallet_page.ticker_infos
     readonly property bool can_change_ticker: !api_wallet_page.tx_fetching_busy
 
-    property int prev_page: -1
+    readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized

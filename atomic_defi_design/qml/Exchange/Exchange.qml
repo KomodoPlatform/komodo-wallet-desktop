@@ -12,8 +12,13 @@ Item {
     id: exchange
     readonly property int layout_margin: 15
 
-    property int prev_page: -1
+    readonly property alias current_component: loader.item
     property int current_page: idx_exchange_trade
+
+    readonly property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
+    readonly property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
+    readonly property string base_ticker: API.app.trading_pg.market_pairs_mdl.base_selected_coin
+    readonly property string rel_ticker: API.app.trading_pg.market_pairs_mdl.rel_selected_coin
 
     function cancelOrder(order_id) {
         API.app.trading_pg.cancel_order(order_id)
@@ -21,7 +26,6 @@ Item {
 
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
-        onOpened()
     }
 
     Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
@@ -33,38 +37,7 @@ Item {
 
     function openTradeView(ticker) {
         current_page = idx_exchange_trade
-        exchange_trade.open(ticker)
-    }
-
-    function onTradeTickerChanged(ticker) {
-        exchange_orders.changeTicker(ticker)
-    }
-
-    function onOpened() {
-        if(prev_page !== current_page) {
-            // Handle DEX enter/exit
-            if(current_page === idx_exchange_trade) {
-                API.app.trading_pg.on_gui_enter_dex()
-                exchange_trade.onOpened()
-            }
-            else if(prev_page === idx_exchange_trade) {
-                API.app.trading_pg.on_gui_leave_dex()
-            }
-
-            // Opening of other pages
-            if(current_page === idx_exchange_orders) {
-                exchange_orders.onOpened()
-            }
-            else if(current_page === idx_exchange_history) {
-                exchange_history.onOpened()
-            }
-        }
-
-        prev_page = current_page
-    }
-
-    onCurrent_pageChanged: {
-        onOpened()
+        current_component.onOpened(ticker)
     }
 
     ColumnLayout {
@@ -124,30 +97,39 @@ Item {
         }
 
         // Bottom content
-        StackLayout {
+        Component {
+            id: exchange_trade
+
+            Trade {}
+        }
+
+        Component {
+            id: exchange_orders
+
+            Orders {}
+        }
+
+        Component {
+            id: exchange_history
+
+            History {}
+        }
+
+        Loader {
+            id: loader
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.bottomMargin: layout_margin
             Layout.rightMargin: Layout.bottomMargin
 
-            currentIndex: current_page
-
-            Trade {
-                id: exchange_trade
-
-                onOrderSuccess: () => {
-                    General.prevent_coin_disabling.restart()
-                    exchange_trade.reset(false)
-                    exchange.current_page = idx_exchange_orders
+            sourceComponent: {
+                switch(current_page) {
+                case idx_exchange_trade: return exchange_trade
+                case idx_exchange_orders: return exchange_orders
+                case idx_exchange_history: return exchange_history
+                default: return undefined
                 }
-            }
-
-            Orders {
-                id: exchange_orders
-            }
-
-            History {
-                id: exchange_history
             }
         }
     }

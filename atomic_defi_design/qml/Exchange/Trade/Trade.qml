@@ -11,6 +11,13 @@ import "../../Wallet"
 Item {
     id: exchange_trade
 
+    Component.onCompleted: {
+        API.app.trading_pg.on_gui_enter_dex()
+        onOpened()
+    }
+
+    Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
+
     readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
@@ -39,10 +46,6 @@ Item {
         API.app.trading_pg.market_mode = v
     }
 
-    readonly property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
-    readonly property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
-    readonly property string base_ticker: API.app.trading_pg.market_pairs_mdl.base_selected_coin
-    readonly property string rel_ticker: API.app.trading_pg.market_pairs_mdl.rel_selected_coin
     readonly property string base_amount: API.app.trading_pg.base_amount
     readonly property string rel_amount: API.app.trading_pg.rel_amount
 
@@ -52,8 +55,10 @@ Item {
         interval: 1000
     }
 
-    // Override
-    property var onOrderSuccess: () => {}
+    property var onOrderSuccess: () => {
+        General.prevent_coin_disabling.restart()
+        exchange.current_page = idx_exchange_orders
+    }
 
     onSell_modeChanged: reset()
 
@@ -91,10 +96,6 @@ Item {
     readonly property string default_rel: "BTC"
 
     // Trade
-    function open(ticker) {
-        onOpened(ticker)
-    }
-
     function onOpened(ticker="") {
         if(!initialized_orderbook_pair) {
             initialized_orderbook_pair = true
@@ -111,10 +112,8 @@ Item {
     function setPair(is_left_side, changed_ticker) {
         swap_cooldown.restart()
 
-        if(API.app.trading_pg.set_pair(is_left_side, changed_ticker)) {
+        if(API.app.trading_pg.set_pair(is_left_side, changed_ticker))
             pairChanged(base_ticker, rel_ticker)
-            exchange.onTradeTickerChanged(base_ticker)
-        }
     }
 
     function trade(options, default_config) {
@@ -167,7 +166,8 @@ Item {
 
             toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(response.result), false)
 
-            onOrderSuccess()
+            General.prevent_coin_disabling.restart()
+            exchange.current_page = idx_exchange_orders
         }
     }
 
