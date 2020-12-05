@@ -212,6 +212,7 @@
         <file>atomic_defi_design/qml/Components/LogModal.qml</file>
         <file>atomic_defi_design/qml/Components/LinkIcon.qml</file>
         <file>atomic_defi_design/qml/Components/LinksRow.qml</file>
+        <file>atomic_defi_design/qml/Components/ModalLoader.qml</file>
         <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
         <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultModal.qml</file>

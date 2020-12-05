@@ -395,21 +395,10 @@ Item {
             id: confirm_trade_modal
         }
 
-        Loader {
+        ModalLoader {
             id: confirm_multi_order_trade_modal
 
-            function open() {
-                if(active) item.open()
-                else active = true
-            }
-
-            active: false
-
-            sourceComponent: ConfirmMultiOrderTradeModal {
-                onClosed: confirm_multi_order_trade_modal.active = false
-            }
-
-            onLoaded: item.open()
+            sourceComponent: ConfirmMultiOrderTradeModal {}
         }
     }
 }
