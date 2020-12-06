@@ -191,22 +191,13 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: layout_margin
 
-                InnerBackground {
-                    id: graph_bg
-
+                CandleStickChart {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: selectors.top
                     anchors.bottomMargin: layout_margin * 2
-
-                    content: CandleStickChart {
-                        id: chart
-                        width: graph_bg.width
-                        height: graph_bg.height
-                    }
                 }
-
 
                 // Ticker Selectors
                 RowLayout {
