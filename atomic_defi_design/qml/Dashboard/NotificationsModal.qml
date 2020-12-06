@@ -171,6 +171,13 @@ BasicModal {
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
     }
+    Component.onDestruction: {
+        API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
+        API.app.notification_mgr.balanceUpdateStatus.disconnect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
+        API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
+    }
 
     function displayMessage(title, message) {
         if(API.app.settings_pg.notification_enabled)

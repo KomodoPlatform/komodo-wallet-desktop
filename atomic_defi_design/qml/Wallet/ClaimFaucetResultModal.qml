@@ -25,7 +25,6 @@ BasicModal {
         message.text_value = qsTr(claiming_faucet_rpc_result.message)
     }
 
-    Component.onCompleted: {
-        api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
-    }
+    Component.onCompleted: api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
+    Component.onDestruction: api_wallet_page.claimingFaucetRpcDataChanged.disconnect(onClaimFaucetRpcResultChanged)
 }
