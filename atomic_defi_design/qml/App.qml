@@ -27,6 +27,7 @@ Rectangle {
     }
 
     // Preload Chart
+    signal pairChanged(string base, string rel)
     property var chart_component
     property var chart_object
 

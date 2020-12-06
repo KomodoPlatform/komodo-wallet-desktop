@@ -112,9 +112,6 @@ Item {
         setPair(true, ticker)
     }
 
-
-    signal pairChanged(string base, string rel)
-
     function setPair(is_left_side, changed_ticker) {
         swap_cooldown.restart()
 
