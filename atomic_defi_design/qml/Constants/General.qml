@@ -51,6 +51,9 @@ QtObject {
 
     property var all_coins: ([])
 
+    readonly property string default_base: "KMD"
+    readonly property string default_rel: "BTC"
+
     function timestampToDouble(timestamp) {
         return (new Date(timestamp)).getTime()
     }

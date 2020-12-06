@@ -14,9 +14,17 @@ Item {
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
+        chart_object.parent = left_section
+        chart_object.anchors.bottom = selectors.top
+        chart_object.anchors.bottomMargin = layout_margin * 2
+        chart_object.visible = true
     }
 
-    Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
+    Component.onDestruction: {
+        API.app.trading_pg.on_gui_leave_dex()
+        chart_object.parent = app
+        chart_object.visible = false
+    }
 
     readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
 
@@ -92,14 +100,12 @@ Item {
     readonly property var curr_fee_info: API.app.trading_pg.fees
 
     property bool initialized_orderbook_pair: false
-    readonly property string default_base: "KMD"
-    readonly property string default_rel: "BTC"
 
     // Trade
     function onOpened(ticker="") {
         if(!initialized_orderbook_pair) {
             initialized_orderbook_pair = true
-            API.app.trading_pg.set_current_orderbook(default_base, default_rel)
+            API.app.trading_pg.set_current_orderbook(General.default_base, General.default_rel)
         }
 
         reset()
@@ -190,14 +196,6 @@ Item {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: layout_margin
-
-                CandleStickChart {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: selectors.top
-                    anchors.bottomMargin: layout_margin * 2
-                }
 
                 // Ticker Selectors
                 RowLayout {

@@ -26,7 +26,20 @@ Rectangle {
         current_page = force ? idx_first_launch : firstPage()
     }
 
-    Component.onCompleted: openFirstLaunch()
+    // Preload Chart
+    property var chart_component
+    property var chart_object
+
+    Component.onCompleted: {
+        openFirstLaunch()
+
+        // Load the chart
+        if(!chart_component) chart_component = Qt.createComponent("./Exchange/Trade/CandleStickChart.qml")
+        if(!chart_object) {
+            chart_object = chart_component.createObject(app)
+            chart_object.visible = false
+        }
+    }
 
     readonly property int idx_first_launch: 0
     readonly property int idx_recover_seed: 1

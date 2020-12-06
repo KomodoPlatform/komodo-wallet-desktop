@@ -16,8 +16,6 @@ InnerBackground {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
-    anchors.bottom: selectors.top
-    anchors.bottomMargin: layout_margin * 2
 
     content: Item {
         id: root
@@ -50,13 +48,26 @@ InnerBackground {
             anchors.centerIn: parent
         }
 
-        Component.onCompleted: loadChart(default_base, default_rel)
+        Component.onCompleted: loadChart(General.default_base, General.default_rel)
 
         Connections {
             target: exchange_trade
             function onPairChanged(base, rel) {
                 root.loadChart(base, rel)
             }
+        }
+
+        Connections {
+            target: graph_bg
+
+            function onParentChanged() {
+                if(!pair_supported && graph_bg.parent !== app) root.reloadChart()
+            }
+        }
+
+        function reloadChart() {
+            loadChart(API.app.trading_pg.market_pairs_mdl.base_selected_coin,
+                      API.app.trading_pg.market_pairs_mdl.rel_selected_coin)
         }
 
         readonly property string theme: Style.dark_theme ? "dark" : "light"
