@@ -276,9 +276,7 @@ Item {
                 font.pixelSize: send_button.font.pixelSize
                 visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
-                onClicked: {
-                    api_wallet_page.claim_faucet()
-                }
+                onClicked: api_wallet_page.claim_faucet()
             }
 
             Component.onCompleted: api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
