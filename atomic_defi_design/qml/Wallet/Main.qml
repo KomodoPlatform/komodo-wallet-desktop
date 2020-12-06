@@ -279,8 +279,15 @@ Item {
                 onClicked: {
                     api_wallet_page.claim_faucet()
                 }
+            }
 
-                ClaimFaucetResultModal {}
+            Component.onCompleted: api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
+            Component.onDestruction: api_wallet_page.claimingFaucetRpcDataChanged.disconnect(onClaimFaucetRpcResultChanged)
+            function onClaimFaucetRpcResultChanged() { claim_faucet_result_modal.open() }
+
+            ModalLoader {
+                id: claim_faucet_result_modal
+                sourceComponent: ClaimFaucetResultModal {}
             }
         }
 
