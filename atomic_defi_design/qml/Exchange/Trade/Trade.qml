@@ -76,11 +76,6 @@ Item {
                 exchange.current_page === idx_exchange_trade
     }
 
-    function fullReset() {
-        initialized_orderbook_pair = false
-        reset()
-    }
-
     function reset() {
         multi_order_switch.checked = false
     }
@@ -99,12 +94,10 @@ Item {
     property bool valid_fee_info: API.app.trading_pg.fees.base_transaction_fees !== undefined
     readonly property var curr_fee_info: API.app.trading_pg.fees
 
-    property bool initialized_orderbook_pair: false
-
     // Trade
     function onOpened(ticker="") {
-        if(!initialized_orderbook_pair) {
-            initialized_orderbook_pair = true
+        if(!General.initialized_orderbook_pair) {
+            General.initialized_orderbook_pair = true
             API.app.trading_pg.set_current_orderbook(General.default_base, General.default_rel)
         }
 

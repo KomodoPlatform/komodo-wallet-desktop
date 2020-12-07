@@ -51,6 +51,8 @@ QtObject {
 
     property var all_coins: ([])
 
+
+    property bool initialized_orderbook_pair: false
     readonly property string default_base: "KMD"
     readonly property string default_rel: "BTC"
 
