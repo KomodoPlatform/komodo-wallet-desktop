@@ -80,6 +80,7 @@ ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdexpro/d
 ci_tools_atomic_dex/installer/linux/packages/com.komodoplatform.atomicdexpro/data
 cmake-build-*
 build
+build_debug
 atomic_legacy_imgui
 .idea
 .gitconfig

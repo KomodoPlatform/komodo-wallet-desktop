@@ -185,7 +185,7 @@ namespace atomic_dex
             //! First time insertion
             beginResetModel();
             m_model_data = transactions;
-            m_file_count = 0;
+            m_file_count = transactions.size() < 50 ? transactions.size() : 50;
             endResetModel();
         }
         else
