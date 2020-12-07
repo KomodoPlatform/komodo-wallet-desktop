@@ -24,12 +24,13 @@
 
 struct tests_context : public antara::gaming::world::app
 {
-    tests_context(char** argv)
+    tests_context([[maybe_unused]] char** argv)
     {
-#ifdef BOOST_OS_LINUX
+#if !defined(WIN32) && !defined(_WIN32)
+#   ifdef linux
         int realargs = 1; // workaround to ignore doct
         folly::init(&realargs, &argv, false);
-#endif
+#   endif
 
         //! Creates mm2 service.
         const auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
@@ -44,6 +45,7 @@ struct tests_context : public antara::gaming::world::app
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
+#endif
     }
 
     antara::gaming::ecs::system_manager& system_manager() noexcept
