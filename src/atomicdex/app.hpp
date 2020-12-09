@@ -138,7 +138,6 @@ namespace atomic_dex
         ip_service_checker*              get_ip_checker() const noexcept;
         update_service_checker*          get_update_checker() const noexcept;
         QVariantList                     get_enableable_coins() const noexcept;
-        //[[nodiscard]] QVariant           get_update_status() const noexcept;
 
         //! Properties Setter
         void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) noexcept;
