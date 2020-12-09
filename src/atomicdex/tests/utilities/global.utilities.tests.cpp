@@ -56,3 +56,9 @@ TEST_CASE("atomic_dex::utils::create_if_doesnt_exist()")
     CHECK(create_if_doesnt_exist(tmp_path));
     CHECK(fs::exists(tmp_path));
 }
+
+TEST_CASE("atomic_dex::utils::determine_balance_factor()")
+{
+    CHECK_EQ(doctest::Approx(1.0), determine_balance_factor(false));
+    CHECK_NE(doctest::Approx(1.0), determine_balance_factor(true));
+}
