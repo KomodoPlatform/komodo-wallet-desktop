@@ -1,10 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
+import "../Constants/Style.qml" as Style
 
-import "../Constants"
-
-// Hide button
 DefaultImage {
     property alias mouse_area: mouse_area
     property bool use_default_behaviour: true

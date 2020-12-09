@@ -180,138 +180,138 @@
     </message>
 </context>
 <context>
-    <name>AddressBookAddContactAddress</name>
+    <name>AddressBookAddContactAddressModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="24"/>
-        <source>Enter the key</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="37"/>
-        <source>This key already exists.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="17"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="17"/>
         <source>Create a new address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="47"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="24"/>
+        <source>Enter the key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="37"/>
+        <source>This key already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="47"/>
         <source>Enter the address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="62"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="62"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddress.qml" line="82"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="82"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>AddressBookEditContact</name>
+    <name>AddressBookEditContactModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="24"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="24"/>
         <source>Edit contact</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="30"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="30"/>
         <source>Contact Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="31"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="31"/>
         <source>Enter a contact name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="46"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="46"/>
         <source>Wallets Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="111"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="113"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="120"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="122"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="143"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="145"/>
         <source>Tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="179"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="181"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="199"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="201"/>
         <source>Validate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContact.qml" line="209"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="211"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>AddressBookNewContact</name>
+    <name>AddressBookNewContactCategoryModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="16"/>
-        <source>Choose a contact name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="23"/>
-        <source>Enter the contact name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="36"/>
-        <source>This contact name already exists.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="53"/>
-        <source>Validate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookNewContact.qml" line="77"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AddressBookNewContactCategory</name>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="22"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="22"/>
         <source>Enter the tag name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="35"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="35"/>
         <source>This contact already has this tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="47"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="47"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategory.qml" line="63"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="63"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddressBookNewContactModal</name>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="16"/>
+        <source>Choose a contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="23"/>
+        <source>Enter the contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="36"/>
+        <source>This contact name already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="53"/>
+        <source>Validate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="77"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -370,12 +370,12 @@
 <context>
     <name>CexInfoModal</name>
     <message>
-        <location filename="../../qml/Components/CexInfoModal.qml" line="14"/>
+        <location filename="../../qml/Components/CexInfoModal.qml" line="9"/>
         <source>Market Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CexInfoModal.qml" line="19"/>
+        <location filename="../../qml/Components/CexInfoModal.qml" line="14"/>
         <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coinpaprika.com&quot;&gt;Coinpaprika&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -383,7 +383,7 @@
 <context>
     <name>CexInfoTrigger</name>
     <message>
-        <location filename="../../qml/Components/CexInfoTrigger.qml" line="19"/>
+        <location filename="../../qml/Components/CexInfoTrigger.qml" line="13"/>
         <source>Price oracle powered by Band Protocol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -649,7 +649,7 @@
 <context>
     <name>CopyFieldButton</name>
     <message>
-        <location filename="../../qml/Components/CopyFieldButton.qml" line="27"/>
+        <location filename="../../qml/Components/CopyFieldButton.qml" line="24"/>
         <source>Copied to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -951,37 +951,37 @@
 <context>
     <name>EulaModal</name>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="21"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="15"/>
         <source>Disclaimer &amp; Terms of Service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="49"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="43"/>
         <source>Accept EULA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="55"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="49"/>
         <source>Accept Terms and Conditions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="61"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="55"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="61"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="55"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="68"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="62"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="80"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="74"/>
         <source>&lt;h2&gt;This End-User License Agreement (&apos;EULA&apos;) is a legal agreement between you and Komodo Platform.&lt;/h2&gt;
 
 &lt;p&gt;This EULA agreement governs your acquisition and use of our AtomicDEX Desktop software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
@@ -1234,17 +1234,17 @@
 <context>
     <name>LinksRow</name>
     <message>
-        <location filename="../../qml/Components/LinksRow.qml" line="14"/>
+        <location filename="../../qml/Components/LinksRow.qml" line="11"/>
         <source>Join the Komodo Discord server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/LinksRow.qml" line="20"/>
+        <location filename="../../qml/Components/LinksRow.qml" line="17"/>
         <source>Follow @atomicdex on Twitter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/LinksRow.qml" line="26"/>
+        <location filename="../../qml/Components/LinksRow.qml" line="23"/>
         <source>Go to Komodo Support Guides</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1252,7 +1252,7 @@
 <context>
     <name>LogModal</name>
     <message>
-        <location filename="../../qml/Components/LogModal.qml" line="28"/>
+        <location filename="../../qml/Components/LogModal.qml" line="24"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1888,37 +1888,37 @@
 <context>
     <name>PasswordField</name>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="58"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="56"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="59"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="57"/>
         <source>Enter your wallet password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="72"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="70"/>
         <source>At least 1 lowercase alphabetical character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="78"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="76"/>
         <source>At least 1 uppercase alphabetical character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="84"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="82"/>
         <source>At least 1 numeric character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="90"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="88"/>
         <source>At least 1 special character (eg. !@#$%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Components/PasswordField.qml" line="95"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="93"/>
         <source>At least %n character(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1926,7 +1926,7 @@
         </translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="100"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="98"/>
         <source>Password and Confirm Password have to be same</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1934,12 +1934,12 @@
 <context>
     <name>PasswordForm</name>
     <message>
-        <location filename="../../qml/Components/PasswordForm.qml" line="44"/>
+        <location filename="../../qml/Components/PasswordForm.qml" line="41"/>
         <source>Confirm Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordForm.qml" line="45"/>
+        <location filename="../../qml/Components/PasswordForm.qml" line="42"/>
         <source>Enter the same password to confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2122,12 +2122,12 @@
 <context>
     <name>RestartModal</name>
     <message>
-        <location filename="../../qml/Components/RestartModal.qml" line="40"/>
+        <location filename="../../qml/Components/RestartModal.qml" line="37"/>
         <source>Applying the changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/RestartModal.qml" line="43"/>
+        <location filename="../../qml/Components/RestartModal.qml" line="40"/>
         <source>Restarting the application...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2135,17 +2135,17 @@
 <context>
     <name>RightClickMenu</name>
     <message>
-        <location filename="../../qml/Components/RightClickMenu.qml" line="29"/>
+        <location filename="../../qml/Components/RightClickMenu.qml" line="25"/>
         <source>Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/RightClickMenu.qml" line="34"/>
+        <location filename="../../qml/Components/RightClickMenu.qml" line="30"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/RightClickMenu.qml" line="39"/>
+        <location filename="../../qml/Components/RightClickMenu.qml" line="35"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2607,12 +2607,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>TextAreaWithTitle</name>
     <message>
-        <location filename="../../qml/Components/TextAreaWithTitle.qml" line="39"/>
+        <location filename="../../qml/Components/TextAreaWithTitle.qml" line="36"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/TextAreaWithTitle.qml" line="39"/>
+        <location filename="../../qml/Components/TextAreaWithTitle.qml" line="36"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2620,7 +2620,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>TextFieldWithTitle</name>
     <message>
-        <location filename="../../qml/Components/TextFieldWithTitle.qml" line="35"/>
+        <location filename="../../qml/Components/TextFieldWithTitle.qml" line="32"/>
         <source>Required</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2628,7 +2628,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Toast</name>
     <message>
-        <location filename="../../qml/Components/Toast.qml" line="51"/>
+        <location filename="../../qml/Components/Toast.qml" line="52"/>
         <source>Click here to see the details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2765,52 +2765,52 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>UpdateModal</name>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="13"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="12"/>
         <source>Changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="13"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="12"/>
         <source>New Update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="14"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="13"/>
         <source>Up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="14"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="13"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="14"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="13"/>
         <source>Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="14"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="13"/>
         <source>Recommended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="33"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="32"/>
         <source>Problem occured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="41"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="40"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="41"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="40"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="50"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="49"/>
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2818,17 +2818,17 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>UpdateNotificationLine</name>
     <message>
-        <location filename="../../qml/Components/UpdateNotificationLine.qml" line="25"/>
+        <location filename="../../qml/Components/UpdateNotificationLine.qml" line="23"/>
         <source>New update available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateNotificationLine.qml" line="25"/>
+        <location filename="../../qml/Components/UpdateNotificationLine.qml" line="23"/>
         <source>Version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateNotificationLine.qml" line="25"/>
+        <location filename="../../qml/Components/UpdateNotificationLine.qml" line="23"/>
         <source>Click here for the details.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2836,12 +2836,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>WalletNameField</name>
     <message>
-        <location filename="../../qml/Components/WalletNameField.qml" line="9"/>
+        <location filename="../../qml/Components/WalletNameField.qml" line="5"/>
         <source>Wallet Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/WalletNameField.qml" line="10"/>
+        <location filename="../../qml/Components/WalletNameField.qml" line="6"/>
         <source>Enter the name of your wallet here</source>
         <translation type="unfinished"></translation>
     </message>

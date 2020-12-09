@@ -1,8 +1,6 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-
-import "../Constants"
+import "../Constants/Style.qml" as Style
 
 TextField {
     id: text_field
@@ -50,10 +48,3 @@ TextField {
         font.pixelSize: text_field.font.pixelSize
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

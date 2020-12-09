@@ -1,8 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.15
-import "../Constants"
+import "../Constants/General.qml" as General
+import "../Constants/Style.qml" as Style
+import "../Constants/API.qml" as API
 
 Menu {
     Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light
@@ -55,10 +55,3 @@ Menu {
         onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_enabled_coins())
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

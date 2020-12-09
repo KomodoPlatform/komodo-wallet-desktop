@@ -2,7 +2,8 @@
 // https://gist.github.com/jonmcclung/bae669101d17b103e94790341301c129
 
 import QtQuick 2.15
-import "../Constants"
+import "../Constants/Style.qml" as Style
+import "../Constants/General.qml" as General
 
 AnimatedRectangle {
     function show(text, duration, info, is_error) {

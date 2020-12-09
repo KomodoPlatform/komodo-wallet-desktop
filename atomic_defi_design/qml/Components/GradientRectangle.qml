@@ -1,12 +1,6 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
+import "../Constants/Style.qml" as Style
 
-import QtGraphicalEffects 1.0
-
-import "../Constants"
-
-// Gradient
 Rectangle {
     property alias orientation: gradient.orientation
 

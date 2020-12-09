@@ -453,17 +453,3 @@ Item {
         implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
     }
 }
-
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:600;width:1200}
-}
-##^##*/

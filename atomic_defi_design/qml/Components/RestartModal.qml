@@ -1,10 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
-
-import "../Components"
-import "../Constants"
-import ".."
+import "../Constants/General.qml" as General
+import "../Constants/API.qml" as API
 
 BasicModal {
     id: root

@@ -163,16 +163,3 @@ Item {
         }
     }
 }
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:264;width:150}
-}
-##^##*/
