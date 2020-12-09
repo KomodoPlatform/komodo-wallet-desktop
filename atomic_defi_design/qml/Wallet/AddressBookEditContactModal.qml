@@ -74,35 +74,76 @@ BasicModal {
                 rowDelegate: DefaultRectangle {
                     id: wallet_info_row_rect
 
-                    height: 25
-
+                    height: 35
                     radius: 0
                     color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
-                }
-
-                itemDelegate: Item {
-                    DefaultText {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: styleData.value
-                        font.pixelSize: Style.textSizeSmall4
-                        width: styleData.column === 0 ? wallet_info_key_column.width : wallet_info_value_column.width
-                    }
                 }
 
                 //! Key column
                 TableViewColumn {
                     id: wallet_info_key_column
 
+                    width: 170
+
                     role: "key"
                     title: "Key"
-                    width: 200
+
+                    delegate: RowLayout {
+                        DefaultText {
+                            text: styleData.value
+                            font.pixelSize: Style.textSizeSmall4
+                        }
+                    }
                 }
                 //! Address column
                 TableViewColumn {
                     id: wallet_info_value_column
 
+                    width: 200
+
                     role: "value"
                     title: "Address"
+
+                    delegate: RowLayout {
+                        //! Text value
+                        DefaultText {
+                            text: styleData.value
+                            font.pixelSize: Style.textSizeSmall4
+                        }
+                    }
+                }
+
+                TableViewColumn {
+                    role: "value"
+                    title: "Address"
+
+                    delegate: Row {
+                        spacing: 0
+
+                        //! Copy clipboard button
+                        Qaterial.OutlineButton {
+                            implicitHeight: 35
+                            implicitWidth: 35
+
+                            icon.source: Qaterial.Icons.contentCopy
+
+                            onClicked: {
+                                API.qt_utilities.copy_text_to_clipboard(styleData.value)
+                            }
+                        }
+
+                        //! Send button
+                        Qaterial.OutlineButton {
+                            implicitHeight: 35
+                            implicitWidth: 35
+
+                            icon.source: Qaterial.Icons.send
+
+                            onClicked: {
+                                console.log("Send button");
+                            }
+                        }
+                    }
                 }
             }
 
