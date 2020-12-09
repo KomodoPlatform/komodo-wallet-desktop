@@ -951,7 +951,7 @@ namespace atomic_dex
         batch.push_back(my_orders_request);
         nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
         std::size_t               total    = this->m_swaps_registry.at("result").total;
-        t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
+        t_my_recent_swaps_request request{.limit = total > 0 ? total : 500};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
         ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())

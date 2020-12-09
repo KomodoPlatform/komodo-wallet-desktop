@@ -73,17 +73,19 @@ namespace atomic_dex
 
         orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~orders_model() noexcept final = default;
-        int                    rowCount(const QModelIndex& parent) const final;
+        int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         QVariant               data(const QModelIndex& index, int role) const final;
         bool                   removeRows(int row, int count, const QModelIndex& parent) final;
         QHash<int, QByteArray> roleNames() const final;
         bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
+        void                   fetchMore(const QModelIndex& parent) final;
+        bool                   canFetchMore(const QModelIndex& parent) const final;
 
         //! Public api
-        void refresh_or_insert_orders() noexcept;
-        void refresh_or_insert_swaps() noexcept;
-        void clear_registry() noexcept;
-        bool swap_is_in_progress(const QString& coin) const noexcept;
+        void             refresh_or_insert_orders() noexcept;
+        void             refresh_or_insert_swaps() noexcept;
+        Q_INVOKABLE void clear_registry() noexcept;
+        bool             swap_is_in_progress(const QString& coin) const noexcept;
 
         //! Properties
         [[nodiscard]] int                 get_length() const noexcept;
@@ -97,10 +99,11 @@ namespace atomic_dex
 
       private:
         void                     set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
+        order_data               from_swap_content(const ::mm2::api::swap_contents& contents);
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
 
-        using t_orders_datas       = QVector<order_data>;
+        using t_orders_datas       = std::vector<order_data>;
         using t_orders_id_registry = std::unordered_set<std::string>;
         using t_swaps_id_registry  = std::unordered_set<std::string>;
 
@@ -108,13 +111,14 @@ namespace atomic_dex
         t_swaps_id_registry  m_swaps_id_registry;
         t_orders_datas       m_model_data;
         QVariant             m_json_time_registry;
+        std::size_t          m_file_count{0};
 
         orders_proxy_model* m_model_proxy;
 
         //! Private api
         void    initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
         void    update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
-        void    initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
+        void    initialize_swaps(const std::vector<order_data>& contents) noexcept;
         void    update_swap(const ::mm2::api::swap_contents& contents) noexcept;
         QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
         QString determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept;

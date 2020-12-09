@@ -15,11 +15,16 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/models/qt.wallet.transactions.model.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/models/qt.wallet.transactions.model.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+
+namespace
+{
+    constexpr int g_file_count_limit = 15_sz;
+}
 
 namespace atomic_dex
 {
@@ -185,7 +190,7 @@ namespace atomic_dex
             //! First time insertion
             beginResetModel();
             m_model_data = transactions;
-            m_file_count = transactions.size() < 50 ? transactions.size() : 50;
+            m_file_count = transactions.size() < g_file_count_limit ? transactions.size() : g_file_count_limit;
             endResetModel();
         }
         else
@@ -194,16 +199,16 @@ namespace atomic_dex
             SPDLOG_DEBUG("other time insertion, from {} to {}", m_file_count, m_file_count + transactions.size());
             beginInsertRows(QModelIndex(), m_file_count, m_file_count + transactions.size() - 1);
             m_file_count += transactions.size();
-            if (m_model_data.size() < 50)
+            if (m_model_data.size() < g_file_count_limit)
             {
                 m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
             }
             else
             {
-                m_model_data.insert(begin(m_model_data) + 50, begin(transactions), end(transactions));
+                m_model_data.insert(begin(m_model_data) + g_file_count_limit, begin(transactions), end(transactions));
             }
             endInsertRows();
-            if (this->canFetchMore(QModelIndex()) && m_model_data.size() >= 50)
+            if (this->canFetchMore(QModelIndex()) && m_model_data.size() >= g_file_count_limit)
             {
                 this->fetchMore(QModelIndex());
             }
@@ -236,8 +241,7 @@ namespace atomic_dex
         }
         t_transactions to_init;
         auto           difference = transactions.size() - this->m_model_data.size();
-        SPDLOG_DEBUG("difference between old transactions call and new transactions is: {}", difference);
-        SPDLOG_DEBUG("new transactions size is: {}, old one is: {}", transactions.size(), m_model_data.size());
+
         if (difference > 0)
         {
             //! Take all the unconfirmed transaction
@@ -262,12 +266,10 @@ namespace atomic_dex
             //! There is new transactions take the diff
             // to_init = t_transactions(transactions.begin(), transactions.begin() + difference);
         }
-        SPDLOG_DEBUG("updating transactions");
+
         std::for_each(begin(transactions) + difference, end(transactions), [this](const tx_infos& tx) { this->update_transaction(tx); });
         if (not to_init.empty())
         {
-            SPDLOG_DEBUG("to init transactions started: {}", to_init.size());
-            SPDLOG_DEBUG("hash: {}", to_init[0].tx_hash);
             this->init_transactions(to_init);
         }
     }
@@ -292,7 +294,7 @@ namespace atomic_dex
             return;
         }
         int remainder      = m_model_data.size() - m_file_count;
-        int items_to_fetch = qMin(50, remainder);
+        int items_to_fetch = qMin(g_file_count_limit, remainder);
         if (items_to_fetch <= 0)
         {
             return;
