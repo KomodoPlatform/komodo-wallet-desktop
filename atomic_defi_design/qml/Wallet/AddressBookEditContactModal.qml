@@ -74,8 +74,10 @@ BasicModal {
                 rowDelegate: DefaultRectangle {
                     id: wallet_info_row_rect
 
+                    height: 25
+
                     radius: 0
-                    color: styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
+                    color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
                 }
 
                 itemDelegate: Item {
