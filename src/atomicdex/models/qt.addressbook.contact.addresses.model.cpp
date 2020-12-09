@@ -155,9 +155,6 @@ namespace atomic_dex
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         
-        // Cleans existing wallet info persistent data before.
-        addrbook_manager.remove_every_wallet_info(m_name.toStdString());
-        
         // Replace the persistent data by the model one.
         for (const auto& address : m_model_data)
         {

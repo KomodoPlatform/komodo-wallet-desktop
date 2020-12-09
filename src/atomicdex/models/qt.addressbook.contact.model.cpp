@@ -155,9 +155,15 @@ namespace atomic_dex
         {
             addrbook_manager.add_contact_category(m_name.toStdString(), category.toStdString());
         }
-
+        
+        // Cleans existing wallet info persistent data before erasing it.
+        addrbook_manager.remove_every_wallet_info(m_name.toStdString());
+        
         // Saves inner model data.
-        for (auto& data: m_model_data) { data->save(); }
+        for (auto& data: m_model_data)
+        {
+            data->save();
+        }
 
         addrbook_manager.save_configuration();
     }
