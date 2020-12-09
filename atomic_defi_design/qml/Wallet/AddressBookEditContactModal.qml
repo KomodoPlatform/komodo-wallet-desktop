@@ -128,7 +128,7 @@ BasicModal {
                 }
             }
 
-            AddressBookAddContactAddress {
+            AddressBookAddContactAddressModal {
                 id: wallet_info_address_creation
             }
         }
@@ -144,7 +144,7 @@ BasicModal {
         }
 
         //! Category adding form
-        AddressBookNewContactCategory {
+        AddressBookNewContactCategoryModal {
             id: add_category
         }
 
@@ -198,9 +198,9 @@ BasicModal {
             PrimaryButton {
                 text: qsTr("Validate")
                 onClicked: {
+                    root.close();
                     modelData.name = name_input.field.text
                     modelData.save();
-                    root.close();
                 }
             }
 
@@ -208,9 +208,10 @@ BasicModal {
             DefaultButton {
                 text: qsTr("Cancel")
                 onClicked: {
-                    name_input.field.text = modelData.name
-                    modelData.reload();
+                    wallet_info_type_select.currentIndex = 0;
                     root.close();
+                    name_input.field.text = modelData.name;
+                    modelData.reload();
                 }
             }
         }

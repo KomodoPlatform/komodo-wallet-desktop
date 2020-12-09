@@ -134,7 +134,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                 }
 
-                AddressBookEditContact {
+                AddressBookEditContactModal {
                     id: edit_contact
                 }
             }
@@ -142,7 +142,7 @@ ColumnLayout {
     }
 
     //! Panel to create new contact
-    AddressBookNewContact {
+    AddressBookNewContactModal {
         id: addressbook_new_contact
     }
 }
