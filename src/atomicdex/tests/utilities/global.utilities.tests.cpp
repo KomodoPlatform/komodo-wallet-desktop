@@ -14,32 +14,37 @@
  *                                                                            *
  ******************************************************************************/
 
-/*#include "atomicdex/pch.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"*/
+#include "atomicdex/pch.hpp"
+
 #include <doctest/doctest.h>
 
-TEST_CASE("AtomicDex Pro get_atomic_dex_data_folder()")
+#include "atomicdex/utilities/global.utilities.hpp"
+
+using namespace atomic_dex::utils;
+
+TEST_CASE("atomic_dex::utils::get_atomic_dex_data_folder()")
 {
-    CHECK_EQ(42, 42);
-    //auto result = atomic_dex::utils::get_atomic_dex_data_folder();
-    //MESSAGE("Result is [" << result << "]");
-    //CHECK_FALSE(result.string().empty());
+    auto result = get_atomic_dex_data_folder();
+    CHECK_FALSE(result.string().empty());
 }
 
-TEST_CASE("AtomicDex Pro get_atomic_dex_logs_folder()")
+TEST_CASE("atomic_dex::utils::get_atomic_dex_logs_folder()")
 {
-    CHECK_EQ(42, 42);
-    //auto result = atomic_dex::utils::get_atomic_dex_logs_folder();
-    //MESSAGE("Result is [" << result.string() << "]");
-    //CHECK_FALSE(result.string().empty());
-    //CHECK(fs::exists(result));
+    auto result = get_atomic_dex_logs_folder();
+    CHECK_FALSE(result.string().empty());
+    CHECK(fs::exists(result));
 }
 
-TEST_CASE("AtomicDex Pro get_atomic_dex_current_log_file()")
+TEST_CASE("atomic_dex::utils::get_atomic_dex_current_log_file()")
 {
-    CHECK_EQ(42, 42);
-    //auto result = atomic_dex::utils::get_atomic_dex_current_log_file();
-    //MESSAGE("Result is [" << result.string() << "]");
-    //CHECK_FALSE(result.string().empty());
-    //CHECK_FALSE(fs::exists(result));
+    auto result = get_atomic_dex_current_log_file();
+    CHECK_FALSE(result.string().empty());
+    CHECK_FALSE(fs::exists(result));
+}
+
+TEST_CASE("atomic_dex::utils::adjust_precision()")
+{
+    CHECK_EQ(adjust_precision("1.0"), "1");
+    CHECK_EQ(adjust_precision("1.899999999"), "1.9");
+    CHECK_EQ(adjust_precision("1.000000001"), "1");
 }

@@ -19,36 +19,41 @@
 #include <folly/init/Init.h>
 
 //! Project
-#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 
 struct tests_context : public antara::gaming::world::app
 {
     tests_context([[maybe_unused]] char** argv)
     {
 #if !defined(WIN32) && !defined(_WIN32)
-#   ifdef linux
+#    ifdef linux
         int realargs = 1; // workaround to ignore doct
         folly::init(&realargs, &argv, false);
-#   endif
+#    endif
 
         //! Creates mm2 service.
         const auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
-        
+
         //! Creates special wallet for the unit tests then logs to it.
         auto& wallet_manager = system_manager_.create_system<atomic_dex::qt_wallet_manager>(system_manager_);
-        wallet_manager.create("atomicdex-desktop_tests", "asdkl lkdsa", "atomicdex-desktop_tests");
-        wallet_manager.login("atomicdex-desktop_tests", "atomicdex-desktop_tests");
-    
-        //! Waits for mm2 to be initialized before running tests
-        while (!mm2.is_mm2_running())
+        if (not wallet_manager.get_wallets().contains("atomicdex-desktop_tests"))
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            wallet_manager.create("atomicdex-desktop_tests", "asdkl lkdsa", "atomicdex-desktop_tests");
         }
+        else
+        {
+            SPDLOG_INFO("atomicdex-desktop_tests already exists - skipping");
+        }
+        wallet_manager.login("atomicdex-desktop_tests", "atomicdex-desktop_tests");
+
+        //! Waits for mm2 to be initialized before running tests
+        while (!mm2.is_mm2_running()) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
 #endif
     }
 
-    antara::gaming::ecs::system_manager& system_manager() noexcept
+    antara::gaming::ecs::system_manager&
+    system_manager() noexcept
     {
         return system_manager_;
     }

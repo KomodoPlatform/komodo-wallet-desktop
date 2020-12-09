@@ -306,12 +306,12 @@ target_compile_definitions(atomicdex-desktop PRIVATE ENTT_API_IMPORT)
 add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.tests.cpp
         src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
-        src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
 
         ##! Utilities
         src/atomicdex/tests/utilities/qt.utilities.tests.cpp
+        src/atomicdex/tests/utilities/global.utilities.tests.cpp
 
         ##! Managers
         src/atomicdex/tests/managers/addressbook.manager.tests.cpp
