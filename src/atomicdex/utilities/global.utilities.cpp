@@ -40,13 +40,15 @@ namespace atomic_dex::utils
         return format_float(current_f);
     }
 
-    void
+    bool
     create_if_doesnt_exist(const fs::path& path)
     {
         if (not fs::exists(path))
         {
             fs::create_directories(path);
+            return true;
         }
+        return false;
     }
 
     double
@@ -199,6 +201,7 @@ namespace atomic_dex::utils
         create_if_doesnt_exist(fs_raw_mm2_shared_folder);
         return fs_raw_mm2_shared_folder;
     }
+
     std::shared_ptr<spdlog::logger>
     register_logger()
     {

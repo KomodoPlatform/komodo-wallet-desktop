@@ -48,3 +48,11 @@ TEST_CASE("atomic_dex::utils::adjust_precision()")
     CHECK_EQ(adjust_precision("1.899999999"), "1.9");
     CHECK_EQ(adjust_precision("1.000000001"), "1");
 }
+
+TEST_CASE("atomic_dex::utils::create_if_doesnt_exist()")
+{
+    fs::path tmp_path = fs::temp_directory_path() / "fake_dir";
+    CHECK_FALSE(fs::exists(tmp_path));
+    CHECK(create_if_doesnt_exist(tmp_path));
+    CHECK(fs::exists(tmp_path));
+}

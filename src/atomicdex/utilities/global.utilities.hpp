@@ -31,7 +31,7 @@ namespace atomic_dex::utils
     std::string format_float(t_float_50 value);
 
     //! Fs helpers
-    void create_if_doesnt_exist(const fs::path& path);
+    bool create_if_doesnt_exist(const fs::path& path);
 
     double determine_balance_factor(bool with_pin_cfg);
 
