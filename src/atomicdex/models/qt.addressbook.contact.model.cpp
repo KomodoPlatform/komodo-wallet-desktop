@@ -116,8 +116,6 @@ namespace atomic_dex
     bool
     addressbook_contact_model::add_category(const QString& category) noexcept
     {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-
         if (m_categories.contains(category))
         {
             return false;
