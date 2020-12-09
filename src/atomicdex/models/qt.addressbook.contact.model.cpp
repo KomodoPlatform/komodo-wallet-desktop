@@ -118,7 +118,7 @@ namespace atomic_dex
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
 
-        if (addrbook_manager.has_category(m_name.toStdString(), category.toStdString()))
+        if (m_categories.contains(category))
         {
             return false;
         }
@@ -151,7 +151,10 @@ namespace atomic_dex
 
         // Saves categories.
         addrbook_manager.reset_contact_categories(m_name.toStdString());
-        for (auto& category: m_categories) { addrbook_manager.add_contact_category(m_name.toStdString(), category.toStdString()); }
+        for (const auto& category: m_categories)
+        {
+            addrbook_manager.add_contact_category(m_name.toStdString(), category.toStdString());
+        }
 
         // Saves inner model data.
         for (auto& data: m_model_data) { data->save(); }
