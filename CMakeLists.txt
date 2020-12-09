@@ -39,6 +39,15 @@ project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.1)
 
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
+if (UNIX)
+    execute_process(COMMAND bash -c "git ls-remote https://github.com/KomodoPlatform/atomicdex-desktop-generics refs/heads/main | cut -f 1 | tr -d '\n'"
+            OUTPUT_VARIABLE GENERICS_VERSION_ID
+            )
+    if (NOT EXISTS ${GENERICS_VERSION_ID}.cfg_hash)
+        file(WRITE assets/config/${GENERICS_VERSION_ID}.remote_last_cfg_hash)
+    endif ()
+endif ()
+
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
