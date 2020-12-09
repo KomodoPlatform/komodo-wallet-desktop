@@ -116,8 +116,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                SPDLOG_ERROR("exception caught in func[{}] line[{}] file[{}] error[{}]", 
-                        __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what());
+                SPDLOG_ERROR("exception caught: error[{}], body: {}", error.what(), body);
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }

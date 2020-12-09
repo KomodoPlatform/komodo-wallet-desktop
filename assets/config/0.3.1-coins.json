@@ -1156,7 +1156,7 @@
   "FIRO": {
     "coin": "FIRO",
     "name": "Firo",
-    "coinpaprika_id": "xzc-zcoin",
+    "coinpaprika_id": "firo-firo",
     "electrum": [
       {
         "url": "electrumx01.zcoin.io:50001"

@@ -118,6 +118,9 @@ signal_handler(int signal)
     atomic_dex::kill_executable("mm2.service");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
+    std::ifstream ifs("./backtrace.dump");
+    boost::stacktrace::stacktrace st = boost::stacktrace::stacktrace::from_dump(ifs);
+    SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(st));
 #endif
     std::exit(signal);
 }
@@ -142,6 +145,7 @@ connect_signals_handler()
 #endif
     std::signal(SIGABRT, signal_handler);
     std::signal(SIGSEGV, signal_handler);
+    std::signal(SIGTERM, signal_handler);
 }
 
 static void

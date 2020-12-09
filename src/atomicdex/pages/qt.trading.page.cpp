@@ -800,6 +800,7 @@ namespace atomic_dex
     {
         return m_volume;
     }
+
     void
     trading_page::set_volume(QString volume) noexcept
     {

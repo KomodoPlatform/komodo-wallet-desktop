@@ -103,7 +103,7 @@ namespace atomic_dex
                     url.append(",");
                 }
             }
-            SPDLOG_INFO("url: {}", url);
+            SPDLOG_INFO("url: {}", TO_STD_STR(g_coinpaprika_client->base_uri().to_string()) + url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);
         }
