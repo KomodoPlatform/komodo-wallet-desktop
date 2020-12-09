@@ -47,6 +47,7 @@
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.bindings.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
@@ -66,11 +67,11 @@ namespace atomic_dex
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(addressbook_page* addressbook_pg READ get_addressbook_page NOTIFY addressbookPageChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
-        Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
         Q_PROPERTY(notification_manager* notification_mgr READ get_notification_manager)
         Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
         Q_PROPERTY(ip_service_checker* ip_checker READ get_ip_checker NOTIFY ipCheckerChanged)
+        Q_PROPERTY(update_service_checker* update_checker READ get_update_checker NOTIFY updateCheckerChanged)
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
@@ -118,7 +119,6 @@ namespace atomic_dex
         void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;
         void on_coin_disabled_event(const coin_disabled&) noexcept;
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
-        void on_refresh_update_status_event(const refresh_update_status&) noexcept;
         void on_process_orders_finished_event(const process_orders_finished&) noexcept;
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
@@ -136,8 +136,9 @@ namespace atomic_dex
         qt_wallet_manager*               get_wallet_mgr() const noexcept;
         internet_service_checker*        get_internet_checker() const noexcept;
         ip_service_checker*              get_ip_checker() const noexcept;
+        update_service_checker*          get_update_checker() const noexcept;
         QVariantList                     get_enableable_coins() const noexcept;
-        [[nodiscard]] QVariant           get_update_status() const noexcept;
+        //[[nodiscard]] QVariant           get_update_status() const noexcept;
 
         //! Properties Setter
         void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) noexcept;
@@ -159,7 +160,6 @@ namespace atomic_dex
         Q_INVOKABLE QString recover_fund(const QString& uuid);
 
         //! Others
-        //Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
         Q_INVOKABLE void               refresh_orders_and_swaps();
         Q_INVOKABLE static QString     get_mnemonic();
         Q_INVOKABLE static bool        first_run();
@@ -183,8 +183,8 @@ namespace atomic_dex
         void addressbookPageChanged();
         void portfolioPageChanged();
         void walletPageChanged();
-        void updateStatusChanged();
         void ordersChanged();
+        void updateCheckerChanged();
         void tradingPageChanged();
         void settingsPageChanged();
         void internetCheckerChanged();

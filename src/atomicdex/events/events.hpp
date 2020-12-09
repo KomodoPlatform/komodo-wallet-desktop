@@ -30,7 +30,7 @@ namespace atomic_dex
     using enabled_coins_event           = entt::tag<"gui_enabled_coins"_hs>;
     using enabled_default_coins_event   = entt::tag<"gui_enabled_default_coins"_hs>;
     using tx_fetch_finished             = entt::tag<"gui_tx_fetch_finished"_hs>;
-    using refresh_update_status         = entt::tag<"gui_refresh_update_status"_hs>;
+    //using refresh_update_status         = entt::tag<"gui_refresh_update_status"_hs>;
     using process_orders_finished       = entt::tag<"gui_process_orders_finished"_hs>;
     using process_swaps_finished        = entt::tag<"gui_process_swaps_finished"_hs>;
     using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;

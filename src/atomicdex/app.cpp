@@ -49,7 +49,6 @@
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
-#include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.bindings.hpp"
 
@@ -235,12 +234,6 @@ application::tick()
                 qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
             }
             break;
-        case action::refresh_update_status:
-            const auto&   update_service_sys = this->system_manager_.get_system<update_service_checker>();
-            QJsonDocument doc                = QJsonDocument::fromJson(QString::fromStdString(update_service_sys.get_update_status().dump()).toUtf8());
-            this->m_update_status            = doc.toVariant();
-            emit updateStatusChanged();
-            break;
         }
     }
 }
@@ -276,7 +269,7 @@ application::application(QObject* pParent) noexcept :
         m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
     }
 
-    get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
+    // get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
     //! MM2 system need to be created before the GUI and give the instance to the gui
     system_manager_.create_system<ip_service_checker>();
     auto& mm2_system           = system_manager_.create_system<mm2_service>(system_manager_);
@@ -288,7 +281,7 @@ application::application(QObject* pParent) noexcept :
     system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
     system_manager_.create_system<band_oracle_price_service>();
     system_manager_.create_system<coinpaprika_provider>(mm2_system);
-    system_manager_.create_system<update_service_checker>();
+    system_manager_.create_system<update_service_checker>(this);
     system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
 
     connect_signals();
@@ -367,15 +360,6 @@ application::on_mm2_initialized_event([[maybe_unused]] const mm2_initialized& ev
 {
     SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
     system_manager_.get_system<qt_wallet_manager>().set_status("enabling_coins");
-}
-
-void
-application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
-{
-    if (not m_event_actions[events_action::about_to_exit_app])
-    {
-        this->m_actions_queue.push(action::refresh_update_status);
-    }
 }
 
 void
@@ -530,12 +514,6 @@ namespace atomic_dex
 //! Misc QML Utilities
 namespace atomic_dex
 {
-    QVariant
-    application::get_update_status() const noexcept
-    {
-        return m_update_status;
-    }
-
     QVariantList
     application::get_all_coins() const noexcept
     {
@@ -754,6 +732,18 @@ namespace atomic_dex
     application::get_internet_checker() const noexcept
     {
         return qobject_cast<internet_service_checker*>(m_manager_models.at("internet_service"));
+    }
+} // namespace atomic_dex
+
+//! update checker
+namespace atomic_dex
+{
+    update_service_checker*
+    application::get_update_checker() const noexcept
+    {
+        auto ptr = const_cast<update_service_checker*>(std::addressof(system_manager_.get_system<update_service_checker>()));
+        assert(ptr != nullptr);
+        return ptr;
     }
 } // namespace atomic_dex
 
