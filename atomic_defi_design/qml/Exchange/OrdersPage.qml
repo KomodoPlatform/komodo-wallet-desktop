@@ -66,8 +66,6 @@ Item {
         API.app.refresh_orders_and_swaps()
     }
 
-    Component.onDestruction: API.app.orders_mdl.clear_registry()
-
     function changeTicker(ticker) {
         combo_base.currentIndex = combo_base.model.map(c => c.value).indexOf(ticker)
     }

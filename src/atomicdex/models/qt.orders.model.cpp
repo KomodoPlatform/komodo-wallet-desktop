@@ -28,16 +28,14 @@
 //! Utils
 namespace
 {
-    constexpr int g_file_count_limit = 15_sz;
-
     std::pair<QString, QString>
     extract_error(const ::mm2::api::swap_contents& contents)
     {
         for (auto&& cur_event: contents.events)
         {
             if (std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
-                    return cur_event.at("state").get<std::string>() == error_str;
-                }))
+              return cur_event.at("state").get<std::string>() == error_str;
+            }))
             {
                 //! It's an error
                 if (cur_event.contains("data") && cur_event.at("data").contains("error"))
@@ -69,8 +67,7 @@ namespace atomic_dex
     int
     orders_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        // return this->m_model_data.size();
-        return static_cast<int>(m_file_count);
+        return this->m_model_data.count();
     }
 
 
@@ -222,7 +219,7 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            this->m_model_data.erase(begin(m_model_data) + position);
+            this->m_model_data.removeAt(position);
             emit lengthChanged();
         }
         endRemoveRows();
@@ -288,7 +285,7 @@ namespace atomic_dex
             {
                 if (cur_event.contains("data") && cur_event.at("data").contains("error") &&
                     std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
-                        return cur_event.at("state").get<std::string>() == error_str;
+                      return cur_event.at("state").get<std::string>() == error_str;
                     }))
                 {
                     status = "failed";
@@ -300,36 +297,56 @@ namespace atomic_dex
     }
 
     void
-    orders_model::initialize_swaps(const std::vector<order_data>& contents) noexcept
+    orders_model::initialize_swap(const ::mm2::api::swap_contents& contents) noexcept
     {
-        if (m_model_data.size() == 0)
+        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
+        bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+        order_data data{
+            .is_maker         = is_maker,
+            .base_coin        = is_maker ? QString::fromStdString(contents.maker_coin) : QString::fromStdString(contents.taker_coin),
+            .rel_coin         = is_maker ? QString::fromStdString(contents.taker_coin) : QString::fromStdString(contents.maker_coin),
+            .base_amount      = is_maker ? QString::fromStdString(contents.maker_amount) : QString::fromStdString(contents.taker_amount),
+            .rel_amount       = is_maker ? QString::fromStdString(contents.taker_amount) : QString::fromStdString(contents.maker_amount),
+            .order_type       = is_maker ? "maker" : "taker",
+            .human_date       = not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "",
+            .unix_timestamp   = not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0,
+            .order_id         = QString::fromStdString(contents.uuid),
+            .order_status     = determine_order_status_from_last_event(contents),
+            .maker_payment_id = determine_payment_id(contents, is_maker, false),
+            .taker_payment_id = determine_payment_id(contents, is_maker, true),
+            .is_swap          = true,
+            .is_cancellable   = false,
+            .is_recoverable   = contents.funds_recoverable,
+            .events           = nlohmann_json_array_to_qt_json_array(contents.events),
+            .error_events     = vector_std_string_to_qt_string_list(contents.error_events),
+            .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
+
+        //! Sets amounts in fiat.
+        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+            data.base_coin.toStdString(), data.base_amount.toStdString(), data.rel_coin.toStdString(), data.rel_amount.toStdString());
+        data.base_amount_fiat = QString::fromStdString(base_fiat_value);
+        data.rel_amount_fiat  = QString::fromStdString(rel_fiat_value);
+
+        data.ticker_pair = data.base_coin + "/" + data.rel_coin;
+        if (data.order_status == "failed")
         {
-            SPDLOG_DEBUG("First time initialization, inserting {} swaps", contents.size());
-            beginResetModel();
-            m_model_data = contents;
-            m_file_count = contents.size() < g_file_count_limit ? contents.size() : g_file_count_limit;
-            endResetModel();
+            auto error               = extract_error(contents);
+            data.order_error_state   = error.first;
+            data.order_error_message = error.second;
         }
-        else
+
+        if (data.order_status == "matched")
         {
-            SPDLOG_DEBUG("other time insertion, from {} to {}", m_file_count, m_file_count + contents.size());
-            beginInsertRows(QModelIndex(), m_file_count, m_file_count + contents.size() - 1);
-            m_file_count += contents.size();
-            if (m_model_data.size() < g_file_count_limit)
-            {
-                m_model_data.insert(end(m_model_data), begin(contents), end(contents));
-            }
-            else
-            {
-                m_model_data.insert(begin(m_model_data) + g_file_count_limit, begin(contents), end(contents));
-            }
-            endInsertRows();
-            if (this->canFetchMore(QModelIndex()) && m_model_data.size() >= g_file_count_limit)
-            {
-                this->fetchMore(QModelIndex());
-            }
+            using namespace std::string_literals;
+            m_dispatcher.trigger<swap_status_notification>(data.order_id, "matching", "matched", data.base_coin, data.rel_coin, data.human_date);
         }
-        SPDLOG_DEBUG("swaps model size: {}", rowCount());
+
+        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
+        {
+            this->m_swaps_id_registry.emplace(contents.uuid);
+        }
+        this->m_model_data.push_back(std::move(data));
+        endInsertRows();
         emit lengthChanged();
     }
 
@@ -342,7 +359,7 @@ namespace atomic_dex
             bool               is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
             update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
             auto&& [prev_value, new_value, is_change] =
-                update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
+            update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
             update_value(
                 OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0, idx, *this);
             auto&& [prev_value_d, new_value_d, _] = update_value(
@@ -372,28 +389,20 @@ namespace atomic_dex
 
             emit lengthChanged();
         }
-        /*else
+        else
         {
             bool is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
             SPDLOG_ERROR(
                 "swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid,
                 is_maker ? contents.maker_coin : contents.taker_coin);
-            if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
-            {
-                this->m_swaps_id_registry.emplace(contents.uuid);
-                initialize_swaps({from_swap_content(contents)});
-            }
-            else
-            {
-                SPDLOG_WARN("swap already in the registry - skipping");
-            }
-        }*/
+            initialize_swap(contents);
+        }
     }
 
     void
     orders_model::initialize_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
-        beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size());
+        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
             .is_maker       = contents.order_type == "maker",
             .base_coin      = contents.action == "Sell" ? QString::fromStdString(contents.base) : QString::fromStdString(contents.rel),
@@ -457,19 +466,19 @@ namespace atomic_dex
         if (!ec)
         {
             auto functor_process_orders = [this](auto&& orders) {
-                for (auto&& [key, value]: orders)
-                {
-                    if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
-                    {
-                        //! Find update needed
-                        this->update_existing_order(value);
-                    }
-                    else
-                    {
-                        //! Not found, insert and initialize.
-                        this->initialize_order(value);
-                    }
-                }
+              for (auto&& [key, value]: orders)
+              {
+                  if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
+                  {
+                      //! Find update needed
+                      this->update_existing_order(value);
+                  }
+                  else
+                  {
+                      //! Not found, insert and initialize.
+                      this->initialize_order(value);
+                  }
+              }
             };
 
             functor_process_orders(orders.maker_orders);
@@ -509,9 +518,6 @@ namespace atomic_dex
         const auto  result = mm2.get_swaps();
 
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
-        std::vector<order_data> to_init;
-        std::vector<order_data> to_update;
-        auto                    difference = result.swaps.size() - this->m_model_data.size();
         for (auto&& current_swap: result.swaps)
         {
             if (this->m_swaps_id_registry.find(current_swap.uuid) != this->m_swaps_id_registry.end())
@@ -520,16 +526,8 @@ namespace atomic_dex
             }
             else
             {
-                if (difference > 0)
-                {
-                    m_swaps_id_registry.emplace(to_init.emplace_back(from_swap_content(current_swap)).order_id.toStdString());
-                }
+                this->initialize_swap(current_swap);
             }
-        }
-
-        if (not to_init.empty())
-        {
-            this->initialize_swaps(to_init);
         }
     }
 
@@ -577,7 +575,6 @@ namespace atomic_dex
     void
     orders_model::clear_registry() noexcept
     {
-        this->m_file_count = 0;
         SPDLOG_DEBUG("clearing orders");
         this->beginResetModel();
         this->m_swaps_id_registry.clear();
@@ -650,84 +647,5 @@ namespace atomic_dex
             }
         }
         return false;
-    }
-
-    order_data
-    orders_model::from_swap_content(const ::mm2::api::swap_contents& contents)
-    {
-        bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
-        order_data data{
-            .is_maker         = is_maker,
-            .base_coin        = is_maker ? QString::fromStdString(contents.maker_coin) : QString::fromStdString(contents.taker_coin),
-            .rel_coin         = is_maker ? QString::fromStdString(contents.taker_coin) : QString::fromStdString(contents.maker_coin),
-            .base_amount      = is_maker ? QString::fromStdString(contents.maker_amount) : QString::fromStdString(contents.taker_amount),
-            .rel_amount       = is_maker ? QString::fromStdString(contents.taker_amount) : QString::fromStdString(contents.maker_amount),
-            .order_type       = is_maker ? "maker" : "taker",
-            .human_date       = not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "",
-            .unix_timestamp   = not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0,
-            .order_id         = QString::fromStdString(contents.uuid),
-            .order_status     = determine_order_status_from_last_event(contents),
-            .maker_payment_id = determine_payment_id(contents, is_maker, false),
-            .taker_payment_id = determine_payment_id(contents, is_maker, true),
-            .is_swap          = true,
-            .is_cancellable   = false,
-            .is_recoverable   = contents.funds_recoverable,
-            .events           = nlohmann_json_array_to_qt_json_array(contents.events),
-            .error_events     = vector_std_string_to_qt_string_list(contents.error_events),
-            .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
-
-        //! Sets amounts in fiat.
-        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
-            data.base_coin.toStdString(), data.base_amount.toStdString(), data.rel_coin.toStdString(), data.rel_amount.toStdString());
-        data.base_amount_fiat = QString::fromStdString(base_fiat_value);
-        data.rel_amount_fiat  = QString::fromStdString(rel_fiat_value);
-
-        data.ticker_pair = data.base_coin + "/" + data.rel_coin;
-        if (data.order_status == "failed")
-        {
-            auto error               = extract_error(contents);
-            data.order_error_state   = error.first;
-            data.order_error_message = error.second;
-        }
-
-        if (data.order_status == "matched")
-        {
-            using namespace std::string_literals;
-            m_dispatcher.trigger<swap_status_notification>(data.order_id, "matching", "matched", data.base_coin, data.rel_coin, data.human_date);
-        }
-
-        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
-        {
-            this->m_swaps_id_registry.emplace(contents.uuid);
-        }
-        return data;
-    }
-
-    void
-    orders_model::fetchMore(const QModelIndex& parent)
-    {
-        if (parent.isValid())
-        {
-            return;
-        }
-        int remainder      = m_model_data.size() - m_file_count;
-        int items_to_fetch = qMin(g_file_count_limit, remainder);
-        if (items_to_fetch <= 0)
-        {
-            return;
-        }
-
-        SPDLOG_INFO("fetching {} swaps, total swaps: {}", items_to_fetch, m_model_data.size());
-        beginInsertRows(QModelIndex(), m_file_count, m_file_count + items_to_fetch - 1);
-        m_file_count += items_to_fetch;
-        endInsertRows();
-        SPDLOG_INFO("new filecount: {}", rowCount());
-        emit lengthChanged();
-    }
-
-    bool
-    orders_model::canFetchMore([[maybe_unused]] const QModelIndex& parent) const
-    {
-        return (m_file_count < m_model_data.size());
     }
 } // namespace atomic_dex
