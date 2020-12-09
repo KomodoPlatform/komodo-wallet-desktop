@@ -22,6 +22,7 @@
 
 using namespace atomic_dex::utils;
 
+#if !defined(WIN32) && !defined(_WIN32)
 TEST_CASE("atomic_dex::utils::get_atomic_dex_data_folder()")
 {
     auto result = get_atomic_dex_data_folder();
@@ -62,3 +63,4 @@ TEST_CASE("atomic_dex::utils::determine_balance_factor()")
     CHECK_EQ(doctest::Approx(1.0), determine_balance_factor(false));
     CHECK_NE(doctest::Approx(1.0), determine_balance_factor(true));
 }
+#endif
