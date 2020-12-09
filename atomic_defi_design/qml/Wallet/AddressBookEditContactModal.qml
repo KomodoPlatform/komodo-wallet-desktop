@@ -153,9 +153,7 @@ BasicModal {
                 PrimaryButton {
                     text: qsTr("Add")
 
-                    onClicked: {
-                        wallet_info_address_creation.open();
-                    }
+                    onClicked: wallet_info_address_creation_modal.open();
                 }
 
                 //! Wallet address deletion
@@ -163,16 +161,16 @@ BasicModal {
                     text: qsTr("Remove")
 
                     onClicked: {
-                        if (wallet_info_table.currentRow >= 0)
-                        {
+                        if (wallet_info_table.currentRow >= 0) {
                             wallet_info_type_select.currentValue.remove_address_entry(wallet_info_table.currentRow)
                         }
                     }
                 }
             }
 
-            AddressBookAddContactAddressModal {
-                id: wallet_info_address_creation
+            ModalLoader {
+                id: wallet_info_address_creation_modal
+                sourceComponent: AddressBookAddContactAddressModal {}
             }
         }
 
@@ -187,8 +185,9 @@ BasicModal {
         }
 
         //! Category adding form
-        AddressBookNewContactCategoryModal {
-            id: add_category
+        ModalLoader {
+            id: add_category_modal
+            sourceComponent: AddressBookNewContactCategoryModal {}
         }
 
         //! Categories list
@@ -221,9 +220,7 @@ BasicModal {
 
                 text: qsTr("+")
 
-                onClicked: {
-                    add_category.open();
-                }
+                onClicked: add_category_modal.open()
             }
         }
 

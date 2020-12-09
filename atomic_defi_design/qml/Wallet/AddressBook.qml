@@ -37,9 +37,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignRight
             text: qsTr("New Contact")
 
-            onClicked: {
-                addressbook_new_contact.open()
-            }
+            onClicked: addressbook_new_contact_modal.open()
         }
     }
 
@@ -111,9 +109,7 @@ ColumnLayout {
                                 text: qsTr("Edit")
                                 font.pixelSize: Style.textSizeSmall3
 
-                                onClicked: {
-                                    edit_contact.open();
-                                }
+                                onClicked: edit_contact_modal.open()
                             }
 
                             //! `Delete` button
@@ -134,15 +130,17 @@ ColumnLayout {
                     Layout.fillWidth: true
                 }
 
-                AddressBookEditContactModal {
-                    id: edit_contact
+                ModalLoader {
+                    id: edit_contact_modal
+                    sourceComponent: AddressBookEditContactModal {}
                 }
             }
         }
     }
 
     //! Panel to create new contact
-    AddressBookNewContactModal {
-        id: addressbook_new_contact
+    ModalLoader {
+        id: addressbook_new_contact_modal
+        sourceComponent: AddressBookNewContactModal {}
     }
 }

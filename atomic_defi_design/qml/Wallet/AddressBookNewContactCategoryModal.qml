@@ -48,12 +48,12 @@ BasicModal {
                 onClicked: {
                     if (!modelData.add_category(name_input.text))
                     {
-                        alrady_exists_tooltip.visible = true;
+                        alrady_exists_tooltip.visible = true
                     }
                     else
                     {
                         name_input.text = ""
-                        add_category.close();
+                        add_category_modal.close()
                     }
                 }
             }
@@ -63,7 +63,7 @@ BasicModal {
                 text: qsTr("Cancel")
                 onClicked: {
                     name_input.text = ""
-                    add_category.close()
+                    add_category_modal.close()
                 }
             }
         }
