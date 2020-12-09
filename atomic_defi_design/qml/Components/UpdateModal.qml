@@ -1,7 +1,6 @@
+import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import "../Constants/General.qml" as General
-import "../Constants/Style.qml" as Style
-import "../Constants/API.qml" as API
+import "../Constants"
 
 BasicModal {
     id: root

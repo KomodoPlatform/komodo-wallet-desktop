@@ -1,6 +1,5 @@
-import "../Constants/General.qml" as General
-import "../Constants/Style.qml" as Style
-import "../Constants/API.qml" as API
+import QtQuick 2.15
+import "../Constants"
 
 AnimatedRectangle {
     visible: update_needed && status_good

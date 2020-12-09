@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "../Constants/Style.qml" as Style
+import "../Constants"
 
 TextArea {
     id: text_field

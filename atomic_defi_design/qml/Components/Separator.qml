@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import "../Constants/Style.qml" as Style
+import "../Constants"
 
 Rectangle {
     height: 1

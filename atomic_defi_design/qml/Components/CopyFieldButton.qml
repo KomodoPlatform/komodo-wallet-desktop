@@ -1,5 +1,5 @@
-import "../Constants/General.qml" as General
-import "../Constants/Style.qml" as Style
+import QtQuick 2.15
+import "../Constants"
 
 // Copy button
 DefaultImage {

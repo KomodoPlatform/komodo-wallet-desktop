@@ -1,3 +1,5 @@
+import QtQuick 2.15
+
 DefaultMouseArea {
     id: mouse_area
     anchors.fill: parent

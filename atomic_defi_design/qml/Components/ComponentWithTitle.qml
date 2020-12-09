@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import "../Constants/Style.qml" as Style
+import "../Constants"
 
 ColumnLayout {
     property alias title: title.text

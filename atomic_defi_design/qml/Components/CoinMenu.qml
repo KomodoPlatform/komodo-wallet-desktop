@@ -1,8 +1,7 @@
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.15
-import "../Constants/General.qml" as General
-import "../Constants/Style.qml" as Style
-import "../Constants/API.qml" as API
+import "../Constants"
 
 Menu {
     Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light

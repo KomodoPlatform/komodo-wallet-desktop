@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtGraphicalEffects 1.12
-import "../Constants/Style.qml" as Style
+import "../Constants"
 
 Item {
     property alias content: inner_space.sourceComponent

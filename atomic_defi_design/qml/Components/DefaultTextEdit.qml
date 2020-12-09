@@ -1,6 +1,5 @@
 import QtQuick 2.15
-import "../Constants/General.qml" as General
-import "../Constants/Style.qml" as Style
+import "../Constants"
 
 TextEdit {
     property string text_value
