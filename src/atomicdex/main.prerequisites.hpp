@@ -40,6 +40,7 @@
 #include "atomicdex/app.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/utilities/kill.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 #ifdef __APPLE__
 #    include "atomicdex/platform/osx/manager.hpp"
@@ -263,6 +264,9 @@ run_app(int argc, char** argv)
 
     //! App declaration
     atomic_dex::application atomic_app;
+    
+    //! Qt utilities declaration.
+    atomic_dex::qt_utilities qt_utilities;
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
@@ -283,6 +287,7 @@ run_app(int argc, char** argv)
     qmlRegisterUncreatableType<atomic_dex::TradingErrorGadget>("AtomicDEX.TradingError", 1, 0, "TradingError", "Not creatable as it is an enum type");
 
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+    engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);

@@ -19,6 +19,7 @@
 
 //! QT Headers
 #include <QtNetwork>
+#include <QClipboard>
 
 //! Project headers
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -79,4 +80,10 @@ namespace atomic_dex
         return out;
     }
     
+    void qt_utilities::copy_text_to_clipboard(const QString& text)
+    {
+        QClipboard* clipboard = QGuiApplication::clipboard();
+        
+        clipboard->setText(text);
+    }
 } // namespace atomic_dex
