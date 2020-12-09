@@ -37,6 +37,8 @@ endif ()
 
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.1)
 
+message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
+
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
@@ -91,13 +93,18 @@ FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/ar
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins qmaterial)
+FetchContent_Declare(adex-generics-coins
+        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
+
+FetchContent_MakeAvailable(mm2 jl777-coins qmaterial adex-generics-coins)
 
 ##! Configure our needs.
 if (UNIX)
+    configure_file(${adex-generics-coins_SOURCE_DIR}/config/${PROJECT_VERSION}-coins.json ${CMAKE_CURRENT_SOURCE_DIR}/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/mm2 COPYONLY)
 else ()
+    configure_file(${adex-generics-coins_SOURCE_DIR}/config/${PROJECT_VERSION}-coins.json ${CMAKE_BINARY_DIR}/bin/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/msvcp140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/msvcp140.dll COPYONLY)
