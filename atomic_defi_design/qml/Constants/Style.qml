@@ -24,7 +24,7 @@ QtObject {
     readonly property FontLoader fontR: FontLoader { source: "../../assets/fonts/Ubuntu-R.ttf" }
     readonly property FontLoader fontRI: FontLoader { source: "../../assets/fonts/Ubuntu-R.ttf" }
     readonly property FontLoader fontTh: FontLoader { source: "../../assets/fonts/Ubuntu-Th.ttf" }
-    readonly property string font_family: "Sans-Serif"
+    readonly property string font_family: "Verdana"
 
     readonly property string listItemPrefix:  " ⚬   "
     readonly property string successCharacter:  "✓"
