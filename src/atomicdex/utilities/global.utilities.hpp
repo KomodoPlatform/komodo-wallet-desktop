@@ -1,3 +1,19 @@
+/******************************************************************************
+ * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
+
 #pragma once
 
 //! STD
@@ -20,8 +36,8 @@ using t_rational = boost::multiprecision::cpp_rational;
 //! Deps
 #include <date/date.h>
 #include <date/tz.h>
-#include <nlohmann/json.hpp>
 #include <entt/core/attribute.h>
+#include <nlohmann/json.hpp>
 
 namespace atomic_dex::utils
 {
@@ -53,13 +69,12 @@ namespace atomic_dex::utils
             return date::format(std::move(format), tp);
         }
     }
-    
+
     fs::path get_atomic_dex_data_folder();
-    
+
     /// \brief  Gets the path where addressbook configs are stored.
     /// \return An fs::path object.
-    [[nodiscard]]
-    fs::path get_atomic_dex_addressbook_folder();
+    [[nodiscard]] fs::path get_atomic_dex_addressbook_folder();
 
     fs::path get_runtime_coins_path() noexcept;
 
@@ -90,51 +105,5 @@ namespace atomic_dex::utils
 
 namespace atomic_dex::utils
 {
-    struct timed_waiter
-    {
-        void interrupt();
 
-        template <class Rep, class Period>
-        bool wait_for(std::chrono::duration<Rep, Period> how_long) const;
-
-      private:
-        std::unique_lock<std::mutex> lock() const;
-
-        mutable std::mutex              m;
-        mutable std::condition_variable cv;
-        bool                            interrupted = false;
-    };
-
-    struct my_json_sax : nlohmann::json_sax<nlohmann::json>
-    {
-        bool binary([[maybe_unused]] binary_t& val) override;
-
-        bool null() override;
-
-        bool boolean([[maybe_unused]] bool val) override;
-
-        bool number_integer([[maybe_unused]] number_integer_t val) override;
-
-        bool number_unsigned([[maybe_unused]] number_unsigned_t val) override;
-
-        bool number_float([[maybe_unused]] number_float_t val, [[maybe_unused]] const string_t& s) override;
-
-        bool string([[maybe_unused]] string_t& val) override;
-
-        bool start_object([[maybe_unused]] std::size_t elements) override;
-
-        bool key([[maybe_unused]] string_t& val) override;
-
-        bool end_object() override;
-
-        bool start_array([[maybe_unused]] std::size_t elements) override;
-
-        bool end_array() override;
-
-        bool parse_error(
-            [[maybe_unused]] std::size_t position, [[maybe_unused]] const std::string& last_token,
-            [[maybe_unused]] const nlohmann::detail::exception& ex) override;
-
-        std::string float_as_string;
-    };
 } // namespace atomic_dex::utils
