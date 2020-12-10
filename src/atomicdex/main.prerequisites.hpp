@@ -45,6 +45,7 @@
 
 #ifdef __APPLE__
 #    include "atomicdex/platform/osx/manager.hpp"
+#    include <sys/sysctl.h>
 #endif
 
 #if defined(ATOMICDEX_HOT_RELOAD)
@@ -216,7 +217,22 @@ init_dpi()
     QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
 
 #ifdef __APPLE__
-    QQuickWindow::setTextRenderType(QQuickWindow::TextRenderType::NativeTextRendering);
+    auto is_apple_translated = []() {
+        int    ret  = 0;
+        size_t size = sizeof(ret);
+        if (sysctlbyname("sysctl.proc_translated", &ret, &size, NULL, 0) == -1)
+        {
+            if (errno == ENOENT)
+                return 0;
+            return -1;
+        }
+        return ret;
+    };
+    if (is_apple_translated() == 1)
+    {
+        SPDLOG_INFO("You are on apple M1 chipset running an Intel application, forcing NativeTextRendering");
+        QQuickWindow::setTextRenderType(QQuickWindow::TextRenderType::NativeTextRendering);
+    }
 #endif
     // QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
 }
