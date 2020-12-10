@@ -80,7 +80,9 @@ namespace atomic_dex::utils
     fs::path
     get_atomic_dex_addressbook_folder()
     {
-        return get_atomic_dex_data_folder() / "addressbook";
+        const auto fs_addr_book_path =  get_atomic_dex_data_folder() / "addressbook";
+        create_if_doesnt_exist(fs_addr_book_path);
+        return fs_addr_book_path;
     }
 
     fs::path

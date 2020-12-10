@@ -56,6 +56,8 @@ TEST_CASE("atomic_dex::utils::create_if_doesnt_exist()")
     CHECK_FALSE(fs::exists(tmp_path));
     CHECK(create_if_doesnt_exist(tmp_path));
     CHECK(fs::exists(tmp_path));
+    fs::remove(tmp_path);
+    CHECK_FALSE(fs::exists(tmp_path));
 }
 
 TEST_CASE("atomic_dex::utils::determine_balance_factor()")
@@ -72,4 +74,20 @@ TEST_CASE("atomic_dex::::utils::to_human_date()")
     CHECK(!human_date.empty());
     CHECK_EQ("10 Dec 2020, 08:33", human_date);
 }
+
+TEST_CASE("atomic_dex::utils::get_atomic_dex_addressbook_folder()")
+{
+    auto result = get_atomic_dex_addressbook_folder();
+    CHECK_FALSE(result.string().empty());
+    CHECK(fs::exists(result));
+}
+
+TEST_CASE("atomic_dex::utils::get_runtime_coins_path()")
+{
+    auto result = get_runtime_coins_path();
+    CHECK_FALSE(result.string().empty());
+    CHECK(fs::exists(result));
+}
+
+TEST_CASE("atomic_dex::utils::register_logger()") { CHECK_NE(register_logger(), nullptr); }
 #endif
