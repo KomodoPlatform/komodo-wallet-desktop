@@ -10,6 +10,8 @@ Switch {
     Universal.foreground: Style.colorQtThemeForeground
     Universal.background: Style.colorQtThemeBackground
 
+    font.family: Style.font_family
+
     DefaultMouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
