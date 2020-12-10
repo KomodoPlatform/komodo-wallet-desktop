@@ -63,4 +63,13 @@ TEST_CASE("atomic_dex::utils::determine_balance_factor()")
     CHECK_EQ(doctest::Approx(1.0), determine_balance_factor(false));
     CHECK_NE(doctest::Approx(1.0), determine_balance_factor(true));
 }
+
+TEST_CASE("atomic_dex::::utils::to_human_date()")
+{
+    using namespace std::chrono;
+    std::size_t timestamp  = 1607585590;
+    std::string human_date = to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M");
+    CHECK(!human_date.empty());
+    CHECK_EQ("10 Dec 2020, 08:33", human_date);
+}
 #endif
