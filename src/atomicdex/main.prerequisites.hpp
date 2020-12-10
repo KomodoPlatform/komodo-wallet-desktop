@@ -211,10 +211,9 @@ init_dpi()
         }
     }
 #endif
-    /*QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
         should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-    QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);*/
-    QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
 }
 
 static void
