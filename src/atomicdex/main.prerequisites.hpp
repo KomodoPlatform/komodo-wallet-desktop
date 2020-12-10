@@ -214,6 +214,11 @@ init_dpi()
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
         should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
+
+#ifdef __APPLE__
+    QQuickWindow::setTextRenderType(QQuickWindow::TextRenderType::NativeTextRendering);
+#endif
+    // QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
 }
 
 static void
@@ -246,7 +251,7 @@ run_app(int argc, char** argv)
 
 #ifdef __APPLE__
 #    if defined(NDEBUG)
-        //folly::init(&argc, &argv, false);
+    // folly::init(&argc, &argv, false);
 #    endif
 #endif
     init_logging();
