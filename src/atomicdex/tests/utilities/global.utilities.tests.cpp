@@ -90,4 +90,5 @@ TEST_CASE("atomic_dex::utils::get_runtime_coins_path()")
 }
 
 TEST_CASE("atomic_dex::utils::register_logger()") { CHECK_NE(register_logger(), nullptr); }
+
 #endif

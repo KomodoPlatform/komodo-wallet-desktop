@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! STD
-#include <random>
-
 //! Boost
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -28,16 +25,10 @@ using t_float_50 = boost::multiprecision::cpp_dec_float_50;
 using t_rational = boost::multiprecision::cpp_rational;
 #pragma clang diagnostic pop
 
-
-//! QT Headers
-#include <QCryptographicHash>
-#include <QString>
-
 //! Deps
-#include <date/date.h>
-#include <date/tz.h>
-#include <entt/core/attribute.h>
-#include <nlohmann/json.hpp>
+#include <date/date.h> ///< date::format
+#include <date/tz.h> ///< date::make_zoned
+#include <entt/core/attribute.h> ///< ENTT_API
 
 namespace atomic_dex::utils
 {
@@ -97,13 +88,5 @@ namespace atomic_dex::utils
 
     fs::path get_atomic_dex_current_export_recent_swaps_file();
 
-    std::string dex_sha256(const std::string& str);
-
     void to_eth_checksum(std::string& address);
-} // namespace atomic_dex::utils
-
-
-namespace atomic_dex::utils
-{
-
 } // namespace atomic_dex::utils

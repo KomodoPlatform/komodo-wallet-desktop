@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <nlohmann/json.hpp>
+
 namespace atomic_dex::utils::details
 {
     struct my_json_sax : nlohmann::json_sax<nlohmann::json>

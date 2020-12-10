@@ -1,5 +1,9 @@
-//! PCH
-#include "atomicdex/pch.hpp"
+//! STD Headers
+#include <random>
+
+//! Qt Headers
+#include <QCryptographicHash>
+#include <QString>
 
 //! Project Headers
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -11,6 +15,13 @@ namespace
     constexpr size_t g_spdlog_thread_count      = 2;
     constexpr size_t g_spdlog_max_file_size     = 7777777;
     constexpr size_t g_spdlog_max_file_rotation = 3;
+
+    std::string
+    dex_sha256(const std::string& str)
+    {
+        QString res = QString(QCryptographicHash::hash((str.c_str()), QCryptographicHash::Keccak_256).toHex());
+        return res.toStdString();
+    }
 } // namespace
 
 namespace atomic_dex::utils
@@ -160,13 +171,6 @@ namespace atomic_dex::utils
     get_atomic_dex_current_export_recent_swaps_file()
     {
         return get_atomic_dex_export_folder() / ("swap-export.json");
-    }
-
-    std::string
-    dex_sha256(const std::string& str)
-    {
-        QString res = QString(QCryptographicHash::hash((str.c_str()), QCryptographicHash::Keccak_256).toHex());
-        return res.toStdString();
     }
 
     void
