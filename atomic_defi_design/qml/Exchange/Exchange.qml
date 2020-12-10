@@ -37,7 +37,10 @@ Item {
 
     function openTradeView(ticker) {
         current_page = idx_exchange_trade
-        current_component.onOpened(ticker)
+
+        loader.onLoadComplete = () => {
+            current_component.onOpened(ticker)
+        }
     }
 
     ColumnLayout {
@@ -118,10 +121,22 @@ Item {
         Loader {
             id: loader
 
+            property var onLoadComplete: () => {}
+
+            onStatusChanged: {
+                if(Loader.Ready) {
+                    onLoadComplete()
+                    onLoadComplete = () => {}
+                }
+            }
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.bottomMargin: layout_margin
             Layout.rightMargin: Layout.bottomMargin
+
+            asynchronous: true
+            visible: loader.status === Loader.Ready
 
             sourceComponent: {
                 switch(current_page) {
@@ -130,6 +145,19 @@ Item {
                 case idx_exchange_history: return exchange_history
                 default: return undefined
                 }
+            }
+        }
+
+        Item {
+            visible: !loader.visible
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.bottomMargin: layout_margin
+            Layout.rightMargin: Layout.bottomMargin
+
+            DefaultBusyIndicator {
+                anchors.centerIn: parent
             }
         }
     }
