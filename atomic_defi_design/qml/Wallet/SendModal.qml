@@ -198,7 +198,7 @@ BasicModal {
     ModalContent {
         Layout.fillWidth: true
 
-        title: qsTr("Prepare to Send")
+        title: qsTr("Prepare to send ") + current_ticker_infos.fee_ticker
 
         // Send address
         RowLayout {
