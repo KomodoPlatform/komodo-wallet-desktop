@@ -100,11 +100,12 @@ namespace atomic_dex
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
 
-        if (addrbook_manager.has_wallet_info(m_name.toStdString(), m_type.toStdString(), key.toStdString()))
+        // Checks if key already exists
+        if (!match(index(0, 0), KeyRole, key).empty())
         {
             return false;
         }
-        beginInsertRows(QModelIndex(), m_model_data.count(), m_model_data.count());
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
         m_model_data.push_back(address{.key = std::move(key), .value = std::move(value)});
         endInsertRows();
         return true;
