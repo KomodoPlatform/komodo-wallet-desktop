@@ -121,10 +121,10 @@ namespace atomic_dex
 {
     void addressbook_model::populate()
     {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        const auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         
         beginInsertRows(QModelIndex(), 0, addrbook_manager.nb_contacts() - 1);
-        for (auto& contact : addrbook_manager.get_contacts())
+        for (const auto& contact : addrbook_manager.get_contacts())
         {
             auto  contact_name  = contact.at("name").get<std::string>();
             auto* contact_model = new addressbook_contact_model(m_system_manager, QString::fromStdString(contact_name), this);
