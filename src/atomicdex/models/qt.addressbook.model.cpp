@@ -77,26 +77,27 @@ namespace atomic_dex
 //! QML API
 namespace atomic_dex
 {
-    addressbook_proxy_model* addressbook_model::get_addressbook_proxy_mdl() const noexcept
+    addressbook_proxy_model*
+    addressbook_model::get_addressbook_proxy_mdl() const noexcept
     {
         return m_addressbook_proxy;
     }
-    
+
     void
     addressbook_model::remove_contact(const QString& name)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         auto  res              = match(index(0), NameRole, name);
-        
+
         if (not res.empty())
         {
-                addrbook_manager.remove_contact(name.toStdString());
-                addrbook_manager.save_configuration();
+            addrbook_manager.remove_contact(name.toStdString());
+            addrbook_manager.save_configuration();
             beginRemoveRows(QModelIndex(), res.at(0).row(), res.at(0).row());
             m_model_data.removeAt(res.at(0).row());
-                endRemoveRows();
-            }
+            endRemoveRows();
         }
+    }
     
     bool addressbook_model::add_contact(const QString& name)
     {
@@ -106,7 +107,6 @@ namespace atomic_dex
         {
             return false;
         }
-        
         addrbook_manager.add_contact(name.toStdString());
         addrbook_manager.save_configuration();
         beginInsertRows(QModelIndex(), rowCount(), rowCount());

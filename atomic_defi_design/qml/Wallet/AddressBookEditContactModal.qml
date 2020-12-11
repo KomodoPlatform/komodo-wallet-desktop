@@ -68,12 +68,9 @@ BasicModal {
 
                 backgroundVisible: false
 
-                headerDelegate: DefaultRectangle {
-                }
+                headerDelegate: DefaultRectangle {}
 
                 rowDelegate: DefaultRectangle {
-                    id: wallet_info_row_rect
-
                     height: 35
                     radius: 0
                     color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
@@ -81,8 +78,6 @@ BasicModal {
 
                 //! Key column
                 TableViewColumn {
-                    id: wallet_info_key_column
-
                     width: 170
 
                     role: "key"
@@ -90,15 +85,13 @@ BasicModal {
 
                     delegate: RowLayout {
                         DefaultText {
-                            text: styleData.value
+                            text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall4
                         }
                     }
                 }
                 //! Address column
                 TableViewColumn {
-                    id: wallet_info_value_column
-
                     width: 200
 
                     role: "value"
@@ -107,12 +100,12 @@ BasicModal {
                     delegate: RowLayout {
                         //! Text value
                         DefaultText {
-                            text: styleData.value
+                            text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall4
                         }
                     }
                 }
-
+                // Buttons column
                 TableViewColumn {
                     role: "value"
                     title: "Address"
@@ -246,7 +239,7 @@ BasicModal {
                 onClicked: {
                     root.close();
                     modelData.name = name_input.field.text
-                    modelData.save();
+                    modelData.save()
                 }
             }
 

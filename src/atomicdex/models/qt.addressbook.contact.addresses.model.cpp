@@ -137,7 +137,7 @@ namespace atomic_dex
         
         const auto& addresses = addrbook_manager.get_wallet_info(m_name.toStdString(), m_type.toStdString()).at("addresses");
         
-        beginInsertRows(QModelIndex(), 0, addresses.size());
+        beginInsertRows(QModelIndex(), 0, addresses.size() - 1);
         for (auto it = addresses.begin(); it != addresses.end(); ++it)
         {
             m_model_data.push_back(address{.key = QString::fromStdString(it.key()), .value = QString::fromStdString(it.value())});
