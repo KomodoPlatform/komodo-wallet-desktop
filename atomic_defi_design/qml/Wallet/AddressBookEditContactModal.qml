@@ -15,7 +15,7 @@ import "../Constants"
 
 BasicModal {
     id: root
-    width: 500
+    width: 700
 
     onClosed: {
         modelData.reload()
@@ -83,7 +83,7 @@ BasicModal {
 
                 //! Key column
                 TableViewColumn {
-                    width: 170
+                    width: 200
 
                     role: "key"
                     title: "Key"
@@ -97,7 +97,7 @@ BasicModal {
                 }
                 //! Address column
                 TableViewColumn {
-                    width: 200
+                    width: 380
 
                     role: "value"
                     title: "Address"
