@@ -118,9 +118,7 @@ ColumnLayout {
                                 text: qsTr("Remove")
                                 font.pixelSize: Style.textSizeSmall3
 
-                                onClicked: {
-                                    api.model.remove_contact(index, modelData.name)
-                                }
+                                onClicked: addressbook_remove_contact_modal.open()
                             }
                         }
                     }
@@ -133,6 +131,36 @@ ColumnLayout {
                 ModalLoader {
                     id: edit_contact_modal
                     sourceComponent: AddressBookEditContactModal {}
+                }
+
+                //! Panel to delete a contact
+                ModalLoader {
+                    id: addressbook_remove_contact_modal
+                    sourceComponent: BasicModal {
+                        width: 500
+
+                        ModalContent {
+                            Layout.fillWidth: true
+                            title: qsTr("Do you want to remove this contact ?")
+
+                            RowLayout {
+                                DangerButton {
+                                    text: qsTr("Yes")
+
+                                    onClicked: {
+                                        addressbook_remove_contact_modal.close()
+                                        api.model.remove_contact(modelData.name)
+                                    }
+                                }
+
+                                DefaultButton {
+                                    text: qsTr("No")
+
+                                    onClicked: addressbook_remove_contact_modal.close()
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
