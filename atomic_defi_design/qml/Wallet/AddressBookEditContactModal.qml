@@ -144,7 +144,18 @@ BasicModal {
                             icon.color: Style.colorWhite1
 
                             onClicked: {
-                                console.log("Send button");
+                                if (!API.app.portfolio_pg.is_coin_enabled(wallet_info_type_select.currentValue.type)) {
+                                    enable_coin_modal.coin_name = wallet_info_type_select.currentValue.type
+                                    enable_coin_modal.open()
+                                }
+                                else if (parseFloat(API.app.get_balance(wallet_info_type_select.currentValue.type)) === 0) {
+                                    cannot_send_modal.open()
+                                }
+                                else {
+                                    API.app.wallet_pg.ticker = wallet_info_type_select.currentValue.type
+                                    send_modal.address = styleData.value
+                                    send_modal.open()
+                                }
                             }
                         }
                     }
@@ -252,6 +263,78 @@ BasicModal {
             DefaultButton {
                 text: qsTr("Cancel")
                 onClicked: root.close()
+            }
+        }
+
+        //! Enable coin modal
+        ModalLoader {
+            property string coin_name
+
+            id: enable_coin_modal
+
+            sourceComponent: BasicModal {
+                width: 400
+
+                ModalContent {
+                    Layout.fillWidth: true
+                    title: qsTr("Enable coin")
+
+                    DefaultText {
+                        text: qsTr("The selected address belongs to a disabled coin, you need to enabled it before sending.")
+                    }
+
+                    //! Enable button
+                    PrimaryButton {
+                        text: qsTr("Enable")
+
+                        onClicked: {
+                            API.app.enable_coin(coin_name)
+                            enable_coin_modal.close()
+                        }
+                    }
+
+                    //! Disable button
+                    DefaultButton {
+                        text: qsTr("Cancel")
+
+                        onClicked: root.close()
+                    }
+                }
+            }
+        }
+
+        //! Send modal
+        ModalLoader {
+            property string address
+
+            id: send_modal
+            sourceComponent: SendModal {
+                address_field.enabled: false
+                address_field.text: send_modal.address
+            }
+        }
+
+        //! Cannot send modal
+        ModalLoader {
+            id: cannot_send_modal
+
+            sourceComponent: BasicModal {
+                width: 400
+
+                ModalContent {
+                    Layout.fillWidth: true
+                    title: qsTr("Cannot send to this address")
+
+                    DefaultText {
+                        text: qsTr("Your balance is empty")
+                    }
+
+                    DefaultButton {
+                        text: qsTr("Ok")
+
+                        onClicked: cannot_send_modal.close()
+                    }
+                }
             }
         }
     }

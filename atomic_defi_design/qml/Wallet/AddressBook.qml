@@ -37,7 +37,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignRight
             text: qsTr("New Contact")
 
-            onClicked: addressbook_new_contact_modal.open()
+            onClicked: new_contact_modal.open()
         }
     }
 
@@ -118,7 +118,10 @@ ColumnLayout {
                                 text: qsTr("Remove")
                                 font.pixelSize: Style.textSizeSmall3
 
-                                onClicked: addressbook_remove_contact_modal.open()
+                                onClicked: {
+                                    remove_contact_modal.contactName = modelData.name
+                                    remove_contact_modal.open()
+                                }
                             }
                         }
                     }
@@ -132,43 +135,46 @@ ColumnLayout {
                     id: edit_contact_modal
                     sourceComponent: AddressBookEditContactModal {}
                 }
-
-                //! Panel to delete a contact
-                ModalLoader {
-                    id: addressbook_remove_contact_modal
-                    sourceComponent: BasicModal {
-                        width: 500
-
-                        ModalContent {
-                            Layout.fillWidth: true
-                            title: qsTr("Do you want to remove this contact ?")
-
-                            RowLayout {
-                                DangerButton {
-                                    text: qsTr("Yes")
-
-                                    onClicked: {
-                                        addressbook_remove_contact_modal.close()
-                                        api.model.remove_contact(modelData.name)
-                                    }
-                                }
-
-                                DefaultButton {
-                                    text: qsTr("No")
-
-                                    onClicked: addressbook_remove_contact_modal.close()
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
 
-    //! Panel to create new contact
+    //! Panel to create a contact
     ModalLoader {
-        id: addressbook_new_contact_modal
+        id: new_contact_modal
         sourceComponent: AddressBookNewContactModal {}
+    }
+
+    //! Panel to delete a contact
+    ModalLoader {
+        property string contactName
+
+        id: remove_contact_modal
+
+        sourceComponent: BasicModal {
+            width: 500
+
+            ModalContent {
+                Layout.fillWidth: true
+                title: qsTr("Do you want to remove this contact ?")
+
+                RowLayout {
+                    DangerButton {
+                        text: qsTr("Yes")
+
+                        onClicked: {
+                            remove_contact_modal.close()
+                            api.model.remove_contact(contactName)
+                        }
+                    }
+
+                    DefaultButton {
+                        text: qsTr("No")
+
+                        onClicked: remove_contact_modal.close()
+                    }
+                }
+            }
+        }
     }
 }
