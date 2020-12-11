@@ -42,6 +42,7 @@ namespace atomic_dex
         enum AddressBookRoles
         {
             SubModelRole = Qt::UserRole + 1,
+            NameRole
         };
 
         explicit addressbook_model(ag::ecs::system_manager& system_registry, QObject* parent = nullptr) noexcept;
@@ -70,7 +71,7 @@ namespace atomic_dex
         
         Q_INVOKABLE bool add_contact(const QString& name);
         
-        Q_INVOKABLE void remove_contact(int row, const QString& name);
+        Q_INVOKABLE void remove_contact(const QString& name);
         
         Q_INVOKABLE void remove_all_contacts();
 

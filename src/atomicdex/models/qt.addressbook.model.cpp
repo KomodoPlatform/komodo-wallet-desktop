@@ -58,6 +58,8 @@ namespace atomic_dex
         {
         case SubModelRole:
             return QVariant::fromValue(m_model_data.at(index.row()));
+        case NameRole:
+            return m_model_data.at(index.row())->get_name();
         default:
             return {};
         }
@@ -80,24 +82,21 @@ namespace atomic_dex
         return m_addressbook_proxy;
     }
     
-    void addressbook_model::remove_contact(int row, const QString& name)
+    void
+    addressbook_model::remove_contact(const QString& name)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        auto  res              = match(index(0), NameRole, name);
         
-        for (auto* it = m_model_data.begin(); it != m_model_data.end(); ++it)
+        if (not res.empty())
         {
-            if ((*it)->get_name() == name)
-            {
                 addrbook_manager.remove_contact(name.toStdString());
                 addrbook_manager.save_configuration();
-                beginRemoveRows(QModelIndex(), row, row);
-                delete *it;
-                m_model_data.erase(it);
+            beginRemoveRows(QModelIndex(), res.at(0).row(), res.at(0).row());
+            m_model_data.removeAt(res.at(0).row());
                 endRemoveRows();
-                return;
             }
         }
-    }
     
     void addressbook_model::remove_all_contacts()
     {
