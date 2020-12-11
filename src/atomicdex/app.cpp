@@ -89,6 +89,12 @@ atomic_dex::application::enable_coins(const QStringList& coins)
 }
 
 bool
+atomic_dex::application::enable_coin(const QString& coin)
+{
+    return enable_coins(QStringList{coin});
+}
+
+bool
 application::disable_coins(const QStringList& coins)
 {
     QStringList coins_copy;
