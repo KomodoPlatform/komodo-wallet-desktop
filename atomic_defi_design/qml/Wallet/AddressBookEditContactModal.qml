@@ -91,7 +91,7 @@ BasicModal {
                     delegate: RowLayout {
                         DefaultText {
                             text: styleData.row >= 0 ? styleData.value : ""
-                            font.pixelSize: Style.textSizeSmall4
+                            font.pixelSize: Style.textSizeSmall3
                         }
                     }
                 }
@@ -106,7 +106,7 @@ BasicModal {
                         //! Text value
                         DefaultText {
                             text: styleData.row >= 0 ? styleData.value : ""
-                            font.pixelSize: Style.textSizeSmall4
+                            font.pixelSize: Style.textSizeSmall3
                         }
                     }
                 }
