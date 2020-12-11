@@ -98,21 +98,6 @@ namespace atomic_dex
             }
         }
     
-    void addressbook_model::remove_all_contacts()
-    {
-        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-        
-        beginRemoveRows(QModelIndex(), 0, rowCount());
-        for (auto& contact_model : m_model_data)
-        {
-            addrbook_manager.remove_contact(contact_model->get_name().toStdString());
-            addrbook_manager.save_configuration();
-            delete contact_model;
-        }
-        m_model_data.clear();
-        endRemoveRows();
-    }
-    
     bool addressbook_model::add_contact(const QString& name)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();

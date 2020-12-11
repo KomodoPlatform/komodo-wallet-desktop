@@ -72,8 +72,6 @@ namespace atomic_dex
         Q_INVOKABLE bool add_contact(const QString& name);
         
         Q_INVOKABLE void remove_contact(const QString& name);
-        
-        Q_INVOKABLE void remove_all_contacts();
 
     private:
         Q_PROPERTY(addressbook_proxy_model* addressbook_proxy_mdl READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
