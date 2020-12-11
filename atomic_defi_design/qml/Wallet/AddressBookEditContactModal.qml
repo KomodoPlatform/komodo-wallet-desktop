@@ -125,7 +125,10 @@ BasicModal {
                             implicitHeight: 35
                             implicitWidth: 35
 
+                            outlined: false
+
                             icon.source: Qaterial.Icons.contentCopy
+                            icon.color: Style.colorWhite1
 
                             onClicked: {
                                 API.qt_utilities.copy_text_to_clipboard(styleData.value)
@@ -137,7 +140,10 @@ BasicModal {
                             implicitHeight: 35
                             implicitWidth: 35
 
+                            outlined: false
+
                             icon.source: Qaterial.Icons.send
+                            icon.color: Style.colorWhite1
 
                             onClicked: {
                                 console.log("Send button");
