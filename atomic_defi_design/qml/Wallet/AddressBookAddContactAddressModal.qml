@@ -10,6 +10,11 @@ BasicModal {
 
     width: 500
 
+    onClosed: {
+        contact_new_address_key.text = ""
+        contact_new_address_value.text = ""
+    }
+
     ModalContent {
         Layout.topMargin: 5
         Layout.fillWidth: true
@@ -62,13 +67,10 @@ BasicModal {
                 text: qsTr("Ok")
 
                 onClicked: {
-
                     var create_address_result = wallet_info_type_select.currentValue.add_address_entry(contact_new_address_key.text, contact_new_address_value.text);
 
                     if (create_address_result === true) {
-                        root.close();
-                        contact_new_address_key.text = "";
-                        contact_new_address_value.text = "";
+                        root.close()
                     }
                     else {
                         key_already_exists_tooltip.visible = true
@@ -81,11 +83,7 @@ BasicModal {
             DefaultButton {
                 text: qsTr("Cancel")
 
-                onClicked: {
-                    root.close();
-                    contact_new_address_key.text = "";
-                    contact_new_address_value.text = "";
-                }
+                onClicked: root.close()
             }
         }
     }
