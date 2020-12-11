@@ -128,4 +128,10 @@ namespace atomic_dex
         }
         return enabled_coins;
     }
+    
+    bool
+    atomic_dex::portfolio_page::is_coin_enabled(const QString& coin_name) const noexcept
+    {
+        return get_all_enabled_coins().contains(coin_name);
+    }
 } // namespace atomic_dex

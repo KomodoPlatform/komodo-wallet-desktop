@@ -54,6 +54,7 @@ namespace atomic_dex
         [[nodiscard]] QStringList             get_oracle_price_supported_pairs() const noexcept;
         [[nodiscard]] Q_INVOKABLE QStringList get_all_enabled_coins() const noexcept;
         [[nodiscard]] Q_INVOKABLE QStringList get_all_coins_by_type(const QString& coin_type) const noexcept;
+        [[nodiscard]] Q_INVOKABLE bool        is_coin_enabled(const QString& coin_name) const noexcept;
 
         [[nodiscard]] QString get_balance_fiat_all() const noexcept;
         void                  set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
