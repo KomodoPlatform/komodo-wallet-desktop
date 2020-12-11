@@ -59,7 +59,7 @@ BasicModal {
                     }
 
                     var create_contact_result =
-                            addressbook.api.model.add_contact(name_input.text.toString());
+                        addressbook.api.model.add_contact(name_input.text.toString());
 
                     if (create_contact_result === false)
                     {
@@ -76,15 +76,10 @@ BasicModal {
             DefaultButton {
                 text: qsTr("Cancel")
 
-                onClicked: {
-                    name_input.text = "";
-                    root.close();
-                }
+                onClicked: root.close()
             }
         }
     }
 
-    Component.onDestruction: {
-        name_input.text = "";
-    }
+    onClosed: name_input.text = ""
 }
