@@ -87,7 +87,7 @@ namespace atomic_dex
     addressbook_model::remove_contact(const QString& name)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-        auto  res              = match(index(0), NameRole, name);
+        auto  res              = match(index(0), NameRole, name, 1, Qt::MatchFlag::MatchExactly);
 
         if (not res.empty())
         {

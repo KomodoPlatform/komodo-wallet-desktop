@@ -17,6 +17,11 @@ BasicModal {
     id: root
     width: 500
 
+    onClosed: {
+        modelData.reload()
+        wallet_info_type_select.currentIndex = 0
+    }
+
     ModalContent {
         Layout.topMargin: 5
         Layout.fillWidth: true
@@ -237,21 +242,16 @@ BasicModal {
             PrimaryButton {
                 text: qsTr("Validate")
                 onClicked: {
-                    root.close();
                     modelData.name = name_input.field.text
                     modelData.save()
+                    root.close();
                 }
             }
 
             //! Cancel
             DefaultButton {
                 text: qsTr("Cancel")
-                onClicked: {
-                    wallet_info_type_select.currentIndex = 0;
-                    root.close();
-                    name_input.field.text = modelData.name;
-                    modelData.reload();
-                }
+                onClicked: root.close()
             }
         }
     }
