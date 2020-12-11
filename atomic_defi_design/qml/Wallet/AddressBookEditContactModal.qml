@@ -93,6 +93,10 @@ BasicModal {
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
                         }
+
+                        VerticalLine {
+                            Layout.fillHeight: true
+                        }
                     }
                 }
                 //! Address column
@@ -107,6 +111,10 @@ BasicModal {
                         DefaultText {
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
+                        }
+
+                        VerticalLine {
+                            Layout.fillHeight: true
                         }
                     }
                 }
