@@ -395,9 +395,17 @@ namespace atomic_dex
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
             .then([this]([[maybe_unused]] pplx::task<void> previous_task) {
-                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", "Timeout mm2, please retry"}});
-                this->set_buy_sell_last_rpc_data(error_json);
-                this->set_buy_sell_rpc_busy(false);
+                try
+                {
+                    previous_task.wait();
+                }
+                catch (const std::exception& e)
+                {
+                    SPDLOG_ERROR("pplx task error: {}", e.what());
+                    auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                    this->set_buy_sell_last_rpc_data(error_json);
+                    this->set_buy_sell_rpc_busy(false);
+                }
             });
     }
 
@@ -504,9 +512,17 @@ namespace atomic_dex
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
             .then([this]([[maybe_unused]] pplx::task<void> previous_task) {
-                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", "Timeout mm2, please retry"}});
-                this->set_buy_sell_last_rpc_data(error_json);
-                this->set_buy_sell_rpc_busy(false);
+                try
+                {
+                    previous_task.wait();
+                }
+                catch (const std::exception& e)
+                {
+                    SPDLOG_ERROR("pplx task error: {}", e.what());
+                    auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                    this->set_buy_sell_last_rpc_data(error_json);
+                    this->set_buy_sell_rpc_busy(false);
+                }
             });
     }
 } // namespace atomic_dex
