@@ -178,6 +178,7 @@ namespace atomic_dex
 
         if (not ifs.is_open())
         {
+            SPDLOG_ERROR("Cannot open: {}", wallet_object_path.string());
             return false;
         }
         nlohmann::json j;
@@ -252,7 +253,10 @@ namespace atomic_dex
     qt_wallet_manager::login(const QString& password, const QString& wallet_name)
     {
         SPDLOG_INFO("qt_wallet_manager::login");
-        load_wallet_cfg(wallet_name.toStdString());
+        if (not load_wallet_cfg(wallet_name.toStdString()))
+        {
+            return false;
+        }
         std::error_code ec;
         std::string     password_std = password.toStdString();
         bool            with_pin_cfg = false;
