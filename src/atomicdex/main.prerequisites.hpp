@@ -112,14 +112,14 @@ qt_message_handler(QtMsgType type, [[maybe_unused]] const QMessageLogContext& co
     }
 }
 
-void
+static void
 signal_handler(int signal)
 {
-    SPDLOG_DEBUG("sigabort received, cleaning mm2");
+    SPDLOG_ERROR("sigabort received, cleaning mm2");
     atomic_dex::kill_executable("mm2.service");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
-    std::ifstream ifs("./backtrace.dump");
+    std::ifstream                 ifs("./backtrace.dump");
     boost::stacktrace::stacktrace st = boost::stacktrace::stacktrace::from_dump(ifs);
     SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(st));
 #endif
@@ -144,9 +144,9 @@ connect_signals_handler()
         fs::remove("./backtrace.dump");
     }
 #endif
-    std::signal(SIGABRT, signal_handler);
-    std::signal(SIGSEGV, signal_handler);
-    std::signal(SIGTERM, signal_handler);
+    std::signal(SIGABRT, &signal_handler);
+    std::signal(SIGSEGV, &signal_handler);
+    std::signal(SIGTERM, &signal_handler);
 }
 
 static void
@@ -249,7 +249,7 @@ run_app(int argc, char** argv)
 
 #ifdef __APPLE__
 #    if defined(NDEBUG)
-        //folly::init(&argc, &argv, false);
+    // folly::init(&argc, &argv, false);
 #    endif
 #endif
     init_logging();
@@ -264,7 +264,7 @@ run_app(int argc, char** argv)
 
     //! App declaration
     atomic_dex::application atomic_app;
-    
+
     //! Qt utilities declaration.
     atomic_dex::qt_utilities qt_utilities;
 
