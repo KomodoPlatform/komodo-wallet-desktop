@@ -49,7 +49,7 @@ namespace atomic_dex
     QJsonObject          nlohmann_json_object_to_qt_json_object(const nlohmann::json& j);
     QString retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config);
 
-    class qt_utilities : public QObject
+    class ENTT_API qt_utilities : public QObject
     {
         Q_OBJECT
         
