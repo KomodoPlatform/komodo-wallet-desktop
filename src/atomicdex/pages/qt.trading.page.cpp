@@ -466,7 +466,7 @@ namespace atomic_dex
         batch.push_back(sell_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
-        //SPDLOG_INFO("batch sell request: {}", batch.dump(4));
+        // SPDLOG_INFO("batch sell request: {}", batch.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -1145,7 +1145,7 @@ namespace atomic_dex
         //! (send) BCH <-> ETH (receive)
         const bool is_max = m_market_mode == MarketMode::Sell && m_volume == m_max_volume;
 
-        this->set_fees(generate_fees_infos(base, rel, is_max, m_total_amount, mm2));
+        this->set_fees(generate_fees_infos(base, rel, is_max, get_base_amount(), mm2));
     }
 
     void
@@ -1257,7 +1257,7 @@ namespace atomic_dex
         auto*       selection_box   = market_selector->get_multiple_selection_box();
         const auto& mm2             = m_system_manager.get_system<mm2_service>();
         auto        total_amount    = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
-        auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, total_amount, mm2);
+        auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
         qDebug() << "fees multi_ticker: " << fees;
         set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
         this->determine_multi_ticker_error_cases(ticker, fees);
