@@ -316,9 +316,14 @@ BasicModal {
             property string address
 
             id: send_modal
+
+            onLoaded: {
+                item.reset()
+                item.address_field.text = address
+            }
+
             sourceComponent: SendModal {
                 address_field.enabled: false
-                address_field.text: send_modal.address
             }
         }
 
