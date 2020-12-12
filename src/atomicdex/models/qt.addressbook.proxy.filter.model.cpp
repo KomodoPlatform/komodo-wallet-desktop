@@ -21,14 +21,10 @@
 namespace atomic_dex
 {
     //! Constructor
-    addressbook_proxy_model::addressbook_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {
-    }
+    addressbook_proxy_model::addressbook_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
 
     //! Destructor
-    addressbook_proxy_model::~addressbook_proxy_model()
-    {
-    }
+    addressbook_proxy_model::~addressbook_proxy_model() {}
 
     //! Protected members override
     bool
@@ -41,11 +37,15 @@ namespace atomic_dex
         switch (static_cast<atomic_dex::addressbook_model::AddressBookRoles>(role))
         {
         case addressbook_model::SubModelRole:
+        {
             auto* left_obj      = qvariant_cast<QObject*>(left_data);
             auto* left_contact  = qobject_cast<addressbook_contact_model*>(left_obj);
             auto* right_obj     = qvariant_cast<QObject*>(right_data);
             auto* right_contact = qobject_cast<addressbook_contact_model*>(right_obj);
             return left_contact->get_name().toLower() < right_contact->get_name().toLower();
+        }
+        case addressbook_model::NameRole:
+            break;
         }
         return false;
     }

@@ -171,6 +171,7 @@ namespace atomic_dex
     bool
     qt_wallet_manager::load_wallet_cfg(const std::string& wallet_name)
     {
+        SPDLOG_INFO("Loading wallet configuration: {}", wallet_name);
         using namespace std::string_literals;
         const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
         std::ifstream  ifs(wallet_object_path.string());
@@ -250,6 +251,7 @@ namespace atomic_dex
     bool
     qt_wallet_manager::login(const QString& password, const QString& wallet_name)
     {
+        SPDLOG_INFO("qt_wallet_manager::login");
         load_wallet_cfg(wallet_name.toStdString());
         std::error_code ec;
         std::string     password_std = password.toStdString();
