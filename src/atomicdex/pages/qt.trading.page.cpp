@@ -394,7 +394,11 @@ namespace atomic_dex
         //! Async call
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
-            .then(&handle_exception_pplx_task);
+            .then([this]([[maybe_unused]] pplx::task<void> previous_task) {
+                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", "Timeout mm2, please retry"}});
+                this->set_buy_sell_last_rpc_data(error_json);
+                this->set_buy_sell_rpc_busy(false);
+            });
     }
 
     void
@@ -499,7 +503,11 @@ namespace atomic_dex
         //! Async call
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
-            .then(&handle_exception_pplx_task);
+            .then([this]([[maybe_unused]] pplx::task<void> previous_task) {
+                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", "Timeout mm2, please retry"}});
+                this->set_buy_sell_last_rpc_data(error_json);
+                this->set_buy_sell_rpc_busy(false);
+            });
     }
 } // namespace atomic_dex
 
