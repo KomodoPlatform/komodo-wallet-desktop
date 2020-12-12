@@ -98,8 +98,6 @@ namespace atomic_dex
 {
     bool addressbook_contact_addresses_model::add_address_entry(QString key, QString value)
     {
-        //auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-
         // Checks if key already exists
         if (!match(index(0, 0), KeyRole, key, 1, Qt::MatchFlag::MatchExactly).empty())
         {
