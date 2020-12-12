@@ -39,16 +39,15 @@ namespace atomic_dex
         {
             return {};
         }
-    
-        const auto& data = m_model_data.at(index.row());
+        
         switch (role)
         {
         case TypeRole:
             return m_type;
         case KeyRole:
-            return data.key;
+            return m_model_data.at(index.row()).key;
         case AddressRole:
-            return data.value;
+            return m_model_data.at(index.row()).value;
         default:
             return {};
         }
