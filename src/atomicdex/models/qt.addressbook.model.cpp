@@ -121,7 +121,7 @@ namespace atomic_dex
 {
     void addressbook_model::populate()
     {
-        const auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        /*const auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         
         beginInsertRows(QModelIndex(), 0, addrbook_manager.nb_contacts() - 1);
         for (const auto& contact : addrbook_manager.get_contacts())
@@ -131,7 +131,7 @@ namespace atomic_dex
     
             m_model_data.push_back(contact_model);
         }
-        endInsertRows();
+        endInsertRows();*/
     }
     
     void addressbook_model::clear()
