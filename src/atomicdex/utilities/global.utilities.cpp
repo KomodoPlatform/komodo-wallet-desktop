@@ -94,6 +94,10 @@ namespace atomic_dex::utils
     std::string
     u8string(const fs::path& p)
     {
+
+#if defined(PREFER_BOOST_FILESYSTEM)
+        return p.string();
+#else
         auto res = p.u8string();
 
         if constexpr (std::is_same_v<decltype(res), std::string>)
@@ -107,6 +111,7 @@ namespace atomic_dex::utils
             std::copy(res.begin(), res.end(), s.begin());
             return s;
         }
+#endif
     }
 
     fs::path
