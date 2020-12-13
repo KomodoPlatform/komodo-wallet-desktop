@@ -23,8 +23,8 @@
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/constants/mm2.constants.hpp"
-#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/pch.hpp"
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace mm2::api
 {
@@ -773,8 +773,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            SPDLOG_ERROR(
-                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
+            SPDLOG_ERROR("exception caught for rpc {} answer: {}", rpc_command, json_answer.dump(4));
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
