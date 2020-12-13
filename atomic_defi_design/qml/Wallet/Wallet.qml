@@ -19,8 +19,7 @@ RowLayout {
     // Local
     function onClickedSwap() {
         dashboard.current_page = idx_dashboard_exchange
-
-        dashboard.current_component.openTradeView(api_wallet_page.ticker)
+        dashboard.openTradeViewWithTicker()
     }
 
     function reset() {

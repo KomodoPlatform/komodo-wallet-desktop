@@ -63,6 +63,13 @@ Item {
         portfolio_coins.setFilterFixedString("")
     }
 
+
+    function openTradeViewWithTicker() {
+        dashboard.loader.onLoadComplete = () => {
+            dashboard.current_component.openTradeView(api_wallet_page.ticker)
+        }
+    }
+
     // Right side
     AnimatedRectangle {
         color: Style.colorTheme8
@@ -146,8 +153,6 @@ Item {
 
         DefaultLoader {
             id: loader
-
-            asynchronous: false
 
             anchors.fill: parent
             transformOrigin: Item.Center
