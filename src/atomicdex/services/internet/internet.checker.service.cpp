@@ -29,7 +29,7 @@ namespace
 {
     web::http::client::http_client_config g_cfg{[]() {
         web::http::client::http_client_config cfg;
-        cfg.set_timeout(std::chrono::seconds(5));
+        cfg.set_timeout(std::chrono::seconds(45));
         return cfg;
     }()};
     t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"), g_cfg)};
@@ -96,7 +96,7 @@ namespace atomic_dex
     {
         using namespace std::chrono_literals;
         m_update_clock = std::chrono::high_resolution_clock::now();
-        set_seconds_left_to_auto_retry(15.0);
+        set_seconds_left_to_auto_retry(60.0);
         this->fetch_internet_connection();
     }
 
@@ -107,12 +107,12 @@ namespace atomic_dex
 
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
-        set_seconds_left_to_auto_retry(15.0 - s.count());
-        if (s >= 15s)
+        set_seconds_left_to_auto_retry(60.0 - s.count());
+        if (s >= 60s)
         {
             this->fetch_internet_connection();
             m_update_clock = std::chrono::high_resolution_clock::now();
-            set_seconds_left_to_auto_retry(15.0);
+            set_seconds_left_to_auto_retry(60.0);
         }
     }
 
