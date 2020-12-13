@@ -118,25 +118,13 @@ Item {
             History {}
         }
 
-        Loader {
+        DefaultLoader {
             id: loader
-
-            property var onLoadComplete: () => {}
-
-            onStatusChanged: {
-                if(Loader.Ready) {
-                    onLoadComplete()
-                    onLoadComplete = () => {}
-                }
-            }
 
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.bottomMargin: layout_margin
             Layout.rightMargin: Layout.bottomMargin
-
-            asynchronous: true
-            visible: loader.status === Loader.Ready
 
             sourceComponent: {
                 switch(current_page) {

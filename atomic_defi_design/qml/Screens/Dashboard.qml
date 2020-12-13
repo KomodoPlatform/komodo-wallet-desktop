@@ -143,7 +143,7 @@ Item {
             }
         }
 
-        Loader {
+        DefaultLoader {
             id: loader
             anchors.fill: parent
             transformOrigin: Item.Center
@@ -160,6 +160,16 @@ Item {
                 case idx_dashboard_support: return support
                 default: return undefined
                 }
+            }
+        }
+
+        Item {
+            visible: !loader.visible
+
+            anchors.fill: parent
+
+            DefaultBusyIndicator {
+                anchors.centerIn: parent
             }
         }
     }

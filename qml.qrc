@@ -202,6 +202,7 @@
         <file>atomic_defi_design/qml/Components/DefaultColorOverlay.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultTextArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultLoader.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultListView.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultFlickable.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSlider.qml</file>
