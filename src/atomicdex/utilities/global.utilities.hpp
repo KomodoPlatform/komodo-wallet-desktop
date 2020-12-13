@@ -39,6 +39,7 @@ namespace atomic_dex::utils
 
     //! Fs helpers
     bool create_if_doesnt_exist(const fs::path& path);
+    std::string u8string(const fs::path& path);
 
     double determine_balance_factor(bool with_pin_cfg);
 

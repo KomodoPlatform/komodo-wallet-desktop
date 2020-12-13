@@ -831,9 +831,9 @@ namespace atomic_dex
 
         options.env.behavior = reproc::env::extend;
         options.env.extra    = std::unordered_map<std::string, std::string>{
-            {"MM_CONF_PATH", mm2_cfg_path.string()},
-            {"MM_LOG", utils::get_mm2_atomic_dex_current_log_file().string()},
-            {"MM_COINS_PATH", (utils::get_current_configs_path() / "coins.json").string()}};
+            {"MM_CONF_PATH", utils::u8string(mm2_cfg_path)},
+            {"MM_LOG", utils::u8string(utils::get_mm2_atomic_dex_current_log_file())},
+            {"MM_COINS_PATH", utils::u8string((utils::get_current_configs_path() / "coins.json"))}};
 
         options.working_directory = strdup(tools_path.string().c_str());
 
@@ -842,7 +842,8 @@ namespace atomic_dex
         std::free((void*)options.working_directory);
         if (ec)
         {
-            SPDLOG_ERROR("{}", ec.message());
+            SPDLOG_ERROR("{}\n", ec.message());
+            std::exit(EXIT_FAILURE);
         }
 
         m_mm2_init_thread = std::thread([this, mm2_cfg_path]() {

@@ -91,6 +91,24 @@ namespace atomic_dex::utils
         return appdata_path;
     }
 
+    std::string
+    u8string(const fs::path& p)
+    {
+        auto res = p.u8string();
+
+        if constexpr (std::is_same_v<decltype(res), std::string>)
+        {
+            return res;
+        }
+        else
+        {
+            std::string s;
+            s.reserve(res.size());
+            std::copy(res.begin(), res.end(), s.begin());
+            return s;
+        }
+    }
+
     fs::path
     get_atomic_dex_addressbook_folder()
     {
