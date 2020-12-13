@@ -866,7 +866,7 @@ namespace atomic_dex
 
             web::http::client::http_client_config cfg;
             using namespace std::chrono_literals;
-            cfg.set_timeout(30s);
+            cfg.set_timeout(120s);
             m_mm2_client = std::make_shared<web::http::client::http_client>(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
             fs::remove(mm2_cfg_path);
             SPDLOG_INFO("mm2 is initialized");
