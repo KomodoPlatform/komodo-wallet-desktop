@@ -242,8 +242,8 @@ jobs:
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           echo "Running tests"
-          ./ci_tools_atomic_dex tests ${{ matrix.qt }}
-          cd build-${{ matrix.qt }}/bin/atomicdex-desktop_tests.app/Contents/MacOS
+          ./ci_tools_atomic_dex tests ${{ matrix.type }}
+          cd build-${{ matrix.type }}/bin/atomicdex-desktop_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
