@@ -243,11 +243,11 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/atomicdex-desktop_tests.app/Contents/MacOS
+          cd build-${{ matrix.qt }}/bin/atomicdex-desktop_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.qt }}]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on OSX finished"
 
       - name: Running Tests (Windows)
