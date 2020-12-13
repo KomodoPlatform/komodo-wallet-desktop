@@ -145,6 +145,9 @@ Item {
 
         DefaultLoader {
             id: loader
+
+            asynchronous: false
+
             anchors.fill: parent
             transformOrigin: Item.Center
 
