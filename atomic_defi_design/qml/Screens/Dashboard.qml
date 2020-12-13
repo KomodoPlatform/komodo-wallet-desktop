@@ -44,6 +44,7 @@ Item {
     readonly property var current_ticker_infos: api_wallet_page.ticker_infos
     readonly property bool can_change_ticker: !api_wallet_page.tx_fetching_busy
 
+    readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
 

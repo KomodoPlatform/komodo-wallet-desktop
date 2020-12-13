@@ -12,6 +12,7 @@ Item {
     id: exchange
     readonly property int layout_margin: 15
 
+    readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_exchange_trade
 
@@ -38,8 +39,8 @@ Item {
     function openTradeView(ticker) {
         current_page = idx_exchange_trade
 
-        loader.onLoadComplete = () => {
-            current_component.onOpened(ticker)
+        exchange.loader.onLoadComplete = () => {
+            exchange.current_component.onOpened(ticker)
         }
     }
 

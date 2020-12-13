@@ -47,7 +47,7 @@ BasicModal {
             break
         case "open_swaps_page":
             dashboard.current_page = idx_dashboard_exchange
-            current_component.current_page = current_component.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
+            dashboard.current_component.current_page = dashboard.current_component.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
             break
         case "open_log_modal":
             showError(notification.title, notification.long_message)
