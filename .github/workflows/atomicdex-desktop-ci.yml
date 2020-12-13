@@ -247,7 +247,7 @@ jobs:
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.qt }}]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.type }}]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on OSX finished"
 
       - name: Running Tests (Windows)
