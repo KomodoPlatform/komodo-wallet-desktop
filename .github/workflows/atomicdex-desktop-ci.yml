@@ -27,14 +27,22 @@ jobs:
           - name: ubuntu-qt-5-15-2
             os: ubuntu-16.04
             qt: '5.15.2'
+            type: 'release'
 
           - name: osx-qt-5-15-2
             os: macos-latest
             qt: '5.15.2'
+            type: 'release'
 
           - name: windows-10-qt-5-15-2
             os: windows-latest
             qt: '5.15.2'
+            type: 'release'
+
+          - name: osx-qt-5-15-2-dbg
+            os: macos-latest
+            qt: '5.15.2'
+            type: 'debug'
 
     steps:
       - uses: actions/checkout@v2
@@ -191,7 +199,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
       #- name: launch rdp (Windows)
       #  if: runner.os == 'Windows'
