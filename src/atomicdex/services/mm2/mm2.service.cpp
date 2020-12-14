@@ -1367,7 +1367,7 @@ namespace atomic_dex
     mm2_service::prepare_process_fees_and_current_orderbook()
     {
         auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
-        if (orderbook_ticker_rel.empty())
+        if (orderbook_ticker_rel.empty() || orderbook_ticker_base.empty())
             return nlohmann::json::array();
         nlohmann::json          batch = nlohmann::json::array();
         t_get_trade_fee_request req_base{.coin = orderbook_ticker_base};
@@ -1387,9 +1387,10 @@ namespace atomic_dex
         ::mm2::api::to_json(current_request, req_base_max_taker_vol);
         batch.push_back(current_request);
         current_request = ::mm2::api::template_request("max_taker_vol");
-        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = orderbook_ticker_rel, .trade_with = orderbook_ticker_rel};
+        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = orderbook_ticker_rel, .trade_with = orderbook_ticker_base};
         ::mm2::api::to_json(current_request, req_rel_max_taker_vol);
         batch.push_back(current_request);
+
         return batch;
     }
 

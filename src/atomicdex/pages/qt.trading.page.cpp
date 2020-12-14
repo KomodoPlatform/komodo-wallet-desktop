@@ -671,7 +671,11 @@ namespace atomic_dex
     void
     trading_page::on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept
     {
-        this->fetch_additional_fees(evt.ticker);
+        SPDLOG_INFO("multi ticker enabled {}", evt.ticker.toStdString());
+        if (not this->m_fees.empty())
+        {
+            this->fetch_additional_fees(evt.ticker);
+        }
     }
 
     void
