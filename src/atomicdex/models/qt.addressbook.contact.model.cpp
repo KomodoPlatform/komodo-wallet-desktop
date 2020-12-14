@@ -181,16 +181,14 @@ namespace atomic_dex
         }
         //! Loads inner model data (wallets info).
         {
-            const auto& mm2          = m_system_manager.get_system<mm2_service>();
-            const auto coins_list    = mm2.get_all_coins();
-            const auto coins_nb      = coins_list.size();
-            const auto coins_type_nb = 3;
-            const auto create_addresses_model = [this](const QString& type)
+            const auto& mm2                    = m_system_manager.get_system<mm2_service>();
+            const auto  coins_list             = mm2.get_all_coins();
+            const auto  create_addresses_model = [this](const QString& type)
             {
                 m_model_data.push_back(new addressbook_contact_addresses_model(m_system_manager, m_name, type, this));
             };
             
-            beginInsertRows(QModelIndex(), 0, coins_nb + coins_type_nb);
+            beginResetModel();
             for (const auto& coin : coins_list)
             {
                 create_addresses_model(QString::fromStdString(coin.ticker));
@@ -198,7 +196,7 @@ namespace atomic_dex
             create_addresses_model("QRC20");
             create_addresses_model("ERC20");
             create_addresses_model("SmartChain");
-            endInsertRows();
+            endResetModel();
         }
     }
     

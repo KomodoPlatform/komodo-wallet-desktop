@@ -703,183 +703,183 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="112"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="125"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="120"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="133"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="258"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="277"/>
         <source>Matching</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="258"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="277"/>
         <source>Order Matching</source>
         <translation type="unfinished">Recherche d&apos;un ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="260"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="279"/>
         <source>Matched</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="260"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="279"/>
         <source>Order Matched</source>
         <translation type="unfinished">Ordre trouvé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="262"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="281"/>
         <source>Ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="262"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="281"/>
         <source>Swap Ongoing</source>
         <translation type="unfinished">Échange en cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="264"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="283"/>
         <source>Successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="264"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="283"/>
         <source>Swap Successful</source>
         <translation type="unfinished">Échange terminé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="266"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="285"/>
         <source>Refunding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="268"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="287"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="268"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="287"/>
         <source>Swap Failed</source>
         <translation type="unfinished">Erreur lors de l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="270"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="289"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="270"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="289"/>
         <source>Unknown State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="314"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
         <source>Started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="316"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="335"/>
         <source>Negotiated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="318"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="337"/>
         <source>Taker fee sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="320"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
         <source>Maker payment received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="322"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="341"/>
         <source>Maker payment wait confirm started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="324"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="343"/>
         <source>Maker payment validated and confirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="326"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="345"/>
         <source>Taker payment sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="328"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="347"/>
         <source>Taker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="330"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="349"/>
         <source>Maker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="332"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="351"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="334"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="353"/>
         <source>Start failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="336"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="355"/>
         <source>Negotiate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="338"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="357"/>
         <source>Taker fee validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="340"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="359"/>
         <source>Maker payment transaction failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="342"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="361"/>
         <source>Maker payment Data send failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="344"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="363"/>
         <source>Maker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="346"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="365"/>
         <source>Taker payment validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="348"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="367"/>
         <source>Taker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="350"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="369"/>
         <source>Taker payment spend failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="352"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="371"/>
         <source>Maker payment wait refund started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="354"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="373"/>
         <source>Maker payment refunded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="356"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="375"/>
         <source>Maker payment refund failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1068,17 +1068,17 @@
 <context>
     <name>Exchange</name>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="75"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="76"/>
         <source>Trade</source>
         <translation>Échanger</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="86"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="87"/>
         <source>Orders</source>
         <translation>Ordres</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="96"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="97"/>
         <source>History</source>
         <translation>Historique</translation>
     </message>
@@ -1557,90 +1557,90 @@
 <context>
     <name>NotificationsModal</name>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="92"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="95"/>
         <source>Swap status updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="103"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="106"/>
         <source>You sent %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="103"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="106"/>
         <source>You received %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="104"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="107"/>
         <source>Your wallet balance changed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="109"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="112"/>
         <source>Please check your internet connection (e.g. VPN service or firewall might block it).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="120"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="123"/>
         <source>Failed to enable %1</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="137"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="140"/>
         <source>Endpoint not reachable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="139"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="142"/>
         <source>Could not reach to endpoint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="154"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="157"/>
         <source>Mismatch at %1 custom asset configuration</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="160"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="163"/>
         <source>Application needs to be restarted for %1 custom asset.</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="198"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="201"/>
         <source>AtomicDEX Desktop</source>
         <translation type="unfinished">AtomicDEX Desktop</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="204"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="207"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="209"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="212"/>
         <source>Restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="214"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="217"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="221"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="224"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="238"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="241"/>
         <source>There isn&apos;t any notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="361"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="364"/>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>
