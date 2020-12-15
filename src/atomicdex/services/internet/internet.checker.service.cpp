@@ -32,7 +32,7 @@ namespace
         cfg.set_timeout(std::chrono::seconds(45));
         return cfg;
     }()};
-    t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"), g_cfg)};
+    //t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"), g_cfg)};
     t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"), g_cfg)};
     t_http_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"), g_cfg)};
     t_http_client_ptr g_cipig_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://dexapi.cipig.net:10000"), g_cfg)};
@@ -126,6 +126,7 @@ namespace atomic_dex
                 this->*p = res;
                 if (res)
                 {
+                    SPDLOG_INFO("Connectivity is true for the endpoint: {}", base_uri);
                     this->set_internet_alive(true);
                 } 
                 else 
@@ -151,7 +152,7 @@ namespace atomic_dex
     void
     internet_service_checker::fetch_internet_connection()
     {
-        query_internet(g_google_proxy_http_client, "", &internet_service_checker::is_google_reacheable);
+        //query_internet(g_google_proxy_http_client, "", &internet_service_checker::is_google_reacheable);
         query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_paprika_provider_alive);
         query_internet(g_ohlc_proxy_http_client, "/api/v1/ohlc/tickers_list", &internet_service_checker::is_our_private_endpoint_reacheable);
         query_internet(g_cipig_proxy_http_client, "", &internet_service_checker::is_cipig_electrum_alive);
