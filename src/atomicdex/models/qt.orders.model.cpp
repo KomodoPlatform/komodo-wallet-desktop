@@ -421,13 +421,16 @@ namespace atomic_dex
     void
     orders_model::refresh_or_insert_swaps() noexcept
     {
-        const auto& mm2    = m_system_manager.get_system<mm2_service>();
-        const auto  result = mm2.get_swaps();
+        const auto&     mm2    = m_system_manager.get_system<mm2_service>();
+        const auto      result = mm2.get_swaps();
+        std::error_code ec;
+        const auto      orders       = mm2.get_raw_orders(ec);
+        const auto      current_size = static_cast<int>((result.swaps.size()) + orders.maker_orders.size() + orders.taker_orders.size());
 
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
         std::vector<order_data> to_init;
         std::vector<order_data> to_update;
-        int                     difference = static_cast<int>(result.swaps.size()) - static_cast<int>(this->m_model_data.size());
+        int                     difference = current_size - static_cast<int>(this->m_model_data.size());
         for (auto&& current_swap: result.swaps)
         {
             if (this->m_swaps_id_registry.find(current_swap.uuid) != this->m_swaps_id_registry.end())
