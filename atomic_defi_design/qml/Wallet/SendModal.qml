@@ -13,8 +13,7 @@ BasicModal {
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
 
-
-    onClosed: if(root.currentIndex === 2) reset(true)
+    onClosed: reset()
 
     // Local
     readonly property var default_send_result: ({ has_error: false, error_message: "",
@@ -26,13 +25,17 @@ BasicModal {
 
 
     readonly property bool is_send_busy: api_wallet_page.is_send_busy
-    readonly property var send_rpc_result: api_wallet_page.send_rpc_data
+    property var send_rpc_result: api_wallet_page.send_rpc_data
 
     readonly property bool is_broadcast_busy: api_wallet_page.is_broadcast_busy
-    readonly property string broadcast_result: api_wallet_page.broadcast_rpc_data
+    property string broadcast_result: api_wallet_page.broadcast_rpc_data
     property bool async_param_max: false
 
     onSend_rpc_resultChanged: {
+        if (is_send_busy === false) {
+            return
+        }
+
         // Local var, faster
         const result = General.clone(send_rpc_result)
 
@@ -60,6 +63,10 @@ BasicModal {
     }
 
     onBroadcast_resultChanged: {
+        if (is_broadcast_busy === false) {
+            return
+        }
+
         if(root.visible && broadcast_result !== "") {
             if(broadcast_result.indexOf("error") !== -1) {
                 reset()
@@ -108,9 +115,8 @@ BasicModal {
         return addr === addr.toLowerCase() || addr === addr.toUpperCase()
     }
 
-    function reset(close = false) {
+    function reset() {
         send_result = default_send_result
-
         input_address.field.text = ""
         input_amount.field.text = ""
         input_custom_fees.field.text = ""
@@ -118,8 +124,6 @@ BasicModal {
         input_custom_fees_gas_price.field.text = ""
         custom_fees_switch.checked = false
         input_max_amount.checked = false
-
-        if(close) root.close()
         root.currentIndex = 0
     }
 
@@ -423,6 +427,8 @@ BasicModal {
         tx_hash: broadcast_result
         custom_amount: input_amount.field.text
 
-        function onClose() { reset(true) }
+        function onClose() {
+            root.close()
+        }
     }
 }
