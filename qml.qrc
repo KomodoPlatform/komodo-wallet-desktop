@@ -349,5 +349,7 @@
         <file>atomic_defi_design/assets/images/coins/uqc.png</file>
         <file>atomic_defi_design/assets/images/coins/uos.png</file>
         <file>atomic_defi_design/assets/images/coins/s4f.png</file>
+        <file>atomic_defi_design/assets/images/coins/cgcx.png</file>
+        <file>atomic_defi_design/assets/images/coins/shr.png</file>
     </qresource>
 </RCC>
