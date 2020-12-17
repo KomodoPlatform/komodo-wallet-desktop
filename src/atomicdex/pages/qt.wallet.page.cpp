@@ -184,11 +184,11 @@ namespace atomic_dex
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer);
             obj["fee_ticker"]                         = QString::fromStdString(ticker);
-            if (coin_info.coin_type == coin_type::QRC20)
+            if (coin_info.coin_type == CoinType::QRC20)
             {
                 obj["fee_ticker"] = (coin_info.is_testnet.value_or(false)) ? "tQTUM" : "QTUM";
             }
-            else if (coin_info.coin_type == coin_type::ERC20)
+            else if (coin_info.coin_type == CoinType::ERC20)
             {
                 obj["fee_ticker"] = "ETH";
             }
@@ -287,11 +287,11 @@ namespace atomic_dex
                 .amount    = json_fees.at("fees_amount").get<std::string>(),
                 .gas_price = json_fees.at("gas_price").get<std::string>(),
                 .gas_limit = json_fees.at("gas_limit").get<int>()};
-            if (coin_info.coin_type == ERC20)
+            if (coin_info.coin_type == CoinType::ERC20)
             {
                 withdraw_req.fees->type = "EthGas";
             }
-            else if (coin_info.coin_type == QRC20)
+            else if (coin_info.coin_type == CoinType::QRC20)
             {
                 withdraw_req.fees->type = "Qrc20Gas";
             }

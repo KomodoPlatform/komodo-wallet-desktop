@@ -16,15 +16,33 @@
 
 #pragma once
 
+#include <QObject>
+
+//! Deps
+#include <entt/core/attribute.h>
+
 namespace atomic_dex
 {
-    //! Possible front end actions
-    enum class action
+    class ENTT_API CoinTypeGadget
     {
-        refresh_enabled_coin         = 0,
-        post_process_orders_finished = 1,
-        post_process_swaps_finished  = 2,
-    };
+      public:
+        Q_GADGET
 
-    inline constexpr std::size_t g_max_actions_size{128};
+      public:
+        enum CoinTypeEnum
+        {
+            QRC20      = 0,
+            ERC20      = 1,
+            UTXO       = 2,
+            SmartChain = 3,
+            Size       = 4
+        };
+
+        Q_ENUM(CoinTypeEnum)
+
+      private:
+        explicit CoinTypeGadget();
+    };
 } // namespace atomic_dex
+
+using CoinType = atomic_dex::CoinTypeGadget::CoinTypeEnum;

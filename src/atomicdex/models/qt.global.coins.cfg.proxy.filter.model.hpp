@@ -16,7 +16,28 @@
 
 #pragma once
 
+#include <QSortFilterProxyModel>
+
 namespace atomic_dex
 {
+    class global_coins_cfg_proxy_model final : public QSortFilterProxyModel
+    {
+        Q_OBJECT
 
-}
+        bool m_exclude_enabled_coins{false};
+
+      public:
+        //! Constructor
+        global_coins_cfg_proxy_model(QObject* parent);
+
+        //! Destructor
+        ~global_coins_cfg_proxy_model() noexcept final = default;
+
+        //! QML API
+        Q_INVOKABLE void filter_by_enableable() noexcept;
+
+      protected:
+        //! Override member functions
+        bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+    };
+} // namespace atomic_dex

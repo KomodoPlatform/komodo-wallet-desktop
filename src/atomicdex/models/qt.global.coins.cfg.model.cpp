@@ -21,7 +21,17 @@
 //! Constructor
 namespace atomic_dex
 {
-    global_coins_cfg_model::global_coins_cfg_model(QObject* parent) noexcept : QAbstractListModel(parent) {}
+    global_coins_cfg_model::global_coins_cfg_model(QObject* parent) noexcept :
+        QAbstractListModel(parent), m_model_data_proxy(new global_coins_cfg_proxy_model(this))
+    {
+        m_model_data_proxy->setSourceModel(this);
+        m_model_data_proxy->setDynamicSortFilter(true);
+        m_model_data_proxy->setFilterRole(CoinsRoles::NameRole);
+        m_model_data_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+        //! Initial State will be enableable
+        m_model_data_proxy->filter_by_enableable();
+    }
 } // namespace atomic_dex
 
 //! Override
@@ -133,5 +143,18 @@ namespace atomic_dex
                 update_functor(res, final_ticker);
             }
         }
+    }
+
+    template void global_coins_cfg_model::update_status(const QStringList&, bool);
+    template void global_coins_cfg_model::update_status(const std::vector<std::string>&, bool);
+} // namespace atomic_dex
+
+//! Properties
+namespace atomic_dex
+{
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_global_coins_cfg_proxy_mdl() const noexcept
+    {
+        return m_model_data_proxy;
     }
 } // namespace atomic_dex

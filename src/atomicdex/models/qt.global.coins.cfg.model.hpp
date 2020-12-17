@@ -32,8 +32,13 @@ namespace atomic_dex
     {
         //! Q_Object definition
         Q_OBJECT
+        Q_PROPERTY(global_coins_cfg_proxy_model* global_coins_cfg_proxy_mdl READ get_global_coins_cfg_proxy_mdl NOTIFY globalCoinsCfgProxyChanged);
 
-        std::vector<coin_config> m_model_data;
+        std::vector<coin_config>      m_model_data;
+        global_coins_cfg_proxy_model* m_model_data_proxy;
+
+      signals:
+        void globalCoinsCfgProxyChanged();
 
       public:
         //! Enums
@@ -56,8 +61,12 @@ namespace atomic_dex
 
         //! CPP API
         void initialize_model(std::vector<coin_config> cfg) noexcept;
+
         template <typename TArray>
         void update_status(const TArray& tickers, bool status) noexcept;
+
+        //! Properties
+        [[nodiscard]] global_coins_cfg_proxy_model* get_global_coins_cfg_proxy_mdl() const noexcept;
 
         //! Overrides
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;

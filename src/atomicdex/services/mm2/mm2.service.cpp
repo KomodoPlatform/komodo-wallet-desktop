@@ -444,7 +444,7 @@ namespace atomic_dex
         std::vector<std::string> tickers_idx;
         std::vector<std::string> erc_to_fetch;
         const auto&              ticker = get_current_ticker();
-        if (!(get_coin_info(ticker).coin_type == ERC20))
+        if (!(get_coin_info(ticker).coin_type == CoinType::ERC20))
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -531,7 +531,7 @@ namespace atomic_dex
                 continue;
             }
 
-            if (!(coin_info.coin_type == ERC20))
+            if (!(coin_info.coin_type == CoinType::ERC20))
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
@@ -547,7 +547,7 @@ namespace atomic_dex
             {
                 t_enable_request request{
                     .coin_name       = coin_info.ticker,
-                    .urls            = (coin_info.coin_type == ERC20) ? coin_info.eth_urls.value() : std::vector<std::string>(),
+                    .urls            = (coin_info.coin_type == CoinType::ERC20) ? coin_info.eth_urls.value() : std::vector<std::string>(),
                     .coin_type       = coin_info.coin_type,
                     .with_tx_history = false};
                 nlohmann::json j = ::mm2::api::template_request("enable");
@@ -917,7 +917,7 @@ namespace atomic_dex
     {
         const auto& ticker = get_current_ticker();
         SPDLOG_DEBUG("asking history of ticker: {}", ticker);
-        if (!(get_coin_info(ticker).coin_type == ERC20))
+        if (!(get_coin_info(ticker).coin_type == CoinType::ERC20))
         {
             if (m_tx_informations.find("result") == m_tx_informations.cend())
             {
@@ -1157,7 +1157,7 @@ namespace atomic_dex
     mm2_service::get_tx_state(t_mm2_ec& ec) const
     {
         const auto& ticker = get_current_ticker();
-        if (!(get_coin_info(ticker).coin_type == ERC20))
+        if (!(get_coin_info(ticker).coin_type == CoinType::ERC20))
         {
             if (m_tx_state.find("result") == m_tx_state.cend())
             {
@@ -1195,7 +1195,8 @@ namespace atomic_dex
     std::string
     mm2_service::apply_specific_fees(const std::string& ticker, t_float_50& value) const
     {
-        if (auto coin_info = get_coin_info(ticker); (coin_info.coin_type == ERC20) || (coin_info.coin_type == QRC20 && !coin_info.electrum_urls.has_value()))
+        if (auto coin_info = get_coin_info(ticker);
+            (coin_info.coin_type == CoinType::ERC20) || (coin_info.coin_type == CoinType::QRC20 && !coin_info.electrum_urls.has_value()))
         {
             SPDLOG_INFO("Calculating specific fees of rel ticker: {}", ticker);
             const auto& answer = get_transaction_fees(ticker);
@@ -1583,7 +1584,7 @@ namespace atomic_dex
     {
         std::vector<electrum_server> servers;
         const coin_config            cfg = this->get_coin_info(ticker);
-        if (cfg.coin_type == QRC20)
+        if (cfg.coin_type == CoinType::QRC20)
         {
             if (cfg.is_testnet.value())
             {

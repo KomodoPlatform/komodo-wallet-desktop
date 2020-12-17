@@ -83,7 +83,7 @@ namespace mm2::api
     to_json(nlohmann::json& j, const enable_request& cfg)
     {
         j["coin"] = cfg.coin_name;
-        if (cfg.coin_type == atomic_dex::ERC20)
+        if (cfg.coin_type == CoinType::ERC20)
         {
             j["gas_station_url"]       = cfg.gas_station_url;
             j["swap_contract_address"] = cfg.erc_swap_contract_address;
@@ -112,7 +112,7 @@ namespace mm2::api
         j["coin"]       = cfg.coin_name;
         j["servers"]    = cfg.servers;
         j["tx_history"] = cfg.with_tx_history;
-        if (cfg.coin_type == atomic_dex::QRC20)
+        if (cfg.coin_type == CoinType::QRC20)
         {
             j["swap_contract_address"] = cfg.is_testnet ? cfg.testnet_qrc_swap_contract_address : cfg.mainnet_qrc_swap_contract_address;
         }
@@ -576,10 +576,10 @@ namespace mm2::api
         if (not request.is_created_order)
         {
             //! From orderbook
-            nlohmann::json price_fraction_repr = nlohmann::json::object();
-            price_fraction_repr["numer"]       = request.price_numer;
-            price_fraction_repr["denom"]       = request.price_denom;
-            j["price"]                         = price_fraction_repr;
+            nlohmann::json price_fraction_repr  = nlohmann::json::object();
+            price_fraction_repr["numer"]        = request.price_numer;
+            price_fraction_repr["denom"]        = request.price_denom;
+            j["price"]                          = price_fraction_repr;
             nlohmann::json volume_fraction_repr = nlohmann::json::object();
             if (not request.selected_order_use_input_volume)
             {
