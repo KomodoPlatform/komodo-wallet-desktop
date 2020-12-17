@@ -41,13 +41,6 @@ get_override_options()
 
 constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
 
-template <typename T>
-constexpr std::size_t
-bit_size() noexcept
-{
-    return sizeof(T) * CHAR_BIT;
-}
-
 template <class Key, class T, class Compare, class Alloc, class Pred>
 void
 erase_if(std::map<Key, T, Compare, Alloc>& c, Pred pred)
@@ -70,6 +63,7 @@ struct overloaded : Ts...
 {
     using Ts::operator()...;
 };
+
 template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
