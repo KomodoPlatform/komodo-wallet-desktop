@@ -205,6 +205,8 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.global.coins.cfg.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.global.coins.cfg.proxy.filter.model.cpp
 
         ##ToClass
 

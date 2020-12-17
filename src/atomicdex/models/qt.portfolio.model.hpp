@@ -83,11 +83,11 @@ namespace atomic_dex
         bool                                 removeRows(int row, int count, const QModelIndex& parent) final;
 
         //! Public api
-        void initialize_portfolio(const std::vector<std::string>& tickers);
-        void update_currency_values();
-        void update_balance_values(const std::vector<std::string>& tickers) noexcept;
-        void disable_coins(const QStringList& coins);
-        void set_cfg(atomic_dex::cfg& cfg) noexcept;
+        void                            initialize_portfolio(const std::vector<std::string>& tickers);
+        void                            update_currency_values();
+        void                            update_balance_values(const std::vector<std::string>& tickers) noexcept;
+        void                            disable_coins(const QStringList& coins);
+        void                            set_cfg(atomic_dex::cfg& cfg) noexcept;
         [[nodiscard]] t_portfolio_datas get_underlying_data() const noexcept;
 
         //! Properties

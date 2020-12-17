@@ -20,6 +20,9 @@
 #include <entt/core/type_info.hpp>
 #include <entt/core/type_traits.hpp>
 
+//! Project Headers
+#include <atomicdex/config/coins.cfg.hpp>
+
 namespace atomic_dex
 {
     using mm2_started                   = entt::tag<"mm2_started"_hs>;
@@ -101,5 +104,10 @@ namespace atomic_dex
     {
         std::string base;
         std::string rel;
+    };
+
+    struct coin_cfg_parsed
+    {
+        std::vector<atomic_dex::coin_config> cfg;
     };
 } // namespace atomic_dex

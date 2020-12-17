@@ -116,7 +116,7 @@ application::disable_coins(const QStringList& coins)
     if (not coins_copy.empty())
     {
         std::vector<std::string> coins_std{};
-        system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins_copy);
+        system_manager_.get_system<portfolio_page>().disable_coins(coins_copy);
         system_manager_.get_system<trading_page>().disable_coins(coins_copy);
         coins_std.reserve(coins_copy.size());
         for (auto&& coin: coins_copy)
@@ -198,7 +198,7 @@ application::tick()
 
         if (not to_init.empty())
         {
-            system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(to_init);
+            system_manager_.get_system<portfolio_page>().initialize_portfolio(to_init);
             if (m_kmd_fully_enabled && m_btc_fully_enabled)
             {
                 if (std::find(to_init.begin(), to_init.end(), "KMD") != to_init.end())

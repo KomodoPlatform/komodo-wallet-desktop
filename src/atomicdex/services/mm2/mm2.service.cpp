@@ -116,9 +116,10 @@ namespace
         ofs << config_json_data;
     }
 
-    bool
+    std::vector<atomic_dex::coin_config>
     retrieve_coins_information(const std::string& wallet_name, atomic_dex::t_coins_registry& coins_registry)
     {
+        std::vector<atomic_dex::coin_config> cfg;
         SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         check_for_reconfiguration(wallet_name);
@@ -132,10 +133,15 @@ namespace
             nlohmann::json config_json_data;
             ifs >> config_json_data;
             auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
-            for (auto&& [key, value]: res) { coins_registry.insert_or_assign(key, value); }
-            return true;
+            cfg.reserve(res.size());
+            for (auto&& [key, value]: res)
+            {
+                coins_registry.insert_or_assign(key, value);
+                cfg.emplace_back(value);
+            }
+            return cfg;
         }
-        return false;
+        return cfg;
     }
 } // namespace
 
@@ -812,7 +818,7 @@ namespace atomic_dex
         SPDLOG_DEBUG("balance factor is: {}", m_balance_factor);
         SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
-        retrieve_coins_information(this->m_current_wallet_name, m_coins_informations);
+        this->dispatcher_.trigger<coin_cfg_parsed>(retrieve_coins_information(this->m_current_wallet_name, m_coins_informations));
         mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
         ::mm2::api::set_rpc_password(cfg.rpc_password);
         json       json_cfg;

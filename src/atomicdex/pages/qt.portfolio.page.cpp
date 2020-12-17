@@ -27,11 +27,13 @@
 namespace atomic_dex
 {
     portfolio_page::portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher_, this))
+        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher_, this)),
+        m_global_cfg_mdl(new global_coins_cfg_model(this))
     {
         emit portfolioChanged();
         this->dispatcher_.sink<update_portfolio_values>().connect<&portfolio_page::on_update_portfolio_values_event>(*this);
         this->dispatcher_.sink<band_oracle_refreshed>().connect<&portfolio_page::on_band_oracle_refreshed>(*this);
+        this->dispatcher_.sink<coin_cfg_parsed>().connect<&portfolio_page::on_coin_cfg_parsed>(*this);
     }
 
     portfolio_model*
@@ -128,10 +130,36 @@ namespace atomic_dex
         }
         return enabled_coins;
     }
-    
+
     bool
     atomic_dex::portfolio_page::is_coin_enabled(const QString& coin_name) const noexcept
     {
         return get_all_enabled_coins().contains(coin_name);
+    }
+
+    global_coins_cfg_model*
+    portfolio_page::get_global_cfg() const noexcept
+    {
+        return m_global_cfg_mdl;
+    }
+
+    void
+    portfolio_page::on_coin_cfg_parsed(const coin_cfg_parsed& evt) noexcept
+    {
+        this->m_global_cfg_mdl->initialize_model(evt.cfg);
+    }
+
+    void
+    portfolio_page::initialize_portfolio(const std::vector<std::string>& tickers)
+    {
+        m_portfolio_mdl->initialize_portfolio(tickers);
+        m_global_cfg_mdl->update_status(tickers, true);
+    }
+
+    void
+    portfolio_page::disable_coins(const QStringList& coins)
+    {
+        m_portfolio_mdl->disable_coins(coins);
+        m_global_cfg_mdl->update_status(coins, false);
     }
 } // namespace atomic_dex
