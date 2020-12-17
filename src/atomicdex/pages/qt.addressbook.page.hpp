@@ -59,8 +59,11 @@ namespace atomic_dex
         /// \defgroup QML API
 
       private:
-        Q_PROPERTY(addressbook_model* model READ get_model)
+        Q_PROPERTY(addressbook_model* model READ get_model NOTIFY addressbookChanged)
         [[nodiscard]] addressbook_model* get_model() const noexcept;
+        
+      signals:
+        void addressbookChanged();
         
         /// @} End of QML API section
     };
