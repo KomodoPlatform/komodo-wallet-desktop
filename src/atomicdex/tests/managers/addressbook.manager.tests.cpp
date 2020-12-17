@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include "atomicdex/pch.hpp"
+
 //! Deps
 #include <doctest/doctest.h>
 

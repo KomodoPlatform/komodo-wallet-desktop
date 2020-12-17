@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include "atomicdex/pch.hpp"
+
 #include <QDebug>
 #include <QStringList>
 
