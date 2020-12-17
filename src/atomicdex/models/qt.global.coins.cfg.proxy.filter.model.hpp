@@ -24,7 +24,8 @@ namespace atomic_dex
     {
         Q_OBJECT
 
-        bool m_exclude_enabled_coins{false};
+        bool     m_exclude_enabled_coins{false};
+        CoinType m_type{CoinType::Size}; ///< if Size means no filter by type
 
       public:
         //! Constructor
@@ -35,6 +36,7 @@ namespace atomic_dex
 
         //! QML API
         Q_INVOKABLE void filter_by_enableable() noexcept;
+        Q_INVOKABLE void filter_by_type(CoinType type) noexcept;
 
       protected:
         //! Override member functions

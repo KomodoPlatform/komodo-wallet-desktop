@@ -28,12 +28,21 @@ namespace atomic_dex
     bool
     global_coins_cfg_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
+        [[maybe_unused]] QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
+        assert(this->sourceModel()->hasIndex(idx.row(), 0));
+
         //! If we want only enableable coins let's refuse every rows that are already enabled
         if (m_exclude_enabled_coins)
         {
-            [[maybe_unused]] QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
-            assert(this->sourceModel()->hasIndex(idx.row(), 0));
             if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::CurrentlyEnabled).toBool())
+            {
+                return false;
+            }
+        }
+
+        if (m_type != CoinType::Size)
+        {
+            if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::CoinType) != static_cast<int>(m_type))
             {
                 return false;
             }
@@ -51,6 +60,13 @@ namespace atomic_dex
     global_coins_cfg_proxy_model::filter_by_enableable() noexcept
     {
         m_exclude_enabled_coins = true;
+        this->invalidateFilter();
+    }
+
+    void
+    global_coins_cfg_proxy_model::filter_by_type(CoinType type) noexcept
+    {
+        m_type = type;
         this->invalidateFilter();
     }
 } // namespace atomic_dex

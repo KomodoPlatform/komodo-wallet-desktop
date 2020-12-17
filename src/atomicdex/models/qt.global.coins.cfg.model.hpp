@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! STD
+#include <array>
+
 //! Qt
 #include <QAbstractListModel>
 
@@ -28,14 +31,17 @@
 
 namespace atomic_dex
 {
+    using cfg_proxy_model_list = QList<global_coins_cfg_proxy_model*>;
+
     class ENTT_API global_coins_cfg_model final : public QAbstractListModel
     {
         //! Q_Object definition
         Q_OBJECT
-        Q_PROPERTY(global_coins_cfg_proxy_model* global_coins_cfg_proxy_mdl READ get_global_coins_cfg_proxy_mdl NOTIFY globalCoinsCfgProxyChanged);
+        Q_PROPERTY(cfg_proxy_model_list global_coins_cfg_proxy_mdl READ get_global_coins_cfg_proxy_mdl NOTIFY globalCoinsCfgProxyChanged);
 
-        std::vector<coin_config>      m_model_data;
-        global_coins_cfg_proxy_model* m_model_data_proxy;
+        std::vector<coin_config>             m_model_data;
+        QList<global_coins_cfg_proxy_model*> m_proxies;
+        // global_coins_cfg_proxy_model* m_model_data_proxy;
 
       signals:
         void globalCoinsCfgProxyChanged();
@@ -47,11 +53,14 @@ namespace atomic_dex
             TickerRole = Qt::UserRole + 1,
             GuiTickerRole,
             NameRole,
+            TickerAndNameRole,
             IsClaimable,
             CurrentlyEnabled,
             Active,
             IsCustomCoin,
-            Type
+            Type,
+            CoinType,
+            Checked
         };
         Q_ENUM(CoinsRoles)
 
@@ -66,7 +75,7 @@ namespace atomic_dex
         void update_status(const TArray& tickers, bool status) noexcept;
 
         //! Properties
-        [[nodiscard]] global_coins_cfg_proxy_model* get_global_coins_cfg_proxy_mdl() const noexcept;
+        [[nodiscard]] cfg_proxy_model_list get_global_coins_cfg_proxy_mdl() const noexcept;
 
         //! Overrides
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;

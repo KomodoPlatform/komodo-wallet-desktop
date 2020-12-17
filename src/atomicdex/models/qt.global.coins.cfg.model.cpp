@@ -22,15 +22,22 @@
 namespace atomic_dex
 {
     global_coins_cfg_model::global_coins_cfg_model(QObject* parent) noexcept :
-        QAbstractListModel(parent), m_model_data_proxy(new global_coins_cfg_proxy_model(this))
+        QAbstractListModel(parent) /*, m_proxies[i](new global_coins_cfg_proxy_model(this))*/
     {
-        m_model_data_proxy->setSourceModel(this);
-        m_model_data_proxy->setDynamicSortFilter(true);
-        m_model_data_proxy->setFilterRole(CoinsRoles::NameRole);
-        m_model_data_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+        m_proxies.reserve(CoinType::Size);
 
-        //! Initial State will be enableable
-        m_model_data_proxy->filter_by_enableable();
+        for (int i = 0; i < CoinType::Size; ++i)
+        {
+            m_proxies[i] = new global_coins_cfg_proxy_model(this);
+            m_proxies[i]->setSourceModel(this);
+            m_proxies[i]->setDynamicSortFilter(true);
+            m_proxies[i]->setFilterRole(CoinsRoles::TickerAndNameRole);
+            m_proxies[i]->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+            //! Initial State will be enableable
+            m_proxies[i]->filter_by_enableable();
+            m_proxies[i]->filter_by_type(static_cast<::CoinType>(i));
+        }
     }
 } // namespace atomic_dex
 
@@ -64,6 +71,12 @@ namespace atomic_dex
             return item.is_custom_coin;
         case Type:
             return QString::fromStdString(item.type);
+        case CoinType:
+            return static_cast<int>(item.coin_type);
+        case TickerAndNameRole:
+            return QString::fromStdString(item.ticker) + QString::fromStdString(item.name); ///! ETHethereum
+        case Checked:
+            return item.checked;
         }
         return {};
     }
@@ -79,6 +92,9 @@ namespace atomic_dex
             break;
         case Active:
             item.active = value.toBool();
+            break;
+        case Checked:
+            item.checked = value.toBool();
             break;
         default:
             return false;
@@ -152,9 +168,9 @@ namespace atomic_dex
 //! Properties
 namespace atomic_dex
 {
-    global_coins_cfg_proxy_model*
+    cfg_proxy_model_list
     global_coins_cfg_model::get_global_coins_cfg_proxy_mdl() const noexcept
     {
-        return m_model_data_proxy;
+        return m_proxies;
     }
 } // namespace atomic_dex

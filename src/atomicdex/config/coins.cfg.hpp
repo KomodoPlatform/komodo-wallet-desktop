@@ -66,6 +66,7 @@ namespace atomic_dex
         // std::optional<bool>             need_electrum;     ///< If this is set to true even if we have a specific tag we force electrum call
         std::optional<bool> is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
         CoinType            coin_type;
+        bool                checked{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);
