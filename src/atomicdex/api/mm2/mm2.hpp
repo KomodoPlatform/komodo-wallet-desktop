@@ -35,7 +35,6 @@ namespace mm2::api
     inline std::unique_ptr<web::http::client::http_client> g_qtum_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(::atomic_dex::g_qtum_infos_endpoint))};
 
-    nlohmann::json rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
     pplx::task<web::http::http_response>
                    async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client, pplx::cancellation_token token);
     nlohmann::json basic_batch_answer(const web::http::http_response& resp);
@@ -70,8 +69,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, max_taker_vol_answer& answer);
 
-    max_taker_vol_answer rpc_max_taker_vol(max_taker_vol_request&& request);
-
     //! Only for erc 20
     struct enable_request
     {
@@ -97,8 +94,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, const enable_answer& cfg);
 
-    enable_answer rpc_enable(enable_request&& request);
-
     struct electrum_request
     {
         std::string                              coin_name;
@@ -122,8 +117,6 @@ namespace mm2::api
     void to_json(nlohmann::json& j, const electrum_request& cfg);
 
     void from_json(const nlohmann::json& j, electrum_answer& answer);
-
-    electrum_answer rpc_electrum(electrum_request&& request);
 
     struct disable_coin_request
     {
@@ -199,8 +192,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, balance_answer& cfg);
 
-    balance_answer rpc_balance(balance_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
     struct trade_fee_request
     {
         std::string coin;
@@ -217,8 +208,6 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, trade_fee_answer& cfg);
-
-    trade_fee_answer rpc_get_trade_fee(trade_fee_request&& req, std::shared_ptr<t_http_client> mm2_client);
 
     struct fee_regular_coin
     {
@@ -349,8 +338,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, tx_history_answer& answer);
 
-    tx_history_answer rpc_my_tx_history(tx_history_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
     struct withdraw_fees
     {
         std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
@@ -381,8 +368,6 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, withdraw_answer& answer);
-
-    withdraw_answer rpc_withdraw(withdraw_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct send_raw_transaction_request
     {
@@ -455,8 +440,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, orderbook_answer& answer);
 
-    orderbook_answer rpc_orderbook(orderbook_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
     struct trading_order_contents
     {
         std::string action;
@@ -508,8 +491,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, buy_answer& answer);
 
-    buy_answer rpc_buy(buy_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
     struct setprice_request
     {
         std::string base;
@@ -559,8 +540,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, sell_answer& answer);
 
-    sell_answer rpc_sell(sell_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
     struct cancel_order_request
     {
         std::string uuid;
@@ -577,8 +556,6 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, cancel_order_answer& answer);
-
-    cancel_order_answer rpc_cancel_order(cancel_order_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct cancel_data
     {
@@ -615,8 +592,6 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, cancel_all_orders_answer& answer);
-
-    cancel_all_orders_answer rpc_cancel_all_orders(cancel_all_orders_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct my_order_contents
     {
@@ -705,115 +680,17 @@ namespace mm2::api
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
     template <typename RpcReturnType>
-    RpcReturnType static inline rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept
-    {
-        std::string body = TO_STD_STR(resp.extract_string(true).get());
-        SPDLOG_INFO("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
-        RpcReturnType answer;
-
-        try
-        {
-            if (resp.status_code() not_eq 200)
-            {
-                SPDLOG_WARN("rpc answer code is not 200, body : {}", body);
-                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
-                {
-                    SPDLOG_DEBUG("error field detected inside the RpcReturnType");
-                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
-                    {
-                        SPDLOG_DEBUG("The error field type is string, parsing it from the response body");
-                        if (auto json_data = nlohmann::json::parse(body); json_data.at("error").is_string())
-                        {
-                            answer.error = json_data.at("error").get<std::string>();
-                        }
-                        else
-                        {
-                            answer.error = body;
-                        }
-                        SPDLOG_DEBUG("The error after getting extracted is: {}", answer.error.value());
-                    }
-                }
-                answer.rpc_result_code = resp.status_code();
-                answer.raw_result      = body;
-                return answer;
-            }
-
-
-            assert(not body.empty());
-            auto json_answer       = nlohmann::json::parse(body);
-            answer.rpc_result_code = resp.status_code();
-            answer.raw_result      = body;
-            from_json(json_answer, answer);
-        }
-        catch (const std::exception& error)
-        {
-            SPDLOG_ERROR(
-                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(),
-                rpc_command, body);
-            answer.rpc_result_code = -1;
-            answer.raw_result      = error.what();
-        }
-
-        return answer;
-    }
+    RpcReturnType rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept;
 
     template <typename RpcReturnType>
-    RpcReturnType static inline rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
-    {
-        RpcReturnType answer;
-        /*if (rpc_command == "my_orders")
-        {
-            SPDLOG_INFO("my_orders answer {}", json_answer.dump(4));
-        }*/
+    RpcReturnType rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
 
-        try
-        {
-            from_json(json_answer, answer);
-            answer.rpc_result_code = 200;
-        }
-        catch (const std::exception& error)
-        {
-            SPDLOG_ERROR("exception caught for rpc {} answer: {}", rpc_command, json_answer.dump(4));
-            answer.rpc_result_code = -1;
-            answer.raw_result      = error.what();
-        }
-
-        return answer;
-    }
-
-    static inline pplx::task<web::http::http_response>
-    async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url)
-    {
-        SPDLOG_INFO("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, TO_STD_STR(client->base_uri().to_string()));
-
-        web::http::http_request req;
-        req.set_method(web::http::methods::GET);
-        if (not url.empty())
-        {
-            req.set_request_uri(FROM_STD_STR(url));
-        }
-        return client->request(req);
-    }
-
-    template <typename TAnswer>
-    TAnswer
-    process_rpc_get(std::string rpc_command, const std::string& url)
-    {
-        SPDLOG_INFO("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
-
-        web::http::http_request request;
-        request.set_method(web::http::methods::GET);
-        request.set_request_uri(url);
-        auto resp = g_etherscan_proxy_http_client->request(request).get();
-        // auto resp = RestClient::get(g_etherscan_proxy_endpoint + url);
-
-        return rpc_process_answer<TAnswer>(resp, rpc_command);
-    }
+    pplx::task<web::http::http_response> async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url);
 
     nlohmann::json template_request(std::string method_name) noexcept;
 
     template <typename TRequest, typename TAnswer>
-    TAnswer static process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> http_mm2_client);
+    static TAnswer process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> http_mm2_client);
 
     void               set_rpc_password(std::string rpc_password) noexcept;
     const std::string& get_rpc_password() noexcept;
@@ -823,16 +700,13 @@ namespace atomic_dex
 {
     using t_balance_request         = ::mm2::api::balance_request;
     using t_balance_answer          = ::mm2::api::balance_answer;
-    using t_buy_answer              = ::mm2::api::buy_answer;
     using t_buy_request             = ::mm2::api::buy_request;
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
-    using t_sell_answer             = ::mm2::api::sell_answer;
     using t_sell_request            = ::mm2::api::sell_request;
     using t_withdraw_request        = ::mm2::api::withdraw_request;
     using t_withdraw_fees           = ::mm2::api::withdraw_fees;
     using t_withdraw_answer         = ::mm2::api::withdraw_answer;
     using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
-    using t_broadcast_answer        = ::mm2::api::send_raw_transaction_answer;
     using t_orderbook_request       = ::mm2::api::orderbook_request;
     using t_orderbook_answer        = ::mm2::api::orderbook_answer;
     using t_electrum_request        = ::mm2::api::electrum_request;

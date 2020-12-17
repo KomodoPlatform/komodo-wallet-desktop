@@ -68,11 +68,11 @@ namespace mm2::api
     }
 
     //! Rpc Call
-    max_taker_vol_answer
+    /*max_taker_vol_answer
     rpc_max_taker_vol(max_taker_vol_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol", mm2_client);
-    }
+    }*/
 } // namespace mm2::api
 
 //! Implementation RPC [enable]
@@ -904,7 +904,7 @@ namespace mm2::api
         }
     }
 
-    enable_answer
+    /*enable_answer
     rpc_enable(enable_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable", mm2_client);
@@ -971,14 +971,14 @@ namespace mm2::api
     rpc_cancel_order(cancel_order_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order", mm2_client);
-    }
+    }*/
 
-    cancel_all_orders_answer
+    /*cancel_all_orders_answer
     rpc_cancel_all_orders(cancel_all_orders_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(
             std::forward<cancel_all_orders_request>(request), "cancel_all_orders", mm2_client);
-    }
+    }*/
 
     disable_coin_answer
     rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client)
@@ -994,7 +994,7 @@ namespace mm2::api
     }
 
     template <typename TRequest, typename TAnswer>
-    static TAnswer
+    TAnswer
     process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> mm2_http_client)
     {
         SPDLOG_INFO("Processing rpc call: {}", rpc_command);
@@ -1103,35 +1103,6 @@ namespace mm2::api
         return answer;
     }
 
-    nlohmann::json
-    rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client)
-    {
-        if (mm2_http_client != nullptr)
-        {
-            web::http::http_request request;
-            request.set_method(web::http::methods::POST);
-            request.set_body(batch_array.dump());
-            auto resp = mm2_http_client->request(request).get();
-
-
-            SPDLOG_INFO("{} resp code: {}", __FUNCTION__, resp.status_code());
-
-            nlohmann::json answer;
-            std::string    body = TO_STD_STR(resp.extract_string(true).get());
-            try
-            {
-                answer = nlohmann::json::parse(body);
-            }
-            catch (const nlohmann::detail::parse_error& err)
-            {
-                SPDLOG_ERROR("{}, body: {}", err.what(), body);
-                answer["error"] = body;
-            }
-            return answer;
-        }
-        return nlohmann::json::array();
-    }
-
     static inline std::string&
     access_rpc_password() noexcept
     {
@@ -1150,4 +1121,102 @@ namespace mm2::api
     {
         return access_rpc_password();
     }
+
+    pplx::task<web::http::http_response>
+    async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url)
+    {
+        SPDLOG_INFO("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, TO_STD_STR(client->base_uri().to_string()));
+
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        if (not url.empty())
+        {
+            req.set_request_uri(FROM_STD_STR(url));
+        }
+        return client->request(req);
+    }
+
+    template <typename RpcReturnType>
+    RpcReturnType
+    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
+    {
+        RpcReturnType answer;
+
+        try
+        {
+            from_json(json_answer, answer);
+            answer.rpc_result_code = 200;
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("exception caught for rpc {} answer: {}", rpc_command, json_answer.dump(4));
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
+
+    template mm2::api::withdraw_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::my_orders_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::orderbook_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::trade_fee_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+
+    template <typename RpcReturnType>
+    RpcReturnType
+    rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept
+    {
+        std::string body = TO_STD_STR(resp.extract_string(true).get());
+        SPDLOG_INFO("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
+        RpcReturnType answer;
+
+        try
+        {
+            if (resp.status_code() not_eq 200)
+            {
+                SPDLOG_WARN("rpc answer code is not 200, body : {}", body);
+                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
+                {
+                    SPDLOG_DEBUG("error field detected inside the RpcReturnType");
+                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
+                    {
+                        SPDLOG_DEBUG("The error field type is string, parsing it from the response body");
+                        if (auto json_data = nlohmann::json::parse(body); json_data.at("error").is_string())
+                        {
+                            answer.error = json_data.at("error").get<std::string>();
+                        }
+                        else
+                        {
+                            answer.error = body;
+                        }
+                        SPDLOG_DEBUG("The error after getting extracted is: {}", answer.error.value());
+                    }
+                }
+                answer.rpc_result_code = resp.status_code();
+                answer.raw_result      = body;
+                return answer;
+            }
+
+
+            assert(not body.empty());
+            auto json_answer       = nlohmann::json::parse(body);
+            answer.rpc_result_code = resp.status_code();
+            answer.raw_result      = body;
+            from_json(json_answer, answer);
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR(
+                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(),
+                rpc_command, body);
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
+
+    template mm2::api::tx_history_answer rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
 } // namespace mm2::api
