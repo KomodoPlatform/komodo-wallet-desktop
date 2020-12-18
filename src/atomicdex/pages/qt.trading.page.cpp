@@ -190,6 +190,7 @@ namespace atomic_dex
     void
     trading_page::cancel_order(const QStringList& orders_id)
     {
+        SPDLOG_INFO("cancel order");
         nlohmann::json batch = nlohmann::json::array();
         for (auto&& order_id: orders_id)
         {
@@ -251,12 +252,14 @@ namespace atomic_dex
     void
     trading_page::cancel_all_orders()
     {
+        SPDLOG_INFO("cancel_all_orders");
         common_cancel_all_orders();
     }
 
     void
     trading_page::cancel_all_orders_by_ticker(const QString& ticker)
     {
+        SPDLOG_INFO("cancel_all_orders by ticker {}", ticker.toStdString());
         common_cancel_all_orders(true, ticker);
     }
 

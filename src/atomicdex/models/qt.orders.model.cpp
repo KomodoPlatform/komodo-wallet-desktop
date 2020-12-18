@@ -361,71 +361,73 @@ namespace atomic_dex
     {
         std::error_code ec;
         const auto&     mm2    = m_system_manager.get_system<mm2_service>();
-        const auto      orders = mm2.get_raw_orders(ec);
+        const auto      orders = mm2.get_raw_orders();
 
-        if (!ec)
-        {
-            auto functor_process_orders = [this](auto&& orders) {
-                std::vector<order_data> to_init;
-                for (auto&& [key, value]: orders)
-                {
-                    if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
-                    {
-                        //! Find update needed
-                        this->update_existing_order(value);
-                    }
-                    else
-                    {
-                        m_orders_id_registry.emplace(to_init.emplace_back(from_order_content(value)).order_id.toStdString());
-                        //! Not found, insert and initialize.
-                        // this->initialize_order(value);
-                    }
-                }
-
-                if (not to_init.empty())
-                {
-                    this->common_insert(to_init, "orders");
-                }
-            };
-
-            functor_process_orders(orders.maker_orders);
-            functor_process_orders(orders.taker_orders);
-
-            //! Check for cleaning orders that are not present anymore
-            std::unordered_set<std::string> to_remove;
-            for (auto&& id: this->m_orders_id_registry)
+        auto functor_process_orders = [this](auto&& orders) {
+            std::vector<order_data> to_init;
+            for (auto&& [key, value]: orders)
             {
-                //! Check if the current id from the model registry is present in the orders collection
-
-                //! Check in maker_orders
-                bool res = std::none_of(begin(orders.maker_orders), end(orders.maker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
-
-                //! And compute with taker orders
-                res &= std::none_of(begin(orders.taker_orders), end(orders.taker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
-                if (res)
+                if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
                 {
-                    //! If it's the case retrieve the index of the row that match this id
-                    auto res_list = this->match(index(0, 0), OrderIdRole, QString::fromStdString(id));
-                    if (not res_list.empty())
-                    {
-                        //! And then delete it
-                        this->removeRow(res_list.at(0).row());
-                        to_remove.emplace(id);
-                    }
+                    //! Find update needed
+                    this->update_existing_order(value);
+                }
+                else
+                {
+                    m_orders_id_registry.emplace(to_init.emplace_back(from_order_content(value)).order_id.toStdString());
+                    //! Not found, insert and initialize.
+                    // this->initialize_order(value);
                 }
             }
-            for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
+
+            if (not to_init.empty())
+            {
+                this->common_insert(to_init, "orders");
+            }
+        };
+
+        if (not orders.maker_orders.empty())
+        {
+            functor_process_orders(orders.maker_orders);
         }
+        if (not orders.taker_orders.empty())
+        {
+            functor_process_orders(orders.taker_orders);
+        }
+
+        //! Check for cleaning orders that are not present anymore
+        std::unordered_set<std::string> to_remove;
+        for (auto&& id: this->m_orders_id_registry)
+        {
+            //! Check if the current id from the model registry is present in the orders collection
+
+            //! Check in maker_orders
+            bool res = std::none_of(begin(orders.maker_orders), end(orders.maker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
+
+            //! And compute with taker orders
+            res &= std::none_of(begin(orders.taker_orders), end(orders.taker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
+            if (res)
+            {
+                //! If it's the case retrieve the index of the row that match this id
+                auto res_list = this->match(index(0, 0), OrderIdRole, QString::fromStdString(id));
+                if (not res_list.empty())
+                {
+                    //! And then delete it
+                    this->removeRow(res_list.at(0).row());
+                    to_remove.emplace(id);
+                }
+            }
+        }
+        for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
     }
 
     void
     orders_model::refresh_or_insert_swaps() noexcept
     {
-        const auto&     mm2    = m_system_manager.get_system<mm2_service>();
-        const auto      result = mm2.get_swaps();
-        std::error_code ec;
-        const auto      orders       = mm2.get_raw_orders(ec);
-        const auto      current_size = static_cast<int>((result.swaps.size()) + orders.maker_orders.size() + orders.taker_orders.size());
+        const auto& mm2          = m_system_manager.get_system<mm2_service>();
+        const auto  result       = mm2.get_swaps();
+        const auto  orders       = mm2.get_raw_orders();
+        const auto  current_size = static_cast<int>((result.swaps.size()) + orders.maker_orders.size() + orders.taker_orders.size());
 
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
         std::vector<order_data> to_init;

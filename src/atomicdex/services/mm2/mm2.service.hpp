@@ -53,12 +53,12 @@ namespace atomic_dex
         //! Private typedefs
         using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
         using t_balance_registry           = t_concurrent_reg<t_ticker, t_balance_answer>;
-        using t_my_orders                  = t_concurrent_reg<t_ticker, t_my_orders_answer>;
         using t_tx_history_registry        = t_concurrent_reg<t_ticker, t_transactions>;
         using t_tx_state_registry          = t_concurrent_reg<t_ticker, t_tx_state>;
         using t_orderbook_registry         = t_concurrent_reg<t_ticker, t_orderbook_answer>;
-        using t_swaps_registry             = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
         using t_fees_registry              = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
+        using t_my_orders                  = boost::synchronized_value<t_my_orders_answer>;
+        using t_swaps                      = boost::synchronized_value<t_my_recent_swaps_answer>;
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
         using t_synchronized_ticker        = boost::synchronized_value<std::string>;
@@ -94,10 +94,10 @@ namespace atomic_dex
         t_balance_registry       m_balance_informations;
         t_tx_history_registry    m_tx_informations;
         t_tx_state_registry      m_tx_state;
-        t_my_orders              m_orders_registry;
         t_fees_registry          m_trade_fees_registry;
         t_orderbook_registry     m_current_orderbook;
-        t_swaps_registry         m_swaps_registry;
+        t_my_orders              m_orders{t_my_orders_answer{}};
+        t_swaps                  m_swaps{t_my_recent_swaps_answer{.limit = 0, .total = 0}};
         t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
 
         //! Balance factor
@@ -220,7 +220,7 @@ namespace atomic_dex
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;
 
         //! Get orders
-        [[nodiscard]] ::mm2::api::my_orders_answer              get_raw_orders(t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] ::mm2::api::my_orders_answer get_raw_orders() const noexcept;
 
         //! Get Swaps
         [[nodiscard]] t_my_recent_swaps_answer get_swaps() const noexcept;

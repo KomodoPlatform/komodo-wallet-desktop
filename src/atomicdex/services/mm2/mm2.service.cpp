@@ -155,8 +155,6 @@ namespace atomic_dex
         dispatcher_.sink<gui_enter_trading>().connect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().connect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2_service::on_refresh_orderbook>(*this);
-
-        m_swaps_registry.insert("result", t_my_recent_swaps_answer{.limit = 0, .total = 0});
     }
 
     void
@@ -957,7 +955,7 @@ namespace atomic_dex
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
         nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
-        std::size_t               total    = this->m_swaps_registry.at("result").total;
+        std::size_t               total    = this->m_swaps.get().total;
         t_my_recent_swaps_request request{.limit = total > 0 ? total : 500};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
@@ -965,12 +963,12 @@ namespace atomic_dex
             .then([this](web::http::http_response resp) {
                 auto answers          = ::mm2::api::basic_batch_answer(resp);
                 auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
-                m_orders_registry.insert_or_assign("result", my_orders_answer);
+                m_orders              = my_orders_answer;
                 this->dispatcher_.trigger<process_orders_finished>();
                 auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_recent_swaps");
                 if (swap_answer.result.has_value())
                 {
-                    m_swaps_registry.insert_or_assign("result", swap_answer.result.value());
+                    m_swaps = swap_answer.result.value();
                     this->dispatcher_.trigger<process_swaps_finished>();
                 }
             })
@@ -1100,20 +1098,15 @@ namespace atomic_dex
     }
 
     ::mm2::api::my_orders_answer
-    mm2_service::get_raw_orders(t_mm2_ec& ec) const noexcept
+    mm2_service::get_raw_orders() const noexcept
     {
-        if (m_orders_registry.find("result") == m_orders_registry.cend())
-        {
-            ec = dextop_error::order_not_available_yet;
-            return {};
-        }
-        return m_orders_registry.at("result");
+        return m_orders.get();
     }
 
     t_my_recent_swaps_answer
     mm2_service::get_swaps() const noexcept
     {
-        return m_swaps_registry.at("result");
+        return m_swaps.get();
     }
 
     t_my_recent_swaps_answer
@@ -1373,7 +1366,7 @@ namespace atomic_dex
     void
     mm2_service::add_orders_answer(t_my_orders_answer answer)
     {
-        m_orders_registry.insert_or_assign("result", answer);
+        m_orders = answer;
         this->dispatcher_.trigger<process_orders_finished>();
     }
 
