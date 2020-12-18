@@ -220,9 +220,7 @@ namespace atomic_dex
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;
 
         //! Get orders
-        [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
         [[nodiscard]] ::mm2::api::my_orders_answer              get_raw_orders(t_mm2_ec& ec) const noexcept;
-        [[nodiscard]] std::vector<::mm2::api::my_orders_answer> get_orders(t_mm2_ec& ec) const noexcept;
 
         //! Get Swaps
         [[nodiscard]] t_my_recent_swaps_answer get_swaps() const noexcept;

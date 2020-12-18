@@ -480,24 +480,6 @@ application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine
     settings_system.init_lang();
 }
 
-bool
-application::export_swaps_json() noexcept
-{
-    auto swaps = get_mm2().get_swaps().raw_result;
-
-    if (not swaps.empty())
-    {
-        auto export_file_path = utils::get_atomic_dex_current_export_recent_swaps_file();
-
-        std::ofstream ofs(export_file_path.string(), std::ios::out | std::ios::trunc);
-        auto          j = nlohmann::json::parse(swaps);
-        ofs << std::setw(4) << j;
-        ofs.close();
-        return true;
-    }
-    return false;
-}
-
 QString
 application::recover_fund(const QString& uuid)
 {

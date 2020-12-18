@@ -36,7 +36,6 @@ Item {
     Layout.fillWidth: true
 
     function openLogsFolder() {
-        API.app.export_swaps_json()
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
 

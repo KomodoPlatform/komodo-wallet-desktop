@@ -1110,37 +1110,6 @@ namespace atomic_dex
         return m_orders_registry.at("result");
     }
 
-    ::mm2::api::my_orders_answer
-    mm2_service::get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept
-    {
-        if (m_orders_registry.find("result") == m_orders_registry.cend())
-        {
-            ec = dextop_error::order_not_available_yet;
-            return {};
-        }
-        auto  result                = m_orders_registry.at("result");
-        auto& taker                 = result.taker_orders;
-        auto& maker                 = result.maker_orders;
-        auto  is_ticker_not_present = [&ticker](const std::pair<std::string, t_my_order_contents>& contents) {
-            return contents.second.base != ticker && contents.second.rel != ticker;
-        };
-
-        erase_if(taker, is_ticker_not_present);
-        erase_if(maker, is_ticker_not_present);
-
-        return result;
-    }
-
-    std::vector<::mm2::api::my_orders_answer>
-    mm2_service::get_orders(t_mm2_ec& ec) const noexcept
-    {
-        auto                                      coins = get_enabled_coins();
-        std::vector<::mm2::api::my_orders_answer> out;
-        out.reserve(coins.size());
-        for (auto&& coin: coins) { out.emplace_back(get_orders(coin.ticker, ec)); }
-        return out;
-    }
-
     t_my_recent_swaps_answer
     mm2_service::get_swaps() const noexcept
     {
@@ -1150,7 +1119,7 @@ namespace atomic_dex
     t_my_recent_swaps_answer
     mm2_service::get_swaps() noexcept
     {
-        return m_swaps_registry.at("result");
+        return std::as_const(*this).get_swaps();
     }
 
     t_tx_state
