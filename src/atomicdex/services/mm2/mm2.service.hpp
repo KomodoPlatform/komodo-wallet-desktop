@@ -53,9 +53,9 @@ namespace atomic_dex
         //! Private typedefs
         using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
         using t_balance_registry           = t_concurrent_reg<t_ticker, t_balance_answer>;
-        using t_tx_history_registry        = t_concurrent_reg<t_ticker, t_transactions>;
-        using t_tx_state_registry          = t_concurrent_reg<t_ticker, t_tx_state>;
-        using t_fees_registry              = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
+        using t_tx_history_registry        = boost::synchronized_value<std::unordered_map<t_ticker, t_transactions>>;
+        using t_tx_state_registry          = boost::synchronized_value<std::unordered_map<t_ticker, t_tx_state>>;
+        using t_fees_registry              = boost::synchronized_value<std::unordered_map<t_ticker, t_get_trade_fee_answer>>;
         using t_orderbook                  = boost::synchronized_value<t_orderbook_answer>;
         using t_my_orders                  = boost::synchronized_value<t_my_orders_answer>;
         using t_swaps                      = boost::synchronized_value<t_my_recent_swaps_answer>;

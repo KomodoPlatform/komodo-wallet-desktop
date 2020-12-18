@@ -709,13 +709,13 @@ namespace atomic_dex
                         auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
                         if (trade_fee_base_answer.rpc_result_code == 200)
                         {
-                            this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_base, trade_fee_base_answer);
+                            this->m_trade_fees_registry->operator[](orderbook_ticker_base) = trade_fee_base_answer;
                         }
 
                         auto trade_fee_rel_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[1], "get_trade_fee");
                         if (trade_fee_rel_answer.rpc_result_code == 200)
                         {
-                            this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_rel, trade_fee_rel_answer);
+                            this->m_trade_fees_registry->operator[](orderbook_ticker_rel) = trade_fee_rel_answer;
                         }
 
                         auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[2], "orderbook");
@@ -916,25 +916,15 @@ namespace atomic_dex
     {
         const auto& ticker = get_current_ticker();
         SPDLOG_DEBUG("asking history of ticker: {}", ticker);
-        if (!(get_coin_info(ticker).coin_type == CoinType::ERC20))
+        const auto underlying_tx_history_map = m_tx_informations.get();
+        const auto coin_type                 = get_coin_info(ticker).coin_type;
+        const auto it = !(coin_type == CoinType::ERC20) ? underlying_tx_history_map.find("result") : underlying_tx_history_map.find(ticker);
+        if (it == underlying_tx_history_map.cend())
         {
-            if (m_tx_informations.find("result") == m_tx_informations.cend())
-            {
-                ec = dextop_error::tx_history_of_a_non_enabled_coin;
-                return {};
-            }
-            return m_tx_informations.at("result");
+            ec = dextop_error::tx_history_of_a_non_enabled_coin;
+            return {};
         }
-        else
-        {
-            SPDLOG_DEBUG("picking history ticker: {}", ticker);
-            if (m_tx_informations.find(ticker) == m_tx_informations.cend())
-            {
-                ec = dextop_error::tx_history_of_a_non_enabled_coin;
-                return {};
-            }
-            return m_tx_informations.at(ticker);
-        }
+        return it->second;
     }
 
     std::string
@@ -1040,10 +1030,14 @@ namespace atomic_dex
                         out.push_back(std::move(current_info));
                     });
 
-                    // std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
-                    m_tx_informations.insert_or_assign(ticker, std::move(out));
-                    m_tx_state.insert_or_assign(ticker, std::move(state));
+                    //! History
+                    m_tx_informations->operator[](ticker) = std::move(out);
+
+                    //! State
+                    m_tx_state->operator[](ticker) = std::move(state);
+
+                    //! Dispatch
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
@@ -1119,27 +1113,16 @@ namespace atomic_dex
     t_tx_state
     mm2_service::get_tx_state(t_mm2_ec& ec) const
     {
-        const auto& ticker = get_current_ticker();
-        if (!(get_coin_info(ticker).coin_type == CoinType::ERC20))
+        const auto& ticker                  = get_current_ticker();
+        const auto  underlying_tx_state_map = m_tx_state.get();
+        const auto  coin_type               = get_coin_info(ticker).coin_type;
+        const auto  it                      = !(coin_type == CoinType::ERC20) ? underlying_tx_state_map.find("result") : underlying_tx_state_map.find(ticker);
+        if (it == underlying_tx_state_map.cend())
         {
-            if (m_tx_state.find("result") == m_tx_state.cend())
-            {
-                ec = dextop_error::tx_history_of_a_non_enabled_coin;
-                return {};
-            }
-
-            return m_tx_state.at("result");
+            ec = dextop_error::tx_history_of_a_non_enabled_coin;
+            return {};
         }
-        else
-        {
-            if (m_tx_state.find(ticker) == m_tx_state.cend())
-            {
-                ec = dextop_error::tx_history_of_a_non_enabled_coin;
-                return {};
-            }
-
-            return m_tx_state.at(ticker);
-        }
+        return it->second;
     }
 
     t_float_50
@@ -1177,7 +1160,15 @@ namespace atomic_dex
     t_get_trade_fee_answer
     mm2_service::get_transaction_fees(const std::string& ticker) const
     {
-        return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
+        auto underlying_map = m_trade_fees_registry.get();
+        if (auto it = underlying_map.find(ticker); it != underlying_map.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return {};
+        }
     }
 
     bool
@@ -1310,8 +1301,12 @@ namespace atomic_dex
             out.push_back(std::move(current_info));
         }
 
-        m_tx_informations.insert_or_assign("result", std::move(out));
-        m_tx_state.insert_or_assign("result", std::move(state));
+
+        //! History
+        m_tx_informations->operator[]("result") = std::move(out);
+
+        //! State
+        m_tx_state->operator[]("result") = std::move(state);
         this->dispatcher_.trigger<tx_fetch_finished>();
     }
 
@@ -1539,7 +1534,7 @@ namespace atomic_dex
     void
     mm2_service::add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept
     {
-        this->m_trade_fees_registry.insert_or_assign(ticker, answer);
+        this->m_trade_fees_registry->operator[](ticker) = answer;
     }
 
     std::vector<electrum_server>
