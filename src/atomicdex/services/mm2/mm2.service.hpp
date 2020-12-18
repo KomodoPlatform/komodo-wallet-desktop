@@ -16,9 +16,12 @@
 
 #pragma once
 
+#include <shared_mutex>
+
 //! Deps
 #include <antara/gaming/ecs/system.hpp>
 #include <antara/gaming/ecs/system.manager.hpp>
+#include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <reproc++/reproc.hpp>
 
@@ -37,6 +40,9 @@ namespace atomic_dex
     namespace bm = boost::multiprecision;
     namespace ag = antara::gaming;
 
+    template <typename T>
+    using t_shared_synchronized_value = boost::synchronized_value<T, boost::shared_mutex>;
+
     using t_ticker         = std::string;
     using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
     using t_coins          = std::vector<coin_config>;
@@ -52,10 +58,9 @@ namespace atomic_dex
       private:
         //! Private typedefs
         using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
-        using t_balance_registry           = t_concurrent_reg<t_ticker, t_balance_answer>;
-        using t_tx_history_registry        = boost::synchronized_value<std::unordered_map<t_ticker, t_transactions>>;
-        using t_tx_state_registry          = boost::synchronized_value<std::unordered_map<t_ticker, t_tx_state>>;
-        using t_fees_registry              = boost::synchronized_value<std::unordered_map<t_ticker, t_get_trade_fee_answer>>;
+        using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
+        using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
+        using t_fees_registry              = t_shared_synchronized_value<std::unordered_map<t_ticker, t_get_trade_fee_answer>>;
         using t_orderbook                  = boost::synchronized_value<t_orderbook_answer>;
         using t_my_orders                  = boost::synchronized_value<t_my_orders_answer>;
         using t_swaps                      = boost::synchronized_value<t_my_recent_swaps_answer>;
@@ -89,11 +94,13 @@ namespace atomic_dex
         //! Current wallet name
         std::string m_current_wallet_name;
 
+        //! Mutex
+        mutable std::shared_mutex m_balance_mutex;
+
         //! Concurrent Registry.
         t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
         t_balance_registry       m_balance_informations;
-        t_tx_history_registry    m_tx_informations;
-        t_tx_state_registry      m_tx_state;
+        t_tx_registry            m_tx_informations;
         t_fees_registry          m_trade_fees_registry;
         t_orderbook              m_orderbook{t_orderbook_answer{}};
         t_my_orders              m_orders{t_my_orders_answer{}};
@@ -118,8 +125,9 @@ namespace atomic_dex
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
 
         //!
-        std::pair<bool, std::string> process_batch_enable_answer(const nlohmann::json& answer);
-        std::vector<electrum_server> get_electrum_server_from_token(const std::string& ticker);
+        std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
+        [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const noexcept;
+        std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
 
       public:
         //! Constructor
@@ -180,9 +188,6 @@ namespace atomic_dex
 
         //! Retrieve my balance for a given ticker as a string.
         [[nodiscard]] std::string my_balance(const std::string& ticker, t_mm2_ec& ec) const;
-
-        //! Retrieve my balance with locked funds for a given ticker as a string.
-        [[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, t_mm2_ec& ec) const;
 
         //! Refresh the current orderbook (internally call process_orderbook)
         void fetch_current_orderbook_thread(bool is_a_reset = false);

@@ -457,9 +457,13 @@ namespace atomic_dex
         {
             for (auto&& coin: enabled_coins)
             {
-                if (is_pin_cfg_enabled() && m_balance_informations.find(coin.ticker) != m_balance_informations.end())
+                if (is_pin_cfg_enabled())
                 {
-                    continue;
+                    std::shared_lock lock(m_balance_mutex); ///< shared_lock
+                    if (m_balance_informations.find(coin.ticker) != m_balance_informations.cend())
+                    {
+                        continue;
+                    }
                 }
                 t_balance_request balance_request{.coin = coin.ticker};
                 nlohmann::json    j = ::mm2::api::template_request("my_balance");
@@ -883,43 +887,23 @@ namespace atomic_dex
         });
     }
 
-    std::string
-    mm2_service::my_balance_with_locked_funds(const std::string& ticker, t_mm2_ec& ec) const
-    {
-        if (m_balance_informations.find(ticker) == m_balance_informations.cend())
-        {
-            ec = dextop_error::balance_of_a_non_enabled_coin;
-            return "0";
-        }
-
-        t_float_50 final_balance = get_balance(ticker);
-
-        return final_balance.convert_to<std::string>();
-    }
-
     t_float_50
     mm2_service::get_balance(const std::string& ticker) const
     {
-        if (m_balance_informations.find(ticker) == m_balance_informations.end())
-        {
-            return 0;
-        }
-
-        const auto answer = m_balance_informations.at(ticker);
-        t_float_50 balance(answer.balance);
-
+        std::error_code ec;
+        t_float_50      balance(my_balance(ticker, ec));
         return balance;
     }
 
-    t_transactions
-    mm2_service::get_tx_history(t_mm2_ec& ec) const
+    std::pair<t_transactions, t_tx_state>
+    mm2_service::get_tx(t_mm2_ec& ec) const noexcept
     {
         const auto& ticker = get_current_ticker();
         SPDLOG_DEBUG("asking history of ticker: {}", ticker);
-        const auto underlying_tx_history_map = m_tx_informations.get();
+        const auto underlying_tx_history_map = m_tx_informations.synchronize();
         const auto coin_type                 = get_coin_info(ticker).coin_type;
-        const auto it = !(coin_type == CoinType::ERC20) ? underlying_tx_history_map.find("result") : underlying_tx_history_map.find(ticker);
-        if (it == underlying_tx_history_map.cend())
+        const auto it = !(coin_type == CoinType::ERC20) ? underlying_tx_history_map->find("result") : underlying_tx_history_map->find(ticker);
+        if (it == underlying_tx_history_map->cend())
         {
             ec = dextop_error::tx_history_of_a_non_enabled_coin;
             return {};
@@ -927,16 +911,30 @@ namespace atomic_dex
         return it->second;
     }
 
+    t_tx_state
+    mm2_service::get_tx_state(t_mm2_ec& ec) const
+    {
+        return get_tx(ec).second;
+    }
+
+    t_transactions
+    mm2_service::get_tx_history(t_mm2_ec& ec) const
+    {
+        return get_tx(ec).first;
+    }
+
     std::string
     mm2_service::my_balance(const std::string& ticker, t_mm2_ec& ec) const
     {
-        if (m_balance_informations.find(ticker) == m_balance_informations.cend())
+        std::shared_lock lock(m_balance_mutex); ///! read
+        auto             it = m_balance_informations.find(ticker);
+        if (it == m_balance_informations.cend())
         {
             ec = dextop_error::balance_of_a_non_enabled_coin;
             return "0";
         }
 
-        return m_balance_informations.at(ticker).balance;
+        return it->second.balance;
     }
 
     void
@@ -1030,12 +1028,8 @@ namespace atomic_dex
                         out.push_back(std::move(current_info));
                     });
 
-
                     //! History
-                    m_tx_informations->operator[](ticker) = std::move(out);
-
-                    //! State
-                    m_tx_state->operator[](ticker) = std::move(state);
+                    m_tx_informations->insert_or_assign(ticker, std::make_pair(out, state));
 
                     //! Dispatch
                     this->dispatcher_.trigger<tx_fetch_finished>();
@@ -1083,13 +1077,16 @@ namespace atomic_dex
     std::string
     mm2_service::address(const std::string& ticker, t_mm2_ec& ec) const noexcept
     {
-        if (m_balance_informations.find(ticker) == m_balance_informations.cend())
+        std::shared_lock lock(m_balance_mutex);
+        auto             it = m_balance_informations.find(ticker);
+
+        if (it == m_balance_informations.cend())
         {
             ec = dextop_error::unknown_ticker;
             return "Invalid";
         }
 
-        return m_balance_informations.at(ticker).address;
+        return it->second.address;
     }
 
     ::mm2::api::my_orders_answer
@@ -1108,21 +1105,6 @@ namespace atomic_dex
     mm2_service::get_swaps() noexcept
     {
         return std::as_const(*this).get_swaps();
-    }
-
-    t_tx_state
-    mm2_service::get_tx_state(t_mm2_ec& ec) const
-    {
-        const auto& ticker                  = get_current_ticker();
-        const auto  underlying_tx_state_map = m_tx_state.get();
-        const auto  coin_type               = get_coin_info(ticker).coin_type;
-        const auto  it                      = !(coin_type == CoinType::ERC20) ? underlying_tx_state_map.find("result") : underlying_tx_state_map.find(ticker);
-        if (it == underlying_tx_state_map.cend())
-        {
-            ec = dextop_error::tx_history_of_a_non_enabled_coin;
-            return {};
-        }
-        return it->second;
     }
 
     t_float_50
@@ -1160,8 +1142,8 @@ namespace atomic_dex
     t_get_trade_fee_answer
     mm2_service::get_transaction_fees(const std::string& ticker) const
     {
-        auto underlying_map = m_trade_fees_registry.get();
-        if (auto it = underlying_map.find(ticker); it != underlying_map.end())
+        auto underlying_map = m_trade_fees_registry.synchronize();
+        if (auto it = underlying_map->find(ticker); it != underlying_map->end())
         {
             return it->second;
         }
@@ -1205,17 +1187,17 @@ namespace atomic_dex
     void
     mm2_service::reset_fake_balance_to_zero(const std::string& ticker) noexcept
     {
-        auto answer    = m_balance_informations.at(ticker);
-        answer.balance = "0";
-        m_balance_informations.assign(ticker, answer);
+        {
+            std::unique_lock lock(m_balance_mutex);
+            m_balance_informations.at(ticker).balance = "0";
+        }
         this->dispatcher_.trigger<ticker_balance_updated>(std::vector<std::string>{ticker});
     }
 
     void
     mm2_service::decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept
     {
-        auto       answer = m_balance_informations.at(ticker);
-        t_float_50 balance(answer.balance);
+        t_float_50 balance = get_balance(ticker);
         t_float_50 amount_f(amount);
         t_float_50 result = balance - amount_f;
         SPDLOG_DEBUG(
@@ -1226,8 +1208,10 @@ namespace atomic_dex
         }
         else
         {
-            answer.balance = result.str(8, std::ios_base::fixed);
-            m_balance_informations.assign(ticker, answer);
+            {
+                std::unique_lock lock(m_balance_mutex); //! Write
+                m_balance_informations.at(ticker).balance = result.str(8, std::ios_base::fixed);
+            }
             this->dispatcher_.trigger<ticker_balance_updated>(std::vector<std::string>{ticker});
         }
     }
@@ -1303,10 +1287,7 @@ namespace atomic_dex
 
 
         //! History
-        m_tx_informations->operator[]("result") = std::move(out);
-
-        //! State
-        m_tx_state->operator[]("result") = std::move(state);
+        m_tx_informations->insert_or_assign("result", std::make_pair(out, state));
         this->dispatcher_.trigger<tx_fetch_finished>();
     }
 
@@ -1317,6 +1298,8 @@ namespace atomic_dex
         ::mm2::api::from_json(answer, answer_r);
         if (is_pin_cfg_enabled())
         {
+            std::shared_lock lock(m_balance_mutex);
+
             if (m_balance_informations.find(answer_r.coin) != m_balance_informations.end())
             {
                 return;
@@ -1325,7 +1308,10 @@ namespace atomic_dex
 
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
         answer_r.balance  = result.str(8, std::ios_base::fixed);
-        m_balance_informations.insert_or_assign(answer_r.coin, answer_r);
+        {
+            std::unique_lock lock(m_balance_mutex);
+            m_balance_informations[answer_r.coin] = std::move(answer_r);
+        }
     }
 
     nlohmann::json
@@ -1557,5 +1543,4 @@ namespace atomic_dex
         }
         return servers;
     }
-
 } // namespace atomic_dex

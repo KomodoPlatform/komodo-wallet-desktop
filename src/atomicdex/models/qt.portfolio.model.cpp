@@ -139,7 +139,7 @@ namespace atomic_dex
                         QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
-                    // SPDLOG_DEBUG("updated currency values of: {}", ticker);
+                    //SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
             };
             taskflow.emplace(update_functor);
