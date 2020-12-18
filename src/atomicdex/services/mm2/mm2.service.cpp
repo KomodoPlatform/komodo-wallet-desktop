@@ -643,19 +643,20 @@ namespace atomic_dex
     t_orderbook_answer
     mm2_service::get_orderbook(t_mm2_ec& ec) const noexcept
     {
-        auto&& [base, rel]     = this->m_synchronized_ticker_pair.get();
-        const std::string pair = base + "/" + rel;
-        if (m_current_orderbook.empty())
+        auto&& [base, rel]          = this->m_synchronized_ticker_pair.get();
+        const std::string pair      = base + "/" + rel;
+        auto              orderbook = m_orderbook.get();
+        if (orderbook.base.empty() && orderbook.rel.empty())
         {
             ec = dextop_error::orderbook_empty;
             return {};
         }
-        if (m_current_orderbook.find(pair) == m_current_orderbook.cend())
+        if (pair != orderbook.base + "/" + rel)
         {
             ec = dextop_error::orderbook_ticker_not_found;
             return {};
         }
-        return m_current_orderbook.at(pair);
+        return orderbook;
     }
 
     nlohmann::json
@@ -721,7 +722,7 @@ namespace atomic_dex
 
                         if (orderbook_answer.rpc_result_code == 200)
                         {
-                            m_current_orderbook.insert_or_assign(orderbook_ticker_base + "/" + orderbook_ticker_rel, orderbook_answer);
+                            m_orderbook = orderbook_answer;
                             this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
                         }
 
@@ -762,7 +763,7 @@ namespace atomic_dex
 
                     if (orderbook_answer.rpc_result_code == 200)
                     {
-                        m_current_orderbook.insert_or_assign(base + "/" + rel, orderbook_answer);
+                        m_orderbook = orderbook_answer;
                         this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
                     }
 
