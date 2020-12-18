@@ -35,7 +35,8 @@ namespace atomic_dex
             ERC20      = 1,
             UTXO       = 2,
             SmartChain = 3,
-            Size       = 4
+            All        = 4,
+            Size       = 5
         };
 
         Q_ENUM(CoinTypeEnum)

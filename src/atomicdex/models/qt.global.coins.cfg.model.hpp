@@ -32,16 +32,26 @@
 namespace atomic_dex
 {
     using cfg_proxy_model_list = QList<global_coins_cfg_proxy_model*>;
-
+    
     class ENTT_API global_coins_cfg_model final : public QAbstractListModel
     {
         //! Q_Object definition
         Q_OBJECT
-        Q_PROPERTY(cfg_proxy_model_list global_coins_cfg_proxy_mdl READ get_global_coins_cfg_proxy_mdl NOTIFY globalCoinsCfgProxyChanged);
 
-        std::vector<coin_config>             m_model_data;
-        QList<global_coins_cfg_proxy_model*> m_proxies;
-        // global_coins_cfg_proxy_model* m_model_data_proxy;
+        std::vector<coin_config>                                    m_model_data;
+        
+        std::array<global_coins_cfg_proxy_model*, ::CoinType::Size> m_proxies;
+        
+        int                                                         m_checked_nb{0};
+    
+        Q_PROPERTY(global_coins_cfg_proxy_model* qrc20_proxy READ get_qrc20_proxy NOTIFY qrc20_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* erc20_proxy READ get_erc20_proxy NOTIFY erc20_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* smartchains_proxy READ get_smartchains_proxy NOTIFY smartchains_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* utxo_proxy READ get_utxo_proxy NOTIFY utxo_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* all_proxy READ get_all_proxy NOTIFY all_proxyChanged)
+        
+        Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
+        Q_PROPERTY(int checked_nb READ get_checked_nb WRITE set_checked_nb NOTIFY checked_nbChanged)
 
       signals:
         void globalCoinsCfgProxyChanged();
@@ -66,21 +76,52 @@ namespace atomic_dex
 
         //! Constructor / Destructor
         explicit global_coins_cfg_model(QObject* parent = nullptr) noexcept;
-        ~global_coins_cfg_model() noexcept final = default;
+        ~global_coins_cfg_model() noexcept final;
 
         //! CPP API
         void initialize_model(std::vector<coin_config> cfg) noexcept;
 
         template <typename TArray>
         void update_status(const TArray& tickers, bool status) noexcept;
-
-        //! Properties
-        [[nodiscard]] cfg_proxy_model_list get_global_coins_cfg_proxy_mdl() const noexcept;
-
+        
         //! Overrides
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
-        [[nodiscard]] int                    rowCount(const QModelIndex& parent) const final;
+        [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
+        
+        //! QML API
+        [[nodiscard]]
+        Q_INVOKABLE QStringList get_checked_coins() const noexcept;
+    
+        //! Properties
+        [[nodiscard]]
+        global_coins_cfg_proxy_model* get_qrc20_proxy() const noexcept;
+        [[nodiscard]]
+        global_coins_cfg_proxy_model* get_erc20_proxy() const noexcept;
+        [[nodiscard]]
+        global_coins_cfg_proxy_model* get_smartchains_proxy() const noexcept;
+        [[nodiscard]]
+        global_coins_cfg_proxy_model* get_utxo_proxy() const noexcept;
+        [[nodiscard]]
+        global_coins_cfg_proxy_model* get_all_proxy() const noexcept;
+        
+        [[nodiscard]]
+        int get_length() const noexcept;
+        
+        [[nodiscard]]
+        int get_checked_nb() const noexcept;
+        void set_checked_nb(int value) noexcept;
+        
+      signals:
+        void qrc20_proxyChanged();
+        void erc20_proxyChanged();
+        void smartchains_proxyChanged();
+        void utxo_proxyChanged();
+        void all_proxyChanged();
+        
+        void lengthChanged();
+        
+        void checked_nbChanged();
     };
 } // namespace atomic_dex

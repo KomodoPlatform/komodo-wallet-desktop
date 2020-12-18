@@ -2,13 +2,17 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import AtomicDEX.CoinType 1.0
+
 import "../Components"
 import "../Constants"
 
 Column {
+    id: root
+
     property alias parent_box: parentBox
     property alias group_title: parentBox.text
-    property alias model: utxo_list.model
+    property var model
 
     ButtonGroup {
         id: childGroup
@@ -18,31 +22,37 @@ Column {
 
     DefaultCheckBox {
         id: parentBox
-        visible: utxo_list.model.length > 0
+        visible: repeater.count > 0
         checkState: childGroup.checkState
     }
 
     Repeater {
-        id: utxo_list
+        id: repeater
+        model: root.model
 
-        delegate: DefaultCheckBox {
-            text: "         " + model.modelData.name + " (" + model.modelData.ticker + ")"
+        DefaultCheckBox {
+            text: "         " + model.name + " (" + model.ticker + ")"
             leftPadding: indicator.width
             ButtonGroup.group: childGroup
+
+            onCheckStateChanged: {
+                if (checkable) {
+                    model.checked = checked
+                }
+            }
+
+            /* handles special case where the check box is unchecked by the search bar filtering even
+               when the coin is still considered as checked */
+            Component.onCompleted: checked = model.checked
 
             // Icon
             DefaultImage {
                 id: icon
                 anchors.left: parent.left
                 anchors.leftMargin: parent.leftPadding + 28
-                source: General.coinIcon(model.modelData.ticker)
+                source: General.coinIcon(model.ticker)
                 width: Style.textSize2
                 anchors.verticalCenter: parent.verticalCenter
-            }
-
-            checked: selected_to_enable[model.modelData.ticker] === true
-            onCheckStateChanged: {
-                markToEnable(model.modelData.ticker, checkState === Qt.Checked)
             }
         }
     }

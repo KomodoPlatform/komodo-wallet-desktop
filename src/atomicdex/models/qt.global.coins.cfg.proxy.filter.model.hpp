@@ -26,6 +26,8 @@ namespace atomic_dex
 
         bool     m_exclude_enabled_coins{false};
         CoinType m_type{CoinType::Size}; ///< if Size means no filter by type
+        
+        Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
 
       public:
         //! Constructor
@@ -41,5 +43,17 @@ namespace atomic_dex
       protected:
         //! Override member functions
         bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+    
+        bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        
+      private:
+        //! Properties
+        [[nodiscard]]
+        int get_length() const noexcept;
+        
+      signals:
+        void lengthChanged();
     };
 } // namespace atomic_dex
+
+Q_DECLARE_METATYPE(atomic_dex::global_coins_cfg_proxy_model*);
