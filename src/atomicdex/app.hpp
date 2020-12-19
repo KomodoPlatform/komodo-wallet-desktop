@@ -64,7 +64,6 @@ namespace atomic_dex
         Q_OBJECT
 
         //! Properties
-        Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(addressbook_page* addressbook_pg READ get_addressbook_page NOTIFY addressbookPageChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
@@ -80,7 +79,6 @@ namespace atomic_dex
         //! Private function
         void connect_signals();
         void tick();
-        void process_refresh_enabled_coin_action();
 
         enum events_action
         {
@@ -99,7 +97,6 @@ namespace atomic_dex
         std::shared_ptr<QApplication>         m_app;
         t_actions_queue                       m_actions_queue{g_max_actions_size};
         t_portfolio_coins_to_initialize_queue m_portfolio_queue{g_max_actions_size};
-        QVariantList                          m_enableable_coins;
         QVariant                              m_update_status;
         t_manager_model_registry              m_manager_models;
         t_events_actions                      m_event_actions{{false}};
@@ -114,10 +111,7 @@ namespace atomic_dex
         //! entt::dispatcher events
         void on_ticker_balance_updated_event(const ticker_balance_updated&) noexcept;
         void on_fiat_rate_updated(const fiat_rate_updated&) noexcept;
-        void on_enabled_coins_event(const enabled_coins_event&) noexcept;
-        void on_enabled_default_coins_event(const enabled_default_coins_event&) noexcept;
         void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;
-        void on_coin_disabled_event(const coin_disabled&) noexcept;
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void on_process_orders_finished_event(const process_orders_finished&) noexcept;
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
@@ -137,7 +131,6 @@ namespace atomic_dex
         internet_service_checker*        get_internet_checker() const noexcept;
         ip_service_checker*              get_ip_checker() const noexcept;
         update_service_checker*          get_update_checker() const noexcept;
-        QVariantList                     get_enableable_coins() const noexcept;
 
         //! Properties Setter
         void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) noexcept;
@@ -175,7 +168,6 @@ namespace atomic_dex
       signals:
         //! Signals to the QML Worlds
         void walletMgrChanged();
-        void enableableCoinsChanged();
         void coinInfoChanged();
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();

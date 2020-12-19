@@ -284,22 +284,6 @@ namespace atomic_dex
     }
 
     t_coins
-    mm2_service::get_enableable_coins() const noexcept
-    {
-        t_coins destination;
-
-        for (auto&& [key, value]: m_coins_informations)
-        {
-            if (not value.currently_enabled)
-            {
-                destination.emplace_back(value);
-            }
-        }
-
-        return destination;
-    }
-
-    t_coins
     mm2_service::get_active_coins() const noexcept
     {
         t_coins destination;
@@ -422,7 +406,6 @@ namespace atomic_dex
                         if (is_during_enabling)
                         {
                             dispatcher_.trigger<coin_enabled>(tickers);
-                            this->dispatcher_.trigger<enabled_default_coins_event>();
                         }
                     }
                 }
