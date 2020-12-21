@@ -21,9 +21,10 @@
 #include <QJsonDocument>
 
 //! Project
-#include "qt.addressbook.contact.model.hpp"
-#include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
+#include "qt.addressbook.contact.model.hpp"
 
 
 //! Constructors.
@@ -34,23 +35,21 @@ namespace atomic_dex
     {
         populate();
     }
-    
-    addressbook_contact_model::~addressbook_contact_model() noexcept
-    {
-        clear();
-    }
-}
+
+    addressbook_contact_model::~addressbook_contact_model() noexcept { clear(); }
+} // namespace atomic_dex
 
 //! QAbstractListModel implementation
 namespace atomic_dex
 {
-    QVariant addressbook_contact_model::data(const QModelIndex& index, int role) const
+    QVariant
+    addressbook_contact_model::data(const QModelIndex& index, int role) const
     {
         if (!hasIndex(index.row(), index.column(), index.parent()))
         {
             return {};
         }
-    
+
         const auto& data = m_model_data.at(index.row());
         switch (role)
         {
@@ -60,19 +59,21 @@ namespace atomic_dex
             return {};
         }
     }
-    
-    int addressbook_contact_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
+
+    int
+    addressbook_contact_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
         return m_model_data.count();
     }
-    
-    QHash<int, QByteArray> addressbook_contact_model::roleNames() const
+
+    QHash<int, QByteArray>
+    addressbook_contact_model::roleNames() const
     {
         return {
             {WalletInfoRole, "wallet_info"},
         };
     }
-}
+} // namespace atomic_dex
 
 //! QML API implementation
 namespace atomic_dex
@@ -137,7 +138,7 @@ namespace atomic_dex
     {
         // Clears model
         clear();
-        
+
         // Repopulates inner model data.
         populate();
     }
@@ -149,48 +150,46 @@ namespace atomic_dex
 
         // Saves categories.
         addrbook_manager.reset_contact_categories(m_name.toStdString());
-        for (const auto& category: m_categories)
-        {
-            addrbook_manager.add_contact_category(m_name.toStdString(), category.toStdString());
-        }
-        
+        for (const auto& category: m_categories) { addrbook_manager.add_contact_category(m_name.toStdString(), category.toStdString()); }
+
         // Cleans existing wallet info persistent data before erasing it.
         addrbook_manager.remove_every_wallet_info(m_name.toStdString());
-        
+
         // Saves inner model data.
-        for (auto& data: m_model_data)
-        {
-            data->save();
-        }
+        for (auto& data: m_model_data) { data->save(); }
 
         addrbook_manager.save_configuration();
     }
-}
+} // namespace atomic_dex
 
 //! Misc section.
 namespace atomic_dex
 {
-    void addressbook_contact_model::populate()
+    void
+    addressbook_contact_model::populate()
     {
         //! Loads categories.
         {
             auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
             auto& contact          = addrbook_manager.get_contact(m_name.toStdString());
-            
+
             set_categories(vector_std_string_to_qt_string_list(contact.at("categories")));
         }
         //! Loads inner model data (wallets info).
         {
-            const auto& mm2                    = m_system_manager.get_system<mm2_service>();
-            const auto  coins_list             = mm2.get_all_coins();
-            const auto  create_addresses_model = [this](const QString& type)
-            {
+            const auto& portfolio_pg           = m_system_manager.get_system<portfolio_page>();
+            const auto  coins_list             = portfolio_pg.get_global_cfg()->get_model_data();
+            const auto  create_addresses_model = [this](const QString& type) {
                 m_model_data.push_back(new addressbook_contact_addresses_model(m_system_manager, m_name, type, this));
             };
-            
+
             beginResetModel();
-            for (const auto& coin : coins_list)
+            for (const auto& coin: coins_list)
             {
+                if (coin.ticker == "All")
+                {
+                    continue;
+                }
                 create_addresses_model(QString::fromStdString(coin.ticker));
             }
             create_addresses_model("QRC20");
@@ -199,12 +198,13 @@ namespace atomic_dex
             endResetModel();
         }
     }
-    
-    void addressbook_contact_model::clear()
+
+    void
+    addressbook_contact_model::clear()
     {
         // Clears categories.
         m_categories.clear();
-    
+
         beginResetModel();
         // Clears inner model data.
         for (auto* inner_model: m_model_data)
@@ -215,4 +215,4 @@ namespace atomic_dex
         m_model_data.clear();
         endResetModel();
     }
-}
+} // namespace atomic_dex

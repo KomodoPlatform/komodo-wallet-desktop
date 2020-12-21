@@ -163,7 +163,6 @@ namespace atomic_dex
         Q_INVOKABLE bool               disable_coins(const QStringList& coins);
         Q_INVOKABLE QString            get_fiat_from_amount(const QString& ticker, const QString& amount);
         Q_INVOKABLE QVariant           get_coin_info(const QString& ticker);
-        Q_INVOKABLE QVariantList       get_all_coins() const noexcept;
 
       signals:
         //! Signals to the QML Worlds

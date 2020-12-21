@@ -458,12 +458,6 @@ namespace atomic_dex
 //! Misc QML Utilities
 namespace atomic_dex
 {
-    QVariantList
-    application::get_all_coins() const noexcept
-    {
-        return to_qt_binding(get_mm2().get_all_coins());
-    }
-
     QString
     application::to_eth_checksum_qt(const QString& eth_lowercase_address)
     {

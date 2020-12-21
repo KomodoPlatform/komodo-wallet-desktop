@@ -81,6 +81,7 @@ namespace atomic_dex
 
         //! CPP API
         void initialize_model(std::vector<coin_config> cfg) noexcept;
+        const std::vector<coin_config>& get_model_data() const noexcept;
 
         template <typename TArray>
         void update_status(const TArray& tickers, bool status) noexcept;

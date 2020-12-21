@@ -206,9 +206,6 @@ namespace atomic_dex
         //! Get coins that are active, but may be not enabled
         [[nodiscard]] t_coins get_active_coins() const noexcept;
 
-        //! Get all coins
-        [[nodiscard]] t_coins get_all_coins() const noexcept;
-
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 

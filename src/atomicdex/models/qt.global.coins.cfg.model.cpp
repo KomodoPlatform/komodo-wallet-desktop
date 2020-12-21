@@ -21,8 +21,7 @@
 //! Constructor
 namespace atomic_dex
 {
-    global_coins_cfg_model::global_coins_cfg_model(QObject* parent) noexcept :
-        QAbstractListModel(parent)
+    global_coins_cfg_model::global_coins_cfg_model(QObject* parent) noexcept : QAbstractListModel(parent)
     {
         for (int i = 0; i < CoinType::Size; ++i)
         {
@@ -36,7 +35,7 @@ namespace atomic_dex
             //! Initial State will be enableable
             m_proxies[i]->filter_by_type(static_cast<::CoinType>(i));
             m_proxies[i]->filter_by_enableable();
-    
+
             m_proxies[i]->sort(0);
         }
     }
@@ -188,11 +187,12 @@ namespace atomic_dex
 //! QML API
 namespace atomic_dex
 {
-    QStringList global_coins_cfg_model::get_checked_coins() const noexcept
+    QStringList
+    global_coins_cfg_model::get_checked_coins() const noexcept
     {
         QStringList result;
-        
-        for (auto&& coin_cfg : m_model_data)
+
+        for (auto&& coin_cfg: m_model_data)
         {
             if (coin_cfg.checked)
             {
@@ -201,52 +201,61 @@ namespace atomic_dex
         }
         return result;
     }
-}
+} // namespace atomic_dex
 
 //! Properties
 namespace atomic_dex
 {
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_qrc20_proxy() const noexcept
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_qrc20_proxy() const noexcept
     {
         return m_proxies[CoinType::QRC20];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_erc20_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_erc20_proxy() const noexcept
     {
         return m_proxies[CoinType::ERC20];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_smartchains_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_smartchains_proxy() const noexcept
     {
         return m_proxies[CoinType::SmartChain];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_utxo_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_utxo_proxy() const noexcept
     {
         return m_proxies[CoinType::UTXO];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_disabled_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_disabled_proxy() const noexcept
     {
         return m_proxies[CoinType::AllDisabled];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_proxy() const noexcept
     {
         return m_proxies[CoinType::All];
     }
-    
-    int global_coins_cfg_model::get_length() const noexcept
+
+    int
+    global_coins_cfg_model::get_length() const noexcept
     {
         return rowCount();
     }
-    
-    int global_coins_cfg_model::get_checked_nb() const noexcept
+
+    int
+    global_coins_cfg_model::get_checked_nb() const noexcept
     {
         return m_checked_nb;
     }
-    
-    void global_coins_cfg_model::set_checked_nb(int value) noexcept
+
+    void
+    global_coins_cfg_model::set_checked_nb(int value) noexcept
     {
         if (value == m_checked_nb)
         {
@@ -255,4 +264,10 @@ namespace atomic_dex
         m_checked_nb = value;
         emit checked_nbChanged();
     }
-}
+
+    const std::vector<coin_config>&
+    global_coins_cfg_model::get_model_data() const noexcept
+    {
+        return m_model_data;
+    }
+} // namespace atomic_dex
