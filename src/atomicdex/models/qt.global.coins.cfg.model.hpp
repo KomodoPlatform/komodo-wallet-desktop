@@ -93,9 +93,8 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         
         //! QML API
-        [[nodiscard]]
-        Q_INVOKABLE QStringList get_checked_coins() const noexcept;
-        Q_INVOKABLE QVariant get_coin_info(QString ticker) const noexcept;
+        [[nodiscard]] Q_INVOKABLE QStringList get_checked_coins() const noexcept;
+        [[nodiscard]] Q_INVOKABLE QVariant get_coin_info(const QString& ticker) const noexcept;
     
         //! Properties
         [[nodiscard]]

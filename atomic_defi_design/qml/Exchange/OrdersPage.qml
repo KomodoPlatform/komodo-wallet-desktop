@@ -156,7 +156,7 @@ Item {
                 // Rel
                 DefaultImage {
                     Layout.rightMargin: 15
-                    source: General.coinIcon(combo_rel.currentText)
+                    source: combo_rel.currentText === "All" ? "" : General.coinIcon(combo_rel.currentText)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }

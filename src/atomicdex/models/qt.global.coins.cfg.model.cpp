@@ -296,7 +296,7 @@ namespace atomic_dex
     }
 
     QVariant
-    global_coins_cfg_model::get_coin_info(QString ticker) const noexcept
+    global_coins_cfg_model::get_coin_info(const QString& ticker) const noexcept
     {
         if (const auto res = this->match(this->index(0, 0), TickerRole, ticker); not res.isEmpty())
         {
