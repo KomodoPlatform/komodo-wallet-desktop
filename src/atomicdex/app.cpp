@@ -340,16 +340,6 @@ namespace atomic_dex
         }
     }
 
-    QVariant
-    application::get_coin_info(const QString& ticker)
-    {
-        QVariant       out;
-        nlohmann::json j      = to_qt_binding(get_mm2().get_coin_info(ticker.toStdString()));
-        QJsonDocument  q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
-        out                   = q_json.toVariant();
-        return out;
-    }
-
     bool
     application::disconnect()
     {

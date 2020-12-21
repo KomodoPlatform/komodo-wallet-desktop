@@ -25,31 +25,5 @@
 
 namespace atomic_dex
 {
-    inline nlohmann::json
-    to_qt_binding(t_coins::value_type&& coin)
-    {
-        nlohmann::json j{
-            {"active", coin.active},
-            {"is_claimable", coin.is_claimable},
-            {"minimal_balance_for_asking_rewards", coin.minimal_claim_amount},
-            {"ticker", coin.ticker},
-            {"name", coin.name},
-            {"type", coin.type},
-            {"explorer_url", coin.explorer_url},
-            {"tx_uri", coin.tx_uri},
-            {"address_uri", coin.address_url},
-            {"is_custom_coin", coin.is_custom_coin}};
-        return j;
-    }
 
-    QVariantList inline to_qt_binding(t_coins&& coins)
-    {
-        QVariantList out;
-        out.reserve(coins.size());
-        nlohmann::json j = nlohmann::json::array();
-        for (auto&& coin: coins) { j.push_back(to_qt_binding(std::move(coin))); }
-        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
-        out                  = q_json.array().toVariantList();
-        return out;
-    }
 } // namespace atomic_dex

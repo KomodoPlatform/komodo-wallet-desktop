@@ -251,13 +251,6 @@ namespace atomic_dex
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
     }
 
-    QVariantList
-    settings_page::get_custom_coins() const noexcept
-    {
-        auto coins = m_system_manager.get_system<mm2_service>().get_custom_coins();
-        return to_qt_binding(std::move(coins));
-    }
-
     QString
     settings_page::get_custom_coins_icons_path() const noexcept
     {

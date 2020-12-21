@@ -95,6 +95,7 @@ namespace atomic_dex
         //! QML API
         [[nodiscard]]
         Q_INVOKABLE QStringList get_checked_coins() const noexcept;
+        Q_INVOKABLE QVariant get_coin_info(QString ticker) const noexcept;
     
         //! Properties
         [[nodiscard]]

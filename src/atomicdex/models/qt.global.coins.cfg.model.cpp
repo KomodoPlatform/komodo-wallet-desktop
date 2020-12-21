@@ -14,9 +14,33 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Qt Headers
+#include <QJsonArray>
+#include <QJsonObject>
+
 //! Project Headers
 #include "atomicdex/models/qt.global.coins.cfg.model.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+
+namespace
+{
+    QJsonObject
+    to_qt_binding(const atomic_dex::coin_config& coin) noexcept
+    {
+        QJsonObject j{
+            {"active", coin.active},
+            {"is_claimable", coin.is_claimable},
+            {"minimal_balance_for_asking_rewards", QString::fromStdString(coin.minimal_claim_amount)},
+            {"ticker", QString::fromStdString(coin.ticker)},
+            {"name", QString::fromStdString(coin.name)},
+            {"type", QString::fromStdString(coin.type)},
+            {"explorer_url", QJsonArray::fromStringList(atomic_dex::vector_std_string_to_qt_string_list(coin.explorer_url))},
+            {"tx_uri", QString::fromStdString(coin.tx_uri)},
+            {"address_uri", QString::fromStdString(coin.address_url)},
+            {"is_custom_coin", coin.is_custom_coin}};
+        return j;
+    }
+} // namespace
 
 //! Constructor
 namespace atomic_dex
@@ -269,5 +293,17 @@ namespace atomic_dex
     global_coins_cfg_model::get_model_data() const noexcept
     {
         return m_model_data;
+    }
+
+    QVariant
+    global_coins_cfg_model::get_coin_info(QString ticker) const noexcept
+    {
+        if (const auto res = this->match(this->index(0, 0), TickerRole, ticker); not res.isEmpty())
+        {
+            const QModelIndex& idx  = res.at(0);
+            const coin_config& item = m_model_data.at(idx.row());
+            return to_qt_binding(item);
+        }
+        return {};
     }
 } // namespace atomic_dex

@@ -16,7 +16,7 @@ QtObject {
     function coinIcon(ticker) {
         if(ticker === "") return ""
 
-        const coin_info = API.app.get_coin_info(ticker)
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
@@ -131,7 +131,7 @@ QtObject {
 
     function viewTxAtExplorer(ticker, id, add_0x=true) {
         if(id !== '') {
-            const coin_info = API.app.get_coin_info(ticker)
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
         }
@@ -139,7 +139,7 @@ QtObject {
 
     function viewAddressAtExplorer(ticker, address) {
         if(address !== '') {
-            const coin_info = API.app.get_coin_info(ticker)
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.address_uri + address)
         }
     }
