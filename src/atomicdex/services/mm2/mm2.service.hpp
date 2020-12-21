@@ -44,7 +44,7 @@ namespace atomic_dex
     using t_shared_synchronized_value = boost::synchronized_value<T, boost::shared_mutex>;
 
     using t_ticker         = std::string;
-    using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
+    using t_coins_registry = std::unordered_map<t_ticker, coin_config>;
     using t_coins          = std::vector<coin_config>;
 
     //! Constants
@@ -96,6 +96,7 @@ namespace atomic_dex
 
         //! Mutex
         mutable std::shared_mutex m_balance_mutex;
+        mutable std::shared_mutex m_coin_cfg_mutex;
 
         //! Concurrent Registry.
         t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
@@ -128,6 +129,7 @@ namespace atomic_dex
         std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
         [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const noexcept;
         std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
+        std::vector<atomic_dex::coin_config> retrieve_coins_informations() noexcept;
 
       public:
         //! Constructor

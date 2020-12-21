@@ -115,16 +115,19 @@ namespace
         assert(ofs.is_open());
         ofs << config_json_data;
     }
+} // namespace
 
+namespace atomic_dex
+{
     std::vector<atomic_dex::coin_config>
-    retrieve_coins_information(const std::string& wallet_name, atomic_dex::t_coins_registry& coins_registry)
+    mm2_service::retrieve_coins_informations() noexcept
     {
         std::vector<atomic_dex::coin_config> cfg;
         SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        check_for_reconfiguration(wallet_name);
+        check_for_reconfiguration(m_current_wallet_name);
         const auto  cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
-        std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
+        std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
         SPDLOG_INFO("Retrieving Wallet information of {}", (cfg_path / filename).string());
         if (exists(cfg_path / filename))
         {
@@ -134,19 +137,17 @@ namespace
             ifs >> config_json_data;
             auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
             cfg.reserve(res.size());
-            for (auto&& [key, value]: res)
+            for (auto&& [key, value]: res) { cfg.emplace_back(value); }
             {
-                coins_registry.insert_or_assign(key, value);
-                cfg.emplace_back(value);
+                std::unique_lock lock(m_coin_cfg_mutex);
+                m_coins_informations = std::move(res);
             }
+
             return cfg;
         }
         return cfg;
     }
-} // namespace
 
-namespace atomic_dex
-{
     mm2_service::mm2_service(entt::registry& registry, ag::ecs::system_manager& system_manager) : system(registry), m_system_manager(system_manager)
     {
         m_orderbook_clock = std::chrono::high_resolution_clock::now();
@@ -253,6 +254,7 @@ namespace atomic_dex
     {
         t_coins destination;
 
+        std::shared_lock lock(m_coin_cfg_mutex);
         for (auto&& [key, value]: m_coins_informations)
         {
             if (value.currently_enabled)
@@ -269,6 +271,7 @@ namespace atomic_dex
     {
         t_coins destination;
 
+        std::shared_lock lock(m_coin_cfg_mutex);
         for (auto&& [key, value]: m_coins_informations)
         {
             if (value.active)
@@ -283,7 +286,7 @@ namespace atomic_dex
     bool
     mm2_service::disable_coin(const std::string& ticker, std::error_code& ec) noexcept
     {
-        coin_config coin_info = m_coins_informations.at(ticker);
+        coin_config coin_info = get_coin_info(ticker);
         if (not coin_info.currently_enabled)
         {
             return true;
@@ -313,7 +316,11 @@ namespace atomic_dex
         }
 
         coin_info.currently_enabled = false;
-        m_coins_informations.assign(coin_info.ticker, coin_info);
+
+        {
+            std::unique_lock lock(m_coin_cfg_mutex);
+            m_coins_informations[ticker].currently_enabled = false;
+        }
 
         dispatcher_.trigger<coin_disabled>(ticker);
         return true;
@@ -452,10 +459,11 @@ namespace atomic_dex
 
         if (answer.contains("coin"))
         {
-            auto        ticker          = answer.at("coin").get<std::string>();
-            coin_config coin_info       = m_coins_informations.at(ticker);
-            coin_info.currently_enabled = true;
-            m_coins_informations.assign(coin_info.ticker, coin_info);
+            auto ticker = answer.at("coin").get<std::string>();
+            {
+                std::unique_lock lock(m_coin_cfg_mutex);
+                m_coins_informations[ticker].currently_enabled = true;
+            }
             return {true, ""};
         }
 
@@ -469,12 +477,12 @@ namespace atomic_dex
         nlohmann::json btc_kmd_batch = nlohmann::json::array();
         if (first_time)
         {
-            coin_config        coin_info = m_coins_informations.at("BTC");
+            coin_config        coin_info = get_coin_info("BTC");
             t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
             nlohmann::json     j = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(j, request);
             btc_kmd_batch.push_back(j);
-            coin_info = m_coins_informations.at("KMD");
+            coin_info = get_coin_info("KMD");
             t_electrum_request request_kmd{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
             j = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(j, request_kmd);
@@ -490,7 +498,7 @@ namespace atomic_dex
             if (ticker == "BTC" || ticker == "KMD")
                 continue;
             copy_tickers.push_back(ticker);
-            coin_config coin_info = m_coins_informations.at(ticker);
+            coin_config coin_info = get_coin_info(ticker);
 
             if (coin_info.currently_enabled)
             {
@@ -601,6 +609,7 @@ namespace atomic_dex
     coin_config
     mm2_service::get_coin_info(const std::string& ticker) const
     {
+        std::shared_lock lock(m_coin_cfg_mutex);
         if (m_coins_informations.find(ticker) == m_coins_informations.cend())
         {
             return {};
@@ -785,7 +794,7 @@ namespace atomic_dex
         SPDLOG_DEBUG("balance factor is: {}", m_balance_factor);
         SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
-        this->dispatcher_.trigger<coin_cfg_parsed>(retrieve_coins_information(this->m_current_wallet_name, m_coins_informations));
+        this->dispatcher_.trigger<coin_cfg_parsed>(this->retrieve_coins_informations());
         mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
         ::mm2::api::set_rpc_password(cfg.rpc_password);
         json       json_cfg;
@@ -1406,6 +1415,7 @@ namespace atomic_dex
     bool
     mm2_service::is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept
     {
+        std::shared_lock lock(m_coin_cfg_mutex);
         return m_coins_informations.find(ticker) != m_coins_informations.end();
     }
 
@@ -1428,7 +1438,10 @@ namespace atomic_dex
             //! Read Contents
             ifs >> config_json_data;
 
-            this->m_coins_informations.erase(ticker);
+            {
+                std::unique_lock lock(m_coin_cfg_mutex);
+                this->m_coins_informations.erase(ticker);
+            }
 
             config_json_data.erase(config_json_data.find(ticker));
 
