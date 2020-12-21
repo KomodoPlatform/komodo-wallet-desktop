@@ -48,6 +48,7 @@ namespace atomic_dex
         Q_PROPERTY(global_coins_cfg_proxy_model* erc20_proxy READ get_erc20_proxy NOTIFY erc20_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* smartchains_proxy READ get_smartchains_proxy NOTIFY smartchains_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* utxo_proxy READ get_utxo_proxy NOTIFY utxo_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* all_disabled_proxy READ get_all_disabled_proxy NOTIFY all_disabled_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_proxy READ get_all_proxy NOTIFY all_proxyChanged)
         
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
@@ -76,7 +77,7 @@ namespace atomic_dex
 
         //! Constructor / Destructor
         explicit global_coins_cfg_model(QObject* parent = nullptr) noexcept;
-        ~global_coins_cfg_model() noexcept final;
+        ~global_coins_cfg_model() noexcept final = default;
 
         //! CPP API
         void initialize_model(std::vector<coin_config> cfg) noexcept;
@@ -104,6 +105,8 @@ namespace atomic_dex
         [[nodiscard]]
         global_coins_cfg_proxy_model* get_utxo_proxy() const noexcept;
         [[nodiscard]]
+        global_coins_cfg_proxy_model* get_all_disabled_proxy() const noexcept;
+        [[nodiscard]]
         global_coins_cfg_proxy_model* get_all_proxy() const noexcept;
         
         [[nodiscard]]
@@ -118,6 +121,7 @@ namespace atomic_dex
         void erc20_proxyChanged();
         void smartchains_proxyChanged();
         void utxo_proxyChanged();
+        void all_disabled_proxyChanged();
         void all_proxyChanged();
         
         void lengthChanged();

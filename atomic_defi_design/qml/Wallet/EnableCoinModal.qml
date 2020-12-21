@@ -9,7 +9,7 @@ import "../Constants"
 
 BasicModal {
     property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
-    property bool should_clear: coin_cfg_model.all_proxy.length === coin_cfg_model.checked_nb
+    property bool should_clear: coin_cfg_model.all_disabled_proxy.length === coin_cfg_model.checked_nb
 
     function uncheck_all() {
         // Have to check and then uncheck to affect all child checkboxes
@@ -93,7 +93,7 @@ BasicModal {
 
         DefaultFlickable {
             id: flickable
-            visible: coin_cfg_model.all_proxy.length > 0
+            visible: coin_cfg_model.all_disabled_proxy.length > 0
 
             height: 375
             Layout.fillWidth: true
@@ -132,7 +132,7 @@ BasicModal {
 
         // Info text
         DefaultText {
-            visible: coin_cfg_model.all_proxy.length === 0
+            visible: coin_cfg_model.all_disabled_proxy.length === 0
 
             text_value: qsTr("All assets are already enabled!")
         }

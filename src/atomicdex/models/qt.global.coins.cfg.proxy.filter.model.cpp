@@ -41,7 +41,7 @@ namespace atomic_dex
             }
         }
 
-        if (m_type != CoinType::Size && m_type != CoinType::All)
+        if (m_type < CoinType::AllDisabled)
         {
             if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::CoinType) != static_cast<int>(m_type))
             {
@@ -65,6 +65,10 @@ namespace atomic_dex
             {
                 QString left_coin  = left_data.toString();
                 QString right_coin = right_data.toString();
+                if (left_coin == "All")
+                {
+                    return true;
+                }
                 return left_coin.toLower() < right_coin.toLower();
             }
             default:
@@ -80,6 +84,10 @@ namespace atomic_dex
     void
     global_coins_cfg_proxy_model::filter_by_enableable() noexcept
     {
+        if (m_type == CoinType::All)
+        {
+            return;
+        }
         m_exclude_enabled_coins = true;
         this->invalidateFilter();
     }

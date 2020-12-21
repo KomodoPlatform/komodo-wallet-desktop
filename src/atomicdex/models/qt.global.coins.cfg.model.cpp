@@ -34,19 +34,10 @@ namespace atomic_dex
             m_proxies[i]->setSortRole(CoinsRoles::NameRole);
 
             //! Initial State will be enableable
-            m_proxies[i]->filter_by_enableable();
             m_proxies[i]->filter_by_type(static_cast<::CoinType>(i));
+            m_proxies[i]->filter_by_enableable();
     
             m_proxies[i]->sort(0);
-        }
-    }
-    
-    global_coins_cfg_model::~global_coins_cfg_model() noexcept
-    {
-        for (int i = 0; i < CoinType::Size; i++)
-        {
-            delete m_proxies[i];
-            m_proxies[i] = nullptr;
         }
     }
 } // namespace atomic_dex
@@ -125,7 +116,7 @@ namespace atomic_dex
         }
 
         emit dataChanged(index, index, {role});
-        emit get_all_proxy()->lengthChanged();
+        emit get_all_disabled_proxy()->lengthChanged();
         return true;
     }
 
@@ -149,13 +140,14 @@ namespace atomic_dex
     void
     global_coins_cfg_model::initialize_model(std::vector<coin_config> cfg) noexcept
     {
+        cfg.push_back(coin_config{.ticker = "All", .currently_enabled = true, .active = true});
         SPDLOG_INFO("Initializing global coin cfg model with size {}", cfg.size());
         set_checked_nb(0);
         beginResetModel();
         m_model_data = std::move(cfg);
         endResetModel();
         emit lengthChanged();
-        emit get_all_proxy()->lengthChanged();
+        emit get_all_disabled_proxy()->lengthChanged();
     }
 
     template <typename TArray>
@@ -234,7 +226,11 @@ namespace atomic_dex
         return m_proxies[CoinType::UTXO];
     }
     
-    [[nodiscard]]
+    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_disabled_proxy() const noexcept
+    {
+        return m_proxies[CoinType::AllDisabled];
+    }
+    
     global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_proxy() const noexcept
     {
         return m_proxies[CoinType::All];
