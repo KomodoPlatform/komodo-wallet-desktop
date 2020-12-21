@@ -50,7 +50,7 @@ Item {
     }
 
     function applyTickerFilter() {
-        list_model_proxy.set_coin_filter(filter_enabled ? combo_base.currentValue + "/" + combo_rel.currentValue : "")
+        list_model_proxy.set_coin_filter(filter_enabled ? combo_base.currentText + "/" + combo_rel.currentText : "")
     }
 
     function applyFilter() {
@@ -99,7 +99,7 @@ Item {
                 // Base
                 DefaultImage {
                     Layout.leftMargin: 15
-                    source: General.coinIcon(combo_base.currentValue)
+                    source: General.coinIcon(combo_base.currentText)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
@@ -111,10 +111,10 @@ Item {
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
 
-                    textRole: "text"
-                    valueRole: "value"
+                    textRole: "ticker"
 
-                    model: ([{ value: "", text: qsTr("All") }].concat(General.tickersOfCoins(General.all_coins)))
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+
                     onCurrentValueChanged: applyTickerFilter()
                 }
 
@@ -124,8 +124,8 @@ Item {
                     Layout.rightMargin: 15
                     Layout.leftMargin: Layout.rightMargin
 
-                    top_arrow_ticker: combo_base.currentValue
-                    bottom_arrow_ticker: combo_rel.currentValue
+                    top_arrow_ticker: combo_base.currentText
+                    bottom_arrow_ticker: combo_rel.currentText
                     hovered: swap_button.containsMouse
 
                     DefaultMouseArea {
@@ -147,8 +147,7 @@ Item {
                     Layout.topMargin: combo_base.Layout.topMargin
                     Layout.bottomMargin: combo_base.Layout.bottomMargin
 
-                    textRole: "text"
-                    valueRole: "value"
+                    textRole: "ticker"
 
                     model: combo_base.model
                     onCurrentValueChanged: applyTickerFilter()
@@ -157,7 +156,7 @@ Item {
                 // Rel
                 DefaultImage {
                     Layout.rightMargin: 15
-                    source: General.coinIcon(combo_rel.currentValue)
+                    source: General.coinIcon(combo_rel.currentText)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
