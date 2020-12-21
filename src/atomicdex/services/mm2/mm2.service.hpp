@@ -169,7 +169,6 @@ namespace atomic_dex
         void                  remove_custom_coin(const std::string& ticker) noexcept;
         [[nodiscard]] bool    is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept;
         [[nodiscard]] bool    is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept;
-        [[nodiscard]] t_coins get_custom_coins() const noexcept;
 
         //! Disable a single coin
         bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;

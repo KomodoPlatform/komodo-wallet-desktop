@@ -261,8 +261,6 @@ namespace atomic_dex
             }
         }
 
-        std::sort(begin(destination), end(destination), [](auto&& lhs, auto&& rhs) { return lhs.ticker < rhs.ticker; });
-
         return destination;
     }
 
@@ -1409,21 +1407,6 @@ namespace atomic_dex
     mm2_service::is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept
     {
         return m_coins_informations.find(ticker) != m_coins_informations.end();
-    }
-
-    t_coins
-    mm2_service::get_custom_coins() const noexcept
-    {
-        t_coins out;
-
-        for (auto&& [key, value]: m_coins_informations)
-        {
-            if (value.is_custom_coin)
-            {
-                out.push_back(value);
-            }
-        }
-        return out;
     }
 
     void
