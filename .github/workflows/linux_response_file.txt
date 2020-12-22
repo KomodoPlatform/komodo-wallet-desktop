@@ -4,6 +4,8 @@ boost-multiprecision
 boost-random
 boost-lockfree
 boost-stacktrace
+boost-filesystem
+boost-thread
 doctest
 nlohmann-json
 range-v3

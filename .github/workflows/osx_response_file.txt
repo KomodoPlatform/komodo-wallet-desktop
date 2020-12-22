@@ -3,6 +3,8 @@ boost-multiprecision
 boost-random
 boost-lockfree
 boost-stacktrace
+boost-filesystem
+boost-thread
 doctest
 fmt
 nlohmann-json
