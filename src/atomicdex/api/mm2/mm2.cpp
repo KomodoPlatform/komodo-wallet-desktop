@@ -809,14 +809,14 @@ namespace mm2::api
                                  &total_time_in_ms](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
                 if (event_timestamp_registry.count(previous_event) != 0)
                 {
-                    std::int64_t ts                         = event_timestamp_registry.at(previous_event);
-                    jf_evt["started_at"]                    = ts;
-                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
-                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
-                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-                    jf_evt["time_diff"]                     = res;
-                    event_timestamp_registry[event_type]    = ts2; // Negotiated finished at this time
+                    std::int64_t ts                               = event_timestamp_registry.at(previous_event);
+                    jf_evt["started_at"]                          = ts;
+                    std::int64_t                              ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    date::sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    date::sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                                    res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                           = res;
+                    event_timestamp_registry[event_type]          = ts2; // Negotiated finished at this time
                     total_time_in_ms += res;
                 }
             };
@@ -840,8 +840,8 @@ namespace mm2::api
                     std::int64_t ts                         = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
                     jf_evt["started_at"]                    = ts;
                     std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
-                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
-                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    date::sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    date::sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
                     double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
                     jf_evt["time_diff"]                     = res;
                     event_timestamp_registry["Started"]     = ts2; // Started finished at this time

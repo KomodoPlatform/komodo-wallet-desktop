@@ -46,25 +46,30 @@ namespace atomic_dex
         mutable std::shared_mutex    m_ticker_infos_mutex;
         mutable std::shared_mutex    m_provider_mutex;
 
+        //! Private member functions
+        void verify_idx(t_ref_count_idx idx = nullptr, uint16_t target_size = 0, const std::vector<std::string>& tickers = {});
+
+        //! Private templated member functions
         template <typename TAnswer, typename TRegistry, typename TLockable>
         TAnswer get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const noexcept;
 
-        void process_provider(
-            const atomic_dex::coin_config& current_coin, std::shared_ptr<std::atomic_uint16_t> idx = nullptr, std::uint16_t target_size = 0,
-            std::vector<std::string> tickers = {});
-        void process_async_price_converter(
-            const t_price_converter_request& request, coin_config current_coin, std::shared_ptr<std::atomic_uint16_t> idx, std::uint16_t target_size,
-            std::vector<std::string> tickers);
-        void process_ticker_infos(
-            const coin_config& current_coin, t_ref_count_idx idx = nullptr, std::uint16_t target_size = 0, std::vector<std::string> tickers = {});
-        void process_async_ticker_infos(
-            const t_ticker_infos_request& request, const coin_config& current_coin, t_ref_count_idx idx, std::uint16_t target_size,
-            std::vector<std::string> tickers);
-        void process_ticker_historical(
-            const coin_config& current_coin, t_ref_count_idx idx = nullptr, std::uint16_t target_size = 0, std::vector<std::string> tickers = {});
-        void process_async_ticker_historical(
-            const t_ticker_historical_request& request, const coin_config& current_coin, t_ref_count_idx idx, std::uint16_t target_size,
-            std::vector<std::string> tickers);
+        //! Provider
+        template <typename... Args>
+        void process_async_price_converter(const t_price_converter_request& request, coin_config current_coin, Args... args);
+        template <typename... Args>
+        void process_provider(const atomic_dex::coin_config& current_coin, Args... args);
+
+        //! Ticker infos
+        template <typename... Args>
+        void process_async_ticker_infos(const t_ticker_infos_request& request, const coin_config& current_coin, Args... args);
+        template <typename... Args>
+        void process_ticker_infos(const coin_config& current_coin, Args... args);
+
+        //! Ticker historical
+        template <typename... Args>
+        void process_async_ticker_historical(const t_ticker_historical_request& request, const coin_config& current_coin, Args... args);
+        template <typename... Args>
+        void process_ticker_historical(const coin_config& current_coin, Args... args);
 
       public:
         //! Constructor
