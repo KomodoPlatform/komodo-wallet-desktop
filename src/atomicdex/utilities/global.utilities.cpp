@@ -99,19 +99,20 @@ namespace atomic_dex::utils
 #else
         auto res = p.u8string();
 
-        return [](auto& r) {
-          if constexpr (std::is_same_v<decltype(r), std::string>)
-          {
-              return r;
-          }
-          else
-          {
-              std::string s;
-              s.reserve(r.size());
-              std::copy(r.begin(), r.end(), s.begin());
-              return s;
-          }
-        }(res);
+        auto functor = [](auto&& r) {
+            if constexpr (std::is_same_v<std::remove_cvref_t<decltype(r)>, std::string>)
+            {
+                return r;
+            }
+            else
+            {
+                std::string s;
+                s.reserve(r.size());
+                std::copy(r.begin(), r.end(), s.begin());
+                return s;
+            }
+        };
+        return functor(res);
 #endif
     }
 
