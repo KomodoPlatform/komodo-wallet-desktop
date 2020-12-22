@@ -17,6 +17,9 @@
 //! PCH
 #include "atomicdex/pch.hpp"
 
+//! STD
+#include <unordered_set>
+
 //! Project Headers
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
@@ -1136,9 +1139,12 @@ namespace atomic_dex
     mm2_service::get_raw_mm2_ticker_cfg(const std::string& ticker) const noexcept
     {
         nlohmann::json out;
-        if (m_mm2_raw_coins_cfg.find(ticker) != m_mm2_raw_coins_cfg.end())
+
+        std::shared_lock lock(m_raw_coin_cfg_mutex);
+        const auto       it = m_mm2_raw_coins_cfg.find(ticker);
+        if (it != m_mm2_raw_coins_cfg.end())
         {
-            atomic_dex::coin_element element = m_mm2_raw_coins_cfg.at(ticker);
+            atomic_dex::coin_element element = it->second;
             to_json(out, element);
             return out;
         }
@@ -1409,6 +1415,7 @@ namespace atomic_dex
     bool
     mm2_service::is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept
     {
+        std::shared_lock lock(m_raw_coin_cfg_mutex);
         return m_mm2_raw_coins_cfg.find(ticker) != m_mm2_raw_coins_cfg.end();
     }
 

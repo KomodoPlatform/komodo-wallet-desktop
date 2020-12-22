@@ -52,8 +52,7 @@ namespace
             if (result.find("e") != std::string::npos)
             {
                 //! We have scientific notations lets get ride of that
-                do
-                {
+                do {
                     default_precision += 1;
                     retry();
                 } while (t_float_50(result) <= 0);
@@ -92,12 +91,14 @@ namespace atomic_dex
                     {
                         if (not answer.price.empty())
                         {
-                            this->m_coin_rate_providers.insert_or_assign(ticker, answer.price);
+                            std::unique_lock lock(m_coin_rate_mutex);
+                            this->m_coin_rate_providers[ticker] = answer.price;
                         }
                     }
                     else
                     {
-                        this->m_coin_rate_providers.insert_or_assign(ticker, "0.00");
+                        std::unique_lock lock(m_coin_rate_mutex);
+                        this->m_coin_rate_providers[ticker] = "0.00";
                     }
                 }
                 if (with_update_providers)
@@ -146,7 +147,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool adjusted) const noexcept
+    global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker, bool adjusted) const noexcept
     {
         //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
         if (ticker.empty())
@@ -157,7 +158,7 @@ namespace atomic_dex
         bool        is_oracle_ready = band_service.is_oracle_ready();
         if (current_price.empty())
         {
-            current_price = paprika.get_rate_conversion("USD", ticker, ec);
+            current_price = paprika.get_rate_conversion(ticker);
         }
 
         if (fiat != "KMD" && fiat != "BTC" && fiat != "USD")
@@ -168,7 +169,12 @@ namespace atomic_dex
 
         if ((fiat == "KMD" && not is_oracle_ready) || (fiat == "BTC" && not is_oracle_ready))
         {
-            t_float_50 tmp_current_price = t_float_50(current_price) * t_float_50(m_coin_rate_providers.at(fiat));
+            t_float_50 rate(1);
+            {
+                std::shared_lock lock(m_coin_rate_mutex);
+                rate = t_float_50(m_coin_rate_providers.at(fiat));
+            }
+            t_float_50 tmp_current_price = t_float_50(current_price) * rate;
             current_price                = tmp_current_price.str();
         }
         else if ((fiat == "BTC" || fiat == "KMD") && is_oracle_ready)
@@ -200,8 +206,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_price_as_currency_from_tx(
-        const std::string& currency, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
+    global_price_service::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx) const noexcept
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
@@ -210,10 +215,10 @@ namespace atomic_dex
             return "0.00";
         }
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
-        const auto current_price = get_rate_conversion(currency, ticker, ec);
-        if (ec)
+        const auto current_price = get_rate_conversion(currency, ticker);
+        if (current_price == "0.00")
         {
-            return "0.00";
+            return current_price;
         }
         return compute_result(amount, current_price, currency, this->m_cfg);
     }
@@ -240,7 +245,7 @@ namespace atomic_dex
 
                 if (ec)
                 {
-                    //SPDLOG_WARN("error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
+                    // SPDLOG_WARN("error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
                     ec.clear(); //! Reset
                     continue;
                 }
@@ -262,15 +267,14 @@ namespace atomic_dex
         }
         catch (const std::exception& error)
         {
-            SPDLOG_ERROR("exception caught in func[{}] line[{}] file[{}] error[{}]", 
-                        __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what());
+            SPDLOG_ERROR(
+                "exception caught in func[{}] line[{}] file[{}] error[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what());
             return "0.00";
         }
     }
 
     std::string
-    global_price_service::get_price_as_currency_from_amount(
-        const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
+    global_price_service::get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount) const noexcept
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
@@ -279,9 +283,9 @@ namespace atomic_dex
             return "0.00";
         }
 
-        const auto current_price = get_rate_conversion(currency, ticker, ec);
+        const auto current_price = get_rate_conversion(currency, ticker);
 
-        if (ec)
+        if (current_price == "0.00")
         {
             return "0.00";
         }
@@ -305,9 +309,9 @@ namespace atomic_dex
             return "0.00";
         }
 
-        const auto price = get_rate_conversion(fiat, ticker, ec);
+        const auto price = get_rate_conversion(fiat, ticker);
 
-        if (ec)
+        if (price == "0.00")
         {
             return "0.00";
         }
@@ -338,25 +342,13 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_cex_rates(const std::string& base, const std::string& rel, std::error_code& ec) const noexcept
+    global_price_service::get_cex_rates(const std::string& base, const std::string& rel) const noexcept
     {
-        std::string base_rate_str = get_rate_conversion("USD", base, ec, false);
+        const std::string base_rate_str = get_rate_conversion("USD", base, false);
+        const std::string rel_rate_str = get_rate_conversion("USD", rel, false);
 
-        if (ec)
+        if (rel_rate_str == "0.00" || base_rate_str == "0.00")
         {
-            return "0.00";
-        }
-
-        std::string rel_rate_str = get_rate_conversion("USD", rel, ec, false);
-
-        if (ec)
-        {
-            return "0.00";
-        }
-
-        if (base_rate_str == "0.00" || rel_rate_str == "0.00")
-        {
-            //! One of the rate is not available
             return "0.00";
         }
 

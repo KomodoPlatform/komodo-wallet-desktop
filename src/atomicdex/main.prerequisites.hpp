@@ -40,7 +40,6 @@
 
 
 //! Deps
-#include <folly/init/Init.h>
 #include <sodium/core.h>
 #include <wally.hpp>
 
@@ -284,11 +283,6 @@ run_app(int argc, char** argv)
     qInstallMessageHandler(&qt_message_handler);
 #endif
 
-#ifdef __APPLE__
-#    if defined(NDEBUG)
-    // folly::init(&argc, &argv, false);
-#    endif
-#endif
     init_logging();
     connect_signals_handler();
     init_timezone_db();

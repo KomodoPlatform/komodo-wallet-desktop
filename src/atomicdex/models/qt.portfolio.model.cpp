@@ -59,18 +59,17 @@ namespace atomic_dex
             std::error_code ec;
             const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
             portfolio_data  data{
-                .ticker                = QString::fromStdString(coin.ticker),
-                .gui_ticker            = QString::fromStdString(coin.gui_ticker),
-                .coin_type             = QString::fromStdString(coin.type),
-                .name                  = QString::fromStdString(coin.name),
-                .balance               = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
-                .main_currency_balance = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
-                .change_24h            = change_24h,
-                .main_currency_price_for_one_unit =
-                    QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, ec, true)),
-                .main_fiat_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker, ec)),
-                .trend_7d                     = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
-                .is_excluded                  = false,
+                .ticker                           = QString::fromStdString(coin.ticker),
+                .gui_ticker                       = QString::fromStdString(coin.gui_ticker),
+                .coin_type                        = QString::fromStdString(coin.type),
+                .name                             = QString::fromStdString(coin.name),
+                .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
+                .main_currency_balance            = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
+                .change_24h                       = change_24h,
+                .main_currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, true)),
+                .main_fiat_price_for_one_unit     = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker)),
+                .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
+                .is_excluded                      = false,
             };
             data.display         = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
             data.ticker_and_name = QString::fromStdString(coin.gui_ticker) + data.name;
@@ -114,9 +113,9 @@ namespace atomic_dex
                     const QModelIndex& idx                         = res.at(0);
                     const QString      main_currency_balance_value = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
                     update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
-                    const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
+                    const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, true));
                     update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-                    const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, ec, false));
+                    const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                     update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
                     QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
                     update_value(Change24H, change24_h, idx, *this);
@@ -133,13 +132,13 @@ namespace atomic_dex
                         {
                             am_i_sender = true;
                         }
-                        t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
-                        QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                        t_float_50 amount_f   = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
+                        QString    amount     = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
+                        qint64     timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+                        QString    human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
-                    //SPDLOG_DEBUG("updated currency values of: {}", ticker);
+                    // SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
             };
             taskflow.emplace(update_functor);
@@ -173,9 +172,9 @@ namespace atomic_dex
                 auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
                 const QString main_currency_balance_value       = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
                 auto&& [_1, _2, is_change_mc]                   = update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
-                const QString currency_price_for_one_unit       = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
+                const QString currency_price_for_one_unit       = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, true));
                 auto&& [_3, _4, is_change_mcpfo]                = update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-                const QString currency_fiat_for_one_unit        = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, ec, false));
+                const QString currency_fiat_for_one_unit        = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                 update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
                 const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
                 update_value(Display, display, idx, *this);
@@ -190,10 +189,10 @@ namespace atomic_dex
                     {
                         am_i_sender = true;
                     }
-                    t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
-                    QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                    qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                    QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                    t_float_50 amount_f   = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
+                    QString    amount     = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
+                    qint64     timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+                    QString    human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                     this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     emit portfolioItemDataChanged();
                 }

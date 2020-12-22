@@ -41,7 +41,7 @@ namespace atomic_dex
     namespace ag = antara::gaming;
 
     template <typename T>
-    using t_shared_synchronized_value = boost::synchronized_value<T, boost::shared_mutex>;
+    using t_shared_synchronized_value = boost::synchronized_value<T, std::shared_mutex>;
 
     using t_ticker         = std::string;
     using t_coins_registry = std::unordered_map<t_ticker, coin_config>;
@@ -97,6 +97,7 @@ namespace atomic_dex
         //! Mutex
         mutable std::shared_mutex m_balance_mutex;
         mutable std::shared_mutex m_coin_cfg_mutex;
+        mutable std::shared_mutex m_raw_coin_cfg_mutex;
 
         //! Concurrent Registry.
         t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};

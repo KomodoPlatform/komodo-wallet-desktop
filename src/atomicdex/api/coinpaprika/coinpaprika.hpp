@@ -21,8 +21,8 @@
 #include <spdlog/spdlog.h>
 
 //! Project Headers
-#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/constants/http.code.hpp"
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -38,7 +38,7 @@ namespace atomic_dex
 
         struct ticker_historical_answer
         {
-            nlohmann::json answer;
+            nlohmann::json answer{nlohmann::json::array()};
             int            rpc_result_code;
             std::string    raw_result;
         };
@@ -91,7 +91,7 @@ namespace atomic_dex
         template <typename TAnswer>
         TAnswer static inline process_generic_resp(web::http::http_response resp)
         {
-            TAnswer answer;
+            TAnswer     answer;
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == e_http_code::bad_request)
             {
@@ -125,7 +125,10 @@ namespace atomic_dex
     } // namespace coinpaprika::api
 
 
-    using t_price_converter_answer   = coinpaprika::api::price_converter_answer;
-    using t_ticker_info_answer       = coinpaprika::api::ticker_info_answer;
-    using t_ticker_historical_answer = coinpaprika::api::ticker_historical_answer;
+    using t_price_converter_answer    = coinpaprika::api::price_converter_answer;
+    using t_price_converter_request   = coinpaprika::api::price_converter_request;
+    using t_ticker_info_answer        = coinpaprika::api::ticker_info_answer;
+    using t_ticker_infos_request      = coinpaprika::api::ticker_infos_request;
+    using t_ticker_historical_answer  = coinpaprika::api::ticker_historical_answer;
+    using t_ticker_historical_request = coinpaprika::api::ticker_historical_request;
 } // namespace atomic_dex

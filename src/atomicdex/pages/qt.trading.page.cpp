@@ -1220,13 +1220,12 @@ namespace atomic_dex
     void
     trading_page::determine_cex_rates() noexcept
     {
-        std::error_code ec;
-        const auto&     price_service   = m_system_manager.get_system<global_price_service>();
-        const auto*     market_selector = get_market_pairs_mdl();
-        const auto&     base            = market_selector->get_left_selected_coin();
-        const auto&     rel             = market_selector->get_right_selected_coin();
-        const auto      cex_price       = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString(), ec));
-        if (cex_price != m_cex_price && !ec)
+        const auto& price_service   = m_system_manager.get_system<global_price_service>();
+        const auto* market_selector = get_market_pairs_mdl();
+        const auto& base            = market_selector->get_left_selected_coin();
+        const auto& rel             = market_selector->get_right_selected_coin();
+        const auto  cex_price       = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString()));
+        if (cex_price != m_cex_price)
         {
             m_cex_price = std::move(cex_price);
             emit cexPriceChanged();
@@ -1400,10 +1399,8 @@ namespace atomic_dex
             }
             else
             {
-                t_float_50      rel_price_for_one_unit(model->data(idx, portfolio_model::PortfolioRoles::MainFiatPriceForOneUnit).toString().toStdString());
-                std::error_code ec;
-                t_float_50      price_as_currency_from_amount(
-                    price_service.get_price_as_currency_from_amount(config.current_fiat, rel_ticker.toStdString(), "1", ec));
+                t_float_50 rel_price_for_one_unit(model->data(idx, portfolio_model::PortfolioRoles::MainFiatPriceForOneUnit).toString().toStdString());
+                t_float_50 price_as_currency_from_amount(price_service.get_price_as_currency_from_amount(config.current_fiat, rel_ticker.toStdString(), "1"));
                 t_float_50 price_field_fiat       = t_float_50(m_price.toStdString()) * price_as_currency_from_amount;
                 t_float_50 rel_price_relative     = rel_price_for_one_unit == t_float_50(0) ? t_float_50(0) : price_field_fiat / rel_price_for_one_unit;
                 const auto rel_price_relative_str = QString::fromStdString(utils::format_float(rel_price_relative));

@@ -16,7 +16,6 @@
 
 //! Deps
 #include <antara/gaming/world/world.app.hpp>
-#include <folly/init/Init.h>
 
 //! Project
 #include "atomicdex/managers/qt.wallet.manager.hpp"
@@ -27,11 +26,6 @@ struct tests_context : public antara::gaming::world::app
     tests_context([[maybe_unused]] char** argv)
     {
 #if !defined(WIN32) && !defined(_WIN32)
-#    ifdef linux
-        int realargs = 1; // workaround to ignore doct
-        folly::init(&realargs, &argv, false);
-#    endif
-
         //! Creates mm2 service.
         const auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
 

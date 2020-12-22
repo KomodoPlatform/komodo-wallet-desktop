@@ -1,4 +1,3 @@
-folly:x64-Windows
 entt:x64-Windows
 boost-multiprecision:x64-Windows
 boost-random:x64-Windows

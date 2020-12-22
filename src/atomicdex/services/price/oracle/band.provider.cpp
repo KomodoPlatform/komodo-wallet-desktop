@@ -63,7 +63,7 @@ namespace atomic_dex
                     nlohmann::json           j    = nlohmann::json::parse(body);
                     band_oracle_price_result result;
                     from_json(j, result);
-                    this->m_oracle_price_result.insert_or_assign("result", result);
+                    this->m_oracle_price_result = result;
                     using namespace std::chrono_literals;
                     auto       last_oracle_timestamp     = result.band_oracle_data.at("BTC").timestamp;
                     const auto now                       = std::chrono::system_clock::now();
@@ -111,9 +111,9 @@ namespace atomic_dex
         std::string current_price = "";
         if (is_oracle_ready())
         {
-            auto& result = m_oracle_price_result.at("result");
-            auto  it     = result.band_oracle_data.find(ticker);
-            if (it != result.band_oracle_data.end())
+            const auto result = m_oracle_price_result.synchronize();
+            const auto it     = result->band_oracle_data.find(ticker);
+            if (it != result->band_oracle_data.end())
             {
                 current_price = it->second.price.str();
             }
@@ -124,8 +124,8 @@ namespace atomic_dex
     t_float_50
     band_oracle_price_service::retrieve_rates(const std::string& fiat) const noexcept
     {
-        auto& result = m_oracle_price_result.at("result");
-        return result.band_oracle_data.at(fiat).rate;
+        const auto synchronized = m_oracle_price_result.synchronize();
+        return synchronized->band_oracle_data.at(fiat).rate;
     }
 
     std::vector<std::string>
@@ -143,16 +143,8 @@ namespace atomic_dex
         std::string out;
         if (is_oracle_ready())
         {
-            auto& result = m_oracle_price_result.at("result");
-            out          = result.band_oracle_data.at("BTC").reference;
-        }
-        else
-        {
-            if (m_oracle_price_result.find("result") != m_oracle_price_result.end())
-            {
-                auto& result = m_oracle_price_result.at("result");
-                out          = result.band_oracle_data.at("BTC").reference;
-            }
+            const auto result = m_oracle_price_result.synchronize();
+            out               = result->band_oracle_data.at("BTC").reference;
         }
         return out;
     }

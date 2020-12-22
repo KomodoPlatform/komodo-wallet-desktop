@@ -29,18 +29,42 @@ namespace atomic_dex
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider>
     {
       public:
-        using t_ticker_infos_registry      = t_concurrent_reg<std::string, t_ticker_info_answer>;
-        using t_ticker_historical_registry = t_concurrent_reg<std::string, t_ticker_historical_answer>;
+        using t_ticker_infos_registry      = std::unordered_map<std::string, t_ticker_info_answer>;
+        using t_ticker_historical_registry = std::unordered_map<std::string, t_ticker_historical_answer>;
 
       private:
         //! Typedefs
-        using t_providers_registry = t_concurrent_reg<std::string, std::string>;
+        using t_ref_count_idx      = std::shared_ptr<std::atomic_uint16_t>;
+        using t_providers_registry = std::unordered_map<std::string, std::string>;
 
         //! Private fields
-        mm2_service&                         m_mm2_instance;                 ///< represent the MM2 instance
+        mm2_service&                 m_mm2_instance;                 ///< represent the MM2 instance
         t_providers_registry         m_usd_rate_providers{};         ///< USD Rate Providers
         t_ticker_infos_registry      m_ticker_infos_registry{};      ///< Ticker info registry, key is the ticker
         t_ticker_historical_registry m_ticker_historical_registry{}; ///< Ticker historical registry, key is the ticker
+        mutable std::shared_mutex    m_ticker_historical_mutex;
+        mutable std::shared_mutex    m_ticker_infos_mutex;
+        mutable std::shared_mutex    m_provider_mutex;
+
+        template <typename TAnswer, typename TRegistry, typename TLockable>
+        TAnswer get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const noexcept;
+
+        void process_provider(
+            const atomic_dex::coin_config& current_coin, std::shared_ptr<std::atomic_uint16_t> idx = nullptr, std::uint16_t target_size = 0,
+            std::vector<std::string> tickers = {});
+        void process_async_price_converter(
+            const t_price_converter_request& request, coin_config current_coin, std::shared_ptr<std::atomic_uint16_t> idx, std::uint16_t target_size,
+            std::vector<std::string> tickers);
+        void process_ticker_infos(
+            const coin_config& current_coin, t_ref_count_idx idx = nullptr, std::uint16_t target_size = 0, std::vector<std::string> tickers = {});
+        void process_async_ticker_infos(
+            const t_ticker_infos_request& request, const coin_config& current_coin, t_ref_count_idx idx, std::uint16_t target_size,
+            std::vector<std::string> tickers);
+        void process_ticker_historical(
+            const coin_config& current_coin, t_ref_count_idx idx = nullptr, std::uint16_t target_size = 0, std::vector<std::string> tickers = {});
+        void process_async_ticker_historical(
+            const t_ticker_historical_request& request, const coin_config& current_coin, t_ref_count_idx idx, std::uint16_t target_size,
+            std::vector<std::string> tickers);
 
       public:
         //! Constructor
@@ -52,7 +76,7 @@ namespace atomic_dex
         //! Public API
 
         //! Get the rate conversion for the given fiat.
-        std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
+        std::string get_rate_conversion(const std::string& ticker) const noexcept;
 
         //! Get the ticker informations.
         t_ticker_info_answer get_ticker_infos(const std::string& ticker) const noexcept;

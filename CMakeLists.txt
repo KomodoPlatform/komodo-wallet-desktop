@@ -274,7 +274,6 @@ target_link_libraries(atomicdex-desktop_shared_deps
         unofficial-btc::bitcoin
         reproc++
         komodo-date::date
-        komodo-folly::folly
         komodo-taskflow::taskflow
         nlohmann_json::nlohmann_json
         antara_qrcode
@@ -400,7 +399,6 @@ if (WIN32)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
-    set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
         target_compile_definitions(atomicdex-desktop PRIVATE WINDOWS_RELEASE_MAIN)

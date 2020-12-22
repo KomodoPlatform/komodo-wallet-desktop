@@ -21,6 +21,9 @@
 #include <QString>
 #include <QVector>
 
+//! STD
+#include <unordered_set>
+
 //! Deps
 #include <entt/core/attribute.h>
 

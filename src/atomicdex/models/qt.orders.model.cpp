@@ -516,10 +516,9 @@ namespace atomic_dex
         const auto&     global_price_system = m_system_manager.get_system<global_price_service>();
         std::string     base_amount_in_currency;
         std::string     rel_amount_in_currency;
-        std::error_code ec;
 
-        base_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, base_coin, base_amount, ec);
-        rel_amount_in_currency  = global_price_system.get_price_as_currency_from_amount(current_currency, rel_coin, rel_amount, ec);
+        base_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, base_coin, base_amount);
+        rel_amount_in_currency  = global_price_system.get_price_as_currency_from_amount(current_currency, rel_coin, rel_amount);
         return std::make_pair(base_amount_in_currency, rel_amount_in_currency);
     }
 

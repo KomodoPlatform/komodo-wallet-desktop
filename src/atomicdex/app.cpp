@@ -466,7 +466,7 @@ namespace atomic_dex
         std::error_code ec;
         const auto&     config        = system_manager_.get_system<settings_page>().get_cfg();
         const auto&     price_service = system_manager_.get_system<global_price_service>();
-        return QString::fromStdString(price_service.get_price_as_currency_from_amount(config.current_fiat, ticker.toStdString(), amount.toStdString(), ec));
+        return QString::fromStdString(price_service.get_price_as_currency_from_amount(config.current_fiat, ticker.toStdString(), amount.toStdString()));
     }
 } // namespace atomic_dex
 
