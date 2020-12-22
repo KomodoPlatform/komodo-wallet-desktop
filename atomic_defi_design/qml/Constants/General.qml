@@ -13,8 +13,9 @@ QtObject {
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
+
     function coinIcon(ticker) {
-        if(ticker === "") return ""
+        if(ticker === "" || ticker === "All") return ""
 
         const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
