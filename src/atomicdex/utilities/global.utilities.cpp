@@ -94,23 +94,24 @@ namespace atomic_dex::utils
     std::string
     u8string(const fs::path& p)
     {
-
 #if defined(PREFER_BOOST_FILESYSTEM)
         return p.string();
 #else
         auto res = p.u8string();
 
-        if constexpr (std::is_same_v<decltype(res), std::string>)
-        {
-            return res;
-        }
-        else
-        {
-            std::string s;
-            s.reserve(res.size());
-            std::copy(res.begin(), res.end(), s.begin());
-            return s;
-        }
+        return [](auto& r) {
+          if constexpr (std::is_same_v<decltype(r), std::string>)
+          {
+              return r;
+          }
+          else
+          {
+              std::string s;
+              s.reserve(r.size());
+              std::copy(r.begin(), r.end(), s.begin());
+              return s;
+          }
+        }(res);
 #endif
     }
 
