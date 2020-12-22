@@ -19,6 +19,7 @@
 
 //! Project
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 
 struct tests_context : public antara::gaming::world::app
@@ -31,6 +32,7 @@ struct tests_context : public antara::gaming::world::app
 
         //! Creates special wallet for the unit tests then logs to it.
         auto& wallet_manager = system_manager_.create_system<atomic_dex::qt_wallet_manager>(system_manager_);
+        system_manager_.create_system<atomic_dex::portfolio_page>(system_manager_);
         if (not wallet_manager.get_wallets().contains("atomicdex-desktop_tests"))
         {
             wallet_manager.create("atomicdex-desktop_tests", "asdkl lkdsa", "atomicdex-desktop_tests");
