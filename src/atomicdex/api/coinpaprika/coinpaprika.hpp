@@ -71,7 +71,7 @@ namespace atomic_dex
             std::string quote_currency_name;
             std::string quote_price_last_updated;
             std::size_t amount;
-            std::string price; ///< we need trick here
+            std::string price{"0.00"}; ///< we need trick here
             int         rpc_result_code;
             std::string raw_result;
         };

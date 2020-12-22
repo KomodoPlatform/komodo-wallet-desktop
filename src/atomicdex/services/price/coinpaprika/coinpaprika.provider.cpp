@@ -30,36 +30,15 @@ namespace
 
 namespace atomic_dex
 {
-    template <typename... Args>
+    template <typename TContainer, typename TAnswer, typename... Args>
     void
-    coinpaprika_provider::process_async_price_converter(const t_price_converter_request& request, coin_config current_coin, Args... args)
+    coinpaprika_provider::generic_post_verification(std::shared_mutex& mtx, TContainer& container, const std::string& ticker, TAnswer answer, Args... args)
     {
-        async_price_converter(request)
-            .then([this, request, current_coin, ... args = std::move(args)](web::http::http_response resp) {
-                auto answer = process_generic_resp<t_price_converter_answer>(resp);
-                if (answer.rpc_result_code == e_http_code::too_many_requests)
-                {
-                    std::this_thread::sleep_for(1s);
-                    process_async_price_converter(request, current_coin, std::move(args)...);
-                }
-                else
-                {
-                    std::string price = "0.00";
-                    if (answer.raw_result.find("error") == std::string::npos)
-                    {
-                        if (not answer.price.empty())
-                        {
-                            price = answer.price;
-                        }
-                    }
-                    {
-                        std::unique_lock lock(m_provider_mutex);
-                        m_usd_rate_providers[current_coin.ticker] = price;
-                    }
-                    verify_idx(std::move(args)...);
-                }
-            })
-            .then(&handle_exception_pplx_task);
+        {
+            std::unique_lock lock(mtx);
+            container[ticker] = std::move(answer);
+        }
+        verify_idx(std::move(args)...);
     }
 
     template <typename... Args>
@@ -67,31 +46,9 @@ namespace atomic_dex
     coinpaprika_provider::process_provider(const atomic_dex::coin_config& current_coin, Args... args)
     {
         const price_converter_request request{.base_currency_id = current_coin.coinpaprika_id, .quote_currency_id = "usd-us-dollars"};
-        process_async_price_converter(request, current_coin, std::move(args)...);
-    }
-
-    template <typename... Args>
-    void
-    coinpaprika_provider::process_async_ticker_infos(const t_ticker_infos_request& request, const atomic_dex::coin_config& current_coin, Args... args)
-    {
-        auto answer_functor = [this, request, current_coin, ... args = std::move(args)](web::http::http_response resp) {
-            auto answer = process_generic_resp<ticker_info_answer>(resp);
-            if (answer.rpc_result_code == e_http_code::too_many_requests)
-            {
-                std::this_thread::sleep_for(1s);
-                process_async_ticker_infos(request, current_coin, std::move(args)...);
-            }
-            else
-            {
-                {
-                    std::unique_lock lock(m_ticker_infos_mutex);
-                    m_ticker_infos_registry[current_coin.ticker] = answer;
-                }
-                verify_idx(std::move(args)...);
-            }
-        };
-
-        async_ticker_info(request).then(answer_functor).then(&handle_exception_pplx_task);
+        generic_rpc_paprika_process<t_price_converter_answer>(
+            request, current_coin.ticker, m_provider_mutex, m_usd_rate_providers,
+            [](auto&& request) { return async_price_converter(std::forward<decltype(request)>(request)); }, std::move(args)...);
     }
 
     template <typename... Args>
@@ -99,33 +56,32 @@ namespace atomic_dex
     coinpaprika_provider::process_ticker_infos(const coin_config& current_coin, Args... args)
     {
         const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR", "BTC"}};
-        process_async_ticker_infos(request, current_coin, std::move(args)...);
+        generic_rpc_paprika_process<ticker_info_answer>(
+            request, current_coin.ticker, m_ticker_infos_mutex, m_ticker_infos_registry,
+            [](auto&& request) { return async_ticker_info(std::forward<decltype(request)>(request)); }, std::move(args)...);
     }
 
-    template <typename... Args>
+    template <typename TAnswer, typename TRequest, typename TExecutorFunctor, typename... Args>
     void
-    coinpaprika_provider::process_async_ticker_historical(const t_ticker_historical_request& request, const atomic_dex::coin_config& current_coin, Args... args)
+    coinpaprika_provider::generic_rpc_paprika_process(
+        const TRequest& request, const std::string& ticker, std::shared_mutex& mtx, std::unordered_map<std::string, TAnswer>& container,
+        TExecutorFunctor&& functor, Args... args)
     {
-        async_ticker_historical(request)
-            .then([this, request, current_coin, ... args = std::move(args)](web::http::http_response resp) {
-                auto answer = process_generic_resp<ticker_historical_answer>(resp);
-                if (answer.rpc_result_code == e_http_code::too_many_requests)
-                {
-                    std::this_thread::sleep_for(1s);
-                    process_async_ticker_historical(request, current_coin, std::move(args)...);
-                }
-                else
-                {
-                    if (answer.raw_result.find("error") == std::string::npos)
-                    {
-                        std::unique_lock lock(m_ticker_historical_mutex);
-                        this->m_ticker_historical_registry[current_coin.ticker] = answer;
-                    }
+        auto answer_functor = [this, &mtx, &container, functor = std::forward<TExecutorFunctor>(functor), request, ticker,
+                               ... args = std::move(args)](web::http::http_response resp) mutable {
+            auto answer = process_generic_resp<TAnswer>(resp);
+            if (answer.rpc_result_code == e_http_code::too_many_requests)
+            {
+                std::this_thread::sleep_for(1s);
+                generic_rpc_paprika_process<TAnswer>(request, ticker, mtx, container, std::forward<TExecutorFunctor>(functor), std::move(args)...);
+            }
+            else
+            {
+                generic_post_verification(mtx, container, ticker, answer, std::move(args)...);
+            }
+        };
 
-                    verify_idx(std::move(args)...);
-                }
-            })
-            .then(&handle_exception_pplx_task);
+        functor(request).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     template <typename... Args>
@@ -133,7 +89,9 @@ namespace atomic_dex
     coinpaprika_provider::process_ticker_historical(const coin_config& current_coin, Args... args)
     {
         const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id, .interval = "2h"};
-        process_async_ticker_historical(request, current_coin, std::move(args)...);
+        generic_rpc_paprika_process<ticker_historical_answer>(
+            request, current_coin.ticker, m_ticker_historical_mutex, m_ticker_historical_registry,
+            [](auto&& request) { return async_ticker_historical(std::forward<decltype(request)>(request)); }, std::move(args)...);
     }
 
     void
@@ -254,8 +212,7 @@ namespace atomic_dex
     std::string
     coinpaprika_provider::get_rate_conversion(const std::string& ticker) const noexcept
     {
-        const auto res = get_infos<std::string>(ticker, m_usd_rate_providers, m_provider_mutex);
-        return res.empty() ? "0.00" : res;
+        return get_infos<t_price_converter_answer>(ticker, m_usd_rate_providers, m_provider_mutex).price;
     }
 
     t_ticker_info_answer

@@ -35,7 +35,7 @@ namespace atomic_dex
       private:
         //! Typedefs
         using t_ref_count_idx      = std::shared_ptr<std::atomic_uint16_t>;
-        using t_providers_registry = std::unordered_map<std::string, std::string>;
+        using t_providers_registry = std::unordered_map<std::string, t_price_converter_answer>;
 
         //! Private fields
         mm2_service&                 m_mm2_instance;                 ///< represent the MM2 instance
@@ -53,21 +53,19 @@ namespace atomic_dex
         template <typename TAnswer, typename TRegistry, typename TLockable>
         TAnswer get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const noexcept;
 
-        //! Provider
-        template <typename... Args>
-        void process_async_price_converter(const t_price_converter_request& request, coin_config current_coin, Args... args);
-        template <typename... Args>
-        void process_provider(const atomic_dex::coin_config& current_coin, Args... args);
+        template <typename TContainer, typename TAnswer, typename... Args>
+        void generic_post_verification(std::shared_mutex& mtx, TContainer& container, const std::string& ticker, TAnswer answer, Args... args);
 
-        //! Ticker infos
+        template <typename TAnswer, typename TRequest, typename TExecutorFunctor, typename... Args>
+        void generic_rpc_paprika_process(
+            const TRequest& request, const std::string& ticker, std::shared_mutex& mtx, std::unordered_map<std::string, TAnswer>& container,
+            TExecutorFunctor&& functor, Args... args);
+
+        //! Process
         template <typename... Args>
-        void process_async_ticker_infos(const t_ticker_infos_request& request, const coin_config& current_coin, Args... args);
+        void process_provider(const coin_config& current_coin, Args... args);
         template <typename... Args>
         void process_ticker_infos(const coin_config& current_coin, Args... args);
-
-        //! Ticker historical
-        template <typename... Args>
-        void process_async_ticker_historical(const t_ticker_historical_request& request, const coin_config& current_coin, Args... args);
         template <typename... Args>
         void process_ticker_historical(const coin_config& current_coin, Args... args);
 
