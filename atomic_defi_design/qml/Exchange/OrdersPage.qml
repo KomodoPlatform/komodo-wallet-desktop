@@ -50,7 +50,7 @@ Item {
     }
 
     function applyTickerFilter() {
-        list_model_proxy.set_coin_filter(filter_enabled ? combo_base.currentText + "/" + combo_rel.currentText : "")
+        list_model_proxy.set_coin_filter(filter_enabled ? combo_base.currentValue + "/" + combo_rel.currentValue : "")
     }
 
     function applyFilter() {
@@ -64,10 +64,6 @@ Item {
         applyFilter()
         list_model_proxy.is_history = root.is_history
         API.app.refresh_orders_and_swaps()
-    }
-
-    function changeTicker(ticker) {
-        combo_base.currentIndex = combo_base.model.map(c => c.value).indexOf(ticker)
     }
 
     ColumnLayout {
@@ -112,6 +108,7 @@ Item {
                     Layout.bottomMargin: Layout.topMargin
 
                     textRole: "ticker"
+                    valueRole: "ticker"
 
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
 
@@ -124,8 +121,8 @@ Item {
                     Layout.rightMargin: 15
                     Layout.leftMargin: Layout.rightMargin
 
-                    top_arrow_ticker: combo_base.currentText
-                    bottom_arrow_ticker: combo_rel.currentText
+                    top_arrow_ticker: combo_base.currentValue
+                    bottom_arrow_ticker: combo_rel.currentValue
                     hovered: swap_button.containsMouse
 
                     DefaultMouseArea {
@@ -148,6 +145,7 @@ Item {
                     Layout.bottomMargin: combo_base.Layout.bottomMargin
 
                     textRole: "ticker"
+                    valueRole: "ticker"
 
                     model: combo_base.model
                     onCurrentValueChanged: applyTickerFilter()
