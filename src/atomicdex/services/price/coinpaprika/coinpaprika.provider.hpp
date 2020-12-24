@@ -15,6 +15,9 @@
  ******************************************************************************/
 
 #pragma once
+²
+//! STD
+#include <shared_mutex>
 
 //! Deps
 #include "antara/gaming/ecs/system.manager.hpp"
