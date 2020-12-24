@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QString>
 #include <QJsonArray>
+#include <QString>
 
-namespace atomic_dex
+namespace mm2::api
 {
     struct order_swaps_data
     {
@@ -21,13 +21,13 @@ namespace atomic_dex
 
         //! eg: 1
         QString base_amount;
-        
+
         //! eg: 1 in fiat currency.
         QString base_amount_fiat;
 
         //! eg: 1
         QString rel_amount;
-        
+
         //! eg: 1 in fiat currency.
         QString rel_amount_fiat;
 
@@ -74,4 +74,9 @@ namespace atomic_dex
         //! success events
         QStringList success_events;
     };
-} // namespace atomic_dex
+} // namespace mm2::api
+
+namespace atomic_dex
+{
+    using t_order_swaps_data = mm2::api::order_swaps_data;
+}

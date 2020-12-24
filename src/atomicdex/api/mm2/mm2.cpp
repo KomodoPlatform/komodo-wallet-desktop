@@ -14,13 +14,21 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Deps
+#include <boost/algorithm/string/case_conv.hpp>
+
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 //! Utilities
 namespace
 {
+    ag::ecs::system_manager* g_system_mgr = nullptr;
+
     template <typename RpcSuccessReturnType, typename RpcReturnType>
     void
     extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer)
@@ -33,6 +41,121 @@ namespace
         {
             answer.result = j.at("result").get<RpcSuccessReturnType>();
         }
+    }
+
+    std::pair<QString, QString>
+    extract_error(const nlohmann::json& events, const QStringList& error_events)
+    {
+        for (auto&& cur_event: events)
+        {
+            if (std::any_of(std::begin(error_events), std::end(error_events), [&cur_event](auto&& error_str) {
+                    return cur_event.at("state").get<std::string>() == error_str.toStdString();
+                }))
+            {
+                //! It's an error
+                if (cur_event.contains("data") && cur_event.at("data").contains("error"))
+                {
+                    return {
+                        QString::fromStdString(cur_event.at("state").get<std::string>()),
+                        QString::fromStdString(cur_event.at("data").at("error").get<std::string>())};
+                }
+            }
+        }
+        return {};
+    }
+
+    QString
+    determine_order_status_from_last_event(const nlohmann::json& events, const QStringList& error_events) noexcept
+    {
+        if (events.empty())
+        {
+            return "matching";
+        }
+        auto last_event = events.back().at("state").get<std::string>();
+        if (last_event == "Started")
+        {
+            return "matched";
+        }
+
+        if (last_event == "TakerPaymentWaitRefundStarted" || last_event == "MakerPaymentWaitRefundStarted")
+        {
+            return "refunding";
+        }
+
+        QString status = "ongoing";
+
+        if (last_event == "Finished")
+        {
+            status = "successful";
+            //! Find error or not
+            for (auto&& cur_event: events)
+            {
+                if (cur_event.contains("data") && cur_event.at("data").contains("error") &&
+                    std::any_of(std::begin(error_events), std::end(error_events), [&cur_event](auto&& error_str) {
+                        return cur_event.at("state").get<std::string>() == error_str.toStdString();
+                    }))
+                {
+                    status = "failed";
+                }
+            }
+        }
+
+        return status;
+    }
+
+    QString
+    determine_payment_id(const nlohmann::json& events, bool am_i_maker, bool want_taker_id) noexcept
+    {
+        QString result = "";
+
+        if (events.empty())
+        {
+            return result;
+        }
+
+        std::string search_name;
+        if (am_i_maker)
+        {
+            search_name = want_taker_id ? "TakerPaymentSpent" : "MakerPaymentSent";
+        }
+        else
+        {
+            search_name = want_taker_id ? "TakerPaymentSent" : "MakerPaymentSpent";
+        }
+        for (auto&& cur_event: events)
+        {
+            if (cur_event.at("state").get<std::string>() == search_name)
+            {
+                result = QString::fromStdString(cur_event.at("data").at("tx_hash").get<std::string>());
+            }
+        }
+        return result;
+    }
+
+    std::pair<std::string, std::string>
+    determine_amounts_in_current_currency(
+        const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount) noexcept
+    {
+        try
+        {
+            if (g_system_mgr != nullptr && g_system_mgr->has_systems<atomic_dex::settings_page, atomic_dex::global_price_service>())
+            {
+                const auto& settings_system     = g_system_mgr->get_system<atomic_dex::settings_page>();
+                const auto& current_currency    = settings_system.get_current_currency().toStdString();
+                const auto& global_price_system = g_system_mgr->get_system<atomic_dex::global_price_service>();
+                std::string base_amount_in_currency;
+                std::string rel_amount_in_currency;
+
+                base_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, base_coin, base_amount);
+                rel_amount_in_currency  = global_price_system.get_price_as_currency_from_amount(current_currency, rel_coin, rel_amount);
+                return std::make_pair(base_amount_in_currency, rel_amount_in_currency);
+            }
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("Exception caught: {}", error.what());
+        }
+        return {};
     }
 } // namespace
 
@@ -722,36 +845,72 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, my_orders_answer& answer)
     {
-        static_cast<void>(answer);
-        // clang-format off
-        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::string, my_order_contents>& out, bool is_maker)
-        {
-          using namespace date;
-          const auto        time_key = value.at("created_at").get<std::size_t>();
+        // answer.orders.reserve(j.at("result").at("maker_orders").size() + j.at("result").at("taker_orders").size());
 
-          std::string action = "";
-          if (not is_maker)
-          {
-             value.at("request").at("action").get_to(action);
-          }
-          my_order_contents contents{
-              .order_id         = key,
-              .price            = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0",
-              .base             = is_maker ? value.at("base").get<std::string>() : value.at("request").at("base").get<std::string>(),
-              .rel              = is_maker ? value.at("rel").get<std::string>() : value.at("request").at("rel").get<std::string>(),
-              .cancellable      = value.at("cancellable").get<bool>(),
-              .timestamp        = time_key,
-              .order_type       = is_maker ? "maker" : "taker",
-              .base_amount      = is_maker ? value.at("available_amount").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
-              .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T"),
-              .action = action};
-          out.try_emplace(contents.order_id, std::move(contents));
+        auto filler_functor = [&answer](const std::string& key, const nlohmann::json& value, bool is_maker) {
+            using namespace date;
+            const auto time_key = value.at("created_at").get<std::size_t>();
+
+            std::string action = "";
+            if (not is_maker)
+            {
+                value.at("request").at("action").get_to(action);
+            }
+            using namespace atomic_dex;
+            const auto price       = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0";
+            const auto base_coin   = is_maker ? QString::fromStdString(value.at("base").get<std::string>())
+                                              : QString::fromStdString(value.at("request").at("base").get<std::string>());
+            const auto rel_coin    = is_maker ? QString::fromStdString(value.at("rel").get<std::string>())
+                                              : QString::fromStdString(value.at("request").at("rel").get<std::string>());
+            const auto base_amount = is_maker ? QString::fromStdString(value.at("available_amount").get<std::string>())
+                                              : QString::fromStdString(value.at("request").at("base_amount").get<std::string>());
+            const auto rel_amount  = is_maker ? QString::fromStdString((t_float_50(price) * t_float_50(base_amount.toStdString())).convert_to<std::string>())
+                                              : QString::fromStdString(value.at("request").at("rel_amount").get<std::string>());
+            order_swaps_data contents{
+                .is_maker       = is_maker,
+                .base_coin      = action == "Sell" ? base_coin : rel_coin,
+                .rel_coin       = action == "Sell" ? rel_coin : base_coin,
+                .base_amount    = action == "Sell" ? base_amount : rel_amount,
+                .rel_amount     = action == "Sell" ? rel_amount : base_amount,
+                .order_type     = is_maker ? "maker" : "taker",
+                .human_date     = QString::fromStdString(atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T")),
+                .unix_timestamp = static_cast<unsigned long long>(time_key),
+                .order_id       = QString::fromStdString(key),
+                .order_status   = "matching",
+                .is_swap        = false,
+                .is_cancellable = value.at("cancellable").get<bool>(),
+                .is_recoverable = false};
+            if (action.empty() && contents.order_type == "maker")
+            {
+                contents.base_coin   = base_coin;
+                contents.rel_coin    = rel_coin;
+                contents.base_amount = base_amount;
+                contents.rel_amount  = rel_amount;
+            }
+            auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+                contents.base_coin.toStdString(), contents.base_amount.toStdString(), contents.rel_coin.toStdString(), contents.rel_amount.toStdString());
+            contents.base_amount_fiat = QString::fromStdString(base_fiat_value);
+            contents.rel_amount_fiat  = QString::fromStdString(rel_fiat_value);
+            contents.ticker_pair      = contents.base_coin + "/" + contents.rel_coin;
+            answer.orders_id.emplace(key);
+            answer.orders.emplace_back(std::move(contents));
+
+            /*my_order_contents contents{
+                .order_id         = key,
+                .price            = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0",
+                .base             = is_maker ? value.at("base").get<std::string>() : value.at("request").at("base").get<std::string>(),
+                .rel              = is_maker ? value.at("rel").get<std::string>() : value.at("request").at("rel").get<std::string>(),
+                .cancellable      = value.at("cancellable").get<bool>(),
+                .timestamp        = time_key,
+                .order_type       = is_maker ? "maker" : "taker",
+                .base_amount      = is_maker ? value.at("available_amount").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
+                .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() :
+            value.at("request").at("rel_amount").get<std::string>(), .human_timestamp  = atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000,
+            "%F    %T"), .action = action}; out.try_emplace(contents.order_id, std::move(contents));*/
         };
-        // clang-format on
 
-        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders, true); }
-        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders, false); }
+        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, true); }
+        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, false); }
     }
 
     void
@@ -765,25 +924,44 @@ namespace mm2::api
     }
 
     void
-    from_json(const nlohmann::json& j, swap_contents& contents)
+    from_json(const nlohmann::json& j, order_swaps_data& contents)
     {
         using namespace date;
         using namespace std::chrono;
+        using namespace atomic_dex;
 
-        j.at("error_events").get_to(contents.error_events);
-        j.at("success_events").get_to(contents.success_events);
-        j.at("uuid").get_to(contents.uuid);
-        j.at("taker_coin").get_to(contents.taker_coin);
-        j.at("maker_coin").get_to(contents.maker_coin);
-        j.at("taker_amount").get_to(contents.taker_amount);
-        j.at("maker_amount").get_to(contents.maker_amount);
-        j.at("type").get_to(contents.type);
-        j.at("recoverable").get_to(contents.funds_recoverable);
+        const auto taker_coin   = QString::fromStdString(j.at("taker_coin").get<std::string>());
+        const auto maker_coin   = QString::fromStdString(j.at("maker_coin").get<std::string>());
+        const auto maker_amount = QString::fromStdString(atomic_dex::utils::adjust_precision(j.at("maker_amount").get<std::string>()));
+        const auto taker_amount = QString::fromStdString(atomic_dex::utils::adjust_precision(j.at("taker_amount").get<std::string>()));
 
-        contents.taker_amount = atomic_dex::utils::adjust_precision(contents.taker_amount);
-        contents.maker_amount = atomic_dex::utils::adjust_precision(contents.maker_amount);
-        contents.events       = nlohmann::json::array();
-        if (j.contains("my_info"))
+        contents.error_events   = vector_std_string_to_qt_string_list(j.at("error_events").get<std::vector<std::string>>());
+        contents.success_events = vector_std_string_to_qt_string_list(j.at("success_events").get<std::vector<std::string>>());
+        contents.order_id       = QString::fromStdString(j.at("uuid").get<std::string>());
+        contents.order_type     = QString::fromStdString(boost::algorithm::to_lower_copy(j.at("type").get<std::string>()));
+        const bool is_maker     = contents.order_type == "maker";
+        contents.is_recoverable = j.at("recoverable").get<bool>();
+        contents.base_coin      = is_maker ? maker_coin : taker_coin;
+        contents.rel_coin       = is_maker ? taker_coin : maker_coin;
+        contents.base_amount    = is_maker ? maker_amount : taker_amount;
+        contents.rel_amount     = is_maker ? taker_amount : maker_amount;
+        // contents.base_amount    = atomic_dex::utils::adjust_precision(contents.base_amount);
+
+        // j.at("error_events").get_to(contents.error_events);
+        // j.at("success_events").get_to(contents.success_events);
+        // j.at("uuid").get_to(contents.uuid);
+        // j.at("taker_coin").get_to(contents.taker_coin);
+        // j.at("maker_coin").get_to(contents.maker_coin);
+        // j.at("taker_amount").get_to(contents.taker_amount);
+        // j.at("maker_amount").get_to(contents.maker_amount);
+        // j.at("type").get_to(contents.type);
+        // j.at("recoverable").get_to(contents.funds_recoverable);
+
+        // contents.taker_amount = atomic_dex::utils::adjust_precision(contents.taker_amount);
+        // contents.maker_amount = atomic_dex::utils::adjust_precision(contents.maker_amount);
+        nlohmann::json events_array = nlohmann::json::array();
+
+        /*if (j.contains("my_info"))
         {
             contents.my_info = j.at("my_info");
             if (not contents.my_info.is_null())
@@ -791,7 +969,8 @@ namespace mm2::api
                 contents.my_info["other_amount"] = atomic_dex::utils::adjust_precision(contents.my_info["other_amount"].get<std::string>());
                 contents.my_info["my_amount"]    = atomic_dex::utils::adjust_precision(contents.my_info["my_amount"].get<std::string>());
             }
-        }
+        }*/
+
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
         t_event_timestamp_registry event_timestamp_registry;
         double                     total_time_in_ms = 0.00;
@@ -830,21 +1009,21 @@ namespace mm2::api
                     rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
                 }
 
-                contents.events.push_back(jf_evt);
+                events_array.push_back(jf_evt);
             }
             else
             {
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
                 if (evt_type == "Started")
                 {
-                    std::int64_t ts                         = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
-                    jf_evt["started_at"]                    = ts;
-                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    std::int64_t ts                               = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
+                    jf_evt["started_at"]                          = ts;
+                    std::int64_t                              ts2 = jf_evt.at("timestamp").get<std::int64_t>();
                     date::sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
                     date::sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-                    jf_evt["time_diff"]                     = res;
-                    event_timestamp_registry["Started"]     = ts2; // Started finished at this time
+                    double                                    res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                           = res;
+                    event_timestamp_registry["Started"]           = ts2; // Started finished at this time
                     total_time_in_ms += res;
                 }
 
@@ -853,11 +1032,31 @@ namespace mm2::api
                     rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
                 }
 
-                contents.events.push_back(jf_evt);
+                events_array.push_back(jf_evt);
             }
             idx += 1;
         }
-        contents.total_time_in_ms = total_time_in_ms;
+        contents.events           = nlohmann_json_array_to_qt_json_array(events_array);
+        contents.human_date       = not events_array.empty() ? QString::fromStdString(events_array.back().at("human_timestamp").get<std::string>()) : "";
+        contents.unix_timestamp   = not events_array.empty() ? events_array.back().at("timestamp").get<unsigned long long>() : 0;
+        contents.order_status     = determine_order_status_from_last_event(events_array, contents.error_events);
+        contents.is_swap          = true;
+        contents.is_cancellable   = false;
+        contents.maker_payment_id = determine_payment_id(events_array, is_maker, false);
+        contents.taker_payment_id = determine_payment_id(events_array, is_maker, true);
+
+        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+            contents.base_coin.toStdString(), contents.base_amount.toStdString(), contents.rel_coin.toStdString(), contents.rel_amount.toStdString());
+        contents.base_amount_fiat = QString::fromStdString(base_fiat_value);
+        contents.rel_amount_fiat  = QString::fromStdString(rel_fiat_value);
+        contents.ticker_pair      = contents.base_coin + "/" + contents.rel_coin;
+        if (contents.order_status == "failed")
+        {
+            auto error                   = extract_error(events_array, contents.error_events);
+            contents.order_error_state   = error.first;
+            contents.order_error_message = error.second;
+        }
+        // contents.total_time_in_ms = total_time_in_ms;
     }
 
     void
@@ -874,9 +1073,12 @@ namespace mm2::api
         {
             for (auto&& cur_event: cur_swap.events)
             {
-                if (cur_event.contains("time_diff"))
+                if (cur_event.isObject())
                 {
-                    events_time_registry[cur_event.at("state").get<std::string>()].push_back(cur_event.at("time_diff").get<double>());
+                    if (auto cur_obj = cur_event.toObject(); cur_obj.contains("time_diff"))
+                    {
+                        events_time_registry[cur_obj.value("state").toString().toStdString()].push_back(cur_obj.value("time_diff").toDouble());
+                    }
                 }
             }
         }
@@ -903,82 +1105,6 @@ namespace mm2::api
             answer.error = j.at("error").get<std::string>();
         }
     }
-
-    /*enable_answer
-    rpc_enable(enable_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable", mm2_client);
-    }
-
-    electrum_answer
-    rpc_electrum(electrum_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<electrum_request, electrum_answer>(std::forward<electrum_request>(request), "electrum", mm2_client);
-    }
-
-    balance_answer
-    rpc_balance(balance_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<balance_request, balance_answer>(std::forward<balance_request>(request), "my_balance", mm2_client);
-    }
-
-    tx_history_answer
-    rpc_my_tx_history(tx_history_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<tx_history_request, tx_history_answer>(std::forward<tx_history_request>(request), "my_tx_history", mm2_client);
-    }
-
-    withdraw_answer
-    rpc_withdraw(withdraw_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<withdraw_request, withdraw_answer>(std::forward<withdraw_request>(request), "withdraw", mm2_client);
-    }
-
-    send_raw_transaction_answer
-    rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        using atomic_dex::t_broadcast_answer;
-        using atomic_dex::t_broadcast_request;
-
-        return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction", mm2_client);
-    }
-
-    trade_fee_answer
-    rpc_get_trade_fee(trade_fee_request&& req, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<trade_fee_request, trade_fee_answer>(std::forward<trade_fee_request>(req), "get_trade_fee", mm2_client);
-    }
-
-    orderbook_answer
-    rpc_orderbook(orderbook_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<orderbook_request, orderbook_answer>(std::forward<orderbook_request>(request), "orderbook", mm2_client);
-    }
-
-    buy_answer
-    rpc_buy(buy_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<buy_request, buy_answer>(std::forward<buy_request>(request), "buy", mm2_client);
-    }
-
-    sell_answer
-    rpc_sell(sell_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<sell_request, sell_answer>(std::forward<sell_request>(request), "sell", mm2_client);
-    }
-
-    cancel_order_answer
-    rpc_cancel_order(cancel_order_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order", mm2_client);
-    }*/
-
-    /*cancel_all_orders_answer
-    rpc_cancel_all_orders(cancel_all_orders_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(
-            std::forward<cancel_all_orders_request>(request), "cancel_all_orders", mm2_client);
-    }*/
 
     disable_coin_answer
     rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client)
@@ -1216,6 +1342,12 @@ namespace mm2::api
         }
 
         return answer;
+    }
+
+    void
+    set_system_manager(ag::ecs::system_manager& system_manager)
+    {
+        g_system_mgr = std::addressof(system_manager);
     }
 
     template mm2::api::tx_history_answer rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);

@@ -113,8 +113,8 @@ namespace atomic_dex
         void on_fiat_rate_updated(const fiat_rate_updated&) noexcept;
         void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
-        void on_process_orders_finished_event(const process_orders_finished&) noexcept;
-        void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
+        void on_process_orders_and_swaps_finished_event(const process_swaps_and_orders_finished&) noexcept;
+        //void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
         mm2_service&                     get_mm2() noexcept;

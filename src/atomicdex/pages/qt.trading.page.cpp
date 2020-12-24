@@ -200,16 +200,12 @@ namespace atomic_dex
             to_json(cancel_request, cancel_req);
             batch.push_back(cancel_request);
         }
-        nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
-        batch.push_back(my_orders_request);
+
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none())
-            .then([this](web::http::http_response resp) {
-                auto& mm2_system       = m_system_manager.get_system<mm2_service>();
-                auto  answers          = ::mm2::api::basic_batch_answer(resp);
-                auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[answers.size() - 1], "my_orders");
-                mm2_system.add_orders_answer(my_orders_answer);
-                // SPDLOG_DEBUG("refreshing orderbook after cancelling order: {}", answers.dump(4));
+            .then([this]([[maybe_unused]] web::http::http_response resp) {
+                auto& mm2_system = m_system_manager.get_system<mm2_service>();
+                mm2_system.batch_fetch_orders_and_swap();
                 mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
@@ -236,15 +232,12 @@ namespace atomic_dex
         }
 
         batch.push_back(cancel_request);
-        nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
-        batch.push_back(my_orders_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none())
-            .then([this](web::http::http_response resp) {
-                auto& mm2_system       = m_system_manager.get_system<mm2_service>();
-                auto  answers          = ::mm2::api::basic_batch_answer(resp);
-                auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[1], "my_orders");
-                mm2_system.add_orders_answer(my_orders_answer);
+            .then([this]([[maybe_unused]] web::http::http_response resp) {
+                auto& mm2_system = m_system_manager.get_system<mm2_service>();
+                mm2_system.batch_fetch_orders_and_swap();
+                mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
     }

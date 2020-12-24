@@ -219,19 +219,25 @@ namespace atomic_dex
             this->m_actions_queue.pop(last_action);
             switch (last_action)
             {
-            case action::post_process_orders_finished:
+            case action::post_process_orders_and_swaps_finished:
+                if (mm2.is_mm2_running()) {
+                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert();
+                }
+                break;
+            }
+            /*case action::post_process_orders_finished:
                 if (mm2.is_mm2_running())
                 {
-                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_orders();
+                    //qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_orders();
                 }
                 break;
             case action::post_process_swaps_finished:
                 if (mm2.is_mm2_running())
                 {
-                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
+                    //qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
                 }
                 break;
-            }
+            }*/
         }
     }
 
@@ -385,8 +391,8 @@ namespace atomic_dex
         dispatcher_.sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
         dispatcher_.sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
         dispatcher_.sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
-        dispatcher_.sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
-        dispatcher_.sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
+        dispatcher_.sink<process_swaps_and_orders_finished>().disconnect<&application::on_process_orders_and_swaps_finished_event>(*this);
+        //dispatcher_.sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
         m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
 
@@ -411,8 +417,8 @@ namespace atomic_dex
         get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
         get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
-        get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
-        get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
+        get_dispatcher().sink<process_swaps_and_orders_finished>().connect<&application::on_process_orders_and_swaps_finished_event>(*this);
+        //get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
     }
 
     void
@@ -498,21 +504,21 @@ namespace atomic_dex
 //! Orders
 namespace atomic_dex
 {
-    void
+    /*void
     application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt) noexcept
     {
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::post_process_swaps_finished);
         }
-    }
+    }*/
 
     void
-    application::on_process_orders_finished_event([[maybe_unused]] const process_orders_finished& evt) noexcept
+    application::on_process_orders_and_swaps_finished_event([[maybe_unused]] const process_swaps_and_orders_finished& evt) noexcept
     {
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            this->m_actions_queue.push(action::post_process_orders_finished);
+            this->m_actions_queue.push(action::post_process_orders_and_swaps_finished);
         }
     }
 

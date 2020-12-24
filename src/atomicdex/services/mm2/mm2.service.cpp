@@ -799,6 +799,7 @@ namespace atomic_dex
         this->m_current_wallet_name = std::move(wallet_name);
         this->dispatcher_.trigger<coin_cfg_parsed>(this->retrieve_coins_informations());
         mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
+        ::mm2::api::set_system_manager(m_system_manager);
         ::mm2::api::set_rpc_password(cfg.rpc_password);
         json       json_cfg;
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
@@ -920,21 +921,32 @@ namespace atomic_dex
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
         nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
-        std::size_t               total    = this->m_swaps.get().total;
+        std::size_t               total    = m_orders_and_swaps->nb_swaps;
         t_my_recent_swaps_request request{.limit = total > 0 ? total : 500};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
         ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
             .then([this](web::http::http_response resp) {
-                auto answers = ::mm2::api::basic_batch_answer(resp);
-                m_orders     = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
-                this->dispatcher_.trigger<process_orders_finished>();
+                orders_and_swaps result;
+                auto             answers        = ::mm2::api::basic_batch_answer(resp);
+                const auto       orders_answers = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+                result.nb_orders                = orders_answers.orders.size();
+                result.orders_and_swaps         = std::move(orders_answers.orders);
+                result.orders_registry          = std::move(orders_answers.orders_id);
+
+                // this->dispatcher_.trigger<process_orders_finished>();
                 auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_recent_swaps");
                 if (swap_answer.result.has_value())
                 {
-                    m_swaps = swap_answer.result.value();
-                    this->dispatcher_.trigger<process_swaps_finished>();
+                    const auto& swap_success_answer = swap_answer.result.value();
+                    result.nb_swaps                 = swap_success_answer.swaps.size();
+                    result.total_swaps              = swap_success_answer.total;
+                    result.orders_and_swaps.insert(end(result.orders_and_swaps), begin(swap_success_answer.swaps), end(swap_success_answer.swaps));
+                    result.average_events_time = std::move(swap_success_answer.average_events_time);
+                    // this->dispatcher_.trigger<process_swaps_finished>();
                 }
+                m_orders_and_swaps = std::move(result);
+                this->dispatcher_.trigger<process_swaps_and_orders_finished>();
             })
             .then(&handle_exception_pplx_task);
     }
@@ -1064,13 +1076,13 @@ namespace atomic_dex
         return it->second.address;
     }
 
-    ::mm2::api::my_orders_answer
+    /*::mm2::api::my_orders_answer
     mm2_service::get_raw_orders() const noexcept
     {
         return m_orders.get();
-    }
+    }*/
 
-    t_my_recent_swaps_answer
+    /*t_my_recent_swaps_answer
     mm2_service::get_swaps() const noexcept
     {
         return m_swaps.get();
@@ -1080,7 +1092,7 @@ namespace atomic_dex
     mm2_service::get_swaps() noexcept
     {
         return std::as_const(*this).get_swaps();
-    }
+    }*/
 
     t_float_50
     mm2_service::get_trading_fees(const std::string& ticker, const std::string& sell_amount, bool is_max) const
@@ -1323,12 +1335,12 @@ namespace atomic_dex
         return batch;
     }
 
-    void
+    /*void
     mm2_service::add_orders_answer(t_my_orders_answer answer)
     {
-        m_orders = answer;
-        this->dispatcher_.trigger<process_orders_finished>();
-    }
+        //m_orders = answer;
+        //this->dispatcher_.trigger<process_orders_finished>();
+    }*/
 
     std::shared_ptr<t_http_client>
     mm2_service::get_mm2_client() noexcept
@@ -1510,5 +1522,11 @@ namespace atomic_dex
             }
         }
         return servers;
+    }
+
+    orders_and_swaps
+    mm2_service::get_orders_and_swaps() const noexcept
+    {
+        return m_orders_and_swaps.get();
     }
 } // namespace atomic_dex

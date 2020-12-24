@@ -78,12 +78,14 @@ namespace atomic_dex
         bool                   removeRows(int row, int count, const QModelIndex& parent) final;
         QHash<int, QByteArray> roleNames() const final;
         bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
-        // void                   fetchMore(const QModelIndex& parent) final;
-        // bool                   canFetchMore(const QModelIndex& parent) const final;
+        void                   fetchMore(const QModelIndex& parent) final;
+        bool                   canFetchMore(const QModelIndex& parent) const final;
 
         //! Public api
-        void refresh_or_insert_orders() noexcept;
-        void refresh_or_insert_swaps() noexcept;
+        // void refresh_or_insert_orders() noexcept;
+        // void refresh_or_insert_swaps() noexcept;
+        void refresh_or_insert();
+        void reset_file_count();
         void clear_registry() noexcept;
         bool swap_is_in_progress(const QString& coin) const noexcept;
 
@@ -98,34 +100,41 @@ namespace atomic_dex
         void onAverageEventsTimeRegistryChanged();
 
       private:
-        void                     set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
-        order_swaps_data               from_swap_content(const ::mm2::api::swap_contents& contents);
-        order_swaps_data               from_order_content(const ::mm2::api::my_order_contents& contents);
-        void                     common_insert(const std::vector<order_swaps_data>& contents, const std::string& kind);
+        void set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
+        // order_swaps_data               from_swap_content(const ::mm2::api::swap_contents& contents);
+        // order_swaps_data               from_order_content(const ::mm2::api::my_order_contents& contents);
+        void                     common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind);
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
 
-        using t_orders_datas       = std::vector<order_swaps_data>;
+        using t_orders_datas       = orders_and_swaps;
         using t_orders_id_registry = std::unordered_set<std::string>;
         using t_swaps_id_registry  = std::unordered_set<std::string>;
 
         t_orders_id_registry m_orders_id_registry;
-        t_swaps_id_registry  m_swaps_id_registry;
-        t_orders_datas       m_model_data;
-        QVariant             m_json_time_registry;
+        // t_swaps_id_registry  m_swaps_id_registry;
+        t_orders_datas m_model_data;
+        QVariant       m_json_time_registry;
+        std::size_t    m_file_count{0};
 
         orders_proxy_model* m_model_proxy;
 
+        void init_model(const orders_and_swaps& contents);
+
+        //! Private orders API
+        void update_or_insert_orders(const orders_and_swaps& contents);
+        void remove_orders(const t_orders_id_registry& are_present);;
+        void update_existing_order(const t_order_swaps_data& contents) noexcept;
         //! Private api
-        void    update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
-        void    update_swap(const ::mm2::api::swap_contents& contents) noexcept;
-        QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
-        QString determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept;
+
+        // void    update_swap(const ::mm2::api::swap_contents& contents) noexcept;
+        // QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
+        // QString determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept;
 
         /// Returns the fiat values of base and relative amounts.
-        [[nodiscard]] std::pair<std::string, std::string> determine_amounts_in_current_currency(
-            const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount) noexcept;
-        [[nodiscard]] std::pair<std::string, std::string> determine_amounts_in_current_currency(const ::mm2::api::swap_contents& contents);
+        /*[[nodiscard]] std::pair<std::string, std::string> determine_amounts_in_current_currency(
+            const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount) noexcept;*/
+        //[[nodiscard]] std::pair<std::string, std::string> determine_amounts_in_current_currency(const ::mm2::api::swap_contents& contents);
 
         void on_current_currency_changed(const current_currency_changed&) noexcept;
     };

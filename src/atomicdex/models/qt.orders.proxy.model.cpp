@@ -24,10 +24,7 @@
 
 namespace atomic_dex
 {
-    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {
-        
-    }
+    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
 
     bool
     orders_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -96,11 +93,12 @@ namespace atomic_dex
     void
     orders_proxy_model::set_is_history(bool is_history) noexcept
     {
-        if (is_history != this->m_is_history)
+        //qobject_cast<orders_model*>(this->sourceModel())->reset_file_count();
+        if (this->m_is_history != is_history)
         {
             this->m_is_history = is_history;
             emit isHistoryChanged();
-            this->invalidateFilter();
+            this->invalidate();
             emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
         }
     }
@@ -148,7 +146,7 @@ namespace atomic_dex
     {
         m_min_date = date;
         emit filterMinimumDateChanged();
-        invalidateFilter();
+        this->invalidate();
         emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
     }
 
@@ -163,7 +161,7 @@ namespace atomic_dex
     {
         m_max_date = date;
         emit filterMaximumDateChanged();
-        invalidateFilter();
+        this->invalidate();
         emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
     }
 

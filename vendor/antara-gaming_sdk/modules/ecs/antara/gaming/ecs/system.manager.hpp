@@ -220,7 +220,7 @@ namespace antara::gaming::ecs
          * @return A reference to the system obtained.
          */
         template <typename TSystem>
-        const TSystem& get_system() const noexcept;
+        const TSystem& get_system() const;
 
         /**
          * @overload get_system
@@ -247,7 +247,7 @@ namespace antara::gaming::ecs
          * @endcode
          */
         template <typename TSystem>
-        TSystem& get_system() noexcept;
+        TSystem& get_system();
 
         /**
          * @verbatim embed:rst:leading-asterisk

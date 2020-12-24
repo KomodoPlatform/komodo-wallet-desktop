@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! STD
+#include <unordered_set>
+
 //! Deps
 #include <meta/detection/detection.hpp>
 #include <nlohmann/json.hpp>
@@ -24,6 +27,7 @@
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
+#include "atomicdex/data/dex/qt.orders.data.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace mm2::api
@@ -593,7 +597,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, cancel_all_orders_answer& answer);
 
-    struct my_order_contents
+    /*struct my_order_contents
     {
         //! New
         std::string order_id;
@@ -607,14 +611,16 @@ namespace mm2::api
         std::string rel_amount;
         std::string human_timestamp;
         std::string action;
-    };
+    };*/
 
     struct my_orders_answer
     {
-        std::map<std::string, my_order_contents> maker_orders;
-        std::map<std::string, my_order_contents> taker_orders;
-        int                                      rpc_result_code;
-        std::string                              raw_result;
+        std::vector<order_swaps_data> orders;
+        std::unordered_set<std::string> orders_id;
+        //std::map<std::string, my_order_contents>  maker_orders;
+        //std::map<std::string, my_order_contents>  taker_orders;
+        int                                       rpc_result_code;
+        std::string                               raw_result;
     };
 
     void from_json(const nlohmann::json& j, my_orders_answer& answer);
@@ -627,7 +633,7 @@ namespace mm2::api
 
     void to_json(nlohmann::json& j, const my_recent_swaps_request& request);
 
-    struct swap_contents
+    /*struct swap_contents
     {
         std::vector<std::string> error_events;
         std::vector<std::string> success_events;
@@ -641,18 +647,19 @@ namespace mm2::api
         std::string              type;
         double                   total_time_in_ms;
         bool                     funds_recoverable;
-    };
+    };*/
 
-    void from_json(const nlohmann::json& j, swap_contents& contents);
+    void from_json(const nlohmann::json& j, order_swaps_data& contents);
 
     struct my_recent_swaps_answer_success
     {
-        std::vector<swap_contents> swaps;
-        std::size_t                limit;
-        std::size_t                skipped;
-        std::size_t                total;
-        std::string                raw_result;
-        nlohmann::json             average_events_time;
+        // std::vector<swap_contents> swaps;
+        std::vector<order_swaps_data> swaps;
+        std::size_t                               limit;
+        std::size_t                               skipped;
+        std::size_t                               total;
+        std::string                               raw_result;
+        nlohmann::json                            average_events_time;
     };
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results);
@@ -694,6 +701,7 @@ namespace mm2::api
 
     void               set_rpc_password(std::string rpc_password) noexcept;
     const std::string& get_rpc_password() noexcept;
+    void               set_system_manager(ag::ecs::system_manager& system_manager);
 } // namespace mm2::api
 
 namespace atomic_dex
@@ -715,7 +723,7 @@ namespace atomic_dex
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer_success;
     using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
-    using t_my_order_contents       = ::mm2::api::my_order_contents;
+    //using t_my_order_contents       = ::mm2::api::my_order_contents;
     using t_get_trade_fee_request   = ::mm2::api::trade_fee_request;
     using t_get_trade_fee_answer    = ::mm2::api::trade_fee_answer;
 } // namespace atomic_dex

@@ -14,8 +14,14 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
-#include <boost/algorithm/string/case_conv.hpp>
+#if defined(linux) || defined(__APPLE__)
+#    define BOOST_STACKTRACE_USE_ADDR2LINE
+#    if defined(__APPLE__)
+#        define _GNU_SOURCE
+#    endif
+#    include <boost/stacktrace.hpp>
+#endif
+
 
 //! Project
 #include "atomicdex/events/qt.events.hpp"
@@ -30,7 +36,7 @@ namespace
 {
     constexpr int g_file_count_limit = 15_sz;
 
-    std::pair<QString, QString>
+    /*std::pair<QString, QString>
     extract_error(const ::mm2::api::swap_contents& contents)
     {
         for (auto&& cur_event: contents.events)
@@ -49,7 +55,7 @@ namespace
             }
         }
         return {};
-    }
+    }*/
 } // namespace
 
 namespace atomic_dex
@@ -69,7 +75,8 @@ namespace atomic_dex
     int
     orders_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return this->m_model_data.size();
+        return this->m_file_count;
+        // return this->m_model_data.size();
     }
 
     bool
@@ -80,7 +87,7 @@ namespace atomic_dex
             return false;
         }
 
-        order_swaps_data& item = m_model_data[index.row()];
+        t_order_swaps_data& item = m_model_data.orders_and_swaps[index.row()];
         switch (static_cast<OrdersRoles>(role))
         {
         case BaseCoinRole:
@@ -159,7 +166,7 @@ namespace atomic_dex
             return {};
         }
 
-        const order_swaps_data& item = m_model_data.at(index.row());
+        const t_order_swaps_data& item = m_model_data.orders_and_swaps.at(index.row());
         switch (static_cast<OrdersRoles>(role))
         {
         case BaseCoinRole:
@@ -220,7 +227,8 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            this->m_model_data.erase(begin(m_model_data) + position);
+            this->m_model_data.orders_and_swaps.erase(begin(m_model_data.orders_and_swaps) + position);
+            m_file_count -= 1;
             emit lengthChanged();
         }
         endRemoveRows();
@@ -228,76 +236,7 @@ namespace atomic_dex
         return true;
     }
 
-
-    QString
-    orders_model::determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept
-    {
-        QString result = "";
-
-        if (contents.events.empty())
-        {
-            return result;
-        }
-
-        std::string search_name;
-        if (am_i_maker)
-        {
-            search_name = want_taker_id ? "TakerPaymentSpent" : "MakerPaymentSent";
-        }
-        else
-        {
-            search_name = want_taker_id ? "TakerPaymentSent" : "MakerPaymentSpent";
-        }
-        for (auto&& cur_event: contents.events)
-        {
-            if (cur_event.at("state").get<std::string>() == search_name)
-            {
-                result = QString::fromStdString(cur_event.at("data").at("tx_hash").get<std::string>());
-            }
-        }
-        return result;
-    }
-
-    QString
-    orders_model::determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept
-    {
-        if (contents.events.empty())
-        {
-            return "matching";
-        }
-        auto last_event = contents.events.back().at("state").get<std::string>();
-        if (last_event == "Started")
-        {
-            return "matched";
-        }
-
-        if (last_event == "TakerPaymentWaitRefundStarted" || last_event == "MakerPaymentWaitRefundStarted")
-        {
-            return "refunding";
-        }
-
-        QString status = "ongoing";
-
-        if (last_event == "Finished")
-        {
-            status = "successful";
-            //! Find error or not
-            for (auto&& cur_event: contents.events)
-            {
-                if (cur_event.contains("data") && cur_event.at("data").contains("error") &&
-                    std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
-                        return cur_event.at("state").get<std::string>() == error_str;
-                    }))
-                {
-                    status = "failed";
-                }
-            }
-        }
-
-        return status;
-    }
-
-    void
+    /*void
     orders_model::update_swap(const ::mm2::api::swap_contents& contents) noexcept
     {
         if (const auto res = this->match(index(0, 0), OrderIdRole, QString::fromStdString(contents.uuid)); not res.isEmpty())
@@ -354,9 +293,9 @@ namespace atomic_dex
             }
             emit lengthChanged();
         }
-    }
+    }*/
 
-    void
+    /*void
     orders_model::refresh_or_insert_orders() noexcept
     {
         std::error_code ec;
@@ -419,9 +358,9 @@ namespace atomic_dex
             }
         }
         for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
-    }
+    }*/
 
-    void
+    /*void
     orders_model::refresh_or_insert_swaps() noexcept
     {
         const auto& mm2          = m_system_manager.get_system<mm2_service>();
@@ -451,7 +390,7 @@ namespace atomic_dex
         {
             this->common_insert(to_init, "swaps");
         }
-    }
+    }*/
 
     QHash<int, QByteArray>
     orders_model::roleNames() const
@@ -497,16 +436,16 @@ namespace atomic_dex
     void
     orders_model::clear_registry() noexcept
     {
-        // this->m_file_count = 0;
         SPDLOG_DEBUG("clearing orders");
         this->beginResetModel();
-        this->m_swaps_id_registry.clear();
+        this->m_file_count = 0;
+        // this->m_swaps_id_registry.clear();
         this->m_orders_id_registry.clear();
-        this->m_model_data.clear();
+        this->m_model_data.orders_and_swaps.clear();
         this->endResetModel();
     }
 
-    std::pair<std::string, std::string>
+    /*std::pair<std::string, std::string>
     orders_model::determine_amounts_in_current_currency(
         const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount) noexcept
     {
@@ -531,7 +470,7 @@ namespace atomic_dex
             return determine_amounts_in_current_currency(contents.maker_coin, contents.maker_amount, contents.taker_coin, contents.taker_amount);
         }
         return determine_amounts_in_current_currency(contents.taker_coin, contents.taker_amount, contents.maker_coin, contents.maker_amount);
-    }
+    }*/
 
     void
     orders_model::on_current_currency_changed([[maybe_unused]] const current_currency_changed&) noexcept
@@ -560,7 +499,7 @@ namespace atomic_dex
     bool
     atomic_dex::orders_model::swap_is_in_progress(const QString& coin) const noexcept
     {
-        for (auto&& cur_hist_swap: m_model_data)
+        for (auto&& cur_hist_swap: m_model_data.orders_and_swaps)
         {
             if ((cur_hist_swap.base_coin == coin || cur_hist_swap.rel_coin == coin) &&
                 (cur_hist_swap.order_status == "matched" || cur_hist_swap.order_status == "ongoing" || cur_hist_swap.order_status == "matching"))
@@ -571,7 +510,7 @@ namespace atomic_dex
         return false;
     }
 
-    order_swaps_data
+    /*order_swaps_data
     orders_model::from_swap_content(const ::mm2::api::swap_contents& contents)
     {
         bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
@@ -616,9 +555,9 @@ namespace atomic_dex
         }
 
         return data;
-    }
+    }*/
 
-    order_swaps_data
+    /*order_swaps_data
     orders_model::from_order_content(const ::mm2::api::my_order_contents& contents)
     {
         order_swaps_data data{
@@ -652,10 +591,10 @@ namespace atomic_dex
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
 
         return data;
-    }
+    }*/
 
-    void
-    orders_model::common_insert(const std::vector<order_swaps_data>& contents, const std::string& kind)
+    /*void
+    orders_model::common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind)
     {
         if (m_model_data.size() == 0)
         {
@@ -673,5 +612,182 @@ namespace atomic_dex
         }
         SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
         emit lengthChanged();
+    }*/
+
+    void
+    orders_model::update_existing_order(const t_order_swaps_data& contents) noexcept
+    {
+        if (const auto res = this->match(index(0, 0), OrderIdRole, contents.order_id); not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            update_value(OrdersRoles::CancellableRole, contents.is_cancellable, idx, *this);
+            update_value(OrdersRoles::IsMakerRole, contents.order_type == "maker", idx, *this);
+            update_value(OrdersRoles::OrderTypeRole, contents.order_type, idx, *this);
+            if (contents.order_type == "maker")
+            {
+                update_value(OrdersRoles::BaseCoinAmountRole, contents.base_amount, idx, *this);
+                update_value(OrdersRoles::RelCoinAmountRole, contents.rel_amount, idx, *this);
+            }
+            emit lengthChanged();
+        }
+    }
+
+    void
+    orders_model::init_model(const orders_and_swaps& contents)
+    {
+        const auto size = contents.orders_and_swaps.size();
+        SPDLOG_DEBUG("First time initialization, inserting {} elements", size);
+        beginResetModel();
+        m_model_data = std::move(contents);
+        m_file_count = size < g_file_count_limit ? size : g_file_count_limit;
+        endResetModel();
+        m_orders_id_registry = std::move(m_model_data.orders_registry);
+        emit lengthChanged();
+        this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(m_model_data.average_events_time));
+    }
+
+    void
+    orders_model::common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind)
+    {
+        SPDLOG_INFO("common_insert, nb elements to insert: {}", contents.size());
+        auto& data = m_model_data.orders_and_swaps;
+        beginInsertRows(QModelIndex(), rowCount(), rowCount() + contents.size() - 1);
+        m_file_count += contents.size();
+        // data.insert(end(data), begin(contents), end(contents));
+        if (data.size() + contents.size() < g_file_count_limit)
+        {
+            data.insert(end(data), begin(contents), end(contents));
+        }
+        else
+        {
+            if (kind == "orders")
+            {
+                SPDLOG_INFO("inserting orders");
+                data.insert(begin(data), begin(contents), end(contents));
+            }
+            else
+            {
+                SPDLOG_INFO("inserting swaps");
+                //! It's swaps insertion skip all orders
+                data.insert(begin(data) + m_model_data.nb_orders, begin(contents), end(contents));
+            }
+        }
+        endInsertRows();
+        get_orders_proxy_mdl()->invalidate();
+        emit lengthChanged();
+        SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
+    }
+
+    void
+    orders_model::refresh_or_insert()
+    {
+        SPDLOG_INFO("refresh_or_insert swaps/orders");
+        const auto& mm2      = m_system_manager.get_system<mm2_service>();
+        const auto  contents = mm2.get_orders_and_swaps();
+
+
+        //! If model is empty let's init it once
+        if (m_model_data.orders_and_swaps.size() == 0)
+        {
+            init_model(contents);
+        }
+        else
+        {
+            m_model_data.nb_orders = contents.nb_orders;
+            m_model_data.nb_swaps  = contents.nb_swaps;
+            update_or_insert_orders(contents);
+        }
+    }
+
+    void
+    orders_model::fetchMore(const QModelIndex& parent)
+    {
+        if (parent.isValid())
+        {
+            return;
+        }
+        SPDLOG_INFO("orders_model::fetchMore");
+        //SPDLOG_INFO("orders_model::fetchMore: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
+        const auto size           = m_model_data.orders_and_swaps.size();
+        int        remainder      = size - rowCount();
+        int        items_to_fetch = qMin(g_file_count_limit, remainder);
+        if (items_to_fetch <= 0)
+        {
+            return;
+        }
+        // SPDLOG_DEBUG("fetching {} orders/swaps, total: {}", items_to_fetch, size);
+        beginInsertRows(QModelIndex(), rowCount(), rowCount() + items_to_fetch - 1);
+        m_file_count += items_to_fetch;
+        endInsertRows();
+        emit lengthChanged();
+    }
+
+    bool
+    orders_model::canFetchMore([[maybe_unused]] const QModelIndex& parent) const
+    {
+        if (parent.isValid())
+            return false;
+        return (static_cast<decltype(m_model_data.orders_and_swaps)::size_type>(rowCount()) < m_model_data.orders_and_swaps.size());
+    }
+
+    void
+    orders_model::reset_file_count()
+    {
+        beginResetModel();
+        m_file_count = 0;
+        endResetModel();
+        emit lengthChanged();
+    }
+
+    void
+    orders_model::update_or_insert_orders(const orders_and_swaps& contents)
+    {
+        const auto& data = contents.orders_and_swaps;
+        std::unordered_set<std::string> are_present;
+        if (contents.nb_orders > 0)
+        {
+            SPDLOG_INFO("nb_orders: {}", contents.nb_orders);
+            std::vector<t_order_swaps_data> to_init;
+            std::for_each(begin(data), begin(data) + contents.nb_orders, [this, &to_init, &are_present](auto&& cur) {
+                if (this->m_orders_id_registry.contains(cur.order_id.toStdString()))
+                {
+                    this->update_existing_order(cur);
+                }
+                else
+                {
+                    m_orders_id_registry.emplace(to_init.emplace_back(cur).order_id.toStdString());
+                }
+                are_present.emplace(cur.order_id.toStdString());
+            });
+
+            if (not to_init.empty())
+            {
+                this->common_insert(to_init, "orders");
+            }
+        }
+
+        remove_orders(are_present);
+    }
+
+    void
+    orders_model::remove_orders(const t_orders_id_registry& are_present)
+    {
+        std::vector<std::string> to_remove;
+        for (auto&& id: this->m_orders_id_registry)
+        {
+            if (!are_present.contains(id))
+            {
+                SPDLOG_INFO("need to remove: {}", id);
+                //! If it's the case retrieve the index of the row that match this id
+                auto res_list = this->match(index(0, 0), OrderIdRole, QString::fromStdString(id));
+                if (not res_list.empty())
+                {
+                    //! And then delete it
+                    this->removeRow(res_list.at(0).row());
+                    to_remove.emplace_back(id);
+                }
+            }
+        }
+        for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
     }
 } // namespace atomic_dex
