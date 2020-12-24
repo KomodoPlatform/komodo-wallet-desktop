@@ -80,7 +80,7 @@ namespace atomic_dex
             return false;
         }
 
-        order_data& item = m_model_data[index.row()];
+        order_swaps_data& item = m_model_data[index.row()];
         switch (static_cast<OrdersRoles>(role))
         {
         case BaseCoinRole:
@@ -159,7 +159,7 @@ namespace atomic_dex
             return {};
         }
 
-        const order_data& item = m_model_data.at(index.row());
+        const order_swaps_data& item = m_model_data.at(index.row());
         switch (static_cast<OrdersRoles>(role))
         {
         case BaseCoinRole:
@@ -364,7 +364,7 @@ namespace atomic_dex
         const auto      orders = mm2.get_raw_orders();
 
         auto functor_process_orders = [this](auto&& orders) {
-            std::vector<order_data> to_init;
+            std::vector<order_swaps_data> to_init;
             for (auto&& [key, value]: orders)
             {
                 if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
@@ -430,7 +430,7 @@ namespace atomic_dex
         const auto  current_size = static_cast<int>((result.swaps.size()) + orders.maker_orders.size() + orders.taker_orders.size());
 
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
-        std::vector<order_data> to_init;
+        std::vector<order_swaps_data> to_init;
         int                     difference = current_size - static_cast<int>(this->m_model_data.size());
         for (auto&& current_swap: result.swaps)
         {
@@ -571,11 +571,11 @@ namespace atomic_dex
         return false;
     }
 
-    order_data
+    order_swaps_data
     orders_model::from_swap_content(const ::mm2::api::swap_contents& contents)
     {
         bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
-        order_data data{
+        order_swaps_data data{
             .is_maker         = is_maker,
             .base_coin        = is_maker ? QString::fromStdString(contents.maker_coin) : QString::fromStdString(contents.taker_coin),
             .rel_coin         = is_maker ? QString::fromStdString(contents.taker_coin) : QString::fromStdString(contents.maker_coin),
@@ -618,10 +618,10 @@ namespace atomic_dex
         return data;
     }
 
-    order_data
+    order_swaps_data
     orders_model::from_order_content(const ::mm2::api::my_order_contents& contents)
     {
-        order_data data{
+        order_swaps_data data{
             .is_maker       = contents.order_type == "maker",
             .base_coin      = contents.action == "Sell" ? QString::fromStdString(contents.base) : QString::fromStdString(contents.rel),
             .rel_coin       = contents.action == "Sell" ? QString::fromStdString(contents.rel) : QString::fromStdString(contents.base),
@@ -655,7 +655,7 @@ namespace atomic_dex
     }
 
     void
-    orders_model::common_insert(const std::vector<order_data>& contents, const std::string& kind)
+    orders_model::common_insert(const std::vector<order_swaps_data>& contents, const std::string& kind)
     {
         if (m_model_data.size() == 0)
         {

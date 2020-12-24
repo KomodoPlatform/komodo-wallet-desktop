@@ -22,7 +22,7 @@
 //! Qt
 #include <QAbstractListModel>
 
-//! Boost
+//! Absl
 #include <absl/container/flat_hash_map.h>
 
 //! Deps

@@ -5,7 +5,7 @@
 
 namespace atomic_dex
 {
-    struct order_data
+    struct order_swaps_data
     {
         //! eg: true / false
         bool is_maker;

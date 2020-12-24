@@ -99,13 +99,13 @@ namespace atomic_dex
 
       private:
         void                     set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
-        order_data               from_swap_content(const ::mm2::api::swap_contents& contents);
-        order_data               from_order_content(const ::mm2::api::my_order_contents& contents);
-        void                     common_insert(const std::vector<order_data>& contents, const std::string& kind);
+        order_swaps_data               from_swap_content(const ::mm2::api::swap_contents& contents);
+        order_swaps_data               from_order_content(const ::mm2::api::my_order_contents& contents);
+        void                     common_insert(const std::vector<order_swaps_data>& contents, const std::string& kind);
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
 
-        using t_orders_datas       = std::vector<order_data>;
+        using t_orders_datas       = std::vector<order_swaps_data>;
         using t_orders_id_registry = std::unordered_set<std::string>;
         using t_swaps_id_registry  = std::unordered_set<std::string>;
 

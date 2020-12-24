@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! Deps
+#include "antara/gaming/ecs/system.manager.hpp"
+
 //! Project Headers
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/events/events.hpp"
