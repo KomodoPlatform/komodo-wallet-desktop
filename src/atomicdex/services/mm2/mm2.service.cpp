@@ -926,9 +926,8 @@ namespace atomic_dex
         batch.push_back(my_swaps);
         ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
             .then([this](web::http::http_response resp) {
-                auto answers          = ::mm2::api::basic_batch_answer(resp);
-                auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
-                m_orders              = my_orders_answer;
+                auto answers = ::mm2::api::basic_batch_answer(resp);
+                m_orders     = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
                 this->dispatcher_.trigger<process_orders_finished>();
                 auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_recent_swaps");
                 if (swap_answer.result.has_value())

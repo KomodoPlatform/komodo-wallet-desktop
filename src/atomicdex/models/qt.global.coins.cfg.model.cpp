@@ -332,7 +332,7 @@ namespace atomic_dex
         return {};
     }
 
-    boost::container::flat_map<std::string, coin_config>
+    t_enabled_coins_registry
     global_coins_cfg_model::get_enabled_coins() const noexcept
     {
         return m_enabled_coins;

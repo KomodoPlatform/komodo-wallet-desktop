@@ -1,3 +1,4 @@
+abseil
 fmt
 entt
 boost-multiprecision

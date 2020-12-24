@@ -23,7 +23,7 @@
 #include <QAbstractListModel>
 
 //! Boost
-#include <boost/container/flat_map.hpp>
+#include <absl/container/flat_hash_map.h>
 
 //! Deps
 #include <entt/core/attribute.h>
@@ -34,15 +34,17 @@
 
 namespace atomic_dex
 {
-    using cfg_proxy_model_list = QList<global_coins_cfg_proxy_model*>;
+    using cfg_proxy_model_list     = QList<global_coins_cfg_proxy_model*>;
+    using t_enabled_coins_registry = absl::flat_hash_map<std::string, coin_config>;
 
     class ENTT_API global_coins_cfg_model final : public QAbstractListModel
     {
+      private:
         //! Q_Object definition
         Q_OBJECT
 
-        std::vector<coin_config>                             m_model_data;    ///< contains all the data
-        boost::container::flat_map<std::string, coin_config> m_enabled_coins; ///< enabled_coins
+        std::vector<coin_config> m_model_data;    ///< contains all the data
+        t_enabled_coins_registry m_enabled_coins; ///< enabled_coins
 
         std::array<global_coins_cfg_proxy_model*, ::CoinType::Size> m_proxies;
 
@@ -84,10 +86,10 @@ namespace atomic_dex
         ~global_coins_cfg_model() noexcept final = default;
 
         //! CPP API
-        void                                                               initialize_model(std::vector<coin_config> cfg) noexcept;
-        const std::vector<coin_config>&                                    get_model_data() const noexcept;
-        [[nodiscard]] coin_config                                          get_coin_info(const std::string& ticker) const noexcept;
-        [[nodiscard]] boost::container::flat_map<std::string, coin_config> get_enabled_coins() const noexcept;
+        void                                   initialize_model(std::vector<coin_config> cfg) noexcept;
+        const std::vector<coin_config>&        get_model_data() const noexcept;
+        [[nodiscard]] coin_config              get_coin_info(const std::string& ticker) const noexcept;
+        [[nodiscard]] t_enabled_coins_registry get_enabled_coins() const noexcept;
 
         template <typename TArray>
         void update_status(const TArray& tickers, bool status) noexcept;
