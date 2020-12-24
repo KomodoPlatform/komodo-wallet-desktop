@@ -24,6 +24,7 @@
 #include <QVariantList>
 
 //! Project Headers
+#include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/wallet.cfg.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
@@ -42,7 +43,6 @@ namespace atomic_dex
         return std::make_tuple(value, value, false);
     }
 
-    bool                 am_i_able_to_reach_this_endpoint(const QString& endpoint);
     QStringList          vector_std_string_to_qt_string_list(const std::vector<std::string>& vec);
     ENTT_API QStringList qt_variant_list_to_qt_string_list(const QVariantList& variant_list);
     QJsonArray           nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
@@ -52,7 +52,7 @@ namespace atomic_dex
     class ENTT_API qt_utilities : public QObject
     {
         Q_OBJECT
-        
+
       public:
         Q_INVOKABLE static void copy_text_to_clipboard(const QString& text);
     };

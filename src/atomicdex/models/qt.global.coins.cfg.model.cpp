@@ -112,7 +112,18 @@ namespace atomic_dex
         switch (static_cast<CoinsRoles>(role))
         {
         case CurrentlyEnabled:
-            item.currently_enabled = value.toBool();
+            if (auto res = value.toBool(); item.currently_enabled != res)
+            {
+                item.currently_enabled = res;
+                if (!item.currently_enabled)
+                {
+                    m_enabled_coins.erase(item.ticker);
+                }
+                else
+                {
+                    m_enabled_coins[item.ticker] = item;
+                }
+            }
             break;
         case Active:
             item.active = value.toBool();
@@ -163,6 +174,14 @@ namespace atomic_dex
     void
     global_coins_cfg_model::initialize_model(std::vector<coin_config> cfg) noexcept
     {
+        m_enabled_coins.clear();
+        for (auto&& cur: cfg)
+        {
+            if (cur.currently_enabled)
+            {
+                m_enabled_coins[cur.ticker] = cur;
+            }
+        }
         cfg.push_back(coin_config{.ticker = "All", .currently_enabled = true, .active = true});
         SPDLOG_INFO("Initializing global coin cfg model with size {}", cfg.size());
         set_checked_nb(0);
@@ -298,12 +317,24 @@ namespace atomic_dex
     QVariant
     global_coins_cfg_model::get_coin_info(const QString& ticker) const noexcept
     {
-        if (const auto res = this->match(this->index(0, 0), TickerRole, ticker); not res.isEmpty())
+        return to_qt_binding(get_coin_info(ticker.toStdString()));
+    }
+
+    coin_config
+    global_coins_cfg_model::get_coin_info(const std::string& ticker) const noexcept
+    {
+        if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
         {
             const QModelIndex& idx  = res.at(0);
             const coin_config& item = m_model_data.at(idx.row());
-            return to_qt_binding(item);
+            return item;
         }
         return {};
+    }
+
+    boost::container::flat_map<std::string, coin_config>
+    global_coins_cfg_model::get_enabled_coins() const noexcept
+    {
+        return m_enabled_coins;
     }
 } // namespace atomic_dex

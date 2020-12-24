@@ -106,10 +106,7 @@ namespace atomic_dex::utils
             }
             else
             {
-                std::string s;
-                s.reserve(r.size());
-                std::copy(r.begin(), r.end(), s.begin());
-                return s;
+                return std::string(r.begin(), r.end());
             }
         };
         return functor(res);

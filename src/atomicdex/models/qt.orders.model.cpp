@@ -431,7 +431,6 @@ namespace atomic_dex
 
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
         std::vector<order_data> to_init;
-        std::vector<order_data> to_update;
         int                     difference = current_size - static_cast<int>(this->m_model_data.size());
         for (auto&& current_swap: result.swaps)
         {

@@ -166,9 +166,9 @@ namespace atomic_dex
         this->process_one_frame();
         if (m_event_actions[events_action::need_a_full_refresh_of_mm2])
         {
-            auto& mm2_s = system_manager_.create_system<mm2_service>(system_manager_);
+            system_manager_.create_system<mm2_service>(system_manager_);
 
-            system_manager_.create_system<coinpaprika_provider>(mm2_s);
+            system_manager_.create_system<coinpaprika_provider>(system_manager_);
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
         }
@@ -269,7 +269,7 @@ namespace atomic_dex
         // get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
         system_manager_.create_system<ip_service_checker>();
-        auto& mm2_system           = system_manager_.create_system<mm2_service>(system_manager_);
+        system_manager_.create_system<mm2_service>(system_manager_);
         auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
@@ -277,7 +277,7 @@ namespace atomic_dex
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<band_oracle_price_service>();
-        system_manager_.create_system<coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<update_service_checker>(this);
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);

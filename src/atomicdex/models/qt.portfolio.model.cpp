@@ -22,7 +22,7 @@
 
 //! Project Headers
 #include "atomicdex/events/qt.events.hpp"
-#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -93,19 +93,19 @@ namespace atomic_dex
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
         const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
-        t_coins            coins         = mm2_system.get_enabled_coins();
+        const auto         coins         = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         const std::string& currency      = m_config->current_currency;
         const std::string& fiat          = m_config->current_fiat;
         tf::Executor       executor;
         tf::Taskflow       taskflow;
-        for (auto&& coin: coins)
+        for (auto&& [_, coin]: coins)
         {
             if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 continue;
             }
-            auto update_functor = [coin, &paprika, &mm2_system, &price_service, currency, fiat, this]() {
+            auto update_functor = [coin = std::move(coin), &paprika, &mm2_system, &price_service, currency, fiat, this]() {
                 const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
                 {
@@ -161,7 +161,8 @@ namespace atomic_dex
             if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
             {
                 const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
-                auto               coin          = mm2_system.get_coin_info(ticker);
+                const auto*        global_cfg    = this->m_system_manager.get_system<portfolio_page>().get_global_cfg();
+                const auto         coin          = global_cfg->get_coin_info(ticker);
                 const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
                 const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
                 std::error_code    ec;
