@@ -125,6 +125,11 @@ namespace atomic_dex
         void update_or_insert_orders(const orders_and_swaps& contents);
         void remove_orders(const t_orders_id_registry& are_present);;
         void update_existing_order(const t_order_swaps_data& contents) noexcept;
+
+        //! Private Swaps API
+        //void update_
+
+
         //! Private api
 
         // void    update_swap(const ::mm2::api::swap_contents& contents) noexcept;

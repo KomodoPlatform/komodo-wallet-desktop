@@ -14,13 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
-#if defined(linux) || defined(__APPLE__)
+/*#if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
 #    if defined(__APPLE__)
 #        define _GNU_SOURCE
 #    endif
 #    include <boost/stacktrace.hpp>
-#endif
+#endif*/
 
 
 //! Project
@@ -638,7 +638,7 @@ namespace atomic_dex
         const auto size = contents.orders_and_swaps.size();
         SPDLOG_DEBUG("First time initialization, inserting {} elements", size);
         beginResetModel();
-        m_model_data = std::move(contents);
+        m_model_data      = std::move(contents);
         m_nb_items_loaded = size < g_file_count_limit ? size : g_file_count_limit;
         endResetModel();
         m_orders_id_registry = std::move(m_model_data.orders_registry);
@@ -653,6 +653,10 @@ namespace atomic_dex
         auto& data = m_model_data.orders_and_swaps;
         beginInsertRows(QModelIndex(), rowCount(), rowCount() + contents.size() - 1);
         m_nb_items_loaded += contents.size();
+        if (kind == "orders")
+        {
+            m_model_data.nb_orders += contents.size();
+        }
         // data.insert(end(data), begin(contents), end(contents));
         if (data.size() + contents.size() < g_file_count_limit)
         {
@@ -681,10 +685,8 @@ namespace atomic_dex
     void
     orders_model::refresh_or_insert()
     {
-        SPDLOG_INFO("refresh_or_insert swaps/orders");
         const auto& mm2      = m_system_manager.get_system<mm2_service>();
         const auto  contents = mm2.get_orders_and_swaps();
-
 
         //! If model is empty let's init it once
         if (m_model_data.orders_and_swaps.size() == 0)
@@ -694,8 +696,11 @@ namespace atomic_dex
         else
         {
             m_model_data.nb_orders = contents.nb_orders;
-            m_model_data.nb_swaps  = contents.nb_swaps;
+            //! Orders
             update_or_insert_orders(contents);
+            m_model_data.nb_swaps = m_model_data.orders_and_swaps.size() - m_model_data.nb_orders;
+            // update_or_insert_swaps(contents);
+            SPDLOG_INFO("post refresh_or_insert - nb_orders: {} - nb_swaps: {}", m_model_data.nb_orders, m_model_data.nb_swaps);
         }
     }
 
@@ -707,7 +712,7 @@ namespace atomic_dex
             return;
         }
         SPDLOG_INFO("orders_model::fetchMore");
-        //SPDLOG_INFO("orders_model::fetchMore: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
+        // SPDLOG_INFO("orders_model::fetchMore: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
         const auto size           = m_model_data.orders_and_swaps.size();
         int        remainder      = size - rowCount();
         int        items_to_fetch = qMin(g_file_count_limit, remainder);
@@ -715,7 +720,7 @@ namespace atomic_dex
         {
             return;
         }
-        // SPDLOG_DEBUG("fetching {} orders/swaps, total: {}", items_to_fetch, size);
+
         beginInsertRows(QModelIndex(), rowCount(), rowCount() + items_to_fetch - 1);
         m_nb_items_loaded += items_to_fetch;
         endInsertRows();
@@ -742,11 +747,10 @@ namespace atomic_dex
     void
     orders_model::update_or_insert_orders(const orders_and_swaps& contents)
     {
-        const auto& data = contents.orders_and_swaps;
+        const auto&                     data = contents.orders_and_swaps;
         std::unordered_set<std::string> are_present;
         if (contents.nb_orders > 0)
         {
-            SPDLOG_INFO("nb_orders: {}", contents.nb_orders);
             std::vector<t_order_swaps_data> to_init;
             std::for_each(begin(data), begin(data) + contents.nb_orders, [this, &to_init, &are_present](auto&& cur) {
                 if (this->m_orders_id_registry.contains(cur.order_id.toStdString()))
@@ -783,6 +787,7 @@ namespace atomic_dex
                 {
                     //! And then delete it
                     this->removeRow(res_list.at(0).row());
+                    m_model_data.nb_orders -= 1;
                     to_remove.emplace_back(id);
                 }
             }
