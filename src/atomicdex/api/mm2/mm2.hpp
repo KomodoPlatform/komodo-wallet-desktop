@@ -601,8 +601,8 @@ namespace mm2::api
     {
         std::vector<order_swaps_data>   orders;
         std::unordered_set<std::string> orders_id;
-        int         rpc_result_code;
-        std::string raw_result;
+        int                             rpc_result_code;
+        std::string                     raw_result;
     };
 
     void from_json(const nlohmann::json& j, my_orders_answer& answer);
@@ -619,13 +619,14 @@ namespace mm2::api
 
     struct my_recent_swaps_answer_success
     {
-        std::vector<order_swaps_data> swaps;
-        std::size_t                   limit;
-        std::size_t                   skipped;
-        std::size_t                   total;
-        std::size_t                   active_swaps{0};
-        std::string                   raw_result;
-        nlohmann::json                average_events_time;
+        std::vector<order_swaps_data>   swaps;
+        std::unordered_set<std::string> swaps_id;
+        std::size_t                     limit;
+        std::size_t                     skipped;
+        std::size_t                     total;
+        std::size_t                     active_swaps{0};
+        std::string                     raw_result;
+        nlohmann::json                  average_events_time;
     };
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results);

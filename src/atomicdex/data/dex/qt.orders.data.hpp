@@ -73,6 +73,8 @@ namespace mm2::api
 
         //! success events
         QStringList success_events;
+
+        bool is_swap_active{false};
     };
 } // namespace mm2::api
 

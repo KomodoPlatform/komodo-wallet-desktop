@@ -924,23 +924,22 @@ namespace atomic_dex
 
 
         //! Swaps preparation
-        std::size_t                total           = 0;
-        std::size_t                nb_active_swaps = 0;
-        std::optional<std::string> from_uuid       = std::nullopt;
+        std::size_t total           = 0;
+        std::size_t nb_active_swaps = 0;
         {
             auto value_ptr  = m_orders_and_swaps.synchronize();
-            total           = value_ptr->nb_swaps;
+            total           = value_ptr->total_swaps;
             nb_active_swaps = value_ptr->active_swaps;
-            from_uuid       = value_ptr->from_uuid;
         }
 
 
+        //! First time fetch or current page
         nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
-        t_my_recent_swaps_request request{.limit = 50, .from_uuid = from_uuid.has_value() ? from_uuid.value() : std::optional<std::string>{std::nullopt}};
+        t_my_recent_swaps_request request{.limit = 50};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
 
-        //! Always force to push nb_active_swaps + 15 to detect new one
+        //! Recents swaps
         nlohmann::json            recent_swaps = ::mm2::api::template_request("my_recent_swaps");
         t_my_recent_swaps_request recent_swaps_request{.limit = nb_active_swaps + 15};
         to_json(recent_swaps, recent_swaps_request);
@@ -948,37 +947,74 @@ namespace atomic_dex
 
 
         SPDLOG_INFO("Time elasped for preparing batch_and_orders request: {} seconds", prepare_request);
-        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
-            .then([this](web::http::http_response resp) {
-                spdlog::stopwatch stopwatch;
-                orders_and_swaps  result;
-                auto              answers = ::mm2::api::basic_batch_answer(resp);
 
-                const auto orders_answers = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+        auto answer_functor = [this](web::http::http_response resp) {
+            spdlog::stopwatch stopwatch;
 
-                // spdlog::stopwatch parsing_swaps_watch;
-                auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_recent_swaps");
-                result.orders_and_swaps.reserve(orders_answers.orders.size() + (swap_answer.result.has_value() ? swap_answer.result.value().swaps.size() : 0));
-                result.nb_orders        = orders_answers.orders.size();
-                result.orders_and_swaps = std::move(orders_answers.orders);
-                result.orders_registry  = std::move(orders_answers.orders_id);
-                // SPDLOG_INFO("Time elasped for parsing swaps: {} seconds", parsing_swaps_watch);
-                if (swap_answer.result.has_value())
+            //! Parsing Resp
+            orders_and_swaps result;
+            auto             answers = ::mm2::api::basic_batch_answer(resp);
+
+            //! Extract
+            const auto orders_answers = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+            auto       swap_answer    = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_recent_swaps");
+
+            result.orders_and_swaps.reserve(orders_answers.orders.size() + 50);
+            result.nb_orders        = orders_answers.orders.size();
+            result.orders_and_swaps = std::move(orders_answers.orders);
+            result.orders_registry  = std::move(orders_answers.orders_id);
+
+            //! Recents swaps
+            if (answers.size() == 3)
+            {
+                auto recent_swaps_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[2], "my_recent_swaps");
+                if (recent_swaps_answer.result.has_value())
                 {
-                    const auto& swap_success_answer = swap_answer.result.value();
-                    result.nb_swaps                 = swap_success_answer.swaps.size();
-                    result.total_swaps              = swap_success_answer.total;
-                    result.orders_and_swaps.insert(end(result.orders_and_swaps), begin(swap_success_answer.swaps), end(swap_success_answer.swaps));
-                    result.average_events_time = std::move(swap_success_answer.average_events_time);
-                    // SPDLOG_INFO("Time elasped for parsing swaps: {} seconds", parsing_swaps_watch);
-                    // this->dispatcher_.trigger<process_swaps_finished>();
+                    const auto& recent_swaps_answer_success = recent_swaps_answer.result.value();
+                    result.active_swaps                     = recent_swaps_answer_success.active_swaps;
+                    const auto& data                        = recent_swaps_answer_success.swaps;
+                    result.swaps_registry.reserve(data.size());
+                    std::for_each(begin(data), begin(data) + result.active_swaps, [&result](auto&& cur) {
+                        if (cur.is_swap_active)
+                        {
+                            result.swaps_registry.emplace(cur.order_id.toStdString());
+                            result.orders_and_swaps.emplace_back(std::move(cur));
+                        }
+                    });
                 }
-                m_orders_and_swaps = std::move(result);
-                SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
-                // SPDLOG_INFO("Time elapsed for parsing and treating answer of orders+swaps: {} seconds", another_stopwatch);
-                this->dispatcher_.trigger<process_swaps_and_orders_finished>();
-            })
-            .then(&handle_exception_pplx_task);
+            }
+
+            if (swap_answer.result.has_value())
+            {
+                const auto& swap_success_answer = swap_answer.result.value();
+                result.nb_swaps                 = swap_success_answer.swaps.size();
+                result.total_swaps              = swap_success_answer.total;
+                result.total_finished_swaps     = result.total_swaps - result.active_swaps;
+                result.orders_and_swaps.insert(end(result.orders_and_swaps), begin(swap_success_answer.swaps), end(swap_success_answer.swaps));
+                result.average_events_time = std::move(swap_success_answer.average_events_time);
+                result.swaps_registry      = std::move(swap_success_answer.swaps_id);
+            }
+
+
+            //! Post Metrics
+            SPDLOG_INFO(
+                "Metrics -> [total_swaps: {}, "
+                "active_swaps: {}, "
+                "nb_orders: {}, "
+                "current_nb_swaps: {}, "
+                "nb_pages: {}, "
+                "current_page: {}, "
+                "total_finished_swaps: {}]",
+                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_swaps, result.nb_pages, result.current_page, result.total_finished_swaps);
+
+            //! Compute everything
+            m_orders_and_swaps = std::move(result);
+
+            SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
+            this->dispatcher_.trigger<process_swaps_and_orders_finished>();
+        };
+
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token()).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void
@@ -1105,24 +1141,6 @@ namespace atomic_dex
 
         return it->second.address;
     }
-
-    /*::mm2::api::my_orders_answer
-    mm2_service::get_raw_orders() const noexcept
-    {
-        return m_orders.get();
-    }*/
-
-    /*t_my_recent_swaps_answer
-    mm2_service::get_swaps() const noexcept
-    {
-        return m_swaps.get();
-    }
-
-    t_my_recent_swaps_answer
-    mm2_service::get_swaps() noexcept
-    {
-        return std::as_const(*this).get_swaps();
-    }*/
 
     t_float_50
     mm2_service::get_trading_fees(const std::string& ticker, const std::string& sell_amount, bool is_max) const

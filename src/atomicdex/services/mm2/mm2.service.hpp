@@ -32,6 +32,7 @@
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/constants/mm2.error.code.hpp"
+#include "atomicdex/data/dex/orders.and.swaps.data.hpp"
 #include "atomicdex/data/wallet/tx.data.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -40,19 +41,6 @@ namespace atomic_dex
 {
     namespace bm = boost::multiprecision;
     namespace ag = antara::gaming;
-
-    struct orders_and_swaps
-    {
-        std::size_t                     nb_orders; ///< current nb_orders
-        std::unordered_set<std::string> orders_registry;
-        std::unordered_set<std::string> swaps_registry;
-        std::size_t                     nb_swaps;    ///< current nb_swaps
-        std::size_t                     total_swaps; ///< total available swaps
-        std::size_t                     active_swaps; ///< total_nb of active swaps
-        std::optional<std::string>      from_uuid{std::nullopt}; ///< if we want to skip some swaps
-        nlohmann::json                  average_events_time;
-        std::vector<t_order_swaps_data> orders_and_swaps;
-    };
 
     template <typename T>
     using t_shared_synchronized_value = boost::synchronized_value<T, std::shared_mutex>;
@@ -71,14 +59,12 @@ namespace atomic_dex
 
       private:
         //! Private typedefs
-        using t_mm2_time_point   = std::chrono::high_resolution_clock::time_point;
-        using t_balance_registry = std::unordered_map<t_ticker, t_balance_answer>;
-        using t_tx_registry      = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
-        using t_fees_registry    = t_shared_synchronized_value<std::unordered_map<t_ticker, t_get_trade_fee_answer>>;
-        using t_orderbook        = boost::synchronized_value<t_orderbook_answer>;
-        using t_orders_and_swaps = boost::synchronized_value<orders_and_swaps>;
-        // using t_my_orders                  = boost::synchronized_value<t_my_orders_answer>;
-        // using t_swaps                      = boost::synchronized_value<t_my_recent_swaps_answer>;
+        using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
+        using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
+        using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
+        using t_fees_registry              = t_shared_synchronized_value<std::unordered_map<t_ticker, t_get_trade_fee_answer>>;
+        using t_orderbook                  = boost::synchronized_value<t_orderbook_answer>;
+        using t_orders_and_swaps           = boost::synchronized_value<orders_and_swaps>;
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
         using t_synchronized_ticker        = boost::synchronized_value<std::string>;
@@ -115,14 +101,12 @@ namespace atomic_dex
         mutable std::shared_mutex m_raw_coin_cfg_mutex;
 
         //! Concurrent Registry.
-        t_coins_registry&  m_coins_informations{entity_registry_.set<t_coins_registry>()};
-        t_balance_registry m_balance_informations;
-        t_tx_registry      m_tx_informations;
-        t_fees_registry    m_trade_fees_registry;
-        t_orderbook        m_orderbook{t_orderbook_answer{}};
-        t_orders_and_swaps m_orders_and_swaps{t_orders_and_swaps{}};
-        // t_my_orders              m_orders{t_my_orders_answer{}};
-        // t_swaps                  m_swaps{t_my_recent_swaps_answer{.limit = 0, .total = 0}};
+        t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
+        t_balance_registry       m_balance_informations;
+        t_tx_registry            m_tx_informations;
+        t_fees_registry          m_trade_fees_registry;
+        t_orderbook              m_orderbook{t_orderbook_answer{}};
+        t_orders_and_swaps       m_orders_and_swaps{t_orders_and_swaps{}};
         t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
 
         //! Balance factor
@@ -236,12 +220,7 @@ namespace atomic_dex
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;
 
-        //! Get orders
-        //[[nodiscard]] ::mm2::api::my_orders_answer get_raw_orders() const noexcept;
-
         //! Get Swaps
-        //[[nodiscard]] t_my_recent_swaps_answer get_swaps() const noexcept;
-        // t_my_recent_swaps_answer               get_swaps() noexcept;
         [[nodiscard]] orders_and_swaps get_orders_and_swaps() const noexcept;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.

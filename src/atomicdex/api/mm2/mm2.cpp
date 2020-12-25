@@ -1040,10 +1040,11 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results)
     {
-        spdlog::stopwatch                                    stopwatch;
+        // spdlog::stopwatch                                    stopwatch;
         std::unordered_map<std::string, std::vector<double>> events_time_registry;
         const auto&                                          swaps = j.at("swaps");
         results.swaps.reserve(swaps.size());
+        results.swaps_id.reserve(swaps.size());
         for (auto&& cur: swaps)
         {
             order_swaps_data to_add;
@@ -1051,6 +1052,7 @@ namespace mm2::api
             if (to_add.order_status == "matched" || to_add.order_status == "ongoing" || to_add.order_status == "matching" || to_add.order_status == "refunding")
             {
                 results.active_swaps += 1;
+                to_add.is_swap_active = true;
             }
             for (auto&& cur_event: to_add.events)
             {
@@ -1062,6 +1064,7 @@ namespace mm2::api
                     }
                 }
             }
+            results.swaps_id.emplace(to_add.order_id.toStdString());
             results.swaps.emplace_back(std::move(to_add));
         }
         j.at("limit").get_to(results.limit);
@@ -1076,8 +1079,8 @@ namespace mm2::api
             double average                        = sum / values.size();
             results.average_events_time[evt_name] = average;
         }
-        SPDLOG_INFO("from_json(my_recent_swaps_answer_success) -> {} seconds", stopwatch);
-        SPDLOG_INFO("Total active swaps: {}", results.active_swaps);
+        // SPDLOG_INFO("from_json(my_recent_swaps_answer_success) -> {} seconds", stopwatch);
+        // SPDLOG_INFO("Total active swaps: {}", results.active_swaps);
     }
 
     void
