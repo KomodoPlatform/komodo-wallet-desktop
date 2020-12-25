@@ -78,14 +78,11 @@ namespace atomic_dex
         bool                   removeRows(int row, int count, const QModelIndex& parent) final;
         QHash<int, QByteArray> roleNames() const final;
         bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
-        void                   fetchMore(const QModelIndex& parent) final;
-        bool                   canFetchMore(const QModelIndex& parent) const final;
 
         //! Public api
         // void refresh_or_insert_orders() noexcept;
         // void refresh_or_insert_swaps() noexcept;
         void refresh_or_insert();
-        void reset_file_count();
         void clear_registry() noexcept;
         bool swap_is_in_progress(const QString& coin) const noexcept;
 
@@ -101,9 +98,10 @@ namespace atomic_dex
 
       private:
         void set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
+        void common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind);
         // order_swaps_data               from_swap_content(const ::mm2::api::swap_contents& contents);
         // order_swaps_data               from_order_content(const ::mm2::api::my_order_contents& contents);
-        void                     common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind);
+
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
 
@@ -112,10 +110,9 @@ namespace atomic_dex
         using t_swaps_id_registry  = std::unordered_set<std::string>;
 
         t_orders_id_registry m_orders_id_registry;
-        // t_swaps_id_registry  m_swaps_id_registry;
-        t_orders_datas m_model_data;
-        QVariant       m_json_time_registry;
-        std::size_t    m_nb_items_loaded{0};
+        t_swaps_id_registry  m_swaps_id_registry;
+        t_orders_datas       m_model_data;
+        QVariant             m_json_time_registry;
 
         orders_proxy_model* m_model_proxy;
 
@@ -123,11 +120,12 @@ namespace atomic_dex
 
         //! Private orders API
         void update_or_insert_orders(const orders_and_swaps& contents);
-        void remove_orders(const t_orders_id_registry& are_present);;
+        void remove_orders(const t_orders_id_registry& are_present);
+        ;
         void update_existing_order(const t_order_swaps_data& contents) noexcept;
 
         //! Private Swaps API
-        //void update_
+        // void update_
 
 
         //! Private api

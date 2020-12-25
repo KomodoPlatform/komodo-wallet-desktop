@@ -14,13 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
-/*#if defined(linux) || defined(__APPLE__)
+#if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
 #    if defined(__APPLE__)
 #        define _GNU_SOURCE
 #    endif
 #    include <boost/stacktrace.hpp>
-#endif*/
+#endif
 
 
 //! Project
@@ -30,33 +30,6 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-
-//! Utils
-namespace
-{
-    constexpr int g_file_count_limit = 15_sz;
-
-    /*std::pair<QString, QString>
-    extract_error(const ::mm2::api::swap_contents& contents)
-    {
-        for (auto&& cur_event: contents.events)
-        {
-            if (std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
-                    return cur_event.at("state").get<std::string>() == error_str;
-                }))
-            {
-                //! It's an error
-                if (cur_event.contains("data") && cur_event.at("data").contains("error"))
-                {
-                    return {
-                        QString::fromStdString(cur_event.at("state").get<std::string>()),
-                        QString::fromStdString(cur_event.at("data").at("error").get<std::string>())};
-                }
-            }
-        }
-        return {};
-    }*/
-} // namespace
 
 namespace atomic_dex
 {
@@ -75,8 +48,7 @@ namespace atomic_dex
     int
     orders_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return this->m_nb_items_loaded;
-        // return this->m_model_data.size();
+        return this->m_model_data.orders_and_swaps.size();
     }
 
     bool
@@ -228,7 +200,6 @@ namespace atomic_dex
         for (int row = 0; row < rows; ++row)
         {
             this->m_model_data.orders_and_swaps.erase(begin(m_model_data.orders_and_swaps) + position);
-            m_nb_items_loaded -= 1;
             emit lengthChanged();
         }
         endRemoveRows();
@@ -438,8 +409,7 @@ namespace atomic_dex
     {
         SPDLOG_DEBUG("clearing orders");
         this->beginResetModel();
-        this->m_nb_items_loaded = 0;
-        // this->m_swaps_id_registry.clear();
+        this->m_swaps_id_registry.clear();
         this->m_orders_id_registry.clear();
         this->m_model_data.orders_and_swaps.clear();
         this->endResetModel();
@@ -593,27 +563,6 @@ namespace atomic_dex
         return data;
     }*/
 
-    /*void
-    orders_model::common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind)
-    {
-        if (m_model_data.size() == 0)
-        {
-            SPDLOG_DEBUG("First time initialization, inserting {} {}", contents.size(), kind);
-            beginResetModel();
-            m_model_data = contents;
-            // m_nb_items_loaded = contents.size() < g_file_count_limit ? contents.size() : g_file_count_limit;
-            endResetModel();
-        }
-        else
-        {
-            beginInsertRows(QModelIndex(), rowCount(), rowCount() + contents.size() - 1);
-            m_model_data.insert(end(m_model_data), begin(contents), end(contents));
-            endInsertRows();
-        }
-        SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
-        emit lengthChanged();
-    }*/
-
     void
     orders_model::update_existing_order(const t_order_swaps_data& contents) noexcept
     {
@@ -638,8 +587,7 @@ namespace atomic_dex
         const auto size = contents.orders_and_swaps.size();
         SPDLOG_DEBUG("First time initialization, inserting {} elements", size);
         beginResetModel();
-        m_model_data      = std::move(contents);
-        m_nb_items_loaded = size < g_file_count_limit ? size : g_file_count_limit;
+        m_model_data = std::move(contents);
         endResetModel();
         m_orders_id_registry = std::move(m_model_data.orders_registry);
         emit lengthChanged();
@@ -652,32 +600,12 @@ namespace atomic_dex
         SPDLOG_INFO("common_insert, nb elements to insert: {}", contents.size());
         auto& data = m_model_data.orders_and_swaps;
         beginInsertRows(QModelIndex(), rowCount(), rowCount() + contents.size() - 1);
-        m_nb_items_loaded += contents.size();
+        data.insert(end(data), begin(contents), end(contents));
         if (kind == "orders")
         {
             m_model_data.nb_orders += contents.size();
         }
-        // data.insert(end(data), begin(contents), end(contents));
-        if (data.size() + contents.size() < g_file_count_limit)
-        {
-            data.insert(end(data), begin(contents), end(contents));
-        }
-        else
-        {
-            if (kind == "orders")
-            {
-                SPDLOG_INFO("inserting orders");
-                data.insert(begin(data), begin(contents), end(contents));
-            }
-            else
-            {
-                SPDLOG_INFO("inserting swaps");
-                //! It's swaps insertion skip all orders
-                data.insert(begin(data) + m_model_data.nb_orders, begin(contents), end(contents));
-            }
-        }
         endInsertRows();
-        get_orders_proxy_mdl()->invalidate();
         emit lengthChanged();
         SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
     }
@@ -695,6 +623,7 @@ namespace atomic_dex
         }
         else
         {
+            this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(contents.average_events_time));
             m_model_data.nb_orders = contents.nb_orders;
             //! Orders
             update_or_insert_orders(contents);
@@ -702,46 +631,6 @@ namespace atomic_dex
             // update_or_insert_swaps(contents);
             SPDLOG_INFO("post refresh_or_insert - nb_orders: {} - nb_swaps: {}", m_model_data.nb_orders, m_model_data.nb_swaps);
         }
-    }
-
-    void
-    orders_model::fetchMore(const QModelIndex& parent)
-    {
-        if (parent.isValid())
-        {
-            return;
-        }
-        SPDLOG_INFO("orders_model::fetchMore");
-        // SPDLOG_INFO("orders_model::fetchMore: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
-        const auto size           = m_model_data.orders_and_swaps.size();
-        int        remainder      = size - rowCount();
-        int        items_to_fetch = qMin(g_file_count_limit, remainder);
-        if (items_to_fetch <= 0)
-        {
-            return;
-        }
-
-        beginInsertRows(QModelIndex(), rowCount(), rowCount() + items_to_fetch - 1);
-        m_nb_items_loaded += items_to_fetch;
-        endInsertRows();
-        emit lengthChanged();
-    }
-
-    bool
-    orders_model::canFetchMore([[maybe_unused]] const QModelIndex& parent) const
-    {
-        if (parent.isValid())
-            return false;
-        return (static_cast<decltype(m_model_data.orders_and_swaps)::size_type>(rowCount()) < m_model_data.orders_and_swaps.size());
-    }
-
-    void
-    orders_model::reset_file_count()
-    {
-        beginResetModel();
-        m_nb_items_loaded = 0;
-        endResetModel();
-        emit lengthChanged();
     }
 
     void
