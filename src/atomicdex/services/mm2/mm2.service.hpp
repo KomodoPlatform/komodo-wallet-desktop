@@ -48,6 +48,8 @@ namespace atomic_dex
         std::unordered_set<std::string> swaps_registry;
         std::size_t                     nb_swaps;    ///< current nb_swaps
         std::size_t                     total_swaps; ///< total available swaps
+        std::size_t                     active_swaps; ///< total_nb of active swaps
+        std::optional<std::string>      from_uuid{std::nullopt}; ///< if we want to skip some swaps
         nlohmann::json                  average_events_time;
         std::vector<t_order_swaps_data> orders_and_swaps;
     };

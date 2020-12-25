@@ -75,7 +75,7 @@ namespace atomic_dex
     int
     orders_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return this->m_file_count;
+        return this->m_nb_items_loaded;
         // return this->m_model_data.size();
     }
 
@@ -228,7 +228,7 @@ namespace atomic_dex
         for (int row = 0; row < rows; ++row)
         {
             this->m_model_data.orders_and_swaps.erase(begin(m_model_data.orders_and_swaps) + position);
-            m_file_count -= 1;
+            m_nb_items_loaded -= 1;
             emit lengthChanged();
         }
         endRemoveRows();
@@ -438,7 +438,7 @@ namespace atomic_dex
     {
         SPDLOG_DEBUG("clearing orders");
         this->beginResetModel();
-        this->m_file_count = 0;
+        this->m_nb_items_loaded = 0;
         // this->m_swaps_id_registry.clear();
         this->m_orders_id_registry.clear();
         this->m_model_data.orders_and_swaps.clear();
@@ -601,7 +601,7 @@ namespace atomic_dex
             SPDLOG_DEBUG("First time initialization, inserting {} {}", contents.size(), kind);
             beginResetModel();
             m_model_data = contents;
-            // m_file_count = contents.size() < g_file_count_limit ? contents.size() : g_file_count_limit;
+            // m_nb_items_loaded = contents.size() < g_file_count_limit ? contents.size() : g_file_count_limit;
             endResetModel();
         }
         else
@@ -639,7 +639,7 @@ namespace atomic_dex
         SPDLOG_DEBUG("First time initialization, inserting {} elements", size);
         beginResetModel();
         m_model_data = std::move(contents);
-        m_file_count = size < g_file_count_limit ? size : g_file_count_limit;
+        m_nb_items_loaded = size < g_file_count_limit ? size : g_file_count_limit;
         endResetModel();
         m_orders_id_registry = std::move(m_model_data.orders_registry);
         emit lengthChanged();
@@ -652,7 +652,7 @@ namespace atomic_dex
         SPDLOG_INFO("common_insert, nb elements to insert: {}", contents.size());
         auto& data = m_model_data.orders_and_swaps;
         beginInsertRows(QModelIndex(), rowCount(), rowCount() + contents.size() - 1);
-        m_file_count += contents.size();
+        m_nb_items_loaded += contents.size();
         // data.insert(end(data), begin(contents), end(contents));
         if (data.size() + contents.size() < g_file_count_limit)
         {
@@ -717,7 +717,7 @@ namespace atomic_dex
         }
         // SPDLOG_DEBUG("fetching {} orders/swaps, total: {}", items_to_fetch, size);
         beginInsertRows(QModelIndex(), rowCount(), rowCount() + items_to_fetch - 1);
-        m_file_count += items_to_fetch;
+        m_nb_items_loaded += items_to_fetch;
         endInsertRows();
         emit lengthChanged();
     }
@@ -734,7 +734,7 @@ namespace atomic_dex
     orders_model::reset_file_count()
     {
         beginResetModel();
-        m_file_count = 0;
+        m_nb_items_loaded = 0;
         endResetModel();
         emit lengthChanged();
     }
@@ -777,7 +777,6 @@ namespace atomic_dex
         {
             if (!are_present.contains(id))
             {
-                SPDLOG_INFO("need to remove: {}", id);
                 //! If it's the case retrieve the index of the row that match this id
                 auto res_list = this->match(index(0, 0), OrderIdRole, QString::fromStdString(id));
                 if (not res_list.empty())

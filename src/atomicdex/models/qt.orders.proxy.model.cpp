@@ -96,7 +96,7 @@ namespace atomic_dex
     void
     orders_proxy_model::set_is_history(bool is_history) noexcept
     {
-        // qobject_cast<orders_model*>(this->sourceModel())->reset_file_count();
+        qobject_cast<orders_model*>(this->sourceModel())->reset_file_count();
         if (this->m_is_history != is_history)
         {
             this->m_is_history = is_history;

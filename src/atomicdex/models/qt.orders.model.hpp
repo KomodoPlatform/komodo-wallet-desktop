@@ -115,7 +115,7 @@ namespace atomic_dex
         // t_swaps_id_registry  m_swaps_id_registry;
         t_orders_datas m_model_data;
         QVariant       m_json_time_registry;
-        std::size_t    m_file_count{0};
+        std::size_t    m_nb_items_loaded{0};
 
         orders_proxy_model* m_model_proxy;
 

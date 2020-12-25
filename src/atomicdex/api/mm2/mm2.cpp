@@ -926,6 +926,7 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, order_swaps_data& contents)
     {
+        // spdlog::stopwatch stopwatch;
         using namespace date;
         using namespace std::chrono;
         using namespace atomic_dex;
@@ -945,31 +946,8 @@ namespace mm2::api
         contents.rel_coin       = is_maker ? taker_coin : maker_coin;
         contents.base_amount    = is_maker ? maker_amount : taker_amount;
         contents.rel_amount     = is_maker ? taker_amount : maker_amount;
-        // contents.base_amount    = atomic_dex::utils::adjust_precision(contents.base_amount);
 
-        // j.at("error_events").get_to(contents.error_events);
-        // j.at("success_events").get_to(contents.success_events);
-        // j.at("uuid").get_to(contents.uuid);
-        // j.at("taker_coin").get_to(contents.taker_coin);
-        // j.at("maker_coin").get_to(contents.maker_coin);
-        // j.at("taker_amount").get_to(contents.taker_amount);
-        // j.at("maker_amount").get_to(contents.maker_amount);
-        // j.at("type").get_to(contents.type);
-        // j.at("recoverable").get_to(contents.funds_recoverable);
-
-        // contents.taker_amount = atomic_dex::utils::adjust_precision(contents.taker_amount);
-        // contents.maker_amount = atomic_dex::utils::adjust_precision(contents.maker_amount);
         nlohmann::json events_array = nlohmann::json::array();
-
-        /*if (j.contains("my_info"))
-        {
-            contents.my_info = j.at("my_info");
-            if (not contents.my_info.is_null())
-            {
-                contents.my_info["other_amount"] = atomic_dex::utils::adjust_precision(contents.my_info["other_amount"].get<std::string>());
-                contents.my_info["my_amount"]    = atomic_dex::utils::adjust_precision(contents.my_info["my_amount"].get<std::string>());
-            }
-        }*/
 
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
         t_event_timestamp_registry event_timestamp_registry;
@@ -1056,22 +1034,25 @@ namespace mm2::api
             contents.order_error_state   = error.first;
             contents.order_error_message = error.second;
         }
-        // contents.total_time_in_ms = total_time_in_ms;
+        // SPDLOG_INFO("from_json(order_swaps_data) -> {} seconds", stopwatch);
     }
 
     void
     from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results)
     {
-        j.at("swaps").get_to(results.swaps);
-        j.at("limit").get_to(results.limit);
-        j.at("skipped").get_to(results.skipped);
-        j.at("total").get_to(results.total);
-        results.average_events_time = nlohmann::json::object();
-
+        spdlog::stopwatch                                    stopwatch;
         std::unordered_map<std::string, std::vector<double>> events_time_registry;
-        for (auto&& cur_swap: results.swaps)
+        const auto&                                          swaps = j.at("swaps");
+        results.swaps.reserve(swaps.size());
+        for (auto&& cur: swaps)
         {
-            for (auto&& cur_event: cur_swap.events)
+            order_swaps_data to_add;
+            from_json(cur, to_add);
+            if (to_add.order_status == "matched" || to_add.order_status == "ongoing" || to_add.order_status == "matching" || to_add.order_status == "refunding")
+            {
+                results.active_swaps += 1;
+            }
+            for (auto&& cur_event: to_add.events)
             {
                 if (cur_event.isObject())
                 {
@@ -1081,7 +1062,12 @@ namespace mm2::api
                     }
                 }
             }
+            results.swaps.emplace_back(std::move(to_add));
         }
+        j.at("limit").get_to(results.limit);
+        j.at("skipped").get_to(results.skipped);
+        j.at("total").get_to(results.total);
+        results.average_events_time = nlohmann::json::object();
 
         for (auto&& [evt_name, values]: events_time_registry)
         {
@@ -1090,6 +1076,8 @@ namespace mm2::api
             double average                        = sum / values.size();
             results.average_events_time[evt_name] = average;
         }
+        SPDLOG_INFO("from_json(my_recent_swaps_answer_success) -> {} seconds", stopwatch);
+        SPDLOG_INFO("Total active swaps: {}", results.active_swaps);
     }
 
     void
