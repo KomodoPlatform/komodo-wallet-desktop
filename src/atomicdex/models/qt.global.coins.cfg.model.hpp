@@ -23,7 +23,9 @@
 #include <QAbstractListModel>
 
 //! Absl
-#include <absl/container/flat_hash_map.h>
+//TODO: When absl fix std::result_of switch to flat_hash_map
+#include <unordered_map>
+//#include <absl/container/flat_hash_map.h>
 
 //! Deps
 #include <entt/core/attribute.h>
@@ -35,7 +37,7 @@
 namespace atomic_dex
 {
     using cfg_proxy_model_list     = QList<global_coins_cfg_proxy_model*>;
-    using t_enabled_coins_registry = absl::flat_hash_map<std::string, coin_config>;
+    using t_enabled_coins_registry = std::unordered_map<std::string, coin_config>;
 
     class ENTT_API global_coins_cfg_model final : public QAbstractListModel
     {
