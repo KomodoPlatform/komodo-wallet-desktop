@@ -83,13 +83,13 @@ namespace antara::gaming::ecs
         [[nodiscard]] tl::expected<std::reference_wrapper<const TSystem>, std::error_code> get_system_() const noexcept;
 
         //! Private data members
-        entt::registry&   entity_registry_;
-        entt::dispatcher& dispatcher_;
-        timer::time_step  timestep_;
-        system_registry   systems_{{}};
-        systems_queue     systems_to_add_;
-        bool              need_to_sweep_systems_{false};
-        bool              game_is_running_{false};
+        [[maybe_unused]] entt::registry& entity_registry_;
+        entt::dispatcher&                dispatcher_;
+        timer::time_step                 timestep_;
+        system_registry                  systems_{{}};
+        systems_queue                    systems_to_add_;
+        bool                             need_to_sweep_systems_{false};
+        bool                             game_is_running_{false};
 
       public:
         //! Constructor

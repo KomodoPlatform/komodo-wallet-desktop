@@ -821,11 +821,11 @@ namespace atomic_dex
             {"MM_LOG", utils::u8string(utils::get_mm2_atomic_dex_current_log_file())},
             {"MM_COINS_PATH", utils::u8string((utils::get_current_configs_path() / "coins.json"))}};
 
-        options.working_directory = strdup(tools_path.string().c_str());
+        options.working_directory = tools_path.string().c_str();
 
         SPDLOG_DEBUG("command line: {}, from directory: {}", args[0], options.working_directory);
         const auto ec = m_mm2_instance.start(args, options);
-        std::free((void*)options.working_directory);
+        //std::free((void*)options.working_directory);
         if (ec)
         {
             SPDLOG_ERROR("{}\n", ec.message());
