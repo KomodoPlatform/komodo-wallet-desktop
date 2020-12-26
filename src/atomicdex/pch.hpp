@@ -16,12 +16,6 @@
 
 #pragma once
 
-#if defined(_WIN32) || defined(WIN32)
-#    ifndef GLOG_NO_ABBREVIATED_SEVERITIES
-#        define GLOG_NO_ABBREVIATED_SEVERITIES
-#    endif
-#endif
-
 #include "atomicdex/utilities/fs.prerequisites.hpp"
 
 constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
@@ -29,6 +23,7 @@ constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
 //! Boost Headers
 #include <boost/algorithm/string/trim.hpp>
 
+//! Prerequisites Headers
 #include "atomicdex/utilities/log.prerequisites.hpp"
 
 namespace antara::gaming

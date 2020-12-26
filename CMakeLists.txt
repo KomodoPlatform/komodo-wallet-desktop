@@ -54,9 +54,15 @@ option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::f
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    message(STATUS "We are in release - Enable interprocedural optimization")
-    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-endif()
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT ipo_supported OUTPUT output)
+    if (ipo_supported)
+        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+        message(STATUS "We are in release - Successfully enabled IPO")
+    else ()
+        message(WARNING "IPO NOT SUPPORTED - Skipping reason: ${output}")
+    endif ()
+endif ()
 
 
 if (PREFER_BOOST_FILESYSTEM)
@@ -355,11 +361,11 @@ set_target_properties(${PROJECT_NAME}_tests
 
 
 target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
-set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
+#set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
 if (APPLE)
     set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
-    set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+    #set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+    #set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
 #target_enable_tsan(atomicdex-desktop_tests)

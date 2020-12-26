@@ -14,8 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
 #include "qt.coins.enums.hpp"
 
 namespace atomic_dex

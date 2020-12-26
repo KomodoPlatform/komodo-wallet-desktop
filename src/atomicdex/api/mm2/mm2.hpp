@@ -20,6 +20,7 @@
 #include <unordered_set>
 
 //! Deps
+#include <antara/gaming/ecs/system.manager.hpp>
 #include <meta/detection/detection.hpp>
 #include <nlohmann/json.hpp>
 
