@@ -220,24 +220,12 @@ namespace atomic_dex
             switch (last_action)
             {
             case action::post_process_orders_and_swaps_finished:
-                if (mm2.is_mm2_running()) {
+                if (mm2.is_mm2_running())
+                {
                     qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert();
                 }
                 break;
             }
-            /*case action::post_process_orders_finished:
-                if (mm2.is_mm2_running())
-                {
-                    //qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_orders();
-                }
-                break;
-            case action::post_process_swaps_finished:
-                if (mm2.is_mm2_running())
-                {
-                    //qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
-                }
-                break;
-            }*/
         }
     }
 
