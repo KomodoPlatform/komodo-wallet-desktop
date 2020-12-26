@@ -271,6 +271,7 @@ endif ()
 add_library(antara_qrcode STATIC)
 target_sources(antara_qrcode PRIVATE vendor/qrcode/QrCode.cpp)
 target_include_directories(antara_qrcode PUBLIC vendor/qrcode)
+target_link_libraries(antara_qrcode PUBLIC antara::default_settings)
 
 target_link_libraries(atomicdex-desktop_shared_deps
         PUBLIC

@@ -47,8 +47,8 @@
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/utilities/qt.bindings.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
 
@@ -59,7 +59,7 @@ Q_DECLARE_METATYPE(portfolio_page_ptr)
 
 namespace atomic_dex
 {
-    struct ENTT_API application : public QObject, public ag::world::app
+    struct ENTT_API application final : public QObject, public ag::world::app
     {
         Q_OBJECT
 
@@ -97,16 +97,21 @@ namespace atomic_dex
         std::shared_ptr<QApplication>         m_app;
         t_actions_queue                       m_actions_queue{g_max_actions_size};
         t_portfolio_coins_to_initialize_queue m_portfolio_queue{g_max_actions_size};
-        QVariant                              m_update_status;
         t_manager_model_registry              m_manager_models;
         t_events_actions                      m_event_actions{{false}};
         std::atomic_bool                      m_btc_fully_enabled{false};
         std::atomic_bool                      m_kmd_fully_enabled{false};
 
       public:
+        //! Deleted operation
+        application(application& other)  = delete;
+        application(application&& other) = delete;
+        application& operator=(application& other) = delete;
+        application& operator=(application&& other) = delete;
+
         //! Constructor
         explicit application(QObject* pParent = nullptr) noexcept;
-        ~application() noexcept;
+        ~application() noexcept final = default;
 
         //! entt::dispatcher events
         void on_ticker_balance_updated_event(const ticker_balance_updated&) noexcept;
@@ -141,7 +146,7 @@ namespace atomic_dex
         Q_INVOKABLE static void restart();
 
         //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
-        Q_INVOKABLE bool           is_pin_cfg_enabled() const noexcept;
+        Q_INVOKABLE bool is_pin_cfg_enabled() const noexcept;
 
         //! Misc
         Q_INVOKABLE static QString to_eth_checksum_qt(const QString& eth_lowercase_address);

@@ -14,9 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! STD
 #include <unordered_set>
 
@@ -25,8 +22,6 @@
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/kill.hpp"
-#include "atomicdex/utilities/security.utilities.hpp"
-#include "atomicdex/version/version.hpp"
 
 //! Anonymous functions
 namespace
@@ -73,7 +68,7 @@ namespace
 
             for (auto& [key, value]: precedent_config_json_data.items())
             {
-                if (value.contains("is_custom_coin") && value.at("is_custom_coin").get<bool>() == true)
+                if (value.contains("is_custom_coin") && value.at("is_custom_coin").get<bool>())
                 {
                     SPDLOG_INFO("{} is a custom coin, copying to new cfg", key);
                     actual_config_data[key] = value;
@@ -99,7 +94,7 @@ namespace
     }
 
     void
-    update_coin_status(const std::string& wallet_name, const std::vector<std::string> tickers, bool status = true)
+    update_coin_status(const std::string& wallet_name, const std::vector<std::string>& tickers, bool status = true)
     {
         fs::path       cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
@@ -306,12 +301,12 @@ namespace atomic_dex
                 ec = dextop_error::disable_unknown_coin;
                 return false;
             }
-            else if (error.find("active swaps") != std::string::npos)
+            if (error.find("active swaps") != std::string::npos)
             {
                 ec = dextop_error::active_swap_is_using_the_coin;
                 return false;
             }
-            else if (error.find("matching orders") != std::string::npos)
+            if (error.find("matching orders") != std::string::npos)
             {
                 ec = dextop_error::order_is_matched_at_the_moment;
                 return false;
@@ -821,11 +816,11 @@ namespace atomic_dex
             {"MM_LOG", utils::u8string(utils::get_mm2_atomic_dex_current_log_file())},
             {"MM_COINS_PATH", utils::u8string((utils::get_current_configs_path() / "coins.json"))}};
 
-        options.working_directory = tools_path.string().c_str();
+        options.working_directory = strdup(tools_path.string().c_str());
 
         SPDLOG_DEBUG("command line: {}, from directory: {}", args[0], options.working_directory);
         const auto ec = m_mm2_instance.start(args, options);
-        
+        std::free((void*)options.working_directory);
         if (ec)
         {
             SPDLOG_ERROR("{}\n", ec.message());
