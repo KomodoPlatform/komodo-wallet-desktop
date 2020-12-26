@@ -22,7 +22,6 @@ namespace atomic_dex
         //! Helpers to navigate into the vector
         std::size_t active_swaps{0}; ///< total_number of active swaps (ongoing/matching/refuding/matched)
         std::size_t nb_orders;       ///< current nb_orders
-        std::size_t nb_swaps{0};     ///< nb swaps of the current page
 
         ///! Metrics
         nlohmann::json average_events_time;     ///< Time registry for each events

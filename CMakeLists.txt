@@ -53,6 +53,11 @@ option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    message(STATUS "We are in release - Enable interprocedural optimization")
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+endif()
+
 
 if (PREFER_BOOST_FILESYSTEM)
     message(STATUS "Boost filesystem over std::filesystem")

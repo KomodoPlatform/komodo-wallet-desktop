@@ -917,7 +917,6 @@ namespace atomic_dex
     void
     mm2_service::batch_fetch_orders_and_swap()
     {
-        spdlog::stopwatch prepare_request;
         nlohmann::json    batch             = nlohmann::json::array();
         nlohmann::json    my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
@@ -944,9 +943,6 @@ namespace atomic_dex
         t_my_recent_swaps_request recent_swaps_request{.limit = nb_active_swaps + 15};
         to_json(recent_swaps, recent_swaps_request);
         batch.push_back(recent_swaps);
-
-
-        SPDLOG_INFO("Time elasped for preparing batch_and_orders request: {} seconds", prepare_request);
 
         auto answer_functor = [this](web::http::http_response resp) {
             spdlog::stopwatch stopwatch;
@@ -987,12 +983,23 @@ namespace atomic_dex
             if (swap_answer.result.has_value())
             {
                 const auto& swap_success_answer = swap_answer.result.value();
-                result.nb_swaps                 = swap_success_answer.swaps.size();
                 result.total_swaps              = swap_success_answer.total;
                 result.total_finished_swaps     = result.total_swaps - result.active_swaps;
-                result.orders_and_swaps.insert(end(result.orders_and_swaps), begin(swap_success_answer.swaps), end(swap_success_answer.swaps));
+                auto& data                      = result.orders_and_swaps;
+                for (auto&& cur: swap_success_answer.swaps)
+                {
+                    const auto id = cur.order_id.toStdString();
+                    if (result.swaps_registry.contains(id))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        result.swaps_registry.emplace(id);
+                        data.emplace_back(std::move(cur));
+                    }
+                }
                 result.average_events_time = std::move(swap_success_answer.average_events_time);
-                result.swaps_registry      = std::move(swap_success_answer.swaps_id);
             }
 
 
@@ -1001,11 +1008,10 @@ namespace atomic_dex
                 "Metrics -> [total_swaps: {}, "
                 "active_swaps: {}, "
                 "nb_orders: {}, "
-                "current_nb_swaps: {}, "
                 "nb_pages: {}, "
                 "current_page: {}, "
                 "total_finished_swaps: {}]",
-                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_swaps, result.nb_pages, result.current_page, result.total_finished_swaps);
+                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);
 
             //! Compute everything
             m_orders_and_swaps = std::move(result);

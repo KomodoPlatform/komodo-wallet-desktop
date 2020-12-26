@@ -627,9 +627,7 @@ namespace atomic_dex
             m_model_data.nb_orders = contents.nb_orders;
             //! Orders
             update_or_insert_orders(contents);
-            m_model_data.nb_swaps = m_model_data.orders_and_swaps.size() - m_model_data.nb_orders;
             // update_or_insert_swaps(contents);
-            SPDLOG_INFO("post refresh_or_insert - nb_orders: {} - nb_swaps: {}", m_model_data.nb_orders, m_model_data.nb_swaps);
         }
     }
 
