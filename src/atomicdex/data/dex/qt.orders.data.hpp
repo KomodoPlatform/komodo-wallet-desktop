@@ -31,7 +31,7 @@ namespace mm2::api
         //! eg: 1 in fiat currency.
         QString rel_amount_fiat;
 
-        //! eg: Taker order;
+        //! eg: taker/maker order;
         QString order_type;
 
         //! eg: 2020-07-2020 17:23:36.625

@@ -137,6 +137,10 @@ namespace atomic_dex
         void update_existing_order(const t_order_swaps_data& contents) noexcept;
 
         //! Private Swaps API
+        void update_or_insert_swaps(const orders_and_swaps& contents);
+        void update_swap(const t_order_swaps_data& contents) noexcept;
+
+        //! Events
         void on_current_currency_changed(const current_currency_changed&) noexcept;
     };
 } // namespace atomic_dex
