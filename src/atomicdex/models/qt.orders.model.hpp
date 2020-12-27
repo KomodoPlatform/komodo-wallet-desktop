@@ -44,6 +44,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant average_events_time_registry READ get_average_events_time_registry NOTIFY onAverageEventsTimeRegistryChanged)
         Q_PROPERTY(bool fetching_busy READ is_fetching_busy WRITE set_fetching_busy NOTIFY fetchingStatusChanged)
         Q_PROPERTY(int current_page READ get_current_page WRITE set_current_page NOTIFY currentPageChanged)
+        Q_PROPERTY(int nb_pages READ get_nb_pages NOTIFY nbPageChanged)
         Q_ENUMS(OrdersRoles)
       public:
         enum OrdersRoles
@@ -97,6 +98,7 @@ namespace atomic_dex
         void                              set_current_page(int current_page) noexcept;
         [[nodiscard]] bool                is_fetching_busy() const noexcept;
         void                              set_fetching_busy(bool fetching_status) noexcept;
+        [[nodiscard]] int                 get_nb_pages() const noexcept;
 
       signals:
         void lengthChanged();
@@ -104,12 +106,11 @@ namespace atomic_dex
         void onAverageEventsTimeRegistryChanged();
         void fetchingStatusChanged();
         void currentPageChanged();
+        void nbPageChanged();
 
       private:
         void set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
         void common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind);
-        // order_swaps_data               from_swap_content(const ::mm2::api::swap_contents& contents);
-        // order_swaps_data               from_order_content(const ::mm2::api::my_order_contents& contents);
 
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
@@ -126,7 +127,9 @@ namespace atomic_dex
 
         orders_proxy_model* m_model_proxy;
 
+        //! Private common API
         void init_model(const orders_and_swaps& contents);
+        void set_common_data(const orders_and_swaps& contents) noexcept;
 
         //! Private orders API
         void update_or_insert_orders(const orders_and_swaps& contents);

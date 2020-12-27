@@ -592,6 +592,7 @@ namespace atomic_dex
         m_orders_id_registry = std::move(m_model_data.orders_registry);
         emit lengthChanged();
         emit currentPageChanged();
+        emit nbPageChanged();
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(m_model_data.average_events_time));
     }
 
@@ -633,9 +634,7 @@ namespace atomic_dex
         }
         else
         {
-            this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(contents.average_events_time));
-            m_model_data.nb_orders = contents.nb_orders;
-            //! Orders
+            this->set_common_data(contents);
             update_or_insert_orders(contents);
             // update_or_insert_swaps(contents);
         }
@@ -723,6 +722,30 @@ namespace atomic_dex
         {
             m_fetching_busy = fetching_status;
             emit fetchingStatusChanged();
+        }
+    }
+
+    int
+    orders_model::get_nb_pages() const noexcept
+    {
+        return m_model_data.nb_pages;
+    }
+
+    void
+    orders_model::set_common_data(const orders_and_swaps& contents) noexcept
+    {
+        this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(contents.average_events_time));
+        m_model_data.nb_orders = contents.nb_orders;
+        if (m_model_data.nb_pages != contents.nb_pages)
+        {
+            SPDLOG_INFO("nb page changed");
+            m_model_data.nb_pages = contents.nb_pages;
+            emit nbPageChanged();
+        }
+        if (m_model_data.current_page != contents.current_page)
+        {
+            SPDLOG_INFO("Page is different from mm2 contents, force change");
+            this->set_current_page(contents.current_page);
         }
     }
 } // namespace atomic_dex
