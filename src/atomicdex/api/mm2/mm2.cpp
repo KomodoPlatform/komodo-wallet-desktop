@@ -894,23 +894,40 @@ namespace mm2::api
             contents.ticker_pair      = contents.base_coin + "/" + contents.rel_coin;
             answer.orders_id.emplace(key);
             answer.orders.emplace_back(std::move(contents));
-
-            /*my_order_contents contents{
-                .order_id         = key,
-                .price            = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0",
-                .base             = is_maker ? value.at("base").get<std::string>() : value.at("request").at("base").get<std::string>(),
-                .rel              = is_maker ? value.at("rel").get<std::string>() : value.at("request").at("rel").get<std::string>(),
-                .cancellable      = value.at("cancellable").get<bool>(),
-                .timestamp        = time_key,
-                .order_type       = is_maker ? "maker" : "taker",
-                .base_amount      = is_maker ? value.at("available_amount").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
-                .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() :
-            value.at("request").at("rel_amount").get<std::string>(), .human_timestamp  = atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000,
-            "%F    %T"), .action = action}; out.try_emplace(contents.order_id, std::move(contents));*/
         };
 
         for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, true); }
         for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, false); }
+    }
+
+    void
+    to_json(nlohmann::json& j, const active_swaps_request& request)
+    {
+        if (request.statuses.has_value())
+        {
+            j["statuses"] = request.statuses.value();
+        }
+        else
+        {
+            j["statuses"] = nullptr;
+        }
+    }
+
+    void
+    from_json(const nlohmann::json& j, active_swaps_answer& answer)
+    {
+        if (j.contains("statuses"))
+        {
+            const auto& statuses = j.at("statuses");
+            j.at("uuids").get_to(answer.uuids);
+            answer.swaps.reserve(answer.uuids.size());
+            for (auto&& [key, value]: statuses.items())
+            {
+                order_swaps_data to_add;
+                from_json(value, to_add);
+                answer.swaps.emplace_back(std::move(to_add));
+            }
+        }
     }
 
     void
@@ -920,6 +937,10 @@ namespace mm2::api
         if (request.from_uuid.has_value())
         {
             j["from_uuid"] = request.from_uuid.value();
+        }
+        if (request.page_number.has_value())
+        {
+            j["page_number"] = request.page_number.value();
         }
     }
 
@@ -1049,11 +1070,6 @@ namespace mm2::api
         {
             order_swaps_data to_add;
             from_json(cur, to_add);
-            if (to_add.order_status == "matched" || to_add.order_status == "ongoing" || to_add.order_status == "matching" || to_add.order_status == "refunding")
-            {
-                results.active_swaps += 1;
-                to_add.is_swap_active = true;
-            }
             for (auto&& cur_event: to_add.events)
             {
                 if (cur_event.isObject())
@@ -1070,6 +1086,8 @@ namespace mm2::api
         j.at("limit").get_to(results.limit);
         j.at("skipped").get_to(results.skipped);
         j.at("total").get_to(results.total);
+        j.at("page_number").get_to(results.page_number);
+        j.at("total_pages").get_to(results.total_pages);
         results.average_events_time = nlohmann::json::object();
 
         for (auto&& [evt_name, values]: events_time_registry)
@@ -1079,8 +1097,6 @@ namespace mm2::api
             double average                        = sum / values.size();
             results.average_events_time[evt_name] = average;
         }
-        // SPDLOG_INFO("from_json(my_recent_swaps_answer_success) -> {} seconds", stopwatch);
-        // SPDLOG_INFO("Total active swaps: {}", results.active_swaps);
     }
 
     void
@@ -1280,6 +1296,7 @@ namespace mm2::api
     template mm2::api::trade_fee_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
 
     template <typename RpcReturnType>
     RpcReturnType

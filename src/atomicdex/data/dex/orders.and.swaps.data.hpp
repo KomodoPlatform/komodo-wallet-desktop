@@ -32,6 +32,7 @@ namespace atomic_dex
         std::size_t nb_pages{1};     ///< number of page
         std::size_t current_page{1}; ///< index of the current page
         std::size_t total_swaps{0};  ///< total number of available swaps
+        std::size_t limit{50};       ///< nb_elements / page
 
         /**
          * orders_and_swaps in the following order

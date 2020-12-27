@@ -611,6 +611,7 @@ namespace mm2::api
     struct my_recent_swaps_request
     {
         std::size_t                limit{50ull};
+        std::optional<std::size_t> page_number{1};
         std::optional<std::string> from_uuid;
     };
 
@@ -625,7 +626,8 @@ namespace mm2::api
         std::size_t                     limit;
         std::size_t                     skipped;
         std::size_t                     total;
-        std::size_t                     active_swaps{0};
+        std::size_t                     page_number;
+        std::size_t                     total_pages;
         std::string                     raw_result;
         nlohmann::json                  average_events_time;
     };
@@ -641,6 +643,23 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer& answer);
+
+    struct active_swaps_request
+    {
+        std::optional<bool> statuses;
+    };
+
+    void to_json(nlohmann::json& j, const active_swaps_request& request);
+
+    struct active_swaps_answer
+    {
+        std::unordered_set<std::string> uuids;
+        std::vector<order_swaps_data>   swaps;
+        int                             rpc_result_code;
+        std::string                     raw_result;
+    };
+
+    void from_json(const nlohmann::json& j, active_swaps_answer& answer);
 
     struct kmd_rewards_info_answer
     {
@@ -689,8 +708,10 @@ namespace atomic_dex
     using t_enable_request          = ::mm2::api::enable_request;
     using t_disable_coin_request    = ::mm2::api::disable_coin_request;
     using t_tx_history_request      = ::mm2::api::tx_history_request;
-    using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer_success;
+    using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;
     using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
+    using t_active_swaps_request    = ::mm2::api::active_swaps_request;
+    using t_active_swaps_answer     = ::mm2::api::active_swaps_answer;
     // using t_my_order_contents       = ::mm2::api::my_order_contents;
     using t_get_trade_fee_request = ::mm2::api::trade_fee_request;
     using t_get_trade_fee_answer  = ::mm2::api::trade_fee_answer;
