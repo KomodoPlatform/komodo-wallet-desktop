@@ -910,7 +910,7 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::batch_fetch_orders_and_swap()
+    mm2_service::batch_fetch_orders_and_swap(bool after_manual_reset)
     {
         nlohmann::json batch             = nlohmann::json::array();
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
@@ -943,7 +943,7 @@ namespace atomic_dex
         to_json(active_swaps, active_swaps_request);
         batch.push_back(active_swaps);
 
-        auto answer_functor = [this, limit](web::http::http_response resp) {
+        auto answer_functor = [this, limit, after_manual_reset](web::http::http_response resp) {
             spdlog::stopwatch stopwatch;
 
             //! Parsing Resp
@@ -1003,7 +1003,7 @@ namespace atomic_dex
             m_orders_and_swaps = std::move(result);
 
             SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
-            this->dispatcher_.trigger<process_swaps_and_orders_finished>();
+            this->dispatcher_.trigger<process_swaps_and_orders_finished>(after_manual_reset);
         };
 
         ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token()).then(answer_functor).then(&handle_exception_pplx_task);
@@ -1567,5 +1567,14 @@ namespace atomic_dex
     mm2_service::get_orders_and_swaps() const noexcept
     {
         return m_orders_and_swaps.get();
+    }
+
+    void
+    mm2_service::set_orders_and_swaps_pagination_infos(std::size_t current_page, std::size_t limit)
+    {
+        {
+            m_orders_and_swaps = orders_and_swaps{.current_page = current_page, .limit = limit};
+        }
+        this->batch_fetch_orders_and_swap(true);
     }
 } // namespace atomic_dex

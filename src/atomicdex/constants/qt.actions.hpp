@@ -22,6 +22,7 @@ namespace atomic_dex
     enum class action
     {
         post_process_orders_and_swaps_finished = 0,
+        post_process_orders_and_swaps_finished_reset = 1,
     };
 
     inline constexpr std::size_t g_max_actions_size{128};

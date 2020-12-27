@@ -106,7 +106,7 @@ namespace atomic_dex
         t_tx_registry            m_tx_informations;
         t_fees_registry          m_trade_fees_registry;
         t_orderbook              m_orderbook{t_orderbook_answer{}};
-        t_orders_and_swaps       m_orders_and_swaps{t_orders_and_swaps{}};
+        t_orders_and_swaps       m_orders_and_swaps{orders_and_swaps{}};
         t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
 
         //! Balance factor
@@ -239,7 +239,7 @@ namespace atomic_dex
         [[nodiscard]] bool is_pin_cfg_enabled() const noexcept;
         void               reset_fake_balance_to_zero(const std::string& ticker) noexcept;
         void               decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
-        void               batch_fetch_orders_and_swap();
+        void               batch_fetch_orders_and_swap(bool after_manual_reset = false);
         void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
@@ -252,6 +252,9 @@ namespace atomic_dex
 
         //! Multi ticker
         void add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept;
+
+        //! Pagination
+        void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50);
     };
 } // namespace atomic_dex
 

@@ -213,6 +213,12 @@ namespace atomic_dex
                     qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert();
                 }
                 break;
+            case action::post_process_orders_and_swaps_finished_reset:
+                if (mm2.is_mm2_running())
+                {
+                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert(true);
+                }
+                break;
             }
         }
     }
@@ -346,7 +352,7 @@ namespace atomic_dex
         {
             orders->removeRows(0, count, QModelIndex());
         }
-        orders->clear_registry();
+        orders->reset();
 
         system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
         system_manager_.get_system<trading_page>().clear_models();
@@ -485,7 +491,8 @@ namespace atomic_dex
     {
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            this->m_actions_queue.push(action::post_process_orders_and_swaps_finished);
+            this->m_actions_queue.push(
+                evt.after_manual_reset ? action::post_process_orders_and_swaps_finished_reset : action::post_process_orders_and_swaps_finished);
         }
     }
 

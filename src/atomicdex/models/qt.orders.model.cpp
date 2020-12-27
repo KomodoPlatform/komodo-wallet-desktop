@@ -405,13 +405,13 @@ namespace atomic_dex
     }
 
     void
-    orders_model::clear_registry() noexcept
+    orders_model::reset() noexcept
     {
         SPDLOG_DEBUG("clearing orders");
         this->beginResetModel();
         this->m_swaps_id_registry.clear();
         this->m_orders_id_registry.clear();
-        this->m_model_data.orders_and_swaps.clear();
+        this->m_model_data = {};
         this->endResetModel();
     }
 
@@ -591,6 +591,7 @@ namespace atomic_dex
         endResetModel();
         m_orders_id_registry = std::move(m_model_data.orders_registry);
         emit lengthChanged();
+        emit currentPageChanged();
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(m_model_data.average_events_time));
     }
 
@@ -611,8 +612,17 @@ namespace atomic_dex
     }
 
     void
-    orders_model::refresh_or_insert()
+    orders_model::refresh_or_insert(bool after_manual_reset)
     {
+        if (after_manual_reset)
+        {
+            this->set_fetching_busy(false);
+        }
+
+        if (is_fetching_busy())
+        {
+            return;
+        }
         const auto& mm2      = m_system_manager.get_system<mm2_service>();
         const auto  contents = mm2.get_orders_and_swaps();
 
@@ -680,5 +690,39 @@ namespace atomic_dex
             }
         }
         for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
+    }
+
+    int
+    orders_model::get_current_page() const noexcept
+    {
+        return static_cast<int>(m_model_data.current_page);
+    }
+
+    void
+    orders_model::set_current_page(int current_page) noexcept
+    {
+        if (static_cast<std::size_t>(current_page) != m_model_data.current_page)
+        {
+            this->reset(); ///< We change page, we need to clear
+            this->set_fetching_busy(true);
+            auto& mm2 = this->m_system_manager.get_system<mm2_service>();
+            mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(current_page));
+        }
+    }
+
+    bool
+    orders_model::is_fetching_busy() const noexcept
+    {
+        return m_fetching_busy.load();
+    }
+
+    void
+    orders_model::set_fetching_busy(bool fetching_status) noexcept
+    {
+        if (fetching_status != m_fetching_busy)
+        {
+            m_fetching_busy = fetching_status;
+            emit fetchingStatusChanged();
+        }
     }
 } // namespace atomic_dex
