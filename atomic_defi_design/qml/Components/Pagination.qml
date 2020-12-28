@@ -35,40 +35,31 @@ RowLayout {
     function paginate(visible_page, page_count) {
         const short_range_count = 5
 
-        // Low page count
-        if(page_count <= short_range_count + 2) return range(1, page_count)
+        // Add next pages
+        const next_pages_count = Math.min(short_range_count, page_count - visible_page + 1)
+        let pages = range(visible_page, next_pages_count)
 
-        // First page is always 1
-        let pages = [1]
+        // Add far pages
+        const last_of_next_pages = pages[pages.length - 1]
+        const diff = page_count - last_of_next_pages
+        add(pages, last_of_next_pages + diff*0.33333333)
+        add(pages, last_of_next_pages + diff*0.66666666)
+        add(pages, page_count)
 
-        // Simple list for first page
-        if(visible_page === 1) {
-            pages = pages.concat(range(2, short_range_count))
-            add(pages, Math.min(page_count, 10))
-        }
-        else {
-            const next_pages_count = Math.min(short_range_count, page_count - visible_page)
+        // Add previous pages
+        let prev_count = short_range_count + 3 - pages.length
+        let prev_start = Math.max(visible_page - prev_count, 1)
+        pages = range(prev_start, pages[0] - prev_start).concat(pages)
 
-            let prev_pages_count = short_range_count - next_pages_count
-
-            // Add previous pages
-            pages = pages.concat(range(visible_page - prev_pages_count, prev_pages_count))
-
-            // Add next pages
-            pages = pages.concat(range(visible_page, next_pages_count))
-
-            // Add far pages
-            add(pages, page_count*0.33333333)
-            add(pages, page_count*0.66666666)
-            add(pages, page_count)
-        }
+        // Add 1
+        if(pages[0] !== 1) pages = [1].concat(pages)
 
         return pages
     }
 
     function add(pages, page) {
         page = Math.floor(page)
-        if(pages[pages.length-1] < page)
+        if(pages.length === 0 || pages[pages.length - 1] < page)
             pages.push(page)
 
         return pages
