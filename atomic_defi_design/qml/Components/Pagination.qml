@@ -4,13 +4,13 @@ import QtQuick.Controls 2.15
 import "../Constants"
 
 RowLayout {
-    property int visible_page: 9//API.app.orders_mdl.current_page
-    property int page_count: 48//API.app.orders_mdl.nb_pages
+    property int visible_page: API.app.orders_mdl.current_page
+    property int page_count: API.app.orders_mdl.nb_pages
 
     PaginationButton {
         text: qsTr("Previous")
         enabled: visible_page > 1
-        onClicked: --visible_page
+        onClicked: --API.app.orders_mdl.current_page
     }
 
     Repeater {
@@ -19,9 +19,8 @@ RowLayout {
             text: model.modelData
             button_type: model.modelData === visible_page ? "primary" : "default"
             onClicked: {
-                if(visible_page !== model.modelData) {
-                    visible_page = model.modelData
-                }
+                if(visible_page !== model.modelData)
+                    API.app.orders_mdl.current_page = model.modelData
             }
         }
     }
@@ -29,7 +28,7 @@ RowLayout {
     PaginationButton {
         text: qsTr("Next")
         enabled: page_count > 1 && visible_page < page_count
-        onClicked: ++visible_page
+        onClicked: ++API.app.orders_mdl.current_page
     }
 
     function paginate(visible_page, page_count) {
