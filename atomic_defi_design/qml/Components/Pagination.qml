@@ -4,8 +4,8 @@ import QtQuick.Controls 2.15
 import "../Constants"
 
 RowLayout {
-    property int visible_page
-    property int page_count
+    property int visible_page: 9//API.app.orders_mdl.current_page
+    property int page_count: 48//API.app.orders_mdl.nb_pages
 
     PaginationButton {
         text: qsTr("Previous")
@@ -44,19 +44,12 @@ RowLayout {
         // Simple list for first page
         if(visible_page === 1) {
             pages = pages.concat(range(2, short_range_count))
-            add(pages, Math.min(page_count, short_range_count*2))
+            add(pages, Math.min(page_count, 10))
         }
         else {
             const next_pages_count = Math.min(short_range_count, page_count - visible_page)
 
             let prev_pages_count = short_range_count - next_pages_count
-            let prev_pages_start = visible_page - prev_pages_count
-
-            // Remove first page if prev pages starts with 1
-            if(prev_pages_start === 1) {
-                prev_pages_count -= 1
-                prev_pages_start += 1
-            }
 
             // Add previous pages
             pages = pages.concat(range(visible_page - prev_pages_count, prev_pages_count))

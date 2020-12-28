@@ -63,9 +63,6 @@ InnerBackground {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
-
-            visible_page: 9//API.app.orders_mdl.current_page
-            page_count: 48//API.app.orders_mdl.nb_pages
         }
     }
 }
