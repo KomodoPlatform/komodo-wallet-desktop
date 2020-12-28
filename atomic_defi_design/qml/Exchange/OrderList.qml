@@ -65,4 +65,11 @@ InnerBackground {
             Layout.bottomMargin: Layout.topMargin
         }
     }
+
+    DefaultBusyIndicator {
+        id: loading
+        visible: API.app.orders_mdl.fetching_busy
+
+        anchors.centerIn: parent
+    }
 }
