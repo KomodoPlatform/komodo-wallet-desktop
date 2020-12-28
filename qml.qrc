@@ -220,6 +220,8 @@
         <file>atomic_defi_design/qml/Components/BasicModal.qml</file>
         <file>atomic_defi_design/qml/Components/SidebarPanel.qml</file>
         <file>atomic_defi_design/qml/Components/SetupPage.qml</file>
+        <file>atomic_defi_design/qml/Components/Pagination.qml</file>
+        <file>atomic_defi_design/qml/Components/PaginationButton.qml</file>
         <file>atomic_defi_design/qml/Components/Separator.qml</file>
         <file>atomic_defi_design/qml/Components/RestartModal.qml</file>
         <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>
