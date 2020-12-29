@@ -8,40 +8,23 @@ import "../Components"
 import "../Constants"
 
 BasicModal {
+    id: root
+
     property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
-    property bool should_clear: coin_cfg_model.all_disabled_proxy.length === coin_cfg_model.checked_nb
 
     function uncheck_all() {
         // Have to check and then uncheck to affect all child checkboxes
-
-        coins_qrc20.parent_box.checkState = Qt.Checked
-        coins_qrc20.parent_box.checkState = Qt.Unchecked
-
-        coins_erc20.parent_box.checkState = Qt.Checked
-        coins_erc20.parent_box.checkState = Qt.Unchecked
-
-        coins_smartchains.parent_box.checkState = Qt.Checked
-        coins_smartchains.parent_box.checkState = Qt.Unchecked
-
-        coins_utxo.parent_box.checkState = Qt.Checked
-        coins_utxo.parent_box.checkState = Qt.Unchecked
+        parentBox.checkState = Qt.Checked
+        parentBox.checkState = Qt.Unchecked
     }
 
     function check_all() {
-        coins_qrc20.parent_box.checkState = Qt.Checked
-        coins_erc20.parent_box.checkState = Qt.Checked
-        coins_smartchains.parent_box.checkState = Qt.Checked
-        coins_utxo.parent_box.checkState = Qt.Checked
+        parentBox.checkState = Qt.Checked
     }
 
     function filter_coins() {
-        coin_cfg_model.qrc20_proxy.setFilterFixedString(input_coin_filter.text)
-        coin_cfg_model.erc20_proxy.setFilterFixedString(input_coin_filter.text)
-        coin_cfg_model.smartchains_proxy.setFilterFixedString(input_coin_filter.text)
-        coin_cfg_model.utxo_proxy.setFilterFixedString(input_coin_filter.text)
+        coin_cfg_model.all_disabled_proxy.setFilterFixedString(input_coin_filter.text)
     }
-
-    id: root
 
     width: 500
 
@@ -53,20 +36,6 @@ BasicModal {
 
     ModalContent {
         title: qsTr("Enable assets")
-
-        DefaultButton {
-            Layout.fillWidth: true
-            text: should_clear ? qsTr("Clear All Selection") : qsTr("Enable All Assets")
-            visible: coin_cfg_model.length > 0
-            onClicked: {
-                if (should_clear) {
-                    uncheck_all()
-                }
-                else {
-                    check_all()
-                }
-            }
-        }
 
         DefaultButton {
             Layout.fillWidth: true
@@ -91,41 +60,50 @@ BasicModal {
             onTextChanged: filter_coins()
         }
 
-        DefaultFlickable {
-            id: flickable
-            visible: coin_cfg_model.all_disabled_proxy.length > 0
+        ButtonGroup {
+            id: childGroup
+            exclusive: false
+            checkState: parentBox.checkState
+        }
 
-            height: 375
+        DefaultCheckBox {
+            id: parentBox
+            text: qsTr("Select all assets")
+            visible: list.visible
+            checkState: childGroup.checkState
+        }
+
+        DefaultListView {
+            id: list
+            visible: coin_cfg_model.all_disabled_proxy.length > 0
+            model: coin_cfg_model.all_disabled_proxy
+
+            Layout.preferredHeight: 375
             Layout.fillWidth: true
 
-            contentWidth: col.width
-            contentHeight: col.height
+            delegate: DefaultCheckBox {
+                text: "         " + model.name + " (" + model.ticker + ")"
+                leftPadding: indicator.width
+                ButtonGroup.group: childGroup
 
-            Column {
-                id: col
-
-                CoinList {
-                    id: coins_qrc20
-                    group_title: qsTr("Select all QRC20 assets")
-                    model: coin_cfg_model.qrc20_proxy
+                onCheckStateChanged: {
+                    if (checkable) {
+                        model.checked = checked
+                    }
                 }
 
-                CoinList {
-                    id: coins_smartchains
-                    group_title: qsTr("Select all SmartChains")
-                    model: coin_cfg_model.smartchains_proxy
-                }
+                /* handles special case where the check box is unchecked by the search bar filtering even
+                   when the coin is still considered as checked */
+                Component.onCompleted: checked = model.checked
 
-                CoinList {
-                    id: coins_erc20
-                    group_title: qsTr("Select all ERC20 assets")
-                    model:coin_cfg_model.erc20_proxy
-                }
-
-                CoinList {
-                    id: coins_utxo
-                    group_title: qsTr("Select all UTXO assets")
-                    model: coin_cfg_model.utxo_proxy
+                // Icon
+                DefaultImage {
+                    id: icon
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.leftPadding + 28
+                    source: General.coinIcon(model.ticker)
+                    width: Style.textSize2
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
         }
