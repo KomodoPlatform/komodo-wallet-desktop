@@ -55,7 +55,7 @@ namespace antara::gaming::ecs
     const TSystem&
     system_manager::get_system() const
     {
-        const auto ret = get_system_<TSystem>().or_else([](const std::error_code& ec) { throw std::runtime_error("get_system error: " + ec.message()); });
+        const auto ret = get_system_<TSystem>().or_else([]([[maybe_unused]] const std::error_code& ec) { throw std::runtime_error("get_system error"); });
         return (*ret).get();
     }
 
@@ -63,7 +63,7 @@ namespace antara::gaming::ecs
     TSystem&
     system_manager::get_system()
     {
-        auto ret = get_system_<TSystem>().or_else([](const std::error_code& ec) { throw std::runtime_error("get_system error: " + ec.message()); });
+        auto ret = get_system_<TSystem>().or_else([]([[maybe_unused]] const std::error_code& ec) { throw std::runtime_error("get_system error"); });
         return (*ret).get();
     }
 

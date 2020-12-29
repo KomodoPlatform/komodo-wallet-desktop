@@ -27,9 +27,7 @@
 
 namespace atomic_dex
 {
-    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {
-    }
+    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
 
     bool
     orders_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -103,11 +101,14 @@ namespace atomic_dex
             this->m_is_history = is_history;
             emit isHistoryChanged();
             this->invalidate();
-            /*if (m_is_history == true)
+            if (m_is_history == true)
             {
-                qobject_cast<orders_model*>(this->sourceModel())->reset_file_count();
-            }*/
-            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+                qobject_cast<orders_model*>(this->sourceModel())->set_current_page(1);
+            }
+            else
+            {
+                emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+            }
         }
     }
 
@@ -227,7 +228,14 @@ namespace atomic_dex
     orders_proxy_model::set_coin_filter(const QString& to_filter)
     {
         this->setFilterFixedString(to_filter);
-        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        if (this->m_is_history)
+        {
+            qobject_cast<orders_model*>(this->sourceModel())->set_current_page(1);
+        }
+        else
+        {
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        }
     }
 
     void
