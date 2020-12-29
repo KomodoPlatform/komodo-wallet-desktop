@@ -106,25 +106,11 @@ BasicModal {
                     width: Style.textSize2
                 }
 
-                AnimatedRectangle {
+                CoinTypeTag {
                     anchors.left: parent.right
                     anchors.verticalCenter: parent.verticalCenter
 
-                    radius: 20
-
-                    height: type_tag.font.pixelSize * 1.5
-                    width: type_tag.width + 8
-
-                    color: Style.getCoinColor(model.type === "ERC-20" ? "ETH" :
-                                              model.type === "QRC-20" ? "QTUM" :
-                                              model.type === "Smart Chain" ? "KMD" : "BTC")
-                    DefaultText {
-                        id: type_tag
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: model.type
-                        font.pixelSize: Style.textSizeSmall1
-                    }
+                    type: model.type
                 }
             }
         }

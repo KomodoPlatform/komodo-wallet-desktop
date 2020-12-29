@@ -375,29 +375,13 @@ ColumnLayout {
                 backgroundColor: "transparent"
             }
 
-            AnimatedRectangle {
+            CoinTypeTag {
+                id: tag
                 anchors.left: chart.right
                 anchors.leftMargin: -25
                 anchors.verticalCenter: parent.verticalCenter
 
-                visible: {
-                    const type = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).type
-                    return (type === "ERC-20" && ticker !== "ETH") ||
-                           (type === "QRC-20" && ticker !== "QTUM")
-                }
-                radius: 20
-
-                height: type_tag.font.pixelSize * 1.5
-                width: type_tag.width + 8
-
-                color: Style.getCoinColor(API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).type === "ERC-20" ? "ETH" : "QTUM")
-                DefaultText {
-                    id: type_tag
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).type === "ERC-20" ? "ERC-20" : "QRC-20"
-                    font.pixelSize: Style.textSizeSmall1
-                }
+                type: model.type
             }
         }
     }
