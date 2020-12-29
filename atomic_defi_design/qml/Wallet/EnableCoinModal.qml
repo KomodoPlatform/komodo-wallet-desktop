@@ -12,6 +12,12 @@ BasicModal {
 
     property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
     property bool should_clear: coin_cfg_model.all_disabled_proxy.length === coin_cfg_model.checked_nb
+    onShould_clearChanged: {
+        if(should_clear !== parent_checkbox.checked) {
+            parent_checkbox.updated_from_backend = true
+            parent_checkbox.checked = should_clear
+        }
+    }
 
     function uncheck_all() {
         coin_cfg_model.all_disabled_proxy.set_all_state(false)
@@ -49,20 +55,6 @@ BasicModal {
             Layout.fillWidth: true
         }
 
-        DefaultButton {
-            Layout.fillWidth: true
-            text: should_clear ? qsTr("Deselect All Assets") : qsTr("Select All Assets")
-            visible: coin_cfg_model.all_disabled_proxy.length > 0
-            onClicked: {
-                if (should_clear) {
-                    uncheck_all()
-                }
-                else {
-                    check_all()
-                }
-            }
-        }
-
         // Search input
         DefaultTextField {
             id: input_coin_filter
@@ -71,6 +63,24 @@ BasicModal {
             placeholderText: qsTr("Search")
 
             onTextChanged: filter_coins()
+        }
+
+        DefaultCheckBox {
+            id: parent_checkbox
+            property bool updated_from_backend: false
+
+            text: qsTr("Select all assets")
+            visible: list.visible
+            onCheckStateChanged: {
+                // Avoid binding loop
+                if(!updated_from_backend) {
+                    if (checked) check_all()
+                    else {
+                        uncheck_all()
+                    }
+                }
+                else updated_from_backend = false
+            }
         }
 
         DefaultListView {
@@ -82,11 +92,17 @@ BasicModal {
             Layout.fillWidth: true
 
             delegate: DefaultCheckBox {
-                property bool backend_checked: model.checked
                 text: "         " + model.name + " (" + model.ticker + ")"
 
-                onBackend_checkedChanged: checked = backend_checked
-                onCheckStateChanged: model.checked = checked
+                leftPadding: indicator.width
+
+                readonly property bool backend_checked: model.checked
+                onBackend_checkedChanged: {
+                    if(checked !== backend_checked) checked = backend_checked
+                }
+                onCheckStateChanged: {
+                    if(checked !== backend_checked) model.checked = checked
+                }
 
                 // Icon
                 DefaultImage {
