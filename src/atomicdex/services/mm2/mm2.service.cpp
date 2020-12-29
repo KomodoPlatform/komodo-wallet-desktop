@@ -930,7 +930,6 @@ namespace atomic_dex
             limit           = value_ptr->limit;
         }
 
-
         //! First time fetch or current page
         nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
         t_my_recent_swaps_request request{.limit = limit, .page_number = current_page};
@@ -959,6 +958,7 @@ namespace atomic_dex
             result.nb_orders        = orders_answers.orders.size();
             result.orders_and_swaps = std::move(orders_answers.orders);
             result.orders_registry  = std::move(orders_answers.orders_id);
+            result.limit            = limit;
 
             //! Recent swaps
             result.active_swaps = active_swaps_answer.uuids.size();

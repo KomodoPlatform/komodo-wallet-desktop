@@ -288,6 +288,7 @@ namespace atomic_dex
     {
         if (static_cast<std::size_t>(limit) != m_model_data.limit)
         {
+            this->m_model_data.limit = limit;
             if (m_model_data.current_page == 1)
             {
                 this->reset(); ///< We change page, we need to clear
@@ -297,7 +298,6 @@ namespace atomic_dex
             }
             else
             {
-                this->m_model_data.limit = limit;
                 this->set_current_page(1);
             }
         }
@@ -397,7 +397,7 @@ namespace atomic_dex
     orders_model::init_model(const orders_and_swaps& contents)
     {
         const auto size = contents.orders_and_swaps.size();
-        SPDLOG_DEBUG("First time initialization, inserting {} elements", size);
+        SPDLOG_INFO("Full initialization, inserting {} elements, nb_elements / page {}", size, contents.limit);
         beginResetModel();
         m_model_data = std::move(contents);
         endResetModel();
@@ -536,10 +536,11 @@ namespace atomic_dex
     orders_model::reset() noexcept
     {
         SPDLOG_DEBUG("clearing orders");
+        const auto limit = this->m_model_data.limit;
         this->beginResetModel();
         this->m_swaps_id_registry.clear();
         this->m_orders_id_registry.clear();
-        this->m_model_data = {};
+        this->m_model_data = {.limit = limit};
         this->endResetModel();
     }
 
