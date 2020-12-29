@@ -12,15 +12,12 @@ ColumnLayout {
     Layout.fillWidth: true
     spacing: 20
 
-    readonly property var api: API.app.addressbook_pg
-
-    //! This variable represents a margin size.
-    readonly property int layout_margin: 30
+    readonly property var page: API.app.addressbook_pg
 
     //! Page header
     RowLayout {
-        Layout.topMargin: layout_margin
-        Layout.leftMargin: layout_margin
+        Layout.topMargin: 30
+        Layout.leftMargin: 30
         Layout.fillWidth: true
 
         //! Title.
@@ -33,7 +30,7 @@ ColumnLayout {
 
         //! Button to add contact
         PrimaryButton {
-            Layout.rightMargin: layout_margin
+            Layout.rightMargin: 30
             Layout.alignment: Qt.AlignRight
             text: qsTr("New Contact")
 
@@ -45,13 +42,22 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
+    // Search input
+    DefaultTextField {
+        Layout.leftMargin: 30
+        Layout.rightMargin: 900
+        Layout.fillWidth: true
+        placeholderText: qsTr("Search a contact")
+        onTextChanged: page.model.proxy.setFilterFixedString(text)
+    }
+
     //! Contact list
     DefaultListView {
         id: contact_list
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: api.model.addressbook_proxy_mdl
+        model: page.model.proxy
 
         //! Contact card
         delegate: Item {
@@ -74,7 +80,7 @@ ColumnLayout {
 
             FloatingBackground {
                 id: background
-                width: parent.width - 2 * layout_margin
+                width: parent.width - 2 * 30
                 height: column_layout.height
                 anchors.centerIn: parent
 
@@ -101,7 +107,7 @@ ColumnLayout {
                         //! Buttons
                         RowLayout {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                            Layout.rightMargin: layout_margin
+                            Layout.rightMargin: 30
 
                             //! `Edit` button
                             PrimaryButton {
@@ -164,7 +170,7 @@ ColumnLayout {
 
                         onClicked: {
                             remove_contact_modal.close()
-                            api.model.remove_contact(contactName)
+                            page.model.remove_contact(contactName)
                         }
                     }
 

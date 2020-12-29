@@ -24,7 +24,7 @@ namespace atomic_dex
 {
     class ENTT_API addressbook_contact_model final : public QAbstractListModel
     {
-        /// \brief Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
+        // Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
       
         friend class addressbook_model;
@@ -36,34 +36,29 @@ namespace atomic_dex
         };
         Q_ENUMS(ContactRoles)
 
-        /// \defgroup Constructors
-        /// {@
-        
         explicit addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent = nullptr);
         ~addressbook_contact_model() noexcept final;
     
-        /// @} End of Constructors section.
-    
-        /// \defgroup QAbstractListModel implementation.
-        /// {@
+        /// QAbstractListModel functions
+        ////////////////////////////////
     
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
     
-        /// @} End of QAbstractListModel implementation section.
+        ////////////////////////////////
         
-        /// \defgroup QML API.
-        /// {@
+        /// QML API
+        ///////////
         
         Q_INVOKABLE bool add_category(const QString& category) noexcept;
         
         Q_INVOKABLE void remove_category(const QString& category) noexcept;
         
-        /// \brief Resets this model then reloads its data from the persistent data.
+        // Resets this model then reloads its data from the persistent data.
         Q_INVOKABLE void reload();
     
-        /// \brief Saves the model modifications in the persistent data.
+        // Saves the model modifications in the persistent data.
         Q_INVOKABLE void save();
     
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
@@ -79,19 +74,16 @@ namespace atomic_dex
       signals:
         void nameChanged();
         void categoriesChanged();
-        
-        /// @} End of QML API section.
+    
+        ///////////
 
       private:
-        /// \brief Loads this model data from the persistent data.
+        // Loads this model data from the persistent data.
         void populate();
         
-        /// \brief Clears this model data.
+        // Clears this model data.
         void clear();
-    
-        /// \defgroup Members
-        /// {@
-        
+
       private:
         ag::ecs::system_manager&                      m_system_manager;
     
@@ -100,7 +92,5 @@ namespace atomic_dex
         QStringList                                   m_categories;
         
         QVector<addressbook_contact_addresses_model*> m_model_data;
-    
-        /// @} End of Members section.
     };
 }
