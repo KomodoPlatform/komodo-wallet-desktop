@@ -101,9 +101,30 @@ BasicModal {
                     id: icon
                     anchors.left: parent.left
                     anchors.leftMargin: parent.leftPadding + 28
+                    anchors.verticalCenter: parent.verticalCenter
                     source: General.coinIcon(model.ticker)
                     width: Style.textSize2
+                }
+
+                AnimatedRectangle {
+                    anchors.left: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+
+                    radius: 20
+
+                    height: type_tag.font.pixelSize * 1.5
+                    width: type_tag.width + 8
+
+                    color: Style.getCoinColor(model.type === "ERC-20" ? "ETH" :
+                                              model.type === "QRC-20" ? "QTUM" :
+                                              model.type === "Smart Chain" ? "KMD" : "BTC")
+                    DefaultText {
+                        id: type_tag
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: model.type
+                        font.pixelSize: Style.textSizeSmall1
+                    }
                 }
             }
         }
