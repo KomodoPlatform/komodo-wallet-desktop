@@ -11,15 +11,14 @@ BasicModal {
     id: root
 
     property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
+    property bool should_clear: coin_cfg_model.all_disabled_proxy.length === coin_cfg_model.checked_nb
 
     function uncheck_all() {
-        // Have to check and then uncheck to affect all child checkboxes
-        parentBox.checkState = Qt.Checked
-        parentBox.checkState = Qt.Unchecked
+        coin_cfg_model.all_disabled_proxy.set_all_state(false)
     }
 
     function check_all() {
-        parentBox.checkState = Qt.Checked
+        coin_cfg_model.all_disabled_proxy.set_all_state(true)
     }
 
     function filter_coins() {
@@ -50,6 +49,20 @@ BasicModal {
             Layout.fillWidth: true
         }
 
+        DefaultButton {
+            Layout.fillWidth: true
+            text: should_clear ? qsTr("Deselect All Assets") : qsTr("Select All Assets")
+            visible: coin_cfg_model.all_disabled_proxy.length > 0
+            onClicked: {
+                if (should_clear) {
+                    uncheck_all()
+                }
+                else {
+                    check_all()
+                }
+            }
+        }
+
         // Search input
         DefaultTextField {
             id: input_coin_filter
@@ -58,19 +71,6 @@ BasicModal {
             placeholderText: qsTr("Search")
 
             onTextChanged: filter_coins()
-        }
-
-        ButtonGroup {
-            id: childGroup
-            exclusive: false
-            checkState: parentBox.checkState
-        }
-
-        DefaultCheckBox {
-            id: parentBox
-            text: qsTr("Select all assets")
-            visible: list.visible
-            checkState: childGroup.checkState
         }
 
         DefaultListView {
@@ -82,19 +82,11 @@ BasicModal {
             Layout.fillWidth: true
 
             delegate: DefaultCheckBox {
+                property bool backend_checked: model.checked
                 text: "         " + model.name + " (" + model.ticker + ")"
-                leftPadding: indicator.width
-                ButtonGroup.group: childGroup
 
-                onCheckStateChanged: {
-                    if (checkable) {
-                        model.checked = checked
-                    }
-                }
-
-                /* handles special case where the check box is unchecked by the search bar filtering even
-                   when the coin is still considered as checked */
-                Component.onCompleted: checked = model.checked
+                onBackend_checkedChanged: checked = backend_checked
+                onCheckStateChanged: model.checked = checked
 
                 // Icon
                 DefaultImage {

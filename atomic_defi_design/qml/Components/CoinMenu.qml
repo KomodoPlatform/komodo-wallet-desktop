@@ -42,10 +42,9 @@ Menu {
     }
 
     MenuItem {
-        readonly property string coin_type: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).type
         enabled: !General.prevent_coin_disabling.running
-        text: qsTr("Disable all %1 assets").arg(coin_type)
-        onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_coins_by_type(coin_type))
+        text: qsTr("Disable all %1 assets").arg(type)
+        onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_coins_by_type(type))
     }
 
     MenuItem {
