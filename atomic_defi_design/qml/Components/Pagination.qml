@@ -31,6 +31,25 @@ RowLayout {
         onClicked: ++API.app.orders_mdl.current_page
     }
 
+
+    ComboBox {
+        readonly property int item_count: API.app.orders_mdl.limit_nb_elements
+        readonly property var options: [5, 10, 25, 50, 100, 200]
+
+        Layout.leftMargin: 60
+        Layout.alignment: Qt.AlignCenter
+
+        model: options
+        currentIndex: options.indexOf(item_count)
+        onCurrentValueChanged: API.app.orders_mdl.limit_nb_elements = currentValue
+    }
+
+    DefaultText {
+        Layout.alignment: Qt.AlignCenter
+
+        text_value: qsTr("items per page")
+    }
+
     function paginate(visible_page, page_count) {
         const short_range_count = 5
 
