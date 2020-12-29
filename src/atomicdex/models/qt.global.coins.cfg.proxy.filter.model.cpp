@@ -16,11 +16,11 @@
 
 #include "atomicdex/models/qt.global.coins.cfg.model.hpp"
 #include "atomicdex/models/qt.global.coins.cfg.proxy.filter.model.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex
 {
-    global_coins_cfg_proxy_model::global_coins_cfg_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {}
+    global_coins_cfg_proxy_model::global_coins_cfg_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
 } // namespace atomic_dex
 
 //! Override
@@ -52,27 +52,28 @@ namespace atomic_dex
         //! Then use the filter by name
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
-    
-    bool global_coins_cfg_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
+
+    bool
+    global_coins_cfg_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
         int      role       = sortRole();
         QVariant left_data  = sourceModel()->data(source_left, role);
         QVariant right_data = sourceModel()->data(source_right, role);
-    
+
         switch (static_cast<global_coins_cfg_model::CoinsRoles>(role))
         {
-            case global_coins_cfg_model::CoinsRoles::NameRole:
+        case global_coins_cfg_model::CoinsRoles::NameRole:
+        {
+            QString left_coin  = left_data.toString();
+            QString right_coin = right_data.toString();
+            if (left_coin == "All")
             {
-                QString left_coin  = left_data.toString();
-                QString right_coin = right_data.toString();
-                if (left_coin == "All")
-                {
-                    return true;
-                }
-                return left_coin.toLower() < right_coin.toLower();
+                return true;
             }
-            default:
-                break;
+            return left_coin.toLower() < right_coin.toLower();
+        }
+        default:
+            break;
         }
         return false;
     }
@@ -98,13 +99,25 @@ namespace atomic_dex
         m_type = type;
         this->invalidateFilter();
     }
+
+    void
+    global_coins_cfg_proxy_model::set_all_state(bool checked) noexcept
+    {
+        int nb_items = this->rowCount();
+        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
+        {
+            QModelIndex idx = this->index(cur_idx, 0);
+            update_value(global_coins_cfg_model::CoinsRoles::Checked, checked, idx, *this);
+        }
+    }
 } // namespace atomic_dex
 
 //! Properties
 namespace atomic_dex
 {
-    int global_coins_cfg_proxy_model::get_length() const noexcept
+    int
+    global_coins_cfg_proxy_model::get_length() const noexcept
     {
         return rowCount();
     }
-}
+} // namespace atomic_dex
