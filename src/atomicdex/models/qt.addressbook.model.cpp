@@ -31,8 +31,6 @@ namespace atomic_dex
         m_addressbook_proxy(new addressbook_proxy_model(this))
     {
         m_addressbook_proxy->setSourceModel(this);
-        m_addressbook_proxy->setSortRole(SubModelRole);
-        m_addressbook_proxy->setDynamicSortFilter(true);
         m_addressbook_proxy->sort(0);
     }
 }

@@ -30,15 +30,15 @@ namespace atomic_dex
         addressbook_proxy_model(QObject* parent);
 
         //! Destructor
-        ~addressbook_proxy_model() final;
+        ~addressbook_proxy_model() final = default;
 
     protected:
-        /// \defgroup QSortFilterProxyModel implementation
-        /// {@
+        /// QSortFilterProxyModel functions
+        ///////////////////////////////////
         
         [[nodiscard]]
         bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
-        
-        /// @} End of QSortFilterProxyModel implementation section.
+    
+        /////////////////////////////////////////
     };
 } // namespace atomic_dex

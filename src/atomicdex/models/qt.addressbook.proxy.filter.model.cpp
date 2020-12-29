@@ -18,22 +18,29 @@
 #include "atomicdex/models/qt.addressbook.model.hpp"
 #include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
 
+//! Ctor.
 namespace atomic_dex
 {
-    //! Constructor
-    addressbook_proxy_model::addressbook_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
+    addressbook_proxy_model::addressbook_proxy_model(QObject* parent) :
+        QSortFilterProxyModel(parent)
+    {
+        setSortRole(addressbook_model::SubModelRole);
+        setFilterRole(addressbook_model::NameRole);
+        setFilterCaseSensitivity(Qt::CaseSensitivity::CaseInsensitive);
+        setDynamicSortFilter(true);
+    }
+} // namespace atomic_dex
 
-    //! Destructor
-    addressbook_proxy_model::~addressbook_proxy_model() {}
-
-    //! Protected members override
+//! QSortFilterProxyModel implementation
+namespace atomic_dex
+{
     bool
     addressbook_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
         int      role       = sortRole();
         QVariant left_data  = sourceModel()->data(source_left, role);
         QVariant right_data = sourceModel()->data(source_right, role);
-
+        
         switch (static_cast<atomic_dex::addressbook_model::AddressBookRoles>(role))
         {
         case addressbook_model::SubModelRole:
