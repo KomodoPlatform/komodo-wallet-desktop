@@ -11,31 +11,20 @@ BasicModal {
     id: root
 
     property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
-    property bool should_clear: coin_cfg_model.all_disabled_proxy.length === coin_cfg_model.checked_nb
-    onShould_clearChanged: {
-        if(should_clear !== parent_checkbox.checked) {
-            parent_checkbox.updated_from_backend = true
-            parent_checkbox.checked = should_clear
-        }
+
+    function setCheckState(checked) {
+        coin_cfg_model.all_disabled_proxy.set_all_state(checked)
     }
 
-    function uncheck_all() {
-        coin_cfg_model.all_disabled_proxy.set_all_state(false)
-    }
-
-    function check_all() {
-        coin_cfg_model.all_disabled_proxy.set_all_state(true)
-    }
-
-    function filter_coins() {
+    function filterCoins() {
         coin_cfg_model.all_disabled_proxy.setFilterFixedString(input_coin_filter.text)
     }
 
     width: 500
 
     onOpened: {
-        uncheck_all()
-        filter_coins()
+        setCheckState(false)
+        filterCoins()
         input_coin_filter.forceActiveFocus()
     }
 
@@ -62,23 +51,27 @@ BasicModal {
             Layout.fillWidth: true
             placeholderText: qsTr("Search")
 
-            onTextChanged: filter_coins()
+            onTextChanged: filterCoins()
         }
 
         DefaultCheckBox {
-            id: parent_checkbox
-            property bool updated_from_backend: false
-
             text: qsTr("Select all assets")
             visible: list.visible
+
+            // Handle updates
+            property bool updated_from_backend: false
+            property int checked_count: coin_cfg_model.checked_nb
+            property int target_parent_state: coin_cfg_model.all_disabled_proxy.length === checked_count ? Qt.Checked :
+                                                                checked_count > 0 ? Qt.PartiallyChecked : Qt.Unchecked
+            onTarget_parent_stateChanged: {
+                if(target_parent_state !== checkState) {
+                    updated_from_backend = true
+                    checkState = target_parent_state
+                }
+            }
             onCheckStateChanged: {
                 // Avoid binding loop
-                if(!updated_from_backend) {
-                    if (checked) check_all()
-                    else {
-                        uncheck_all()
-                    }
-                }
+                if(!updated_from_backend) setCheckState(checked)
                 else updated_from_backend = false
             }
         }
@@ -146,7 +139,7 @@ BasicModal {
                 onClicked: {
                     const checked_coins = coin_cfg_model.get_checked_coins()
 
-                    uncheck_all()
+                    setCheckState(false)
                     API.app.enable_coins(checked_coins)
                     coin_cfg_model.checked_nb = 0
                     root.close()
