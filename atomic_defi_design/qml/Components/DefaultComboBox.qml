@@ -59,10 +59,9 @@ ComboBox {
 
     // Dropdown itself
     popup: Popup {
-        y: control.height - 1
         width: control.width
-        height: Math.min(contentItem.implicitHeight, window.height - bottomMargin - mapToItem(window.contentItem, x, y).y)
 
+        topMargin: 20
         bottomMargin: 20
 
         padding: 1
