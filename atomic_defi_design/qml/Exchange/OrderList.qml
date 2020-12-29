@@ -10,6 +10,7 @@ InnerBackground {
     property string title
     property var items
     property alias empty_text: no_orders.text_value
+    property bool is_history: false
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -60,6 +61,7 @@ InnerBackground {
 
         // Pagination
         Pagination {
+            visible: is_history
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
@@ -68,7 +70,7 @@ InnerBackground {
 
     DefaultBusyIndicator {
         id: loading
-        visible: API.app.orders_mdl.fetching_busy
+        visible: is_history && API.app.orders_mdl.fetching_busy
 
         anchors.centerIn: parent
     }

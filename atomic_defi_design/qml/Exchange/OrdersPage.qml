@@ -240,6 +240,7 @@ Item {
             OrderList {
                 id: order_list
                 items: list_model
+                is_history: root.is_history
             }
         }
 
