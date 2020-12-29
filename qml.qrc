@@ -247,7 +247,6 @@
         <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>
         <file>atomic_defi_design/qml/Wallet/PriceGraph.qml</file>
         <file>atomic_defi_design/qml/Wallet/EnableCoinModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/CoinList.qml</file>
         <file>atomic_defi_design/qml/Wallet/Sidebar.qml</file>
         <file>atomic_defi_design/qml/Wallet/Main.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBook.qml</file>
