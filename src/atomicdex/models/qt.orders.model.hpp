@@ -44,6 +44,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant average_events_time_registry READ get_average_events_time_registry NOTIFY onAverageEventsTimeRegistryChanged)
         Q_PROPERTY(bool fetching_busy READ is_fetching_busy WRITE set_fetching_busy NOTIFY fetchingStatusChanged)
         Q_PROPERTY(int current_page READ get_current_page WRITE set_current_page NOTIFY currentPageChanged)
+        Q_PROPERTY(int limit_nb_elements READ get_limit_nb_elements WRITE set_limit_nb_elements NOTIFY limitNbElementsChanged)
         Q_PROPERTY(int nb_pages READ get_nb_pages NOTIFY nbPageChanged)
         Q_ENUMS(OrdersRoles)
       public:
@@ -96,9 +97,12 @@ namespace atomic_dex
         [[nodiscard]] QVariant            get_average_events_time_registry() const noexcept;
         [[nodiscard]] int                 get_current_page() const noexcept;
         void                              set_current_page(int current_page) noexcept;
+        [[nodiscard]] int                 get_limit_nb_elements() const noexcept;
+        void                              set_limit_nb_elements(int limit) noexcept;
         [[nodiscard]] bool                is_fetching_busy() const noexcept;
         void                              set_fetching_busy(bool fetching_status) noexcept;
         [[nodiscard]] int                 get_nb_pages() const noexcept;
+
 
       signals:
         void lengthChanged();
@@ -106,6 +110,7 @@ namespace atomic_dex
         void onAverageEventsTimeRegistryChanged();
         void fetchingStatusChanged();
         void currentPageChanged();
+        void limitNbElementsChanged();
         void nbPageChanged();
 
       private:

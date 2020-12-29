@@ -273,7 +273,33 @@ namespace atomic_dex
             this->reset(); ///< We change page, we need to clear
             this->set_fetching_busy(true);
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-            mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(current_page));
+            mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(current_page), static_cast<std::size_t>(m_model_data.limit));
+        }
+    }
+
+    int
+    orders_model::get_limit_nb_elements() const noexcept
+    {
+        return static_cast<int>(m_model_data.limit);
+    }
+
+    void
+    orders_model::set_limit_nb_elements(int limit) noexcept
+    {
+        if (static_cast<std::size_t>(limit) != m_model_data.limit)
+        {
+            if (m_model_data.current_page == 1)
+            {
+                this->reset(); ///< We change page, we need to clear
+                this->set_fetching_busy(true);
+                auto& mm2 = this->m_system_manager.get_system<mm2_service>();
+                mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(m_model_data.current_page), static_cast<std::size_t>(limit));
+            }
+            else
+            {
+                this->m_model_data.limit = limit;
+                this->set_current_page(1);
+            }
         }
     }
 
@@ -379,6 +405,7 @@ namespace atomic_dex
         m_swaps_id_registry  = std::move(m_model_data.swaps_registry);
         emit lengthChanged();
         emit currentPageChanged();
+        emit limitNbElementsChanged();
         emit nbPageChanged();
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(m_model_data.average_events_time));
     }
@@ -487,6 +514,13 @@ namespace atomic_dex
             m_model_data.nb_pages = contents.nb_pages;
             emit nbPageChanged();
         }
+
+        if (m_model_data.limit != contents.limit)
+        {
+            SPDLOG_INFO("nb elements / page changed");
+            this->set_limit_nb_elements(contents.limit);
+        }
+
         if (m_model_data.current_page != contents.current_page)
         {
             SPDLOG_INFO("Page is different from mm2 contents, force change");
