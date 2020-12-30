@@ -16,17 +16,19 @@ BasicModal {
         coin_cfg_model.all_disabled_proxy.set_all_state(checked)
     }
 
-    function filterCoins() {
-        coin_cfg_model.all_disabled_proxy.setFilterFixedString(input_coin_filter.text)
+    function filterCoins(text) {
+        coin_cfg_model.all_disabled_proxy.setFilterFixedString(text || input_coin_filter.text)
     }
 
     width: 500
 
     onOpened: {
-        setCheckState(false)
         filterCoins()
+        setCheckState(false)
         input_coin_filter.forceActiveFocus()
     }
+
+    onClosed: filterCoins("")
 
     ModalContent {
         title: qsTr("Enable assets")
