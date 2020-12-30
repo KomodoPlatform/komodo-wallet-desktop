@@ -46,20 +46,43 @@ InnerBackground {
         }
 
         // List
-        DefaultListView {
+        DefaultFlickable {
             id: list
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            model: items.orders_proxy_mdl
-            enabled: !is_history || !API.app.orders_mdl.fetching_busy
+            contentWidth: width
+            contentHeight: column.height
 
-            // Row
-            delegate: OrderLine {
-                details: model
+            Column {
+                id: column
+
+                Repeater {
+                    width: list.width
+
+                    model: items.orders_proxy_mdl
+                    enabled: !is_history || !API.app.orders_mdl.fetching_busy
+
+                    // Row
+                    delegate: OrderLine {
+                        id: order_line
+                        details: model
+
+                        // Spawn animation
+                        x: 500
+                        opacity: 0
+
+                        SequentialAnimation {
+                            id: spawn_animation
+                            running: true
+
+                            NumberAnimation { id: move_animation; target: order_line; property: "x"; to: 0; duration: Style.animationDuration * 0.25 * (1 + index) }
+                            NumberAnimation { target: order_line; property: "opacity"; to: 1; duration: move_animation.duration }
+                        }
+                    }
+                }
             }
         }
-
         // Pagination
         Pagination {
             visible: is_history
@@ -69,3 +92,4 @@ InnerBackground {
         }
     }
 }
+
