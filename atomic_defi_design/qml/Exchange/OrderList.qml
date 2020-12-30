@@ -52,7 +52,7 @@ InnerBackground {
             Layout.fillHeight: true
 
             model: items.orders_proxy_mdl
-            enabled: !loading.visible
+            enabled: !is_history || !API.app.orders_mdl.fetching_busy
 
             // Row
             delegate: OrderLine {
@@ -67,12 +67,5 @@ InnerBackground {
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
         }
-    }
-
-    DefaultBusyIndicator {
-        id: loading
-        visible: is_history && API.app.orders_mdl.fetching_busy
-
-        anchors.centerIn: parent
     }
 }
