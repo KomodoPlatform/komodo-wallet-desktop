@@ -89,6 +89,7 @@ namespace atomic_dex
         //! Public api
         void refresh_or_insert(bool after_manual_reset = false);
         void reset() noexcept;
+        void reset_backend() noexcept;
         bool swap_is_in_progress(const QString& coin) const noexcept;
 
         //! Properties
