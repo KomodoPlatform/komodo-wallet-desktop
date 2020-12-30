@@ -137,11 +137,8 @@ BasicModal {
                 text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: {
-                    const checked_coins = coin_cfg_model.get_checked_coins()
-
+                    API.app.enable_coins(coin_cfg_model.get_checked_coins())
                     setCheckState(false)
-                    API.app.enable_coins(checked_coins)
-                    coin_cfg_model.checked_nb = 0
                     root.close()
                 }
             }
