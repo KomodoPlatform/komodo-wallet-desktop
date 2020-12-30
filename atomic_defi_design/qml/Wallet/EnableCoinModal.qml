@@ -139,6 +139,7 @@ BasicModal {
                 onClicked: {
                     API.app.enable_coins(coin_cfg_model.get_checked_coins())
                     setCheckState(false)
+                    coin_cfg_model.checked_nb = 0
                     root.close()
                 }
             }
