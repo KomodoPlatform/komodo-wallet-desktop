@@ -52,6 +52,7 @@ InnerBackground {
             Layout.fillHeight: true
 
             model: items.orders_proxy_mdl
+            enabled: !loading.visible
 
             // Row
             delegate: OrderLine {
