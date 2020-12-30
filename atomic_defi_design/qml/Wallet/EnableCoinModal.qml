@@ -17,7 +17,7 @@ BasicModal {
     }
 
     function filterCoins(text) {
-        coin_cfg_model.all_disabled_proxy.set_filter(text || input_coin_filter.text)
+        coin_cfg_model.all_disabled_proxy.setFilterFixedString(text || input_coin_filter.text)
     }
 
     width: 500
