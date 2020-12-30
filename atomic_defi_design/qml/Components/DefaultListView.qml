@@ -18,20 +18,6 @@ ListView {
     clip: true
 
     // Opacity animation
-    opacity: 0
-
-    Component.onCompleted: fadeAnimation()
-    onEnabledChanged: fadeAnimation()
-
-    function fadeAnimation() {
-        fade_animation.to = enabled ? 1 : 0.2
-        fade_animation.restart()
-    }
-
-    NumberAnimation {
-        id: fade_animation
-        target: root
-        property: "opacity"
-        duration: Style.animationDuration * 0.5
-    }
+    opacity: root.count === 0 ? 0 : enabled ? 1 : 0.2
+    Behavior on opacity { SmoothedAnimation { duration: Style.animationDuration * 0.5; velocity: -1 } }
 }
