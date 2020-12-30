@@ -98,7 +98,7 @@ namespace atomic_dex
         case CoinType:
             return static_cast<int>(item.coin_type);
         case TickerAndNameRole:
-            return QString::fromStdString(item.ticker) + QString::fromStdString(item.name); ///! ETHethereum
+            return QString::fromStdString(item.ticker) + QString::fromStdString(item.name) + QString::fromStdString(item.type); ///! ETHethereumERC-20
         case Checked:
             return item.checked;
         }
