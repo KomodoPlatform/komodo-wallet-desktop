@@ -40,7 +40,6 @@ namespace atomic_dex
         Q_INVOKABLE void filter_by_enableable() noexcept;
         Q_INVOKABLE void filter_by_type(CoinType type) noexcept;
         Q_INVOKABLE void set_all_state(bool checked) noexcept;
-        Q_INVOKABLE void set_filter(const QString& to_filter) noexcept;
 
 
       protected:
