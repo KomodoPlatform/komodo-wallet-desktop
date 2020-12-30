@@ -270,8 +270,8 @@ namespace atomic_dex
     {
         if (static_cast<std::size_t>(current_page) != m_model_data.current_page)
         {
-            this->reset_backend(); ///< We change page, we need to clear, but do not notify the front-end
             this->set_fetching_busy(true);
+            this->reset_backend(); ///< We change page, we need to clear, but do not notify the front-end
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
             mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(current_page), static_cast<std::size_t>(m_model_data.limit));
         }
@@ -291,8 +291,8 @@ namespace atomic_dex
             this->m_model_data.limit = limit;
             if (m_model_data.current_page == 1)
             {
-                this->reset_backend(); ///< We change page, we need to clear, but do not notify the front-end
                 this->set_fetching_busy(true);
+                this->reset_backend(); ///< We change page, we need to clear, but do not notify the front-end
                 auto& mm2 = this->m_system_manager.get_system<mm2_service>();
                 mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(m_model_data.current_page), static_cast<std::size_t>(limit));
             }
