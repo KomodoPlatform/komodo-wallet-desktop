@@ -63,6 +63,7 @@ InnerBackground {
         // Pagination
         Pagination {
             visible: is_history
+            enabled: list.enabled
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
