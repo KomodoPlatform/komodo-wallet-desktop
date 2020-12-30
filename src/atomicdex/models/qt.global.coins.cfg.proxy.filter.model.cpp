@@ -83,6 +83,13 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
+    global_coins_cfg_proxy_model::set_filter(const QString& to_filter) noexcept
+    {
+        this->setFilterFixedString(to_filter);
+        emit lengthChanged();
+    }
+
+    void
     global_coins_cfg_proxy_model::filter_by_enableable() noexcept
     {
         if (m_type == CoinType::All)
