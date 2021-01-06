@@ -48,6 +48,18 @@ namespace atomic_dex
                 return false;
             }
         }
+        else if (m_type > CoinType::All)
+        {
+            if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::TickerRole) == "All")
+            {
+                return false;
+            }
+            if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::CoinType) !=
+                static_cast<int>(m_type - CoinType::AllQRC20))
+            {
+                return false;
+            }
+        }
 
         //! Then use the filter by name
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
@@ -85,7 +97,7 @@ namespace atomic_dex
     void
     global_coins_cfg_proxy_model::filter_by_enableable() noexcept
     {
-        if (m_type == CoinType::All)
+        if (m_type >= CoinType::All)
         {
             return;
         }

@@ -58,6 +58,10 @@ namespace atomic_dex
         Q_PROPERTY(global_coins_cfg_proxy_model* utxo_proxy READ get_utxo_proxy NOTIFY utxo_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_disabled_proxy READ get_all_disabled_proxy NOTIFY all_disabled_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_proxy READ get_all_proxy NOTIFY all_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* all_qrc20_proxy READ get_all_qrc20_proxy NOTIFY all_qrc20_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* all_erc20_proxy READ get_all_erc20_proxy NOTIFY all_erc20_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* all_smartchains_proxy READ get_all_smartchains_proxy NOTIFY all_smartchains_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* all_utxo_proxy READ get_all_utxo_proxy NOTIFY all_utxo_proxyChanged)
 
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
         Q_PROPERTY(int checked_nb READ get_checked_nb WRITE set_checked_nb NOTIFY checked_nbChanged)
@@ -113,6 +117,10 @@ namespace atomic_dex
         [[nodiscard]] global_coins_cfg_proxy_model* get_utxo_proxy() const noexcept;
         [[nodiscard]] global_coins_cfg_proxy_model* get_all_disabled_proxy() const noexcept;
         [[nodiscard]] global_coins_cfg_proxy_model* get_all_proxy() const noexcept;
+        [[nodiscard]] global_coins_cfg_proxy_model* get_all_qrc20_proxy() const noexcept;
+        [[nodiscard]] global_coins_cfg_proxy_model* get_all_erc20_proxy() const noexcept;
+        [[nodiscard]] global_coins_cfg_proxy_model* get_all_smartchains_proxy() const noexcept;
+        [[nodiscard]] global_coins_cfg_proxy_model* get_all_utxo_proxy() const noexcept;
 
         [[nodiscard]] int get_length() const noexcept;
 
@@ -126,6 +134,10 @@ namespace atomic_dex
         void utxo_proxyChanged();
         void all_disabled_proxyChanged();
         void all_proxyChanged();
+        void all_qrc20_proxyChanged();
+        void all_erc20_proxyChanged();
+        void all_smartchains_proxyChanged();
+        void all_utxo_proxyChanged();
 
         void lengthChanged();
 

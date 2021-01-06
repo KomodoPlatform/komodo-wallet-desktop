@@ -31,13 +31,17 @@ namespace atomic_dex
       public:
         enum CoinTypeEnum
         {
-            QRC20       = 0,
-            ERC20       = 1,
-            UTXO        = 2,
-            SmartChain  = 3,
-            AllDisabled = 4,
-            All         = 5,
-            Size        = 6
+            QRC20         = 0,
+            ERC20         = 1,
+            UTXO          = 2,
+            SmartChain    = 3,
+            AllDisabled   = 4,
+            All           = 5,
+            AllQRC20      = 6,
+            AllERC20      = 7,
+            AllUTXO       = 8,
+            AllSmartChain = 9,
+            Size          = 10
         };
 
         Q_ENUM(CoinTypeEnum)

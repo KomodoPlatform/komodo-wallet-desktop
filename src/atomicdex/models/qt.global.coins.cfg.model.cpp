@@ -284,6 +284,26 @@ namespace atomic_dex
     {
         return m_proxies[CoinType::All];
     }
+    
+    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_qrc20_proxy() const noexcept
+    {
+        return m_proxies[CoinType::AllQRC20];
+    }
+    
+    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_erc20_proxy() const noexcept
+    {
+        return m_proxies[CoinType::AllERC20];
+    }
+    
+    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_smartchains_proxy() const noexcept
+    {
+        return m_proxies[CoinType::AllSmartChain];
+    }
+    
+    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_utxo_proxy() const noexcept
+    {
+        return m_proxies[CoinType::AllUTXO];
+    }
 
     int
     global_coins_cfg_model::get_length() const noexcept
