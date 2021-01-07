@@ -285,7 +285,7 @@ BasicModal {
 
                 ModalContent {
                     Layout.fillWidth: true
-                    title: qsTr("Enable coin")
+                    title: qsTr("Enable " + coin_name)
 
                     DefaultText {
                         text: qsTr("The selected address belongs to a disabled coin, you need to enabled it before sending.")
