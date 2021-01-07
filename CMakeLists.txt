@@ -386,7 +386,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop_64.png"
+            "atomicdex-desktop-64.png"
             atomicdex-desktop
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
@@ -395,7 +395,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop_64.png"
+            "atomicdex-desktop-64.png"
             atomicdex-desktop_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
