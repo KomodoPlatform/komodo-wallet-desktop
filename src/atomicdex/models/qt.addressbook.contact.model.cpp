@@ -194,7 +194,7 @@ namespace atomic_dex
             }
             create_addresses_model("QRC20");
             create_addresses_model("ERC20");
-            create_addresses_model("SmartChain");
+            create_addresses_model("SmartChains");
             endResetModel();
         }
     }
