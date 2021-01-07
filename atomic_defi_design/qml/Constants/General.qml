@@ -22,6 +22,10 @@ QtObject {
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
+    function coinTypeIcon(type) {
+        return coin_icons_path + type.toLowerCase() + ".png"
+    }
+
     function qaterialIcon(name) {
         return "qrc:/Qaterial/Icons/" + name + ".svg"
     }
