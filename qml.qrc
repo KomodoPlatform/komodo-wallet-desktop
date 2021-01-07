@@ -256,7 +256,11 @@
         <file>atomic_defi_design/qml/Wallet/AddressBookNewContactModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBookNewContactCategoryModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBookEditContactModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeList.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListRow.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBookAddContactAddressModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookSendWalletSelector.qml</file>
         <file>atomic_defi_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_defi_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressList.qml</file>

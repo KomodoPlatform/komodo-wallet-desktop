@@ -15,11 +15,36 @@ import "../Constants"
 
 BasicModal {
     id: root
+
     width: 700
 
-    onClosed: {
-        modelData.reload()
-        wallet_info_type_select.currentIndex = 0
+    onClosed: modelData.reload()
+
+    function trySend(wallet_type, address) {
+        // Checks if the selected wallet type is a coin type instead of a ticker.
+        if (wallet_type === "QRC20" || wallet_type === "ERC20" || wallet_type === "SmartChains") {
+            send_selector.coin_type = wallet_type
+            send_selector.address = address
+            send_selector.open()
+        }
+
+        // Checks if the coin is currently enabled.
+        else if (!API.app.portfolio_pg.is_coin_enabled(wallet_type)) {
+            enable_coin_modal.coin_name = wallet_type
+            enable_coin_modal.open()
+        }
+
+        // Checks if the coin has balance.
+        else if (parseFloat(API.app.get_balance(wallet_type)) === 0) {
+            cannot_send_modal.open()
+        }
+
+        // If the coin has balance and is enabled, opens the send modal.
+        else {
+            API.app.wallet_pg.ticker = wallet_type
+            send_modal.address = address
+            send_modal.open()
+        }
     }
 
     ModalContent {
@@ -52,21 +77,22 @@ BasicModal {
             }
 
             //! Wallets information type selection list
-            DefaultComboBox {
-                id: wallet_info_type_select
-
-                Layout.fillWidth: true
+            DefaultButton {
                 Layout.alignment: Qt.AlignHCenter
-
-                model: modelData
-                textRole: "type"
-                mainLineText: currentValue.type
+                Layout.fillWidth: true
+                text: qsTr("Change of wallet type. Current: ") + wallet_type_list_modal.selected_wallet_type
+                onClicked: wallet_type_list_modal.open()
             }
 
             //! Wallet information edition
             TableView {
                 id: wallet_info_table
-                model: wallet_info_type_select.currentValue
+
+                property alias model: wallet_info_table.model
+
+                enabled: wallet_type_list_modal.selected_wallet_type !== ""
+
+                model: modelData.get_addresses(wallet_type_list_modal.selected_wallet_type)
 
                 Layout.topMargin: 15
                 Layout.fillWidth: true
@@ -152,20 +178,7 @@ BasicModal {
                             icon.source: Qaterial.Icons.send
                             icon.color: Style.colorWhite1
 
-                            onClicked: {
-                                if (!API.app.portfolio_pg.is_coin_enabled(wallet_info_type_select.currentValue.type)) {
-                                    enable_coin_modal.coin_name = wallet_info_type_select.currentValue.type
-                                    enable_coin_modal.open()
-                                }
-                                else if (parseFloat(API.app.get_balance(wallet_info_type_select.currentValue.type)) === 0) {
-                                    cannot_send_modal.open()
-                                }
-                                else {
-                                    API.app.wallet_pg.ticker = wallet_info_type_select.currentValue.type
-                                    send_modal.address = styleData.value
-                                    send_modal.open()
-                                }
-                            }
+                            onClicked: trySend(wallet_type_list_modal.selected_wallet_type, styleData.value)
                         }
                     }
                 }
@@ -178,6 +191,8 @@ BasicModal {
                     text: qsTr("Add")
 
                     onClicked: wallet_info_address_creation_modal.open();
+
+                    enabled: wallet_type_list_modal.selected_wallet_type !== ""
                 }
 
                 //! Wallet address deletion
@@ -186,9 +201,11 @@ BasicModal {
 
                     onClicked: {
                         if (wallet_info_table.currentRow >= 0) {
-                            wallet_info_type_select.currentValue.remove_address_entry(wallet_info_table.currentRow)
+                            wallet_info_table.model.remove_address_entry(wallet_info_table.currentRow)
                         }
                     }
+
+                    enabled: wallet_type_list_modal.selected_wallet_type !== ""
                 }
             }
 
@@ -275,6 +292,18 @@ BasicModal {
             }
         }
 
+        //! Wallets type list modal
+        ModalLoader {
+            id: wallet_type_list_modal
+
+            property string selected_wallet_type: ""
+
+            sourceComponent: AddressBookWalletTypeListModal {
+                selected_wallet_type: ""
+                onSelected_wallet_typeChanged: wallet_type_list_modal.selected_wallet_type = selected_wallet_type
+            }
+        }
+
         //! Enable coin modal
         ModalLoader {
             property string coin_name
@@ -282,8 +311,6 @@ BasicModal {
             id: enable_coin_modal
 
             sourceComponent: BasicModal {
-                width: 400
-
                 ModalContent {
                     Layout.fillWidth: true
                     title: qsTr("Enable " + coin_name)
@@ -292,24 +319,42 @@ BasicModal {
                         text: qsTr("The selected address belongs to a disabled coin, you need to enabled it before sending.")
                     }
 
-                    //! Enable button
-                    PrimaryButton {
-                        text: qsTr("Enable")
+                    Row {
+                        //! Enable button
+                        PrimaryButton {
+                            text: qsTr("Enable")
 
-                        onClicked: {
-                            API.app.enable_coin(coin_name)
-                            enable_coin_modal.close()
+                            onClicked: {
+                                API.app.enable_coin(coin_name)
+                                enable_coin_modal.close()
+                            }
                         }
-                    }
 
-                    //! Disable button
-                    DefaultButton {
-                        text: qsTr("Cancel")
+                        //! Cancel button
+                        DefaultButton {
+                            Layout.rightMargin: 5
+                            text: qsTr("Cancel")
 
-                        onClicked: root.close()
+                            onClicked: enable_coin_modal.close()
+                        }
                     }
                 }
             }
+        }
+
+        //! Send selector modal
+        ModalLoader {
+            id: send_selector
+
+            property string coin_type
+            property string address
+
+            onLoaded: {
+                item.coin_type = coin_type
+                item.address = address
+            }
+
+            sourceComponent: AddressBookSendWalletSelector {}
         }
 
         //! Send modal

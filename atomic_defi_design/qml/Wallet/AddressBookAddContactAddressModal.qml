@@ -67,7 +67,7 @@ BasicModal {
                 text: qsTr("Ok")
 
                 onClicked: {
-                    var create_address_result = wallet_info_type_select.currentValue.add_address_entry(contact_new_address_key.text, contact_new_address_value.text);
+                    var create_address_result = wallet_info_table.model.add_address_entry(contact_new_address_key.text, contact_new_address_value.text);
 
                     if (create_address_result === true) {
                         root.close()
