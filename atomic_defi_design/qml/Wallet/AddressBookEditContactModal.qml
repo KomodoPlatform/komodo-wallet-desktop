@@ -329,10 +329,7 @@ BasicModal {
             id: cannot_send_modal
 
             sourceComponent: BasicModal {
-                width: 400
-
                 ModalContent {
-                    Layout.fillWidth: true
                     title: qsTr("Cannot send to this address")
 
                     DefaultText {
