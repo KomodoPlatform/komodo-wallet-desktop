@@ -152,7 +152,6 @@ ColumnLayout {
 
         // With balance button
         DefaultSwitch {
-            anchors.horizontalCenter: add_coin_button.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 4
             anchors.left: parent.left
