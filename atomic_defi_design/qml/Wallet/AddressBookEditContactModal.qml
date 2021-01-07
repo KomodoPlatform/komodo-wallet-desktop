@@ -81,8 +81,7 @@ BasicModal {
                     color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
                 }
 
-                //! Key column
-                TableViewColumn {
+                TableViewColumn { //! Key column
                     width: 200
 
                     role: "key"
@@ -90,44 +89,47 @@ BasicModal {
 
                     delegate: RowLayout {
                         DefaultText {
+                            Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
                         }
 
                         VerticalLine {
+                            Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
-                //! Address column
-                TableViewColumn {
+
+                TableViewColumn { //! Address column
                     width: 380
 
                     role: "value"
                     title: "Address"
 
                     delegate: RowLayout {
-                        //! Text value
                         DefaultText {
+                            Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
                         }
 
                         VerticalLine {
+                            Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
-                // Buttons column
-                TableViewColumn {
+
+                TableViewColumn { // Buttons column
+                    width: 60
                     role: "value"
                     title: "Address"
 
                     delegate: Row {
                         spacing: 0
 
-                        //! Copy clipboard button
-                        Qaterial.OutlineButton {
+                        Qaterial.OutlineButton { //! Copy clipboard button
                             implicitHeight: 35
                             implicitWidth: 35
 
@@ -141,8 +143,7 @@ BasicModal {
                             }
                         }
 
-                        //! Send button
-                        Qaterial.OutlineButton {
+                        Qaterial.OutlineButton { //! Send button
                             implicitHeight: 35
                             implicitWidth: 35
 
