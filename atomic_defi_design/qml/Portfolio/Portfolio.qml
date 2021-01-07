@@ -149,6 +149,20 @@ ColumnLayout {
 
             width: 120
         }
+
+        // With balance button
+        DefaultSwitch {
+            anchors.horizontalCenter: add_coin_button.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 4
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+
+            text: qsTr("Show only coins with balance")
+
+            checked: false
+            onCheckedChanged: portfolio_coins.with_balance = checked
+        }
     }
 
 

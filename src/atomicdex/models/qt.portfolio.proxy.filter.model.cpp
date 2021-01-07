@@ -25,35 +25,6 @@ namespace atomic_dex
     {
     }
 
-    //! Public API
-    void
-    portfolio_proxy_model::sort_by_name(bool is_ascending)
-    {
-        this->setSortRole(atomic_dex::portfolio_model::NameRole);
-        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
-    }
-
-    void
-    portfolio_proxy_model::sort_by_currency_balance(bool is_ascending)
-    {
-        this->setSortRole(atomic_dex::portfolio_model::MainCurrencyBalanceRole);
-        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
-    }
-
-    void
-    portfolio_proxy_model::sort_by_change_last24h(bool is_ascending)
-    {
-        this->setSortRole(atomic_dex::portfolio_model::Change24H);
-        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
-    }
-
-    void
-    portfolio_proxy_model::sort_by_currency_unit(bool is_ascending)
-    {
-        this->setSortRole(atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit);
-        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
-    }
-
     //! Override member functions
     bool
     portfolio_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -119,6 +90,15 @@ namespace atomic_dex
         {
             return false;
         }
+        
+        if (m_with_balance)
+        {
+            if (this->sourceModel()->data(idx, portfolio_model::BalanceRole).toString().toFloat() == 0.f)
+            {
+                return false;
+            }
+        }
+        
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 
@@ -142,3 +122,49 @@ namespace atomic_dex
         this->am_i_a_market_selector = is_market_selector;
     }
 } // namespace atomic_dex
+
+//! QML API
+namespace atomic_dex
+{
+    void
+    portfolio_proxy_model::sort_by_name(bool is_ascending)
+    {
+        this->setSortRole(atomic_dex::portfolio_model::NameRole);
+        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    }
+    
+    void
+    portfolio_proxy_model::sort_by_currency_balance(bool is_ascending)
+    {
+        this->setSortRole(atomic_dex::portfolio_model::MainCurrencyBalanceRole);
+        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    }
+    
+    void
+    portfolio_proxy_model::sort_by_change_last24h(bool is_ascending)
+    {
+        this->setSortRole(atomic_dex::portfolio_model::Change24H);
+        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    }
+    
+    void
+    portfolio_proxy_model::sort_by_currency_unit(bool is_ascending)
+    {
+        this->setSortRole(atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit);
+        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    }
+    
+    bool portfolio_proxy_model::get_with_balance() const noexcept
+    {
+        return m_with_balance;
+    }
+    
+    void portfolio_proxy_model::set_with_balance(bool value) noexcept
+    {
+        if (value != m_with_balance)
+        {
+            m_with_balance = value;
+            this->invalidateFilter();
+        }
+    }
+}
