@@ -54,6 +54,11 @@ namespace atomic_dex
         Q_INVOKABLE bool add_category(const QString& category) noexcept;
         
         Q_INVOKABLE void remove_category(const QString& category) noexcept;
+    
+        // Gets the contact address of a specific ticker.
+        // Returns the corresponding `addressbook_contact_addresses_model*` as `QVariant according to the given ticker
+        [[nodiscard]]
+        Q_INVOKABLE QVariant get_addresses(const QString& ticker);
         
         // Resets this model then reloads its data from the persistent data.
         Q_INVOKABLE void reload();
