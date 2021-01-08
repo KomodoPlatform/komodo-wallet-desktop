@@ -103,11 +103,15 @@ namespace atomic_dex
     
     QVariant addressbook_contact_model::get_addresses(const QString& ticker)
     {
-        addressbook_contact_addresses_model* data = *std::find_if(m_model_data.begin(), m_model_data.end(), [ticker](auto* model)
+        addressbook_contact_addresses_model** data = std::find_if(m_model_data.begin(), m_model_data.end(), [ticker](auto* model)
         {
             return model->get_type() == ticker;
         });
-        return QVariant::fromValue(data);
+        if (*data == nullptr)
+        {
+            return {};
+        }
+        return QVariant::fromValue(*data);
     }
 
     const QStringList&
