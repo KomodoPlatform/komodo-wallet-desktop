@@ -90,12 +90,12 @@ namespace atomic_dex
         void clear();
 
       private:
-        ag::ecs::system_manager&                      m_system_manager;
+        ag::ecs::system_manager&                          m_system_manager;
     
-        QString                                       m_name;
+        QString                                           m_name;
     
-        QStringList                                   m_categories;
+        QStringList                                       m_categories;
         
-        QVector<addressbook_contact_addresses_model*> m_model_data;
+        std::vector<addressbook_contact_addresses_model*> m_model_data;
     };
 }

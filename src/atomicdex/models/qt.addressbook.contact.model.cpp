@@ -63,7 +63,7 @@ namespace atomic_dex
     int
     addressbook_contact_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_model_data.count();
+        return m_model_data.size();
     }
 
     QHash<int, QByteArray>
@@ -103,15 +103,15 @@ namespace atomic_dex
     
     QVariant addressbook_contact_model::get_addresses(const QString& ticker)
     {
-        addressbook_contact_addresses_model** data = std::find_if(m_model_data.begin(), m_model_data.end(), [ticker](auto* model)
+        auto data = std::find_if(m_model_data.begin(), m_model_data.end(), [ticker](auto* model)
         {
             return model->get_type() == ticker;
         });
-        if (*data == nullptr)
+        if (data != m_model_data.end())
         {
-            return {};
+            return QVariant::fromValue(*data);
         }
-        return QVariant::fromValue(*data);
+        return {};
     }
 
     const QStringList&
