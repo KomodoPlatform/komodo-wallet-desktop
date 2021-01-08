@@ -35,7 +35,6 @@ namespace atomic_dex
         switch (static_cast<atomic_dex::portfolio_model::PortfolioRoles>(role))
         {
         case atomic_dex::portfolio_model::TickerRole:
-            return left_data.toString() > right_data.toString();
         case atomic_dex::portfolio_model::GuiTickerRole:
             return left_data.toString() > right_data.toString();
         case atomic_dex::portfolio_model::NameRole:
