@@ -68,8 +68,7 @@ namespace atomic_dex
         Q_INVOKABLE void remove_address_entry(int row);
 
         Q_PROPERTY(QString type READ get_type NOTIFY typeChanged)
-        [[nodiscard]]
-        Q_INVOKABLE const QString& get_type() const noexcept;
+        [[nodiscard]] const QString& get_type() const noexcept;
         
       signals:
         void typeChanged();
