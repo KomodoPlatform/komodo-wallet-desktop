@@ -100,6 +100,7 @@
         <file>atomic_defi_design/assets/images/coins/rfox.png</file>
         <file>atomic_defi_design/assets/images/coins/qtum.png</file>
         <file>atomic_defi_design/assets/images/coins/qrc20.png</file>
+        <file>atomic_defi_design/assets/images/coins/qrc-20.png</file>
         <file>atomic_defi_design/assets/images/coins/tqtum.png</file>
         <file>atomic_defi_design/assets/images/coins/rvn.png</file>
         <file>atomic_defi_design/assets/images/coins/space.png</file>
@@ -118,8 +119,8 @@
         <file>atomic_defi_design/assets/images/coins/zec.png</file>
         <file>atomic_defi_design/assets/images/coins/zer.png</file>
         <file>atomic_defi_design/assets/images/coins/zilla.png</file>
-        <file>atomic_defi_design/assets/images/coins/erc20.png</file>
-        <file>atomic_defi_design/assets/images/coins/smartchains.png</file>
+        <file>atomic_defi_design/assets/images/coins/erc-20.png</file>
+        <file>atomic_defi_design/assets/images/coins/smart chain.png</file>
         <file>atomic_defi_design/assets/images/lang/en.png</file>
         <file>atomic_defi_design/assets/images/lang/fr.png</file>
         <file>atomic_defi_design/assets/images/lang/tr.png</file>
