@@ -14,6 +14,7 @@ Qaterial.Expandable {
 
     property string title
 
+    property string type_title
     property string type: ""
 
     property var model
@@ -35,10 +36,10 @@ Qaterial.Expandable {
 
             width: root.width
 
-            name: type
-            ticker: type
+            name: type_title
+            ticker: type_title
 
-            onClicked: onTypeSelect(ticker)
+            onClicked: onTypeSelect(type)
         }
 
         Repeater {

@@ -55,31 +55,35 @@ BasicModal {
         AddressBookWalletTypeList {
             Layout.rightMargin: 10
             Layout.fillWidth: true
-            title: "QRC20 coins"
-            type: "QRC20"
+            title: "QRC-20 coins"
+            type_title: "QRC-20"
+            type: "QRC-20"
             model: glb_coins_cfg_mdl.all_qrc20_proxy
         }
 
         AddressBookWalletTypeList {
             Layout.rightMargin: 10
             Layout.fillWidth: true
-            title: "ERC20 coins"
-            type: "ERC20"
+            title: "ERC-20 coins"
+            type_title: "ERC-20"
+            type: "ERC-20"
             model: glb_coins_cfg_mdl.all_erc20_proxy
         }
 
         AddressBookWalletTypeList {
             Layout.rightMargin: 10
             Layout.fillWidth: true
-            title: "SmartChains coins"
-            type: "SmartChains"
+            title: "Smart Chain coins"
+            type_title: "Smart Chain"
+            type: "Smart Chain"
             model: glb_coins_cfg_mdl.all_smartchains_proxy
         }
 
         AddressBookWalletTypeList {
             Layout.rightMargin: 10
             Layout.fillWidth: true
-            title: "Other coins"
+            title: "UTXO coins"
+            type_title: "UTXO"
             model: glb_coins_cfg_mdl.all_utxo_proxy
         }
     }
