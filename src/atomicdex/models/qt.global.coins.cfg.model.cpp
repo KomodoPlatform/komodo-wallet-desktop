@@ -49,16 +49,12 @@ namespace atomic_dex
     {
         for (int i = 0; i < CoinType::Size; ++i)
         {
-            m_proxies[i] = new global_coins_cfg_proxy_model(this);
+            m_proxies[i] = new global_coins_cfg_proxy_model(this, static_cast<::CoinType>(i));
             m_proxies[i]->setSourceModel(this);
             m_proxies[i]->setDynamicSortFilter(true);
             m_proxies[i]->setFilterRole(CoinsRoles::TickerAndNameRole);
             m_proxies[i]->setFilterCaseSensitivity(Qt::CaseInsensitive);
             m_proxies[i]->setSortRole(CoinsRoles::NameRole);
-
-            //! Initial State will be enableable
-            m_proxies[i]->filter_by_type(static_cast<::CoinType>(i));
-            m_proxies[i]->filter_by_enableable();
 
             m_proxies[i]->sort(0);
         }
@@ -250,33 +246,9 @@ namespace atomic_dex
 namespace atomic_dex
 {
     global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_qrc20_proxy() const noexcept
-    {
-        return m_proxies[CoinType::QRC20];
-    }
-
-    global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_erc20_proxy() const noexcept
-    {
-        return m_proxies[CoinType::ERC20];
-    }
-
-    global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_smartchains_proxy() const noexcept
-    {
-        return m_proxies[CoinType::SmartChain];
-    }
-
-    global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_utxo_proxy() const noexcept
-    {
-        return m_proxies[CoinType::UTXO];
-    }
-
-    global_coins_cfg_proxy_model*
     global_coins_cfg_model::get_all_disabled_proxy() const noexcept
     {
-        return m_proxies[CoinType::AllDisabled];
+        return m_proxies[CoinType::Disabled];
     }
 
     global_coins_cfg_proxy_model*
@@ -287,22 +259,22 @@ namespace atomic_dex
     
     global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_qrc20_proxy() const noexcept
     {
-        return m_proxies[CoinType::AllQRC20];
+        return m_proxies[CoinType::QRC20];
     }
     
     global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_erc20_proxy() const noexcept
     {
-        return m_proxies[CoinType::AllERC20];
+        return m_proxies[CoinType::ERC20];
     }
     
     global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_smartchains_proxy() const noexcept
     {
-        return m_proxies[CoinType::AllSmartChain];
+        return m_proxies[CoinType::SmartChain];
     }
     
     global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_utxo_proxy() const noexcept
     {
-        return m_proxies[CoinType::AllUTXO];
+        return m_proxies[CoinType::UTXO];
     }
 
     int

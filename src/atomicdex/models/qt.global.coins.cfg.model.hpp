@@ -52,10 +52,6 @@ namespace atomic_dex
 
         int m_checked_nb{0};
 
-        Q_PROPERTY(global_coins_cfg_proxy_model* qrc20_proxy READ get_qrc20_proxy NOTIFY qrc20_proxyChanged)
-        Q_PROPERTY(global_coins_cfg_proxy_model* erc20_proxy READ get_erc20_proxy NOTIFY erc20_proxyChanged)
-        Q_PROPERTY(global_coins_cfg_proxy_model* smartchains_proxy READ get_smartchains_proxy NOTIFY smartchains_proxyChanged)
-        Q_PROPERTY(global_coins_cfg_proxy_model* utxo_proxy READ get_utxo_proxy NOTIFY utxo_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_disabled_proxy READ get_all_disabled_proxy NOTIFY all_disabled_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_proxy READ get_all_proxy NOTIFY all_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_qrc20_proxy READ get_all_qrc20_proxy NOTIFY all_qrc20_proxyChanged)
@@ -111,10 +107,6 @@ namespace atomic_dex
         [[nodiscard]] Q_INVOKABLE QVariant    get_coin_info(const QString& ticker) const noexcept;
 
         //! Properties
-        [[nodiscard]] global_coins_cfg_proxy_model* get_qrc20_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model* get_erc20_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model* get_smartchains_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model* get_utxo_proxy() const noexcept;
         [[nodiscard]] global_coins_cfg_proxy_model* get_all_disabled_proxy() const noexcept;
         [[nodiscard]] global_coins_cfg_proxy_model* get_all_proxy() const noexcept;
         [[nodiscard]] global_coins_cfg_proxy_model* get_all_qrc20_proxy() const noexcept;
@@ -128,10 +120,6 @@ namespace atomic_dex
         void              set_checked_nb(int value) noexcept;
 
       signals:
-        void qrc20_proxyChanged();
-        void erc20_proxyChanged();
-        void smartchains_proxyChanged();
-        void utxo_proxyChanged();
         void all_disabled_proxyChanged();
         void all_proxyChanged();
         void all_qrc20_proxyChanged();

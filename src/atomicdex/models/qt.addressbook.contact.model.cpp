@@ -205,9 +205,9 @@ namespace atomic_dex
                 }
                 create_addresses_model(QString::fromStdString(coin.ticker));
             }
-            create_addresses_model("QRC20");
-            create_addresses_model("ERC20");
-            create_addresses_model("SmartChains");
+            create_addresses_model("QRC-20");
+            create_addresses_model("ERC-20");
+            create_addresses_model("Smart Chain");
             endResetModel();
         }
     }

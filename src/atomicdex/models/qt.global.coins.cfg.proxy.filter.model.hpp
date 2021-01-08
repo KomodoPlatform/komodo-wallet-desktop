@@ -24,37 +24,38 @@ namespace atomic_dex
     {
         Q_OBJECT
 
-        bool     m_exclude_enabled_coins{false};
-        CoinType m_type{CoinType::Size}; ///< if Size means no filter by type
-        
-        Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
+        CoinType m_type{CoinType::All};
 
       public:
         //! Constructor
-        global_coins_cfg_proxy_model(QObject* parent);
+        explicit global_coins_cfg_proxy_model(QObject* parent);
+        explicit global_coins_cfg_proxy_model(QObject* parent, CoinType type);
 
         //! Destructor
         ~global_coins_cfg_proxy_model() noexcept final = default;
 
-        //! QML API
-        Q_INVOKABLE void filter_by_enableable() noexcept;
-        Q_INVOKABLE void filter_by_type(CoinType type) noexcept;
+        //////// QML API
+        ////////////////
+        
+        // Checks/Unchecks all coins
         Q_INVOKABLE void set_all_state(bool checked) noexcept;
-
-
+      
+      private:
+        Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
+        
+        [[nodiscard]]
+        int get_length() const noexcept;
+  
+      signals:
+        void lengthChanged();
+        
+        ////////////////
+        
       protected:
         //! Override member functions
         bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
     
         bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
-        
-      private:
-        //! Properties
-        [[nodiscard]]
-        int get_length() const noexcept;
-        
-      signals:
-        void lengthChanged();
     };
 } // namespace atomic_dex
 

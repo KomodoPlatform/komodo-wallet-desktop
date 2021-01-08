@@ -21,6 +21,12 @@
 namespace atomic_dex
 {
     global_coins_cfg_proxy_model::global_coins_cfg_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
+    
+    global_coins_cfg_proxy_model::global_coins_cfg_proxy_model(QObject* parent, CoinType type) :
+        global_coins_cfg_proxy_model(parent)
+    {
+        m_type = type;
+    }
 } // namespace atomic_dex
 
 //! Override
@@ -32,35 +38,25 @@ namespace atomic_dex
         [[maybe_unused]] QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
 
-        //! If we want only enableable coins let's refuse every rows that are already enabled
-        if (m_exclude_enabled_coins)
+        if (m_type < CoinType::Disabled)
         {
-            if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::CurrentlyEnabled).toBool())
+            if (this->sourceModel()->data(idx, global_coins_cfg_model::CoinType) != static_cast<int>(m_type))
+            {
+                return false;
+            }
+            if (this->sourceModel()->data(idx, global_coins_cfg_model::TickerRole).toString() == "All")
             {
                 return false;
             }
         }
-
-        if (m_type < CoinType::AllDisabled)
+        else if (m_type == CoinType::Disabled)
         {
-            if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::CoinType) != static_cast<int>(m_type))
+            if (this->sourceModel()->data(idx, global_coins_cfg_model::CurrentlyEnabled).toBool())
             {
                 return false;
             }
         }
-        else if (m_type > CoinType::All)
-        {
-            if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::TickerRole) == "All")
-            {
-                return false;
-            }
-            if (this->sourceModel()->data(idx, atomic_dex::global_coins_cfg_model::CoinType) !=
-                static_cast<int>(m_type - CoinType::AllQRC20))
-            {
-                return false;
-            }
-        }
-
+        
         //! Then use the filter by name
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
@@ -94,24 +90,6 @@ namespace atomic_dex
 //! QML API
 namespace atomic_dex
 {
-    void
-    global_coins_cfg_proxy_model::filter_by_enableable() noexcept
-    {
-        if (m_type >= CoinType::All)
-        {
-            return;
-        }
-        m_exclude_enabled_coins = true;
-        this->invalidateFilter();
-    }
-
-    void
-    global_coins_cfg_proxy_model::filter_by_type(CoinType type) noexcept
-    {
-        m_type = type;
-        this->invalidateFilter();
-    }
-
     void
     global_coins_cfg_proxy_model::set_all_state(bool checked) noexcept
     {
