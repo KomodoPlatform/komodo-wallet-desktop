@@ -88,8 +88,6 @@ BasicModal {
             TableView {
                 id: wallet_info_table
 
-                property alias model: wallet_info_table.model
-
                 enabled: wallet_type_list_modal.selected_wallet_type !== ""
 
                 model: modelData.get_addresses(wallet_type_list_modal.selected_wallet_type)
