@@ -22,7 +22,7 @@ BasicModal {
 
     function trySend(wallet_type, address) {
         // Checks if the selected wallet type is a coin type instead of a ticker.
-        if (wallet_type === "QRC20" || wallet_type === "ERC20" || wallet_type === "SmartChains") {
+        if (wallet_type === "QRC-20" || wallet_type === "ERC-20" || wallet_type === "Smart Chain") {
             send_selector.coin_type = wallet_type
             send_selector.address = address
             send_selector.open()
