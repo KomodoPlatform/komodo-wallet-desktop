@@ -50,7 +50,7 @@ BasicModal {
 
             //! Validate button.
             PrimaryButton {
-                text: qsTr("Validate")
+                text: qsTr("Confirm")
                 enabled: name_input.text.length > 0
                 onClicked: {
                     if (name_input.text.length == 0)

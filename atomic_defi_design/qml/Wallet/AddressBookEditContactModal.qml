@@ -275,7 +275,7 @@ BasicModal {
 
             //! Validate
             PrimaryButton {
-                text: qsTr("Validate")
+                text: qsTr("Confirm")
                 onClicked: {
                     modelData.name = name_input.field.text
                     modelData.save()

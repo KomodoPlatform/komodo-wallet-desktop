@@ -26,7 +26,7 @@ BasicModal {
 
             width: 100
 
-            placeholderText: qsTr("Enter the key")
+            placeholderText: qsTr("Enter a name")
 
             onTextChanged: {
                 const max_length = 50
@@ -64,7 +64,7 @@ BasicModal {
 
         RowLayout {
             PrimaryButton {
-                text: qsTr("Ok")
+                text: qsTr("Validate")
 
                 onClicked: {
                     var create_address_result = wallet_info_table.model.add_address_entry(contact_new_address_key.text, contact_new_address_value.text);
