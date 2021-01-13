@@ -46,6 +46,7 @@ namespace atomic_dex
         json_body["symbols"]   = nlohmann::json::array();
         for (auto&& cur_symbol: this->m_supported_tickers) { json_body["symbols"].push_back(cur_symbol); }
         req.headers().set_content_type(FROM_STD_STR("application/json"));
+        //SPDLOG_INFO("req: {}", json_body.dump(4));
         req.set_body(json_body.dump());
         return m_band_http_client->request(req);
     }
@@ -58,8 +59,8 @@ namespace atomic_dex
             .then([this](web::http::http_response resp) {
                 if (resp.status_code() == 200)
                 {
-                    SPDLOG_INFO("band oracle successfully fetched");
                     auto                     body = TO_STD_STR(resp.extract_string(true).get());
+                    //SPDLOG_INFO("band oracle successfully fetched: {}", body);
                     nlohmann::json           j    = nlohmann::json::parse(body);
                     band_oracle_price_result result;
                     from_json(j, result);
