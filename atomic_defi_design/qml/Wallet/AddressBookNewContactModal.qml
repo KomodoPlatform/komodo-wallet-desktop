@@ -13,13 +13,11 @@ BasicModal {
         Layout.topMargin: 5
         Layout.fillWidth: true
 
-        title: qsTr("Choose a contact name")
+        title: qsTr("Create a new contact")
 
         //! Contact name input.
         DefaultTextField {
             id: name_input
-            Layout.topMargin: 4
-            Layout.leftMargin: 20
             placeholderText: qsTr("Enter the contact name")
             width: 150
             onTextChanged: {
@@ -46,7 +44,6 @@ BasicModal {
         //! Footer
         RowLayout {
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
-            Layout.bottomMargin: 5
 
             //! Validate button.
             PrimaryButton {
