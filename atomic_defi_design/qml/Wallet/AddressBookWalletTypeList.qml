@@ -34,6 +34,8 @@ Qaterial.Expandable {
             enabled: type !== ""
             visible: type !== ""
 
+            icon_source: General.coinTypeIcon(type)
+
             width: root.width
 
             name: type_title

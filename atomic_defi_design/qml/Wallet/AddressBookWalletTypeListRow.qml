@@ -9,10 +9,13 @@ ItemDelegate {
     property string ticker
     property string name
 
+    property alias icon_source: icon.source
+
     height: 50
 
     RowLayout {
         DefaultImage {
+            id: icon
             Layout.topMargin: 10
             Layout.leftMargin: 30
             Layout.alignment: Qt.AlignVCenter

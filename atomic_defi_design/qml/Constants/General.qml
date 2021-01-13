@@ -22,8 +22,14 @@ QtObject {
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
+    // Returns the icon full path of a coin type.
+    // If the given coin type has spaces, it will be replaced by '-' characters.
+    // If the given coin type is empty, returns an empty string.
     function coinTypeIcon(type) {
-        return coin_icons_path + type.toLowerCase() + ".png"
+        if (type === "") return ""
+
+        var filename = type.toLowerCase().replace(" ", "-");
+        return coin_icons_path + filename + ".png"
     }
 
     function qaterialIcon(name) {
