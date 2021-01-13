@@ -61,7 +61,7 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! Override
+//! QAbstractListModel functions
 namespace atomic_dex
 {
     QVariant
@@ -164,7 +164,7 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! CPP API
+//! Others
 namespace atomic_dex
 {
     void
@@ -247,9 +247,15 @@ namespace atomic_dex
         }
         return result;
     }
+    
+    QVariant
+    global_coins_cfg_model::get_coin_info(const QString& ticker) const noexcept
+    {
+        return to_qt_binding(get_coin_info(ticker.toStdString()));
+    }
 } // namespace atomic_dex
 
-//! Properties
+//! Getters/Setters
 namespace atomic_dex
 {
     global_coins_cfg_proxy_model*
@@ -318,12 +324,6 @@ namespace atomic_dex
         return m_model_data;
     }
 
-    QVariant
-    global_coins_cfg_model::get_coin_info(const QString& ticker) const noexcept
-    {
-        return to_qt_binding(get_coin_info(ticker.toStdString()));
-    }
-
     coin_config
     global_coins_cfg_model::get_coin_info(const std::string& ticker) const noexcept
     {
@@ -335,8 +335,8 @@ namespace atomic_dex
         }
         return {};
     }
-
-    t_enabled_coins_registry
+    
+    global_coins_cfg_model::t_enabled_coins_registry
     global_coins_cfg_model::get_enabled_coins() const noexcept
     {
         return m_enabled_coins;
