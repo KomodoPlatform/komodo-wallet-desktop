@@ -51,6 +51,9 @@ namespace atomic_dex
         std::array<global_coins_cfg_proxy_model*, ::CoinType::Size> m_proxies;
 
         int m_checked_nb{0};
+        
+        // Contains every supported coin type (e.g. UTXO, SmartChain)
+        QStringList m_all_coin_types;
 
         Q_PROPERTY(global_coins_cfg_proxy_model* all_disabled_proxy READ get_all_disabled_proxy NOTIFY all_disabled_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_proxy READ get_all_proxy NOTIFY all_proxyChanged)
@@ -61,6 +64,8 @@ namespace atomic_dex
 
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
         Q_PROPERTY(int checked_nb READ get_checked_nb WRITE set_checked_nb NOTIFY checked_nbChanged)
+        
+        Q_PROPERTY(QStringList all_coin_types READ get_all_coin_types)
 
       signals:
         void globalCoinsCfgProxyChanged();
@@ -118,6 +123,8 @@ namespace atomic_dex
 
         [[nodiscard]] int get_checked_nb() const noexcept;
         void              set_checked_nb(int value) noexcept;
+        
+        [[nodiscard]] const QStringList& get_all_coin_types() const noexcept;
 
       signals:
         void all_disabled_proxyChanged();

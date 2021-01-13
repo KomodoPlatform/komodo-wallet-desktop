@@ -171,8 +171,15 @@ namespace atomic_dex
     global_coins_cfg_model::initialize_model(std::vector<coin_config> cfg) noexcept
     {
         m_enabled_coins.clear();
+        m_all_coin_types.clear();
         for (auto&& cur: cfg)
         {
+            // If a new coin type is detected, push the type to `m_all_coin_types` member.
+            if (auto type = QString::fromStdString(cur.type); !m_all_coin_types.contains(type))
+            {
+                m_all_coin_types.push_back(type);
+            }
+            
             if (cur.currently_enabled)
             {
                 m_enabled_coins[cur.ticker] = cur;
@@ -298,6 +305,11 @@ namespace atomic_dex
         }
         m_checked_nb = value;
         emit checked_nbChanged();
+    }
+    
+    const QStringList& global_coins_cfg_model::get_all_coin_types() const noexcept
+    {
+        return m_all_coin_types;
     }
 
     const std::vector<coin_config>&
