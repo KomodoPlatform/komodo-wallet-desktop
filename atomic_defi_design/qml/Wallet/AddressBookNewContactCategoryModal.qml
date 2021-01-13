@@ -11,39 +11,33 @@ BasicModal {
     width: 500
 
     ModalContent {
-        Layout.topMargin: 5
         Layout.fillWidth: true
+        title: qsTr("Add a new tag")
 
-        //! Category name input.
-        DefaultTextField {
-            id: name_input
-            Layout.topMargin: 4
-            Layout.leftMargin: 20
-            placeholderText: qsTr("Enter the tag name")
-            width: 150
-            onTextChanged: {
-                const max_length = 20
-                if(text.length > max_length)
-                    text = text.substring(0, max_length)
-            }
+        RowLayout {
+            //! Category name input.
+            DefaultTextField {
+                id: name_input
+                placeholderText: qsTr("Enter the tag name")
+                onTextChanged: {
+                    const max_length = 14
+                    if(text.length > max_length)
+                        text = text.substring(0, max_length)
+                }
 
-            //! Error tooltip when category name already exists.
-            DefaultTooltip {
-                id: alrady_exists_tooltip
-                visible: false
-                contentItem: DefaultText {
-                    text_value: qsTr("This contact already has this tag")
+                //! Error tooltip when category name already exists.
+                DefaultTooltip {
+                    id: alrady_exists_tooltip
+                    visible: false
+                    contentItem: DefaultText {
+                        text_value: qsTr("This contact already has this tag")
+                    }
                 }
             }
-        }
-
-        //! Buttons
-        RowLayout {
-            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
-            Layout.bottomMargin: 5
 
             //! Add
             PrimaryButton {
+                Layout.leftMargin: 90
                 text: qsTr("Add")
                 onClicked: {
                     if (!modelData.add_category(name_input.text))
