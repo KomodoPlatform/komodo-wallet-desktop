@@ -401,7 +401,9 @@ namespace atomic_dex
             {MultiTickerPrice, "multi_ticker_price"},
             {MultiTickerError, "multi_ticker_error"},
             {MultiTickerReceiveAmount, "multi_ticker_receive_amount"},
-            {MultiTickerFeesInfo, "multi_ticker_fees_info"}};
+            {MultiTickerFeesInfo, "multi_ticker_fees_info"},
+            {Address, "public_address"},
+            {PrivKey, "priv_key"}};
     }
 
     portfolio_proxy_model*
