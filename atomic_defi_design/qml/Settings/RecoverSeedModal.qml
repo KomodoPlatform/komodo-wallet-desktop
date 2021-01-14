@@ -87,6 +87,7 @@ BasicModal {
         Layout.fillWidth: true
 
         DefaultRectangle {
+            id: seed_container
             height: 120
             width: parent.width
 
@@ -160,8 +161,8 @@ BasicModal {
             model: portfolio_mdl.portfolio_proxy_mdl
 
             delegate: DefaultRectangle {
-                width: parent.width
-                height: 120
+                height: seed_container.height
+                width: seed_container.width
 
                 RowLayout {
                     Layout.fillWidth: true
