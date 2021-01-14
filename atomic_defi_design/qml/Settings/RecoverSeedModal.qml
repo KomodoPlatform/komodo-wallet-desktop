@@ -39,7 +39,7 @@ BasicModal {
     }
 
     ModalContent { // Password checking
-        title: qsTr("View Seed")
+        title: qsTr("View seed and private keys")
 
         ColumnLayout {
             DefaultText {
