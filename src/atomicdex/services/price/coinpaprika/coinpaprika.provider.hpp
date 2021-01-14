@@ -20,7 +20,7 @@
 #include <shared_mutex>
 
 //! Deps
-#include "antara/gaming/ecs/system.manager.hpp"
+#include <antara/gaming/ecs/system.manager.hpp>
 
 //! Project Headers
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
@@ -77,8 +77,14 @@ namespace atomic_dex
         void process_ticker_historical(const coin_config& current_coin, Args... args);
 
       public:
+        //! Deleted operation
+        coinpaprika_provider(coinpaprika_provider& other) = delete;
+        coinpaprika_provider(coinpaprika_provider&& other) = delete;
+        coinpaprika_provider& operator=(coinpaprika_provider& other) = delete;
+        coinpaprika_provider& operator=(coinpaprika_provider&& other) = delete;
+
         //! Constructor
-        coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager);
+        coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) noexcept;
 
         //! Destructor
         ~coinpaprika_provider() noexcept final;

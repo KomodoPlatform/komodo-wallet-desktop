@@ -14,18 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! Deps
 #include <boost/random/random_device.hpp>
 #include <wally_bip39.h>
 
 //! QT
 #include <QDebug>
-#include <QJsonArray>
 #include <QJsonDocument>
-#include <QJsonObject>
 #include <QProcess>
 #include <QTimer>
 
@@ -40,17 +35,8 @@
 
 //! Project Headers
 #include "atomicdex/app.hpp"
-#include "atomicdex/managers/addressbook.manager.hpp"
-#include "atomicdex/pages/qt.addressbook.page.hpp"
-#include "atomicdex/pages/qt.settings.page.hpp"
-#include "atomicdex/pages/qt.wallet.page.hpp"
-#include "atomicdex/services/ip/ip.checker.service.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
-#include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
-#include "atomicdex/utilities/qt.bindings.hpp"
 
 namespace
 {
@@ -141,7 +127,7 @@ namespace atomic_dex
     application::launch()
     {
         this->system_manager_.start();
-        auto timer = new QTimer(this);
+        auto* timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &application::tick);
         timer->start(g_timeout_q_timer_ms);
     }
@@ -214,21 +200,23 @@ namespace atomic_dex
         while (not this->m_actions_queue.empty())
         {
             if (m_event_actions[events_action::about_to_exit_app])
+            {
                 break;
+            }
             action last_action;
             this->m_actions_queue.pop(last_action);
             switch (last_action)
             {
-            case action::post_process_orders_finished:
+            case action::post_process_orders_and_swaps_finished:
                 if (mm2.is_mm2_running())
                 {
-                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_orders();
+                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert();
                 }
                 break;
-            case action::post_process_swaps_finished:
+            case action::post_process_orders_and_swaps_finished_reset:
                 if (mm2.is_mm2_running())
                 {
-                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
+                    qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert(true);
                 }
                 break;
             }
@@ -247,10 +235,7 @@ namespace atomic_dex
         return this->dispatcher_;
     }
 
-    application::application(QObject* pParent) noexcept :
-        QObject(pParent),
-        m_update_status(QJsonObject{
-            {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}})
+    application::application(QObject* pParent) noexcept : QObject(pParent)
     {
         //! Creates managers
         {
@@ -354,7 +339,7 @@ namespace atomic_dex
 
         while (not this->m_portfolio_queue.empty())
         {
-            const char* ticker;
+            const char* ticker = nullptr;
             m_portfolio_queue.pop(ticker);
             free((void*)ticker);
         }
@@ -367,7 +352,7 @@ namespace atomic_dex
         {
             orders->removeRows(0, count, QModelIndex());
         }
-        orders->clear_registry();
+        orders->reset();
 
         system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
         system_manager_.get_system<trading_page>().clear_models();
@@ -385,8 +370,8 @@ namespace atomic_dex
         dispatcher_.sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
         dispatcher_.sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
         dispatcher_.sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
-        dispatcher_.sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
-        dispatcher_.sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
+        dispatcher_.sink<process_swaps_and_orders_finished>().disconnect<&application::on_process_orders_and_swaps_finished_event>(*this);
+        // dispatcher_.sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
         m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
 
@@ -411,8 +396,8 @@ namespace atomic_dex
         get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
         get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
-        get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
-        get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
+        get_dispatcher().sink<process_swaps_and_orders_finished>().connect<&application::on_process_orders_and_swaps_finished_event>(*this);
+        // get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
     }
 
     void
@@ -437,12 +422,6 @@ namespace atomic_dex
 
         return result;
     }
-} // namespace atomic_dex
-
-//! Constructor / Destructor
-namespace atomic_dex
-{
-    application::~application() noexcept {}
 } // namespace atomic_dex
 
 //! Misc QML Utilities
@@ -498,21 +477,22 @@ namespace atomic_dex
 //! Orders
 namespace atomic_dex
 {
-    void
+    /*void
     application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt) noexcept
     {
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::post_process_swaps_finished);
         }
-    }
+    }*/
 
     void
-    application::on_process_orders_finished_event([[maybe_unused]] const process_orders_finished& evt) noexcept
+    application::on_process_orders_and_swaps_finished_event([[maybe_unused]] const process_swaps_and_orders_finished& evt) noexcept
     {
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            this->m_actions_queue.push(action::post_process_orders_finished);
+            this->m_actions_queue.push(
+                evt.after_manual_reset ? action::post_process_orders_and_swaps_finished_reset : action::post_process_orders_and_swaps_finished);
         }
     }
 

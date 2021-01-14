@@ -100,6 +100,7 @@
         <file>atomic_defi_design/assets/images/coins/rfox.png</file>
         <file>atomic_defi_design/assets/images/coins/qtum.png</file>
         <file>atomic_defi_design/assets/images/coins/qrc20.png</file>
+        <file>atomic_defi_design/assets/images/coins/qrc-20.png</file>
         <file>atomic_defi_design/assets/images/coins/tqtum.png</file>
         <file>atomic_defi_design/assets/images/coins/rvn.png</file>
         <file>atomic_defi_design/assets/images/coins/space.png</file>
@@ -118,6 +119,8 @@
         <file>atomic_defi_design/assets/images/coins/zec.png</file>
         <file>atomic_defi_design/assets/images/coins/zer.png</file>
         <file>atomic_defi_design/assets/images/coins/zilla.png</file>
+        <file>atomic_defi_design/assets/images/coins/erc-20.png</file>
+        <file>atomic_defi_design/assets/images/coins/smart-chain.png</file>
         <file>atomic_defi_design/assets/images/lang/en.png</file>
         <file>atomic_defi_design/assets/images/lang/fr.png</file>
         <file>atomic_defi_design/assets/images/lang/tr.png</file>
@@ -220,9 +223,12 @@
         <file>atomic_defi_design/qml/Components/BasicModal.qml</file>
         <file>atomic_defi_design/qml/Components/SidebarPanel.qml</file>
         <file>atomic_defi_design/qml/Components/SetupPage.qml</file>
+        <file>atomic_defi_design/qml/Components/Pagination.qml</file>
+        <file>atomic_defi_design/qml/Components/PaginationButton.qml</file>
         <file>atomic_defi_design/qml/Components/Separator.qml</file>
         <file>atomic_defi_design/qml/Components/RestartModal.qml</file>
         <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>
+        <file>atomic_defi_design/qml/Components/CoinTypeTag.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>
         <file>atomic_defi_design/qml/Components/ComboBoxWithTitle.qml</file>
@@ -245,14 +251,17 @@
         <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>
         <file>atomic_defi_design/qml/Wallet/PriceGraph.qml</file>
         <file>atomic_defi_design/qml/Wallet/EnableCoinModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/CoinList.qml</file>
         <file>atomic_defi_design/qml/Wallet/Sidebar.qml</file>
         <file>atomic_defi_design/qml/Wallet/Main.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBook.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBookNewContactModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBookNewContactCategoryModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBookEditContactModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeList.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListRow.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBookAddContactAddressModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookSendWalletSelector.qml</file>
         <file>atomic_defi_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_defi_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressList.qml</file>

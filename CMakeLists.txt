@@ -53,6 +53,23 @@ option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    if (APPLE OR WIN32)
+        include(CheckIPOSupported)
+        check_ipo_supported(RESULT ipo_supported OUTPUT output)
+        if (ipo_supported)
+            set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+            message(STATUS "We are in release - Successfully enabled IPO")
+        else ()
+            message(WARNING "IPO NOT SUPPORTED - Skipping reason: ${output}")
+        endif ()
+    endif ()
+endif ()
+
+if (WIN32)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif ()
+
 
 if (PREFER_BOOST_FILESYSTEM)
     message(STATUS "Boost filesystem over std::filesystem")
@@ -63,7 +80,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POLICY_WARNING_CMP0100 OFF)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ##! Antara
@@ -89,13 +106,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2793/mm2-19701cc87-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2883/mm2-014c4eab4-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2793/mm2-19701cc87-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2883/mm2-014c4eab4-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2793/mm2-19701cc87-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2883/mm2-014c4eab4-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
@@ -256,6 +273,7 @@ endif ()
 add_library(antara_qrcode STATIC)
 target_sources(antara_qrcode PRIVATE vendor/qrcode/QrCode.cpp)
 target_include_directories(antara_qrcode PUBLIC vendor/qrcode)
+target_link_libraries(antara_qrcode PUBLIC antara::default_settings)
 
 target_link_libraries(atomicdex-desktop_shared_deps
         PUBLIC
@@ -270,7 +288,7 @@ target_link_libraries(atomicdex-desktop_shared_deps
         antara::world
         Boost::random
         Boost::filesystem
-        absl::flat_hash_map
+        #absl::flat_hash_map
         komodo-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
@@ -350,11 +368,11 @@ set_target_properties(${PROJECT_NAME}_tests
 
 
 target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
-set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
+#set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
 if (APPLE)
     set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
-    set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+    #set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+    #set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
 #target_enable_tsan(atomicdex-desktop_tests)
@@ -368,7 +386,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop_64.png"
+            "atomicdex-desktop-64.png"
             atomicdex-desktop
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
@@ -377,7 +395,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop_64.png"
+            "atomicdex-desktop-64.png"
             atomicdex-desktop_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
@@ -421,10 +439,10 @@ if (WIN32)
     add_custom_command(TARGET atomicdex-desktop PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:atomicdex-desktop>)
-    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
+    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
     add_custom_command(TARGET atomicdex-desktop
             POST_BUILD
-            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
+            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
     include(data/windows/atomicdex_install.cmake)
 endif ()

@@ -115,7 +115,7 @@ namespace atomic_dex
     update_service_checker::get_update_status() const noexcept
     {
         nlohmann::json status = *m_update_status;
-        QJsonDocument doc                = QJsonDocument::fromJson(QString::fromStdString(status.dump()).toUtf8());
+        QJsonDocument  doc    = QJsonDocument::fromJson(QString::fromStdString(status.dump()).toUtf8());
         return doc.toVariant();
     }
 } // namespace atomic_dex

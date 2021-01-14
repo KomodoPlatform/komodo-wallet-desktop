@@ -25,7 +25,7 @@ namespace atomic_dex
         using t_update_time_point         = std::chrono::high_resolution_clock::time_point;
         using t_oracle_price_synchronized = boost::synchronized_value<band_oracle_price_result>;
 
-        static constexpr const char* m_band_endpoint{"https://poa-api.bandchain.org/oracle/request_prices"};
+        static constexpr const char* m_band_endpoint{"http://komodo-rpc.bandchain.org/oracle/request_prices"};
         t_http_client_ptr            m_band_http_client{std::make_unique<t_http_client>(FROM_STD_STR(m_band_endpoint))};
         t_update_time_point          m_update_clock;
         t_oracle_price_synchronized  m_oracle_price_result;

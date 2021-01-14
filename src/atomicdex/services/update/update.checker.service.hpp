@@ -59,9 +59,6 @@ namespace atomic_dex
         //! Public override
         void update() noexcept final;
 
-        /*//! Public API
-        [[nodiscard]] nlohmann::json get_update_status() const noexcept;*/
-
         //! Properties
         [[nodiscard]] QVariant get_update_status() const noexcept;
     };

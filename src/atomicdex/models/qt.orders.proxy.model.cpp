@@ -17,6 +17,9 @@
 //! Qt
 #include <QDebug>
 
+//! Boost
+#include <boost/algorithm/string.hpp>
+
 //! Project
 #include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/models/qt.orders.proxy.model.hpp"
@@ -24,10 +27,7 @@
 
 namespace atomic_dex
 {
-    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {
-        
-    }
+    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
 
     bool
     orders_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -96,12 +96,19 @@ namespace atomic_dex
     void
     orders_proxy_model::set_is_history(bool is_history) noexcept
     {
-        if (is_history != this->m_is_history)
+        if (this->m_is_history != is_history)
         {
             this->m_is_history = is_history;
             emit isHistoryChanged();
-            this->invalidateFilter();
-            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+            this->invalidate();
+            if (m_is_history == true)
+            {
+                qobject_cast<orders_model*>(this->sourceModel())->set_current_page(1);
+            }
+            else
+            {
+                emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+            }
         }
     }
 
@@ -134,6 +141,35 @@ namespace atomic_dex
                 return false;
             }
         }
+
+        if (this->filterRole() == orders_model::OrdersRoles::TickerPairRole)
+        {
+            const auto pattern = this->filterRegExp().pattern().toStdString();
+            if (pattern.find("/") != std::string::npos)
+            {
+                std::vector<std::string> out;
+                boost::algorithm::split(out, pattern, boost::is_any_of("/"));
+                auto base_coin = this->sourceModel()->data(idx, orders_model::OrdersRoles::BaseCoinRole).toString();
+                auto rel_coin  = this->sourceModel()->data(idx, orders_model::OrdersRoles::RelCoinRole).toString();
+                if (out.size() >= 2)
+                {
+                    const auto& left_pattern  = out[0];
+                    const auto& right_pattern = out[1];
+                    if (left_pattern == "All" && right_pattern == "All")
+                    {
+                        return true;
+                    }
+                    if (left_pattern == "All" && right_pattern == rel_coin.toStdString())
+                    {
+                        return true;
+                    }
+                    if (right_pattern == "All" && left_pattern == base_coin.toStdString())
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 
@@ -148,7 +184,7 @@ namespace atomic_dex
     {
         m_min_date = date;
         emit filterMinimumDateChanged();
-        invalidateFilter();
+        this->invalidate();
         emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
     }
 
@@ -163,7 +199,7 @@ namespace atomic_dex
     {
         m_max_date = date;
         emit filterMaximumDateChanged();
-        invalidateFilter();
+        this->invalidate();
         emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
     }
 
@@ -192,7 +228,14 @@ namespace atomic_dex
     orders_proxy_model::set_coin_filter(const QString& to_filter)
     {
         this->setFilterFixedString(to_filter);
-        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        if (this->m_is_history)
+        {
+            qobject_cast<orders_model*>(this->sourceModel())->set_current_page(1);
+        }
+        else
+        {
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        }
     }
 
     void

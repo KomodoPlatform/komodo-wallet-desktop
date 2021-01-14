@@ -7,6 +7,7 @@ QtObject {
     readonly property int height: 800
     readonly property int minimumWidth: 1280
     readonly property int minimumHeight: 800
+    readonly property double delta_time: 1000/60
 
     readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
@@ -19,6 +20,16 @@ QtObject {
 
         const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
+    }
+
+    // Returns the icon full path of a coin type.
+    // If the given coin type has spaces, it will be replaced by '-' characters.
+    // If the given coin type is empty, returns an empty string.
+    function coinTypeIcon(type) {
+        if (type === "") return ""
+
+        var filename = type.toLowerCase().replace(" ", "-");
+        return coin_icons_path + filename + ".png"
     }
 
     function qaterialIcon(name) {

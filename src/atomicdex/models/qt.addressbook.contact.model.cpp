@@ -63,7 +63,7 @@ namespace atomic_dex
     int
     addressbook_contact_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_model_data.count();
+        return m_model_data.size();
     }
 
     QHash<int, QByteArray>
@@ -99,6 +99,19 @@ namespace atomic_dex
             m_name = name;
             emit nameChanged();
         }
+    }
+    
+    QVariant addressbook_contact_model::get_addresses(const QString& ticker)
+    {
+        auto data = std::find_if(m_model_data.begin(), m_model_data.end(), [ticker](auto* model)
+        {
+            return model->get_type() == ticker;
+        });
+        if (data != m_model_data.end())
+        {
+            return QVariant::fromValue(*data);
+        }
+        return {};
     }
 
     const QStringList&
@@ -192,9 +205,9 @@ namespace atomic_dex
                 }
                 create_addresses_model(QString::fromStdString(coin.ticker));
             }
-            create_addresses_model("QRC20");
-            create_addresses_model("ERC20");
-            create_addresses_model("SmartChain");
+            create_addresses_model("QRC-20");
+            create_addresses_model("ERC-20");
+            create_addresses_model("Smart Chain");
             endResetModel();
         }
     }

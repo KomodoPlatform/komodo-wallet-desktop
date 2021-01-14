@@ -18,8 +18,10 @@
 #include "atomicdex/pch.hpp"
 
 //! QT Headers
-#include <QtNetwork>
 #include <QClipboard>
+#include <QGuiApplication>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 //! Project headers
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -36,7 +38,7 @@ namespace atomic_dex
     }
 
     QJsonObject
-    nlohmann_json_object_to_qt_json_object(const json& j)
+    nlohmann_json_object_to_qt_json_object(const nlohmann::json& j)
     {
         QJsonObject   obj;
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
@@ -67,23 +69,22 @@ namespace atomic_dex
         for (auto&& cur: vec) { out.append(QString::fromStdString(cur)); }
         return out;
     }
-    
-    QStringList qt_variant_list_to_qt_string_list(const QVariantList& variant_list)
+
+    QStringList
+    qt_variant_list_to_qt_string_list(const QVariantList& variant_list)
     {
         QStringList out;
-        
+
         out.reserve(variant_list.size());
-        for (auto&& cur: variant_list)
-        {
-            out.append(cur.value<QString>());
-        }
+        for (auto&& cur: variant_list) { out.append(cur.value<QString>()); }
         return out;
     }
-    
-    void qt_utilities::copy_text_to_clipboard(const QString& text)
+
+    void
+    qt_utilities::copy_text_to_clipboard(const QString& text)
     {
         QClipboard* clipboard = QGuiApplication::clipboard();
-        
+
         clipboard->setText(text);
     }
 } // namespace atomic_dex

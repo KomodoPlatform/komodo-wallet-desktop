@@ -1109,14 +1109,14 @@
 <context>
     <name>General</name>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="99"/>
+        <location filename="../../qml/Constants/General.qml" line="100"/>
         <source>%n day(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="109"/>
+        <location filename="../../qml/Constants/General.qml" line="110"/>
         <source>%nd</source>
         <comment>day</comment>
         <translation type="unfinished">
@@ -1124,7 +1124,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="110"/>
+        <location filename="../../qml/Constants/General.qml" line="111"/>
         <source>%nh</source>
         <comment>hours</comment>
         <translation type="unfinished">
@@ -1132,7 +1132,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="111"/>
+        <location filename="../../qml/Constants/General.qml" line="112"/>
         <source>%nm</source>
         <comment>minutes</comment>
         <translation type="unfinished">
@@ -1140,7 +1140,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="112"/>
+        <location filename="../../qml/Constants/General.qml" line="113"/>
         <source>%ns</source>
         <comment>seconds</comment>
         <translation type="unfinished">
@@ -1148,7 +1148,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="113"/>
+        <location filename="../../qml/Constants/General.qml" line="114"/>
         <source>%nms</source>
         <comment>milliseconds</comment>
         <translation type="unfinished">
@@ -1156,68 +1156,68 @@
         </translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="114"/>
+        <location filename="../../qml/Constants/General.qml" line="115"/>
         <source>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="343"/>
+        <location filename="../../qml/Constants/General.qml" line="344"/>
         <source>Transaction Fee</source>
         <translation type="unfinished">İşlem Ücreti</translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="358"/>
+        <location filename="../../qml/Constants/General.qml" line="359"/>
         <source>Trading Fee</source>
         <translation type="unfinished">Al-Sat Ücreti</translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="368"/>
+        <location filename="../../qml/Constants/General.qml" line="369"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="377"/>
+        <location filename="../../qml/Constants/General.qml" line="378"/>
         <source>Not enough balance for trading fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="379"/>
+        <location filename="../../qml/Constants/General.qml" line="380"/>
         <source>Not enough balance for fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="381"/>
-        <location filename="../../qml/Constants/General.qml" line="383"/>
+        <location filename="../../qml/Constants/General.qml" line="382"/>
+        <location filename="../../qml/Constants/General.qml" line="384"/>
         <source>Not enough balance for transaction fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="385"/>
+        <location filename="../../qml/Constants/General.qml" line="386"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="387"/>
+        <location filename="../../qml/Constants/General.qml" line="388"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="389"/>
+        <location filename="../../qml/Constants/General.qml" line="390"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="391"/>
-        <location filename="../../qml/Constants/General.qml" line="393"/>
+        <location filename="../../qml/Constants/General.qml" line="392"/>
+        <location filename="../../qml/Constants/General.qml" line="394"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="395"/>
+        <location filename="../../qml/Constants/General.qml" line="396"/>
         <source>Unknown Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1878,42 +1878,42 @@
 <context>
     <name>OrdersPage</name>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="187"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="185"/>
         <source>Cancel All Orders</source>
         <translation type="unfinished">Tüm Emirleri İptal Et</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="187"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="185"/>
         <source>Cancel Filtered Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="167"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="165"/>
         <source>From</source>
         <translation type="unfinished">Gönderen</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="93"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="89"/>
         <source>Enable Filters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="177"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="175"/>
         <source>To</source>
         <translation type="unfinished">Alan</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="198"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="196"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="209"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="207"/>
         <source>Please choose the CSV export name and location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="257"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="255"/>
         <source>Recover Funds Result</source>
         <translation type="unfinished"></translation>
     </message>

@@ -25,17 +25,20 @@
 
 namespace atomic_dex
 {
-    using mm2_started                   = entt::tag<"mm2_started"_hs>;
-    using post_login                    = entt::tag<"post_login"_hs>;
-    using gui_enter_trading             = entt::tag<"gui_enter_trading"_hs>;
-    using gui_leave_trading             = entt::tag<"gui_leave_trading"_hs>;
-    using mm2_initialized               = entt::tag<"mm2_running_and_enabling"_hs>;
-    using tx_fetch_finished             = entt::tag<"gui_tx_fetch_finished"_hs>;
-    using process_orders_finished       = entt::tag<"gui_process_orders_finished"_hs>;
-    using process_swaps_finished        = entt::tag<"gui_process_swaps_finished"_hs>;
-    using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;
-    using current_currency_changed      = entt::tag<"update_orders_and_swap_values"_hs>;
+    using mm2_started       = entt::tag<"mm2_started"_hs>;
+    using post_login        = entt::tag<"post_login"_hs>;
+    using gui_enter_trading = entt::tag<"gui_enter_trading"_hs>;
+    using gui_leave_trading = entt::tag<"gui_leave_trading"_hs>;
+    using mm2_initialized   = entt::tag<"mm2_running_and_enabling"_hs>;
+    using tx_fetch_finished = entt::tag<"gui_tx_fetch_finished"_hs>;
+    //using process_swaps_and_orders_finished = entt::tag<"process_swaps_and_orders_finished"_hs>;
+    using band_oracle_refreshed    = entt::tag<"band_oracle_refreshed"_hs>;
+    using current_currency_changed = entt::tag<"update_orders_and_swap_values"_hs>;
 
+    struct process_swaps_and_orders_finished
+    {
+        bool after_manual_reset{false};
+    };
     struct enabling_coin_failed
     {
         std::string coin;

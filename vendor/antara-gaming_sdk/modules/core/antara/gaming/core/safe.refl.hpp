@@ -16,13 +16,14 @@
 
 #pragma once
 
-#ifndef _MSC_VER
+#if defined(WIN32)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wunused-parameter"
 #    pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
+
 #include <refl.hpp>
 
-#ifndef _MSC_VER
+#if defined(WIN32)
 #    pragma clang diagnostic pop
 #endif

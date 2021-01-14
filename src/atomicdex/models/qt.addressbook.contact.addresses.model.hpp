@@ -46,16 +46,11 @@ namespace atomic_dex
         };
         Q_ENUMS(ContactRoles)
     
-        /// \defgroup Constructors
-        /// {@
-    
         explicit addressbook_contact_addresses_model(ag::ecs::system_manager& system_manager, const QString& name, QString type, QObject* parent = nullptr);
         ~addressbook_contact_addresses_model() noexcept final = default;
-    
-        /// @} End of Constructors section.
-    
-        /// \defgroup QAbstractListModel implementation.
-        /// {@
+
+        /// QAbstractListModel functions
+        ////////////////////////////////
     
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
@@ -63,44 +58,43 @@ namespace atomic_dex
         [[nodiscard]] int                    rowCount([[maybe_unused]] const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
     
-        /// @} End of QAbstractListModel implementation section.
+        /////////////////////////////
     
-        /// \defgroup QML API.
-        /// {@
+        /// QML API
+        ///////////
         
         Q_INVOKABLE bool add_address_entry(QString key, QString value);
 
         Q_INVOKABLE void remove_address_entry(int row);
 
-      private:
         Q_PROPERTY(QString type READ get_type NOTIFY typeChanged)
-        Q_INVOKABLE const QString& get_type() const noexcept;
+        [[nodiscard]] const QString& get_type() const noexcept;
         
       signals:
         void typeChanged();
-        
-        /// @} End of QML API section.
+    
+        ///////////
         
       public:
-        /// \brief Loads this model data from the persistent data.
+        // Loads this model data from the persistent data.
         void populate();
         
-        /// \brief Unload this model data.
+        // Unloads this model data.
         void clear();
         
-        /// \brief Saves this model data to the persistent data.
+        // Saves this model data to the persistent data.
         void save();
         
       private:
         ag::ecs::system_manager& m_system_manager;
     
-        /// \brief Name of the contact.
+        // Name of the contact.
         const QString& m_name;
         
-        /// \brief Type of the wallet info (e.g. BTC, ERC-20).
+        // Type of the wallet info (e.g. BTC, ERC-20).
         QString m_type{"KMD"};
         
-        /// \brief Array of addresses.  First value is key, second is value.
+        // Array of addresses. First value is key, second is value.
         QVector<address> m_model_data;
     };
 }

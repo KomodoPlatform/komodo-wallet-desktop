@@ -14,9 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! STD
 #include <unordered_set>
 
@@ -25,8 +22,6 @@
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/kill.hpp"
-#include "atomicdex/utilities/security.utilities.hpp"
-#include "atomicdex/version/version.hpp"
 
 //! Anonymous functions
 namespace
@@ -73,7 +68,7 @@ namespace
 
             for (auto& [key, value]: precedent_config_json_data.items())
             {
-                if (value.contains("is_custom_coin") && value.at("is_custom_coin").get<bool>() == true)
+                if (value.contains("is_custom_coin") && value.at("is_custom_coin").get<bool>())
                 {
                     SPDLOG_INFO("{} is a custom coin, copying to new cfg", key);
                     actual_config_data[key] = value;
@@ -99,7 +94,7 @@ namespace
     }
 
     void
-    update_coin_status(const std::string& wallet_name, const std::vector<std::string> tickers, bool status = true)
+    update_coin_status(const std::string& wallet_name, const std::vector<std::string>& tickers, bool status = true)
     {
         fs::path       cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
@@ -306,12 +301,12 @@ namespace atomic_dex
                 ec = dextop_error::disable_unknown_coin;
                 return false;
             }
-            else if (error.find("active swaps") != std::string::npos)
+            if (error.find("active swaps") != std::string::npos)
             {
                 ec = dextop_error::active_swap_is_using_the_coin;
                 return false;
             }
-            else if (error.find("matching orders") != std::string::npos)
+            if (error.find("matching orders") != std::string::npos)
             {
                 ec = dextop_error::order_is_matched_at_the_moment;
                 return false;
@@ -799,6 +794,7 @@ namespace atomic_dex
         this->m_current_wallet_name = std::move(wallet_name);
         this->dispatcher_.trigger<coin_cfg_parsed>(this->retrieve_coins_informations());
         mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
+        ::mm2::api::set_system_manager(m_system_manager);
         ::mm2::api::set_rpc_password(cfg.rpc_password);
         json       json_cfg;
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
@@ -914,35 +910,108 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::batch_fetch_orders_and_swap()
+    mm2_service::batch_fetch_orders_and_swap(bool after_manual_reset)
     {
         nlohmann::json batch             = nlohmann::json::array();
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
+
+
+        //! Swaps preparation
+        std::size_t total           = 0;
+        std::size_t nb_active_swaps = 0;
+        std::size_t current_page    = 0;
+        std::size_t limit           = 0;
+        {
+            auto value_ptr  = m_orders_and_swaps.synchronize();
+            total           = value_ptr->total_swaps;
+            nb_active_swaps = value_ptr->active_swaps;
+            current_page    = value_ptr->current_page;
+            limit           = value_ptr->limit;
+        }
+
+        //! First time fetch or current page
         nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
-        std::size_t               total    = this->m_swaps.get().total;
-        t_my_recent_swaps_request request{.limit = total > 0 ? total : 500};
+        t_my_recent_swaps_request request{.limit = limit, .page_number = current_page};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
-        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
-            .then([this](web::http::http_response resp) {
-                auto answers = ::mm2::api::basic_batch_answer(resp);
-                m_orders     = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
-                this->dispatcher_.trigger<process_orders_finished>();
-                auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_recent_swaps");
-                if (swap_answer.result.has_value())
+
+        //! Active swaps
+        nlohmann::json         active_swaps = ::mm2::api::template_request("active_swaps");
+        t_active_swaps_request active_swaps_request{.statuses = true};
+        to_json(active_swaps, active_swaps_request);
+        batch.push_back(active_swaps);
+
+        auto answer_functor = [this, limit, after_manual_reset](web::http::http_response resp) {
+            spdlog::stopwatch stopwatch;
+
+            //! Parsing Resp
+            orders_and_swaps result;
+            auto             answers = ::mm2::api::basic_batch_answer(resp);
+
+            //! Extract
+            const auto orders_answers      = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+            const auto swap_answer         = ::mm2::api::rpc_process_answer_batch<t_my_recent_swaps_answer>(answers[1], "my_recent_swaps");
+            const auto active_swaps_answer = ::mm2::api::rpc_process_answer_batch<t_active_swaps_answer>(answers[2], "active_swaps");
+
+            result.orders_and_swaps.reserve(orders_answers.orders.size() + limit);
+            result.nb_orders        = orders_answers.orders.size();
+            result.orders_and_swaps = std::move(orders_answers.orders);
+            result.orders_registry  = std::move(orders_answers.orders_id);
+            result.limit            = limit;
+
+            //! Recent swaps
+            result.active_swaps = active_swaps_answer.uuids.size();
+            for (auto&& cur: active_swaps_answer.swaps)
+            {
+                const auto uuid = cur.order_id.toStdString();
+                result.swaps_registry.emplace(uuid);
+                result.orders_and_swaps.emplace_back(std::move(cur));
+            }
+
+            //! Swaps
+            if (swap_answer.result.has_value())
+            {
+                const auto& swap_success_answer = swap_answer.result.value();
+                result.total_swaps              = swap_success_answer.total;
+                result.total_finished_swaps     = result.total_swaps - active_swaps_answer.uuids.size();
+                result.current_page             = swap_success_answer.page_number;
+                result.nb_pages                 = swap_success_answer.total_pages;
+                for (auto&& cur: swap_success_answer.swaps)
                 {
-                    m_swaps = swap_answer.result.value();
-                    this->dispatcher_.trigger<process_swaps_finished>();
+                    const auto uuid = cur.order_id.toStdString();
+                    if (!result.swaps_registry.contains(uuid))
+                    {
+                        result.swaps_registry.emplace(uuid);
+                        result.orders_and_swaps.emplace_back(std::move(cur));
+                    }
                 }
-            })
-            .then(&handle_exception_pplx_task);
+                result.average_events_time = std::move(swap_success_answer.average_events_time);
+            }
+
+            //! Post Metrics
+            SPDLOG_INFO(
+                "Metrics -> [total_swaps: {}, "
+                "active_swaps: {}, "
+                "nb_orders: {}, "
+                "nb_pages: {}, "
+                "current_page: {}, "
+                "total_finished_swaps: {}]",
+                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);
+
+            //! Compute everything
+            m_orders_and_swaps = std::move(result);
+
+            SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
+            this->dispatcher_.trigger<process_swaps_and_orders_finished>(after_manual_reset);
+        };
+
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token()).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void
     mm2_service::process_tx_etherscan(const std::string& ticker, [[maybe_unused]] bool is_a_refresh)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         SPDLOG_DEBUG("process_tx ticker: {}", ticker);
         std::error_code ec;
         using namespace std::string_literals;
@@ -1062,24 +1131,6 @@ namespace atomic_dex
         }
 
         return it->second.address;
-    }
-
-    ::mm2::api::my_orders_answer
-    mm2_service::get_raw_orders() const noexcept
-    {
-        return m_orders.get();
-    }
-
-    t_my_recent_swaps_answer
-    mm2_service::get_swaps() const noexcept
-    {
-        return m_swaps.get();
-    }
-
-    t_my_recent_swaps_answer
-    mm2_service::get_swaps() noexcept
-    {
-        return std::as_const(*this).get_swaps();
     }
 
     t_float_50
@@ -1323,12 +1374,12 @@ namespace atomic_dex
         return batch;
     }
 
-    void
+    /*void
     mm2_service::add_orders_answer(t_my_orders_answer answer)
     {
-        m_orders = answer;
-        this->dispatcher_.trigger<process_orders_finished>();
-    }
+        //m_orders = answer;
+        //this->dispatcher_.trigger<process_orders_finished>();
+    }*/
 
     std::shared_ptr<t_http_client>
     mm2_service::get_mm2_client() noexcept
@@ -1510,5 +1561,20 @@ namespace atomic_dex
             }
         }
         return servers;
+    }
+
+    orders_and_swaps
+    mm2_service::get_orders_and_swaps() const noexcept
+    {
+        return m_orders_and_swaps.get();
+    }
+
+    void
+    mm2_service::set_orders_and_swaps_pagination_infos(std::size_t current_page, std::size_t limit)
+    {
+        {
+            m_orders_and_swaps = orders_and_swaps{.current_page = current_page, .limit = limit};
+        }
+        this->batch_fetch_orders_and_swap(true);
     }
 } // namespace atomic_dex

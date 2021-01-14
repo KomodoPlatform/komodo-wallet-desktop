@@ -17,8 +17,13 @@
 //! Project Headers
 #include "atomicdex/constants/http.code.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
+
+/**
+ * Optimisation note:
+ *
+ * t_ref_count_idx is always passed by copy to increase ref_counting on this shared_ptr
+ */
 
 namespace
 {
@@ -33,7 +38,7 @@ namespace
 //! Constructor/Destructor
 namespace atomic_dex
 {
-    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) :
+    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) noexcept :
         system(registry), m_system_manager(system_manager)
     {
         disable();

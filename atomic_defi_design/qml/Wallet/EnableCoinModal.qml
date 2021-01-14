@@ -8,65 +8,30 @@ import "../Components"
 import "../Constants"
 
 BasicModal {
-    property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
-    property bool should_clear: coin_cfg_model.all_disabled_proxy.length === coin_cfg_model.checked_nb
-
-    function uncheck_all() {
-        // Have to check and then uncheck to affect all child checkboxes
-
-        coins_qrc20.parent_box.checkState = Qt.Checked
-        coins_qrc20.parent_box.checkState = Qt.Unchecked
-
-        coins_erc20.parent_box.checkState = Qt.Checked
-        coins_erc20.parent_box.checkState = Qt.Unchecked
-
-        coins_smartchains.parent_box.checkState = Qt.Checked
-        coins_smartchains.parent_box.checkState = Qt.Unchecked
-
-        coins_utxo.parent_box.checkState = Qt.Checked
-        coins_utxo.parent_box.checkState = Qt.Unchecked
-    }
-
-    function check_all() {
-        coins_qrc20.parent_box.checkState = Qt.Checked
-        coins_erc20.parent_box.checkState = Qt.Checked
-        coins_smartchains.parent_box.checkState = Qt.Checked
-        coins_utxo.parent_box.checkState = Qt.Checked
-    }
-
-    function filter_coins() {
-        coin_cfg_model.qrc20_proxy.setFilterFixedString(input_coin_filter.text)
-        coin_cfg_model.erc20_proxy.setFilterFixedString(input_coin_filter.text)
-        coin_cfg_model.smartchains_proxy.setFilterFixedString(input_coin_filter.text)
-        coin_cfg_model.utxo_proxy.setFilterFixedString(input_coin_filter.text)
-    }
-
     id: root
+
+    property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
+
+    function setCheckState(checked) {
+        coin_cfg_model.all_disabled_proxy.set_all_state(checked)
+    }
+
+    function filterCoins(text) {
+        coin_cfg_model.all_disabled_proxy.setFilterFixedString(text === undefined ? input_coin_filter.text : text)
+    }
 
     width: 500
 
     onOpened: {
-        uncheck_all()
-        filter_coins()
+        filterCoins()
+        setCheckState(false)
         input_coin_filter.forceActiveFocus()
     }
 
+    onClosed: filterCoins("")
+
     ModalContent {
         title: qsTr("Enable assets")
-
-        DefaultButton {
-            Layout.fillWidth: true
-            text: should_clear ? qsTr("Clear All Selection") : qsTr("Enable All Assets")
-            visible: coin_cfg_model.length > 0
-            onClicked: {
-                if (should_clear) {
-                    uncheck_all()
-                }
-                else {
-                    check_all()
-                }
-            }
-        }
 
         DefaultButton {
             Layout.fillWidth: true
@@ -88,44 +53,67 @@ BasicModal {
             Layout.fillWidth: true
             placeholderText: qsTr("Search")
 
-            onTextChanged: filter_coins()
+            onTextChanged: filterCoins()
         }
 
-        DefaultFlickable {
-            id: flickable
-            visible: coin_cfg_model.all_disabled_proxy.length > 0
+        DefaultCheckBox {
+            text: qsTr("Select all assets")
+            visible: list.visible
 
-            height: 375
+            // Handle updates
+            property bool updated_from_backend: false
+            property int checked_count: coin_cfg_model.checked_nb
+            property int target_parent_state: coin_cfg_model.all_disabled_proxy.length === checked_count ? Qt.Checked :
+                                                                checked_count > 0 ? Qt.PartiallyChecked : Qt.Unchecked
+            onTarget_parent_stateChanged: {
+                if(target_parent_state !== checkState) {
+                    updated_from_backend = true
+                    checkState = target_parent_state
+                }
+            }
+            onCheckStateChanged: {
+                // Avoid binding loop
+                if(!updated_from_backend) setCheckState(checked)
+                else updated_from_backend = false
+            }
+        }
+
+        DefaultListView {
+            id: list
+            visible: coin_cfg_model.all_disabled_proxy.length > 0
+            model: coin_cfg_model.all_disabled_proxy
+
+            Layout.preferredHeight: 375
             Layout.fillWidth: true
 
-            contentWidth: col.width
-            contentHeight: col.height
+            delegate: DefaultCheckBox {
+                text: "         " + model.name + " (" + model.ticker + ")"
 
-            Column {
-                id: col
+                leftPadding: indicator.width
 
-                CoinList {
-                    id: coins_qrc20
-                    group_title: qsTr("Select all QRC20 assets")
-                    model: coin_cfg_model.qrc20_proxy
+                readonly property bool backend_checked: model.checked
+                onBackend_checkedChanged: {
+                    if(checked !== backend_checked) checked = backend_checked
+                }
+                onCheckStateChanged: {
+                    if(checked !== backend_checked) model.checked = checked
                 }
 
-                CoinList {
-                    id: coins_smartchains
-                    group_title: qsTr("Select all SmartChains")
-                    model: coin_cfg_model.smartchains_proxy
+                // Icon
+                DefaultImage {
+                    id: icon
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.leftPadding + 28
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: General.coinIcon(model.ticker)
+                    width: Style.textSize2
                 }
 
-                CoinList {
-                    id: coins_erc20
-                    group_title: qsTr("Select all ERC20 assets")
-                    model:coin_cfg_model.erc20_proxy
-                }
+                CoinTypeTag {
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
 
-                CoinList {
-                    id: coins_utxo
-                    group_title: qsTr("Select all UTXO assets")
-                    model: coin_cfg_model.utxo_proxy
+                    type: model.type
                 }
             }
         }
@@ -151,10 +139,8 @@ BasicModal {
                 text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: {
-                    const checked_coins = coin_cfg_model.get_checked_coins()
-
-                    uncheck_all()
-                    API.app.enable_coins(checked_coins)
+                    API.app.enable_coins(coin_cfg_model.get_checked_coins())
+                    setCheckState(false)
                     coin_cfg_model.checked_nb = 0
                     root.close()
                 }
