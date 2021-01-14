@@ -70,7 +70,7 @@ namespace atomic_dex
                 .main_fiat_price_for_one_unit     = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker)),
                 .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
                 .is_excluded                      = false,
-            };
+                .public_address                   = QString::fromStdString(mm2_system.address(coin.ticker, ec))};
             data.display         = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
             data.ticker_and_name = QString::fromStdString(coin.gui_ticker) + data.name;
             datas.push_back(std::move(data));
@@ -254,6 +254,10 @@ namespace atomic_dex
             return item.multi_ticker_receive_amount.value_or("0");
         case MultiTickerFeesInfo:
             return item.multi_ticker_fees_info.value_or(QJsonObject());
+        case Address:
+            return item.public_address;
+        case PrivKey:
+            return item.priv_key;
         }
         return {};
     }
@@ -325,6 +329,12 @@ namespace atomic_dex
             break;
         case MultiTickerFeesInfo:
             item.multi_ticker_fees_info = QJsonObject::fromVariantMap(value.value<QVariantMap>());
+            break;
+        case Address:
+            item.public_address = value.toString();
+            break;
+        case PrivKey:
+            item.priv_key = value.toString();
             break;
         default:
             return false;

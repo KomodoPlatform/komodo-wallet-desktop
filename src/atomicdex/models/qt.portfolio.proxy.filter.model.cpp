@@ -15,15 +15,13 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {
     //! Constructor
-    portfolio_proxy_model::portfolio_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {
-    }
+    portfolio_proxy_model::portfolio_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
 
     //! Override member functions
     bool
@@ -64,6 +62,8 @@ namespace atomic_dex
         case portfolio_model::MultiTickerReceiveAmount:
         case portfolio_model::MultiTickerFeesInfo:
         case portfolio_model::CoinType:
+        case portfolio_model::Address:
+        case portfolio_model::PrivKey:
             return false;
         }
     }
@@ -89,7 +89,7 @@ namespace atomic_dex
         {
             return false;
         }
-        
+
         if (m_with_balance)
         {
             if (this->sourceModel()->data(idx, portfolio_model::BalanceRole).toString().toFloat() == 0.f)
@@ -97,7 +97,7 @@ namespace atomic_dex
                 return false;
             }
         }
-        
+
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 
@@ -131,34 +131,36 @@ namespace atomic_dex
         this->setSortRole(atomic_dex::portfolio_model::NameRole);
         this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
     }
-    
+
     void
     portfolio_proxy_model::sort_by_currency_balance(bool is_ascending)
     {
         this->setSortRole(atomic_dex::portfolio_model::MainCurrencyBalanceRole);
         this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
     }
-    
+
     void
     portfolio_proxy_model::sort_by_change_last24h(bool is_ascending)
     {
         this->setSortRole(atomic_dex::portfolio_model::Change24H);
         this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
     }
-    
+
     void
     portfolio_proxy_model::sort_by_currency_unit(bool is_ascending)
     {
         this->setSortRole(atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit);
         this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
     }
-    
-    bool portfolio_proxy_model::get_with_balance() const noexcept
+
+    bool
+    portfolio_proxy_model::get_with_balance() const noexcept
     {
         return m_with_balance;
     }
-    
-    void portfolio_proxy_model::set_with_balance(bool value) noexcept
+
+    void
+    portfolio_proxy_model::set_with_balance(bool value) noexcept
     {
         if (value != m_with_balance)
         {
@@ -166,4 +168,4 @@ namespace atomic_dex
             this->invalidateFilter();
         }
     }
-}
+} // namespace atomic_dex

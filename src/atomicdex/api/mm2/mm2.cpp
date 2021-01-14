@@ -931,6 +931,19 @@ namespace mm2::api
     }
 
     void
+    to_json(nlohmann::json& j, const show_priv_key_request& request)
+    {
+        j["coin"] = request.coin;
+    }
+
+    void
+    from_json(const nlohmann::json& j, show_priv_key_answer& answer)
+    {
+        j.at("coin").get_to(answer.coin);
+        j.at("priv_key").get_to(answer.priv_key);
+    }
+
+    void
     to_json(nlohmann::json& j, const my_recent_swaps_request& request)
     {
         j["limit"] = request.limit;

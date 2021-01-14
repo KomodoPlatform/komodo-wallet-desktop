@@ -63,7 +63,9 @@ namespace atomic_dex
             MultiTickerPrice,            ///< The price field of multi ticker
             MultiTickerReceiveAmount,    ///< The total receive amount (it's readonly from front-end)
             MultiTickerFeesInfo,         ///< the fees json infos (it's readonly from front-end)
-            CoinType
+            CoinType,                    ///< Type of the coin
+            Address,                     ///< Public address
+            PrivKey                      ///< Priv key
         };
         Q_ENUM(PortfolioRoles)
 

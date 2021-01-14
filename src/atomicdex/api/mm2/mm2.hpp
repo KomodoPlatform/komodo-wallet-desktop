@@ -661,6 +661,23 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, active_swaps_answer& answer);
 
+    struct show_priv_key_request
+    {
+        std::string coin;
+    };
+
+    void to_json(nlohmann::json& j, const show_priv_key_request& request);
+
+    struct show_priv_key_answer
+    {
+        std::string coin;
+        std::string priv_key;
+        std::string raw_result;
+        int rpc_result_code;
+    };
+
+    void from_json(const nlohmann::json& j, show_priv_key_answer& answer);
+
     struct kmd_rewards_info_answer
     {
         nlohmann::json result;
