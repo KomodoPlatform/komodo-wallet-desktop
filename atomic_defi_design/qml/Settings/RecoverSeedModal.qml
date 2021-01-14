@@ -2,11 +2,15 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Components"
 import "../Constants"
 
 BasicModal {
     id: root
+
+    property var portfolio_model: API.app.portfolio_pg.portfolio_mdl
 
     property bool wrong_password: false
 
@@ -16,7 +20,7 @@ BasicModal {
         const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, input_password.field.text)
 
         if(result !== 'wrong password') {
-            seed_text.field.text = result
+            seed_text.text = result
             wrong_password = false
             root.nextPage()
         }
@@ -25,16 +29,16 @@ BasicModal {
         }
     }
 
-    width: 500
+    width: 800
 
     onClosed: {
         wrong_password = false
         input_password.reset()
-        seed_text.reset()
+        seed_text.text = ""
         currentIndex = 0
     }
 
-    ModalContent {
+    ModalContent { // Password checking
         title: qsTr("View Seed")
 
         ColumnLayout {
@@ -80,12 +84,166 @@ BasicModal {
 
     ModalContent {
         title: qsTr("View Seed")
+        Layout.fillWidth: true
 
-        TextAreaWithTitle {
-            id: seed_text
-            title: qsTr("Seed")
-            field.readOnly: true
-            copyable: true
+        DefaultRectangle {
+            height: 120
+            width: parent.width
+
+            RowLayout {
+                Layout.fillWidth: true
+                anchors.verticalCenter: parent.verticalCenter
+
+                DefaultImage {
+                    Layout.leftMargin: 10
+                    source: General.image_path + "atomicdex-logo.svg"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                }
+
+                DefaultText {
+                    Layout.leftMargin: 5
+                    Layout.preferredWidth: 100
+                    text: "atomicDex"
+                    font.pixelSize: Style.textSizeSmall5
+                }
+
+                Qaterial.RawMaterialButton {
+                    implicitWidth: 45
+                    backgroundColor: "transparent"
+                    icon.source: Qaterial.Icons.qrcodeScan
+
+                    onClicked: {
+                        qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(seed_text.text)
+                        qrcode_modal.open()
+                    }
+                }
+
+                Qaterial.RawMaterialButton { //! Copy clipboard button
+                    implicitWidth: 45
+                    backgroundColor: "transparent"
+                    icon.source: Qaterial.Icons.contentCopy
+
+                    onClicked: API.qt_utilities.copy_text_to_clipboard(seed_text.text)
+                }
+
+                ColumnLayout { // Seed
+                    DefaultText {
+                        text: qsTr("Backup seed")
+                        color: Style.modalValueColor
+                        font.pixelSize: Style.textSizeSmall2
+                    }
+
+                    DefaultText {
+                        Layout.preferredWidth: 400
+                        id: seed_text
+                        font.pixelSize: Style.textSizeSmall3
+                    }
+                }
+            }
+        }
+
+        DefaultListView {
+            id: coins_list
+
+            width: parent.width
+            model: portfolio_mdl
+
+            delegate: DefaultRectangle {
+                width: parent.width
+                height: 120
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    DefaultImage {
+                        Layout.leftMargin: 10
+                        source: General.coinIcon(model.ticker)
+                        Layout.preferredWidth: 32
+                        Layout.preferredHeight: 32
+                    }
+
+                    DefaultText {
+                        Layout.preferredWidth: 100
+                        Layout.leftMargin: 5
+                        text: model.name
+                        font.pixelSize: Style.textSizeSmall5
+                    }
+
+                    ColumnLayout { // QR/Copy buttons
+                        spacing: 3
+
+                        RowLayout {
+                            Qaterial.RawMaterialButton {
+                                Layout.topMargin: 2
+                                implicitWidth: 45
+                                backgroundColor: "transparent"
+                                icon.source: Qaterial.Icons.qrcodeScan
+
+                                onClicked: {
+                                    qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(model.public_address)
+                                    qrcode_modal.open()
+                                }
+                            }
+
+                            Qaterial.RawMaterialButton { //! Copy clipboard button
+                                implicitWidth: 45
+                                backgroundColor: "transparent"
+                                icon.source: Qaterial.Icons.contentCopy
+
+                                onClicked: API.qt_utilities.copy_text_to_clipboard(model.public_address)
+                            }
+                        }
+
+                        RowLayout {
+                            Qaterial.RawMaterialButton {
+                                implicitWidth: 45
+                                backgroundColor: "transparent"
+                                icon.source: Qaterial.Icons.qrcodeScan
+
+                                onClicked: {
+                                    qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(model.priv_key)
+                                    qrcode_modal.open()
+                                }
+                            }
+
+                            Qaterial.RawMaterialButton { //! Copy clipboard button
+                                implicitWidth: 45
+                                backgroundColor: "transparent"
+                                icon.source: Qaterial.Icons.contentCopy
+
+                                onClicked: API.qt_utilities.copy_text_to_clipboard(model.priv_key)
+                            }
+                        }
+                    }
+
+                    ColumnLayout { // Addresses
+                        DefaultText {
+                            text: qsTr("Public Address")
+                            color: Style.modalValueColor
+                            font.pixelSize: Style.textSizeSmall2
+                        }
+
+                        DefaultText {
+                            text: model.public_address
+                            font.pixelSize: Style.textSizeSmall3
+                        }
+
+                        DefaultText {
+                            Layout.topMargin: 10
+                            text: qsTr("Private Key")
+                            color: Style.modalValueColor
+                            font.pixelSize: Style.textSizeSmall2
+                        }
+
+                        DefaultText {
+                            text: model.priv_key
+                            font.pixelSize: Style.textSizeSmall3
+                        }
+                    }
+                }
+            }
         }
 
         // Buttons
@@ -96,5 +254,27 @@ BasicModal {
                 onClicked: root.close()
             }
         ]
+
+        ModalLoader {
+            id: qrcode_modal
+
+            property string qrcode_svg
+
+            sourceComponent: Popup {
+                id: popup
+
+                x: (root.width - width) / 2
+                y: ((root.height - height) / 2) - 250
+
+                onClosed: qrcode_svg = ""
+
+                background: Image {
+                    source: qrcode_svg
+
+                    sourceSize.width: 200
+                    sourceSize.height: 200
+                }
+            }
+        }
     }
 }
