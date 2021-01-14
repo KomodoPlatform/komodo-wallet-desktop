@@ -143,11 +143,21 @@ BasicModal {
             }
         }
 
+        // Search input
+        DefaultTextField {
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search a coin.")
+            onTextChanged: portfolio_model.portfolio_proxy_mdl.setFilterFixedString(text)
+
+            Component.onDestruction: portfolio_model.portfolio_proxy_mdl.setFilterFixedString("")
+        }
+
         DefaultListView {
             id: coins_list
 
+            enabled: false
             width: parent.width
-            model: portfolio_mdl
+            model: portfolio_mdl.portfolio_proxy_mdl
 
             delegate: DefaultRectangle {
                 width: parent.width
