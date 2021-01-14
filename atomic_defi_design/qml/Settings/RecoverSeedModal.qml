@@ -83,7 +83,7 @@ BasicModal {
     }
 
     ModalContent {
-        title: qsTr("View Seed")
+        title: qsTr("View seed and private keys")
         Layout.fillWidth: true
 
         DefaultRectangle {

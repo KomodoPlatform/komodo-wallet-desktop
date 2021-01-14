@@ -85,7 +85,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: qsTr("View Seed")
+                text: qsTr("View seed and private keys")
                 onClicked: recover_seed_modal.open()
             }
 
