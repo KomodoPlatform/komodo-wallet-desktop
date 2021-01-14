@@ -939,8 +939,8 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, show_priv_key_answer& answer)
     {
-        j.at("coin").get_to(answer.coin);
-        j.at("priv_key").get_to(answer.priv_key);
+        j.at("result").at("coin").get_to(answer.coin);
+        j.at("result").at("priv_key").get_to(answer.priv_key);
     }
 
     void
@@ -1295,7 +1295,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            SPDLOG_ERROR("exception caught for rpc {} answer: {}", rpc_command, json_answer.dump(4));
+            SPDLOG_ERROR("exception caught for rpc {} answer: {}, exception: {}", rpc_command, json_answer.dump(4), error.what());
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
@@ -1310,6 +1310,7 @@ namespace mm2::api
     template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
 
     template <typename RpcReturnType>
     RpcReturnType

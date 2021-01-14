@@ -27,6 +27,8 @@
 //! Project Headers
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/models/qt.global.coins.cfg.model.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -495,6 +497,7 @@ namespace atomic_dex
     QString
     settings_page::retrieve_seed(const QString& wallet_name, const QString& password)
     {
+        this->set_fetching_priv_key_busy(true);
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
@@ -513,6 +516,42 @@ namespace atomic_dex
             SPDLOG_ERROR("cannot decrypt the seed with the derived password: {}", ec.message());
             return "wrong password";
         }
+
+        //! Also fetch private keys
+        nlohmann::json batch   = nlohmann::json::array();
+        const auto*    cfg_mdl = m_system_manager.get_system<portfolio_page>().get_global_cfg();
+        const auto     coins   = cfg_mdl->get_enabled_coins();
+        for (auto&& [coin, coin_cfg]: coins)
+        {
+            ::mm2::api::show_priv_key_request req{.coin = coin};
+            nlohmann::json                    req_json = ::mm2::api::template_request("show_priv_key");
+            to_json(req_json, req);
+            batch.push_back(req_json);
+        }
+        auto&      mm2_system     = m_system_manager.get_system<mm2_service>();
+        const auto answer_functor = [this](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                //!
+                auto answers = nlohmann::json::parse(body);
+                SPDLOG_WARN("Priv keys fetched, those are sensitive data.");
+                for (auto&& answer: answers)
+                {
+                    auto       show_priv_key_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::show_priv_key_answer>(answer, "show_priv_key");
+                    auto*      portfolio_mdl        = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
+                    const auto idx =
+                        portfolio_mdl->match(portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin));
+                    if (not idx.empty())
+                    {
+                        update_value(portfolio_model::PrivKey, QString::fromStdString(show_priv_key_answer.priv_key), idx.at(0), *portfolio_mdl);
+                    }
+                }
+            }
+            this->set_fetching_priv_key_busy(false);
+        };
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none()).then(answer_functor);
+
         return QString::fromStdString(seed);
     }
 
@@ -538,5 +577,20 @@ namespace atomic_dex
     settings_page::get_export_folder()
     {
         return QString::fromStdString(utils::get_atomic_dex_export_folder().string());
+    }
+
+    bool
+    settings_page::is_fetching_priv_key_busy() const noexcept
+    {
+        return m_fetching_priv_keys_busy.load();
+    }
+    void
+    settings_page::set_fetching_priv_key_busy(bool status) noexcept
+    {
+        if (m_fetching_priv_keys_busy != status)
+        {
+            m_fetching_priv_keys_busy = status;
+            emit privKeyStatusChanged();
+        }
     }
 } // namespace atomic_dex

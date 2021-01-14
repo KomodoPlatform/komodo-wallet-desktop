@@ -49,6 +49,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant custom_token_data READ get_custom_token_data WRITE set_custom_token_data NOTIFY customTokenDataChanged)
         Q_PROPERTY(bool fetching_custom_token_data_busy READ is_fetching_custom_token_data_busy WRITE set_fetching_custom_token_data_busy NOTIFY
                        customTokenDataStatusChanged)
+        Q_PROPERTY(bool fetching_priv_keys_busy READ is_fetching_priv_key_busy WRITE set_fetching_priv_key_busy NOTIFY privKeyStatusChanged)
 
         using t_synchronized_json = boost::synchronized_value<nlohmann::json>;
 
@@ -60,6 +61,7 @@ namespace atomic_dex
         QTranslator                   m_translator;
         QString                       m_empty_string{""};
         std::atomic_bool              m_fetching_erc_data_busy{false};
+        std::atomic_bool              m_fetching_priv_keys_busy{false};
         t_synchronized_json           m_custom_token_data;
 
       public:
@@ -86,6 +88,8 @@ namespace atomic_dex
         void                   set_fetching_custom_token_data_busy(bool status) noexcept;
         [[nodiscard]] QVariant get_custom_token_data() const noexcept;
         void                   set_custom_token_data(QVariant rpc_data) noexcept;
+        [[nodiscard]] bool     is_fetching_priv_key_busy() const noexcept;
+        void                   set_fetching_priv_key_busy(bool status) noexcept;
 
         //! Public API
         [[nodiscard]] atomic_dex::cfg&       get_cfg() noexcept;
@@ -94,20 +98,20 @@ namespace atomic_dex
         void                                 set_qml_engine(QQmlApplicationEngine* engine) noexcept;
 
         //! Public QML API
-        Q_INVOKABLE void                       remove_custom_coin(const QString& ticker) noexcept;
-        Q_INVOKABLE [[nodiscard]] QStringList  get_available_langs() const;
-        Q_INVOKABLE [[nodiscard]] QStringList  get_available_fiats() const;
-        Q_INVOKABLE [[nodiscard]] QStringList  get_available_currencies() const;
-        Q_INVOKABLE [[nodiscard]] bool         is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
-        Q_INVOKABLE [[nodiscard]] bool         is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
-        Q_INVOKABLE [[nodiscard]] QString      get_custom_coins_icons_path() const noexcept;
+        Q_INVOKABLE void                      remove_custom_coin(const QString& ticker) noexcept;
+        Q_INVOKABLE [[nodiscard]] QStringList get_available_langs() const;
+        Q_INVOKABLE [[nodiscard]] QStringList get_available_fiats() const;
+        Q_INVOKABLE [[nodiscard]] QStringList get_available_currencies() const;
+        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
+        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
+        Q_INVOKABLE [[nodiscard]] QString     get_custom_coins_icons_path() const noexcept;
         Q_INVOKABLE void process_erc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath);
         Q_INVOKABLE void process_qrc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath);
         Q_INVOKABLE void submit();
         Q_INVOKABLE void reset_coin_cfg();
 
         //! Infos
-        Q_INVOKABLE static QString retrieve_seed(const QString& wallet_name, const QString& password);
+        Q_INVOKABLE QString        retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE static QString get_mm2_version();
         Q_INVOKABLE static QString get_log_folder();
         Q_INVOKABLE static QString get_export_folder();
@@ -123,6 +127,7 @@ namespace atomic_dex
         void onNotificationEnabledChanged();
         void customTokenDataChanged();
         void customTokenDataStatusChanged();
+        void privKeyStatusChanged();
     };
 } // namespace atomic_dex
 
