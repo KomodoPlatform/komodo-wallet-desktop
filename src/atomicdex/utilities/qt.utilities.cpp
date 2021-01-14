@@ -23,6 +23,9 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 
+//! Deps
+#include <QrCode.hpp>
+
 //! Project headers
 #include "atomicdex/utilities/qt.utilities.hpp"
 
@@ -86,5 +89,13 @@ namespace atomic_dex
         QClipboard* clipboard = QGuiApplication::clipboard();
 
         clipboard->setText(text);
+    }
+    
+    QString qt_utilities::get_qrcode_svg_from_string(const QString& str)
+    {
+        qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(str.toStdString().c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
+        std::string       svg = qr0.toSvgString(2);
+        
+        return QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
     }
 } // namespace atomic_dex

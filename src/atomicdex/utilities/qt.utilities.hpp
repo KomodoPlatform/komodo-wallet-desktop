@@ -54,6 +54,8 @@ namespace atomic_dex
         Q_OBJECT
 
       public:
-        Q_INVOKABLE static void copy_text_to_clipboard(const QString& text);
+        Q_INVOKABLE static void    copy_text_to_clipboard(const QString& text);
+        
+        Q_INVOKABLE static QString get_qrcode_svg_from_string(const QString& str);
     };
 } // namespace atomic_dex
