@@ -16,5 +16,6 @@ AnimatedRectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         text: type
         font.pixelSize: Style.textSizeSmall1
+        color: Style.colorWhite1
     }
 }

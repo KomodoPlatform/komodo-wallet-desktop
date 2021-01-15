@@ -221,7 +221,7 @@ ColumnLayout {
             id: trend_7d_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.24
+            anchors.rightMargin: parent.width * 0.2
             anchors.verticalCenter: parent.verticalCenter
 
             text: qsTr("Trend 7d")
@@ -312,10 +312,25 @@ ColumnLayout {
 
             // Name
             DefaultText {
+                id: coin_name
                 anchors.left: icon.right
                 anchors.leftMargin: 10
                 text_value: name
                 anchors.verticalCenter: parent.verticalCenter
+            }
+
+
+            CoinTypeTag {
+                id: tag
+                anchors.left: coin_name.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+
+                type: model.type
+
+                opacity: 0.25
+
+                visible: mouse_area.containsMouse
             }
 
             // Balance
@@ -386,15 +401,6 @@ ColumnLayout {
                 onDark_themeChanged: refresh()
                 onHistoricalChanged: refresh()
                 backgroundColor: "transparent"
-            }
-
-            CoinTypeTag {
-                id: tag
-                anchors.left: chart.right
-                anchors.leftMargin: -25
-                anchors.verticalCenter: parent.verticalCenter
-
-                type: model.type
             }
         }
     }
