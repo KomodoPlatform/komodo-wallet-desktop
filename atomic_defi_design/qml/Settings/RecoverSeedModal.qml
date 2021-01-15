@@ -37,6 +37,7 @@ BasicModal {
         wrong_password = false
         input_password.reset()
         seed_text.text = ""
+        portfolio_model.clean_priv_keys()
         currentIndex = 0
     }
 
