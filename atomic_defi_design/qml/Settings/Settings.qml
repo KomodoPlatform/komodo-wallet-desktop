@@ -86,11 +86,11 @@ Item {
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("View seed and private keys")
-                onClicked: recover_seed_modal.open()
+                onClicked: view_seed_modal.open()
             }
 
             ModalLoader {
-                id: recover_seed_modal
+                id: view_seed_modal
                 sourceComponent: RecoverSeedModal {}
             }
 
