@@ -276,21 +276,29 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount) const noexcept
     {
-        auto& mm2_instance = m_system_manager.get_system<mm2_service>();
-
-        if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+        try
         {
+            auto& mm2_instance = m_system_manager.get_system<mm2_service>();
+
+            if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+            {
+                return "0.00";
+            }
+
+            const auto current_price = get_rate_conversion(currency, ticker);
+
+            if (current_price == "0.00")
+            {
+                return "0.00";
+            }
+
+            return compute_result(amount, current_price, currency, this->m_cfg);
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("Exception caught: {}", error.what());
             return "0.00";
         }
-
-        const auto current_price = get_rate_conversion(currency, ticker);
-
-        if (current_price == "0.00")
-        {
-            return "0.00";
-        }
-
-        return compute_result(amount, current_price, currency, this->m_cfg);
     }
 
     std::string

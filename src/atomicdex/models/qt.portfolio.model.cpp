@@ -28,6 +28,8 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "qt.portfolio.model.hpp"
+
 
 namespace atomic_dex
 {
@@ -437,5 +439,20 @@ namespace atomic_dex
     portfolio_model::get_underlying_data() const noexcept
     {
         return m_model_data;
+    }
+
+    void
+    portfolio_model::clean_priv_keys()
+    {
+        const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+        for (auto&& [coin, cfg]: coins)
+        {
+            auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin));
+            // assert(not res.empty());
+            if (not res.empty())
+            {
+                update_value(PortfolioRoles::PrivKey, "", res.at(0), *this);
+            }
+        }
     }
 } // namespace atomic_dex

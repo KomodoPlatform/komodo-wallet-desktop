@@ -87,6 +87,9 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         bool                                 removeRows(int row, int count, const QModelIndex& parent) final;
 
+        //! QML API
+        Q_INVOKABLE void clean_priv_keys();
+
         //! Public api
         void                            initialize_portfolio(const std::vector<std::string>& tickers);
         void                            update_currency_values();
