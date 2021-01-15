@@ -187,7 +187,8 @@ BasicModal {
             visible: false
             enabled: false
 
-            width: parent.width
+            Layout.fillWidth: true
+            Layout.preferredHeight: 300
             model: portfolio_mdl.portfolio_proxy_mdl
 
             delegate: DefaultRectangle {
