@@ -189,7 +189,7 @@ BasicModal {
             enabled: false
 
             Layout.fillWidth: true
-            Layout.preferredHeight: 300
+            Layout.preferredHeight: 600
             model: portfolio_mdl.portfolio_proxy_mdl
 
             delegate: DefaultRectangle {
