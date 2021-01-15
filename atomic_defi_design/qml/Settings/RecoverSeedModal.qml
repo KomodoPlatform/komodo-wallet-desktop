@@ -11,6 +11,7 @@ BasicModal {
     id: root
 
     property var portfolio_model: API.app.portfolio_pg.portfolio_mdl
+    property var settings_page: API.app.settings_pg
 
     property bool wrong_password: false
 
@@ -23,6 +24,7 @@ BasicModal {
             seed_text.text = result
             wrong_password = false
             root.nextPage()
+            loading.running = true
         }
         else {
             wrong_password = true
@@ -86,8 +88,34 @@ BasicModal {
         title: qsTr("View seed and private keys")
         Layout.fillWidth: true
 
+        Timer {
+            id: loading
+
+            repeat: true
+            running: false
+            onTriggered: {
+                if (!settings_page.fetching_priv_keys_busy) {
+                    repeat = false
+                    busy_view.visible = false
+                    busy_view.enabled = false
+                    seed_container.visible = true
+                    seed_container.enabled = true
+                    coins_list.visible = true
+                    coins_list.enabled = true
+                }
+            }
+        }
+
+        DefaultBusyIndicator {
+            id: busy_view
+
+            Layout.alignment: Qt.AlignHCenter
+        }
+
         DefaultRectangle {
             id: seed_container
+            visible: false
+            enabled: false
             height: 120
             width: parent.width
 
@@ -156,7 +184,9 @@ BasicModal {
         DefaultListView {
             id: coins_list
 
+            visible: false
             enabled: false
+
             width: parent.width
             model: portfolio_mdl.portfolio_proxy_mdl
 
