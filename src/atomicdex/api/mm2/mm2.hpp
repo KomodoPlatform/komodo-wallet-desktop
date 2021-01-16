@@ -498,12 +498,20 @@ namespace mm2::api
 
     struct setprice_request
     {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
-        bool        max{false};
-        bool        cancel_previous{false};
+        std::string                base;
+        std::string                rel;
+        std::string                price;
+        std::string                volume;
+        bool                       max{false};
+        bool                       cancel_previous{false};
+        std::string                price_denom;
+        std::string                price_numer;
+        std::string                volume_denom;
+        std::string                volume_numer;
+        std::optional<bool>        base_nota;
+        std::optional<std::size_t> base_confs;
+        std::optional<bool>        rel_nota;
+        std::optional<std::size_t> rel_confs;
     };
 
     void to_json(nlohmann::json& j, const setprice_request& request);
@@ -673,7 +681,7 @@ namespace mm2::api
         std::string coin;
         std::string priv_key;
         std::string raw_result;
-        int rpc_result_code;
+        int         rpc_result_code;
     };
 
     void from_json(const nlohmann::json& j, show_priv_key_answer& answer);

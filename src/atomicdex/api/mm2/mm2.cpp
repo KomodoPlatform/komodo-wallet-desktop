@@ -638,17 +638,6 @@ namespace mm2::api
     }
 
     void
-    to_json(nlohmann::json& j, const setprice_request& request)
-    {
-        j["base"]            = request.base;
-        j["price"]           = request.price;
-        j["rel"]             = request.rel;
-        j["volume"]          = request.volume;
-        j["cancel_previous"] = request.cancel_previous;
-        j["max"]             = request.max;
-    }
-
-    void
     from_json(const nlohmann::json& j, trading_order_contents& contents)
     {
         j.at("base").get_to(contents.base);
@@ -715,6 +704,33 @@ namespace mm2::api
         else
         {
             SPDLOG_INFO("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
+        }
+    }
+
+    void
+    to_json(nlohmann::json& j, const setprice_request& request)
+    {
+        j["base"]            = request.base;
+        j["price"]           = request.price;
+        j["rel"]             = request.rel;
+        j["volume"]          = request.volume;
+        j["cancel_previous"] = request.cancel_previous;
+        j["max"]             = request.max;
+        if (request.base_nota.has_value())
+        {
+            j["base_nota"] = request.base_nota.value();
+        }
+        if (request.base_confs.has_value())
+        {
+            j["base_confs"] = request.base_confs.value();
+        }
+        if (request.rel_nota.has_value())
+        {
+            j["rel_nota"] = request.rel_nota.value();
+        }
+        if (request.rel_confs.has_value())
+        {
+            j["rel_confs"] = request.rel_confs.value();
         }
     }
 
