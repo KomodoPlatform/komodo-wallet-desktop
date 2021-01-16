@@ -504,10 +504,6 @@ namespace mm2::api
         std::string                volume;
         bool                       max{false};
         bool                       cancel_previous{false};
-        std::string                price_denom;
-        std::string                price_numer;
-        std::string                volume_denom;
-        std::string                volume_numer;
         std::optional<bool>        base_nota;
         std::optional<std::size_t> base_confs;
         std::optional<bool>        rel_nota;
@@ -723,6 +719,7 @@ namespace atomic_dex
     using t_buy_request             = ::mm2::api::buy_request;
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
     using t_sell_request            = ::mm2::api::sell_request;
+    using t_setprice_request        = ::mm2::api::setprice_request;
     using t_withdraw_request        = ::mm2::api::withdraw_request;
     using t_withdraw_fees           = ::mm2::api::withdraw_fees;
     using t_withdraw_answer         = ::mm2::api::withdraw_answer;

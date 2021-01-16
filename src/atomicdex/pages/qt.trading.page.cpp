@@ -292,6 +292,84 @@ namespace atomic_dex
     }
 
     void
+    trading_page::place_setprice_order(const QString& base_nota, const QString& base_confs, const QString& rel_nota, const QString& rel_confs)
+    {
+        this->set_buy_sell_rpc_busy(true);
+        this->set_buy_sell_last_rpc_data(QJsonObject{{}});
+
+        const auto* market_selector = get_market_pairs_mdl();
+        const auto& base            = market_selector->get_left_selected_coin();
+        const auto& rel             = market_selector->get_right_selected_coin();
+        const bool  is_max          = m_max_volume == m_volume;
+
+        //! Since it's a setprice request, it's obviously a created order, we don't pick from the orderbook in this case
+        //! No need to handle orderbook case
+        t_setprice_request req{
+            .base            = base.toStdString(),
+            .rel             = rel.toStdString(),
+            .price           = m_price.toStdString(),
+            .volume          = m_volume.toStdString(),
+            .max             = is_max,
+            .cancel_previous = false,
+            .base_nota       = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
+            .base_confs      = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
+            .rel_nota        = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs       = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
+
+        auto answer_functor = [this](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                if (body.find("error") == std::string::npos)
+                {
+                    this->clear_forms();
+                    auto           answers = nlohmann::json::parse(body);
+                    nlohmann::json answer  = answers[0];
+                    this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
+                    auto& mm2_system = m_system_manager.get_system<mm2_service>();
+                    SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
+                    mm2_system.batch_fetch_orders_and_swap();
+                }
+                else
+                {
+                    auto error_json = QJsonObject({{"error_code", -1}, {"error_message", QString::fromStdString(body)}});
+                    SPDLOG_ERROR("error place_buy_order: {}", body);
+                    this->set_buy_sell_last_rpc_data(error_json);
+                }
+            }
+            else
+            {
+                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                this->set_buy_sell_last_rpc_data(error_json);
+            }
+            this->set_buy_sell_rpc_busy(false);
+        };
+
+        auto error_functor = [this]([[maybe_unused]] pplx::task<void> previous_task) {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("pplx task error: {}", e.what());
+                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                this->set_buy_sell_last_rpc_data(error_json);
+                this->set_buy_sell_rpc_busy(false);
+            }
+        };
+
+        nlohmann::json batch;
+        nlohmann::json setprice_request = ::mm2::api::template_request("setprice");
+        ::mm2::api::to_json(setprice_request, req);
+        batch.push_back(setprice_request);
+        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+            .then(answer_functor)
+            .then(error_functor);
+    }
+
+    void
     trading_page::place_buy_order(const QString& base_nota, const QString& base_confs)
     {
         this->set_buy_sell_rpc_busy(true);

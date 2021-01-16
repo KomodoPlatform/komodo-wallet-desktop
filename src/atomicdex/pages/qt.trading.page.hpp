@@ -160,6 +160,7 @@ namespace atomic_dex
 
         Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
         Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "");
+        Q_INVOKABLE void place_setprice_order(const QString& base_nota = "", const QString& base_confs = "", const QString& rel_nota = "", const QString& rel_confs = "");
 
         Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
         Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
