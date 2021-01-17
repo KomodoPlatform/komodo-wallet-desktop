@@ -1533,4 +1533,20 @@ namespace atomic_dex
         }
         return last_trading_error;
     }
+
+    bool
+    trading_page::get_skip_taker() const noexcept
+    {
+        return m_skip_taker;
+    }
+
+    void
+    trading_page::set_skip_taker(bool skip_taker) noexcept
+    {
+        if (m_skip_taker != skip_taker)
+        {
+            m_skip_taker = skip_taker;
+            emit skipTakerChanged();
+        }
+    }
 } // namespace atomic_dex
