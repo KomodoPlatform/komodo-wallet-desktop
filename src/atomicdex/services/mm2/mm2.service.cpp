@@ -406,7 +406,7 @@ namespace atomic_dex
                     SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
                 }
             })
-            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
+            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -587,7 +587,7 @@ namespace atomic_dex
                         //! Emit event here
                     }
                 })
-                .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
+                .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
@@ -724,7 +724,7 @@ namespace atomic_dex
                         }
                     }
                 })
-            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
+            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -765,7 +765,7 @@ namespace atomic_dex
                     }
                 }
             })
-            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
+            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -1012,7 +1012,9 @@ namespace atomic_dex
             this->dispatcher_.trigger<process_swaps_and_orders_finished>(after_manual_reset);
         };
 
-        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token()).then(answer_functor).then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
+            .then(answer_functor)
+            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -1085,7 +1087,7 @@ namespace atomic_dex
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
-            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
+            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -1583,7 +1585,7 @@ namespace atomic_dex
         }
         this->batch_fetch_orders_and_swap(true);
     }
-    
+
     void
     mm2_service::handle_exception_pplx_task(pplx::task<void> previous_task)
     {
@@ -1594,9 +1596,24 @@ namespace atomic_dex
         catch (const std::exception& e)
         {
             SPDLOG_ERROR("pplx task error: {}", e.what());
-            if (std::string(e.what()) == "Failed to read HTTP status line") {
+            if (std::string(e.what()).find("Failed to read HTTP status line") != std::string::npos ||
+                std::string(e.what()).find("WinHttpReceiveResponse: 12002: The operation timed out") != std::string::npos)
+            {
+                SPDLOG_WARN("We should reset connection here");
+                this->dispatcher_.trigger<fatal_notification>("connection dropped");
+                /*using namespace std::chrono_literals;
                 //! Here we have connection issue
                 // What we should do ?
+                m_mm2_running = false;
+                m_token_source.cancel();
+                std::this_thread::sleep_for(5s);
+
+                web::http::client::http_client_config cfg;
+                cfg.set_timeout(30s);
+                m_mm2_client   = std::make_shared<web::http::client::http_client>(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
+                m_token_source = pplx::cancellation_token_source();
+
+                m_mm2_running = true;*/
             }
         }
     }

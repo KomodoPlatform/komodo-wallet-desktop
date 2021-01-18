@@ -111,4 +111,9 @@ namespace atomic_dex
     {
         std::vector<atomic_dex::coin_config> cfg;
     };
+
+    struct fatal_notification
+    {
+        std::string message;
+    };
 } // namespace atomic_dex
