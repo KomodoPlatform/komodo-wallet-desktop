@@ -159,7 +159,7 @@ ColumnLayout {
 
             text: qsTr("Show only coins with balance")
 
-            checked: false
+            checked: portfolio_coins.with_balance
             onCheckedChanged: portfolio_coins.with_balance = checked
         }
     }
