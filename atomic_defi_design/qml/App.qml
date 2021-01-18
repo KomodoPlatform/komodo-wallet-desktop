@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import "Screens"
 import "Constants"
 import "Components"
+import "Dashboard"
 
 Rectangle {
     id: app
@@ -16,7 +17,6 @@ Rectangle {
     function firstPage() {
         return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
     }
-
 
     function onDisconnect() { openFirstLaunch() }
 
@@ -160,5 +160,11 @@ Rectangle {
     UpdateNotificationLine {
         anchors.top: parent.top
         anchors.right: parent.right
+    }
+
+    // Fatal Error Modal
+    FatalErrorModal {
+        id: fatal_error_modal
+        visible: false
     }
 }
