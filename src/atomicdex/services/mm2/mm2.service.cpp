@@ -382,7 +382,13 @@ namespace atomic_dex
                             }
                             else
                             {
-                                SPDLOG_ERROR("error answer for tx or my_balance: {}", answer.dump(4));
+                                const std::string error = answer.dump(4);
+                                SPDLOG_ERROR("error answer for tx or my_balance: {}", error);
+                                if (error.find("future timed out") != std::string::npos)
+                                {
+                                    SPDLOG_WARN("Future timed out error detected, probably a connection issue");
+                                    //! Emit error for UI Change
+                                }
                             }
                             ++idx;
                         }
@@ -400,7 +406,7 @@ namespace atomic_dex
                     SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
                 }
             })
-            .then(&handle_exception_pplx_task);
+            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -581,7 +587,7 @@ namespace atomic_dex
                         //! Emit event here
                     }
                 })
-                .then(&handle_exception_pplx_task);
+                .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
@@ -718,7 +724,7 @@ namespace atomic_dex
                         }
                     }
                 })
-            .then(&handle_exception_pplx_task);
+            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -759,7 +765,7 @@ namespace atomic_dex
                     }
                 }
             })
-            .then(&handle_exception_pplx_task);
+            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -848,7 +854,7 @@ namespace atomic_dex
 
             web::http::client::http_client_config cfg;
             using namespace std::chrono_literals;
-            cfg.set_timeout(120s);
+            cfg.set_timeout(30s);
             m_mm2_client = std::make_shared<web::http::client::http_client>(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
             fs::remove(mm2_cfg_path);
             SPDLOG_INFO("mm2 is initialized");
@@ -1006,7 +1012,7 @@ namespace atomic_dex
             this->dispatcher_.trigger<process_swaps_and_orders_finished>(after_manual_reset);
         };
 
-        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token()).then(answer_functor).then(&handle_exception_pplx_task);
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token()).then(answer_functor).then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -1079,7 +1085,7 @@ namespace atomic_dex
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
-            .then(&handle_exception_pplx_task);
+            .then([this](pplx::task<void> previous_task){ this->handle_exception_pplx_task(previous_task); });
     }
 
     void
@@ -1576,5 +1582,22 @@ namespace atomic_dex
             m_orders_and_swaps = orders_and_swaps{.current_page = current_page, .limit = limit};
         }
         this->batch_fetch_orders_and_swap(true);
+    }
+    
+    void
+    mm2_service::handle_exception_pplx_task(pplx::task<void> previous_task)
+    {
+        try
+        {
+            previous_task.wait();
+        }
+        catch (const std::exception& e)
+        {
+            SPDLOG_ERROR("pplx task error: {}", e.what());
+            if (std::string(e.what()) == "Failed to read HTTP status line") {
+                //! Here we have connection issue
+                // What we should do ?
+            }
+        }
     }
 } // namespace atomic_dex
