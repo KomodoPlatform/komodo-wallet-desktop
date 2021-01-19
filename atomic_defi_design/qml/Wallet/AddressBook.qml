@@ -49,6 +49,8 @@ ColumnLayout {
         Layout.fillWidth: true
         placeholderText: qsTr("Search a contact by name or tags")
         onTextChanged: page.model.proxy.search_exp = text
+
+        Component.onDestruction: page.model.proxy.search_exp = ""
     }
 
     //! Contact list
