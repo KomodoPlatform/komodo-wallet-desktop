@@ -22,7 +22,7 @@
 #include "atomicdex/models/qt.addressbook.model.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
-//! Constructors
+//! Ctor
 namespace atomic_dex
 {
     addressbook_model::addressbook_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
@@ -30,12 +30,15 @@ namespace atomic_dex
         m_system_manager(system_manager),
         m_addressbook_proxy(new addressbook_proxy_model(this))
     {
+        m_addressbook_proxy->setSortRole(SubModelRole);
+        m_addressbook_proxy->setFilterRole(NameRoleAndCategoriesRole);
+        m_addressbook_proxy->setDynamicSortFilter(true);
         m_addressbook_proxy->setSourceModel(this);
         m_addressbook_proxy->sort(0);
     }
 }
 
-//! QAbstractListModel implementation
+//! QAbstractListModel Functions
 namespace atomic_dex
 {
     int
@@ -58,6 +61,11 @@ namespace atomic_dex
             return QVariant::fromValue(m_model_data.at(index.row()));
         case NameRole:
             return m_model_data.at(index.row())->get_name();
+        case NameRoleAndCategoriesRole:
+        {
+            auto* contact = m_model_data.at(index.row());
+            return contact->get_name() + ' ' + contact->get_categories().join(' ');
+        }
         default:
             return {};
         }
@@ -70,7 +78,7 @@ namespace atomic_dex
             {SubModelRole, "contacts"}
         };
     }
-}
+} // namespace atomic_dex
 
 //! QML API
 namespace atomic_dex
@@ -112,9 +120,9 @@ namespace atomic_dex
         endInsertRows();
         return true;
     }
-}
+} // namespace atomic_dex
 
-//! Other member functions
+//! Others
 namespace atomic_dex
 {
     void addressbook_model::populate()

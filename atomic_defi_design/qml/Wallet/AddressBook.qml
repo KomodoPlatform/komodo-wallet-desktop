@@ -47,8 +47,8 @@ ColumnLayout {
         Layout.leftMargin: 30
         Layout.rightMargin: 900
         Layout.fillWidth: true
-        placeholderText: qsTr("Search a contact")
-        onTextChanged: page.model.proxy.setFilterFixedString(text)
+        placeholderText: qsTr("Search a contact by name or tags")
+        onTextChanged: page.model.proxy.search_exp = text
     }
 
     //! Contact list

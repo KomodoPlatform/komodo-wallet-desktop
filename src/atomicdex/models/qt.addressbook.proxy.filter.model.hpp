@@ -25,20 +25,26 @@ namespace atomic_dex
     {
         Q_OBJECT
         
-    public:
-        //! Constructor
-        addressbook_proxy_model(QObject* parent);
-
-        //! Destructor
-        ~addressbook_proxy_model() final = default;
-
-    protected:
-        /// QSortFilterProxyModel functions
-        ///////////////////////////////////
+        QString m_search_exp;
         
-        [[nodiscard]]
-        bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+    public:
+        addressbook_proxy_model(QObject* parent);
+        ~addressbook_proxy_model() final = default;
     
-        /////////////////////////////////////////
+        // Getters/Setters
+        [[nodiscard]] const QString& get_search_exp() const noexcept;
+        void                         set_search_exp(QString expression) noexcept;
+        
+        // QML Properties
+        Q_PROPERTY(QString search_exp READ get_search_exp WRITE set_search_exp NOTIFY search_expChanged)
+        
+        // QML Properties Signals
+    signals:
+        void search_expChanged();
+      
+    protected:
+        // QSortFilterProxyModel Functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final; // Only if sort role equals addressbook_model::SubModelRole, sorts contacts by their name in ascending order.
+        [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;     // Only if filter role equals addressbook_model::NameRoleAndCategoriesRole, accepts rows which match each word (not case sensitive) of m_search_exp.
     };
 } // namespace atomic_dex

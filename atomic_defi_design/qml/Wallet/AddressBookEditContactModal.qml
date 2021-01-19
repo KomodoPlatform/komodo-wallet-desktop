@@ -252,7 +252,6 @@ BasicModal {
                 }
             }
 
-
             //! Category adding form opening button
             Qaterial.OutlineButton {
                 Layout.leftMargin: 10
