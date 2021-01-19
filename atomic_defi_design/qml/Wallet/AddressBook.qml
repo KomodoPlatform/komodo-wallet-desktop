@@ -1,11 +1,15 @@
+//! Qt
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
+//! Deps
+import Qaterial 1.0 as Qaterial
+
+//! Project
 import "../Components"
 import "../Constants"
-
 
 ColumnLayout {
     id: addressbook
@@ -14,22 +18,20 @@ ColumnLayout {
 
     readonly property var page: API.app.addressbook_pg
 
-    //! Page header
+    // Page header
     RowLayout {
         Layout.topMargin: 30
         Layout.leftMargin: 30
         Layout.fillWidth: true
 
-        //! Title.
-        DefaultText {
+        DefaultText { // Title
             text_value: qsTr("Address Book")
             font.weight: Font.Medium
             font.pixelSize: Style.textSize3
             Layout.fillWidth: true
         }
 
-        //! Button to add contact
-        PrimaryButton {
+        PrimaryButton { // New Contact Button
             Layout.rightMargin: 30
             Layout.alignment: Qt.AlignRight
             text: qsTr("New Contact")
@@ -42,8 +44,10 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
-    // Search input
-    DefaultTextField {
+
+    DefaultTextField { // Search input
+        id: searchbar
+
         Layout.leftMargin: 30
         Layout.rightMargin: 900
         Layout.fillWidth: true
@@ -63,18 +67,19 @@ ColumnLayout {
 
         //! Contact card
         delegate: Item {
-            property var item_margin: 5     //! Margin between each card.
-            property var height_shift: 2
-            property var current_height: 50
-
             id: contact_card
+
+            readonly property int item_margin: 5     // Margin between each card.
+            readonly property int height_shift: 2
+            property int current_height: 50
+
+            readonly property var contact: modelData
+
             height: current_height + item_margin
             width: contact_list.width
 
-            // Increases the height each time a contact card is created.
-            Component.onCompleted: {
-                current_height += height_shift
-            }
+            // Increases current y position each time a contact card is created.
+            Component.onCompleted: current_height += height_shift
 
             Connections {
                 target: addressbook
@@ -82,54 +87,73 @@ ColumnLayout {
 
             FloatingBackground {
                 id: background
-                width: parent.width - 2 * 30
-                height: column_layout.height
+                width: parent.width - 2 * 18
+                height: 50
                 anchors.centerIn: parent
 
-                ColumnLayout {
-                    id: column_layout
-                    width: parent.width
-                    anchors.centerIn: parent
+                RowLayout {
+                    Layout.preferredHeight: parent.height
+                    DefaultText { // Show Contact Name
+                        Layout.leftMargin: 20
+                        Layout.preferredWidth: 120
 
-                    RowLayout {
-                        Layout.preferredWidth: parent.width
-                        Layout.preferredHeight: 50
-                        Layout.alignment: Qt.AlignVCenter
+                        text: modelData.name
+                        color: Style.colorText
+                        elide: Text.ElideRight
+                    }
 
-                        //! Contact name
-                        DefaultText {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            Layout.leftMargin: 20
+                    VerticalLine {
+                        Layout.alignment: Qt.AlignRight
+                        Layout.fillHeight: true
+                    }
 
-                            text: modelData.name
-                            color: Style.colorText
-                            visible: true
-                        }
+                    RowLayout { // Tags Row
+                        id: tags_row_layout
 
-                        //! Buttons
-                        RowLayout {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                            Layout.rightMargin: 30
+                        readonly property int tag_column_width: 164
+                        readonly property int tag_column_nb: 5
 
-                            //! `Edit` button
-                            PrimaryButton {
-                                Layout.rightMargin: 1
-                                text: qsTr("Edit")
-                                font.pixelSize: Style.textSizeSmall3
+                        Layout.preferredWidth: tag_column_width * tag_column_nb + 5
 
-                                onClicked: edit_contact_modal.open()
-                            }
+                        Flow {
+                            Repeater {    // Contact tags, display 5 maximum.
+                                model: 5
+                                delegate: ColumnLayout {
+                                    Qaterial.OutlineButton {
+                                        Layout.preferredWidth: tags_row_layout.tag_column_width
+                                        visible: index < contact_card.contact.categories.length
 
-                            //! `Delete` button
-                            DangerButton {
-                                Layout.rightMargin: 1
-                                text: qsTr("Remove")
-                                font.pixelSize: Style.textSizeSmall3
+                                        text: contact_card.contact.categories[index]
+                                        icon.source: Qaterial.Icons.cardSearchOutline
+                                        elide: Text.ElideRight
 
-                                onClicked: {
-                                    remove_contact_modal.contactName = modelData.name
-                                    remove_contact_modal.open()
+                                        onClicked: searchbar.text = contact_card.contact.categories[index]
+                                    }
                                 }
+                            }
+                        }
+                    }
+
+                    VerticalLine {
+                        Layout.fillHeight: true
+                    }
+
+                    RowLayout {    // Edit Or Remove Contact
+                        Layout.leftMargin: 8
+                        PrimaryButton { // Edit Button
+                            text: qsTr("Edit")
+                            font.pixelSize: Style.textSizeSmall3
+
+                            onClicked: edit_contact_modal.open()
+                        }
+                        DangerButton { // Remove Button
+                            Layout.rightMargin: 1
+                            text: qsTr("Remove")
+                            font.pixelSize: Style.textSizeSmall3
+
+                            onClicked: {
+                                remove_contact_modal.contactName = modelData.name
+                                remove_contact_modal.open()
                             }
                         }
                     }
