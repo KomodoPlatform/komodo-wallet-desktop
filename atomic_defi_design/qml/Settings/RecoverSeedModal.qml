@@ -20,8 +20,9 @@ BasicModal {
 
         const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, input_password.field.text)
 
-        if(result !== 'wrong password') {
-            seed_text.text = result
+        if(result.length === 2) {
+            seed_text.text = result[0]
+            rpc_pw.text = result[1]
             wrong_password = false
             root.nextPage()
             loading.running = true
@@ -138,6 +139,8 @@ BasicModal {
                     font.pixelSize: Style.textSizeSmall5
                 }
 
+                ColumnLayout {
+                    RowLayout {
                 Qaterial.RawMaterialButton {
                     implicitWidth: 45
                     backgroundColor: "transparent"
@@ -156,17 +159,52 @@ BasicModal {
 
                     onClicked: API.qt_utilities.copy_text_to_clipboard(seed_text.text)
                 }
+                    }
+                    RowLayout {
+                        Qaterial.RawMaterialButton {
+                            implicitWidth: 45
+                            backgroundColor: "transparent"
+                            icon.source: Qaterial.Icons.qrcodeScan
 
-                ColumnLayout { // Seed
+                            onClicked: {
+                                qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(rpc_pw.text)
+                                qrcode_modal.open()
+                            }
+                        }
+
+                        Qaterial.RawMaterialButton { //! Copy clipboard button
+                            implicitWidth: 45
+                            backgroundColor: "transparent"
+                            icon.source: Qaterial.Icons.contentCopy
+
+                            onClicked: API.qt_utilities.copy_text_to_clipboard(rpc_pw.text)
+                        }
+                    }
+                }
+
+                ColumnLayout {
+                    // Seed
                     DefaultText {
                         text: qsTr("Backup seed")
                         color: Style.modalValueColor
                         font.pixelSize: Style.textSizeSmall2
                     }
-
                     DefaultText {
                         Layout.preferredWidth: 400
                         id: seed_text
+                        font.pixelSize: Style.textSizeSmall1
+                    }
+
+                    // RPC Password
+                    DefaultText {
+                        Layout.topMargin: 10
+                        text: qsTr("RPC Password")
+                        color: Style.modalValueColor
+                        font.pixelSize: Style.textSizeSmall2
+                    }
+
+                    DefaultText {
+                        id: rpc_pw
                         font.pixelSize: Style.textSizeSmall3
                     }
                 }
