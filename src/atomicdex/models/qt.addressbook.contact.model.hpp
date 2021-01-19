@@ -39,48 +39,32 @@ namespace atomic_dex
         explicit addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent = nullptr);
         ~addressbook_contact_model() noexcept final;
     
-        /// QAbstractListModel functions
-        ////////////////////////////////
-    
+        // QAbstractListModel Functions
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
-    
-        ////////////////////////////////
         
-        /// QML API
-        ///////////
-        
-        Q_INVOKABLE bool add_category(const QString& category) noexcept;
-        
-        Q_INVOKABLE void remove_category(const QString& category) noexcept;
+        // Getters/Setters
+        [[nodiscard]] const QString&     get_name() const noexcept;
+        void                             set_name(const QString& name) noexcept;
+        [[nodiscard]] const QStringList& get_categories() const noexcept;
+        void                             set_categories(QStringList categories) noexcept;
     
-        // Gets the contact address of a specific ticker.
-        // Returns the corresponding `addressbook_contact_addresses_model*` as `QVariant according to the given ticker
-        [[nodiscard]]
-        Q_INVOKABLE QVariant get_addresses(const QString& ticker);
-        
-        // Resets this model then reloads its data from the persistent data.
-        Q_INVOKABLE void reload();
+        // QML API
+        Q_INVOKABLE bool     add_category(const QString& category) noexcept;
+        Q_INVOKABLE void     remove_category(const QString& category) noexcept;
+        Q_INVOKABLE QVariant get_addresses(const QString& ticker);              // Returns the corresponding `addressbook_contact_addresses_model*` as `QVariant` according the given ticker
+        Q_INVOKABLE void     reload();                                          // Unloads model data then reloads its data from the persistent data.
+        Q_INVOKABLE void     save();                                            // Saves the model modifications in the persistent data.
     
-        // Saves the model modifications in the persistent data.
-        Q_INVOKABLE void save();
-    
+        // QML API Properties
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
-        [[nodiscard]]
-        const QString& get_name() const noexcept;
-        void set_name(const QString& name) noexcept;
-    
         Q_PROPERTY(QStringList categories READ get_categories WRITE set_categories NOTIFY categoriesChanged)
-        [[nodiscard]]
-        const QStringList& get_categories() const noexcept;
-        void set_categories(QStringList categories) noexcept;
         
+        // QML API Properties Signals
       signals:
         void nameChanged();
         void categoriesChanged();
-    
-        ///////////
 
       private:
         // Loads this model data from the persistent data.

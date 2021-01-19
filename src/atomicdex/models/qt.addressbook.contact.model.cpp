@@ -27,7 +27,7 @@
 #include "qt.addressbook.contact.model.hpp"
 
 
-//! Constructors.
+//! Ctor
 namespace atomic_dex
 {
     addressbook_contact_model::addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent) :
@@ -39,7 +39,7 @@ namespace atomic_dex
     addressbook_contact_model::~addressbook_contact_model() noexcept { clear(); }
 } // namespace atomic_dex
 
-//! QAbstractListModel implementation
+//! QAbstractListModel Functions
 namespace atomic_dex
 {
     QVariant
@@ -75,7 +75,7 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! QML API implementation
+//! QML API
 namespace atomic_dex
 {
     const QString&
