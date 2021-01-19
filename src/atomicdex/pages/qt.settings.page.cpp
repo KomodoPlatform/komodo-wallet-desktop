@@ -494,9 +494,10 @@ namespace atomic_dex
         functor_remove(std::move(mm2_coins_file_path));
     }
 
-    QString
+    QStringList
     settings_page::retrieve_seed(const QString& wallet_name, const QString& password)
     {
+        QStringList out;
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
@@ -504,7 +505,7 @@ namespace atomic_dex
             SPDLOG_ERROR("cannot derive the password: {}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
-                return "wrong password";
+                return {"wrong password"};
             }
         }
         using namespace std::string_literals;
@@ -513,7 +514,7 @@ namespace atomic_dex
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
             SPDLOG_ERROR("cannot decrypt the seed with the derived password: {}", ec.message());
-            return "wrong password";
+            return {"wrong password"};
         }
 
         if (!ec)
@@ -554,7 +555,7 @@ namespace atomic_dex
             };
             ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none()).then(answer_functor);
         }
-        return QString::fromStdString(seed);
+        return {QString::fromStdString(seed), QString::fromStdString(::mm2::api::get_rpc_password())};
     }
 
     QString

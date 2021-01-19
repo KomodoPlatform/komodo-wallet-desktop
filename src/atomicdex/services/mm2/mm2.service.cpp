@@ -1601,19 +1601,6 @@ namespace atomic_dex
             {
                 SPDLOG_WARN("We should reset connection here");
                 this->dispatcher_.trigger<fatal_notification>("connection dropped");
-                /*using namespace std::chrono_literals;
-                //! Here we have connection issue
-                // What we should do ?
-                m_mm2_running = false;
-                m_token_source.cancel();
-                std::this_thread::sleep_for(5s);
-
-                web::http::client::http_client_config cfg;
-                cfg.set_timeout(30s);
-                m_mm2_client   = std::make_shared<web::http::client::http_client>(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
-                m_token_source = pplx::cancellation_token_source();
-
-                m_mm2_running = true;*/
             }
         }
     }
