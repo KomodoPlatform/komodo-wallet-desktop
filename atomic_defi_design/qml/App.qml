@@ -23,6 +23,8 @@ Rectangle {
     function openFirstLaunch(force=false, set_wallet_name=true) {
         if(set_wallet_name) selected_wallet_name = API.app.wallet_mgr.wallet_default_name
 
+        General.initialized_orderbook_pair = false
+
         current_page = force ? idx_first_launch : firstPage()
     }
 
