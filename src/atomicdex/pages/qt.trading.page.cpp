@@ -154,6 +154,7 @@ namespace atomic_dex
     void
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
+        SPDLOG_INFO("Setting current orderbook: {} / {}", base.toStdString(), rel.toStdString());
         auto* market_selector_mdl = get_market_pairs_mdl();
 
         if (base != market_selector_mdl->get_left_selected_coin() || rel != market_selector_mdl->get_right_selected_coin())
@@ -1086,6 +1087,7 @@ namespace atomic_dex
     bool
     trading_page::set_pair(bool is_left_side, QString changed_ticker) noexcept
     {
+        SPDLOG_INFO("Changed ticker: {}", changed_ticker.toStdString());
         auto* const market_pair = get_market_pairs_mdl();
         auto        base        = market_pair->get_left_selected_coin();
         auto        rel         = market_pair->get_right_selected_coin();
@@ -1133,7 +1135,14 @@ namespace atomic_dex
         }
         else
         {
-            set_current_orderbook(base, rel);
+            if (base == rel || base.isEmpty() || rel.isEmpty())
+            {
+                set_current_orderbook("KMD", "BTC");
+            }
+            else
+            {
+                set_current_orderbook(base, rel);
+            }
         }
         return true;
     }
