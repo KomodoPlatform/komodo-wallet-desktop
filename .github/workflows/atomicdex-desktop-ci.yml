@@ -76,6 +76,7 @@ jobs:
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
@@ -87,13 +88,14 @@ jobs:
           version: ${{ matrix.qt }}
           host: 'mac'
           target: 'desktop'
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-          python3  -m aqt tool mac tools_ifw 4.0.1-202012091045 qt.tools.ifw.40 --outputdir ${{ github.workspace }}/Qt
+          python3  -m aqt tool mac tools_ifw 4.0.1-202012091045 qt.tools.ifw.40 -b http://mirrors.ocf.berkeley.edu/qt/ --outputdir ${{ github.workspace }}/Qt
           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
 
       - name: Install QT (Windows)
@@ -104,6 +106,7 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
