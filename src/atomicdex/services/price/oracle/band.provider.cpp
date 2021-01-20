@@ -46,6 +46,7 @@ namespace atomic_dex
         json_body["symbols"]   = nlohmann::json::array();
         for (auto&& cur_symbol: this->m_supported_tickers) { json_body["symbols"].push_back(cur_symbol); }
         req.headers().set_content_type(FROM_STD_STR("application/json"));
+        //SPDLOG_INFO("req: {}", json_body.dump(4));
         req.set_body(json_body.dump());
         return m_band_http_client->request(req);
     }
@@ -58,12 +59,12 @@ namespace atomic_dex
             .then([this](web::http::http_response resp) {
                 if (resp.status_code() == 200)
                 {
-                    SPDLOG_INFO("band oracle successfully fetched");
                     auto                     body = TO_STD_STR(resp.extract_string(true).get());
+                    //SPDLOG_INFO("band oracle successfully fetched: {}", body);
                     nlohmann::json           j    = nlohmann::json::parse(body);
                     band_oracle_price_result result;
                     from_json(j, result);
-                    this->m_oracle_price_result.insert_or_assign("result", result);
+                    this->m_oracle_price_result = result;
                     using namespace std::chrono_literals;
                     auto       last_oracle_timestamp     = result.band_oracle_data.at("BTC").timestamp;
                     const auto now                       = std::chrono::system_clock::now();
@@ -111,9 +112,9 @@ namespace atomic_dex
         std::string current_price = "";
         if (is_oracle_ready())
         {
-            auto& result = m_oracle_price_result.at("result");
-            auto  it     = result.band_oracle_data.find(ticker);
-            if (it != result.band_oracle_data.end())
+            const auto result = m_oracle_price_result.synchronize();
+            const auto it     = result->band_oracle_data.find(ticker);
+            if (it != result->band_oracle_data.end())
             {
                 current_price = it->second.price.str();
             }
@@ -124,8 +125,8 @@ namespace atomic_dex
     t_float_50
     band_oracle_price_service::retrieve_rates(const std::string& fiat) const noexcept
     {
-        auto& result = m_oracle_price_result.at("result");
-        return result.band_oracle_data.at(fiat).rate;
+        const auto synchronized = m_oracle_price_result.synchronize();
+        return synchronized->band_oracle_data.at(fiat).rate;
     }
 
     std::vector<std::string>
@@ -143,16 +144,8 @@ namespace atomic_dex
         std::string out;
         if (is_oracle_ready())
         {
-            auto& result = m_oracle_price_result.at("result");
-            out          = result.band_oracle_data.at("BTC").reference;
-        }
-        else
-        {
-            if (m_oracle_price_result.find("result") != m_oracle_price_result.end())
-            {
-                auto& result = m_oracle_price_result.at("result");
-                out          = result.band_oracle_data.at("BTC").reference;
-            }
+            const auto result = m_oracle_price_result.synchronize();
+            out               = result->band_oracle_data.at("BTC").reference;
         }
         return out;
     }

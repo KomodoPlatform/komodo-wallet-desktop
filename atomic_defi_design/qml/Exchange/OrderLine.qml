@@ -62,8 +62,8 @@ AnimatedRectangle {
         anchors.fill: parent
         hoverEnabled: enabled
         onClicked: {
-            order_modal.details = details
             order_modal.open()
+            order_modal.item.details = details
         }
     }
 
@@ -191,12 +191,3 @@ AnimatedRectangle {
         anchors.bottom: parent.bottom
     }
 }
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

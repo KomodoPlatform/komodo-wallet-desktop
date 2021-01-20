@@ -10,6 +10,7 @@ InnerBackground {
     property string title
     property var items
     property alias empty_text: no_orders.text_value
+    property bool is_history: false
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -51,26 +52,52 @@ InnerBackground {
             Layout.fillHeight: true
 
             model: items.orders_proxy_mdl
+            enabled: !is_history || !API.app.orders_mdl.fetching_busy
+
+            property int animationTimestamp: 0
+            readonly property int animationTime: 600
+            readonly property int animationDelay: 50
+            property bool resetAnimation: false
 
             // Row
             delegate: OrderLine {
+                readonly property double anim_time: list.animationTimestamp > index*list.animationDelay ?
+                                                Math.min((list.animationTimestamp-index*list.animationDelay)/(list.animationTime), 1) : 0
                 details: model
+                opacity: anim_time
             }
+
+            populate:  Transition {
+                PropertyAction { target: list; property: "resetAnimation"; value: !list.resetAnimation }
+            }
+
+
+            onResetAnimationChanged: {
+                list.animationTimestamp = 0
+                spawn_anim_timer.repeat = true
+                spawn_anim_timer.restart()
+            }
+
+            Timer {
+                id: spawn_anim_timer
+                interval: General.delta_time
+                running: true
+                repeat: true
+                onTriggered: () => {
+                     list.animationTimestamp += interval
+                     if(list.animationTimestamp > list.animationDelay*list.count + list.animationTime)
+                         repeat = false
+                }
+            }
+        }
+
+        // Pagination
+        Pagination {
+            visible: is_history
+            enabled: list.enabled
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 10
+            Layout.bottomMargin: Layout.topMargin
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

@@ -30,7 +30,7 @@ namespace antara::gaming::core::details
         HMODULE hModule = GetModuleHandleW(nullptr);
         assert(hModule != nullptr);
         WCHAR path[MAX_PATH];
-        auto  result = GetModuleFileNameW(hModule, path, MAX_PATH);
+        [[maybe_unused]] auto  result = GetModuleFileNameW(hModule, path, MAX_PATH);
         assert(result);
         return fs::path(path);
     }

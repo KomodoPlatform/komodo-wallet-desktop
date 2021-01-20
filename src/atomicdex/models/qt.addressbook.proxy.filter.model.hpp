@@ -24,15 +24,27 @@ namespace atomic_dex
     class addressbook_proxy_model final : public QSortFilterProxyModel
     {
         Q_OBJECT
-      public:
-        //! Constructor
+        
+        QString m_search_exp;
+        
+    public:
         addressbook_proxy_model(QObject* parent);
-
-        //! Destructor
-        ~addressbook_proxy_model() final;
-
-      protected:
-        //! Override member functions
-        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        ~addressbook_proxy_model() final = default;
+    
+        // Getters/Setters
+        [[nodiscard]] const QString& get_search_exp() const noexcept;
+        void                         set_search_exp(QString expression) noexcept;
+        
+        // QML Properties
+        Q_PROPERTY(QString search_exp READ get_search_exp WRITE set_search_exp NOTIFY search_expChanged)
+        
+        // QML Properties Signals
+    signals:
+        void search_expChanged();
+      
+    protected:
+        // QSortFilterProxyModel Functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final; // Only if sort role equals addressbook_model::SubModelRole, sorts contacts by their name in ascending order.
+        [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;     // Only if filter role equals addressbook_model::NameRoleAndCategoriesRole, accepts rows which match each word (not case sensitive) of m_search_exp.
     };
 } // namespace atomic_dex

@@ -12,9 +12,6 @@ Item {
     readonly property int layout_margin: 30
 
     function reset() {
-        send_modal.reset(true)
-        receive_modal.reset()
-        claim_rewards_modal.reset()
     }
 
     function loadingPercentage(remaining) {
@@ -203,8 +200,9 @@ Item {
                 }
             }
 
-            SendModal {
+            ModalLoader {
                 id: send_modal
+                sourceComponent: SendModal {}
             }
 
             DefaultButton {
@@ -222,8 +220,9 @@ Item {
                 }
             }
 
-            ReceiveModal {
+            ModalLoader {
                 id: receive_modal
+                sourceComponent: ReceiveModal {}
             }
 
             DefaultButton {
@@ -259,13 +258,14 @@ Item {
                 visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
                 enabled: parseFloat(current_ticker_infos.balance) > 0
                 onClicked: {
-                    claim_rewards_modal.prepareClaimRewards()
                     claim_rewards_modal.open()
+                    claim_rewards_modal.item.prepareClaimRewards()
                 }
             }
 
-            ClaimRewardsModal {
+            ModalLoader {
                 id: claim_rewards_modal
+                sourceComponent: ClaimRewardsModal {}
             }
 
             // Faucet for RICK/MORTY coins
@@ -276,14 +276,18 @@ Item {
                 font.pixelSize: send_button.font.pixelSize
                 visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
-                onClicked: {
-                    api_wallet_page.claim_faucet()
-                }
+                onClicked: api_wallet_page.claim_faucet()
+            }
 
-                ClaimFaucetResultModal {}
+            Component.onCompleted: api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
+            Component.onDestruction: api_wallet_page.claimingFaucetRpcDataChanged.disconnect(onClaimFaucetRpcResultChanged)
+            function onClaimFaucetRpcResultChanged() { claim_faucet_result_modal.open() }
+
+            ModalLoader {
+                id: claim_faucet_result_modal
+                sourceComponent: ClaimFaucetResultModal {}
             }
         }
-
 
         InnerBackground {
             id: price_graph_bg
@@ -449,17 +453,3 @@ Item {
         implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
     }
 }
-
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:600;width:1200}
-}
-##^##*/

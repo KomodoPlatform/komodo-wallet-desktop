@@ -1,6 +1,5 @@
 pragma Singleton
 import QtQuick 2.15
-
 import Qaterial 1.0 as Qaterial
 
 QtObject {
@@ -233,6 +232,13 @@ QtObject {
             return v > 0 ? Style.colorGreen : Style.colorRed
 
         return Style.colorWhite4
+    }
+
+    function getCoinTypeColor(type) {
+        return getCoinColor(type === "ERC-20" ? "ETH" :
+                            type === "QRC-20" ? "QTUM" :
+                            type === "Smart Chain" ? "KMD" :
+                                                     "BTC")
     }
 
     function getCoinColor(ticker) {

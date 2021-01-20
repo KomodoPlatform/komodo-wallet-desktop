@@ -1,10 +1,5 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
-
-import QtGraphicalEffects 1.0
 import "../Constants"
-import "../Components"
 
 Item {
     property int sort_type
@@ -66,11 +61,3 @@ Item {
         color: title.color
     }
 }
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

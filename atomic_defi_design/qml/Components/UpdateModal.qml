@@ -1,18 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
-
 import "../Constants"
 
 BasicModal {
     id: root
 
-    readonly property bool status_good: API.app.update_status.rpc_code === 200
-    readonly property bool update_needed: status_good && API.app.update_status.update_needed
-    readonly property bool required_update: update_needed && (API.app.update_status.status === "required")
-    readonly property bool suggest_update: update_needed && (required_update || API.app.update_status.status === "recommended")
+    readonly property bool required_update: update_needed && (API.app.update_checker.update_status.status === "required")
+    readonly property bool suggest_update: update_needed && (required_update || API.app.update_checker.update_status.status === "recommended")
 
-    readonly property string update_title: !update_needed ? qsTr("Changelog") : (qsTr("New Update!") + " " + (API.app.update_status.current_version + "  " + General.right_arrow_icon + "  " + API.app.update_status.new_version))
+    readonly property string update_title: !update_needed ? qsTr("Changelog") : (qsTr("New Update!") + " " + (API.app.update_checker.update_status.current_version + "  " + General.right_arrow_icon + "  " + API.app.update_checker.update_status.new_version))
     readonly property string update_state: !update_needed ? qsTr("Up to date") : !suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended")
     readonly property string update_color: !update_needed || !suggest_update ? Style.colorGreen : required_update ? Style.colorRed : Style.colorOrange
 
@@ -32,7 +28,7 @@ BasicModal {
             id: text_area
             Layout.fillWidth: true
             readOnly: true
-            text: status_good ? API.app.update_status.changelog : (qsTr("Problem occured") + ": " + API.app.update_status.status)
+            text: status_good ? API.app.update_checker.update_status.changelog : (qsTr("Problem occured") + ": " + API.app.update_checker.update_status.status)
             textFormat: Text.MarkdownText
             remove_newline: false
         }
@@ -50,7 +46,7 @@ BasicModal {
                 visible: update_needed
                 enabled: status_good
                 text: qsTr("Download")
-                onClicked: Qt.openUrlExternally(API.app.update_status.download_url)
+                onClicked: Qt.openUrlExternally(API.app.update_checker.update_status.download_url)
             }
         ]
     }

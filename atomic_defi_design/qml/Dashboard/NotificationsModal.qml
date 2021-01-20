@@ -11,7 +11,6 @@ BasicModal {
     id: root
 
     width: 900
-    property var notifications_list: ([])
 
     function reset() {
         notifications_list = []
@@ -44,11 +43,14 @@ BasicModal {
             break
         case "open_wallet_page":
             api_wallet_page.ticker = notification.params.ticker
-            dashboard.current_page = General.idx_dashboard_wallet
+            dashboard.current_page = idx_dashboard_wallet
             break
         case "open_swaps_page":
-            dashboard.current_page = General.idx_dashboard_exchange
-            exchange.current_page = exchange.isSwapDone(notification.params.new_swap_status) ? General.idx_exchange_history : General.idx_exchange_orders
+            dashboard.current_page = idx_dashboard_exchange
+
+            dashboard.loader.onLoadComplete = () => {
+                dashboard.current_component.current_page = dashboard.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
+            }
             break
         case "open_log_modal":
             showError(notification.title, notification.long_message)
@@ -91,7 +93,7 @@ BasicModal {
                         { old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date },
                         swap_uuid,
                         base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
-                        exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
+                        getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + getStatusText(new_swap_status),
                         human_date,
                         "open_swaps_page")
     }
@@ -137,6 +139,8 @@ BasicModal {
     function onEndpointNonReacheableStatus(base_uri, human_date, timestamp) {
         const title = qsTr("Endpoint not reachable")
 
+        const error = qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri
+
         newNotification("onEndpointNonReacheableStatus",
                         { base_uri, human_date, timestamp },
                         timestamp,
@@ -146,7 +150,7 @@ BasicModal {
                         "open_log_modal",
                         error)
 
-        toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
+        toast.show(title, General.time_toast_important_error, error)
     }
 
     function onMismatchCustomCoinConfiguration(asset, human_date, timestamp) {
@@ -169,6 +173,13 @@ BasicModal {
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
+    }
+    Component.onDestruction: {
+        API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
+        API.app.notification_mgr.balanceUpdateStatus.disconnect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
+        API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
     }
 
     function displayMessage(title, message) {
@@ -356,11 +367,3 @@ BasicModal {
         ]
     }
 }
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

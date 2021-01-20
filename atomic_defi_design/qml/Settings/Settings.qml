@@ -13,15 +13,7 @@ Item {
         onDisconnect()
     }
 
-    function reset() {
-
-    }
-
-    function onOpened() {
-        if(mm2_version === '') mm2_version = API.app.get_mm2_version()
-    }
-
-    property string mm2_version: ''
+    readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var fiats: API.app.settings_pg.get_available_fiats()
 
     InnerBackground {
@@ -93,12 +85,13 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: qsTr("View Seed")
-                onClicked: recover_seed_modal.open()
+                text: qsTr("View seed and private keys")
+                onClicked: view_seed_modal.open()
             }
 
-            RecoverSeedModal {
-                id: recover_seed_modal
+            ModalLoader {
+                id: view_seed_modal
+                sourceComponent: RecoverSeedModal {}
             }
 
             HorizontalLine {
@@ -112,12 +105,14 @@ Item {
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Disclaimer and ToS")
-                onClicked: eula.open()
+                onClicked: eula_modal.open()
             }
 
-            EulaModal {
-                id: eula
-                close_only: true
+            ModalLoader {
+                id: eula_modal
+                sourceComponent: EulaModal {
+                    close_only: true
+                }
             }
 
             HorizontalLine {
@@ -135,8 +130,9 @@ Item {
                 onClicked: camouflage_password_modal.open()
             }
 
-            CamouflagePasswordModal {
+            ModalLoader {
                 id: camouflage_password_modal
+                sourceComponent: CamouflagePasswordModal {}
             }
 
             DangerButton {
@@ -145,8 +141,8 @@ Item {
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Reset assets configuration")
                 onClicked: {
-                    restart_modal.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                     restart_modal.open()
+                    restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                 }
             }
 
@@ -158,8 +154,9 @@ Item {
                 onClicked: delete_wallet_modal.open()
             }
 
-            DeleteWalletModal {
+            ModalLoader {
                 id: delete_wallet_modal
+                sourceComponent: DeleteWalletModal {}
             }
 
             DefaultButton {
@@ -181,9 +178,3 @@ Item {
         font.pixelSize: Style.textSizeSmall
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

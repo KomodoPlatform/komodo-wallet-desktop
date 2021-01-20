@@ -60,14 +60,10 @@ Item {
 
     function reset() {  }
 
-    function onOpened() {
+    Component.onCompleted: {
         applyFilter()
         list_model_proxy.is_history = root.is_history
         API.app.refresh_orders_and_swaps()
-    }
-
-    function changeTicker(ticker) {
-        combo_base.currentIndex = combo_base.model.map(c => c.value).indexOf(ticker)
     }
 
     ColumnLayout {
@@ -99,7 +95,7 @@ Item {
                 // Base
                 DefaultImage {
                     Layout.leftMargin: 15
-                    source: General.coinIcon(combo_base.currentValue)
+                    source: General.coinIcon(combo_base.currentText)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
@@ -111,10 +107,11 @@ Item {
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
 
-                    textRole: "text"
-                    valueRole: "value"
+                    textRole: "ticker"
+                    valueRole: "ticker"
 
-                    model: ([{ value: "", text: qsTr("All") }].concat(General.tickersOfCoins(General.all_coins)))
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+
                     onCurrentValueChanged: applyTickerFilter()
                 }
 
@@ -147,8 +144,8 @@ Item {
                     Layout.topMargin: combo_base.Layout.topMargin
                     Layout.bottomMargin: combo_base.Layout.bottomMargin
 
-                    textRole: "text"
-                    valueRole: "value"
+                    textRole: "ticker"
+                    valueRole: "ticker"
 
                     model: combo_base.model
                     onCurrentValueChanged: applyTickerFilter()
@@ -157,7 +154,7 @@ Item {
                 // Rel
                 DefaultImage {
                     Layout.rightMargin: 15
-                    source: General.coinIcon(combo_rel.currentValue)
+                    source: combo_rel.currentText === "All" ? "" : General.coinIcon(combo_rel.currentText)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
@@ -199,7 +196,7 @@ Item {
                     text: qsTr("Export CSV")
                     enabled: list_model.length > 0
                     onClicked: {
-                        export_csv_dialog.folder = General.os_file_prefix + API.app.get_export_folder()
+                        export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
                         export_csv_dialog.open()
                     }
                 }
@@ -243,21 +240,24 @@ Item {
             OrderList {
                 id: order_list
                 items: list_model
+                is_history: root.is_history
             }
         }
 
-        OrderModal {
+        ModalLoader {
             id: order_modal
+            sourceComponent: OrderModal {}
         }
     }
 
-    LogModal {
+    ModalLoader {
         id: recover_funds_modal
+        sourceComponent: LogModal {
+            header: qsTr("Recover Funds Result")
+            field.text: General.prettifyJSON(recover_funds_result)
 
-        header: qsTr("Recover Funds Result")
-        field.text: General.prettifyJSON(recover_funds_result)
-
-        onClosed: recover_funds_result = "{}"
+            onClosed: recover_funds_result = "{}"
+        }
     }
 }
 

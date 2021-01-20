@@ -11,7 +11,7 @@ ColumnLayout {
     spacing: 0
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_settings
+        dashboard_index: idx_dashboard_settings
         text_value: qsTr("Settings")
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true
@@ -19,7 +19,7 @@ ColumnLayout {
     }
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_support
+        dashboard_index: idx_dashboard_support
         text_value: qsTr("Support")
         image: General.image_path + "menu-support-white.png"
         Layout.fillWidth: true
@@ -27,7 +27,7 @@ ColumnLayout {
     }
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_privacy_mode
+        dashboard_index: idx_dashboard_privacy_mode
         text_value: qsTr("Privacy")
         image: ""
         Layout.fillWidth: true
@@ -36,7 +36,7 @@ ColumnLayout {
     }
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_light_ui
+        dashboard_index: idx_dashboard_light_ui
         text_value: qsTr("Light UI")
         image: ""
         Layout.fillWidth: true
@@ -44,17 +44,3 @@ ColumnLayout {
         checked: !Style.dark_theme
     }
 }
-
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:264;width:150}
-}
-##^##*/

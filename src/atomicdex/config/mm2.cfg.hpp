@@ -16,6 +16,10 @@
 
 #pragma once
 
+//! Deps
+#include <nlohmann/json.hpp>
+
+//! Headers
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/version/version.hpp"
 
@@ -30,12 +34,13 @@ namespace atomic_dex
         int64_t                  netid{7777};
         std::vector<std::string> seednodes{"195.201.91.96", "195.201.91.53", "168.119.174.126"};
 #ifdef _WIN32
-        std::string userhome{std::getenv("HOMEPATH")};
+        // std::string userhome{std::getenv("HOMEPATH")};
+        std::string userhome{utils::u8string(fs::path(_wgetenv(L"HOMEPATH")))};
 #else
         std::string userhome{std::getenv("HOME")};
 #endif
         std::string passphrase;
-        std::string dbdir{(utils::get_atomic_dex_data_folder() / "mm2" / "DB").string()};
+        std::string dbdir{utils::u8string((utils::get_atomic_dex_data_folder() / "mm2" / "DB"))};
         std::string rpc_password{"atomic_dex_mm2_passphrase"};
     };
 

@@ -18,7 +18,13 @@
 #include "atomicdex/pch.hpp"
 
 //! QT Headers
-#include <QtNetwork>
+#include <QClipboard>
+#include <QGuiApplication>
+#include <QJsonArray>
+#include <QJsonDocument>
+
+//! Deps
+#include <QrCode.hpp>
 
 //! Project headers
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -35,7 +41,7 @@ namespace atomic_dex
     }
 
     QJsonObject
-    nlohmann_json_object_to_qt_json_object(const json& j)
+    nlohmann_json_object_to_qt_json_object(const nlohmann::json& j)
     {
         QJsonObject   obj;
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
@@ -65,5 +71,31 @@ namespace atomic_dex
         out.reserve(vec.size());
         for (auto&& cur: vec) { out.append(QString::fromStdString(cur)); }
         return out;
+    }
+
+    QStringList
+    qt_variant_list_to_qt_string_list(const QVariantList& variant_list)
+    {
+        QStringList out;
+
+        out.reserve(variant_list.size());
+        for (auto&& cur: variant_list) { out.append(cur.value<QString>()); }
+        return out;
+    }
+
+    void
+    qt_utilities::copy_text_to_clipboard(const QString& text)
+    {
+        QClipboard* clipboard = QGuiApplication::clipboard();
+
+        clipboard->setText(text);
+    }
+    
+    QString qt_utilities::get_qrcode_svg_from_string(const QString& str)
+    {
+        qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(str.toStdString().c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
+        std::string       svg = qr0.toSvgString(2);
+        
+        return QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
     }
 } // namespace atomic_dex

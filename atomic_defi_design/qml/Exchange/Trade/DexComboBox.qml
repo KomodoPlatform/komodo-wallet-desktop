@@ -19,6 +19,7 @@ DefaultComboBox {
         padding: 10
 
         Component.onCompleted: portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
+        Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
 
         function forceUpdateDetails() {
             console.log("Portfolio item data changed, force-updating the selected ticker details!")

@@ -1,9 +1,12 @@
+abseil
 fmt
 entt
 boost-multiprecision
 boost-random
 boost-lockfree
 boost-stacktrace
+boost-filesystem
+boost-thread
 doctest
 nlohmann-json
 range-v3
@@ -12,4 +15,3 @@ spdlog
 date
 cpprestsdk
 cpp-taskflow
-folly

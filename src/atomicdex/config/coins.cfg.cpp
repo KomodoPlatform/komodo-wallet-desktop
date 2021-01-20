@@ -78,7 +78,7 @@ namespace atomic_dex
         {
             cfg.is_custom_coin = true;
         }
-        
+
         j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {
@@ -88,29 +88,29 @@ namespace atomic_dex
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
         }
-        if (j.contains("need_electrum"))
+        /*if (j.contains("need_electrum"))
         {
             cfg.need_electrum = j.at("need_electrum").get<bool>();
-        }
+        }*/
         if (j.contains("is_testnet"))
         {
             cfg.is_testnet = j.at("is_testnet").get<bool>();
         }
         if (cfg.type == "QRC-20")
         {
-            cfg.coin_type = coin_type::QRC20;
+            cfg.coin_type = CoinType::QRC20;
         }
         else if (cfg.type == "ERC-20")
         {
-            cfg.coin_type = coin_type::ERC20;
+            cfg.coin_type = CoinType::ERC20;
         }
         else if (cfg.type == "UTXO")
         {
-            cfg.coin_type = coin_type::UTXO;
+            cfg.coin_type = CoinType::UTXO;
         }
         else if (cfg.type == "Smart Chain")
         {
-            cfg.coin_type = coin_type::SmartChain;
+            cfg.coin_type = CoinType::SmartChain;
         }
     }
 } // namespace atomic_dex

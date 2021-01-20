@@ -10,8 +10,9 @@ DefaultListView {
 
     readonly property int row_height: 45
 
-    TransactionDetailsModal {
+    ModalLoader {
         id: tx_details_modal
+        sourceComponent: TransactionDetailsModal {}
     }
 
     // Row
@@ -27,8 +28,8 @@ DefaultListView {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                tx_details_modal.details = model
                 tx_details_modal.open()
+                tx_details_modal.item.details = model
             }
         }
 
@@ -116,14 +117,3 @@ DefaultListView {
         }
     }
 }
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

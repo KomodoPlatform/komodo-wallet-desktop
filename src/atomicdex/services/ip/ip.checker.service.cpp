@@ -28,7 +28,8 @@ namespace
 {
     web::http::client::http_client_config g_ip_cfg{[]() {
         web::http::client::http_client_config cfg;
-        cfg.set_timeout(std::chrono::seconds(5));
+        cfg.set_validate_certificates(false);
+        cfg.set_timeout(std::chrono::seconds(45));
         return cfg;
     }()};
 

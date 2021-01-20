@@ -40,7 +40,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.app.wallet_default_name)
+                    text_value: qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.app.wallet_mgr.wallet_default_name)
                     font.pixelSize: Style.textSize2
                 }
 
@@ -80,11 +80,11 @@ BasicModal {
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    if(API.app.confirm_password(API.app.wallet_default_name, input_password.field.text)) {
+                    if(API.app.wallet_mgr.confirm_password(API.app.wallet_mgr.wallet_default_name, input_password.field.text)) {
                         root.close()
                         wrong_password = false
 
-                        API.app.delete_wallet(API.app.wallet_default_name)
+                        API.app.wallet_mgr.delete_wallet(API.app.wallet_mgr.wallet_default_name)
                         disconnect()
                     }
                     else {

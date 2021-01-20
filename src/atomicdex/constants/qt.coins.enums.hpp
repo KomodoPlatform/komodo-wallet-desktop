@@ -16,13 +16,35 @@
 
 #pragma once
 
-#include <QString>
+#include <QObject>
+
+//! Deps
+#include <entt/core/attribute.h>
 
 namespace atomic_dex
 {
-    struct qt_contact_address_contents
+    class ENTT_API CoinTypeGadget
     {
-        QString type;
-        QString address;
+      public:
+        Q_GADGET
+
+      public:
+        enum CoinTypeEnum
+        {
+            QRC20      = 0,
+            ERC20      = 1,
+            UTXO       = 2,
+            SmartChain = 3,
+            Disabled   = 4,
+            All        = 5,
+            Size       = 6
+        };
+
+        Q_ENUM(CoinTypeEnum)
+
+      private:
+        explicit CoinTypeGadget();
     };
 } // namespace atomic_dex
+
+using CoinType = atomic_dex::CoinTypeGadget::CoinTypeEnum;

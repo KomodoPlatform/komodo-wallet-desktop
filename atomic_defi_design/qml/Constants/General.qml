@@ -7,17 +7,29 @@ QtObject {
     readonly property int height: 800
     readonly property int minimumWidth: 1280
     readonly property int minimumHeight: 800
+    readonly property double delta_time: 1000/60
 
     readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
-    function coinIcon(ticker) {
-        if(ticker === "") return ""
 
-        const coin_info = API.app.get_coin_info(ticker)
+    function coinIcon(ticker) {
+        if(ticker === "" || ticker === "All") return ""
+
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
+    }
+
+    // Returns the icon full path of a coin type.
+    // If the given coin type has spaces, it will be replaced by '-' characters.
+    // If the given coin type is empty, returns an empty string.
+    function coinTypeIcon(type) {
+        if (type === "") return ""
+
+        var filename = type.toLowerCase().replace(" ", "-");
+        return coin_icons_path + filename + ".png"
     }
 
     function qaterialIcon(name) {
@@ -29,24 +41,9 @@ QtObject {
     readonly property string right_arrow_icon: "⮕"
     readonly property string privacy_text: "*****"
 
-    readonly property string version_string: "Desktop v" + API.app.get_version()
+    readonly property string version_string: "Desktop v" + API.app.settings_pg.get_version()
 
     property bool privacy_mode: false
-
-    readonly property int idx_dashboard_portfolio: 0
-    readonly property int idx_dashboard_wallet: 1
-    readonly property int idx_dashboard_exchange: 2
-    readonly property int idx_dashboard_addressbook: 3
-    readonly property int idx_dashboard_news: 4
-    readonly property int idx_dashboard_dapps: 5
-    readonly property int idx_dashboard_settings: 6
-    readonly property int idx_dashboard_support: 7
-    readonly property int idx_dashboard_light_ui: 8
-    readonly property int idx_dashboard_privacy_mode: 9
-
-    readonly property int idx_exchange_trade: 0
-    readonly property int idx_exchange_orders: 1
-    readonly property int idx_exchange_history: 2
 
     readonly property var reg_pass_input: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/
     readonly property var reg_pass_valid_low_security: /^(?=.{1,}).*$/
@@ -64,7 +61,10 @@ QtObject {
     readonly property var chart_times: (["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d", "3d"/*, "1w"*/])
     readonly property var time_seconds: ({ "1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "2h": 7200, "4h": 14400, "6h": 21600, "12h": 43200, "1d": 86400, "3d": 259200, "1w": 604800 })
 
-    property var all_coins
+
+    property bool initialized_orderbook_pair: false
+    readonly property string default_base: "KMD"
+    readonly property string default_rel: "BTC"
 
     function timestampToDouble(timestamp) {
         return (new Date(timestamp)).getTime()
@@ -143,7 +143,7 @@ QtObject {
 
     function viewTxAtExplorer(ticker, id, add_0x=true) {
         if(id !== '') {
-            const coin_info = API.app.get_coin_info(ticker)
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
         }
@@ -151,7 +151,7 @@ QtObject {
 
     function viewAddressAtExplorer(ticker, address) {
         if(address !== '') {
-            const coin_info = API.app.get_coin_info(ticker)
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.address_uri + address)
         }
     }
@@ -286,7 +286,7 @@ QtObject {
     }
 
     function isParentCoinNeeded(ticker, type) {
-        for(const c of API.app.enabled_coins)
+        for(const c of API.app.portfolio_pg.get_all_enabled_coins())
             if(c.type === type && c.ticker !== ticker) return true
 
         return false
@@ -322,22 +322,6 @@ QtObject {
         else if(type === "QRC-20") return "QTUM"
         else if(type === "Smart Chain") return "KMD"
         return "?"
-    }
-
-    function isCoinEnabled(ticker) {
-        for(const c of API.app.enabled_coins)
-            if(c.ticker === ticker) return true
-
-        return false
-    }
-
-    function enableParentCoinIfNeeded(ticker, type) {
-        if(!isCoinEnabled(ticker) && isParentCoinNeeded(ticker, type)) {
-            API.app.enable_coins([ticker])
-            return true
-        }
-
-        return false
     }
 
     function getRandomInt(min, max) {
@@ -392,9 +376,8 @@ QtObject {
     }
 
     function checkIfWalletExists(name) {
-        if(API.app.get_wallets().indexOf(name) !== -1)
+        if(API.app.wallet_mgr.get_wallets().indexOf(name) !== -1)
             return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
-
         return ""
     }
 

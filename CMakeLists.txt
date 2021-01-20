@@ -9,6 +9,7 @@ endif ()
 ################# END BUILD TYPE ###############################
 
 ############################ VCPKG PREREQUISITES ##############
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftime-trace")
 message(STATUS "VCPKG package manager enabled")
 set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-custom-ports/ports" CACHE STRING "")
 set(_VCPKG_INSTALLED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/installed")
@@ -37,10 +38,38 @@ endif ()
 
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.1)
 
+message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
+
+if (UNIX)
+    execute_process(COMMAND bash -c "git ls-remote https://github.com/KomodoPlatform/atomicdex-desktop-generics refs/heads/main | cut -f 1 | tr -d '\n'"
+            OUTPUT_VARIABLE GENERICS_VERSION_ID
+            )
+    if (NOT EXISTS ${GENERICS_VERSION_ID}.cfg_hash)
+        file(WRITE assets/config/${GENERICS_VERSION_ID}.remote_last_cfg_hash)
+    endif ()
+endif ()
+
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    if (APPLE OR WIN32)
+        include(CheckIPOSupported)
+        check_ipo_supported(RESULT ipo_supported OUTPUT output)
+        if (ipo_supported)
+            set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+            message(STATUS "We are in release - Successfully enabled IPO")
+        else ()
+            message(WARNING "IPO NOT SUPPORTED - Skipping reason: ${output}")
+        endif ()
+    endif ()
+endif ()
+
+if (WIN32)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif ()
+
 
 if (PREFER_BOOST_FILESYSTEM)
     message(STATUS "Boost filesystem over std::filesystem")
@@ -51,7 +80,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POLICY_WARNING_CMP0100 OFF)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ##! Antara
@@ -77,13 +106,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2793/mm2-19701cc87-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2883/mm2-014c4eab4-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2793/mm2-19701cc87-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2883/mm2-014c4eab4-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2793/mm2-19701cc87-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2883/mm2-014c4eab4-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
@@ -91,13 +120,18 @@ FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/ar
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins qmaterial)
+FetchContent_Declare(adex-generics-coins
+        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
+
+FetchContent_MakeAvailable(mm2 jl777-coins qmaterial adex-generics-coins)
 
 ##! Configure our needs.
 if (UNIX)
+    configure_file(${adex-generics-coins_SOURCE_DIR}/config/${PROJECT_VERSION}-coins.json ${CMAKE_CURRENT_SOURCE_DIR}/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/mm2 COPYONLY)
 else ()
+    configure_file(${adex-generics-coins_SOURCE_DIR}/config/${PROJECT_VERSION}-coins.json ${CMAKE_BINARY_DIR}/bin/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/msvcp140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/msvcp140.dll COPYONLY)
@@ -157,15 +191,18 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! Constants
         ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/mm2.error.code.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/qt.trading.enums.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/qt.coins.enums.cpp
 
         ##! Config
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/coins.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/wallet.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/addressbook.cfg.cpp
 
         ##! Managers
         ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/notification.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/qt.wallet.manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/addressbook.manager.cpp
 
         ##! API
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
@@ -179,13 +216,16 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.candlestick.charts.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.contact.addresses.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.global.coins.cfg.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.global.coins.cfg.proxy.filter.model.cpp
 
         ##ToClass
 
@@ -198,6 +238,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.settings.page.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.portfolio.page.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.wallet.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.addressbook.page.cpp
 
         ##! Services
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/global.provider.cpp
@@ -229,6 +270,11 @@ if (DISABLE_GEOBLOCKING)
 endif ()
 #target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
 
+add_library(antara_qrcode STATIC)
+target_sources(antara_qrcode PRIVATE vendor/qrcode/QrCode.cpp)
+target_include_directories(antara_qrcode PUBLIC vendor/qrcode)
+target_link_libraries(antara_qrcode PUBLIC antara::default_settings)
+
 target_link_libraries(atomicdex-desktop_shared_deps
         PUBLIC
         Qt::Core
@@ -239,17 +285,17 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qt::WebEngineCore
         Qt::WebEngineWidgets
         Qt::Widgets
-        qzxing
         antara::world
         Boost::random
         Boost::filesystem
+        #absl::flat_hash_map
         komodo-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
         komodo-date::date
-        komodo-folly::folly
         komodo-taskflow::taskflow
         nlohmann_json::nlohmann_json
+        antara_qrcode
         #spdlog::spdlog
         #spdlog::spdlog_header_only
         cpprestsdk::cpprest
@@ -282,9 +328,19 @@ target_compile_definitions(atomicdex-desktop PRIVATE ENTT_API_IMPORT)
 add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.tests.cpp
         src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
-        src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
+
+        ##! Utilities
+        src/atomicdex/tests/utilities/qt.utilities.tests.cpp
+        src/atomicdex/tests/utilities/global.utilities.tests.cpp
+
+        ##! Managers
+        src/atomicdex/tests/managers/addressbook.manager.tests.cpp
+
+        ##! Models
+        src/atomicdex/tests/models/qt.addressbook.contact.model.tests.cpp
+
         src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomicdex-desktop
@@ -296,7 +352,7 @@ target_include_directories(atomicdex-desktop PUBLIC src)
 
 target_link_libraries(atomicdex-desktop_tests
         PUBLIC
-        #atomicdex-desktop_shared_deps
+        atomicdex-desktop_shared_deps
         doctest::doctest)
 
 ##! Setting output directory
@@ -312,11 +368,11 @@ set_target_properties(${PROJECT_NAME}_tests
 
 
 target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
-set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
+#set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
 if (APPLE)
     set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
-    set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+    #set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+    #set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
 #target_enable_tsan(atomicdex-desktop_tests)
@@ -330,7 +386,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop_64.png"
+            "atomicdex-desktop-64.png"
             atomicdex-desktop
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
@@ -339,7 +395,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop_64.png"
+            "atomicdex-desktop-64.png"
             atomicdex-desktop_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
@@ -362,7 +418,6 @@ if (WIN32)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
-    set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
         target_compile_definitions(atomicdex-desktop PRIVATE WINDOWS_RELEASE_MAIN)
@@ -384,10 +439,10 @@ if (WIN32)
     add_custom_command(TARGET atomicdex-desktop PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:atomicdex-desktop>)
-    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
+    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
     add_custom_command(TARGET atomicdex-desktop
             POST_BUILD
-            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
+            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
     include(data/windows/atomicdex_install.cmake)
 endif ()

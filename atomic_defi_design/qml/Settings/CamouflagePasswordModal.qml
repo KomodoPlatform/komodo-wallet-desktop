@@ -78,7 +78,7 @@ BasicModal {
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    API.app.set_emergency_password(input_password.field.text)
+                    API.app.wallet_mgr.set_emergency_password(input_password.field.text)
                     root.close()
                 }
             }

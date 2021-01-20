@@ -18,7 +18,7 @@ SetupPage {
     }
 
     function onClickedLogin(password) {
-        if(API.app.login(password, selected_wallet_name)) {
+        if(API.app.wallet_mgr.login(password, selected_wallet_name)) {
             console.log("Success: Login")
             postLoginSuccess()
             return true
@@ -94,10 +94,3 @@ SetupPage {
         }
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

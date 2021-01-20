@@ -1,5 +1,4 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.15
 import "../Constants"
@@ -39,26 +38,18 @@ Menu {
             API.app.settings_pg.remove_custom_coin(cloneTicker)
             restart_modal.open()
         }
-        enabled: disable_action.enabled && API.app.get_coin_info(ticker).is_custom_coin
+        enabled: disable_action.enabled && API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_custom_coin
     }
 
     MenuItem {
-        readonly property string coin_type: API.app.get_coin_info(ticker).type
         enabled: !General.prevent_coin_disabling.running
-        text: qsTr("Disable all %1 assets").arg(coin_type)
-        onTriggered: API.app.disable_coins(API.app.enabled_coins.filter(c => c.type === coin_type).map(c => c.ticker))
+        text: qsTr("Disable all %1 assets").arg(type)
+        onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_coins_by_type(type))
     }
 
     MenuItem {
         enabled: !General.prevent_coin_disabling.running
         text: qsTr("Disable all assets")
-        onTriggered: API.app.disable_coins(API.app.enabled_coins.map(c => c.ticker))
+        onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_enabled_coins())
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

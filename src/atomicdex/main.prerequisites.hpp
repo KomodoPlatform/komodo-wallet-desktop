@@ -1,3 +1,19 @@
+/******************************************************************************
+ * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
+
 //! PCH Headers
 #include "atomicdex/pch.hpp"
 
@@ -24,9 +40,6 @@
 
 
 //! Deps
-#define QZXING_QML
-#include "QZXing.h"
-#include <folly/init/Init.h>
 #include <sodium/core.h>
 #include <wally.hpp>
 
@@ -42,9 +55,11 @@
 #include "atomicdex/app.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/utilities/kill.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 #ifdef __APPLE__
 #    include "atomicdex/platform/osx/manager.hpp"
+#    include <sys/sysctl.h>
 #endif
 
 #if defined(ATOMICDEX_HOT_RELOAD)
@@ -113,13 +128,16 @@ qt_message_handler(QtMsgType type, [[maybe_unused]] const QMessageLogContext& co
     }
 }
 
-void
+static void
 signal_handler(int signal)
 {
-    SPDLOG_DEBUG("sigabort received, cleaning mm2");
+    SPDLOG_ERROR("sigabort received, cleaning mm2");
     atomic_dex::kill_executable("mm2.service");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
+    std::ifstream                 ifs("./backtrace.dump");
+    boost::stacktrace::stacktrace st = boost::stacktrace::stacktrace::from_dump(ifs);
+    SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(st));
 #endif
     std::exit(signal);
 }
@@ -142,8 +160,9 @@ connect_signals_handler()
         fs::remove("./backtrace.dump");
     }
 #endif
-    std::signal(SIGABRT, signal_handler);
-    std::signal(SIGSEGV, signal_handler);
+    std::signal(SIGABRT, &signal_handler);
+    std::signal(SIGSEGV, &signal_handler);
+    std::signal(SIGTERM, &signal_handler);
 }
 
 static void
@@ -214,6 +233,26 @@ init_dpi()
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
         should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
+
+#ifdef __APPLE__
+    auto is_apple_translated = []() {
+        int    ret  = 0;
+        size_t size = sizeof(ret);
+        if (sysctlbyname("sysctl.proc_translated", &ret, &size, NULL, 0) == -1)
+        {
+            if (errno == ENOENT)
+                return 0;
+            return -1;
+        }
+        return ret;
+    };
+    if (is_apple_translated() == 1)
+    {
+        SPDLOG_INFO("You are on apple M1 chipset running an Intel application, forcing NativeTextRendering");
+        QQuickWindow::setTextRenderType(QQuickWindow::TextRenderType::NativeTextRendering);
+    }
+#endif
+    // QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
 }
 
 static void
@@ -244,11 +283,6 @@ run_app(int argc, char** argv)
     qInstallMessageHandler(&qt_message_handler);
 #endif
 
-#ifdef __APPLE__
-#    if defined(NDEBUG)
-        //folly::init(&argc, &argv, false);
-#    endif
-#endif
     init_logging();
     connect_signals_handler();
     init_timezone_db();
@@ -261,6 +295,9 @@ run_app(int argc, char** argv)
 
     //! App declaration
     atomic_dex::application atomic_app;
+
+    //! Qt utilities declaration.
+    atomic_dex::qt_utilities qt_utilities;
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
@@ -275,14 +312,15 @@ run_app(int argc, char** argv)
 
     //! QT QML
     engine.addImportPath("qrc:///");
-    QZXing::registerQMLTypes();
-    QZXing::registerQMLImageProvider(engine);
     qRegisterMetaType<MarketMode>("MarketMode");
     qmlRegisterUncreatableType<atomic_dex::MarketModeGadget>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
     qRegisterMetaType<TradingError>("TradingError");
     qmlRegisterUncreatableType<atomic_dex::TradingErrorGadget>("AtomicDEX.TradingError", 1, 0, "TradingError", "Not creatable as it is an enum type");
+    qRegisterMetaType<CoinType>("CoinType");
+    qmlRegisterUncreatableType<atomic_dex::CoinTypeGadget>("AtomicDEX.CoinType", 1, 0, "CoinType", "Not creatable as it is an enum type");
 
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+    engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);

@@ -7,7 +7,7 @@ import "../../Constants"
 import ".."
 
 OrdersPage {
-    page_index: General.idx_exchange_history
+    page_index: idx_exchange_history
 
     title: filter_enabled ? qsTr("Filtered Swaps") : qsTr("Recent Swaps")
     empty_text: qsTr("You don't have recent orders.")

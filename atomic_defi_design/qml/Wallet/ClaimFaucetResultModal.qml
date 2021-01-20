@@ -10,24 +10,18 @@ BasicModal {
 
     id: root
     width: 1200
-    enabled: false
 
     ModalContent {
         id: status
 
+        title: claiming_faucet_rpc_result && claiming_faucet_rpc_result.status ?
+                   claiming_faucet_rpc_result.status : ""
+
         DefaultText {
             id: message
+
+            text_value: claiming_faucet_rpc_result && claiming_faucet_rpc_result.message ?
+                            claiming_faucet_rpc_result.message : ""
         }
-    }
-
-    function onClaimFaucetRpcResultChanged() {
-        root.enabled = true
-        root.visible = true
-        status.title = qsTr(claiming_faucet_rpc_result.status)
-        message.text_value = qsTr(claiming_faucet_rpc_result.message)
-    }
-
-    Component.onCompleted: {
-        api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
     }
 }
