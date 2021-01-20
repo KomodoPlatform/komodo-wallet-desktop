@@ -36,7 +36,7 @@ if (APPLE)
 endif ()
 ############################ END VCPKG PREREQUISITES ##############################
 
-project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.1)
+project(atomicdex-desktop LANGUAGES CXX VERSION 0.4.0)
 
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
