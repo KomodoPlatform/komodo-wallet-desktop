@@ -229,6 +229,7 @@ namespace atomic_dex
         QStringList out;
         out.reserve(m_config.available_fiat.size());
         for (auto&& cur_fiat: m_config.available_fiat) { out.push_back(QString::fromStdString(cur_fiat)); }
+        out.sort();
         return out;
     }
 
