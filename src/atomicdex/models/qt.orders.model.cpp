@@ -350,6 +350,8 @@ namespace atomic_dex
             update_value(OrdersRoles::CancellableRole, contents.is_cancellable, idx, *this);
             update_value(OrdersRoles::IsMakerRole, contents.order_type == "maker", idx, *this);
             update_value(OrdersRoles::OrderTypeRole, contents.order_type, idx, *this);
+            update_value(OrdersRoles::BaseCoinAmountCurrentCurrencyRole, contents.base_amount_fiat, idx, *this);
+            update_value(OrdersRoles::RelCoinAmountCurrentCurrencyRole, contents.rel_amount_fiat, idx, *this);
             if (contents.order_type == "maker")
             {
                 update_value(OrdersRoles::BaseCoinAmountRole, contents.base_amount, idx, *this);
