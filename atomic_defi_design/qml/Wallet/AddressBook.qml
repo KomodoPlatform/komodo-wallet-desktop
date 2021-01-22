@@ -87,7 +87,7 @@ ColumnLayout {
 
             FloatingBackground {
                 id: background
-                width: parent.width - 2 * 18
+                width: parent.width - 36
                 height: 50
                 anchors.centerIn: parent
 
@@ -95,7 +95,7 @@ ColumnLayout {
                     Layout.preferredHeight: parent.height
                     DefaultText { // Show Contact Name
                         Layout.leftMargin: 20
-                        Layout.preferredWidth: 120
+                        Layout.preferredWidth: 150
 
                         text: modelData.name
                         color: Style.colorText
@@ -110,14 +110,14 @@ ColumnLayout {
                     RowLayout { // Tags Row
                         id: tags_row_layout
 
-                        readonly property int tag_column_width: 164
-                        readonly property int tag_column_nb: 5
+                        readonly property int tag_column_width: 175
+                        readonly property int tag_column_nb: 6
 
                         Layout.preferredWidth: tag_column_width * tag_column_nb + 5
 
                         Flow {
                             Repeater {    // Contact tags, display 5 maximum.
-                                model: 5
+                                model: 6
                                 delegate: ColumnLayout {
                                     Qaterial.OutlineButton {
                                         Layout.preferredWidth: tags_row_layout.tag_column_width
@@ -139,7 +139,6 @@ ColumnLayout {
                     }
 
                     RowLayout {    // Edit Or Remove Contact
-                        Layout.leftMargin: 8
                         PrimaryButton { // Edit Button
                             text: qsTr("Edit")
                             font.pixelSize: Style.textSizeSmall3
@@ -147,7 +146,6 @@ ColumnLayout {
                             onClicked: edit_contact_modal.open()
                         }
                         DangerButton { // Remove Button
-                            Layout.rightMargin: 1
                             text: qsTr("Remove")
                             font.pixelSize: Style.textSizeSmall3
 
