@@ -143,3 +143,8 @@ else ()
     message(STATUS "Found wally -> ${unofficial-wally} ${unofficial-wally-headers}")
 endif ()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
+
+if (APPLE)
+    find_library(APPLE_APP_KIT AppKit)
+    find_library(APPLE_LOCAL_AUTHENTICATION LocalAuthentication)
+endif ()

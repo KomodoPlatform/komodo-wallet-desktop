@@ -17,6 +17,9 @@
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.settings.page.hpp"
 #include "qt.wallet.page.hpp"
+#ifdef __APPLE__
+    #include "atomicdex/platform/osx/authentication.hpp"
+#endif
 
 namespace atomic_dex
 {
@@ -30,9 +33,9 @@ namespace atomic_dex
     wallet_page::update() noexcept
     {
     }
-} // namespace atomic_dex
+}
 
-//! Properties
+//! Getters/Setters
 namespace atomic_dex
 {
     QString
@@ -71,8 +74,7 @@ namespace atomic_dex
             emit rpcClaimingStatusChanged();
         }
     }
-
-
+    
     bool
     wallet_page::is_claiming_faucet_busy() const noexcept
     {
@@ -256,6 +258,11 @@ namespace atomic_dex
         m_send_rpc_result = rpc_data.toJsonObject();
         emit sendDataChanged();
     }
+    
+    bool wallet_page::has_auth_succeeded() const noexcept
+    {
+        return m_auth_succeeded;
+    }
 } // namespace atomic_dex
 
 //! Public api
@@ -373,7 +380,24 @@ namespace atomic_dex
     void
     wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) noexcept
     {
-        //! Preparation
+#ifdef __APPLE__
+        evaluate_authentication("send coins.",
+                                [=](bool is_auth) { broadcast_on_auth_finished(is_auth, tx_hex, is_claiming, is_max, amount); });
+#else
+        broadcast_on_auth_finished(true, tx_hex, is_claiming, is_max, amount);
+#endif
+    }
+    
+    void wallet_page::broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
+    {
+        if (!is_auth)
+        {
+            m_auth_succeeded = false;
+            emit auth_succeededChanged();
+            return;
+        }
+        m_auth_succeeded = true;
+        emit auth_succeededChanged();
         this->set_rpc_broadcast_data("");
         this->set_broadcast_busy(true);
         auto&               mm2_system = m_system_manager.get_system<mm2_service>();
@@ -383,41 +407,41 @@ namespace atomic_dex
         nlohmann::json      json_data = ::mm2::api::template_request("send_raw_transaction");
         ::mm2::api::to_json(json_data, broadcast_request);
         batch.push_back(json_data);
-
+    
         //! Answer
         auto answer_functor = [this, is_claiming, is_max, amount](web::http::http_response resp) {
-            std::string body = TO_STD_STR(resp.extract_string(true).get());
-            if (resp.status_code() == 200)
-            {
-                auto&       mm2_system = m_system_manager.get_system<mm2_service>();
-                const auto& ticker     = mm2_system.get_current_ticker();
-                auto        answers    = nlohmann::json::parse(body);
-                // SPDLOG_INFO("broadcast answer: {}", answers.dump(4));
-                if (answers[0].contains("tx_hash"))
-                {
-                    this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
-                    if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && is_max))
-                    {
-                        mm2_system.reset_fake_balance_to_zero(ticker);
-                    }
-                    else if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && not is_max))
-                    {
-                        mm2_system.decrease_fake_balance(ticker, amount.toStdString());
-                    }
-                    mm2_system.fetch_infos_thread();
-                }
-                else
-                {
-                    this->set_rpc_broadcast_data(QString::fromStdString(body));
-                }
-            }
-            else
-            {
-                this->set_rpc_broadcast_data(QString::fromStdString(body));
-            }
-            this->set_broadcast_busy(false);
+          std::string body = TO_STD_STR(resp.extract_string(true).get());
+          if (resp.status_code() == 200)
+          {
+              auto&       mm2_system = m_system_manager.get_system<mm2_service>();
+              const auto& ticker     = mm2_system.get_current_ticker();
+              auto        answers    = nlohmann::json::parse(body);
+              // SPDLOG_INFO("broadcast answer: {}", answers.dump(4));
+              if (answers[0].contains("tx_hash"))
+              {
+                  this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
+                  if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && is_max))
+                  {
+                      mm2_system.reset_fake_balance_to_zero(ticker);
+                  }
+                  else if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && not is_max))
+                  {
+                      mm2_system.decrease_fake_balance(ticker, amount.toStdString());
+                  }
+                  mm2_system.fetch_infos_thread();
+              }
+              else
+              {
+                  this->set_rpc_broadcast_data(QString::fromStdString(body));
+              }
+          }
+          else
+          {
+              this->set_rpc_broadcast_data(QString::fromStdString(body));
+          }
+          this->set_broadcast_busy(false);
         };
-
+    
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
             .then(&handle_exception_pplx_task);
