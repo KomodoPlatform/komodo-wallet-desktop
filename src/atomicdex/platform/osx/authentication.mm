@@ -10,9 +10,9 @@ void atomic_dex::evaluate_authentication(const QString& auth_reason, std::functi
                                                     encoding:[NSString defaultCStringEncoding]];
     LAContext* ctx = [[LAContext alloc] init];
 
-    if ([ctx canEvaluatePolicy:LAPolicy::LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error] != 0)
+    if ([ctx canEvaluatePolicy:LAPolicy::LAPolicyDeviceOwnerAuthentication error:&error] != 0)
     {
-        [ctx evaluatePolicy:LAPolicy::LAPolicyDeviceOwnerAuthenticationWithBiometrics
+        [ctx evaluatePolicy:LAPolicy::LAPolicyDeviceOwnerAuthentication
             localizedReason:localized_reason
                       reply: ^(BOOL success, [[maybe_unused]] NSError* __nullable err)
                       {
@@ -27,26 +27,6 @@ void atomic_dex::evaluate_authentication(const QString& auth_reason, std::functi
                                   handler(true);
                                   return;
                               }
-                      }
-        ];
-    }
-    else if ([ctx canEvaluatePolicy:LAPolicy::LAPolicyDeviceOwnerAuthentication error:&error] != 0)
-    {
-        [ctx evaluatePolicy:LAPolicy::LAPolicyDeviceOwnerAuthentication
-            localizedReason:localized_reason
-                      reply: ^(BOOL success, [[maybe_unused]] NSError* __nullable err)
-                      {
-                          if ((error != nullptr) || (success == 0))
-                          {
-                              handler(false);
-                              return;
-                          }
-    
-                          if (success != 0)
-                          {
-                              handler(true);
-                              return;
-                          }
                       }
         ];
     }
