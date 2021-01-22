@@ -19,7 +19,6 @@
 
 //! Project headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/utilities/qt.utilities.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
 
 namespace atomic_dex

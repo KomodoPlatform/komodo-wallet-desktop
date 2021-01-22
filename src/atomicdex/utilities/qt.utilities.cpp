@@ -14,9 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! QT Headers
 #include <QClipboard>
 #include <QGuiApplication>
