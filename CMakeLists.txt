@@ -370,7 +370,7 @@ set_target_properties(${PROJECT_NAME}_tests
 target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
 #set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
 if (APPLE)
-    set_source_files_properties(src/atomicdex/platform/osx/manager.mm src/atomicdex/platform/osx/authentication.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
     #set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
     #set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
