@@ -252,7 +252,6 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
 
         ##! Platform
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/atomicdex/platform/osx/manager.mm>
-        $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/atomicdex/platform/osx/authentication.mm>
         )
 
 target_compile_definitions(atomicdex-desktop_shared_deps
@@ -301,8 +300,6 @@ target_link_libraries(atomicdex-desktop_shared_deps
         #spdlog::spdlog_header_only
         cpprestsdk::cpprest
         Qaterial
-        $<$<PLATFORM_ID:Darwin>:${APPLE_APP_KIT}>
-        $<$<PLATFORM_ID:Darwin>:${APPLE_LOCAL_AUTHENTICATION}>
         )
 
 target_include_directories(atomicdex-desktop_shared_deps
