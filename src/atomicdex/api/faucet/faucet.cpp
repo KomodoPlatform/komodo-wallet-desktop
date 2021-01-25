@@ -19,7 +19,7 @@
 
 //! Project Headers
 #include "atomicdex/constants/http.code.hpp"
-#include "faucet.hpp"
+#include "atomicdex/api/faucet/faucet.hpp"
 
 namespace
 {
@@ -45,7 +45,7 @@ namespace atomic_dex::faucet::api
     claim_result
     get_claim_result(const web::http::http_response& claim_response)
     {
-        std::string resp_body = TO_STD_STR(claim_response.extract_string(true).get());
+        const std::string resp_body = TO_STD_STR(claim_response.extract_string(true).get());
 
         //! request success.
         if (claim_response.status_code() == e_http_code::ok)
