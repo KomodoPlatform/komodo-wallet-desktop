@@ -360,5 +360,15 @@
         <file>atomic_defi_design/assets/images/coins/s4f.png</file>
         <file>atomic_defi_design/assets/images/coins/cgcx.png</file>
         <file>atomic_defi_design/assets/images/coins/shr.png</file>
+        <file>atomic_defi_design/assets/images/coins/ink.png</file>
+        <file>atomic_defi_design/assets/images/coins/spc.png</file>
+        <file>atomic_defi_design/assets/images/coins/hpy.png</file>
+        <file>atomic_defi_design/assets/images/coins/hlc.png</file>
+        <file>atomic_defi_design/assets/images/coins/med.png</file>
+        <file>atomic_defi_design/assets/images/coins/lstr.png</file>
+        <file>atomic_defi_design/assets/images/coins/qbt.png</file>
+        <file>atomic_defi_design/assets/images/coins/oc.png</file>
+        <file>atomic_defi_design/assets/images/coins/put.png</file>
+        <file>atomic_defi_design/assets/images/coins/zat.png</file>
     </qresource>
 </RCC>
