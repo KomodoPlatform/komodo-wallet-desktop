@@ -88,10 +88,6 @@ namespace atomic_dex
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
         }
-        /*if (j.contains("need_electrum"))
-        {
-            cfg.need_electrum = j.at("need_electrum").get<bool>();
-        }*/
         if (j.contains("is_testnet"))
         {
             cfg.is_testnet = j.at("is_testnet").get<bool>();
