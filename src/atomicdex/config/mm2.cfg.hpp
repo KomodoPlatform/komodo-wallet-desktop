@@ -34,7 +34,6 @@ namespace atomic_dex
         int64_t                  netid{7777};
         std::vector<std::string> seednodes{"195.201.91.96", "195.201.91.53", "168.119.174.126"};
 #ifdef _WIN32
-        // std::string userhome{std::getenv("HOMEPATH")};
         std::string userhome{utils::u8string(fs::path(_wgetenv(L"HOMEPATH")))};
 #else
         std::string userhome{std::getenv("HOME")};
