@@ -19,7 +19,7 @@
 
 //! Project Headers
 #include "atomicdex/constants/http.code.hpp"
-#include "faucet.hpp"
+#include "atomicdex/api/faucet/faucet.hpp"
 
 namespace
 {
