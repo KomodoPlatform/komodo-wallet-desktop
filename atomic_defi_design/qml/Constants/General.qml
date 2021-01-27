@@ -409,7 +409,12 @@ QtObject {
     }
 
     readonly property var supported_pairs: ({
+                                                "AAVE/BTC": "BINANCE:AAVEBTC",
+                                                "AAVE/BUSD": "BINANCE:AAVEBUSD",
+                                                "AAVE/ETH": "BINANCE:AAVEETH",
                                                 "UNI/BTC": "BINANCE:UNIBTC",
+                                                "UNI/BUSD": "BINANCE:UNIBUSD",
+                                                "UNI/ETH": "KRAKEN:UNIETH",
                                                 "KMD/BTC": "BINANCE:KMDBTC",
                                                 "KMD/ETH": "BINANCE:KMDETH",
                                                 "KMD/BUSD": "BINANCE:KMDBUSD",
