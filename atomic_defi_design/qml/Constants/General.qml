@@ -392,7 +392,7 @@ QtObject {
         case TradingError.BaseTransactionFeesNotEnough:
             return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.base_transaction_fees, fee_info.base_transaction_fees_ticker))
         case TradingError.RelTransactionFeesNotEnough:
-            return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.rel_transaction_fees, fee_info.rel_transaction_fee_ticker))
+            return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.rel_transaction_fees, fee_info.rel_transaction_fees_ticker))
         case TradingError.BalanceIsLessThanTheMinimalTradingAmount:
             return qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
         case TradingError.PriceFieldNotFilled:
@@ -409,7 +409,15 @@ QtObject {
     }
 
     readonly property var supported_pairs: ({
+                                                "AAVE/BTC": "BINANCE:AAVEBTC",
+                                                "AAVE/BUSD": "BINANCE:AAVEBUSD",
+                                                "AAVE/ETH": "BINANCE:AAVEETH",
+                                                "BNT/BTC": "BINANCE:BNTBTC",
+                                                "BNT/BUSD": "BINANCE:BNTBUSD",
+                                                "BNT/ETH": "BINANCE:BNTETH",
                                                 "UNI/BTC": "BINANCE:UNIBTC",
+                                                "UNI/BUSD": "BINANCE:UNIBUSD",
+                                                "UNI/ETH": "KRAKEN:UNIETH",
                                                 "KMD/BTC": "BINANCE:KMDBTC",
                                                 "KMD/ETH": "BINANCE:KMDETH",
                                                 "KMD/BUSD": "BINANCE:KMDBUSD",
