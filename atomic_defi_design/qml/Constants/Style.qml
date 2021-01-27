@@ -265,6 +265,7 @@ QtObject {
                                           "ZEC": "#ECB244",
                                           "ZER": "#FFFFFF",
                                           "NAV": "#7D59B5",
+                                          "DP": "#E41D25",
                                           "ECA": "#A915DC",
                                           "QTUM": "#2E9AD0",
                                           "CHIPS": "#598182",
