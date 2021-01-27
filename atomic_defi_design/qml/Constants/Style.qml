@@ -302,6 +302,23 @@ QtObject {
                                           "SPACE": "#E44C65",
                                           "QC": "#00D7B3",
                                           "PBC": "#64A3CB",
+                                          "AAVE": "#9C64A6",
+                                          "BNT": "#000D2B",
+                                          "CEL": "#4055A6",
+                                          "COMP": "#00DBA3",
+                                          "CRO": "#243565",
+                                          "ENJ": "#6752C3",
+                                          "KNC": "#117980",
+                                          "LEO": "#F79B2C",
+                                          "LINK": "#356CE4",
+                                          "LRC": "#32C2F8",
+                                          "MANA": "#FF3C6C",
+                                          "MKR": "#1BAF9F",
+                                          "SNX": "#00D1FF",
+                                          "STORJ": "#2683FF",
+                                          "WBTC": "#201A2D",
+                                          "YFI": "#006BE6",
+                                          "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
                                       })
 }
