@@ -1368,7 +1368,7 @@ namespace atomic_dex
         const auto& mm2             = m_system_manager.get_system<mm2_service>();
         auto        total_amount    = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
         auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
-        qDebug() << "fees multi_ticker: " << fees;
+        //qDebug() << "fees multi_ticker: " << fees;
         set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
         this->determine_multi_ticker_error_cases(ticker, fees);
     }
