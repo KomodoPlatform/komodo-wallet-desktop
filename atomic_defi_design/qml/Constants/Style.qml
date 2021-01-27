@@ -299,6 +299,7 @@ QtObject {
                                           "VRA": "#D70A41",
                                           "SPACE": "#E44C65",
                                           "QC": "#00D7B3",
-                                          "PBC": "#64A3CB"
+                                          "PBC": "#64A3CB",
+                                          "UNI": "#FF007A"
                                       })
 }
