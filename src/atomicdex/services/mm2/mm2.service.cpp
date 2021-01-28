@@ -924,21 +924,30 @@ namespace atomic_dex
 
 
         //! Swaps preparation
-        std::size_t total           = 0;
-        std::size_t nb_active_swaps = 0;
-        std::size_t current_page    = 0;
-        std::size_t limit           = 0;
+        std::size_t       total           = 0;
+        std::size_t       nb_active_swaps = 0;
+        std::size_t       current_page    = 0;
+        std::size_t       limit           = 0;
+        t_filtering_infos filter_infos;
         {
             auto value_ptr  = m_orders_and_swaps.synchronize();
             total           = value_ptr->total_swaps;
             nb_active_swaps = value_ptr->active_swaps;
             current_page    = value_ptr->current_page;
             limit           = value_ptr->limit;
+            filter_infos    = value_ptr->filtering_infos;
         }
 
         //! First time fetch or current page
         nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
-        t_my_recent_swaps_request request{.limit = limit, .page_number = current_page};
+        t_my_recent_swaps_request request{
+            .limit          = limit,
+            .page_number    = current_page,
+            .my_coin        = filter_infos.my_coin,
+            .other_coin     = filter_infos.other_coin,
+            .from_timestamp = filter_infos.from_timestamp,
+            .to_timestamp   = filter_infos.to_timestamp,
+            };
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
 
@@ -1578,10 +1587,10 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::set_orders_and_swaps_pagination_infos(std::size_t current_page, std::size_t limit)
+    mm2_service::set_orders_and_swaps_pagination_infos(std::size_t current_page, std::size_t limit, t_filtering_infos filter_infos)
     {
         {
-            m_orders_and_swaps = orders_and_swaps{.current_page = current_page, .limit = limit};
+            m_orders_and_swaps = orders_and_swaps{.current_page = current_page, .limit = limit, .filtering_infos = std::move(filter_infos)};
         }
         this->batch_fetch_orders_and_swap(true);
     }

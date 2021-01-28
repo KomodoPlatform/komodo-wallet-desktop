@@ -182,10 +182,12 @@ namespace atomic_dex
     void
     orders_proxy_model::set_filter_minimum_date(QDate date)
     {
-        m_min_date = date;
-        emit filterMinimumDateChanged();
-        this->invalidate();
-        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        m_min_date                  = date;
+        std::size_t from_timestamp  = m_min_date.startOfDay().toSecsSinceEpoch();
+        auto*       model           = qobject_cast<orders_model*>(this->sourceModel());
+        auto        filter_infos    = model->get_filtering_infos();
+        filter_infos.from_timestamp = from_timestamp;
+        model->set_filtering_infos(filter_infos);
     }
 
     QDate
@@ -197,10 +199,12 @@ namespace atomic_dex
     void
     orders_proxy_model::set_filter_maximum_date(QDate date)
     {
-        m_max_date = date;
-        emit filterMaximumDateChanged();
-        this->invalidate();
-        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        m_max_date                = date;
+        std::size_t to_timestamp  = m_max_date.startOfDay().toSecsSinceEpoch();
+        auto*       model         = qobject_cast<orders_model*>(this->sourceModel());
+        auto        filter_infos  = model->get_filtering_infos();
+        filter_infos.to_timestamp = to_timestamp;
+        model->set_filtering_infos(filter_infos);
     }
 
     bool
