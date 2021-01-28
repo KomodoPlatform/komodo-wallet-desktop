@@ -971,6 +971,26 @@ namespace mm2::api
         {
             j["page_number"] = request.page_number.value();
         }
+
+        if (request.my_coin.has_value())
+        {
+            j["my_coin"] = request.my_coin.value();
+        }
+
+        if (request.other_coin.has_value())
+        {
+            j["other_coin"] = request.other_coin.value();
+        }
+
+        if (request.from_timestamp.has_value())
+        {
+            j["from_timestamp"] = request.from_timestamp.value();
+        }
+
+        if (request.to_timestamp.has_value())
+        {
+            j["to_timestamp"] = request.to_timestamp.value();
+        }
     }
 
     void

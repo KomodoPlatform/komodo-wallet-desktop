@@ -34,6 +34,12 @@ namespace atomic_dex
         std::size_t total_swaps{0};  ///< total number of available swaps
         std::size_t limit{50};       ///< nb_elements / page
 
+        //! Filtering
+        std::optional<std::string> my_coin;        ///< base_coin
+        std::optional<std::string> other_coin;     ///< rel_coin
+        std::optional<std::size_t> from_timestamp; ///< start date
+        std::optional<std::size_t> to_timestamp;   ///< end date
+
         /**
          * orders_and_swaps in the following order
          *
