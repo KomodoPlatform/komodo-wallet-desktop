@@ -120,7 +120,14 @@ namespace atomic_dex
         {
             return false;
         }
-        auto data = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        auto data      = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        auto timestamp = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
+        auto date      = QDateTime::fromMSecsSinceEpoch(timestamp).date();
+
+        if (not this->m_is_history && not date_in_range(date))
+        {
+            return false;
+        }
 
         assert(not data.isEmpty());
 
@@ -139,6 +146,36 @@ namespace atomic_dex
             }
         }
 
+        if (not this->m_is_history && this->filterRole() == orders_model::OrdersRoles::TickerPairRole)
+        {
+            const auto pattern = this->filterRegExp().pattern().toStdString();
+            if (pattern.find("/") != std::string::npos)
+            {
+                std::vector<std::string> out;
+                boost::algorithm::split(out, pattern, boost::is_any_of("/"));
+                auto base_coin = this->sourceModel()->data(idx, orders_model::OrdersRoles::BaseCoinRole).toString();
+                auto rel_coin  = this->sourceModel()->data(idx, orders_model::OrdersRoles::RelCoinRole).toString();
+                if (out.size() >= 2)
+                {
+                    const auto& left_pattern  = out[0];
+                    const auto& right_pattern = out[1];
+                    if (left_pattern == "All" && right_pattern == "All")
+                    {
+                        return true;
+                    }
+                    if (left_pattern == "All" && right_pattern == rel_coin.toStdString())
+                    {
+                        return true;
+                    }
+                    if (right_pattern == "All" && left_pattern == base_coin.toStdString())
+                    {
+                        return true;
+                    }
+                    return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+                }
+            }
+        }
+
         return true;
     }
 
@@ -153,7 +190,15 @@ namespace atomic_dex
     {
         m_min_date = date;
         emit filterMinimumDateChanged();
-        this->set_apply_filtering(true);
+        if (not this->m_is_history)
+        {
+            this->invalidate();
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        }
+        else
+        {
+            this->set_apply_filtering(true);
+        }
     }
 
     QDate
@@ -167,7 +212,15 @@ namespace atomic_dex
     {
         m_max_date = date;
         emit filterMaximumDateChanged();
-        this->set_apply_filtering(true);
+        if (not this->m_is_history)
+        {
+            this->invalidate();
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        }
+        else
+        {
+            this->set_apply_filtering(true);
+        }
     }
 
     bool
@@ -196,7 +249,14 @@ namespace atomic_dex
     {
         SPDLOG_INFO("filter pattern: {}", to_filter.toStdString());
         this->setFilterFixedString(to_filter);
-        this->set_apply_filtering(true);
+        if (this->m_is_history)
+        {
+            this->set_apply_filtering(true);
+        }
+        else
+        {
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        }
     }
 
     void
