@@ -947,7 +947,7 @@ namespace atomic_dex
             .other_coin     = filter_infos.other_coin,
             .from_timestamp = filter_infos.from_timestamp,
             .to_timestamp   = filter_infos.to_timestamp,
-            };
+        };
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
 
@@ -957,7 +957,7 @@ namespace atomic_dex
         to_json(active_swaps, active_swaps_request);
         batch.push_back(active_swaps);
 
-        auto answer_functor = [this, limit, after_manual_reset](web::http::http_response resp) {
+        auto answer_functor = [this, limit, filter_infos, after_manual_reset](web::http::http_response resp) {
             spdlog::stopwatch stopwatch;
 
             //! Parsing Resp
@@ -974,6 +974,7 @@ namespace atomic_dex
             result.orders_and_swaps = std::move(orders_answers.orders);
             result.orders_registry  = std::move(orders_answers.orders_id);
             result.limit            = limit;
+            result.filtering_infos  = filter_infos;
 
             //! Recent swaps
             result.active_swaps = active_swaps_answer.uuids.size();

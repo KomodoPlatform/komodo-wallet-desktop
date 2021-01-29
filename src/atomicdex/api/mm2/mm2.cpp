@@ -991,6 +991,7 @@ namespace mm2::api
         {
             j["to_timestamp"] = request.to_timestamp.value();
         }
+        //SPDLOG_INFO("Full request: {}", j.dump(4));
     }
 
     void
@@ -1146,6 +1147,7 @@ namespace mm2::api
             double average                        = sum / values.size();
             results.average_events_time[evt_name] = average;
         }
+        SPDLOG_INFO("total pages: {}", results.total_pages);
     }
 
     void
