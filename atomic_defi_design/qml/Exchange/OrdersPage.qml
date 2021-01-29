@@ -164,6 +164,7 @@ Item {
 
                 // Apply Filter Button
                 PrimaryButton {
+                    visible: root.is_history
                     Layout.leftMargin: 30
                     text: qsTr("Apply Filter")
                     enabled: list_model_proxy.can_i_apply_filtering
@@ -173,6 +174,7 @@ Item {
                 // Cancel button
                 DangerButton {
                     visible: !root.is_history
+                    Layout.leftMargin: 30
                     text: qsTr("Cancel Displayed Orders")
                     enabled: list_model.length > 0
                     onClicked: API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
