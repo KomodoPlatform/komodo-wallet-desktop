@@ -166,7 +166,7 @@ Item {
                 PrimaryButton {
                     Layout.leftMargin: 30
                     text: qsTr("Apply Filter")
-                    enabled: list_model.length > 0 && list_model_proxy.can_i_apply_filtering
+                    enabled: list_model_proxy.can_i_apply_filtering
                     onClicked: list_model_proxy.apply_all_filtering()
                 }
 
