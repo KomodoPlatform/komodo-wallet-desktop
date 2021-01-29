@@ -9,7 +9,7 @@ import ".."
 OrdersPage {
     page_index: idx_exchange_history
 
-    title: filter_enabled ? qsTr("Filtered Swaps") : qsTr("Recent Swaps")
+    title: qsTr("Recent Swaps")
     empty_text: qsTr("You don't have recent orders.")
     is_history: true
 }
