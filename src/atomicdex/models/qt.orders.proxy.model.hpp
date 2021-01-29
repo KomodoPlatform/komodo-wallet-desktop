@@ -28,6 +28,7 @@ namespace atomic_dex
         Q_PROPERTY(bool is_history READ am_i_in_history WRITE set_is_history NOTIFY isHistoryChanged);
         Q_PROPERTY(QDate filter_minimum_date READ filter_minimum_date WRITE set_filter_minimum_date NOTIFY filterMinimumDateChanged);
         Q_PROPERTY(QDate filter_maximum_date READ filter_maximum_date WRITE set_filter_maximum_date NOTIFY filterMaximumDateChanged);
+        Q_PROPERTY(bool can_i_apply_filtering READ get_apply_filtering WRITE set_apply_filtering NOTIFY filteringStatusChanged);
 
       public:
         //! Constructor
@@ -37,8 +38,10 @@ namespace atomic_dex
         ~orders_proxy_model() noexcept final = default;
 
         [[nodiscard]] bool am_i_in_history() const noexcept;
+        void               set_is_history(bool is_history) noexcept;
 
-        void set_is_history(bool is_history) noexcept;
+        [[nodiscard]] bool get_apply_filtering() const noexcept;
+        void               set_apply_filtering(bool status) noexcept;
 
         [[nodiscard]] QDate filter_minimum_date() const;
         void                set_filter_minimum_date(QDate date);
@@ -58,6 +61,7 @@ namespace atomic_dex
         void isHistoryChanged();
         void filterMinimumDateChanged();
         void filterMaximumDateChanged();
+        void filteringStatusChanged();
 
       protected:
         //! Override member functions
@@ -68,6 +72,7 @@ namespace atomic_dex
         [[nodiscard]] bool date_in_range(QDate date) const;
 
         bool m_is_history{false};
+        bool m_is_filtering_applicable{false};
 
         QDate m_min_date;
         QDate m_max_date;

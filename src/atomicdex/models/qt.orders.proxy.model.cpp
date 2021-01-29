@@ -153,6 +153,7 @@ namespace atomic_dex
     {
         m_min_date = date;
         emit filterMinimumDateChanged();
+        this->set_apply_filtering(true);
     }
 
     QDate
@@ -166,6 +167,7 @@ namespace atomic_dex
     {
         m_max_date = date;
         emit filterMaximumDateChanged();
+        this->set_apply_filtering(true);
     }
 
     bool
@@ -194,6 +196,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("filter pattern: {}", to_filter.toStdString());
         this->setFilterFixedString(to_filter);
+        this->set_apply_filtering(true);
     }
 
     void
@@ -269,5 +272,21 @@ namespace atomic_dex
         }
 
         model->set_filtering_infos(filter_infos);
+        this->set_apply_filtering(false);
+    }
+
+    bool
+    orders_proxy_model::get_apply_filtering() const noexcept
+    {
+        return m_is_filtering_applicable;
+    }
+    void
+    orders_proxy_model::set_apply_filtering(bool status) noexcept
+    {
+        if (m_is_filtering_applicable != status)
+        {
+            m_is_filtering_applicable = status;
+            emit filteringStatusChanged();
+        }
     }
 } // namespace atomic_dex
