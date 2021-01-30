@@ -280,7 +280,6 @@
         <file>atomic_defi_design/assets/images/coins/wbtc.png</file>
         <file>atomic_defi_design/assets/images/coins/okb.png</file>
         <file>atomic_defi_design/assets/images/coins/leo.png</file>
-        <file>atomic_defi_design/assets/images/coins/cfi.png</file>
         <file>atomic_defi_design/assets/images/coins/hex.png</file>
         <file>atomic_defi_design/assets/images/coins/thx.png</file>
         <file>atomic_defi_design/assets/images/coins/cro.png</file>
@@ -328,7 +327,6 @@
         <file>atomic_defi_design/assets/images/coins/sxp.png</file>
         <file>atomic_defi_design/assets/images/coins/chz.png</file>
         <file>atomic_defi_design/assets/images/coins/yfii.png</file>
-        <file>atomic_defi_design/assets/images/coins/iotx.png</file>
         <file>atomic_defi_design/assets/images/coins/paxg.png</file>
         <file>atomic_defi_design/assets/images/coins/skl.png</file>
         <file>atomic_defi_design/assets/images/coins/pnk.png</file>
@@ -343,7 +341,6 @@
         <file>atomic_defi_design/assets/images/coins/mln.png</file>
         <file>atomic_defi_design/assets/images/coins/ttt.png</file>
         <file>atomic_defi_design/assets/images/coins/npxs.png</file>
-        <file>atomic_defi_design/assets/images/coins/hyn.png</file>
         <file>atomic_defi_design/assets/images/coins/eum.png</file>
         <file>atomic_defi_design/assets/images/coins/xor.png</file>
         <file>atomic_defi_design/assets/images/coins/mco.png</file>
@@ -368,6 +365,8 @@
         <file>atomic_defi_design/assets/images/coins/qbt.png</file>
         <file>atomic_defi_design/assets/images/coins/oc.png</file>
         <file>atomic_defi_design/assets/images/coins/put.png</file>
+        <file>atomic_defi_design/assets/images/coins/soulja.png</file>
+        <file>atomic_defi_design/assets/images/coins/wsb.png</file>
         <file>atomic_defi_design/assets/images/coins/zat.png</file>
     </qresource>
 </RCC>
