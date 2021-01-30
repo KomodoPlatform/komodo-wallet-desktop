@@ -106,18 +106,25 @@ namespace atomic_dex
             break;
         case IsSwapRole:
             item.is_swap = value.toBool();
+            break;
         case IsRecoverableRole:
             item.is_recoverable = value.toBool();
+            break;
         case OrderErrorStateRole:
             item.order_error_state = value.toString();
+            break;
         case OrderErrorMessageRole:
             item.order_error_message = value.toString();
+            break;
         case EventsRole:
             item.events = value.toJsonArray();
+            break;
         case SuccessEventsRole:
             item.success_events = value.toStringList();
+            break;
         case ErrorEventsRole:
             item.error_events = value.toStringList();
+            break;
         }
 
         emit dataChanged(index, index, {role});
@@ -404,6 +411,7 @@ namespace atomic_dex
         SPDLOG_INFO("Full initialization, inserting {} elements, nb_elements / page {}", size, contents.limit);
         beginResetModel();
         m_model_data = std::move(contents);
+        SPDLOG_INFO("IS_MAKER: {}: BASE_COIN: {}", m_model_data.orders_and_swaps[contents.nb_orders].is_maker, m_model_data.orders_and_swaps[contents.nb_orders].base_coin.toStdString());
         endResetModel();
         m_orders_id_registry = std::move(m_model_data.orders_registry);
         m_swaps_id_registry  = std::move(m_model_data.swaps_registry);
