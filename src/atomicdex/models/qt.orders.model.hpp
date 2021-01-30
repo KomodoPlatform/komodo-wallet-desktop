@@ -104,6 +104,10 @@ namespace atomic_dex
         void                              set_fetching_busy(bool fetching_status) noexcept;
         [[nodiscard]] int                 get_nb_pages() const noexcept;
 
+        //! getter
+        [[nodiscard]] t_filtering_infos get_filtering_infos() const noexcept;
+        void                            set_filtering_infos(t_filtering_infos infos) noexcept;
+
 
       signals:
         void lengthChanged();

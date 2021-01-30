@@ -971,6 +971,27 @@ namespace mm2::api
         {
             j["page_number"] = request.page_number.value();
         }
+
+        if (request.my_coin.has_value())
+        {
+            j["my_coin"] = request.my_coin.value();
+        }
+
+        if (request.other_coin.has_value())
+        {
+            j["other_coin"] = request.other_coin.value();
+        }
+
+        if (request.from_timestamp.has_value())
+        {
+            j["from_timestamp"] = request.from_timestamp.value();
+        }
+
+        if (request.to_timestamp.has_value())
+        {
+            j["to_timestamp"] = request.to_timestamp.value();
+        }
+        // SPDLOG_INFO("Full request: {}", j.dump(4));
     }
 
     void
@@ -990,12 +1011,12 @@ namespace mm2::api
         contents.success_events = vector_std_string_to_qt_string_list(j.at("success_events").get<std::vector<std::string>>());
         contents.order_id       = QString::fromStdString(j.at("uuid").get<std::string>());
         contents.order_type     = QString::fromStdString(boost::algorithm::to_lower_copy(j.at("type").get<std::string>()));
-        const bool is_maker     = contents.order_type == "maker";
+        contents.is_maker       = contents.order_type == "maker";
         contents.is_recoverable = j.at("recoverable").get<bool>();
-        contents.base_coin      = is_maker ? maker_coin : taker_coin;
-        contents.rel_coin       = is_maker ? taker_coin : maker_coin;
-        contents.base_amount    = is_maker ? maker_amount : taker_amount;
-        contents.rel_amount     = is_maker ? taker_amount : maker_amount;
+        contents.base_coin      = contents.is_maker ? maker_coin : taker_coin;
+        contents.rel_coin       = contents.is_maker ? taker_coin : maker_coin;
+        contents.base_amount    = contents.is_maker ? maker_amount : taker_amount;
+        contents.rel_amount     = contents.is_maker ? taker_amount : maker_amount;
 
         nlohmann::json events_array = nlohmann::json::array();
 
@@ -1070,8 +1091,8 @@ namespace mm2::api
         contents.order_status     = determine_order_status_from_last_event(events_array, contents.error_events);
         contents.is_swap          = true;
         contents.is_cancellable   = false;
-        contents.maker_payment_id = determine_payment_id(events_array, is_maker, false);
-        contents.taker_payment_id = determine_payment_id(events_array, is_maker, true);
+        contents.maker_payment_id = determine_payment_id(events_array, contents.is_maker, false);
+        contents.taker_payment_id = determine_payment_id(events_array, contents.is_maker, true);
 
         auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
             contents.base_coin.toStdString(), contents.base_amount.toStdString(), contents.rel_coin.toStdString(), contents.rel_amount.toStdString());
@@ -1126,6 +1147,7 @@ namespace mm2::api
             double average                        = sum / values.size();
             results.average_events_time[evt_name] = average;
         }
+        SPDLOG_INFO("total pages: {}", results.total_pages);
     }
 
     void

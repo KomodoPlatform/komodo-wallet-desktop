@@ -459,7 +459,7 @@
     <message>
         <location filename="../../qml/Components/CexInfoModal.qml" line="15"/>
         <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coinpaprika.com&quot;&gt;Coinpaprika&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
-        <translation>Рыночные данные (цены, графики и т. д.), отмеченные значком ⓘ, получены из сторонних источников. & lt; br & gt; & lt; br & gt; Данные получены от & lt; a href = & quot; https: // bandprotocol. com / & gt; Band Decentralized Oracle & lt; / a & gt; и & lt; a href = & quot; https: //coinpaprika.com&quot; & gt; Coinpaprika & lt; / a & gt;. & lt; br & gt; & lt; br & gt; & lt; b & gt; Пары, поддерживаемые Oracle: & lt; / b & gt; & lt; br 1 & lt; br & gt; & lt; br & gt; & lt; b & gt; Последняя ссылка (Band Oracle): & lt; / b & gt; & lt; br & gt; & lt; a href = & quot;% 2 & quot; & gt;% 2 & lt; / a & gt; </translation>
+        <translation>unfinished</translation>
     </message>
 </context>
 <context>
@@ -2698,7 +2698,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Support/Support.qml" line="163"/>
         <source>AtomicDEX is available for mobile on both &lt;a href=&quot;https://atomicdex.io/&quot;&gt;Android and iPhone, and for desktop on Windows, Mac, and Linux&lt;/a&gt; operating systems.</source>
-        <translation>AtomicDEX доступен для мобильных устройств как на & lt; a href = & quot; https: //atomicdex.io/&quot; & gt; Android и iPhone, так и для настольных ПК на Windows, Mac и Linux & lt; / a & gt;</translation>
+        <translation>unfinished</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="167"/>

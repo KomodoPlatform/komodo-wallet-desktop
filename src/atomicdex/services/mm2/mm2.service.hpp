@@ -256,7 +256,7 @@ namespace atomic_dex
         void add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept;
 
         //! Pagination
-        void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50);
+        void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});
     };
 } // namespace atomic_dex
 
