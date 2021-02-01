@@ -308,6 +308,7 @@ QtObject {
                                           "AGI": "#6815FF",
                                           "BAND": "#526BFF",
                                           "BNT": "#000D2B",
+                                          "BTCZ": "#F5B036",
                                           "CEL": "#4055A6",
                                           "CENNZ": "#2E87F1",
                                           "COMP": "#00DBA3",
