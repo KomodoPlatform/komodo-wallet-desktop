@@ -48,11 +48,15 @@ namespace atomic_dex
     void
     exporter_service::export_swaps_history_to_csv(const QString& path)
     {
-        fs::path csv_path = path.toStdString();
+        std::string str_path = path.toStdString();
+        fs::path    csv_path = str_path;
+
         if (not csv_path.has_extension())
         {
-            SPDLOG_INFO("csv path doesn't contains .csv, adding it");
-            csv_path = csv_path / ".csv";
+            SPDLOG_WARN("csv path doesn't contains file extensions adding it");
+            str_path += ".csv";
+            csv_path = str_path;
+            SPDLOG_INFO("new csv path is: {}", csv_path.string());
         }
         nlohmann::json            batch           = nlohmann::json::array();
         nlohmann::json            my_recent_swaps = ::mm2::api::template_request("my_recent_swaps");
