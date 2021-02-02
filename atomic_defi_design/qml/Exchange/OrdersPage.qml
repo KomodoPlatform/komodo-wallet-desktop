@@ -208,7 +208,7 @@ Item {
 
                         // Export
                         console.log("Exporting to CSV: " + path)
-                        API.app.orders_mdl.orders_proxy_mdl.export_csv_visible_history(path.replace(General.os_file_prefix, ""))
+                        API.app.exporter_service.export_swaps_history_to_csv(path.replace(General.os_file_prefix, ""))
 
                         // Open the save folder
                         const folder_path = path.substring(0, path.lastIndexOf("/"))
