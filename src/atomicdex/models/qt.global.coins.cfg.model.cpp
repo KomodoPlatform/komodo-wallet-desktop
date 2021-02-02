@@ -253,6 +253,12 @@ namespace atomic_dex
     {
         return to_qt_binding(get_coin_info(ticker.toStdString()));
     }
+    
+    bool
+    global_coins_cfg_model::is_coin_type(const QString& ticker) const noexcept
+    {
+        return get_all_coin_types().contains(ticker);
+    }
 } // namespace atomic_dex
 
 //! Getters/Setters
