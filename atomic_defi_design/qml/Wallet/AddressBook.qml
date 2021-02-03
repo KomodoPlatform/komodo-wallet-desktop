@@ -92,7 +92,7 @@ ColumnLayout {
 
         DefaultText {
             anchors.right: parent.right
-            anchors.rightMargin: 20
+            anchors.rightMargin: parent.width * 0.138
             anchors.verticalCenter: parent.verticalCenter
             color: Style.colorWhite4
             text: qsTr("Actions")
