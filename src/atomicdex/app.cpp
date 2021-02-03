@@ -35,6 +35,7 @@
 
 //! Project Headers
 #include "atomicdex/app.hpp"
+#include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 
@@ -264,6 +265,7 @@ namespace atomic_dex
         system_manager_.create_system<band_oracle_price_service>();
         system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<update_service_checker>(this);
+        system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
 
@@ -650,6 +652,18 @@ namespace atomic_dex
         return ptr;
     }
 } // namespace atomic_dex
+
+//! Exporter service
+namespace atomic_dex
+{
+    exporter_service*
+    application::get_exporter_service() const noexcept
+    {
+        auto ptr = const_cast<exporter_service*>(std::addressof(system_manager_.get_system<exporter_service>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+}
 
 //! Wallet_mgr
 namespace atomic_dex

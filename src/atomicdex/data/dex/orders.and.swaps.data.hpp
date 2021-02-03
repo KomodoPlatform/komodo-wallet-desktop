@@ -5,13 +5,16 @@
 
 namespace atomic_dex
 {
-    struct index_data
+    struct filtering_infos
     {
-        std::string first_uuid;
-        std::string last_uuid;
-        bool        is_visited{false};
+        //! Filtering
+        std::optional<std::string> my_coin;        ///< base_coin
+        std::optional<std::string> other_coin;     ///< rel_coin
+        std::optional<std::size_t> from_timestamp; ///< start date
+        std::optional<std::size_t> to_timestamp;   ///< end date
     };
 
+    using t_filtering_infos = filtering_infos;
 
     struct orders_and_swaps
     {
@@ -34,11 +37,7 @@ namespace atomic_dex
         std::size_t total_swaps{0};  ///< total number of available swaps
         std::size_t limit{50};       ///< nb_elements / page
 
-        //! Filtering
-        std::optional<std::string> my_coin;        ///< base_coin
-        std::optional<std::string> other_coin;     ///< rel_coin
-        std::optional<std::size_t> from_timestamp; ///< start date
-        std::optional<std::size_t> to_timestamp;   ///< end date
+        t_filtering_infos filtering_infos;
 
         /**
          * orders_and_swaps in the following order

@@ -60,6 +60,7 @@
         <file>atomic_defi_design/assets/images/coins/bat.png</file>
         <file>atomic_defi_design/assets/images/coins/btc.png</file>
         <file>atomic_defi_design/assets/images/coins/btch.png</file>
+        <file>atomic_defi_design/assets/images/coins/btcz.png</file>
         <file>atomic_defi_design/assets/images/coins/bch.png</file>
         <file>atomic_defi_design/assets/images/coins/bet.png</file>
         <file>atomic_defi_design/assets/images/coins/bots.png</file>
@@ -112,7 +113,7 @@
         <file>atomic_defi_design/assets/images/coins/vra.png</file>
         <file>atomic_defi_design/assets/images/coins/vrsc.png</file>
         <file>atomic_defi_design/assets/images/coins/qc.png</file>
-        <file>atomic_defi_design/assets/images/coins/pbc.png</file>
+        <file>atomic_defi_design/assets/images/coins/sfusd.png</file>
         <file>atomic_defi_design/assets/images/coins/vote2020.png</file>
         <file>atomic_defi_design/assets/images/coins/wlc.png</file>
         <file>atomic_defi_design/assets/images/coins/tusd.png</file>
@@ -280,7 +281,6 @@
         <file>atomic_defi_design/assets/images/coins/wbtc.png</file>
         <file>atomic_defi_design/assets/images/coins/okb.png</file>
         <file>atomic_defi_design/assets/images/coins/leo.png</file>
-        <file>atomic_defi_design/assets/images/coins/cfi.png</file>
         <file>atomic_defi_design/assets/images/coins/hex.png</file>
         <file>atomic_defi_design/assets/images/coins/thx.png</file>
         <file>atomic_defi_design/assets/images/coins/cro.png</file>
@@ -325,11 +325,9 @@
         <file>atomic_defi_design/assets/images/coins/trac.png</file>
         <file>atomic_defi_design/assets/images/coins/ubt.png</file>
         <file>atomic_defi_design/assets/images/coins/gno.png</file>
-        <file>atomic_defi_design/assets/images/coins/brc.png</file>
         <file>atomic_defi_design/assets/images/coins/sxp.png</file>
         <file>atomic_defi_design/assets/images/coins/chz.png</file>
         <file>atomic_defi_design/assets/images/coins/yfii.png</file>
-        <file>atomic_defi_design/assets/images/coins/iotx.png</file>
         <file>atomic_defi_design/assets/images/coins/paxg.png</file>
         <file>atomic_defi_design/assets/images/coins/skl.png</file>
         <file>atomic_defi_design/assets/images/coins/pnk.png</file>
@@ -344,7 +342,6 @@
         <file>atomic_defi_design/assets/images/coins/mln.png</file>
         <file>atomic_defi_design/assets/images/coins/ttt.png</file>
         <file>atomic_defi_design/assets/images/coins/npxs.png</file>
-        <file>atomic_defi_design/assets/images/coins/hyn.png</file>
         <file>atomic_defi_design/assets/images/coins/eum.png</file>
         <file>atomic_defi_design/assets/images/coins/xor.png</file>
         <file>atomic_defi_design/assets/images/coins/mco.png</file>
@@ -358,10 +355,10 @@
         <file>atomic_defi_design/assets/images/coins/uqc.png</file>
         <file>atomic_defi_design/assets/images/coins/uos.png</file>
         <file>atomic_defi_design/assets/images/coins/s4f.png</file>
-        <file>atomic_defi_design/assets/images/coins/cgcx.png</file>
         <file>atomic_defi_design/assets/images/coins/shr.png</file>
         <file>atomic_defi_design/assets/images/coins/ink.png</file>
         <file>atomic_defi_design/assets/images/coins/spc.png</file>
+        <file>atomic_defi_design/assets/images/coins/tsl.png</file>
         <file>atomic_defi_design/assets/images/coins/hpy.png</file>
         <file>atomic_defi_design/assets/images/coins/hlc.png</file>
         <file>atomic_defi_design/assets/images/coins/med.png</file>
@@ -369,6 +366,8 @@
         <file>atomic_defi_design/assets/images/coins/qbt.png</file>
         <file>atomic_defi_design/assets/images/coins/oc.png</file>
         <file>atomic_defi_design/assets/images/coins/put.png</file>
+        <file>atomic_defi_design/assets/images/coins/soulja.png</file>
+        <file>atomic_defi_design/assets/images/coins/wsb.png</file>
         <file>atomic_defi_design/assets/images/coins/zat.png</file>
     </qresource>
 </RCC>
