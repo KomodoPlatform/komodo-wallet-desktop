@@ -15,7 +15,7 @@ BasicModal {
 
         title: qsTr("Create a new contact")
 
-        //! Contact name input.
+        // Contact name input.
         DefaultTextField {
             id: name_input
             placeholderText: qsTr("Enter the contact name")
@@ -26,7 +26,7 @@ BasicModal {
                     text = text.substring(0, max_length)
             }
 
-            //! Error tooltip when contact name already exists.
+            // Error tooltip when contact name already exists.
             DefaultTooltip {
                 id: contact_alrady_exists_tooltip
                 visible: false
@@ -41,11 +41,11 @@ BasicModal {
             color: Style.colorWhite8
         }
 
-        //! Footer
+        // Footer
         RowLayout {
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
 
-            //! Validate button.
+            // Validate button.
             PrimaryButton {
                 text: qsTr("Confirm")
                 enabled: name_input.text.length > 0
@@ -55,8 +55,7 @@ BasicModal {
                         return;
                     }
 
-                    var create_contact_result =
-                        addressbook.page.model.add_contact(name_input.text.toString());
+                    var create_contact_result = API.app.addressbook_pg.model.add_contact(name_input.text.toString());
 
                     if (create_contact_result === false)
                     {
@@ -69,7 +68,7 @@ BasicModal {
                 }
             }
 
-            //! Cancel button.
+            // Cancel button.
             DefaultButton {
                 text: qsTr("Cancel")
 
