@@ -85,7 +85,7 @@ BasicModal {
                 Layout.topMargin: 10
                 Layout.fillWidth: true
 
-                placeholderText: qsTr("Search for an adress entry.")
+                placeholderText: qsTr("Search for an address entry.")
 
                 onTextChanged: contactModel.proxy_filter.search_expression = text
                 Component.onDestruction: contactModel.proxy_filter.search_expression = ""
