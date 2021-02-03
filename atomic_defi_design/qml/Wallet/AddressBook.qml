@@ -22,7 +22,7 @@ ColumnLayout {
     // Page header
     Item {
         Layout.fillWidth: true
-        height: 100
+        Layout.preferredHeight: 100
 
         DefaultText { // Title
             anchors.left: parent.left
@@ -64,7 +64,7 @@ ColumnLayout {
     // Contact List Header
     Item {
         Layout.fillWidth: true
-        height: 30
+        Layout.preferredHeight: 30
 
         HorizontalLine {
             anchors.top: parent.top
@@ -91,8 +91,8 @@ ColumnLayout {
         }
 
         DefaultText {
-            anchors.left: header_tags_column.right
-            anchors.leftMargin: 855
+            anchors.right: parent.right
+            anchors.rightMargin: 20
             anchors.verticalCenter: parent.verticalCenter
             color: Style.colorWhite4
             text: qsTr("Actions")
@@ -172,8 +172,8 @@ ColumnLayout {
             }
 
             VerticalLine {
-                anchors.left: contact_tags_list.right
-                anchors.leftMargin: 25
+                anchors.right: edit_contact_button.left
+                anchors.rightMargin: 30
                 height: parent.height
                 width: 1
             }
@@ -181,8 +181,8 @@ ColumnLayout {
             DefaultButton { // Edit Button
                 id: edit_contact_button
 
-                anchors.left: contact_tags_list.right
-                anchors.leftMargin: 50
+                anchors.right: remove_contact_button.left
+                anchors.leftMargin: 30
                 anchors.verticalCenter: parent.verticalCenter
 
                 text: qsTr("Edit")
@@ -196,8 +196,10 @@ ColumnLayout {
             }
 
             DangerButton { // Remove Button
-                anchors.left: edit_contact_button.right
-                anchors.leftMargin: 30
+                id: remove_contact_button
+
+                anchors.right: parent.right
+                anchors.rightMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
 
                 text: qsTr("Remove")
