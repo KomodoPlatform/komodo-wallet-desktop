@@ -250,6 +250,7 @@ QtObject {
                                           "ARPA": "#CCD9E2",
                                           "BCH": "#8DC351",
                                           "BTC": "#F7931A",
+                                          "CLC": "#0970DC",
                                           "FTC": "#FFFFFF",
                                           "GLEEC": "#8C41FF",
                                           "DOGE": "#C3A634",
