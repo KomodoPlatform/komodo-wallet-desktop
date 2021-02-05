@@ -276,6 +276,8 @@
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
+        <file>atomic_defi_design/assets/images/coins/arpa.png</file>
+        <file>atomic_defi_design/assets/images/coins/clc.png</file>
         <file>atomic_defi_design/assets/images/coins/1inch.png</file>
         <file>atomic_defi_design/assets/images/coins/link.png</file>
         <file>atomic_defi_design/assets/images/coins/wbtc.png</file>
