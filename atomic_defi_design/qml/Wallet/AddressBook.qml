@@ -182,7 +182,7 @@ ColumnLayout {
                 id: edit_contact_button
 
                 anchors.right: remove_contact_button.left
-                anchors.leftMargin: 30
+                anchors.rightMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
 
                 text: qsTr("Edit")
@@ -199,7 +199,7 @@ ColumnLayout {
                 id: remove_contact_button
 
                 anchors.right: parent.right
-                anchors.rightMargin: 20
+                anchors.rightMargin: 30
                 anchors.verticalCenter: parent.verticalCenter
 
                 text: qsTr("Remove")
