@@ -420,7 +420,7 @@ QtObject {
                                                 "ANT/ETH": "BITFINEX:ANTETH",
                                                 "ANT/BUSD": "BINANCE:ANTBUSD",
                                                 "ARPA/BTC": "BINANCE:ARPABTC",
-                                                "ARPA/HT": "HUOBI:ARPAHT"
+                                                "ARPA/HT": "HUOBI:ARPAHT",
                                                 "BAL/BTC": "BINANCE:BALBTC",
                                                 "BAL/ETH": "HUOBI:BALETH",
                                                 "BAL/BUSD": "BINANCE:BALBUSD",
