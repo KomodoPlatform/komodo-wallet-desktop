@@ -334,6 +334,7 @@ QtObject {
                                           "MKR": "#1BAF9F",
                                           "NPXS": "#F3CB00",
                                           "POWR": "#05BCAA",
+                                          "QI": "#FFFFFF",
                                           "QKC": "#2175B4",
                                           "QNT": "#46DDC8",
                                           "REP": "#0E0E21",
