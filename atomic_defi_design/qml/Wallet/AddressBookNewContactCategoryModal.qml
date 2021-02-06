@@ -10,6 +10,8 @@ BasicModal {
     id: root
     width: 500
 
+    property var contactModel
+
     ModalContent {
         Layout.fillWidth: true
         title: qsTr("Add a new tag")
@@ -40,7 +42,7 @@ BasicModal {
                 Layout.leftMargin: 90
                 text: qsTr("Add")
                 onClicked: {
-                    if (!modelData.add_category(name_input.text))
+                    if (!contactModel.add_category(name_input.text))
                     {
                         alrady_exists_tooltip.visible = true
                     }

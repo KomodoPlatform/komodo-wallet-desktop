@@ -335,9 +335,7 @@ BasicModal {
                     text: modelData
                     icon.source: Qaterial.Icons.closeOctagon
 
-                    onClicked: {
-                        category_repeater.contactModel.remove_category(contactModel);
-                    }
+                    onClicked: contactModel.remove_category(modelData);
                 }
             }
 
@@ -477,6 +475,9 @@ BasicModal {
         // Category (Tag) Adding Modal
         ModalLoader {
             id: add_category_modal
+
+            onLoaded: item.contactModel = root.contactModel
+
             sourceComponent: AddressBookNewContactCategoryModal {}
         }
     }

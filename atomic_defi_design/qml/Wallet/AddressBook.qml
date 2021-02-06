@@ -156,17 +156,17 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
 
                 Repeater {
-                    model: parent.length
+                    model: contact_card.contact.categories
 
                     delegate: Qaterial.OutlineButton {
                         width: contact_tags_list.tagButtonWidth
-                        visible: index < contact_card.contact.categories.length
+                        visible: index < contact_tags_list.length && index < contact_card.contact.categories.length
                         outlined: false
-                        text: contact_card.contact.categories[index]
+                        text: modelData
                         icon.source: Qaterial.Icons.tag
                         elide: Text.ElideRight
 
-                        onClicked: searchbar.text = contact_card.contact.categories[index]
+                        onClicked: searchbar.text = modelData
                     }
                 }
             }
