@@ -91,13 +91,14 @@ BasicModal {
                 text: qsTr("Validate")
 
                 onClicked: {
+                    if (isEdition) { // Removes old address entry before if we are in edition mode.
+                        console.debug("AddressBook: Replacing address %1:%2:%3 of contact %4"
+                                        .arg(oldWalletType).arg(oldKey).arg(oldValue).arg(contactModel.name))
+                        contactModel.remove_address_entry(oldWalletType, oldKey);
+                    }
+
                     var create_address_result = contactModel.add_address_entry(walletType, key, value);
                     if (create_address_result === true) {
-                        if (isEdition) { // Removes old address entry if we are in edition mode.
-                            console.debug("AddressBook: Replacing address %1:%2:%3 of contact %4"
-                                            .arg(oldWalletType).arg(oldKey).arg(oldValue).arg(contactModel.name))
-                            contactModel.remove_address_entry(oldWalletType, oldKey);
-                        }
                         console.debug("AddressBook: Address %1:%2:%3 created for contact %4"
                                         .arg(walletType).arg(key).arg(value).arg(contactModel.name))
                         root.close()
