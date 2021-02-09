@@ -219,10 +219,7 @@ BasicModal {
             DefaultButton {
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                 text: qsTr("Address Book")
-                onClicked: {
-                    dashboard.current_page = idx_dashboard_addressbook
-                    root.close()
-                }
+                onClicked: contact_list.open()
                 enabled: !root.is_send_busy
             }
         }
@@ -361,6 +358,20 @@ BasicModal {
                                            isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
             }
         ]
+
+        ModalLoader { // Modal to pick up a contact's address.
+            id: contact_list
+            sourceComponent: SendModalContactList {
+                onClosed: {
+                    if (selected_address === "") {
+                        return
+                    }
+                    input_address.field.text = selected_address
+                    selected_address = ""
+                    console.debug("SendModal: Selected %1 address from addressbook.".arg(input_address.field.text))
+                }
+            }
+        }
     }
 
     // Send Page

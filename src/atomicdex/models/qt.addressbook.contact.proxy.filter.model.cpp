@@ -30,15 +30,23 @@ namespace atomic_dex
     {
         QModelIndex idx = sourceModel()->index(source_row, 0, source_parent);
         assert(sourceModel()->hasIndex(idx.row(), 0));
-    
+        const auto address_type = idx.data(addressbook_contact_model::AddressTypeRole).toString();
+        
+        // Checks if type filter corresponds to address entry's type.
+        if (!m_filter_type.isEmpty() && m_filter_type != address_type)
+        {
+            return false;
+        }
+        
+        // Checks if search expression corresponds to address entry.
         if (m_search_expression.isEmpty())
         {
             return true;
         }
-        return idx.data(addressbook_contact_model::AddressTypeRole).toString().contains(m_search_expression, Qt::CaseInsensitive) ||
-               idx.data(addressbook_contact_model::AddressKeyRole).toString().contains(m_search_expression, Qt::CaseInsensitive) ||
-               idx.data(addressbook_contact_model::AddressTypeAndKeyRole).toString().contains(m_search_expression, Qt::CaseInsensitive) ||
-               idx.data(addressbook_contact_model::AddressValueRole).toString().contains(m_search_expression, Qt::CaseInsensitive);
+        return idx.data(addressbook_contact_model::AddressKeyRole).toString().contains(m_search_expression, Qt::CaseInsensitive) ||
+               idx.data(addressbook_contact_model::AddressValueRole).toString().contains(m_search_expression, Qt::CaseInsensitive) ||
+               address_type.contains(m_search_expression, Qt::CaseInsensitive) ||
+               idx.data(addressbook_contact_model::AddressTypeAndKeyRole).toString().contains(m_search_expression, Qt::CaseInsensitive);
     }
     
     bool addressbook_contact_proxy_filter_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -60,6 +68,17 @@ namespace atomic_dex
     void addressbook_contact_proxy_filter_model::set_search_expression(QString value) noexcept
     {
         m_search_expression = std::move(value);
+        invalidateFilter();
+    }
+    
+    const QString& addressbook_contact_proxy_filter_model::get_filter_type() const noexcept
+    {
+        return m_filter_type;
+    }
+    
+    void addressbook_contact_proxy_filter_model::set_filter_type(QString value) noexcept
+    {
+        m_filter_type = std::move(value);
         invalidateFilter();
     }
 }

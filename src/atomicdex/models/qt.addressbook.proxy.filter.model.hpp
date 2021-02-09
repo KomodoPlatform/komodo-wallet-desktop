@@ -16,8 +16,8 @@
 
 #pragma once
 
-//! Qt
-#include <QSortFilterProxyModel>
+// Qt Headers
+#include <QSortFilterProxyModel> //> QSortFilterProxyModel
 
 namespace atomic_dex
 {
@@ -27,24 +27,29 @@ namespace atomic_dex
         
         QString m_search_exp;
         
+        QString m_type_filter; // Contains the address type that a contact should have on one of its addresses to validate the filtering.
+        
     public:
         addressbook_proxy_model(QObject* parent);
         ~addressbook_proxy_model() final = default;
+        
+        // QSortFilterProxyModel Functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final; // Only if sort role equals addressbook_model::SubModelRole, sorts contacts by their name in ascending order.
+        [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;     // Only if filter role equals addressbook_model::NameRoleAndCategoriesRole, accepts rows which match each word (not case sensitive) of m_search_exp. Also filters contacts which have at least one address of type equivalent to the one specified by the member `m_filter_type`.
     
         // Getters/Setters
         [[nodiscard]] const QString& get_search_exp() const noexcept;
         void                         set_search_exp(QString expression) noexcept;
+        [[nodiscard]] const QString& get_type_filter() const noexcept;
+        void                         set_type_filter(QString value) noexcept;
         
         // QML Properties
         Q_PROPERTY(QString search_exp READ get_search_exp WRITE set_search_exp NOTIFY search_expChanged)
+        Q_PROPERTY(QString type_filter READ get_type_filter WRITE set_type_filter NOTIFY typeFilterChanged)
         
         // QML Properties Signals
     signals:
         void search_expChanged();
-      
-    protected:
-        // QSortFilterProxyModel Functions
-        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final; // Only if sort role equals addressbook_model::SubModelRole, sorts contacts by their name in ascending order.
-        [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;     // Only if filter role equals addressbook_model::NameRoleAndCategoriesRole, accepts rows which match each word (not case sensitive) of m_search_exp.
+        void typeFilterChanged();
     };
 } // namespace atomic_dex

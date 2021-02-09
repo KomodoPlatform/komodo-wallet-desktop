@@ -63,7 +63,14 @@ namespace atomic_dex
         [[nodiscard]] const QStringList&                      get_categories() const noexcept;
         void                                                  set_categories(QStringList categories) noexcept;
         [[nodiscard]] addressbook_contact_proxy_filter_model* get_proxy_filter() const noexcept;
+        [[nodiscard]] const QVector<address_entry>&           get_address_entries() const noexcept; // Returns contact's current addresses.
     
+        // Loads this model data from the persistent data.
+        void populate();
+    
+        // Clears this model data.
+        void clear();
+
         // QML API
         Q_INVOKABLE bool add_category(const QString& category) noexcept;                         // Adds a category to the current contact.
         Q_INVOKABLE void remove_category(const QString& category) noexcept;                      // Removes a category from the current contact.
@@ -82,13 +89,6 @@ namespace atomic_dex
         void nameChanged();
         void categoriesChanged();
         void proxyFilterChanged();
-
-      private:
-        // Loads this model data from the persistent data.
-        void populate();
-        
-        // Clears this model data.
-        void clear();
 
       private:
         ag::ecs::system_manager&                m_system_manager;

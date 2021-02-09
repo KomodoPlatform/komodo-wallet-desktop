@@ -26,6 +26,7 @@ namespace atomic_dex
         Q_OBJECT
         
         QString m_search_expression;
+        QString m_filter_type;
         
       public:
         explicit addressbook_contact_proxy_filter_model(QObject* parent);
@@ -33,6 +34,8 @@ namespace atomic_dex
         
         [[nodiscard]] const QString& get_search_expression() const noexcept;
         void                         set_search_expression(QString value) noexcept;
+        [[nodiscard]] const QString& get_filter_type() const noexcept;
+        void                         set_filter_type(QString value) noexcept;
         
         // QSortFilterProxyModel Functions
         [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
@@ -40,9 +43,11 @@ namespace atomic_dex
     
         // QML API Properties
         Q_PROPERTY(QString search_expression READ get_search_expression WRITE set_search_expression NOTIFY searchExpressionChanged)
+        Q_PROPERTY(QString filter_type READ get_filter_type WRITE set_filter_type NOTIFY filterTypeChanged)
         
         // QML API Properties Signals
       signals:
         void searchExpressionChanged();
+        void filterTypeChanged();
     };
 }

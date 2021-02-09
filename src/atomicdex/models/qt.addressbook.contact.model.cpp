@@ -129,6 +129,11 @@ namespace atomic_dex
     {
         return m_proxy_filter;
     }
+    
+    const QVector<addressbook_contact_model::address_entry>& addressbook_contact_model::get_address_entries() const noexcept
+    {
+        return m_address_entries;
+    }
 }
 
 // QML API
