@@ -253,6 +253,7 @@ QtObject {
                                           "CLC": "#0970DC",
                                           "FTC": "#FFFFFF",
                                           "GLEEC": "#8C41FF",
+                                          "GRS": "#377E96",
                                           "DOGE": "#C3A634",
                                           "ETH": "#627EEA",
                                           "KMD": "#2B6680",
