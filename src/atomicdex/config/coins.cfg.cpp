@@ -74,6 +74,10 @@ namespace atomic_dex
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
         j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
+        if (j.contains("coingecko_id"))
+        {
+            j.at("coingecko_id").get_to(cfg.coingecko_id);
+        }
         if (j.contains("is_custom_coin"))
         {
             cfg.is_custom_coin = true;

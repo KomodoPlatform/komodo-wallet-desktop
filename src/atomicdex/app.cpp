@@ -37,6 +37,7 @@
 #include "atomicdex/app.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 
 namespace
@@ -156,6 +157,7 @@ namespace atomic_dex
             system_manager_.create_system<mm2_service>(system_manager_);
 
             system_manager_.create_system<coinpaprika_provider>(system_manager_);
+            system_manager_.create_system<coingecko_provider>(system_manager_);
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
         }
@@ -264,6 +266,7 @@ namespace atomic_dex
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<band_oracle_price_service>();
         system_manager_.create_system<coinpaprika_provider>(system_manager_);
+        system_manager_.create_system<coingecko_provider>(system_manager_);
         system_manager_.create_system<update_service_checker>(this);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
@@ -363,6 +366,7 @@ namespace atomic_dex
         //! Mark systems
         system_manager_.mark_system<mm2_service>();
         system_manager_.mark_system<coinpaprika_provider>();
+        system_manager_.mark_system<coingecko_provider>();
 
         //! Disconnect signals
         get_trading_page()->disconnect_signals();

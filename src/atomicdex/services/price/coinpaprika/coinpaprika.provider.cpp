@@ -41,6 +41,7 @@ namespace atomic_dex
     coinpaprika_provider::coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) noexcept :
         system(registry), m_system_manager(system_manager)
     {
+        SPDLOG_INFO("coinpaprika_provider created");
         disable();
         dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
@@ -49,6 +50,7 @@ namespace atomic_dex
 
     coinpaprika_provider::~coinpaprika_provider() noexcept
     {
+        SPDLOG_INFO("coinpaprika_provider destroyed");
         dispatcher_.sink<mm2_started>().disconnect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().disconnect<&coinpaprika_provider::on_coin_enabled>(*this);
         dispatcher_.sink<coin_disabled>().disconnect<&coinpaprika_provider::on_coin_disabled>(*this);

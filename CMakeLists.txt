@@ -208,6 +208,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/mm2.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coingecko/coingecko.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/faucet/faucet.cpp
 
         ##! Models
@@ -244,6 +245,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/exporter/exporter.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/global.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coinpaprika/coinpaprika.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coingecko/coingecko.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/oracle/band.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/update/update.checker.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/ohlc/ohlc.provider.cpp
@@ -331,6 +333,9 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
+
+        ##! API
+        src/atomicdex/tests/api/coingecko/coingecko.tests.cpp
 
         ##! Utilities
         src/atomicdex/tests/utilities/qt.utilities.tests.cpp
