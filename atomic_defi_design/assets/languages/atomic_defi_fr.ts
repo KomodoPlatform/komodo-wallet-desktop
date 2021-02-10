@@ -159,42 +159,42 @@
 <context>
     <name>AddressBook</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="25"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="28"/>
         <source>Address Book</source>
         <translation>Carnet d&apos;adresses</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="35"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="37"/>
         <source>New Contact</source>
         <translation>Nouveau contact</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="50"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="54"/>
         <source>Search a contact by name or tags</source>
         <translation>Rechercher un contact par nom ou par tags</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="115"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="144"/>
         <source>Edit</source>
         <translation>Éditer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="124"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="151"/>
         <source>Remove</source>
         <translation>Retirer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="165"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="191"/>
         <source>Do you want to remove this contact ?</source>
         <translation>Voulez-vous supprimer ce contact ?</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="169"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="195"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="178"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="204"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
@@ -2181,28 +2181,28 @@
 <context>
     <name>RecoverSeedModal</name>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="45"/>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="89"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="46"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="90"/>
         <source>View seed and private keys</source>
         <translation>Afficher le seed et les clefs privées</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="53"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="54"/>
         <source>Please enter your password to view the seed.</source>
         <translation>Veuillez entrer votre mot de passe pour voir la phrase de récupération.</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="64"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="65"/>
         <source>Wrong Password</source>
         <translation>Mauvais mot de passe</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="73"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="74"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="162"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="188"/>
         <source>Backup seed</source>
         <translation>Seed de récuperation</translation>
     </message>
@@ -2222,7 +2222,7 @@
         <translation> Adresse copiée dans le presse-papiers</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="273"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="316"/>
         <source>Private Key</source>
         <translation>Clé privée</translation>
     </message>
@@ -2237,7 +2237,7 @@
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="80"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="81"/>
         <source>View</source>
         <translation>Voir</translation>
     </message>
