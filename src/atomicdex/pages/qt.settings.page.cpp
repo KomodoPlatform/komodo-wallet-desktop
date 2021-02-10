@@ -232,6 +232,21 @@ namespace atomic_dex
         out.sort();
         return out;
     }
+    
+    QStringList
+    settings_page::get_recommended_fiats() const
+    {
+        static const auto nb_recommended = 6;
+        QStringList out;
+        out.reserve(nb_recommended);
+        for (auto&& it = m_config.available_fiat.begin();
+             it != m_config.available_fiat.end() && it < m_config.available_fiat.begin() + nb_recommended;
+             it++)
+        {
+            out.push_back(QString::fromStdString(*it));
+        }
+        return out;
+    }
 
     QStringList
     settings_page::get_available_currencies() const
