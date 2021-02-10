@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -63,7 +63,6 @@ namespace atomic_dex
         std::string                     tx_uri{"tx/"};
         std::string                     address_url{"address/"};
         std::optional<nlohmann::json>   custom_backup;
-        // std::optional<bool>             need_electrum;     ///< If this is set to true even if we have a specific tag we force electrum call
         std::optional<bool> is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
         CoinType            coin_type;
         bool                checked{false};

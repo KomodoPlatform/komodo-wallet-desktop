@@ -200,7 +200,7 @@ namespace atomic_dex
         to_json_functor("asset", x.asset);
         to_json_functor("txversion", x.txversion);
         to_json_functor("overwintered", x.overwintered);
-        to_json_functor("requires_notarization", x.overwintered);
+        to_json_functor("requires_notarization", x.requires_notarization);
         to_json_functor("overwintered", x.overwintered);
         to_json_functor("isPoS", x.is_po_s);
         to_json_functor("segwit", x.segwit);

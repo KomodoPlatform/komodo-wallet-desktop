@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -24,6 +24,11 @@
 #include "atomicdex/constants/http.code.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
+namespace
+{
+    constexpr const std::size_t g_nb_hours_in_a_week{168};
+}
+
 namespace atomic_dex
 {
     namespace coinpaprika::api
@@ -32,7 +37,7 @@ namespace atomic_dex
         {
             std::string ticker_currency_id;
             std::size_t timestamp{static_cast<size_t>(
-                std::chrono::duration_cast<std::chrono::seconds>((std::chrono::system_clock::now() - std::chrono::hours(168)).time_since_epoch()).count())};
+                std::chrono::duration_cast<std::chrono::seconds>((std::chrono::system_clock::now() - std::chrono::hours(g_nb_hours_in_a_week)).time_since_epoch()).count())};
             std::string interval{"1d"};
         };
 

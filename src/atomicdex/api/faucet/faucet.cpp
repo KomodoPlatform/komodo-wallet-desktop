@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -18,14 +18,14 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "faucet.hpp"
 #include "atomicdex/constants/http.code.hpp"
+#include "atomicdex/api/faucet/faucet.hpp"
 
 namespace
 {
-    inline constexpr const char*    g_faucet_api_endpoint   = "https://faucet.komodo.live/faucet/";
-    inline auto                     g_faucet_api_client     = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_faucet_api_endpoint));
-}
+    constexpr const char* g_faucet_api_endpoint = "https://faucet.komodo.live/faucet/";
+    const auto            g_faucet_api_client   = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_faucet_api_endpoint));
+} // namespace
 
 namespace atomic_dex::faucet::api
 {
@@ -34,28 +34,28 @@ namespace atomic_dex::faucet::api
     {
         web::http::http_request http_request;
         web::uri_builder        uri_builder;
-    
+
         uri_builder.append_path(FROM_STD_STR(claim_req.coin_name));
         uri_builder.append_path(FROM_STD_STR(claim_req.wallet_address));
         http_request.set_request_uri(uri_builder.to_uri());
         http_request.set_method(web::http::methods::GET);
         return g_faucet_api_client->request(http_request);
     }
-    
+
     claim_result
     get_claim_result(const web::http::http_response& claim_response)
     {
-        std::string resp_body = TO_STD_STR(claim_response.extract_string(true).get());
-        
+        const std::string resp_body = TO_STD_STR(claim_response.extract_string(true).get());
+
         //! request success.
         if (claim_response.status_code() == e_http_code::ok)
         {
             auto resp_body_json = nlohmann::json::parse(resp_body);
-        
-            return faucet::api::claim_result {.message = resp_body_json.at("Result")["Message"].get<std::string>(),
-                                              .status  = resp_body_json.at("Status").get<std::string>()};
+
+            return faucet::api::claim_result{
+                .message = resp_body_json.at("Result")["Message"].get<std::string>(), .status = resp_body_json.at("Status").get<std::string>()};
         }
         //! request error.
-        return faucet::api::claim_result {.message = resp_body, .status = "Request Error"};
+        return faucet::api::claim_result{.message = resp_body, .status = "Request Error"};
     }
-}
+} // namespace atomic_dex::faucet::api
