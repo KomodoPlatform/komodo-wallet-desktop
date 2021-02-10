@@ -1,40 +1,62 @@
+// Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
+// Project Imports
 import "../Constants"
 import "../Components"
 
-//! Wallet information address creation modal
+// Contact address entry creation/edition modal
 BasicModal {
     id: root
 
-    width: 500
+    property var contactModel
 
-    onClosed: {
-        contact_new_address_key.text = ""
-        contact_new_address_value.text = ""
-    }
+    // Address Creation (false) or Edition (true) mode.
+    property bool isEdition: false
+
+    property alias walletType: wallet_type_list_modal.selected_wallet_type // The selected wallet type that will be associated this new address entry.
+    property alias key: contact_new_address_key.text                       // The entered key that will be associated to this new address entry.
+    property alias value: contact_new_address_value.text                   // The entered address value that will be associated to this new address entry.
+
+    // These properties are required in edition mode since we need to wipe out old address entry.
+    property string oldWalletType
+    property string oldKey
+    property string oldValue
+
+    width: 400
 
     ModalContent {
         Layout.topMargin: 5
         Layout.fillWidth: true
 
-        title: qsTr("Create a new address")
+        title: isEdition ? qsTr("Edit address entry") : qsTr("Create a new address")
 
+        // Wallet Type Selector
+        DefaultButton {
+            implicitWidth: parent.width
+
+            text: qsTr("Choose a wallet type, current: %1").arg(walletType === "" ? "NONE" : walletType)
+
+            onClicked: wallet_type_list_modal.open()
+        }
+
+        // Address Key Field
         DefaultTextField {
             id: contact_new_address_key
 
-            width: 100
+            Layout.topMargin: 5
+            implicitWidth: parent.width
 
             placeholderText: qsTr("Enter a name")
 
             onTextChanged: {
-                const max_length = 50
+                const max_length = 30
                 if (text.length > max_length)
                     text = text.substring(0, max_length)
             }
 
-            //! Error tooltip when key already exists.
+            // Error tooltip when key already exists.
             DefaultTooltip {
                 id: key_already_exists_tooltip
                 visible: false
@@ -44,10 +66,12 @@ BasicModal {
             }
         }
 
+        // Address Value Field
         DefaultTextField {
             id: contact_new_address_value
 
-            width: 100
+            Layout.topMargin: 5
+            implicitWidth: parent.width
 
             placeholderText: qsTr("Enter the address")
 
@@ -67,23 +91,44 @@ BasicModal {
                 text: qsTr("Validate")
 
                 onClicked: {
-                    var create_address_result = wallet_info_table.model.add_address_entry(contact_new_address_key.text, contact_new_address_value.text);
+                    if (isEdition) { // Removes old address entry before if we are in edition mode.
+                        console.debug("AddressBook: Replacing address %1:%2:%3 of contact %4"
+                                        .arg(oldWalletType).arg(oldKey).arg(oldValue).arg(contactModel.name))
+                        contactModel.remove_address_entry(oldWalletType, oldKey);
+                    }
 
+                    var create_address_result = contactModel.add_address_entry(walletType, key, value);
                     if (create_address_result === true) {
+                        console.debug("AddressBook: Address %1:%2:%3 created for contact %4"
+                                        .arg(walletType).arg(key).arg(value).arg(contactModel.name))
                         root.close()
                     }
                     else {
+                        console.debug("AddressBook: Failed to create address for contact %1: %2 key already exists"
+                                        .arg(contactModel.name).arg(key))
                         key_already_exists_tooltip.visible = true
                     }
                 }
 
-                enabled: contact_new_address_key.text.length > 0 && contact_new_address_value.text.length > 0
+                enabled: key.length > 0 && value.length > 0 && walletType !== ""
             }
 
             DefaultButton {
                 text: qsTr("Cancel")
 
                 onClicked: root.close()
+            }
+        }
+
+
+        ModalLoader {
+            id: wallet_type_list_modal
+
+            property string selected_wallet_type: ""
+
+            sourceComponent: AddressBookWalletTypeListModal
+            {
+                onSelected_wallet_typeChanged: wallet_type_list_modal.selected_wallet_type = selected_wallet_type
             }
         }
     }

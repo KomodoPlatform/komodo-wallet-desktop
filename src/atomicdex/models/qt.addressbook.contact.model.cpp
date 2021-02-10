@@ -14,32 +14,35 @@
  *                                                                            *
  ******************************************************************************/
 
-//! STD
+// STD
 #include <utility>
 
-//! Qt
+// Qt
 #include <QJsonDocument>
 
-//! Project
+// Project
 #include "atomicdex/pages/qt.portfolio.page.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-#include "qt.addressbook.contact.model.hpp"
+#include "atomicdex/managers/addressbook.manager.hpp"    //> addressbook_manager
+#include "qt.addressbook.contact.model.hpp"              //> addressbook_contact_model
+#include "qt.addressbook.contact.proxy.filter.model.hpp" //> addressbook_contact_proxy_filter_model
 
-
-//! Ctor
+// Ctor/Dtor
 namespace atomic_dex
 {
     addressbook_contact_model::addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent) :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_name(std::move(name))
+        QAbstractListModel(parent), m_system_manager(system_manager), m_name(std::move(name)), m_proxy_filter(new addressbook_contact_proxy_filter_model(this))
     {
         populate();
+        m_proxy_filter->setDynamicSortFilter(true);
+        m_proxy_filter->setSourceModel(this);
+        m_proxy_filter->sort(0);
     }
 
     addressbook_contact_model::~addressbook_contact_model() noexcept { clear(); }
-} // namespace atomic_dex
+}
 
-//! QAbstractListModel Functions
+// QAbstractListModel Functions
 namespace atomic_dex
 {
     QVariant
@@ -50,11 +53,17 @@ namespace atomic_dex
             return {};
         }
 
-        const auto& data = m_model_data.at(index.row());
+        const auto& address_entry = m_address_entries.at(index.row());
         switch (role)
         {
-        case ContactRoles::WalletInfoRole:
-            return QVariant::fromValue(data);
+        case ContactRoles::AddressTypeRole:
+            return address_entry.type;
+        case ContactRoles::AddressKeyRole:
+            return address_entry.key;
+        case ContactRoles::AddressValueRole:
+            return address_entry.value;
+        case ContactRoles::AddressTypeAndKeyRole: // Used for address entry removal.
+            return address_entry.type + address_entry.key;
         default:
             return {};
         }
@@ -63,19 +72,21 @@ namespace atomic_dex
     int
     addressbook_contact_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_model_data.size();
+        return m_address_entries.size();
     }
 
     QHash<int, QByteArray>
     addressbook_contact_model::roleNames() const
     {
         return {
-            {WalletInfoRole, "wallet_info"},
+            {AddressTypeRole, "address_type"},
+            {AddressKeyRole, "address_key"},
+            {AddressValueRole, "address_value"}
         };
     }
 } // namespace atomic_dex
 
-//! QML API
+// Getters/Setters
 namespace atomic_dex
 {
     const QString&
@@ -83,12 +94,12 @@ namespace atomic_dex
     {
         return m_name;
     }
-
+    
     void
     addressbook_contact_model::set_name(const QString& name) noexcept
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
-
+        
         if (name != m_name)
         {
             if (!m_name.isEmpty())
@@ -101,32 +112,33 @@ namespace atomic_dex
         }
     }
     
-    QVariant addressbook_contact_model::get_addresses(const QString& ticker)
-    {
-        auto data = std::find_if(m_model_data.begin(), m_model_data.end(), [ticker](auto* model)
-        {
-            return model->get_type() == ticker;
-        });
-        if (data != m_model_data.end())
-        {
-            return QVariant::fromValue(*data);
-        }
-        return {};
-    }
-
     const QStringList&
     addressbook_contact_model::get_categories() const noexcept
     {
         return m_categories;
     }
-
+    
     void
     addressbook_contact_model::set_categories(QStringList categories) noexcept
     {
         m_categories = std::move(categories);
         emit categoriesChanged();
     }
+    
+    addressbook_contact_proxy_filter_model* addressbook_contact_model::get_proxy_filter() const noexcept
+    {
+        return m_proxy_filter;
+    }
+    
+    const QVector<addressbook_contact_model::address_entry>& addressbook_contact_model::get_address_entries() const noexcept
+    {
+        return m_address_entries;
+    }
+}
 
+// QML API
+namespace atomic_dex
+{
     bool
     addressbook_contact_model::add_category(const QString& category) noexcept
     {
@@ -144,6 +156,40 @@ namespace atomic_dex
     {
         m_categories.removeOne(category);
         emit categoriesChanged();
+    }
+    
+    bool
+    addressbook_contact_model::add_address_entry(QString type, QString key, QString value) noexcept
+    {
+        // Returns false if the given key already exists.
+        auto res = match(index(0), AddressTypeAndKeyRole, type + key, 1, Qt::MatchFlag::MatchExactly);
+        if (not res.empty())
+        {
+            return false;
+        }
+    
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        m_address_entries.push_back(address_entry
+                                        {
+                                            .type = std::move(type),
+                                            .key = std::move(key),
+                                            .value = std::move(value)
+                                        });
+        endInsertRows();
+        return true;
+    }
+    
+    void
+    addressbook_contact_model::remove_address_entry(const QString& type, const QString& key) noexcept
+    {
+        auto res = match(index(0), AddressTypeAndKeyRole, type + key, 1, Qt::MatchFlag::MatchExactly);
+    
+        if (not res.empty())
+        {
+            beginRemoveRows(QModelIndex(), res.at(0).row(), res.at(0).row());
+            m_address_entries.removeAt(res.at(0).row());
+            endRemoveRows();
+        }
     }
 
     void
@@ -169,31 +215,52 @@ namespace atomic_dex
         addrbook_manager.remove_every_wallet_info(m_name.toStdString());
 
         // Saves inner model data.
-        for (auto& data: m_model_data) { data->save(); }
+        for (auto& address_entry: m_address_entries)
+        {
+            addrbook_manager.set_contact_wallet_info(m_name.toStdString(), address_entry.type.toStdString(),
+                                                     address_entry.key.toStdString(), address_entry.value.toStdString());
+        }
 
         addrbook_manager.save_configuration();
     }
 } // namespace atomic_dex
 
-//! Misc section.
+//! Others
 namespace atomic_dex
 {
     void
     addressbook_contact_model::populate()
     {
-        //! Loads categories.
+        // Loads categories.
         {
             auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
             auto& contact          = addrbook_manager.get_contact(m_name.toStdString());
 
             set_categories(vector_std_string_to_qt_string_list(contact.at("categories")));
         }
-        //! Loads inner model data (wallets info).
+        // Loads address entries.
         {
+            const auto& addrbook_manager       = m_system_manager.get_system<addressbook_manager>();
             const auto& portfolio_pg           = m_system_manager.get_system<portfolio_page>();
             const auto  coins_list             = portfolio_pg.get_global_cfg()->get_model_data();
-            const auto  create_addresses_model = [this](const QString& type) {
-                m_model_data.push_back(new addressbook_contact_addresses_model(m_system_manager, m_name, type, this));
+            const auto& coins_type_list        = portfolio_pg.get_global_cfg()->get_all_coin_types();
+            const auto  create_address_entries = [&](const QString& type)
+            {
+                if (!addrbook_manager.has_wallet_info(m_name.toStdString(), type.toStdString()))
+                {
+                    return;
+                }
+                const auto& addresses = addrbook_manager.get_wallet_info(m_name.toStdString(), type.toStdString()).at("addresses");
+    
+                for (auto it = addresses.begin(); it != addresses.end(); ++it)
+                {
+                    m_address_entries.push_back(address_entry
+                                                {
+                                                    .type = type,
+                                                    .key = QString::fromStdString(it.key()),
+                                                    .value = QString::fromStdString(it.value())
+                                                });
+                }
             };
 
             beginResetModel();
@@ -203,11 +270,16 @@ namespace atomic_dex
                 {
                     continue;
                 }
-                create_addresses_model(QString::fromStdString(coin.ticker));
+                create_address_entries(QString::fromStdString(coin.ticker));
             }
-            create_addresses_model("QRC-20");
-            create_addresses_model("ERC-20");
-            create_addresses_model("Smart Chain");
+            for (const auto& coin_type: coins_type_list)
+            {
+                if (coin_type == "UTXO")
+                {
+                    continue;
+                }
+                create_address_entries(coin_type);
+            }
             endResetModel();
         }
     }
@@ -217,15 +289,10 @@ namespace atomic_dex
     {
         // Clears categories.
         m_categories.clear();
-
+    
+        // Clears address entries.
         beginResetModel();
-        // Clears inner model data.
-        for (auto* inner_model: m_model_data)
-        {
-            inner_model->clear();
-            delete inner_model;
-        }
-        m_model_data.clear();
+        m_address_entries.clear();
         endResetModel();
     }
 } // namespace atomic_dex

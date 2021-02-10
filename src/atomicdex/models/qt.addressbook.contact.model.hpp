@@ -16,9 +16,12 @@
 
 #pragma once
 
-//! Project Headers
-#include "atomicdex/managers/addressbook.manager.hpp" //> addressbook_manager.
-#include "atomicdex/models/qt.addressbook.contact.addresses.model.hpp"
+// 3rdParty Headers
+#include <entt/core/attribute.h>                //> ENTT_API
+#include <antara/gaming/ecs/system.manager.hpp> //> ag::ecs::system_manager
+
+// Project Headers
+#include "qt.addressbook.contact.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {
@@ -28,11 +31,21 @@ namespace atomic_dex
         Q_OBJECT
       
         friend class addressbook_model;
+        
+        struct address_entry
+        {
+            QString type;
+            QString key;
+            QString value;
+        };
     
       public:
         enum ContactRoles
         {
-            WalletInfoRole = Qt::UserRole + 1
+            AddressTypeRole = Qt::UserRole + 1,
+            AddressKeyRole,
+            AddressValueRole,
+            AddressTypeAndKeyRole,
         };
         Q_ENUMS(ContactRoles)
 
@@ -45,41 +58,47 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         
         // Getters/Setters
-        [[nodiscard]] const QString&     get_name() const noexcept;
-        void                             set_name(const QString& name) noexcept;
-        [[nodiscard]] const QStringList& get_categories() const noexcept;
-        void                             set_categories(QStringList categories) noexcept;
+        [[nodiscard]] const QString&                          get_name() const noexcept;
+        void                                                  set_name(const QString& name) noexcept;
+        [[nodiscard]] const QStringList&                      get_categories() const noexcept;
+        void                                                  set_categories(QStringList categories) noexcept;
+        [[nodiscard]] addressbook_contact_proxy_filter_model* get_proxy_filter() const noexcept;
+        [[nodiscard]] const QVector<address_entry>&           get_address_entries() const noexcept; // Returns contact's current addresses.
     
+        // Loads this model data from the persistent data.
+        void populate();
+    
+        // Clears this model data.
+        void clear();
+
         // QML API
-        Q_INVOKABLE bool     add_category(const QString& category) noexcept;
-        Q_INVOKABLE void     remove_category(const QString& category) noexcept;
-        Q_INVOKABLE QVariant get_addresses(const QString& ticker);              // Returns the corresponding `addressbook_contact_addresses_model*` as `QVariant` according the given ticker
-        Q_INVOKABLE void     reload();                                          // Unloads model data then reloads its data from the persistent data.
-        Q_INVOKABLE void     save();                                            // Saves the model modifications in the persistent data.
+        Q_INVOKABLE bool add_category(const QString& category) noexcept;                         // Adds a category to the current contact.
+        Q_INVOKABLE void remove_category(const QString& category) noexcept;                      // Removes a category from the current contact.
+        Q_INVOKABLE bool add_address_entry(QString type, QString key, QString value) noexcept;   // Adds an address entry to the current contact. Returns false if the key already exists in the given wallet type, false otherwise.
+        Q_INVOKABLE void remove_address_entry(const QString& type, const QString& key) noexcept; // Removes an address entry from the current contact.
+        Q_INVOKABLE void reload();                                                               // Reinitializes data from the persistent data ignoring pending changes.
+        Q_INVOKABLE void save();                                                                 // Saves the current contact pending changes in the persistent data.
     
         // QML API Properties
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
         Q_PROPERTY(QStringList categories READ get_categories WRITE set_categories NOTIFY categoriesChanged)
+        Q_PROPERTY(addressbook_contact_proxy_filter_model* proxy_filter READ get_proxy_filter NOTIFY proxyFilterChanged)
         
         // QML API Properties Signals
       signals:
         void nameChanged();
         void categoriesChanged();
+        void proxyFilterChanged();
 
       private:
-        // Loads this model data from the persistent data.
-        void populate();
-        
-        // Clears this model data.
-        void clear();
-
-      private:
-        ag::ecs::system_manager&                          m_system_manager;
+        ag::ecs::system_manager&                m_system_manager;
     
-        QString                                           m_name;
+        QString                                 m_name;
     
-        QStringList                                       m_categories;
+        QStringList                             m_categories;
         
-        std::vector<addressbook_contact_addresses_model*> m_model_data;
+        QVector<address_entry>                  m_address_entries;
+    
+        addressbook_contact_proxy_filter_model* m_proxy_filter;
     };
 }

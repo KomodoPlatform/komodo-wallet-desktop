@@ -24,6 +24,7 @@
 
 //! Project
 #include "atomicdex/models/qt.addressbook.contact.model.hpp"
+#include "atomicdex/managers/addressbook.manager.hpp"
 
 #include "../atomic.dex.tests.hpp"
 
