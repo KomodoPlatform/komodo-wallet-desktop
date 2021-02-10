@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -252,6 +252,12 @@ namespace atomic_dex
     global_coins_cfg_model::get_coin_info(const QString& ticker) const noexcept
     {
         return to_qt_binding(get_coin_info(ticker.toStdString()));
+    }
+    
+    bool
+    global_coins_cfg_model::is_coin_type(const QString& ticker) const noexcept
+    {
+        return get_all_coin_types().contains(ticker);
     }
 } // namespace atomic_dex
 

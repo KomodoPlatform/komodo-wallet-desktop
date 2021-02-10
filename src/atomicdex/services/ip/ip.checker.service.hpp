@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -47,7 +47,7 @@ namespace atomic_dex
         boost::synchronized_value<std::string> m_external_ip;
         boost::synchronized_value<std::string> m_country;
         std::atomic_bool                       m_external_ip_authorized{true}; ///< true by default
-        const std::unordered_set<std::string>  m_non_authorized_countries{"CA", "IL", "IR", "SS", "USA", "HK", "SG", "AT"};
+        const std::unordered_set<std::string>  m_non_authorized_countries{"CA", "IL", "IR", "SS", "USA", "HK", "SG", "AT", "US"};
 
       signals:
         void ipAuthorizedStatusChanged();

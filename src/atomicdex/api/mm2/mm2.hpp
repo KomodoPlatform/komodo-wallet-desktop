@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -617,6 +617,12 @@ namespace mm2::api
         std::size_t                limit{50ull};
         std::optional<std::size_t> page_number{1};
         std::optional<std::string> from_uuid;
+
+        //! Filtering
+        std::optional<std::string> my_coin;        ///< base_coin
+        std::optional<std::string> other_coin;     ///< rel_coin
+        std::optional<std::size_t> from_timestamp; ///< start date
+        std::optional<std::size_t> to_timestamp;   ///< end date
     };
 
     void to_json(nlohmann::json& j, const my_recent_swaps_request& request);

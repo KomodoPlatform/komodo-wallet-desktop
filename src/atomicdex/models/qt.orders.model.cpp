@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -106,18 +106,25 @@ namespace atomic_dex
             break;
         case IsSwapRole:
             item.is_swap = value.toBool();
+            break;
         case IsRecoverableRole:
             item.is_recoverable = value.toBool();
+            break;
         case OrderErrorStateRole:
             item.order_error_state = value.toString();
+            break;
         case OrderErrorMessageRole:
             item.order_error_message = value.toString();
+            break;
         case EventsRole:
             item.events = value.toJsonArray();
+            break;
         case SuccessEventsRole:
             item.success_events = value.toStringList();
+            break;
         case ErrorEventsRole:
             item.error_events = value.toStringList();
+            break;
         }
 
         emit dataChanged(index, index, {role});
@@ -273,7 +280,8 @@ namespace atomic_dex
             this->set_fetching_busy(true);
             this->reset_backend(); ///< We change page, we need to clear, but do not notify the front-end
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-            mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(current_page), static_cast<std::size_t>(m_model_data.limit));
+            mm2.set_orders_and_swaps_pagination_infos(
+                static_cast<std::size_t>(current_page), static_cast<std::size_t>(m_model_data.limit), m_model_data.filtering_infos);
         }
     }
 
@@ -294,7 +302,8 @@ namespace atomic_dex
                 this->set_fetching_busy(true);
                 this->reset_backend(); ///< We change page, we need to clear, but do not notify the front-end
                 auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-                mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(m_model_data.current_page), static_cast<std::size_t>(limit));
+                mm2.set_orders_and_swaps_pagination_infos(
+                    static_cast<std::size_t>(m_model_data.current_page), static_cast<std::size_t>(limit), m_model_data.filtering_infos);
             }
             else
             {
@@ -542,15 +551,16 @@ namespace atomic_dex
         reset_backend();
         this->endResetModel();
     }
-    
+
     void
     orders_model::reset_backend() noexcept
     {
         SPDLOG_DEBUG("clearing orders in backend");
-        const auto limit = this->m_model_data.limit;
+        const auto limit     = this->m_model_data.limit;
+        const auto filtering = this->m_model_data.filtering_infos;
         this->m_swaps_id_registry.clear();
         this->m_orders_id_registry.clear();
-        this->m_model_data = {.limit = limit};
+        this->m_model_data = {.limit = limit, .filtering_infos = filtering};
     }
 
     bool
@@ -573,6 +583,7 @@ namespace atomic_dex
         if (after_manual_reset)
         {
             this->set_fetching_busy(false);
+            SPDLOG_INFO("Fetching is not busy anymore");
         }
 
         if (is_fetching_busy())
@@ -593,5 +604,37 @@ namespace atomic_dex
             update_or_insert_orders(contents);
             update_or_insert_swaps(contents);
         }
+    }
+
+    void
+    orders_model::set_filtering_infos(t_filtering_infos infos) noexcept
+    {
+        if (this->is_fetching_busy())
+        {
+            SPDLOG_WARN("Fetching busy - skipping filtering infos set");
+            return;
+        }
+
+        m_model_data.filtering_infos = std::move(infos);
+
+        if (m_model_data.current_page == 1)
+        {
+            //! Filtering changed
+            this->set_fetching_busy(true);
+            this->reset_backend(); ///< We change page, we need to clear, but do not notify the front-end
+            auto& mm2 = this->m_system_manager.get_system<mm2_service>();
+            mm2.set_orders_and_swaps_pagination_infos(
+                static_cast<std::size_t>(m_model_data.current_page), static_cast<std::size_t>(m_model_data.limit), m_model_data.filtering_infos);
+        }
+        else
+        {
+            this->set_current_page(1);
+        }
+    }
+
+    t_filtering_infos
+    orders_model::get_filtering_infos() const noexcept
+    {
+        return m_model_data.filtering_infos;
     }
 } // namespace atomic_dex

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,11 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project Headers
+// Project Headers
 #include "atomicdex/models/qt.addressbook.model.hpp"
 #include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
 
-//! Ctor
+// Ctor
 namespace atomic_dex
 {
     addressbook_proxy_model::addressbook_proxy_model(QObject* parent) :
@@ -26,7 +26,7 @@ namespace atomic_dex
     {}
 }
 
-//! QSortFilterProxyModel Functions
+// QSortFilterProxyModel Functions
 namespace atomic_dex
 {
     bool
@@ -78,11 +78,28 @@ namespace atomic_dex
             SPDLOG_WARN("No filter behavior on role {}", role);
             break;
         }
+        
+        // If a type filter exists, checks if the contact has at least one address of equivalent type.
+        if (!m_type_filter.isEmpty())
+        {
+            const auto& addresses =
+                qobject_cast<addressbook_contact_model*>(
+                    qvariant_cast<QObject*>(idx.data(addressbook_model::SubModelRole)))
+                        ->get_address_entries();
+            
+            if (std::find_if(addresses.begin(), addresses.end(), [this](const auto& address)
+                {
+                    return address.type == m_type_filter;
+                }) == addresses.end())
+            {
+                return false;
+            }
+        }
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 } // namespace atomic_dex
 
-//! Getters/Setters
+// Getters/Setters
 namespace atomic_dex
 {
     const QString& addressbook_proxy_model::get_search_exp() const noexcept
@@ -93,6 +110,17 @@ namespace atomic_dex
     void addressbook_proxy_model::set_search_exp(QString expression) noexcept
     {
         m_search_exp = std::move(expression);
+        invalidateFilter();
+    }
+    
+    const QString& addressbook_proxy_model::get_type_filter() const noexcept
+    {
+        return m_type_filter;
+    }
+    
+    void addressbook_proxy_model::set_type_filter(QString value) noexcept
+    {
+        m_type_filter = std::move(value);
         invalidateFilter();
     }
 }

@@ -38,8 +38,8 @@ trade peer-to-peer with minimal fees and never give up control over your digital
 AtomicDEX Desktop has been tested on the following platforms:
 
 - Windows 10
-- Linux (Ubuntu 18.04)
-- macOS (10.13 - 10.15.7)
+- Linux (Ubuntu 16.04+)
+- macOS (10.14 - 11.0)
 
 
 ## Get Started

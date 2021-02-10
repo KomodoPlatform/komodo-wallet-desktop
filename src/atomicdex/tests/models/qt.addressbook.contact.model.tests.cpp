@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -24,6 +24,7 @@
 
 //! Project
 #include "atomicdex/models/qt.addressbook.contact.model.hpp"
+#include "atomicdex/managers/addressbook.manager.hpp"
 
 #include "../atomic.dex.tests.hpp"
 

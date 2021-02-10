@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -19,7 +19,6 @@
 
 //! Project headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/utilities/qt.utilities.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
 
 namespace atomic_dex

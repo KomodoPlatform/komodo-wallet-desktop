@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -116,17 +116,21 @@ namespace atomic_dex
     orders_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
         QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
-        assert(this->sourceModel()->hasIndex(idx.row(), 0));
-        auto data      = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
-        auto timestamp = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
-        auto date      = QDateTime::fromMSecsSinceEpoch(timestamp).date();
-        // qDebug() << date;
-
-        assert(not data.isEmpty());
-        if (not date_in_range(date))
+        if (not this->sourceModel()->hasIndex(idx.row(), 0))
         {
             return false;
         }
+        auto data      = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        auto timestamp = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
+        auto date      = QDateTime::fromMSecsSinceEpoch(timestamp).date();
+
+        if (not this->m_is_history && not date_in_range(date))
+        {
+            return false;
+        }
+
+        assert(not data.isEmpty());
+
         if (this->m_is_history)
         {
             if (data == "matching" || data == "ongoing" || data == "matched" || data == "refunding")
@@ -142,7 +146,7 @@ namespace atomic_dex
             }
         }
 
-        if (this->filterRole() == orders_model::OrdersRoles::TickerPairRole)
+        if (not this->m_is_history && this->filterRole() == orders_model::OrdersRoles::TickerPairRole)
         {
             const auto pattern = this->filterRegExp().pattern().toStdString();
             if (pattern.find("/") != std::string::npos)
@@ -167,10 +171,12 @@ namespace atomic_dex
                     {
                         return true;
                     }
+                    return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
                 }
             }
         }
-        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+
+        return true;
     }
 
     QDate
@@ -184,8 +190,15 @@ namespace atomic_dex
     {
         m_min_date = date;
         emit filterMinimumDateChanged();
-        this->invalidate();
-        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        if (not this->m_is_history)
+        {
+            this->invalidate();
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        }
+        else
+        {
+            this->set_apply_filtering(true);
+        }
     }
 
     QDate
@@ -199,8 +212,15 @@ namespace atomic_dex
     {
         m_max_date = date;
         emit filterMaximumDateChanged();
-        this->invalidate();
-        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        if (not this->m_is_history)
+        {
+            this->invalidate();
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        }
+        else
+        {
+            this->set_apply_filtering(true);
+        }
     }
 
     bool
@@ -227,10 +247,11 @@ namespace atomic_dex
     void
     orders_proxy_model::set_coin_filter(const QString& to_filter)
     {
+        SPDLOG_INFO("filter pattern: {}", to_filter.toStdString());
         this->setFilterFixedString(to_filter);
         if (this->m_is_history)
         {
-            qobject_cast<orders_model*>(this->sourceModel())->set_current_page(1);
+            this->set_apply_filtering(true);
         }
         else
         {
@@ -267,5 +288,65 @@ namespace atomic_dex
             }
         }
         ofs.close();
+    }
+
+    void
+    orders_proxy_model::apply_all_filtering()
+    {
+        auto* model        = qobject_cast<orders_model*>(this->sourceModel());
+        auto  filter_infos = model->get_filtering_infos();
+
+        std::size_t from_timestamp  = m_min_date.startOfDay().toSecsSinceEpoch();
+        filter_infos.from_timestamp = from_timestamp;
+
+        std::size_t to_timestamp  = m_max_date.startOfDay().toSecsSinceEpoch();
+        filter_infos.to_timestamp = to_timestamp;
+
+        const auto pattern = this->filterRegExp().pattern().toStdString();
+        if (pattern.find("/") != std::string::npos)
+        {
+            std::vector<std::string> out;
+            boost::algorithm::split(out, pattern, boost::is_any_of("/"));
+            if (out.size() >= 2)
+            {
+                const auto& left_pattern  = out[0];
+                const auto& right_pattern = out[1];
+                if (left_pattern == "All")
+                {
+                    filter_infos.my_coin = std::nullopt;
+                }
+                else
+                {
+                    filter_infos.my_coin = left_pattern;
+                }
+
+                if (right_pattern == "All")
+                {
+                    filter_infos.other_coin = std::nullopt;
+                }
+                else
+                {
+                    filter_infos.other_coin = right_pattern;
+                }
+            }
+        }
+
+        model->set_filtering_infos(filter_infos);
+        this->set_apply_filtering(false);
+    }
+
+    bool
+    orders_proxy_model::get_apply_filtering() const noexcept
+    {
+        return m_is_filtering_applicable;
+    }
+    void
+    orders_proxy_model::set_apply_filtering(bool status) noexcept
+    {
+        if (m_is_filtering_applicable != status)
+        {
+            m_is_filtering_applicable = status;
+            emit filteringStatusChanged();
+        }
     }
 } // namespace atomic_dex

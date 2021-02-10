@@ -59,7 +59,7 @@
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="141"/>
         <source>Get the contract address from QTUM Insight</source>
-        <translation type="unfinished"></translation>
+        <translation>Obtenez l&apos;adresse du contrat auprès de QTUM Insight</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="158"/>
@@ -159,44 +159,44 @@
 <context>
     <name>AddressBook</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="25"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="28"/>
         <source>Address Book</source>
-        <translation type="unfinished">Carnet d&apos;adresses</translation>
+        <translation>Carnet d&apos;adresses</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="35"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="37"/>
         <source>New Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau contact</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="50"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="54"/>
         <source>Search a contact by name or tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher un contact par nom ou par tags</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="115"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="144"/>
         <source>Edit</source>
-        <translation type="unfinished">Éditer</translation>
+        <translation>Éditer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="124"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="151"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Retirer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="165"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="191"/>
         <source>Do you want to remove this contact ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous supprimer ce contact ?</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="169"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="195"/>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="178"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="204"/>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Non</translation>
     </message>
 </context>
 <context>
@@ -204,32 +204,32 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="22"/>
         <source>Create a new address</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer une nouvelle adresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="29"/>
         <source>Enter a name</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez un nom</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="42"/>
         <source>This key already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette clé existe déjà.</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="52"/>
         <source>Enter the address</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez l&apos;adresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="67"/>
         <source>Validate</source>
-        <translation type="unfinished"></translation>
+        <translation>Valider</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="84"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -237,83 +237,83 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="54"/>
         <source>Edit contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier le contact</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="60"/>
         <source>Contact Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du contact</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="61"/>
         <source>Enter a contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez un nom de contact</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="76"/>
         <source>Wallets Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations sur les portefeuilles</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="83"/>
         <source>Change of wallet type. Current: </source>
-        <translation type="unfinished"></translation>
+        <translation>Changement de type de portefeuille. Actuel : </translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="189"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="198"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Retirer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="223"/>
         <source>Tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Tags</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="259"/>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="277"/>
         <source>Confirm</source>
-        <translation type="unfinished">Confirmer</translation>
+        <translation>Confirmer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="287"/>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="333"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="316"/>
         <source>The selected address belongs to a disabled coin, you need to enabled it before sending.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;adresse sélectionnée appartient à un actif désactivée, vous devez l&apos;activer avant l&apos;envoi.</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="322"/>
         <source>Enable</source>
-        <translation type="unfinished">Activer</translation>
+        <translation>Activer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="376"/>
         <source>Cannot send to this address</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;envoyer à cette adresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="379"/>
         <source>Your balance is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre solde est vide</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="383"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -321,27 +321,27 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="15"/>
         <source>Add a new tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un nouveau tag</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="21"/>
         <source>Enter the tag name</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrer le nom du tag</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="33"/>
         <source>This contact already has this tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce contact possède déjà ce tag</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="41"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="57"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -349,27 +349,27 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="16"/>
         <source>Create a new contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau contact</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="21"/>
         <source>Enter the contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez le nom du contact</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="34"/>
         <source>This contact name already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce nom de contact existe déjà.</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="50"/>
         <source>Confirm</source>
-        <translation type="unfinished">Confirmer</translation>
+        <translation>Confirmer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="74"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -377,12 +377,12 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookSendWalletSelector.qml" line="18"/>
         <source>Choose a valid </source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez un actif </translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookSendWalletSelector.qml" line="18"/>
         <source> coin</source>
-        <translation type="unfinished"></translation>
+        <translation> valide</translation>
     </message>
 </context>
 <context>
@@ -390,12 +390,12 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="42"/>
         <source>Select wallet type</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez le type de portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="50"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -403,37 +403,37 @@
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="18"/>
         <source>Setup Camouflage Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurer le mot de passe de camouflage</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="39"/>
         <source>Camouflage Password is a secret password for emergency situations.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mot de passe de camouflage est un mot de passe secret pour les situations d&apos;urgence.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="48"/>
         <source>Using it to login will display your balance lower than it actually is.</source>
-        <translation type="unfinished"></translation>
+        <translation>Son utilisation pour vous connecter affichera votre solde inférieur à ce qu&apos;il est réellement.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="56"/>
         <source>Here you enter the suffix and at login you need to enter {real_password}{suffix}</source>
-        <translation type="unfinished"></translation>
+        <translation>Ici, vous entrez le suffixe et lors de la connexion, vous devez entrer {mot de passe réel}{suffixe}</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="64"/>
         <source>Enter a suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrer un suffixe</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="71"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="77"/>
         <source>Save</source>
-        <translation type="unfinished">Sauvegarder</translation>
+        <translation>Sauvegarder</translation>
     </message>
 </context>
 <context>
@@ -441,12 +441,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="41"/>
         <source>Loading market data</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement des données de marché</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="47"/>
         <source>There is no chart data for this pair yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a pas encore de données graphiques pour cette paire</translation>
     </message>
 </context>
 <context>
@@ -454,12 +454,12 @@
     <message>
         <location filename="../../qml/Components/CexInfoModal.qml" line="10"/>
         <source>Market Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Données du marché</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CexInfoModal.qml" line="15"/>
         <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coinpaprika.com&quot;&gt;Coinpaprika&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Les données de marché (prix, graphiques, etc.) marquées de l&apos;icône ⓘ proviennent de sources tierces.&lt;br&gt;&lt;br&gt;Les données proviennent de &lt;a href=&quot;https://bandprotocol.com/&quot;&gt; Band Decentralized Oracle&lt;/a&gt; et &lt;a href=&quot;https://coinpaprika.com&quot;&gt;Coinpaprika &lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Paires prises en charge par Oracle:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Dernière référence (Band Oracle) :&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -467,7 +467,7 @@
     <message>
         <location filename="../../qml/Components/CexInfoTrigger.qml" line="15"/>
         <source>Price oracle powered by Band Protocol</source>
-        <translation type="unfinished"></translation>
+        <translation>Prix de l&apos;oracle alimenté par Band Protocol</translation>
     </message>
 </context>
 <context>
@@ -475,7 +475,7 @@
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="76"/>
         <source>Failed to prepare to claim rewards</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la préparation de la réclamation des récompenses</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="108"/>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="122"/>
         <source>No UTXOs eligible for claiming</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun UTXO éligible pour réclamer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="125"/>
@@ -497,87 +497,87 @@
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="123"/>
         <source>Transaction fee is higher than the reward!</source>
-        <translation type="unfinished"></translation>
+        <translation>Les frais de transaction sont plus élevés que la récompense !</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="129"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualiser</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="137"/>
         <source>Read more about KMD active users rewards</source>
-        <translation type="unfinished"></translation>
+        <translation>En savoir plus sur les récompenses des utilisateurs actifs de KMD</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="155"/>
         <source>UTXO</source>
-        <translation type="unfinished"></translation>
+        <translation>UTXO</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="170"/>
         <source>Amount</source>
-        <translation type="unfinished">Montant</translation>
+        <translation>Montant</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="186"/>
         <source>Reward</source>
-        <translation type="unfinished"></translation>
+        <translation>Récompense</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="202"/>
         <source>Accruing Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Début accumulation</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="218"/>
         <source>Accruing Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Fin accumulation</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="234"/>
         <source>Time Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps restant</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="250"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="379"/>
         <source>Locktime is not set</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;heure de verrouillage n&apos;est pas définie</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="382"/>
         <source>Locktime is less than the threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Le temps de verrouillage est inférieur au seuil</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="385"/>
         <source>UTXO height is greater than end of the era</source>
-        <translation type="unfinished"></translation>
+        <translation>La hauteur UTXO est supérieure à la fin de l&apos;ère</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="388"/>
         <source>UTXO amount is less than 10</source>
-        <translation type="unfinished"></translation>
+        <translation>Le montant UTXO est inférieur à 10</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="391"/>
         <source>One hour did not pass yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Une heure ne s&apos;est pas encore écoulée</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="394"/>
         <source>Transaction is in mempool</source>
-        <translation type="unfinished"></translation>
+        <translation>La transaction est en mempool</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="397"/>
         <source>Unknown problem</source>
-        <translation type="unfinished"></translation>
+        <translation>Problème inconnu</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="422"/>
@@ -596,23 +596,23 @@
         <location filename="../../qml/Components/CoinMenu.qml" line="28"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Désactiver %1</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CoinMenu.qml" line="34"/>
         <source>Disable and Delete %1</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Désactiver et Supprimer %1</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CoinMenu.qml" line="46"/>
         <source>Disable all %1 assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Désactiver tous les actifs %1</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CoinMenu.qml" line="52"/>
         <source>Disable all assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Désactiver tous les actifs</translation>
     </message>
 </context>
 <context>
@@ -620,42 +620,42 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="21"/>
         <source>Confirm Multi Order Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer les détails de l&apos;ordre multiple</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="73"/>
         <source>These swaps requests can not be undone and this is the final event!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ces demandes d&apos;échange ne peuvent être annulées et c&apos;est l&apos;événement final !</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="79"/>
         <source>These transactions can take up to 60 mins - DO NOT close this application!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ces transactions peuvent prendre jusqu&apos;à 60 minutes - NE fermez PAS cette application !</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="86"/>
         <source>Same funds will be used until an order matches.</source>
-        <translation type="unfinished">Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
+        <translation>Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="93"/>
         <source>Note that if one order is filled other will not be cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Notez que si un ordre est exécutée, une autre ne sera pas annulée.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="102"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="108"/>
         <source>Confirm</source>
-        <translation type="unfinished">Confirmer</translation>
+        <translation>Confirmer</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="116"/>
         <source>Placed multiple orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordres multiples placés</translation>
     </message>
 </context>
 <context>
@@ -673,49 +673,49 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="101"/>
         <source>Security configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration de la sécurité</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="107"/>
         <source>dPoW protected</source>
-        <translation type="unfinished"></translation>
+        <translation>dPoW protégé</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="114"/>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="147"/>
         <source>Read more about dPoW</source>
-        <translation type="unfinished"></translation>
+        <translation>En savoir plus sur dPoW</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="124"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser les paramètres de protection personnalisés pour les transactions%1 entrantes</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="141"/>
         <source>Enable Komodo dPoW security</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la sécurité de Komodo dPoW</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="108"/>
         <source>%1 confirmations for incoming %2 transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Il y a %1 confirmations pour les transactions entrantes du ticker %2</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="75"/>
         <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
-        <translation type="unfinished">Cette transaction peut prendre jusqu&apos;à 10 mins - NE fermez pas l&apos;application ! {60 ?}</translation>
+        <translation>Cette transaction peut prendre jusqu&apos;à 60 minutes - NE fermez PAS cette application !</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="165"/>
         <source>Required Confirmations</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmations requises</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="201"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention, ce swap atomique n&apos;est pas protégé par dPoW !</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="214"/>
@@ -742,182 +742,182 @@
         <location filename="../../qml/Screens/Dashboard.qml" line="119"/>
         <location filename="../../qml/Screens/Dashboard.qml" line="132"/>
         <source>Content for this section will be added later. Stay tuned!</source>
-        <translation type="unfinished"></translation>
+        <translation>Le contenu de cette section sera ajouté ultérieurement. Restez à l&apos;écoute !</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="276"/>
         <source>Matching</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche en cours</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="276"/>
         <source>Order Matching</source>
-        <translation type="unfinished">Recherche d&apos;un ordre</translation>
+        <translation>Recherche d&apos;un ordre</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="278"/>
         <source>Matched</source>
-        <translation type="unfinished"></translation>
+        <translation>Trouvé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="278"/>
         <source>Order Matched</source>
-        <translation type="unfinished">Ordre trouvé</translation>
+        <translation>Ordre trouvé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="280"/>
         <source>Ongoing</source>
-        <translation type="unfinished"></translation>
+        <translation>En cours</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="280"/>
         <source>Swap Ongoing</source>
-        <translation type="unfinished">Échange en cours</translation>
+        <translation>Échange en cours</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="282"/>
         <source>Successful</source>
-        <translation type="unfinished"></translation>
+        <translation>Réussi</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="282"/>
         <source>Swap Successful</source>
-        <translation type="unfinished">Échange terminé</translation>
+        <translation>Échange terminé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="284"/>
         <source>Refunding</source>
-        <translation type="unfinished"></translation>
+        <translation>En cours de remboursement</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="286"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Échoué</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="286"/>
         <source>Swap Failed</source>
-        <translation type="unfinished">Erreur lors de l&apos;échange</translation>
+        <translation>Erreur lors de l&apos;échange</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="288"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Inconnue</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="288"/>
         <source>Unknown State</source>
-        <translation type="unfinished"></translation>
+        <translation>État inconnu</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="332"/>
         <source>Started</source>
-        <translation type="unfinished"></translation>
+        <translation>Commencé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="334"/>
         <source>Negotiated</source>
-        <translation type="unfinished"></translation>
+        <translation>Négocié</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="336"/>
         <source>Taker fee sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Frais de preneur envoyés</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="338"/>
         <source>Maker payment received</source>
-        <translation type="unfinished"></translation>
+        <translation>Paiement de l&apos;envoyeur reçu</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="340"/>
         <source>Maker payment wait confirm started</source>
-        <translation type="unfinished"></translation>
+        <translation>La confirmation d&apos;attente de paiement de l&apos;envoyeur a commencé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="342"/>
         <source>Maker payment validated and confirmed</source>
-        <translation type="unfinished"></translation>
+        <translation>Paiement de l&apos;envoyeur validé et confirmé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="344"/>
         <source>Taker payment sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Paiement du preneur envoyé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="346"/>
         <source>Taker payment spent</source>
-        <translation type="unfinished"></translation>
+        <translation>Paiement du preneur dépensé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="348"/>
         <source>Maker payment spent</source>
-        <translation type="unfinished"></translation>
+        <translation>Paiement de l&apos;envoyeur dépensé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="350"/>
         <source>Finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Fini</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="352"/>
         <source>Start failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Le démarrage a échoué</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="354"/>
         <source>Negotiate failed</source>
-        <translation type="unfinished"></translation>
+        <translation>La négociation a échoué</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="356"/>
         <source>Taker fee validate failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la validation des frais du preneur</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="358"/>
         <source>Maker payment transaction failed</source>
-        <translation type="unfinished"></translation>
+        <translation>La transaction de paiement du créateur a échoué</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="360"/>
         <source>Maker payment Data send failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;envoi des données de paiement du créateur</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="362"/>
         <source>Maker payment wait confirm failed</source>
-        <translation type="unfinished"></translation>
+        <translation>La confirmation de l&apos;attente de paiement du créateur a échoué</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="364"/>
         <source>Taker payment validate failed</source>
-        <translation type="unfinished"></translation>
+        <translation>La validation du paiement du preneur a échoué</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="366"/>
         <source>Taker payment wait confirm failed</source>
-        <translation type="unfinished"></translation>
+        <translation>La confirmation de l&apos;attente de paiement du preneur a échoué</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="368"/>
         <source>Taker payment spend failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec des dépenses de paiement du preneur</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="370"/>
         <source>Maker payment wait refund started</source>
-        <translation type="unfinished"></translation>
+        <translation>attente de paiement du créateur, remboursement commencé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="372"/>
         <source>Maker payment refunded</source>
-        <translation type="unfinished"></translation>
+        <translation>Paiement du créateur remboursé</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="374"/>
         <source>Maker payment refund failed</source>
-        <translation type="unfinished"></translation>
+        <translation>échec du remboursement du paiement du créateur</translation>
     </message>
 </context>
 <context>
@@ -936,12 +936,12 @@
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="52"/>
         <source>If so, make sure you record your seed phrase in order to restore your wallet in the future.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si tel est le cas, assurez-vous d&apos;enregistrer votre phrase de départ afin de restaurer votre portefeuille à l&apos;avenir.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="61"/>
         <source>Enter your wallet password</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez le mot de passe de votre portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="65"/>
@@ -964,7 +964,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/DexComboBox.qml" line="95"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -972,17 +972,17 @@
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="34"/>
         <source>Enable assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer les actifs</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="38"/>
         <source>Add a custom asset to the list</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un token personnalisé à la liste</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="125"/>
         <source>All assets are already enabled!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les actifs sont déjà activés !</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="54"/>
@@ -992,7 +992,7 @@
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="60"/>
         <source>Select all assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez tous les actifs</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="131"/>
@@ -1099,22 +1099,22 @@
     <message>
         <location filename="../../qml/Dashboard/FatalErrorModal.qml" line="26"/>
         <source>Fatal Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur fatale</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/FatalErrorModal.qml" line="29"/>
         <source>Connection has been lost. You have been disconnected.</source>
-        <translation type="unfinished"></translation>
+        <translation>La connexion a été perdue. Vous avez été déconnecté.</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/FatalErrorModal.qml" line="30"/>
         <source>An error occurred. You have been disconnected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur s&apos;est produite. Vous avez été déconnecté.</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/FatalErrorModal.qml" line="36"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1122,22 +1122,22 @@
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="31"/>
         <source>Welcome</source>
-        <translation type="unfinished"></translation>
+        <translation>Bienvenue</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="44"/>
         <source>New Wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="50"/>
         <source>Recover Wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupérer le portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="63"/>
         <source>My Wallets</source>
-        <translation type="unfinished"></translation>
+        <translation>Mes portefeuilles</translation>
     </message>
 </context>
 <context>
@@ -1198,68 +1198,68 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="126"/>
         <source>-</source>
-        <translation type="unfinished"></translation>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="355"/>
         <source>Transaction Fee</source>
-        <translation type="unfinished">Frais de transactions</translation>
+        <translation>Frais de transactions</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="370"/>
         <source>Trading Fee</source>
-        <translation type="unfinished">Frais d&apos;échanges</translation>
+        <translation>Frais d&apos;échanges</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="380"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
-        <translation type="unfinished"></translation>
+        <translation>Le portefeuille %1 existe déjà</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="389"/>
         <source>Not enough balance for trading fees: %1</source>
         <comment>AMT TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Solde insuffisant pour les frais de négociation : %1</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="391"/>
         <source>Not enough balance for fees: %1</source>
         <comment>AMT TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Solde insuffisant pour les frais : %1</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="393"/>
         <location filename="../../qml/Constants/General.qml" line="395"/>
         <source>Not enough balance for transaction fees: %1</source>
         <comment>AMT TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Solde insuffisant pour les frais de transaction: %1</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="397"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Le solde négociable (après frais) %1 est inférieur au montant minimum de la transaction</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="399"/>
         <source>Please fill the price field</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez remplir le champ de prix</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="401"/>
         <source>Please fill the volume field</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez remplir le champ de volume</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="403"/>
         <location filename="../../qml/Constants/General.qml" line="405"/>
         <source>%1 volume is lower than minimum trade amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Le volume de %1 est inférieur au montant minimum de la transaction</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="407"/>
         <source>Unknown Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur inconnue</translation>
     </message>
 </context>
 <context>
@@ -1272,12 +1272,12 @@
     <message>
         <location filename="../../qml/Exchange/History/History.qml" line="12"/>
         <source>Filtered Swaps</source>
-        <translation type="unfinished"></translation>
+        <translation>Swaps filtrés</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/History/History.qml" line="13"/>
         <source>You don&apos;t have recent orders.</source>
-        <translation type="unfinished">Vous n&apos;avez pas d&apos;ordres récents.</translation>
+        <translation>Vous n&apos;avez pas d&apos;ordres récents.</translation>
     </message>
 </context>
 <context>
@@ -1295,12 +1295,12 @@
     <message>
         <location filename="../../qml/Screens/InitialLoading.qml" line="40"/>
         <source>Enabling assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer les actifs</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/InitialLoading.qml" line="40"/>
         <source>Getting ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement</translation>
     </message>
 </context>
 <context>
@@ -1316,17 +1316,17 @@
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="12"/>
         <source>Join the Komodo Discord server</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejoignez le serveur Komodo Discord</translation>
     </message>
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="18"/>
         <source>Follow @atomicdex on Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Suivez @atomicdex sur Twitter</translation>
     </message>
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="24"/>
         <source>Go to Komodo Support Guides</source>
-        <translation type="unfinished"></translation>
+        <translation>Accéder aux guides d&apos;assistance de Komodo</translation>
     </message>
 </context>
 <context>
@@ -1334,7 +1334,7 @@
     <message>
         <location filename="../../qml/Components/LogModal.qml" line="25"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1342,12 +1342,12 @@
     <message>
         <location filename="../../qml/Screens/Login.qml" line="28"/>
         <source>Incorrect Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe incorrect</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Login.qml" line="56"/>
         <source>Wallet Name</source>
-        <translation type="unfinished">Nom du portefeuille</translation>
+        <translation>Nom du portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Login.qml" line="84"/>
@@ -1365,88 +1365,88 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="88"/>
         <source>Wallet Balance</source>
-        <translation type="unfinished"></translation>
+        <translation>Solde portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="115"/>
         <source>Price</source>
-        <translation type="unfinished">Prix</translation>
+        <translation>Prix</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="133"/>
         <source>Change 24h</source>
-        <translation type="unfinished">Changement 24H</translation>
+        <translation>Changement 24H</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="155"/>
         <source>Portfolio %</source>
-        <translation type="unfinished"></translation>
+        <translation>Portefeuille %</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="330"/>
         <source>%1 / %2 Price</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Prix %1 / %2</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="353"/>
         <source>Volume 24h</source>
-        <translation type="unfinished"></translation>
+        <translation>Volume 24h</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="188"/>
         <source>Send</source>
-        <translation type="unfinished">Envoyez</translation>
+        <translation>Envoyez</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="209"/>
         <source>Receive</source>
-        <translation type="unfinished">Recevoir</translation>
+        <translation>Recevoir</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="230"/>
         <source>Swap</source>
-        <translation type="unfinished">Échange</translation>
+        <translation>Échange</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="254"/>
         <source>Claim Rewards</source>
-        <translation type="unfinished">Réclamer des récompenses</translation>
+        <translation>Réclamer des récompenses</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="274"/>
         <source>Faucet</source>
-        <translation type="unfinished"></translation>
+        <translation>Robinet</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="373"/>
         <source>Loading</source>
-        <translation type="unfinished">Chargement</translation>
+        <translation>Chargement</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="384"/>
         <source>Scanning blocks for TX History...</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyses des blocs pour l&apos;historique TX...</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="385"/>
         <source>Syncing TX History...</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisation de l&apos;historique de transactions...</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="416"/>
         <source>No transactions</source>
-        <translation type="unfinished">Pas de transactions</translation>
+        <translation>Pas de transactions</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="416"/>
         <source>Refreshing</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualiser</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="448"/>
         <source>Fetching transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupération des transactions</translation>
     </message>
 </context>
 <context>
@@ -1455,29 +1455,29 @@
         <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="61"/>
         <source>%1 price is zero!</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Le prix de %1 est zéro !</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="69"/>
         <source>%1 receive volume is lower than minimum trade amount</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Le volume de réception de %1 est inférieur au montant d&apos;échange minimum</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="77"/>
         <source>Error:</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur :</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="118"/>
         <source>You&apos;ll receive %1</source>
         <comment>AMOUNT TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vous recevrez %1</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="156"/>
         <source>Price</source>
-        <translation type="unfinished">Prix</translation>
+        <translation>Prix</translation>
     </message>
 </context>
 <context>
@@ -1510,7 +1510,7 @@
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="102"/>
         <source>New Wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="202"/>
@@ -1580,12 +1580,12 @@
     <message>
         <location filename="../../qml/NoConnection.qml" line="31"/>
         <source>Will automatically retry in %1 seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Réessayera automatiquement dans %1 secondes</translation>
     </message>
     <message>
         <location filename="../../qml/NoConnection.qml" line="40"/>
         <source>Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>Retenter</translation>
     </message>
 </context>
 <context>
@@ -1593,90 +1593,90 @@
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="95"/>
         <source>Swap status updated</source>
-        <translation type="unfinished"></translation>
+        <translation>État du swap mis à jour</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="106"/>
         <source>You sent %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé %1</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="106"/>
         <source>You received %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez reçu %1</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="107"/>
         <source>Your wallet balance changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Le solde de votre portefeuille a changé</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="112"/>
         <source>Please check your internet connection (e.g. VPN service or firewall might block it).</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez vérifier votre connexion Internet (par exemple, le service VPN ou le pare-feu peut la bloquer).</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="123"/>
         <source>Failed to enable %1</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;activation de %1</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="140"/>
         <source>Endpoint not reachable</source>
-        <translation type="unfinished"></translation>
+        <translation>Point final non accessible</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="142"/>
         <source>Could not reach to endpoint</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;atteindre le point de terminaison</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="157"/>
         <source>Mismatch at %1 custom asset configuration</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Non-correspondance à la configuration de l&apos;asset personnalisé %1</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="163"/>
         <source>Application needs to be restarted for %1 custom asset.</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;application doit être redémarrée pour l&apos;asset personnalisé %1.</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="201"/>
         <source>AtomicDEX Desktop</source>
-        <translation type="unfinished">AtomicDEX Desktop</translation>
+        <translation>AtomicDEX Desktop</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="207"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="212"/>
         <source>Restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrer</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="217"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="224"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifications</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="241"/>
         <source>There isn&apos;t any notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a aucune notification</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="364"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1684,7 +1684,7 @@
     <message>
         <location filename="../../qml/Exchange/OrderContent.qml" line="78"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderContent.qml" line="110"/>
@@ -1717,59 +1717,59 @@
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="105"/>
         <source>Price</source>
-        <translation type="unfinished">Prix</translation>
+        <translation>Prix</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="138"/>
         <source>Volume</source>
-        <translation type="unfinished">Volume</translation>
+        <translation>Volume</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="193"/>
         <source>Min</source>
-        <translation type="unfinished"></translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="200"/>
         <source>Half</source>
-        <translation type="unfinished"></translation>
+        <translation>Moitié</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="207"/>
         <source>Max</source>
-        <translation type="unfinished"></translation>
+        <translation>Max</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="247"/>
         <source>Minimum fee</source>
-        <translation type="unfinished"></translation>
+        <translation>Frais minimum</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="248"/>
         <source>Fees will be calculated</source>
-        <translation type="unfinished"></translation>
+        <translation>Les frais seront calculés</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="267"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="290"/>
         <source>Start Swap</source>
-        <translation type="unfinished"></translation>
+        <translation>Commencer l&apos;échange</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="70"/>
         <source>Sell %1</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vendre %1</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="79"/>
         <source>Buy %1</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Acheter %1</translation>
     </message>
 </context>
 <context>
@@ -1777,7 +1777,7 @@
     <message>
         <location filename="../../qml/Exchange/OrderLine.qml" line="169"/>
         <source>Funds are recoverable</source>
-        <translation type="unfinished"></translation>
+        <translation>Les fonds sont récupérables</translation>
     </message>
 </context>
 <context>
@@ -1813,12 +1813,12 @@
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="84"/>
         <source>Refund State</source>
-        <translation type="unfinished"></translation>
+        <translation>État de remboursement</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="86"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre échange a échoué, mais le processus de remboursement automatique de votre paiement a déjà commencé. Veuillez patienter et garder l&apos;application ouverte jusqu&apos;à ce que vous receviez votre remboursement</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="94"/>
@@ -1828,42 +1828,42 @@
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="102"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="185"/>
         <source>Recover Funds</source>
-        <translation type="unfinished">Récupérer des fonds</translation>
+        <translation>Récupérer des fonds</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="190"/>
         <source>View on Explorer</source>
-        <translation type="unfinished">Voir dans l&apos;explorateur</translation>
+        <translation>Voir dans l&apos;explorateur</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="112"/>
         <source>Maker Payment Sent ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant d&apos;envoi du paiement du créateur</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="112"/>
         <source>Maker Payment Spent ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant de paiement du créateur</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="122"/>
         <source>Taker Payment Spent ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant de paiement du preneur d&apos;achat</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="122"/>
         <source>Taker Payment Sent ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant d&apos;envoi du paiement du preneur</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="176"/>
         <source>Cancel Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler l&apos;ordre</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="131"/>
@@ -1886,22 +1886,22 @@
     <message>
         <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="27"/>
         <source>Ask Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Prix de la demande</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="28"/>
         <source>Bid Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Prix de l&apos;offre</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="49"/>
         <source>Quantity</source>
-        <translation type="unfinished"></translation>
+        <translation>Quantité</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="64"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
 </context>
 <context>
@@ -1909,12 +1909,12 @@
     <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="12"/>
         <source>Orders</source>
-        <translation type="unfinished">Ordres</translation>
+        <translation>Ordres</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="13"/>
         <source>You don&apos;t have any orders.</source>
-        <translation type="unfinished">Vous n&apos;avez aucun ordre en cours.</translation>
+        <translation>Vous n&apos;avez aucun ordre en cours.</translation>
     </message>
 </context>
 <context>
@@ -1922,42 +1922,42 @@
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="185"/>
         <source>Cancel All Orders</source>
-        <translation type="unfinished">Annuler tous les ordres</translation>
+        <translation>Annuler tous les ordres</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="185"/>
         <source>Cancel Filtered Orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler les ordres filtrées</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="165"/>
         <source>From</source>
-        <translation type="unfinished">De</translation>
+        <translation>De</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="89"/>
         <source>Enable Filters</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer les filtres</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="175"/>
         <source>To</source>
-        <translation type="unfinished">Vers</translation>
+        <translation>Vers</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="196"/>
         <source>Export CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter CSV</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="207"/>
         <source>Please choose the CSV export name and location</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez choisir le nom et l&apos;emplacement de l&apos;exportation CSV</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="256"/>
         <source>Recover Funds Result</source>
-        <translation type="unfinished">Le résultat de la récupération des fonds</translation>
+        <translation>Le résultat de la récupération des fonds</translation>
     </message>
 </context>
 <context>
@@ -1965,17 +1965,17 @@
     <message>
         <location filename="../../qml/Components/Pagination.qml" line="11"/>
         <source>Previous</source>
-        <translation type="unfinished">Précedent</translation>
+        <translation>Précedent</translation>
     </message>
     <message>
         <location filename="../../qml/Components/Pagination.qml" line="29"/>
         <source>Next</source>
-        <translation type="unfinished">Suivant</translation>
+        <translation>Suivant</translation>
     </message>
     <message>
         <location filename="../../qml/Components/Pagination.qml" line="50"/>
         <source>items per page</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombres d&apos;éléments par page</translation>
     </message>
 </context>
 <context>
@@ -1988,7 +1988,7 @@
     <message>
         <location filename="../../qml/Components/PasswordField.qml" line="57"/>
         <source>Enter your wallet password</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez le mot de passe de votre portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Components/PasswordField.qml" line="70"/>
@@ -2013,15 +2013,15 @@
     <message numerus="yes">
         <location filename="../../qml/Components/PasswordField.qml" line="93"/>
         <source>At least %n character(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Au moins %n caractère</numerusform>
+            <numerusform>Au moins %n caractères</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../../qml/Components/PasswordField.qml" line="98"/>
         <source>Password and Confirm Password have to be same</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mot de passe et la confirmation du mot de passe doivent être identiques</translation>
     </message>
 </context>
 <context>
@@ -2052,12 +2052,12 @@
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="160"/>
         <source>Show only coins with balance</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher uniquement les assets avec solde</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="191"/>
         <source>Asset</source>
-        <translation type="unfinished"></translation>
+        <translation>Asset</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="203"/>
@@ -2085,38 +2085,38 @@
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="33"/>
         <source>Set swap price for evaluation</source>
-        <translation type="unfinished"></translation>
+        <translation>Définir le prix d&apos;échange pour l&apos;évaluation</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="44"/>
         <source>Exchange rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Taux de l&apos;échange</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="44"/>
         <source>Selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisi</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="76"/>
         <source>Expensive</source>
-        <translation type="unfinished"></translation>
+        <translation>Coûteuse</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="76"/>
         <source>Expedient</source>
-        <translation type="unfinished"></translation>
+        <translation>Abordable</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="76"/>
         <source>%1 compared to CEX</source>
         <comment>PRICE_DIFF%</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 par rapport aux CEX</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="121"/>
         <source>CEXchange rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Taux du CEX</translation>
     </message>
 </context>
 <context>
@@ -2130,7 +2130,7 @@
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="22"/>
         <source>Only send %1 to this address</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Envoyez uniquement %1 à cette adresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="41"/>
@@ -2148,7 +2148,7 @@
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="45"/>
         <source>Recover Wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer le portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="89"/>
@@ -2181,55 +2181,55 @@
 <context>
     <name>RecoverSeedModal</name>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="45"/>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="89"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="46"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="90"/>
         <source>View seed and private keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le seed et les clefs privées</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="53"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="54"/>
         <source>Please enter your password to view the seed.</source>
         <translation>Veuillez entrer votre mot de passe pour voir la phrase de récupération.</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="64"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="65"/>
         <source>Wrong Password</source>
         <translation>Mauvais mot de passe</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="73"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="74"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="162"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="188"/>
         <source>Backup seed</source>
-        <translation type="unfinished"></translation>
+        <translation>Seed de récuperation</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="179"/>
         <source>Search a coin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher une asset.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="246"/>
         <source>Public Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse publique</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="266"/>
         <source> Address copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation> Adresse copiée dans le presse-papiers</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="273"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="316"/>
         <source>Private Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clé privée</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="296"/>
         <source> Key copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation> Clé copiée dans le presse-papiers</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="308"/>
@@ -2237,7 +2237,7 @@
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="80"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="81"/>
         <source>View</source>
         <translation>Voir</translation>
     </message>
@@ -2247,12 +2247,12 @@
     <message>
         <location filename="../../qml/Components/RestartModal.qml" line="36"/>
         <source>Applying the changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer les changements</translation>
     </message>
     <message>
         <location filename="../../qml/Components/RestartModal.qml" line="39"/>
         <source>Restarting the application...</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrage de l&apos;application ...</translation>
     </message>
 </context>
 <context>
@@ -2278,17 +2278,17 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="45"/>
         <source>Failed to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;envoi</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="73"/>
         <source>Failed to Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;envoi</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="205"/>
         <source>Prepare to send </source>
-        <translation type="unfinished"></translation>
+        <translation>Préparez à envoyer du </translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="214"/>
@@ -2304,7 +2304,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="221"/>
         <source>Address Book</source>
-        <translation type="unfinished">Carnet d&apos;adresses</translation>
+        <translation>Carnet d&apos;adresses</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="237"/>
@@ -2464,7 +2464,7 @@
     <message>
         <location filename="../../qml/Wallet/SendResult.qml" line="58"/>
         <source>View on Explorer</source>
-        <translation type="unfinished">Voir dans l&apos;explorateur</translation>
+        <translation>Voir dans l&apos;explorateur</translation>
     </message>
 </context>
 <context>
@@ -2477,7 +2477,7 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="71"/>
         <source>Enable Desktop Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer les notifications</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="80"/>
@@ -2487,7 +2487,7 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="88"/>
         <source>View seed and private keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir le seed et les clefs privées</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="107"/>
@@ -2497,12 +2497,12 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="126"/>
         <source>Setup Camouflage Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurez un mot de passe de camouflage</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="142"/>
         <source>Reset assets configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser la configuration d&apos;assets</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="150"/>
@@ -2540,7 +2540,7 @@
     <message>
         <location filename="../../qml/Sidebar/SidebarBottom.qml" line="40"/>
         <source>Light UI</source>
-        <translation type="unfinished"></translation>
+        <translation>Thème Clair</translation>
     </message>
 </context>
 <context>
@@ -2880,7 +2880,7 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="58"/>
         <source>Sent</source>
-        <translation>Envoyer</translation>
+        <translation>Envoyé</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="91"/>

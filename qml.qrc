@@ -60,6 +60,7 @@
         <file>atomic_defi_design/assets/images/coins/bat.png</file>
         <file>atomic_defi_design/assets/images/coins/btc.png</file>
         <file>atomic_defi_design/assets/images/coins/btch.png</file>
+        <file>atomic_defi_design/assets/images/coins/btcz.png</file>
         <file>atomic_defi_design/assets/images/coins/bch.png</file>
         <file>atomic_defi_design/assets/images/coins/bet.png</file>
         <file>atomic_defi_design/assets/images/coins/bots.png</file>
@@ -71,6 +72,7 @@
         <file>atomic_defi_design/assets/images/coins/dash.png</file>
         <file>atomic_defi_design/assets/images/coins/dgb.png</file>
         <file>atomic_defi_design/assets/images/coins/doge.png</file>
+        <file>atomic_defi_design/assets/images/coins/dp.png</file>
         <file>atomic_defi_design/assets/images/coins/eca.png</file>
         <file>atomic_defi_design/assets/images/coins/ftc.png</file>
         <file>atomic_defi_design/assets/images/coins/gleec.png</file>
@@ -105,12 +107,13 @@
         <file>atomic_defi_design/assets/images/coins/rvn.png</file>
         <file>atomic_defi_design/assets/images/coins/space.png</file>
         <file>atomic_defi_design/assets/images/coins/supernet.png</file>
+        <file>atomic_defi_design/assets/images/coins/sushi.png</file>
         <file>atomic_defi_design/assets/images/coins/thc.png</file>
         <file>atomic_defi_design/assets/images/coins/usdc.png</file>
         <file>atomic_defi_design/assets/images/coins/vra.png</file>
         <file>atomic_defi_design/assets/images/coins/vrsc.png</file>
         <file>atomic_defi_design/assets/images/coins/qc.png</file>
-        <file>atomic_defi_design/assets/images/coins/pbc.png</file>
+        <file>atomic_defi_design/assets/images/coins/sfusd.png</file>
         <file>atomic_defi_design/assets/images/coins/vote2020.png</file>
         <file>atomic_defi_design/assets/images/coins/wlc.png</file>
         <file>atomic_defi_design/assets/images/coins/tusd.png</file>
@@ -248,6 +251,7 @@
         <file>atomic_defi_design/qml/Wallet/ClaimFaucetResultModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/ReceiveModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/SendModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/SendModalContactList.qml</file>
         <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>
         <file>atomic_defi_design/qml/Wallet/PriceGraph.qml</file>
         <file>atomic_defi_design/qml/Wallet/EnableCoinModal.qml</file>
@@ -273,11 +277,13 @@
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
+        <file>atomic_defi_design/assets/images/coins/arpa.png</file>
+        <file>atomic_defi_design/assets/images/coins/clc.png</file>
+        <file>atomic_defi_design/assets/images/coins/1inch.png</file>
         <file>atomic_defi_design/assets/images/coins/link.png</file>
         <file>atomic_defi_design/assets/images/coins/wbtc.png</file>
         <file>atomic_defi_design/assets/images/coins/okb.png</file>
         <file>atomic_defi_design/assets/images/coins/leo.png</file>
-        <file>atomic_defi_design/assets/images/coins/cfi.png</file>
         <file>atomic_defi_design/assets/images/coins/hex.png</file>
         <file>atomic_defi_design/assets/images/coins/thx.png</file>
         <file>atomic_defi_design/assets/images/coins/cro.png</file>
@@ -314,7 +320,6 @@
         <file>atomic_defi_design/assets/images/coins/hot.png</file>
         <file>atomic_defi_design/assets/images/coins/best.png</file>
         <file>atomic_defi_design/assets/images/coins/bal.png</file>
-        <file>atomic_defi_design/assets/images/coins/noia.png</file>
         <file>atomic_defi_design/assets/images/coins/cvt.png</file>
         <file>atomic_defi_design/assets/images/coins/dx.png</file>
         <file>atomic_defi_design/assets/images/coins/rlc.png</file>
@@ -323,13 +328,11 @@
         <file>atomic_defi_design/assets/images/coins/trac.png</file>
         <file>atomic_defi_design/assets/images/coins/ubt.png</file>
         <file>atomic_defi_design/assets/images/coins/gno.png</file>
-        <file>atomic_defi_design/assets/images/coins/brc.png</file>
         <file>atomic_defi_design/assets/images/coins/sxp.png</file>
         <file>atomic_defi_design/assets/images/coins/chz.png</file>
         <file>atomic_defi_design/assets/images/coins/yfii.png</file>
-        <file>atomic_defi_design/assets/images/coins/xdce.png</file>
-        <file>atomic_defi_design/assets/images/coins/iotx.png</file>
         <file>atomic_defi_design/assets/images/coins/paxg.png</file>
+        <file>atomic_defi_design/assets/images/coins/qi.png</file>
         <file>atomic_defi_design/assets/images/coins/skl.png</file>
         <file>atomic_defi_design/assets/images/coins/pnk.png</file>
         <file>atomic_defi_design/assets/images/coins/crv.png</file>
@@ -343,7 +346,6 @@
         <file>atomic_defi_design/assets/images/coins/mln.png</file>
         <file>atomic_defi_design/assets/images/coins/ttt.png</file>
         <file>atomic_defi_design/assets/images/coins/npxs.png</file>
-        <file>atomic_defi_design/assets/images/coins/hyn.png</file>
         <file>atomic_defi_design/assets/images/coins/eum.png</file>
         <file>atomic_defi_design/assets/images/coins/xor.png</file>
         <file>atomic_defi_design/assets/images/coins/mco.png</file>
@@ -351,14 +353,25 @@
         <file>atomic_defi_design/assets/images/coins/powr.png</file>
         <file>atomic_defi_design/assets/images/coins/vgx.png</file>
         <file>atomic_defi_design/assets/images/coins/fet.png</file>
-        <file>atomic_defi_design/assets/images/coins/fxc.png</file>
         <file>atomic_defi_design/assets/images/coins/dia.png</file>
         <file>atomic_defi_design/assets/images/coins/agi.png</file>
         <file>atomic_defi_design/assets/images/coins/eurs.png</file>
         <file>atomic_defi_design/assets/images/coins/uqc.png</file>
         <file>atomic_defi_design/assets/images/coins/uos.png</file>
         <file>atomic_defi_design/assets/images/coins/s4f.png</file>
-        <file>atomic_defi_design/assets/images/coins/cgcx.png</file>
         <file>atomic_defi_design/assets/images/coins/shr.png</file>
+        <file>atomic_defi_design/assets/images/coins/ink.png</file>
+        <file>atomic_defi_design/assets/images/coins/spc.png</file>
+        <file>atomic_defi_design/assets/images/coins/tsl.png</file>
+        <file>atomic_defi_design/assets/images/coins/hpy.png</file>
+        <file>atomic_defi_design/assets/images/coins/hlc.png</file>
+        <file>atomic_defi_design/assets/images/coins/med.png</file>
+        <file>atomic_defi_design/assets/images/coins/lstr.png</file>
+        <file>atomic_defi_design/assets/images/coins/qbt.png</file>
+        <file>atomic_defi_design/assets/images/coins/oc.png</file>
+        <file>atomic_defi_design/assets/images/coins/put.png</file>
+        <file>atomic_defi_design/assets/images/coins/soulja.png</file>
+        <file>atomic_defi_design/assets/images/coins/wsb.png</file>
+        <file>atomic_defi_design/assets/images/coins/zat.png</file>
     </qresource>
 </RCC>

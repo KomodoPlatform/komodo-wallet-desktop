@@ -22,6 +22,12 @@ BasicModal {
         glb_coins_cfg_mdl.all_erc20_proxy.setFilterFixedString(text)
         glb_coins_cfg_mdl.all_smartchains_proxy.setFilterFixedString(text)
         glb_coins_cfg_mdl.all_utxo_proxy.setFilterFixedString(text)
+
+        // Expands type lists if searchbar is not empty
+        qrc20_expandable.expanded = text !== ""
+        erc20_expandable.expanded = text !== ""
+        sc_expandable.expanded = text !== ""
+        utxo_expandable.expanded = text !== ""
     }
 
     function onTypeSelect(type_or_ticker) {
@@ -53,6 +59,7 @@ BasicModal {
         }
 
         AddressBookWalletTypeList {
+            id: qrc20_expandable
             Layout.rightMargin: 10
             Layout.fillWidth: true
             title: "QRC-20 coins"
@@ -62,6 +69,7 @@ BasicModal {
         }
 
         AddressBookWalletTypeList {
+            id: erc20_expandable
             Layout.rightMargin: 10
             Layout.fillWidth: true
             title: "ERC-20 coins"
@@ -71,6 +79,7 @@ BasicModal {
         }
 
         AddressBookWalletTypeList {
+            id: sc_expandable
             Layout.rightMargin: 10
             Layout.fillWidth: true
             title: "Smart Chain coins"
@@ -80,6 +89,7 @@ BasicModal {
         }
 
         AddressBookWalletTypeList {
+            id: utxo_expandable
             Layout.rightMargin: 10
             Layout.fillWidth: true
             title: "UTXO coins"

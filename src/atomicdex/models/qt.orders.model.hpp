@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -103,6 +103,10 @@ namespace atomic_dex
         [[nodiscard]] bool                is_fetching_busy() const noexcept;
         void                              set_fetching_busy(bool fetching_status) noexcept;
         [[nodiscard]] int                 get_nb_pages() const noexcept;
+
+        //! getter
+        [[nodiscard]] t_filtering_infos get_filtering_infos() const noexcept;
+        void                            set_filtering_infos(t_filtering_infos infos) noexcept;
 
 
       signals:
