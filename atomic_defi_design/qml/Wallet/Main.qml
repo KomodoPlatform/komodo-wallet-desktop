@@ -289,74 +289,74 @@ Item {
             }
         }
 
-        InnerBackground {
-            id: price_graph_bg
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.leftMargin: layout_margin
-            Layout.rightMargin: layout_margin
-            Layout.bottomMargin: -parent.spacing*0.5
-            implicitHeight: wallet.height*0.6
+//        InnerBackground {
+//            id: price_graph_bg
+//            Layout.fillWidth: true
+//            Layout.fillHeight: true
+//            Layout.leftMargin: layout_margin
+//            Layout.rightMargin: layout_margin
+//            Layout.bottomMargin: -parent.spacing*0.5
+//            implicitHeight: wallet.height*0.6
 
-            visible: chart.has_data
+//            visible: chart.has_data
 
-            PriceGraph {
-                id: chart
-                anchors.fill: parent
+//            PriceGraph {
+//                id: chart
+//                anchors.fill: parent
 
-                RowLayout {
-                    spacing: 60
-                    y: 10
-                    anchors.horizontalCenter: parent.horizontalCenter
+//                RowLayout {
+//                    spacing: 60
+//                    y: 10
+//                    anchors.horizontalCenter: parent.horizontalCenter
 
-                    RowLayout {
-                        Layout.alignment: Qt.AlignLeft
+//                    RowLayout {
+//                        Layout.alignment: Qt.AlignLeft
 
-                        FloatingBackground {
-                            id: left_circle
+//                        FloatingBackground {
+//                            id: left_circle
 
-                            verticalShadow: true
-                            width: 28; height: 28
+//                            verticalShadow: true
+//                            width: 28; height: 28
 
-                            content: DefaultImage {
-                                source: General.image_path + "shadowed_circle_green.svg"
+//                            content: DefaultImage {
+//                                source: General.image_path + "shadowed_circle_green.svg"
 
-                                width: 12; height: width
-                            }
-                        }
+//                                width: 12; height: width
+//                            }
+//                        }
 
-                        DefaultText {
-                            id: left_text
-                            text_value: qsTr("%1 / %2 Price", "TICKER").arg(api_wallet_page.ticker).arg(API.app.settings_pg.current_fiat) + " " + General.cex_icon
-                            font.pixelSize: Style.textSizeSmall3
+//                        DefaultText {
+//                            id: left_text
+//                            text_value: qsTr("%1 / %2 Price", "TICKER").arg(api_wallet_page.ticker).arg(API.app.settings_pg.current_fiat) + " " + General.cex_icon
+//                            font.pixelSize: Style.textSizeSmall3
 
-                            CexInfoTrigger {}
-                        }
-                    }
+//                            CexInfoTrigger {}
+//                        }
+//                    }
 
-                    RowLayout {
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.fillWidth: true
+//                    RowLayout {
+//                        Layout.alignment: Qt.AlignLeft
+//                        Layout.fillWidth: true
 
-                        FloatingBackground {
-                            verticalShadow: left_circle.verticalShadow
-                            width: left_circle.width; height: left_circle.height
+//                        FloatingBackground {
+//                            verticalShadow: left_circle.verticalShadow
+//                            width: left_circle.width; height: left_circle.height
 
-                            content: DefaultImage {
-                                source: General.image_path + "shadowed_circle_blue.svg"
+//                            content: DefaultImage {
+//                                source: General.image_path + "shadowed_circle_blue.svg"
 
-                                width: 12; height: width
-                            }
-                        }
+//                                width: 12; height: width
+//                            }
+//                        }
 
-                        DefaultText {
-                            text_value: qsTr("Volume 24h") + " (" + API.app.settings_pg.current_fiat + ")"
-                            font: left_text.font
-                        }
-                    }
-                }
-            }
-        }
+//                        DefaultText {
+//                            text_value: qsTr("Volume 24h") + " (" + API.app.settings_pg.current_fiat + ")"
+//                            font: left_text.font
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         // Transactions or loading
         Item {
