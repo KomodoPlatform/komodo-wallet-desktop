@@ -4,6 +4,7 @@
 
 //! Deps
 #include <boost/algorithm/string/case_conv.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <range/v3/view.hpp>
 
 //! Project headers
@@ -91,9 +92,11 @@ namespace atomic_dex::coingecko::api
     from_json(const nlohmann::json& j, single_infos_answer& answer)
     {
         answer.current_price = std::to_string(j.at("current_price").get<double>());
+        boost::algorithm::replace_all(answer.current_price, ",", ".");
         std::ostringstream ss;
         ss << std::setprecision(2) << j.at("price_change_percentage_24h").get<double>();
         answer.price_change_24h = ss.str();
+        boost::algorithm::replace_all(answer.price_change_24h, ",", ".");
         j.at("sparkline_in_7d").at("price").get_to(answer.sparkline_in_7d);
     }
 
