@@ -155,29 +155,28 @@ namespace atomic_dex
         //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
         if (ticker.empty())
             return "0";
-        auto&       coingecko         = m_system_manager.get_system<coingecko_provider>();
-        auto&       band_service      = m_system_manager.get_system<band_oracle_price_service>();
-        const auto& current_fiat      = m_system_manager.get_system<settings_page>().get_cfg().current_fiat;
-        const auto& current_fiat_sign = m_system_manager.get_system<settings_page>().get_cfg().current_fiat_sign;
-        std::string current_price     = band_service.retrieve_if_this_ticker_supported(ticker);
-        const bool  is_oracle_ready   = band_service.is_oracle_ready();
+        auto&       coingecko       = m_system_manager.get_system<coingecko_provider>();
+        auto&       band_service    = m_system_manager.get_system<band_oracle_price_service>();
+        const auto& current_fiat    = m_system_manager.get_system<settings_page>().get_cfg().current_fiat;
+        std::string current_price   = band_service.retrieve_if_this_ticker_supported(ticker);
+        const bool  is_oracle_ready = band_service.is_oracle_ready();
 
         if (current_price.empty())
         {
             current_price = coingecko.get_rate_conversion(ticker);
             if (!is_this_currency_a_fiat(m_cfg, fiat))
             {
-                t_float_50 rate_fallback_usd(1);
                 t_float_50 rate(1);
                 {
                     std::shared_lock lock(m_coin_rate_mutex);
-                    if (current_fiat != "USD")
-                    {
-                        rate_fallback_usd = rate_fallback_usd / m_other_fiats_rates->at("rates").at(current_fiat).get<double>();
-                    }
                     rate = t_float_50(m_coin_rate_providers.at(fiat)); ///< Retrieve BTC or KMD rate let's say for USD
                 }
-                t_float_50 tmp_current_price = (t_float_50(current_price) * rate_fallback_usd) * rate;
+                t_float_50 tmp_current_price = t_float_50(current_price) * rate;
+                current_price                = tmp_current_price.str();
+            }
+            else if (fiat != "USD")
+            {
+                t_float_50 tmp_current_price = t_float_50(current_price) * m_other_fiats_rates->at("rates").at(fiat).get<double>();
                 current_price                = tmp_current_price.str();
             }
         }
@@ -390,9 +389,9 @@ namespace atomic_dex
         SPDLOG_INFO("Forcing update providers");
         async_fetch_fiat_rates()
             .then([this](web::http::http_response resp) {
-              this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
-              refresh_other_coins_rates("kmd-komodo", "KMD");
-              refresh_other_coins_rates("btc-bitcoin", "BTC", true);
+                this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
+                refresh_other_coins_rates("kmd-komodo", "KMD");
+                refresh_other_coins_rates("btc-bitcoin", "BTC", true);
             })
             .then(&handle_exception_pplx_task);
     }

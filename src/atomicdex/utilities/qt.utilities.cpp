@@ -25,6 +25,7 @@
 
 //! Project headers
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "global.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -47,12 +48,30 @@ namespace atomic_dex
     }
 
     QString
-    retrieve_change_24h(const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config)
+    retrieve_change_24h(
+        const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
+        const ag::ecs::system_manager& system_manager)
     {
         QString change_24h = "0";
-        if (config.current_currency != "KMD" && config.current_currency != "BTC")
+        if (is_this_currency_a_fiat(config, config.current_currency))
         {
             change_24h = QString::fromStdString(coingecko.get_change_24h(coin.ticker));
+            if (config.current_currency != "USD")
+            {
+                // system_manager.get_system<>()
+                t_float_50 change_24h_f(change_24h.toStdString());
+            }
+        }
+        else
+        {
+            const auto res = coingecko.get_change_24h(config.current_currency);
+
+            if (res != "0" && coin.ticker != config.current_currency)
+            {
+                t_float_50 change_24h_f(res);
+                t_float_50 final_result = t_float_50(coingecko.get_change_24h(coin.ticker)) - change_24h_f;
+                change_24h              = QString::fromStdString(final_result.str(2));
+            }
         }
         return change_24h;
     }

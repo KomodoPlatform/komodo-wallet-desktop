@@ -119,8 +119,8 @@ namespace atomic_dex
         if (!ids.empty())
         {
             SPDLOG_INFO("Processing internal_update");
-            const std::string                current_currency = this->m_system_manager.get_system<settings_page>().get_cfg().current_fiat;
-            t_coingecko_market_infos_request request{.vs_currency = boost::algorithm::to_lower_copy(current_currency), .ids = std::move(ids)};
+
+            t_coingecko_market_infos_request request{.ids = std::move(ids)};
             const auto                       answer_functor = [this, registry, should_move, tickers](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 if (resp.status_code() == 200)

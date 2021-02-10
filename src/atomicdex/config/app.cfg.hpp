@@ -40,7 +40,7 @@ namespace atomic_dex
     void               change_currency(cfg& config, const std::string& new_currency);
     void               change_fiat(cfg& config, const std::string& new_fiat);
     void               change_notification_status(cfg& config, bool is_enabled);
-    [[nodiscard]] bool is_this_currency_a_fiat(cfg& config, const std::string& currency) noexcept;
+    [[nodiscard]] bool is_this_currency_a_fiat(const cfg& config, const std::string& currency) noexcept;
     cfg                load_cfg();
     std::string        retrieve_sign_from_ticker(const cfg& config, const std::string& currency) noexcept;
 } // namespace atomic_dex

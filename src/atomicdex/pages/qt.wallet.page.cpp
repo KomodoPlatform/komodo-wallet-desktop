@@ -179,7 +179,7 @@ namespace atomic_dex
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
             obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url[0]);
             obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, true));
-            obj["change_24h"]                         = retrieve_change_24h(coingecko, coin_info, config);
+            obj["change_24h"]                         = retrieve_change_24h(coingecko, coin_info, config, m_system_manager);
             const auto& tx_state                      = mm2_system.get_tx_state(ec);
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));

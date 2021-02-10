@@ -116,7 +116,7 @@ namespace atomic_dex
     }
 
     bool
-    is_this_currency_a_fiat(cfg& config, const std::string& currency) noexcept
+    is_this_currency_a_fiat(const cfg& config, const std::string& currency) noexcept
     {
         return ranges::any_of(config.available_fiat, [currency](const std::string& current_fiat) { return current_fiat == currency; });
     }

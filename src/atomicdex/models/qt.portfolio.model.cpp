@@ -59,7 +59,7 @@ namespace atomic_dex
             auto        coin          = mm2_system.get_coin_info(ticker);
 
             std::error_code ec;
-            const QString   change_24h = retrieve_change_24h(coingecko, coin, *m_config);
+            const QString   change_24h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
             portfolio_data  data{
                 .ticker                           = QString::fromStdString(coin.ticker),
                 .gui_ticker                       = QString::fromStdString(coin.gui_ticker),
@@ -119,7 +119,7 @@ namespace atomic_dex
                     update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
                     const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                     update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
-                    QString change24_h = retrieve_change_24h(coingecko, coin, *m_config);
+                    QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
                     update_value(Change24H, change24_h, idx, *this);
                     const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
                     auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
@@ -181,7 +181,7 @@ namespace atomic_dex
                 update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
                 const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
                 update_value(Display, display, idx, *this);
-                QString change24_h = retrieve_change_24h(coingecko, coin, *m_config);
+                QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
                 update_value(Change24H, change24_h, idx, *this);
                 if (is_change_b)
                 {
