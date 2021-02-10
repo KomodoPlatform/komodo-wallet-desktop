@@ -97,10 +97,11 @@ namespace atomic_dex
         void                                 init_lang() noexcept;
         void                                 set_qml_engine(QQmlApplicationEngine* engine) noexcept;
 
-        //! Public QML API
+        // QML API
         Q_INVOKABLE void                      remove_custom_coin(const QString& ticker) noexcept;
         Q_INVOKABLE [[nodiscard]] QStringList get_available_langs() const;
         Q_INVOKABLE [[nodiscard]] QStringList get_available_fiats() const;
+        Q_INVOKABLE [[nodiscard]] QStringList get_recommended_fiats() const; // Returns 6 recommended fiats. Basically, the first 6 values in cfg.json.
         Q_INVOKABLE [[nodiscard]] QStringList get_available_currencies() const;
         Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
         Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
@@ -109,14 +110,13 @@ namespace atomic_dex
         Q_INVOKABLE void process_qrc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath);
         Q_INVOKABLE void submit();
         Q_INVOKABLE void reset_coin_cfg();
+        Q_INVOKABLE QStringList               retrieve_seed(const QString& wallet_name, const QString& password);
+        Q_INVOKABLE static QString            get_mm2_version();
+        Q_INVOKABLE static QString            get_log_folder();
+        Q_INVOKABLE static QString            get_export_folder();
+        Q_INVOKABLE static QString            get_version() noexcept;
 
-        //! Infos
-        Q_INVOKABLE QStringList        retrieve_seed(const QString& wallet_name, const QString& password);
-        Q_INVOKABLE static QString get_mm2_version();
-        Q_INVOKABLE static QString get_log_folder();
-        Q_INVOKABLE static QString get_export_folder();
-        Q_INVOKABLE static QString get_version() noexcept;
-
+        // QML API Properties Signals
       signals:
         void onLangChanged();
         void langChanged();
