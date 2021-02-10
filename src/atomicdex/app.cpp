@@ -36,8 +36,8 @@
 //! Project Headers
 #include "atomicdex/app.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
-#include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 
 namespace
@@ -156,7 +156,7 @@ namespace atomic_dex
         {
             system_manager_.create_system<mm2_service>(system_manager_);
 
-            system_manager_.create_system<coinpaprika_provider>(system_manager_);
+            // system_manager_.create_system<coinpaprika_provider>(system_manager_);
             system_manager_.create_system<coingecko_provider>(system_manager_);
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
@@ -265,7 +265,7 @@ namespace atomic_dex
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<band_oracle_price_service>();
-        system_manager_.create_system<coinpaprika_provider>(system_manager_);
+        // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<coingecko_provider>(system_manager_);
         system_manager_.create_system<update_service_checker>(this);
         system_manager_.create_system<exporter_service>(system_manager_);
@@ -365,7 +365,7 @@ namespace atomic_dex
 
         //! Mark systems
         system_manager_.mark_system<mm2_service>();
-        system_manager_.mark_system<coinpaprika_provider>();
+        // system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<coingecko_provider>();
 
         //! Disconnect signals
@@ -461,8 +461,9 @@ namespace atomic_dex
     void
     application::on_fiat_rate_updated(const fiat_rate_updated&) noexcept
     {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("on_fiat_rate_updated");
         this->dispatcher_.trigger<update_portfolio_values>();
+        this->dispatcher_.trigger<current_currency_changed>();
     }
 
     void
@@ -667,7 +668,7 @@ namespace atomic_dex
         assert(ptr != nullptr);
         return ptr;
     }
-}
+} // namespace atomic_dex
 
 //! Wallet_mgr
 namespace atomic_dex

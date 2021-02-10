@@ -19,12 +19,6 @@
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 
-/**
- * Optimisation note:
- *
- * t_ref_count_idx is always passed by copy to increase ref_counting on this shared_ptr
- */
-
 namespace
 {
     //! Using namespace

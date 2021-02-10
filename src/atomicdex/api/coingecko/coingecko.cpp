@@ -13,7 +13,7 @@ namespace
 {
     //! Constants
     constexpr const char* g_coingecko_endpoint = "https://api.coingecko.com/api/v3";
-    constexpr const char* g_coingecko_base_uri{"/coins/markets?vs_currency=usd&ids="};
+    constexpr const char* g_coingecko_base_uri{"/coins/markets"};
     t_http_client_ptr     g_coingecko_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coingecko_endpoint));
 } // namespace
 
@@ -23,6 +23,9 @@ namespace atomic_dex::coingecko::api
              to_coingecko_uri(market_infos_request&& request)
     {
         std::string uri = g_coingecko_base_uri;
+        uri.append("?vs_currency=");
+        uri.append(request.vs_currency);
+        uri.append("&ids=");
         using ranges::views::ints;
         using ranges::views::zip;
         auto fill_list_functor = [](auto&& container, auto& uri) {
@@ -66,38 +69,39 @@ namespace atomic_dex::coingecko::api
         return uri;
     }
 
-    std::vector<std::string>
+    std::pair<std::vector<std::string>, t_coingecko_registry>
     from_enabled_coins(const t_coins_registry& coins)
     {
         std::vector<std::string> out;
+        t_coingecko_registry     registry;
 
         for (auto&& [key, value]: coins)
         {
             if (value.coingecko_id != "test-coin")
             {
+                registry[value.coingecko_id] = value.ticker;
                 out.emplace_back(value.coingecko_id);
             }
         }
 
-        return out;
+        return {out, registry};
     }
 
     void
     from_json(const nlohmann::json& j, single_infos_answer& answer)
     {
-        answer.current_price    = std::to_string(j.at("current_price").get<double>());
-        answer.price_change_24h = std::to_string(j.at("price_change_percentage_24h").get<double>());
+        answer.current_price = std::to_string(j.at("current_price").get<double>());
+        std::ostringstream ss;
+        ss << std::setprecision(2) << j.at("price_change_percentage_24h").get<double>();
+        answer.price_change_24h = ss.str();
         j.at("sparkline_in_7d").at("price").get_to(answer.sparkline_in_7d);
     }
 
     void
-    from_json(const nlohmann::json& j, market_infos_answer& answer)
+    from_json(const nlohmann::json& j, market_infos_answer& answer, const t_coingecko_registry& registry)
     {
         answer.result.reserve(j.size());
-        for (auto&& cur_json_obj: j)
-        {
-            answer.result[boost::algorithm::to_upper_copy(j.at("symbol").get<std::string>())] = cur_json_obj.get<single_infos_answer>();
-        }
+        for (auto&& cur_json_obj: j) { answer.result[registry.at(cur_json_obj.at("id").get<std::string>())] = cur_json_obj.get<single_infos_answer>(); }
     }
 
     pplx::task<web::http::http_response>

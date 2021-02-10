@@ -47,16 +47,12 @@ namespace atomic_dex
     }
 
     QString
-    retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config)
+    retrieve_change_24h(const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config)
     {
-        auto    ticker_infos = paprika.get_ticker_infos(coin.ticker).answer;
-        QString change_24h   = "0";
-        if (not ticker_infos.empty() && ticker_infos.contains(config.current_currency))
+        QString change_24h = "0";
+        if (config.current_currency != "KMD" && config.current_currency != "BTC")
         {
-            auto change_24h_str =
-                std::to_string(paprika.get_ticker_infos(coin.ticker).answer.at(config.current_currency).at("percent_change_24h").get<double>());
-            std::replace(begin(change_24h_str), end(change_24h_str), ',', '.');
-            change_24h = QString::fromStdString(change_24h_str);
+            change_24h = QString::fromStdString(coingecko.get_change_24h(coin.ticker));
         }
         return change_24h;
     }
@@ -87,12 +83,13 @@ namespace atomic_dex
 
         clipboard->setText(text);
     }
-    
-    QString qt_utilities::get_qrcode_svg_from_string(const QString& str)
+
+    QString
+    qt_utilities::get_qrcode_svg_from_string(const QString& str)
     {
         qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(str.toStdString().c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
         std::string       svg = qr0.toSvgString(2);
-        
+
         return QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
     }
 } // namespace atomic_dex

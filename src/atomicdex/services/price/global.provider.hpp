@@ -41,6 +41,9 @@ namespace atomic_dex
         std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, bool adjusted = false) const noexcept;
         std::string get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount) const noexcept;
         std::string get_cex_rates(const std::string& base, const std::string& rel) const noexcept;
+
+        //! Events
+        void on_force_update_providers([[maybe_unused]] const force_update_providers& evt);
     };
 } // namespace atomic_dex
 

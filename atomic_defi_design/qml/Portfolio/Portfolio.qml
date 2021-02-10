@@ -55,8 +55,8 @@ ColumnLayout {
             let min = 999999999
             let max = -999999999
             for(i = 0; i < historical.length; ++i) {
-                let price = historical[i].price
-                series.append(i / historical.length, historical[i].price)
+                let price = historical[i]
+                series.append(i / historical.length, historical[i])
                 min = Math.min(min, price)
                 max = Math.max(max, price)
             }
