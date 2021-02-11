@@ -63,10 +63,7 @@ namespace atomic_dex
             }
         }
 
-        if (!ids.empty())
-        {
-            internal_update(ids, registry, false, evt.tickers);
-        }
+        internal_update(ids, registry, false, evt.tickers);
     }
 
     void
@@ -158,6 +155,11 @@ namespace atomic_dex
                 }
             };
             coingecko::api::async_market_infos(std::move(request)).then(answer_functor).then(&handle_exception_pplx_task);
+        }
+        else
+        {
+            //! If it's only test coin
+            dispatcher_.trigger<coin_fully_initialized>(tickers);
         }
     }
 

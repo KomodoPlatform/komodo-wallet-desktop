@@ -157,7 +157,6 @@ namespace atomic_dex
             return "0";
         auto&       coingecko       = m_system_manager.get_system<coingecko_provider>();
         auto&       band_service    = m_system_manager.get_system<band_oracle_price_service>();
-        const auto& current_fiat    = m_system_manager.get_system<settings_page>().get_cfg().current_fiat;
         std::string current_price   = band_service.retrieve_if_this_ticker_supported(ticker);
         const bool  is_oracle_ready = band_service.is_oracle_ready();
 
