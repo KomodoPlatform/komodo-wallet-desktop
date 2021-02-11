@@ -108,7 +108,7 @@ namespace atomic_dex
             }
             auto update_functor = [coin = std::move(coin), &coingecko, &mm2_system, &price_service, currency, fiat, this]() {
                 const std::string& ticker = coin.ticker;
-                if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+                if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
                 {
                     std::error_code    ec;
                     const QModelIndex& idx                         = res.at(0);
@@ -147,7 +147,7 @@ namespace atomic_dex
                 continue;
             }
             // SPDLOG_DEBUG("trying updating balance values of: {}", ticker);
-            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
             {
                 const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
                 const auto*        global_cfg    = this->m_system_manager.get_system<portfolio_page>().get_global_cfg();
@@ -341,7 +341,7 @@ namespace atomic_dex
     {
         for (auto&& coin: coins)
         {
-            auto res = this->match(this->index(0, 0), TickerRole, coin);
+            auto res = this->match(this->index(0, 0), TickerRole, coin, 1, Qt::MatchFlag::MatchExactly);
             // assert(not res.empty());
             if (not res.empty())
             {
@@ -422,7 +422,7 @@ namespace atomic_dex
         const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         for (auto&& [coin, cfg]: coins)
         {
-            auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin));
+            auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin), 1, Qt::MatchFlag::MatchExactly);
             // assert(not res.empty());
             if (not res.empty())
             {
