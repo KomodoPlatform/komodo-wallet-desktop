@@ -313,6 +313,8 @@ Item {
                 function loadChart() {
                     const pair = ticker + "/" + API.app.settings_pg.current_currency
                     const pair_reversed = API.app.settings_pg.current_currency + "/" + ticker
+                    const pair_usd = ticker + "/" + "USD"
+                    const pair_usd_reversed = "USD" + "/" + ticker
                     const pair_busd = ticker + "/" + "BUSD"
                     const pair_busd_reversed = "BUSD" + "/" + ticker
 
@@ -326,6 +328,18 @@ Item {
                     // Reversed pair
                     if (!symbol) {
                         console.log("Symbol not found for", pair_reversed)
+                        symbol = General.supported_pairs[pair_usd]
+                    }
+
+                    // Pair with USD
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair_usd)
+                        symbol = General.supported_pairs[pair_usd_reversed]
+                    }
+
+                    // Reversed pair with USD
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair_usd_reversed)
                         symbol = General.supported_pairs[pair_busd]
                     }
 
