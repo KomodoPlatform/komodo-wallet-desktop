@@ -1118,6 +1118,11 @@ namespace mm2::api
         results.swaps_id.reserve(swaps.size());
         for (auto&& cur: swaps)
         {
+            if (cur.is_null())
+            {
+                SPDLOG_WARN("Current swap object is null - skipping");
+                continue;
+            }
             order_swaps_data to_add;
             from_json(cur, to_add);
             for (auto&& cur_event: to_add.events)
@@ -1147,7 +1152,6 @@ namespace mm2::api
             double average                        = sum / values.size();
             results.average_events_time[evt_name] = average;
         }
-        SPDLOG_INFO("total pages: {}", results.total_pages);
     }
 
     void
