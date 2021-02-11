@@ -107,8 +107,8 @@ namespace atomic_dex::coingecko::api
         for (auto&& cur_json_obj: j) { answer.result[registry.at(cur_json_obj.at("id").get<std::string>())] = cur_json_obj.get<single_infos_answer>(); }
     }
 
-    pplx::task<web::http::http_response>
-    async_market_infos(market_infos_request&& request)
+    ENTT_API pplx::task<web::http::http_response>
+             async_market_infos(market_infos_request&& request)
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);

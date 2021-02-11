@@ -50,7 +50,7 @@ namespace atomic_dex
     QString
     retrieve_change_24h(
         const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
-        const ag::ecs::system_manager& system_manager)
+        [[maybe_unused]] const ag::ecs::system_manager& system_manager)
     {
         QString change_24h = "0";
         if (is_this_currency_a_fiat(config, config.current_currency))
