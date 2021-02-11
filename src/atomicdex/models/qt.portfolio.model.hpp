@@ -110,6 +110,7 @@ namespace atomic_dex
         void portfolioItemDataChanged();
 
       private:
+        void balance_update_handler(const QString& prev_value, const QString& new_value, const QString& ticker);
         //! From project
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;

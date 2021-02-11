@@ -59,6 +59,9 @@ namespace atomic_dex
     void
     notification_manager::on_balance_update_notification(const balance_update_notification& evt)
     {
+        SPDLOG_INFO(
+            "balance update notification: am_i_sender: {} amount: {} ticker: {} human_date: {}", evt.am_i_sender, evt.amount.toStdString(),
+            evt.ticker.toStdString(), evt.human_date.toStdString());
         emit balanceUpdateStatus(evt.am_i_sender, evt.amount, evt.ticker, evt.human_date, evt.timestamp);
     }
 

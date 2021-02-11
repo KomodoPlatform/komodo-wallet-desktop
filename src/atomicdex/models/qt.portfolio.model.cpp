@@ -91,7 +91,6 @@ namespace atomic_dex
     void
     portfolio_model::update_currency_values()
     {
-        using namespace std::chrono;
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
         const auto&        coingecko     = this->m_system_manager.get_system<coingecko_provider>();
@@ -127,18 +126,7 @@ namespace atomic_dex
                     update_value(Display, display, idx, *this);
                     if (is_change_b)
                     {
-                        t_float_50 prev_balance_f(prev_balance.toString().toStdString());
-                        t_float_50 new_balance_f(new_balance.toString().toStdString());
-                        bool       am_i_sender = false;
-                        if (prev_balance_f > new_balance_f)
-                        {
-                            am_i_sender = true;
-                        }
-                        t_float_50 amount_f   = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
-                        QString    amount     = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                        qint64     timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                        QString    human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                        this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
+                        balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                     }
                     // SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
@@ -151,7 +139,6 @@ namespace atomic_dex
     void
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers) noexcept
     {
-        using namespace std::chrono;
         for (auto&& ticker: tickers)
         {
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
@@ -185,19 +172,7 @@ namespace atomic_dex
                 update_value(Change24H, change24_h, idx, *this);
                 if (is_change_b)
                 {
-                    t_float_50 prev_balance_f(prev_balance.toString().toStdString());
-                    t_float_50 new_balance_f(new_balance.toString().toStdString());
-                    bool       am_i_sender = false;
-                    if (prev_balance_f > new_balance_f)
-                    {
-                        am_i_sender = true;
-                    }
-                    t_float_50 amount_f   = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
-                    QString    amount     = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                    qint64     timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                    QString    human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                    this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
-                    emit portfolioItemDataChanged();
+                    balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                 }
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {
@@ -454,5 +429,27 @@ namespace atomic_dex
                 update_value(PortfolioRoles::PrivKey, "", res.at(0), *this);
             }
         }
+    }
+} // namespace atomic_dex
+
+namespace atomic_dex
+{
+    void
+    portfolio_model::balance_update_handler(const QString& prev_balance, const QString& new_balance, const QString& ticker)
+    {
+        using namespace std::chrono;
+        t_float_50 prev_balance_f(prev_balance.toStdString());
+        t_float_50 new_balance_f(new_balance.toStdString());
+        bool       am_i_sender = false;
+        if (prev_balance_f > new_balance_f)
+        {
+            am_i_sender = true;
+        }
+        t_float_50 amount_f   = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
+        QString    amount     = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
+        qint64     timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+        QString    human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, ticker, human_date, timestamp);
+        emit portfolioItemDataChanged();
     }
 } // namespace atomic_dex
