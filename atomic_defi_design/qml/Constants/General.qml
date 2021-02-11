@@ -520,6 +520,8 @@ QtObject {
                                                 "GLEEC/BTC": "BITTREX:GLEECBTC",
                                                 "GNO/BTC": "BITTREX:GNOBTC",
                                                 "GNO/ETH": "KRAKEN:GNOETH",
+                                                "GRS/BTC": "BINANCE:GRSBTC",
+                                                "GRS/ETH": "HUOBI:GRSETH",
                                                 "HEX/BTC": "HITBTC:HEXBTC",
                                                 "HEX/USDC": "UNISWAP:HEXUSDC",
                                                 "HOT/BTC": "HUOBI:HOTBTC",
