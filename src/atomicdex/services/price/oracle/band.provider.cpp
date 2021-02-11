@@ -41,12 +41,12 @@ namespace atomic_dex
         web::http::http_request req;
         req.set_method(web::http::methods::POST);
         nlohmann::json json_body;
-        json_body["min_count"] = 3;
-        json_body["ask_count"] = 4;
+        json_body["min_count"] = 10;
+        json_body["ask_count"] = 16;
         json_body["symbols"]   = nlohmann::json::array();
         for (auto&& cur_symbol: this->m_supported_tickers) { json_body["symbols"].push_back(cur_symbol); }
         req.headers().set_content_type(FROM_STD_STR("application/json"));
-        //SPDLOG_INFO("req: {}", json_body.dump(4));
+        // SPDLOG_INFO("req: {}", json_body.dump(4));
         req.set_body(json_body.dump());
         return m_band_http_client->request(req);
     }
@@ -57,11 +57,10 @@ namespace atomic_dex
         SPDLOG_INFO("start fetching oracle");
         async_fetch_oracle_result()
             .then([this](web::http::http_response resp) {
+                auto body = TO_STD_STR(resp.extract_string(true).get());
                 if (resp.status_code() == 200)
                 {
-                    auto                     body = TO_STD_STR(resp.extract_string(true).get());
-                    //SPDLOG_INFO("band oracle successfully fetched: {}", body);
-                    nlohmann::json           j    = nlohmann::json::parse(body);
+                    nlohmann::json           j = nlohmann::json::parse(body);
                     band_oracle_price_result result;
                     from_json(j, result);
                     this->m_oracle_price_result = result;
@@ -78,6 +77,10 @@ namespace atomic_dex
                             utils::to_human_date<std::chrono::seconds>(last_oracle_timestamp, "%e %b %Y, %H:%M"));
                     }
                     this->dispatcher_.trigger<band_oracle_refreshed>();
+                }
+                else
+                {
+                    SPDLOG_ERROR("Cannot fetch oracle price: {}", body);
                 }
             })
             .then(&handle_exception_pplx_task);

@@ -27,7 +27,7 @@
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/wallet.cfg.hpp"
-#include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 
 namespace atomic_dex
 {
@@ -47,15 +47,17 @@ namespace atomic_dex
     ENTT_API QStringList qt_variant_list_to_qt_string_list(const QVariantList& variant_list);
     QJsonArray           nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
     QJsonObject          nlohmann_json_object_to_qt_json_object(const nlohmann::json& j);
-    QString retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config);
+    QString              retrieve_change_24h(
+                     const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
+                     const ag::ecs::system_manager& system_manager);
 
     class ENTT_API qt_utilities : public QObject
     {
         Q_OBJECT
 
       public:
-        Q_INVOKABLE static void    copy_text_to_clipboard(const QString& text);
-        
+        Q_INVOKABLE static void copy_text_to_clipboard(const QString& text);
+
         Q_INVOKABLE static QString get_qrcode_svg_from_string(const QString& str);
     };
 } // namespace atomic_dex

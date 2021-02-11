@@ -56,7 +56,8 @@ namespace atomic_dex
         std::string                     minimal_claim_amount{"0"};
         bool                            currently_enabled{false};
         bool                            active{false};
-        std::string                     coinpaprika_id;
+        std::string                     coinpaprika_id{"test-coin"};
+        std::string                     coingecko_id{"test-coin"};
         bool                            is_custom_coin{false};
         std::string                     type;
         std::vector<std::string>        explorer_url; ///< usefull for transaction, take this url and append transaction id

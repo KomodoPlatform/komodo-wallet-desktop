@@ -224,6 +224,9 @@ QtObject {
     readonly property string colorSelectedText: Style.colorTheme9
     readonly property string colorSelection: Style.colorGreen2
 
+    readonly property string colorTrendingLine: dark_theme ? Style.colorGreen : "#37a6ef"
+    readonly property string colorTrendingUnderLine: dark_theme ? Style.colorGradient3 : "#e3f2fd"
+
     readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {
