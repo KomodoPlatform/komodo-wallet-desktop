@@ -169,6 +169,6 @@ namespace atomic_dex
         std::shared_lock lock(m_market_mutex);
         // SPDLOG_INFO("Looking for ticker: {}", ticker);
         const auto it = m_market_registry.find(ticker);
-        return it != m_market_registry.cend() ? it->second : coingecko::api::single_infos_answer{.price_change_24h = "0", .current_price = "0"};
+        return it != m_market_registry.cend() ? it->second : coingecko::api::single_infos_answer{.price_change_24h = "0.00", .current_price = "0.00"};
     }
 } // namespace atomic_dex
