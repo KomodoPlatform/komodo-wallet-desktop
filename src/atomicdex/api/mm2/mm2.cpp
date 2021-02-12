@@ -188,14 +188,13 @@ namespace mm2::api
     from_json(const nlohmann::json& j, max_taker_vol_answer& answer)
     {
         extract_rpc_json_answer<max_taker_vol_answer_success>(j, answer);
+        if (answer.error.has_value())
+        {
+            SPDLOG_WARN(
+                "Max taker volume need a default value, fallback with 0 as value, this is probably because you have an empty balance or not enough funds (< 0.00777).");
+            answer.result = max_taker_vol_answer_success{.denom = "1", .numer = "0", .decimal = "0"};
+        }
     }
-
-    //! Rpc Call
-    /*max_taker_vol_answer
-    rpc_max_taker_vol(max_taker_vol_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol", mm2_client);
-    }*/
 } // namespace mm2::api
 
 //! Implementation RPC [enable]
