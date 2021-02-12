@@ -948,7 +948,7 @@ namespace atomic_dex
             if (not max_taker_vol.empty())
             {
                 SPDLOG_INFO("max_taker_vol is valid, processing...");
-                if (t_float_50(max_taker_vol) < 0)
+                if (t_float_50(max_taker_vol) <= 0)
                 {
                     this->set_max_volume("0");
                 }
@@ -980,25 +980,28 @@ namespace atomic_dex
                     const auto& rel_max_taker_json_obj = get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject();
                     const auto& denom                  = rel_max_taker_json_obj["denom"].toString().toStdString();
                     const auto& numer                  = rel_max_taker_json_obj["numer"].toString().toStdString();
-                    t_rational  rel_max_taker_rat((boost::multiprecision::cpp_int(numer)), boost::multiprecision::cpp_int(denom));
-                    t_float_50  res_f = t_float_50(0);
-                    if (price_f > t_float_50(0))
-                    {
-                        const auto price_denom = m_preffered_order->at("price_denom").get<std::string>();
-                        const auto price_numer = m_preffered_order->at("price_numer").get<std::string>();
-                        t_rational price_orderbook_rat((boost::multiprecision::cpp_int(price_numer)), (boost::multiprecision::cpp_int(price_denom)));
-
-                        t_rational res = rel_max_taker_rat / price_orderbook_rat;
-                        SPDLOG_INFO(
-                            "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
-                            boost::multiprecision::denominator(res).str());
-                        res_f                                               = res.convert_to<t_float_50>();
-                        this->m_preffered_order.value()["max_volume_denom"] = boost::multiprecision::denominator(res).str();
-                        this->m_preffered_order.value()["max_volume_numer"] = boost::multiprecision::numerator(res).str();
-                    }
-                    if (res_f < 0)
+                    t_float_50  res_f                  = t_float_50(rel_max_taker_json_obj["decimal"].toString().toStdString());
+                    if (res_f <= 0)
                     {
                         res_f = 0;
+                    }
+                    else
+                    {
+                        t_rational rel_max_taker_rat((boost::multiprecision::cpp_int(numer)), boost::multiprecision::cpp_int(denom));
+                        if (price_f > t_float_50(0))
+                        {
+                            const auto price_denom = m_preffered_order->at("price_denom").get<std::string>();
+                            const auto price_numer = m_preffered_order->at("price_numer").get<std::string>();
+                            t_rational price_orderbook_rat((boost::multiprecision::cpp_int(price_numer)), (boost::multiprecision::cpp_int(price_denom)));
+
+                            t_rational res = rel_max_taker_rat / price_orderbook_rat;
+                            SPDLOG_INFO(
+                                "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
+                                boost::multiprecision::denominator(res).str());
+                            res_f                                               = res.convert_to<t_float_50>();
+                            this->m_preffered_order.value()["max_volume_denom"] = boost::multiprecision::denominator(res).str();
+                            this->m_preffered_order.value()["max_volume_numer"] = boost::multiprecision::numerator(res).str();
+                        }
                     }
                     this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
                     this->cap_volume();
@@ -1368,7 +1371,7 @@ namespace atomic_dex
         const auto& mm2             = m_system_manager.get_system<mm2_service>();
         auto        total_amount    = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
         auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
-        //qDebug() << "fees multi_ticker: " << fees;
+        // qDebug() << "fees multi_ticker: " << fees;
         set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
         this->determine_multi_ticker_error_cases(ticker, fees);
     }
