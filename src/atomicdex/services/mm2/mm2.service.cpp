@@ -694,7 +694,7 @@ namespace atomic_dex
             .then(
                 [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp) {
                     auto answer = ::mm2::api::basic_batch_answer(resp);
-                    SPDLOG_INFO("Debug output: {}", answer.dump(4));
+                    //SPDLOG_INFO("Debug output: {}", answer.dump(4));
                     if (answer.is_array())
                     {
                         auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
