@@ -14,7 +14,7 @@ TEST_CASE("test to coingecko uri from market infos request")
 {
     atomic_dex::t_coingecko_market_infos_request request{.ids = {{"bitcoin"}, {"komodo"}}};
     std::string res = atomic_dex::coingecko::api::to_coingecko_uri(std::move(request));
-    CHECK_EQ("/coins/markets?vs_currency=usd&ids=bitcoin,komodo&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=24h", res);
+    CHECK_EQ("/coins/markets?vs_currency=usd&ids=bitcoin,komodo&order=market_cap_desc&sparkline=true&price_change_percentage=24h", res);
 }
 
 TEST_CASE("api test")
