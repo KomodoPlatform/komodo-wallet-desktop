@@ -62,8 +62,8 @@ namespace atomic_dex::coingecko::api
 
         fill_list_functor(request.ids, uri);
         fill_single_field_functor("&order=", request.order);
-        fill_single_field_functor("&per_page=", request.per_page);
-        fill_single_field_functor("&page=", request.current_page);
+        //fill_single_field_functor("&per_page=", request.per_page);
+        //fill_single_field_functor("&page=", request.current_page);
         fill_single_field_functor("&sparkline=", request.with_sparkline);
         fill_single_field_functor("&price_change_percentage=", request.price_change_percentage);
         SPDLOG_TRACE("atomic_dex::coingecko::api uri: {}", uri);
