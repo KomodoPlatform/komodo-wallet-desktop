@@ -17,6 +17,14 @@
 //! STD
 #include <unordered_set>
 
+#if defined(linux) || defined(__APPLE__)
+#    define BOOST_STACKTRACE_USE_ADDR2LINE
+#    if defined(__APPLE__)
+#        define _GNU_SOURCE
+#    endif
+#    include <boost/stacktrace.hpp>
+#endif
+
 //! Project Headers
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
@@ -675,6 +683,7 @@ namespace atomic_dex
 
         //! Prepare fees
         auto batch = prepare_process_fees_and_current_orderbook();
+        SPDLOG_INFO("Request: {}", batch.dump(4));
         if (batch.empty())
         {
             return;
@@ -685,6 +694,7 @@ namespace atomic_dex
             .then(
                 [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp) {
                     auto answer = ::mm2::api::basic_batch_answer(resp);
+                    SPDLOG_INFO("Debug output: {}", answer.dump(4));
                     if (answer.is_array())
                     {
                         auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
@@ -1606,6 +1616,9 @@ namespace atomic_dex
         catch (const std::exception& e)
         {
             SPDLOG_ERROR("pplx task error: {}", e.what());
+#if defined(linux) || defined(__APPLE__)
+            SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
+#endif
             if (std::string(e.what()).find("Failed to read HTTP status line") != std::string::npos ||
                 std::string(e.what()).find("WinHttpReceiveResponse: 12002: The operation timed out") != std::string::npos)
             {
