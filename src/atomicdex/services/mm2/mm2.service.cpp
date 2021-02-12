@@ -683,7 +683,7 @@ namespace atomic_dex
 
         //! Prepare fees
         auto batch = prepare_process_fees_and_current_orderbook();
-        SPDLOG_INFO("Request: {}", batch.dump(4));
+        //SPDLOG_INFO("Request: {}", batch.dump(4));
         if (batch.empty())
         {
             return;
