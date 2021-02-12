@@ -53,7 +53,7 @@ add_library(komodo-date INTERFACE)
 if (CONAN_ENABLED)
     target_link_libraries(komodo-date INTERFACE date::date)
 else ()
-    target_link_libraries(komodo-date INTERFACE date::tz)
+    target_link_libraries(komodo-date INTERFACE date::date-tz)
 endif ()
 add_library(komodo-date::date ALIAS komodo-date)
 
