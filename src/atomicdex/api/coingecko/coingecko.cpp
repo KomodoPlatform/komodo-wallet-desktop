@@ -62,8 +62,8 @@ namespace atomic_dex::coingecko::api
 
         fill_list_functor(request.ids, uri);
         fill_single_field_functor("&order=", request.order);
-        //fill_single_field_functor("&per_page=", request.per_page);
-        //fill_single_field_functor("&page=", request.current_page);
+        // fill_single_field_functor("&per_page=", request.per_page);
+        // fill_single_field_functor("&page=", request.current_page);
         fill_single_field_functor("&sparkline=", request.with_sparkline);
         fill_single_field_functor("&price_change_percentage=", request.price_change_percentage);
         SPDLOG_TRACE("atomic_dex::coingecko::api uri: {}", uri);
@@ -104,7 +104,17 @@ namespace atomic_dex::coingecko::api
     from_json(const nlohmann::json& j, market_infos_answer& answer, const t_coingecko_registry& registry)
     {
         answer.result.reserve(j.size());
-        for (auto&& cur_json_obj: j) { answer.result[registry.at(cur_json_obj.at("id").get<std::string>())] = cur_json_obj.get<single_infos_answer>(); }
+        for (auto&& cur_json_obj: j)
+        {
+            try
+            {
+                answer.result[registry.at(cur_json_obj.at("id").get<std::string>())] = cur_json_obj.get<single_infos_answer>();
+            }
+            catch (const std::exception& error)
+            {
+                SPDLOG_ERROR("Error when treating coingecko answer: {} - error: {}", cur_json_obj.dump(1), error.what());
+            }
+        }
     }
 
     ENTT_API pplx::task<web::http::http_response>
