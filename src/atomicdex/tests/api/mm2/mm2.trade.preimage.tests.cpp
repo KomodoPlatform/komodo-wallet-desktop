@@ -29,3 +29,51 @@ TEST_CASE("mm2::api::preimage_request serialisation")
                                     )"_json;
     CHECK_EQ(j, expected_json);
 }
+
+TEST_CASE("mm2::api::coin_fee deserialization")
+{
+    nlohmann::json     answer_json = R"(
+    {
+        "amount":"0.00042049",
+        "amount_fraction":{
+            "denom":"100000000",
+            "numer":"42049"
+          },
+        "amount_rat":[[1,[42049]],[1,[100000000]]],
+        "coin":"BTC"
+    }
+    )"_json;
+    mm2::api::coin_fee answer;
+    mm2::api::from_json(answer_json, answer);
+    CHECK_EQ("0.00042049", answer.amount);
+    CHECK_EQ("BTC", answer.coin);
+    CHECK_EQ("100000000", answer.amount_fraction.denom);
+}
+
+TEST_CASE("mm2::api::preimage_answer deserialization from setprice")
+{
+    nlohmann::json answer_json = R"(
+    {
+      "result":{
+        "base_coin_fee": {
+          "amount":"0.00042049",
+          "amount_fraction":{
+            "denom":"100000000",
+            "numer":"42049"
+          },
+          "amount_rat":[[1,[42049]],[1,[100000000]]],
+          "coin":"BTC"
+        },
+        "rel_coin_fee": {
+          "amount":"0",
+          "amount_fraction":{
+            "denom":"1",
+            "numer":"0"
+          },
+          "amount_rat":[[0,[]],[1,[1]]],
+          "coin":"RICK"
+        }
+      }
+    }
+    )"_json;
+}

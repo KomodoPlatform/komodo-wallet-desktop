@@ -31,10 +31,13 @@ namespace mm2::api
         fraction    amount_fraction;
     };
 
+    ENTT_API void from_json(const nlohmann::json& j, coin_fee& fee);
+
     struct trade_preimage_answer_success
     {
-        coin_fee base_coin_fee;
-        coin_fee rel_coin_fee;
+        coin_fee                   base_coin_fee;
+        coin_fee                   rel_coin_fee;
+        std::optional<std::string> taker_fee;
     };
 
     struct trade_preimage_answer
@@ -48,5 +51,7 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_trade_preimage_request = ::mm2::api::trade_preimage_request;
-}
+    using t_trade_preimage_request        = ::mm2::api::trade_preimage_request;
+    using t_trade_preimage_answer         = ::mm2::api::trade_preimage_answer;
+    using t_trade_preimage_answer_success = ::mm2::api::trade_preimage_answer_success;
+} // namespace atomic_dex

@@ -18,4 +18,12 @@ namespace mm2::api
             j["max"] = request.max.value();
         }
     }
+
+    void
+    from_json(const nlohmann::json& j, coin_fee& fee)
+    {
+        j.at("coin").get_to(fee.coin);
+        j.at("amount").get_to(fee.amount);
+        j.at("amount_fraction").get_to(fee.amount_fraction);
+    }
 } // namespace mm2::api
