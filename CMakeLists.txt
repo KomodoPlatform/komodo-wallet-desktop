@@ -207,8 +207,8 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! API
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/mm2.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/trade.preimage.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/max.taker.vol.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.trade.preimage.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.max.taker.vol.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/fraction.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coingecko/coingecko.cpp
@@ -339,7 +339,7 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
 
         ##! API
         src/atomicdex/tests/api/coingecko/coingecko.tests.cpp
-        src/atomicdex/tests/api/mm2/mm2.trade.preimage.tests.cpp
+        src/atomicdex/tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         src/atomicdex/tests/api/mm2/mm2.fraction.tests.cpp
 
         ##! Utilities

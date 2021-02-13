@@ -12,7 +12,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/trade.preimage.hpp"
+#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 
 //! Constants
 namespace
