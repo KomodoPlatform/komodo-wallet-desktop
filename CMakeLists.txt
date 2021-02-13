@@ -208,6 +208,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/mm2.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/trade.preimage.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/max.taker.vol.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/fraction.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coingecko/coingecko.cpp

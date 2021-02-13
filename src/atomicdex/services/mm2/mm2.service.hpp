@@ -27,6 +27,7 @@
 #include <reproc++/reproc.hpp>
 
 //! Project Headers
+#include "atomicdex/api/mm2/max.taker.vol.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
@@ -55,7 +56,7 @@ namespace atomic_dex
     class ENTT_API mm2_service final : public ag::ecs::pre_update_system<mm2_service>
     {
       public:
-        using t_pair_max_vol = std::pair<::mm2::api::max_taker_vol_answer_success, ::mm2::api::max_taker_vol_answer_success>;
+        using t_pair_max_vol = std::pair<t_max_taker_vol_answer_success, t_max_taker_vol_answer_success>;
 
       private:
         //! Private typedefs

@@ -6,6 +6,7 @@
 
 namespace mm2::api
 {
+    //! Serialization
     void
     to_json(nlohmann::json& j, const trade_preimage_request& request)
     {
@@ -19,6 +20,7 @@ namespace mm2::api
         }
     }
 
+    //! Deserialization
     void
     from_json(const nlohmann::json& j, coin_fee& fee)
     {
