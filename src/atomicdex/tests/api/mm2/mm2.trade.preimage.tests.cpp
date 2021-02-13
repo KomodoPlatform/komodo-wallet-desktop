@@ -75,7 +75,7 @@ namespace
                                     )"_json;
     const nlohmann::json g_preimage_answer_setprice     = R"(
                                      {
-                                          "result":{
+                                        "result":{
                                             "base_coin_fee": {
                                               "amount":"0.00042049",
                                               "amount_fraction":{
@@ -95,6 +95,45 @@ namespace
                                               "coin":"RICK"
                                             }
                                           }
+                                    }
+                                    )"_json;
+    const nlohmann::json g_preimage_answer_buy          = R"(
+                                    {
+                                      "result":{
+                                        "base_coin_fee": {
+                                          "amount":"0",
+                                          "amount_fraction":{
+                                            "denom":"1",
+                                            "numer":"0"
+                                          },
+                                          "amount_rat":[[0,[]],[1,[1]]],
+                                          "coin":"BTC"
+                                        },
+                                        "rel_coin_fee": {
+                                          "amount":"0.0001",
+                                          "amount_fraction":{
+                                            "denom":"10000",
+                                            "numer":"1"
+                                          },
+                                          "amount_rat":[[1,[1]],[1,[10000]]],
+                                          "coin":"RICK"
+                                        },
+                                        "taker_fee":"0.00012870012870012872",
+                                        "taker_fee_fraction":{
+                                          "denom":"7770",
+                                          "numer":"1"
+                                        },
+                                        "taker_rat":[[1,[1]],[1,[7770]]],
+                                        "fee_to_send_taker_fee":{
+                                          "amount":"0.0001",
+                                          "amount_fraction":{
+                                            "denom":"10000",
+                                            "numer":"1"
+                                          },
+                                          "amount_rat":[[1,[1]],[1,[10000]]],
+                                          "coin":"RICK"
+                                        }
+                                      }
                                     }
                                     )"_json;
 } // namespace
@@ -126,9 +165,8 @@ TEST_CASE("mm2::api::preimage_answer_success deserialization from buy")
     CHECK_FALSE(answer.volume.has_value());
 }
 
-TEST_SUITE("mm2::api::preimage_answer_success deserialization test suites")
+TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
 {
-    nlohmann::json answer_json;
     TEST_CASE("setprice BTC/RICK")
     {
         atomic_dex::t_trade_preimage_answer answer;
@@ -136,5 +174,16 @@ TEST_SUITE("mm2::api::preimage_answer_success deserialization test suites")
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
         CHECK_FALSE(answer.result.value().volume.has_value());
+        CHECK_FALSE(answer.result.value().fee_to_send_taker_fee.has_value());
+    }
+
+    TEST_CASE("buy BTC/RICK")
+    {
+        atomic_dex::t_trade_preimage_answer answer;
+        mm2::api::from_json(g_preimage_answer_buy, answer);
+        CHECK(answer.result.has_value());
+        CHECK_FALSE(answer.error.has_value());
+        CHECK_FALSE(answer.result.value().volume.has_value());
+        CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
     }
 }
