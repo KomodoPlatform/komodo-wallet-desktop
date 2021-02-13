@@ -136,6 +136,50 @@ namespace
                                       }
                                     }
                                     )"_json;
+    const nlohmann::json g_preimage_answer_sell_max     = R"(
+                                    {
+                                      "result":{
+                                        "base_coin_fee": {
+                                          "amount":"0.00042049",
+                                          "amount_fraction":{
+                                            "denom":"100000000",
+                                            "numer":"42049"
+                                          },
+                                          "amount_rat":[[1,[42049]],[1,[100000000]]],
+                                          "coin":"BTC"
+                                        },
+                                        "rel_coin_fee": {
+                                          "amount":"0",
+                                          "amount_fraction":{
+                                            "denom":"1",
+                                            "numer":"0"
+                                          },
+                                          "amount_rat":[[0,[]],[1,[1]]],
+                                          "coin":"RICK"
+                                        },
+                                        "volume":"2.21363478",
+                                        "volume_fraction":{
+                                          "denom":"50000000",
+                                          "numer":"110681739"
+                                        },
+                                        "volume_rat":[[1,[110681739]],[1,[50000000]]],
+                                        "taker_fee":"0.0028489508108108107",
+                                        "taker_fee_fraction":{
+                                          "denom":"1850000000",
+                                          "numer":"5270559"
+                                        },
+                                        "taker_fee_rat":[[1,[5270559]],[1,[1850000000]]],
+                                        "fee_to_send_taker_fee":{
+                                          "amount":"0.00033219",
+                                          "amount_fraction":{
+                                            "denom":"100000000",
+                                            "numer":"33219"
+                                          },
+                                          "amount_rat":[[1,[33219]],[1,[100000000]]],
+                                          "coin":"BTC"
+                                        }
+                                      }
+                                    })"_json;
 } // namespace
 
 TEST_CASE("mm2::api::preimage_request serialisation")
@@ -184,6 +228,16 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
         CHECK_FALSE(answer.result.value().volume.has_value());
+        CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
+    }
+
+    TEST_CASE("sell max BTC/RICK")
+    {
+        atomic_dex::t_trade_preimage_answer answer;
+        mm2::api::from_json(g_preimage_answer_sell_max, answer);
+        CHECK(answer.result.has_value());
+        CHECK_FALSE(answer.error.has_value());
+        CHECK(answer.result.value().volume.has_value());
         CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
     }
 }
