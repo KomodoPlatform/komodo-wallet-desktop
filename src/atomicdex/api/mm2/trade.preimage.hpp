@@ -37,8 +37,14 @@ namespace mm2::api
     {
         coin_fee                   base_coin_fee;
         coin_fee                   rel_coin_fee;
+        std::optional<coin_fee>    fee_to_send_taker_fee;
         std::optional<std::string> taker_fee;
+        std::optional<fraction>    taker_fee_fraction;
+        std::optional<std::string> volume;
+        std::optional<fraction>    volume_fraction;
     };
+
+    ENTT_API void from_json(const nlohmann::json& j, trade_preimage_answer_success& answer);
 
     struct trade_preimage_answer
     {
@@ -47,6 +53,8 @@ namespace mm2::api
         int                                          rpc_result_code;
         std::string                                  raw_result;
     };
+
+    ENTT_API void from_json(const nlohmann::json& j, trade_preimage_answer& answer);
 } // namespace mm2::api
 
 namespace atomic_dex
