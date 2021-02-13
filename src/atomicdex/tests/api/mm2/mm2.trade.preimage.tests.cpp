@@ -180,6 +180,30 @@ namespace
                                         }
                                       }
                                     })"_json;
+
+    const nlohmann::json g_preimage_answer_setprice_erc = R"(
+                                    {
+                                      "result":{
+                                        "base_coin_fee": {
+                                          "amount":"0.0045",
+                                          "amount_fraction":{
+                                            "denom":"2000",
+                                            "numer":"9"
+                                          },
+                                          "amount_rat":[[1,[9]],[1,[2000]]],
+                                          "coin":"ETH"
+                                        },
+                                        "rel_coin_fee": {
+                                          "amount":"0",
+                                          "amount_fraction":{
+                                            "denom":"1",
+                                            "numer":"0"
+                                          },
+                                          "amount_rat":[[0,[]],[1,[1]]],
+                                          "coin":"RICK"
+                                        }
+                                      }
+                                    })"_json;
 } // namespace
 
 TEST_CASE("mm2::api::preimage_request serialisation")
@@ -239,5 +263,16 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
         CHECK_FALSE(answer.error.has_value());
         CHECK(answer.result.value().volume.has_value());
         CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
+    }
+
+    TEST_CASE("setprice ERC20 BAT/RICK")
+    {
+        atomic_dex::t_trade_preimage_answer answer;
+        mm2::api::from_json(g_preimage_answer_setprice_erc, answer);
+        CHECK(answer.result.has_value());
+        CHECK_FALSE(answer.error.has_value());
+        CHECK_FALSE(answer.result.value().volume.has_value());
+        CHECK_FALSE(answer.result.value().fee_to_send_taker_fee.has_value());
+        CHECK_EQ(answer.result.value().base_coin_fee.coin, "ETH");
     }
 }
