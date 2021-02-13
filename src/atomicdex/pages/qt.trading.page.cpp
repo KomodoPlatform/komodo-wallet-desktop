@@ -21,10 +21,10 @@
 
 //! Project Headers
 #include "atomicdex/pages/qt.settings.page.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-#include "qt.trading.page.hpp"
 
 namespace
 {
@@ -32,7 +32,8 @@ namespace
     set_multi_ticker_data(
         const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, QVariant data, atomic_dex::portfolio_proxy_model* multi_ticker_model)
     {
-        if (const auto res = multi_ticker_model->sourceModel()->match(multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
+        if (const auto res = multi_ticker_model->sourceModel()->match(
+                multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
             not res.isEmpty())
         {
             const QModelIndex& idx = res.at(0);
@@ -44,7 +45,8 @@ namespace
     T
     get_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, atomic_dex::portfolio_proxy_model* multi_ticker_model)
     {
-        if (const auto res = multi_ticker_model->sourceModel()->match(multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
+        if (const auto res = multi_ticker_model->sourceModel()->match(
+                multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
             not res.isEmpty())
         {
             const QModelIndex& idx = res.at(0);

@@ -190,8 +190,8 @@ namespace mm2::api
         extract_rpc_json_answer<max_taker_vol_answer_success>(j, answer);
         if (answer.error.has_value())
         {
-            SPDLOG_WARN(
-                "Max taker volume need a default value, fallback with 0 as value, this is probably because you have an empty balance or not enough funds (< 0.00777).");
+            SPDLOG_WARN("Max taker volume need a default value, fallback with 0 as value, this is probably because you have an empty balance or not enough "
+                        "funds (< 0.00777).");
             answer.result = max_taker_vol_answer_success{.denom = "1", .numer = "0", .decimal = "0"};
         }
     }
