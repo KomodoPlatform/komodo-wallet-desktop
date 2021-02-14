@@ -46,55 +46,6 @@ namespace mm2::api
 
     std::string rpc_version();
 
-    //! Only for erc 20
-    struct enable_request
-    {
-        std::string              coin_name;
-        std::vector<std::string> urls;
-        CoinType                 coin_type;
-        const std::string        erc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
-        std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
-        std::string              type; ///< QRC-20 ?
-        bool                     with_tx_history{true};
-    };
-
-    void to_json(nlohmann::json& j, const enable_request& cfg);
-
-    struct enable_answer
-    {
-        std::string address;
-        std::string balance;
-        std::string result;
-        std::string raw_result;
-        int         rpc_result_code;
-    };
-
-    void from_json(const nlohmann::json& j, const enable_answer& cfg);
-
-    struct electrum_request
-    {
-        std::string                              coin_name;
-        std::vector<atomic_dex::electrum_server> servers;
-        CoinType                                 coin_type;
-        bool                                     is_testnet{false};
-        bool                                     with_tx_history{true};
-        const std::string                        testnet_qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
-        const std::string                        mainnet_qrc_swap_contract_address{"0x2f754733acd6d753731c00fee32cb484551cc15d"};
-    };
-
-    struct electrum_answer
-    {
-        std::string address;
-        std::string balance;
-        std::string result;
-        int         rpc_result_code;
-        std::string raw_result;
-    };
-
-    void to_json(nlohmann::json& j, const electrum_request& cfg);
-
-    void from_json(const nlohmann::json& j, electrum_answer& answer);
-
     struct disable_coin_request
     {
         std::string coin;
@@ -150,24 +101,6 @@ namespace mm2::api
 
     recover_funds_of_swap_answer rpc_recover_funds(recover_funds_of_swap_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
-
-    struct balance_request
-    {
-        std::string coin;
-    };
-
-    struct balance_answer
-    {
-        std::string address;
-        std::string balance;
-        std::string coin;
-        int         rpc_result_code;
-        std::string raw_result;
-    };
-
-    void to_json(nlohmann::json& j, const balance_request& cfg);
-
-    void from_json(const nlohmann::json& j, balance_answer& cfg);
 
     struct trade_fee_request
     {
@@ -692,8 +625,6 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_balance_request         = ::mm2::api::balance_request;
-    using t_balance_answer          = ::mm2::api::balance_answer;
     using t_buy_request             = ::mm2::api::buy_request;
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
     using t_sell_request            = ::mm2::api::sell_request;
@@ -704,8 +635,6 @@ namespace atomic_dex
     using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
     using t_orderbook_request       = ::mm2::api::orderbook_request;
     using t_orderbook_answer        = ::mm2::api::orderbook_answer;
-    using t_electrum_request        = ::mm2::api::electrum_request;
-    using t_enable_request          = ::mm2::api::enable_request;
     using t_disable_coin_request    = ::mm2::api::disable_coin_request;
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;

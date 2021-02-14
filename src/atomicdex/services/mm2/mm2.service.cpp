@@ -17,19 +17,14 @@
 //! STD
 #include <unordered_set>
 
-#if defined(linux) || defined(__APPLE__)
-#    define BOOST_STACKTRACE_USE_ADDR2LINE
-#    if defined(__APPLE__)
-#        define _GNU_SOURCE
-#    endif
-#    include <boost/stacktrace.hpp>
-#endif
-
 //! Project Headers
+#include "atomicdex/api/mm2/rpc.electrum.hpp"
+#include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/utilities/kill.hpp"
+#include "atomicdex/utilities/kill.hpp" ///< no delete
+#include "atomicdex/utilities/stacktrace.prerequisites.hpp"
 
 //! Anonymous functions
 namespace
@@ -40,7 +35,7 @@ namespace
     check_for_reconfiguration(const std::string& wallet_name)
     {
         using namespace std::string_literals;
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("checking for reconfiguration");
 
         fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
@@ -683,7 +678,7 @@ namespace atomic_dex
 
         //! Prepare fees
         auto batch = prepare_process_fees_and_current_orderbook();
-        //SPDLOG_INFO("Request: {}", batch.dump(4));
+        // SPDLOG_INFO("Request: {}", batch.dump(4));
         if (batch.empty())
         {
             return;
@@ -694,7 +689,7 @@ namespace atomic_dex
             .then(
                 [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp) {
                     auto answer = ::mm2::api::basic_batch_answer(resp);
-                    //SPDLOG_INFO("Debug output: {}", answer.dump(4));
+                    // SPDLOG_INFO("Debug output: {}", answer.dump(4));
                     if (answer.is_array())
                     {
                         auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
