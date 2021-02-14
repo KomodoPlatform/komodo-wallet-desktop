@@ -17,6 +17,10 @@
 
 #pragma once
 
+//! STD
+#include <optional>
+#include <string>
+
 namespace atomic_dex
 {
     struct electrum_server
