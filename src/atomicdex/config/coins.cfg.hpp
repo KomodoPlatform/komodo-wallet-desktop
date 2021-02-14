@@ -26,21 +26,12 @@
 #include <nlohmann/json.hpp>
 
 //! Project
+#include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
 namespace atomic_dex
 {
-    struct electrum_server
-    {
-        std::string                url;
-        std::optional<std::string> protocol{"TCP"};
-        std::optional<bool>        disable_cert_verification{false};
-    };
-
-    void to_json(nlohmann::json& j, const electrum_server& cfg);
-    void from_json(const nlohmann::json& j, electrum_server& cfg);
-
     struct coin_config
     {
       public:
@@ -64,9 +55,9 @@ namespace atomic_dex
         std::string                     tx_uri{"tx/"};
         std::string                     address_url{"address/"};
         std::optional<nlohmann::json>   custom_backup;
-        std::optional<bool> is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
-        CoinType            coin_type;
-        bool                checked{false};
+        std::optional<bool>             is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
+        CoinType                        coin_type;
+        bool                            checked{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);

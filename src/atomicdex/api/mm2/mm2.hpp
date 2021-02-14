@@ -46,32 +46,6 @@ namespace mm2::api
 
     std::string rpc_version();
 
-
-
-    struct electrum_request
-    {
-        std::string                              coin_name;
-        std::vector<atomic_dex::electrum_server> servers;
-        CoinType                                 coin_type;
-        bool                                     is_testnet{false};
-        bool                                     with_tx_history{true};
-        const std::string                        testnet_qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
-        const std::string                        mainnet_qrc_swap_contract_address{"0x2f754733acd6d753731c00fee32cb484551cc15d"};
-    };
-
-    struct electrum_answer
-    {
-        std::string address;
-        std::string balance;
-        std::string result;
-        int         rpc_result_code;
-        std::string raw_result;
-    };
-
-    void to_json(nlohmann::json& j, const electrum_request& cfg);
-
-    void from_json(const nlohmann::json& j, electrum_answer& answer);
-
     struct disable_coin_request
     {
         std::string coin;
@@ -681,7 +655,6 @@ namespace atomic_dex
     using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
     using t_orderbook_request       = ::mm2::api::orderbook_request;
     using t_orderbook_answer        = ::mm2::api::orderbook_answer;
-    using t_electrum_request        = ::mm2::api::electrum_request;
     using t_disable_coin_request    = ::mm2::api::disable_coin_request;
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;

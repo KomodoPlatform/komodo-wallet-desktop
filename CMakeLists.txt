@@ -196,6 +196,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! Config
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/coins.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/electrum.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/wallet.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/addressbook.cfg.cpp
 
@@ -210,6 +211,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.trade.preimage.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.max.taker.vol.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.enable.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.electrum.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/fraction.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coingecko/coingecko.cpp

@@ -18,6 +18,7 @@
 #include <unordered_set>
 
 //! Project Headers
+#include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
