@@ -46,30 +46,7 @@ namespace mm2::api
 
     std::string rpc_version();
 
-    //! Only for erc 20
-    struct enable_request
-    {
-        std::string              coin_name;
-        std::vector<std::string> urls;
-        CoinType                 coin_type;
-        const std::string        erc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
-        std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
-        std::string              type; ///< QRC-20 ?
-        bool                     with_tx_history{true};
-    };
 
-    void to_json(nlohmann::json& j, const enable_request& cfg);
-
-    struct enable_answer
-    {
-        std::string address;
-        std::string balance;
-        std::string result;
-        std::string raw_result;
-        int         rpc_result_code;
-    };
-
-    void from_json(const nlohmann::json& j, const enable_answer& cfg);
 
     struct electrum_request
     {
@@ -705,7 +682,6 @@ namespace atomic_dex
     using t_orderbook_request       = ::mm2::api::orderbook_request;
     using t_orderbook_answer        = ::mm2::api::orderbook_answer;
     using t_electrum_request        = ::mm2::api::electrum_request;
-    using t_enable_request          = ::mm2::api::enable_request;
     using t_disable_coin_request    = ::mm2::api::disable_coin_request;
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;
