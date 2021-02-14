@@ -28,6 +28,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/mm2/rpc.balance.hpp"
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"

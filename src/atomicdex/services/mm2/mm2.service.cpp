@@ -23,6 +23,7 @@
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/utilities/kill.hpp" ///< no delete
 #include "atomicdex/utilities/stacktrace.prerequisites.hpp"
 
 //! Anonymous functions

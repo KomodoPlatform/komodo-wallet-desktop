@@ -102,24 +102,6 @@ namespace mm2::api
     recover_funds_of_swap_answer rpc_recover_funds(recover_funds_of_swap_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
 
-    struct balance_request
-    {
-        std::string coin;
-    };
-
-    struct balance_answer
-    {
-        std::string address;
-        std::string balance;
-        std::string coin;
-        int         rpc_result_code;
-        std::string raw_result;
-    };
-
-    void to_json(nlohmann::json& j, const balance_request& cfg);
-
-    void from_json(const nlohmann::json& j, balance_answer& cfg);
-
     struct trade_fee_request
     {
         std::string coin;
@@ -643,8 +625,6 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_balance_request         = ::mm2::api::balance_request;
-    using t_balance_answer          = ::mm2::api::balance_answer;
     using t_buy_request             = ::mm2::api::buy_request;
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
     using t_sell_request            = ::mm2::api::sell_request;

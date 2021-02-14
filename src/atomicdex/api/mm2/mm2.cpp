@@ -186,25 +186,6 @@ namespace mm2::api
 namespace mm2::api
 {
     void
-    to_json(nlohmann::json& j, const balance_request& cfg)
-    {
-        j["coin"] = cfg.coin;
-    }
-
-    void
-    from_json(const nlohmann::json& j, balance_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
-        j.at("coin").get_to(cfg.coin);
-        if (cfg.coin == "BCH")
-        {
-            cfg.address = cfg.address.substr(sizeof("bitcoincash"));
-        }
-    }
-
-    void
     from_json(const nlohmann::json& j, fee_regular_coin& cfg)
     {
         j.at("amount").get_to(cfg.amount);
