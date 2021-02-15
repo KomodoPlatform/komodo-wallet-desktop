@@ -213,6 +213,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.enable.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.electrum.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.balance.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/generics.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/fraction.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coingecko/coingecko.cpp

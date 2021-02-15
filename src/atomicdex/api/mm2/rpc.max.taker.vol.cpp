@@ -1,11 +1,24 @@
-//
-// Created by Roman Szterg on 13/02/2021.
-//
+/******************************************************************************
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
 
 //! Deps
 #include <nlohmann/json.hpp>
 
 //! Project Headers
+#include "atomicdex/api/mm2/generics.hpp"
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
@@ -37,16 +50,12 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, max_taker_vol_answer& answer)
     {
-        if (j.contains("error") && j.at("error").is_string())
+        extract_rpc_json_answer<max_taker_vol_answer_success>(j, answer);
+        if (answer.error.has_value()) ///< we need a default fallback in this case fixed on upstream already, need to update
         {
-            answer.error = j.at("error").get<std::string>();
             SPDLOG_WARN("Max taker volume need a default value, fallback with 0 as value, this is probably because you have an empty balance or not enough "
                         "funds (< 0.00777).");
             answer.result = max_taker_vol_answer_success{.denom = "1", .numer = "0", .decimal = "0"};
-        }
-        else if (j.contains("result"))
-        {
-            answer.result = j.at("result").get<max_taker_vol_answer_success>();
         }
     }
 } // namespace mm2::api
