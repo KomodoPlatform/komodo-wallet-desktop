@@ -16,13 +16,11 @@
 
 #pragma once
 
+#include <nlohmann/json_fwd.hpp>
+
 namespace mm2::api
 {
-    struct trade_preimage_request;
-    struct trade_preimage_answer;
-} // namespace mm2::api
-
-namespace atomic_dex
-{
-    using t_trade_preimage_answer = ::mm2::api::trade_preimage_answer;
+    template <typename RpcSuccessReturnType, typename RpcReturnType>
+    void
+    extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer);
 }

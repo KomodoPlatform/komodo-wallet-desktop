@@ -14,15 +14,30 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+//! Deps
+#include <nlohmann/json.hpp>
+
+//! Project Headers
+#include "atomicdex/api/mm2/generics.hpp"
+#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
+#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 
 namespace mm2::api
 {
-    struct trade_preimage_request;
-    struct trade_preimage_answer;
-} // namespace mm2::api
+    template <typename RpcSuccessReturnType, typename RpcReturnType>
+    void
+    extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer)
+    {
+        if (j.contains("error") && j.at("error").is_string())
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
+        else if (j.contains("result"))
+        {
+            answer.result = j.at("result").get<RpcSuccessReturnType>();
+        }
+    }
 
-namespace atomic_dex
-{
-    using t_trade_preimage_answer = ::mm2::api::trade_preimage_answer;
-}
+    template void extract_rpc_json_answer<trade_preimage_answer_success>(const nlohmann::json& j, trade_preimage_answer& answer);
+    template void extract_rpc_json_answer<max_taker_vol_answer_success>(const nlohmann::json& j, max_taker_vol_answer& answer);
+} // namespace mm2::api
