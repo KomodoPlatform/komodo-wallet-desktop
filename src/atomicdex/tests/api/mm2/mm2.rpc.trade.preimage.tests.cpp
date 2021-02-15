@@ -300,6 +300,29 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
 }
 
 #if !defined(WIN32) && !defined(_WIN32)
+/**
+ * To add a new test file -> CMakeLists.txt -> line 338, add the sources at the good place
+ * Recompile
+ *
+ * add the headers at the top of the file:
+ *
+ *
+    #include "atomicdex/pch.hpp"
+
+    //! STD
+    #include <iostream>
+
+    //! Deps
+    #include "doctest/doctest.h"
+    #include <nlohmann/json.hpp>
+
+    //! Tests
+    #include "atomicdex/tests/atomic.dex.tests.hpp"
+
+    //! Project Headers
+    #include "atomicdex/api/mm2/mm2.hpp"
+    #include "atomicdex/api/mm2/rpc.trade.preimage.hpp" ///< replace this one by your current rpc file
+ */
 SCENARIO("mm2::api::preimage scenario")
 {
     /**
