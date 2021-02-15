@@ -11,7 +11,11 @@
 #include "doctest/doctest.h"
 #include <nlohmann/json.hpp>
 
+//! Tests
+#include "atomicdex/tests/atomic.dex.tests.hpp"
+
 //! Project Headers
+#include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 
 //! Constants
@@ -181,7 +185,7 @@ namespace
                                       }
                                     })"_json;
 
-    const nlohmann::json g_preimage_answer_setprice_erc = R"(
+    const nlohmann::json g_preimage_answer_setprice_erc      = R"(
                                     {
                                       "result":{
                                         "base_coin_fee": {
@@ -203,6 +207,15 @@ namespace
                                           "coin":"RICK"
                                         }
                                       }
+                                    })"_json;
+    const nlohmann::json g_preimage_request_buy_kmd_btc_real = R"(
+                                    {
+                                      "base": "RICK",
+                                      "method": "trade_preimage",
+                                      "rel": "MORTY",
+                                      "swap_method": "buy",
+                                      "userpass": "",
+                                      "volume": "1"
                                     })"_json;
 } // namespace
 
@@ -276,3 +289,41 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
         CHECK_EQ(answer.result.value().base_coin_fee.coin, "ETH");
     }
 }
+
+#if !defined(WIN32) && !defined(_WIN32)
+SCENARIO("mm2::api::preimage scenario")
+{
+    //!
+    CHECK(g_context != nullptr);
+    nlohmann::json batch = nlohmann::json::array();
+    CHECK(batch.is_array());
+    nlohmann::json request_json         = ::mm2::api::template_request("trade_preimage");
+    auto&          mm2                  = g_context->system_manager().get_system<atomic_dex::mm2_service>();
+    auto           generic_resp_process = [&mm2, &batch]() {
+        const auto  resp = ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), mm2.get_cancellation_token()).get();
+        std::string body = TO_STD_STR(resp.extract_string(true).get());
+        THEN("I expect the status code to be 200") { CHECK_EQ(resp.status_code(), 200); }
+        THEN("I expect the body to be non empty")
+        {
+            CHECK_FALSE(body.empty());
+            SPDLOG_INFO("resp: {}", body);
+        }
+        return nlohmann::json::parse(body);
+    };
+
+    GIVEN("Preparing a simple buy request RICK/MORTY")
+    {
+        atomic_dex::t_trade_preimage_request request{.base_coin = "RICK", .rel_coin = "MORTY", .swap_method = "buy", .volume = "1"};
+        ::mm2::api::to_json(request_json, request);
+        batch.push_back(request_json);
+        auto copy_request        = request_json;
+        copy_request["userpass"] = "";
+        CHECK_EQ(copy_request, g_preimage_request_buy_kmd_btc_real);
+        WHEN("I execute the request")
+        {
+            //!
+            const auto answers = generic_resp_process();
+        }
+    }
+}
+#endif

@@ -229,6 +229,8 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
+          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
+          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
@@ -251,6 +253,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
+          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
+          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           echo "Running tests"

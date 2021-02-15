@@ -1348,6 +1348,7 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
+        //SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             std::shared_lock lock(m_balance_mutex);
