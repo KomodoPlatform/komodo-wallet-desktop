@@ -185,7 +185,7 @@ namespace
                                       }
                                     })"_json;
 
-    const nlohmann::json g_preimage_answer_setprice_erc      = R"(
+    const nlohmann::json g_preimage_answer_setprice_erc               = R"(
                                     {
                                       "result":{
                                         "base_coin_fee": {
@@ -208,11 +208,20 @@ namespace
                                         }
                                       }
                                     })"_json;
-    const nlohmann::json g_preimage_request_buy_kmd_btc_real = R"(
+    const nlohmann::json g_preimage_request_buy_rick_morty_real       = R"(
                                     {
                                       "base": "RICK",
                                       "method": "trade_preimage",
                                       "rel": "MORTY",
+                                      "swap_method": "buy",
+                                      "userpass": "",
+                                      "volume": "1"
+                                    })"_json;
+    const nlohmann::json g_preimage_request_buy_rick_nonexistent_real = R"(
+                                    {
+                                      "base": "RICK",
+                                      "method": "trade_preimage",
+                                      "rel": "NONEXISTENT",
                                       "swap_method": "buy",
                                       "userpass": "",
                                       "volume": "1"
@@ -308,7 +317,10 @@ SCENARIO("mm2::api::preimage scenario")
             CHECK_FALSE(body.empty());
             SPDLOG_INFO("resp: {}", body);
         }
-        return nlohmann::json::parse(body);
+        auto answers = nlohmann::json::parse(body);
+        batch.clear();
+        CHECK(batch.empty());
+        return ::mm2::api::rpc_process_answer_batch<atomic_dex::t_trade_preimage_answer>(answers[0], "trade_preimage");
     };
 
     GIVEN("Preparing a simple buy request RICK/MORTY")
@@ -318,11 +330,30 @@ SCENARIO("mm2::api::preimage scenario")
         batch.push_back(request_json);
         auto copy_request        = request_json;
         copy_request["userpass"] = "";
-        CHECK_EQ(copy_request, g_preimage_request_buy_kmd_btc_real);
+        CHECK_EQ(copy_request, g_preimage_request_buy_rick_morty_real);
         WHEN("I execute the request")
         {
-            //!
-            const auto answers = generic_resp_process();
+            const atomic_dex::t_trade_preimage_answer answer = generic_resp_process();
+            CHECK_FALSE(answer.error.has_value());
+            CHECK(answer.result.has_value());
+            CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
+            CHECK(answer.result.value().taker_fee.has_value());
+        }
+    }
+
+    GIVEN("Preparing a wrong request RICK/NONEXISTENT coin")
+    {
+        atomic_dex::t_trade_preimage_request request{.base_coin = "RICK", .rel_coin = "NONEXISTENT", .swap_method = "buy", .volume = "1"};
+        ::mm2::api::to_json(request_json, request);
+        batch.push_back(request_json);
+        auto copy_request        = request_json;
+        copy_request["userpass"] = "";
+        CHECK_EQ(copy_request, g_preimage_request_buy_rick_nonexistent_real);
+        WHEN("I execute the request")
+        {
+            const atomic_dex::t_trade_preimage_answer answer = generic_resp_process();
+            CHECK(answer.error.has_value());
+            CHECK_FALSE(answer.result.has_value());
         }
     }
 }
