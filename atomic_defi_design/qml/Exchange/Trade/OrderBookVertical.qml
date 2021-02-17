@@ -162,16 +162,16 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.verticalCenterOffset: 1
                             anchors.right: parent.right
-                            anchors.rightMargin:  mouse_area2.containsMouse || cancel_button.containsMouse? 12 : 6
+                            anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse? 12 : 6
                             Behavior on iconSize {
                                 NumberAnimation {
                                     duration: 200
                                 }
                             }
 
-                            iconSize: mouse_area2.containsMouse || cancel_button.containsMouse? 16 : 7
+                            iconSize: mouse_area.containsMouse || cancel_button.containsMouse? 16 : 7
 
-                            color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_area2.containsMouse? Style.colorText2 : Qaterial.Colors.red
+                            color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_area.containsMouse? Style.colorText2 : Qaterial.Colors.red
 
                             DefaultMouseArea {
                                 id: cancel_button
