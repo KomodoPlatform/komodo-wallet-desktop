@@ -29,6 +29,7 @@ Item {
     readonly property int idx_dashboard_privacy_mode: 9
 
     readonly property int idx_exchange_trade: 0
+     readonly property int idx_exchange_trade_v2: 3
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
