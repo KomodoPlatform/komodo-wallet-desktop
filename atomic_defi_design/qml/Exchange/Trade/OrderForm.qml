@@ -56,13 +56,16 @@ FloatingBackground {
             spacing: 15
 
             // Top Line
-            RowLayout {
+            GridLayout {
                 id: top_line
-                spacing: 20
+                //spacing: 20
                 Layout.topMargin: parent.spacing
                 Layout.leftMargin: parent.spacing
                 Layout.rightMargin: Layout.leftMargin
                 Layout.alignment: Qt.AlignHCenter
+                columns: parent.width<=250? 1 : 2
+                rowSpacing: 10
+                columnSpacing: 10
 
                 DefaultButton {
                     Layout.fillWidth: true

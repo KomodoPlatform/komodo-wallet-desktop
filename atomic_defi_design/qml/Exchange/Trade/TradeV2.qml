@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
-
+import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 
 import "../../Components"
@@ -173,19 +173,31 @@ Item {
     ColumnLayout {
         id: form
 
-        spacing: layout_margin
+        spacing: 10
 
         anchors.fill: parent
+        Component.onCompleted: splitView.restoreState(settings.splitView)
+         Component.onDestruction: settings.splitView = splitView.saveState()
 
-        RowLayout {
+         Settings {
+             id: settings
+             property var splitView
+         }
+        SplitView {
+            id: splitView
             Layout.fillWidth: true
             Layout.fillHeight: true
             spacing: 15
+            handle: InnerBackground {
+                implicitWidth: 10
+                implicitHeight: 10
+            }
 
             Item {
                 id: left_section
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                SplitView.fillWidth: true
+                SplitView.fillHeight: true
+                SplitView.minimumWidth: 650
 
                 // Ticker Selectors
                 DefaultFlickable {
@@ -350,12 +362,15 @@ Item {
 
                 
             }
-            OrderBookVertical { }
+            OrderBookVertical {
+                SplitView.minimumWidth: 320
+            }
 
             Item {
                 id: forms
-                width: 375
-                Layout.fillHeight: true
+                SplitView.preferredWidth: 250
+                SplitView.minimumWidth: 200
+                SplitView.fillHeight: true
 
                 OrderForm {
                     id: form_base

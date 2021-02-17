@@ -8,14 +8,14 @@ import "../../Components"
 import "../../Constants"
 
 Item {
-    Layout.fillHeight: true
-    Layout.preferredWidth: isUltraLarge? 330 : 0
-    Behavior on Layout.preferredWidth {
+    SplitView.fillHeight: true
+    SplitView.preferredWidth: isUltraLarge? 330 : 0
+    Behavior on SplitView.preferredWidth {
         NumberAnimation {
             duration: 100
         }
     }
-    visible: Layout.preferredWidth>0
+    visible: SplitView.preferredWidth>0
     InnerBackground {
         width: parent.width
         height: parent.height
