@@ -196,7 +196,7 @@ Item {
                     contentHeight: _content_column.height+10
                     Column {
                         id: _content_column
-                        width: parent.width
+                        width: safe_exchange_flickable.contentHeight>safe_exchange_flickable.height? parent.width-20 : parent.width
                         spacing: 10
                         Item {
                             id: chart_view
@@ -259,32 +259,86 @@ Item {
 
                             width: parent.width
 
-                            currentIndex: multi_order_enabled ? 1 : 0
 
                             OrderBookV2 {
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
                             }
 
-                            MultiOrder {
-                                Layout.fillWidth: true
-                                Layout.fillHeight: true
-                            }
+                        }
+
+                        MultiOrder {
+                            visible: multi_order_enabled
+                            width: parent.width
+                            height: 250
                         }
 
 
                         // Price
-                        InnerBackground {
-                            id: price_line
-                            width: parent.width
-                            height: price_line_obj.height + 30
-                            PriceLine {
-                                id: price_line_obj
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.left: parent.left
-                                anchors.right: parent.right
+                        Column {
+                            width: parent.width-10
+                            height: 300
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            Qaterial.TabBar {
+                                z: 4
+                                id: tabView
+                                width: parent.width
+                                currentIndex: swipeView.currentIndex
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                background: FloatingBackground {
+                                    black_shadow.visible: false
+                                    radius: 0
+                                }
+                                y:5
+                                leftPadding: 15
+                                Qaterial.TabButton {
+                                    width: 150
+                                    text: "Taux d'échange"
+                                    opacity: checked? 1 : .4
+                                }
+                                Qaterial.TabButton {
+                                    width: 120
+                                    text: "Ordres"
+                                    opacity: checked? 1 : .4
+                                }
+                                Qaterial.TabButton {
+                                    width: 120
+                                    text: "Historique"
+                                    opacity: checked? 1 : .4
+                                }
+                            }
+                            FloatingBackground {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                radius: 4
+                                width: parent.width
+                                height: 120
+                                SwipeView {
+                                    id: swipeView
+                                    currentIndex: tabView.currentIndex
+                                    anchors.fill: parent
+                                    Item {
+
+                                        PriceLine {
+                                            id: price_line_obj
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.left: parent.left
+                                            anchors.right: parent.right
+                                        }
+                                    }
+                                }
                             }
                         }
+//                        InnerBackground {
+//                            id: price_line
+//                            width: parent.width
+//                            height: price_line_obj.height + 30
+//                            PriceLine {
+//                                id: price_line_obj
+//                                anchors.verticalCenter: parent.verticalCenter
+//                                anchors.left: parent.left
+//                                anchors.right: parent.right
+//                            }
+//                        }
                     }
 
 
