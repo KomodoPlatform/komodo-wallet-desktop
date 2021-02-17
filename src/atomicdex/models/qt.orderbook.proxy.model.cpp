@@ -58,4 +58,10 @@ namespace atomic_dex
         }
         return true;
     }
+
+    void
+    orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order) noexcept
+    {
+        this->sort(column, order);
+    }
 } // namespace atomic_dex
