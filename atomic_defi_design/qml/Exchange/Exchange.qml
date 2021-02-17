@@ -81,6 +81,15 @@ Item {
                         height: content.height * 0.5
                         color: Style.colorTheme5
                     }
+                    ExchangeTab {
+                        dashboard_index: idx_exchange_trade_v2
+                        text_value: qsTr("Trade V2")
+                    }
+
+                    VerticalLineBasic {
+                        height: content.height * 0.5
+                        color: Style.colorTheme5
+                    }
 
                     ExchangeTab {
                         dashboard_index: idx_exchange_orders
@@ -105,6 +114,11 @@ Item {
             id: exchange_trade
 
             Trade {}
+        }
+        Component {
+            id: exchange_trade_v2
+
+            TradeV2 {}
         }
 
         Component {
@@ -132,6 +146,7 @@ Item {
                 case idx_exchange_trade: return exchange_trade
                 case idx_exchange_orders: return exchange_orders
                 case idx_exchange_history: return exchange_history
+                case idx_exchange_trade_v2: return exchange_trade_v2
                 default: return undefined
                 }
             }

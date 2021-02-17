@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import AtomicDEX.MarketMode 1.0
 
 import "../../Components"
@@ -14,9 +16,9 @@ Item {
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
-        chart_object.parent = left_section
-        chart_object.anchors.bottom = selectors.top
-        chart_object.anchors.bottomMargin = layout_margin * 2
+        chart_object.parent = chart_view
+        //chart_object.anchors.bottom = selectors.top
+        //chart_object.anchors.bottomMargin = 40
         chart_object.visible = true
     }
 
@@ -25,7 +27,7 @@ Item {
         chart_object.parent = app
         chart_object.visible = false
     }
-
+    property bool isUltraLarge: width>1400
     readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
@@ -49,7 +51,7 @@ Item {
         API.app.trading_pg.volume = v
     }
 
-    readonly property bool sell_mode: API.app.trading_pg.market_mode === MarketMode.Sell
+    readonly property bool sell_mode: API.app.trading_pg.market_mode == MarketMode.Sell
     function setMarketMode(v) {
         API.app.trading_pg.market_mode = v
     }
@@ -175,112 +177,132 @@ Item {
 
         anchors.fill: parent
 
-        Item {
+        RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            spacing: 15
 
             Item {
                 id: left_section
-                anchors.left: parent.left
-                anchors.right: forms.left
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.rightMargin: layout_margin
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
                 // Ticker Selectors
-                RowLayout {
-                    id: selectors
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: orderbook_area.top
-                    anchors.bottomMargin: layout_margin
-                    spacing: 20
+                DefaultFlickable {
+                    id: safe_exchange_flickable
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    anchors.rightMargin: 0
+                    contentHeight: _content_column.height+10
+                    Column {
+                        id: _content_column
+                        width: parent.width
+                        spacing: 10
+                        Item {
+                            id: chart_view
+                            width: parent.width
+                            height: chart_object.height+10
+                        }
+                        RowLayout {
+                            id: selectors
+                            width: parent.width
+                            height: 60
+                            spacing: 20
 
-                    TickerSelector {
-                        id: selector_left
-                        left_side: true
-                        ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
-                        ticker: left_ticker
-                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-                        Layout.fillWidth: true
-                    }
+                            TickerSelector {
+                                id: selector_left
+                                left_side: true
+                                ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
+                                ticker: left_ticker
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                                Layout.fillWidth: true
+                            }
 
-                    // Swap button
-                    SwapIcon {
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        Layout.preferredHeight: selector_left.height * 0.9
+                            // Swap button
+                            SwapIcon {
+                                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                                Layout.preferredHeight: selector_left.height * 0.9
 
-                        top_arrow_ticker: selector_left.ticker
-                        bottom_arrow_ticker: selector_right.ticker
-                        hovered: swap_button.containsMouse
+                                top_arrow_ticker: selector_left.ticker
+                                bottom_arrow_ticker: selector_right.ticker
+                                hovered: swap_button.containsMouse
 
-                        DefaultMouseArea {
-                            id: swap_button
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked: {
-                                if(!block_everything)
-                                    setPair(true, right_ticker)
+                                DefaultMouseArea {
+                                    id: swap_button
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    onClicked: {
+                                        if(!block_everything)
+                                            setPair(true, right_ticker)
+                                    }
+                                }
+                            }
+
+                            TickerSelector {
+                                id: selector_right
+                                left_side: false
+                                ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
+                                ticker: right_ticker
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                Layout.fillWidth: true
+                            }
+                        }
+                        StackLayout {
+                            id: orderbook_area
+                            height: isUltraLarge? 0 : 250
+                            Behavior on height {
+                                NumberAnimation {
+                                    duration: 150
+                                }
+                            }
+                            visible: height>0
+
+                            width: parent.width
+
+                            currentIndex: multi_order_enabled ? 1 : 0
+
+                            OrderBookV2 {
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                            }
+
+                            MultiOrder {
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                            }
+                        }
+
+
+                        // Price
+                        InnerBackground {
+                            id: price_line
+                            width: parent.width
+                            height: price_line_obj.height + 30
+                            PriceLine {
+                                id: price_line_obj
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.right: parent.right
                             }
                         }
                     }
 
-                    TickerSelector {
-                        id: selector_right
-                        left_side: false
-                        ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
-                        ticker: right_ticker
-                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                        Layout.fillWidth: true
-                    }
+
+                }
+                Qaterial.DebugRectangle {
+                    anchors.fill: parent
+                    visible: false
                 }
 
-                StackLayout {
-                    id: orderbook_area
-                    height: 250
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: price_line.top
-                    anchors.bottomMargin: layout_margin
-
-                    currentIndex: multi_order_enabled ? 1 : 0
-
-                    Orderbook {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                    }
-
-                    MultiOrder {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                    }
-                }
-
-
-                // Price
-                InnerBackground {
-                    id: price_line
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    height: price_line_obj.height + 30
-                    PriceLine {
-                        id: price_line_obj
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                    }
-                }
+                
             }
+            OrderBookVertical { }
 
             Item {
                 id: forms
                 width: 375
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                Layout.fillHeight: true
 
-                // Sell
                 OrderForm {
                     id: form_base
 
