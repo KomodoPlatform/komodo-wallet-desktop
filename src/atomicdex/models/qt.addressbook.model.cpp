@@ -28,7 +28,7 @@ namespace atomic_dex
     addressbook_model::addressbook_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
         QAbstractListModel(parent),
         m_system_manager(system_manager),
-        m_addressbook_proxy(new addressbook_proxy_model(this))
+        m_addressbook_proxy(new addressbook_proxy_model(m_system_manager, this))
     {
         m_addressbook_proxy->setSortRole(SubModelRole);
         m_addressbook_proxy->setFilterRole(NameRoleAndCategoriesRole);

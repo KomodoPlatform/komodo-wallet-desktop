@@ -19,17 +19,24 @@
 // Qt Headers
 #include <QSortFilterProxyModel> //> QSortFilterProxyModel
 
+// Deps Headers
+#include <antara/gaming/ecs/system.manager.hpp> //> antara::gaming, ag::ecs::system_manager
+
+namespace ag = antara::gaming;
+
 namespace atomic_dex
 {
     class addressbook_contact_proxy_filter_model final : public QSortFilterProxyModel
     {
         Q_OBJECT
         
+        ag::ecs::system_manager& m_system_manager;
+        
         QString m_search_expression;
         QString m_filter_type;
         
       public:
-        explicit addressbook_contact_proxy_filter_model(QObject* parent);
+        explicit addressbook_contact_proxy_filter_model(ag::ecs::system_manager& system_manager, QObject* parent);
         ~addressbook_contact_proxy_filter_model() final = default;
         
         [[nodiscard]] const QString& get_search_expression() const noexcept;
