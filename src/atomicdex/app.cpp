@@ -250,7 +250,7 @@ namespace atomic_dex
         {
             // m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
             m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
-            m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this)));
+            m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(system_manager_, this->dispatcher_, this)));
             m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
         }
 
@@ -463,7 +463,7 @@ namespace atomic_dex
     {
         SPDLOG_DEBUG("on_fiat_rate_updated");
         this->dispatcher_.trigger<update_portfolio_values>();
-        //this->dispatcher_.trigger<current_currency_changed>();
+        // this->dispatcher_.trigger<current_currency_changed>();
     }
 
     void

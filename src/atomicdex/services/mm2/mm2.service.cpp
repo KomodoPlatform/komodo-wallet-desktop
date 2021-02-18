@@ -21,7 +21,9 @@
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
+#include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/kill.hpp" ///< no delete
 #include "atomicdex/utilities/stacktrace.prerequisites.hpp"
@@ -580,6 +582,10 @@ namespace atomic_dex
 
                             if (not tickers.empty())
                             {
+                                if (tickers == default_coins)
+                                {
+                                    this->dispatcher_.trigger<default_coins_enabled>();
+                                }
                                 batch_balance_and_tx(false, tickers, true);
                             }
                         }
@@ -597,7 +603,7 @@ namespace atomic_dex
 
         if (not btc_kmd_batch.empty() && first_time)
         {
-            functor(btc_kmd_batch, {"BTC", "KMD"});
+            functor(btc_kmd_batch, default_coins);
         }
 
         if (not batch_array.empty())
@@ -1348,7 +1354,7 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
-        //SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
+        // SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             std::shared_lock lock(m_balance_mutex);
@@ -1618,8 +1624,12 @@ namespace atomic_dex
             if (std::string(e.what()).find("Failed to read HTTP status line") != std::string::npos ||
                 std::string(e.what()).find("WinHttpReceiveResponse: 12002: The operation timed out") != std::string::npos)
             {
-                SPDLOG_WARN("We should reset connection here");
-                this->dispatcher_.trigger<fatal_notification>("connection dropped");
+                const auto& internet_service = this->m_system_manager.get_system<internet_service_checker>();
+                if (!internet_service.is_internet_alive())
+                {
+                    SPDLOG_WARN("We should reset connection here");
+                    this->dispatcher_.trigger<fatal_notification>("connection dropped");
+                }
             }
         }
     }
