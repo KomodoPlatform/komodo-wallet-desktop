@@ -19,6 +19,7 @@
 
 //! Our project
 #include "atomicdex/services/internet/internet.checker.service.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
@@ -30,11 +31,9 @@ namespace
         cfg.set_timeout(std::chrono::seconds(45));
         return cfg;
     }()};
-    // t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"), g_cfg)};
-    t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"), g_cfg)};
-    //t_http_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"), g_cfg)};
-    // t_http_client_ptr g_cipig_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://dexapi.cipig.net:10000"), g_cfg)};
 
+    t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"), g_cfg)};
+    std::atomic_bool  g_mm2_default_coins_ready{false};
 
     pplx::task<web::http::http_response>
     async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
@@ -84,7 +83,14 @@ namespace atomic_dex
 
 namespace atomic_dex
 {
-    internet_service_checker::internet_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry) { retry(); }
+    internet_service_checker::internet_service_checker(
+        entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
+        QObject(parent),
+        system(registry), m_system_manager(system_manager)
+    {
+        dispatcher.sink<default_coins_enabled>().connect<&internet_service_checker::on_default_coins_enabled>(*this);
+        retry();
+    }
 
     void
     atomic_dex::internet_service_checker::retry() noexcept
@@ -112,10 +118,10 @@ namespace atomic_dex
     }
 
     void
-    internet_service_checker::query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept
+    internet_service_checker::generic_treat_answer(
+        pplx::task<web::http::http_response>& answer, const std::string& base_uri, std::atomic_bool internet_service_checker::*p)
     {
-        std::string base_uri = TO_STD_STR(client->base_uri().to_string());
-        async_check_retrieve(client, uri)
+        answer
             .then([this, p, base_uri](web::http::http_response resp) {
                 bool res = resp.status_code() == web::http::status_codes::OK;
                 this->*p = res;
@@ -143,13 +149,51 @@ namespace atomic_dex
             });
     }
 
+    void
+    internet_service_checker::query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept
+    {
+        if (client != nullptr)
+        {
+            std::string base_uri     = TO_STD_STR(client->base_uri().to_string());
+            auto        async_answer = async_check_retrieve(client, uri);
+            generic_treat_answer(async_answer, base_uri, p);
+        }
+    }
+
 
     void
     internet_service_checker::fetch_internet_connection()
     {
-        // query_internet(g_google_proxy_http_client, "", &internet_service_checker::is_google_reacheable);
         query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_paprika_provider_alive);
-        //query_internet(g_ohlc_proxy_http_client, "/api/v1/ohlc/tickers_list", &internet_service_checker::is_our_private_endpoint_reacheable);
-        // query_internet(g_cipig_proxy_http_client, "", &internet_service_checker::is_cipig_electrum_alive);
+        if (this->m_system_manager.has_system<mm2_service>() && g_mm2_default_coins_ready)
+        {
+            auto& mm2 = this->m_system_manager.get_system<mm2_service>();
+            if (mm2.is_mm2_running())
+            {
+                SPDLOG_INFO("mm2 is alive, checking if ware able to fetch a simple orderbook");
+                nlohmann::json      batch           = nlohmann::json::array();
+                nlohmann::json      current_request = ::mm2::api::template_request("orderbook");
+                t_orderbook_request req_orderbook{.base = "KMD", .rel = "BTC"};
+                ::mm2::api::to_json(current_request, req_orderbook);
+                batch.push_back(current_request);
+                auto async_answer = ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), mm2.get_cancellation_token());
+                generic_treat_answer(async_answer, "http://127.0.0.1:7783", &internet_service_checker::is_mm2_endpoint_alive);
+            }
+            else
+            {
+                SPDLOG_WARN("mm2 not running skipping internet connectivity with it");
+            }
+        }
+        else
+        {
+            SPDLOG_WARN("mm2 system not available skipping internet connectivity with it");
+        }
+    }
+
+    void
+    internet_service_checker::on_default_coins_enabled([[maybe_unused]] const default_coins_enabled& evt)
+    {
+        SPDLOG_INFO("Default coins are enabled, we can now check internet with mm2 too");
+        g_mm2_default_coins_ready = true;
     }
 } // namespace atomic_dex

@@ -20,9 +20,10 @@
 #include <QObject>
 
 //! Deps
-#include <antara/gaming/ecs/system.hpp>
+#include <antara/gaming/ecs/system.manager.hpp>
 
 //! Project Headers
+#include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace atomic_dex
@@ -39,17 +40,17 @@ namespace atomic_dex
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
 
         //! Private members
-        t_update_time_point m_update_clock;
-        double              m_timer;
-        std::atomic_bool    is_internet_reacheable{true};
-        std::atomic_bool    is_paprika_provider_alive{true};
-        //std::atomic_bool    is_cipig_electrum_alive{true};
-        //std::atomic_bool    is_google_reacheable{true};
-        std::atomic_bool    is_our_private_endpoint_reacheable{true};
-        //std::atomic_bool    is_cipig_endpoint_reacheable{true};
+        ag::ecs::system_manager& m_system_manager;
+        t_update_time_point      m_update_clock;
+        double                   m_timer;
+        std::atomic_bool         is_internet_reacheable{true};
+        std::atomic_bool         is_paprika_provider_alive{true};
+        std::atomic_bool         is_mm2_endpoint_alive{true};
+        std::atomic_bool         is_our_private_endpoint_reacheable{true};
 
         //! Private functions
         void fetch_internet_connection();
+        void generic_treat_answer(pplx::task<web::http::http_response>& answer, const std::string& base_uri, std::atomic_bool internet_service_checker::*p);
 
       signals:
         void internetStatusChanged();
@@ -57,7 +58,7 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        explicit internet_service_checker(entt::registry& registry, QObject* parent = nullptr);
+        explicit internet_service_checker(entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
         ~internet_service_checker() noexcept final = default;
 
         //! Public override
@@ -72,6 +73,9 @@ namespace atomic_dex
         void query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept;
 
         Q_INVOKABLE void retry() noexcept;
+
+        //! Events
+        void on_default_coins_enabled([[maybe_unused]] const default_coins_enabled& evt);
     };
 } // namespace atomic_dex
 
