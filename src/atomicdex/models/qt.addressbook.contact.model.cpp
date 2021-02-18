@@ -31,7 +31,10 @@
 namespace atomic_dex
 {
     addressbook_contact_model::addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent) :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_name(std::move(name)), m_proxy_filter(new addressbook_contact_proxy_filter_model(this))
+        QAbstractListModel(parent),
+        m_system_manager(system_manager),
+        m_name(std::move(name)),
+        m_proxy_filter(new addressbook_contact_proxy_filter_model(system_manager, this))
     {
         populate();
         m_proxy_filter->setDynamicSortFilter(true);
