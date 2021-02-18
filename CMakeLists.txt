@@ -1,90 +1,24 @@
 cmake_minimum_required(VERSION 3.15)
 
-################# BUILD TYPE ##################################
-if (NOT EXISTS ${CMAKE_BINARY_DIR}/CMakeCache.txt)
-    if (NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
-    endif ()
-endif ()
-################# END BUILD TYPE ###############################
-
-############################ VCPKG PREREQUISITES ##############
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftime-trace")
-message(STATUS "VCPKG package manager enabled")
-set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-custom-ports/ports" CACHE STRING "")
-set(_VCPKG_INSTALLED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/installed")
-set(CMAKE_TOOLCHAIN_FILE
-        "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
-        CACHE STRING "")
-if (WIN32)
-    set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
-endif ()
-find_program(ANTARA_CXX_COMPILER clang++)
-find_program(ANTARA_C_COMPILER clang)
-message(STATUS "Compiler: ${ANTARA_CXX_COMPILER} and ${ANTARA_C_COMPILER}")
-set(CMAKE_CXX_COMPILER "${ANTARA_CXX_COMPILER}" CACHE STRING "")
-set(CMAKE_C_COMPILER "${ANTARA_C_COMPILER}" CACHE STRING "")
-if (WIN32)
-    set(CMAKE_PREFIX_PATH "$ENV{QT_INSTALL_CMAKE_PATH}/lib/cmake" CACHE STRING "")
-else ()
-    set(CMAKE_PREFIX_PATH "$ENV{QT_INSTALL_CMAKE_PATH}" CACHE STRING "")
-endif ()
-message(STATUS "CMake Prefix path is: ${CMAKE_PREFIX_PATH}")
-
-if (APPLE)
-    set(VCPKG_APPLOCAL_DEPS OFF CACHE BOOL "")
-endif ()
-############################ END VCPKG PREREQUISITES ##############################
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+include(build_type)
+include(compiler_prerequisites)
+include(vcpkg_prerequisites)
+include(qt_prerequisites)
+include(cfg_hash)
 
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.4.0)
-
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
-if (UNIX)
-    execute_process(COMMAND bash -c "git ls-remote https://github.com/KomodoPlatform/atomicdex-desktop-generics refs/heads/main | cut -f 1 | tr -d '\n'"
-            OUTPUT_VARIABLE GENERICS_VERSION_ID
-            )
-    if (NOT EXISTS ${GENERICS_VERSION_ID}.cfg_hash)
-        file(WRITE assets/config/${GENERICS_VERSION_ID}.remote_last_cfg_hash)
-    endif ()
-endif ()
+include(cmake_default_options)
+include(ipo_prerequisites)
 
+##! Options
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
-set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    if (APPLE OR WIN32)
-        include(CheckIPOSupported)
-        check_ipo_supported(RESULT ipo_supported OUTPUT output)
-        if (ipo_supported)
-            set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-            message(STATUS "We are in release - Successfully enabled IPO")
-        else ()
-            message(WARNING "IPO NOT SUPPORTED - Skipping reason: ${output}")
-        endif ()
-    endif ()
-endif ()
-
-if (WIN32)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif ()
-
-
-if (PREFER_BOOST_FILESYSTEM)
-    message(STATUS "Boost filesystem over std::filesystem")
-    add_compile_definitions(PREFER_BOOST_FILESYSTEM)
-endif ()
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_POLICY_WARNING_CMP0100 OFF)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ##! Antara
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(antara)
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
 init_antara_env()
@@ -475,7 +409,7 @@ if (WITH_HOTRELOAD)
     include(hot_reload/cmake/Configuration.cmake)
     include(hot_reload/cmake/FetchDependencies.cmake)
     set(QATERIALHOTRELOAD_LIB QaterialHotReload)
-    set(QATERIALHOTRELOAD_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload)
+    set(QATERIALHOTRELOAD_SRC_DIR ${CMAKE_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload)
     add_subdirectory(hot_reload/qml/Qaterial/HotReload)
 
 

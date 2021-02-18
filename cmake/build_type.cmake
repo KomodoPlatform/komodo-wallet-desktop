@@ -1,0 +1,6 @@
+if (NOT EXISTS ${CMAKE_BINARY_DIR}/CMakeCache.txt)
+    if (NOT CMAKE_BUILD_TYPE)
+        message(STATUS "Force release mode since it's was not specified")
+        set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+    endif ()
+endif ()

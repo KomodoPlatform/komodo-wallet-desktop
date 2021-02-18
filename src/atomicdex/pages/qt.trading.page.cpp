@@ -17,7 +17,7 @@
 #include <QJsonDocument>
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Project Headers
 #include "atomicdex/pages/qt.settings.page.hpp"

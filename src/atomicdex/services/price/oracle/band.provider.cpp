@@ -1,6 +1,3 @@
-//! PCH Headers
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
 #include "band.provider.hpp"
 
