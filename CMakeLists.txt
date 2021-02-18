@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.15)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+include(project.metadata)
 include(build_type)
 include(compiler_prerequisites)
 include(vcpkg_prerequisites)
 include(qt_prerequisites)
 include(cfg_hash)
 
-project(atomicdex-desktop LANGUAGES CXX VERSION 0.4.0)
+project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.4.0)
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
 include(cmake_default_options)
@@ -106,11 +107,11 @@ message(STATUS "TS FILES -> ${TS_FILES}")
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
 if (LINUX)
-    add_library(atomicdex-desktop_shared_deps STATIC)
+    add_library(${PROJECT_NAME}_shared_deps STATIC)
 else ()
-    add_library(atomicdex-desktop_shared_deps SHARED)
+    add_library(${PROJECT_NAME}_shared_deps SHARED)
 endif ()
-target_sources(atomicdex-desktop_shared_deps PRIVATE
+target_sources(${PROJECT_NAME}_shared_deps PRIVATE
         ##! App
         ${CMAKE_SOURCE_DIR}/src/atomicdex/app.cpp
 
@@ -199,11 +200,12 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/atomicdex/platform/osx/manager.mm>
         )
 
-target_compile_definitions(atomicdex-desktop_shared_deps
+target_compile_definitions(${PROJECT_NAME}_shared_deps
         PUBLIC
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+        DEX_NAME="${DEX_DISPLAY_NAME}"
         PRIVATE
         ENTT_API_EXPORT
         )
@@ -211,7 +213,7 @@ target_compile_definitions(atomicdex-desktop_shared_deps
 
 if (DISABLE_GEOBLOCKING)
     message(STATUS "Disabling Geoblocking for dev purpose")
-    target_compile_definitions(atomicdex-desktop_shared_deps PUBLIC -DDISABLE_GEOBLOCKING)
+    target_compile_definitions(${PROJECT_NAME}_shared_deps PUBLIC -DDISABLE_GEOBLOCKING)
 endif ()
 #target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
 
@@ -220,7 +222,7 @@ target_sources(antara_qrcode PRIVATE vendor/qrcode/QrCode.cpp)
 target_include_directories(antara_qrcode PUBLIC vendor/qrcode)
 target_link_libraries(antara_qrcode PUBLIC antara::default_settings)
 
-target_link_libraries(atomicdex-desktop_shared_deps
+target_link_libraries(${PROJECT_NAME}_shared_deps
         PUBLIC
         Qt::Core
         Qt::Quick
@@ -247,7 +249,7 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qaterial
         )
 
-target_include_directories(atomicdex-desktop_shared_deps
+target_include_directories(${PROJECT_NAME}_shared_deps
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         PRIVATE
@@ -256,7 +258,7 @@ target_include_directories(atomicdex-desktop_shared_deps
         )
 
 ##! Main executable
-add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
+add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicdex-desktop.rc
         main.cpp
         ##! QRC
@@ -267,10 +269,10 @@ add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
         ${TS_FILES}
         )
 
-target_compile_definitions(atomicdex-desktop PRIVATE ENTT_API_IMPORT)
+target_compile_definitions(${PROJECT_NAME} PRIVATE ENTT_API_IMPORT)
 
 ##! Testing executable
-add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
+add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.tests.cpp
         src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
@@ -293,16 +295,16 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
 
         src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
-target_link_libraries(atomicdex-desktop
+target_link_libraries(${PROJECT_NAME}
         PUBLIC
-        atomicdex-desktop_shared_deps
+        ${PROJECT_NAME}_shared_deps
         )
 
-target_include_directories(atomicdex-desktop PUBLIC src)
+target_include_directories(${PROJECT_NAME} PUBLIC src)
 
-target_link_libraries(atomicdex-desktop_tests
+target_link_libraries(${PROJECT_NAME}_tests
         PUBLIC
-        atomicdex-desktop_shared_deps
+        ${PROJECT_NAME}_shared_deps
         doctest::doctest)
 
 ##! Setting output directory
@@ -317,7 +319,7 @@ set_target_properties(${PROJECT_NAME}_tests
         )
 
 
-target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
+target_precompile_headers(${PROJECT_NAME}_shared_deps PRIVATE src/atomicdex/pch.hpp)
 #set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
 if (APPLE)
     set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
@@ -370,9 +372,9 @@ if (WIN32)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
-        target_compile_definitions(atomicdex-desktop PRIVATE WINDOWS_RELEASE_MAIN)
-        target_compile_options(atomicdex-desktop PRIVATE -Wno-deprecated-declarations)
-        target_link_options(atomicdex-desktop PUBLIC --for-linker -subsystem:windows)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE WINDOWS_RELEASE_MAIN)
+        target_compile_options(${PROJECT_NAME} PRIVATE -Wno-deprecated-declarations)
+        target_link_options(${PROJECT_NAME} PUBLIC --for-linker -subsystem:windows)
     endif ()
     set(WINDEPLOYQT_PATH "")
     if (CONAN_ENABLED)
@@ -386,11 +388,11 @@ if (WIN32)
     else ()
         message(FATAL_ERROR "Didn't find windeployqt ${WINDEPLOYQT_PATH}")
     endif ()
-    add_custom_command(TARGET atomicdex-desktop PRE_BUILD
+    add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:atomicdex-desktop>)
     message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
-    add_custom_command(TARGET atomicdex-desktop
+    add_custom_command(TARGET ${PROJECT_NAME}
             POST_BUILD
             COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
@@ -468,5 +470,5 @@ if (WITH_HOTRELOAD)
         qt_generate_plugin_import(${QATERIALHOTRELOAD_LIB})
     endif ()
 
-    target_link_libraries(atomicdex-desktop PRIVATE Qaterial::HotReload)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qaterial::HotReload)
 endif ()

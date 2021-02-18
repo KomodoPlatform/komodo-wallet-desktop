@@ -9,7 +9,7 @@
     <RunProgram>@TargetDir@/atomicdex-desktop.exe</RunProgram>
 	<RunProgramDescription>Run AtomicDEX Desktop now.</RunProgramDescription>
     <StartMenuDir>AtomicDEX Desktop</StartMenuDir>
-    <MaintenanceToolName>AtomicDEX Maintenance Tool</MaintenanceToolName>
+    <MaintenanceToolName>AtomicDEX Desktop Maintenance Tool</MaintenanceToolName>
 	<InstallerWindowIcon>install_icon</InstallerWindowIcon>
     <InstallerApplicationIcon>install_icon</InstallerApplicationIcon>
     <Logo>install_icon.png</Logo>
