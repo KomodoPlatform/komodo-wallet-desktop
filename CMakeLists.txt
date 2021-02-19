@@ -366,7 +366,7 @@ if (LINUX)
 endif ()
 
 if (WIN32)
-    set_target_properties(atomicdex-desktop_shared_deps PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    set_target_properties(${PROJECT_NAME}_shared_deps PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
@@ -390,11 +390,11 @@ if (WIN32)
     endif ()
     add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:atomicdex-desktop>)
-    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
+            ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
     add_custom_command(TARGET ${PROJECT_NAME}
             POST_BUILD
-            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
+            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
     include(data/windows/atomicdex_install.cmake)
 endif ()
@@ -425,7 +425,7 @@ if (WITH_HOTRELOAD)
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PUBLIC
             Qaterial
             SortFilterProxyModel
-            atomicdex-desktop_shared_deps
+            ${PROJECT_NAME}_shared_deps
             )
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PRIVATE
             Qaterial::HotReload::Ui
