@@ -18,14 +18,22 @@ Rectangle {
         return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
     }
 
-    function onDisconnect() { openFirstLaunch() }
+    function onDisconnect() {
+        API.app.wallet_mgr.set_log_status(false);
+        openFirstLaunch()
+    }
 
     function openFirstLaunch(force=false, set_wallet_name=true) {
         if(set_wallet_name) selected_wallet_name = API.app.wallet_mgr.wallet_default_name
 
         General.initialized_orderbook_pair = false
+        if(API.app.wallet_mgr.log_status()){
+            current_page = idx_dashboard
+        }else {
+            current_page = force ? idx_first_launch : firstPage()
+        }
 
-        current_page = force ? idx_first_launch : firstPage()
+
     }
 
     // Preload Chart
@@ -37,7 +45,7 @@ Rectangle {
         openFirstLaunch()
 
         // Load the chart
-        if(!chart_component) chart_component = Qt.createComponent("./Exchange/Trade/CandleStickChart.qml")
+        if(!chart_component) chart_component = Qt.createComponent("qrc:/atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml")//./Exchange/Trade/CandleStickChart.qml")
         if(!chart_object) {
             chart_object = chart_component.createObject(app)
             chart_object.visible = false
