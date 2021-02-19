@@ -9,10 +9,13 @@ import AtomicDEX.MarketMode 1.0
 import "../../Components"
 import "../../Constants"
 import "../../Wallet"
+import "TradeBox/"
+
+import "./" as Here
 
 Item {
     id: exchange_trade
-
+    readonly property string total_amount: API.app.trading_pg.total_amount
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
@@ -281,36 +284,6 @@ Item {
                                 Layout.fillWidth: true
                             }
                         }
-                        Item {
-                            id: formBox
-                            property int space: 10
-                            width: parent.width-5
-                            height: 200
-                            Rectangle {
-                                id: rect1
-                                anchors.verticalCenter: parent.verticalCenter
-                                width: (parent.width/2)-(parent.space/2)
-                                height: parent.height
-                                radius: 5
-                                opacity: 0
-                                border.color: Style.colorRed
-                                layer.enabled: true
-                                layer.smooth: true
-                                color: Style.colorTheme9
-                            }
-                            Rectangle {
-                                x: (parent.width/2)+parent.space
-                                anchors.verticalCenter: parent.verticalCenter
-                                width: (parent.width/2)-(parent.space/2)
-                                height: parent.height
-                                radius: 5
-                                color: 'cyan'
-                            }
-                            DefaultSubstractRectangle {
-                                target: rect1
-                            }
-                        }
-
                         StackLayout {
                             id: orderbook_area
                             height: isUltraLarge? 0 : 250
@@ -428,13 +401,16 @@ Item {
 
                 
             }
+
+
             Item {
                 id: forms
+                visible: false
                 SplitView.preferredWidth: 250
                 SplitView.minimumWidth: 200
                 SplitView.fillHeight: true
 
-                OrderForm {
+                Here.OrderForm {
                     id: form_base
 
                     anchors.left: parent.left
@@ -523,6 +499,142 @@ Item {
             }
             OrderBookVertical {
                 SplitView.minimumWidth: 320
+                SplitView.preferredWidth: 400
+            }
+            ColumnLayout {
+                //id: formBox
+                property int space: 10
+                SplitView.preferredWidth: 220
+                SplitView.minimumWidth: 200
+                SplitView.fillHeight: true
+                spacing: 10
+                SellBox {
+
+                }
+                BuyBox {
+
+                }
+                Item {
+
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    ColumnLayout {
+                        anchors.fill: parent
+                        InnerBackground {
+                            id: bg
+                            Layout.fillWidth: true
+                            Layout.leftMargin: top_line.Layout.leftMargin
+                            Layout.rightMargin: top_line.Layout.rightMargin
+
+                            content: RowLayout {
+                                width: bg.width
+                                height: tx_fee_text.implicitHeight+10
+
+                                ColumnLayout {
+                                    id: fees
+                                    visible: valid_fee_info && !General.isZero(non_null_volume)
+
+                                    Layout.leftMargin: 10
+                                    Layout.rightMargin: Layout.leftMargin
+                                    Layout.alignment: Qt.AlignLeft
+
+                                    DefaultText {
+                                        id: tx_fee_text
+                                        text_value: General.feeText(curr_fee_info, base_ticker, true, true)
+                                        font.pixelSize: Style.textSizeSmall1
+                                        width: parent.width
+                                        wrapMode: Text.Wrap
+                                        CexInfoTrigger {}
+                                    }
+                                }
+
+
+                                DefaultText {
+                                    visible: !fees.visible
+
+                                    text_value: !visible ? "" :
+                                                last_trading_error === TradingError.BalanceIsLessThanTheMinimalTradingAmount
+                                                           ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(getMaxBalance()) - parseFloat(getMaxVolume())), base_ticker))
+                                                           : qsTr('Fees will be calculated')
+                                    Layout.alignment: Qt.AlignCenter
+                                    font.pixelSize: tx_fee_text.font.pixelSize
+                                }
+                            }
+                        }
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Layout.rightMargin: Layout.leftMargin
+                            Layout.bottomMargin: layout_margin
+
+                            DefaultText {
+
+                                font.weight: Font.Medium
+                                font.pixelSize: Style.textSizeSmall3
+                                text_value: qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker)
+                            }
+
+                            DefaultText {
+                                text_value: General.getFiatText(total_amount, right_ticker)
+                                font.pixelSize: input_price.field.font.pixelSize
+
+                                CexInfoTrigger {}
+                            }
+                        }
+
+                        // Trade button
+                        DefaultButton {
+                            Layout.alignment: Qt.AlignRight
+                            Layout.fillWidth: true
+                            Layout.leftMargin: top_line.Layout.rightMargin
+                            Layout.rightMargin: Layout.leftMargin
+                            Layout.bottomMargin: layout_margin
+
+                            button_type: sell_mode ? "danger" : "primary"
+
+                            width: 170
+
+                            text: qsTr("Start Swap")
+                            font.weight: Font.Medium
+                            enabled: !multi_order_enabled && can_submit_trade
+                            onClicked: confirm_trade_modal.open()
+                        }
+
+                        ColumnLayout {
+                            spacing: parent.spacing
+                            visible: errors.text_value !== ""
+
+                            Layout.alignment: Qt.AlignBottom
+                            Layout.fillWidth: true
+                            Layout.bottomMargin: layout_margin
+
+                            HorizontalLine {
+                                Layout.fillWidth: true
+                                Layout.bottomMargin: layout_margin
+                            }
+
+                            // Show errors
+                            DefaultText {
+                                id: errors
+                                Layout.leftMargin: top_line.Layout.rightMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                font.pixelSize: Style.textSizeSmall4
+                                color: Style.colorRed
+
+                                text_value: General.getTradingError(last_trading_error, curr_fee_info, base_ticker, rel_ticker)
+                            }
+                        }
+                        Item {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                        }
+
+
+                    }
+
+
+                }
             }
 
 

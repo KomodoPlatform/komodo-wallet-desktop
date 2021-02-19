@@ -379,5 +379,8 @@
         <file>atomic_defi_design/qml/Exchange/Trade/OrderBookV2.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderBookVertical.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSubstractRectangle.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/SellBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/OrderForm.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/BuyBox.qml</file>
     </qresource>
 </RCC>
