@@ -20,12 +20,12 @@ Item {
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
+
     Settings {
         id: atomic_settings2
-        //category: "General"
-
         fileName: atomic_cfg_file
     }
+
     InnerBackground {
         id: layout_background
         anchors.centerIn: parent
