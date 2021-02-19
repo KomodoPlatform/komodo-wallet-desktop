@@ -73,8 +73,8 @@ namespace atomic_dex
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void               set_emergency_password(const QString& emergency_password);
         Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
-        Q_INVOKABLE bool               log_status();
-        Q_INVOKABLE void               set_log_status(bool status);
+        Q_INVOKABLE bool               log_status() const noexcept;
+        Q_INVOKABLE void               set_log_status(bool status) noexcept;
 
         //! API
         static bool is_there_a_default_wallet() noexcept;

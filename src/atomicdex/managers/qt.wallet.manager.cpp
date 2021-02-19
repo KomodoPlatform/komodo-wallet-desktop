@@ -331,13 +331,13 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::log_status()
+    qt_wallet_manager::log_status() const noexcept
     {
         return m_login_status;
     }
 
     void
-    qt_wallet_manager::set_log_status(bool status)
+    qt_wallet_manager::set_log_status(bool status) noexcept
     {
         m_login_status = status;
     }
