@@ -11,7 +11,7 @@ import "../../Constants"
 
 FloatingBackground {
     id: root
-
+    radius: 0
     function focusVolumeField() {
         input_volume.field.forceActiveFocus()
     }
@@ -74,7 +74,15 @@ FloatingBackground {
                     color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     font.weight: Font.Medium
-                    onClicked: setMarketMode(MarketMode.Sell)
+                    onClicked: {
+                        //console.log(API.app.trading_pg.market_mode)
+                        //console.log("Sell Button",MarketMode.Sell)
+                        console.log("[START]")
+                        setMarketMode(MarketMode.Sell)
+                        console.log(sell_mode,API.app.trading_pg.market_mode)
+                        console.log("[END]")
+                        //console.log(API.app.trading_pg.market_mode)
+                    }
                 }
                 DefaultButton {
                     Layout.fillWidth: true
@@ -83,7 +91,16 @@ FloatingBackground {
                     color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     font.weight: Font.Medium
-                    onClicked: setMarketMode(MarketMode.Buy)
+                    onClicked: {
+                        console.log("[START]")
+                        //console.log(API.app.trading_pg.market_mode)
+                        //console.log("Buy Button",MarketMode.Buy)
+                        setMarketMode(MarketMode.Buy)
+                        //console.log(API.app.trading_pg.market_mode)
+                        console.log(sell_mode,API.app.trading_pg.market_mode)
+                        console.log("[END]")
+
+                    }
                 }
             }
 
@@ -219,10 +236,11 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
+                //Layout.preferredHeight:
 
                 content: RowLayout {
                     width: bg.width
-                    height: tx_fee_text.font.pixelSize * 4
+                    height: tx_fee_text.implicitHeight+10
 
                     ColumnLayout {
                         id: fees
@@ -236,7 +254,8 @@ FloatingBackground {
                             id: tx_fee_text
                             text_value: General.feeText(curr_fee_info, base_ticker, true, true)
                             font.pixelSize: Style.textSizeSmall1
-
+                            width: parent.width
+                            wrapMode: Text.Wrap
                             CexInfoTrigger {}
                         }
                     }

@@ -13,6 +13,8 @@ DefaultComboBox {
     id: control
 
     mainBorderColor: Style.getCoinColor(ticker)
+    border.width: 2
+    radius: 10
 
     contentItem: DexComboBoxLine {
         id: line
@@ -50,6 +52,7 @@ DefaultComboBox {
     }
 
     // Each dropdown item
+    height: 80
     delegate: ItemDelegate {
         Universal.accent: control.lineHoverColor
         width: control.width
@@ -59,24 +62,36 @@ DefaultComboBox {
         contentItem: DexComboBoxLine {
             details: model
         }
+        z: 5
     }
 
     // Dropdown itself
     popup: Popup {
         id: popup
-        readonly property double max_height: control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y
+        readonly property double max_height: 450//control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y
         y: control.height - 1
         width: control.width
         height: Math.min(contentItem.implicitHeight, popup.max_height)
-
+        z: 4
         bottomMargin: 20
 
         padding: 1
+        rightMargin: 5
 
         contentItem: ColumnLayout {
+            anchors.rightMargin: 5
+
             // Search input
             DefaultTextField {
                 id: input_coin_filter
+                background: Item {
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.rightMargin: 2
+                       border.color: "transparent"
+                       color: Style.colorInnerBackground
+                   }
+                }
 
                 function reset() {
                     text = ""
@@ -98,10 +113,19 @@ DefaultComboBox {
                     ticker_list.setFilterFixedString(text)
                     renewIndex()
                 }
+                font.pixelSize: 16
+
                 Layout.fillWidth: true
-                Layout.leftMargin: 6
-                Layout.rightMargin: Layout.leftMargin
+                Layout.leftMargin: 0
+                Layout.preferredHeight: 60
+                Layout.rightMargin: 2//Layout.leftMargin
                 Layout.topMargin: Layout.leftMargin
+                Keys.onDownPressed:  {
+                    control.incrementCurrentIndex()
+                }
+                Keys.onUpPressed: {
+                    control.decrementCurrentIndex()
+                }
 
                 Keys.onPressed: {
                     if(event.key === Qt.Key_Return) {
@@ -113,24 +137,38 @@ DefaultComboBox {
                     }
                 }
             }
-
-            DefaultListView {
-                implicitHeight: contentHeight + 5 // Scrollbar appears if this extra space is not added
-                model: control.popup.visible ? control.delegateModel : null
-                currentIndex: control.highlightedIndex
-
+            Item {
                 Layout.maximumHeight: popup.max_height - 100
-                DefaultMouseArea {
+                Layout.fillWidth: true
+                implicitHeight: popup_list_view.contentHeight + 5
+                DefaultListView {
+                    id: popup_list_view
+                     // Scrollbar appears if this extra space is not added
+                    model: control.popup.visible ? control.delegateModel : null
+                    currentIndex: control.highlightedIndex
                     anchors.fill: parent
-                    acceptedButtons: Qt.NoButton
+                    anchors.rightMargin: 2
+
+                    DefaultMouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.NoButton
+                    }
                 }
             }
+
+
         }
 
-        background: AnimatedRectangle {
-            color: Style.colorTheme9
-            border.color: control.mainBorderColor
-            radius: Style.rectangleCornerRadius
+        background: Item {
+            AnimatedRectangle {
+                width: parent.width
+                y: -5
+                height: parent.height+10
+                color: Style.colorTheme9
+                border.width: 1
+                border.color: control.mainBorderColor
+                //radius: Style.rectangleCornerRadius
+            }
         }
     }
 }

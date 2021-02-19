@@ -20,6 +20,7 @@ Item {
         //chart_object.anchors.bottom = selectors.top
         //chart_object.anchors.bottomMargin = 40
         chart_object.visible = true
+        console.log(chart_object.implicitHeight)
     }
 
     Component.onDestruction: {
@@ -28,6 +29,14 @@ Item {
         chart_object.visible = false
     }
     property bool isUltraLarge: width>1400
+    onIsUltraLargeChanged:  {
+        if(isUltraLarge) {
+            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(0, Qt.DescendingOrder)
+        }else {
+            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(0, Qt.AscendingOrder)
+        }
+    }
+
     readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
@@ -51,7 +60,7 @@ Item {
         API.app.trading_pg.volume = v
     }
 
-    readonly property bool sell_mode: API.app.trading_pg.market_mode == MarketMode.Sell
+    property bool sell_mode: API.app.trading_pg.market_mode.toString()==="Sell"
     function setMarketMode(v) {
         API.app.trading_pg.market_mode = v
     }
@@ -70,7 +79,10 @@ Item {
         exchange.current_page = idx_exchange_orders
     }
 
-    onSell_modeChanged: reset()
+    onSell_modeChanged: {
+        console.log(sell_mode)
+        reset()
+    }
 
     // Local
     function inCurrentPage() {
@@ -188,9 +200,15 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             spacing: 15
-            handle: InnerBackground {
+            handle: Item {
                 implicitWidth: 10
                 implicitHeight: 10
+                InnerBackground {
+                    implicitWidth: 6
+                    implicitHeight: 16
+                    anchors.centerIn: parent
+                    opacity: .2
+                }
             }
 
             Item {
@@ -213,17 +231,21 @@ Item {
                         Item {
                             id: chart_view
                             width: parent.width
-                            height: chart_object.height+10
+                            height: 400//chart_object.height+10
+                            CandleStickChart {
+                                anchors.fill: parent
+                            }
                         }
                         RowLayout {
                             id: selectors
                             width: parent.width
-                            height: 60
+                            height: 80
                             spacing: 20
 
                             TickerSelector {
                                 id: selector_left
                                 left_side: true
+                                Layout.fillHeight: true
                                 ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
                                 ticker: left_ticker
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -233,7 +255,7 @@ Item {
                             // Swap button
                             SwapIcon {
                                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                                Layout.preferredHeight: selector_left.height * 0.9
+                                Layout.preferredHeight: selector_left.height * 0.65
 
                                 top_arrow_ticker: selector_left.ticker
                                 bottom_arrow_ticker: selector_right.ticker
@@ -259,6 +281,36 @@ Item {
                                 Layout.fillWidth: true
                             }
                         }
+                        Item {
+                            id: formBox
+                            property int space: 10
+                            width: parent.width-5
+                            height: 200
+                            Rectangle {
+                                id: rect1
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: (parent.width/2)-(parent.space/2)
+                                height: parent.height
+                                radius: 5
+                                opacity: 0
+                                border.color: Style.colorRed
+                                layer.enabled: true
+                                layer.smooth: true
+                                color: Style.colorTheme9
+                            }
+                            Rectangle {
+                                x: (parent.width/2)+parent.space
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: (parent.width/2)-(parent.space/2)
+                                height: parent.height
+                                radius: 5
+                                color: 'cyan'
+                            }
+                            DefaultSubstractRectangle {
+                                target: rect1
+                            }
+                        }
+
                         StackLayout {
                             id: orderbook_area
                             height: isUltraLarge? 0 : 250
@@ -287,6 +339,19 @@ Item {
 
 
                         // Price
+                        Item {
+                           width: parent.width
+                           height: 320
+                           visible: false
+                           FloatingBackground {
+                               width: parent.width-10
+                               height: 300
+                               anchors.centerIn: parent
+                               radius: 4
+
+                           }
+                        }
+
                         Column {
                             width: parent.width-10
                             height: 300
@@ -301,6 +366,7 @@ Item {
                                     black_shadow.visible: false
                                     radius: 0
                                 }
+
                                 y:5
                                 leftPadding: 15
                                 Qaterial.TabButton {
@@ -362,10 +428,6 @@ Item {
 
                 
             }
-            OrderBookVertical {
-                SplitView.minimumWidth: 320
-            }
-
             Item {
                 id: forms
                 SplitView.preferredWidth: 250
@@ -459,6 +521,11 @@ Item {
                     }
                 }
             }
+            OrderBookVertical {
+                SplitView.minimumWidth: 320
+            }
+
+
         }
 
         ModalLoader {

@@ -340,29 +340,56 @@ QtObject {
     }
 
     function feeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+
+
         if(!trade_info || !trade_info.trading_fee) return ""
 
         const tx_fee = txFeeText(trade_info, base_ticker, has_info_icon, has_limited_space)
         const trading_fee = tradingFeeText(trade_info, base_ticker, has_info_icon)
 
+
         return tx_fee + "\n" + trading_fee
     }
 
     function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+
         if(!trade_info || !trade_info.trading_fee) return ""
 
         const has_parent_coin_fees = hasParentCoinFees(trade_info)
-        const main_fee = (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker)) +
-                                 // Rel Fees
-                                 (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker) : '')
 
-        let fiat_part = "("
-        fiat_part += getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, false)
-        if(has_parent_coin_fees) fiat_part += (has_limited_space ? "\n\t\t+ " : " + ") + getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon)
-        fiat_part += ")"
+         var info =  qsTr('%1 Transaction Fee'.arg(trade_info.base_transaction_fees_ticker))+': '+ trade_info.base_transaction_fees + " (%1)".arg(getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, has_info_icon))
 
-        return main_fee + " " + fiat_part
+        if (has_parent_coin_fees) {
+            info = info+"<br>"+qsTr('%1 Transaction Fee'.arg(trade_info.rel_transaction_fees_ticker))+': '+ trade_info.rel_transaction_fees + " (%1)".arg(getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon))
+        }
+
+        return info+"<br>"
+//        const main_fee = (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker)) +
+//                                 // Rel Fees
+//                                 (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker) : '')
+
+//        let fiat_part = "("
+//        fiat_part += getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, false)
+//        if(has_parent_coin_fees) fiat_part += (has_limited_space ? "\n\t\t+ " : " + ") + getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon)
+//        fiat_part += ")"
+
+//        return main_fee + " " + fiat_part
     }
+//    function txFeeText2(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+//        if(!trade_info || !trade_info.trading_fee) return ""
+
+//        const has_parent_coin_fees = hasParentCoinFees(trade_info)
+//        const main_fee = (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker)) +
+//                                 // Rel Fees
+//                                 (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker) : '')
+
+//        let fiat_part = "("
+//        fiat_part += getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, false)
+//        if(has_parent_coin_fees) fiat_part += (has_limited_space ? "\n\t\t+ " : " + ") + getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon)
+//        fiat_part += ")"
+
+//        return main_fee + " " + fiat_part
+//    }
 
     function tradingFeeText(trade_info, base_ticker, has_info_icon=true) {
         if(!trade_info || !trade_info.trading_fee) return ""

@@ -140,7 +140,7 @@
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/API.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeV1.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>

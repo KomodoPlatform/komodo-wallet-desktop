@@ -35,7 +35,7 @@ RowLayout {
 
         // Indicates user input, when list changes, index stays the same so we know it's not user input
         property bool index_changed: false
-
+        height: parent.height
         onCurrentIndexChanged: combo.index_changed = true
 
         onCurrentValueChanged: {

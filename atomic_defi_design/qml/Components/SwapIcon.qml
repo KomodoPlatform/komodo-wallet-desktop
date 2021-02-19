@@ -20,7 +20,7 @@ Item {
         text_value: "→"
         font.family: "Impact"
         font.pixelSize: 30
-        font.weight: Font.Medium
+        font.weight: Font.Black
         color: Qt.lighter(Style.getCoinColor(top_arrow_ticker), hovered ? Style.hoverLightMultiplier : 1.0)
     }
 
@@ -30,7 +30,7 @@ Item {
         text_value: "←"
         font.family: right_arrow.font.family
         font.pixelSize: right_arrow.font.pixelSize
-        font.weight: right_arrow.font.weight
+        font.weight: Font.Black
         color: Qt.lighter(Style.getCoinColor(bottom_arrow_ticker), hovered ? Style.hoverLightMultiplier : 1.0)
     }
 }

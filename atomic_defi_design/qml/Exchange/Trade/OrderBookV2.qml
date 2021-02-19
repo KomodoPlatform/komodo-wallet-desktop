@@ -247,7 +247,10 @@ Item {
                     clip: true
                     snapMode: ListView.SnapToItem
                     headerPositioning: ListView.OverlayHeader
-                    Component.onCompleted: positionViewAtEnd()
+                    Component.onCompleted:{
+                        positionViewAtEnd()
+
+                    }
                     delegate: Item {
                         width: asks_view.width
                         height: 34
