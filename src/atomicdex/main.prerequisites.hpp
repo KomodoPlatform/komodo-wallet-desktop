@@ -26,6 +26,7 @@
 #include <QDesktopWidget>
 #include <QQmlApplicationEngine>
 #include <QScreen>
+#include <QSettings>
 #include <QWindow>
 #include <QtGlobal>
 #include <QtQml>
@@ -233,26 +234,6 @@ init_dpi()
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
         should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
-
-#ifdef __APPLE__
-    auto is_apple_translated = []() {
-        int    ret  = 0;
-        size_t size = sizeof(ret);
-        if (sysctlbyname("sysctl.proc_translated", &ret, &size, NULL, 0) == -1)
-        {
-            if (errno == ENOENT)
-                return 0;
-            return -1;
-        }
-        return ret;
-    };
-    if (is_apple_translated() == 1)
-    {
-        SPDLOG_INFO("You are on apple M1 chipset running an Intel application, forcing NativeTextRendering");
-        QQuickWindow::setTextRenderType(QQuickWindow::TextRenderType::NativeTextRendering);
-    }
-#endif
-    // QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
 }
 
 static void
@@ -275,6 +256,29 @@ init_timezone_db()
 #endif
 }
 
+static void
+handle_settings(QSettings& settings)
+{
+    auto create_settings_functor = [&settings](QString settings_name, QVariant value) {
+        if (!settings.contains(settings_name))
+        {
+            SPDLOG_INFO("Settings {} doesn't exist yet for this application, creating now", settings_name.toStdString());
+            settings.setValue(settings_name, value);
+        }
+        else
+        {
+            SPDLOG_INFO("Settings {} already exist - skipping", settings_name.toStdString());
+        }
+    };
+    SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
+#ifdef __APPLE__
+    create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
+    QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
+#else
+    create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
+#endif
+}
+
 inline int
 run_app(int argc, char** argv)
 {
@@ -289,6 +293,8 @@ run_app(int argc, char** argv)
     init_wally();
     init_sodium();
     clean_previous_run();
+    QSettings settings((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string().c_str(), QSettings::IniFormat);
+    handle_settings(settings);
     init_dpi();
 
     int res = 0;
@@ -322,6 +328,8 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     engine.rootContext()->setContextProperty("atomic_app_name", QString{DEX_NAME});
     engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
+    engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
+    engine.rootContext()->setContextProperty("atomic_settings", &settings);
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);
