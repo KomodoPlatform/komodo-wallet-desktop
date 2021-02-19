@@ -44,6 +44,7 @@ namespace atomic_dex
         wallet_cfg               m_wallet_cfg;
         QString                  m_current_default_wallet{""};
         QString                  m_current_status{"None"};
+        bool                     m_login_status{false};
 
         //! Private functions
         bool load_wallet_cfg(const std::string& wallet_name);
@@ -63,7 +64,6 @@ namespace atomic_dex
         QString        get_wallet_default_name() const noexcept;
         void           set_wallet_default_name(QString wallet_default_name) noexcept;
         static QString get_default_wallet_name() noexcept; ///< Static version
-        bool login_status = false;
 
         //! Q_INVOKABLE (QML API)
         Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
@@ -73,8 +73,8 @@ namespace atomic_dex
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void               set_emergency_password(const QString& emergency_password);
         Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
-        Q_INVOKABLE bool log_status();
-        Q_INVOKABLE void set_log_status(const bool status);
+        Q_INVOKABLE bool               log_status();
+        Q_INVOKABLE void               set_log_status(bool status);
 
         //! API
         static bool is_there_a_default_wallet() noexcept;
