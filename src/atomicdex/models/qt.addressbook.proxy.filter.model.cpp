@@ -17,12 +17,13 @@
 // Project Headers
 #include "atomicdex/models/qt.addressbook.model.hpp"
 #include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 
 // Ctor
 namespace atomic_dex
 {
-    addressbook_proxy_model::addressbook_proxy_model(QObject* parent) :
-        QSortFilterProxyModel(parent)
+    addressbook_proxy_model::addressbook_proxy_model(ag::ecs::system_manager& system_manager, QObject* parent) :
+        QSortFilterProxyModel(parent), m_system_manager(system_manager)
     {}
 }
 
@@ -80,15 +81,27 @@ namespace atomic_dex
         }
         
         // If a type filter exists, checks if the contact has at least one address of equivalent type.
+        //  - If the contact address' type is a coin type (e.g. ERC20), checks if the filter type corresponds to this coin type (e.g. SmartChain and KMD).
+        //  - If type filter is a coin type (e.g. ERC20), checks if the contact address' type belongs to this coin type.
         if (!m_type_filter.isEmpty())
         {
-            const auto& addresses =
-                qobject_cast<addressbook_contact_model*>(
-                    qvariant_cast<QObject*>(idx.data(addressbook_model::SubModelRole)))
-                        ->get_address_entries();
+            const auto& glb_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
+            const auto& addresses     = qobject_cast<addressbook_contact_model*>(
+                                            qvariant_cast<QObject*>(idx.data(addressbook_model::SubModelRole))
+                                        )->get_address_entries();
             
-            if (std::find_if(addresses.begin(), addresses.end(), [this](const auto& address)
+            if (std::find_if(addresses.begin(), addresses.end(), [this, glb_coins_cfg](const auto& address)
                 {
+                    if (glb_coins_cfg->is_coin_type(address.type))
+                    {
+                        return address.type == m_type_filter ||
+                               glb_coins_cfg->get_coin_info(m_type_filter.toStdString()).type == address.type.toStdString();
+                    }
+                    if (glb_coins_cfg->is_coin_type(m_type_filter))
+                    {
+                        return address.type == m_type_filter ||
+                               glb_coins_cfg->get_coin_info(address.type.toStdString()).type == m_type_filter.toStdString();
+                    }
                     return address.type == m_type_filter;
                 }) == addresses.end())
             {
