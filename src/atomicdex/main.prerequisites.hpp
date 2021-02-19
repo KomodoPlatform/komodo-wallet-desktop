@@ -327,6 +327,7 @@ run_app(int argc, char** argv)
 
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
+    engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
     // Load Qaterial.
 
