@@ -6,6 +6,8 @@ import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 
+import "../" as OtherPage
+
 import "../../Components"
 import "../../Constants"
 import "../../Wallet"
@@ -79,7 +81,8 @@ Item {
 
     property var onOrderSuccess: () => {
         General.prevent_coin_disabling.restart()
-        exchange.current_page = idx_exchange_orders
+        //exchange.current_page = idx_exchange_orders
+        tabView.currentIndex = 1
     }
 
     onSell_modeChanged: {
@@ -180,7 +183,8 @@ Item {
             toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(response.result), false)
 
             General.prevent_coin_disabling.restart()
-            exchange.current_page = idx_exchange_orders
+            tabView.currentIndex = 1
+            //exchange.current_page = idx_exchange_orders
         }
     }
 
@@ -327,7 +331,7 @@ Item {
 
                         Column {
                             width: parent.width-10
-                            height: 300
+                            height: 400
                             anchors.horizontalCenter: parent.horizontalCenter
                             Qaterial.TabBar {
                                 z: 4
@@ -362,18 +366,23 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 radius: 4
                                 width: parent.width
-                                height: 120
+                                height: parent.height-tabView.height
                                 SwipeView {
                                     id: swipeView
                                     currentIndex: tabView.currentIndex
                                     anchors.fill: parent
-                                    Item {
 
+                                    Item {
                                         PriceLine {
                                             id: price_line_obj
                                             anchors.verticalCenter: parent.verticalCenter
-                                            anchors.left: parent.left
-                                            anchors.right: parent.right
+                                            width: parent.width
+                                        }
+                                    }
+                                    Item {
+                                        OtherPage.OrdersPage {
+                                            anchors.fill: parent
+                                            clip: true
                                         }
                                     }
                                 }
@@ -498,8 +507,6 @@ Item {
                 }
             }
             OrderBookVertical {
-                SplitView.minimumWidth: 320
-                SplitView.preferredWidth: 400
             }
             ColumnLayout {
                 //id: formBox
@@ -595,7 +602,7 @@ Item {
 
                             text: qsTr("Start Swap")
                             font.weight: Font.Medium
-                            enabled: !multi_order_enabled && can_submit_trade
+                            enabled: !multi_order_enabled && form_base.can_submit_trade
                             onClicked: confirm_trade_modal.open()
                         }
 

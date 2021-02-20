@@ -63,8 +63,6 @@ FloatingBackground {
 
             Item {
                 Layout.fillWidth: true
-                Layout.leftMargin: top_line.Layout.leftMargin
-                Layout.rightMargin: top_line.Layout.rightMargin
                 Layout.bottomMargin: input_volume.field.font.pixelSize
                 height: input_volume.height
 
@@ -96,8 +94,6 @@ FloatingBackground {
 
             Item {
                 Layout.fillWidth: true
-                Layout.leftMargin: top_line.Layout.leftMargin
-                Layout.rightMargin: top_line.Layout.rightMargin
                 Layout.bottomMargin: input_volume.field.font.pixelSize
                 height: input_volume.height
 
@@ -137,9 +133,6 @@ FloatingBackground {
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
                 Layout.fillWidth: true
-                Layout.leftMargin: top_line.Layout.leftMargin
-                Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: top_line.Layout.rightMargin*0.5
                 from: 0
                 to: Math.max(0, parseFloat(max_volume))
                 live: false

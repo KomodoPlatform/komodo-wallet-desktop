@@ -20,7 +20,7 @@ Item {
     property int page_index
 
     property alias title: order_list.title
-    property alias empty_text: order_list.empty_text
+    //property alias empty_text: order_list.empty_text
     property alias items: order_list.items
 
     property bool is_history: false
@@ -34,10 +34,10 @@ Item {
         recover_funds_modal.open()
     }
 
-    function inCurrentPage() {
-        return  exchange.inCurrentPage() &&
-                exchange.current_page === page_index
-    }
+//    function inCurrentPage() {
+//        return  exchange.inCurrentPage() &&
+//                exchange.current_page === page_index
+//    }
 
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = min_date.date
@@ -66,81 +66,99 @@ Item {
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
 
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
         spacing: 15
 
-        // Select coins row
-        FloatingBackground {
-            Layout.alignment: Qt.AlignHCenter
+        // Bottom part
+        Item {
+            id: orders_settings
+            property bool displaySetting: false
             Layout.fillWidth: true
-            height: layout.height
+            Layout.preferredHeight: displaySetting? 80 : 30
+            Behavior on Layout.preferredHeight {
+                NumberAnimation {
+                    duration: 150
+                }
+            }
 
-            RowLayout {
-                id: layout
-                anchors.centerIn: parent
+            Rectangle {
+                width: parent.width
+                height: orders_settings.displaySetting? 50 : 10
+                Behavior on height {
+                    NumberAnimation {
+                        duration: 150
+                    }
+                }
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -15
+                visible: false//orders_settings.height>75
+                color: Style.colorTheme5
+            }
 
-                // Base
-                DefaultImage {
-                    source: General.coinIcon(combo_base.currentText)
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: Layout.preferredWidth
+            Row {
+                x: 5
+                y: 0
+                spacing: -10
+                //anchors.verticalCenter: parent.verticalCenter
+                Qaterial.OutlineButton {
+                    icon.source: Qaterial.Icons.filter
+                    text: "Filter"
+                    foregroundColor: Qaterial.Colors.white
+                    anchors.verticalCenter: parent.verticalCenter
+                    outlinedColor: Style.colorTheme5
+                    onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
 
+            }
+            Row {
+                anchors.right: parent.right
+                y: 0
+                rightPadding: 5
+                //anchors.verticalCenter: parent.verticalCenter
+                Qaterial.OutlineButton {
+                    icon.source: Qaterial.Icons.close
+                    text: "Cancel All"
+                    foregroundColor: Qaterial.Colors.pink
+                    anchors.verticalCenter: parent.verticalCenter
+                    outlinedColor: Style.colorTheme5
+                    onClicked: API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
+                }
+            }
+            RowLayout {
+                visible: orders_settings.height>75
+                width: parent.width-20
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -15
+                spacing: 10
                 DefaultComboBox {
                     id: combo_base
-                    Layout.preferredWidth: 120
-                    Layout.topMargin: 10
-                    Layout.bottomMargin: Layout.topMargin
-
-                    textRole: "ticker"
-                    valueRole: "ticker"
-
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     onCurrentValueChanged: applyFilter()
+                    width: 150
+                    height: 100
+                    valueRole: "ticker"
+                    textRole: 'ticker'
+                    editable: true
                 }
-
-                // Swap button
-                SwapIcon {
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.rightMargin: 15
-                    Layout.leftMargin: Layout.rightMargin
-
-                    top_arrow_ticker: combo_base.currentValue
-                    bottom_arrow_ticker: combo_rel.currentValue
-                    hovered: swap_button.containsMouse
-
-                    DefaultMouseArea {
-                        id: swap_button
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: {
-                            const base_idx = combo_base.currentIndex
-                            combo_base.currentIndex = combo_rel.currentIndex
-                            combo_rel.currentIndex = base_idx
-                        }
-                    }
+                Qaterial.ColorIcon {
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: Qaterial.Icons.swapHorizontal
                 }
 
                 DefaultComboBox {
                     id: combo_rel
-                    Layout.preferredWidth: 120
-                    Layout.topMargin: combo_base.Layout.topMargin
-                    Layout.bottomMargin: combo_base.Layout.bottomMargin
-
-                    textRole: "ticker"
-                    valueRole: "ticker"
-
                     model: combo_base.model
                     onCurrentValueChanged: applyFilter()
+                    width: 150
+                    height: 100
+                    valueRole: "ticker"
+                    textRole: 'ticker'
+                    editable: true
                 }
-
-                // Rel
-                DefaultImage {
-                    Layout.rightMargin: 15
-                    source: combo_rel.currentText === "All" ? "" : General.coinIcon(combo_rel.currentText)
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: Layout.preferredWidth
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                 }
 
                 Qaterial.TextFieldDatePicker {
@@ -150,6 +168,7 @@ Item {
                     to: default_max_date
                     date: default_min_date
                     onAccepted: applyDateFilter()
+                    Layout.preferredWidth: 130
                 }
 
                 Qaterial.TextFieldDatePicker {
@@ -160,68 +179,12 @@ Item {
                     to: default_max_date
                     date: default_max_date
                     onAccepted: applyDateFilter()
+                    Layout.preferredWidth: 130
                 }
 
-                // Apply Filter Button
-                PrimaryButton {
-                    visible: root.is_history
-                    Layout.leftMargin: 30
-                    text: qsTr("Apply Filter")
-                    enabled: list_model_proxy.can_i_apply_filtering
-                    onClicked: list_model_proxy.apply_all_filtering()
-                }
-
-                // Cancel button
-                DangerButton {
-                    visible: !root.is_history
-                    Layout.leftMargin: 30
-                    text: qsTr("Cancel Displayed Orders")
-                    enabled: list_model.length > 0
-                    onClicked: API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
-                }
-
-                // Export button
-                PrimaryButton {
-                    Layout.leftMargin: 20
-                    visible: root.is_history
-                    text: qsTr("Export CSV")
-                    enabled: list_model.length > 0
-                    onClicked: {
-                        export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
-                        export_csv_dialog.open()
-                    }
-                }
-
-                FileDialog {
-                    id: export_csv_dialog
-
-                    title: qsTr("Please choose the CSV export name and location")
-                    selectMultiple: false
-                    selectExisting: false
-                    selectFolder: false
-
-                    defaultSuffix: "csv"
-                    nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
-
-                    onAccepted: {
-                        const path = fileUrl.toString()
-
-                        // Export
-                        console.log("Exporting to CSV: " + path)
-                        API.app.exporter_service.export_swaps_history_to_csv(path.replace(General.os_file_prefix, ""))
-
-                        // Open the save folder
-                        const folder_path = path.substring(0, path.lastIndexOf("/"))
-                        Qt.openUrlExternally(folder_path)
-                    }
-                    onRejected: {
-                        console.log("CSV export cancelled")
-                    }
-                }
             }
         }
 
-        // Bottom part
         RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -232,7 +195,10 @@ Item {
                 id: order_list
                 items: list_model
                 is_history: root.is_history
+                Layout.fillHeight: true
+                Layout.fillWidth: true
             }
+
         }
 
         ModalLoader {
@@ -240,6 +206,7 @@ Item {
             sourceComponent: OrderModal {}
         }
     }
+
 
     ModalLoader {
         id: recover_funds_modal

@@ -6,27 +6,19 @@ import "../Components"
 import "../Constants"
 import ".."
 
-InnerBackground {
+Item {
     property string title
     property var items
-    property alias empty_text: no_orders.text_value
+    //property alias empty_text: no_orders.text_value
     property bool is_history: false
 
     Layout.fillWidth: true
     Layout.fillHeight: true
 
     ColumnLayout {
-        width: parent.width
+        width: parent.width-10
         height: parent.height
-
-        DefaultText {
-            text_value: title + " (" + items.length + ")"
-
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-            Layout.topMargin: 10
-
-            font.pixelSize: Style.textSize2
-        }
+        anchors.horizontalCenter: parent.horizontalCenter
 
         HorizontalLine {
             Layout.fillWidth: true
@@ -34,16 +26,16 @@ InnerBackground {
         }
 
         // No orders
-        DefaultText {
-            id: no_orders
-            wrapMode: Text.Wrap
-            visible: items.length === 0
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 20
-            color: Style.colorWhite5
+//        DefaultText {
+//            id: no_orders
+//            wrapMode: Text.Wrap
+//            visible: items.length === 0
+//            Layout.alignment: Qt.AlignHCenter
+//            Layout.topMargin: 20
+//            color: Style.colorWhite5
 
-            text_value: qsTr("You don't have any orders.")
-        }
+//            text_value: qsTr("You don't have any orders.")
+//        }
 
         // List
         DefaultListView {

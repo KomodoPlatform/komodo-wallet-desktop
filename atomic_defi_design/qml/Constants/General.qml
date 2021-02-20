@@ -17,7 +17,6 @@ QtObject {
 
     function coinIcon(ticker) {
         if(ticker === "" || ticker === "All") return ""
-        console.log(coin_icons_path + ticker.toLowerCase() + ".png")
         const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }

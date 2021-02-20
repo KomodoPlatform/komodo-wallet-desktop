@@ -10,6 +10,6 @@ OrdersPage {
     page_index: idx_exchange_history
 
     title: qsTr("Recent Swaps")
-    empty_text: qsTr("You don't have recent orders.")
+    //empty_text: qsTr("You don't have recent orders.")
     is_history: true
 }

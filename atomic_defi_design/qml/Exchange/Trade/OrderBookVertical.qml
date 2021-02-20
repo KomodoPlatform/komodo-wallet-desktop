@@ -9,7 +9,7 @@ import "../../Constants"
 
 Item {
     SplitView.fillHeight: true
-    SplitView.preferredWidth: isUltraLarge? 330 : 0
+    SplitView.preferredWidth: isUltraLarge? 400 : 0
     Behavior on SplitView.preferredWidth {
         NumberAnimation {
             duration: 100
