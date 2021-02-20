@@ -9,7 +9,7 @@
     <security>
       <requestedPrivileges>
         <requestedExecutionLevel
-          level="requireAdministrator"
+          level="highestAvailable"
           uiAccess="false"/>
         </requestedPrivileges>
        </security>
