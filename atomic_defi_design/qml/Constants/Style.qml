@@ -350,6 +350,7 @@ QtObject {
                                           "SOULJA": "#8F734A",
                                           "STORJ": "#2683FF",
                                           "TSL": "#64B082",
+                                          "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",
                                           "YFI": "#006BE6",
