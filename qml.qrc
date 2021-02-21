@@ -384,5 +384,6 @@
         <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/BuyBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/OrdersPage_backup.qml</file>
         <file>atomic_defi_design/qml/Exchange/OrderLine_Backup.qml</file>
+        <file>atomic_defi_design/qml/Components/LoaderBusyIndicator.qml</file>
     </qresource>
 </RCC>
