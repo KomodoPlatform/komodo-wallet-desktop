@@ -176,17 +176,17 @@
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="81"/>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="90"/>
         <source>Tags (first 6)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tags (Les 6 premiers)</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="98"/>
         <source>Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="188"/>
@@ -499,7 +499,7 @@
     <message>
         <location filename="../../qml/Components/CexInfoModal.qml" line="19"/>
         <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Les données de marché (prix, graphiques, etc.) marquées de l&apos;icône ⓘ proviennent de sources tierces.&lt;br&gt;&lt;br&gt;Les données proviennent de &lt;a href=&quot;https://bandprotocol.com/&quot;&gt; Band Decentralized Oracle&lt;/a&gt; et &lt;a href=&quot;https://www.coingecko.com/fr&quot;&gt;Coingecko &lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Paires prises en charge par Oracle:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Dernière référence (Band Oracle) :&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2545,7 +2545,7 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="70"/>
         <source>Recommended: </source>
-        <translation type="unfinished"></translation>
+        <translation>Conseillé :</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="132"/>
@@ -2555,7 +2555,7 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="142"/>
         <source>Use QtTextRendering Or NativeTextRendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisez QtTextRendering ou NativeTextRendering</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="162"/>
@@ -2847,32 +2847,32 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
         <source>Failed to place the order</source>
-        <translation type="unfinished">Échec lors du placement de l&apos;ordre</translation>
+        <translation>Échec lors du placement de l&apos;ordre</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="163"/>
         <source>Placed the order</source>
-        <translation type="unfinished">Placer l&apos;ordre</translation>
+        <translation>Placer l&apos;ordre</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="322"/>
         <source>Multi-Order</source>
-        <translation type="unfinished">Multiple ordres</translation>
+        <translation>Multiple ordres</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="341"/>
         <source>Select additional assets for multi-order creation.</source>
-        <translation type="unfinished">Sélectionnez des actifs supplémentaires pour la création de plusieurs ordres.</translation>
+        <translation>Sélectionnez des actifs supplémentaires pour la création de plusieurs ordres.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="350"/>
         <source>Same funds will be used until an order matches.</source>
-        <translation type="unfinished">Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
+        <translation>Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="355"/>
         <source>Submit Trade</source>
-        <translation type="unfinished">Soumettre l&apos;échange</translation>
+        <translation>Soumettre l&apos;échange</translation>
     </message>
 </context>
 <context>
