@@ -30,10 +30,11 @@ AnimatedRectangle {
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: 10
+        anchors.rightMargin: 10
         RowLayout {
             id: status_text
             Layout.fillHeight: true
-            Layout.preferredWidth: 40
+            Layout.preferredWidth: 45
 
             spacing: 5
             visible: !details ? false :
@@ -54,6 +55,19 @@ AnimatedRectangle {
                 Layout.preferredHeight: Layout.preferredWidth
             }
         }
+        Item {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 45
+
+            visible: !status_text.visible
+
+            Qaterial.ColorIcon {
+                anchors.centerIn: parent
+                iconSize: 17
+                source: Qaterial.Icons.clipboardTextSearchOutline
+            }
+        }
+
         DefaultText {
             font.pixelSize: base_amount.font.pixelSize
             text_value: !details ? "" :

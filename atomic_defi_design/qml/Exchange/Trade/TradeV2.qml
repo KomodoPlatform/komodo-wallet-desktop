@@ -4,7 +4,9 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
+
 import AtomicDEX.MarketMode 1.0
+import AtomicDEX.TradingError 1.0
 
 import "../" as OtherPage
 
@@ -336,6 +338,9 @@ Item {
                             Qaterial.TabBar {
                                 z: 4
                                 id: tabView
+                                property int taux_exchange: 0
+                                property int order_idx: 1
+                                property int history_idx: 2
                                 width: parent.width
                                 currentIndex: swipeView.currentIndex
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -380,10 +385,52 @@ Item {
                                         }
                                     }
                                     Item {
-                                        OtherPage.OrdersPage {
+                                        DefaultLoader {
+                                            id: order_loader
+
                                             anchors.fill: parent
-                                            clip: true
+                                            sourceComponent: {
+                                                switch(swipeView.currentIndex) {
+                                                case tabView.order_idx: return order_component
+                                                default: return undefined
+                                                }
+                                            }
                                         }
+                                        LoaderBusyIndicator {
+                                            target: order_loader
+                                        }
+                                        Component {
+                                            id: order_component
+                                            OtherPage.OrdersPage {
+                                                anchors.fill: parent
+                                                clip: true
+                                            }
+                                        }
+                                    }
+                                    Item {
+                                        DefaultLoader {
+                                            id: history_loader
+
+                                            anchors.fill: parent
+                                            sourceComponent: {
+                                                switch(swipeView.currentIndex) {
+                                                case tabView.history_idx: return history_component
+                                                default: return undefined
+                                                }
+                                            }
+                                        }
+                                        LoaderBusyIndicator {
+                                            target: history_loader
+                                        }
+                                        Component {
+                                            id: history_component
+                                            OtherPage.OrdersPage {
+                                                anchors.fill: parent
+                                                is_history: true
+                                                clip: true
+                                            }
+                                        }
+
                                     }
                                 }
                             }
@@ -437,70 +484,62 @@ Item {
                     anchors.topMargin: layout_margin
 
                     height: column_layout.height
-
                     ColumnLayout {
                         id: column_layout
 
                         width: parent.width
 
-                        ColumnLayout {
+                        spacing: layout_margin
+
+                        DefaultSwitch {
+                            id: multi_order_switch
+                            Layout.leftMargin: 15
+                            Layout.rightMargin: Layout.leftMargin
                             Layout.fillWidth: true
-                            Layout.leftMargin: layout_margin
-                            Layout.rightMargin: layout_margin
-                            Layout.topMargin: layout_margin
-                            Layout.bottomMargin: layout_margin
-                            spacing: layout_margin
 
-                            DefaultSwitch {
-                                id: multi_order_switch
-                                Layout.leftMargin: 15
-                                Layout.rightMargin: Layout.leftMargin
-                                Layout.fillWidth: true
+                            text: qsTr("Multi-Order")
+                            enabled: !block_everything && (form_base.can_submit_trade || checked)
 
-                                text: qsTr("Multi-Order")
-                                enabled: !block_everything && (form_base.can_submit_trade || checked)
-
-                                checked: API.app.trading_pg.multi_order_enabled
-                                onCheckedChanged: {
-                                    if(checked) {
-                                        setVolume(max_volume)
-                                        API.app.trading_pg.multi_order_enabled = checked
-                                    }
+                            checked: API.app.trading_pg.multi_order_enabled
+                            onCheckedChanged: {
+                                if(checked) {
+                                    setVolume(max_volume)
+                                    API.app.trading_pg.multi_order_enabled = checked
                                 }
                             }
+                        }
 
-                            DefaultText {
-                                id: first_text
+                        DefaultText {
+                            id: first_text
 
-                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                                Layout.rightMargin: Layout.leftMargin
-                                Layout.fillWidth: true
+                            Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                            Layout.rightMargin: Layout.leftMargin
+                            Layout.fillWidth: true
 
-                                text_value: qsTr("Select additional assets for multi-order creation.")
-                                font.pixelSize: Style.textSizeSmall2
-                            }
+                            text_value: qsTr("Select additional assets for multi-order creation.")
+                            font.pixelSize: Style.textSizeSmall2
+                        }
 
-                            DefaultText {
-                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                                Layout.rightMargin: Layout.leftMargin
-                                Layout.fillWidth: true
+                        DefaultText {
+                            Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                            Layout.rightMargin: Layout.leftMargin
+                            Layout.fillWidth: true
 
-                                text_value: qsTr("Same funds will be used until an order matches.")
-                                font.pixelSize: first_text.font.pixelSize
-                            }
+                            text_value: qsTr("Same funds will be used until an order matches.")
+                            font.pixelSize: first_text.font.pixelSize
+                        }
 
-                            DefaultButton {
-                                text: qsTr("Submit Trade")
-                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                                Layout.rightMargin: Layout.leftMargin
-                                Layout.fillWidth: true
-                                enabled: multi_order_enabled && form_base.can_submit_trade
-                                onClicked: {
-                                    multi_order_values_are_valid = true
-                                    prepareMultiOrder()
-                                    if(multi_order_values_are_valid)
-                                        confirm_multi_order_trade_modal.open()
-                                }
+                        DefaultButton {
+                            text: qsTr("Submit Trade")
+                            Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                            Layout.rightMargin: Layout.leftMargin
+                            Layout.fillWidth: true
+                            enabled: multi_order_enabled && form_base.can_submit_trade
+                            onClicked: {
+                                multi_order_values_are_valid = true
+                                prepareMultiOrder()
+                                if(multi_order_values_are_valid)
+                                    confirm_multi_order_trade_modal.open()
                             }
                         }
                     }
@@ -530,8 +569,6 @@ Item {
                         InnerBackground {
                             id: bg
                             Layout.fillWidth: true
-                            Layout.leftMargin: top_line.Layout.leftMargin
-                            Layout.rightMargin: top_line.Layout.rightMargin
 
                             content: RowLayout {
                                 width: bg.width
@@ -582,7 +619,7 @@ Item {
 
                             DefaultText {
                                 text_value: General.getFiatText(total_amount, right_ticker)
-                                font.pixelSize: input_price.field.font.pixelSize
+                                font.pixelSize: Style.textSizeSmall3
 
                                 CexInfoTrigger {}
                             }
@@ -592,7 +629,6 @@ Item {
                         DefaultButton {
                             Layout.alignment: Qt.AlignRight
                             Layout.fillWidth: true
-                            Layout.leftMargin: top_line.Layout.rightMargin
                             Layout.rightMargin: Layout.leftMargin
                             Layout.bottomMargin: layout_margin
 
@@ -622,7 +658,6 @@ Item {
                             // Show errors
                             DefaultText {
                                 id: errors
-                                Layout.leftMargin: top_line.Layout.rightMargin
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true
 

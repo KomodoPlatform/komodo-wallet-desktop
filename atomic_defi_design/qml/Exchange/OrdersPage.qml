@@ -98,7 +98,7 @@ Item {
             Row {
                 x: 5
                 y: 0
-                spacing: -10
+                spacing: 0
                 //anchors.verticalCenter: parent.verticalCenter
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
@@ -107,6 +107,17 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
+                }
+                Qaterial.Button {
+                    visible: root.is_history
+                    height: 40
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Export CSV")
+                    enabled: list_model.length > 0
+                    onClicked: {
+                        export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
+                        export_csv_dialog.open()
+                    }
                 }
 
             }
@@ -142,8 +153,18 @@ Item {
                     editable: true
                 }
                 Qaterial.ColorIcon {
-                    anchors.verticalCenter: parent.verticalCenter
+                    Layout.alignment: Qt.AlignVCenter
                     source: Qaterial.Icons.swapHorizontal
+                    DefaultMouseArea {
+                        id: swap_button
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {
+                            const base_idx = combo_base.currentIndex
+                            combo_base.currentIndex = combo_rel.currentIndex
+                            combo_rel.currentIndex = base_idx
+                        }
+                    }
                 }
 
                 DefaultComboBox {
@@ -182,6 +203,7 @@ Item {
                     Layout.preferredWidth: 130
                 }
 
+
             }
         }
 
@@ -207,7 +229,32 @@ Item {
         }
     }
 
+    FileDialog {
+        id: export_csv_dialog
 
+        title: qsTr("Please choose the CSV export name and location")
+        selectMultiple: false
+        selectExisting: false
+        selectFolder: false
+
+        defaultSuffix: "csv"
+        nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
+
+        onAccepted: {
+            const path = fileUrl.toString()
+
+            // Export
+            console.log("Exporting to CSV: " + path)
+            API.app.exporter_service.export_swaps_history_to_csv(path.replace(General.os_file_prefix, ""))
+
+            // Open the save folder
+            const folder_path = path.substring(0, path.lastIndexOf("/"))
+            Qt.openUrlExternally(folder_path)
+        }
+        onRejected: {
+            console.log("CSV export cancelled")
+        }
+    }
     ModalLoader {
         id: recover_funds_modal
         sourceComponent: LogModal {

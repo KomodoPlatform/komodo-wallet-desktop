@@ -222,7 +222,10 @@ Rectangle {
                 }
             }
             Action {
-                text: "Refresh"
+                text: "Clean Cache"
+                onTriggered: {
+                    _statusView.children[0].contentItem.children[0].clear()
+                }
             }
         }
 
