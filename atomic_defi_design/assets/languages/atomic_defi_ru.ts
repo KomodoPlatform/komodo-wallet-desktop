@@ -159,42 +159,57 @@
 <context>
     <name>AddressBook</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="28"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="33"/>
         <source>Address Book</source>
         <translation>Адресная книга</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="37"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="58"/>
         <source>New Contact</source>
         <translation>Новый контакт</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="54"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="47"/>
         <source>Search a contact by name or tags</source>
         <translation>Поиск контакта по имени или тегам </translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="144"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="81"/>
+        <source>Name</source>
+        <translation type="unfinished">Название</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="90"/>
+        <source>Tags (first 6)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="98"/>
+        <source>Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="188"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="151"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="205"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="191"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="245"/>
         <source>Do you want to remove this contact ?</source>
         <translation>Вы действительно хотите удалить этот контакт?</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="195"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="249"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="204"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="258"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
@@ -202,32 +217,42 @@
 <context>
     <name>AddressBookAddContactAddressModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="22"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="33"/>
         <source>Create a new address</source>
         <translation>Добавить новый адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="29"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="33"/>
+        <source>Edit address entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
+        <source>Choose a wallet type, current: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="51"/>
         <source>Enter a name</source>
         <translation>Введите имя</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="42"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="64"/>
         <source>This key already exists.</source>
         <translation>Уже существует</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="52"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="76"/>
         <source>Enter the address</source>
         <translation>Введите адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="67"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="91"/>
         <source>Validate</source>
         <translation>Валидировать</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="84"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="117"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
@@ -235,83 +260,98 @@
 <context>
     <name>AddressBookEditContactModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="54"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="56"/>
         <source>Edit contact</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="60"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="62"/>
         <source>Contact Name</source>
         <translation>Имя контакта</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="61"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="63"/>
         <source>Enter a contact name</source>
         <translation>Введите имя</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="76"/>
-        <source>Wallets Information</source>
-        <translation>Информация о кошельках</translation>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="82"/>
+        <source>Address List</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="83"/>
-        <source>Change of wallet type. Current: </source>
-        <translation>Изменить тип кошелька</translation>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="88"/>
+        <source>Search for an address entry.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="189"/>
-        <source>Add</source>
-        <translation>Добавить</translation>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="141"/>
+        <source>Type</source>
+        <translation type="unfinished">Тип</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="198"/>
-        <source>Remove</source>
-        <translation>Удалить</translation>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="164"/>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="223"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="187"/>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="209"/>
+        <source>Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="275"/>
+        <source>New Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="320"/>
         <source>Tags</source>
         <translation>Теги</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="259"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="346"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="277"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="363"/>
         <source>Confirm</source>
         <translation>Подтвердить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="287"/>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="333"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="372"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="417"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="316"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="400"/>
         <source>The selected address belongs to a disabled coin, you need to enabled it before sending.</source>
         <translation>Вы выбрали адрес отключенной монеты, ее необходимо включить перед отправкой.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="322"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="406"/>
         <source>Enable</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="376"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="460"/>
         <source>Cannot send to this address</source>
         <translation>Отправка на этот адрес невозможна</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="379"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="463"/>
         <source>Your balance is empty</source>
         <translation>Ваш баланс пуст </translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="383"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="467"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -319,27 +359,27 @@
 <context>
     <name>AddressBookNewContactCategoryModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="15"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="17"/>
         <source>Add a new tag</source>
         <translation>Добавить новый тег</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="21"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="23"/>
         <source>Enter the tag name</source>
         <translation>Добавить имя тега</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="33"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="35"/>
         <source>This contact already has this tag</source>
         <translation>У этого контакта уже есть этот тег </translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="41"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="43"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="57"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="59"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
@@ -367,7 +407,7 @@
         <translation>Подтвердить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="74"/>
+        <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="73"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
@@ -388,12 +428,12 @@
 <context>
     <name>AddressBookWalletTypeListModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="42"/>
+        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="48"/>
         <source>Select wallet type</source>
         <translation>Выберите тип кошелька</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="50"/>
+        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="56"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
@@ -452,14 +492,14 @@
 <context>
     <name>CexInfoModal</name>
     <message>
-        <location filename="../../qml/Components/CexInfoModal.qml" line="10"/>
+        <location filename="../../qml/Components/CexInfoModal.qml" line="13"/>
         <source>Market Data</source>
         <translation>Рыночные данные</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CexInfoModal.qml" line="15"/>
-        <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coinpaprika.com&quot;&gt;Coinpaprika&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
-        <translation>unfinished</translation>
+        <location filename="../../qml/Components/CexInfoModal.qml" line="19"/>
+        <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1242,7 +1282,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="355"/>
         <source>Transaction Fee</source>
-        <translation>Комиссия транзакции</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="370"/>
@@ -1309,14 +1349,9 @@
         <translation>Недавние свопы</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/History/History.qml" line="12"/>
-        <source>Filtered Swaps</source>
-        <translation>Выбранные свопы</translation>
-    </message>
-    <message>
         <location filename="../../qml/Exchange/History/History.qml" line="13"/>
         <source>You don&apos;t have recent orders.</source>
-        <translation>У вас нет недавних ордеров.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1402,88 +1437,87 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="88"/>
+        <location filename="../../qml/Wallet/Main.qml" line="93"/>
         <source>Wallet Balance</source>
         <translation>Баланс кошелька</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="115"/>
+        <location filename="../../qml/Wallet/Main.qml" line="120"/>
         <source>Price</source>
         <translation>Цена</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="133"/>
+        <location filename="../../qml/Wallet/Main.qml" line="138"/>
         <source>Change 24h</source>
         <translation>Изменение за 24ч</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="155"/>
+        <location filename="../../qml/Wallet/Main.qml" line="160"/>
         <source>Portfolio %</source>
         <translation>% портфолио</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="188"/>
+        <location filename="../../qml/Wallet/Main.qml" line="193"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="209"/>
+        <location filename="../../qml/Wallet/Main.qml" line="214"/>
         <source>Receive</source>
         <translation>Получить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="230"/>
+        <location filename="../../qml/Wallet/Main.qml" line="235"/>
         <source>Swap</source>
         <translation>Обменять</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="254"/>
+        <location filename="../../qml/Wallet/Main.qml" line="259"/>
         <source>Claim Rewards</source>
         <translation>Получить вознаграждение</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="274"/>
+        <location filename="../../qml/Wallet/Main.qml" line="279"/>
         <source>Faucet</source>
         <translation>Фасет</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="330"/>
-        <source>%1 / %2 Price</source>
-        <comment>TICKER</comment>
-        <translation>Цена %1 / %2</translation>
+        <location filename="../../qml/Wallet/Main.qml" line="408"/>
+        <source>Loading market data</source>
+        <translation type="unfinished">Загрузка данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="353"/>
-        <source>Volume 24h</source>
-        <translation>24ч объем</translation>
+        <location filename="../../qml/Wallet/Main.qml" line="414"/>
+        <source>There is no chart data for this ticker yet</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="373"/>
+        <location filename="../../qml/Wallet/Main.qml" line="439"/>
         <source>Loading</source>
         <translation>Загрузка</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="384"/>
+        <location filename="../../qml/Wallet/Main.qml" line="450"/>
         <source>Scanning blocks for TX History...</source>
         <translation>Сканирование блокчейна для получения данных о транзакциях...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="385"/>
+        <location filename="../../qml/Wallet/Main.qml" line="451"/>
         <source>Syncing TX History...</source>
         <translation>Синхронизация истории транзакций...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="416"/>
+        <location filename="../../qml/Wallet/Main.qml" line="482"/>
         <source>No transactions</source>
         <translation>Нет транзакций</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="416"/>
+        <location filename="../../qml/Wallet/Main.qml" line="482"/>
         <source>Refreshing</source>
         <translation>Обновление данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="448"/>
+        <location filename="../../qml/Wallet/Main.qml" line="514"/>
         <source>Fetching transactions</source>
         <translation>Получение данных о транзакциях</translation>
     </message>
@@ -1826,7 +1860,7 @@
     <message>
         <location filename="../../qml/Exchange/OrderList.qml" line="45"/>
         <source>You don&apos;t have any orders.</source>
-        <translation>У вас нет ордеров.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1955,48 +1989,43 @@
     <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="13"/>
         <source>You don&apos;t have any orders.</source>
-        <translation>У вас нет ордеров.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OrdersPage</name>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="185"/>
-        <source>Cancel All Orders</source>
-        <translation>Отменить все ордеры</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="185"/>
-        <source>Cancel Filtered Orders</source>
-        <translation>Отменить выбранные ордеры</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="165"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="148"/>
         <source>From</source>
         <translation>От</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="89"/>
-        <source>Enable Filters</source>
-        <translation>Включить фильтры</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="175"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="158"/>
         <source>To</source>
         <translation>Кому</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="196"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="169"/>
+        <source>Apply Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="178"/>
+        <source>Cancel Displayed Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="187"/>
         <source>Export CSV</source>
         <translation>Скачать CSV</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="207"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="198"/>
         <source>Please choose the CSV export name and location</source>
         <translation>Выберите название и расположение загружаемого файла</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="256"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="247"/>
         <source>Recover Funds Result</source>
         <translation>Результат восстановления средств</translation>
     </message>
@@ -2249,19 +2278,19 @@
         <translation>Сделать бекап seed-фразы</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="179"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="201"/>
+        <source>RPC Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="217"/>
         <source>Search a coin.</source>
         <translation>Найти монету</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="246"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="304"/>
         <source>Public Address</source>
         <translation>Публичный адрес</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="266"/>
-        <source> Address copied to clipboard</source>
-        <translation>Адрес скопирован в буфер обмена</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="316"/>
@@ -2269,12 +2298,7 @@
         <translation>Приватный ключ</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="296"/>
-        <source> Key copied to clipboard</source>
-        <translation>Ключ скопирован в буфер обмена</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="308"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="333"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -2334,7 +2358,7 @@
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="214"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="372"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="383"/>
         <source>Recipient&apos;s address</source>
         <translation>Адрес получателя</translation>
     </message>
@@ -2349,121 +2373,165 @@
         <translation>Адресная книга</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="237"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="234"/>
         <source>The address has to be mixed case.</source>
         <translation>Адрес должен быть написан в смешанном регистре.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="242"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="239"/>
         <source>Fix</source>
         <translation>Фикс</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="256"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="253"/>
         <source>Amount to send</source>
         <translation>Отправляемая сумма</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="257"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="254"/>
         <source>Enter the amount to send</source>
         <translation>Введите сумму для отправки</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="264"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="261"/>
         <source>MAX</source>
         <translation>МАКС</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="273"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="270"/>
         <source>Enable Custom Fees</source>
         <translation>Включить настройку комиссий</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="285"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="282"/>
         <source>Only use custom fees if you know what you are doing!</source>
         <translation>Используйте настраиваемые комиссии только если знаете, что делаете!</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="293"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="290"/>
         <source>Custom Fee</source>
         <translation>Комиссия</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="294"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="291"/>
         <source>Enter the custom fee</source>
         <translation>Введите комиссию сети</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="305"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="302"/>
         <source>Gas Limit</source>
         <translation>Gas лимит</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="306"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="303"/>
         <source>Enter the gas limit</source>
         <translation>Введите лимит gas</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="313"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="310"/>
         <source>Gas Price</source>
         <translation>Цена Gas</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="314"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="311"/>
         <source>Enter the gas price</source>
         <translation>Введите gas цену</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="329"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="326"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation>Комиссия не может больше выше суммы</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="339"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="336"/>
         <source>Not enough funds.</source>
         <translation>Недостаточно средств.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="339"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="336"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation>У вас %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="349"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="346"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="355"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="352"/>
         <source>Prepare</source>
         <translation>Подготовка</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="368"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="411"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="379"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="422"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="378"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="389"/>
         <source>Amount</source>
         <translation>Сумма</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="385"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="396"/>
         <source>Fees</source>
         <translation>Комиссии</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="392"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="403"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="404"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="415"/>
         <source>Back</source>
         <translation>Назад</translation>
+    </message>
+</context>
+<context>
+    <name>SendModalContactList</name>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="20"/>
+        <source>Select a contact with an %1 address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="24"/>
+        <source>Search for contacts...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="98"/>
+        <source>%1 addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="99"/>
+        <source>1 address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="113"/>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="216"/>
+        <source>Back</source>
+        <translation type="unfinished">Назад</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="131"/>
+        <source>Choose an %1 address of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="141"/>
+        <source>Name</source>
+        <translation type="unfinished">Название</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModalContactList.qml" line="146"/>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2512,52 +2580,62 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="33"/>
+        <location filename="../../qml/Settings/Settings.qml" line="43"/>
         <source>Fiat</source>
         <translation>Валюта по умолчанию</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="71"/>
+        <location filename="../../qml/Settings/Settings.qml" line="70"/>
+        <source>Recommended: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="132"/>
         <source>Enable Desktop Notifications</source>
         <translation>Включить уведомления для рабочего стола</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="80"/>
+        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <source>Use QtTextRendering Or NativeTextRendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="162"/>
         <source>Open Logs Folder</source>
         <translation>Открыть логи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="88"/>
+        <location filename="../../qml/Settings/Settings.qml" line="170"/>
         <source>View seed and private keys</source>
         <translation>Показать seed-фразу и приватные ключи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="107"/>
+        <location filename="../../qml/Settings/Settings.qml" line="189"/>
         <source>Disclaimer and ToS</source>
         <translation>Дисклеймер и TOS</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="126"/>
+        <location filename="../../qml/Settings/Settings.qml" line="208"/>
         <source>Setup Camouflage Password</source>
         <translation>Установить камуфляжный пароль</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <location filename="../../qml/Settings/Settings.qml" line="224"/>
         <source>Reset assets configuration</source>
         <translation>Сбросить конфигурацию ассетов</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="150"/>
+        <location filename="../../qml/Settings/Settings.qml" line="232"/>
         <source>Delete Wallet</source>
         <translation>Удалить кошелек</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="166"/>
+        <location filename="../../qml/Settings/Settings.qml" line="248"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="177"/>
+        <location filename="../../qml/Settings/Settings.qml" line="259"/>
         <source>mm2 version</source>
         <translation>версия mm2</translation>
     </message>
@@ -2808,34 +2886,34 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished">Ошибка при размещении ордера</translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="163"/>
         <source>Placed the order</source>
-        <translation>Ордер размещен</translation>
+        <translation type="unfinished">Ордер размещен</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="322"/>
         <source>Multi-Order</source>
-        <translation>Мульти-ордер</translation>
+        <translation type="unfinished">Мульти-ордер</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="341"/>
         <source>Select additional assets for multi-order creation.</source>
-        <translation>Выбрать допольнительные активы для создания мульти-ордера.</translation>
+        <translation type="unfinished">Выбрать допольнительные активы для создания мульти-ордера.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="350"/>
         <source>Same funds will be used until an order matches.</source>
-        <translation>Баланс будет использоваться одновременно в нескольких ордерах, пока один из них не будет исполнен.</translation>
+        <translation type="unfinished">Баланс будет использоваться одновременно в нескольких ордерах, пока один из них не будет исполнен.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="355"/>
         <source>Submit Trade</source>
-        <translation>Разместить сделку</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
-        <source>Failed to place the order</source>
-        <translation>Ошибка при размещении ордера</translation>
+        <translation type="unfinished">Разместить сделку</translation>
     </message>
 </context>
 <context>
