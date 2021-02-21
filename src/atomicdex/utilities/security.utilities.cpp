@@ -140,12 +140,12 @@ namespace atomic_dex
                           "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                           "1234567890"
                           "!@#$%^&*()"
-                          "`~-_=+[{]{\\|;:'\",<.>/? ");
+                          "`~-_=+[{]{|;:,<.>/? ");
 
         boost::random::random_device              rng;
         boost::random::uniform_int_distribution<> index_dist(0, chars.size() - 1);
         std::stringstream                         ss;
-        for (int i = 0; i < 12; ++i) { ss << chars[index_dist(rng)]; }
+        for (int i = 0; i < 24; ++i) { ss << chars[index_dist(rng)]; }
         return ss.str();
     }
 } // namespace atomic_dex
