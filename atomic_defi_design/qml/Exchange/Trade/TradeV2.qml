@@ -24,11 +24,11 @@ Item {
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
-        chart_object.parent = chart_view
-        //chart_object.anchors.bottom = selectors.top
-        //chart_object.anchors.bottomMargin = 40
-        chart_object.visible = true
-        console.log(chart_object.implicitHeight)
+//        chart_object.parent = chart_view
+//        //chart_object.anchors.bottom = selectors.top
+//        //chart_object.anchors.bottomMargin = 40
+//        chart_object.visible = true
+//        console.log(chart_object.implicitHeight)
     }
 
     Component.onDestruction: {
@@ -89,7 +89,6 @@ Item {
     }
 
     onSell_modeChanged: {
-        console.log(sell_mode)
         reset()
     }
 
@@ -242,7 +241,7 @@ Item {
                         Item {
                             id: chart_view
                             width: parent.width
-                            height: 500//chart_object.height+10
+                            height: tabView.currentIndex===0? 580 : 500//chart_object.height+10
                             CandleStickChart {
                                 anchors.fill: parent
                             }
@@ -337,7 +336,7 @@ Item {
 
                         Column {
                             width: parent.width-10
-                            height: 400
+                            height: tabView.currentIndex===0? 200 : 400
                             anchors.horizontalCenter: parent.horizontalCenter
                             Qaterial.TabBar {
                                 z: 4
@@ -346,11 +345,23 @@ Item {
                                 property int order_idx: 1
                                 property int history_idx: 2
                                 width: parent.width
-                                currentIndex: swipeView.currentIndex
+                                currentIndex: tabView.currentIndex
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 background: FloatingBackground {
                                     black_shadow.visible: false
                                     radius: 0
+                                }
+                                onCurrentIndexChanged: {
+                                    swipeView.pop()
+                                    switch(currentIndex) {
+                                        case 0: swipeView.push(priceLine)
+                                            break;
+                                        case 1: swipeView.push(order_component)
+                                            break;
+                                        case 2: swipeView.push(history_component)
+                                            break;
+                                        default: priceLine
+                                    }
                                 }
 
                                 y:5
@@ -376,91 +387,46 @@ Item {
                                 radius: 4
                                 width: parent.width
                                 height: parent.height-tabView.height
-                                SwipeView {
+                                verticalShadow: false
+                                StackView {
                                     id: swipeView
-                                    currentIndex: tabView.currentIndex
-                                    anchors.fill: parent
 
-                                    Item {
+                                    initialItem: priceLine
+                                    anchors.fill: parent
+                                    LoaderBusyIndicator {
+                                        target: swipeView
+                                    }
+                                    Component {
+                                        id: priceLine
                                         PriceLine {
                                             id: price_line_obj
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            width: parent.width
+
                                         }
                                     }
-                                    Item {
-                                        DefaultLoader {
-                                            id: order_loader
 
+                                    Component {
+                                        id: order_component
+                                        OtherPage.OrdersPage {
                                             anchors.fill: parent
-                                            sourceComponent: {
-                                                switch(swipeView.currentIndex) {
-                                                case tabView.order_idx: return order_component
-                                                default: return undefined
-                                                }
-                                            }
-                                        }
-                                        LoaderBusyIndicator {
-                                            target: order_loader
-                                        }
-                                        Component {
-                                            id: order_component
-                                            OtherPage.OrdersPage {
-                                                anchors.fill: parent
-                                                clip: true
-                                            }
+                                            clip: true
                                         }
                                     }
-                                    Item {
-                                        DefaultLoader {
-                                            id: history_loader
-
+                                    Component {
+                                        id: history_component
+                                        OtherPage.OrdersPage {
                                             anchors.fill: parent
-                                            sourceComponent: {
-                                                switch(swipeView.currentIndex) {
-                                                case tabView.history_idx: return history_component
-                                                default: return undefined
-                                                }
-                                            }
+                                            is_history: true
+                                            clip: true
                                         }
-                                        LoaderBusyIndicator {
-                                            target: history_loader
-                                        }
-                                        Component {
-                                            id: history_component
-                                            OtherPage.OrdersPage {
-                                                anchors.fill: parent
-                                                is_history: true
-                                                clip: true
-                                            }
-                                        }
-
                                     }
                                 }
                             }
                         }
-//                        InnerBackground {
-//                            id: price_line
-//                            width: parent.width
-//                            height: price_line_obj.height + 30
-//                            PriceLine {
-//                                id: price_line_obj
-//                                anchors.verticalCenter: parent.verticalCenter
-//                                anchors.left: parent.left
-//                                anchors.right: parent.right
-//                            }
-//                        }
                     }
 
 
                 }
-                Qaterial.DebugRectangle {
-                    anchors.fill: parent
-                    visible: false
-                }
 
-
-                
             }
 
 
@@ -470,84 +436,9 @@ Item {
                 SplitView.preferredWidth: 250
                 SplitView.minimumWidth: 200
                 SplitView.fillHeight: true
-                Column {
-                    width: parent.width
-                    spacing: 10
-                    FloatingBackground {
-                        visible: sell_mode
-
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.top: form_base.bottom
-                        anchors.topMargin: layout_margin
-
-                        height: column_layout.height
-                        ColumnLayout {
-                            id: column_layout
-
-                            width: parent.width
-
-                            spacing: 10
-
-                            DefaultSwitch {
-                                id: multi_order_switch2
-                                Layout.fillWidth: true
-
-                                text: qsTr("Multi-Order")
-                                enabled: !block_everything && (form_base.can_submit_trade || checked)
-
-                                checked: API.app.trading_pg.multi_order_enabled
-                                onCheckedChanged: {
-                                    if(checked) {
-                                        setVolume(max_volume)
-                                        API.app.trading_pg.multi_order_enabled = checked
-                                    }
-                                }
-                            }
-
-                            DefaultText {
-                                id: first_text
-
-                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                                Layout.rightMargin: Layout.leftMargin
-                                Layout.fillWidth: true
-
-                                text_value: qsTr("Select additional assets for multi-order creation.")
-                                font.pixelSize: Style.textSizeSmall2
-                            }
-
-                            DefaultText {
-                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                                Layout.rightMargin: Layout.leftMargin
-                                Layout.fillWidth: true
-
-                                text_value: qsTr("Same funds will be used until an order matches.")
-                                font.pixelSize: first_text.font.pixelSize
-                            }
-
-                            DefaultButton {
-                                text: qsTr("Submit Trade")
-                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                                Layout.rightMargin: Layout.leftMargin
-                                Layout.fillWidth: true
-                                enabled: multi_order_enabled && form_base.can_submit_trade
-                                onClicked: {
-                                    multi_order_values_are_valid = true
-                                    prepareMultiOrder()
-                                    if(multi_order_values_are_valid)
-                                        confirm_multi_order_trade_modal.open()
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                // Multi-Order
 
             }
             OrderBookVertical {
-
             }
             ColumnLayout {
                 property int space: 10
@@ -640,7 +531,7 @@ Item {
 
                             text: qsTr("Start Swap")
                             font.weight: Font.Medium
-                            enabled: !multi_order_enabled && form_base.can_submit_trade
+                            enabled: !multi_order_enabled && sellBox.can_submit_trade
                             onClicked: confirm_trade_modal.open()
                         }
 
@@ -730,7 +621,6 @@ Item {
 
                         }
 
-
                     }
 
 
@@ -785,10 +675,10 @@ Item {
                                     source: General.coinIcon(right_ticker)
                                 }
                                 Image {
-                                    x: -7
-                                    y: -7
-                                    height: 24
-                                    width: 24
+                                    x: -4
+                                    y: -4
+                                    height: 30
+                                    width: 30
                                     source: General.coinIcon(left_ticker)
                                 }
                             }
@@ -803,6 +693,7 @@ Item {
                             }
                             Qaterial.ColorIcon {
                                 source: Qaterial.Icons.menuDown
+                                visible: false
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                         }
