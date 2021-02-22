@@ -325,13 +325,13 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
-                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
+                    this->clear_forms();
                 }
                 else
                 {
@@ -445,13 +445,13 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
-                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
+                    this->clear_forms();
                 }
                 else
                 {
@@ -563,13 +563,13 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
-                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
+                    this->clear_forms();
                 }
                 else
                 {
@@ -794,11 +794,12 @@ namespace atomic_dex
         }
 
         auto& mm2_system     = m_system_manager.get_system<mm2_service>();
-        auto  answer_functor = [](web::http::http_response resp) {
+        auto  answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
                 auto answers = nlohmann::json::parse(body);
+                this->clear_forms();
             }
             else
             {
