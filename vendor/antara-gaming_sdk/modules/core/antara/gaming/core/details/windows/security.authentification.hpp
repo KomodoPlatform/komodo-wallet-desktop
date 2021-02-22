@@ -21,9 +21,5 @@
 
 namespace antara::gaming::core::details
 {
-    void evaluate_authentication(const std::string& auth_reason, std::function<void(bool)> handler)
-    {
-        (void)auth_reason;
-        (void)handler;
-    }
+    void evaluate_authentication(const std::string& auth_reason, std::function<void(bool)> handler);
 } // namespace antara::gaming::core::details

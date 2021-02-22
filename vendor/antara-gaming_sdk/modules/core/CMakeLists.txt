@@ -6,6 +6,7 @@ target_sources(antara_core_shared_sources PRIVATE antara/gaming/core/real.path.c
         antara/gaming/core/security.authentification.cpp
         $<$<PLATFORM_ID:Darwin>:antara/gaming/core/details/osx/api.scaling.mm>
         $<$<PLATFORM_ID:Darwin>:antara/gaming/core/details/osx/security.authentification.mm>
+        $<$<PLATFORM_ID:Windows>:antara/gaming/core/details/windows/security.authentification.cpp>
         )
 if (APPLE)
     macro(antara_add_framework fwname appname)
