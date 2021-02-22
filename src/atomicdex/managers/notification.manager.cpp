@@ -20,9 +20,7 @@
 
 namespace atomic_dex
 {
-    notification_manager::notification_manager(entt::dispatcher& dispatcher, QObject* parent) noexcept : QObject(parent), m_dispatcher(dispatcher)
-    {
-    }
+    notification_manager::notification_manager(entt::dispatcher& dispatcher, QObject* parent) noexcept : QObject(parent), m_dispatcher(dispatcher) {}
 
     void
     notification_manager::on_swap_status_notification(const atomic_dex::swap_status_notification& evt)
@@ -30,7 +28,10 @@ namespace atomic_dex
         using namespace std::chrono;
         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
         QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-        emit    updateSwapStatus(evt.prev_status, evt.new_status, evt.uuid, evt.base, evt.rel, human_date);
+        SPDLOG_INFO(
+            "swap status notification: previous_status: {} new_status: {} uuid: {} base: {}, rel: {}, date: {}", evt.prev_status.toStdString(),
+            evt.new_status.toStdString(), evt.uuid.toStdString(), evt.base.toStdString(), evt.rel.toStdString(), evt.human_date.toStdString());
+        emit updateSwapStatus(evt.prev_status, evt.new_status, evt.uuid, evt.base, evt.rel, human_date);
     }
 
     void
@@ -58,6 +59,9 @@ namespace atomic_dex
     void
     notification_manager::on_balance_update_notification(const balance_update_notification& evt)
     {
+        SPDLOG_INFO(
+            "balance update notification: am_i_sender: {} amount: {} ticker: {} human_date: {}", evt.am_i_sender, evt.amount.toStdString(),
+            evt.ticker.toStdString(), evt.human_date.toStdString());
         emit balanceUpdateStatus(evt.am_i_sender, evt.amount, evt.ticker, evt.human_date, evt.timestamp);
     }
 

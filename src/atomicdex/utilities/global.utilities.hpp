@@ -75,7 +75,7 @@ namespace atomic_dex::utils
     ENTT_API fs::path get_atomic_dex_current_log_file();
     ENTT_API std::shared_ptr<spdlog::logger> register_logger();
 
-    fs::path get_current_configs_path();
+    ENTT_API fs::path get_current_configs_path();
 
     fs::path get_mm2_atomic_dex_current_log_file();
 

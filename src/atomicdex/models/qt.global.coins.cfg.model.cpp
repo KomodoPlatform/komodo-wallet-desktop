@@ -179,7 +179,7 @@ namespace atomic_dex
             {
                 m_all_coin_types.push_back(type);
             }
-            
+
             if (cur.currently_enabled)
             {
                 m_enabled_coins[cur.ticker] = cur;
@@ -219,7 +219,7 @@ namespace atomic_dex
                 final_ticker = ticker;
             }
 
-            if (const auto res = this->match(this->index(0, 0), TickerRole, final_ticker); not res.isEmpty())
+            if (const auto res = this->match(this->index(0, 0), TickerRole, final_ticker, 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
             {
                 update_functor(res, final_ticker);
             }
@@ -247,13 +247,13 @@ namespace atomic_dex
         }
         return result;
     }
-    
+
     QVariant
     global_coins_cfg_model::get_coin_info(const QString& ticker) const noexcept
     {
         return to_qt_binding(get_coin_info(ticker.toStdString()));
     }
-    
+
     bool
     global_coins_cfg_model::is_coin_type(const QString& ticker) const noexcept
     {
@@ -275,23 +275,27 @@ namespace atomic_dex
     {
         return m_proxies[CoinType::All];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_qrc20_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_qrc20_proxy() const noexcept
     {
         return m_proxies[CoinType::QRC20];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_erc20_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_erc20_proxy() const noexcept
     {
         return m_proxies[CoinType::ERC20];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_smartchains_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_smartchains_proxy() const noexcept
     {
         return m_proxies[CoinType::SmartChain];
     }
-    
-    global_coins_cfg_proxy_model* global_coins_cfg_model::get_all_utxo_proxy() const noexcept
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_utxo_proxy() const noexcept
     {
         return m_proxies[CoinType::UTXO];
     }
@@ -318,8 +322,9 @@ namespace atomic_dex
         m_checked_nb = value;
         emit checked_nbChanged();
     }
-    
-    const QStringList& global_coins_cfg_model::get_all_coin_types() const noexcept
+
+    const QStringList&
+    global_coins_cfg_model::get_all_coin_types() const noexcept
     {
         return m_all_coin_types;
     }
@@ -333,7 +338,7 @@ namespace atomic_dex
     coin_config
     global_coins_cfg_model::get_coin_info(const std::string& ticker) const noexcept
     {
-        if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+        if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
         {
             const QModelIndex& idx  = res.at(0);
             const coin_config& item = m_model_data.at(idx.row());
@@ -341,7 +346,7 @@ namespace atomic_dex
         }
         return {};
     }
-    
+
     global_coins_cfg_model::t_enabled_coins_registry
     global_coins_cfg_model::get_enabled_coins() const noexcept
     {

@@ -1,10 +1,15 @@
+// Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-
+import QtCharts 2.3
+import QtWebEngine 1.8
 import QtGraphicalEffects 1.0
+
+// Project Imports
 import "../Components"
 import "../Constants"
+import "../Exchange/Trade"
 
 // Right side, main
 Item {
@@ -289,6 +294,7 @@ Item {
             }
         }
 
+        // Price Graph
         InnerBackground {
             id: price_graph_bg
             Layout.fillWidth: true
@@ -298,62 +304,121 @@ Item {
             Layout.bottomMargin: -parent.spacing*0.5
             implicitHeight: wallet.height*0.6
 
-            visible: chart.has_data
+            content: Item {
+                property bool ticker_supported: false
+                readonly property bool is_fetching: chart.loadProgress < 100
+                readonly property string theme: Style.dark_theme ? "dark" : "light"
+                property var ticker: api_wallet_page.ticker
 
-            PriceGraph {
-                id: chart
-                anchors.fill: parent
+                function loadChart() {
+                    const pair = ticker + "/" + API.app.settings_pg.current_currency
+                    const pair_reversed = API.app.settings_pg.current_currency + "/" + ticker
+                    const pair_usd = ticker + "/" + "USD"
+                    const pair_usd_reversed = "USD" + "/" + ticker
+                    const pair_busd = ticker + "/" + "BUSD"
+                    const pair_busd_reversed = "BUSD" + "/" + ticker
+
+                    // Normal pair
+                    let symbol = General.supported_pairs[pair]
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair)
+                        symbol = General.supported_pairs[pair_reversed]
+                    }
+
+                    // Reversed pair
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair_reversed)
+                        symbol = General.supported_pairs[pair_usd]
+                    }
+
+                    // Pair with USD
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair_usd)
+                        symbol = General.supported_pairs[pair_usd_reversed]
+                    }
+
+                    // Reversed pair with USD
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair_usd_reversed)
+                        symbol = General.supported_pairs[pair_busd]
+                    }
+
+                    // Pair with BUSD
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair_busd)
+                        symbol = General.supported_pairs[pair_busd_reversed]
+                    }
+
+                    // Reversed pair with BUSD
+                    if (!symbol) {
+                        console.log("Symbol not found for", pair_busd_reversed)
+                        ticker_supported = false
+                        return
+                    }
+
+                    ticker_supported = true
+
+                    console.debug("Wallet: Loading chart for %1".arg(symbol))
+
+                    chart.loadHtml(`
+    <style>
+    body { margin: 0; background: ${ Style.colorInnerBackground } }
+    </style>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+      {
+      "symbol": "${symbol}",
+      "width": "100%",
+      "height": "100%",
+      "locale": "en",
+      "dateRange": "1D",
+      "colorTheme": "${theme}",
+      "trendLineColor": "${ Style.colorTrendingLine }",
+      "underLineColor": "${ Style.colorTrendingUnderLine }",
+      "isTransparent": true,
+      "autosize": false,
+      "largeChartUrl": ""
+      }
+      </script>
+    </div>
+    <!-- TradingView Widget END -->`)
+                }
+
+                width: price_graph_bg.width
+                height: price_graph_bg.height
+
+                onTickerChanged: loadChart()
+                onThemeChanged: loadChart()
 
                 RowLayout {
-                    spacing: 60
-                    y: 10
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: ticker_supported && !chart.visible
+                    anchors.centerIn: parent
 
-                    RowLayout {
-                        Layout.alignment: Qt.AlignLeft
-
-                        FloatingBackground {
-                            id: left_circle
-
-                            verticalShadow: true
-                            width: 28; height: 28
-
-                            content: DefaultImage {
-                                source: General.image_path + "shadowed_circle_green.svg"
-
-                                width: 12; height: width
-                            }
-                        }
-
-                        DefaultText {
-                            id: left_text
-                            text_value: qsTr("%1 / %2 Price", "TICKER").arg(api_wallet_page.ticker).arg(API.app.settings_pg.current_fiat) + " " + General.cex_icon
-                            font.pixelSize: Style.textSizeSmall3
-
-                            CexInfoTrigger {}
-                        }
+                    DefaultBusyIndicator {
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.leftMargin: -15
+                        Layout.rightMargin: Layout.leftMargin*0.75
+                        scale: 0.5
                     }
 
-                    RowLayout {
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.fillWidth: true
-
-                        FloatingBackground {
-                            verticalShadow: left_circle.verticalShadow
-                            width: left_circle.width; height: left_circle.height
-
-                            content: DefaultImage {
-                                source: General.image_path + "shadowed_circle_blue.svg"
-
-                                width: 12; height: width
-                            }
-                        }
-
-                        DefaultText {
-                            text_value: qsTr("Volume 24h") + " (" + API.app.settings_pg.current_fiat + ")"
-                            font: left_text.font
-                        }
+                    DefaultText {
+                        text_value: qsTr("Loading market data") + "..."
                     }
+                }
+
+                DefaultText {
+                    visible: !ticker_supported
+                    text_value: qsTr("There is no chart data for this ticker yet")
+                    anchors.centerIn: parent
+                }
+
+                WebEngineView {
+                    id: chart
+                    anchors.fill: parent
+                    anchors.margins: -1
+                    visible: !is_fetching && ticker_supported
                 }
             }
         }

@@ -19,6 +19,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -159,98 +160,6 @@ namespace
     }
 } // namespace
 
-//! Implementation RPC [max_taker_vol]
-namespace mm2::api
-{
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const max_taker_vol_request& cfg)
-    {
-        j["coin"] = cfg.coin;
-        if (cfg.trade_with.has_value())
-        {
-            j["trade_with"] = cfg.trade_with.value();
-        }
-    }
-
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, max_taker_vol_answer_success& cfg)
-    {
-        j.at("denom").get_to(cfg.denom);
-        j.at("numer").get_to(cfg.numer);
-        t_rational rat(boost::multiprecision::cpp_int(cfg.numer), boost::multiprecision::cpp_int(cfg.denom));
-        t_float_50 res = rat.convert_to<t_float_50>();
-        cfg.decimal    = res.str(8);
-    }
-
-    void
-    from_json(const nlohmann::json& j, max_taker_vol_answer& answer)
-    {
-        extract_rpc_json_answer<max_taker_vol_answer_success>(j, answer);
-    }
-
-    //! Rpc Call
-    /*max_taker_vol_answer
-    rpc_max_taker_vol(max_taker_vol_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol", mm2_client);
-    }*/
-} // namespace mm2::api
-
-//! Implementation RPC [enable]
-namespace mm2::api
-{
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const enable_request& cfg)
-    {
-        j["coin"] = cfg.coin_name;
-        if (cfg.coin_type == CoinType::ERC20)
-        {
-            j["gas_station_url"]       = cfg.gas_station_url;
-            j["swap_contract_address"] = cfg.erc_swap_contract_address;
-            j["urls"]                  = cfg.urls;
-        }
-        j["tx_history"] = cfg.with_tx_history;
-    }
-
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, enable_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        j.at("result").get_to(cfg.result);
-    }
-} // namespace mm2::api
-
-//! Implementation RPC [electrum]
-namespace mm2::api
-{
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const electrum_request& cfg)
-    {
-        j["coin"]       = cfg.coin_name;
-        j["servers"]    = cfg.servers;
-        j["tx_history"] = cfg.with_tx_history;
-        if (cfg.coin_type == CoinType::QRC20)
-        {
-            j["swap_contract_address"] = cfg.is_testnet ? cfg.testnet_qrc_swap_contract_address : cfg.mainnet_qrc_swap_contract_address;
-        }
-    }
-
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, electrum_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        j.at("result").get_to(cfg.result);
-    }
-} // namespace mm2::api
-
 //! Implementation RPC [disable_coin]
 namespace mm2::api
 {
@@ -277,25 +186,6 @@ namespace mm2::api
 
 namespace mm2::api
 {
-    void
-    to_json(nlohmann::json& j, const balance_request& cfg)
-    {
-        j["coin"] = cfg.coin;
-    }
-
-    void
-    from_json(const nlohmann::json& j, balance_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
-        j.at("coin").get_to(cfg.coin);
-        if (cfg.coin == "BCH")
-        {
-            cfg.address = cfg.address.substr(sizeof("bitcoincash"));
-        }
-    }
-
     void
     from_json(const nlohmann::json& j, fee_regular_coin& cfg)
     {
@@ -1118,6 +1008,11 @@ namespace mm2::api
         results.swaps_id.reserve(swaps.size());
         for (auto&& cur: swaps)
         {
+            if (cur.is_null())
+            {
+                SPDLOG_WARN("Current swap object is null - skipping");
+                continue;
+            }
             order_swaps_data to_add;
             from_json(cur, to_add);
             for (auto&& cur_event: to_add.events)
@@ -1147,7 +1042,6 @@ namespace mm2::api
             double average                        = sum / values.size();
             results.average_events_time[evt_name] = average;
         }
-        SPDLOG_INFO("total pages: {}", results.total_pages);
     }
 
     void
@@ -1349,6 +1243,7 @@ namespace mm2::api
     template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::trade_preimage_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
 
     template <typename RpcReturnType>
     RpcReturnType

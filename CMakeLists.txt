@@ -106,13 +106,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2978/mm2-9d9cd707c-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3054/mm2-e423b0532-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2978/mm2-9d9cd707c-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3054/mm2-e423b0532-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.2978/mm2-9d9cd707c-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3054/mm2-e423b0532-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
@@ -196,6 +196,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! Config
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/coins.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/electrum.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/wallet.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/addressbook.cfg.cpp
 
@@ -207,7 +208,15 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! API
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/mm2.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.trade.preimage.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.max.taker.vol.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.enable.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.electrum.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.balance.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/generics.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/fraction.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coingecko/coingecko.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/faucet/faucet.cpp
 
         ##! Models
@@ -244,6 +253,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/exporter/exporter.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/global.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coinpaprika/coinpaprika.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coingecko/coingecko.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/oracle/band.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/update/update.checker.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/ohlc/ohlc.provider.cpp
@@ -331,6 +341,11 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
+
+        ##! API
+        src/atomicdex/tests/api/coingecko/coingecko.tests.cpp
+        src/atomicdex/tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
+        src/atomicdex/tests/api/mm2/mm2.fraction.tests.cpp
 
         ##! Utilities
         src/atomicdex/tests/utilities/qt.utilities.tests.cpp

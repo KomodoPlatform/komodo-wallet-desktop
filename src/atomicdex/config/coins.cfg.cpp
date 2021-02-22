@@ -23,34 +23,6 @@
 namespace atomic_dex
 {
     void
-    to_json(nlohmann::json& j, const electrum_server& cfg)
-    {
-        j["url"] = cfg.url;
-        if (cfg.protocol.has_value())
-        {
-            j["protocol"] = cfg.protocol.value();
-        }
-        if (cfg.disable_cert_verification.has_value())
-        {
-            j["disable_cert_verification"] = cfg.disable_cert_verification.value();
-        }
-    }
-
-    void
-    from_json(const nlohmann::json& j, electrum_server& cfg)
-    {
-        if (j.count("protocol") == 1)
-        {
-            cfg.protocol = j.at("protocol").get<std::string>();
-        }
-        if (j.count("disable_cert_verification") == 1)
-        {
-            cfg.disable_cert_verification = j.at("disable_cert_verification").get<bool>();
-        }
-        j.at("url").get_to(cfg.url);
-    }
-
-    void
     from_json(const nlohmann::json& j, coin_config& cfg)
     {
         j.at("coin").get_to(cfg.ticker);
@@ -74,6 +46,10 @@ namespace atomic_dex
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
         j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
+        if (j.contains("coingecko_id"))
+        {
+            j.at("coingecko_id").get_to(cfg.coingecko_id);
+        }
         if (j.contains("is_custom_coin"))
         {
             cfg.is_custom_coin = true;

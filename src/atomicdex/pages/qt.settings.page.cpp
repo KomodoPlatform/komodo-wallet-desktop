@@ -163,6 +163,8 @@ namespace atomic_dex
         {
             SPDLOG_INFO("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
+
+            // this->dispatcher_.trigger<force_update_providers>();
             this->dispatcher_.trigger<update_portfolio_values>();
             this->dispatcher_.trigger<current_currency_changed>();
             emit onCurrencyChanged();
@@ -232,16 +234,14 @@ namespace atomic_dex
         out.sort();
         return out;
     }
-    
+
     QStringList
     settings_page::get_recommended_fiats() const
     {
         static const auto nb_recommended = 6;
-        QStringList out;
+        QStringList       out;
         out.reserve(nb_recommended);
-        for (auto&& it = m_config.available_fiat.begin();
-             it != m_config.available_fiat.end() && it < m_config.available_fiat.begin() + nb_recommended;
-             it++)
+        for (auto&& it = m_config.available_fiat.begin(); it != m_config.available_fiat.end() && it < m_config.available_fiat.begin() + nb_recommended; it++)
         {
             out.push_back(QString::fromStdString(*it));
         }
@@ -513,7 +513,7 @@ namespace atomic_dex
     QStringList
     settings_page::retrieve_seed(const QString& wallet_name, const QString& password)
     {
-        QStringList out;
+        QStringList     out;
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
@@ -559,8 +559,9 @@ namespace atomic_dex
                     {
                         auto       show_priv_key_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::show_priv_key_answer>(answer, "show_priv_key");
                         auto*      portfolio_mdl        = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
-                        const auto idx =
-                            portfolio_mdl->match(portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin));
+                        const auto idx                  = portfolio_mdl->match(
+                            portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin), 1,
+                            Qt::MatchFlag::MatchExactly);
                         if (not idx.empty())
                         {
                             update_value(portfolio_model::PrivKey, QString::fromStdString(show_priv_key_answer.priv_key), idx.at(0), *portfolio_mdl);

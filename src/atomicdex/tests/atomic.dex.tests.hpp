@@ -18,33 +18,90 @@
 #include <antara/gaming/world/world.app.hpp>
 
 //! Project
+#include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 
 struct tests_context : public antara::gaming::world::app
 {
+  private:
+    std::atomic_bool         m_test_context_ready{false};
+    std::atomic_bool         m_extra_coins_ready{false};
+    std::vector<std::string> m_extra_coins{"tQTUM", "tBTC", "QRC20", "RICK", "MORTY"};
+
+  public:
+    void
+    on_coin_enabled(const atomic_dex::coin_enabled& evt)
+    {
+        if (std::any_of(begin(evt.tickers), end(evt.tickers), [this](auto&& item) { return item == this->m_extra_coins[0]; }))
+        {
+            SPDLOG_INFO("extra coins {} enabled", fmt::format("{}", fmt::join(evt.tickers, ", ")));
+            m_extra_coins_ready = true;
+        }
+        else
+        {
+            SPDLOG_INFO("{} enabled", fmt::format("{}", fmt::join(evt.tickers, ", ")));
+            m_test_context_ready = true;
+        }
+    }
+
+
     tests_context([[maybe_unused]] char** argv)
     {
 #if !defined(WIN32) && !defined(_WIN32)
+        this->dispatcher_.sink<atomic_dex::coin_enabled>().connect<&tests_context::on_coin_enabled>(*this);
         //! Creates mm2 service.
-        const auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
+        auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
 
         //! Creates special wallet for the unit tests then logs to it.
         auto& wallet_manager = system_manager_.create_system<atomic_dex::qt_wallet_manager>(system_manager_);
         system_manager_.create_system<atomic_dex::portfolio_page>(system_manager_);
+
+        const char* test_seed     = std::getenv("ATOMICDEX_TEST_SEED");
+        const char* test_password = std::getenv("ATOMICDEX_PASSWORD");
+
+        if (test_seed != nullptr)
+        {
+            SPDLOG_INFO("Using environment seed from ATOMICDEX_TEST_SEED variable");
+        }
+        else
+        {
+            SPDLOG_INFO("Using default seed from the application");
+        }
+
+        if (test_password != nullptr)
+        {
+            SPDLOG_INFO("Using environment password from ATOMICDEX_PASSWORD variable");
+        }
+        else
+        {
+            SPDLOG_INFO("Using default password from the application");
+        }
+
         if (not wallet_manager.get_wallets().contains("atomicdex-desktop_tests"))
         {
-            wallet_manager.create("atomicdex-desktop_tests", "asdkl lkdsa", "atomicdex-desktop_tests");
+            wallet_manager.create(
+                test_password != nullptr ? test_password : "fakepasswordtemporary", test_seed != nullptr ? test_seed : "fake seed", "atomicdex-desktop_tests");
         }
         else
         {
             SPDLOG_INFO("atomicdex-desktop_tests already exists - skipping");
         }
-        wallet_manager.login("atomicdex-desktop_tests", "atomicdex-desktop_tests");
+        wallet_manager.login(test_password != nullptr ? test_password : "fakepasswordtemporary", "atomicdex-desktop_tests");
 
         //! Waits for mm2 to be initialized before running tests
-        while (!mm2.is_mm2_running()) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+        while (!mm2.is_mm2_running() && !m_test_context_ready) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+        const auto& enabled_coins = mm2.get_enabled_coins();
+        bool        found =
+            std::any_of(enabled_coins.begin(), enabled_coins.end(), [](const auto& item) -> bool { return item.ticker == "tBTC" || item.ticker == "tQTUM"; });
+        if (!found)
+        {
+            SPDLOG_INFO("Extra coins not enabled yet, enabling now");
+            mm2.enable_multiple_coins(m_extra_coins);
+        }
+        while (!m_extra_coins_ready) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+        //! At this point BTC/KMD are enabled but we need ERC20 and QRC20 too / change login behaviour ?
 #endif
     }
 

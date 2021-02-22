@@ -9,8 +9,9 @@
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
+#include "atomicdex/constants/http.code.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.settings.page.hpp"
@@ -163,7 +164,7 @@ namespace atomic_dex
         {
             auto&       price_service                 = m_system_manager.get_system<global_price_service>();
             const auto& settings_system               = m_system_manager.get_system<settings_page>();
-            const auto& paprika                       = m_system_manager.get_system<coinpaprika_provider>();
+            const auto& coingecko                     = m_system_manager.get_system<coingecko_provider>();
             const auto& ticker                        = mm2_system.get_current_ticker();
             const auto& coin_info                     = mm2_system.get_coin_info(ticker);
             const auto& config                        = settings_system.get_cfg();
@@ -175,11 +176,11 @@ namespace atomic_dex
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
             obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url[0]);
             obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, true));
-            obj["change_24h"]                         = retrieve_change_24h(paprika, coin_info, config);
+            obj["change_24h"]                         = retrieve_change_24h(coingecko, coin_info, config, m_system_manager);
             const auto& tx_state                      = mm2_system.get_tx_state(ec);
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
-            obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer);
+            obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
             obj["fee_ticker"]                         = QString::fromStdString(ticker);
             if (coin_info.coin_type == CoinType::QRC20)
             {

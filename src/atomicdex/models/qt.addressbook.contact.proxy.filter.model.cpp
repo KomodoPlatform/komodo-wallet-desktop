@@ -17,10 +17,12 @@
 // Project Headers
 #include "qt.addressbook.contact.proxy.filter.model.hpp" //> addressbook_contact_proxy_filter_model
 #include "qt.addressbook.contact.model.hpp"              //> addressbook_contact_model::AddressTypeRole/AddressKeyRole/AddressTypeAndKeyRole/AddressValueRole
+#include "atomicdex/pages/qt.portfolio.page.hpp"         //> portfolio_page::get_global_cfg
 
 namespace atomic_dex
 {
-    addressbook_contact_proxy_filter_model::addressbook_contact_proxy_filter_model(QObject* parent) : QSortFilterProxyModel(parent)
+    addressbook_contact_proxy_filter_model::addressbook_contact_proxy_filter_model(ag::ecs::system_manager& system_manager, QObject* parent) :
+        QSortFilterProxyModel(parent), m_system_manager(system_manager)
     {}
 }
 
@@ -33,9 +35,33 @@ namespace atomic_dex
         const auto address_type = idx.data(addressbook_contact_model::AddressTypeRole).toString();
         
         // Checks if type filter corresponds to address entry's type.
-        if (!m_filter_type.isEmpty() && m_filter_type != address_type)
+        //  - Returns false if type filter and address' type are not equal.
+        //  - Returns false if type filter is a coin type (e.g. ERC20) and address' type does not belong or is not equal to this coin type.
+        //  - Returns false if address type is a coin type (e.g. ERC20) and type filter does not belong or is not equal to this coin type.
+        if (!m_filter_type.isEmpty())
         {
-            return false;
+            const auto& glb_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
+
+            if (glb_coins_cfg->is_coin_type(m_filter_type))
+            {
+                if (m_filter_type != address_type &&
+                    glb_coins_cfg->get_coin_info(address_type.toStdString()).type != m_filter_type.toStdString())
+                {
+                    return false;
+                }
+            }
+            else if (glb_coins_cfg->is_coin_type(address_type))
+            {
+                if (m_filter_type != address_type &&
+                    glb_coins_cfg->get_coin_info(m_filter_type.toStdString()).type != address_type.toStdString())
+                {
+                    return false;
+                }
+            }
+            else if (m_filter_type != address_type)
+            {
+                return false;
+            }
         }
         
         // Checks if search expression corresponds to address entry.
