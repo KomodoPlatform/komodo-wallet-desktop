@@ -126,6 +126,14 @@ Item {
                 y: 0
                 rightPadding: 5
                 //anchors.verticalCenter: parent.verticalCenter
+                PrimaryButton {
+                    visible: root.is_history
+                    Layout.leftMargin: 30
+                    text: qsTr("Apply Filter")
+                    enabled: list_model_proxy.can_i_apply_filtering
+                    onClicked: list_model_proxy.apply_all_filtering()
+                    anchors.verticalCenter: parent.verticalCenter
+                }
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.close
                     text: "Cancel All"

@@ -11,6 +11,7 @@ import "../../../Constants"
 import "../../../Wallet"
 
 FloatingBackground {
+    property alias can_submit_trade: form_base.can_submit_trade
     Layout.preferredHeight: !sell_mode? 250 : 45
     Behavior on Layout.preferredHeight {
         NumberAnimation {
@@ -36,6 +37,7 @@ FloatingBackground {
     }
 
     OrderForm {
+        id: form_base
         y: 45
         width: parent.width-25
         height: parent.height-45

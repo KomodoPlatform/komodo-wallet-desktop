@@ -376,7 +376,7 @@
         <file>atomic_defi_design/assets/images/coins/wsb.png</file>
         <file>atomic_defi_design/assets/images/coins/zat.png</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TradeV2.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBookV2.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBookHorizontal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderBookVertical.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSubstractRectangle.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/SellBox.qml</file>

@@ -20,6 +20,7 @@ import "./" as Here
 Item {
     id: exchange_trade
     readonly property string total_amount: API.app.trading_pg.total_amount
+    //property var form_base: sell_mode? sellBox : buyBox
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
@@ -195,7 +196,7 @@ Item {
         id: form
 
         spacing: 10
-
+        anchors.topMargin: 80
         anchors.fill: parent
         Component.onCompleted: splitView.restoreState(settings.splitView)
          Component.onDestruction: settings.splitView = splitView.saveState()
@@ -231,6 +232,7 @@ Item {
                     id: safe_exchange_flickable
                     anchors.fill: parent
                     anchors.margins: 10
+                    anchors.topMargin: 0
                     anchors.rightMargin: 0
                     contentHeight: _content_column.height+10
                     Column {
@@ -240,7 +242,7 @@ Item {
                         Item {
                             id: chart_view
                             width: parent.width
-                            height: 400//chart_object.height+10
+                            height: 500//chart_object.height+10
                             CandleStickChart {
                                 anchors.fill: parent
                             }
@@ -290,9 +292,14 @@ Item {
                                 Layout.fillWidth: true
                             }
                         }
+                        MultiOrder {
+                            visible: multi_order_enabled
+                            width: parent.width
+                            height: 250
+                        }
                         StackLayout {
                             id: orderbook_area
-                            height: isUltraLarge? 0 : 250
+                            height: isUltraLarge? 0 : 300
                             Behavior on height {
                                 NumberAnimation {
                                     duration: 150
@@ -303,18 +310,15 @@ Item {
                             width: parent.width
 
 
-                            OrderBookV2 {
+                            OrderBookHorizontal {
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
+                                visible: parent.visible
                             }
 
                         }
 
-                        MultiOrder {
-                            visible: multi_order_enabled
-                            width: parent.width
-                            height: 250
-                        }
+
 
 
                         // Price
@@ -455,6 +459,7 @@ Item {
                     visible: false
                 }
 
+
                 
             }
 
@@ -465,100 +470,97 @@ Item {
                 SplitView.preferredWidth: 250
                 SplitView.minimumWidth: 200
                 SplitView.fillHeight: true
+                Column {
+                    width: parent.width
+                    spacing: 10
+                    FloatingBackground {
+                        visible: sell_mode
 
-                Here.OrderForm {
-                    id: form_base
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: form_base.bottom
+                        anchors.topMargin: layout_margin
 
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                }
+                        height: column_layout.height
+                        ColumnLayout {
+                            id: column_layout
 
-                // Multi-Order
-                FloatingBackground {
-                    visible: sell_mode
+                            width: parent.width
 
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: form_base.bottom
-                    anchors.topMargin: layout_margin
+                            spacing: 10
 
-                    height: column_layout.height
-                    ColumnLayout {
-                        id: column_layout
+                            DefaultSwitch {
+                                id: multi_order_switch2
+                                Layout.fillWidth: true
 
-                        width: parent.width
+                                text: qsTr("Multi-Order")
+                                enabled: !block_everything && (form_base.can_submit_trade || checked)
 
-                        spacing: layout_margin
-
-                        DefaultSwitch {
-                            id: multi_order_switch
-                            Layout.leftMargin: 15
-                            Layout.rightMargin: Layout.leftMargin
-                            Layout.fillWidth: true
-
-                            text: qsTr("Multi-Order")
-                            enabled: !block_everything && (form_base.can_submit_trade || checked)
-
-                            checked: API.app.trading_pg.multi_order_enabled
-                            onCheckedChanged: {
-                                if(checked) {
-                                    setVolume(max_volume)
-                                    API.app.trading_pg.multi_order_enabled = checked
+                                checked: API.app.trading_pg.multi_order_enabled
+                                onCheckedChanged: {
+                                    if(checked) {
+                                        setVolume(max_volume)
+                                        API.app.trading_pg.multi_order_enabled = checked
+                                    }
                                 }
                             }
-                        }
 
-                        DefaultText {
-                            id: first_text
+                            DefaultText {
+                                id: first_text
 
-                            Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                            Layout.rightMargin: Layout.leftMargin
-                            Layout.fillWidth: true
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
 
-                            text_value: qsTr("Select additional assets for multi-order creation.")
-                            font.pixelSize: Style.textSizeSmall2
-                        }
+                                text_value: qsTr("Select additional assets for multi-order creation.")
+                                font.pixelSize: Style.textSizeSmall2
+                            }
 
-                        DefaultText {
-                            Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                            Layout.rightMargin: Layout.leftMargin
-                            Layout.fillWidth: true
+                            DefaultText {
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
 
-                            text_value: qsTr("Same funds will be used until an order matches.")
-                            font.pixelSize: first_text.font.pixelSize
-                        }
+                                text_value: qsTr("Same funds will be used until an order matches.")
+                                font.pixelSize: first_text.font.pixelSize
+                            }
 
-                        DefaultButton {
-                            text: qsTr("Submit Trade")
-                            Layout.leftMargin: multi_order_switch.Layout.leftMargin
-                            Layout.rightMargin: Layout.leftMargin
-                            Layout.fillWidth: true
-                            enabled: multi_order_enabled && form_base.can_submit_trade
-                            onClicked: {
-                                multi_order_values_are_valid = true
-                                prepareMultiOrder()
-                                if(multi_order_values_are_valid)
-                                    confirm_multi_order_trade_modal.open()
+                            DefaultButton {
+                                text: qsTr("Submit Trade")
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+                                enabled: multi_order_enabled && form_base.can_submit_trade
+                                onClicked: {
+                                    multi_order_values_are_valid = true
+                                    prepareMultiOrder()
+                                    if(multi_order_values_are_valid)
+                                        confirm_multi_order_trade_modal.open()
+                                }
                             }
                         }
                     }
                 }
+
+
+                // Multi-Order
+
             }
             OrderBookVertical {
+
             }
             ColumnLayout {
-                //id: formBox
                 property int space: 10
                 SplitView.preferredWidth: 220
                 SplitView.minimumWidth: 200
                 SplitView.fillHeight: true
                 spacing: 10
                 SellBox {
+                    id: sellBox
 
                 }
                 BuyBox {
-
+                    id: buyBox
                 }
                 Item {
 
@@ -670,11 +672,70 @@ Item {
                         Item {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
+                            FloatingBackground {
+                                visible: sell_mode
+                                width: parent.width
+                                height: multi_order_swith_col.height+10
+                                Column {
+                                    id: multi_order_swith_col
+                                    width: parent.width
+                                    leftPadding: 5
+                                    DefaultSwitch {
+                                        id: multi_order_switch
+                                        Layout.fillWidth: true
+
+                                        text: qsTr("Multi-Order")
+                                        enabled: !block_everything && (sellBox.can_submit_trade || checked)
+
+                                        checked: API.app.trading_pg.multi_order_enabled
+                                        onCheckedChanged: {
+                                            if(checked) {
+                                                setVolume(max_volume)
+                                                API.app.trading_pg.multi_order_enabled = checked
+                                            }
+                                        }
+                                    }
+
+                                    DefaultText {
+
+                                        width: parent.width-10
+                                        wrapMode: Label.Wrap
+                                        text_value: qsTr("Select additional assets for multi-order creation.")
+                                        font.pixelSize: Style.textSizeSmall2
+                                    }
+
+                                    DefaultText {
+                                        width: parent.width-10
+                                        wrapMode: Label.Wrap
+                                        text_value: qsTr("Same funds will be used until an order matches.")
+                                        font.pixelSize: first_text.font.pixelSize
+                                    }
+
+                                    DefaultButton {
+                                        text: qsTr("Submit Trade")
+                                        width: parent.width-10
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        enabled: multi_order_enabled && form_base.can_submit_trade
+                                        onClicked: {
+                                            multi_order_values_are_valid = true
+                                            prepareMultiOrder()
+                                            if(multi_order_values_are_valid)
+                                                confirm_multi_order_trade_modal.open()
+                                        }
+                                    }
+
+                                }
+                            }
+
+
                         }
 
 
                     }
 
+
+                }
+                Item {
 
                 }
             }
@@ -690,6 +751,121 @@ Item {
         ModalLoader {
             id: confirm_multi_order_trade_modal
             sourceComponent: ConfirmMultiOrderTradeModal {}
+        }
+    }
+    Item {
+        height: 70
+        width: parent.width+10
+        FloatingBackground {
+            anchors.horizontalCenterOffset: 5
+            anchors.fill: parent
+            anchors.margins: 10
+            anchors.topMargin: 0
+            radius: 10
+            RowLayout {
+                anchors.fill: parent
+                Item {
+                    Layout.preferredWidth: 250
+                    Layout.fillHeight: true
+                    Qaterial.FlatButton {
+                        width: 230
+                        height: parent.height-10
+                        x: 10
+                        anchors.verticalCenter: parent.verticalCenter
+                        Row {
+                            anchors.centerIn: parent
+                            Item {
+                                height: 36
+                                width: 36
+
+                                Image {
+                                    height: 31
+                                    width: 31
+                                    anchors.centerIn: parent
+                                    source: General.coinIcon(right_ticker)
+                                }
+                                Image {
+                                    x: -7
+                                    y: -7
+                                    height: 24
+                                    width: 24
+                                    source: General.coinIcon(left_ticker)
+                                }
+                            }
+
+                            spacing: 10
+                            DefaultText {
+                                text: left_ticker+" / "+right_ticker
+                                font.family: Style.font_family
+                                anchors.verticalCenter: parent.verticalCenter
+                                font.pixelSize: 26
+                                anchors.verticalCenterOffset: -2
+                            }
+                            Qaterial.ColorIcon {
+                                source: Qaterial.Icons.menuDown
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+                        onClicked:  {
+                           ticker_view.model.setFilterFixedString("")
+                            tickerSearchField.text = ""
+                            openSelector()
+                        }
+                    }
+                }
+                VerticalLine {
+                    Layout.fillHeight: true
+                }
+                Item {
+                    Layout.preferredWidth: 120
+                    Layout.fillHeight: true
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+                        leftPadding: 20
+                        spacing: 5
+                        DefaultText {
+                            text: "Last Price"
+                            font.family: Style.font_family
+                            font.pixelSize: Style.textSize
+
+                        }
+                        DefaultText {
+                            text: "0.008091 BTC"
+                            font.family: Style.font_family
+                            font.pixelSize: Style.textSizeSmall2
+                        }
+                    }
+                }
+                VerticalLine {
+                    Layout.fillHeight: true
+                }
+                Item {
+                    Layout.preferredWidth: 100
+                    Layout.fillHeight: true
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+                        leftPadding: 20
+                        spacing: 5
+                        DefaultText {
+                            text: left_ticker+" Balance"
+                            font.family: Style.font_family
+                            font.pixelSize: Style.textSize
+
+                        }
+                        DefaultText {
+                            text: " "+left_ticker
+                            font.family: Style.font_family
+                            font.pixelSize: Style.textSizeSmall2
+                        }
+                    }
+                }
+
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+            }
         }
     }
 }

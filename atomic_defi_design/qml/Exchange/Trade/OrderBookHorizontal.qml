@@ -8,8 +8,10 @@ import "../../Components"
 import "../../Constants"
 
 Item {
+    id: rootHort
     Layout.fillHeight: true
     Layout.fillWidth: true
+
     InnerBackground {
         width: parent.width
         height: parent.height
@@ -76,16 +78,27 @@ Item {
                     snapMode: ListView.SnapToItem
                     headerPositioning: ListView.OverlayHeader
                     delegate: Item {
-                        width: bids_view.width
+                        width: rootHort.visible? bids_view.width : 0
                         height: 34
+
+
                         AnimatedRectangle {
-                            visible: mouse_area.containsMouse || is_mine
+                            visible: mouse_area.containsMouse //|| is_mine
                             width: parent.width
                             height: parent.height
-                            color: is_mine ? Style.colorOrange : Style.colorWhite1
+                            color:  Style.colorWhite1
                             opacity: 0.1
 
                             anchors.right: parent.right
+                        }
+                        Rectangle {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 6
+                            height: 6
+                            radius: width/2
+                            x: 3
+                            visible: is_mine
+                            color: "#0AFFEF"
                         }
                         RowLayout {
                             width: parent.width - 30
@@ -117,8 +130,9 @@ Item {
                                     height: 10
                                     radius: 101
                                     color: "#0AFFEF"
-                                    opacity: 1 - (index + 1) / 13
+                                    opacity: 1 - (index + 1) / 11
                                     width: 0
+
                                     Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
                                     Behavior on width {
                                         NumberAnimation {
@@ -133,6 +147,12 @@ Item {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 120
                                 text: total
+                                Behavior on rightPadding {
+                                    NumberAnimation {
+                                        duration: 150
+                                    }
+                                }
+                                rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
                                 horizontalAlignment: Label.AlignRight
                                 font.pixelSize: Style.textSizeSmall1
                             }
@@ -163,7 +183,7 @@ Item {
                                 }
                             }
 
-                            iconSize: mouse_area.containsMouse || cancel_button.containsMouse? 16 : 7
+                            iconSize: mouse_area.containsMouse || cancel_button.containsMouse? 16 : 0
 
                             color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_area.containsMouse? Style.colorText2 : Qaterial.Colors.red
 
@@ -252,8 +272,9 @@ Item {
 
                     }
                     delegate: Item {
-                        width: asks_view.width
+                        width: rootHort.visible? asks_view.width : 0
                         height: 34
+
                         AnimatedRectangle {
                             visible: mouse_area2.containsMouse //|| is_mine
                             width: parent.width
@@ -307,6 +328,7 @@ Item {
                                     radius: 101
                                     color: "#E31A93"
                                     width: 0
+
                                     Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
                                     opacity: (index + 1) / 11
                                     Behavior on width {
