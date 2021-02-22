@@ -20,7 +20,7 @@ import "./" as Here
 Item {
     id: exchange_trade
     readonly property string total_amount: API.app.trading_pg.total_amount
-    //property var form_base: sell_mode? sellBox : buyBox
+    property var form_base: sell_mode? sellBox : buyBox
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
@@ -194,7 +194,7 @@ Item {
         id: form
 
         spacing: 10
-        anchors.topMargin: 80
+        anchors.topMargin: 40
         anchors.fill: parent
         Component.onCompleted: splitView.restoreState(settings.splitView)
          Component.onDestruction: settings.splitView = splitView.saveState()
@@ -490,7 +490,7 @@ Item {
 
                                     text_value: !visible ? "" :
                                                 last_trading_error === TradingError.BalanceIsLessThanTheMinimalTradingAmount
-                                                           ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(getMaxBalance()) - parseFloat(getMaxVolume())), base_ticker))
+                                                           ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(form_base.getMaxBalance()) - parseFloat(form_base.getMaxVolume())), base_ticker))
                                                            : qsTr('Fees will be calculated')
                                     Layout.alignment: Qt.AlignCenter
                                     font.pixelSize: tx_fee_text.font.pixelSize
@@ -570,6 +570,7 @@ Item {
                                     id: multi_order_swith_col
                                     width: parent.width
                                     leftPadding: 5
+                                    spacing: 10
                                     DefaultSwitch {
                                         id: multi_order_switch
                                         Layout.fillWidth: true
@@ -605,7 +606,7 @@ Item {
                                         text: qsTr("Submit Trade")
                                         width: parent.width-10
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        enabled: multi_order_enabled && form_base.can_submit_trade
+                                        enabled: multi_order_enabled && sellBox.can_submit_trade
                                         onClicked: {
                                             multi_order_values_are_valid = true
                                             prepareMultiOrder()
@@ -643,16 +644,44 @@ Item {
         }
     }
     Item {
-        height: 70
-        visible: false
+        y: -20
+        height: 25
+        visible: true
 
         width: parent.width+10
+        RowLayout {
+            width: parent.width-20
+            anchors.fill: parent
+            anchors.rightMargin: 20
+            DefaultText {
+                leftPadding: 20
+                topPadding: 5
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                font.family: 'Ubuntu'
+                font.pixelSize: 20
+                font.weight: Font.Light
+                text: qsTr("Trading Mode")
+            }
+            Qaterial.LatoTabBar {
+                Layout.alignment: Qt.AlignVCenter
+                Qaterial.LatoTabButton {
+                    text: qsTr("Pro-Mode")
+                }
+                Qaterial.LatoTabButton {
+                    text: qsTr("Starter")
+                    ToolTip.text: "(Under Work)"
+                }
+            }
+        }
+
         FloatingBackground {
             anchors.horizontalCenterOffset: 5
             anchors.fill: parent
             anchors.margins: 10
             anchors.topMargin: 0
             radius: 10
+            visible: false
             RowLayout {
                 anchors.fill: parent
                 Item {
