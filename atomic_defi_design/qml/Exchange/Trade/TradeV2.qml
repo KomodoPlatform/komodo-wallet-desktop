@@ -24,11 +24,10 @@ Item {
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
-//        chart_object.parent = chart_view
-//        //chart_object.anchors.bottom = selectors.top
-//        //chart_object.anchors.bottomMargin = 40
-//        chart_object.visible = true
-//        console.log(chart_object.implicitHeight)
+        chart_object.parent = chart_view
+        //chart_object.anchors.bottom = selectors.top
+        //chart_object.anchors.bottomMargin = 40
+        chart_object.visible = true
     }
 
     Component.onDestruction: {
@@ -645,6 +644,8 @@ Item {
     }
     Item {
         height: 70
+        visible: false
+
         width: parent.width+10
         FloatingBackground {
             anchors.horizontalCenterOffset: 5
