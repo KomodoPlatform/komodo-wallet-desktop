@@ -2533,57 +2533,62 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="36"/>
+        <location filename="../../qml/Settings/Settings.qml" line="43"/>
         <source>Fiat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="63"/>
+        <location filename="../../qml/Settings/Settings.qml" line="70"/>
         <source>Recommended: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="125"/>
+        <location filename="../../qml/Settings/Settings.qml" line="132"/>
         <source>Enable Desktop Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="134"/>
+        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <source>Use QtTextRendering Or NativeTextRendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="162"/>
         <source>Open Logs Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <location filename="../../qml/Settings/Settings.qml" line="170"/>
         <source>View seed and private keys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="161"/>
+        <location filename="../../qml/Settings/Settings.qml" line="189"/>
         <source>Disclaimer and ToS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="180"/>
+        <location filename="../../qml/Settings/Settings.qml" line="208"/>
         <source>Setup Camouflage Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="196"/>
+        <location filename="../../qml/Settings/Settings.qml" line="224"/>
         <source>Reset assets configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="204"/>
+        <location filename="../../qml/Settings/Settings.qml" line="232"/>
         <source>Delete Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="220"/>
+        <location filename="../../qml/Settings/Settings.qml" line="248"/>
         <source>Log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="231"/>
+        <location filename="../../qml/Settings/Settings.qml" line="259"/>
         <source>mm2 version</source>
         <translation type="unfinished"></translation>
     </message>

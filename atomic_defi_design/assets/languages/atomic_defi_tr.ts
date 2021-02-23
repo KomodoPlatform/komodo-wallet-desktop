@@ -1237,7 +1237,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="355"/>
         <source>Transaction Fee</source>
-        <translation type="unfinished">İşlem Ücreti</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="370"/>
@@ -1306,7 +1306,7 @@
     <message>
         <location filename="../../qml/Exchange/History/History.qml" line="13"/>
         <source>You don&apos;t have recent orders.</source>
-        <translation type="unfinished">Yakın zamanda bir emriniz yok.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1806,7 +1806,7 @@
     <message>
         <location filename="../../qml/Exchange/OrderList.qml" line="45"/>
         <source>You don&apos;t have any orders.</source>
-        <translation>Hiç emriniz yok.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1935,7 +1935,7 @@
     <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="13"/>
         <source>You don&apos;t have any orders.</source>
-        <translation type="unfinished">Hiç emriniz yok.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2524,57 +2524,62 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="36"/>
+        <location filename="../../qml/Settings/Settings.qml" line="43"/>
         <source>Fiat</source>
         <translation>Döviz</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="63"/>
+        <location filename="../../qml/Settings/Settings.qml" line="70"/>
         <source>Recommended: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="125"/>
+        <location filename="../../qml/Settings/Settings.qml" line="132"/>
         <source>Enable Desktop Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="134"/>
+        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <source>Use QtTextRendering Or NativeTextRendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="162"/>
         <source>Open Logs Folder</source>
         <translation>Log Klasörünü Aç</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="161"/>
+        <location filename="../../qml/Settings/Settings.qml" line="189"/>
         <source>Disclaimer and ToS</source>
         <translation>Sorumluluk Reddi ve K.Ş.</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="180"/>
+        <location filename="../../qml/Settings/Settings.qml" line="208"/>
         <source>Setup Camouflage Password</source>
         <translation type="unfinished">Kamuflaj Parolasını Ayarla</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="196"/>
+        <location filename="../../qml/Settings/Settings.qml" line="224"/>
         <source>Reset assets configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="231"/>
+        <location filename="../../qml/Settings/Settings.qml" line="259"/>
         <source>mm2 version</source>
         <translation>mm2 versiyonu</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="204"/>
+        <location filename="../../qml/Settings/Settings.qml" line="232"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <location filename="../../qml/Settings/Settings.qml" line="170"/>
         <source>View seed and private keys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="220"/>
+        <location filename="../../qml/Settings/Settings.qml" line="248"/>
         <source>Log out</source>
         <translation>Çıkış</translation>
     </message>
@@ -2818,6 +2823,11 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="163"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
@@ -2840,11 +2850,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="355"/>
         <source>Submit Trade</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
-        <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

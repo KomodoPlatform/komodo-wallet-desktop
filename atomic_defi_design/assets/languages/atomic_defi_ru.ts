@@ -1249,7 +1249,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="355"/>
         <source>Transaction Fee</source>
-        <translation>Комиссия транзакции</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="370"/>
@@ -1318,7 +1318,7 @@
     <message>
         <location filename="../../qml/Exchange/History/History.qml" line="13"/>
         <source>You don&apos;t have recent orders.</source>
-        <translation>У вас нет недавних ордеров.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1822,7 +1822,7 @@
     <message>
         <location filename="../../qml/Exchange/OrderList.qml" line="45"/>
         <source>You don&apos;t have any orders.</source>
-        <translation>У вас нет ордеров.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1951,7 +1951,7 @@
     <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="13"/>
         <source>You don&apos;t have any orders.</source>
-        <translation>У вас нет ордеров.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2542,57 +2542,62 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="36"/>
+        <location filename="../../qml/Settings/Settings.qml" line="43"/>
         <source>Fiat</source>
         <translation>Валюта по умолчанию</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="63"/>
+        <location filename="../../qml/Settings/Settings.qml" line="70"/>
         <source>Recommended: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="125"/>
+        <location filename="../../qml/Settings/Settings.qml" line="132"/>
         <source>Enable Desktop Notifications</source>
         <translation>Включить уведомления для рабочего стола</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="134"/>
+        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <source>Use QtTextRendering Or NativeTextRendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="162"/>
         <source>Open Logs Folder</source>
         <translation>Открыть логи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <location filename="../../qml/Settings/Settings.qml" line="170"/>
         <source>View seed and private keys</source>
         <translation>Показать seed-фразу и приватные ключи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="161"/>
+        <location filename="../../qml/Settings/Settings.qml" line="189"/>
         <source>Disclaimer and ToS</source>
         <translation>Дисклеймер и TOS</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="180"/>
+        <location filename="../../qml/Settings/Settings.qml" line="208"/>
         <source>Setup Camouflage Password</source>
         <translation>Установить камуфляжный пароль</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="196"/>
+        <location filename="../../qml/Settings/Settings.qml" line="224"/>
         <source>Reset assets configuration</source>
         <translation>Сбросить конфигурацию ассетов</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="204"/>
+        <location filename="../../qml/Settings/Settings.qml" line="232"/>
         <source>Delete Wallet</source>
         <translation>Удалить кошелек</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="220"/>
+        <location filename="../../qml/Settings/Settings.qml" line="248"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="231"/>
+        <location filename="../../qml/Settings/Settings.qml" line="259"/>
         <source>mm2 version</source>
         <translation>версия mm2</translation>
     </message>
@@ -2836,34 +2841,34 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished">Ошибка при размещении ордера</translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="163"/>
         <source>Placed the order</source>
-        <translation>Ордер размещен</translation>
+        <translation type="unfinished">Ордер размещен</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="322"/>
         <source>Multi-Order</source>
-        <translation>Мульти-ордер</translation>
+        <translation type="unfinished">Мульти-ордер</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="341"/>
         <source>Select additional assets for multi-order creation.</source>
-        <translation>Выбрать допольнительные активы для создания мульти-ордера.</translation>
+        <translation type="unfinished">Выбрать допольнительные активы для создания мульти-ордера.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="350"/>
         <source>Same funds will be used until an order matches.</source>
-        <translation>Баланс будет использоваться одновременно в нескольких ордерах, пока один из них не будет исполнен.</translation>
+        <translation type="unfinished">Баланс будет использоваться одновременно в нескольких ордерах, пока один из них не будет исполнен.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="355"/>
         <source>Submit Trade</source>
-        <translation>Разместить сделку</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
-        <source>Failed to place the order</source>
-        <translation>Ошибка при размещении ордера</translation>
+        <translation type="unfinished">Разместить сделку</translation>
     </message>
 </context>
 <context>

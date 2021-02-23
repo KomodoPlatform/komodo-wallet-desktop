@@ -176,17 +176,17 @@
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="81"/>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="90"/>
         <source>Tags (first 6)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tags (Les 6 premiers)</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="98"/>
         <source>Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="188"/>
@@ -499,7 +499,7 @@
     <message>
         <location filename="../../qml/Components/CexInfoModal.qml" line="19"/>
         <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Les données de marché (prix, graphiques, etc.) marquées de l&apos;icône ⓘ proviennent de sources tierces.&lt;br&gt;&lt;br&gt;Les données proviennent de &lt;a href=&quot;https://bandprotocol.com/&quot;&gt; Band Decentralized Oracle&lt;/a&gt; et &lt;a href=&quot;https://www.coingecko.com/fr&quot;&gt;Coingecko &lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Paires prises en charge par Oracle:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Dernière référence (Band Oracle) :&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -1243,7 +1243,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="355"/>
         <source>Transaction Fee</source>
-        <translation>Frais de transactions</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="370"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../../qml/Exchange/History/History.qml" line="13"/>
         <source>You don&apos;t have recent orders.</source>
-        <translation>Vous n&apos;avez pas d&apos;ordres récents.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1814,7 +1814,7 @@
     <message>
         <location filename="../../qml/Exchange/OrderList.qml" line="45"/>
         <source>You don&apos;t have any orders.</source>
-        <translation>Vous n&apos;avez aucun ordre en cours.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1943,7 +1943,7 @@
     <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="13"/>
         <source>You don&apos;t have any orders.</source>
-        <translation>Vous n&apos;avez aucun ordre en cours.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2533,57 +2533,62 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="36"/>
+        <location filename="../../qml/Settings/Settings.qml" line="43"/>
         <source>Fiat</source>
         <translation>Monnaie fiduciaire</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="63"/>
+        <location filename="../../qml/Settings/Settings.qml" line="70"/>
         <source>Recommended: </source>
-        <translation type="unfinished"></translation>
+        <translation>Conseillé :</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="125"/>
+        <location filename="../../qml/Settings/Settings.qml" line="132"/>
         <source>Enable Desktop Notifications</source>
         <translation>Activer les notifications</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="134"/>
+        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <source>Use QtTextRendering Or NativeTextRendering</source>
+        <translation>Utilisez QtTextRendering ou NativeTextRendering</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="162"/>
         <source>Open Logs Folder</source>
         <translation>Ouvrir le répertoire de logs</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <location filename="../../qml/Settings/Settings.qml" line="170"/>
         <source>View seed and private keys</source>
         <translation>Voir le seed et les clefs privées</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="161"/>
+        <location filename="../../qml/Settings/Settings.qml" line="189"/>
         <source>Disclaimer and ToS</source>
         <translation>Clause de non-responsabilité et conditions d&apos;utilisation</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="180"/>
+        <location filename="../../qml/Settings/Settings.qml" line="208"/>
         <source>Setup Camouflage Password</source>
         <translation>Configurez un mot de passe de camouflage</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="196"/>
+        <location filename="../../qml/Settings/Settings.qml" line="224"/>
         <source>Reset assets configuration</source>
         <translation>Réinitialiser la configuration d&apos;assets</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="204"/>
+        <location filename="../../qml/Settings/Settings.qml" line="232"/>
         <source>Delete Wallet</source>
         <translation>Supprimez le portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="220"/>
+        <location filename="../../qml/Settings/Settings.qml" line="248"/>
         <source>Log out</source>
         <translation>Déconnection</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="231"/>
+        <location filename="../../qml/Settings/Settings.qml" line="259"/>
         <source>mm2 version</source>
         <translation>Version de mm2</translation>
     </message>
@@ -2828,6 +2833,11 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
+        <source>Failed to place the order</source>
+        <translation>Échec lors du placement de l&apos;ordre</translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="163"/>
         <source>Placed the order</source>
         <translation>Placer l&apos;ordre</translation>
@@ -2851,11 +2861,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="355"/>
         <source>Submit Trade</source>
         <translation>Soumettre l&apos;échange</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="156"/>
-        <source>Failed to place the order</source>
-        <translation>Échec lors du placement de l&apos;ordre</translation>
     </message>
 </context>
 <context>
