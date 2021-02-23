@@ -14,7 +14,7 @@ set(PROJECT_APP_PATH ${CMAKE_SOURCE_DIR}/bin/${PROJECT_APP_DIR})
 if (EXISTS ${PROJECT_APP_PATH})
     message(STATUS "PROJECT_APP_PATH path is -> ${PROJECT_APP_PATH}")
 else ()
-    message(FATAL_ERROR "Didn't find PROJECT_APP_PATH")
+    message(FATAL_ERROR "Didn't find PROJECT_APP_PATH -> ${PROJECT_APP_PATH}")
 endif ()
 
 
