@@ -20,6 +20,7 @@
 #include "src/atomicdex/pch.hpp"
 
 //! Project Headers
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -1454,6 +1455,13 @@ namespace atomic_dex
             if (m_multi_order_enabled == true)
             {
                 this->determine_all_multi_ticker_forms();
+            }
+            else
+            {
+                SPDLOG_INFO("Reset multi order for the multi order model");
+                const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+                auto       model = this->get_market_pairs_mdl()->get_multiple_order_coins();
+                model->reset();
             }
             emit multiOrderEnabledChanged();
         }

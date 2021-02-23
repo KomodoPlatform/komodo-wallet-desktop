@@ -58,7 +58,6 @@ namespace atomic_dex
       public:
         void set_excluded_coin(const QString& ticker);
         void is_a_market_selector(bool is_market_selector) noexcept;
-
         void reset();
 
       protected:
