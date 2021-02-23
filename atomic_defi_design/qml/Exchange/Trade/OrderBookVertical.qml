@@ -183,7 +183,7 @@ Item {
                             hoverEnabled: true
                             onClicked: {
                                 if(is_mine) return
-
+                                flick_scrollBar.position = 0
                                 selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer)
                                 safe_exchange_flickable.flick(0, 5)
                             }
@@ -318,7 +318,7 @@ Item {
                                 Layout.preferredWidth: 90
                                 text: General.formatDouble(
                                           price, General.amountPrecision, true)
-                                font.family: 'Montserrat'
+                                font.family: 'Ubuntu'
                                 font.pixelSize: Style.textSizeSmall1
                                 color: "#0AFFEF"
                             }
@@ -370,7 +370,7 @@ Item {
                             hoverEnabled: true
                             onClicked: {
                                 if(is_mine) return
-
+                                flick_scrollBar.position = 0
                                 selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer)
                             }
                         }

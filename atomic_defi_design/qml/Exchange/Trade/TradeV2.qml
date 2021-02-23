@@ -20,20 +20,14 @@ import "./" as Here
 Item {
     id: exchange_trade
     readonly property string total_amount: API.app.trading_pg.total_amount
-    property var form_base: sell_mode? sellBox : buyBox
+    property var form_base: sell_mode? sellBox.formBase : buyBox.formBase
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
-        chart_object.parent = chart_view
-        //chart_object.anchors.bottom = selectors.top
-        //chart_object.anchors.bottomMargin = 40
-        chart_object.visible = true
     }
 
     Component.onDestruction: {
         API.app.trading_pg.on_gui_leave_dex()
-        chart_object.parent = app
-        chart_object.visible = false
     }
     property bool isUltraLarge: width>1400
     onIsUltraLargeChanged:  {
@@ -83,8 +77,9 @@ Item {
 
     property var onOrderSuccess: () => {
         General.prevent_coin_disabling.restart()
-        //exchange.current_page = idx_exchange_orders
         tabView.currentIndex = 1
+        flick_scrollBar.down()
+        multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
     }
 
     onSell_modeChanged: {
@@ -98,7 +93,9 @@ Item {
     }
 
     function reset() {
-        multi_order_switch.checked = false
+        //API.app.trading_pg.multi_order_enabled = false
+        multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
+
     }
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
@@ -233,6 +230,19 @@ Item {
                     anchors.topMargin: 0
                     anchors.rightMargin: 0
                     contentHeight: _content_column.height+10
+                    ScrollBar.vertical: DefaultScrollBar {
+                        id: flick_scrollBar
+                        height: parent.height
+                        anchors.right: parent.right
+                        width: 4
+                        function down(){
+                            flick_scrollBar.increase()
+                            flick_scrollBar.increase()
+                            flick_scrollBar.increase()
+                            flick_scrollBar.increase()
+                        }
+                    }
+
                     Column {
                         id: _content_column
                         width: safe_exchange_flickable.contentHeight>safe_exchange_flickable.height? parent.width-20 : parent.width
@@ -291,7 +301,7 @@ Item {
                             }
                         }
                         MultiOrder {
-                            visible: multi_order_enabled
+                            visible: API.app.trading_pg.multi_order_enabled
                             width: parent.width
                             height: 250
                         }
@@ -361,23 +371,25 @@ Item {
                                             break;
                                         default: priceLine
                                     }
+                                    flick_scrollBar.down()
+
                                 }
 
                                 y:5
                                 leftPadding: 15
                                 Qaterial.TabButton {
                                     width: 150
-                                    text: "Taux d'échange"
+                                    text: qsTr("Exchange Rates")
                                     opacity: checked? 1 : .4
                                 }
                                 Qaterial.TabButton {
                                     width: 120
-                                    text: "Ordres"
+                                    text: qsTr("Orders")
                                     opacity: checked? 1 : .4
                                 }
                                 Qaterial.TabButton {
                                     width: 120
-                                    text: "Historique"
+                                    text: qsTr("history")
                                     opacity: checked? 1 : .4
                                 }
                             }
@@ -392,8 +404,9 @@ Item {
 
                                     initialItem: priceLine
                                     anchors.fill: parent
+
                                     LoaderBusyIndicator {
-                                        target: swipeView
+                                        visible: swipeView.busy
                                     }
                                     Component {
                                         id: priceLine
@@ -402,12 +415,12 @@ Item {
 
                                         }
                                     }
-
                                     Component {
                                         id: order_component
                                         OtherPage.OrdersPage {
                                             anchors.fill: parent
                                             clip: true
+                                            Component.onCompleted: flick_scrollBar.down()
                                         }
                                     }
                                     Component {
@@ -416,19 +429,17 @@ Item {
                                             anchors.fill: parent
                                             is_history: true
                                             clip: true
+                                            Component.onCompleted: {
+                                                flick_scrollBar.down()
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-
-
                 }
-
             }
-
-
             Item {
                 id: forms
                 visible: false
@@ -583,6 +594,8 @@ Item {
                                             if(checked) {
                                                 setVolume(max_volume)
                                                 API.app.trading_pg.multi_order_enabled = checked
+                                            }else {
+                                                API.app.trading_pg.multi_order_enabled = checked
                                             }
                                         }
                                     }
@@ -614,16 +627,10 @@ Item {
                                                 confirm_multi_order_trade_modal.open()
                                         }
                                     }
-
                                 }
                             }
-
-
                         }
-
                     }
-
-
                 }
                 Item {
 
@@ -661,7 +668,7 @@ Item {
                 font.family: 'Ubuntu'
                 font.pixelSize: 20
                 font.weight: Font.Light
-                text: qsTr("Trading Mode")
+                text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
             }
             Qaterial.LatoTabBar {
                 Layout.alignment: Qt.AlignVCenter

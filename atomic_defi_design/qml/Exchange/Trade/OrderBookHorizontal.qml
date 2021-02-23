@@ -163,7 +163,7 @@ Item {
                             hoverEnabled: true
                             onClicked: {
                                 if(is_mine) return
-
+                                flick_scrollBar.position = 0
                                 selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer)
                             }
                         }
@@ -363,7 +363,7 @@ Item {
                             hoverEnabled: true
                             onClicked: {
                                 if(is_mine) return
-
+                                flick_scrollBar.position = 0
                                 selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer)
                                 safe_exchange_flickable.flick(0, 5)
                             }

@@ -37,8 +37,8 @@ AnimatedRectangle {
             Layout.preferredWidth: 45
 
             spacing: 5
-            visible: !details ? false :
-                     (details.is_swap || !details.is_maker)
+            visible: clickable? !details ? false :
+                     (details.is_swap || !details.is_maker) : false
 
             DefaultText {
                 Layout.alignment: Qt.AlignVCenter
@@ -59,7 +59,7 @@ AnimatedRectangle {
             Layout.fillHeight: true
             Layout.preferredWidth: 45
 
-            visible: !status_text.visible
+            visible: !status_text.visible? clickable? true : false : false
 
             Qaterial.ColorIcon {
                 anchors.centerIn: parent
@@ -69,6 +69,7 @@ AnimatedRectangle {
         }
 
         DefaultText {
+            visible: clickable
             font.pixelSize: base_amount.font.pixelSize
             text_value: !details ? "" :
                         details.date
@@ -170,26 +171,11 @@ AnimatedRectangle {
             outlinedColor: Style.colorTheme5
             onClicked: { if(details) cancelOrder(details.order_id) }
         }
-//        DefaultText {
-//            id: cancel_button_text
-//            visible: !details ? false :
-//                     details.cancellable
-
-//            font.pixelSize: Style.textSizeSmall4
-//            text_value: "x"
-
-//            verticalAlignment: Label.AlignVCenter
-//            horizontalAlignment: Label.AlignHCenter
-
-//            color: cancel_button.containsMouse ? Style.colorText : Style.colorText2
-
-//            DefaultMouseArea {
-//                id: cancel_button
-//                anchors.fill: parent
-//                hoverEnabled: true
-//
-//            }
-//        }
+        Item {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 40
+            visible: !clickable
+        }
     }
 
 

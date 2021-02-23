@@ -47,7 +47,7 @@ BasicModal {
                 FeeIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: 30
+                    anchors.rightMargin: 10
                     trade_info: order_data.trade_info
                     base: order_data.base
                 }
