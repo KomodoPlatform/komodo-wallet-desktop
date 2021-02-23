@@ -376,7 +376,7 @@ namespace atomic_dex
     void
     wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) noexcept
     {
-#if defined(__APPLE__) || defined(WIN32)
+#if defined(__APPLE__)
         antara::gaming::core::evaluate_authentication(
             "Password to send funds is required", [=](bool is_auth) { broadcast_on_auth_finished(is_auth, tx_hex, is_claiming, is_max, amount); });
 #else
