@@ -39,8 +39,8 @@ endif()
 message(STATUS "Creating Installer")
 set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.0/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
-if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${PROJECT_NAME}.7z)
-	execute_process(COMMAND ${IFW_BINDIR}/archivegen.exe ${PROJECT_NAME}.7z .
+if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
+	execute_process(COMMAND ${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z .
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 		ECHO_OUTPUT_VARIABLE
 		ECHO_ERROR_VARIABLE
@@ -48,13 +48,13 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${PROJECT_NAME}.7z)
 		OUTPUT_VARIABLE ARCHIVE_OUTPUT
 		ERROR_VARIABLE ARCHIVE_ERROR)
 else()
-	message(STATUS "${PROJECT_NAME}.7z already exists skipping")
+	message(STATUS "${DEX_PROJECT_NAME}.7z already exists skipping")
 endif()
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data)
 
-execute_process(COMMAND ${IFW_BINDIR}/binarycreator.exe -c ./config/config.xml -p ./packages/ ${PROJECT_NAME}_installer.exe
+execute_process(COMMAND ${IFW_BINDIR}/binarycreator.exe -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer.exe
 	WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows
 	ECHO_OUTPUT_VARIABLE
 	ECHO_ERROR_VARIABLE)
-file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/${PROJECT_NAME}_installer.exe DESTINATION ${TARGET_APP_PATH})
+file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/${DEX_PROJECT_NAME}_installer.exe DESTINATION ${TARGET_APP_PATH})

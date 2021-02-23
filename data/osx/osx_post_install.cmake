@@ -85,26 +85,26 @@ file(COPY ${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}.dmg DESTINATION ${TARGET_APP_P
 get_filename_component(QT_ROOT_DIR  $ENV{QT_ROOT} DIRECTORY)
 set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.0/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
-if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${PROJECT_NAME}.7z)
-    message(STATUS "Generating ${PROJECT_NAME}.7z")
+if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
+    message(STATUS "Generating ${DEX_PROJECT_NAME}.7z")
     execute_process(COMMAND ${IFW_BINDIR}/archivegen ${PROJECT_NAME}.7z ${PROJECT_NAME}.app
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
 else()
-    message(STATUS "${PROJECT_NAME}.7z already created - skipping")
+    message(STATUS "${DEX_PROJECT_NAME}.7z already created - skipping")
 endif()
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
 
-execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${PROJECT_NAME}_installer
+execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer
         WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
 
-file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${PROJECT_NAME}_installer.app DESTINATION ${TARGET_APP_PATH})
+file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.app DESTINATION ${TARGET_APP_PATH})
 
-execute_process(COMMAND ${IFW_BINDIR}/archivegen ${PROJECT_NAME}_installer.7z ${PROJECT_NAME}_installer.app
+execute_process(COMMAND ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}_installer.7z ${DEX_PROJECT_NAME}_installer.app
         WORKING_DIRECTORY ${TARGET_APP_PATH}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)

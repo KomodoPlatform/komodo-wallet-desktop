@@ -49,8 +49,8 @@ list(APPEND LIST_LIBS
         "/usr/lib/x86_64-linux-gnu/nss/libnssdbm3.so"
         "/usr/lib/x86_64-linux-gnu/nss/libsoftokn3.chk"
         "/usr/lib/x86_64-linux-gnu/nss/libsoftokn3.so")
-file(COPY ${PROJECT_APP_PATH}/usr/share/icons/default/64x64/apps/${PROJECT_NAME}-64.png DESTINATION ${PROJECT_APP_PATH})
-file(COPY ${PROJECT_APP_PATH}/usr/share/applications/${PROJECT_NAME}.desktop DESTINATION ${PROJECT_APP_PATH})
+file(COPY ${PROJECT_APP_PATH}/usr/share/icons/default/64x64/apps/${DEX_PROJECT_NAME}-64.png DESTINATION ${PROJECT_APP_PATH})
+file(COPY ${PROJECT_APP_PATH}/usr/share/applications/${DEX_PROJECT_NAME}.desktop DESTINATION ${PROJECT_APP_PATH})
 foreach (current_lib ${LIST_LIBS})
     message(STATUS "copying ${current_lib} to ${PROJECT_LIB_PATH}")
     file(COPY ${current_lib} DESTINATION ${PROJECT_LIB_PATH})
@@ -63,12 +63,12 @@ execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJE
         ECHO_ERROR_VARIABLE)
 message(STATUS "Copying ${PROJECT_APP_PATH} to ${TARGET_APP_PATH}/${PROJECT_APP_DIR}")
 file(COPY ${PROJECT_APP_PATH} DESTINATION ${TARGET_APP_PATH})
-execute_process(COMMAND zip -r ${PROJECT_NAME}-linux-${VERSION_ID}.zip AntaraAtomicDexAppDir
+execute_process(COMMAND zip -r ${DEX_PROJECT_NAME}-linux-${VERSION_ID}.zip AntaraAtomicDexAppDir
         WORKING_DIRECTORY ${TARGET_APP_PATH}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
-execute_process(COMMAND tar --zstd -cf ${PROJECT_NAME}-linux-${VERSION_ID}.tar.zst AntaraAtomicDexAppDir
+execute_process(COMMAND tar --zstd -cf ${DEX_PROJECT_NAME}-linux-${VERSION_ID}.tar.zst AntaraAtomicDexAppDir
         WORKING_DIRECTORY ${TARGET_APP_PATH}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
-file(COPY ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage DESTINATION ${TARGET_APP_PATH})
+file(COPY ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage DESTINATION ${TARGET_APP_PATH})
