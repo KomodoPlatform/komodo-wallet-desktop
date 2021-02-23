@@ -339,7 +339,7 @@ if (LINUX)
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
             "atomicdex-desktop-64.png"
-            atomicdex-desktop
+            ${PROJECT_NAME}
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
@@ -348,7 +348,7 @@ if (LINUX)
             "atomicdex-desktop.desktop"
             "atomicdex-desktop.appdata.xml"
             "atomicdex-desktop-64.png"
-            atomicdex-desktop_tests
+            ${PROJECT_NAME}_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
