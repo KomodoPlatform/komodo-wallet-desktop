@@ -16,7 +16,7 @@ Rectangle {
     color: Style.colorTheme8
 
     property string selected_wallet_name: ""
-    property bool debug: true
+    property bool debug: debug_bar
 
     function firstPage() {
         return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
