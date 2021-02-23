@@ -9,6 +9,12 @@ on:
   schedule:
     - cron: '0 0 * * 1'
 
+env:
+  DEX_PROJECT_NAME: "atomicdex-desktop"
+  DEX_DISPLAY_NAME: "AtomicDex Desktop"
+  DEX_COMPANY: "KomodoPlatform"
+  DEX_WEBSITE: "https://atomicdex.io/"
+
 jobs:
 
   ci-flow:
@@ -259,7 +265,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           echo "Running tests"
           ./ci_tools_atomic_dex tests ${{ matrix.type }}
-          cd build-${{ matrix.type }}/bin/atomicdex-desktop_tests.app/Contents/MacOS
+          cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
@@ -285,12 +291,12 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           ls ./bundled/linux/
-          echo "artifact_name_zstd=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
-          echo "artifact_name_zip=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
-          echo "artifact_name_appimage=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
-          echo "target_name_zstd=atomicdex-desktop-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
-          echo "target_name_zip=atomicdex-desktop-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
-          echo "target_name_appimage=atomicdex-desktop-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+          echo "artifact_name_zstd=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
+          echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
+          echo "artifact_name_appimage=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+          echo "target_name_zstd=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
+          echo "target_name_zip=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
+          echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
 
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
@@ -317,29 +323,29 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           ls ./bundled/osx/
-          echo "artifact_name_dmg=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
-          echo "artifact_name_installer=atomicdex-desktop-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).7z" >> $GITHUB_ENV
+          echo "artifact_name_dmg=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
+          echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).7z" >> $GITHUB_ENV
 
       - name: Upload artifacts (MacOS dmg)
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_dmg }}
-          path: ./bundled/osx/atomicdex-desktop.dmg
+          path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
 
       - name: Upload artifacts (MacOS installer)
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_installer }}
-          path: ./bundled/osx/atomicdex_desktop_installer.7z
+          path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
 
       - name: Upload env variable for artifacts (Windows)
         if: runner.os == 'Windows'
         run: |
           echo "on_windows"
-          echo "artifact_name_zip=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "artifact_name_installer=atomicdex-desktop-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
@@ -353,6 +359,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_installer }}
-          path: ./bundled/windows/atomicdex_desktop_installer.exe
+          path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
       
       

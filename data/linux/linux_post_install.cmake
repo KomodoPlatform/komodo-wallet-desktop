@@ -49,7 +49,7 @@ list(APPEND LIST_LIBS
         "/usr/lib/x86_64-linux-gnu/nss/libnssdbm3.so"
         "/usr/lib/x86_64-linux-gnu/nss/libsoftokn3.chk"
         "/usr/lib/x86_64-linux-gnu/nss/libsoftokn3.so")
-file(COPY ${PROJECT_APP_PATH}/usr/share/icons/default/64x64/apps/${PROJECT_NAME}--64.png DESTINATION ${PROJECT_APP_PATH})
+file(COPY ${PROJECT_APP_PATH}/usr/share/icons/default/64x64/apps/${PROJECT_NAME}-64.png DESTINATION ${PROJECT_APP_PATH})
 file(COPY ${PROJECT_APP_PATH}/usr/share/applications/${PROJECT_NAME}.desktop DESTINATION ${PROJECT_APP_PATH})
 foreach (current_lib ${LIST_LIBS})
     message(STATUS "copying ${current_lib} to ${PROJECT_LIB_PATH}")

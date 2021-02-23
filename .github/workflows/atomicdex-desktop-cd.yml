@@ -5,6 +5,12 @@ on:
     branches:
     - temporary_disabled
 
+env:
+  DEX_PROJECT_NAME: "atomicdex-desktop"
+  DEX_DISPLAY_NAME: "AtomicDex Desktop"
+  DEX_COMPANY: "KomodoPlatform"
+  DEX_WEBSITE: "https://atomicdex.io/"
+
 jobs:
 
   linux-release:
