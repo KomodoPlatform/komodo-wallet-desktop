@@ -14,6 +14,7 @@ BasicModal {
     property alias amount_field: input_amount.field
 
     onClosed: reset()
+    closePolicy: Popup.NoAutoClose
 
     // Local
     readonly property var default_send_result: ({ has_error: false, error_message: "",
