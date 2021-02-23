@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
 
-# Loads CMake modules
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-include(project.metadata)
+
+include(project.metadata)           ##> generate_dex_project_metafiles()
+generate_dex_project_metafiles()
+
 include(build_type)
 include(compiler_prerequisites)
 include(vcpkg_prerequisites)

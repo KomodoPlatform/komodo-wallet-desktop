@@ -1,4 +1,5 @@
-message(STATUS "Hello world")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
+include(project.metadata)
 
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
 if (EXISTS ${PROJECT_ROOT_DIR}/build-Release)

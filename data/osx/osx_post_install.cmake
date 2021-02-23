@@ -1,4 +1,6 @@
-message(STATUS "Hello post install ${CMAKE_SOURCE_DIR}")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
+include(project.metadata)
+
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
 if (EXISTS ${PROJECT_ROOT_DIR}/build-Release OR EXISTS ${PROJECT_ROOT_DIR}/build-Debug)
     message(STATUS "from ci tools, readjusting")
@@ -9,7 +11,7 @@ message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
 set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/qml)
 message(STATUS "PROJECT_QML_DIR -> ${PROJECT_QML_DIR}")
 set(TARGET_APP_PATH ${PROJECT_ROOT_DIR}/bundled/osx/)
-set(PROJECT_APP_DIR ${PROJECT_NAME}.app)
+set(PROJECT_APP_DIR ${DEX_PROJECT_NAME}.app)
 set(PROJECT_APP_PATH ${CMAKE_SOURCE_DIR}/bin/${PROJECT_APP_DIR})
 if (EXISTS ${PROJECT_APP_PATH})
     message(STATUS "PROJECT_APP_PATH path is -> ${PROJECT_APP_PATH}")
@@ -29,7 +31,7 @@ else ()
     message(FATAL_ERROR "Didn't find macdeployqt")
 endif ()
 
-if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}.dmg)
+if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
     ##-------------------------------------------
     message(STATUS "Executing macdeployqt to fix dependencies")
     execute_process(COMMAND ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite
@@ -66,7 +68,7 @@ if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}.dmg)
         message(FATAL_ERROR "Didn't find PACKAGER_PATH")
     endif ()
 
-    execute_process(COMMAND ${PACKAGER_PATH} ${PROJECT_NAME} ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/bin/
+    execute_process(COMMAND ${PACKAGER_PATH} ${DEX_PROJECT_NAME} ${DEX_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/bin/
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             RESULT_VARIABLE PACKAGER_PATH_RESULT
             OUTPUT_VARIABLE PACKAGER_PATH_OUTPUT
@@ -80,14 +82,14 @@ else()
     message(STATUS "dmg already generated - skipping")
 endif ()
 
-file(COPY ${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}.dmg DESTINATION ${TARGET_APP_PATH})
+file(COPY ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg DESTINATION ${TARGET_APP_PATH})
 
 get_filename_component(QT_ROOT_DIR  $ENV{QT_ROOT} DIRECTORY)
 set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.0/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
     message(STATUS "Generating ${DEX_PROJECT_NAME}.7z")
-    execute_process(COMMAND ${IFW_BINDIR}/archivegen ${PROJECT_NAME}.7z ${PROJECT_NAME}.app
+    execute_process(COMMAND ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)

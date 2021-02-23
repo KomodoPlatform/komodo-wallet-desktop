@@ -1,4 +1,5 @@
-message(STATUS "Hello post install ${CMAKE_SOURCE_DIR}")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
+include(project.metadata)
 
 ## 2 case root_dir/build_folder root_dir/ci_tools/build_folder
 execute_process(COMMAND bash -c "echo -n `git rev-parse --short HEAD`"
