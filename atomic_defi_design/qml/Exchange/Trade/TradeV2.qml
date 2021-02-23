@@ -87,7 +87,6 @@ Item {
         reset()
     }
 
-    // Local
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
                 exchange.current_page === idx_exchange_trade
@@ -223,7 +222,6 @@ Item {
                 SplitView.fillHeight: true
                 SplitView.minimumWidth: 650
 
-                // Ticker Selectors
                 DefaultFlickable {
                     id: safe_exchange_flickable
                     anchors.fill: parent
@@ -231,16 +229,32 @@ Item {
                     anchors.topMargin: 0
                     anchors.rightMargin: 0
                     contentHeight: _content_column.height+10
+                    boundsBehavior: Flickable.DragAndOvershootBounds
+                    flickableDirection: Flickable.VerticalFlick
+                    function currPos(){
+                        return safe_exchange_flickable.contentY
+                    }
+
+                    function setPos(pos){
+                        safe_exchange_flickable.contentY = pos;
+                    }
+
+                    function getEndPos(){
+                        var ratio = 1.0 - safe_exchange_flickable.visibleArea.heightRatio;
+                        var endPos = safe_exchange_flickable.contentHeight * ratio;
+                        return endPos;
+                    }
+
+                    function scrollToEnd(){
+                        safe_exchange_flickable.contentY = getEndPos();
+                    }
                     ScrollBar.vertical: DefaultScrollBar {
                         id: flick_scrollBar
                         height: parent.height
                         anchors.right: parent.right
                         width: 4
                         function down(){
-                            flick_scrollBar.increase()
-                            flick_scrollBar.increase()
-                            flick_scrollBar.increase()
-                            flick_scrollBar.increase()
+                            safe_exchange_flickable.scrollToEnd()
                         }
                     }
 
@@ -642,8 +656,6 @@ Item {
 
                 }
             }
-
-
         }
 
         ModalLoader {

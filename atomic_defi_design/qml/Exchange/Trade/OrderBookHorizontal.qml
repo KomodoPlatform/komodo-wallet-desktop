@@ -24,54 +24,8 @@ Item {
             Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Item {
-                    height: 40
-                    width: bids_view.width
-                    z: 2
-                    Rectangle {
-                        anchors.fill: parent
-                        color: Style.colorTheme9
-                    }
-                    RowLayout {
-                        width: parent.width - 30
-                        height: parent.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        DefaultText {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 90
-                            text: qsTr("Prix") + " ("+left_ticker+")"
-                            font.family: Style.font_family
-                            font.pixelSize: 12
-                            font.bold: true
-                            color: "#0AFFEF"
-                            font.weight: Font.Bold
-                        }
-                        DefaultText {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 60
-                            text: qsTr("Qty") + " ("+right_ticker+")"
-                            font.family: Style.font_family
-                            font.pixelSize: 12
-                            font.bold: true
-                            font.weight: Font.Bold
-                            horizontalAlignment: Label.AlignRight
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                        }
-                        DefaultText {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 120
-                            text: qsTr("Total") + "("+left_ticker+")"
-                            horizontalAlignment: Label.AlignRight
-                            font.family: Style.font_family
-                            font.pixelSize: 12
-                            font.bold: true
-                            font.weight: Font.Bold
-                        }
-                    }
-                    Separator {}
+                OrderbookHeader {
+                    is_ask: false
                 }
                 ListView {
                     id: bids_view
@@ -216,56 +170,8 @@ Item {
             Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Item {
-                    height: 40
-                    width: asks_view.width
-                    z: 2
-                    Rectangle {
-                        anchors.fill: parent
-                        color: Style.colorTheme9
-                    }
-
-                    RowLayout {
-                        width: parent.width - 30
-                        height: parent.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        DefaultText {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 90
-                            text: qsTr("Prix") + " ("+left_ticker+")"
-                            font.family: Style.font_family
-                            font.pixelSize: 12
-                            font.bold: true
-                            color: "#E31A93"
-                            font.weight: Font.Bold
-                        }
-                        DefaultText {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 60
-                            text: qsTr("Qty") + " ("+right_ticker+")"
-                            font.family: Style.font_family
-                            font.pixelSize: 12
-                            font.bold: true
-                            font.weight: Font.Bold
-                            horizontalAlignment: Label.AlignRight
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                        }
-                        DefaultText {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 120
-                            text: qsTr("Total") + "("+left_ticker+")"
-                            horizontalAlignment: Label.AlignRight
-                            font.family: Style.font_family
-                            font.pixelSize: 12
-                            font.bold: true
-                            font.weight: Font.Bold
-                        }
-                    }
-
-                    Separator {}
+                OrderbookHeader {
+                    is_ask: true
                 }
                 ListView {
                     id: asks_view
