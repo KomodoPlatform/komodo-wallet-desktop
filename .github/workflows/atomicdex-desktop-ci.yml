@@ -248,10 +248,10 @@ jobs:
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
           cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
-          cat atomic-dex-tests-result.xml
+          cat $DEX_PROJECT_NAME-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='$DEX_PROJECT_NAME-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on Linux finished"
 
       - name: Running Tests (MacOS)
@@ -266,10 +266,10 @@ jobs:
           echo "Running tests"
           ./ci_tools_atomic_dex tests ${{ matrix.type }}
           cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
-          cat atomic-dex-tests-result.xml
+          cat $DEX_PROJECT_NAME-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.type }}]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.type }}]" --include='$DEX_PROJECT_NAME-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on OSX finished"
 
       - name: Running Tests (Windows)
@@ -285,7 +285,7 @@ jobs:
           cd bin
           ls
           Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
-          python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='$DEX_PROJECT_NAME-tests-result.xml' --framework=doctest --merge ".*"
 
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
