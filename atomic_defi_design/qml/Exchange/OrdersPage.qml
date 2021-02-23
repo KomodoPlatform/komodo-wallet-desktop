@@ -103,7 +103,7 @@ Item {
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
                     text: "Filter"
-                    foregroundColor: Qaterial.Colors.white
+                    foregroundColor:Style.colorWhite5
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting

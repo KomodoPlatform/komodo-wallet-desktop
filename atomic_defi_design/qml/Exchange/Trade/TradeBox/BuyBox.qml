@@ -20,7 +20,7 @@ FloatingBackground {
         }
     }
     Layout.fillWidth: true
-    radius: 5
+    radius: sell_mode? 3 : 4
     border.color: Style.colorGreen
     color: Style.colorTheme9
     opacity:mouse_area2.containsMouse? 1 : !sell_mode? 1 : .2
@@ -31,8 +31,8 @@ FloatingBackground {
         radius: 2
         DefaultText {
             anchors.centerIn: parent
-            text: "Buy "+left_ticker
-            color: 'black'
+            text: qsTr("Buy")+" "+left_ticker
+            color: Style.colorBlack4
             font.pixelSize: Style.textSize2
         }
     }

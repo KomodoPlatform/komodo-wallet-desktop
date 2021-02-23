@@ -13,7 +13,7 @@ AnimatedRectangle {
     readonly property bool is_placed_order: !details ? false :
                                                        details.order_id !== ''
 
-    width: list.width
+    width: list.model.count>6? list.width-15 : list.width-8
     height: 40
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme8)
@@ -64,6 +64,7 @@ AnimatedRectangle {
             Qaterial.ColorIcon {
                 anchors.centerIn: parent
                 iconSize: 17
+                color: Style.colorWhite4
                 source: Qaterial.Icons.clipboardTextSearchOutline
             }
         }

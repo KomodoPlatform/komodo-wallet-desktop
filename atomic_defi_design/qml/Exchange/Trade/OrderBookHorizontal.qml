@@ -25,9 +25,13 @@ Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Item {
-                    height: 34
+                    height: 40
                     width: bids_view.width
                     z: 2
+                    Rectangle {
+                        anchors.fill: parent
+                        color: Style.colorTheme9
+                    }
                     RowLayout {
                         width: parent.width - 30
                         height: parent.height
@@ -71,7 +75,7 @@ Item {
                 }
                 ListView {
                     id: bids_view
-                    anchors.topMargin: 34
+                    anchors.topMargin: 40
                     anchors.fill: parent
                     model: API.app.trading_pg.orderbook.bids.proxy_mdl
                     clip: true
@@ -79,7 +83,7 @@ Item {
                     headerPositioning: ListView.OverlayHeader
                     delegate: Item {
                         width: rootHort.visible? bids_view.width : 0
-                        height: 34
+                        height: 36
 
 
                         AnimatedRectangle {
@@ -213,9 +217,13 @@ Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Item {
-                    height: 34
+                    height: 40
                     width: asks_view.width
                     z: 2
+                    Rectangle {
+                        anchors.fill: parent
+                        color: Style.colorTheme9
+                    }
 
                     RowLayout {
                         width: parent.width - 30
@@ -261,7 +269,7 @@ Item {
                 }
                 ListView {
                     id: asks_view
-                    anchors.topMargin: 34
+                    anchors.topMargin: 40
                     anchors.fill: parent
                     model: API.app.trading_pg.orderbook.asks.proxy_mdl
                     clip: true
@@ -273,7 +281,7 @@ Item {
                     }
                     delegate: Item {
                         width: rootHort.visible? asks_view.width : 0
-                        height: 34
+                        height: 36
 
                         AnimatedRectangle {
                             visible: mouse_area2.containsMouse //|| is_mine

@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 
 import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
@@ -356,9 +357,11 @@ Item {
                                 width: parent.width
                                 currentIndex: tabView.currentIndex
                                 anchors.horizontalCenter: parent.horizontalCenter
+                                Material.foreground: Style.colorWhite4
                                 background: FloatingBackground {
                                     black_shadow.visible: false
                                     radius: 0
+                                    color: Style.colorTheme9
                                 }
                                 onCurrentIndexChanged: {
                                     swipeView.pop()
@@ -380,17 +383,20 @@ Item {
                                 Qaterial.TabButton {
                                     width: 150
                                     text: qsTr("Exchange Rates")
-                                    opacity: checked? 1 : .4
+                                    foregroundColor: CheckBox? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    opacity: checked? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("Orders")
-                                    opacity: checked? 1 : .4
+                                    foregroundColor: CheckBox? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    opacity: checked? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("history")
-                                    opacity: checked? 1 : .4
+                                    foregroundColor: CheckBox? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    opacity: checked? 1 : .6
                                 }
                             }
                             FloatingBackground {
@@ -668,130 +674,22 @@ Item {
                 font.family: 'Ubuntu'
                 font.pixelSize: 20
                 font.weight: Font.Light
+                color: Style.colorWhite2
                 text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
             }
             Qaterial.LatoTabBar {
                 Layout.alignment: Qt.AlignVCenter
                 Qaterial.LatoTabButton {
                     text: qsTr("Pro-Mode")
+                    textColor: Style.colorWhite2
+                    textSecondaryColor: Style.colorWhite8
                 }
                 Qaterial.LatoTabButton {
                     text: qsTr("Starter")
+                    textSecondaryColor: Style.colorWhite8
+                    textColor: Style.colorWhite2
                     ToolTip.text: "(Under Work)"
-                }
-            }
-        }
 
-        FloatingBackground {
-            anchors.horizontalCenterOffset: 5
-            anchors.fill: parent
-            anchors.margins: 10
-            anchors.topMargin: 0
-            radius: 10
-            visible: false
-            RowLayout {
-                anchors.fill: parent
-                Item {
-                    Layout.preferredWidth: 250
-                    Layout.fillHeight: true
-                    Qaterial.FlatButton {
-                        width: 230
-                        height: parent.height-10
-                        x: 10
-                        anchors.verticalCenter: parent.verticalCenter
-                        Row {
-                            anchors.centerIn: parent
-                            Item {
-                                height: 36
-                                width: 36
-
-                                Image {
-                                    height: 31
-                                    width: 31
-                                    anchors.centerIn: parent
-                                    source: General.coinIcon(right_ticker)
-                                }
-                                Image {
-                                    x: -4
-                                    y: -4
-                                    height: 30
-                                    width: 30
-                                    source: General.coinIcon(left_ticker)
-                                }
-                            }
-
-                            spacing: 10
-                            DefaultText {
-                                text: left_ticker+" / "+right_ticker
-                                font.family: Style.font_family
-                                anchors.verticalCenter: parent.verticalCenter
-                                font.pixelSize: 26
-                                anchors.verticalCenterOffset: -2
-                            }
-                            Qaterial.ColorIcon {
-                                source: Qaterial.Icons.menuDown
-                                visible: false
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                        onClicked:  {
-                           ticker_view.model.setFilterFixedString("")
-                            tickerSearchField.text = ""
-                            openSelector()
-                        }
-                    }
-                }
-                VerticalLine {
-                    Layout.fillHeight: true
-                }
-                Item {
-                    Layout.preferredWidth: 120
-                    Layout.fillHeight: true
-                    Column {
-                        anchors.verticalCenter: parent.verticalCenter
-                        leftPadding: 20
-                        spacing: 5
-                        DefaultText {
-                            text: "Last Price"
-                            font.family: Style.font_family
-                            font.pixelSize: Style.textSize
-
-                        }
-                        DefaultText {
-                            text: "0.008091 BTC"
-                            font.family: Style.font_family
-                            font.pixelSize: Style.textSizeSmall2
-                        }
-                    }
-                }
-                VerticalLine {
-                    Layout.fillHeight: true
-                }
-                Item {
-                    Layout.preferredWidth: 100
-                    Layout.fillHeight: true
-                    Column {
-                        anchors.verticalCenter: parent.verticalCenter
-                        leftPadding: 20
-                        spacing: 5
-                        DefaultText {
-                            text: left_ticker+" Balance"
-                            font.family: Style.font_family
-                            font.pixelSize: Style.textSize
-
-                        }
-                        DefaultText {
-                            text: " "+left_ticker
-                            font.family: Style.font_family
-                            font.pixelSize: Style.textSizeSmall2
-                        }
-                    }
-                }
-
-
-                Item {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
                 }
             }
         }

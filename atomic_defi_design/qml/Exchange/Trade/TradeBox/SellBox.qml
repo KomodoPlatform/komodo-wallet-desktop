@@ -21,10 +21,10 @@ FloatingBackground {
     }
 
     Layout.fillWidth: true
-    radius: 5
+    radius: sell_mode? 4 : 3
     border.color: Style.colorRed
     //color: Style.colorTheme9
-    opacity: mouse_area.containsMouse? 1 : sell_mode? 1 : .2
+    opacity: mouse_area.containsMouse? 1 : sell_mode? 1 : .35
 
     Rectangle {
         width: parent.width
@@ -33,7 +33,8 @@ FloatingBackground {
         radius: 2
         DefaultText {
             anchors.centerIn: parent
-            text: "Sell "+left_ticker
+            text: qsTr("Sell")+left_ticker
+            color: Qaterial.Colors.gray200
             font.pixelSize: Style.textSize2
         }
     }
