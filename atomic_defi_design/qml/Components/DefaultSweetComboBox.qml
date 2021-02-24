@@ -103,7 +103,7 @@ ComboBox {
                 Keys.onPressed: {
                     if(event.key === Qt.Key_Return) {
                         if(control.count > 0) {
-                            control.currentIndex = control.highlightedIndex
+                            control.currentIndex = 0//control.highlightedIndex
                             control.currentTicker = control.currentText
                         }
                         popup.close()
