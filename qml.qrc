@@ -386,5 +386,6 @@
         <file>atomic_defi_design/qml/Exchange/OrderLine_Backup.qml</file>
         <file>atomic_defi_design/qml/Components/LoaderBusyIndicator.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderbookHeader.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSweetComboBox.qml</file>
     </qresource>
 </RCC>

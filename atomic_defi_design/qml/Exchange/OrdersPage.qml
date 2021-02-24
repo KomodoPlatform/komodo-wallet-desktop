@@ -51,10 +51,13 @@ Item {
     function applyTickerFilter() {
         list_model_proxy.set_coin_filter(combo_base.currentValue + "/" + combo_rel.currentValue)
     }
+    function applyTickerFilter2(ticker1, ticker2) {
+        list_model_proxy.set_coin_filter(ticker1 + "/" + ticker2)
+    }
 
     function applyFilter() {
         applyDateFilter()
-        applyTickerFilter()
+        applyTickerFilter2(combo_base.currentTicker, combo_rel.currentTicker)
     }
 
     Component.onCompleted: {
@@ -151,15 +154,14 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -15
                 spacing: 10
-                DefaultComboBox {
+                DefaultSweetComboBox {
                     id: combo_base
-                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
-                    onCurrentValueChanged: applyFilter()
+                    _model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+                    onCurrentTickerChanged: applyFilter()
                     width: 150
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
-                    editable: true
                 }
                 Qaterial.ColorIcon {
                     Layout.alignment: Qt.AlignVCenter
@@ -176,15 +178,15 @@ Item {
                     }
                 }
 
-                DefaultComboBox {
+                DefaultSweetComboBox {
                     id: combo_rel
-                    model: combo_base.model
-                    onCurrentValueChanged: applyFilter()
+                    _model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
+                    onCurrentTickerChanged: applyFilter()
                     width: 150
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
-                    editable: true
+
                 }
                 Item {
                     Layout.fillWidth: true

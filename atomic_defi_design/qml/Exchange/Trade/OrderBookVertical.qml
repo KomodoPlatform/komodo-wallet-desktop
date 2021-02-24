@@ -106,7 +106,7 @@ Item {
                                     color: "#E31A93"
                                     width: 0
                                     Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
-                                    opacity: (index + 1) / 11
+                                    opacity: 1.1-(index * 0.1)
                                     Behavior on width {
                                         NumberAnimation {
                                             duration: 1000
@@ -252,7 +252,7 @@ Item {
                                     height: 10
                                     radius: 101
                                     color: "#0AFFEF"
-                                    opacity: 1 - (index + 1) / 11
+                                    opacity: 1.1-(index * 0.1)
                                     width: 0
                                     Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
                                     Behavior on width {

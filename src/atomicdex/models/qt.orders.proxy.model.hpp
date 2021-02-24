@@ -53,6 +53,7 @@ namespace atomic_dex
         Q_INVOKABLE void        set_coin_filter(const QString& to_filter);
         Q_INVOKABLE void        export_csv_visible_history(const QString& path);
         Q_INVOKABLE void        apply_all_filtering(); ///< call it only once
+       
 
         void on_layout_changed() noexcept;
 
