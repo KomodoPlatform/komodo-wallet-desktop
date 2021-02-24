@@ -33,7 +33,7 @@ FloatingBackground {
         radius: 2
         DefaultText {
             anchors.centerIn: parent
-            text: qsTr("Sell")+left_ticker
+            text: qsTr("Sell")+" "+left_ticker
             color: Qaterial.Colors.gray200
             font.pixelSize: Style.textSize2
         }

@@ -26,6 +26,7 @@ Item {
                 Layout.fillWidth: true
                 OrderbookHeader {
                     is_ask: false
+                    is_horizontal: true
                 }
                 ListView {
                     id: bids_view
@@ -74,7 +75,7 @@ Item {
                             }
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
-                                Layout.preferredWidth: 60
+                                Layout.preferredWidth: 70
                                 text: quantity
                                 font.pixelSize: Style.textSizeSmall1
                                 horizontalAlignment: Label.AlignRight
@@ -172,6 +173,7 @@ Item {
                 Layout.fillWidth: true
                 OrderbookHeader {
                     is_ask: true
+                    is_horizontal: true
                 }
                 ListView {
                     id: asks_view
@@ -225,7 +227,7 @@ Item {
                             }
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
-                                Layout.preferredWidth: 60
+                                Layout.preferredWidth: 70
                                 text: quantity
                                 font.pixelSize: Style.textSizeSmall1
                                 horizontalAlignment: Label.AlignRight

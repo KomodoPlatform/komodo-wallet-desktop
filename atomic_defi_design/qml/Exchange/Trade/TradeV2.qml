@@ -121,6 +121,9 @@ Item {
 
         reset()
         setPair(true, ticker)
+        console.log("HERE")
+        console.log(base_ticker,rel_ticker)
+        app.pairChanged(base_ticker, rel_ticker)
     }
 
     function setPair(is_left_side, changed_ticker) {
@@ -440,6 +443,7 @@ Item {
                                         OtherPage.OrdersPage {
                                             anchors.fill: parent
                                             clip: true
+                                            anchors.bottomMargin: 10
                                             Component.onCompleted: flick_scrollBar.down()
                                         }
                                     }

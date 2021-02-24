@@ -9,6 +9,7 @@ import "../../Constants"
 
 Item {
     property bool is_ask: false
+    property bool is_horizontal: false
     height: 40
     width: parent.width
     z: 2
@@ -24,7 +25,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 90
-            text: is_ask? qsTr("Ask Price") + " ("+right_ticker+")" : qsTr("Bid Price") + " ("+right_ticker+")"
+            text: is_ask? qsTr("Price") + " ("+right_ticker+")" : qsTr("Price") + " ("+right_ticker+")"
             font.family: Style.font_family
             font.pixelSize: 12
             font.bold: true
@@ -33,7 +34,8 @@ Item {
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 60
+            Layout.preferredWidth: is_horizontal? 70 : 60
+
             text: qsTr("Quantity") + " ("+left_ticker+")"
             font.family: Style.font_family
             font.pixelSize: 12

@@ -48,7 +48,7 @@ InnerBackground {
             anchors.centerIn: parent
         }
 
-        Component.onCompleted: loadChart(General.default_base, General.default_rel)
+        Component.onCompleted: loadChart(left_ticker, right_ticker)
 
         Connections {
             target: app
