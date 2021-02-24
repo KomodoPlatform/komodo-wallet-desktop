@@ -156,7 +156,7 @@ Item {
                 spacing: 10
                 DefaultSweetComboBox {
                     id: combo_base
-                    _model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     onCurrentTickerChanged: applyFilter()
                     width: 150
                     height: 100
@@ -180,7 +180,7 @@ Item {
 
                 DefaultSweetComboBox {
                     id: combo_rel
-                    _model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
                     onCurrentTickerChanged: applyFilter()
                     width: 150
                     height: 100

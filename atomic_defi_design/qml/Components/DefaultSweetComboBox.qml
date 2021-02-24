@@ -11,16 +11,7 @@ ComboBox {
     property var dropdownLineText: m => textRole === "" ?
                                        m.modelData :
                                        !m.modelData ? m[textRole] : m.modelData[textRole]
-    property string searchText: ""
     property string currentTicker: "All"
-    property var _model
-    model: SortFilterProxyModel {
-            id: filteredModel
-        sourceModel: control._model
-        filterRoleName: control.textRole
-        filterPattern: control.searchText
-        filterCaseSensitivity: Qt.CaseInsensitive
-    }
     delegate: ItemDelegate {
         width: control.width+50
         highlighted: control.highlightedIndex === index
@@ -79,8 +70,7 @@ ComboBox {
                    }
                 }
                 onTextChanged: {
-                    //control.find(text,Qt.MatchCaseSensitive)
-                    control.searchText = text
+                    control.model.setFilterFixedString(text)
                 }
 
                 function reset() {
@@ -115,7 +105,7 @@ ComboBox {
                     if(event.key === Qt.Key_Return) {
                         if(control.count > 0) {
                             control.currentIndex = control.highlightedIndex
-                            control.currentTicker = control.model.get(control.currentIndex).ticker
+                            control.currentTicker = control.currentText
                         }
                         popup.close()
                         event.accepted = true
