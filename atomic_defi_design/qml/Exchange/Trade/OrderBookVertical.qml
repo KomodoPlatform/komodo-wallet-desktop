@@ -221,7 +221,7 @@ Item {
                                 radius: width/2
                                 x: 3
                                 visible: is_mine
-                                color: "#E31A93"
+                                color: Style.colorGreen
                             }
                             RowLayout {
                                 id: row2
@@ -236,7 +236,7 @@ Item {
                                               price, General.amountPrecision, true)).toFixed(8)
                                     font.family: 'Ubuntu'
                                     font.pixelSize: Style.textSizeSmall1
-                                    color: "#0AFFEF"
+                                    color: Style.colorGreen
                                 }
                                 DefaultText {
                                     Layout.alignment: Qt.AlignVCenter
@@ -253,7 +253,7 @@ Item {
                                         id: progress
                                         height: 10
                                         radius: 101
-                                        color: "#0AFFEF"
+                                        color: Style.colorGreen
                                         opacity: 1.1-(index * 0.1)
                                         width: 0
                                         Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100

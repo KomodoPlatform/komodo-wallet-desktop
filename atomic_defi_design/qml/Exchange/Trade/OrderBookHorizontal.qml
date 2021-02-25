@@ -57,7 +57,7 @@ Item {
                             radius: width/2
                             x: 3
                             visible: is_mine
-                            color: "#0AFFEF"
+                            color: Style.colorGreen
                         }
                         RowLayout {
                             width: parent.width - 30
@@ -71,7 +71,7 @@ Item {
                                           price, General.amountPrecision, true)).toFixed(8)
                                 font.family: 'Montserrat'
                                 font.pixelSize: Style.textSizeSmall1
-                                color: "#0AFFEF"
+                                color: Style.colorGreen
                             }
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
@@ -88,7 +88,7 @@ Item {
                                     id: progress
                                     height: 10
                                     radius: 101
-                                    color: "#0AFFEF"
+                                    color: Style.colorGreen
                                     opacity: 1.1-(index * 0.1)
                                     width: 0
 
