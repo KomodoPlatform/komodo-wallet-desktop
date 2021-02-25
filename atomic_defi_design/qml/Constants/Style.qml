@@ -321,6 +321,7 @@ QtObject {
                                           "CRO": "#243565",
                                           "CVC": "#3AB03E",
                                           "CVT": "#4B0082",
+                                          "DODO": "#FFF706",
                                           "ELF": "#2B5EBB",
                                           "ENJ": "#6752C3",
                                           "EURS": "#2F77ED",

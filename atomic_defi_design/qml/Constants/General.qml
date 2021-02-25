@@ -492,6 +492,8 @@ QtObject {
                                                 "DIA/ETH": "OKEX:DIAETH",
                                                 "DIA/BUSD": "BINANCE:DIABUSD",
                                                 "DIA/USDC": "UNISWAP:DIAUSDC",
+                                                "DODO/BTC": "BINANCE:DODOBTC",
+                                                "DODO/BUSD": "BINANCE:DODOBUSD",
                                                 "DX/BTC": "KUCOIN:DXBTC",
                                                 "DX/ETH": "KUCOIN:DXETH",
                                                 "ELF/BTC": "BINANCE:ELFBTC",
