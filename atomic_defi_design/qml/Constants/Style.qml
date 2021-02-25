@@ -313,6 +313,7 @@ QtObject {
                                           "ANT": "#33DAE6",
                                           "AGI": "#6815FF",
                                           "BAND": "#526BFF",
+                                          "BLK": "#191919",
                                           "BNT": "#000D2B",
                                           "BTCZ": "#F5B036",
                                           "CEL": "#4055A6",

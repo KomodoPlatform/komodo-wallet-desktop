@@ -441,6 +441,7 @@ QtObject {
                                                 "BCH/USDC": "BINANCE:BCHUSDC",
                                                 "BCH/PAX": "BINANCE:BCHPAX",
                                                 "BCH/TUSD": "BINANCE:BCHTUSD",
+                                                "BLK/BTC": "BITTREX:BLKBTC",
                                                 "BNT/BTC": "BINANCE:BNTBTC",
                                                 "BNT/BUSD": "BINANCE:BNTBUSD",
                                                 "BNT/ETH": "BINANCE:BNTETH",
