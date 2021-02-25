@@ -12,6 +12,7 @@ TextField {
     placeholderTextColor: Style.colorPlaceholderText
     selectedTextColor: Style.colorSelectedText
     selectionColor: Style.colorSelection
+    color: Style.colorWhite1
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
