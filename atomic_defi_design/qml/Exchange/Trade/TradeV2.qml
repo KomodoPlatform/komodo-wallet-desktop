@@ -263,7 +263,7 @@ Item {
 
                     Column {
                         id: _content_column
-                        width: safe_exchange_flickable.contentHeight>safe_exchange_flickable.height? parent.width-20 : parent.width
+                        width: parent.width
                         spacing: 10
                         Item {
                             id: chart_view
@@ -441,16 +441,14 @@ Item {
                                     Component {
                                         id: order_component
                                         OtherPage.OrdersPage {
-                                            anchors.fill: parent
                                             clip: true
-                                            anchors.bottomMargin: 10
+
                                             Component.onCompleted: flick_scrollBar.down()
                                         }
                                     }
                                     Component {
                                         id: history_component
                                         OtherPage.OrdersPage {
-                                            anchors.fill: parent
                                             is_history: true
                                             clip: true
                                             Component.onCompleted: {
@@ -636,7 +634,6 @@ Item {
                                         width: parent.width-10
                                         wrapMode: Label.Wrap
                                         text_value: qsTr("Same funds will be used until an order matches.")
-                                        font.pixelSize: first_text.font.pixelSize
                                     }
 
                                     DefaultButton {
@@ -672,6 +669,37 @@ Item {
             sourceComponent: ConfirmMultiOrderTradeModal {}
         }
     }
+    Popup {
+        id: p
+        width: 260
+        height: 250
+        x: parent.width-340
+        y: 35
+        background: FloatingBackground {}
+
+        Column {
+            id: popup_column
+            width: 250
+            anchors.horizontalCenter: parent.horizontalCenter
+            padding: 10
+            topPadding: 2
+            RowLayout {
+                width: parent.width-20
+                height: 40
+                anchors.margins: 5
+                DefaultText {
+                    Layout.alignment: Qt.AlignVCenter
+                    text: "Length"
+                }
+                Item { Layout.fillWidth: true; Layout.fillHeight: true }
+                DefaultComboBox {
+                    id: lenComboBox
+                    model: ["default","0,01","0,001","0,0001","0,00001","0,000001","0,0000001","0,00000001"]
+                }
+            }
+        }
+    }
+
     Item {
         y: -20
         height: 25
@@ -693,6 +721,16 @@ Item {
                 color: Style.colorWhite2
                 text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
             }
+            Qaterial.AppBarButton {
+                Layout.alignment: Qt.AlignVCenter
+                Layout.topMargin: 6
+                icon.source: Qaterial.Icons.cog
+                onClicked: p.open()
+            }
+            VerticalLine {
+                Layout.fillHeight: true
+            }
+
             Qaterial.LatoTabBar {
                 Layout.alignment: Qt.AlignVCenter
                 Qaterial.LatoTabButton {

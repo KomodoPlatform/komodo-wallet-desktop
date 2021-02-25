@@ -73,7 +73,7 @@ AnimatedRectangle {
             visible: clickable
             font.pixelSize: base_amount.font.pixelSize
             text_value: !details ? "" :
-                        details.date
+                        details.date?? ""
             Layout.fillHeight: true
             verticalAlignment: Label.AlignVCenter
             Layout.preferredWidth: 140
@@ -82,7 +82,7 @@ AnimatedRectangle {
         DefaultImage {
             id: base_icon
             source: General.coinIcon(!details ? "KMD" :
-                                                details.base_coin)
+                                                details.base_coin?? "KMD")
             Layout.preferredWidth: Style.textSize1
             Layout.preferredHeight: Style.textSize1
             Layout.alignment: Qt.AlignVCenter
@@ -109,9 +109,9 @@ AnimatedRectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 top_arrow_ticker: !details ? "KMD" :
-                                             details.base_coin
+                                             details.base_coin?? ""
                 bottom_arrow_ticker: !details ? "KMD" :
-                                                details.rel_coin
+                                                details.rel_coin?? ""
             }
         }
 
@@ -130,7 +130,7 @@ AnimatedRectangle {
         DefaultImage {
             id: rel_icon
             source: General.coinIcon(!details ? "KMD" :
-                                                details.rel_coin)
+                                                details.rel_coin?? "BTC")
 
             width: base_icon.width
             Layout.preferredWidth: Style.textSize1
@@ -149,7 +149,7 @@ AnimatedRectangle {
             color: Style.colorYellow
 
             DefaultTooltip {
-                visible: parent.visible && mouse_area.containsMouse
+                visible: (parent.visible && mouse_area.containsMouse) ?? false
 
                 contentItem: ColumnLayout {
                     DefaultText {
@@ -162,7 +162,7 @@ AnimatedRectangle {
         Qaterial.FlatButton {
             id: cancel_button_text
             visible: !details ? false :
-                     details.cancellable
+                     details.cancellable ?? ""
 
             icon.source: Qaterial.Icons.close
             Layout.fillHeight: true

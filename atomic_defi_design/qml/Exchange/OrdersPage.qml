@@ -70,6 +70,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
 
         anchors.fill: parent
+        anchors.bottomMargin: is_history? 0 : 10
         spacing: 15
 
         // Bottom part

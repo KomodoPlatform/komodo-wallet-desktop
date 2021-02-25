@@ -16,9 +16,12 @@ QtObject {
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
 
     function coinIcon(ticker) {
-        if(ticker === "" || ticker === "All") return ""
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        }else {
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+            return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toString().toLowerCase() + ".png"
+        }
     }
 
     // Returns the icon full path of a coin type.

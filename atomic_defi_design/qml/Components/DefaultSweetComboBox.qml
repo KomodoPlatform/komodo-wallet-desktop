@@ -149,8 +149,6 @@ ComboBox {
                 y: -5
                 height: parent.height+10
                 color: Style.colorTheme9
-                border.width: 1
-                border.color: control.mainBorderColor
             }
         }
     }

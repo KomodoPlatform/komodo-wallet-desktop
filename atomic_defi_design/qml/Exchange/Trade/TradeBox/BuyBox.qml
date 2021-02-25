@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
-import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 
@@ -32,7 +31,7 @@ FloatingBackground {
         DefaultText {
             anchors.centerIn: parent
             text: qsTr("Buy")+" "+left_ticker
-            color: Style.colorBlack4
+            color: Style.colorTheme9
             font.pixelSize: Style.textSize2
         }
     }

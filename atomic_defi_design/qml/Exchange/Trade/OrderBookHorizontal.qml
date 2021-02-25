@@ -67,16 +67,16 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 90
-                                text: General.formatDouble(
-                                          price, General.amountPrecision, true)
+                                text: parseFloat(General.formatDouble(
+                                          price, General.amountPrecision, true)).toFixed(8)
                                 font.family: 'Montserrat'
                                 font.pixelSize: Style.textSizeSmall1
                                 color: "#0AFFEF"
                             }
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
-                                Layout.preferredWidth: 70
-                                text: quantity
+                                Layout.preferredWidth: 75
+                                text: parseFloat(quantity).toFixed(8)
                                 font.pixelSize: Style.textSizeSmall1
                                 horizontalAlignment: Label.AlignRight
                             }
@@ -105,7 +105,7 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 120
-                                text: total
+                                text: parseFloat(total).toFixed(8)
                                 Behavior on rightPadding {
                                     NumberAnimation {
                                         duration: 150
@@ -219,8 +219,8 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 90
-                                text: General.formatDouble(
-                                          price, General.amountPrecision, true)
+                                text: parseFloat(General.formatDouble(
+                                          price, General.amountPrecision, true)).toFixed(8)
                                 font.pixelSize: Style.textSizeSmall1
                                 color: "#E31A93"
 
@@ -228,7 +228,7 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 70
-                                text: quantity
+                                text: parseFloat(quantity).toFixed(8)
                                 font.pixelSize: Style.textSizeSmall1
                                 horizontalAlignment: Label.AlignRight
                                 opacity: 1
@@ -259,7 +259,7 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 120
-                                text: total
+                                text: parseFloat(total).toFixed(8)
                                 Behavior on rightPadding {
                                     NumberAnimation {
                                         duration: 150

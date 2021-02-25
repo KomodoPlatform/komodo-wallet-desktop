@@ -24,7 +24,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 90
+            Layout.preferredWidth: 80
             text: is_ask? qsTr("Price") + " ("+right_ticker+")" : qsTr("Price") + " ("+right_ticker+")"
             font.family: Style.font_family
             font.pixelSize: 12
@@ -34,7 +34,7 @@ Item {
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: is_horizontal? 70 : 60
+            Layout.preferredWidth: 90
 
             text: qsTr("Quantity") + " ("+left_ticker+")"
             font.family: Style.font_family
@@ -42,6 +42,7 @@ Item {
             font.bold: true
             font.weight: Font.Bold
             horizontalAlignment: Label.AlignRight
+
         }
         Item {
             Layout.fillWidth: true
