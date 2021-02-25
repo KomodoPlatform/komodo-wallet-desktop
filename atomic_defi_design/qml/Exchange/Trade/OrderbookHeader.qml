@@ -29,7 +29,7 @@ Item {
             font.family: Style.font_family
             font.pixelSize: 12
             font.bold: true
-            color: is_ask? "#E31A93" : "#0AFFEF"
+            color: is_ask? "#E31A93" : style.colorGreen
             font.weight: Font.Bold
         }
         DefaultText {
