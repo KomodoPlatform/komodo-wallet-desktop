@@ -228,7 +228,7 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 70
-                                text: parseFloat(quantity).toFixed(8)
+                                text: quantity
                                 font.pixelSize: Style.textSizeSmall1
                                 horizontalAlignment: Label.AlignRight
                                 opacity: 1
@@ -259,7 +259,7 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 120
-                                text: parseFloat(total).toFixed(8)
+                                text: total
                                 Behavior on rightPadding {
                                     NumberAnimation {
                                         duration: 150

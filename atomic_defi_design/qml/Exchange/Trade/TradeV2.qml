@@ -601,9 +601,11 @@ Item {
                                 height: multi_order_swith_col.height+10
                                 Column {
                                     id: multi_order_swith_col
-                                    width: parent.width
-                                    leftPadding: 5
+                                    width: parent.width-10
+                                    padding: 5
                                     spacing: 10
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    bottomPadding: 0
                                     DefaultSwitch {
                                         id: multi_order_switch
                                         Layout.fillWidth: true
@@ -623,8 +625,7 @@ Item {
                                     }
 
                                     DefaultText {
-
-                                        width: parent.width-10
+                                        width: parent.width-20
                                         wrapMode: Label.Wrap
                                         text_value: qsTr("Select additional assets for multi-order creation.")
                                         font.pixelSize: Style.textSizeSmall2
@@ -633,6 +634,7 @@ Item {
                                     DefaultText {
                                         width: parent.width-10
                                         wrapMode: Label.Wrap
+                                        font.pixelSize: Style.textSizeSmall2
                                         text_value: qsTr("Same funds will be used until an order matches.")
                                     }
 
