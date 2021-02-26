@@ -161,8 +161,7 @@ AnimatedRectangle {
         }
         Qaterial.FlatButton {
             id: cancel_button_text
-            visible: !details ? false :
-                     details.cancellable ?? ""
+            visible: (!is_history? details.cancellable?? false : false)===true? (mouse_area.containsMouse || hovered)? true : false : false
 
             icon.source: Qaterial.Icons.close
             Layout.fillHeight: true
@@ -170,8 +169,23 @@ AnimatedRectangle {
             foregroundColor: Qaterial.Colors.pink300
             Layout.alignment: Qt.AlignVCenter
             outlinedColor: Style.colorTheme5
+            Behavior on scale {
+                NumberAnimation { duration: 200 }
+            }
+
+            scale: visible? 1 : 0
             onClicked: { if(details) cancelOrder(details.order_id) }
+            hoverEnabled: true
+
         }
+        Rectangle {
+            visible: (!is_history? details.cancellable?? false : false) === true? (mouse_area.containsMouse || cancel_button_text.hovered )? false : true : false
+            width: 5
+            height: 5
+            color: Style.colorRed
+            Layout.alignment: Qt.AlignVCenter
+        }
+
         Item {
             Layout.fillHeight: true
             Layout.preferredWidth: 40

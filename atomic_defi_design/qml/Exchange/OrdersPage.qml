@@ -141,7 +141,7 @@ Item {
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.close
                     text: "Cancel All"
-                    visible: !is_history
+                    visible: !is_history && API.app.orders_mdl.length>0
                     foregroundColor: Qaterial.Colors.pink
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5

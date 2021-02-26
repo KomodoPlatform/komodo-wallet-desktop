@@ -76,7 +76,7 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.preferredWidth: 75
-                                text: parseFloat(quantity).toFixed(8)
+                                text: parseFloat(quantity).toFixed(6)
                                 font.pixelSize: Style.textSizeSmall1
                                 horizontalAlignment: Label.AlignRight
                             }

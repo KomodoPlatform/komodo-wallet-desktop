@@ -27,10 +27,10 @@ Item {
             Layout.preferredWidth: 80
             text: is_ask? qsTr("Price") + " ("+right_ticker+")" : qsTr("Price") + " ("+right_ticker+")"
             font.family: Style.font_family
-            font.pixelSize: 12
+            font.pixelSize: 10
             font.bold: true
             color: is_ask? "#E31A93" : Style.colorGreen
-            font.weight: Font.Bold
+            font.weight: Font.Black
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
@@ -38,9 +38,9 @@ Item {
 
             text: qsTr("Quantity") + " ("+left_ticker+")"
             font.family: Style.font_family
-            font.pixelSize: 12
+            font.pixelSize: 10
             font.bold: true
-            font.weight: Font.Bold
+            font.weight: Font.Black
             horizontalAlignment: Label.AlignRight
 
         }
@@ -54,9 +54,9 @@ Item {
             text: qsTr("Total") + "("+right_ticker+")"
             horizontalAlignment: Label.AlignRight
             font.family: Style.font_family
-            font.pixelSize: 12
+            font.pixelSize: 10
             font.bold: true
-            font.weight: Font.Bold
+            font.weight: Font.Black
         }
     }
 
