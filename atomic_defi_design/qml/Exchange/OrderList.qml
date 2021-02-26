@@ -74,7 +74,10 @@ Item {
             visible: is_history
             enabled: list.enabled
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
             Layout.topMargin: 10
+            Layout.rightMargin: 10
+            Layout.leftMargin: 10
             Layout.bottomMargin: Layout.topMargin
         }
     }

@@ -344,9 +344,6 @@ Item {
 
                         }
 
-
-
-
                         // Price
                         Item {
                            width: parent.width

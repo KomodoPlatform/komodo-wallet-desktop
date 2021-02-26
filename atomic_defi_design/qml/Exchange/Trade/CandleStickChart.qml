@@ -58,7 +58,7 @@ InnerBackground {
         }
 
         readonly property string theme: Style.dark_theme ? "dark" : "light"
-        onThemeChanged: loadChart(chart_base, chart_rel, true)
+        onThemeChanged: loadChart(left_ticker, right_ticker, true)
 
         property string chart_base
         property string chart_rel

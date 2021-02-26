@@ -112,9 +112,10 @@ Item {
                     outlinedColor: Style.colorTheme5
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
-                Qaterial.Button {
-                    visible: root.is_history
-                    height: 40
+                Qaterial.OutlineButton {
+                    visible: root.is_history && orders_settings.displaySetting
+                    foregroundColor:Style.colorWhite5
+                    outlinedColor: Style.colorTheme5
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Export CSV")
                     enabled: list_model.length > 0
@@ -130,10 +131,12 @@ Item {
                 y: 0
                 rightPadding: 5
                 //anchors.verticalCenter: parent.verticalCenter
-                PrimaryButton {
+                Qaterial.OutlineButton {
                     visible: root.is_history
                     Layout.leftMargin: 30
                     text: qsTr("Apply Filter")
+                    foregroundColor: enabled? Style.colorGreen2 : Style.colorTheme5
+                    outlinedColor: enabled? Style.colorGreen2 : Style.colorTheme5
                     enabled: list_model_proxy.can_i_apply_filtering
                     onClicked: list_model_proxy.apply_all_filtering()
                     anchors.verticalCenter: parent.verticalCenter
