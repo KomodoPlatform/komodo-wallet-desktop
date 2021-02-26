@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -15,33 +15,38 @@
  ******************************************************************************/
 
 //! Qt
+#include <QJsonArray>
 #include <QJsonDocument>
 
 //! Project headers
 #include "atomicdex/models/qt.addressbook.model.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
-//! Addressbook model
+//! Ctor
 namespace atomic_dex
 {
-    addressbook_model::addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_wallet_manager(wallet_manager_), m_addressbook_proxy(new addressbook_proxy_model(this))
+    addressbook_model::addressbook_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
+        QAbstractListModel(parent),
+        m_system_manager(system_manager),
+        m_addressbook_proxy(new addressbook_proxy_model(m_system_manager, this))
     {
-        this->m_addressbook_proxy->setSourceModel(this);
-        this->m_addressbook_proxy->setSortRole(SubModelRole);
-        this->m_addressbook_proxy->setDynamicSortFilter(true);
-        this->m_addressbook_proxy->sort(0);
+        m_addressbook_proxy->setSortRole(SubModelRole);
+        m_addressbook_proxy->setFilterRole(NameRoleAndCategoriesRole);
+        m_addressbook_proxy->setDynamicSortFilter(true);
+        m_addressbook_proxy->setSourceModel(this);
+        m_addressbook_proxy->sort(0);
     }
+}
 
-    addressbook_model::~addressbook_model() noexcept
-    {
-    }
-
+//! QAbstractListModel Functions
+namespace atomic_dex
+{
     int
     atomic_dex::addressbook_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_addressbook.count();
+        return m_model_data.count();
     }
-
+    
     QVariant
     atomic_dex::addressbook_model::data(const QModelIndex& index, int role) const
     {
@@ -53,96 +58,31 @@ namespace atomic_dex
         switch (static_cast<AddressBookRoles>(role))
         {
         case SubModelRole:
-            return QVariant::fromValue(m_addressbook.at(index.row()));
+            return QVariant::fromValue(m_model_data.at(index.row()));
+        case NameRole:
+            return m_model_data.at(index.row())->get_name();
+        case NameRoleAndCategoriesRole:
+        {
+            auto* contact = m_model_data.at(index.row());
+            return contact->get_name() + ' ' + contact->get_categories().join(' ');
+        }
         default:
             return {};
         }
     }
-
-    bool
-    atomic_dex::addressbook_model::insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
-    {
-        beginInsertRows(QModelIndex(), position, position + rows - 1);
-
-        for (int row = 0; row < rows; ++row) { this->m_addressbook.insert(position, new contact_model(this->m_wallet_manager, this)); }
-
-        endInsertRows();
-        return true;
-    }
-
-    bool
-    atomic_dex::addressbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
-    {
-        beginRemoveRows(QModelIndex(), position, position + rows - 1);
-
-        for (int row = 0; row < rows; ++row)
-        {
-            contact_model* element = this->m_addressbook.at(position);
-            if ((element->rowCount(QModelIndex()) == 0 && not element->get_name().isEmpty()) ||
-                (this->m_should_delete_contacts && not element->get_name().isEmpty()))
-            {
-                this->m_wallet_manager.delete_contact(element->get_name());
-                this->m_wallet_manager.update_wallet_cfg();
-            }
-            delete element;
-            this->m_addressbook.removeAt(position);
-        }
-
-        endRemoveRows();
-        return true;
-    }
-
-    void
-    atomic_dex::addressbook_model::initializeFromCfg()
-    {
-        this->m_addressbook.clear();
-        auto functor = [this](const atomic_dex::contact& cur_contact) {
-            int position = 0;
-            int rows     = 1;
-
-            auto* contact_ptr = new contact_model(this->m_wallet_manager, nullptr);
-            contact_ptr->set_name(QString::fromStdString(cur_contact.name));
-            for (auto&& contact_contents: cur_contact.contents)
-            {
-                contact_ptr->m_addresses.push_back(qt_contact_address_contents{
-                    .type = QString::fromStdString(contact_contents.type), .address = QString::fromStdString(contact_contents.address)});
-            }
-            beginInsertRows(QModelIndex(), this->m_addressbook.count(), this->m_addressbook.count());
-
-            for (int row = 0; row < rows; ++row)
-            {
-                //! Insert contact
-                this->m_addressbook.push_back(contact_ptr);
-            }
-
-            endInsertRows();
-        };
-        const wallet_cfg& cfg = this->m_wallet_manager.get_wallet_cfg();
-        for (auto&& cur: cfg.address_book) { functor(cur); }
-    }
-
-    void
-    atomic_dex::addressbook_model::add_contact_entry()
-    {
-        insertRow(0);
-    }
-
-    void
-    atomic_dex::addressbook_model::remove_at(int position)
-    {
-        this->m_should_delete_contacts = true;
-        removeRow(position);
-        this->m_should_delete_contacts = false;
-    }
-
+    
     QHash<int, QByteArray>
     atomic_dex::addressbook_model::roleNames() const
     {
         return {
-            {SubModelRole, "contacts"},
+            {SubModelRole, "contacts"}
         };
     }
+} // namespace atomic_dex
 
+//! QML API
+namespace atomic_dex
+{
     addressbook_proxy_model*
     addressbook_model::get_addressbook_proxy_mdl() const noexcept
     {
@@ -150,25 +90,64 @@ namespace atomic_dex
     }
 
     void
-    addressbook_model::cleanup()
+    addressbook_model::remove_contact(const QString& name)
     {
-        int nb_rows = this->rowCount(QModelIndex()) - 1;
-        for (int cur_contact_idx = 0; cur_contact_idx < nb_rows; ++cur_contact_idx)
+        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        auto  res              = match(index(0), NameRole, name, 1, Qt::MatchFlag::MatchExactly);
+
+        if (not res.empty())
         {
-            QVariant       value       = this->data(index(cur_contact_idx, 0), SubModelRole);
-            QObject*       obj         = qvariant_cast<QObject*>(value);
-            contact_model* cur_contact = qobject_cast<contact_model*>(obj);
-            for (int cur_idx = 0; cur_idx < cur_contact->rowCount(QModelIndex()); ++cur_idx)
-            {
-                if (cur_contact->data(index(cur_idx), contact_model::ContactRoles::AddressRole).toString().isEmpty())
-                {
-                    cur_contact->remove_at(cur_idx);
-                }
-            }
-            if (cur_contact->get_addresses().isEmpty())
-            {
-                this->remove_at(cur_contact_idx);
-            }
+            addrbook_manager.remove_contact(name.toStdString());
+            addrbook_manager.save_configuration();
+            beginRemoveRows(QModelIndex(), res.at(0).row(), res.at(0).row());
+            m_model_data.removeAt(res.at(0).row());
+            endRemoveRows();
         }
+    }
+    
+    bool addressbook_model::add_contact(const QString& name)
+    {
+        auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+        
+        if (addrbook_manager.has_contact(name.toStdString()))
+        {
+            return false;
+        }
+        addrbook_manager.add_contact(name.toStdString());
+        addrbook_manager.save_configuration();
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        m_model_data.push_back(new addressbook_contact_model(m_system_manager, name, this));
+        endInsertRows();
+        return true;
+    }
+} // namespace atomic_dex
+
+//! Others
+namespace atomic_dex
+{
+    void addressbook_model::populate()
+    {
+        const auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
+
+        beginResetModel();
+        for (const auto& contact : addrbook_manager.get_contacts())
+        {
+            auto  contact_name  = contact.at("name").get<std::string>();
+            auto* contact_model = new addressbook_contact_model(m_system_manager, QString::fromStdString(contact_name), this);
+    
+            m_model_data.push_back(contact_model);
+        }
+        endResetModel();
+    }
+    
+    void addressbook_model::clear()
+    {
+        beginResetModel();
+        for (auto&& model : m_model_data)
+        {
+            delete model;
+        }
+        m_model_data.clear();
+        endResetModel();
     }
 } // namespace atomic_dex

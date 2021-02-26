@@ -1,16 +1,29 @@
-//! PCH
-#include "atomicdex/pch.hpp"
+//! STD Headers
+#include <random>
+
+//! Qt Headers
+#include <QCryptographicHash>
+#include <QString>
 
 //! Project Headers
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/version/version.hpp"
 
-namespace {
+namespace
+{
     constexpr size_t g_qsize_spdlog             = 10240;
     constexpr size_t g_spdlog_thread_count      = 2;
     constexpr size_t g_spdlog_max_file_size     = 7777777;
     constexpr size_t g_spdlog_max_file_rotation = 3;
-}
+
+    std::string
+    dex_sha256(const std::string& str)
+    {
+        QString res = QString(QCryptographicHash::hash((str.c_str()), QCryptographicHash::Keccak_256).toHex());
+        return res.toStdString();
+    }
+} // namespace
+
 namespace atomic_dex::utils
 {
     std::string
@@ -22,7 +35,8 @@ namespace atomic_dex::utils
         return ss.str();
     }
 
-    std::string format_float(t_float_50 value)
+    std::string
+    format_float(t_float_50 value)
     {
         std::string result = value.str(8, std::ios_base::fixed);
         boost::trim_right_if(result, boost::is_any_of("0"));
@@ -37,21 +51,18 @@ namespace atomic_dex::utils
         std::stringstream ss;
         t_float_50        current_f(current);
 
-        ss << std::fixed << std::setprecision(8) << current_f;
-        result = ss.str();
-
-        boost::trim_right_if(result, boost::is_any_of("0"));
-        boost::trim_right_if(result, boost::is_any_of("."));
-        return result;
+        return format_float(current_f);
     }
 
-    void
+    bool
     create_if_doesnt_exist(const fs::path& path)
     {
         if (not fs::exists(path))
         {
             fs::create_directories(path);
+            return true;
         }
+        return false;
     }
 
     double
@@ -78,6 +89,36 @@ namespace atomic_dex::utils
         appdata_path = fs::path(std::getenv("HOME")) / ".atomic_qt";
 #endif
         return appdata_path;
+    }
+
+    std::string
+    u8string(const fs::path& p)
+    {
+#if defined(PREFER_BOOST_FILESYSTEM)
+        return p.string();
+#else
+        auto res = p.u8string();
+
+        auto functor = [](auto&& r) {
+            if constexpr (std::is_same_v<std::remove_cvref_t<decltype(r)>, std::string>)
+            {
+                return r;
+            }
+            else
+            {
+                return std::string(r.begin(), r.end());
+            }
+        };
+        return functor(res);
+#endif
+    }
+
+    fs::path
+    get_atomic_dex_addressbook_folder()
+    {
+        const auto fs_addr_book_path = get_atomic_dex_data_folder() / "addressbook";
+        create_if_doesnt_exist(fs_addr_book_path);
+        return fs_addr_book_path;
     }
 
     fs::path
@@ -154,13 +195,6 @@ namespace atomic_dex::utils
         return get_atomic_dex_export_folder() / ("swap-export.json");
     }
 
-    std::string
-    dex_sha256(const std::string& str)
-    {
-        QString res = QString(QCryptographicHash::hash((str.c_str()), QCryptographicHash::Keccak_256).toHex());
-        return res.toStdString();
-    }
-
     void
     to_eth_checksum(std::string& address)
     {
@@ -198,6 +232,7 @@ namespace atomic_dex::utils
         create_if_doesnt_exist(fs_raw_mm2_shared_folder);
         return fs_raw_mm2_shared_folder;
     }
+
     std::shared_ptr<spdlog::logger>
     register_logger()
     {
@@ -217,110 +252,5 @@ namespace atomic_dex::utils
         SPDLOG_INFO("Logger successfully initialized");
 
         return logger;
-    }
-} // namespace atomic_dex::utils
-
-namespace atomic_dex::utils
-{
-    bool
-    my_json_sax::binary([[maybe_unused]] binary_t& val)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::null()
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::boolean([[maybe_unused]] bool val)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::number_integer([[maybe_unused]] number_integer_t val)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::number_unsigned([[maybe_unused]] number_unsigned_t val)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::number_float([[maybe_unused]] number_float_t val, const string_t& s)
-    {
-        this->float_as_string = s;
-        return true;
-    }
-
-    bool
-    my_json_sax::string([[maybe_unused]] string_t& val)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::start_object([[maybe_unused]] std::size_t elements)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::key([[maybe_unused]] string_t& val)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::end_object()
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::start_array([[maybe_unused]] std::size_t elements)
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::end_array()
-    {
-        return true;
-    }
-
-    bool
-    my_json_sax::parse_error(
-        [[maybe_unused]] std::size_t position, [[maybe_unused]] const std::string& last_token, [[maybe_unused]] const nlohmann::detail::exception& ex)
-    {
-        return false;
-    }
-
-    void
-    timed_waiter::interrupt()
-    {
-        auto l      = lock();
-        interrupted = true;
-        cv.notify_one();
-    }
-
-    template <class Rep, class Period>
-    bool
-    timed_waiter::wait_for(std::chrono::duration<Rep, Period> how_long) const
-    {
-        auto l = lock();
-        return cv.wait_for(l, how_long, [&] { return interrupted; });
-    }
-
-    std::unique_lock<std::mutex>
-    timed_waiter::lock() const
-    {
-        return std::unique_lock<std::mutex>(m, std::try_to_lock);
     }
 } // namespace atomic_dex::utils

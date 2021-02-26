@@ -15,7 +15,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     //! run app
     int res = run_app(argc, argv);
-    SPDLOG_INFO("Shutdown all loggers");
-    spdlog::drop_all();
+    //SPDLOG_INFO("Shutdown all loggers");
+    //spdlog::drop_all();
     return res;
 }

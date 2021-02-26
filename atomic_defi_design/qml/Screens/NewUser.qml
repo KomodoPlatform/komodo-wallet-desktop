@@ -20,6 +20,12 @@ SetupPage {
     property int current_word_idx: 0
     property int guess_count: 1
 
+    Component.onCompleted: onOpened()
+
+    function onOpened() {
+        current_mnemonic = API.app.get_mnemonic()
+    }
+
     function getWords() {
         return current_mnemonic.split(" ")
     }
@@ -60,10 +66,6 @@ SetupPage {
         return guess_count === 3
     }
 
-    function onOpened() {
-        current_mnemonic = API.app.get_mnemonic()
-    }
-
     // Local
     function reset() {
         current_mnemonic = ""
@@ -75,7 +77,7 @@ SetupPage {
     }
 
     function onClickedCreate(password, generated_seed, wallet_name) {
-        if(API.app.create(password, generated_seed, wallet_name)) {
+        if(API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
             console.log("Success: Create wallet")
             selected_wallet_name = wallet_name
             postCreateSuccess()
@@ -128,17 +130,20 @@ SetupPage {
 
         function tryGuess() {
             // Open EULA if it's the final one
-            if(submitGuess(input_seed_word.field)) eula.open()
+            if(submitGuess(input_seed_word.field)) eula_modal.open()
         }
 
-        EulaModal {
-            id: eula
-            onConfirm: () => {
-               if(onClickedCreate(input_password.field.text,
-                                   input_generated_seed.field.text,
-                                   input_wallet_name.field.text)) reset()
+        ModalLoader {
+            id: eula_modal
+            sourceComponent: EulaModal {
+                onConfirm: () => {
+                   if(onClickedCreate(input_password.field.text,
+                                       input_generated_seed.field.text,
+                                       input_wallet_name.field.text)) reset()
+                }
             }
         }
+
 
         // First page, fill the form
         ColumnLayout {
@@ -306,9 +311,3 @@ SetupPage {
         }
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

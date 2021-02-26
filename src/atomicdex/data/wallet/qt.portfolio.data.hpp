@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -73,5 +73,9 @@ namespace atomic_dex
         std::optional<QString>      multi_ticker_price;
         std::optional<QString>      multi_ticker_receive_amount;
         std::optional<QJsonObject>  multi_ticker_fees_info;
+
+        //! Address
+        QString public_address; ///< Public address
+        QString priv_key;       ///< Private key (required password to be shown)
     };
 } // namespace atomic_dex

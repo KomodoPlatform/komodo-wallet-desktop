@@ -17,7 +17,7 @@ SetupPage {
     }
 
     function onClickedConfirm(password, seed, wallet_name) {
-        if(API.app.create(password, seed, wallet_name)) {
+        if(API.app.wallet_mgr.create(password, seed, wallet_name)) {
             console.log("Success: Recover seed")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
@@ -64,14 +64,17 @@ SetupPage {
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
             if(text_error !== "") return
 
-            eula.open()
+            eula_modal.open()
         }
 
-        EulaModal {
-            id: eula
-            onConfirm: () => {
-               if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
-                   reset()
+
+        ModalLoader {
+            id: eula_modal
+            sourceComponent: EulaModal {
+                onConfirm: () => {
+                   if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
+                       reset()
+                }
             }
         }
 
@@ -151,7 +154,7 @@ SetupPage {
                              input_wallet_name.field.acceptableInput === true &&
                              input_seed.field.text !== '' &&
                              input_password.isValid() &&
-                             (allow_custom_seed.checked || API.app.mnemonic_validate(input_seed.field.text))
+                             (allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(input_seed.field.text))
             }
         }
 
@@ -162,10 +165,3 @@ SetupPage {
         }
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

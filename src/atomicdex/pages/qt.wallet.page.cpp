@@ -6,10 +6,14 @@
 //! PCH
 #include "src/atomicdex/pch.hpp"
 
+//! Deps
+#include <QrCode.hpp>
+
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
+#include "atomicdex/constants/http.code.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.settings.page.hpp"
@@ -155,14 +159,15 @@ namespace atomic_dex
             {"blocks_left", 1},
             {"transactions_left", 0},
             {"current_block", 1},
-            {"is_smartchain_test_coin", false}};
+            {"is_smartchain_test_coin", false},
+            {"qrcode_address", ""}};
         std::error_code ec;
         auto&           mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
             auto&       price_service                 = m_system_manager.get_system<global_price_service>();
             const auto& settings_system               = m_system_manager.get_system<settings_page>();
-            const auto& paprika                       = m_system_manager.get_system<coinpaprika_provider>();
+            const auto& coingecko                     = m_system_manager.get_system<coingecko_provider>();
             const auto& ticker                        = mm2_system.get_current_ticker();
             const auto& coin_info                     = mm2_system.get_coin_info(ticker);
             const auto& config                        = settings_system.get_cfg();
@@ -173,18 +178,18 @@ namespace atomic_dex
             obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
             obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url[0]);
-            obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, ec, true));
-            obj["change_24h"]                         = retrieve_change_24h(paprika, coin_info, config);
+            obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, true));
+            obj["change_24h"]                         = retrieve_change_24h(coingecko, coin_info, config, m_system_manager);
             const auto& tx_state                      = mm2_system.get_tx_state(ec);
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
-            obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer);
+            obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
             obj["fee_ticker"]                         = QString::fromStdString(ticker);
-            if (coin_info.coin_type == coin_type::QRC20)
+            if (coin_info.coin_type == CoinType::QRC20)
             {
                 obj["fee_ticker"] = (coin_info.is_testnet.value_or(false)) ? "tQTUM" : "QTUM";
             }
-            else if (coin_info.coin_type == coin_type::ERC20)
+            else if (coin_info.coin_type == CoinType::ERC20)
             {
                 obj["fee_ticker"] = "ETH";
             }
@@ -192,8 +197,11 @@ namespace atomic_dex
             obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
             obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
             obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
+            std::error_code   ec;
+            qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
+            std::string       svg = qr0.toSvgString(2);
+            obj["qrcode_address"] = QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
         }
-        // qDebug() << obj;
         return obj;
     }
 
@@ -280,11 +288,11 @@ namespace atomic_dex
                 .amount    = json_fees.at("fees_amount").get<std::string>(),
                 .gas_price = json_fees.at("gas_price").get<std::string>(),
                 .gas_limit = json_fees.at("gas_limit").get<int>()};
-            if (coin_info.coin_type == ERC20)
+            if (coin_info.coin_type == CoinType::ERC20)
             {
                 withdraw_req.fees->type = "EthGas";
             }
-            else if (coin_info.coin_type == QRC20)
+            else if (coin_info.coin_type == CoinType::QRC20)
             {
                 withdraw_req.fees->type = "Qrc20Gas";
             }
@@ -302,11 +310,10 @@ namespace atomic_dex
 
         //! Answer
         auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp) {
-            const auto&     settings_system     = m_system_manager.get_system<settings_page>();
-            const auto&     global_price_system = m_system_manager.get_system<global_price_service>();
-            const auto&     current_fiat        = settings_system.get_current_fiat().toStdString();
-            std::error_code ec;
-            std::string     body = TO_STD_STR(resp.extract_string(true).get());
+            const auto& settings_system     = m_system_manager.get_system<settings_page>();
+            const auto& global_price_system = m_system_manager.get_system<global_price_service>();
+            const auto& current_fiat        = settings_system.get_current_fiat().toStdString();
+            std::string body                = TO_STD_STR(resp.extract_string(true).get());
             SPDLOG_DEBUG("resp: {}", body);
             if (resp.status_code() == 200 && body.find("error") == std::string::npos)
             {
@@ -323,7 +330,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    j_out["withdraw_answer"]["total_amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount_std, ec);
+                    j_out["withdraw_answer"]["total_amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount_std);
                 }
 
                 // Add fees amount.
@@ -344,8 +351,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] =
-                        global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, fee, ec);
+                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, fee);
                 }
 
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));

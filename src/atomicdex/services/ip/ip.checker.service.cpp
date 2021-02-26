@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -28,7 +28,8 @@ namespace
 {
     web::http::client::http_client_config g_ip_cfg{[]() {
         web::http::client::http_client_config cfg;
-        cfg.set_timeout(std::chrono::seconds(5));
+        cfg.set_validate_certificates(false);
+        cfg.set_timeout(std::chrono::seconds(45));
         return cfg;
     }()};
 

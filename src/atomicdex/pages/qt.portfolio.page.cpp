@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -15,23 +15,25 @@
  ******************************************************************************/
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Project Headers
+#include "atomicdex/pages/qt.portfolio.page.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
+#include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
-#include "qt.portfolio.page.hpp"
-#include "qt.settings.page.hpp"
-#include "qt.wallet.page.hpp"
 
 namespace atomic_dex
 {
     portfolio_page::portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher_, this))
+        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher_, this)),
+        m_global_cfg_mdl(new global_coins_cfg_model(this))
     {
         emit portfolioChanged();
         this->dispatcher_.sink<update_portfolio_values>().connect<&portfolio_page::on_update_portfolio_values_event>(*this);
         this->dispatcher_.sink<band_oracle_refreshed>().connect<&portfolio_page::on_band_oracle_refreshed>(*this);
+        this->dispatcher_.sink<coin_cfg_parsed>().connect<&portfolio_page::on_coin_cfg_parsed>(*this);
     }
 
     portfolio_model*
@@ -88,11 +90,14 @@ namespace atomic_dex
     void
     portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt) noexcept
     {
+        SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
+
         if (evt.with_update_model)
         {
             m_portfolio_mdl->update_currency_values();
             m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
         }
+
         std::error_code ec;
         const auto&     config           = m_system_manager.get_system<settings_page>().get_cfg();
         const auto&     price_service    = m_system_manager.get_system<global_price_service>();
@@ -101,5 +106,63 @@ namespace atomic_dex
         {
             set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
         }
+    }
+
+    QStringList
+    atomic_dex::portfolio_page::get_all_enabled_coins() const noexcept
+    {
+        return get_all_coins_by_type("All");
+    }
+
+    QStringList
+    atomic_dex::portfolio_page::get_all_coins_by_type(const QString& coin_type) const noexcept
+    {
+        QStringList enabled_coins;
+        const auto& portfolio_list = this->get_portfolio()->get_underlying_data();
+        enabled_coins.reserve(portfolio_list.count());
+        for (auto&& cur_coin: portfolio_list)
+        {
+            if (coin_type == "All")
+            {
+                enabled_coins.push_back(cur_coin.ticker);
+            }
+            else if (cur_coin.coin_type == coin_type)
+            {
+                enabled_coins.push_back(cur_coin.ticker);
+            }
+        }
+        return enabled_coins;
+    }
+
+    bool
+    atomic_dex::portfolio_page::is_coin_enabled(const QString& coin_name) const noexcept
+    {
+        return get_all_enabled_coins().contains(coin_name);
+    }
+
+    global_coins_cfg_model*
+    portfolio_page::get_global_cfg() const noexcept
+    {
+        return m_global_cfg_mdl;
+    }
+
+    void
+    portfolio_page::on_coin_cfg_parsed(const coin_cfg_parsed& evt) noexcept
+    {
+        this->m_global_cfg_mdl->initialize_model(evt.cfg);
+    }
+
+    void
+    portfolio_page::initialize_portfolio(const std::vector<std::string>& tickers)
+    {
+        m_portfolio_mdl->initialize_portfolio(tickers);
+        m_global_cfg_mdl->update_status(tickers, true);
+    }
+
+    void
+    portfolio_page::disable_coins(const QStringList& coins)
+    {
+        m_portfolio_mdl->disable_coins(coins);
+        m_global_cfg_mdl->update_status(coins, false);
     }
 } // namespace atomic_dex

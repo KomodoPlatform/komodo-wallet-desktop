@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -22,12 +22,15 @@
 
 //! Project Headers
 #include "atomicdex/events/qt.events.hpp"
-#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "qt.portfolio.model.hpp"
+
 
 namespace atomic_dex
 {
@@ -52,26 +55,24 @@ namespace atomic_dex
                 continue;
             const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
             const auto& price_service = this->m_system_manager.get_system<global_price_service>();
-            const auto& paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
+            const auto& coingecko     = this->m_system_manager.get_system<coingecko_provider>();
             auto        coin          = mm2_system.get_coin_info(ticker);
 
-
             std::error_code ec;
-            const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
+            const QString   change_24h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
             portfolio_data  data{
-                .ticker                = QString::fromStdString(coin.ticker),
-                .gui_ticker            = QString::fromStdString(coin.gui_ticker),
-                .coin_type             = QString::fromStdString(coin.type),
-                .name                  = QString::fromStdString(coin.name),
-                .balance               = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
-                .main_currency_balance = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
-                .change_24h            = change_24h,
-                .main_currency_price_for_one_unit =
-                    QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, ec, true)),
-                .main_fiat_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker, ec)),
-                .trend_7d                     = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
-                .is_excluded                  = false,
-            };
+                .ticker                           = QString::fromStdString(coin.ticker),
+                .gui_ticker                       = QString::fromStdString(coin.gui_ticker),
+                .coin_type                        = QString::fromStdString(coin.type),
+                .name                             = QString::fromStdString(coin.name),
+                .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
+                .main_currency_balance            = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
+                .change_24h                       = change_24h,
+                .main_currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, true)),
+                .main_fiat_price_for_one_unit     = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker)),
+                .trend_7d                         = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(coin.ticker)),
+                .is_excluded                      = false,
+                .public_address                   = QString::fromStdString(mm2_system.address(coin.ticker, ec))};
             data.display         = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
             data.ticker_and_name = QString::fromStdString(coin.gui_ticker) + data.name;
             datas.push_back(std::move(data));
@@ -90,35 +91,34 @@ namespace atomic_dex
     void
     portfolio_model::update_currency_values()
     {
-        using namespace std::chrono;
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
-        const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
-        t_coins            coins         = mm2_system.get_enabled_coins();
+        const auto&        coingecko     = this->m_system_manager.get_system<coingecko_provider>();
+        const auto         coins         = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         const std::string& currency      = m_config->current_currency;
         const std::string& fiat          = m_config->current_fiat;
         tf::Executor       executor;
         tf::Taskflow       taskflow;
-        for (auto&& coin: coins)
+        for (auto&& [_, coin]: coins)
         {
             if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 continue;
             }
-            auto update_functor = [coin, &paprika, &mm2_system, &price_service, currency, fiat, this]() {
+            auto update_functor = [coin = std::move(coin), &coingecko, &mm2_system, &price_service, currency, fiat, this]() {
                 const std::string& ticker = coin.ticker;
-                if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+                if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
                 {
                     std::error_code    ec;
                     const QModelIndex& idx                         = res.at(0);
                     const QString      main_currency_balance_value = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
                     update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
-                    const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
+                    const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, true));
                     update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-                    const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, ec, false));
+                    const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                     update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
-                    QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
+                    QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
                     update_value(Change24H, change24_h, idx, *this);
                     const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
                     auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
@@ -126,18 +126,7 @@ namespace atomic_dex
                     update_value(Display, display, idx, *this);
                     if (is_change_b)
                     {
-                        t_float_50 prev_balance_f(prev_balance.toString().toStdString());
-                        t_float_50 new_balance_f(new_balance.toString().toStdString());
-                        bool       am_i_sender = false;
-                        if (prev_balance_f > new_balance_f)
-                        {
-                            am_i_sender = true;
-                        }
-                        t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
-                        QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                        this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
+                        balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                     }
                     // SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
@@ -150,7 +139,6 @@ namespace atomic_dex
     void
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers) noexcept
     {
-        using namespace std::chrono;
         for (auto&& ticker: tickers)
         {
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
@@ -159,12 +147,13 @@ namespace atomic_dex
                 continue;
             }
             // SPDLOG_DEBUG("trying updating balance values of: {}", ticker);
-            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
             {
                 const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
-                auto               coin          = mm2_system.get_coin_info(ticker);
+                const auto*        global_cfg    = this->m_system_manager.get_system<portfolio_page>().get_global_cfg();
+                const auto         coin          = global_cfg->get_coin_info(ticker);
                 const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
-                const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
+                const auto&        coingecko     = this->m_system_manager.get_system<coingecko_provider>();
                 std::error_code    ec;
                 const std::string& currency                     = m_config->current_currency;
                 const std::string& fiat                         = m_config->current_fiat;
@@ -173,29 +162,17 @@ namespace atomic_dex
                 auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
                 const QString main_currency_balance_value       = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
                 auto&& [_1, _2, is_change_mc]                   = update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
-                const QString currency_price_for_one_unit       = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
+                const QString currency_price_for_one_unit       = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, true));
                 auto&& [_3, _4, is_change_mcpfo]                = update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-                const QString currency_fiat_for_one_unit        = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, ec, false));
+                const QString currency_fiat_for_one_unit        = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                 update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
                 const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
                 update_value(Display, display, idx, *this);
-                QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
+                QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
                 update_value(Change24H, change24_h, idx, *this);
                 if (is_change_b)
                 {
-                    t_float_50 prev_balance_f(prev_balance.toString().toStdString());
-                    t_float_50 new_balance_f(new_balance.toString().toStdString());
-                    bool       am_i_sender = false;
-                    if (prev_balance_f > new_balance_f)
-                    {
-                        am_i_sender = true;
-                    }
-                    t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
-                    QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                    qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                    QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                    this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
-                    emit portfolioItemDataChanged();
+                    balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                 }
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {
@@ -254,6 +231,10 @@ namespace atomic_dex
             return item.multi_ticker_receive_amount.value_or("0");
         case MultiTickerFeesInfo:
             return item.multi_ticker_fees_info.value_or(QJsonObject());
+        case Address:
+            return item.public_address;
+        case PrivKey:
+            return item.priv_key;
         }
         return {};
     }
@@ -326,6 +307,12 @@ namespace atomic_dex
         case MultiTickerFeesInfo:
             item.multi_ticker_fees_info = QJsonObject::fromVariantMap(value.value<QVariantMap>());
             break;
+        case Address:
+            item.public_address = value.toString();
+            break;
+        case PrivKey:
+            item.priv_key = value.toString();
+            break;
         default:
             return false;
         }
@@ -354,7 +341,7 @@ namespace atomic_dex
     {
         for (auto&& coin: coins)
         {
-            auto res = this->match(this->index(0, 0), TickerRole, coin);
+            auto res = this->match(this->index(0, 0), TickerRole, coin, 1, Qt::MatchFlag::MatchExactly);
             // assert(not res.empty());
             if (not res.empty())
             {
@@ -391,7 +378,9 @@ namespace atomic_dex
             {MultiTickerPrice, "multi_ticker_price"},
             {MultiTickerError, "multi_ticker_error"},
             {MultiTickerReceiveAmount, "multi_ticker_receive_amount"},
-            {MultiTickerFeesInfo, "multi_ticker_fees_info"}};
+            {MultiTickerFeesInfo, "multi_ticker_fees_info"},
+            {Address, "public_address"},
+            {PrivKey, "priv_key"}};
     }
 
     portfolio_proxy_model*
@@ -419,5 +408,48 @@ namespace atomic_dex
         this->beginResetModel();
         this->m_model_data.clear();
         this->endResetModel();
+    }
+
+    portfolio_model::t_portfolio_datas
+    portfolio_model::get_underlying_data() const noexcept
+    {
+        return m_model_data;
+    }
+
+    void
+    portfolio_model::clean_priv_keys()
+    {
+        const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+        for (auto&& [coin, cfg]: coins)
+        {
+            auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin), 1, Qt::MatchFlag::MatchExactly);
+            // assert(not res.empty());
+            if (not res.empty())
+            {
+                update_value(PortfolioRoles::PrivKey, "", res.at(0), *this);
+            }
+        }
+    }
+} // namespace atomic_dex
+
+namespace atomic_dex
+{
+    void
+    portfolio_model::balance_update_handler(const QString& prev_balance, const QString& new_balance, const QString& ticker)
+    {
+        using namespace std::chrono;
+        t_float_50 prev_balance_f(prev_balance.toStdString());
+        t_float_50 new_balance_f(new_balance.toStdString());
+        bool       am_i_sender = false;
+        if (prev_balance_f > new_balance_f)
+        {
+            am_i_sender = true;
+        }
+        t_float_50 amount_f   = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
+        QString    amount     = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
+        qint64     timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+        QString    human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, ticker, human_date, timestamp);
+        emit portfolioItemDataChanged();
     }
 } // namespace atomic_dex

@@ -8,7 +8,6 @@ import "Components"
 
 Rectangle {
     id: app
-    visible: !API.app.internet_checker.internet_reacheable
     color: Style.colorTheme8
 
     ColumnLayout {
@@ -44,11 +43,3 @@ Rectangle {
         }
     }
 }
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

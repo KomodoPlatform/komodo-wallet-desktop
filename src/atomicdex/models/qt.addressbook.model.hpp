@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -17,52 +17,72 @@
 #pragma once
 
 //! Qt
-#include <QAbstractListModel>
-#include <QObject> //! QObject
-#include <QVariantList>
+#include <QAbstractListModel> //> QAbstractListModel
+#include <QObject>            //> QObject
+
+//! Deps
+#include <antara/gaming/ecs/system.manager.hpp> //> antara::gaming, ag::ecs::system_manager
 
 //! Project include
-#include "atomicdex/data/wallet/qt.addressbook.contact.contents.hpp"
-#include "atomicdex/managers/qt.wallet.manager.hpp"
-#include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
-#include "atomicdex/models/qt.contact.model.hpp"
+#include "atomicdex/managers/addressbook.manager.hpp"             //> addressbook_manager
+#include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp" //> addressbook_proxy_filter
+#include "qt.addressbook.contact.model.hpp"                       //> addressbook_contact_model
+
+namespace ag = antara::gaming;
 
 namespace atomic_dex
 {
     class addressbook_model final : public QAbstractListModel
     {
+        // Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
-        Q_PROPERTY(addressbook_proxy_model* addressbook_proxy_mdl READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
+        
         Q_ENUMS(AddressBookRoles)
 
-      public:
+    public:
         enum AddressBookRoles
         {
             SubModelRole = Qt::UserRole + 1,
+            
+            NameRole,
+          
+            NameRoleAndCategoriesRole           // Used as search role.
         };
+        Q_ENUM(AddressBookRoles);
 
-      public:
-        explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
-        ~addressbook_model() noexcept final;
+        explicit addressbook_model(ag::ecs::system_manager& system_registry, QObject* parent = nullptr) noexcept;
+        ~addressbook_model() noexcept final = default;
+        
+        // QAbstractListModel Functions
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
-        bool                                 insertRows(int position, int rows, const QModelIndex& parent) final;
-        bool                                 removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
-        void                                 initializeFromCfg();
-        Q_INVOKABLE void                     add_contact_entry();
-        Q_INVOKABLE void                     remove_at(int position);
-        Q_INVOKABLE void                     cleanup();
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
-        //! Properties
+        // Loads model data from persistent data.
+        void populate();
+        
+        // Unloads model data.
+        void clear();
+        
+        // Getters/Setters
         [[nodiscard]] addressbook_proxy_model* get_addressbook_proxy_mdl() const noexcept;
-      signals:
+        
+        // QML API
+        Q_INVOKABLE bool add_contact(const QString& name);
+        Q_INVOKABLE void remove_contact(const QString& name);
+
+        // QML API properties
+        Q_PROPERTY(addressbook_proxy_model* proxy READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
+        
+        // QMl API properties signals
+    signals:
         void addressbookProxyChanged();
 
-      private:
-        atomic_dex::qt_wallet_manager&       m_wallet_manager;
-        atomic_dex::addressbook_proxy_model* m_addressbook_proxy;
-        QVector<contact_model*>              m_addressbook;
-        bool                                 m_should_delete_contacts{false};
+    private:
+        ag::ecs::system_manager&            m_system_manager;
+        
+        addressbook_proxy_model*            m_addressbook_proxy;
+        
+        QVector<addressbook_contact_model*> m_model_data;
     };
 } // namespace atomic_dex

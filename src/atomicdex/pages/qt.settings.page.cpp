@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -27,6 +27,8 @@
 //! Project Headers
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/models/qt.global.coins.cfg.model.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -161,6 +163,8 @@ namespace atomic_dex
         {
             SPDLOG_INFO("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
+
+            // this->dispatcher_.trigger<force_update_providers>();
             this->dispatcher_.trigger<update_portfolio_values>();
             this->dispatcher_.trigger<current_currency_changed>();
             emit onCurrencyChanged();
@@ -227,6 +231,20 @@ namespace atomic_dex
         QStringList out;
         out.reserve(m_config.available_fiat.size());
         for (auto&& cur_fiat: m_config.available_fiat) { out.push_back(QString::fromStdString(cur_fiat)); }
+        out.sort();
+        return out;
+    }
+
+    QStringList
+    settings_page::get_recommended_fiats() const
+    {
+        static const auto nb_recommended = 6;
+        QStringList       out;
+        out.reserve(nb_recommended);
+        for (auto&& it = m_config.available_fiat.begin(); it != m_config.available_fiat.end() && it < m_config.available_fiat.begin() + nb_recommended; it++)
+        {
+            out.push_back(QString::fromStdString(*it));
+        }
         return out;
     }
 
@@ -249,13 +267,6 @@ namespace atomic_dex
     settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept
     {
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
-    }
-
-    QVariantList
-    settings_page::get_custom_coins() const noexcept
-    {
-        auto coins = m_system_manager.get_system<mm2_service>().get_custom_coins();
-        return to_qt_binding(std::move(coins));
     }
 
     QString
@@ -497,5 +508,109 @@ namespace atomic_dex
 
         functor_remove(std::move(wallet_cfg_path));
         functor_remove(std::move(mm2_coins_file_path));
+    }
+
+    QStringList
+    settings_page::retrieve_seed(const QString& wallet_name, const QString& password)
+    {
+        QStringList     out;
+        std::error_code ec;
+        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        if (ec)
+        {
+            SPDLOG_ERROR("cannot derive the password: {}", ec.message());
+            if (ec == dextop_error::derive_password_failed)
+            {
+                return {"wrong password"};
+            }
+        }
+        using namespace std::string_literals;
+        const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+        auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+        if (ec == dextop_error::corrupted_file_or_wrong_password)
+        {
+            SPDLOG_ERROR("cannot decrypt the seed with the derived password: {}", ec.message());
+            return {"wrong password"};
+        }
+
+        if (!ec)
+        {
+            this->set_fetching_priv_key_busy(true);
+            //! Also fetch private keys
+            nlohmann::json batch   = nlohmann::json::array();
+            const auto*    cfg_mdl = m_system_manager.get_system<portfolio_page>().get_global_cfg();
+            const auto     coins   = cfg_mdl->get_enabled_coins();
+            for (auto&& [coin, coin_cfg]: coins)
+            {
+                ::mm2::api::show_priv_key_request req{.coin = coin};
+                nlohmann::json                    req_json = ::mm2::api::template_request("show_priv_key");
+                to_json(req_json, req);
+                batch.push_back(req_json);
+            }
+            auto&      mm2_system     = m_system_manager.get_system<mm2_service>();
+            const auto answer_functor = [this](web::http::http_response resp) {
+                std::string body = TO_STD_STR(resp.extract_string(true).get());
+                if (resp.status_code() == 200)
+                {
+                    //!
+                    auto answers = nlohmann::json::parse(body);
+                    SPDLOG_WARN("Priv keys fetched, those are sensitive data.");
+                    for (auto&& answer: answers)
+                    {
+                        auto       show_priv_key_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::show_priv_key_answer>(answer, "show_priv_key");
+                        auto*      portfolio_mdl        = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
+                        const auto idx                  = portfolio_mdl->match(
+                            portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin), 1,
+                            Qt::MatchFlag::MatchExactly);
+                        if (not idx.empty())
+                        {
+                            update_value(portfolio_model::PrivKey, QString::fromStdString(show_priv_key_answer.priv_key), idx.at(0), *portfolio_mdl);
+                        }
+                    }
+                }
+                this->set_fetching_priv_key_busy(false);
+            };
+            ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none()).then(answer_functor);
+        }
+        return {QString::fromStdString(seed), QString::fromStdString(::mm2::api::get_rpc_password())};
+    }
+
+    QString
+    settings_page::get_version() noexcept
+    {
+        return QString::fromStdString(atomic_dex::get_version());
+    }
+
+    QString
+    settings_page::get_log_folder()
+    {
+        return QString::fromStdString(utils::get_atomic_dex_logs_folder().string());
+    }
+
+    QString
+    settings_page::get_mm2_version()
+    {
+        return QString::fromStdString(::mm2::api::rpc_version());
+    }
+
+    QString
+    settings_page::get_export_folder()
+    {
+        return QString::fromStdString(utils::get_atomic_dex_export_folder().string());
+    }
+
+    bool
+    settings_page::is_fetching_priv_key_busy() const noexcept
+    {
+        return m_fetching_priv_keys_busy.load();
+    }
+    void
+    settings_page::set_fetching_priv_key_busy(bool status) noexcept
+    {
+        if (m_fetching_priv_keys_busy != status)
+        {
+            m_fetching_priv_keys_busy = status;
+            emit privKeyStatusChanged();
+        }
     }
 } // namespace atomic_dex

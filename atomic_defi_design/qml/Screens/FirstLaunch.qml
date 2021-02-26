@@ -12,9 +12,11 @@ SetupPage {
     property var onClickedRecoverSeed: () => {}
     property var onClickedWallet: () => {}
 
+    Component.onCompleted: updateWallets()
+
     // Local
     function updateWallets() {
-        wallets = API.app.get_wallets()
+        wallets = API.app.wallet_mgr.get_wallets()
     }
 
     property var wallets: ([])
@@ -133,10 +135,3 @@ SetupPage {
 
     bottom_content: LinksRow {}
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

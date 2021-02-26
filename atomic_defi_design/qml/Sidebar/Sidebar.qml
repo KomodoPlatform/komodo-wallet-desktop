@@ -102,16 +102,16 @@ Item {
 
         y: {
             switch(dashboard.current_page) {
-                case General.idx_dashboard_portfolio:
-                case General.idx_dashboard_wallet:
-                case General.idx_dashboard_exchange:
-                case General.idx_dashboard_addressbook:
-                case General.idx_dashboard_news:
-                case General.idx_dashboard_dapps:
+                case idx_dashboard_portfolio:
+                case idx_dashboard_wallet:
+                case idx_dashboard_exchange:
+                case idx_dashboard_addressbook:
+                case idx_dashboard_news:
+                case idx_dashboard_dapps:
                     return sidebar_center.y + dashboard.current_page * Style.sidebarLineHeight
-                case General.idx_dashboard_settings:
-                case General.idx_dashboard_support:
-                    return sidebar_bottom.y + (dashboard.current_page - General.idx_dashboard_settings) * Style.sidebarLineHeight
+                case idx_dashboard_settings:
+                case idx_dashboard_support:
+                    return sidebar_bottom.y + (dashboard.current_page - idx_dashboard_settings) * Style.sidebarLineHeight
             }
         }
 
@@ -163,16 +163,3 @@ Item {
         }
     }
 }
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:264;width:150}
-}
-##^##*/

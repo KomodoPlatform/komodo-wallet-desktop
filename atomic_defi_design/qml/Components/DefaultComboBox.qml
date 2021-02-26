@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
 import QtQuick.Controls.Universal 2.15
@@ -22,8 +21,9 @@ ComboBox {
     Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
 
     property string mainLineText: control.displayText
-    property var dropdownLineText: m => textRole === "" ? m.modelData : m.modelData[textRole]
-
+    property var dropdownLineText: m => textRole === "" ?
+                                       m.modelData :
+                                       !m.modelData ? m[textRole] : m.modelData[textRole]
 
     readonly property bool disabled: !enabled
 
@@ -59,10 +59,9 @@ ComboBox {
 
     // Dropdown itself
     popup: Popup {
-        y: control.height - 1
         width: control.width
-        height: Math.min(contentItem.implicitHeight, control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y)
 
+        topMargin: 20
         bottomMargin: 20
 
         padding: 1
@@ -111,10 +110,3 @@ ComboBox {
         acceptedButtons: Qt.NoButton
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

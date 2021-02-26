@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,18 +16,26 @@
 
 #pragma once
 
+#include <shared_mutex>
+#include <unordered_set>
+
 //! Deps
 #include <antara/gaming/ecs/system.hpp>
 #include <antara/gaming/ecs/system.manager.hpp>
+#include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <reproc++/reproc.hpp>
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/mm2/rpc.balance.hpp"
+#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/mm2.constants.hpp"
 #include "atomicdex/constants/mm2.error.code.hpp"
+#include "atomicdex/data/dex/orders.and.swaps.data.hpp"
+#include "atomicdex/data/wallet/tx.data.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
@@ -36,57 +44,29 @@ namespace atomic_dex
     namespace bm = boost::multiprecision;
     namespace ag = antara::gaming;
 
-    struct tx_infos
-    {
-        bool                     am_i_sender;
-        std::size_t              confirmations;
-        std::vector<std::string> from;
-        std::vector<std::string> to;
-        std::string              date;
-        std::size_t              timestamp;
-        std::string              tx_hash;
-        std::string              fees;
-        std::string              my_balance_change;
-        std::string              total_amount;
-        std::size_t              block_height;
-        t_mm2_ec                 ec{dextop_error::success};
-        bool                     unconfirmed{false};
-        std::string              transaction_note{""};
-    };
+    template <typename T>
+    using t_shared_synchronized_value = boost::synchronized_value<T, std::shared_mutex>;
 
-    struct tx_state
-    {
-        std::string state;
-        std::size_t current_block;
-        std::size_t blocks_left;
-        std::size_t transactions_left;
-    };
-
-    using t_ticker              = std::string;
-    using t_tx_state            = tx_state;
-    using t_coins_registry      = t_concurrent_reg<t_ticker, coin_config>;
-    using t_wallet_cfg_registry = t_concurrent_reg<std::string, t_coins_registry>;
-    using t_transactions        = std::vector<tx_infos>;
-    using t_coins               = std::vector<coin_config>;
+    using t_ticker         = std::string;
+    using t_coins_registry = std::unordered_map<t_ticker, coin_config>;
+    using t_coins          = std::vector<coin_config>;
 
     //! Constants
     inline constexpr const std::size_t g_tx_max_limit{50_sz};
 
-    class mm2_service final : public ag::ecs::pre_update_system<mm2_service>
+    class ENTT_API mm2_service final : public ag::ecs::pre_update_system<mm2_service>
     {
       public:
-        using t_pair_max_vol = std::pair<::mm2::api::max_taker_vol_answer_success, ::mm2::api::max_taker_vol_answer_success>;
+        using t_pair_max_vol = std::pair<t_max_taker_vol_answer_success, t_max_taker_vol_answer_success>;
 
       private:
         //! Private typedefs
         using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
-        using t_balance_registry           = t_concurrent_reg<t_ticker, t_balance_answer>;
-        using t_my_orders                  = t_concurrent_reg<t_ticker, t_my_orders_answer>;
-        using t_tx_history_registry        = t_concurrent_reg<t_ticker, t_transactions>;
-        using t_tx_state_registry          = t_concurrent_reg<t_ticker, t_tx_state>;
-        using t_orderbook_registry         = t_concurrent_reg<t_ticker, t_orderbook_answer>;
-        using t_swaps_registry             = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
-        using t_fees_registry              = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
+        using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
+        using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
+        using t_fees_registry              = t_shared_synchronized_value<std::unordered_map<t_ticker, t_get_trade_fee_answer>>;
+        using t_orderbook                  = boost::synchronized_value<t_orderbook_answer>;
+        using t_orders_and_swaps           = boost::synchronized_value<orders_and_swaps>;
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
         using t_synchronized_ticker        = boost::synchronized_value<std::string>;
@@ -117,15 +97,18 @@ namespace atomic_dex
         //! Current wallet name
         std::string m_current_wallet_name;
 
+        //! Mutex
+        mutable std::shared_mutex m_balance_mutex;
+        mutable std::shared_mutex m_coin_cfg_mutex;
+        mutable std::shared_mutex m_raw_coin_cfg_mutex;
+
         //! Concurrent Registry.
         t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
-        t_balance_registry&      m_balance_informations{entity_registry_.set<t_balance_registry>()};
-        t_tx_history_registry    m_tx_informations;
-        t_tx_state_registry      m_tx_state;
-        t_my_orders              m_orders_registry;
+        t_balance_registry       m_balance_informations;
+        t_tx_registry            m_tx_informations;
         t_fees_registry          m_trade_fees_registry;
-        t_orderbook_registry     m_current_orderbook;
-        t_swaps_registry         m_swaps_registry;
+        t_orderbook              m_orderbook{t_orderbook_answer{}};
+        t_orders_and_swaps       m_orders_and_swaps{orders_and_swaps{}};
         t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
 
         //! Balance factor
@@ -146,8 +129,12 @@ namespace atomic_dex
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
 
         //!
-        std::pair<bool, std::string> process_batch_enable_answer(const nlohmann::json& answer);
-        std::vector<electrum_server> get_electrum_server_from_token(const std::string& ticker);
+        std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
+        [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const noexcept;
+        std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
+        std::vector<atomic_dex::coin_config>                retrieve_coins_informations() noexcept;
+
+        void handle_exception_pplx_task(pplx::task<void> previous_task);
 
       public:
         //! Constructor
@@ -185,11 +172,10 @@ namespace atomic_dex
         void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
 
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
-        void                  add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept;
-        void                  remove_custom_coin(const std::string& ticker) noexcept;
-        [[nodiscard]] bool    is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept;
-        [[nodiscard]] bool    is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept;
-        [[nodiscard]] t_coins get_custom_coins() const noexcept;
+        void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept;
+        void               remove_custom_coin(const std::string& ticker) noexcept;
+        [[nodiscard]] bool is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept;
+        [[nodiscard]] bool is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept;
 
         //! Disable a single coin
         bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;
@@ -209,9 +195,6 @@ namespace atomic_dex
         //! Retrieve my balance for a given ticker as a string.
         [[nodiscard]] std::string my_balance(const std::string& ticker, t_mm2_ec& ec) const;
 
-        //! Retrieve my balance with locked funds for a given ticker as a string.
-        [[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, t_mm2_ec& ec) const;
-
         //! Refresh the current orderbook (internally call process_orderbook)
         void fetch_current_orderbook_thread(bool is_a_reset = false);
 
@@ -229,12 +212,6 @@ namespace atomic_dex
         //! Get coins that are active, but may be not enabled
         [[nodiscard]] t_coins get_active_coins() const noexcept;
 
-        //! Get coins that can be activated
-        [[nodiscard]] t_coins get_enableable_coins() const noexcept;
-
-        //! Get all coins
-        [[nodiscard]] t_coins get_all_coins() const noexcept;
-
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
@@ -247,14 +224,8 @@ namespace atomic_dex
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;
 
-        //! Get orders
-        [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
-        [[nodiscard]] ::mm2::api::my_orders_answer              get_raw_orders(t_mm2_ec& ec) const noexcept;
-        [[nodiscard]] std::vector<::mm2::api::my_orders_answer> get_orders(t_mm2_ec& ec) const noexcept;
-
         //! Get Swaps
-        [[nodiscard]] t_my_recent_swaps_answer get_swaps() const noexcept;
-        t_my_recent_swaps_answer               get_swaps() noexcept;
+        [[nodiscard]] orders_and_swaps get_orders_and_swaps() const noexcept;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
         [[nodiscard]] t_float_50 get_balance(const std::string& ticker) const;
@@ -272,7 +243,7 @@ namespace atomic_dex
         [[nodiscard]] bool is_pin_cfg_enabled() const noexcept;
         void               reset_fake_balance_to_zero(const std::string& ticker) noexcept;
         void               decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
-        void               batch_fetch_orders_and_swap();
+        void               batch_fetch_orders_and_swap(bool after_manual_reset = false);
         void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
@@ -285,6 +256,9 @@ namespace atomic_dex
 
         //! Multi ticker
         void add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept;
+
+        //! Pagination
+        void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});
     };
 } // namespace atomic_dex
 

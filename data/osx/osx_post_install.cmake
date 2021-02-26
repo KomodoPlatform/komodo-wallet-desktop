@@ -1,6 +1,6 @@
 message(STATUS "Hello post install ${CMAKE_SOURCE_DIR}")
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
-if (EXISTS ${PROJECT_ROOT_DIR}/build-Release)
+if (EXISTS ${PROJECT_ROOT_DIR}/build-Release OR EXISTS ${PROJECT_ROOT_DIR}/build-Debug)
     message(STATUS "from ci tools, readjusting")
     get_filename_component(PROJECT_ROOT_DIR ${PROJECT_ROOT_DIR} DIRECTORY)
 endif ()

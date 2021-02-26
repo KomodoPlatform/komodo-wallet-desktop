@@ -9,14 +9,6 @@ import "../Constants"
 Item {
     id: root
 
-    function reset() {
-
-    }
-
-    function onOpened() {
-
-    }
-
     DefaultFlickable {
         id: layout_background
 
@@ -61,12 +53,12 @@ Item {
                             Circle {
                                 Layout.alignment: Qt.AlignVCenter
 
-                                color: Qt.lighter(update_modal.update_needed ? Style.colorOrange : Style.colorGreen, changelog_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                                color: Qt.lighter(update_needed ? Style.colorOrange : Style.colorGreen, changelog_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                             }
 
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
-                                text_value: update_modal.update_needed ? qsTr("Update available") : qsTr("Up to date")
+                                text_value: update_needed ? qsTr("Update available") : qsTr("Up to date")
                                 color: changelog_text.color
                             }
                         }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,13 +14,22 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Deps
+#include <boost/algorithm/string/case_conv.hpp>
+
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 //! Utilities
 namespace
 {
+    ag::ecs::system_manager* g_system_mgr = nullptr;
+
     template <typename RpcSuccessReturnType, typename RpcReturnType>
     void
     extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer)
@@ -34,99 +43,122 @@ namespace
             answer.result = j.at("result").get<RpcSuccessReturnType>();
         }
     }
+
+    std::pair<QString, QString>
+    extract_error(const nlohmann::json& events, const QStringList& error_events)
+    {
+        for (auto&& cur_event: events)
+        {
+            if (std::any_of(std::begin(error_events), std::end(error_events), [&cur_event](auto&& error_str) {
+                    return cur_event.at("state").get<std::string>() == error_str.toStdString();
+                }))
+            {
+                //! It's an error
+                if (cur_event.contains("data") && cur_event.at("data").contains("error"))
+                {
+                    return {
+                        QString::fromStdString(cur_event.at("state").get<std::string>()),
+                        QString::fromStdString(cur_event.at("data").at("error").get<std::string>())};
+                }
+            }
+        }
+        return {};
+    }
+
+    QString
+    determine_order_status_from_last_event(const nlohmann::json& events, const QStringList& error_events) noexcept
+    {
+        if (events.empty())
+        {
+            return "matching";
+        }
+        auto last_event = events.back().at("state").get<std::string>();
+        if (last_event == "Started")
+        {
+            return "matched";
+        }
+
+        if (last_event == "TakerPaymentWaitRefundStarted" || last_event == "MakerPaymentWaitRefundStarted")
+        {
+            return "refunding";
+        }
+
+        QString status = "ongoing";
+
+        if (last_event == "Finished")
+        {
+            status = "successful";
+            //! Find error or not
+            for (auto&& cur_event: events)
+            {
+                if (cur_event.contains("data") && cur_event.at("data").contains("error") &&
+                    std::any_of(std::begin(error_events), std::end(error_events), [&cur_event](auto&& error_str) {
+                        return cur_event.at("state").get<std::string>() == error_str.toStdString();
+                    }))
+                {
+                    status = "failed";
+                }
+            }
+        }
+
+        return status;
+    }
+
+    QString
+    determine_payment_id(const nlohmann::json& events, bool am_i_maker, bool want_taker_id) noexcept
+    {
+        QString result = "";
+
+        if (events.empty())
+        {
+            return result;
+        }
+
+        std::string search_name;
+        if (am_i_maker)
+        {
+            search_name = want_taker_id ? "TakerPaymentSpent" : "MakerPaymentSent";
+        }
+        else
+        {
+            search_name = want_taker_id ? "TakerPaymentSent" : "MakerPaymentSpent";
+        }
+        for (auto&& cur_event: events)
+        {
+            if (cur_event.at("state").get<std::string>() == search_name)
+            {
+                result = QString::fromStdString(cur_event.at("data").at("tx_hash").get<std::string>());
+            }
+        }
+        return result;
+    }
+
+    std::pair<std::string, std::string>
+    determine_amounts_in_current_currency(
+        const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount) noexcept
+    {
+        try
+        {
+            if (g_system_mgr != nullptr && g_system_mgr->has_systems<atomic_dex::settings_page, atomic_dex::global_price_service>())
+            {
+                const auto& settings_system     = g_system_mgr->get_system<atomic_dex::settings_page>();
+                const auto& current_currency    = settings_system.get_current_currency().toStdString();
+                const auto& global_price_system = g_system_mgr->get_system<atomic_dex::global_price_service>();
+                std::string base_amount_in_currency;
+                std::string rel_amount_in_currency;
+
+                base_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, base_coin, base_amount);
+                rel_amount_in_currency  = global_price_system.get_price_as_currency_from_amount(current_currency, rel_coin, rel_amount);
+                return std::make_pair(base_amount_in_currency, rel_amount_in_currency);
+            }
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("Exception caught: {}", error.what());
+        }
+        return {};
+    }
 } // namespace
-
-//! Implementation RPC [max_taker_vol]
-namespace mm2::api
-{
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const max_taker_vol_request& cfg)
-    {
-        j["coin"] = cfg.coin;
-        if (cfg.trade_with.has_value())
-        {
-            j["trade_with"] = cfg.trade_with.value();
-        }
-    }
-
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, max_taker_vol_answer_success& cfg)
-    {
-        j.at("denom").get_to(cfg.denom);
-        j.at("numer").get_to(cfg.numer);
-        t_rational rat(boost::multiprecision::cpp_int(cfg.numer), boost::multiprecision::cpp_int(cfg.denom));
-        t_float_50 res = rat.convert_to<t_float_50>();
-        cfg.decimal    = res.str(8);
-    }
-
-    void
-    from_json(const nlohmann::json& j, max_taker_vol_answer& answer)
-    {
-        extract_rpc_json_answer<max_taker_vol_answer_success>(j, answer);
-    }
-
-    //! Rpc Call
-    max_taker_vol_answer
-    rpc_max_taker_vol(max_taker_vol_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol", mm2_client);
-    }
-} // namespace mm2::api
-
-//! Implementation RPC [enable]
-namespace mm2::api
-{
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const enable_request& cfg)
-    {
-        j["coin"] = cfg.coin_name;
-        if (cfg.coin_type == atomic_dex::ERC20)
-        {
-            j["gas_station_url"]       = cfg.gas_station_url;
-            j["swap_contract_address"] = cfg.erc_swap_contract_address;
-            j["urls"]                  = cfg.urls;
-        }
-        j["tx_history"] = cfg.with_tx_history;
-    }
-
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, enable_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        j.at("result").get_to(cfg.result);
-    }
-} // namespace mm2::api
-
-//! Implementation RPC [electrum]
-namespace mm2::api
-{
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const electrum_request& cfg)
-    {
-        j["coin"]       = cfg.coin_name;
-        j["servers"]    = cfg.servers;
-        j["tx_history"] = cfg.with_tx_history;
-        if (cfg.coin_type == atomic_dex::QRC20)
-        {
-            j["swap_contract_address"] = cfg.is_testnet ? cfg.testnet_qrc_swap_contract_address : cfg.mainnet_qrc_swap_contract_address;
-        }
-    }
-
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, electrum_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        j.at("result").get_to(cfg.result);
-    }
-} // namespace mm2::api
 
 //! Implementation RPC [disable_coin]
 namespace mm2::api
@@ -154,25 +186,6 @@ namespace mm2::api
 
 namespace mm2::api
 {
-    void
-    to_json(nlohmann::json& j, const balance_request& cfg)
-    {
-        j["coin"] = cfg.coin;
-    }
-
-    void
-    from_json(const nlohmann::json& j, balance_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
-        j.at("coin").get_to(cfg.coin);
-        if (cfg.coin == "BCH")
-        {
-            cfg.address = cfg.address.substr(sizeof("bitcoincash"));
-        }
-    }
-
     void
     from_json(const nlohmann::json& j, fee_regular_coin& cfg)
     {
@@ -515,17 +528,6 @@ namespace mm2::api
     }
 
     void
-    to_json(nlohmann::json& j, const setprice_request& request)
-    {
-        j["base"]            = request.base;
-        j["price"]           = request.price;
-        j["rel"]             = request.rel;
-        j["volume"]          = request.volume;
-        j["cancel_previous"] = request.cancel_previous;
-        j["max"]             = request.max;
-    }
-
-    void
     from_json(const nlohmann::json& j, trading_order_contents& contents)
     {
         j.at("base").get_to(contents.base);
@@ -576,10 +578,10 @@ namespace mm2::api
         if (not request.is_created_order)
         {
             //! From orderbook
-            nlohmann::json price_fraction_repr = nlohmann::json::object();
-            price_fraction_repr["numer"]       = request.price_numer;
-            price_fraction_repr["denom"]       = request.price_denom;
-            j["price"]                         = price_fraction_repr;
+            nlohmann::json price_fraction_repr  = nlohmann::json::object();
+            price_fraction_repr["numer"]        = request.price_numer;
+            price_fraction_repr["denom"]        = request.price_denom;
+            j["price"]                          = price_fraction_repr;
             nlohmann::json volume_fraction_repr = nlohmann::json::object();
             if (not request.selected_order_use_input_volume)
             {
@@ -592,6 +594,33 @@ namespace mm2::api
         else
         {
             SPDLOG_INFO("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
+        }
+    }
+
+    void
+    to_json(nlohmann::json& j, const setprice_request& request)
+    {
+        j["base"]            = request.base;
+        j["price"]           = request.price;
+        j["rel"]             = request.rel;
+        j["volume"]          = request.volume;
+        j["cancel_previous"] = request.cancel_previous;
+        j["max"]             = request.max;
+        if (request.base_nota.has_value())
+        {
+            j["base_nota"] = request.base_nota.value();
+        }
+        if (request.base_confs.has_value())
+        {
+            j["base_confs"] = request.base_confs.value();
+        }
+        if (request.rel_nota.has_value())
+        {
+            j["rel_nota"] = request.rel_nota.value();
+        }
+        if (request.rel_confs.has_value())
+        {
+            j["rel_confs"] = request.rel_confs.value();
         }
     }
 
@@ -722,36 +751,102 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, my_orders_answer& answer)
     {
-        static_cast<void>(answer);
-        // clang-format off
-        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::string, my_order_contents>& out, bool is_maker)
-        {
-          using namespace date;
-          const auto        time_key = value.at("created_at").get<std::size_t>();
+        // answer.orders.reserve(j.at("result").at("maker_orders").size() + j.at("result").at("taker_orders").size());
 
-          std::string action = "";
-          if (not is_maker)
-          {
-             value.at("request").at("action").get_to(action);
-          }
-          my_order_contents contents{
-              .order_id         = key,
-              .price            = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0",
-              .base             = is_maker ? value.at("base").get<std::string>() : value.at("request").at("base").get<std::string>(),
-              .rel              = is_maker ? value.at("rel").get<std::string>() : value.at("request").at("rel").get<std::string>(),
-              .cancellable      = value.at("cancellable").get<bool>(),
-              .timestamp        = time_key,
-              .order_type       = is_maker ? "maker" : "taker",
-              .base_amount      = is_maker ? value.at("available_amount").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
-              .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T"),
-              .action = action};
-          out.try_emplace(contents.order_id, std::move(contents));
+        auto filler_functor = [&answer](const std::string& key, const nlohmann::json& value, bool is_maker) {
+            using namespace date;
+            const auto time_key = value.at("created_at").get<std::size_t>();
+
+            std::string action = "";
+            if (not is_maker)
+            {
+                value.at("request").at("action").get_to(action);
+            }
+            using namespace atomic_dex;
+            const auto price       = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0";
+            const auto base_coin   = is_maker ? QString::fromStdString(value.at("base").get<std::string>())
+                                              : QString::fromStdString(value.at("request").at("base").get<std::string>());
+            const auto rel_coin    = is_maker ? QString::fromStdString(value.at("rel").get<std::string>())
+                                              : QString::fromStdString(value.at("request").at("rel").get<std::string>());
+            const auto base_amount = is_maker ? QString::fromStdString(value.at("available_amount").get<std::string>())
+                                              : QString::fromStdString(value.at("request").at("base_amount").get<std::string>());
+            const auto rel_amount  = is_maker ? QString::fromStdString((t_float_50(price) * t_float_50(base_amount.toStdString())).convert_to<std::string>())
+                                              : QString::fromStdString(value.at("request").at("rel_amount").get<std::string>());
+            order_swaps_data contents{
+                .is_maker       = is_maker,
+                .base_coin      = action == "Sell" ? base_coin : rel_coin,
+                .rel_coin       = action == "Sell" ? rel_coin : base_coin,
+                .base_amount    = action == "Sell" ? base_amount : rel_amount,
+                .rel_amount     = action == "Sell" ? rel_amount : base_amount,
+                .order_type     = is_maker ? "maker" : "taker",
+                .human_date     = QString::fromStdString(atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T")),
+                .unix_timestamp = static_cast<unsigned long long>(time_key),
+                .order_id       = QString::fromStdString(key),
+                .order_status   = "matching",
+                .is_swap        = false,
+                .is_cancellable = value.at("cancellable").get<bool>(),
+                .is_recoverable = false};
+            if (action.empty() && contents.order_type == "maker")
+            {
+                contents.base_coin   = base_coin;
+                contents.rel_coin    = rel_coin;
+                contents.base_amount = base_amount;
+                contents.rel_amount  = rel_amount;
+            }
+            auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+                contents.base_coin.toStdString(), contents.base_amount.toStdString(), contents.rel_coin.toStdString(), contents.rel_amount.toStdString());
+            contents.base_amount_fiat = QString::fromStdString(base_fiat_value);
+            contents.rel_amount_fiat  = QString::fromStdString(rel_fiat_value);
+            contents.ticker_pair      = contents.base_coin + "/" + contents.rel_coin;
+            answer.orders_id.emplace(key);
+            answer.orders.emplace_back(std::move(contents));
         };
-        // clang-format on
 
-        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders, true); }
-        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders, false); }
+        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, true); }
+        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, false); }
+    }
+
+    void
+    to_json(nlohmann::json& j, const active_swaps_request& request)
+    {
+        if (request.statuses.has_value())
+        {
+            j["statuses"] = request.statuses.value();
+        }
+        else
+        {
+            j["statuses"] = nullptr;
+        }
+    }
+
+    void
+    from_json(const nlohmann::json& j, active_swaps_answer& answer)
+    {
+        if (j.contains("statuses"))
+        {
+            const auto& statuses = j.at("statuses");
+            j.at("uuids").get_to(answer.uuids);
+            answer.swaps.reserve(answer.uuids.size());
+            for (auto&& [key, value]: statuses.items())
+            {
+                order_swaps_data to_add;
+                from_json(value, to_add);
+                answer.swaps.emplace_back(std::move(to_add));
+            }
+        }
+    }
+
+    void
+    to_json(nlohmann::json& j, const show_priv_key_request& request)
+    {
+        j["coin"] = request.coin;
+    }
+
+    void
+    from_json(const nlohmann::json& j, show_priv_key_answer& answer)
+    {
+        j.at("result").at("coin").get_to(answer.coin);
+        j.at("result").at("priv_key").get_to(answer.priv_key);
     }
 
     void
@@ -762,36 +857,59 @@ namespace mm2::api
         {
             j["from_uuid"] = request.from_uuid.value();
         }
+        if (request.page_number.has_value())
+        {
+            j["page_number"] = request.page_number.value();
+        }
+
+        if (request.my_coin.has_value())
+        {
+            j["my_coin"] = request.my_coin.value();
+        }
+
+        if (request.other_coin.has_value())
+        {
+            j["other_coin"] = request.other_coin.value();
+        }
+
+        if (request.from_timestamp.has_value())
+        {
+            j["from_timestamp"] = request.from_timestamp.value();
+        }
+
+        if (request.to_timestamp.has_value())
+        {
+            j["to_timestamp"] = request.to_timestamp.value();
+        }
+        // SPDLOG_INFO("Full request: {}", j.dump(4));
     }
 
     void
-    from_json(const nlohmann::json& j, swap_contents& contents)
+    from_json(const nlohmann::json& j, order_swaps_data& contents)
     {
+        // spdlog::stopwatch stopwatch;
         using namespace date;
         using namespace std::chrono;
+        using namespace atomic_dex;
 
-        j.at("error_events").get_to(contents.error_events);
-        j.at("success_events").get_to(contents.success_events);
-        j.at("uuid").get_to(contents.uuid);
-        j.at("taker_coin").get_to(contents.taker_coin);
-        j.at("maker_coin").get_to(contents.maker_coin);
-        j.at("taker_amount").get_to(contents.taker_amount);
-        j.at("maker_amount").get_to(contents.maker_amount);
-        j.at("type").get_to(contents.type);
-        j.at("recoverable").get_to(contents.funds_recoverable);
+        const auto taker_coin   = QString::fromStdString(j.at("taker_coin").get<std::string>());
+        const auto maker_coin   = QString::fromStdString(j.at("maker_coin").get<std::string>());
+        const auto maker_amount = QString::fromStdString(atomic_dex::utils::adjust_precision(j.at("maker_amount").get<std::string>()));
+        const auto taker_amount = QString::fromStdString(atomic_dex::utils::adjust_precision(j.at("taker_amount").get<std::string>()));
 
-        contents.taker_amount = atomic_dex::utils::adjust_precision(contents.taker_amount);
-        contents.maker_amount = atomic_dex::utils::adjust_precision(contents.maker_amount);
-        contents.events       = nlohmann::json::array();
-        if (j.contains("my_info"))
-        {
-            contents.my_info = j.at("my_info");
-            if (not contents.my_info.is_null())
-            {
-                contents.my_info["other_amount"] = atomic_dex::utils::adjust_precision(contents.my_info["other_amount"].get<std::string>());
-                contents.my_info["my_amount"]    = atomic_dex::utils::adjust_precision(contents.my_info["my_amount"].get<std::string>());
-            }
-        }
+        contents.error_events   = vector_std_string_to_qt_string_list(j.at("error_events").get<std::vector<std::string>>());
+        contents.success_events = vector_std_string_to_qt_string_list(j.at("success_events").get<std::vector<std::string>>());
+        contents.order_id       = QString::fromStdString(j.at("uuid").get<std::string>());
+        contents.order_type     = QString::fromStdString(boost::algorithm::to_lower_copy(j.at("type").get<std::string>()));
+        contents.is_maker       = contents.order_type == "maker";
+        contents.is_recoverable = j.at("recoverable").get<bool>();
+        contents.base_coin      = contents.is_maker ? maker_coin : taker_coin;
+        contents.rel_coin       = contents.is_maker ? taker_coin : maker_coin;
+        contents.base_amount    = contents.is_maker ? maker_amount : taker_amount;
+        contents.rel_amount     = contents.is_maker ? taker_amount : maker_amount;
+
+        nlohmann::json events_array = nlohmann::json::array();
+
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
         t_event_timestamp_registry event_timestamp_registry;
         double                     total_time_in_ms = 0.00;
@@ -809,14 +927,14 @@ namespace mm2::api
                                  &total_time_in_ms](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
                 if (event_timestamp_registry.count(previous_event) != 0)
                 {
-                    std::int64_t ts                         = event_timestamp_registry.at(previous_event);
-                    jf_evt["started_at"]                    = ts;
-                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
-                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
-                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-                    jf_evt["time_diff"]                     = res;
-                    event_timestamp_registry[event_type]    = ts2; // Negotiated finished at this time
+                    std::int64_t ts                               = event_timestamp_registry.at(previous_event);
+                    jf_evt["started_at"]                          = ts;
+                    std::int64_t                              ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    date::sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    date::sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                                    res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                           = res;
+                    event_timestamp_registry[event_type]          = ts2; // Negotiated finished at this time
                     total_time_in_ms += res;
                 }
             };
@@ -830,21 +948,21 @@ namespace mm2::api
                     rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
                 }
 
-                contents.events.push_back(jf_evt);
+                events_array.push_back(jf_evt);
             }
             else
             {
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
                 if (evt_type == "Started")
                 {
-                    std::int64_t ts                         = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
-                    jf_evt["started_at"]                    = ts;
-                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
-                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
-                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-                    jf_evt["time_diff"]                     = res;
-                    event_timestamp_registry["Started"]     = ts2; // Started finished at this time
+                    std::int64_t ts                               = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
+                    jf_evt["started_at"]                          = ts;
+                    std::int64_t                              ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    date::sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    date::sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                                    res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                           = res;
+                    event_timestamp_registry["Started"]           = ts2; // Started finished at this time
                     total_time_in_ms += res;
                 }
 
@@ -853,33 +971,69 @@ namespace mm2::api
                     rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
                 }
 
-                contents.events.push_back(jf_evt);
+                events_array.push_back(jf_evt);
             }
             idx += 1;
         }
-        contents.total_time_in_ms = total_time_in_ms;
+        contents.events           = nlohmann_json_array_to_qt_json_array(events_array);
+        contents.human_date       = not events_array.empty() ? QString::fromStdString(events_array.back().at("human_timestamp").get<std::string>()) : "";
+        contents.unix_timestamp   = not events_array.empty() ? events_array.back().at("timestamp").get<unsigned long long>() : 0;
+        contents.order_status     = determine_order_status_from_last_event(events_array, contents.error_events);
+        contents.is_swap          = true;
+        contents.is_cancellable   = false;
+        contents.maker_payment_id = determine_payment_id(events_array, contents.is_maker, false);
+        contents.taker_payment_id = determine_payment_id(events_array, contents.is_maker, true);
+
+        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+            contents.base_coin.toStdString(), contents.base_amount.toStdString(), contents.rel_coin.toStdString(), contents.rel_amount.toStdString());
+        contents.base_amount_fiat = QString::fromStdString(base_fiat_value);
+        contents.rel_amount_fiat  = QString::fromStdString(rel_fiat_value);
+        contents.ticker_pair      = contents.base_coin + "/" + contents.rel_coin;
+        if (contents.order_status == "failed")
+        {
+            auto error                   = extract_error(events_array, contents.error_events);
+            contents.order_error_state   = error.first;
+            contents.order_error_message = error.second;
+        }
+        // SPDLOG_INFO("from_json(order_swaps_data) -> {} seconds", stopwatch);
     }
 
     void
     from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results)
     {
-        j.at("swaps").get_to(results.swaps);
+        // spdlog::stopwatch                                    stopwatch;
+        std::unordered_map<std::string, std::vector<double>> events_time_registry;
+        const auto&                                          swaps = j.at("swaps");
+        results.swaps.reserve(swaps.size());
+        results.swaps_id.reserve(swaps.size());
+        for (auto&& cur: swaps)
+        {
+            if (cur.is_null())
+            {
+                SPDLOG_WARN("Current swap object is null - skipping");
+                continue;
+            }
+            order_swaps_data to_add;
+            from_json(cur, to_add);
+            for (auto&& cur_event: to_add.events)
+            {
+                if (cur_event.isObject())
+                {
+                    if (auto cur_obj = cur_event.toObject(); cur_obj.contains("time_diff"))
+                    {
+                        events_time_registry[cur_obj.value("state").toString().toStdString()].push_back(cur_obj.value("time_diff").toDouble());
+                    }
+                }
+            }
+            results.swaps_id.emplace(to_add.order_id.toStdString());
+            results.swaps.emplace_back(std::move(to_add));
+        }
         j.at("limit").get_to(results.limit);
         j.at("skipped").get_to(results.skipped);
         j.at("total").get_to(results.total);
+        j.at("page_number").get_to(results.page_number);
+        j.at("total_pages").get_to(results.total_pages);
         results.average_events_time = nlohmann::json::object();
-
-        std::unordered_map<std::string, std::vector<double>> events_time_registry;
-        for (auto&& cur_swap: results.swaps)
-        {
-            for (auto&& cur_event: cur_swap.events)
-            {
-                if (cur_event.contains("time_diff"))
-                {
-                    events_time_registry[cur_event.at("state").get<std::string>()].push_back(cur_event.at("time_diff").get<double>());
-                }
-            }
-        }
 
         for (auto&& [evt_name, values]: events_time_registry)
         {
@@ -904,82 +1058,6 @@ namespace mm2::api
         }
     }
 
-    enable_answer
-    rpc_enable(enable_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable", mm2_client);
-    }
-
-    electrum_answer
-    rpc_electrum(electrum_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<electrum_request, electrum_answer>(std::forward<electrum_request>(request), "electrum", mm2_client);
-    }
-
-    balance_answer
-    rpc_balance(balance_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<balance_request, balance_answer>(std::forward<balance_request>(request), "my_balance", mm2_client);
-    }
-
-    tx_history_answer
-    rpc_my_tx_history(tx_history_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<tx_history_request, tx_history_answer>(std::forward<tx_history_request>(request), "my_tx_history", mm2_client);
-    }
-
-    withdraw_answer
-    rpc_withdraw(withdraw_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<withdraw_request, withdraw_answer>(std::forward<withdraw_request>(request), "withdraw", mm2_client);
-    }
-
-    send_raw_transaction_answer
-    rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        using atomic_dex::t_broadcast_answer;
-        using atomic_dex::t_broadcast_request;
-
-        return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction", mm2_client);
-    }
-
-    trade_fee_answer
-    rpc_get_trade_fee(trade_fee_request&& req, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<trade_fee_request, trade_fee_answer>(std::forward<trade_fee_request>(req), "get_trade_fee", mm2_client);
-    }
-
-    orderbook_answer
-    rpc_orderbook(orderbook_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<orderbook_request, orderbook_answer>(std::forward<orderbook_request>(request), "orderbook", mm2_client);
-    }
-
-    buy_answer
-    rpc_buy(buy_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<buy_request, buy_answer>(std::forward<buy_request>(request), "buy", mm2_client);
-    }
-
-    sell_answer
-    rpc_sell(sell_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<sell_request, sell_answer>(std::forward<sell_request>(request), "sell", mm2_client);
-    }
-
-    cancel_order_answer
-    rpc_cancel_order(cancel_order_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order", mm2_client);
-    }
-
-    cancel_all_orders_answer
-    rpc_cancel_all_orders(cancel_all_orders_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(
-            std::forward<cancel_all_orders_request>(request), "cancel_all_orders", mm2_client);
-    }
-
     disable_coin_answer
     rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
@@ -994,7 +1072,7 @@ namespace mm2::api
     }
 
     template <typename TRequest, typename TAnswer>
-    static TAnswer
+    TAnswer
     process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> mm2_http_client)
     {
         SPDLOG_INFO("Processing rpc call: {}", rpc_command);
@@ -1103,35 +1181,6 @@ namespace mm2::api
         return answer;
     }
 
-    nlohmann::json
-    rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client)
-    {
-        if (mm2_http_client != nullptr)
-        {
-            web::http::http_request request;
-            request.set_method(web::http::methods::POST);
-            request.set_body(batch_array.dump());
-            auto resp = mm2_http_client->request(request).get();
-
-
-            SPDLOG_INFO("{} resp code: {}", __FUNCTION__, resp.status_code());
-
-            nlohmann::json answer;
-            std::string    body = TO_STD_STR(resp.extract_string(true).get());
-            try
-            {
-                answer = nlohmann::json::parse(body);
-            }
-            catch (const nlohmann::detail::parse_error& err)
-            {
-                SPDLOG_ERROR("{}, body: {}", err.what(), body);
-                answer["error"] = body;
-            }
-            return answer;
-        }
-        return nlohmann::json::array();
-    }
-
     static inline std::string&
     access_rpc_password() noexcept
     {
@@ -1150,4 +1199,111 @@ namespace mm2::api
     {
         return access_rpc_password();
     }
+
+    pplx::task<web::http::http_response>
+    async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url)
+    {
+        SPDLOG_INFO("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, TO_STD_STR(client->base_uri().to_string()));
+
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        if (not url.empty())
+        {
+            req.set_request_uri(FROM_STD_STR(url));
+        }
+        return client->request(req);
+    }
+
+    template <typename RpcReturnType>
+    RpcReturnType
+    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
+    {
+        RpcReturnType answer;
+
+        try
+        {
+            from_json(json_answer, answer);
+            answer.rpc_result_code = 200;
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("exception caught for rpc {} answer: {}, exception: {}", rpc_command, json_answer.dump(4), error.what());
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
+
+    template mm2::api::withdraw_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::my_orders_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::orderbook_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::trade_fee_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::trade_preimage_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+
+    template <typename RpcReturnType>
+    RpcReturnType
+    rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept
+    {
+        std::string body = TO_STD_STR(resp.extract_string(true).get());
+        SPDLOG_INFO("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
+        RpcReturnType answer;
+
+        try
+        {
+            if (resp.status_code() not_eq 200)
+            {
+                SPDLOG_WARN("rpc answer code is not 200, body : {}", body);
+                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
+                {
+                    SPDLOG_DEBUG("error field detected inside the RpcReturnType");
+                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
+                    {
+                        SPDLOG_DEBUG("The error field type is string, parsing it from the response body");
+                        if (auto json_data = nlohmann::json::parse(body); json_data.at("error").is_string())
+                        {
+                            answer.error = json_data.at("error").get<std::string>();
+                        }
+                        else
+                        {
+                            answer.error = body;
+                        }
+                        SPDLOG_DEBUG("The error after getting extracted is: {}", answer.error.value());
+                    }
+                }
+                answer.rpc_result_code = resp.status_code();
+                answer.raw_result      = body;
+                return answer;
+            }
+
+
+            assert(not body.empty());
+            auto json_answer       = nlohmann::json::parse(body);
+            answer.rpc_result_code = resp.status_code();
+            answer.raw_result      = body;
+            from_json(json_answer, answer);
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR(
+                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(),
+                rpc_command, body);
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
+
+    void
+    set_system_manager(ag::ecs::system_manager& system_manager)
+    {
+        g_system_mgr = std::addressof(system_manager);
+    }
+
+    template mm2::api::tx_history_answer rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
 } // namespace mm2::api

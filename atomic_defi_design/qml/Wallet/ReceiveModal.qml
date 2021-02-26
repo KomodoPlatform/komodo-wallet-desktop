@@ -29,11 +29,10 @@ BasicModal {
         Image {
             Layout.alignment: Qt.AlignHCenter
 
-            source: "image://QZXing/encode/" + current_ticker_infos.address +
-                            "?correctionLevel=H" +
-                            "&format=qrcode&border=true"
-            sourceSize.width: 240
-            sourceSize.height: 240
+            source: current_ticker_infos.qrcode_address
+
+            sourceSize.width: 200
+            sourceSize.height: 200
         }
 
         // Buttons
@@ -46,9 +45,3 @@ BasicModal {
         ]
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:600;width:1200}
-}
-##^##*/

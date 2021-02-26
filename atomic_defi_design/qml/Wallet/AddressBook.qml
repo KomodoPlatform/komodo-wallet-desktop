@@ -1,485 +1,263 @@
+// Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-
 import QtGraphicalEffects 1.0
+
+// Deps Imports
+import Qaterial 1.0 as Qaterial
+
+// Project Imports
 import "../Components"
 import "../Constants"
 
-
 ColumnLayout {
-    id: address_book
-
-    function reset() {
-
-    }
-
-    readonly property int layout_margin: 30
-
-    property bool global_edit_in_progress: false
+    id: root
     Layout.fillWidth: true
+    Layout.fillHeight: true
+    //spacing: 20
 
-    property bool initialized: false
-    property bool inCurrentPage: dashboard.inCurrentPage() && dashboard.current_page === General.idx_dashboard_addressbook
+    readonly property var addressbook_pg: API.app.addressbook_pg
 
-    onInCurrentPageChanged: {
-        if(inCurrentPage) {
-            initialized = true
-        }
-        // Clean-up if user leaves this page
-        else {
-            if(initialized) {
-                console.log("Cleaning up the empty items at address book...")
-                global_edit_in_progress = false
-            }
-        }
-    }
-
-    readonly property var essential_coins: General.all_coins.filter(c => {
-                    if(c.type === "ERC-20" && c.ticker !== "ETH") return false
-                    else if(c.type === "QRC-20" && c.ticker !== "QTUM") return false
-                    else if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
-
-                    return true
-                })
-
-    spacing: 20
-
-    RowLayout {
-        Layout.topMargin: layout_margin
-
-        Layout.leftMargin: layout_margin
+    // Page header
+    Item {
         Layout.fillWidth: true
+        Layout.preferredHeight: 100
 
-        DefaultText {
+        DefaultText { // Title
+            anchors.left: parent.left
+            anchors.leftMargin: 15
+            anchors.top: parent.top
+            anchors.topMargin: 10
+
             text_value: qsTr("Address Book")
             font.weight: Font.Medium
             font.pixelSize: Style.textSize3
+        }
+
+        DefaultTextField { // Search input
+            id: searchbar
+            width: 400
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.bottom: parent.bottom
+            anchors.topMargin: 10
+
             Layout.fillWidth: true
+            placeholderText: qsTr("Search a contact by name or tags")
+            onTextChanged: addressbook_pg.model.proxy.search_exp = text
+
+            Component.onDestruction: addressbook_pg.model.proxy.search_exp = ""
         }
 
-        DefaultButton {
-            Layout.rightMargin: layout_margin
-            Layout.alignment: Qt.AlignRight
+        PrimaryButton { // New Contact Button
+            anchors.right: parent.right
+            anchors.rightMargin: 30
+            anchors.verticalCenter: parent.verticalCenter
+
             text: qsTr("New Contact")
-            enabled: !global_edit_in_progress
-            onClicked: {
-                API.app.addressbook_mdl.add_contact_entry()
-            }
+
+            onClicked: new_contact_modal.open()
         }
     }
 
-    HorizontalLine {
+    // Contact List Header
+    Item {
         Layout.fillWidth: true
+        Layout.preferredHeight: 30
+
+        HorizontalLine {
+            anchors.top: parent.top
+            width: parent.width
+            color: Style.colorWhite5
+        }
+
+        DefaultText {
+            id: header_name_column
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.verticalCenter: parent.verticalCenter
+            color: Style.colorWhite4
+            text: qsTr("Name")
+        }
+
+        DefaultText {
+            id: header_tags_column
+            anchors.left: header_name_column.right
+            anchors.leftMargin: 180
+            anchors.verticalCenter: parent.verticalCenter
+            color: Style.colorWhite4
+            text: qsTr("Tags (first 6)")
+        }
+
+        DefaultText {
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.138
+            anchors.verticalCenter: parent.verticalCenter
+            color: Style.colorWhite4
+            text: qsTr("Actions")
+        }
+
+        HorizontalLine {
+            width: parent.width
+            color: Style.colorWhite5
+            anchors.bottom: parent.bottom
+        }
     }
 
-    // Contacts list
+    // Contact List
     DefaultListView {
-        id: list
+        id: contact_list
         Layout.fillWidth: true
         Layout.fillHeight: true
-        model: API.app.addressbook_mdl.addressbook_proxy_mdl
 
-        delegate: Item {
-            id: contact
-            readonly property int line_height: 200
-            readonly property bool is_last_item: index === model.length - 1
-            property bool editing: false
+        model: addressbook_pg.model.proxy
 
-            readonly property var selected_coins: modelData.readonly_addresses.map(c => c.type)
+        // Contact Card
+        delegate: AnimatedRectangle {
+            id: contact_card
 
-            width: list.width
-            height: contact_bg.height + layout_margin
+            property var contact: modelData
 
+            color: Qt.lighter(index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7, 1.0)
+            width: root.width
+            height: 55
 
-            function kill() {
-                if(address_book.initialized)
-                    API.app.addressbook_mdl.remove_at(index)
+            DefaultText { // Contact Name
+                id: contact_name
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                anchors.verticalCenter: parent.verticalCenter
+
+                width: 160
+
+                text: modelData.name
+                elide: Text.ElideRight
             }
 
-            Connections {
-                target: address_book
+            VerticalLine {
+                anchors.left: contact_name.right
+                anchors.leftMargin: 25
+                height: parent.height
+                width: 1
+            }
 
-                function onInCurrentPageChanged() {
-                    if(!address_book.inCurrentPage) {
-                        const addresses_list = modelData.readonly_addresses
+            Flow { // Contact First 6 Tags
+                id: contact_tags_list
+                flow: GridLayout.LeftToRight
 
-                        // No killing if any of the addresses is filled
-                        for(const a of addresses_list)
-                            if(a.address !== "") {
-                                if(contact.editing)
-                                    contact.editing = false
+                readonly property int length: 6           // Number of displayed tags
+                readonly property int tagButtonWidth: 150 // Width of a tag button
 
-                                return
-                            }
+                width: length * tagButtonWidth
 
-                        // Kill if all addresses are empty
-                        contact.kill()
+                anchors.left: contact_name.right
+                anchors.leftMargin: 50
+                anchors.verticalCenter: parent.verticalCenter
+
+                Repeater {
+                    model: contact_card.contact.categories
+
+                    delegate: Qaterial.OutlineButton {
+                        width: contact_tags_list.tagButtonWidth
+                        visible: index < contact_tags_list.length && index < contact_card.contact.categories.length
+                        outlined: false
+                        text: modelData
+                        icon.source: Qaterial.Icons.tag
+                        elide: Text.ElideRight
+
+                        onClicked: searchbar.text = modelData
                     }
                 }
             }
 
+            VerticalLine {
+                anchors.right: edit_contact_button.left
+                anchors.rightMargin: 30
+                height: parent.height
+                width: 1
+            }
 
-            // Contact card
-            FloatingBackground {
-                id: contact_bg
+            DefaultButton { // Edit Button
+                id: edit_contact_button
 
-                width: parent.width - 2*layout_margin
-                height: column_layout.height + layout_margin
-                anchors.centerIn: parent
+                anchors.right: remove_contact_button.left
+                anchors.rightMargin: 5
+                anchors.verticalCenter: parent.verticalCenter
 
-                ColumnLayout {
-                    id: column_layout
-                    width: parent.width
-                    anchors.centerIn: parent
+                text: qsTr("Edit")
+                font.pixelSize: Style.textSizeSmall3
+                width: 120
+
+                onClicked: {
+                    edit_contact_modal.contactModel = modelData
+                    edit_contact_modal.open()
+                }
+            }
+
+            DangerButton { // Remove Button
+                id: remove_contact_button
+
+                anchors.right: parent.right
+                anchors.rightMargin: 30
+                anchors.verticalCenter: parent.verticalCenter
+
+                text: qsTr("Remove")
+                font.pixelSize: Style.textSizeSmall3
+                width: 120
+
+                onClicked: {
+                    remove_contact_modal.contactName = modelData.name
+                    remove_contact_modal.open()
+                }
+            }
+        }
+
+
+        // Create Contact Modal
+        ModalLoader {
+            id: new_contact_modal
+            sourceComponent: AddressBookNewContactModal {}
+        }
+
+        // Edit Contact Modal
+        ModalLoader {
+            id: edit_contact_modal
+
+            property var contactModel
+
+            onLoaded: item.contactModel = contactModel
+
+            sourceComponent: AddressBookEditContactModal {}
+        }
+
+        // Delete Contact Modal
+        ModalLoader {
+            property string contactName
+
+            id: remove_contact_modal
+
+            sourceComponent: BasicModal {
+                width: 500
+
+                ModalContent {
+                    Layout.fillWidth: true
+                    title: qsTr("Do you want to remove this contact ?")
 
                     RowLayout {
-                        Layout.preferredWidth: parent.width
-                        Layout.preferredHeight: 50
-                        Layout.alignment: Qt.AlignVCenter
+                        DangerButton {
+                            text: qsTr("Yes")
 
-                        // Contact name
-                        RowLayout {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            Layout.leftMargin: layout_margin
-
-                            DefaultText {
-                                Layout.leftMargin: name_input.Layout.leftMargin
-
-                                text: modelData.name
-                                color: Style.colorText
-                                visible: !editing
-
-                                Component.onCompleted: {
-                                    // Start editing if it's a new/empty one
-                                    if(text.length === 0) {
-                                        editing = global_edit_in_progress = true
-                                    }
-                                }
-                            }
-                            DefaultTextField {
-                                id: name_input
-
-                                color: Style.colorText
-                                placeholderText: qsTr("Enter the contact name")
-                                width: 150
-                                onTextChanged: {
-                                    const max_length = 50
-                                    if(text.length > max_length)
-                                        text = text.substring(0, max_length)
-                                }
-
-                                visible: editing
-                            }
-
-                            DefaultText {
-                                id: edit_contact
-                                Layout.leftMargin: layout_margin * 0.25
-
-                                visible: !editing && enabled
-                                enabled: !global_edit_in_progress
-                                text: "✎"
-                                font.weight: Font.Medium
-                                color: Style.colorGreen
-
-                                DefaultMouseArea {
-                                    anchors.fill: parent
-                                    onClicked: {
-                                        if(edit_contact.enabled) {
-                                            name_input.text = modelData.name
-                                            editing = global_edit_in_progress = true
-                                        }
-                                    }
-                                }
+                            onClicked: {
+                                remove_contact_modal.close()
+                                addressbook_pg.model.remove_contact(contactName)
                             }
                         }
 
-                        // Buttons
-                        RowLayout {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                            Layout.rightMargin: layout_margin
+                        DefaultButton {
+                            text: qsTr("No")
 
-                            PrimaryButton {
-                                Layout.leftMargin: layout_margin
-
-                                visible: editing
-                                enabled: name_input.length > 0
-                                font.pixelSize: Style.textSizeSmall3
-                                text:  qsTr("Save")
-                                minWidth: height
-                                onClicked: {
-                                    modelData.name = name_input.text
-                                    editing = global_edit_in_progress = false
-                                }
-                            }
-
-                            DefaultButton {
-                                Layout.alignment: Qt.AlignVCenter
-                                Layout.leftMargin: layout_margin
-
-                                visible: !editing
-                                enabled: !global_edit_in_progress && essential_coins.length > contact.selected_coins.length
-                                font.pixelSize: Style.textSizeSmall3
-                                text: "New Address"
-                                onClicked: {
-                                    modelData.add_address_content()
-                                }
-                            }
-
-                            DangerButton {
-                                Layout.alignment: Qt.AlignVCenter
-                                visible: editing
-                                Layout.leftMargin: layout_margin
-
-                                font.pixelSize: Style.textSizeSmall3
-                                text:  qsTr("Delete")
-                                minWidth: height
-                                onClicked: {
-                                    global_edit_in_progress = false
-                                    kill()
-                                }
-                            }
-                        }
-                    }
-
-                    HorizontalLine {
-                        Layout.fillWidth: true
-                    }
-
-                    // Address list
-                    Column {
-                        Layout.fillWidth: true
-
-                        Repeater {
-                            id: address_list
-
-                            model: modelData
-                            delegate: AnimatedRectangle {
-                                id: address_line
-
-                                property bool initialized: false
-
-                                function kill() {
-                                    if(address_book.initialized) modelData.remove_at(index)
-                                }
-
-                                Connections {
-                                    target: address_book
-
-                                    function onInCurrentPageChanged() {
-                                        if(address_book.inCurrentPage && !address_line.initialized && address_line.selectable_coins.length === 0) {
-                                            address_line.updateSelectableCoins()
-                                            address_line.initialized = true
-                                        }
-
-                                        if(!address_book.inCurrentPage) {
-                                            if(address === "") address_line.kill()
-                                            else if(address_line.editing_address) {
-                                                address_line.editing_address = false
-                                            }
-                                        }
-                                    }
-                                }
-
-                                property bool editing_address: false
-
-
-                                property var selectable_coins: ([])
-
-                                Connections {
-                                    target: contact
-
-                                    function onSelected_coinsChanged() {
-                                        address_line.updateSelectableCoins()
-                                    }
-                                }
-
-                                function updateSelectableCoins() {
-                                    const original_text = type
-
-                                    selectable_coins = essential_coins.filter(c => c.ticker === type || contact.selected_coins.indexOf(c.ticker) === -1).map(c => c.ticker)
-
-                                    if(original_text !== "")
-                                        combo_base.currentIndex = address_line.selectable_coins.indexOf(original_text)
-                                }
-
-
-                                width: contact_bg.width
-                                height: 50
-
-
-                                color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
-
-                                DefaultMouseArea {
-                                    id: mouse_area
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                }
-
-                                // Edit
-                                DefaultText {
-                                    id: edit_icon
-                                    anchors.left: parent.left
-                                    anchors.leftMargin: layout_margin * 0.5
-                                    anchors.verticalCenter: parent.verticalCenter
-
-                                    visible: !editing_address && enabled
-                                    enabled: !global_edit_in_progress
-                                    text: "✎"
-                                    font.weight: Font.Medium
-                                    color: enabled ? Style.colorGreen : Style.colorTextDisabled
-
-                                    DefaultMouseArea {
-                                        anchors.fill: parent
-                                        onClicked: {
-                                            if(edit_icon.enabled) {
-                                                address_input.text = address
-                                                editing_address = global_edit_in_progress = true
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // Icon
-                                DefaultImage {
-                                    id: icon
-
-                                    anchors.left: edit_icon.right
-                                    anchors.leftMargin: 10
-                                    anchors.verticalCenter: parent.verticalCenter
-
-                                    source: General.coinIcon(type)
-                                    width: Style.textSize2
-                                }
-
-                                // Name
-                                DefaultText {
-                                    anchors.left: combo_base.anchors.left
-                                    anchors.leftMargin: combo_base.anchors.leftMargin
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    visible: !combo_base.visible
-
-                                    text_value: type
-                                }
-
-                                DefaultComboBox {
-                                    id: combo_base
-
-                                    anchors.left: icon.right
-                                    anchors.leftMargin: 10
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    width: 125
-                                    visible: editing_address
-
-                                    model: selectable_coins
-
-                                    onCurrentTextChanged: { if(currentText !== type) type = currentText }
-                                }
-
-                                VerticalLine {
-                                    anchors.top: parent.top
-                                    anchors.bottom: parent.bottom
-                                }
-
-                                // Address name
-                                DefaultText {
-                                    anchors.left: combo_base.right
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin
-                                    text: address
-                                    visible: !address_input.visible
-                                    font.pixelSize: Style.textSizeSmall3
-
-                                    Component.onCompleted: {
-                                        // Start editing if it's a new/empty one
-                                        if(text.length === 0) {
-                                            editing_address = global_edit_in_progress = true
-                                        }
-                                    }
-                                }
-                                AddressField {
-                                    id: address_input
-                                    anchors.left: combo_base.right
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin
-                                    font.pixelSize: Style.textSizeSmall3
-                                    placeholderText: qsTr("Enter the address")
-                                    width: 400
-                                    visible: editing_address
-                                }
-
-                                RowLayout {
-                                    anchors.right: parent.right
-                                    anchors.rightMargin: layout_margin * 0.5
-                                    anchors.verticalCenter: parent.verticalCenter
-
-                                    PrimaryButton {
-                                        Layout.leftMargin: layout_margin
-
-                                        visible: editing_address
-                                        font.pixelSize: Style.textSizeSmall3
-                                        text:  qsTr("Save")
-                                        enabled: address_input.length > 0
-                                        minWidth: height
-                                        onClicked: {
-                                            address = address_input.text
-                                            editing_address = global_edit_in_progress = false
-                                        }
-                                    }
-
-                                    DefaultButton {
-                                        Layout.alignment: Qt.AlignVCenter
-                                        Layout.leftMargin: layout_margin
-
-                                        font.pixelSize: Style.textSizeSmall3
-                                        text: qsTr("Explorer")
-                                        enabled: address !== "" && type !== ""
-                                        visible: !editing_address
-                                        onClicked: General.viewAddressAtExplorer(type, address)
-                                    }
-
-                                    DefaultButton {
-                                        Layout.alignment: Qt.AlignVCenter
-                                        Layout.leftMargin: layout_margin
-
-                                        font.pixelSize: Style.textSizeSmall3
-                                        text: qsTr("Send")
-                                        minWidth: height
-                                        enabled: address !== "" && type !== "" && API.app.enabled_coins.map(c => c.ticker).indexOf(type) !== -1
-                                        visible: !editing_address
-                                        onClicked: {
-                                            api_wallet_page.ticker = type
-                                            dashboard.current_page = General.idx_dashboard_wallet
-                                            wallet.send_modal.address_field.text = address
-                                            wallet.send_modal.open()
-                                        }
-                                    }
-
-                                    DangerButton {
-                                        Layout.alignment: Qt.AlignVCenter
-                                        visible: editing_address
-                                        Layout.leftMargin: layout_margin
-
-                                        font.pixelSize: Style.textSizeSmall3
-                                        text:  qsTr("Delete")
-                                        minWidth: height
-                                        onClicked: {
-                                            global_edit_in_progress = false
-                                            address_line.kill()
-                                        }
-                                    }
-                                }
-
-                                HorizontalLine {
-                                    visible: index !== modelData.length -1
-                                    width: parent.width - 4
-
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.bottom: parent.bottom
-                                    anchors.bottomMargin: -height/2
-                                    light: true
-                                }
-                            }
+                            onClicked: remove_contact_modal.close()
                         }
                     }
                 }
@@ -487,16 +265,3 @@ ColumnLayout {
         }
     }
 }
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:600;width:1200}
-}
-##^##*/

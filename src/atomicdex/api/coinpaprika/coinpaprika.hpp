@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,9 +16,18 @@
 
 #pragma once
 
+//! Deps
+#include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
+
 //! Project Headers
-#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/constants/http.code.hpp"
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
+
+namespace
+{
+    constexpr const std::size_t g_nb_hours_in_a_week{168};
+}
 
 namespace atomic_dex
 {
@@ -28,13 +37,13 @@ namespace atomic_dex
         {
             std::string ticker_currency_id;
             std::size_t timestamp{static_cast<size_t>(
-                std::chrono::duration_cast<std::chrono::seconds>((std::chrono::system_clock::now() - std::chrono::hours(168)).time_since_epoch()).count())};
+                std::chrono::duration_cast<std::chrono::seconds>((std::chrono::system_clock::now() - std::chrono::hours(g_nb_hours_in_a_week)).time_since_epoch()).count())};
             std::string interval{"1d"};
         };
 
         struct ticker_historical_answer
         {
-            nlohmann::json answer;
+            nlohmann::json answer{nlohmann::json::array()};
             int            rpc_result_code;
             std::string    raw_result;
         };
@@ -67,7 +76,7 @@ namespace atomic_dex
             std::string quote_currency_name;
             std::string quote_price_last_updated;
             std::size_t amount;
-            std::string price; ///< we need trick here
+            std::string price{"0.00"}; ///< we need trick here
             int         rpc_result_code;
             std::string raw_result;
         };
@@ -87,7 +96,7 @@ namespace atomic_dex
         template <typename TAnswer>
         TAnswer static inline process_generic_resp(web::http::http_response resp)
         {
-            TAnswer answer;
+            TAnswer     answer;
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == e_http_code::bad_request)
             {
@@ -112,8 +121,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                SPDLOG_ERROR("exception caught in func[{}] line[{}] file[{}] error[{}]", 
-                        __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what());
+                SPDLOG_ERROR("exception caught: error[{}], body: {}", error.what(), body);
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }
@@ -122,7 +130,10 @@ namespace atomic_dex
     } // namespace coinpaprika::api
 
 
-    using t_price_converter_answer   = coinpaprika::api::price_converter_answer;
-    using t_ticker_info_answer       = coinpaprika::api::ticker_info_answer;
-    using t_ticker_historical_answer = coinpaprika::api::ticker_historical_answer;
+    using t_price_converter_answer    = coinpaprika::api::price_converter_answer;
+    using t_price_converter_request   = coinpaprika::api::price_converter_request;
+    using t_ticker_info_answer        = coinpaprika::api::ticker_info_answer;
+    using t_ticker_infos_request      = coinpaprika::api::ticker_infos_request;
+    using t_ticker_historical_answer  = coinpaprika::api::ticker_historical_answer;
+    using t_ticker_historical_request = coinpaprika::api::ticker_historical_request;
 } // namespace atomic_dex

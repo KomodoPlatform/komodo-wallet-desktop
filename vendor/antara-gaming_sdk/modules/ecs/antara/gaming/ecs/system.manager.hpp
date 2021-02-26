@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -83,13 +83,13 @@ namespace antara::gaming::ecs
         [[nodiscard]] tl::expected<std::reference_wrapper<const TSystem>, std::error_code> get_system_() const noexcept;
 
         //! Private data members
-        entt::registry&   entity_registry_;
-        entt::dispatcher& dispatcher_;
-        timer::time_step  timestep_;
-        system_registry   systems_{{}};
-        systems_queue     systems_to_add_;
-        bool              need_to_sweep_systems_{false};
-        bool              game_is_running_{false};
+        [[maybe_unused]] entt::registry& entity_registry_;
+        entt::dispatcher&                dispatcher_;
+        timer::time_step                 timestep_;
+        system_registry                  systems_{{}};
+        systems_queue                    systems_to_add_;
+        bool                             need_to_sweep_systems_{false};
+        bool                             game_is_running_{false};
 
       public:
         //! Constructor
@@ -220,7 +220,7 @@ namespace antara::gaming::ecs
          * @return A reference to the system obtained.
          */
         template <typename TSystem>
-        const TSystem& get_system() const noexcept;
+        const TSystem& get_system() const;
 
         /**
          * @overload get_system
@@ -247,7 +247,7 @@ namespace antara::gaming::ecs
          * @endcode
          */
         template <typename TSystem>
-        TSystem& get_system() noexcept;
+        TSystem& get_system();
 
         /**
          * @verbatim embed:rst:leading-asterisk

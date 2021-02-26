@@ -31,8 +31,8 @@ Item {
 
     DefaultSwitch {
         id: switch_input
-        visible: dashboard_index === General.idx_dashboard_light_ui ||
-                 dashboard_index === General.idx_dashboard_privacy_mode
+        visible: dashboard_index === idx_dashboard_light_ui ||
+                 dashboard_index === idx_dashboard_privacy_mode
         anchors.left: parent.left
         anchors.leftMargin: 7
         anchors.verticalCenter: img.verticalCenter
@@ -102,10 +102,10 @@ Item {
         onClicked: function() {
             if(!section_enabled) return
 
-            if(dashboard_index === General.idx_dashboard_light_ui) {
+            if(dashboard_index === idx_dashboard_light_ui) {
                 toggleDarkUI()
             }
-            else if(dashboard_index === General.idx_dashboard_privacy_mode) {
+            else if(dashboard_index === idx_dashboard_privacy_mode) {
                 togglePrivacyMode()
             }
             else dashboard.current_page = dashboard_index

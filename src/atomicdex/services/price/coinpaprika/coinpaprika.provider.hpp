@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,11 +16,15 @@
 
 #pragma once
 
+//! STD
+#include <shared_mutex>
+
+//! Deps
+#include <antara/gaming/ecs/system.manager.hpp>
+
 //! Project Headers
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
-#include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/events/events.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
 
 namespace atomic_dex
 {
@@ -28,39 +32,78 @@ namespace atomic_dex
 
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider>
     {
-      public:
-        using t_ticker_infos_registry      = t_concurrent_reg<std::string, t_ticker_info_answer>;
-        using t_ticker_historical_registry = t_concurrent_reg<std::string, t_ticker_historical_answer>;
-
-      private:
         //! Typedefs
-        using t_providers_registry = t_concurrent_reg<std::string, std::string>;
+        using t_ref_count_idx              = std::shared_ptr<std::atomic_uint16_t>;
+        using t_providers_registry         = std::unordered_map<std::string, t_price_converter_answer>;
+        using t_ticker_infos_registry      = std::unordered_map<std::string, t_ticker_info_answer>;
+        using t_ticker_historical_registry = std::unordered_map<std::string, t_ticker_historical_answer>;
 
         //! Private fields
-        mm2_service&                         m_mm2_instance;                 ///< represent the MM2 instance
+
+        //! ag::system_manager
+        ag::ecs::system_manager& m_system_manager;
+
+        //! Containers
         t_providers_registry         m_usd_rate_providers{};         ///< USD Rate Providers
         t_ticker_infos_registry      m_ticker_infos_registry{};      ///< Ticker info registry, key is the ticker
         t_ticker_historical_registry m_ticker_historical_registry{}; ///< Ticker historical registry, key is the ticker
 
+        //! Mutexes
+        mutable std::shared_mutex m_ticker_historical_mutex;
+        mutable std::shared_mutex m_ticker_infos_mutex;
+        mutable std::shared_mutex m_provider_mutex;
+
+        //! Private member functions
+        void verify_idx(t_ref_count_idx idx = nullptr, uint16_t target_size = 0, const std::vector<std::string>& tickers = {});
+
+        //! Private templated member functions
+        template <typename TAnswer, typename TRegistry, typename TLockable>
+        TAnswer get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const noexcept;
+
+        template <typename TContainer, typename TAnswer, typename... Args>
+        void generic_post_verification(std::shared_mutex& mtx, TContainer& container, std::string&& ticker, TAnswer&& answer, Args... args);
+
+        template <typename TAnswer, typename TRequest, typename TExecutorFunctor, typename... Args>
+        void generic_rpc_paprika_process(
+            const TRequest& request, std::string ticker, std::shared_mutex& mtx, std::unordered_map<std::string, TAnswer>& container,
+            TExecutorFunctor&& functor, Args... args);
+
+        //! Private RPC Call
+        template <typename... Args>
+        void process_provider(const coin_config& current_coin, Args... args);
+        template <typename... Args>
+        void process_ticker_infos(const coin_config& current_coin, Args... args);
+        template <typename... Args>
+        void process_ticker_historical(const coin_config& current_coin, Args... args);
+
       public:
+        //! Deleted operation
+        coinpaprika_provider(coinpaprika_provider& other) = delete;
+        coinpaprika_provider(coinpaprika_provider&& other) = delete;
+        coinpaprika_provider& operator=(coinpaprika_provider& other) = delete;
+        coinpaprika_provider& operator=(coinpaprika_provider&& other) = delete;
+
         //! Constructor
-        coinpaprika_provider(entt::registry& registry, mm2_service& mm2_instance);
+        coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) noexcept;
 
         //! Destructor
         ~coinpaprika_provider() noexcept final;
 
-        //! Public API
+        ///< Public API
+
+        //! Update all the data of the provider in an async way
+        void update_ticker_and_provider();
 
         //! Get the rate conversion for the given fiat.
-        std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
+        [[nodiscard]] std::string get_rate_conversion(const std::string& ticker) const noexcept;
 
         //! Get the ticker informations.
-        t_ticker_info_answer get_ticker_infos(const std::string& ticker) const noexcept;
+        [[nodiscard]] t_ticker_info_answer get_ticker_infos(const std::string& ticker) const noexcept;
 
         //! Get the ticker informations.
-        t_ticker_historical_answer get_ticker_historical(const std::string& ticker) const noexcept;
+        [[nodiscard]] t_ticker_historical_answer get_ticker_historical(const std::string& ticker) const noexcept;
 
-        //! Events
+        ///< Events
 
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
@@ -71,11 +114,8 @@ namespace atomic_dex
         //! Event that occur when a coin is correctly disabled.
         void on_coin_disabled(const coin_disabled& evt) noexcept;
 
-        //! Override ag::ecs functions
+        //! Override ag::system functions
         void update() noexcept final;
-
-        //! Update all the data of the provider in an async way
-        void update_ticker_and_provider();
     };
 } // namespace atomic_dex
 

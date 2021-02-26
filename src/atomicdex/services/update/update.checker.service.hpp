@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,17 +16,25 @@
 
 #pragma once
 
+//! Qt
+#include <QObject>
+#include <QVariant>
+
 //! Deps
-#include <nlohmann/json_fwd.hpp>
 #include <boost/thread/synchronized_value.hpp>
+#include <nlohmann/json_fwd.hpp>
 
 //! Project Headers
 #include <antara/gaming/ecs/system.hpp>
 
 namespace atomic_dex
 {
-    class update_service_checker final : public ag::ecs::pre_update_system<update_service_checker>
+    class update_service_checker final : public QObject, public ag::ecs::pre_update_system<update_service_checker>
     {
+        Q_OBJECT
+
+        Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
+
         //! Private typedefs
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
         using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
@@ -38,16 +46,21 @@ namespace atomic_dex
         //! Private API
         void fetch_update_status() noexcept;
 
+      signals:
+        void updateStatusChanged();
+
       public:
         //! Constructor
-        explicit update_service_checker(entt::registry& registry);
+        explicit update_service_checker(entt::registry& registry, QObject* parent = nullptr);
+
+        //! Destructor
         ~update_service_checker() noexcept final = default;
 
         //! Public override
         void update() noexcept final;
 
-        //! Public API
-        [[nodiscard]] nlohmann::json get_update_status() const noexcept;
+        //! Properties
+        [[nodiscard]] QVariant get_update_status() const noexcept;
     };
 } // namespace atomic_dex
 

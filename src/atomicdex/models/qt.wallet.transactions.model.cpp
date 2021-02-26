@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -15,11 +15,17 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/models/qt.wallet.transactions.model.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/models/qt.wallet.transactions.model.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
+
+namespace
+{
+    constexpr int g_file_count_limit = 15_sz;
+}
 
 namespace atomic_dex
 {
@@ -103,7 +109,6 @@ namespace atomic_dex
             item.transaction_note = value.toString().toStdString();
             auto& wallet_manager  = this->m_system_manager.get_system<qt_wallet_manager>();
             wallet_manager.update_transactions_notes(item.tx_hash, item.transaction_note);
-            wallet_manager.update_wallet_cfg();
             break;
         }
         }
@@ -131,11 +136,10 @@ namespace atomic_dex
             return static_cast<quint64>(item.timestamp);
         case AmountFiatRole:
         {
-            const auto&     currency      = this->m_system_manager.get_system<settings_page>().get_cfg().current_currency;
-            const auto&     price_service = this->m_system_manager.get_system<global_price_service>();
-            const auto&     mm2_system    = this->m_system_manager.get_system<mm2_service>();
-            std::error_code ec;
-            return QString::fromStdString(price_service.get_price_as_currency_from_tx(currency, mm2_system.get_current_ticker(), item, ec));
+            const auto& currency      = this->m_system_manager.get_system<settings_page>().get_cfg().current_currency;
+            const auto& price_service = this->m_system_manager.get_system<global_price_service>();
+            const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
+            return QString::fromStdString(price_service.get_price_as_currency_from_tx(currency, mm2_system.get_current_ticker(), item));
         }
         case TxHashRole:
             return QString::fromStdString(item.tx_hash);
@@ -186,7 +190,7 @@ namespace atomic_dex
             //! First time insertion
             beginResetModel();
             m_model_data = transactions;
-            m_file_count = 0;
+            m_file_count = transactions.size() < g_file_count_limit ? transactions.size() : g_file_count_limit;
             endResetModel();
         }
         else
@@ -195,16 +199,16 @@ namespace atomic_dex
             SPDLOG_DEBUG("other time insertion, from {} to {}", m_file_count, m_file_count + transactions.size());
             beginInsertRows(QModelIndex(), m_file_count, m_file_count + transactions.size() - 1);
             m_file_count += transactions.size();
-            if (m_model_data.size() < 50)
+            if (m_model_data.size() < g_file_count_limit)
             {
                 m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
             }
             else
             {
-                m_model_data.insert(begin(m_model_data) + 50, begin(transactions), end(transactions));
+                m_model_data.insert(begin(m_model_data) + g_file_count_limit, begin(transactions), end(transactions));
             }
             endInsertRows();
-            if (this->canFetchMore(QModelIndex()) && m_model_data.size() >= 50)
+            if (this->canFetchMore(QModelIndex()) && m_model_data.size() >= g_file_count_limit)
             {
                 this->fetchMore(QModelIndex());
             }
@@ -237,8 +241,7 @@ namespace atomic_dex
         }
         t_transactions to_init;
         auto           difference = transactions.size() - this->m_model_data.size();
-        SPDLOG_DEBUG("difference between old transactions call and new transactions is: {}", difference);
-        SPDLOG_DEBUG("new transactions size is: {}, old one is: {}", transactions.size(), m_model_data.size());
+
         if (difference > 0)
         {
             //! Take all the unconfirmed transaction
@@ -263,12 +266,10 @@ namespace atomic_dex
             //! There is new transactions take the diff
             // to_init = t_transactions(transactions.begin(), transactions.begin() + difference);
         }
-        SPDLOG_DEBUG("updating transactions");
+
         std::for_each(begin(transactions) + difference, end(transactions), [this](const tx_infos& tx) { this->update_transaction(tx); });
         if (not to_init.empty())
         {
-            SPDLOG_DEBUG("to init transactions started: {}", to_init.size());
-            SPDLOG_DEBUG("hash: {}", to_init[0].tx_hash);
             this->init_transactions(to_init);
         }
     }
@@ -293,7 +294,7 @@ namespace atomic_dex
             return;
         }
         int remainder      = m_model_data.size() - m_file_count;
-        int items_to_fetch = qMin(50, remainder);
+        int items_to_fetch = qMin(g_file_count_limit, remainder);
         if (items_to_fetch <= 0)
         {
             return;

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -45,6 +45,7 @@ namespace atomic_dex
         void on_balance_update_notification(const balance_update_notification& evt);
         void on_endpoint_nonreacheable(const endpoint_nonreacheable& evt);
         void on_mismatch_custom_coins_configuration(const mismatch_configuration_custom_coin& evt);
+        void on_fatal_notification(const fatal_notification& evt);
 
       signals:
         void updateSwapStatus(QString old_swap_status, QString new_swap_status, QString swap_uuid, QString base_coin, QString rel_coin, QString human_date);
@@ -52,6 +53,7 @@ namespace atomic_dex
         void enablingCoinFailedStatus(QString coin, QString error, QString human_date, qint64 timestamp);
         void endpointNonReacheableStatus(QString base_uri, QString human_date, qint64 timestamp);
         void mismatchCustomCoinConfiguration(QString asset, QString human_date, qint64 timestamp);
+        void fatalNotification(QString message);
 
       private:
         entt::dispatcher& m_dispatcher;

@@ -13,30 +13,31 @@ BasicModal {
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
 
-
-    onClosed: if(root.currentIndex === 2) reset(true)
+    onClosed: reset()
 
     // Local
     readonly property var default_send_result: ({ has_error: false, error_message: "",
                                                     withdraw_answer: {
-                                                        tx_hex: "", date: "", "fee_details": { total_fee: "" }
+                                                        total_amount_fiat: "", tx_hex: "", date: "", "fee_details": { total_fee: "" }
                                                     },
                                                     explorer_url: "", max: false })
     property var send_result: default_send_result
 
 
     readonly property bool is_send_busy: api_wallet_page.is_send_busy
-    readonly property var send_rpc_result: api_wallet_page.send_rpc_data
+    property var send_rpc_result: api_wallet_page.send_rpc_data
 
     readonly property bool is_broadcast_busy: api_wallet_page.is_broadcast_busy
-    readonly property string broadcast_result: api_wallet_page.broadcast_rpc_data
+    property string broadcast_result: api_wallet_page.broadcast_rpc_data
     property bool async_param_max: false
 
     onSend_rpc_resultChanged: {
-        send_result = General.clone(send_rpc_result)
+        if (is_send_busy === false) {
+            return
+        }
 
         // Local var, faster
-        const result = send_result
+        const result = General.clone(send_rpc_result)
 
         if(result.error_code) {
             root.close()
@@ -44,7 +45,7 @@ BasicModal {
             toast.show(qsTr("Failed to send"), General.time_toast_important_error, result.error_message)
         }
         else {
-            if(!result.withdraw_answer) {
+            if(!result || !result.withdraw_answer) {
                 reset()
                 return
             }
@@ -57,9 +58,15 @@ BasicModal {
             // Change page
             root.currentIndex = 1
         }
+
+        send_result = result
     }
 
     onBroadcast_resultChanged: {
+        if (is_broadcast_busy === false) {
+            return
+        }
+
         if(root.visible && broadcast_result !== "") {
             if(broadcast_result.indexOf("error") !== -1) {
                 reset()
@@ -108,9 +115,8 @@ BasicModal {
         return addr === addr.toLowerCase() || addr === addr.toUpperCase()
     }
 
-    function reset(close = false) {
+    function reset() {
         send_result = default_send_result
-
         input_address.field.text = ""
         input_amount.field.text = ""
         input_custom_fees.field.text = ""
@@ -118,8 +124,6 @@ BasicModal {
         input_custom_fees_gas_price.field.text = ""
         custom_fees_switch.checked = false
         input_max_amount.checked = false
-
-        if(close) root.close()
         root.currentIndex = 0
     }
 
@@ -198,7 +202,7 @@ BasicModal {
     ModalContent {
         Layout.fillWidth: true
 
-        title: qsTr("Prepare to Send")
+        title: qsTr("Prepare to send ") + current_ticker_infos.name
 
         // Send address
         RowLayout {
@@ -215,10 +219,7 @@ BasicModal {
             DefaultButton {
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                 text: qsTr("Address Book")
-                onClicked: {
-                    dashboard.current_page = General.idx_dashboard_addressbook
-                    root.close()
-                }
+                onClicked: contact_list.open()
                 enabled: !root.is_send_busy
             }
         }
@@ -357,6 +358,20 @@ BasicModal {
                                            isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
             }
         ]
+
+        ModalLoader { // Modal to pick up a contact's address.
+            id: contact_list
+            sourceComponent: SendModalContactList {
+                onClosed: {
+                    if (selected_address === "") {
+                        return
+                    }
+                    input_address.field.text = selected_address
+                    selected_address = ""
+                    console.debug("SendModal: Selected %1 address from addressbook.".arg(input_address.field.text))
+                }
+            }
+        }
     }
 
     // Send Page
@@ -372,7 +387,8 @@ BasicModal {
         // Amount
         TextEditWithTitle {
             title: qsTr("Amount")
-            text: General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
+            text: empty_data ? "" :
+                  General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
         }
 
         // Fees
@@ -422,12 +438,8 @@ BasicModal {
         tx_hash: broadcast_result
         custom_amount: input_amount.field.text
 
-        function onClose() { reset(true) }
+        function onClose() {
+            root.close()
+        }
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:600;width:1200}
-}
-##^##*/

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -15,7 +15,10 @@
  ******************************************************************************/
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
+
+//! Qt
+#include <QJsonDocument>
 
 //! Deps
 #include <boost/algorithm/string/replace.hpp>
@@ -23,9 +26,9 @@
 
 //! Project headers
 #include "atomicdex/events/events.hpp"
+#include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
-#include "src/atomicdex/version/version.hpp"
-#include "update.checker.service.hpp"
+#include "atomicdex/version/version.hpp"
 
 namespace
 {
@@ -72,7 +75,7 @@ namespace
 namespace atomic_dex
 {
     //! Constructor
-    update_service_checker::update_service_checker(entt::registry& registry) : system(registry)
+    update_service_checker::update_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
     {
         m_update_clock  = std::chrono::high_resolution_clock::now();
         m_update_status = nlohmann::json::object();
@@ -103,14 +106,16 @@ namespace atomic_dex
         async_check_retrieve()
             .then([this](web::http::http_response resp) {
                 this->m_update_status = get_update_status_rpc(resp);
-                this->dispatcher_.trigger<refresh_update_status>();
+                emit updateStatusChanged();
             })
             .then(&handle_exception_pplx_task);
     }
 
-    nlohmann::json
+    QVariant
     update_service_checker::get_update_status() const noexcept
     {
-        return *m_update_status;
+        nlohmann::json status = *m_update_status;
+        QJsonDocument  doc    = QJsonDocument::fromJson(QString::fromStdString(status.dump()).toUtf8());
+        return doc.toVariant();
     }
 } // namespace atomic_dex

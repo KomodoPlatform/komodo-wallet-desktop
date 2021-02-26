@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,28 +16,15 @@
 
 #pragma once
 
+//! STD
+#include <unordered_map>
+
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 #include <boost/thread/synchronized_value.hpp>
 
 namespace atomic_dex
 {
-    struct contact_contents
-    {
-        std::string type{};
-        std::string address{};
-    };
-
-    void to_json(nlohmann::json& j, const contact_contents& cfg);
-
-    struct contact
-    {
-        std::string                   name{};
-        std::vector<contact_contents> contents{};
-    };
-
-    void to_json(nlohmann::json& j, const contact& cfg);
-
     struct transactions_contents
     {
         std::string note;
@@ -52,7 +39,6 @@ namespace atomic_dex
         using t_synchronized_transactions_details = boost::synchronized_value<std::unordered_map<std::string, transactions_contents>>;
         std::string                         name{};
         std::string                         protection_pass{"default_protection_pass"};
-        std::vector<contact>                address_book{};
         t_synchronized_transactions_details transactions_details;
     };
 

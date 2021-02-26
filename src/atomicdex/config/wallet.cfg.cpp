@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -30,22 +30,6 @@ namespace atomic_dex
         {
             j.at("protection_pass").get_to(cfg.protection_pass);
         }
-        if (j.contains("addressbook"))
-        {
-            for (const auto& cur: j.at("addressbook"))
-            {
-                contact current_contact;
-                cur.at("name").get_to(current_contact.name);
-                for (const auto& cur_addr: cur.at("addresses"))
-                {
-                    contact_contents contents;
-                    cur_addr.at("type").get_to(contents.type);
-                    cur_addr.at("address").get_to(contents.address);
-                    current_contact.contents.emplace_back(std::move(contents));
-                }
-                cfg.address_book.emplace_back(std::move(current_contact));
-            }
-        }
         if (j.contains("transactions_details"))
         {
             cfg.transactions_details = j.at("transactions_details").get<decltype(cfg.transactions_details)::value_type>();
@@ -53,25 +37,10 @@ namespace atomic_dex
     }
 
     void
-    to_json(nlohmann::json& j, const contact_contents& cfg)
-    {
-        j["type"]    = cfg.type;
-        j["address"] = cfg.address;
-    }
-
-    void
-    to_json(nlohmann::json& j, const contact& cfg)
-    {
-        j["name"]      = cfg.name;
-        j["addresses"] = cfg.contents;
-    }
-
-    void
     to_json(nlohmann::json& j, const wallet_cfg& cfg)
     {
         j["name"]                 = cfg.name;
         j["protection_pass"]      = cfg.protection_pass;
-        j["addressbook"]          = cfg.address_book;
         j["transactions_details"] = cfg.transactions_details.get();
     }
 

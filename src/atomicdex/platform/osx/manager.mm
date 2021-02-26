@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -13,6 +13,11 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
+
+#include "atomicdex/pch.hpp"
+
+//! STD
+#include <string>
 
 #include <Availability.h>
 #include "manager.hpp"
@@ -33,6 +38,7 @@ void atomic_dex::mac_window_setup(long winid, bool fullscreen)
     (void)winid;
     (void)fullscreen;
 #ifdef __MAC_10_15
+    @try {
     NSView *nativeView = reinterpret_cast<NSView *>(winid);
     NSWindow* nativeWindow = [nativeView window];
     NSWindowStyleMask windowMask = NSWindowStyleMaskFullSizeContentView | NSWindowStyleMaskBorderless | NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
@@ -45,5 +51,10 @@ void atomic_dex::mac_window_setup(long winid, bool fullscreen)
     [myColor set];
     [nativeWindow setBackgroundColor: myColor];
     [nativeWindow setTitleVisibility: static_cast<NSWindowTitleVisibility>(1)];
+    }
+    @catch (NSException *exception) {
+        std::string reason = std::string([exception.reason UTF8String]);
+        SPDLOG_ERROR("Exception caught in mac_window_setup {}", reason);
+    }
 #endif
 }

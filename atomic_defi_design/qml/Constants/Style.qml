@@ -1,6 +1,5 @@
 pragma Singleton
 import QtQuick 2.15
-
 import Qaterial 1.0 as Qaterial
 
 QtObject {
@@ -225,6 +224,9 @@ QtObject {
     readonly property string colorSelectedText: Style.colorTheme9
     readonly property string colorSelection: Style.colorGreen2
 
+    readonly property string colorTrendingLine: dark_theme ? Style.colorGreen : "#37a6ef"
+    readonly property string colorTrendingUnderLine: dark_theme ? Style.colorGradient3 : "#e3f2fd"
+
     readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {
@@ -235,16 +237,26 @@ QtObject {
         return Style.colorWhite4
     }
 
+    function getCoinTypeColor(type) {
+        return getCoinColor(type === "ERC-20" ? "ETH" :
+                            type === "QRC-20" ? "QTUM" :
+                            type === "Smart Chain" ? "KMD" :
+                                                     "BTC")
+    }
+
     function getCoinColor(ticker) {
         const c = colorCoin[ticker]
         return c || Style.colorTheme2
     }
 
     readonly property var colorCoin: ({
+                                          "ARPA": "#CCD9E2",
                                           "BCH": "#8DC351",
                                           "BTC": "#F7931A",
+                                          "CLC": "#0970DC",
                                           "FTC": "#FFFFFF",
                                           "GLEEC": "#8C41FF",
+                                          "GRS": "#377E96",
                                           "DOGE": "#C3A634",
                                           "ETH": "#627EEA",
                                           "KMD": "#2B6680",
@@ -259,6 +271,7 @@ QtObject {
                                           "ZEC": "#ECB244",
                                           "ZER": "#FFFFFF",
                                           "NAV": "#7D59B5",
+                                          "DP": "#E41D25",
                                           "ECA": "#A915DC",
                                           "QTUM": "#2E9AD0",
                                           "CHIPS": "#598182",
@@ -283,16 +296,68 @@ QtObject {
                                           "ILN": "#523170",
                                           "VRSC": "#3164D3",
                                           "THC": "#819F6F",
+                                          "1INCH": "#95A7C5",
                                           "BAT": "#FF5000",
                                           "BUSD": "#EDB70B",
                                           "DAI": "#B68900",
                                           "USDC": "#317BCB",
                                           "PAX": "#EDE70A",
+                                          "SUSHI": "#E25DA8",
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
                                           "VRA": "#D70A41",
                                           "SPACE": "#E44C65",
                                           "QC": "#00D7B3",
-                                          "PBC": "#64A3CB"
+                                          "PBC": "#64A3CB",
+                                          "AAVE": "#9C64A6",
+                                          "ANT": "#33DAE6",
+                                          "AGI": "#6815FF",
+                                          "BAND": "#526BFF",
+                                          "BLK": "#191919",
+                                          "BNT": "#000D2B",
+                                          "BTCZ": "#F5B036",
+                                          "CEL": "#4055A6",
+                                          "CENNZ": "#2E87F1",
+                                          "COMP": "#00DBA3",
+                                          "CRO": "#243565",
+                                          "CVC": "#3AB03E",
+                                          "CVT": "#4B0082",
+                                          "DODO": "#FFF706",
+                                          "ELF": "#2B5EBB",
+                                          "ENJ": "#6752C3",
+                                          "EURS": "#2F77ED",
+                                          "FUN": "#EF1C70",
+                                          "GNO": "#00B0CC",
+                                          "HOT": "#983EFF",
+                                          "IOTX": "#00CDCE",
+                                          "KNC": "#117980",
+                                          "LEO": "#F79B2C",
+                                          "LINK": "#356CE4",
+                                          "LRC": "#32C2F8",
+                                          "MANA": "#FF3C6C",
+                                          "MATIC": "#1E61ED",
+                                          "MED": "#00B5FF",
+                                          "MKR": "#1BAF9F",
+                                          "NPXS": "#F3CB00",
+                                          "POWR": "#05BCAA",
+                                          "QI": "#FFFFFF",
+                                          "QIAIR": "#FEFEFE",
+                                          "QKC": "#2175B4",
+                                          "QNT": "#46DDC8",
+                                          "REP": "#0E0E21",
+                                          "REV": "#78034D",
+                                          "RLC": "#FFE100",
+                                          "SFUSD": "#F54D4C",
+                                          "SNT": "#596BED",
+                                          "SNX": "#00D1FF",
+                                          "SOULJA": "#8F734A",
+                                          "STORJ": "#2683FF",
+                                          "TSL": "#64B082",
+                                          "VRM": "#586A7A",
+                                          "WSB": "#FEBB84",
+                                          "WBTC": "#CCCCCC",
+                                          "YFI": "#006BE6",
+                                          "ZRX": "#302C2C",
+                                          "UNI": "#FF007A"
                                       })
 }

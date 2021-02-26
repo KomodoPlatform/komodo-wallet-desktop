@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -22,34 +22,6 @@
 
 namespace atomic_dex
 {
-    void
-    to_json(nlohmann::json& j, const electrum_server& cfg)
-    {
-        j["url"] = cfg.url;
-        if (cfg.protocol.has_value())
-        {
-            j["protocol"] = cfg.protocol.value();
-        }
-        if (cfg.disable_cert_verification.has_value())
-        {
-            j["disable_cert_verification"] = cfg.disable_cert_verification.value();
-        }
-    }
-
-    void
-    from_json(const nlohmann::json& j, electrum_server& cfg)
-    {
-        if (j.count("protocol") == 1)
-        {
-            cfg.protocol = j.at("protocol").get<std::string>();
-        }
-        if (j.count("disable_cert_verification") == 1)
-        {
-            cfg.disable_cert_verification = j.at("disable_cert_verification").get<bool>();
-        }
-        j.at("url").get_to(cfg.url);
-    }
-
     void
     from_json(const nlohmann::json& j, coin_config& cfg)
     {
@@ -74,11 +46,15 @@ namespace atomic_dex
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
         j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
+        if (j.contains("coingecko_id"))
+        {
+            j.at("coingecko_id").get_to(cfg.coingecko_id);
+        }
         if (j.contains("is_custom_coin"))
         {
             cfg.is_custom_coin = true;
         }
-        
+
         j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {
@@ -88,29 +64,25 @@ namespace atomic_dex
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
         }
-        if (j.contains("need_electrum"))
-        {
-            cfg.need_electrum = j.at("need_electrum").get<bool>();
-        }
         if (j.contains("is_testnet"))
         {
             cfg.is_testnet = j.at("is_testnet").get<bool>();
         }
         if (cfg.type == "QRC-20")
         {
-            cfg.coin_type = coin_type::QRC20;
+            cfg.coin_type = CoinType::QRC20;
         }
         else if (cfg.type == "ERC-20")
         {
-            cfg.coin_type = coin_type::ERC20;
+            cfg.coin_type = CoinType::ERC20;
         }
         else if (cfg.type == "UTXO")
         {
-            cfg.coin_type = coin_type::UTXO;
+            cfg.coin_type = CoinType::UTXO;
         }
         else if (cfg.type == "Smart Chain")
         {
-            cfg.coin_type = coin_type::SmartChain;
+            cfg.coin_type = CoinType::SmartChain;
         }
     }
 } // namespace atomic_dex

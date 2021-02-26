@@ -7,7 +7,7 @@ import "../../Constants"
 import ".."
 
 OrdersPage {
-    page_index: General.idx_exchange_orders
+    page_index: idx_exchange_orders
 
     title: qsTr("Orders")
     empty_text: qsTr("You don't have any orders.")

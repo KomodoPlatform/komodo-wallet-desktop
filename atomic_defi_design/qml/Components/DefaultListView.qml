@@ -1,5 +1,4 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import "../Constants"
@@ -17,4 +16,8 @@ ListView {
     implicitHeight: contentItem.childrenRect.height
 
     clip: true
+
+    // Opacity animation
+    opacity: root.count === 0 ? 0 : enabled ? 1 : 0.2
+    Behavior on opacity { SmoothedAnimation { duration: Style.animationDuration * 0.5; velocity: -1 } }
 }

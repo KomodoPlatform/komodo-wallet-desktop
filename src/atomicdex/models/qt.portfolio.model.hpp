@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -20,6 +20,9 @@
 #include <QAbstractListModel>
 #include <QString>
 #include <QVector>
+
+//! STD
+#include <unordered_set>
 
 //! Deps
 #include <entt/core/attribute.h>
@@ -60,16 +63,19 @@ namespace atomic_dex
             MultiTickerPrice,            ///< The price field of multi ticker
             MultiTickerReceiveAmount,    ///< The total receive amount (it's readonly from front-end)
             MultiTickerFeesInfo,         ///< the fees json infos (it's readonly from front-end)
-            CoinType
+            CoinType,                    ///< Type of the coin
+            Address,                     ///< Public address
+            PrivKey                      ///< Priv key
         };
         Q_ENUM(PortfolioRoles)
 
       private:
         //! Typedef
-        using t_portfolio_datas = QVector<portfolio_data>;
         using t_ticker_registry = std::unordered_set<std::string>;
 
       public:
+        using t_portfolio_datas = QVector<portfolio_data>;
+
         //! Constructor / Destructor
         explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~portfolio_model() noexcept final = default;
@@ -81,12 +87,16 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         bool                                 removeRows(int row, int count, const QModelIndex& parent) final;
 
+        //! QML API
+        Q_INVOKABLE void clean_priv_keys();
+
         //! Public api
-        void initialize_portfolio(const std::vector<std::string>& tickers);
-        void update_currency_values();
-        void update_balance_values(const std::vector<std::string>& tickers) noexcept;
-        void disable_coins(const QStringList& coins);
-        void set_cfg(atomic_dex::cfg& cfg) noexcept;
+        void                            initialize_portfolio(const std::vector<std::string>& tickers);
+        void                            update_currency_values();
+        void                            update_balance_values(const std::vector<std::string>& tickers) noexcept;
+        void                            disable_coins(const QStringList& coins);
+        void                            set_cfg(atomic_dex::cfg& cfg) noexcept;
+        [[nodiscard]] t_portfolio_datas get_underlying_data() const noexcept;
 
         //! Properties
         [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
@@ -100,6 +110,7 @@ namespace atomic_dex
         void portfolioItemDataChanged();
 
       private:
+        void balance_update_handler(const QString& prev_value, const QString& new_value, const QString& ticker);
         //! From project
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;

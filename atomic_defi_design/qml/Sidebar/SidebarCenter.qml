@@ -12,7 +12,7 @@ ColumnLayout {
     spacing: 0
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_portfolio
+        dashboard_index: idx_dashboard_portfolio
         text_value: qsTr("Dashboard")
         image: General.image_path + "menu-assets-portfolio.svg"
         Layout.fillWidth: true
@@ -20,7 +20,7 @@ ColumnLayout {
     }
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_wallet
+        dashboard_index: idx_dashboard_wallet
         text_value: qsTr("Wallet")
         image: General.image_path + "menu-assets-white.svg"
         Layout.fillWidth: true
@@ -29,7 +29,7 @@ ColumnLayout {
     SidebarLine {
         id: dex_line
         section_enabled: !is_dex_banned
-        dashboard_index: General.idx_dashboard_exchange
+        dashboard_index: idx_dashboard_exchange
         text_value: qsTr("DEX")
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true
@@ -47,37 +47,23 @@ ColumnLayout {
     }
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_addressbook
+        dashboard_index: idx_dashboard_addressbook
         text_value: qsTr("Address Book")
         image: General.image_path + "menu-news-white.svg"
         Layout.fillWidth: true
     }
 
 //    SidebarLine {
-//        dashboard_index: General.idx_dashboard_news
+//        dashboard_index: idx_dashboard_news
 //        text_value: qsTr("News")
 //        image: General.image_path + "menu-news-white.svg"
 //        Layout.fillWidth: true
 //    }
 
 //    SidebarLine {
-//        dashboard_index: General.idx_dashboard_dapps
+//        dashboard_index: idx_dashboard_dapps
 //        text_value: qsTr("Dapps")
 //        image: General.image_path + "menu-dapp-white.svg"
 //        Layout.fillWidth: true
 //    }
 }
-
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:264;width:150}
-}
-##^##*/

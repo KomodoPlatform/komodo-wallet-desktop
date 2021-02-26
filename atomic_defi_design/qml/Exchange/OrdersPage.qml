@@ -22,7 +22,6 @@ Item {
     property alias title: order_list.title
     property alias empty_text: order_list.empty_text
     property alias items: order_list.items
-    property alias filter_enabled: enable_filters.checked
 
     property bool is_history: false
 
@@ -41,16 +40,16 @@ Item {
     }
 
     function applyDateFilter() {
-        list_model_proxy.filter_minimum_date = filter_enabled ? min_date.date : default_min_date
+        list_model_proxy.filter_minimum_date = min_date.date
 
         if(max_date.date < min_date.date)
             max_date.date = min_date.date
 
-        list_model_proxy.filter_maximum_date = filter_enabled ? max_date.date : default_max_date
+        list_model_proxy.filter_maximum_date = max_date.date
     }
 
     function applyTickerFilter() {
-        list_model_proxy.set_coin_filter(filter_enabled ? combo_base.currentValue + "/" + combo_rel.currentValue : "")
+        list_model_proxy.set_coin_filter(combo_base.currentValue + "/" + combo_rel.currentValue)
     }
 
     function applyFilter() {
@@ -58,16 +57,10 @@ Item {
         applyTickerFilter()
     }
 
-    function reset() {  }
-
-    function onOpened() {
-        applyFilter()
+    Component.onCompleted: {
         list_model_proxy.is_history = root.is_history
-        API.app.refresh_orders_and_swaps()
-    }
-
-    function changeTicker(ticker) {
-        combo_base.currentIndex = combo_base.model.map(c => c.value).indexOf(ticker)
+        applyFilter()
+        list_model_proxy.apply_all_filtering()
     }
 
     ColumnLayout {
@@ -87,35 +80,24 @@ Item {
                 id: layout
                 anchors.centerIn: parent
 
-                DefaultSwitch {
-                    id: enable_filters
-                    Layout.leftMargin: 15
-                    text: qsTr("Enable Filters")
-
-                    checked: false
-                    onCheckedChanged: applyFilter()
-                }
-
                 // Base
                 DefaultImage {
-                    Layout.leftMargin: 15
-                    source: General.coinIcon(combo_base.currentValue)
+                    source: General.coinIcon(combo_base.currentText)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
 
                 DefaultComboBox {
                     id: combo_base
-                    enabled: filter_enabled
                     Layout.preferredWidth: 120
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
 
-                    textRole: "text"
-                    valueRole: "value"
+                    textRole: "ticker"
+                    valueRole: "ticker"
 
-                    model: ([{ value: "", text: qsTr("All") }].concat(General.tickersOfCoins(General.all_coins)))
-                    onCurrentValueChanged: applyTickerFilter()
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+                    onCurrentValueChanged: applyFilter()
                 }
 
                 // Swap button
@@ -142,29 +124,27 @@ Item {
 
                 DefaultComboBox {
                     id: combo_rel
-                    enabled: filter_enabled
                     Layout.preferredWidth: 120
                     Layout.topMargin: combo_base.Layout.topMargin
                     Layout.bottomMargin: combo_base.Layout.bottomMargin
 
-                    textRole: "text"
-                    valueRole: "value"
+                    textRole: "ticker"
+                    valueRole: "ticker"
 
                     model: combo_base.model
-                    onCurrentValueChanged: applyTickerFilter()
+                    onCurrentValueChanged: applyFilter()
                 }
 
                 // Rel
                 DefaultImage {
                     Layout.rightMargin: 15
-                    source: General.coinIcon(combo_rel.currentValue)
+                    source: combo_rel.currentText === "All" ? "" : General.coinIcon(combo_rel.currentText)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
 
                 Qaterial.TextFieldDatePicker {
                     id: min_date
-                    enabled: filter_enabled
                     title: qsTr("From")
                     from: default_min_date
                     to: default_max_date
@@ -182,24 +162,32 @@ Item {
                     onAccepted: applyDateFilter()
                 }
 
+                // Apply Filter Button
+                PrimaryButton {
+                    visible: root.is_history
+                    Layout.leftMargin: 30
+                    text: qsTr("Apply Filter")
+                    enabled: list_model_proxy.can_i_apply_filtering
+                    onClicked: list_model_proxy.apply_all_filtering()
+                }
+
                 // Cancel button
                 DangerButton {
                     visible: !root.is_history
-                    text: filter_enabled ? qsTr("Cancel Filtered Orders") : qsTr("Cancel All Orders")
+                    Layout.leftMargin: 30
+                    text: qsTr("Cancel Displayed Orders")
                     enabled: list_model.length > 0
-                    onClicked: {
-                        if(filter_enabled) API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
-                        else API.app.trading_pg.cancel_all_orders()
-                    }
+                    onClicked: API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
                 }
 
                 // Export button
                 PrimaryButton {
+                    Layout.leftMargin: 20
                     visible: root.is_history
                     text: qsTr("Export CSV")
                     enabled: list_model.length > 0
                     onClicked: {
-                        export_csv_dialog.folder = General.os_file_prefix + API.app.get_export_folder()
+                        export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
                         export_csv_dialog.open()
                     }
                 }
@@ -220,7 +208,7 @@ Item {
 
                         // Export
                         console.log("Exporting to CSV: " + path)
-                        API.app.orders_mdl.orders_proxy_mdl.export_csv_visible_history(path.replace(General.os_file_prefix, ""))
+                        API.app.exporter_service.export_swaps_history_to_csv(path.replace(General.os_file_prefix, ""))
 
                         // Open the save folder
                         const folder_path = path.substring(0, path.lastIndexOf("/"))
@@ -243,21 +231,24 @@ Item {
             OrderList {
                 id: order_list
                 items: list_model
+                is_history: root.is_history
             }
         }
 
-        OrderModal {
+        ModalLoader {
             id: order_modal
+            sourceComponent: OrderModal {}
         }
     }
 
-    LogModal {
+    ModalLoader {
         id: recover_funds_modal
+        sourceComponent: LogModal {
+            header: qsTr("Recover Funds Result")
+            field.text: General.prettifyJSON(recover_funds_result)
 
-        header: qsTr("Recover Funds Result")
-        field.text: General.prettifyJSON(recover_funds_result)
-
-        onClosed: recover_funds_result = "{}"
+            onClosed: recover_funds_result = "{}"
+        }
     }
 }
 

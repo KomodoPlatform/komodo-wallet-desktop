@@ -34,11 +34,9 @@ ColumnLayout {
         }
     }
 
-    function reset() {
-        input_coin_filter.reset()
-    }
+    Component.onCompleted: reset()
 
-    function onOpened() {
+    function reset() {
         // Reset the coin name filter
         input_coin_filter.reset()
     }
@@ -57,8 +55,8 @@ ColumnLayout {
             let min = 999999999
             let max = -999999999
             for(i = 0; i < historical.length; ++i) {
-                let price = historical[i].price
-                series.append(i / historical.length, historical[i].price)
+                let price = historical[i]
+                series.append(i / historical.length, historical[i])
                 min = Math.min(min, price)
                 max = Math.max(max, price)
             }
@@ -121,7 +119,7 @@ ColumnLayout {
         // Add button
         PlusButton {
             id: add_coin_button
-            onClicked: enable_coin_modal.prepareAndOpen()
+            onClicked: enable_coin_modal.open()
 
             anchors.right: parent.right
             anchors.rightMargin: parent.height * 0.5 - width * 0.5
@@ -150,6 +148,19 @@ ColumnLayout {
             }
 
             width: 120
+        }
+
+        // With balance button
+        DefaultSwitch {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 4
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+
+            text: qsTr("Show only coins with balance")
+
+            checked: portfolio_coins.with_balance
+            onCheckedChanged: portfolio_coins.with_balance = checked
         }
     }
 
@@ -210,7 +221,7 @@ ColumnLayout {
             id: trend_7d_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.24
+            anchors.rightMargin: parent.width * 0.2
             anchors.verticalCenter: parent.verticalCenter
 
             text: qsTr("Trend 7d")
@@ -273,7 +284,7 @@ ColumnLayout {
                     if (mouse.button === Qt.RightButton) context_menu.popup()
                     else {
                         api_wallet_page.ticker = ticker
-                        dashboard.current_page = General.idx_dashboard_wallet
+                        dashboard.current_page = idx_dashboard_wallet
                     }
                 }
                 onPressAndHold: {
@@ -301,10 +312,25 @@ ColumnLayout {
 
             // Name
             DefaultText {
+                id: coin_name
                 anchors.left: icon.right
                 anchors.leftMargin: 10
                 text_value: name
                 anchors.verticalCenter: parent.verticalCenter
+            }
+
+
+            CoinTypeTag {
+                id: tag
+                anchors.left: coin_name.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+
+                type: model.type
+
+                opacity: 0.25
+
+                visible: mouse_area.containsMouse
             }
 
             // Balance
@@ -375,31 +401,6 @@ ColumnLayout {
                 onDark_themeChanged: refresh()
                 onHistoricalChanged: refresh()
                 backgroundColor: "transparent"
-            }
-
-            AnimatedRectangle {
-                anchors.left: chart.right
-                anchors.leftMargin: -25
-                anchors.verticalCenter: parent.verticalCenter
-
-                visible: {
-                    const type = API.app.get_coin_info(ticker).type
-                    return (type === "ERC-20" && ticker !== "ETH") ||
-                           (type === "QRC-20" && ticker !== "QTUM")
-                }
-                radius: 20
-
-                height: type_tag.font.pixelSize * 1.5
-                width: type_tag.width + 8
-
-                color: Style.getCoinColor(API.app.get_coin_info(ticker).type === "ERC-20" ? "ETH" : "QTUM")
-                DefaultText {
-                    id: type_tag
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: API.app.get_coin_info(ticker).type === "ERC-20" ? "ERC-20" : "QRC-20"
-                    font.pixelSize: Style.textSizeSmall1
-                }
             }
         }
     }

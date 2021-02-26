@@ -11,6 +11,21 @@ import "../../Wallet"
 Item {
     id: exchange_trade
 
+    Component.onCompleted: {
+        API.app.trading_pg.on_gui_enter_dex()
+        onOpened()
+        chart_object.parent = left_section
+        chart_object.anchors.bottom = selectors.top
+        chart_object.anchors.bottomMargin = layout_margin * 2
+        chart_object.visible = true
+    }
+
+    Component.onDestruction: {
+        API.app.trading_pg.on_gui_leave_dex()
+        chart_object.parent = app
+        chart_object.visible = false
+    }
+
     readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
@@ -39,10 +54,6 @@ Item {
         API.app.trading_pg.market_mode = v
     }
 
-    readonly property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
-    readonly property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
-    readonly property string base_ticker: API.app.trading_pg.market_pairs_mdl.base_selected_coin
-    readonly property string rel_ticker: API.app.trading_pg.market_pairs_mdl.rel_selected_coin
     readonly property string base_amount: API.app.trading_pg.base_amount
     readonly property string rel_amount: API.app.trading_pg.rel_amount
 
@@ -52,20 +63,17 @@ Item {
         interval: 1000
     }
 
-    // Override
-    property var onOrderSuccess: () => {}
+    property var onOrderSuccess: () => {
+        General.prevent_coin_disabling.restart()
+        exchange.current_page = idx_exchange_orders
+    }
 
     onSell_modeChanged: reset()
 
     // Local
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
-                exchange.current_page === General.idx_exchange_trade
-    }
-
-    function fullReset() {
-        initialized_orderbook_pair = false
-        reset()
+                exchange.current_page === idx_exchange_trade
     }
 
     function reset() {
@@ -86,35 +94,22 @@ Item {
     property bool valid_fee_info: API.app.trading_pg.fees.base_transaction_fees !== undefined
     readonly property var curr_fee_info: API.app.trading_pg.fees
 
-    property bool initialized_orderbook_pair: false
-    readonly property string default_base: "KMD"
-    readonly property string default_rel: "BTC"
-
     // Trade
-    function open(ticker) {
-        onOpened(ticker)
-    }
-
     function onOpened(ticker="") {
-        if(!initialized_orderbook_pair) {
-            initialized_orderbook_pair = true
-            API.app.trading_pg.set_current_orderbook(default_base, default_rel)
+        if(!General.initialized_orderbook_pair) {
+            General.initialized_orderbook_pair = true
+            API.app.trading_pg.set_current_orderbook(General.default_base, General.default_rel)
         }
 
         reset()
         setPair(true, ticker)
     }
 
-
-    signal pairChanged(string base, string rel)
-
     function setPair(is_left_side, changed_ticker) {
         swap_cooldown.restart()
 
-        if(API.app.trading_pg.set_pair(is_left_side, changed_ticker)) {
+        if(API.app.trading_pg.set_pair(is_left_side, changed_ticker))
             pairChanged(base_ticker, rel_ticker)
-            exchange.onTradeTickerChanged(base_ticker)
-        }
     }
 
     function trade(options, default_config) {
@@ -150,7 +145,9 @@ Item {
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
-    onBuy_sell_last_rpc_dataChanged: {
+    onBuy_sell_rpc_busyChanged: {
+        if(buy_sell_rpc_busy) return
+
         const response = General.clone(buy_sell_last_rpc_data)
 
         if(response.error_code) {
@@ -165,7 +162,8 @@ Item {
 
             toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(response.result), false)
 
-            onOrderSuccess()
+            General.prevent_coin_disabling.restart()
+            exchange.current_page = idx_exchange_orders
         }
     }
 
@@ -188,23 +186,6 @@ Item {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: layout_margin
-
-                InnerBackground {
-                    id: graph_bg
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: selectors.top
-                    anchors.bottomMargin: layout_margin * 2
-
-                    content: CandleStickChart {
-                        id: chart
-                        width: graph_bg.width
-                        height: graph_bg.height
-                    }
-                }
-
 
                 // Ticker Selectors
                 RowLayout {
@@ -389,27 +370,14 @@ Item {
             }
         }
 
-        ConfirmTradeModal {
+        ModalLoader {
             id: confirm_trade_modal
+            sourceComponent: ConfirmTradeModal {}
         }
 
-        ConfirmMultiOrderTradeModal {
+        ModalLoader {
             id: confirm_multi_order_trade_modal
+            sourceComponent: ConfirmMultiOrderTradeModal {}
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

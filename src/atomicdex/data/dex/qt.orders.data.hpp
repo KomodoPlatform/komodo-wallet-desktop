@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QString>
 #include <QJsonArray>
+#include <QString>
 
-namespace atomic_dex
+namespace mm2::api
 {
-    struct order_data
+    struct order_swaps_data
     {
         //! eg: true / false
         bool is_maker;
@@ -21,17 +21,17 @@ namespace atomic_dex
 
         //! eg: 1
         QString base_amount;
-        
+
         //! eg: 1 in fiat currency.
         QString base_amount_fiat;
 
         //! eg: 1
         QString rel_amount;
-        
+
         //! eg: 1 in fiat currency.
         QString rel_amount_fiat;
 
-        //! eg: Taker order;
+        //! eg: taker/maker order;
         QString order_type;
 
         //! eg: 2020-07-2020 17:23:36.625
@@ -73,5 +73,12 @@ namespace atomic_dex
 
         //! success events
         QStringList success_events;
+
+        bool is_swap_active{false};
     };
-} // namespace atomic_dex
+} // namespace mm2::api
+
+namespace atomic_dex
+{
+    using t_order_swaps_data = mm2::api::order_swaps_data;
+}

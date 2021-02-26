@@ -1,8 +1,12 @@
+// Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-
 import QtGraphicalEffects 1.0
+import Qt.labs.settings 1.0
+
+
+// Project Imports
 import "../Components"
 import "../Constants"
 
@@ -13,16 +17,14 @@ Item {
         onDisconnect()
     }
 
-    function reset() {
-
-    }
-
-    function onOpened() {
-        if(mm2_version === '') mm2_version = API.app.get_mm2_version()
-    }
-
-    property string mm2_version: ''
+    readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
+    property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
+
+    Settings {
+        id: atomic_settings2
+        fileName: atomic_cfg_file
+    }
 
     InnerBackground {
         id: layout_background
@@ -57,6 +59,57 @@ Item {
                     currentIndex = model.indexOf(API.app.settings_pg.current_fiat)
                     initialized = true
                 }
+
+                RowLayout {
+                    Layout.topMargin: 5
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 2
+                    Layout.rightMargin: Layout.leftMargin
+
+                    DefaultText {
+                        text: qsTr("Recommended: ")
+                        font.pixelSize: Style.textSizeSmall4
+                    }
+
+                    Grid {
+                        Layout.leftMargin: 30
+                        Layout.alignment: Qt.AlignVCenter
+
+                        clip: true
+
+                        columns: 6
+                        spacing: 25
+
+                        layoutDirection: Qt.LeftToRight
+
+                        Repeater {
+                            model: recommended_fiats
+
+                            delegate: DefaultText {
+                                text: modelData
+                                color: fiats_mouse_area.containsMouse ? Style.colorText : Style.colorText2
+
+                                DefaultMouseArea {
+                                    id: fiats_mouse_area
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    onClicked: {
+                                        API.app.settings_pg.current_fiat = modelData
+                                        API.app.settings_pg.current_currency = modelData
+                                        combo_fiat.currentIndex = combo_fiat.model.indexOf(API.app.settings_pg.current_fiat)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            HorizontalLine {
+                Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
+                Layout.topMargin: 10
             }
 
             Languages {
@@ -80,6 +133,27 @@ Item {
                 Component.onCompleted: checked = API.app.settings_pg.notification_enabled
                 onCheckedChanged: API.app.settings_pg.notification_enabled = checked
             }
+            DefaultSwitch {
+                property bool firstTime: true
+                Layout.alignment: Qt.AlignHCenter
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
+                checked: parseInt(atomic_settings2.value("FontMode")) === 1
+                text: qsTr("Use QtTextRendering Or NativeTextRendering")
+                onCheckedChanged: {
+                    if(checked){
+                        atomic_settings2.setValue("FontMode", 1)
+                    }else {
+                        atomic_settings2.setValue("FontMode", 0)
+                    }
+                    if(firstTime) {
+                        firstTime = false
+                    }else {
+                        restart_modal.open()
+                    }
+
+                }
+            }
 
             DefaultButton {
                 Layout.fillWidth: true
@@ -93,12 +167,13 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: qsTr("View Seed")
-                onClicked: recover_seed_modal.open()
+                text: qsTr("View seed and private keys")
+                onClicked: view_seed_modal.open()
             }
 
-            RecoverSeedModal {
-                id: recover_seed_modal
+            ModalLoader {
+                id: view_seed_modal
+                sourceComponent: RecoverSeedModal {}
             }
 
             HorizontalLine {
@@ -112,12 +187,14 @@ Item {
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Disclaimer and ToS")
-                onClicked: eula.open()
+                onClicked: eula_modal.open()
             }
 
-            EulaModal {
-                id: eula
-                close_only: true
+            ModalLoader {
+                id: eula_modal
+                sourceComponent: EulaModal {
+                    close_only: true
+                }
             }
 
             HorizontalLine {
@@ -135,8 +212,9 @@ Item {
                 onClicked: camouflage_password_modal.open()
             }
 
-            CamouflagePasswordModal {
+            ModalLoader {
                 id: camouflage_password_modal
+                sourceComponent: CamouflagePasswordModal {}
             }
 
             DangerButton {
@@ -145,8 +223,8 @@ Item {
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Reset assets configuration")
                 onClicked: {
-                    restart_modal.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                     restart_modal.open()
+                    restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                 }
             }
 
@@ -158,8 +236,9 @@ Item {
                 onClicked: delete_wallet_modal.open()
             }
 
-            DeleteWalletModal {
+            ModalLoader {
                 id: delete_wallet_modal
+                sourceComponent: DeleteWalletModal {}
             }
 
             DefaultButton {
@@ -181,9 +260,3 @@ Item {
         font.pixelSize: Style.textSizeSmall
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

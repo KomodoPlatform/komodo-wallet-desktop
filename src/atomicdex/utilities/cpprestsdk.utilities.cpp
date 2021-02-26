@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -17,6 +17,14 @@
 //! Deps
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
+
+#if defined(linux) || defined(__APPLE__)
+#    define BOOST_STACKTRACE_USE_ADDR2LINE
+#    if defined(__APPLE__)
+#        define _GNU_SOURCE
+#    endif
+#    include <boost/stacktrace.hpp>
+#endif
 
 //! Project Headers
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
@@ -41,5 +49,8 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
     catch (const std::exception& e)
     {
         SPDLOG_ERROR("pplx task error: {}", e.what());
+#if defined(linux) || defined(__APPLE__)
+        SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
+#endif
     }
 }

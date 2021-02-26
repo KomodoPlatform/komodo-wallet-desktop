@@ -13,26 +13,21 @@ RowLayout {
 
     function inCurrentPage() {
         return  dashboard.inCurrentPage() &&
-                dashboard.current_page === General.idx_dashboard_wallet
+                dashboard.current_page === idx_dashboard_wallet
     }
 
     // Local
     function onClickedSwap() {
-        dashboard.current_page = General.idx_dashboard_exchange
-        exchange.current_page = General.idx_exchange_trade
-        exchange.openTradeView(api_wallet_page.ticker)
+        dashboard.current_page = idx_dashboard_exchange
+        dashboard.openTradeViewWithTicker()
     }
 
     function reset() {
         main.reset()
         sidebar.reset()
-        enable_coin_modal.reset()
     }
 
-    function onOpened() {
-        // Reset the coin name filter
-        sidebar.reset()
-    }
+    Component.onCompleted: reset()
 
     readonly property double button_margin: 0.05
     spacing: 0
@@ -49,16 +44,3 @@ RowLayout {
     }
 }
 
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:600;width:1200}
-}
-##^##*/

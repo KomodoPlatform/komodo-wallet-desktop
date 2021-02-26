@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -20,7 +20,8 @@
 #include <QObject>
 
 //! Project headers
-#include "src/atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/models/qt.global.coins.cfg.model.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
 
 
 namespace atomic_dex
@@ -35,10 +36,12 @@ namespace atomic_dex
         Q_PROPERTY(QString oracle_last_price_reference READ get_oracle_last_price_reference NOTIFY oraclePriceUpdated)
         Q_PROPERTY(QStringList oracle_price_supported_pairs READ get_oracle_price_supported_pairs NOTIFY oraclePriceUpdated)
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY onFiatBalanceAllChanged)
+        Q_PROPERTY(global_coins_cfg_model* global_cfg_mdl READ get_global_cfg NOTIFY globalCfgMdlChanged)
 
         //! Private members fields
         ag::ecs::system_manager& m_system_manager;
         portfolio_model*         m_portfolio_mdl;
+        global_coins_cfg_model*  m_global_cfg_mdl;
         QString                  m_current_balance_all{"0"};
 
       public:
@@ -49,21 +52,31 @@ namespace atomic_dex
         //! Public override
         void update() noexcept final;
 
-        [[nodiscard]] portfolio_model* get_portfolio() const noexcept;
-        [[nodiscard]] QString          get_oracle_last_price_reference() const noexcept;
-        [[nodiscard]] QStringList      get_oracle_price_supported_pairs() const noexcept;
+        //! CPP API
+        void initialize_portfolio(const std::vector<std::string>& tickers);
+        void disable_coins(const QStringList& coins);
+
+        [[nodiscard]] portfolio_model*        get_portfolio() const noexcept;
+        [[nodiscard]] global_coins_cfg_model* get_global_cfg() const noexcept;
+        [[nodiscard]] QString                 get_oracle_last_price_reference() const noexcept;
+        [[nodiscard]] QStringList             get_oracle_price_supported_pairs() const noexcept;
+        [[nodiscard]] Q_INVOKABLE QStringList get_all_enabled_coins() const noexcept;
+        [[nodiscard]] Q_INVOKABLE QStringList get_all_coins_by_type(const QString& coin_type) const noexcept;
+        [[nodiscard]] Q_INVOKABLE bool        is_coin_enabled(const QString& coin_name) const noexcept;
 
         [[nodiscard]] QString get_balance_fiat_all() const noexcept;
         void                  set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
 
         //! Events
         void on_band_oracle_refreshed([[maybe_unused]] const band_oracle_refreshed& evt);
-        void on_update_portfolio_values_event(const update_portfolio_values&) noexcept;;
+        void on_update_portfolio_values_event(const update_portfolio_values&) noexcept;
+        void on_coin_cfg_parsed(const coin_cfg_parsed& evt) noexcept;
 
       signals:
         void portfolioChanged();
         void oraclePriceUpdated();
         void onFiatBalanceAllChanged();
+        void globalCfgMdlChanged();
     };
 } // namespace atomic_dex
 

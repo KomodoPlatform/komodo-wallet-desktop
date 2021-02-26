@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -35,13 +35,9 @@ namespace antara::gaming::ecs
         auto   sys_type          = SystemToSwap::get_system_type();
         auto&& sys_collection    = systems_[sys_type];
         auto   name              = SystemToSwap::get_class_name();
-        auto   it_system_to_swap = find_if(sys_collection, [&name](auto&& sys) {
-            return sys->get_name() == name;
-        });
+        auto   it_system_to_swap = find_if(sys_collection, [&name](auto&& sys) { return sys->get_name() == name; });
         name                     = SystemB::get_class_name();
-        auto it_system_b         = find_if(sys_collection, [&name](auto&& sys) {
-            return sys->get_name() == name;
-        });
+        auto it_system_b         = find_if(sys_collection, [&name](auto&& sys) { return sys->get_name() == name; });
 
         if (it_system_to_swap != systems_[sys_type].end() && it_system_b != systems_[sys_type].end())
         {
@@ -57,21 +53,17 @@ namespace antara::gaming::ecs
     // LCOV_EXCL_STOP
     template <typename TSystem>
     const TSystem&
-    system_manager::get_system() const noexcept
+    system_manager::get_system() const
     {
-        const auto ret = get_system_<TSystem>().or_else([this](const std::error_code& ec) {
-            this->dispatcher_.trigger<gaming::event::fatal_error>(ec);
-        });
+        const auto ret = get_system_<TSystem>().or_else([]([[maybe_unused]] const std::error_code& ec) { throw std::runtime_error("get_system error"); });
         return (*ret).get();
     }
 
     template <typename TSystem>
     TSystem&
-    system_manager::get_system() noexcept
+    system_manager::get_system()
     {
-        auto ret = get_system_<TSystem>().or_else([this](const std::error_code& ec) {
-            this->dispatcher_.trigger<gaming::event::fatal_error>(ec);
-        });
+        auto ret = get_system_<TSystem>().or_else([]([[maybe_unused]] const std::error_code& ec) { throw std::runtime_error("get_system error"); });
         return (*ret).get();
     }
 
@@ -93,14 +85,12 @@ namespace antara::gaming::ecs
     TSystem&
     system_manager::create_system(TSystemArgs&&... args) noexcept
     {
-        //LOG_SCOPE_FUNCTION(INFO);
+        // LOG_SCOPE_FUNCTION(INFO);
         if (has_system<TSystem>())
         {
             return get_system<TSystem>();
         }
-        auto creator = [this](auto&&... args_) {
-            return std::make_unique<TSystem>(this->entity_registry_, std::forward<decltype(args_)>(args_)...);
-        };
+        auto creator = [this](auto&&... args_) { return std::make_unique<TSystem>(this->entity_registry_, std::forward<decltype(args_)>(args_)...); };
 
         system_ptr sys = creator(std::forward<TSystemArgs>(args)...);
         return static_cast<TSystem&>(add_system_(std::move(sys), TSystem::get_system_type()));
@@ -110,14 +100,12 @@ namespace antara::gaming::ecs
     void
     system_manager::create_system_rt(TSystemArgs&&... args) noexcept
     {
-        //LOG_SCOPE_FUNCTION(INFO);
+        // LOG_SCOPE_FUNCTION(INFO);
         if (has_system<TSystem>())
         {
             return;
         }
-        auto creator = [this](auto&&... args_) {
-            return std::make_unique<TSystem>(this->entity_registry_, std::forward<decltype(args_)>(args_)...);
-        };
+        auto creator = [this](auto&&... args_) { return std::make_unique<TSystem>(this->entity_registry_, std::forward<decltype(args_)>(args_)...); };
 
         this->dispatcher_.trigger<event::add_base_system>(creator(std::forward<TSystemArgs>(args)...));
     }
@@ -136,6 +124,8 @@ namespace antara::gaming::ecs
     {
         constexpr const auto sys_type = TSystem::get_system_type();
         return ranges::any_of(systems_[sys_type], [](auto&& ptr) {
+            if (ptr == nullptr)
+                return false;
             return ptr->get_name() == TSystem::get_class_name();
         });
     }
@@ -217,6 +207,10 @@ namespace antara::gaming::ecs
 
         constexpr const auto sys_type = TSystem::get_system_type();
         auto                 it       = ranges::find_if(systems_[sys_type], [](auto&& ptr) {
+            if (ptr == nullptr)
+            {
+                return false;
+            }
             return ptr->get_name() == TSystem::get_class_name();
         });
 
@@ -238,9 +232,7 @@ namespace antara::gaming::ecs
         }
 
         constexpr const auto sys_type = TSystem::get_system_type();
-        auto                 it       = ranges::find_if(systems_[sys_type], [](auto&& ptr) {
-            return ptr->get_name() == TSystem::get_class_name();
-        });
+        auto                 it       = ranges::find_if(systems_[sys_type], [](auto&& ptr) { return ptr->get_name() == TSystem::get_class_name(); });
         if (it != systems_[sys_type].end())
         {
             const auto& system = static_cast<const TSystem&>(*(*it));

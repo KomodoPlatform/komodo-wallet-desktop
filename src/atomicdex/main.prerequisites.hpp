@@ -1,3 +1,19 @@
+/******************************************************************************
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
+
 //! PCH Headers
 #include "atomicdex/pch.hpp"
 
@@ -10,6 +26,7 @@
 #include <QDesktopWidget>
 #include <QQmlApplicationEngine>
 #include <QScreen>
+#include <QSettings>
 #include <QWindow>
 #include <QtGlobal>
 #include <QtQml>
@@ -24,9 +41,6 @@
 
 
 //! Deps
-#define QZXING_QML
-#include "QZXing.h"
-#include <folly/init/Init.h>
 #include <sodium/core.h>
 #include <wally.hpp>
 
@@ -42,9 +56,11 @@
 #include "atomicdex/app.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/utilities/kill.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 #ifdef __APPLE__
 #    include "atomicdex/platform/osx/manager.hpp"
+#    include <sys/sysctl.h>
 #endif
 
 #if defined(ATOMICDEX_HOT_RELOAD)
@@ -113,13 +129,16 @@ qt_message_handler(QtMsgType type, [[maybe_unused]] const QMessageLogContext& co
     }
 }
 
-void
+static void
 signal_handler(int signal)
 {
-    SPDLOG_DEBUG("sigabort received, cleaning mm2");
+    SPDLOG_ERROR("sigabort received, cleaning mm2");
     atomic_dex::kill_executable("mm2.service");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
+    std::ifstream                 ifs("./backtrace.dump");
+    boost::stacktrace::stacktrace st = boost::stacktrace::stacktrace::from_dump(ifs);
+    SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(st));
 #endif
     std::exit(signal);
 }
@@ -142,8 +161,9 @@ connect_signals_handler()
         fs::remove("./backtrace.dump");
     }
 #endif
-    std::signal(SIGABRT, signal_handler);
-    std::signal(SIGSEGV, signal_handler);
+    std::signal(SIGABRT, &signal_handler);
+    std::signal(SIGSEGV, &signal_handler);
+    std::signal(SIGTERM, &signal_handler);
 }
 
 static void
@@ -236,6 +256,29 @@ init_timezone_db()
 #endif
 }
 
+static void
+handle_settings(QSettings& settings)
+{
+    auto create_settings_functor = [&settings](QString settings_name, QVariant value) {
+        if (!settings.contains(settings_name))
+        {
+            SPDLOG_INFO("Settings {} doesn't exist yet for this application, creating now", settings_name.toStdString());
+            settings.setValue(settings_name, value);
+        }
+        else
+        {
+            SPDLOG_INFO("Settings {} already exist - skipping", settings_name.toStdString());
+        }
+    };
+    SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
+#ifdef __APPLE__
+    create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
+    QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
+#else
+    create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
+#endif
+}
+
 inline int
 run_app(int argc, char** argv)
 {
@@ -244,23 +287,23 @@ run_app(int argc, char** argv)
     qInstallMessageHandler(&qt_message_handler);
 #endif
 
-#ifdef __APPLE__
-#    if defined(NDEBUG)
-        //folly::init(&argc, &argv, false);
-#    endif
-#endif
     init_logging();
     connect_signals_handler();
     init_timezone_db();
     init_wally();
     init_sodium();
     clean_previous_run();
+    QSettings settings((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string().c_str(), QSettings::IniFormat);
+    handle_settings(settings);
     init_dpi();
 
     int res = 0;
 
     //! App declaration
     atomic_dex::application atomic_app;
+
+    //! Qt utilities declaration.
+    atomic_dex::qt_utilities qt_utilities;
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
@@ -275,14 +318,17 @@ run_app(int argc, char** argv)
 
     //! QT QML
     engine.addImportPath("qrc:///");
-    QZXing::registerQMLTypes();
-    QZXing::registerQMLImageProvider(engine);
     qRegisterMetaType<MarketMode>("MarketMode");
     qmlRegisterUncreatableType<atomic_dex::MarketModeGadget>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
     qRegisterMetaType<TradingError>("TradingError");
     qmlRegisterUncreatableType<atomic_dex::TradingErrorGadget>("AtomicDEX.TradingError", 1, 0, "TradingError", "Not creatable as it is an enum type");
+    qRegisterMetaType<CoinType>("CoinType");
+    qmlRegisterUncreatableType<atomic_dex::CoinTypeGadget>("AtomicDEX.CoinType", 1, 0, "CoinType", "Not creatable as it is an enum type");
 
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+    engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
+    engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
+    engine.rootContext()->setContextProperty("atomic_settings", &settings);
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -65,6 +65,7 @@ namespace atomic_dex
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
         Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
         Q_PROPERTY(bool multi_order_enabled READ get_multi_order_enabled WRITE set_multi_order_enabled NOTIFY multiOrderEnabledChanged)
+        Q_PROPERTY(bool skip_taker READ get_skip_taker WRITE set_skip_taker NOTIFY skipTakerChanged)
 
 
         //! Private enum
@@ -113,6 +114,7 @@ namespace atomic_dex
         std::optional<nlohmann::json> m_preffered_order;
         QVariantMap                   m_fees;
         bool                          m_multi_order_enabled{false};
+        bool                          m_skip_taker{false};
 
         //! Private function
         void                       common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -160,6 +162,8 @@ namespace atomic_dex
 
         Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
         Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "");
+        Q_INVOKABLE void
+        place_setprice_order(const QString& base_nota = "", const QString& base_confs = "", const QString& rel_nota = "", const QString& rel_confs = "");
 
         Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
         Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
@@ -196,6 +200,8 @@ namespace atomic_dex
         void                       set_fees(QVariantMap fees) noexcept;
         [[nodiscard]] bool         get_multi_order_enabled() const noexcept;
         void                       set_multi_order_enabled(bool multi_order_enabled) noexcept;
+        [[nodiscard]] bool         get_skip_taker() const noexcept;
+        void                       set_skip_taker(bool skip_taker) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -237,6 +243,7 @@ namespace atomic_dex
         void invalidCexPriceChanged();
         void priceReversedChanged();
         void multiOrderEnabledChanged();
+        void skipTakerChanged();
     };
 } // namespace atomic_dex
 

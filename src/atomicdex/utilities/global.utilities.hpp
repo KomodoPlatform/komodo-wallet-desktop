@@ -1,7 +1,20 @@
-#pragma once
+/******************************************************************************
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
 
-//! STD
-#include <random>
+#pragma once
 
 //! Boost
 #pragma clang diagnostic push
@@ -12,16 +25,10 @@ using t_float_50 = boost::multiprecision::cpp_dec_float_50;
 using t_rational = boost::multiprecision::cpp_rational;
 #pragma clang diagnostic pop
 
-
-//! QT Headers
-#include <QCryptographicHash>
-#include <QString>
-
 //! Deps
-#include <date/date.h>
-#include <date/tz.h>
-#include <nlohmann/json.hpp>
-#include <entt/core/attribute.h>
+#include <date/date.h> ///< date::format
+#include <date/tz.h> ///< date::make_zoned
+#include <entt/core/attribute.h> ///< ENTT_API
 
 namespace atomic_dex::utils
 {
@@ -31,7 +38,8 @@ namespace atomic_dex::utils
     std::string format_float(t_float_50 value);
 
     //! Fs helpers
-    void create_if_doesnt_exist(const fs::path& path);
+    bool        create_if_doesnt_exist(const fs::path& path);
+    std::string u8string(const fs::path& path);
 
     double determine_balance_factor(bool with_pin_cfg);
 
@@ -56,6 +64,10 @@ namespace atomic_dex::utils
 
     fs::path get_atomic_dex_data_folder();
 
+    /// \brief  Gets the path where addressbook configs are stored.
+    /// \return An fs::path object.
+    [[nodiscard]] fs::path get_atomic_dex_addressbook_folder();
+
     fs::path get_runtime_coins_path() noexcept;
 
     fs::path get_atomic_dex_logs_folder() noexcept;
@@ -63,7 +75,7 @@ namespace atomic_dex::utils
     ENTT_API fs::path get_atomic_dex_current_log_file();
     ENTT_API std::shared_ptr<spdlog::logger> register_logger();
 
-    fs::path get_current_configs_path();
+    ENTT_API fs::path get_current_configs_path();
 
     fs::path get_mm2_atomic_dex_current_log_file();
 
@@ -77,59 +89,5 @@ namespace atomic_dex::utils
 
     fs::path get_atomic_dex_current_export_recent_swaps_file();
 
-    std::string dex_sha256(const std::string& str);
-
     void to_eth_checksum(std::string& address);
-} // namespace atomic_dex::utils
-
-
-namespace atomic_dex::utils
-{
-    struct timed_waiter
-    {
-        void interrupt();
-
-        template <class Rep, class Period>
-        bool wait_for(std::chrono::duration<Rep, Period> how_long) const;
-
-      private:
-        std::unique_lock<std::mutex> lock() const;
-
-        mutable std::mutex              m;
-        mutable std::condition_variable cv;
-        bool                            interrupted = false;
-    };
-
-    struct my_json_sax : nlohmann::json_sax<nlohmann::json>
-    {
-        bool binary([[maybe_unused]] binary_t& val) override;
-
-        bool null() override;
-
-        bool boolean([[maybe_unused]] bool val) override;
-
-        bool number_integer([[maybe_unused]] number_integer_t val) override;
-
-        bool number_unsigned([[maybe_unused]] number_unsigned_t val) override;
-
-        bool number_float([[maybe_unused]] number_float_t val, [[maybe_unused]] const string_t& s) override;
-
-        bool string([[maybe_unused]] string_t& val) override;
-
-        bool start_object([[maybe_unused]] std::size_t elements) override;
-
-        bool key([[maybe_unused]] string_t& val) override;
-
-        bool end_object() override;
-
-        bool start_array([[maybe_unused]] std::size_t elements) override;
-
-        bool end_array() override;
-
-        bool parse_error(
-            [[maybe_unused]] std::size_t position, [[maybe_unused]] const std::string& last_token,
-            [[maybe_unused]] const nlohmann::detail::exception& ex) override;
-
-        std::string float_as_string;
-    };
 } // namespace atomic_dex::utils

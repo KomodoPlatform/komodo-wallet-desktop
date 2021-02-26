@@ -30,26 +30,30 @@
 
 ## What is AtomicDEX?
 
-AtomicDEX is a secure wallet and non-custodial decentralized exchange rolled into one application. Store your coins, trade peer-to-peer with minimal fees and never give up control over your digital assets.
+AtomicDEX is a secure wallet and non-custodial decentralized exchange rolled into one application. Store your coins,
+trade peer-to-peer with minimal fees and never give up control over your digital assets.
 
 ## On which platforms can I use AtomicDEX Desktop?
 
 AtomicDEX Desktop has been tested on the following platforms:
 
 - Windows 10
-- Linux (Ubuntu 18.04)
-- macOS (10.13 - 10.15.7)
+- Linux (Ubuntu 16.04+)
+- macOS (10.14 - 11.0)
 
 
 ## Get Started
 
-You can [download](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) the pre-built <b>beta</b> binaries on our [GitHub release page](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases).
+You can [download](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) the pre-built <b>beta</b> binaries on
+our [GitHub release page](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases).
 
-Please join our [Discord Server](https://komodoplatform.com/discord) discussions around AtomicDEX and general UI/UX feedback.
+Please join our [Discord Server](https://komodoplatform.com/discord) discussions around AtomicDEX and general UI/UX
+feedback.
 
 ## AtomicDEX mobile
 
-Check out AtomicDEX mobile, available for [Android and iOS](https://atomicdex.io) [![atomicDEX mobile](https://s5.gifyu.com/images/atomicdex_animation_small2.gif)](https://atomicdex.io)
+Check out AtomicDEX mobile, available
+for [Android and iOS](https://atomicdex.io) [![atomicDEX mobile](https://s5.gifyu.com/images/atomicdex_animation_small2.gif)](https://atomicdex.io)
 
 ## License
 
@@ -57,13 +61,16 @@ For details please refer to our [license](https://github.com/KomodoPlatform/atom
 
 This is experimental alpha software - use at your own risk!
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## Self-Hosted Dependencies
 
 | Dependencies  | Version       | Description                                                                                                                                     | Categories          |
 |---------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
-| boost         | 1.73          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
+| boost         | 1.75          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
 | zstd          | 1.4.4         | Zstandard - Fast real-time compression algorithm                                                                                                | Compression         |
 | zlib          | 1.2.11-6        | A massively spiffy yet delicately unobtrusive compression library.                                                                              | Compression         |
 | doctest       | 2.3.8         | The fastest feature-rich C++11/14/17/20 single-header testing framework                                                                         | Testing             |
@@ -71,15 +78,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 | nlohmann_json | 3.9.1         | JSON for Modern C++                                                                                                                             | Parsing             |
 | range-v3      | 0.11.0        | Range library for C++14/17/20, basis for C++20's std::ranges                                                                                    | Algorithm           |
 | date          | 2019-11-08         | A date and time library based on the C++11/14/17 <chrono> header                                                                                | Timezone/Calendar   |
-| folly         | 2020.10.19.00 | An open-source C++ library developed and used at Facebook.                                                                                      | Threading           |
 | spdlog        | 1.8.0         | Fast C++ logging library.                                                                                                                       | Logging             |
 | openssl       | 1.1.1h        | TLS/SSL and crypto library                                                                                                                      | Network/Crypto      |
 | entt          | 3.5.1         | Gaming meets modern C++ - a fast and reliable entity component system (ECS) and much more                                                       | Architecture        |
 | cpprestsdk    | 2.10.15-1       | The C++ REST SDK is a Microsoft project for cloud-based client-server  communication in native code using a modern asynchronous C++ API design. | HTTP                |
 | taskflow      | 2.2.0         | Parallel and Heterogeneous Task Programming in Modern C++                                                                                       | Threading           |
-| qt            | 5.15.0        | Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                      | GUI                 |
+| qt            | 5.15.2        | Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                      | GUI                 |
 | reproc        | 13.0.1        | A cross-platform (C99/C++11) process library                                                                                                    | Process             |
-| qzxing        | HEAD          | Qt/QML wrapper library for the ZXing library. 1D/2D barcode image processing library                                                            | QR                  |
 
 ## How do I build it ?
 

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,23 +16,47 @@
 
 #pragma once
 
-//! Qt
-#include <QSortFilterProxyModel>
+// Qt Headers
+#include <QSortFilterProxyModel> //> QSortFilterProxyModel
+
+// Deps Headers
+#include <antara/gaming/ecs/system.manager.hpp> //> antara::gaming, ag::ecs::system_manager
+
+namespace ag = antara::gaming;
 
 namespace atomic_dex
 {
     class addressbook_proxy_model final : public QSortFilterProxyModel
     {
         Q_OBJECT
-      public:
-        //! Constructor
-        addressbook_proxy_model(QObject* parent);
-
-        //! Destructor
-        ~addressbook_proxy_model() final;
-
-      protected:
-        //! Override member functions
-        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        
+        ag::ecs::system_manager& m_system_manager;
+        
+        QString                  m_search_exp;
+        
+        QString                  m_type_filter; // Contains the address type that a contact should have on one of its addresses to validate the filtering.
+        
+    public:
+        addressbook_proxy_model(ag::ecs::system_manager& system_manager, QObject* parent);
+        ~addressbook_proxy_model() final = default;
+        
+        // QSortFilterProxyModel Functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final; // Only if sort role equals addressbook_model::SubModelRole, sorts contacts by their name in ascending order.
+        [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;     // Only if filter role equals addressbook_model::NameRoleAndCategoriesRole, accepts rows which match each word (not case sensitive) of m_search_exp. Also filters contacts which have at least one address of type equivalent to the one specified by the member `m_filter_type`.
+    
+        // Getters/Setters
+        [[nodiscard]] const QString& get_search_exp() const noexcept;
+        void                         set_search_exp(QString expression) noexcept;
+        [[nodiscard]] const QString& get_type_filter() const noexcept;
+        void                         set_type_filter(QString value) noexcept;
+        
+        // QML Properties
+        Q_PROPERTY(QString search_exp READ get_search_exp WRITE set_search_exp NOTIFY search_expChanged)
+        Q_PROPERTY(QString type_filter READ get_type_filter WRITE set_type_filter NOTIFY typeFilterChanged)
+        
+        // QML Properties Signals
+    signals:
+        void search_expChanged();
+        void typeFilterChanged();
     };
 } // namespace atomic_dex

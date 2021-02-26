@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -21,6 +21,9 @@
 //! Project Headers
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+
+//! Private
+#include "atomicdex/utilities/nlohmann.json.sax.private.cpp"
 
 namespace
 {
@@ -44,7 +47,7 @@ namespace atomic_dex
         void
         from_json(const nlohmann::json& j, price_converter_answer& evt)
         {
-            utils::my_json_sax sx;
+            utils::details::my_json_sax sx;
             nlohmann::json::sax_parse(j.dump(), &sx);
 
             evt.base_currency_id         = j.at("base_currency_id").get<std::string>();
@@ -103,7 +106,7 @@ namespace atomic_dex
                     url.append(",");
                 }
             }
-            SPDLOG_INFO("url: {}", url);
+            SPDLOG_INFO("url: {}", TO_STD_STR(g_coinpaprika_client->base_uri().to_string()) + url);
             req.set_request_uri(FROM_STD_STR(url));
             return g_coinpaprika_client->request(req);
         }

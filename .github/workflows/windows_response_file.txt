@@ -1,6 +1,8 @@
-folly:x64-Windows
+abseil:x64-Windows
 entt:x64-Windows
 boost-multiprecision:x64-Windows
+boost-filesystem:x64-Windows
+boost-thread:x64-Windows
 boost-random:x64-Windows
 boost-lockfree:x64-Windows
 doctest:x64-Windows
