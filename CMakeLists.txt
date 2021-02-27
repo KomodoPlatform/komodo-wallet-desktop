@@ -265,7 +265,7 @@ target_include_directories(${PROJECT_NAME}_shared_deps
 
 ##! Main executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
-        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicdex-desktop.rc
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/dex.rc
         main.cpp
         ##! QRC
         ${CMAKE_SOURCE_DIR}/qml.qrc
