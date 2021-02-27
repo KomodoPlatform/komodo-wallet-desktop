@@ -16,6 +16,10 @@
 
 #pragma once
 
+//! STD
+#include <optional>
+#include <string>
+
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
