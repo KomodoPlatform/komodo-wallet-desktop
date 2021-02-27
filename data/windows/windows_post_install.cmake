@@ -31,10 +31,10 @@ else()
 endif()
 
 if (NOT EXISTS ${TARGET_APP_PATH}/bin.zip)
-	message(STATUS "Copying ${CMAKE_SOURCE_DIR}/bin.zip to ${TARGET_APP_PATH}/${PROJECT_NAME}.zip")
+	message(STATUS "Copying ${CMAKE_SOURCE_DIR}/bin.zip to ${TARGET_APP_PATH}/${DEX_PROJECT_NAME}.zip")
 	file(COPY ${CMAKE_SOURCE_DIR}/bin.zip DESTINATION ${TARGET_APP_PATH})
 else()
-	message(STATUS "${TARGET_APP_PATH}/${PROJECT_NAME}.zip exists - skipping")
+	message(STATUS "${TARGET_APP_PATH}/${DEX_PROJECT_NAME}.zip exists - skipping")
 endif()
 
 message(STATUS "Creating Installer")

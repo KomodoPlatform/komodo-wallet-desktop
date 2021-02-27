@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=${DEX_PROJECT_NAME}
+Exec=${DEX_PROJECT_NAME}
+Icon=dex-logo-64
+Categories=Office;

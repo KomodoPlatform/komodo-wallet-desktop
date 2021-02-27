@@ -339,27 +339,27 @@ if (LINUX)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicdex-desktop.desktop"
-            "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop-64.png"
+            "dex.desktop"
+            "dex.appdata.xml"
+            "dex-logo-64.png"
             ${PROJECT_NAME}
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicdex-desktop.desktop"
-            "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop-64.png"
+            "dex.desktop"
+            "dex.appdata.xml"
+            "dex-logo-64.png"
             ${PROJECT_NAME}_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
-    set(desktop_file "atomicdex-desktop.desktop")
-    set(appdata_file "atomicdex-desktop.appdata.xml")
-    set(app_icon "atomicdex-desktop-64.png")
+    set(desktop_file "dex.desktop")
+    set(appdata_file "dex.appdata.xml")
+    set(app_icon "dex-logo-64.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
