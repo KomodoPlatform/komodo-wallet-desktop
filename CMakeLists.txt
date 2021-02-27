@@ -151,6 +151,9 @@ target_sources(${PROJECT_NAME}_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.enable.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.electrum.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.balance.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.buy.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/rpc.sell.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/trading.order.contents.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/generics.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/fraction.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp

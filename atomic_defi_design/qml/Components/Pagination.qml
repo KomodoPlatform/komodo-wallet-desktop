@@ -1,42 +1,17 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import Qaterial 1.0 as Qaterial
 import "../Constants"
 
 RowLayout {
     property int visible_page: API.app.orders_mdl.current_page
     property int page_count: API.app.orders_mdl.nb_pages
-
-    PaginationButton {
-        text: qsTr("Previous")
-        enabled: visible_page > 1
-        onClicked: --API.app.orders_mdl.current_page
-    }
-
-    Repeater {
-        model: paginate(visible_page, page_count)
-        delegate: PaginationButton {
-            text: model.modelData
-            button_type: model.modelData === visible_page ? "primary" : "default"
-            onClicked: {
-                if(visible_page !== model.modelData)
-                    API.app.orders_mdl.current_page = model.modelData
-            }
-        }
-    }
-
-    PaginationButton {
-        text: qsTr("Next")
-        enabled: page_count > 1 && visible_page < page_count
-        onClicked: ++API.app.orders_mdl.current_page
-    }
-
-
     DefaultComboBox {
         readonly property int item_count: API.app.orders_mdl.limit_nb_elements
         readonly property var options: [5, 10, 25, 50, 100, 200]
 
-        Layout.leftMargin: 40
+        Layout.leftMargin: 0
         Layout.alignment: Qt.AlignCenter
 
         model: options
@@ -46,8 +21,62 @@ RowLayout {
 
     DefaultText {
         Layout.alignment: Qt.AlignCenter
-
+        font.pixelSize: 11
         text_value: qsTr("items per page")
+    }
+    Item {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+    }
+
+    PaginationButton {
+        Layout.preferredWidth: 40
+        Layout.preferredHeight: 40
+        radius: 20
+        opacity: enabled? 1 : .5
+        Qaterial.ColorIcon {
+            anchors.centerIn: parent
+
+            color: enabled? Style.colorWhite : Style.colorWhite6
+            source: Qaterial.Icons.skipPreviousOutline
+        }
+
+        //text: qsTr("Previous")
+        enabled: visible_page > 1
+        onClicked: --API.app.orders_mdl.current_page
+    }
+    spacing: 10
+
+    Repeater {
+        model: paginate(visible_page, page_count)
+        delegate: PaginationButton {
+            text: model.modelData
+            radius: 30
+            Layout.preferredWidth: 40
+            Layout.preferredHeight: 40
+            Layout.alignment: Qt.AlignVCenter
+            button_type: model.modelData === visible_page ? "primary" : "default"
+            onClicked: {
+                if(visible_page !== model.modelData)
+                    API.app.orders_mdl.current_page = model.modelData
+            }
+        }
+    }
+    PaginationButton {
+        Layout.preferredWidth: 40
+        Layout.preferredHeight: 40
+        radius: 20
+        opacity: enabled? 1 : .5
+        Qaterial.ColorIcon {
+            anchors.centerIn: parent
+
+            color: enabled? Style.colorWhite : Style.colorWhite6
+            source: Qaterial.Icons.skipNextOutline
+        }
+
+        //text: qsTr("Next")
+        enabled: page_count > 1 && visible_page < page_count
+        onClicked:  ++API.app.orders_mdl.current_page
     }
 
     function paginate(visible_page, page_count) {

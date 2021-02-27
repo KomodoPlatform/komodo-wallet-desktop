@@ -139,7 +139,7 @@
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/API.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeV1.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
@@ -377,5 +377,17 @@
         <file>atomic_defi_design/assets/images/coins/vrm.png</file>
         <file>atomic_defi_design/assets/images/coins/wsb.png</file>
         <file>atomic_defi_design/assets/images/coins/zat.png</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeV2.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBookHorizontal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBookVertical.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSubstractRectangle.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/SellBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/OrderForm.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/BuyBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/OrdersPage_backup.qml</file>
+        <file>atomic_defi_design/qml/Exchange/OrderLine_Backup.qml</file>
+        <file>atomic_defi_design/qml/Components/LoaderBusyIndicator.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderbookHeader.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSweetComboBox.qml</file>
     </qresource>
 </RCC>

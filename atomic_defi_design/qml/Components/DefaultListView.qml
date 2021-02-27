@@ -8,9 +8,10 @@ ListView {
 
     property bool scrollbar_visible: contentItem.childrenRect.height > height
     readonly property double scrollbar_margin: scrollbar_visible ? 8 : 0
+    property bool visibleBackground: false
 
     boundsBehavior: Flickable.StopAtBounds
-    ScrollBar.vertical: DefaultScrollBar { }
+    ScrollBar.vertical: DefaultScrollBar { visibleBackground:  root.visibleBackground }
 
     implicitWidth: contentItem.childrenRect.width
     implicitHeight: contentItem.childrenRect.height

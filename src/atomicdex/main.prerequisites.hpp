@@ -58,6 +58,8 @@
 #include "atomicdex/utilities/kill.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
+#include "atomicdex/utilities/log.prerequisites.hpp"
+
 #ifdef __APPLE__
 #    include "atomicdex/platform/osx/manager.hpp"
 #    include <sys/sysctl.h>
@@ -342,6 +344,7 @@ run_app(int argc, char** argv)
     qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
 
 #if defined(ATOMICDEX_HOT_RELOAD)
+    engine.rootContext()->setContextProperty("debug_bar", true);
     engine.addImportPath("qrc:/");
     installLoggers();
     qaterial::registerQmlTypes();
@@ -351,6 +354,7 @@ run_app(int argc, char** argv)
     if (engine.rootObjects().isEmpty())
         return -1;
 #else
+    engine.rootContext()->setContextProperty("debug_bar", false);
     const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),

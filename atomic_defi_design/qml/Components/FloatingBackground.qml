@@ -18,6 +18,9 @@ Item {
     property bool verticalShadow: false
     property bool opacity_mask_enabled: false
     property bool auto_set_size: true
+    property bool show_shadow: true
+    property alias light_gradient: _linear_gradient
+    property alias black_shadow: _black_shadow
 
     readonly property var visible_rect: opacity_mask_enabled ? mask_loader : rect
 
@@ -43,6 +46,7 @@ Item {
     }
 
     LinearGradient {
+        id: _linear_gradient
         visible: rect.border.width > 0
         source: visible_rect
         width: parent.width + rect.border.width*2
@@ -69,6 +73,7 @@ Item {
         anchors.fill: visible_rect
         source: visible_rect
         cached: false
+        visible: show_shadow
         horizontalOffset: verticalShadow ? 0 : -6
         verticalOffset: verticalShadow ? -10 : -6
         radius: verticalShadow ? 25 : 15
@@ -80,9 +85,11 @@ Item {
     }
 
     DropShadow {
+        id: _black_shadow
         anchors.fill: visible_rect
         source: visible_rect
         cached: false
+        visible: show_shadow
         horizontalOffset: verticalShadow ? 0 : 6
         verticalOffset: verticalShadow ? 10 : 6
         radius: verticalShadow ? 25 : 20

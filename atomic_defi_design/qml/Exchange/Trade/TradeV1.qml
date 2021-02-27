@@ -49,7 +49,7 @@ Item {
         API.app.trading_pg.volume = v
     }
 
-    readonly property bool sell_mode: API.app.trading_pg.market_mode == MarketMode.Sell
+    readonly property bool sell_mode: API.app.trading_pg.market_mode === MarketMode.Sell
     function setMarketMode(v) {
         API.app.trading_pg.market_mode = v
     }
