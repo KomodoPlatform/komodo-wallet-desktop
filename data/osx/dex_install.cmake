@@ -2,7 +2,7 @@ if (APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
             MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
             RESOURCE data/osx/dex-logo.icns
-            MACOSX_BUNDLE_ICON_FILE ${PROJECT_NAME}
+            MACOSX_BUNDLE_ICON_FILE dex-logo.icns
             MACOSX_BUNDLE_SHORT_VERSION_STRING 0.0.1
             MACOSX_BUNDLE_LONG_VERSION_STRING 0.0.1
             MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/cmake/MacOSXBundleInfo.plist.in")
