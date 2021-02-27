@@ -159,15 +159,17 @@ namespace atomic_dex
         SPDLOG_INFO("Setting current orderbook: {} / {}", base.toStdString(), rel.toStdString());
         auto* market_selector_mdl = get_market_pairs_mdl();
 
-        if (base != market_selector_mdl->get_left_selected_coin() || rel != market_selector_mdl->get_right_selected_coin())
-        {
-            this->clear_forms();
-        }
-
+        const bool to_change = base != market_selector_mdl->get_left_selected_coin() || rel != market_selector_mdl->get_right_selected_coin();
         market_selector_mdl->set_left_selected_coin(base);
         market_selector_mdl->set_right_selected_coin(rel);
         market_selector_mdl->set_base_selected_coin(m_market_mode == MarketMode::Sell ? base : rel);
         market_selector_mdl->set_rel_selected_coin(m_market_mode == MarketMode::Sell ? rel : base);
+
+        if (to_change)
+        {
+            this->clear_forms();
+        }
+
         emit mm2MinTradeVolChanged();
         dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
@@ -892,6 +894,7 @@ namespace atomic_dex
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
         this->set_multi_order_enabled(false);
+        this->set_min_trade_vol(get_mm2_min_trade_vol());
         this->m_preffered_order = std::nullopt;
         this->m_fees            = QVariantMap();
         this->m_cex_price       = "0";
@@ -1588,5 +1591,21 @@ namespace atomic_dex
         }
         //SPDLOG_INFO("min_trade_vol for ticker: {} is {}", base_coin, min_trade_vol.toStdString());
         return min_trade_vol;
+    }
+
+    QString
+    trading_page::get_min_trade_vol() const noexcept
+    {
+        return m_minimal_trading_amount;
+    }
+
+    void
+    trading_page::set_min_trade_vol(QString min_trade_vol) noexcept
+    {
+        if (min_trade_vol != m_minimal_trading_amount)
+        {
+            m_minimal_trading_amount = min_trade_vol;
+            emit minTradeVolChanged();
+        }
     }
 } // namespace atomic_dex
