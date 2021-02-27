@@ -20,6 +20,7 @@
 #include "src/atomicdex/pch.hpp"
 
 //! Project Headers
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -325,13 +326,13 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
-                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
+                    this->clear_forms();
                 }
                 else
                 {
@@ -445,13 +446,13 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
-                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
+                    this->clear_forms();
                 }
                 else
                 {
@@ -563,13 +564,13 @@ namespace atomic_dex
             {
                 if (body.find("error") == std::string::npos)
                 {
-                    this->clear_forms();
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
                     mm2_system.batch_fetch_orders_and_swap();
+                    this->clear_forms();
                 }
                 else
                 {
@@ -794,11 +795,12 @@ namespace atomic_dex
         }
 
         auto& mm2_system     = m_system_manager.get_system<mm2_service>();
-        auto  answer_functor = [](web::http::http_response resp) {
+        auto  answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
                 auto answers = nlohmann::json::parse(body);
+                this->clear_forms();
             }
             else
             {
@@ -1453,6 +1455,13 @@ namespace atomic_dex
             if (m_multi_order_enabled == true)
             {
                 this->determine_all_multi_ticker_forms();
+            }
+            else
+            {
+                SPDLOG_INFO("Reset multi order for the multi order model");
+                const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+                auto       model = this->get_market_pairs_mdl()->get_multiple_order_coins();
+                model->reset();
             }
             emit multiOrderEnabledChanged();
         }

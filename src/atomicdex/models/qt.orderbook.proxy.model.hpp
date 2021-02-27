@@ -32,6 +32,8 @@ namespace atomic_dex
         //! Destructor
         ~orderbook_proxy_model() noexcept final = default;
 
+        Q_INVOKABLE void qml_sort(int column, Qt::SortOrder order = Qt::AscendingOrder) noexcept;
+
       protected:
         //! Override member functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;

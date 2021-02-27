@@ -12,6 +12,7 @@ TextField {
     placeholderTextColor: Style.colorPlaceholderText
     selectedTextColor: Style.colorSelectedText
     selectionColor: Style.colorSelection
+    color: Style.colorWhite1
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
@@ -20,10 +21,11 @@ TextField {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground { auto_set_size: false }
+    background: InnerBackground { auto_set_size: false; radius: 10 }
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)
+    topPadding: 7
 
 
     RightClickMenu { }

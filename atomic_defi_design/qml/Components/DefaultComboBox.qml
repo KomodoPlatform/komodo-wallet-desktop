@@ -12,6 +12,8 @@ ComboBox {
     Universal.accent: Style.colorQtThemeAccent
     Universal.foreground: Style.colorQtThemeForeground
     Universal.background: Style.colorQtThemeBackground
+    property alias border: bg_rect.border
+    property alias radius: bg_rect.radius
 
     font.family: Style.font_family
 
@@ -49,6 +51,7 @@ ComboBox {
 
     // Main background
     background: AnimatedRectangle {
+        id: bg_rect
         implicitWidth: 120
         implicitHeight: 40
         color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
