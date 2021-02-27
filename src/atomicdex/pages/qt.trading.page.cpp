@@ -163,11 +163,12 @@ namespace atomic_dex
         {
             this->clear_forms();
         }
+
         market_selector_mdl->set_left_selected_coin(base);
         market_selector_mdl->set_right_selected_coin(rel);
-
         market_selector_mdl->set_base_selected_coin(m_market_mode == MarketMode::Sell ? base : rel);
         market_selector_mdl->set_rel_selected_coin(m_market_mode == MarketMode::Sell ? rel : base);
+        emit mm2MinTradeVolChanged();
         dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
 
@@ -1570,5 +1571,22 @@ namespace atomic_dex
             m_skip_taker = skip_taker;
             emit skipTakerChanged();
         }
+    }
+
+    QString
+    trading_page::get_mm2_min_trade_vol() const noexcept
+    {
+        const auto& mm2           = m_system_manager.get_system<mm2_service>();
+        const auto  base_coin     = get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+        const auto& raw_cfg       = mm2.get_raw_mm2_ticker_cfg(base_coin);
+        QString     min_trade_vol = QString::fromStdString(atomic_dex::utils::minimal_trade_amount_str());
+        if (raw_cfg.contains("dust"))
+        {
+            t_float_50 min_volume(raw_cfg.at("dust").get<int64_t>());
+            min_volume /= 100000000;
+            min_trade_vol = QString::fromStdString(atomic_dex::utils::format_float(min_volume));
+        }
+        //SPDLOG_INFO("min_trade_vol for ticker: {} is {}", base_coin, min_trade_vol.toStdString());
+        return min_trade_vol;
     }
 } // namespace atomic_dex
