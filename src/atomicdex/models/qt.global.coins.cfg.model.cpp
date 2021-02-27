@@ -199,8 +199,8 @@ namespace atomic_dex
     void
     global_coins_cfg_model::update_status(const TArray& tickers, bool status) noexcept
     {
-        auto update_functor = [this, status](QModelIndexList res, const QString& ticker) {
-            SPDLOG_INFO("Changing Active/CurrentlyEnabled status to {} for ticker {}", status, ticker.toStdString());
+        auto update_functor = [this, status](QModelIndexList res, [[maybe_unused]] const QString& ticker) {
+            //SPDLOG_INFO("Changing Active/CurrentlyEnabled status to {} for ticker {}", status, ticker.toStdString());
             const QModelIndex& idx = res.at(0);
             update_value(Active, status, idx, *this);
             update_value(CurrentlyEnabled, status, idx, *this);

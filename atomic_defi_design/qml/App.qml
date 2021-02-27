@@ -1,6 +1,9 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.0
+
+import Qaterial 1.0 as Qaterial
 
 import "Screens"
 import "Constants"
@@ -13,19 +16,28 @@ Rectangle {
     color: Style.colorTheme8
 
     property string selected_wallet_name: ""
+    property bool debug: debug_bar
 
     function firstPage() {
         return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
     }
 
-    function onDisconnect() { openFirstLaunch() }
+    function onDisconnect() {
+        API.app.wallet_mgr.set_log_status(false);
+        openFirstLaunch()
+    }
 
     function openFirstLaunch(force=false, set_wallet_name=true) {
         if(set_wallet_name) selected_wallet_name = API.app.wallet_mgr.wallet_default_name
 
         General.initialized_orderbook_pair = false
+        if(API.app.wallet_mgr.log_status()){
+            current_page = idx_dashboard
+        }else {
+            current_page = force ? idx_first_launch : firstPage()
+        }
 
-        current_page = force ? idx_first_launch : firstPage()
+
     }
 
     // Preload Chart
@@ -37,7 +49,7 @@ Rectangle {
         openFirstLaunch()
 
         // Load the chart
-        if(!chart_component) chart_component = Qt.createComponent("./Exchange/Trade/CandleStickChart.qml")
+        if(!chart_component) chart_component = Qt.createComponent("qrc:/atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml")//./Exchange/Trade/CandleStickChart.qml")
         if(!chart_object) {
             chart_object = chart_component.createObject(app)
             chart_object.visible = false
@@ -169,4 +181,88 @@ Rectangle {
         id: fatal_error_modal
         visible: false
     }
+    Item {
+        id: debug_control
+        property var splitViewState
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        width: 110
+        height: 20
+        visible: app.debug
+        Menu {
+            id: contextMenu
+            Action {
+                text: "Display Normal"
+                onTriggered: {
+                    treeView.parent.visible = true
+                    _statusView.visible = true
+                    flow.parent.parent.visible = true
+                    app.parent.width = app.parent.parent.width-treeView.width
+                    app.parent.height = app.parent.parent.height
+                    app.parent.parent.update()
+                }
+            }
+            Action {
+                text: "Show Full"
+                onTriggered: {
+                    app.parent.width = app.parent.parent.width-treeView.width
+                    app.parent.height = app.parent.parent.height
+                    treeView.parent.visible = false
+                    _statusView.visible = false
+                    flow.parent.parent.visible = false
+
+                }
+            }
+            Action {
+                text: "Show Minimum"
+                onTriggered: {
+                    app.parent.width = General.minimumWidth
+                    app.parent.height = General.minimumHeight
+
+                }
+            }
+            Action {
+                text: "Clean Cache"
+                onTriggered: {
+                    _statusView.children[0].contentItem.children[0].clear()
+                }
+            }
+        }
+
+        Rectangle {
+            width: parent.width
+            radius: 1
+            height: 20
+            color: Qaterial.Colors.blueGray600
+        }
+
+        Row {
+            anchors.centerIn: parent
+            spacing: 10
+            anchors.bottomMargin: 5
+            DefaultText {
+                text: "%1x%2".arg(app.width).arg(app.height)
+                color: 'white'
+                font.pixelSize: 13
+                layer.enabled: true
+                DropShadow {
+                    color: 'black'
+                }
+            }
+            Qaterial.ColorIcon {
+                source: Qaterial.Icons.tools
+                iconSize: 12
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+        }
+        DefaultMouseArea {
+            anchors.fill: parent
+            onClicked: {
+                contextMenu.open()
+            }
+        }
+    }
+
+
 }

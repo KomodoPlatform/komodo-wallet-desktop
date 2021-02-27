@@ -107,6 +107,7 @@ namespace atomic_dex
         std::optional<std::string>    n_spv{std::nullopt};
         std::optional<std::string>    version_group_id{std::nullopt};
         std::optional<std::string>    consensus_branch_id{std::nullopt};
+        std::optional<int64_t>        dust{std::nullopt};
     };
 
     using coins = std::vector<coin_element>;
@@ -172,6 +173,7 @@ namespace atomic_dex
         x.n_spv                  = atomic_dex::get_optional<std::string>(j, "nSPV");
         x.version_group_id       = atomic_dex::get_optional<std::string>(j, "version_group_id");
         x.consensus_branch_id    = atomic_dex::get_optional<std::string>(j, "consensus_branch_id");
+        x.dust                   = atomic_dex::get_optional<int64_t>(j, "dust");
     }
 
     inline void
@@ -214,6 +216,7 @@ namespace atomic_dex
         to_json_functor("nSPV", x.n_spv);
         to_json_functor("version_group_id", x.version_group_id);
         to_json_functor("consensus_branch_id", x.consensus_branch_id);
+        to_json_functor("dust", x.dust);
     }
 
     inline t_mm2_raw_coins_registry
