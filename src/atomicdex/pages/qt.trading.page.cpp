@@ -16,10 +16,9 @@
 
 #include <QJsonDocument>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
+#include "atomicdex/api/mm2/rpc.buy.hpp"
+#include "atomicdex/api/mm2/rpc.sell.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"

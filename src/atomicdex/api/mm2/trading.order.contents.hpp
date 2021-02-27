@@ -14,34 +14,28 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
-#include <nlohmann/json.hpp>
+#pragma once
 
-//! Project Headers
-#include "atomicdex/api/mm2/generics.hpp"
-#include "atomicdex/api/mm2/rpc.buy.hpp"
-#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
-#include "atomicdex/api/mm2/rpc.sell.hpp"
-#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
+//! STD
+#include <string>
+
+//! Deps
+#include <nlohmann/json_fwd.hpp>
 
 namespace mm2::api
 {
-    template <typename RpcSuccessReturnType, typename RpcReturnType>
-    void
-    extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer)
+    struct trading_order_contents
     {
-        if (j.contains("error") && j.at("error").is_string())
-        {
-            answer.error = j.at("error").get<std::string>();
-        }
-        else if (j.contains("result"))
-        {
-            answer.result = j.at("result").get<RpcSuccessReturnType>();
-        }
-    }
+        std::string action;
+        std::string base;
+        std::string base_amount;
+        std::string dest_pub_key;
+        std::string method;
+        std::string rel;
+        std::string rel_amount;
+        std::string sender_pubkey;
+        std::string uuid;
+    };
 
-    template void extract_rpc_json_answer<trade_preimage_answer_success>(const nlohmann::json& j, trade_preimage_answer& answer);
-    template void extract_rpc_json_answer<max_taker_vol_answer_success>(const nlohmann::json& j, max_taker_vol_answer& answer);
-    template void extract_rpc_json_answer<buy_answer_success>(const nlohmann::json& j, buy_answer& answer);
-    template void extract_rpc_json_answer<sell_answer_success>(const nlohmann::json& j, sell_answer& answer);
-} // namespace mm2::api
+    void from_json(const nlohmann::json& j, trading_order_contents& contents);
+}
