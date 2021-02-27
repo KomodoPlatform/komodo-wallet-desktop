@@ -141,7 +141,7 @@ namespace atomic_dex
     QVariant
     wallet_page::get_ticker_infos() const noexcept
     {
-        SPDLOG_DEBUG("get_ticker_infos");
+        //SPDLOG_DEBUG("get_ticker_infos");
         QJsonObject obj{
             {"balance", "0"},
             {"name", "Komodo"},
@@ -265,7 +265,7 @@ namespace atomic_dex
     void
     wallet_page::refresh_ticker_infos() noexcept
     {
-        SPDLOG_DEBUG("refresh ticker infos");
+        //SPDLOG_DEBUG("refresh ticker infos");
         emit tickerInfosChanged();
     }
 
