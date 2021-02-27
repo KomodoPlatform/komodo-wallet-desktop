@@ -43,6 +43,10 @@ namespace mm2::api
             j["volume"] = volume_fraction_functor();
         }
         j["price"] = request.price;
+        if (request.min_volume.has_value())
+        {
+            j["min_volume"] = request.min_volume.value();
+        }
         if (request.rel_nota.has_value())
         {
             j["rel_nota"] = request.rel_nota.value();

@@ -44,6 +44,7 @@ namespace mm2::api
         std::optional<bool>        rel_nota;
         std::optional<std::size_t> rel_confs;
         bool                       is_max;
+        std::optional<std::string> min_volume{std::nullopt};
     };
 
     void to_json(nlohmann::json& j, const sell_request& request);

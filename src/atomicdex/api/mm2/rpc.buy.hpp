@@ -43,6 +43,7 @@ namespace mm2::api
         bool                       selected_order_use_input_volume{false};
         std::optional<bool>        base_nota{std::nullopt};
         std::optional<std::size_t> base_confs{std::nullopt};
+        std::optional<std::string> min_volume{std::nullopt};
     };
 
     void to_json(nlohmann::json& j, const buy_request& request);

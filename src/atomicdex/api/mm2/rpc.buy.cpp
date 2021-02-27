@@ -42,6 +42,10 @@ namespace mm2::api
         j["price"]  = request.price;
         j["rel"]    = request.rel;
         j["volume"] = request.volume;
+        if (request.min_volume.has_value())
+        {
+            j["min_volume"] = request.min_volume.value();
+        }
         if (request.base_nota.has_value())
         {
             j["base_nota"] = request.base_nota.value();
