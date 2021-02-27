@@ -131,7 +131,7 @@ namespace atomic_dex
     void
     trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt) noexcept
     {
-        //SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        // SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (not m_about_to_exit_the_app)
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
@@ -410,7 +410,9 @@ namespace atomic_dex
             .volume_numer                   = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
             .is_exact_selected_order_volume = is_exact_selected_order_volume,
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
-            .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
+            .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
+            .min_volume =
+                m_minimal_trading_amount != get_mm2_min_trade_vol() ? m_minimal_trading_amount.toStdString() : std::optional<std::string>{std::nullopt}};
 
         if (m_preffered_order.has_value())
         {
@@ -518,7 +520,9 @@ namespace atomic_dex
                 (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false,
             .rel_nota  = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
             .rel_confs = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
-            .is_max    = is_max};
+            .is_max    = is_max,
+            .min_volume =
+                m_minimal_trading_amount != get_mm2_min_trade_vol() ? m_minimal_trading_amount.toStdString() : std::optional<std::string>{std::nullopt}};
 
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
         if (m_preffered_order.has_value())
@@ -921,7 +925,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            //SPDLOG_DEBUG("volume is [{}]", m_volume.toStdString());
+            // SPDLOG_DEBUG("volume is [{}]", m_volume.toStdString());
             this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
@@ -972,7 +976,7 @@ namespace atomic_dex
             }
             else
             {
-                //SPDLOG_WARN("max_taker_vol cannot be empty, is it called before being determinated ?");
+                // SPDLOG_WARN("max_taker_vol cannot be empty, is it called before being determinated ?");
             }
         }
         else
@@ -1412,12 +1416,12 @@ namespace atomic_dex
             }
             else
             {
-                //SPDLOG_WARN("Skipping for first multi-ticker element, it's the main trade info");
+                // SPDLOG_WARN("Skipping for first multi-ticker element, it's the main trade info");
             }
         }
         else
         {
-            //SPDLOG_ERROR("multi_ticker order are not available in buy mode");
+            // SPDLOG_ERROR("multi_ticker order are not available in buy mode");
         }
     }
 
@@ -1473,7 +1477,7 @@ namespace atomic_dex
     void
     trading_page::determine_all_multi_ticker_forms() noexcept
     {
-        //SPDLOG_INFO("determine all multi ticker forms");
+        // SPDLOG_INFO("determine all multi ticker forms");
         portfolio_proxy_model* model         = this->get_market_pairs_mdl()->get_multiple_selection_box();
         const auto&            price_service = this->m_system_manager.get_system<global_price_service>();
         const auto&            config        = this->m_system_manager.get_system<settings_page>().get_cfg();
@@ -1486,7 +1490,7 @@ namespace atomic_dex
             QModelIndex idx    = model->index(cur_idx, 0);
             const auto  ticker = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString();
 
-            //SPDLOG_INFO("setting info form ticker: {}", ticker.toStdString());
+            // SPDLOG_INFO("setting info form ticker: {}", ticker.toStdString());
             if (ticker == rel_ticker)
             {
                 set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerCurrentlyEnabled, true, model);
@@ -1589,7 +1593,7 @@ namespace atomic_dex
             min_volume /= 100000000;
             min_trade_vol = QString::fromStdString(atomic_dex::utils::format_float(min_volume));
         }
-        //SPDLOG_INFO("min_trade_vol for ticker: {} is {}", base_coin, min_trade_vol.toStdString());
+        // SPDLOG_INFO("min_trade_vol for ticker: {} is {}", base_coin, min_trade_vol.toStdString());
         return min_trade_vol;
     }
 
