@@ -350,57 +350,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, orderbook_answer& answer);
 
-    struct trading_order_contents
-    {
-        std::string action;
-        std::string base;
-        std::string base_amount;
-        std::string dest_pub_key;
-        std::string method;
-        std::string rel;
-        std::string rel_amount;
-        std::string sender_pubkey;
-        std::string uuid;
-    };
-
-    void from_json(const nlohmann::json& j, trading_order_contents& contents);
-
-    struct buy_request
-    {
-        std::string                base;
-        std::string                rel;
-        std::string                price;
-        std::string                volume;
-        bool                       is_created_order;
-        std::string                price_denom;
-        std::string                price_numer;
-        std::string                volume_denom;
-        std::string                volume_numer;
-        bool                       is_exact_selected_order_volume;
-        bool                       selected_order_use_input_volume{false};
-        std::optional<bool>        base_nota{std::nullopt};
-        std::optional<std::size_t> base_confs{std::nullopt};
-    };
-
-    void to_json(nlohmann::json& j, const buy_request& request);
-
-    struct buy_answer_success
-    {
-        trading_order_contents contents;
-    };
-
-    void from_json(const nlohmann::json& j, buy_answer_success& contents);
-
-    struct buy_answer
-    {
-        std::optional<std::string>        error;
-        std::optional<buy_answer_success> result;
-        int                               rpc_result_code;
-        std::string                       raw_result;
-    };
-
-    void from_json(const nlohmann::json& j, buy_answer& answer);
-
     struct setprice_request
     {
         std::string                base;
@@ -416,43 +365,6 @@ namespace mm2::api
     };
 
     void to_json(nlohmann::json& j, const setprice_request& request);
-
-    struct sell_request
-    {
-        std::string                base;
-        std::string                rel;
-        std::string                price;
-        std::string                volume;
-        bool                       is_created_order;
-        std::string                price_denom;
-        std::string                price_numer;
-        std::string                volume_denom;
-        std::string                volume_numer;
-        bool                       is_exact_selected_order_volume;
-        bool                       selected_order_use_input_volume{false};
-        std::optional<bool>        rel_nota;
-        std::optional<std::size_t> rel_confs;
-        bool                       is_max;
-    };
-
-    void to_json(nlohmann::json& j, const sell_request& request);
-
-    struct sell_answer_success
-    {
-        trading_order_contents contents;
-    };
-
-    void from_json(const nlohmann::json& j, sell_answer_success& contents);
-
-    struct sell_answer
-    {
-        std::optional<std::string>         error;
-        std::optional<sell_answer_success> result;
-        int                                rpc_result_code;
-        std::string                        raw_result;
-    };
-
-    void from_json(const nlohmann::json& j, sell_answer& answer);
 
     struct cancel_order_request
     {
@@ -625,9 +537,7 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_buy_request             = ::mm2::api::buy_request;
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
-    using t_sell_request            = ::mm2::api::sell_request;
     using t_setprice_request        = ::mm2::api::setprice_request;
     using t_withdraw_request        = ::mm2::api::withdraw_request;
     using t_withdraw_fees           = ::mm2::api::withdraw_fees;
