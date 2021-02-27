@@ -81,7 +81,7 @@ add_subdirectory(vendor/antara-gaming_sdk/modules)
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/atomicdex-desktop.icns ICON atomicdex-desktop.icns)
+configure_icon_osx(data/osx/dex-logo.icns ICON dex-logo.icns)
 ##! End antara
 
 set(CMAKE_AUTOUIC ON)
