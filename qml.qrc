@@ -387,5 +387,9 @@
         <file>atomic_defi_design/qml/Components/LoaderBusyIndicator.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderbookHeader.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSweetComboBox.qml</file>
+        <file>atomic_defi_design/qml/Components/Blank.qml</file>
+        <file>atomic_defi_design/qml/Components/ClipRRect.qml</file>
+        <file>atomic_defi_design/qml/Components/ItemBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Trade201.qml</file>
     </qresource>
 </RCC>
