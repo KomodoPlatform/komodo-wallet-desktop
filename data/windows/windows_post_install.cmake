@@ -1,4 +1,5 @@
-message(STATUS "Hello world")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
+include(project.metadata)
 
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
 if (EXISTS ${PROJECT_ROOT_DIR}/build-Release)
@@ -30,17 +31,17 @@ else()
 endif()
 
 if (NOT EXISTS ${TARGET_APP_PATH}/bin.zip)
-	message(STATUS "Copying ${CMAKE_SOURCE_DIR}/bin.zip to ${TARGET_APP_PATH}/atomicdex-desktop.zip")
+	message(STATUS "Copying ${CMAKE_SOURCE_DIR}/bin.zip to ${TARGET_APP_PATH}/${DEX_PROJECT_NAME}.zip")
 	file(COPY ${CMAKE_SOURCE_DIR}/bin.zip DESTINATION ${TARGET_APP_PATH})
 else()
-	message(STATUS "${TARGET_APP_PATH}/atomicdex-desktop.zip exists - skipping")
+	message(STATUS "${TARGET_APP_PATH}/${DEX_PROJECT_NAME}.zip exists - skipping")
 endif()
 
 message(STATUS "Creating Installer")
 set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.0/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
-if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/atomicdex_desktop.7z)
-	execute_process(COMMAND ${IFW_BINDIR}/archivegen.exe atomicdex_desktop.7z .
+if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
+	execute_process(COMMAND ${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z .
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 		ECHO_OUTPUT_VARIABLE
 		ECHO_ERROR_VARIABLE
@@ -48,13 +49,13 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/atomicdex_desktop.7z)
 		OUTPUT_VARIABLE ARCHIVE_OUTPUT
 		ERROR_VARIABLE ARCHIVE_ERROR)
 else()
-	message(STATUS "atomicdex_desktop.7z already exists skipping")
+	message(STATUS "${DEX_PROJECT_NAME}.7z already exists skipping")
 endif()
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/atomicdex_desktop.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data)
 
-execute_process(COMMAND ${IFW_BINDIR}/binarycreator.exe -c ./config/config.xml -p ./packages/ atomicdex_desktop_installer.exe
+execute_process(COMMAND ${IFW_BINDIR}/binarycreator.exe -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer.exe
 	WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows
 	ECHO_OUTPUT_VARIABLE
 	ECHO_ERROR_VARIABLE)
-file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/atomicdex_desktop_installer.exe DESTINATION ${TARGET_APP_PATH})
+file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/${DEX_PROJECT_NAME}_installer.exe DESTINATION ${TARGET_APP_PATH})

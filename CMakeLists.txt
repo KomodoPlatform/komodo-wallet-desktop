@@ -1,90 +1,28 @@
 cmake_minimum_required(VERSION 3.15)
 
-################# BUILD TYPE ##################################
-if (NOT EXISTS ${CMAKE_BINARY_DIR}/CMakeCache.txt)
-    if (NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
-    endif ()
-endif ()
-################# END BUILD TYPE ###############################
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-############################ VCPKG PREREQUISITES ##############
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftime-trace")
-message(STATUS "VCPKG package manager enabled")
-set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-custom-ports/ports" CACHE STRING "")
-set(_VCPKG_INSTALLED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/installed")
-set(CMAKE_TOOLCHAIN_FILE
-        "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
-        CACHE STRING "")
-if (WIN32)
-    set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
-endif ()
-find_program(ANTARA_CXX_COMPILER clang++)
-find_program(ANTARA_C_COMPILER clang)
-message(STATUS "Compiler: ${ANTARA_CXX_COMPILER} and ${ANTARA_C_COMPILER}")
-set(CMAKE_CXX_COMPILER "${ANTARA_CXX_COMPILER}" CACHE STRING "")
-set(CMAKE_C_COMPILER "${ANTARA_C_COMPILER}" CACHE STRING "")
-if (WIN32)
-    set(CMAKE_PREFIX_PATH "$ENV{QT_INSTALL_CMAKE_PATH}/lib/cmake" CACHE STRING "")
-else ()
-    set(CMAKE_PREFIX_PATH "$ENV{QT_INSTALL_CMAKE_PATH}" CACHE STRING "")
-endif ()
-message(STATUS "CMake Prefix path is: ${CMAKE_PREFIX_PATH}")
+include(project.metadata)           ##> generate_dex_project_metafiles()
+generate_dex_project_metafiles()
 
-if (APPLE)
-    set(VCPKG_APPLOCAL_DEPS OFF CACHE BOOL "")
-endif ()
-############################ END VCPKG PREREQUISITES ##############################
+include(build_type)
+include(compiler_prerequisites)
+include(vcpkg_prerequisites)
+include(qt_prerequisites)
+include(cfg_hash)
 
-project(atomicdex-desktop LANGUAGES CXX VERSION 0.4.0)
-
+project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.4.0)
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
-if (UNIX)
-    execute_process(COMMAND bash -c "git ls-remote https://github.com/KomodoPlatform/atomicdex-desktop-generics refs/heads/main | cut -f 1 | tr -d '\n'"
-            OUTPUT_VARIABLE GENERICS_VERSION_ID
-            )
-    if (NOT EXISTS ${GENERICS_VERSION_ID}.cfg_hash)
-        file(WRITE assets/config/${GENERICS_VERSION_ID}.remote_last_cfg_hash)
-    endif ()
-endif ()
+include(cmake_default_options)
+include(ipo_prerequisites)
 
+##! Options
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
-set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    if (APPLE OR WIN32)
-        include(CheckIPOSupported)
-        check_ipo_supported(RESULT ipo_supported OUTPUT output)
-        if (ipo_supported)
-            set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-            message(STATUS "We are in release - Successfully enabled IPO")
-        else ()
-            message(WARNING "IPO NOT SUPPORTED - Skipping reason: ${output}")
-        endif ()
-    endif ()
-endif ()
-
-if (WIN32)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif ()
-
-
-if (PREFER_BOOST_FILESYSTEM)
-    message(STATUS "Boost filesystem over std::filesystem")
-    add_compile_definitions(PREFER_BOOST_FILESYSTEM)
-endif ()
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_POLICY_WARNING_CMP0100 OFF)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ##! Antara
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(antara)
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
 init_antara_env()
@@ -143,7 +81,7 @@ add_subdirectory(vendor/antara-gaming_sdk/modules)
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/atomicdex-desktop.icns ICON atomicdex-desktop.icns)
+configure_icon_osx(data/osx/dex-logo.icns ICON dex-logo.icns)
 ##! End antara
 
 set(CMAKE_AUTOUIC ON)
@@ -172,11 +110,11 @@ message(STATUS "TS FILES -> ${TS_FILES}")
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
 if (LINUX)
-    add_library(atomicdex-desktop_shared_deps STATIC)
+    add_library(${PROJECT_NAME}_shared_deps STATIC)
 else ()
-    add_library(atomicdex-desktop_shared_deps SHARED)
+    add_library(${PROJECT_NAME}_shared_deps SHARED)
 endif ()
-target_sources(atomicdex-desktop_shared_deps PRIVATE
+target_sources(${PROJECT_NAME}_shared_deps PRIVATE
         ##! App
         ${CMAKE_SOURCE_DIR}/src/atomicdex/app.cpp
 
@@ -268,11 +206,12 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/atomicdex/platform/osx/manager.mm>
         )
 
-target_compile_definitions(atomicdex-desktop_shared_deps
+target_compile_definitions(${PROJECT_NAME}_shared_deps
         PUBLIC
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+        DEX_NAME="${DEX_DISPLAY_NAME}"
         PRIVATE
         ENTT_API_EXPORT
         )
@@ -280,7 +219,7 @@ target_compile_definitions(atomicdex-desktop_shared_deps
 
 if (DISABLE_GEOBLOCKING)
     message(STATUS "Disabling Geoblocking for dev purpose")
-    target_compile_definitions(atomicdex-desktop_shared_deps PUBLIC -DDISABLE_GEOBLOCKING)
+    target_compile_definitions(${PROJECT_NAME}_shared_deps PUBLIC -DDISABLE_GEOBLOCKING)
 endif ()
 #target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
 
@@ -289,7 +228,7 @@ target_sources(antara_qrcode PRIVATE vendor/qrcode/QrCode.cpp)
 target_include_directories(antara_qrcode PUBLIC vendor/qrcode)
 target_link_libraries(antara_qrcode PUBLIC antara::default_settings)
 
-target_link_libraries(atomicdex-desktop_shared_deps
+target_link_libraries(${PROJECT_NAME}_shared_deps
         PUBLIC
         Qt::Core
         Qt::Quick
@@ -316,7 +255,7 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qaterial
         )
 
-target_include_directories(atomicdex-desktop_shared_deps
+target_include_directories(${PROJECT_NAME}_shared_deps
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         PRIVATE
@@ -325,8 +264,8 @@ target_include_directories(atomicdex-desktop_shared_deps
         )
 
 ##! Main executable
-add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
-        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicdex-desktop.rc
+add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/dex.rc
         main.cpp
         ##! QRC
         ${CMAKE_SOURCE_DIR}/qml.qrc
@@ -336,10 +275,10 @@ add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
         ${TS_FILES}
         )
 
-target_compile_definitions(atomicdex-desktop PRIVATE ENTT_API_IMPORT)
+target_compile_definitions(${PROJECT_NAME} PRIVATE ENTT_API_IMPORT)
 
 ##! Testing executable
-add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
+add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.tests.cpp
         src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
@@ -362,16 +301,16 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
 
         src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
-target_link_libraries(atomicdex-desktop
+target_link_libraries(${PROJECT_NAME}
         PUBLIC
-        atomicdex-desktop_shared_deps
+        ${PROJECT_NAME}_shared_deps
         )
 
-target_include_directories(atomicdex-desktop PUBLIC src)
+target_include_directories(${PROJECT_NAME} PUBLIC src)
 
-target_link_libraries(atomicdex-desktop_tests
+target_link_libraries(${PROJECT_NAME}_tests
         PUBLIC
-        atomicdex-desktop_shared_deps
+        ${PROJECT_NAME}_shared_deps
         doctest::doctest)
 
 ##! Setting output directory
@@ -386,7 +325,7 @@ set_target_properties(${PROJECT_NAME}_tests
         )
 
 
-target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
+target_precompile_headers(${PROJECT_NAME}_shared_deps PRIVATE src/atomicdex/pch.hpp)
 #set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
 if (APPLE)
     set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
@@ -403,45 +342,45 @@ if (LINUX)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicdex-desktop.desktop"
-            "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop-64.png"
-            atomicdex-desktop
+            "dex.desktop"
+            "dex.appdata.xml"
+            "dex-logo-64.png"
+            ${PROJECT_NAME}
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicdex-desktop.desktop"
-            "atomicdex-desktop.appdata.xml"
-            "atomicdex-desktop-64.png"
-            atomicdex-desktop_tests
+            "dex.desktop"
+            "dex.appdata.xml"
+            "dex-logo-64.png"
+            ${PROJECT_NAME}_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
-    set(desktop_file "atomicdex-desktop.desktop")
-    set(appdata_file "atomicdex-desktop.appdata.xml")
-    set(app_icon "atomicdex-desktop-64.png")
+    set(desktop_file "dex.desktop")
+    set(appdata_file "dex.appdata.xml")
+    set(app_icon "dex-logo-64.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/64x64/apps/${app_icon} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/default/64x64/apps/${app_icon} COPYONLY)
-    include(data/linux/atomicdex_install.cmake)
+    include(data/linux/dex_install.cmake)
 endif ()
 
 if (WIN32)
-    set_target_properties(atomicdex-desktop_shared_deps PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    set_target_properties(${PROJECT_NAME}_shared_deps PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
-        target_compile_definitions(atomicdex-desktop PRIVATE WINDOWS_RELEASE_MAIN)
-        target_compile_options(atomicdex-desktop PRIVATE -Wno-deprecated-declarations)
-        target_link_options(atomicdex-desktop PUBLIC --for-linker -subsystem:windows)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE WINDOWS_RELEASE_MAIN)
+        target_compile_options(${PROJECT_NAME} PRIVATE -Wno-deprecated-declarations)
+        target_link_options(${PROJECT_NAME} PUBLIC --for-linker -subsystem:windows)
     endif ()
     set(WINDEPLOYQT_PATH "")
     if (CONAN_ENABLED)
@@ -455,21 +394,21 @@ if (WIN32)
     else ()
         message(FATAL_ERROR "Didn't find windeployqt ${WINDEPLOYQT_PATH}")
     endif ()
-    add_custom_command(TARGET atomicdex-desktop PRE_BUILD
+    add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:atomicdex-desktop>)
-    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
-    add_custom_command(TARGET atomicdex-desktop
+            ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
+    add_custom_command(TARGET ${PROJECT_NAME}
             POST_BUILD
-            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/atomicdex-desktop_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
+            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
-    include(data/windows/atomicdex_install.cmake)
+    include(data/windows/dex_install.cmake)
 endif ()
 
 if (APPLE)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_tests.app/Contents/Resources)
-    include(data/osx/atomicdex_install.cmake)
+    include(data/osx/dex_install.cmake)
 endif ()
 
 if (WITH_HOTRELOAD)
@@ -478,7 +417,7 @@ if (WITH_HOTRELOAD)
     include(hot_reload/cmake/Configuration.cmake)
     include(hot_reload/cmake/FetchDependencies.cmake)
     set(QATERIALHOTRELOAD_LIB QaterialHotReload)
-    set(QATERIALHOTRELOAD_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload)
+    set(QATERIALHOTRELOAD_SRC_DIR ${CMAKE_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload)
     add_subdirectory(hot_reload/qml/Qaterial/HotReload)
 
 
@@ -492,7 +431,7 @@ if (WITH_HOTRELOAD)
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PUBLIC
             Qaterial
             SortFilterProxyModel
-            atomicdex-desktop_shared_deps
+            ${PROJECT_NAME}_shared_deps
             )
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PRIVATE
             Qaterial::HotReload::Ui
@@ -537,5 +476,5 @@ if (WITH_HOTRELOAD)
         qt_generate_plugin_import(${QATERIALHOTRELOAD_LIB})
     endif ()
 
-    target_link_libraries(atomicdex-desktop PRIVATE Qaterial::HotReload)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qaterial::HotReload)
 endif ()

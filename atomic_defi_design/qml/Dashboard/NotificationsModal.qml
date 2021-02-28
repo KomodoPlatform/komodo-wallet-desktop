@@ -198,7 +198,7 @@ BasicModal {
             showApp()
         }
 
-        tooltip: qsTr("AtomicDEX Desktop")
+        tooltip: API.app_name
 
 //        onActivated: showApp()
 

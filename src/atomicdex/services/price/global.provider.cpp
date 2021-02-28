@@ -1,5 +1,3 @@
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"

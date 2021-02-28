@@ -3,9 +3,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
 #include <QrCode.hpp>
 

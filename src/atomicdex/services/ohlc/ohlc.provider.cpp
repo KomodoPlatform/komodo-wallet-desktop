@@ -14,16 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
-#include <nlohmann/json.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project headers
-#include "ohlc.provider.hpp"
-#include "src/atomicdex/api/ohlc/ohlc.api.hpp"
+#include "atomicdex/api/ohlc/ohlc.api.hpp"
+#include "atomicdex/services/ohlc/ohlc.provider.hpp"
 
 namespace atomic_dex
 {

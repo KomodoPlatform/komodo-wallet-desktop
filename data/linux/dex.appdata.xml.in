@@ -1,20 +1,20 @@
 <component type="desktop-application">
-    <id>AtomicDEX.desktop</id>
+    <id>${DEX_LINUX_APP_ID}</id>
     <metadata_license>MIT</metadata_license>
     <project_license>MIT</project_license>
-    <name>AtomicDEX</name>
-    <summary>atomic qt  gui desktop</summary>
+    <name>${DEX_DISPLAY_NAME}</name>
+    <summary>AtomicDEX Desktop GUI</summary>
     <description>
         <p>Written in c++17</p>
     </description>
-    <launchable type="desktop-id">AtomicDEX.desktop</launchable>
-    <url type="homepage">https://github.com/KomodoPlatform/antara-gaming-sdk</url>
+    <launchable type="desktop-id">${DEX_LINUX_APP_ID}</launchable>
+    <url type="homepage">${DEX_WEBSITE}</url>
     <screenshots>
         <screenshot type="default">
             <image>https://www.freedesktop.org/software/appstream/docs/images/scr-examples/geany-good.png</image>
         </screenshot>
     </screenshots>
     <provides>
-        <id>AtomicDEX.desktop</id>
+        <id>${DEX_LINUX_APP_ID}</id>
     </provides>
 </component>
