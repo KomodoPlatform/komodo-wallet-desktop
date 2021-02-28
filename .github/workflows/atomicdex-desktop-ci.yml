@@ -176,8 +176,8 @@ jobs:
       - name: Upload env variable for vpkg (MacOS)
         if: runner.os == 'macOS'
         run: |
-          echo "CXX=/usr/local/opt/llvm@9/bin/clang++" >> $GITHUB_ENV
-          echo "CC=/usr/local/opt/llvm@9/bin/clang" >> $GITHUB_ENV
+          echo "CXX=/usr/local/opt/llvm/bin/clang++" >> $GITHUB_ENV
+          echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
 
       - name: vcpkg deps (MacOS)
         if: runner.os == 'macOS'

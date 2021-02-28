@@ -12,7 +12,7 @@ brew install autoconf \
             boost \
             gcc \
             gnu-sed \
-            llvm@9
+            llvm
 export CC=clang
 export CXX=clang++
 export MACOSX_DEPLOYMENT_TARGET=10.14
