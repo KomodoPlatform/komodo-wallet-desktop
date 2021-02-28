@@ -19,7 +19,9 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
+#include "atomicdex/api/mm2/rpc.buy.hpp"
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
+#include "atomicdex/api/mm2/rpc.sell.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 
 namespace mm2::api
@@ -40,4 +42,6 @@ namespace mm2::api
 
     template void extract_rpc_json_answer<trade_preimage_answer_success>(const nlohmann::json& j, trade_preimage_answer& answer);
     template void extract_rpc_json_answer<max_taker_vol_answer_success>(const nlohmann::json& j, max_taker_vol_answer& answer);
+    template void extract_rpc_json_answer<buy_answer_success>(const nlohmann::json& j, buy_answer& answer);
+    template void extract_rpc_json_answer<sell_answer_success>(const nlohmann::json& j, sell_answer& answer);
 } // namespace mm2::api

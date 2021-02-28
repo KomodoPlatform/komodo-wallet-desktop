@@ -3,11 +3,12 @@ import QtGraphicalEffects 1.12
 import "../Constants"
 
 Item {
+    id: control
     property alias content: inner_space.sourceComponent
     property alias color: rect.color
     property alias radius: rect.radius
     property alias border: rect.border
-
+    property bool shadowOff: false
     property bool auto_set_size: true
     implicitWidth: auto_set_size ? inner_space.width : 0
     implicitHeight: auto_set_size ? inner_space.height : 0
@@ -38,7 +39,7 @@ Item {
             }
         }
 
-        layer.enabled: true
+        layer.enabled: !control.shadowOff
         layer.effect: DefaultInnerShadow { }
     }
 

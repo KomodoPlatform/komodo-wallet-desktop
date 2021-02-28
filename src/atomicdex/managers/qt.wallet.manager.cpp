@@ -115,6 +115,8 @@ namespace atomic_dex
             }
         }
 
+        out.sort();
+
         return out;
     }
 

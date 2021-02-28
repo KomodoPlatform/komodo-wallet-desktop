@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
-    <DisplayName>AtomicDEX Desktop</DisplayName>
-    <Description>Install AtomicDEX Desktop.</Description>
+    <DisplayName>${DEX_DISPLAY_NAME}</DisplayName>
+    <Description>Install ${DEX_DISPLAY_NAME}.</Description>
     <Version>0.4.0</Version>
     <ReleaseDate>2020-11-27</ReleaseDate>
     <Licenses>

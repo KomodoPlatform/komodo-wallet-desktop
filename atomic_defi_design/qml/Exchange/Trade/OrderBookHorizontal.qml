@@ -20,7 +20,7 @@ Item {
         radius: 6
         RowLayout {
             anchors.fill: parent
-            spacing: 5
+            spacing: 0
             Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true

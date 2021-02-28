@@ -113,19 +113,19 @@ Item {
             // FAQ Lines
             FAQLine {
                 title: qsTr("Do you store my private keys?")
-                text: qsTr("No! AtomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets.")
+                text: qsTr("No! %1 is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets.").arg(API.app_name)
             }
 
             FAQLine {
-                title: qsTr("How is trading on AtomicDEX different from trading on other DEXs?")
+                title: qsTr("How is trading on %1 different from trading on other DEXs?").arg(API.app_name)
                 text: qsTr("Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
-AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.")
+%1 enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.").arg(API.app_name)
             }
 
             FAQLine {
                 title: qsTr("How long does each atomic swap take?")
-                text: qsTr('Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">notarization</a>.')
+                text: qsTr('Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">notarization</a>.').arg(API.app_name)
             }
 
             FAQLine {
@@ -134,33 +134,33 @@ AtomicDEX enables you to natively trade across two different blockchain networks
             }
 
             FAQLine {
-                title: qsTr("How are the fees on AtomicDEX calculated?")
-                text: qsTr("There are two fee categories to consider when trading on AtomicDEX.
+                title: qsTr("How are the fees on %1 calculated?").arg(API.app_name)
+                text: qsTr("There are two fee categories to consider when trading on %1.
 
-1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
+1. %1 charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
-Network fees can vary greatly depending on your selected trading pair.")
+Network fees can vary greatly depending on your selected trading pair.").arg(API.app_name)
             }
 
             FAQLine {
                 title: qsTr("Do you provide user support?")
-                text: qsTr('Yes! AtomicDEX offers support through the <a href="https://komodoplatform.com/discord">Komodo Discord server</a>. The team and the community are always happy to help!')
+                text: qsTr('Yes! %1 offers support through the <a href="https://komodoplatform.com/discord">Komodo Discord server</a>. The team and the community are always happy to help!').arg(API.app_name)
             }
 
             FAQLine {
-                title: qsTr("Who is behind AtomicDEX?")
-                text: qsTr("AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.")
+                title: qsTr("Who is behind %1?").arg(API.app_name)
+                text: qsTr("%1 is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.").arg(API.app_name)
             }
 
             FAQLine {
-                title: qsTr("Is it possible to develop my own white-label exchange on AtomicDEX?")
-                text: qsTr("Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDEX developer community is always ready to help!")
+                title: qsTr("Is it possible to develop my own white-label exchange on %1?").arg(API.app_name)
+                text: qsTr("Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The %1 developer community is always ready to help!").arg(API.app_name)
             }
 
             FAQLine {
-                title: qsTr("Which devices can I use AtomicDEX on?")
-                text: qsTr('AtomicDEX is available for mobile on both <a href="https://atomicdex.io/">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.')
+                title: qsTr("Which devices can I use %1 on?").arg(API.app_name)
+                text: qsTr('%1 is available for mobile on both <a href="https://%1.io/">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.').arg(API.app_name)
             }
 
             FAQLine {

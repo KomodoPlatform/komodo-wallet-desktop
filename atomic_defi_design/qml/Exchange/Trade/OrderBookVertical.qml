@@ -9,14 +9,8 @@ import "../../Constants"
 
 Item {
     id: rootVert
-    SplitView.fillHeight: true
-    SplitView.preferredWidth: isUltraLarge? 350 : 0
-    SplitView.minimumWidth: 350
-    Behavior on SplitView.preferredWidth {
-        NumberAnimation {
-            duration: 100
-        }
-    }
+    anchors.fill: parent
+
     visible: isUltraLarge
 
     ColumnLayout {

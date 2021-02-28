@@ -90,7 +90,7 @@ namespace atomic_dex
     void
     portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt) noexcept
     {
-        SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
+        //SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
 
         if (evt.with_update_model)
         {

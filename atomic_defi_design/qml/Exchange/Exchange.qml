@@ -120,7 +120,7 @@ Item {
         Component {
             id: exchange_trade
 
-            TradeV2 {}
+            Trade201 {}
         }
 
 //        Component {
