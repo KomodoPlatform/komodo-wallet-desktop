@@ -892,13 +892,13 @@ namespace atomic_dex
     trading_page::clear_forms() noexcept
     {
         SPDLOG_INFO("clearing forms");
+        this->set_min_trade_vol(get_mm2_min_trade_vol());
         this->set_price("0");
         this->set_volume("0");
         this->set_max_volume("0");
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
         this->set_multi_order_enabled(false);
-        this->set_min_trade_vol(get_mm2_min_trade_vol());
         this->m_preffered_order = std::nullopt;
         this->m_fees            = QVariantMap();
         this->m_cex_price       = "0";
@@ -1606,7 +1606,7 @@ namespace atomic_dex
     void
     trading_page::set_min_trade_vol(QString min_trade_vol) noexcept
     {
-        if (min_trade_vol != m_minimal_trading_amount)
+        if (min_trade_vol != m_minimal_trading_amount && t_float_50(min_trade_vol.toStdString()) <= t_float_50(m_volume.toStdString()))
         {
             m_minimal_trading_amount = min_trade_vol;
             emit minTradeVolChanged();
