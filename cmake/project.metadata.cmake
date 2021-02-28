@@ -4,7 +4,7 @@ set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
 set(DEX_COMPANY "KomodoPlatform")
 set(DEX_WEBSITE "https://atomicdex.io/")
 if (UNIX AND NOT APPLE)
-    set(DEX_LINUX_APP_ID "AtomicDEX.desktop")
+    set(DEX_LINUX_APP_ID "dex.desktop")
 endif ()
 
 # Erases default project values with environment variables if they exist.
