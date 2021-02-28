@@ -193,7 +193,7 @@ FloatingBackground {
                         anchors.bottom: parent.bottom
                     }
                     DefaultText {
-                        text_value: General.cex_icon+" ("+input_minimum_amount_slider.value+" "+API.app.trading_pg.market_pairs_mdl.base_selected_coin+" - "+General.getFiatText(parseFloat(input_minimum_amount_slider.getRealValue()).toFixed(8),API.app.trading_pg.market_pairs_mdl.base_selected_coin).replace(" "+General.cex_icon,"").replace(" ","").slice(0, -1)+"):"
+                        text_value: General.cex_icon+" ("+input_minimum_amount_slider.value+" "+API.app.trading_pg.market_pairs_mdl.base_selected_coin+" - "+General.getFiatText(parseFloat(input_minimum_amount_slider.getRealValue()).toFixed(8),API.app.trading_pg.market_pairs_mdl.base_selected_coin).replace(" "+General.cex_icon,"")+"):"
                         font.pixelSize: Style.textSizeSmall1
 
                         wrapMode: Text.Wrap
