@@ -1609,7 +1609,7 @@ namespace atomic_dex
         //! If it's Sell mode you want to check volume field, if it's price you
         const bool is_valid =
             (m_market_mode == MarketMode::Sell ? t_float_50(min_trade_vol.toStdString()) <= t_float_50(m_volume.toStdString())
-                                               : t_float_50(min_trade_vol.toStdString()) <= t_float_50(m_price.toStdString()));
+                                               : t_float_50(min_trade_vol.toStdString()) <= t_float_50(m_total_amount.toStdString()));
 
         if (min_trade_vol != m_minimal_trading_amount && is_valid)
         {
