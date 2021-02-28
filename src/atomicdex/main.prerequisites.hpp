@@ -344,7 +344,7 @@ run_app(int argc, char** argv)
     qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
 
 #if defined(ATOMICDEX_HOT_RELOAD)
-    engine.rootContext()->setContextProperty("debug_bar", true);
+    engine.rootContext()->setContextProperty("debug_bar", QVariant(true));
     engine.addImportPath("qrc:/");
     installLoggers();
     qaterial::registerQmlTypes();
@@ -354,7 +354,7 @@ run_app(int argc, char** argv)
     if (engine.rootObjects().isEmpty())
         return -1;
 #else
-    engine.rootContext()->setContextProperty("debug_bar", false);
+    engine.rootContext()->setContextProperty("debug_bar", QVariant(false));
     const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),
