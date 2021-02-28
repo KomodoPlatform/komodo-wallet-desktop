@@ -108,8 +108,8 @@ namespace atomic_dex
         //! Trading Logic
         MarketMode                    m_market_mode{MarketModeGadget::Sell};
         TradingError                  m_last_trading_error{TradingErrorGadget::None};
-        QString                       m_price{""};
-        QString                       m_volume{""};
+        QString                       m_price{"0"};
+        QString                       m_volume{"0"};
         QString                       m_max_volume{"0"};
         QString                       m_total_amount{"0"};
         QString                       m_cex_price{"0"};
