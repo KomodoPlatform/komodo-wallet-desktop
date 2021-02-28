@@ -9,7 +9,7 @@ import "../../Constants"
 
 Item {
     id: rootVert
-    anchors.fill: parent
+
 
     visible: isUltraLarge
 

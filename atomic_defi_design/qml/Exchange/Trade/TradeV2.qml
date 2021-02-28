@@ -468,6 +468,10 @@ Item {
 
             }
             OrderBookVertical {
+                SplitView.preferredWidth:isUltraLarge? 300 : 0
+                SplitView.minimumWidth: 350
+                SplitView.fillHeight: true
+//                /anchors.fill: parent
             }
             ColumnLayout {
                 property int space: 10
