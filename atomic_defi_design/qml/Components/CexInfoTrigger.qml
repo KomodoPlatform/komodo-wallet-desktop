@@ -14,7 +14,7 @@ DefaultMouseArea {
 
         contentItem: DefaultText {
             text_value: mouse_area.toolTip
-            wrapMode: Label.wrap
+            wrapMode: DefaultText.Wrap
             width: 300
         }
     }

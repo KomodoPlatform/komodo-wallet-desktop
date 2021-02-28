@@ -193,7 +193,7 @@ FloatingBackground {
                         anchors.bottom: parent.bottom
                     }
                     DefaultText {
-                        text_value: General.cex_icon+" ("+input_minimum_amount_slider.value+" "+left_ticker+" - "+General.getFiatText(parseFloat(input_minimum_amount_slider.getRealValue()).toFixed(8),left_ticker).replace(" "+General.cex_icon,"").replace(" ","").slice(0, -1)+"):"
+                        text_value: General.cex_icon+" ("+input_minimum_amount_slider.value+" "+API.app.trading_pg.market_pairs_mdl.base_selected_coin+" - "+General.getFiatText(parseFloat(input_minimum_amount_slider.getRealValue()).toFixed(8),API.app.trading_pg.market_pairs_mdl.base_selected_coin).replace(" "+General.cex_icon,"").replace(" ","").slice(0, -1)+"):"
                         font.pixelSize: Style.textSizeSmall1
 
                         wrapMode: Text.Wrap
@@ -215,12 +215,12 @@ FloatingBackground {
                     return input_minimum_amount_slider.position * (input_minimum_amount_slider.to - input_minimum_amount_slider.from)
                 }
 
-                enabled: input_volume_slider.value>0
+                enabled: API.app.trading_pg.base_amount>0
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
                 Layout.fillWidth: true
                 from: parseFloat(API.app.trading_pg.mm2_min_trade_vol)
-                to: input_volume_slider.value//parseFloat(API.app.trading_pg.max_volume)  //Math.max(0, parseFloat(max_volume))
+                to: API.app.trading_pg.base_amount//parseFloat(API.app.trading_pg.max_volume)  //Math.max(0, parseFloat(max_volume))
                 live: false
                 value: parseFloat(API.app.trading_pg.min_trade_vol )
 

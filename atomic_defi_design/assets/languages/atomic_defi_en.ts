@@ -439,6 +439,14 @@
     </message>
 </context>
 <context>
+    <name>BuyBox</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/BuyBox.qml" line="33"/>
+        <source>Buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CamouflagePasswordModal</name>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="18"/>
@@ -1191,7 +1199,7 @@
 <context>
     <name>General</name>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="111"/>
+        <location filename="../../qml/Constants/General.qml" line="113"/>
         <source>%n day(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1199,7 +1207,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="121"/>
+        <location filename="../../qml/Constants/General.qml" line="123"/>
         <source>%nd</source>
         <comment>day</comment>
         <translation type="unfinished">
@@ -1208,7 +1216,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="122"/>
+        <location filename="../../qml/Constants/General.qml" line="124"/>
         <source>%nh</source>
         <comment>hours</comment>
         <translation type="unfinished">
@@ -1217,7 +1225,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="123"/>
+        <location filename="../../qml/Constants/General.qml" line="125"/>
         <source>%nm</source>
         <comment>minutes</comment>
         <translation type="unfinished">
@@ -1226,7 +1234,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="124"/>
+        <location filename="../../qml/Constants/General.qml" line="126"/>
         <source>%ns</source>
         <comment>seconds</comment>
         <translation type="unfinished">
@@ -1235,7 +1243,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="125"/>
+        <location filename="../../qml/Constants/General.qml" line="127"/>
         <source>%nms</source>
         <comment>milliseconds</comment>
         <translation type="unfinished">
@@ -1244,68 +1252,63 @@
         </translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="126"/>
+        <location filename="../../qml/Constants/General.qml" line="128"/>
         <source>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="355"/>
-        <source>Transaction Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Constants/General.qml" line="370"/>
+        <location filename="../../qml/Constants/General.qml" line="399"/>
         <source>Trading Fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="380"/>
+        <location filename="../../qml/Constants/General.qml" line="409"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="389"/>
+        <location filename="../../qml/Constants/General.qml" line="418"/>
         <source>Not enough balance for trading fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="391"/>
+        <location filename="../../qml/Constants/General.qml" line="420"/>
         <source>Not enough balance for fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="393"/>
-        <location filename="../../qml/Constants/General.qml" line="395"/>
+        <location filename="../../qml/Constants/General.qml" line="422"/>
+        <location filename="../../qml/Constants/General.qml" line="424"/>
         <source>Not enough balance for transaction fees: %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="397"/>
+        <location filename="../../qml/Constants/General.qml" line="426"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="399"/>
+        <location filename="../../qml/Constants/General.qml" line="428"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="401"/>
+        <location filename="../../qml/Constants/General.qml" line="430"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="403"/>
-        <location filename="../../qml/Constants/General.qml" line="405"/>
+        <location filename="../../qml/Constants/General.qml" line="432"/>
+        <location filename="../../qml/Constants/General.qml" line="434"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="407"/>
+        <location filename="../../qml/Constants/General.qml" line="436"/>
         <source>Unknown Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1712,48 +1715,6 @@
     </message>
 </context>
 <context>
-    <name>OrderBookHorizontal</name>
-    <message>
-        <location filename="../../qml/Exchange/Trade/OrderBookHorizontal.qml" line="42"/>
-        <location filename="../../qml/Exchange/Trade/OrderBookHorizontal.qml" line="235"/>
-        <source>Prix</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/OrderBookHorizontal.qml" line="52"/>
-        <location filename="../../qml/Exchange/Trade/OrderBookHorizontal.qml" line="245"/>
-        <source>Qty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/OrderBookHorizontal.qml" line="66"/>
-        <location filename="../../qml/Exchange/Trade/OrderBookHorizontal.qml" line="259"/>
-        <source>Total</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>OrderBookVertical</name>
-    <message>
-        <location filename="../../qml/Exchange/Trade/OrderBookVertical.qml" line="51"/>
-        <location filename="../../qml/Exchange/Trade/OrderBookVertical.qml" line="253"/>
-        <source>Prix</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/OrderBookVertical.qml" line="61"/>
-        <location filename="../../qml/Exchange/Trade/OrderBookVertical.qml" line="263"/>
-        <source>Qty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/OrderBookVertical.qml" line="75"/>
-        <location filename="../../qml/Exchange/Trade/OrderBookVertical.qml" line="277"/>
-        <source>Total</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>OrderContent</name>
     <message>
         <location filename="../../qml/Exchange/OrderContent.qml" line="78"/>
@@ -2014,12 +1975,40 @@
 <context>
     <name>OrdersPage</name>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="89"/>
-        <source>Enable Filters</source>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="202"/>
+        <source>From</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="165"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="213"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="137"/>
+        <source>Apply Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="120"/>
+        <source>Export CSV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="250"/>
+        <source>Please choose the CSV export name and location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="276"/>
+        <source>Recover Funds Result</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OrdersPage_backup</name>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage_backup.qml" line="148"/>
         <source>From</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2898,6 +2887,89 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     </message>
 </context>
 <context>
+    <name>Trade201</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="177"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="184"/>
+        <source>Placed the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="388"/>
+        <source>Exchange Rates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="394"/>
+        <source>Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="400"/>
+        <source>history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="628"/>
+        <source>Minimum fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="629"/>
+        <source>Fees will be calculated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="648"/>
+        <source>Start Swap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="712"/>
+        <source>Multi-Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="729"/>
+        <source>Select additional assets for multi-order creation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="737"/>
+        <source>Same funds will be used until an order matches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="741"/>
+        <source>Submit Trade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="820"/>
+        <source>Trading Mode - Multi Ordering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="820"/>
+        <source>Trading Mode - Single Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="835"/>
+        <source>Pro-Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade201.qml" line="840"/>
+        <source>Starter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TradeV1</name>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeV1.qml" line="156"/>
@@ -2927,6 +2999,94 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeV1.qml" line="355"/>
         <source>Submit Trade</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TradeV2</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="177"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="184"/>
+        <source>Placed the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="399"/>
+        <source>Exchange Rates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="405"/>
+        <source>Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="411"/>
+        <source>history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="523"/>
+        <source>Minimum fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="524"/>
+        <source>Fees will be calculated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="539"/>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="561"/>
+        <source>Start Swap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="610"/>
+        <source>Multi-Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="627"/>
+        <source>Select additional assets for multi-order creation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="635"/>
+        <source>Same funds will be used until an order matches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="639"/>
+        <source>Submit Trade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="721"/>
+        <source>Trading Mode - Multi Ordering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="721"/>
+        <source>Trading Mode - Single Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="736"/>
+        <source>Pro-Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="741"/>
+        <source>Starter</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
