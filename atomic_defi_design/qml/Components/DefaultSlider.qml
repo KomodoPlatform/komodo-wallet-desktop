@@ -4,6 +4,7 @@ import "../Constants"
 Slider {
     id: control
     value: 0.5
+    opacity: enabled? 1 : .5
 
     background: Rectangle {
         x: control.leftPadding

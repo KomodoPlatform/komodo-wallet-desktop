@@ -175,22 +175,54 @@ FloatingBackground {
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
             }
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 5
+            }
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 10
+                Row {
+                    anchors.bottom: parent.bottom
+                    spacing: 5
+                    DefaultText {
+                        text_value: qsTr("Minimum trading amount")
+                        font.pixelSize: Style.textSizeSmall1
+
+                        wrapMode: Text.Wrap
+                        anchors.bottom: parent.bottom
+                    }
+                    DefaultText {
+                        text_value: General.cex_icon+" ("+input_minimum_amount_slider.value+" "+left_ticker+" - "+General.getFiatText(parseFloat(input_minimum_amount_slider.getRealValue()).toFixed(8),left_ticker).replace(" "+General.cex_icon,"").replace(" ","").slice(0, -1)+"):"
+                        font.pixelSize: Style.textSizeSmall1
+
+                        wrapMode: Text.Wrap
+                        CexInfoTrigger {
+                            toolTip: qsTr("the minimum amount of base coin available...")
+                            onClicked: ()=>{}
+                            enabled: false
+                        }
+
+                        anchors.bottom: parent.bottom
+                    }
+                }
+            }
+
             DefaultSlider {
                 id: input_minimum_amount_slider
 
                 function getRealValue() {
-                    return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
+                    return input_minimum_amount_slider.position * (input_minimum_amount_slider.to - input_minimum_amount_slider.from)
                 }
 
-                enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
+                enabled: input_volume_slider.value>0
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
                 Layout.fillWidth: true
                 from: parseFloat(API.app.trading_pg.mm2_min_trade_vol)
-                to: parseFloat(API.app.trading_pg.max_volume)  //Math.max(0, parseFloat(max_volume))
+                to: input_volume_slider.value//parseFloat(API.app.trading_pg.max_volume)  //Math.max(0, parseFloat(max_volume))
                 live: false
-
-                value: parseFloat(non_null_volume)
+                value: parseFloat(API.app.trading_pg.min_trade_vol )
 
                 onValueChanged: { if(pressed) setMinimumAmount(General.formatDouble(value)) }
 
@@ -199,7 +231,7 @@ FloatingBackground {
                     anchors.horizontalCenter: parent.handle.horizontalCenter
                     anchors.bottom: parent.handle.top
 
-                    text_value: General.formatDouble(input_volume_slider.getRealValue(), General.getRecommendedPrecision(input_volume_slider.to))
+                    text_value: General.formatDouble(input_minimum_amount_slider.getRealValue(), General.getRecommendedPrecision(input_minimum_amount_slider.to))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
 

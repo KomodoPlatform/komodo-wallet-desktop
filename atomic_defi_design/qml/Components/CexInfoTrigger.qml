@@ -2,6 +2,7 @@ import QtQuick 2.15
 
 DefaultMouseArea {
     id: mouse_area
+    property string toolTip: qsTr("Price oracle powered by Band Protocol")
     anchors.fill: parent
     onClicked: cex_rates_modal.open()
     hoverEnabled: true
@@ -12,7 +13,9 @@ DefaultMouseArea {
         delay: 500
 
         contentItem: DefaultText {
-            text_value: qsTr("Price oracle powered by Band Protocol")
+            text_value: mouse_area.toolTip
+            wrapMode: Label.wrap
+            width: 300
         }
     }
 }
