@@ -171,7 +171,7 @@ jobs:
         run: |
           ./ci_tools_atomic_dex/ci_scripts/osx_script.sh
 
-      - name: Upload env variable for vpkg (Linux)
+      - name: Upload env variable for vpkg (MacOS)
         if: runner.os == 'macOS'
         run: |
           echo "CXX=/usr/local/opt/llvm@9/bin/clang++" >> $GITHUB_ENV
