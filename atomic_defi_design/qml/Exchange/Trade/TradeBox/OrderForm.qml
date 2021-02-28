@@ -40,6 +40,9 @@ FloatingBackground {
 
         return getMaxBalance()
     }
+    function setMinimumAmount(value){
+        API.app.trading_pg.min_trade_vol = value
+    }
 
     function reset() {
     }
@@ -140,6 +143,56 @@ FloatingBackground {
                 value: parseFloat(non_null_volume)
 
                 onValueChanged: { if(pressed) setVolume(General.formatDouble(value)) }
+
+                DefaultText {
+                    visible: parent.pressed
+                    anchors.horizontalCenter: parent.handle.horizontalCenter
+                    anchors.bottom: parent.handle.top
+
+                    text_value: General.formatDouble(input_volume_slider.getRealValue(), General.getRecommendedPrecision(input_volume_slider.to))
+                    font.pixelSize: input_volume.field.font.pixelSize
+                }
+
+                DefaultText {
+                    anchors.left: parent.left
+                    anchors.top: parent.bottom
+
+                    text_value: qsTr("Min")
+                    font.pixelSize: input_volume.field.font.pixelSize
+                }
+                DefaultText {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.bottom
+
+                    text_value: qsTr("Half")
+                    font.pixelSize: input_volume.field.font.pixelSize
+                }
+                DefaultText {
+                    anchors.right: parent.right
+                    anchors.top: parent.bottom
+
+                    text_value: qsTr("Max")
+                    font.pixelSize: input_volume.field.font.pixelSize
+                }
+            }
+            DefaultSlider {
+                id: input_minimum_amount_slider
+
+                function getRealValue() {
+                    return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
+                }
+
+                enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
+                property bool updating_from_text_field: false
+                property bool updating_text_field: false
+                Layout.fillWidth: true
+                from: parseFloat(API.app.trading_pg.mm2_min_trade_vol)
+                to: parseFloat(API.app.trading_pg.max_volume)  //Math.max(0, parseFloat(max_volume))
+                live: false
+
+                value: parseFloat(non_null_volume)
+
+                onValueChanged: { if(pressed) setMinimumAmount(General.formatDouble(value)) }
 
                 DefaultText {
                     visible: parent.pressed
