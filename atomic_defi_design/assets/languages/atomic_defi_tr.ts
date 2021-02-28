@@ -513,7 +513,7 @@
 <context>
     <name>CexInfoTrigger</name>
     <message>
-        <location filename="../../qml/Components/CexInfoTrigger.qml" line="15"/>
+        <location filename="../../qml/Components/CexInfoTrigger.qml" line="5"/>
         <source>Price oracle powered by Band Protocol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1733,43 +1733,46 @@
     <name>OrderForm</name>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="160"/>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="107"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="110"/>
         <source>Amount to sell</source>
         <translation>Satılacak miktar</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="160"/>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="107"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="110"/>
         <source>Amount to receive</source>
         <translation>Alınacak miktar</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="125"/>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="74"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="77"/>
         <source>Price</source>
         <translation type="unfinished">Fiyat</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="158"/>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="105"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="108"/>
         <source>Volume</source>
         <translation type="unfinished">Hacim</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="213"/>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="157"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="160"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="242"/>
         <source>Min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="220"/>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="164"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="167"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="249"/>
         <source>Half</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="227"/>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="171"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="174"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="256"/>
         <source>Max</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1803,6 +1806,11 @@
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="90"/>
         <source>Buy %1</source>
         <comment>TICKER</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="189"/>
+        <source>Minimum trading amount: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3021,62 +3029,62 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="523"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="527"/>
         <source>Minimum fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="524"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="528"/>
         <source>Fees will be calculated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="539"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="543"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="561"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="565"/>
         <source>Start Swap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="610"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="614"/>
         <source>Multi-Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="627"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="631"/>
         <source>Select additional assets for multi-order creation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="635"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="639"/>
         <source>Same funds will be used until an order matches.</source>
         <translation type="unfinished">Bir emir eşleşene kadar tüm emirler aynı fonu kullanacaktır.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="639"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="643"/>
         <source>Submit Trade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="721"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="725"/>
         <source>Trading Mode - Multi Ordering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="721"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="725"/>
         <source>Trading Mode - Single Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="736"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="740"/>
         <source>Pro-Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="741"/>
+        <location filename="../../qml/Exchange/Trade/TradeV2.qml" line="745"/>
         <source>Starter</source>
         <translation type="unfinished"></translation>
     </message>

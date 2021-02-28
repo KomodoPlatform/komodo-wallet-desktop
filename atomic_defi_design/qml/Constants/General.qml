@@ -348,9 +348,10 @@ QtObject {
 
         const tx_fee = txFeeText(trade_info, base_ticker, has_info_icon, has_limited_space)
         const trading_fee = tradingFeeText(trade_info, base_ticker, has_info_icon)
+        const minimum_amount = minimumtradingFeeText(trade_info, base_ticker, has_info_icon)
 
 
-        return tx_fee + "\n" + trading_fee
+        return tx_fee + "\n" + trading_fee +"<br>"+minimum_amount
     }
 
     function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
@@ -396,11 +397,21 @@ QtObject {
     function tradingFeeText(trade_info, base_ticker, has_info_icon=true) {
         if(!trade_info || !trade_info.trading_fee) return ""
 
-        return qsTr('Trading Fee') + ': ' + General.formatCrypto("", trade_info.trading_fee, trade_info.trading_fee_ticker) +
+        return trade_info.trading_fee_ticker+" "+qsTr('Trading Fee') + ': ' + General.formatCrypto("", trade_info.trading_fee, "") +
 
                 // Fiat part
                 (" ("+
                     getFiatText(trade_info.trading_fee, trade_info.trading_fee_ticker, has_info_icon)
+                 +")")
+    }
+    function minimumtradingFeeText(trade_info, base_ticker, has_info_icon=true) {
+        if(!trade_info || !trade_info.trading_fee) return ""
+
+        return trade_info.trading_fee_ticker+" "+qsTr('Minimum Trading Amount') + ': ' + General.formatCrypto("", API.app.trading_pg.min_trade_vol , "") +
+
+                // Fiat part
+                (" ("+
+                    getFiatText(API.app.trading_pg.min_trade_vol , trade_info.trading_fee_ticker, has_info_icon)
                  +")")
     }
 
