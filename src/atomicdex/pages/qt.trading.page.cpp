@@ -1606,7 +1606,12 @@ namespace atomic_dex
     void
     trading_page::set_min_trade_vol(QString min_trade_vol) noexcept
     {
-        if (min_trade_vol != m_minimal_trading_amount && t_float_50(min_trade_vol.toStdString()) <= t_float_50(m_volume.toStdString()))
+        //! If it's Sell mode you want to check volume field, if it's price you
+        const bool is_valid =
+            (m_market_mode == MarketMode::Sell ? t_float_50(min_trade_vol.toStdString()) <= t_float_50(m_volume.toStdString())
+                                               : t_float_50(min_trade_vol.toStdString()) <= t_float_50(m_price.toStdString()));
+
+        if (min_trade_vol != m_minimal_trading_amount && is_valid)
         {
             m_minimal_trading_amount = min_trade_vol;
             emit minTradeVolChanged();
