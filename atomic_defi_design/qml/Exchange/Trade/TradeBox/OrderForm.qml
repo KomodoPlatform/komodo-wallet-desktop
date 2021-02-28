@@ -186,25 +186,25 @@ FloatingBackground {
                     anchors.bottom: parent.bottom
                     spacing: 5
                     DefaultText {
-                        text_value: qsTr("Minimum trading amount")
+                        text_value: qsTr("Minimum trading amount: ")
                         font.pixelSize: Style.textSizeSmall1
 
                         wrapMode: Text.Wrap
                         anchors.bottom: parent.bottom
                     }
-                    DefaultText {
-                        text_value: General.cex_icon+" ("+input_minimum_amount_slider.value+" "+API.app.trading_pg.market_pairs_mdl.left_selected_coin+" - "+General.getFiatText(parseFloat(input_minimum_amount_slider.getRealValue()).toFixed(8),API.app.trading_pg.market_pairs_mdl.left_selected_coin).replace(" "+General.cex_icon,"")+"):"
-                        font.pixelSize: Style.textSizeSmall1
+                    //DefaultText {
+                    //    text_value: General.cex_icon+" ("+input_minimum_amount_slider.value+" "+API.app.trading_pg.market_pairs_mdl.left_selected_coin+" - "+General.getFiatText(parseFloat(input_minimum_amount_slider.getRealValue()).toFixed(8),API.app.trading_pg.market_pairs_mdl.left_selected_coin).replace(" "+General.cex_icon,"")+"):"
+                    //    font.pixelSize: Style.textSizeSmall1
 
-                        wrapMode: Text.Wrap
-                        CexInfoTrigger {
-                            toolTip: qsTr("the minimum amount of base coin available...")
-                            onClicked: ()=>{}
-                            enabled: false
-                        }
+                    //    wrapMode: Text.Wrap
+                    //    CexInfoTrigger {
+                    //        toolTip: qsTr("the minimum amount of base coin available...")
+                    //        onClicked: ()=>{}
+                    //        enabled: false
+                    //    }
 
-                        anchors.bottom: parent.bottom
-                    }
+                    //    anchors.bottom: parent.bottom
+                    //}
                 }
             }
 
