@@ -148,7 +148,7 @@ Item {
                     foregroundColor: Qaterial.Colors.pink
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5
-                    onClicked: API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
+                    onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())
                 }
             }
             RowLayout {
