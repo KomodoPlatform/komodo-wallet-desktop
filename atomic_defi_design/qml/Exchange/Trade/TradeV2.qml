@@ -100,10 +100,10 @@ Item {
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
 
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
+    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
-        API.app.trading_pg.preffered_order = { coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer }
+        API.app.trading_pg.preffered_order = { coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume }
 
         form_base.focusVolumeField()
     }

@@ -136,7 +136,7 @@ Item {
                                 onClicked: {
                                     if(is_mine) return
                                     flick_scrollBar.position = 0
-                                    selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer)
+                                    selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume)
                                     safe_exchange_flickable.flick(0, 5)
                                 }
                             }
@@ -281,7 +281,7 @@ Item {
                                 onClicked: {
                                     if(is_mine) return
                                     flick_scrollBar.position = 0
-                                    selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer)
+                                    selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume)
                                 }
                             }
                             Qaterial.ColorIcon {
