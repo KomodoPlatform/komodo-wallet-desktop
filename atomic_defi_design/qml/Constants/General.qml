@@ -407,11 +407,11 @@ QtObject {
     function minimumtradingFeeText(trade_info, base_ticker, has_info_icon=true) {
         if(!trade_info || !trade_info.trading_fee) return ""
 
-        return trade_info.trading_fee_ticker+" "+qsTr('Minimum Trading Amount') + ': ' + General.formatCrypto("", API.app.trading_pg.min_trade_vol , "") +
+        return API.app.trading_pg.market_pairs_mdl.left_selected_coin+" "+qsTr('Minimum Trading Amount') + ': ' + General.formatCrypto("", API.app.trading_pg.min_trade_vol , "") +
 
                 // Fiat part
                 (" ("+
-                    getFiatText(API.app.trading_pg.min_trade_vol , trade_info.trading_fee_ticker, has_info_icon)
+                    getFiatText(API.app.trading_pg.min_trade_vol , API.app.trading_pg.market_pairs_mdl.left_selected_coin, has_info_icon)
                  +")")
     }
 

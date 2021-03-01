@@ -49,6 +49,69 @@ Item {
                 ItemBox {
                     title: "Orderbook Box"
                     defaultHeight: 200
+                    RangeSlider {
+                        y: 60
+                        x: 10
+                        id: control
+                        //value: 0.5
+//                        from: 0
+//                        to: 100
+                        opacity: enabled? 1 : .5
+                        first.value: 0.25
+                        second.value: .75
+
+                        background: Rectangle {
+                            x: control.leftPadding
+                            y: control.topPadding + control.availableHeight / 2 - height / 2
+                            implicitWidth: 200
+                            implicitHeight: 4
+                            width: control.availableWidth
+                            height: implicitHeight
+                            radius: 2
+                            color: "#bdbebf"
+
+                            Rectangle {
+                                x: control.first.visualPosition * parent.width
+                                width: control.second.visualPosition * parent.width - x
+                                height: parent.height
+                                color: Style.colorGreen
+                                radius: 2
+                            }
+                        }
+
+                        first.handle: FloatingBackground {
+                            x: control.leftPadding + control.first.visualPosition * (control.availableWidth - width)
+                           y: control.topPadding + control.availableHeight / 2 - height / 2
+                           implicitWidth: 26
+                           implicitHeight: 26
+                           radius: 13
+                            Rectangle {
+                                anchors.centerIn: parent
+                                width: 10
+                                height: 10
+                                radius: 10
+                                color: Style.colorGreen
+                            }
+
+                            //border.color: "#bdbebf"
+                        }
+                        second.handle: FloatingBackground {
+                            x: control.leftPadding + control.second.visualPosition * (control.availableWidth - width)
+                           y: control.topPadding + control.availableHeight / 2 - height / 2
+                           implicitWidth: 26
+                           implicitHeight: 26
+                           radius: 13
+                            Rectangle {
+                                anchors.centerIn: parent
+                                width: 10
+                                height: 10
+                                radius: 10
+                                color: Style.colorGreen
+                            }
+
+                            //border.color: "#bdbebf"
+                        }
+                    }
 
                 }
                 ItemBox {
@@ -61,6 +124,8 @@ Item {
             title: "OrderBook Box"
             defaultHeight: 350
             minimumWidth: 350
+
+
 
 
         }

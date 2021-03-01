@@ -393,5 +393,6 @@
         <file>atomic_defi_design/qml/Components/ClipRRect.qml</file>
         <file>atomic_defi_design/qml/Components/ItemBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trade201.qml</file>
+        <file>atomic_defi_design/qml/Components/MinTradeModal.qml</file>
     </qresource>
 </RCC>

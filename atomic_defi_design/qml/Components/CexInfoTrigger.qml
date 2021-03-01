@@ -2,9 +2,10 @@ import QtQuick 2.15
 
 DefaultMouseArea {
     id: mouse_area
+    property bool no_default: true
     property string toolTip: qsTr("Price oracle powered by Band Protocol")
     anchors.fill: parent
-    onClicked: cex_rates_modal.open()
+    onClicked: no_default? cex_rates_modal.open() : ()=>{}
     hoverEnabled: true
 
     DefaultTooltip {

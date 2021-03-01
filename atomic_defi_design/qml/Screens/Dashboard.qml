@@ -249,6 +249,10 @@ Item {
         id: cex_rates_modal
         sourceComponent: CexInfoModal {}
     }
+    ModalLoader {
+        id: min_trade_modal
+        sourceComponent: MinTradeModal {}
+    }
 
     ModalLoader {
         id: restart_modal

@@ -541,6 +541,7 @@ Item {
                                 font.weight: Font.Medium
                                 font.pixelSize: Style.textSizeSmall3
                                 text_value: qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker)+" ("+General.getFiatText(total_amount, right_ticker)+")"
+                                CexInfoTrigger {}
                             }
 
                             DefaultText {
@@ -548,7 +549,7 @@ Item {
                                 text_value: General.getFiatText(total_amount, right_ticker)
                                 font.pixelSize: Style.textSizeSmall3
 
-                                CexInfoTrigger {}
+
                             }
                         }
 
