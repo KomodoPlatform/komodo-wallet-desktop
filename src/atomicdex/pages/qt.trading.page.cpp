@@ -925,7 +925,6 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            // SPDLOG_DEBUG("volume is [{}]", m_volume.toStdString());
             this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
@@ -944,7 +943,7 @@ namespace atomic_dex
         if (m_max_volume != max_volume)
         {
             m_max_volume = std::move(max_volume);
-            SPDLOG_DEBUG("max_volume is [{}]", m_max_volume.toStdString());
+            // SPDLOG_DEBUG("max_volume is [{}]", m_max_volume.toStdString());
             emit maxVolumeChanged();
         }
     }
@@ -958,7 +957,7 @@ namespace atomic_dex
             const auto max_taker_vol = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
             if (not max_taker_vol.empty())
             {
-                SPDLOG_INFO("max_taker_vol is valid, processing...");
+                // SPDLOG_INFO("max_taker_vol is valid, processing...");
                 if (t_float_50(max_taker_vol) <= 0)
                 {
                     this->set_max_volume("0");
@@ -1006,9 +1005,9 @@ namespace atomic_dex
                             t_rational price_orderbook_rat((boost::multiprecision::cpp_int(price_numer)), (boost::multiprecision::cpp_int(price_denom)));
 
                             t_rational res = rel_max_taker_rat / price_orderbook_rat;
-                            SPDLOG_INFO(
+                            /*SPDLOG_INFO(
                                 "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
-                                boost::multiprecision::denominator(res).str());
+                                boost::multiprecision::denominator(res).str());*/
                             res_f                                               = res.convert_to<t_float_50>();
                             this->m_preffered_order.value()["max_volume_denom"] = boost::multiprecision::denominator(res).str();
                             this->m_preffered_order.value()["max_volume_numer"] = boost::multiprecision::numerator(res).str();
@@ -1201,7 +1200,7 @@ namespace atomic_dex
         if (m_total_amount != total_amount)
         {
             m_total_amount = std::move(total_amount);
-            SPDLOG_DEBUG("total_amount is [{}]", m_total_amount.toStdString());
+            // SPDLOG_DEBUG("total_amount is [{}]", m_total_amount.toStdString());
             emit totalAmountChanged();
             emit baseAmountChanged();
             emit relAmountChanged();
@@ -1251,7 +1250,7 @@ namespace atomic_dex
         if (fees != m_fees)
         {
             m_fees = std::move(fees);
-            qDebug() << "fees are: [" << m_fees << "]";
+            //qDebug() << "fees are: [" << m_fees << "]";
             emit feesChanged();
         }
     }
