@@ -47,9 +47,6 @@ Item {
                         delegate: Item {
                             width: rootVert.visible? asks_view.width:0
                             height: 36
-                            Component.onCompleted: {
-                                console.log(min_volume)
-                            }
 
                             AnimatedRectangle {
                                 visible: mouse_area2.containsMouse //|| is_mine
