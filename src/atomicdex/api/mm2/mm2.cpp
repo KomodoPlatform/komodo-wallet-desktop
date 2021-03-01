@@ -463,6 +463,10 @@ namespace mm2::api
         j.at("zcredits").get_to(contents.zcredits);
         j.at("uuid").get_to(contents.uuid);
         j.at("is_mine").get_to(contents.is_mine);
+        if (j.contains("min_volume"))
+        {
+            contents.min_volume = j.at("min_volume").get<std::string>();
+        }
 
         if (contents.price.find('.') != std::string::npos)
         {

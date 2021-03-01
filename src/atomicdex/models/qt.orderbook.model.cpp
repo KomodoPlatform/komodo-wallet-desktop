@@ -61,6 +61,7 @@ namespace atomic_dex
         {
             return {};
         }
+
         switch (static_cast<OrderbookRoles>(role))
         {
         case PriceRole:
@@ -95,6 +96,9 @@ namespace atomic_dex
         case QuantityNumerRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).max_volume_fraction_numer)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).max_volume_fraction_numer);
+        case MinVolumeRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).min_volume)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).min_volume);
         }
     }
 
@@ -141,6 +145,9 @@ namespace atomic_dex
         case CoinRole:
             order.coin = value.toString().toStdString();
             break;
+        case MinVolumeRole:
+            order.min_volume = value.toString().toStdString();
+            break;
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -160,7 +167,8 @@ namespace atomic_dex
             {PriceNumerRole, "price_numer"},
             {QuantityDenomRole, "quantity_denom"},
             {QuantityNumerRole, "quantity_numer"},
-            {PercentDepthRole, "depth"}};
+            {PercentDepthRole, "depth"},
+            {MinVolumeRole, "min_volume"}};
     }
 
     void

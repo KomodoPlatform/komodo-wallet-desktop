@@ -52,7 +52,8 @@ namespace atomic_dex
             PriceNumerRole,
             QuantityDenomRole,
             QuantityNumerRole,
-            PercentDepthRole
+            PercentDepthRole,
+            MinVolumeRole
         };
 
         orderbook_model(kind orderbook_kind, QObject* parent = nullptr);

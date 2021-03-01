@@ -323,6 +323,7 @@ namespace mm2::api
         std::string uuid;
         std::string depth_percent;
         bool        is_mine;
+        std::string min_volume{"0"};
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);

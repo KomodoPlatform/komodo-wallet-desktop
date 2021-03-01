@@ -15,15 +15,13 @@
  ******************************************************************************/
 
 //! Project
-#include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 #include "atomicdex/models/qt.orderbook.model.hpp"
+#include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
-    orderbook_proxy_model::orderbook_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {
-    }
+    orderbook_proxy_model::orderbook_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
 
     bool
     orderbook_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -54,6 +52,8 @@ namespace atomic_dex
         case orderbook_model::QuantityNumerRole:
             break;
         case orderbook_model::CoinRole:
+            break;
+        case orderbook_model::MinVolumeRole:
             break;
         }
         return true;
