@@ -143,7 +143,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderForm.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OldOrderForm.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderbookSection.qml</file>
@@ -394,5 +394,6 @@
         <file>atomic_defi_design/qml/Components/ItemBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trade201.qml</file>
         <file>atomic_defi_design/qml/Components/MinTradeModal.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultRangeSlider.qml</file>
     </qresource>
 </RCC>
