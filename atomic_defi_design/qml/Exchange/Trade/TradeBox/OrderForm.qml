@@ -58,12 +58,6 @@ FloatingBackground {
 
             Layout.fillWidth: true
             spacing: 15
-
-            HorizontalLine {
-                Layout.fillWidth: true
-            }
-
-
             Item {
                 Layout.fillWidth: true
                 Layout.bottomMargin: input_volume.field.font.pixelSize
@@ -125,139 +119,165 @@ FloatingBackground {
                 }
             }
 
-            DefaultSlider {
-                id: input_volume_slider
-
+            DefaultRangeSlider {
                 function getRealValue() {
-                    return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
+                    return first.position * (first.to - first.from)
+                }
+                function getRealValue2() {
+                    return second.position * (second.to - second.from)
                 }
 
                 enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
-                property bool updating_from_text_field: false
-                property bool updating_text_field: false
                 Layout.fillWidth: true
                 from: 0
                 to: Math.max(0, parseFloat(max_volume))
-                live: false
+                //live: false
 
-                value: parseFloat(non_null_volume)
+                rangeBackgroundColor: Style.colorTheme7
+                onRangeBackgroundColorChanged: sell_mode? Style.colorRed : Style.colorGreen
 
-                onValueChanged: { if(pressed) setVolume(General.formatDouble(value)) }
+                second.value: parseFloat(non_null_volume)
+                second.onValueChanged: { if(second.pressed) setVolume(General.formatDouble(second.value)) }
+                //secondValueTooltipText: General.formatDouble(input_volumgetRealValue(), General.getRecommendedPrecision(second.to))
 
-                DefaultText {
-                    visible: parent.pressed
-                    anchors.horizontalCenter: parent.handle.horizontalCenter
-                    anchors.bottom: parent.handle.top
-
-                    text_value: General.formatDouble(input_volume_slider.getRealValue(), General.getRecommendedPrecision(input_volume_slider.to))
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-
-                DefaultText {
-                    anchors.left: parent.left
-                    anchors.top: parent.bottom
-
-                    text_value: qsTr("Min")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-                DefaultText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.bottom
-
-                    text_value: qsTr("Half")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-                DefaultText {
-                    anchors.right: parent.right
-                    anchors.top: parent.bottom
-
-                    text_value: qsTr("Max")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-            }
-            Item {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 5
-            }
-            Item {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 10
-                Row {
-                    anchors.bottom: parent.bottom
-                    spacing: 5
-                    DefaultText {
-                        text_value: qsTr("Minimum trading amount")
-                        font.pixelSize: Style.textSizeSmall1
-
-                        wrapMode: Text.Wrap
-                        anchors.bottom: parent.bottom
-                    }
-                    DefaultText {
-                        text_value: General.cex_icon+":"
-                        font.pixelSize: Style.textSizeSmall1
-
-                        wrapMode: Text.Wrap
-                        CexInfoTrigger {
-                            no_default: false
-                            toolTip: qsTr("the minimum amount of base coin available...")
-                            onClicked: min_trade_modal.open()
-                            enabled: true
-                        }
-
-                        anchors.bottom: parent.bottom
-                    }
-                }
+                first.value: parseFloat(API.app.trading_pg.min_trade_vol )
+                first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }
+                //firstValueTooltipText: General.formatDouble(getRealValue(), General.getRecommendedPrecision(second.value))
             }
 
-            DefaultSlider {
-                id: input_minimum_amount_slider
+//            DefaultSlider {
+//                id: input_volume_slider
 
-                function getRealValue() {
-                    return input_minimum_amount_slider.position * (input_minimum_amount_slider.to - input_minimum_amount_slider.from)
-                }
+//                function getRealValue() {
+//                    return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
+//                }
 
-                enabled: API.app.trading_pg.volume>0
-                property bool updating_from_text_field: false
-                property bool updating_text_field: false
-                Layout.fillWidth: true
-                from: parseFloat(API.app.trading_pg.mm2_min_trade_vol)
-                to: API.app.trading_pg.volume
-                live: false
-                value: parseFloat(API.app.trading_pg.min_trade_vol )
+//                enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
+//                property bool updating_from_text_field: false
+//                property bool updating_text_field: false
+//                Layout.fillWidth: true
+//                from: 0
+//                to: Math.max(0, parseFloat(max_volume))
+//                live: false
 
-                onValueChanged: { if(pressed) setMinimumAmount(General.formatDouble(value)) }
+//                value: parseFloat(non_null_volume)
 
-                DefaultText {
-                    visible: parent.pressed
-                    anchors.horizontalCenter: parent.handle.horizontalCenter
-                    anchors.bottom: parent.handle.top
+//                onValueChanged: { if(pressed) setVolume(General.formatDouble(value)) }
 
-                    text_value: General.formatDouble(input_minimum_amount_slider.getRealValue(), General.getRecommendedPrecision(input_minimum_amount_slider.to))
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
+//                DefaultText {
+//                    visible: parent.pressed
+//                    anchors.horizontalCenter: parent.handle.horizontalCenter
+//                    anchors.bottom: parent.handle.top
 
-                DefaultText {
-                    anchors.left: parent.left
-                    anchors.top: parent.bottom
+//                    text_value: General.formatDouble(input_volume_slider.getRealValue(), General.getRecommendedPrecision(input_volume_slider.to))
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
 
-                    text_value: qsTr("Min")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-                DefaultText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.bottom
+//                DefaultText {
+//                    anchors.left: parent.left
+//                    anchors.top: parent.bottom
 
-                    text_value: qsTr("Half")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-                DefaultText {
-                    anchors.right: parent.right
-                    anchors.top: parent.bottom
+//                    text_value: qsTr("Min")
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
+//                DefaultText {
+//                    anchors.horizontalCenter: parent.horizontalCenter
+//                    anchors.top: parent.bottom
 
-                    text_value: qsTr("Max")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-            }
+//                    text_value: qsTr("Half")
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
+//                DefaultText {
+//                    anchors.right: parent.right
+//                    anchors.top: parent.bottom
+
+//                    text_value: qsTr("Max")
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
+//            }
+//            Item {
+//                Layout.fillWidth: true
+//                Layout.preferredHeight: 5
+//            }
+//            Item {
+//                Layout.fillWidth: true
+//                Layout.preferredHeight: 10
+//                Row {
+//                    anchors.bottom: parent.bottom
+//                    spacing: 5
+//                    DefaultText {
+//                        text_value: qsTr("Minimum trading amount")
+//                        font.pixelSize: Style.textSizeSmall1
+
+//                        wrapMode: Text.Wrap
+//                        anchors.bottom: parent.bottom
+//                    }
+//                    DefaultText {
+//                        text_value: General.cex_icon+":"
+//                        font.pixelSize: Style.textSizeSmall1
+
+//                        wrapMode: Text.Wrap
+//                        CexInfoTrigger {
+//                            no_default: false
+//                            toolTip: qsTr("the minimum amount of base coin available...")
+//                            onClicked: min_trade_modal.open()
+//                            enabled: true
+//                        }
+
+//                        anchors.bottom: parent.bottom
+//                    }
+//                }
+//            }
+
+//            DefaultSlider {
+//                id: input_minimum_amount_slider
+
+//                function getRealValue() {
+//                    return input_minimum_amount_slider.position * (input_minimum_amount_slider.to - input_minimum_amount_slider.from)
+//                }
+
+//                enabled: API.app.trading_pg.volume>0
+//                property bool updating_from_text_field: false
+//                property bool updating_text_field: false
+//                Layout.fillWidth: true
+//                from: parseFloat(API.app.trading_pg.mm2_min_trade_vol)
+//                to: API.app.trading_pg.volume
+//                live: false
+//                value: parseFloat(API.app.trading_pg.min_trade_vol )
+
+//                onValueChanged: { if(pressed) setMinimumAmount(General.formatDouble(value)) }
+
+//                DefaultText {
+//                    visible: parent.pressed
+//                    anchors.horizontalCenter: parent.handle.horizontalCenter
+//                    anchors.bottom: parent.handle.top
+
+//                    text_value: General.formatDouble(input_minimum_amount_slider.getRealValue(), General.getRecommendedPrecision(input_minimum_amount_slider.to))
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
+
+//                DefaultText {
+//                    anchors.left: parent.left
+//                    anchors.top: parent.bottom
+
+//                    text_value: qsTr("Min")
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
+//                DefaultText {
+//                    anchors.horizontalCenter: parent.horizontalCenter
+//                    anchors.top: parent.bottom
+
+//                    text_value: qsTr("Half")
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
+//                DefaultText {
+//                    anchors.right: parent.right
+//                    anchors.top: parent.bottom
+
+//                    text_value: qsTr("Max")
+//                    font.pixelSize: input_volume.field.font.pixelSize
+//                }
+//            }
 
 
             // Fees

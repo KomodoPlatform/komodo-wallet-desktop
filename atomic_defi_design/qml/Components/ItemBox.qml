@@ -8,6 +8,7 @@ import "../Constants/" as Constants
 
 InnerBackground {
     id: _control
+    property bool hideHeader: false
     property bool expandedVert: false
     property bool expandedHort: false
     property bool showed: true
@@ -25,7 +26,8 @@ InnerBackground {
     property bool contentVisible: expandable
     property bool isVertical: _control.parent.parent.orientation === Qt.Vertical
     shadowOff: true
-    color: Constants.Style.colorTheme8
+    color: Constants.Style.colorTheme9
+    border.color: color//Constants.Style.colorTheme99
     property alias titleLabel: _texto
 
     onExpandedVertChanged: {
@@ -88,7 +90,7 @@ InnerBackground {
             height: 40
             radius: parent.parent.height<41? parent.parent.radius : 0
             color: Constants.Style.colorTheme9
-            visible: isVertical? true : expandable
+            visible: (isVertical? true : expandable) && !_control.hideHeader
             RowLayout {
                 anchors.fill: parent
                 Layout.rightMargin: 10

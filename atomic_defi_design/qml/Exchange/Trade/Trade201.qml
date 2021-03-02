@@ -21,7 +21,7 @@ import "./" as Here
 Item {
     id: exchange_trade
     readonly property string total_amount: API.app.trading_pg.total_amount
-    property var form_base: sell_mode? sellBox.formBase : buyBox.formBase
+    //property var form_base: sell_mode? sellBox.formBase : buyBox.formBase
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
@@ -195,6 +195,7 @@ Item {
 
         spacing: 10
         anchors.topMargin: 40
+        anchors.leftMargin: 10
         anchors.fill: parent
         Component.onCompleted: splitView.restoreState(settings.splitView)
          Component.onDestruction: settings.splitView = splitView.saveState()
@@ -227,6 +228,8 @@ Item {
                 expandedHort: true
                 SplitView.fillHeight: true
                 title: "Chart View"
+                color: 'transparent'
+                border.color: 'transparent'
                 SplitView {
                     id: safe_exchange_flickable
                     anchors.fill: parent
@@ -464,6 +467,7 @@ Item {
                 maximumWidth: 350
                 clip: true
                 title: "OrderBook"
+                visible: isUltraLarge
                 Behavior on SplitView.preferredWidth {
                     NumberAnimation {
                         duration: 100
@@ -472,6 +476,7 @@ Item {
                 OrderBookVertical {
                     visible: parent.contentVisible
                     anchors.topMargin: 40
+                    anchors.fill: parent
                 }
             }
 
@@ -480,6 +485,8 @@ Item {
                 maximumWidth: 300
                 SplitView.fillHeight: true
                 title: "Buy & Sell"
+                color: 'transparent'
+                border.color: 'transparent'
                 clip: true
                 SplitView {
                     visible: parent.contentVisible
@@ -499,7 +506,9 @@ Item {
                     ItemBox {
                         title: "Total"
                         defaultHeight: 160
+                        hideHeader: true
                         clip: true
+                        visible: false
                         Item {
                             anchors.fill: parent
                             anchors.topMargin: 0
@@ -572,23 +581,90 @@ Item {
 
                     ItemBox {
                         SplitView.fillHeight: true
+                        hideHeader: true
                         title: "Form"
                         ColumnLayout {
                             property int space: 10
                             anchors.fill: parent
                             anchors.topMargin: 0
                             spacing: 10
-                            SellBox {
-                                id: sellBox
+                            Item {
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: 30
+                                Row {
+                                    width: parent.width-120
+                                    anchors.centerIn: parent
+                                    Rectangle {
+                                        width: (parent.width/2)
+                                        height: 30
+                                        radius: 8
+                                        color: enabled? Qt.darker(Style.colorGreen) : Style.colorTheme7
+                                        enabled: !sell_mode
+                                        border.color: enabled? Style.colorGreen : Style.colorWhite9
+                                        //border.width: enabled? 1 : 0
+                                        Rectangle {
+                                            anchors.right: parent.right
+                                            color: parent.color
+                                            height: parent.height
+                                            width: parent.radius
+                                            border.color: parent.border.color
+                                            border.width: parent.border.width
 
+                                            Rectangle {
+                                                anchors.left: parent.left
+                                                color: parent.color
+                                                height: parent.height-(parent.border.width*2)
+                                                anchors.verticalCenter: parent.verticalCenter
+                                                width: 2
+                                            }
+                                        }
+                                    }
+                                    Rectangle {
+                                        width: (parent.width/2)
+                                        height: 30
+                                        radius: 8
+                                        color: Qt.darker(Style.colorRed)
+                                        border.color: Style.colorRed
+                                        enabled: sell_mode
+                                        Rectangle {
+                                            anchors.left: parent.left
+                                            color: parent.color
+                                            height: parent.height
+                                            width: parent.radius
+                                            border.color: parent.border.color
+                                            Rectangle {
+                                                anchors.right: parent.right
+                                                color: parent.color
+                                                height: parent.height-(parent.border.width*2)
+                                                anchors.verticalCenter: parent.verticalCenter
+                                                width: 2
+                                            }
+                                        }
+                                        DefaultText {
+                                            anchors.centerIn: parent
+                                            font.pixelSize: Style.textSize1
+                                        }
+                                    }
+                                }
                             }
-                            BuyBox {
-                                id: buyBox
+
+                            OrderForm {
+                                id: form_base
+                                Layout.fillWidth: true
+                                Layout.leftMargin: 10
+                                Layout.rightMargin: 10
+                                Layout.preferredHeight: 200
+                                border.color: 'transparent'
+                                color: 'transparent'
+                                Layout.alignment: Qt.AlignHCenter
                             }
+
                             Item {
 
                                 Layout.fillHeight: true
                                 Layout.fillWidth: true
+                                Layout.leftMargin: 10
+                                Layout.rightMargin: 10
                                 ColumnLayout {
                                     anchors.fill: parent
                                     anchors.leftMargin: 5

@@ -18,6 +18,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         radius: 6
+        color: "transparent"
         RowLayout {
             anchors.fill: parent
             spacing: 0

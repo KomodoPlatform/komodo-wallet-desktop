@@ -21,6 +21,7 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             radius: 2
+            color: 'transparent'
             ColumnLayout {
                 anchors.fill: parent
                 spacing: 5
