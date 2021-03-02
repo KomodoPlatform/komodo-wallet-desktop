@@ -153,23 +153,23 @@ namespace atomic_dex
         return true;
     }
 
-    QHash<int, QByteArray>
-    orderbook_model::roleNames() const
-    {
-        return {
-            {PriceRole, "price"},
-            {CoinRole, "coin"},
-            {QuantityRole, "quantity"},
-            {TotalRole, "total"},
-            {UUIDRole, "uuid"},
-            {IsMineRole, "is_mine"},
-            {PriceDenomRole, "price_denom"},
-            {PriceNumerRole, "price_numer"},
-            {QuantityDenomRole, "quantity_denom"},
-            {QuantityNumerRole, "quantity_numer"},
-            {PercentDepthRole, "depth"},
-            {MinVolumeRole, "min_volume"}};
-    }
+        QHash<int, QByteArray>
+        orderbook_model::roleNames() const
+        {
+            return {
+                {PriceRole, "price"},
+                {CoinRole, "coin"},
+                {QuantityRole, "quantity"},
+                {TotalRole, "total"},
+                {UUIDRole, "uuid"},
+                {IsMineRole, "is_mine"},
+                {PriceDenomRole, "price_denom"},
+                {PriceNumerRole, "price_numer"},
+                {QuantityDenomRole, "quantity_denom"},
+                {QuantityNumerRole, "quantity_numer"},
+                {PercentDepthRole, "depth"},
+                {MinVolumeRole, "min_volume"}};
+        }
 
     void
     orderbook_model::reset_orderbook(const t_orderbook_answer& orderbook) noexcept

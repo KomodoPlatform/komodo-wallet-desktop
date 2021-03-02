@@ -75,17 +75,17 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 spacing: 10
                                 Qaterial.ColorIcon {
-                                    visible: mouse_area2.containsMouse && (min_volume > 0 && API.app.trading_pg.max_volume < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
+                                    visible: mouse_area2.containsMouse && (min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
                                     source: Qaterial.Icons.alert
                                     Layout.alignment: Qt.AlignVCenter
                                     iconSize: 13
                                     color: Qaterial.Colors.amber
                                 }
                                 DefaultTooltip {
-                                    visible: mouse_area2.containsMouse && (min_volume > 0 && API.app.trading_pg.max_volume < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
+                                    visible: mouse_area2.containsMouse && (min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
                                     width: 300
                                     contentItem: DefaultText {
-                                        text_value: qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(coin).arg(API.app.trading_pg.max_volume)
+                                        text_value: qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(coin).arg(API.app.trading_pg.orderbook.base_max_taker_vol.decimal)
                                         wrapMode: DefaultText.Wrap
                                         width: 300
                                     }
@@ -243,17 +243,17 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 spacing: 10
                                 Qaterial.ColorIcon {
-                                    visible: mouse_area.containsMouse && (min_volume > 0 && API.app.trading_pg.max_volume < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
+                                    visible: mouse_area.containsMouse && (min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
                                     source: Qaterial.Icons.alert
                                     Layout.alignment: Qt.AlignVCenter
                                     iconSize: 13
                                     color: Qaterial.Colors.amber
                                 }
                                 DefaultTooltip {
-                                    visible: mouse_area.containsMouse && (min_volume > 0 && API.app.trading_pg.max_volume < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
+                                    visible: mouse_area.containsMouse && (min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume != API.app.trading_pg.mm2_min_volume
                                     width: 300
                                     contentItem: DefaultText {
-                                        text_value: qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(coin).arg(API.app.trading_pg.max_volume)
+                                        text_value: qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(coin).arg(API.app.trading_pg.orderbook.base_max_taker_vol.decimal)
                                         wrapMode: DefaultText.Wrap
                                         width: 300
                                     }

@@ -180,7 +180,7 @@ Item {
                     Layout.leftMargin: 30
                     text: qsTr("Cancel Displayed Orders")
                     enabled: list_model.length > 0
-                    onClicked: API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
+                    onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())
                 }
 
                 // Export button

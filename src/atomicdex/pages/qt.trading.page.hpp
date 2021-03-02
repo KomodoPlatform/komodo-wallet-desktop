@@ -31,6 +31,7 @@
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/widgets/dex/qt.market.pairs.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
+#include "atomicdex/widgets/dex/qt.orders.widget.hpp"
 
 namespace atomic_dex
 {
@@ -43,6 +44,7 @@ namespace atomic_dex
         //! Q Properties definitions
         Q_PROPERTY(qt_orderbook_wrapper* orderbook READ get_orderbook_wrapper NOTIFY orderbookChanged)
         Q_PROPERTY(market_pairs* market_pairs_mdl READ get_market_pairs_mdl NOTIFY marketPairsChanged)
+        Q_PROPERTY(qt_orders_widget* orders READ get_orders_widget NOTIFY ordersWidgetChanged)
         Q_PROPERTY(QVariant buy_sell_last_rpc_data READ get_buy_sell_last_rpc_data WRITE set_buy_sell_last_rpc_data NOTIFY buySellLastRpcDataChanged)
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
         Q_PROPERTY(bool fetching_multi_ticker_fees_busy READ is_fetching_multi_ticker_fees_busy WRITE set_fetching_multi_ticker_fees_busy NOTIFY
@@ -75,7 +77,8 @@ namespace atomic_dex
         {
             orderbook       = 0,
             market_selector = 1,
-            models_size     = 2
+            orders          = 2,
+            models_size     = 3
         };
 
         enum models_actions
@@ -120,7 +123,6 @@ namespace atomic_dex
         bool                          m_skip_taker{false};
 
         //! Private function
-        void                       common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
         void                       clear_forms() noexcept;
         void                       determine_max_volume() noexcept;
         void                       determine_fees() noexcept;
@@ -149,13 +151,8 @@ namespace atomic_dex
         void disable_coins(const QStringList& coins) noexcept;
 
         //! Public QML API
-        Q_INVOKABLE void on_gui_enter_dex();
-        Q_INVOKABLE void on_gui_leave_dex();
-        Q_INVOKABLE void cancel_order(const QStringList& orders_id);
-        Q_INVOKABLE void cancel_all_orders();
-        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
-
-
+        Q_INVOKABLE void     on_gui_enter_dex();
+        Q_INVOKABLE void     on_gui_leave_dex();
         Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
 
         //! Trading business
@@ -165,14 +162,13 @@ namespace atomic_dex
 
         Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
         Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "");
-        Q_INVOKABLE void
-        place_setprice_order(const QString& base_nota = "", const QString& base_confs = "", const QString& rel_nota = "", const QString& rel_confs = "");
 
         Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
         Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper* get_orderbook_wrapper() const noexcept;
+        [[nodiscard]] qt_orders_widget*     get_orders_widget() const noexcept;
         [[nodiscard]] market_pairs*         get_market_pairs_mdl() const noexcept;
         [[nodiscard]] bool                  is_buy_sell_rpc_busy() const noexcept;
         void                                set_buy_sell_rpc_busy(bool status) noexcept;
@@ -226,6 +222,7 @@ namespace atomic_dex
 
       signals:
         void orderbookChanged();
+        void ordersWidgetChanged();
         void candlestickChartsChanged();
         void marketPairsChanged();
         void buySellLastRpcDataChanged();

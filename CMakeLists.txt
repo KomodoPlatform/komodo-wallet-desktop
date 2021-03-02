@@ -182,6 +182,7 @@ target_sources(${PROJECT_NAME}_shared_deps PRIVATE
         ##! Widgets
         ${CMAKE_SOURCE_DIR}/src/atomicdex/widgets/dex/qt.market.pairs.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/widgets/dex/qt.orderbook.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/widgets/dex/qt.orders.widget.cpp
 
         ##! Pages
         ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.trading.page.cpp

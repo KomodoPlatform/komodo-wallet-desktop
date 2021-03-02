@@ -22,7 +22,7 @@ Item {
     readonly property string rel_ticker: API.app.trading_pg.market_pairs_mdl.rel_selected_coin
 
     function cancelOrder(order_id) {
-        API.app.trading_pg.cancel_order(order_id)
+        API.app.trading_pg.orders.cancel_order(order_id)
     }
 
     Component.onCompleted: {
