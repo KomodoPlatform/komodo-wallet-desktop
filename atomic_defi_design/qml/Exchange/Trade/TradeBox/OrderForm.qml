@@ -134,7 +134,7 @@ FloatingBackground {
                 //live: false
 
                 rangeBackgroundColor: Style.colorTheme7
-                onRangeBackgroundColorChanged: sell_mode? Style.colorRed : Style.colorGreen
+                rangeDistanceColor: sell_mode? Style.colorRed : Style.colorGreen
 
                 second.value: parseFloat(non_null_volume)
                 second.onValueChanged: { if(second.pressed) setVolume(General.formatDouble(second.value)) }

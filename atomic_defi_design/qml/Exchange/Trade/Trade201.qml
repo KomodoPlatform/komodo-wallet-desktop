@@ -505,80 +505,153 @@ Item {
                     }
                     ItemBox {
                         title: "Total"
-                        defaultHeight: 160
+                        defaultHeight: 90
                         hideHeader: true
                         clip: true
-                        visible: false
+                        visible: true
                         Item {
                             anchors.fill: parent
                             anchors.topMargin: 0
-                            Rectangle {
+                            Item {
                                 width: parent.width
-                                height: 100
-                                radius: 2
-                                color: Style.colorRed
+                                height: 80
                                 Column {
-                                    width: parent.width-20
+                                    width: parent.width-60
                                     anchors.centerIn: parent
-                                    spacing: 10
+                                    spacing: 0
                                     RowLayout {
                                         width: parent.width
                                         DefaultText {
                                             color: Style.colorWhite1
-                                            text: "USD"
+                                            text: "TOTAL USD "+General.cex_icon
                                             font.pixelSize:  Style.textSizeSmall5
-                                            Layout.preferredWidth: 35
-                                            font.bold: true
-                                            font.weight: Font.Bold
+                                            Layout.preferredWidth: 90
+                                            font.weight: Font.Light
+                                            CexInfoTrigger {}
                                         }
-                                        Rectangle {
+                                        Item {
                                             height: 40
                                             Layout.fillWidth: true
-                                            color: "black"
-                                            radius: 4
                                             DefaultText {
                                                 anchors.verticalCenter: parent.verticalCenter
                                                 anchors.right: parent.right
                                                 anchors.rightMargin: 10
-                                                font.weight: Font.Medium
-                                                font.pixelSize: Style.textSize1
-                                                text_value: General.getFiatText(total_amount, right_ticker)
+                                                font.weight: Font.Light
+                                                font.pixelSize: Style.textSizeSmall4
+                                                text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon,"")
+
                                             }
                                         }
                                     }
+                                    HorizontalLine {
+                                        width: parent.width-50
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                    }
+
                                     RowLayout {
                                         width: parent.width
                                         DefaultText {
-                                            Layout.preferredWidth: 35
                                             color: Style.colorWhite1
-                                            text: "BTC "
+                                            text: "TOTAL "+right_ticker
                                             font.pixelSize:  Style.textSizeSmall5
-                                            font.bold: true
-                                            font.weight: Font.Bold
+                                            Layout.preferredWidth: 90
+                                            font.weight: Font.Light
+
                                         }
-                                        Rectangle {
+                                        Item {
                                             height: 40
                                             Layout.fillWidth: true
-                                            color: "black"
-                                            radius: 4
                                             DefaultText {
-                                                text_value: General.formatCrypto("", total_amount, right_ticker).replace("BTC ","")
+                                                text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker,"")
                                                 anchors.verticalCenter: parent.verticalCenter
                                                 anchors.right: parent.right
                                                 anchors.rightMargin: 10
-                                                font.weight: Font.Medium
-                                                font.pixelSize: Style.textSize1
-
-                                                CexInfoTrigger {}
+                                                font.weight: Font.Light
+                                                font.pixelSize: Style.textSizeSmall4
                                             }
                                         }
                                     }
                                 }
-
                             }
                         }
                     }
+                    Item {
+                        SplitView.fillWidth: true
+                        SplitView.preferredHeight: 30
+                        SplitView.maximumHeight: 35
+                        Row {
+                            width: parent.width-120
+                            anchors.centerIn: parent
+                            Rectangle {
+                                width: (parent.width/2)
+                                height: 30
+                                radius: 8
+                                color: !sell_mode? Qt.darker(Style.colorGreen) : Style.colorTheme7
+                                border.color: !sell_mode? Style.colorGreen : Style.colorWhite9
+                                Rectangle {
+                                    anchors.right: parent.right
+                                    color: parent.color
+                                    height: parent.height
+                                    width: parent.radius
+                                    border.color: parent.border.color
+                                    border.width: parent.border.width
 
+                                    Rectangle {
+                                        anchors.left: parent.left
+                                        color: parent.color
+                                        height: parent.height-(parent.border.width*2)
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        width: 2
+                                    }
+                                }
+                                DefaultText {
+                                    anchors.centerIn: parent
+                                    font.pixelSize: Style.textSizeSmall5
+                                    opacity: !sell_mode? 1 : .5
+                                    text: "Buy"
+
+                                }
+                                DefaultMouseArea {
+                                    anchors.fill: parent
+                                    id: buySelector
+                                    onClicked: setMarketMode(MarketMode.Buy)
+                                }
+                            }
+                            Rectangle {
+                                width: (parent.width/2)
+                                height: 30
+                                radius: 8
+                                color: sell_mode? Qt.darker(Style.colorRed) : Style.colorTheme7
+                                border.color: sell_mode? Style.colorRed : Style.colorWhite9
+                                Rectangle {
+                                    anchors.left: parent.left
+                                    color: parent.color
+                                    height: parent.height
+                                    width: parent.radius
+                                    border.color: parent.border.color
+                                    border.width: parent.border.width
+                                    Rectangle {
+                                        anchors.right: parent.right
+                                        color: parent.color
+                                        height: parent.height-(parent.border.width*2)
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        width: 2
+                                    }
+                                }
+                                DefaultText {
+                                    anchors.centerIn: parent
+                                    font.pixelSize: Style.textSizeSmall5
+                                    opacity: sell_mode? 1 : .5
+                                    text: "Sell"
+                                }
+                                DefaultMouseArea {
+                                    anchors.fill: parent
+                                    id: sellSelector
+                                    onClicked: setMarketMode(MarketMode.Sell)
+                                }
+                            }
+                        }
+                    }
                     ItemBox {
                         SplitView.fillHeight: true
                         hideHeader: true
@@ -586,67 +659,8 @@ Item {
                         ColumnLayout {
                             property int space: 10
                             anchors.fill: parent
-                            anchors.topMargin: 0
+                            anchors.topMargin: 5
                             spacing: 10
-                            Item {
-                                Layout.fillWidth: true
-                                Layout.preferredHeight: 30
-                                Row {
-                                    width: parent.width-120
-                                    anchors.centerIn: parent
-                                    Rectangle {
-                                        width: (parent.width/2)
-                                        height: 30
-                                        radius: 8
-                                        color: enabled? Qt.darker(Style.colorGreen) : Style.colorTheme7
-                                        enabled: !sell_mode
-                                        border.color: enabled? Style.colorGreen : Style.colorWhite9
-                                        //border.width: enabled? 1 : 0
-                                        Rectangle {
-                                            anchors.right: parent.right
-                                            color: parent.color
-                                            height: parent.height
-                                            width: parent.radius
-                                            border.color: parent.border.color
-                                            border.width: parent.border.width
-
-                                            Rectangle {
-                                                anchors.left: parent.left
-                                                color: parent.color
-                                                height: parent.height-(parent.border.width*2)
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                width: 2
-                                            }
-                                        }
-                                    }
-                                    Rectangle {
-                                        width: (parent.width/2)
-                                        height: 30
-                                        radius: 8
-                                        color: Qt.darker(Style.colorRed)
-                                        border.color: Style.colorRed
-                                        enabled: sell_mode
-                                        Rectangle {
-                                            anchors.left: parent.left
-                                            color: parent.color
-                                            height: parent.height
-                                            width: parent.radius
-                                            border.color: parent.border.color
-                                            Rectangle {
-                                                anchors.right: parent.right
-                                                color: parent.color
-                                                height: parent.height-(parent.border.width*2)
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                width: 2
-                                            }
-                                        }
-                                        DefaultText {
-                                            anchors.centerIn: parent
-                                            font.pixelSize: Style.textSize1
-                                        }
-                                    }
-                                }
-                            }
 
                             OrderForm {
                                 id: form_base
@@ -665,15 +679,15 @@ Item {
                                 Layout.fillWidth: true
                                 Layout.leftMargin: 10
                                 Layout.rightMargin: 10
-                                ColumnLayout {
+                                Column {
                                     anchors.fill: parent
                                     anchors.leftMargin: 5
                                     anchors.rightMargin: 5
                                     Column {
                                         id: bg
-                                        Layout.fillWidth: true
+                                        width: parent.width
 
-                                        RowLayout {
+                                        Row {
                                             width: bg.width
                                             height: tx_fee_text.implicitHeight+25
 
@@ -712,33 +726,22 @@ Item {
 
                                     // Trade button
                                     DefaultButton {
-                                        Layout.alignment: Qt.AlignRight
-                                        Layout.fillWidth: true
-                                        Layout.rightMargin: Layout.leftMargin
-                                        Layout.bottomMargin: layout_margin
+                                        width: parent.width-20
+                                        anchors.horizontalCenter: parent.horizontalCenter
 
                                         button_type: sell_mode ? "danger" : "primary"
-
-                                        width: 170
 
                                         text: qsTr("Start Swap")
                                         font.weight: Font.Medium
                                         enabled: !multi_order_enabled && sellBox.can_submit_trade
                                         onClicked: confirm_trade_modal.open()
                                     }
-                                    Item {
-                                        Layout.fillHeight: true
-                                        Layout.fillWidth: true
-                                    }
 
-                                    ColumnLayout {
+                                    Column {
                                         spacing: parent.spacing
                                         visible: errors.text_value !== ""
-
-                                        Layout.alignment: Qt.AlignBottom
-                                        Layout.fillWidth: true
-                                        Layout.bottomMargin: layout_margin
-
+                                        width: parent.width
+                                        bottomPadding: 10
                                         HorizontalLine {
                                             Layout.fillWidth: true
                                             Layout.bottomMargin: layout_margin
@@ -747,9 +750,7 @@ Item {
                                         // Show errors
                                         DefaultText {
                                             id: errors
-                                            Layout.rightMargin: Layout.leftMargin
-                                            Layout.fillWidth: true
-                                            horizontalAlignment: Label.AlignHCenter
+                                            anchors.horizontalCenter: parent.horizontalCenter
                                             font.pixelSize: Style.textSizeSmall4
                                             color: Style.colorRed
 
