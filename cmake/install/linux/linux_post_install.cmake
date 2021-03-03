@@ -1,5 +1,4 @@
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
-include(project.metadata)
+include(${CMAKE_CURRENT_LIST_DIR}/../../project.metadata.cmake)
 
 ## 2 case root_dir/build_folder root_dir/ci_tools/build_folder
 execute_process(COMMAND bash -c "echo -n `git rev-parse --short HEAD`"

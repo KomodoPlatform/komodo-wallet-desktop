@@ -41,8 +41,10 @@ macro(generate_dex_project_metafiles)
     endif ()
 
     # Configures logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/install/logo/dex-logo-64.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo-64.png COPYONLY) # Configures x64 Linux logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/install/logo/dex-logo.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo.png COPYONLY)       # Configures Linux logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/install/logo/dex-logo.ico ${CMAKE_CURRENT_LIST_DIR}/cmake/install/windows/dex-logo.ico COPYONLY)     # Configures Windows logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/install/logo/dex-logo.icns ${CMAKE_CURRENT_LIST_DIR}/cmake/install/macos/dex-logo.icns COPYONLY)     # Configures Windows logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-64.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo-64.png COPYONLY)                  # Configures x64 Linux logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo.png COPYONLY)                        # Configures Linux logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.ico ${CMAKE_CURRENT_LIST_DIR}/cmake/install/windows/dex-logo.ico COPYONLY)                      # Configures Windows logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.icns ${CMAKE_CURRENT_LIST_DIR}/cmake/install/macos/dex-logo.icns COPYONLY)                      # Configures MacOS logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.svg ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo.svg COPYONLY)           # Configures application fronted sidebar logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-dark.svg ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-dark.svg COPYONLY) # Configures application fronted sidebar logo
 endmacro()
