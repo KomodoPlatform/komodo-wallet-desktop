@@ -3,6 +3,9 @@ set(DEX_PROJECT_NAME "atomicdex-desktop")
 set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
 set(DEX_COMPANY "KomodoPlatform")
 set(DEX_WEBSITE "https://atomicdex.io/")
+set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
+set(DEX_DISCORD "https://komodoplatform.com/discord")
+set(DEX_TWITTER "https://twitter.com/AtomicDEX")
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 
 if (UNIX AND NOT APPLE)
@@ -43,10 +46,11 @@ macro(generate_dex_project_metafiles)
     endif ()
 
     # Configures logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-64.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo-64.png COPYONLY)                  # Configures x64 Linux logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo.png COPYONLY)                        # Configures Linux logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.ico ${CMAKE_CURRENT_LIST_DIR}/cmake/install/windows/dex-logo.ico COPYONLY)                      # Configures Windows logo
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.icns ${CMAKE_CURRENT_LIST_DIR}/cmake/install/macos/dex-logo.icns COPYONLY)                      # Configures MacOS logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-64.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo-64.png COPYONLY)                                  # Configures x64 Linux logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.png ${CMAKE_CURRENT_LIST_DIR}/cmake/install/linux/dex-logo.png COPYONLY)                                        # Configures Linux logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.ico ${CMAKE_CURRENT_LIST_DIR}/cmake/install/windows/dex-logo.ico COPYONLY)                                      # Configures Windows logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.icns ${CMAKE_CURRENT_LIST_DIR}/cmake/install/macos/dex-logo.icns COPYONLY)                                      # Configures MacOS logo
     configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-sidebar.png ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-sidebar.png COPYONLY)           # Configures application fronted sidebar logo
     configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-sidebar-dark.png ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-sidebar-dark.png COPYONLY) # Configures application fronted sidebar logo
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-tray-icon.png ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-tray-icon.png COPYONLY)                 # Configures application fronted tray icon logo
 endmacro()

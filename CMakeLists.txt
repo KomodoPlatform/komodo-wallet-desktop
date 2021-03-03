@@ -211,6 +211,10 @@ target_compile_definitions(${PROJECT_NAME}_shared_deps
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
         DEX_NAME="${DEX_DISPLAY_NAME}"
+        DEX_WEBSITE_URL="${DEX_WEBSITE}"
+        DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}"
+        DEX_DISCORD_URL="${DEX_DISCORD}"
+        DEX_TWITTER_URL="${DEX_TWITTER}"
         PRIVATE
         ENTT_API_EXPORT
         )

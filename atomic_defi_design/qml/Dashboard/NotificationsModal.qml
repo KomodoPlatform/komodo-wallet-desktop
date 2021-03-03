@@ -190,7 +190,7 @@ BasicModal {
     SystemTrayIcon {
         id: tray
         visible: true
-        iconSource: General.image_path + "tray-icon.png"
+        iconSource: General.image_path + "dex-tray-icon.png"
         onMessageClicked: {
             if(notifications_list.length > 0)
                 performNotificationAction(notifications_list[0])
