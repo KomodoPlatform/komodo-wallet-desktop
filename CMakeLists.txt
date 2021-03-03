@@ -81,7 +81,7 @@ add_subdirectory(vendor/antara-gaming_sdk/modules)
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/dex-logo.icns ICON dex-logo.icns)
+configure_icon_osx(cmake/install/macos/dex-logo.icns ICON dex-logo.icns)
 ##! End antara
 
 set(CMAKE_AUTOUIC ON)
@@ -265,7 +265,7 @@ target_include_directories(${PROJECT_NAME}_shared_deps
 
 ##! Main executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
-        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/dex.rc
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/windows/dex.rc
         main.cpp
         ##! QRC
         ${CMAKE_SOURCE_DIR}/qml.qrc
@@ -341,7 +341,7 @@ if (LINUX)
     get_target_property(exe_runtime_directory_at ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
-    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux"
             "dex.desktop"
             "dex.appdata.xml"
             "dex-logo-64.png"
@@ -350,7 +350,7 @@ if (LINUX)
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
-    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux"
             "dex.desktop"
             "dex.appdata.xml"
             "dex-logo-64.png"
@@ -359,7 +359,7 @@ if (LINUX)
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
-    set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
+    set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux")
     set(desktop_file "dex.desktop")
     set(appdata_file "dex.appdata.xml")
     set(app_icon "dex-logo-64.png")
@@ -368,7 +368,7 @@ if (LINUX)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/64x64/apps/${app_icon} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/default/64x64/apps/${app_icon} COPYONLY)
-    include(data/linux/dex_install.cmake)
+    include(cmake/install/linux/dex_install.cmake)
 endif ()
 
 if (WIN32)
@@ -402,13 +402,13 @@ if (WIN32)
             POST_BUILD
             COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
-    include(data/windows/dex_install.cmake)
+    include(cmake/install/windows/dex_install.cmake)
 endif ()
 
 if (APPLE)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_tests.app/Contents/Resources)
-    include(data/osx/dex_install.cmake)
+    include(cmake/install/macos/dex_install.cmake)
 endif ()
 
 if (WITH_HOTRELOAD)

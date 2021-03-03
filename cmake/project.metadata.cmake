@@ -36,8 +36,8 @@ macro(generate_dex_project_metafiles)
     configure_file(${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/config/config.xml.in ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/config/config.xml)
     configure_file(${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/meta/package.xml.in ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/meta/package.xml)
     if (UNIX AND NOT APPLE)
-        configure_file(${CMAKE_SOURCE_DIR}/data/linux/dex.appdata.xml.in ${CMAKE_SOURCE_DIR}/data/linux/dex.appdata.xml)
-        configure_file(${CMAKE_SOURCE_DIR}/data/linux/dex.desktop.in ${CMAKE_SOURCE_DIR}/data/linux/dex.desktop)
+        configure_file(${CMAKE_SOURCE_DIR}/cmake/install/linux/dex.appdata.xml.in ${CMAKE_SOURCE_DIR}/cmake/install/linux/dex.appdata.xml)
+        configure_file(${CMAKE_SOURCE_DIR}/cmake/install/linux/dex.desktop.in ${CMAKE_SOURCE_DIR}/cmake/install/linux/dex.desktop)
     endif ()
 
     # Configures logo
