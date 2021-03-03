@@ -71,8 +71,6 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 | Dependencies  | Version       | Description                                                                                                                                     | Categories          |
 |---------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
 | boost         | 1.75          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
-| zstd          | 1.4.4         | Zstandard - Fast real-time compression algorithm                                                                                                | Compression         |
-| zlib          | 1.2.11-6        | A massively spiffy yet delicately unobtrusive compression library.                                                                              | Compression         |
 | doctest       | 2.3.8         | The fastest feature-rich C++11/14/17/20 single-header testing framework                                                                         | Testing             |
 | fmt           | 7.1.0         | A modern formatting library                                                                                                                     | Formatting          |
 | nlohmann_json | 3.9.1         | JSON for Modern C++                                                                                                                             | Parsing             |

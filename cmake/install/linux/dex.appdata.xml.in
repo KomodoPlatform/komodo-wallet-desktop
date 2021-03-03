@@ -3,7 +3,7 @@
     <metadata_license>MIT</metadata_license>
     <project_license>MIT</project_license>
     <name>${DEX_DISPLAY_NAME}</name>
-    <summary>AtomicDEX Desktop GUI</summary>
+    <summary>atomic qt  gui desktop</summary>
     <description>
         <p>Written in c++17</p>
     </description>

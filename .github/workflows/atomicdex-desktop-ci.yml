@@ -45,10 +45,10 @@ jobs:
             qt: '5.15.2'
             type: 'release'
 
-          - name: osx-qt-5-15-2-dbg
-            os: macos-latest
-            qt: '5.15.2'
-            type: 'debug'
+          #- name: osx-qt-5-15-2-dbg
+          #  os: macos-latest
+          #  qt: '5.15.2'
+          #  type: 'debug'
 
     steps:
       - uses: actions/checkout@v2
@@ -60,19 +60,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-
-      #- name: setup rdp (Windows)
-      #  if: runner.os == 'Windows'
-      #  env:
-      #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      #  run: |
-      #    Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
-      #    Expand-Archive ngrok.zip
-      #    .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
-      #    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
-      #    Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-      #    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-      #    Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
@@ -158,13 +145,12 @@ jobs:
           echo "CXX=clang++-11" >> $GITHUB_ENV
           echo "CC=clang-11" >> $GITHUB_ENV
 
-      - name: vcpkg deps (Linux)
-        if: runner.os == 'Linux'
-        uses: KomodoPlatform/run-vcpkg@v5
+      - name: vcpkg deps (All)
+        uses: KomodoPlatform/run-vcpkg@v7
         with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/linux_response_file.txt') }}
+          setupOnly: true
+          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
 
       - name: Install deps (MacOS)
         if: runner.os == 'macOS'
@@ -176,22 +162,6 @@ jobs:
         run: |
           echo "CXX=/usr/local/opt/llvm@9/bin/clang++" >> $GITHUB_ENV
           echo "CC=/usr/local/opt/llvm@9/bin/clang" >> $GITHUB_ENV
-
-      - name: vcpkg deps (MacOS)
-        if: runner.os == 'macOS'
-        uses: KomodoPlatform/run-vcpkg@v5
-        with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
-          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
-
-      - name: vcpkg deps (Windows)
-        if: runner.os == 'Windows'
-        uses: KomodoPlatform/run-vcpkg@v5
-        with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
-          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
 
       - name: Build AtomicDEX (Linux)
         if: runner.os == 'Linux'
@@ -219,10 +189,6 @@ jobs:
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
-      #- name: launch rdp (Windows)
-      #  if: runner.os == 'Windows'
-      #  run: .\ngrok\ngrok.exe tcp 3389
-
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
         shell: powershell
@@ -232,7 +198,7 @@ jobs:
 
       - name: Running Tests (Linux)
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
@@ -256,7 +222,7 @@ jobs:
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS' &&  'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
@@ -275,7 +241,7 @@ jobs:
       - name: Running Tests (Windows)
         shell: powershell
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
           echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
