@@ -45,10 +45,10 @@ jobs:
             qt: '5.15.2'
             type: 'release'
 
-          - name: osx-qt-5-15-2-dbg
-            os: macos-latest
-            qt: '5.15.2'
-            type: 'debug'
+          #- name: osx-qt-5-15-2-dbg
+          #  os: macos-latest
+          #  qt: '5.15.2'
+          #  type: 'debug'
 
     steps:
       - uses: actions/checkout@v2
@@ -146,10 +146,8 @@ jobs:
           echo "CC=clang-11" >> $GITHUB_ENV
 
       - name: vcpkg deps (All)
-        #if: runner.os == 'Linux'
         uses: KomodoPlatform/run-vcpkg@v7
         with:
-          #vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           setupOnly: true
           appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
@@ -164,22 +162,6 @@ jobs:
         run: |
           echo "CXX=/usr/local/opt/llvm@9/bin/clang++" >> $GITHUB_ENV
           echo "CC=/usr/local/opt/llvm@9/bin/clang" >> $GITHUB_ENV
-
-      #- name: vcpkg deps (MacOS)
-      #  if: runner.os == 'macOS'
-      #  uses: KomodoPlatform/run-vcpkg@v5
-      #  with:
-      #    vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
-      #    vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-      #    appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
-
-      #- name: vcpkg deps (Windows)
-      #  if: runner.os == 'Windows'
-      #  uses: KomodoPlatform/run-vcpkg@v5
-      #  with:
-      #    vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
-      #    vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-      #    appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
 
       - name: Build AtomicDEX (Linux)
         if: runner.os == 'Linux'
@@ -206,10 +188,6 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
-
-      #- name: launch rdp (Windows)
-      #  if: runner.os == 'Windows'
-      #  run: .\ngrok\ngrok.exe tcp 3389
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'

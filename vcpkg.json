@@ -8,6 +8,7 @@
     "boost-thread",
     "boost-random",
     "boost-lockfree",
+    "boost-stacktrace",
     "doctest",
     "fmt",
     "nlohmann-json",
