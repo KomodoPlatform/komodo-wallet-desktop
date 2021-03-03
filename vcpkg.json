@@ -27,6 +27,6 @@
       "platform": "!windows"
     },
     "cpprestsdk",
-    "cpp-taskflow"
+    "taskflow"
   ]
 }
