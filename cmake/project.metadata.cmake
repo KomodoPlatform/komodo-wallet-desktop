@@ -53,4 +53,12 @@ macro(generate_dex_project_metafiles)
     configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-sidebar.png ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-sidebar.png COPYONLY)           # Configures application fronted sidebar logo
     configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-sidebar-dark.png ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-sidebar-dark.png COPYONLY) # Configures application fronted sidebar logo
     configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-tray-icon.png ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-tray-icon.png COPYONLY)                 # Configures application fronted tray icon logo
+    if (APPLE)
+        configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.icns ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/config/install_icon.icns COPYONLY)               # Configures MacOS logo for the installer
+        configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.png ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/config/install_icon.png COPYONLY)                 # Configures MacOS logo for the installer
+    endif ()
+    if (WIN32)
+        configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.ico ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/config/install_icon.ico COPYONLY)             # Configures Windows logo for the installer
+        configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.png ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/config/install_icon.png COPYONLY)             # Configures Windows logo for the installer
+    endif()
 endmacro()
