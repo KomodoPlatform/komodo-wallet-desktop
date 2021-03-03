@@ -1,7 +1,7 @@
 if (APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
             MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
-            RESOURCE data/osx/dex-logo.icns
+            RESOURCE cmake/install/macos/dex-logo.icns
             MACOSX_BUNDLE_ICON_FILE dex-logo.icns
             MACOSX_BUNDLE_SHORT_VERSION_STRING 0.0.1
             MACOSX_BUNDLE_LONG_VERSION_STRING 0.0.1
@@ -17,5 +17,5 @@ macro(finalize_bundling)
 endmacro()
 
 if (APPLE)
-    install(SCRIPT ${CMAKE_SOURCE_DIR}/data/osx/osx_post_install.cmake)
+    install(SCRIPT ${CMAKE_SOURCE_DIR}/cmake/install/macos/osx_post_install.cmake)
 endif ()
