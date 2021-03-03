@@ -20,12 +20,9 @@
       "features": [
         "remote-api"
       ],
-      "platform": "(windows)"
+      "platform": "windows"
     },
-    {
-      "name": "date",
-      "platform": "!windows"
-    },
+    "date",
     "cpprestsdk",
     "taskflow"
   ]
