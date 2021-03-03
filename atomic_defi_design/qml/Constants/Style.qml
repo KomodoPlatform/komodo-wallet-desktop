@@ -89,7 +89,7 @@ QtObject {
     readonly property string colorQtThemeForeground: colorWhite1
     readonly property string colorQtThemeBackground: colorTheme9
 
-    readonly property string sidebar_atomicdex_logo: dark_theme ? "dex-logo.svg" : "dex-logo-dark.svg"
+    readonly property string sidebar_atomicdex_logo: dark_theme ? "dex-logo-sidebar.png" : "dex-logo-sidebar-dark.png"
     readonly property string colorRed: dark_theme ? "#D13990" : "#9a1165" // Light is 15% darker than Red2, same with the green set
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
     readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#D13990"

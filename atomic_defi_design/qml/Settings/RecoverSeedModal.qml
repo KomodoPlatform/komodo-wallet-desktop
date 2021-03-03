@@ -127,7 +127,7 @@ BasicModal {
 
                 DefaultImage {
                     Layout.leftMargin: 10
-                    source: General.image_path + "dex-logo.svg"
+                    source: General.image_path + "dex-logo-sidebar.png"
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: 32
                 }
