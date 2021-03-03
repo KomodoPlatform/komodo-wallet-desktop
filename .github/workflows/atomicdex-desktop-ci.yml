@@ -232,7 +232,7 @@ jobs:
 
       - name: Running Tests (Linux)
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Linux' && github.event.pull_request.head.repo.full_name == github.repository
+        if: runner.os == 'Linux' && "KomodoPlatform/atomicDEX-Desktop" == github.repository
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
@@ -256,7 +256,7 @@ jobs:
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'macOS' &&  github.event.pull_request.head.repo.full_name == github.repository
+        if: runner.os == 'macOS' &&  "KomodoPlatform/atomicDEX-Desktop" == github.repository
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
@@ -275,7 +275,7 @@ jobs:
       - name: Running Tests (Windows)
         shell: powershell
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Windows' && github.event.pull_request.head.repo.full_name == github.repository
+        if: runner.os == 'Windows' && "KomodoPlatform/atomicDEX-Desktop" == github.repository
         run: |
           echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
