@@ -14,14 +14,21 @@ import "../" as OtherPage
 import "../../Components"
 import "../../Constants"
 import "../../Wallet"
+
+// Trade Form / Component import
 import "TradeBox/"
+import "Trading/"
+import "Trading/Items/"
+
+// OrderBook / Component import
+import "OrderBook/"
 
 import "./" as Here
 
 Item {
     id: exchange_trade
     readonly property string total_amount: API.app.trading_pg.total_amount
-    //property var form_base: sell_mode? sellBox.formBase : buyBox.formBase
+    //property var form_base: sell_mode? form_base.formBase : buyBox.formBase
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
         onOpened()
@@ -275,8 +282,6 @@ Item {
 
                     RowLayout {
                         id: selectors
-                        width: parent.width
-                        height: 80
                         spacing: 20
                         SplitView.maximumHeight: 80
                         SplitView.minimumHeight: 75
@@ -291,7 +296,6 @@ Item {
                             Layout.fillWidth: true
                         }
 
-                        // Swap button
                         SwapIcon {
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                             Layout.preferredHeight: selector_left.height * 0.65
@@ -341,7 +345,7 @@ Item {
                         width: parent.width
 
                         clip: true
-                        OrderBookHorizontal {
+                        OrderbookHorizontal {
                             anchors.topMargin: 40
                             anchors.fill: parent
                             visible: parent.visible
@@ -452,32 +456,74 @@ Item {
 
                 }
             }
-            Item {
-                id: forms
-                visible: false
-                SplitView.preferredWidth: 250
-                SplitView.minimumWidth: 200
-                SplitView.fillHeight: true
 
-            }
             ItemBox {
+                SplitView.minimumWidth: 0
+                SplitView.maximumWidth: 350
                 SplitView.fillHeight: true
-                defaultWidth: isUltraLarge? 350 : 0
-                minimumWidth: 350
-                maximumWidth: 350
-                clip: true
-                title: "OrderBook"
+                title: "OrderBook & Best Orders"
+                color: 'transparent'
+                closable: false
                 visible: isUltraLarge
-                Behavior on SplitView.preferredWidth {
-                    NumberAnimation {
-                        duration: 100
-                    }
-                }
-                OrderBookVertical {
-                    visible: parent.contentVisible
+                SplitView {
                     anchors.topMargin: 40
                     anchors.fill: parent
+                    orientation: Qt.Vertical
+                    handle: Item {
+                        implicitWidth: 10
+                        implicitHeight: 10
+                        InnerBackground {
+                            implicitWidth: 16
+                            implicitHeight: 6
+                            anchors.centerIn: parent
+                            opacity: .4
+                        }
+                    }
+                    Item {
+                        SplitView.minimumHeight: 1
+                        SplitView.maximumHeight: 1
+                        SplitView.fillWidth: true
+                    }
+                    ItemBox {
+                        SplitView.fillWidth: true
+                        //defaultWidth: isUltraLarge? 350 : 0
+                        clip: true
+                        title: "OrderBook"
+
+                        Behavior on SplitView.preferredWidth {
+                            NumberAnimation {
+                                duration: 100
+                            }
+                        }
+                        OrderbookVertical {
+                            visible: parent.contentVisible
+                            anchors.topMargin: 40
+                            anchors.fill: parent
+                        }
+                    }
+                    ItemBox {
+                        SplitView.fillWidth: true
+                        //defaultWidth: isUltraLarge? 350 : 0
+                        SplitView.fillHeight: true
+                        defaultHeight: 300
+                        clip: true
+                        title: "Best Orders"
+                        Behavior on SplitView.preferredWidth {
+                            NumberAnimation {
+                                duration: 100
+                            }
+                        }
+                        OrderbookVertical {
+                            visible: parent.contentVisible
+                            anchors.topMargin: 40
+                            anchors.fill: parent
+                        }
+                    }
                 }
+
+
+
+
             }
 
             ItemBox {
@@ -509,70 +555,8 @@ Item {
                         hideHeader: true
                         clip: true
                         visible: true
-                        Item {
-                            anchors.fill: parent
-                            anchors.topMargin: 0
-                            Item {
-                                width: parent.width
-                                height: 80
-                                Column {
-                                    width: parent.width-60
-                                    anchors.centerIn: parent
-                                    spacing: 0
-                                    RowLayout {
-                                        width: parent.width
-                                        DefaultText {
-                                            color: Style.colorWhite1
-                                            text: "TOTAL USD "+General.cex_icon
-                                            font.pixelSize:  Style.textSizeSmall5
-                                            Layout.preferredWidth: 90
-                                            font.weight: Font.Light
-                                            CexInfoTrigger {}
-                                        }
-                                        Item {
-                                            height: 40
-                                            Layout.fillWidth: true
-                                            DefaultText {
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                anchors.right: parent.right
-                                                anchors.rightMargin: 10
-                                                font.weight: Font.Light
-                                                font.pixelSize: Style.textSizeSmall4
-                                                text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon,"")
+                        TotalView {
 
-                                            }
-                                        }
-                                    }
-                                    HorizontalLine {
-                                        width: parent.width-50
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-
-                                    RowLayout {
-                                        width: parent.width
-                                        DefaultText {
-                                            color: Style.colorWhite1
-                                            text: "TOTAL "+right_ticker
-                                            font.pixelSize:  Style.textSizeSmall5
-                                            Layout.preferredWidth: 90
-                                            font.weight: Font.Light
-
-                                        }
-                                        Item {
-                                            height: 40
-                                            Layout.fillWidth: true
-                                            DefaultText {
-                                                text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker,"")
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                anchors.right: parent.right
-                                                anchors.rightMargin: 10
-                                                font.weight: Font.Light
-                                                font.pixelSize: Style.textSizeSmall4
-                                            }
-                                        }
-                                    }
-                                }
-                            }
                         }
                     }
                     Item {
@@ -683,44 +667,9 @@ Item {
                                     anchors.fill: parent
                                     anchors.leftMargin: 5
                                     anchors.rightMargin: 5
-                                    Column {
+                                    FeeInfo {
                                         id: bg
-                                        width: parent.width
-
-                                        Row {
-                                            width: bg.width
-                                            height: tx_fee_text.implicitHeight+25
-
-                                            ColumnLayout {
-                                                id: fees
-                                                visible: valid_fee_info && !General.isZero(non_null_volume)
-
-                                                Layout.leftMargin: 10
-                                                Layout.rightMargin: Layout.leftMargin
-                                                Layout.alignment: Qt.AlignLeft
-
-                                                DefaultText {
-                                                    id: tx_fee_text
-                                                    text_value: General.feeText(curr_fee_info, base_ticker, true, true)
-                                                    font.pixelSize: Style.textSizeSmall1
-                                                    width: parent.width
-                                                    wrapMode: Text.Wrap
-                                                    CexInfoTrigger {}
-                                                }
-                                            }
-
-
-                                            DefaultText {
-                                                visible: !fees.visible
-
-                                                text_value: !visible ? "" :
-                                                            last_trading_error === TradingError.BalanceIsLessThanTheMinimalTradingAmount
-                                                                       ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(form_base.getMaxBalance()) - parseFloat(form_base.getMaxVolume())), base_ticker))
-                                                                       : qsTr('Fees will be calculated')
-                                                Layout.alignment: Qt.AlignCenter
-                                                font.pixelSize: tx_fee_text.font.pixelSize
-                                            }
-                                        }
+                                        visible: false
                                     }
                                     spacing: 15
 
@@ -733,7 +682,7 @@ Item {
 
                                         text: qsTr("Start Swap")
                                         font.weight: Font.Medium
-                                        enabled: !multi_order_enabled && sellBox.can_submit_trade
+                                        enabled: !multi_order_enabled && form_base.can_submit_trade
                                         onClicked: confirm_trade_modal.open()
                                     }
 
@@ -751,6 +700,8 @@ Item {
                                         DefaultText {
                                             id: errors
                                             anchors.horizontalCenter: parent.horizontalCenter
+                                            width: parent.width
+                                            horizontalAlignment: DefaultText.AlignHCenter
                                             font.pixelSize: Style.textSizeSmall4
                                             color: Style.colorRed
 
@@ -787,7 +738,7 @@ Item {
                                         Layout.fillWidth: true
 
                                         text: qsTr("Multi-Order")
-                                        enabled: !block_everything && (sellBox.can_submit_trade || checked)
+                                        enabled: !block_everything && (form_base.can_submit_trade || checked)
 
                                         checked: API.app.trading_pg.multi_order_enabled
                                         onCheckedChanged: {
@@ -818,7 +769,7 @@ Item {
                                         text: qsTr("Submit Trade")
                                         width: parent.width-10
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        enabled: multi_order_enabled && sellBox.can_submit_trade
+                                        enabled: multi_order_enabled && form_base.can_submit_trade
                                         onClicked: {
                                             multi_order_values_are_valid = true
                                             prepareMultiOrder()
@@ -875,52 +826,7 @@ Item {
         }
     }
 
-    Item {
+    TradeViewHeader {
         y: -20
-        height: 25
-        visible: true
-
-        width: parent.width+10
-        RowLayout {
-            width: parent.width-20
-            anchors.fill: parent
-            anchors.rightMargin: 20
-            DefaultText {
-                leftPadding: 20
-                topPadding: 5
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                font.family: 'Ubuntu'
-                font.pixelSize: 20
-                font.weight: Font.Light
-                color: Style.colorWhite2
-                text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
-            }
-            Qaterial.AppBarButton {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.topMargin: 6
-                icon.source: Qaterial.Icons.cog
-                onClicked: p.open()
-            }
-            VerticalLine {
-                Layout.fillHeight: true
-            }
-
-            Qaterial.LatoTabBar {
-                Layout.alignment: Qt.AlignVCenter
-                Qaterial.LatoTabButton {
-                    text: qsTr("Pro-Mode")
-                    textColor: Style.colorWhite2
-                    textSecondaryColor: Style.colorWhite8
-                }
-                Qaterial.LatoTabButton {
-                    text: qsTr("Starter")
-                    textSecondaryColor: Style.colorWhite8
-                    textColor: Style.colorWhite2
-                    ToolTip.text: "(Under Work)"
-
-                }
-            }
-        }
     }
 }

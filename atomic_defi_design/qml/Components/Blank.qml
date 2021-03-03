@@ -59,6 +59,31 @@ Item {
                 ItemBox {
                     title: "Orders & History Box"
                     defaultHeight: 200
+                    Flickable
+                    {
+                        anchors.fill: parent
+                        anchors.margins: 5
+                        contentHeight: flow.height
+
+                        Flow
+                        {
+                            id: flow
+                            width: parent.width
+                            height: 800
+                            spacing: 10
+                            flow: Flow.TopToBottom
+                            Repeater
+                            {
+                                model: 10
+                                Rectangle
+                                {
+                                    height: index%2==0? 120: 80
+                                    width: 100
+                                    border.color: "black"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -32,8 +32,10 @@ Item {
     Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
 
     function inCurrentPage() {
+
         return  dashboard.inCurrentPage() &&
                 dashboard.current_page === idx_dashboard_exchange
+
     }
 
     function openTradeView(ticker) {
@@ -53,87 +55,11 @@ Item {
 
         spacing: layout_margin
 
-        // Top tabs
-        FloatingBackground {
-            id: balance_box
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            Layout.fillWidth: true
-            Layout.topMargin: layout_margin
-            Layout.rightMargin: layout_margin
-            visible: false
-
-            content: Item {
-                id: content
-                width: balance_box.width
-                height: 62
-
-                RowLayout {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    spacing: 30
-
-                    ExchangeTab {
-                        dashboard_index: idx_exchange_trade
-                        text_value: qsTr("Trade")
-                    }
-
-                    VerticalLineBasic {
-                        id: vline
-                        height: content.height * 0.5
-                        color: Style.colorTheme5
-                    }
-//                    ExchangeTab {
-//                        dashboard_index: idx_exchange_trade_v2
-//                        text_value: qsTr("Trade V2")
-//                    }
-
-//                    VerticalLineBasic {
-//                        height: content.height * 0.5
-//                        color: Style.colorTheme5
-//                    }
-
-                    ExchangeTab {
-                        dashboard_index: idx_exchange_orders
-                        text_value: qsTr("Orders")
-                    }
-
-                    VerticalLineBasic {
-                        height: vline.height
-                        color: vline.color
-                    }
-
-                    ExchangeTab {
-                        dashboard_index: idx_exchange_history
-                        text_value: qsTr("History")
-                    }
-                }
-            }
-        }
-
-        // Bottom content
-//        Component {
-//            id: exchange_trade
-
-//            Trade {}
-//        }
         Component {
             id: exchange_trade
 
             Trade201 {}
         }
-
-//        Component {
-//            id: exchange_orders
-
-//            Orders {}
-//        }
-
-//        Component {
-//            id: exchange_history
-
-//            History {}
-//        }
 
         DefaultLoader {
             id: loader
@@ -143,13 +69,7 @@ Item {
             Layout.bottomMargin: layout_margin
             Layout.rightMargin: Layout.bottomMargin
 
-            sourceComponent: {
-                switch(current_page) {
-                case idx_exchange_trade: return exchange_trade
-
-                default: return undefined
-                }
-            }
+            sourceComponent: exchange_trade
         }
 
         Item {

@@ -27,7 +27,6 @@ InnerBackground {
     property bool isVertical: _control.parent.parent.orientation === Qt.Vertical
     shadowOff: true
     color: Constants.Style.colorTheme9
-    border.color: color//Constants.Style.colorTheme99
     property alias titleLabel: _texto
 
     onExpandedVertChanged: {

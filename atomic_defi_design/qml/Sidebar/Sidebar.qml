@@ -9,10 +9,17 @@ import "../Components"
 
 Item {
     id: sidebar
+    property bool expanded: dashboard.current_page===dashboard.idx_dashboard_exchange? false : true
     readonly property alias app_logo: app_logo
 
     x: -top_rect.radius
-    width: 200 - x
+    width: expanded? 200 - x : 80 - x
+    Behavior on width {
+        SmoothedAnimation {
+            duration: 200
+        }
+    }
+
     height: parent.height
 
     // Cursor

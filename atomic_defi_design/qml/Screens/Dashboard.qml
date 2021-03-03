@@ -48,6 +48,7 @@ Item {
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
 
+
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
 
     function inCurrentPage() {
