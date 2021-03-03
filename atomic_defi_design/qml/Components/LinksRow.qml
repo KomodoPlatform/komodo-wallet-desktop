@@ -1,31 +1,38 @@
+// Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import "../Constants"
+
+// Project Imports
+import "../Constants" //> API
 
 RowLayout {
     spacing: 10
 
     LinkIcon {
+        enabled: API.app_discord_url !== ""
+        visible: enabled
+
         id: discord_icon
-        link: "https://komodoplatform.com/discord"
+        link: API.app_discord_url
         source: General.image_path + "icon-discord.png"
-        text: qsTr("Join the Komodo Discord server")
+        text: qsTr("Join our Discord server")
     }
 
     LinkIcon {
-        link: "https://twitter.com/AtomicDEX"
+        enabled: API.app_twitter_url !== ""
+        visible: enabled
+
+        link: API.app_twitter_url
         source: General.image_path + "icon-twitter.png"
-        text: qsTr("Follow @atomicdex on Twitter")
+        text: qsTr("Follow us on Twitter")
     }
 
     LinkIcon {
-        link: "https://support.komodoplatform.com/support/home"
-        source: General.image_path + "icon-support.png"
-        text: qsTr("Go to Komodo Support Guides")
-    }
+        enabled: API.app_support_url !== ""
+        visible: enabled
 
-//                    LinkIcon {
-//                        link: "mailto:support@komodoplatform.com"
-//                        source: General.image_path + "icon-email.png"
-//                    }
+        link: API.app_support_url
+        source: General.image_path + "icon-support.png"
+        text: qsTr("Go to Support Guides")
+    }
 }

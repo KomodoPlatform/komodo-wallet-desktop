@@ -329,6 +329,10 @@ run_app(int argc, char** argv)
 
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     engine.rootContext()->setContextProperty("atomic_app_name", QString{DEX_NAME});
+    engine.rootContext()->setContextProperty("atomic_app_website_url", QString{DEX_WEBSITE_URL});
+    engine.rootContext()->setContextProperty("atomic_app_support_url", QString{DEX_SUPPORT_URL});
+    engine.rootContext()->setContextProperty("atomic_app_discord_url", QString{DEX_DISCORD_URL});
+    engine.rootContext()->setContextProperty("atomic_app_twitter_url", QString{DEX_TWITTER_URL});
     engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
     engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
@@ -344,7 +348,7 @@ run_app(int argc, char** argv)
     qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
 
 #if defined(ATOMICDEX_HOT_RELOAD)
-    engine.rootContext()->setContextProperty("debug_bar", true);
+    engine.rootContext()->setContextProperty("debug_bar", QVariant(true));
     engine.addImportPath("qrc:/");
     installLoggers();
     qaterial::registerQmlTypes();
@@ -354,7 +358,7 @@ run_app(int argc, char** argv)
     if (engine.rootObjects().isEmpty())
         return -1;
 #else
-    engine.rootContext()->setContextProperty("debug_bar", false);
+    engine.rootContext()->setContextProperty("debug_bar", QVariant(false));
     const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),

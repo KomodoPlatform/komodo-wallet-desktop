@@ -18,7 +18,6 @@ include(cmake_default_options)
 include(ipo_prerequisites)
 
 ##! Options
-option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 
@@ -58,18 +57,18 @@ FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/ar
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
-FetchContent_Declare(adex-generics-coins
-        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
+#FetchContent_Declare(adex-generics-coins
+#        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins qmaterial adex-generics-coins)
+FetchContent_MakeAvailable(mm2 jl777-coins qmaterial)
 
 ##! Configure our needs.
 if (UNIX)
-    configure_file(${adex-generics-coins_SOURCE_DIR}/config/${PROJECT_VERSION}-coins.json ${CMAKE_CURRENT_SOURCE_DIR}/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
+    configure_file(assets/config/${PROJECT_VERSION}-coins.json ${CMAKE_CURRENT_SOURCE_DIR}/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/mm2 COPYONLY)
 else ()
-    configure_file(${adex-generics-coins_SOURCE_DIR}/config/${PROJECT_VERSION}-coins.json ${CMAKE_BINARY_DIR}/bin/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
+    configure_file(assets/config/${PROJECT_VERSION}-coins.json ${CMAKE_BINARY_DIR}/bin/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/msvcp140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/msvcp140.dll COPYONLY)
@@ -81,7 +80,7 @@ add_subdirectory(vendor/antara-gaming_sdk/modules)
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/dex-logo.icns ICON dex-logo.icns)
+configure_icon_osx(cmake/install/macos/dex-logo.icns ICON dex-logo.icns)
 ##! End antara
 
 set(CMAKE_AUTOUIC ON)
@@ -212,6 +211,10 @@ target_compile_definitions(${PROJECT_NAME}_shared_deps
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
         DEX_NAME="${DEX_DISPLAY_NAME}"
+        DEX_WEBSITE_URL="${DEX_WEBSITE}"
+        DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}"
+        DEX_DISCORD_URL="${DEX_DISCORD}"
+        DEX_TWITTER_URL="${DEX_TWITTER}"
         PRIVATE
         ENTT_API_EXPORT
         )
@@ -265,7 +268,7 @@ target_include_directories(${PROJECT_NAME}_shared_deps
 
 ##! Main executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
-        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/dex.rc
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/windows/dex.rc
         main.cpp
         ##! QRC
         ${CMAKE_SOURCE_DIR}/qml.qrc
@@ -341,7 +344,7 @@ if (LINUX)
     get_target_property(exe_runtime_directory_at ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
-    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux"
             "dex.desktop"
             "dex.appdata.xml"
             "dex-logo-64.png"
@@ -350,7 +353,7 @@ if (LINUX)
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
-    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux"
             "dex.desktop"
             "dex.appdata.xml"
             "dex-logo-64.png"
@@ -359,7 +362,7 @@ if (LINUX)
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
-    set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
+    set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux")
     set(desktop_file "dex.desktop")
     set(appdata_file "dex.appdata.xml")
     set(app_icon "dex-logo-64.png")
@@ -368,7 +371,7 @@ if (LINUX)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/64x64/apps/${app_icon} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/default/64x64/apps/${app_icon} COPYONLY)
-    include(data/linux/dex_install.cmake)
+    include(cmake/install/linux/dex_install.cmake)
 endif ()
 
 if (WIN32)
@@ -402,13 +405,13 @@ if (WIN32)
             POST_BUILD
             COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
-    include(data/windows/dex_install.cmake)
+    include(cmake/install/windows/dex_install.cmake)
 endif ()
 
 if (APPLE)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_tests.app/Contents/Resources)
-    include(data/osx/dex_install.cmake)
+    include(cmake/install/macos/dex_install.cmake)
 endif ()
 
 if (WITH_HOTRELOAD)
