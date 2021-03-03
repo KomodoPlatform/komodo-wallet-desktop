@@ -17,7 +17,9 @@
     "spdlog",
     {
       "name": "date",
-      "features": [ "remote-api" ]
+      "features": [
+        "remote-api"
+      ]
     },
     "cpprestsdk",
     "cpp-taskflow"
