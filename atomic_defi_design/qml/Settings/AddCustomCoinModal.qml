@@ -25,10 +25,10 @@ BasicModal {
         const fields = General.clone(config_fields)
         console.log("Fetching asset data:", JSON.stringify(fields))
         if(fields.type === "ERC-20") {
-            API.app.settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
+            API.app.settings_pg.process_erc_20_token_add(fields.contract_address, fields.coingecko_id, fields.image_path)
         }
         else if(fields.type === "QRC-20") {
-            API.app.settings_pg.process_qrc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
+            API.app.settings_pg.process_qrc_20_token_add(fields.contract_address, fields.coingecko_id, fields.image_path)
         }
     }
 
@@ -60,7 +60,7 @@ BasicModal {
         addToConfig(input_name,             "name",             input_name.field.text)
         addToConfig(input_contract_address, "contract_address", input_contract_address.field.text)
         addToConfig(input_active,           "active",           input_active.checked)
-        addToConfig(input_coinpaprika_id,   "coinpaprika_id",   input_coinpaprika_id.field.text)
+        addToConfig(input_coingecko_id,   "coingecko_id",   input_coingecko_id.field.text)
 
         root.config_fields = General.clone(fields)
     }
@@ -72,7 +72,7 @@ BasicModal {
         input_name.field.text = ""
         input_contract_address.field.text = ""
         input_active.checked = false
-        input_coinpaprika_id.field.text = "test-coin"
+        input_coingecko_id.field.text = "test-coin"
     }
 
     readonly property bool is_erc20: input_type.currentText === "ERC-20"
@@ -248,25 +248,25 @@ BasicModal {
         }
 
         TextFieldWithTitle {
-            id: input_coinpaprika_id
+            id: input_coingecko_id
             Layout.fillWidth: true
-            title: qsTr("Coinpaprika ID")
-            field.placeholderText: qsTr("Enter the Coinpaprika ID")
+            title: qsTr("Coingecko ID")
+            field.placeholderText: qsTr("Enter the Coingecko ID")
         }
 
         DefaultText {
-            visible: input_coinpaprika_id.visible
+            visible: input_coingecko_id.visible
             Layout.fillWidth: true
-            text_value: General.cex_icon + ' <a href="https://coinpaprika.com/">' + qsTr('Get the Coinpaprika ID') + '</a>'
+            text_value: General.cex_icon + ' <a href="https://coingecko.com/">' + qsTr('Get the Coingecko ID') + '</a>'
         }
 
         InnerBackground {
             Layout.alignment: Qt.AlignHCenter
             content: DefaultAnimatedImage {
-                id: guide_coinpaprika_id
-                visible: input_coinpaprika_id.visible
+                id: guide_coingecko_id
+                visible: input_coingecko_id.visible
                 playing: root.visible && visible
-                source: General.image_path + "guide_coinpaprika_id.gif"
+                source: General.image_path + "guide_coingecko_id.gif"
             }
         }
 
@@ -295,7 +295,7 @@ BasicModal {
                 Layout.fillWidth: true
                 enabled: !root.fetching_custom_token_data_busy &&
                          (!input_name.enabled || input_name.field.text !== "") &&
-                         (!input_coinpaprika_id.enabled || input_coinpaprika_id.field.text !== "")
+                         (!input_coingecko_id.enabled || input_coingecko_id.field.text !== "")
                 onClicked: {
                     root.prepareConfigs()
                     root.fetchAssetData()

@@ -276,12 +276,12 @@ namespace atomic_dex
     }
 
     void
-    settings_page::process_qrc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath)
+    settings_page::process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath)
     {
         this->set_fetching_custom_token_data_busy(true);
         using namespace std::string_literals;
         std::string url            = "/contract/"s + contract_address.toStdString();
-        auto        answer_functor = [this, contract_address, coinpaprika_id, icon_filepath](web::http::http_response resp) {
+        auto        answer_functor = [this, contract_address, coingecko_id, icon_filepath](web::http::http_response resp) {
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
             out["mm2_cfg"]      = nlohmann::json::object();
@@ -330,7 +330,7 @@ namespace atomic_dex
                     out["adex_cfg"][adex_ticker]["coin"]              = adex_ticker;
                     out["adex_cfg"][adex_ticker]["gui_coin"]          = ticker;
                     out["adex_cfg"][adex_ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
-                    out["adex_cfg"][adex_ticker]["coinpaprika_id"]    = coinpaprika_id.toStdString();
+                    out["adex_cfg"][adex_ticker]["coingecko_id"]      = coingecko_id.toStdString();
                     out["adex_cfg"][adex_ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
                     out["adex_cfg"][adex_ticker]["type"]              = "QRC-20";
                     out["adex_cfg"][adex_ticker]["active"]            = false;
@@ -364,12 +364,12 @@ namespace atomic_dex
     }
 
     void
-    settings_page::process_erc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath)
+    settings_page::process_erc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath)
     {
         this->set_fetching_custom_token_data_busy(true);
         using namespace std::string_literals;
         std::string url            = "/api/v1/erc_infos/"s + contract_address.toStdString();
-        auto        answer_functor = [this, contract_address, coinpaprika_id, icon_filepath](web::http::http_response resp) {
+        auto        answer_functor = [this, contract_address, coingecko_id, icon_filepath](web::http::http_response resp) {
             //! Extract answer
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
@@ -404,10 +404,10 @@ namespace atomic_dex
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
                     //!
-                    out["adex_cfg"][ticker]                   = nlohmann::json::object();
-                    out["adex_cfg"][ticker]["coin"]           = ticker;
-                    out["adex_cfg"][ticker]["name"]           = name_lowercase;
-                    out["adex_cfg"][ticker]["coinpaprika_id"] = coinpaprika_id.toStdString();
+                    out["adex_cfg"][ticker]                 = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["coin"]         = ticker;
+                    out["adex_cfg"][ticker]["name"]         = name_lowercase;
+                    out["adex_cfg"][ticker]["coingecko_id"] = coingecko_id.toStdString();
                     out["adex_cfg"][ticker]["eth_nodes"] =
                         nlohmann::json::array({"http://eth1.cipig.net:8555", "http://eth2.cipig.net:8555", "http://eth3.cipig.net:8555"});
                     out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://etherscan.io/"});
