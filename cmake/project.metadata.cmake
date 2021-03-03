@@ -3,6 +3,8 @@ set(DEX_PROJECT_NAME "atomicdex-desktop")
 set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
 set(DEX_COMPANY "KomodoPlatform")
 set(DEX_WEBSITE "https://atomicdex.io/")
+option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+
 if (UNIX AND NOT APPLE)
     set(DEX_LINUX_APP_ID "dex.desktop")
 endif ()

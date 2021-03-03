@@ -18,7 +18,6 @@ include(cmake_default_options)
 include(ipo_prerequisites)
 
 ##! Options
-option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 
