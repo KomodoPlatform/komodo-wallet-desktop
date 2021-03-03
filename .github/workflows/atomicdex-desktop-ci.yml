@@ -145,13 +145,14 @@ jobs:
           echo "CXX=clang++-11" >> $GITHUB_ENV
           echo "CC=clang-11" >> $GITHUB_ENV
 
-      - name: vcpkg deps (Linux)
-        if: runner.os == 'Linux'
-        uses: KomodoPlatform/run-vcpkg@v5
+      - name: vcpkg deps (All)
+        #if: runner.os == 'Linux'
+        uses: KomodoPlatform/run-vcpkg@v7
         with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
+          #vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/linux_response_file.txt') }}
+          setupOnly: true
+          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
 
       - name: Install deps (MacOS)
         if: runner.os == 'macOS'
@@ -164,21 +165,21 @@ jobs:
           echo "CXX=/usr/local/opt/llvm@9/bin/clang++" >> $GITHUB_ENV
           echo "CC=/usr/local/opt/llvm@9/bin/clang" >> $GITHUB_ENV
 
-      - name: vcpkg deps (MacOS)
-        if: runner.os == 'macOS'
-        uses: KomodoPlatform/run-vcpkg@v5
-        with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
-          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
+      #- name: vcpkg deps (MacOS)
+      #  if: runner.os == 'macOS'
+      #  uses: KomodoPlatform/run-vcpkg@v5
+      #  with:
+      #    vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
+      #    vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+      #    appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
 
-      - name: vcpkg deps (Windows)
-        if: runner.os == 'Windows'
-        uses: KomodoPlatform/run-vcpkg@v5
-        with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
-          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
+      #- name: vcpkg deps (Windows)
+      #  if: runner.os == 'Windows'
+      #  uses: KomodoPlatform/run-vcpkg@v5
+      #  with:
+      #    vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
+      #    vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+      #    appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
 
       - name: Build AtomicDEX (Linux)
         if: runner.os == 'Linux'
