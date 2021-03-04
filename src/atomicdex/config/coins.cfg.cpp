@@ -45,7 +45,14 @@ namespace atomic_dex
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
-        j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
+        if (j.contains("coinpaprika_id"))
+        {
+            j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
+        }
+        else
+        {
+            cfg.coinpaprika_id = "test-coin";
+        }
         if (j.contains("coingecko_id"))
         {
             j.at("coingecko_id").get_to(cfg.coingecko_id);
