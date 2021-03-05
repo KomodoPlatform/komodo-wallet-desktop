@@ -139,30 +139,18 @@
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/API.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/_TradeV1.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/_OrderForm.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/_OrderbookSection.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/_Orderbook.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/FeeIcon.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/MultiOrder.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>
         <file>atomic_defi_design/qml/Exchange/Orders/Orders.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrderList.qml</file>
         <file>atomic_defi_design/qml/Exchange/History/History.qml</file>
         <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
-        <file>atomic_defi_design/qml/Exchange/ExchangeTab.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrdersPage.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrderList.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrderLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/SwapProgress.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrderModal.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrderContent.qml</file>
         <file>atomic_defi_design/qml/Sidebar/Sidebar.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarCenter.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarBottom.qml</file>
@@ -377,31 +365,39 @@
         <file>atomic_defi_design/assets/images/coins/vrm.png</file>
         <file>atomic_defi_design/assets/images/coins/wsb.png</file>
         <file>atomic_defi_design/assets/images/coins/zat.png</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/_TradeV2.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/_OrderBookHorizontal.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/__OrderBookVertical.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSubstractRectangle.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/SellBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/OrderForm.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/BuyBox.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrdersPage_backup.qml</file>
-        <file>atomic_defi_design/qml/Exchange/OrderLine_Backup.qml</file>
         <file>atomic_defi_design/qml/Components/LoaderBusyIndicator.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/_OrderbookHeader.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSweetComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/Blank.qml</file>
         <file>atomic_defi_design/qml/Components/ClipRRect.qml</file>
         <file>atomic_defi_design/qml/Components/ItemBox.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Trade201.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
         <file>atomic_defi_design/qml/Components/MinTradeModal.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultRangeSlider.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trading/TradeViewHeader.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trading/Items/TotalView.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trading/Items/FeeInfo.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/OrderBookDelegate.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/OrderBookListView.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/OrderbookHeader.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/OrderbookVertical.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/OrderbookHorizontal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/ListDelegate.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/List.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Header.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Vertical.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Horizontal.qml</file>
+        <file>atomic_defi_design/assets/images/logo/dex-logo-sidebar.png</file>
+        <file>atomic_defi_design/assets/images/logo/dex-logo-sidebar-dark.png</file>
+        <file>atomic_defi_design/assets/images/logo/minimal-dark.png</file>
+        <file>atomic_defi_design/assets/images/logo/minimal-light.png</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/List.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/Header.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/ListDelegate.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderContent.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderLine.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderList.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrdersPage.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
     </qresource>
 </RCC>

@@ -22,12 +22,12 @@ Item {
             ColumnLayout {
                 anchors.fill: parent
                 spacing: 5
-                OrderBookListView {
+                List {
                     isAsk: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
-                OrderBookListView {
+                List {
                     isAsk: false
                     Layout.fillHeight: true
                     Layout.fillWidth: true

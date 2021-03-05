@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Constants"
 import "../Components"
 
@@ -17,6 +19,10 @@ ColumnLayout {
         image: General.image_path + "menu-assets-portfolio.svg"
         Layout.fillWidth: true
         separator: false
+        SidebarTooltip {
+            text_value: qsTr("Dashboard")
+        }
+
     }
 
     SidebarLine {
@@ -24,6 +30,9 @@ ColumnLayout {
         text_value: sidebar.expanded? qsTr("Wallet") : ""
         image: General.image_path + "menu-assets-white.svg"
         Layout.fillWidth: true
+        SidebarTooltip {
+            text_value: qsTr("Wallet")
+        }
     }
 
     SidebarLine {
@@ -33,6 +42,9 @@ ColumnLayout {
         text_value: sidebar.expanded? qsTr("DEX") : ""
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true
+        SidebarTooltip {
+            text_value: qsTr("DEX")
+        }
 
         DefaultTooltip {
             visible: dex_line.mouse_area.containsMouse && !dex_line.section_enabled
@@ -51,6 +63,9 @@ ColumnLayout {
         text_value: sidebar.expanded? qsTr("Address Book") : ""
         image: General.image_path + "menu-news-white.svg"
         Layout.fillWidth: true
+        SidebarTooltip {
+            text_value: qsTr("Address Book")
+        }
     }
 
 //    SidebarLine {

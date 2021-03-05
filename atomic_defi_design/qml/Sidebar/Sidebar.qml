@@ -133,11 +133,12 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: General.image_path + Style.sidebar_atomicdex_logo
+            source: expanded? General.image_path + Style.sidebar_atomicdex_logo : "qrc:/atomic_defi_design/assets/images/logo/minimal-light.png"
             anchors.horizontalCenter: parent.horizontalCenter
-            y: parent.width * 0.25
+            y: expanded? parent.width * 0.25 : parent.width * 0.40
             transformOrigin: Item.Center
-            height: 85
+            height: expanded? 85 : 65
+            scale: expanded? 1 : .8
         }
 
         Separator {
@@ -150,7 +151,10 @@ Item {
             id: version_text
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
-            anchors.topMargin: parent.width * 0.85
+            anchors.topMargin: expanded? parent.width * 0.85 : parent.width * 1.4
+            width: parent.width-5
+            horizontalAlignment: DefaultText.AlignHCenter
+            wrapMode: DefaultText.Wrap
             text_value: General.version_string
             font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight

@@ -9,7 +9,7 @@ import "../../../Constants/"
 Item {
     id: _control
     property bool isAsk
-    OrderbookHeader {
+    Header {
         is_ask: isAsk
     }
 
@@ -25,7 +25,7 @@ Item {
             positionViewAtEnd()
         }
 
-        delegate: OrderBookDelegate {
+        delegate: ListDelegate {
             isAsk: _control.isAsk? true : false
         }
     }

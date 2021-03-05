@@ -22,12 +22,12 @@ Item {
         RowLayout {
             anchors.fill: parent
             spacing: 0
-            OrderBookListView {
+            List {
                 isAsk: false
                 Layout.fillHeight: true
                 Layout.fillWidth: true
             }
-            OrderBookListView {
+            List {
                 isAsk: true
                 Layout.fillHeight: true
                 Layout.fillWidth: true

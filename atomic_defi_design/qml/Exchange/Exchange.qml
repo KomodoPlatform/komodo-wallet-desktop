@@ -12,8 +12,6 @@ Item {
     id: exchange
     readonly property int layout_margin: 15
 
-    readonly property alias loader: loader
-    readonly property alias current_component: loader.item
     property int current_page: idx_exchange_trade
 
     readonly property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
@@ -31,21 +29,6 @@ Item {
 
     Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
 
-    function inCurrentPage() {
-
-        return  dashboard.inCurrentPage() &&
-                dashboard.current_page === idx_dashboard_exchange
-
-    }
-
-    function openTradeView(ticker) {
-        current_page = idx_exchange_trade
-
-        exchange.loader.onLoadComplete = () => {
-            exchange.current_component.onOpened(ticker)
-        }
-    }
-
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -55,34 +38,13 @@ Item {
 
         spacing: layout_margin
 
-        Component {
-            id: exchange_trade
-
-            Trade201 {}
-        }
-
-        DefaultLoader {
-            id: loader
-
+        Trade {
+            id: trade
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.bottomMargin: layout_margin
             Layout.rightMargin: Layout.bottomMargin
-
-            sourceComponent: exchange_trade
         }
 
-        Item {
-            visible: !loader.visible
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.bottomMargin: layout_margin
-            Layout.rightMargin: Layout.bottomMargin
-
-            DefaultBusyIndicator {
-                anchors.centerIn: parent
-            }
-        }
     }
 }

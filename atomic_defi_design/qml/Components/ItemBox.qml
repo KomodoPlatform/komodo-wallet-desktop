@@ -18,8 +18,8 @@ InnerBackground {
     property string title: "Default Title"
     property int minimumHeight: 40
     property int minimumWidth: 250
-    property int maximumHeight: undefined
-    property int maximumWidth:  splitView.maximumWidth
+    property int maximumHeight: SplitView.minimumWidth
+    property int maximumWidth:  SplitView.maximumWidth
     property int default_minimumWidth: 40
     property int defaultHeight: 40
     property int defaultWidth: 250

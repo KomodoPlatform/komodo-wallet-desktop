@@ -115,6 +115,7 @@ Item {
     Separator {
         id: separator
         anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 10
     }
 }
 

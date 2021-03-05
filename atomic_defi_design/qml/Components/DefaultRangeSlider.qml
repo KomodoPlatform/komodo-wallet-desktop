@@ -79,7 +79,7 @@ RangeSlider {
         anchors.bottom: parent.second.handle.top
 
         text_value: parent.second.value
-        font.pixelSize: Style.textSizeSmall1
+        font.pixelSize: Constants.Style.textSizeSmall1
     }
     DefaultText {
         id: firstTooltip
@@ -88,7 +88,7 @@ RangeSlider {
         anchors.bottom: parent.first.handle.top
 
         text_value: parent.first.value
-        font.pixelSize: Style.textSizeSmall1
+        font.pixelSize: Constants.Style.textSizeSmall1
     }
     DefaultText {
         id: _left_item

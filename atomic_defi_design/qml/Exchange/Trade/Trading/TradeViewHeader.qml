@@ -35,12 +35,6 @@ Item {
             color: Style.colorWhite2
             text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
         }
-        Qaterial.AppBarButton {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.topMargin: 6
-            icon.source: Qaterial.Icons.cog
-            onClicked: p.open()
-        }
         VerticalLine {
             Layout.fillHeight: true
         }

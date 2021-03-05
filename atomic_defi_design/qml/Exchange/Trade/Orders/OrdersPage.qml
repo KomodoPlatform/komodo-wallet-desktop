@@ -5,9 +5,9 @@ import QtQuick.Dialogs 1.3
 
 import Qaterial 1.0 as Qaterial
 
-import "../Components"
-import "../Constants"
-import ".."
+import "../../../Components"
+import "../../../Constants"
+import "../../.."
 
 Item {
     id: root

@@ -6,6 +6,9 @@ import "../../Components"
 import "../../Constants"
 import ".."
 
+import "Orders/"
+
+
 BasicModal {
     id: root
 
