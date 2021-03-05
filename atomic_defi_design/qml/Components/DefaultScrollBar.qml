@@ -8,7 +8,7 @@ ScrollBar {
     anchors.right: root.right
     anchors.rightMargin: 3
     policy: scrollbar_visible ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-
+    property bool visibleBackground: true
     width: 6
     contentItem: Item {
         FloatingBackground {
@@ -26,6 +26,7 @@ ScrollBar {
         width: 10
         x: -width/2 + 6/2
         InnerBackground {
+            visible: control.visibleBackground
             width: parent.width
             height: parent.height - 7
             anchors.verticalCenter: parent.verticalCenter

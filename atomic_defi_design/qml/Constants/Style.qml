@@ -89,7 +89,7 @@ QtObject {
     readonly property string colorQtThemeForeground: colorWhite1
     readonly property string colorQtThemeBackground: colorTheme9
 
-    readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
+    readonly property string sidebar_atomicdex_logo: dark_theme ? "dex-logo-sidebar.png" : "dex-logo-sidebar-dark.png"
     readonly property string colorRed: dark_theme ? "#D13990" : "#9a1165" // Light is 15% darker than Red2, same with the green set
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
     readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#D13990"
@@ -313,6 +313,7 @@ QtObject {
                                           "ANT": "#33DAE6",
                                           "AGI": "#6815FF",
                                           "BAND": "#526BFF",
+                                          "BLK": "#191919",
                                           "BNT": "#000D2B",
                                           "BTCZ": "#F5B036",
                                           "CEL": "#4055A6",
@@ -321,6 +322,7 @@ QtObject {
                                           "CRO": "#243565",
                                           "CVC": "#3AB03E",
                                           "CVT": "#4B0082",
+                                          "DODO": "#FFF706",
                                           "ELF": "#2B5EBB",
                                           "ENJ": "#6752C3",
                                           "EURS": "#2F77ED",
@@ -345,7 +347,7 @@ QtObject {
                                           "REP": "#0E0E21",
                                           "REV": "#78034D",
                                           "RLC": "#FFE100",
-                                          "SFUSD": "#F54D4C",
+                                          "SFUSD": "#9881B8",
                                           "SNT": "#596BED",
                                           "SNX": "#00D1FF",
                                           "SOULJA": "#8F734A",

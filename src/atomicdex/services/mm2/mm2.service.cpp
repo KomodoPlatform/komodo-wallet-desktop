@@ -782,12 +782,11 @@ namespace atomic_dex
     void
     mm2_service::fetch_current_orderbook_thread(bool is_a_reset)
     {
-        SPDLOG_INFO("Fetch current orderbook");
+        !m_orderbook_thread_active ? SPDLOG_WARN("Nothing to achieve, sleeping") : SPDLOG_INFO("Fetch current orderbook");
 
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
-        if (not m_orderbook_thread_active)
+        if (!m_orderbook_thread_active)
         {
-            SPDLOG_WARN("Nothing to achieve, sleeping");
             return;
         }
 
@@ -797,7 +796,7 @@ namespace atomic_dex
     void
     mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
     {
-        SPDLOG_INFO("{}: Fetching Infos l{}", __FUNCTION__, __LINE__);
+        SPDLOG_INFO("fetch_infos_thread");
 
         batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
     }
@@ -888,7 +887,7 @@ namespace atomic_dex
     mm2_service::get_tx(t_mm2_ec& ec) const noexcept
     {
         const auto& ticker = get_current_ticker();
-        SPDLOG_DEBUG("asking history of ticker: {}", ticker);
+        //SPDLOG_DEBUG("asking history of ticker: {}", ticker);
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
         const auto coin_type                 = get_coin_info(ticker).coin_type;
         const auto it = !(coin_type == CoinType::ERC20) ? underlying_tx_history_map->find("result") : underlying_tx_history_map->find(ticker);
@@ -1017,19 +1016,19 @@ namespace atomic_dex
             }
 
             //! Post Metrics
-            SPDLOG_INFO(
+            /*SPDLOG_INFO(
                 "Metrics -> [total_swaps: {}, "
                 "active_swaps: {}, "
                 "nb_orders: {}, "
                 "nb_pages: {}, "
                 "current_page: {}, "
                 "total_finished_swaps: {}]",
-                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);
+                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);*/
 
             //! Compute everything
             m_orders_and_swaps = std::move(result);
 
-            SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
+            //SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
             this->dispatcher_.trigger<process_swaps_and_orders_finished>(after_manual_reset);
         };
 

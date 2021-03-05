@@ -10,16 +10,18 @@ QtObject {
     readonly property double delta_time: 1000/60
 
     readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
-    readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
-    readonly property string image_path: assets_path + "images/"
+    readonly property string assets_path: "qrc:///"
+    readonly property string image_path: assets_path + "atomic_defi_design/assets/images/"
     readonly property string coin_icons_path: image_path + "coins/"
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
 
     function coinIcon(ticker) {
-        if(ticker === "" || ticker === "All") return ""
-
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        }else {
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+            return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toString().toLowerCase() + ".png"
+        }
     }
 
     // Returns the icon full path of a coin type.
@@ -340,29 +342,56 @@ QtObject {
     }
 
     function feeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+
+
         if(!trade_info || !trade_info.trading_fee) return ""
 
         const tx_fee = txFeeText(trade_info, base_ticker, has_info_icon, has_limited_space)
         const trading_fee = tradingFeeText(trade_info, base_ticker, has_info_icon)
 
+
         return tx_fee + "\n" + trading_fee
     }
 
     function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+
         if(!trade_info || !trade_info.trading_fee) return ""
 
         const has_parent_coin_fees = hasParentCoinFees(trade_info)
-        const main_fee = (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker)) +
-                                 // Rel Fees
-                                 (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker) : '')
 
-        let fiat_part = "("
-        fiat_part += getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, false)
-        if(has_parent_coin_fees) fiat_part += (has_limited_space ? "\n\t\t+ " : " + ") + getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon)
-        fiat_part += ")"
+         var info =  qsTr('%1 Transaction Fee'.arg(trade_info.base_transaction_fees_ticker))+': '+ trade_info.base_transaction_fees + " (%1)".arg(getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, has_info_icon))
 
-        return main_fee + " " + fiat_part
+        if (has_parent_coin_fees) {
+            info = info+"<br>"+qsTr('%1 Transaction Fee'.arg(trade_info.rel_transaction_fees_ticker))+': '+ trade_info.rel_transaction_fees + " (%1)".arg(getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon))
+        }
+
+        return info+"<br>"
+//        const main_fee = (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker)) +
+//                                 // Rel Fees
+//                                 (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker) : '')
+
+//        let fiat_part = "("
+//        fiat_part += getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, false)
+//        if(has_parent_coin_fees) fiat_part += (has_limited_space ? "\n\t\t+ " : " + ") + getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon)
+//        fiat_part += ")"
+
+//        return main_fee + " " + fiat_part
     }
+//    function txFeeText2(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+//        if(!trade_info || !trade_info.trading_fee) return ""
+
+//        const has_parent_coin_fees = hasParentCoinFees(trade_info)
+//        const main_fee = (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker)) +
+//                                 // Rel Fees
+//                                 (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker) : '')
+
+//        let fiat_part = "("
+//        fiat_part += getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, false)
+//        if(has_parent_coin_fees) fiat_part += (has_limited_space ? "\n\t\t+ " : " + ") + getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon)
+//        fiat_part += ")"
+
+//        return main_fee + " " + fiat_part
+//    }
 
     function tradingFeeText(trade_info, base_ticker, has_info_icon=true) {
         if(!trade_info || !trade_info.trading_fee) return ""
@@ -441,6 +470,7 @@ QtObject {
                                                 "BCH/USDC": "BINANCE:BCHUSDC",
                                                 "BCH/PAX": "BINANCE:BCHPAX",
                                                 "BCH/TUSD": "BINANCE:BCHTUSD",
+                                                "BLK/BTC": "BITTREX:BLKBTC",
                                                 "BNT/BTC": "BINANCE:BNTBTC",
                                                 "BNT/BUSD": "BINANCE:BNTBUSD",
                                                 "BNT/ETH": "BINANCE:BNTETH",
@@ -492,6 +522,8 @@ QtObject {
                                                 "DIA/ETH": "OKEX:DIAETH",
                                                 "DIA/BUSD": "BINANCE:DIABUSD",
                                                 "DIA/USDC": "UNISWAP:DIAUSDC",
+                                                "DODO/BTC": "BINANCE:DODOBTC",
+                                                "DODO/BUSD": "BINANCE:DODOBUSD",
                                                 "DX/BTC": "KUCOIN:DXBTC",
                                                 "DX/ETH": "KUCOIN:DXETH",
                                                 "ELF/BTC": "BINANCE:ELFBTC",

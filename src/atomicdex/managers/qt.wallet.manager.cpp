@@ -115,6 +115,8 @@ namespace atomic_dex
             }
         }
 
+        out.sort();
+
         return out;
     }
 
@@ -295,6 +297,7 @@ namespace atomic_dex
             if (ec == dextop_error::corrupted_file_or_wrong_password)
             {
                 SPDLOG_WARN("{}", ec.message());
+                set_log_status(false);
                 return false;
             }
 
@@ -303,6 +306,7 @@ namespace atomic_dex
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
             mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed, with_pin_cfg);
             this->dispatcher_.trigger<post_login>();
+            set_log_status(true);
 
             return true;
         }
@@ -326,5 +330,17 @@ namespace atomic_dex
     qt_wallet_manager::mnemonic_validate(const QString& entropy)
     {
         return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
+    }
+
+    bool
+    qt_wallet_manager::log_status() const noexcept
+    {
+        return m_login_status;
+    }
+
+    void
+    qt_wallet_manager::set_log_status(bool status) noexcept
+    {
+        m_login_status = status;
     }
 } // namespace atomic_dex

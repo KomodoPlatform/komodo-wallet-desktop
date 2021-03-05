@@ -44,7 +44,7 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::refresh_orderbook(t_orderbook_answer answer)
     {
-        SPDLOG_DEBUG("refresh orderbook");
+        //SPDLOG_DEBUG("refresh orderbook");
         this->m_asks->refresh_orderbook(answer);
         this->m_bids->refresh_orderbook(answer);
         this->set_both_taker_vol();
@@ -53,7 +53,7 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::reset_orderbook(t_orderbook_answer answer)
     {
-        SPDLOG_DEBUG("full reset orderbook");
+        //SPDLOG_DEBUG("full reset orderbook");
         this->m_asks->reset_orderbook(answer);
         this->m_bids->reset_orderbook(answer);
         this->set_both_taker_vol();

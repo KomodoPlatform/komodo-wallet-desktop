@@ -1,0 +1,29 @@
+{
+  "name": "atomicdex-desktop",
+  "version-string": "0.4.0",
+  "dependencies": [
+    "entt",
+    "boost-multiprecision",
+    "boost-filesystem",
+    "boost-thread",
+    "boost-random",
+    "boost-lockfree",
+    "boost-stacktrace",
+    "doctest",
+    "fmt",
+    "nlohmann-json",
+    "range-v3",
+    "libsodium",
+    "spdlog",
+    {
+      "name": "date",
+      "features": [
+        "remote-api"
+      ],
+      "platform": "windows"
+    },
+    "date",
+    "cpprestsdk",
+    "taskflow"
+  ]
+}

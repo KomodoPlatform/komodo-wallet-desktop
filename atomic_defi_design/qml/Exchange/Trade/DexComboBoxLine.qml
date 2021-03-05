@@ -14,14 +14,13 @@ RowLayout {
     property var details
     property color color: !details ? "white" : Style.getCoinColor(details.ticker)
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
-
     property alias bottom_text: bottom_line.text_value
 
     DefaultImage {
         id: icon
         source: General.coinIcon(ticker)
         Layout.preferredWidth: 32
-        Layout.preferredHeight: Layout.preferredWidth
+        Layout.preferredHeight: 45
         Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
         Layout.leftMargin: padding
         Layout.topMargin: Layout.leftMargin
@@ -31,7 +30,6 @@ RowLayout {
             anchors.left: parent.right
             anchors.leftMargin: 12
             anchors.verticalCenter: parent.verticalCenter
-
             DefaultText {
                 text_value: !details ? "" :
                             `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`

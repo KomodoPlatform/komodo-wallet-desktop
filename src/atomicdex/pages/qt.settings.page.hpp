@@ -106,8 +106,8 @@ namespace atomic_dex
         Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
         Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
         Q_INVOKABLE [[nodiscard]] QString     get_custom_coins_icons_path() const noexcept;
-        Q_INVOKABLE void process_erc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath);
-        Q_INVOKABLE void process_qrc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath);
+        Q_INVOKABLE void process_erc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath);
+        Q_INVOKABLE void process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath);
         Q_INVOKABLE void submit();
         Q_INVOKABLE void reset_coin_cfg();
         Q_INVOKABLE QStringList               retrieve_seed(const QString& wallet_name, const QString& password);
