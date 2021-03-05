@@ -385,10 +385,6 @@
         <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Header.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Vertical.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Horizontal.qml</file>
-        <file>atomic_defi_design/assets/images/logo/dex-logo-sidebar.png</file>
-        <file>atomic_defi_design/assets/images/logo/dex-logo-sidebar-dark.png</file>
-        <file>atomic_defi_design/assets/images/logo/minimal-dark.png</file>
-        <file>atomic_defi_design/assets/images/logo/minimal-light.png</file>
         <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/List.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/Header.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/ListDelegate.qml</file>
@@ -399,5 +395,6 @@
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrdersPage.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
+        <file>atomic_defi_design/assets/images/logo/dex-logo.png</file>
     </qresource>
 </RCC>

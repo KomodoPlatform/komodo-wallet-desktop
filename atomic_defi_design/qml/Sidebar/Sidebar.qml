@@ -133,7 +133,7 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: expanded? General.image_path + Style.sidebar_atomicdex_logo : "qrc:/atomic_defi_design/assets/images/logo/minimal-light.png"
+            source: expanded? General.image_path + Style.sidebar_atomicdex_logo : General.image_path +  "logo/dex-logo.png"
             anchors.horizontalCenter: parent.horizontalCenter
             y: expanded? parent.width * 0.25 : parent.width * 0.40
             transformOrigin: Item.Center
