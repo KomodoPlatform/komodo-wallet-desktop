@@ -194,6 +194,7 @@ target_sources(${PROJECT_NAME}_shared_deps PRIVATE
         ##! Services
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/exporter/exporter.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/global.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/orderbook.scanner.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coinpaprika/coinpaprika.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coingecko/coingecko.provider.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/oracle/band.provider.cpp
