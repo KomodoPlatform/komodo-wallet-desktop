@@ -1468,4 +1468,9 @@ namespace atomic_dex
             emit minTradeVolChanged();
         }
     }
+    void
+    trading_page::reset_order() noexcept
+    {
+        this->clear_forms();
+    }
 } // namespace atomic_dex

@@ -166,6 +166,8 @@ namespace atomic_dex
         Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
         Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
 
+        Q_INVOKABLE void reset_order() noexcept;
+
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper* get_orderbook_wrapper() const noexcept;
         [[nodiscard]] qt_orders_widget*     get_orders_widget() const noexcept;
