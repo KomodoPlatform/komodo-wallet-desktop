@@ -539,7 +539,10 @@ Item {
                             opacity: .9
                         }
                         Column {
-                            clip: !parent.contentVisible
+                            clip: true
+                            visible: parent.contentVisible
+                            width: parent.width
+                            height: 100
                             anchors.centerIn: parent
                             spacing: 20
                             Qaterial.ColorIcon {
