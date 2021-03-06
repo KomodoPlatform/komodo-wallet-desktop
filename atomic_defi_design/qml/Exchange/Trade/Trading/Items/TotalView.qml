@@ -28,7 +28,7 @@ Item {
                 width: parent.width
                 DefaultText {
                     color: Style.colorWhite1
-                    text: "TOTAL USD "+General.cex_icon
+                    text: "TOTAL "+API.app.settings_pg.current_fiat+" "+General.cex_icon
                     font.pixelSize:  Style.textSizeSmall5
                     Layout.preferredWidth: 90
                     font.weight: Font.Light

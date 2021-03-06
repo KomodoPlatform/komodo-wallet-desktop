@@ -76,27 +76,35 @@ InnerBackground {
 
     onExpandedVertChanged: {
         if(expandedVert) {
-//            if(DefaultSplitView.view!=null){
-//                for(var i=0; i< DefaultSplitView.view.children.length;i++){
-//                    if (DefaultSplitView.view.children[i]!==_control){
-//                        DefaultSplitView.view.children[i].expandedVert = false
-//                    }
-//                }
-//            }
+            if(DefaultSplitView.view!=null){
+                for(var i=0; i< DefaultSplitView.view.children.length;i++){
+                    if (DefaultSplitView.view.children[i]!==_control){
+                        try{
+                            DefaultSplitView.view.children[i].expandedVert = false
+                        }catch(e){}
 
-
+                    }
+                }
+                SplitView.fillHeight = true
+            }
+        } else {
+            SplitView.fillHeight = false
         }
     }
     onExpandedHortChanged: {
         if(expandedHort) {
-//            if(DefaultSplitView.view!=null){
-//                for(var i=0; i<SplitView.view.children.length;i++) {
-//                    if (SplitView.view.children[i]!==_control){
-//                        SplitView.view.children[i].expandedHort = false
-//                    }
-//                }
-//            }
-
+            if(DefaultSplitView.view!=null){
+                for(var i=0; i<SplitView.view.children.length;i++) {
+                    if (SplitView.view.children[i]!==_control){
+                        try{
+                            SplitView.view.children[i].expandedHort = false
+                        }catch(e){}
+                    }
+                }
+                SplitView.fillHeight = true
+            }
+        }else {
+            SplitView.fillHeight = false
         }
     }
 
