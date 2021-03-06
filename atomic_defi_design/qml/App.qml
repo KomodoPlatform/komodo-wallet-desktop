@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
+import QtQuick.Window 2.12
+
 import Qaterial 1.0 as Qaterial
 
 import "Screens"
@@ -20,6 +22,11 @@ Rectangle {
     }
     property string selected_wallet_name: ""
     property bool debug: debug_bar
+    property bool debug_log: false
+
+    function appendLog(text){
+        log_area.append(text)
+    }
 
     function firstPage() {
         return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
@@ -271,6 +278,24 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 contextMenu.open()
+            }
+        }
+    }
+    Window {
+        visible: debug_log
+        width: 500
+        height: 400
+        InnerBackground {
+            anchors.fill: parent
+        }
+        Flickable {
+            anchors.fill: parent
+            DefaultTextArea.flickable: DefaultTextArea {
+                id: log_area
+                remove_newline: false
+                anchors.fill: parent
+                color: Style.colorWhite1
+                 wrapMode: TextArea.Wrap
             }
         }
     }

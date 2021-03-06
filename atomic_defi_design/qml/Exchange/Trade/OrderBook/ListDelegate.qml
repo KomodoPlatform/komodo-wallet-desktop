@@ -20,6 +20,7 @@ Item {
         opacity: 0.1
         anchors.left: parent.left
     }
+
     Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 6
@@ -37,17 +38,17 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: 10
         Qaterial.ColorIcon {
-            visible: mouse_are.containsMouse && (min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
+            visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume //(min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
             source: Qaterial.Icons.alert
             Layout.alignment: Qt.AlignVCenter
             iconSize: 13
             color: Qaterial.Colors.amber
         }
         DefaultTooltip {
-            visible: mouse_are.containsMouse && (min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
+            visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume //(min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
             width: 300
             contentItem: DefaultText {
-                text_value: qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(coin).arg(API.app.trading_pg.orderbook.base_max_taker_vol.decimal)
+                text_value: isAsk? qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(coin).arg(API.app.trading_pg.orderbook.base_max_taker_vol.decimal) : qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(coin).arg(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal)
                 wrapMode: DefaultText.Wrap
                 width: 300
             }
@@ -114,11 +115,19 @@ Item {
         id: mouse_are
         anchors.fill: parent
         hoverEnabled: true
+        onContainsMouseChanged: {
+            app.appendLog("[ORDER INFO]: "+JSON.stringify([coin,
+                               price,
+                               quantity,
+                               min_volume,
+                               API.app.trading_pg.orderbook.base_max_taker_vol.decimal,
+                               API.app.trading_pg.mm2_min_trade_vol]))
+        }
         onClicked: {
             if(is_mine) return
 
             if((min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume){
-                _modal.open()
+
             }
             else {
                 isAsk? selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume) : selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume)
@@ -126,11 +135,6 @@ Item {
 
 
         }
-    }
-    DefaultModal {
-        id: _modal
-        width: 300
-        height: 300
     }
 
     Qaterial.ColorIcon {
@@ -157,6 +161,8 @@ Item {
             id: cancel_button
             anchors.fill: parent
             hoverEnabled: true
+
+
             onClicked: {
                 if(!is_mine) return
 
@@ -165,6 +171,13 @@ Item {
             }
         }
     }
+    AnimatedRectangle {
+        visible: !enough_funds_to_pay_min_volume && mouse_are.containsMouse
+        color: Style.colorTheme9
+        anchors.fill: parent
+        opacity: .8
+    }
+
     HorizontalLine {
         width: parent.width
     }

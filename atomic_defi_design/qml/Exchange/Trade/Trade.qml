@@ -510,7 +510,8 @@ Item {
                         id: _best_order_box
                         SplitView.fillWidth: true
                         SplitView.fillHeight: true
-                        defaultHeight: 300
+                        defaultHeight: 250
+                        minimumHeight: 130
                         //clip: true
                         //smooth: true
                         title: "Best Orders"
@@ -540,6 +541,7 @@ Item {
                         }
                         Column {
                             clip: true
+                            topPadding: 10
                             visible: parent.contentVisible
                             width: parent.width
                             height: 100
@@ -801,12 +803,13 @@ Item {
                         minimumHeight: 150
                         //clip: true
                         title: "Multi-Order"
+                        visible: sell_mode
                         Item {
                             clip: true
                             anchors.fill: parent
                             anchors.topMargin: 40
                             Item {
-                                visible: sell_mode
+
                                 width: parent.width
                                 height: multi_order_swith_col.height+10
                                 Column {

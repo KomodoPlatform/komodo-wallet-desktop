@@ -1977,7 +1977,7 @@
 <context>
     <name>Pagination</name>
     <message>
-        <location filename="../../qml/Components/Pagination.qml" line="25"/>
+        <location filename="../../qml/Components/Pagination.qml" line="27"/>
         <source>items per page</source>
         <translation>Nombres d&apos;éléments par page</translation>
     </message>
@@ -2850,27 +2850,27 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="728"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="763"/>
         <source>Start Swap</source>
         <translation type="unfinished">Commencer l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="786"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="823"/>
         <source>Multi-Order</source>
         <translation type="unfinished">Multiple ordres</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="803"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="840"/>
         <source>Select additional assets for multi-order creation.</source>
         <translation type="unfinished">Sélectionnez des actifs supplémentaires pour la création de plusieurs ordres.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="811"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="848"/>
         <source>Same funds will be used until an order matches.</source>
         <translation type="unfinished">Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="815"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="852"/>
         <source>Submit Trade</source>
         <translation type="unfinished">Soumettre l&apos;échange</translation>
     </message>
