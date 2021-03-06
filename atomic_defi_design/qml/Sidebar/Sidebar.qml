@@ -16,7 +16,7 @@ Item {
     width: expanded? 200 - x : 80 - x
     Behavior on width {
         NumberAnimation {
-            duration: 200
+            duration: 300
         }
     }
 

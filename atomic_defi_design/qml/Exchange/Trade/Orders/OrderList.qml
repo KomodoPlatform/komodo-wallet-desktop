@@ -71,7 +71,7 @@ Item {
 
         // Pagination
         Pagination {
-            visible: is_history
+            visible: is_history && API.app.orders_mdl.rowCount()>0
             enabled: list.enabled
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true

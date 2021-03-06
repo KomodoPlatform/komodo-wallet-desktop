@@ -7,6 +7,8 @@ import "../Constants"
 RowLayout {
     property int visible_page: API.app.orders_mdl.current_page
     property int page_count: API.app.orders_mdl.nb_pages
+
+
     DefaultComboBox {
         readonly property int item_count: API.app.orders_mdl.limit_nb_elements
         readonly property var options: [5, 10, 25, 50, 100, 200]

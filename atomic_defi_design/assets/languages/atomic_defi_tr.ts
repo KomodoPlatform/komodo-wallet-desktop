@@ -106,18 +106,18 @@
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="253"/>
-        <source>Coinpaprika ID</source>
-        <translation>Coinpaprika ID</translation>
+        <source>Coingecko ID</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="254"/>
-        <source>Enter the Coinpaprika ID</source>
-        <translation>Coinpaprika ID&apos;sini girin</translation>
+        <source>Enter the Coingecko ID</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="260"/>
-        <source>Get the Coinpaprika ID</source>
-        <translation>Coinpaprika ID&apos;sini bul</translation>
+        <source>Get the Coingecko ID</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="277"/>
@@ -976,12 +976,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="106"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="105"/>
         <source>Half</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="114"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="112"/>
         <source>Max</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2815,52 +2815,52 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="190"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="191"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="197"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="198"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="403"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="402"/>
         <source>Exchange Rates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="409"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="408"/>
         <source>Orders</source>
         <translation type="unfinished">Emirler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="415"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="414"/>
         <source>history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="691"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="728"/>
         <source>Start Swap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="748"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="786"/>
         <source>Multi-Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="765"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="803"/>
         <source>Select additional assets for multi-order creation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="773"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="811"/>
         <source>Same funds will be used until an order matches.</source>
         <translation type="unfinished">Bir emir eşleşene kadar tüm emirler aynı fonu kullanacaktır.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="777"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="815"/>
         <source>Submit Trade</source>
         <translation type="unfinished"></translation>
     </message>

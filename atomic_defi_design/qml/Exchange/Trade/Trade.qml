@@ -763,9 +763,11 @@ Item {
                     ItemBox {
                         defaultHeight: 200
                         maximumHeight: 300
+                        minimumHeight: 150
                         //clip: true
                         title: "Multi-Order"
                         Item {
+                            clip: true
                             anchors.fill: parent
                             anchors.topMargin: 40
                             Item {
