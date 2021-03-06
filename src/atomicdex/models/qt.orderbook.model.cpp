@@ -257,7 +257,6 @@ namespace atomic_dex
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
-            //this->data(idx, OrderbookRoles::EnoughFundsToPayMinVolume);
         }
     }
 

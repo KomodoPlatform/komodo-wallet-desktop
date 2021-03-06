@@ -20,30 +20,36 @@
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
 #include "atomicdex/api/mm2/rpc.best.orders.hpp"
-#include "atomicdex/api/mm2/rpc.buy.hpp"
-#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
-#include "atomicdex/api/mm2/rpc.sell.hpp"
-#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 
+//! Implementation RPC [best_orders]
 namespace mm2::api
 {
-    template <typename RpcSuccessReturnType, typename RpcReturnType>
     void
-    extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer)
+    to_json(nlohmann::json& j, const best_orders_request& req)
     {
-        if (j.contains("error") && j.at("error").is_string())
-        {
-            answer.error = j.at("error").get<std::string>();
-        }
-        else if (j.contains("result"))
-        {
-            answer.result = j.at("result").get<RpcSuccessReturnType>();
-        }
+        j["coin"]   = req.coin;
+        j["action"] = req.action;
+        j["volume"] = req.volume;
     }
 
-    template void extract_rpc_json_answer<trade_preimage_answer_success>(const nlohmann::json& j, trade_preimage_answer& answer);
-    template void extract_rpc_json_answer<max_taker_vol_answer_success>(const nlohmann::json& j, max_taker_vol_answer& answer);
-    template void extract_rpc_json_answer<buy_answer_success>(const nlohmann::json& j, buy_answer& answer);
-    template void extract_rpc_json_answer<sell_answer_success>(const nlohmann::json& j, sell_answer& answer);
-    template void extract_rpc_json_answer<best_orders_answer_success>(const nlohmann::json& j, best_orders_answer& answer);
+    void
+    from_json(const nlohmann::json& j, best_order_infos& answer)
+    {
+        j.at("volume").get_to(answer.volume);
+        j.at("price").get_to(answer.price);
+        j.at("order_uuid").get_to(answer.order_uuid);
+    }
+
+    void
+    from_json(const nlohmann::json& j, best_orders_answer_success& answer)
+    {
+        j.get_to(answer.result);
+    }
+
+    void
+    from_json(const nlohmann::json& j, best_orders_answer& answer)
+    {
+        extract_rpc_json_answer<best_orders_answer_success>(j, answer);
+    }
+
 } // namespace mm2::api
