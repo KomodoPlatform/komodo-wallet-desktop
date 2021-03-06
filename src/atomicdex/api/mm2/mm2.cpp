@@ -19,6 +19,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -434,94 +435,9 @@ namespace mm2::api
     }
 
     void
-    to_json(nlohmann::json& j, const orderbook_request& request)
-    {
-        j["base"] = request.base;
-        j["rel"]  = request.rel;
-    }
-
-    void
     to_json(nlohmann::json& j, const trade_fee_request& cfg)
     {
         j["coin"] = cfg.coin;
-    }
-
-    void
-    from_json(const nlohmann::json& j, order_contents& contents)
-    {
-        j.at("coin").get_to(contents.coin);
-        j.at("address").get_to(contents.address);
-        j.at("price").get_to(contents.price);
-        // contents.price = t_float_50(contents.price).str(8, std::ios_base::fixed);
-        j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
-        j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
-        j.at("max_volume_fraction").at("numer").get_to(contents.max_volume_fraction_numer);
-        j.at("max_volume_fraction").at("denom").get_to(contents.max_volume_fraction_denom);
-        j.at("maxvolume").get_to(contents.maxvolume);
-        j.at("pubkey").get_to(contents.pubkey);
-        j.at("age").get_to(contents.age);
-        j.at("zcredits").get_to(contents.zcredits);
-        j.at("uuid").get_to(contents.uuid);
-        j.at("is_mine").get_to(contents.is_mine);
-        if (j.contains("min_volume"))
-        {
-            contents.min_volume = j.at("min_volume").get<std::string>();
-        }
-
-        if (contents.price.find('.') != std::string::npos)
-        {
-            boost::trim_right_if(contents.price, boost::is_any_of("0"));
-            contents.price = contents.price;
-        }
-        contents.maxvolume = atomic_dex::utils::adjust_precision(contents.maxvolume);
-        t_float_50 total_f = t_float_50(contents.price) * t_float_50(contents.maxvolume);
-        contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
-    }
-
-    void
-    from_json(const nlohmann::json& j, orderbook_answer& answer)
-    {
-        using namespace date;
-
-        j.at("base").get_to(answer.base);
-        j.at("rel").get_to(answer.rel);
-        j.at("askdepth").get_to(answer.askdepth);
-        j.at("biddepth").get_to(answer.biddepth);
-        j.at("bids").get_to(answer.bids);
-        j.at("asks").get_to(answer.asks);
-        j.at("numasks").get_to(answer.numasks);
-        j.at("numbids").get_to(answer.numbids);
-        j.at("netid").get_to(answer.netid);
-        j.at("timestamp").get_to(answer.timestamp);
-
-        answer.human_timestamp = atomic_dex::utils::to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
-
-        t_float_50 result_asks_f("0");
-        for (auto&& cur_asks: answer.asks) { result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume); }
-
-        answer.asks_total_volume = result_asks_f.str();
-
-        t_float_50 result_bids_f("0");
-        for (auto& cur_bids: answer.bids)
-        {
-            cur_bids.total        = cur_bids.maxvolume;
-            t_float_50 new_volume = t_float_50(cur_bids.maxvolume) / t_float_50(cur_bids.price);
-            cur_bids.maxvolume    = atomic_dex::utils::adjust_precision(new_volume.str());
-            result_bids_f         = result_bids_f + t_float_50(cur_bids.maxvolume);
-        }
-
-        answer.bids_total_volume = result_bids_f.str();
-        for (auto&& cur_asks: answer.asks)
-        {
-            t_float_50 percent_f   = t_float_50(cur_asks.maxvolume) / result_asks_f;
-            cur_asks.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
-        }
-
-        for (auto&& cur_bids: answer.bids)
-        {
-            t_float_50 percent_f   = t_float_50(cur_bids.maxvolume) / result_bids_f;
-            cur_bids.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
-        }
     }
 
     void

@@ -17,38 +17,29 @@
 #pragma once
 
 //! Deps
-#include <antara/gaming/ecs/system.manager.hpp>
-#include <boost/thread/synchronized_value.hpp>
-#include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
 
-//! Namespace declaration
-namespace atomic_dex
+namespace mm2::api
 {
-    //! Class declaration
-    class orderbook_scanner_service final : public ag::ecs::pre_update_system<orderbook_scanner_service>
+    struct order_contents
     {
-        //! Private typedefs
-        using t_update_time_point = std::chrono::high_resolution_clock::time_point;
-        using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
-
-        //! Private member fields
-        ag::ecs::system_manager& m_system_manager;
-        t_json_synchronized      m_best_orders_infos;
-        t_update_time_point      m_update_clock;
-
-        //! Private member functions
-        void process_best_orders() noexcept;
-
-      public:
-        //! Constructor
-        explicit orderbook_scanner_service(entt::registry& registry, ag::ecs::system_manager& system_manager);
-
-        //! Destructor
-        ~orderbook_scanner_service() noexcept final = default;
-
-        //! Public override
-        void update() noexcept final;
+        std::string coin;
+        std::string address;
+        std::string price;
+        std::string price_fraction_numer;
+        std::string price_fraction_denom;
+        std::string max_volume_fraction_numer;
+        std::string max_volume_fraction_denom;
+        std::string maxvolume;
+        std::string pubkey;
+        std::size_t age;
+        std::size_t zcredits;
+        std::string total;
+        std::string uuid;
+        std::string depth_percent;
+        bool        is_mine;
+        std::string min_volume{"0"};
     };
-} // namespace atomic_dex
 
-REFL_AUTO(type(atomic_dex::orderbook_scanner_service))
+    void from_json(const nlohmann::json& j, order_contents& contents);
+} // namespace mm2::api

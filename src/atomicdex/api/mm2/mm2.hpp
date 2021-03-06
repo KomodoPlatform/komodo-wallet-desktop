@@ -298,59 +298,6 @@ namespace mm2::api
 
     send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
-    struct orderbook_request
-    {
-        std::string base;
-        std::string rel;
-    };
-
-    void to_json(nlohmann::json& j, const orderbook_request& request);
-
-    struct order_contents
-    {
-        std::string coin;
-        std::string address;
-        std::string price;
-        std::string price_fraction_numer;
-        std::string price_fraction_denom;
-        std::string max_volume_fraction_numer;
-        std::string max_volume_fraction_denom;
-        std::string maxvolume;
-        std::string pubkey;
-        std::size_t age;
-        std::size_t zcredits;
-        std::string total;
-        std::string uuid;
-        std::string depth_percent;
-        bool        is_mine;
-        std::string min_volume{"0"};
-    };
-
-    void from_json(const nlohmann::json& j, order_contents& contents);
-
-    struct orderbook_answer
-    {
-        std::size_t                 askdepth;
-        std::size_t                 biddepth;
-        std::vector<order_contents> asks;
-        std::vector<order_contents> bids;
-        std::string                 base;
-        std::string                 rel;
-        std::size_t                 numasks;
-        std::size_t                 numbids;
-        std::size_t                 timestamp;
-        std::size_t                 netid;
-        std::string                 human_timestamp; //! Moment of the orderbook request human readeable
-        std::string                 asks_total_volume;
-        std::string                 bids_total_volume;
-
-        //! Internal
-        std::string raw_result;
-        int         rpc_result_code;
-    };
-
-    void from_json(const nlohmann::json& j, orderbook_answer& answer);
-
     struct setprice_request
     {
         std::string                base;
@@ -544,8 +491,6 @@ namespace atomic_dex
     using t_withdraw_fees           = ::mm2::api::withdraw_fees;
     using t_withdraw_answer         = ::mm2::api::withdraw_answer;
     using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
-    using t_orderbook_request       = ::mm2::api::orderbook_request;
-    using t_orderbook_answer        = ::mm2::api::orderbook_answer;
     using t_disable_coin_request    = ::mm2::api::disable_coin_request;
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;

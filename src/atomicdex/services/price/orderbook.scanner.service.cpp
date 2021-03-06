@@ -15,6 +15,9 @@
  ******************************************************************************/
 
 //! Project Headers
+#include "atomicdex/api/mm2/rpc.best.orders.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
 //! Constructor
@@ -24,6 +27,57 @@ namespace atomic_dex
         system(registry), m_system_manager(system_manager)
     {
         SPDLOG_INFO("orderbook_scanner_service created");
+        m_update_clock      = std::chrono::high_resolution_clock::now();
+        m_best_orders_infos = nlohmann::json::object();
+    }
+} // namespace atomic_dex
+
+//! Private member functions
+namespace atomic_dex
+{
+    void
+    orderbook_scanner_service::process_best_orders() noexcept
+    {
+        if (m_system_manager.has_system<mm2_service>())
+        {
+            auto& mm2_system = m_system_manager.get_system<mm2_service>();
+            if (mm2_system.is_mm2_running())
+            {
+                using namespace std::string_literals;
+                const auto&           trading_pg = m_system_manager.get_system<trading_page>();
+                auto                  volume     = trading_pg.get_volume().toStdString();
+                auto                  action     = trading_pg.get_market_mode() == MarketMode::Buy ? "buy"s : "sell"s;
+                auto                  coin       = trading_pg.get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+                t_best_orders_request req{.coin = std::move(coin), .volume = std::move(volume), .action = std::move(action)};
+
+                //! Prepare request
+                nlohmann::json batch                = nlohmann::json::array();
+                nlohmann::json best_orders_req_json = ::mm2::api::template_request("best_orders");
+                to_json(best_orders_req_json, req);
+                batch.push_back(best_orders_req_json);
+
+                //! Treat answer
+                auto answer_functor = [this](web::http::http_response resp) {
+                    std::string body = TO_STD_STR(resp.extract_string(true).get());
+                    if (resp.status_code() == 200)
+                    {
+                        //SPDLOG_WARN("Best Orders resp: {}", body);
+                    }
+                };
+
+                ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+                    .then(answer_functor)
+                    .then(&handle_exception_pplx_task);
+            }
+            else
+            {
+                SPDLOG_WARN("MM2 Service not launched yet - skipping");
+            }
+        }
+        else
+        {
+            SPDLOG_WARN("MM2 Service not created yet - skipping");
+        }
     }
 } // namespace atomic_dex
 
@@ -33,6 +87,15 @@ namespace atomic_dex
     void
     orderbook_scanner_service::update() noexcept
     {
-        //!
+        //! Scan orderbook widget every 30 seconds if there is not any update
+        using namespace std::chrono_literals;
+
+        const auto now = std::chrono::high_resolution_clock::now();
+        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
+        if (s >= 30s)
+        {
+            process_best_orders();
+            m_update_clock = std::chrono::high_resolution_clock::now();
+        }
     }
-}
+} // namespace atomic_dex

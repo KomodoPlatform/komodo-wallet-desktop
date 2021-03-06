@@ -39,6 +39,7 @@
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
+#include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
 namespace
 {
@@ -250,7 +251,8 @@ namespace atomic_dex
         {
             // m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
             m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
-            m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(system_manager_, this->dispatcher_, this)));
+            m_manager_models.emplace(
+                "internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(system_manager_, this->dispatcher_, this)));
             m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
         }
 
@@ -264,6 +266,7 @@ namespace atomic_dex
 
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
+        system_manager_.create_system<orderbook_scanner_service>(system_manager_);
         system_manager_.create_system<band_oracle_price_service>();
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<coingecko_provider>(system_manager_);
