@@ -14,7 +14,10 @@ Rectangle {
     id: app
 
     color: Style.colorTheme8
-
+    Shortcut {
+        sequence: "F11"
+        onActivated: window.showNormal()
+    }
     property string selected_wallet_name: ""
     property bool debug: debug_bar
 
@@ -220,6 +223,14 @@ Rectangle {
                     app.parent.height = General.minimumHeight
 
                 }
+            }
+            Action {
+                text: "Show FullScreen"
+                onTriggered: {
+                    window.showFullScreen()
+
+                }
+
             }
             Action {
                 text: "Clean Cache"

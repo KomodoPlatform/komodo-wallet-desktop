@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 
+import QtGraphicalEffects 1.0
+
 import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
 
@@ -92,7 +94,6 @@ Item {
     property var onOrderSuccess: () => {
         General.prevent_coin_disabling.restart()
         tabView.currentIndex = 1
-        flick_scrollBar.down()
         multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
     }
 
@@ -259,19 +260,6 @@ Item {
                             opacity: .4
                         }
                     }
-                    function scrollToEnd(){
-                        //safe_exchange_flickable.contentY = getEndPos();
-                    }
-                    ScrollBar.vertical: DefaultScrollBar {
-                        id: flick_scrollBar
-                        height: parent.height
-                        anchors.right: parent.right
-                        width: 4
-                        function down(){
-                            safe_exchange_flickable.scrollToEnd()
-                        }
-                    }
-
                     ItemBox {
                         title: "Chart View"
                         expandedVert: true
@@ -341,31 +329,43 @@ Item {
 
                     ItemBox {
                         title: "OrderBook"
-                        defaultHeight: isUltraLarge? 40 : 300
+                        defaultHeight: 300
                         Behavior on defaultHeight {
                             NumberAnimation {
                                 duration: 150
                             }
                         }
+
                         visible: !isUltraLarge
 
-                        width: parent.width
 
-                        clip: true
                         OrderBook.Horizontal {
                             anchors.topMargin: 40
                             anchors.fill: parent
+                            clip: !parent.contentVisible
                             visible: parent.visible
                         }
                     }
                     ItemBox {
+                        id: optionBox
                         defaultHeight: tabView.currentIndex===0? 200 : 400
-                        clip: true
+                        Connections {
+                            target: tabView
+                            function onCurrentIndexChanged(){
+                                if(tabView.currentIndex!==0) {
+                                    optionBox.setHeight(400)
+                                }else {
+                                    optionBox.setHeight(200)
+                                }
+                            }
+                        }
+
                         title: "Options"
                         Column {
                             topPadding: 40
                             width: parent.width
                             height: parent.height
+                            clip: !parent.contentVisible
                             anchors.horizontalCenter: parent.horizontalCenter
                             Qaterial.TabBar {
                                 z: 4
@@ -392,7 +392,6 @@ Item {
                                             break;
                                         default: priceLine
                                     }
-                                    flick_scrollBar.down()
 
                                 }
 
@@ -444,7 +443,6 @@ Item {
                                         OrdersView.OrdersPage {
                                             clip: true
 
-                                            Component.onCompleted: flick_scrollBar.down()
                                         }
                                     }
                                     Component {
@@ -452,9 +450,6 @@ Item {
                                         OrdersView.OrdersPage {
                                             is_history: true
                                             clip: true
-                                            Component.onCompleted: {
-                                                flick_scrollBar.down()
-                                            }
                                         }
                                     }
                                 }
@@ -466,14 +461,14 @@ Item {
             }
 
             ItemBox {
-                SplitView.minimumWidth: 0
-                SplitView.maximumWidth: 350
-                SplitView.fillHeight: true
+                minimumWidth: 350
+                maximumWidth: 380
+                defaultWidth: 350
                 title: "OrderBook & Best Orders"
                 color: 'transparent'
                 closable: false
                 visible: isUltraLarge
-                SplitView {
+                DefaultSplitView {
                     anchors.topMargin: 40
                     anchors.fill: parent
                     orientation: Qt.Vertical
@@ -495,7 +490,7 @@ Item {
                     }
                     ItemBox {
                         SplitView.fillWidth: true
-                        clip: true
+                        //clip: true
                         title: "OrderBook"
                         expandedVert: true
 
@@ -505,16 +500,19 @@ Item {
                             }
                         }
                         OrderBook.Vertical {
+                            clip: !parent.contentVisible
                             visible: parent.contentVisible
                             anchors.topMargin: 40
                             anchors.fill: parent
                         }
                     }
                     ItemBox {
+                        id: _best_order_box
                         SplitView.fillWidth: true
                         SplitView.fillHeight: true
                         defaultHeight: 300
-                        clip: true
+                        //clip: true
+                        //smooth: true
                         title: "Best Orders"
                         Behavior on SplitView.preferredWidth {
                             NumberAnimation {
@@ -522,31 +520,70 @@ Item {
                             }
                         }
                         BestOrder.List {
+                            clip: !parent.contentVisible
+                            enabled: false
+                            id: best_order_list
                             visible: parent.contentVisible
                             anchors.topMargin: 40
                             anchors.fill: parent
                         }
+                        FastBlur {
+
+                             anchors.fill: best_order_list
+                             source: best_order_list
+                             radius: 35
+                         }
+                        Rectangle {
+                            anchors.fill: parent
+                            color: parent.color
+                            opacity: .9
+                        }
+                        Column {
+                            clip: !parent.contentVisible
+                            anchors.centerIn: parent
+                            spacing: 20
+                            Qaterial.ColorIcon {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                source: Qaterial.Icons.rocketLaunchOutline
+                                iconSize: 30
+                                Behavior on rotation {
+                                    NumberAnimation {
+                                        duration: 500
+                                    }
+                                }
+
+                                Timer {
+                                    running: false
+                                    repeat: true
+                                    interval: 1500
+                                    onTriggered: parent.rotation+=180
+                                }
+                            }
+                            DefaultText {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                text: "Coming Soon!"
+                                font.weight: Font.Light
+                                font.pixelSize: 16
+                            }
+                        }
                     }
                 }
-
-
-
-
             }
 
             ItemBox {
                 defaultWidth: 300
                 maximumWidth: 300
+                minimumWidth: 280
                 SplitView.fillHeight: true
                 title: "Buy & Sell"
                 color: 'transparent'
                 border.color: 'transparent'
-                clip: true
+                //clip: true
                 SplitView {
                     visible: parent.contentVisible
                     orientation: Qt.Vertical
                     anchors.fill: parent
-                    anchors.topMargin: 40
+                    anchors.topMargin: 45
                     handle: Item {
                         implicitWidth: 10
                         implicitHeight: 10
@@ -561,7 +598,7 @@ Item {
                         title: "Total"
                         defaultHeight: 90
                         hideHeader: true
-                        clip: true
+                        //clip: true
                         visible: true
                         TotalView {
 
@@ -645,7 +682,7 @@ Item {
                         }
                     }
                     ItemBox {
-                        SplitView.fillHeight: true
+                        expandedVert: true
                         hideHeader: true
                         title: "Form"
                         ColumnLayout {
@@ -725,7 +762,8 @@ Item {
                     }
                     ItemBox {
                         defaultHeight: 200
-                        clip: true
+                        maximumHeight: 300
+                        //clip: true
                         title: "Multi-Order"
                         Item {
                             anchors.fill: parent

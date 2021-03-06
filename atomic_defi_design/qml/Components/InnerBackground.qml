@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtGraphicalEffects 1.12
+import Qaterial 1.0 as Qaterial
 import "../Constants"
 
 Item {
@@ -62,7 +63,7 @@ Item {
             }
             GradientStop {
                position: 0.65
-               color: Style.colorRectangleBorderGradient1
+               color: Style.colorRectangleBorderGradient1 //Qaterial.Colors.blueA400//
             }
         }
     }

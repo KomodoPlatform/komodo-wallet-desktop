@@ -8,58 +8,100 @@ import "../Constants/" as Constants
 
 InnerBackground {
     id: _control
+    border.width: 1.1
     property bool hideHeader: false
+    property bool visibility: isVertical? height>=40 ? true : false : width>=40? true : false
+    property bool hidden: false
     property bool expandedVert: false
     property bool expandedHort: false
     property bool showed: true
     property bool duplicable: false
-    property bool closable: true
+    property bool closable: false
     property bool expandable: true
     property string title: "Default Title"
-    property int minimumHeight: 40
-    property int minimumWidth: 250
-    property int maximumHeight: SplitView.minimumWidth
-    property int maximumWidth:  SplitView.maximumWidth
-    property int default_minimumWidth: 40
-    property int defaultHeight: 40
+    property int minimumHeight: isVertical? 40 : 250
+    property int minimumWidth: isVertical? 40 : 250
+    property int maximumHeight: 9999999
+    property int maximumWidth:  9999999
+    property int defaultHeight: 250
     property int defaultWidth: 250
-    property bool contentVisible: expandable
+    property bool contentVisible: !hidden
+
     property bool isVertical: _control.parent.parent.orientation === Qt.Vertical
-    shadowOff: true
+    function setHeight(height) {
+        SplitView.preferredHeight = height
+    }
+    function setWidth(width) {
+        SplitView.preferredWidth = width
+    }
+
+    onHiddenChanged: {
+        if(isVertical && hidden) {
+            SplitView.preferredHeight = 40
+            SplitView.minimumHeight = 40
+            SplitView.maximumHeight = 40
+        }
+        else if(isVertical && !hidden){
+            SplitView.preferredHeight = defaultHeight
+            SplitView.minimumHeight = minimumHeight
+            SplitView.maximumHeight = maximumHeight
+            SplitView.fillHeight = true
+            SplitView.view.update()
+        }
+        else if(!isVertical && hidden) {
+            SplitView.preferredWidth = 40
+            SplitView.minimumWidth = 40
+            SplitView.maximumWidth = 40
+        }
+        else if(!isVertical && !hidden){
+            SplitView.preferredWidth = defaultWidth
+            SplitView.minimumWidth = minimumWidth
+            SplitView.maximumWidth = maximumWidth
+            console.log(_control.maximumWidth)
+            SplitView.fillWidth = true
+
+        }
+    }
+
+    //shadowOff: true
     color: Constants.Style.colorTheme9
     property alias titleLabel: _texto
 
+    Connections {
+        target: _control.parent.parent
+        function onCurrentIndexChanged(){
+            console.log(_control.parent.parent.currentIndex)
+        }
+    }
+
     onExpandedVertChanged: {
         if(expandedVert) {
-            for(var i=0; i<_control.parent.children.length;i++){
-                if (_control.parent.children[i]!==_control){
-                    _control.parent.children[i].expandedVert = false
-                }
-            }
+//            if(DefaultSplitView.view!=null){
+//                for(var i=0; i< DefaultSplitView.view.children.length;i++){
+//                    if (DefaultSplitView.view.children[i]!==_control){
+//                        DefaultSplitView.view.children[i].expandedVert = false
+//                    }
+//                }
+//            }
+
+
         }
     }
     onExpandedHortChanged: {
         if(expandedHort) {
-            for(var i=0; i<_control.parent.children.length;i++){
-                if (_control.parent.children[i]!==_control){
-                    _control.parent.children[i].expandedHort = false
-                }
-            }
-        }
-    }
-    onExpandableChanged: {
-        if(!expandable){
-            if(_control.parent.parent.orientation === Qt.Vertical){
-                expandedVert = false
+//            if(DefaultSplitView.view!=null){
+//                for(var i=0; i<SplitView.view.children.length;i++) {
+//                    if (SplitView.view.children[i]!==_control){
+//                        SplitView.view.children[i].expandedHort = false
+//                    }
+//                }
+//            }
 
-            }else {
-                expandedHort = false
-            }
         }
     }
 
-    SplitView.minimumHeight: default_minimumWidth
-    SplitView.minimumWidth: default_minimumWidth
+
+
     Behavior on SplitView.preferredHeight {
         SmoothedAnimation {
             duration: 200
@@ -72,11 +114,18 @@ InnerBackground {
 
         }
     }
+    Component.onCompleted: {
+        SplitView.minimumHeight = minimumHeight
+        SplitView.minimumWidth = minimumWidth
+        SplitView.maximumHeight = maximumHeight
+        SplitView.maximumWidth = maximumWidth
+        SplitView.preferredHeight = defaultHeight
+        SplitView.preferredWidth = defaultWidth
+        SplitView.fillHeight = expandedVert? true: false
+        SplitView.fillWidth = expandedHort? true: false
+    }
 
-    SplitView.preferredHeight: expandable? defaultHeight : minimumHeight
-    SplitView.preferredWidth: expandable? defaultWidth : default_minimumWidth
-    SplitView.fillHeight: expandedVert? true: false
-    SplitView.fillWidth: expandedHort? true: false
+
     //SplitView.maximumWidth: maximumWidth
     property Component contentItem
 
@@ -89,7 +138,7 @@ InnerBackground {
             height: 40
             radius: parent.parent.height<41? parent.parent.radius : 0
             color: Constants.Style.colorTheme9
-            visible: (isVertical? true : expandable) && !_control.hideHeader
+            visible: visibility && !_control.hideHeader
             RowLayout {
                 anchors.fill: parent
                 Layout.rightMargin: 10
@@ -113,7 +162,7 @@ InnerBackground {
                         icon.height: 17
                         icon.width: 17
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
-                        onClicked: _control.expandable =!_control.expandable
+                        onClicked: _control.hidden =!_control.hidden
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
@@ -158,14 +207,23 @@ InnerBackground {
             anchors.right: parent.right
             radius: parent.parent.height<41? parent.parent.radius : 0
             color: Constants.Style.colorTheme9
-            visible: !isVertical && !expandable
+            visible: !isVertical && hidden
+            DefaultText {
+                id: _texto2
+                leftPadding: 10
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                text: _control.title
+                color: Constants.Style.colorWhite4
+                bottomPadding: 5
+                rotation: 90
+                anchors.centerIn: parent
+            }
             ColumnLayout {
                 anchors.fill: parent
                 Layout.rightMargin: 10
                 Layout.leftMargin: 10
-                //rotation: 90
                 Column {
-                    //Layout.alignment: Qt.AlignVCenter
                     opacity: .8
                     spacing: -8
 
@@ -175,7 +233,9 @@ InnerBackground {
                         icon.height: 17
                         icon.width: 17
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
-                        onClicked: _control.expandable =!_control.expandable
+                        onClicked: {
+                            _control.hidden = !_control.hidden
+                        }
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40

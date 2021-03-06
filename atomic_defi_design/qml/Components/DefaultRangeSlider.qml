@@ -96,7 +96,6 @@ RangeSlider {
         anchors.top: parent.bottom
 
         text_value: qsTr("Min")
-        font.pixelSize: input_volume.field.font.pixelSize
     }
     DefaultText {
         id: _half_item
@@ -104,7 +103,6 @@ RangeSlider {
         anchors.top: parent.bottom
 
         text_value: qsTr("Half")
-        font.pixelSize: input_volume.field.font.pixelSize
     }
     DefaultText {
         id: _right_item
@@ -112,6 +110,5 @@ RangeSlider {
         anchors.top: parent.bottom
 
         text_value: qsTr("Max")
-        font.pixelSize: input_volume.field.font.pixelSize
     }
 }

@@ -3,6 +3,9 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import QtWebEngine 1.8
+
+import QtGraphicalEffects 1.0
+
 import "../Exchange/Trade/"
 import "../Constants/" as Constants
 
@@ -10,19 +13,20 @@ Item {
     anchors.margins: 5
     readonly property string left_ticker: "KMD"
     readonly property string right_ticker: "BTC"
-//    component ItemBox: ItemBox {
-//        id: _control
-//    }
-    SplitView {
+
+    DefaultSplitView {
         anchors.fill: parent
         ItemBox {
+            id: box1
             title: "Third Box"
             defaultWidth: 300
-            maximumWidth: 400
             closable: false
+
             expandedHort: true
             color: 'transparent'
-            SplitView {
+
+            DefaultSplitView {
+                visible: parent.contentVisible
                 anchors.fill: parent
                 anchors.topMargin: 45
                 orientation: Qt.Vertical
@@ -37,6 +41,7 @@ Item {
                     }
                 }
                 ItemBox {
+                    id: bBox1
                     title: "WebView Box"
                     defaultHeight: 200
                     expandedVert: true
@@ -47,58 +52,47 @@ Item {
                     }
                 }
                 ItemBox {
+                    id: bBox2
                     title: "Orderbook Box"
                     defaultHeight: 200
                     DefaultRangeSlider {
+                        visible: parent.contentVisible
                         id: control
                         x: 10
                         y: 60
+                        smooth: true
+                    }
+                    FastBlur {
+                        anchors.fill: bBox2
+                        source: bBox2
+                        radius: 32
+                        DefaultText {
+                            anchors.centerIn: parent
+                            text: "Jemm"
+                        }
                     }
 
                 }
                 ItemBox {
+                    id: bBox3
                     title: "Orders & History Box"
                     defaultHeight: 200
-                    Flickable
-                    {
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        contentHeight: flow.height
-
-                        Flow
-                        {
-                            id: flow
-                            width: parent.width
-                            height: 800
-                            spacing: 10
-                            flow: Flow.TopToBottom
-                            Repeater
-                            {
-                                model: 10
-                                Rectangle
-                                {
-                                    height: index%2==0? 120: 80
-                                    width: 100
-                                    border.color: "black"
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
         ItemBox {
+            id: box2
             title: "OrderBook Box"
             defaultHeight: 350
+            defaultWidth: 400
             minimumWidth: 350
-
-
-
-
         }
+
         ItemBox {
+            id: box3
             title: "Form Box"
             defaultHeight: 250
+            maximumHeight: 250
         }
         handle: Item {
             implicitWidth: 10
@@ -112,6 +106,4 @@ Item {
         }
 
     }
-
-
 }

@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
@@ -29,15 +30,26 @@ Item {
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: 10
-        DefaultText {
+        Row {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 90
-            leftPadding: 2
-            text: parseFloat(Math.random(522222)).toFixed(8) + (isAsk? " RVN": " KMD")
-            font.pixelSize: Style.textSizeSmall1
-            color: isAsk? Style.colorRed : Style.colorGreen
+            leftPadding: -10
+            spacing: 5
+            Image {
+                source: General.coinIcon((isAsk? "RVN": "KMD"))
+                width: 20
+                height: 20
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            DefaultText {
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
+                text: parseFloat(Math.random(522222)).toFixed(8) + (isAsk? " RVN": " KMD")
+                font.pixelSize: Style.textSizeSmall1
 
+            }
         }
+
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
@@ -62,6 +74,7 @@ Item {
                     duration: 150
                 }
             }
+            color: isAsk? Style.colorRed : Style.colorGreen
             horizontalAlignment: Label.AlignRight
             font.pixelSize: Style.textSizeSmall1
             opacity: 1
@@ -82,4 +95,5 @@ Item {
     HorizontalLine {
         width: parent.width
     }
+
 }

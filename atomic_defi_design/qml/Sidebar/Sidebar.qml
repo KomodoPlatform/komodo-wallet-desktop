@@ -15,7 +15,7 @@ Item {
     x: -top_rect.radius
     width: expanded? 200 - x : 80 - x
     Behavior on width {
-        SmoothedAnimation {
+        NumberAnimation {
             duration: 200
         }
     }
@@ -144,6 +144,7 @@ Item {
         Separator {
             anchors.bottom: version_text.top
             anchors.bottomMargin: 6
+            width: parent.width-10
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
