@@ -24,6 +24,7 @@ Item {
                 spacing: 5
                 List {
                     isAsk: true
+                    isVertical: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }

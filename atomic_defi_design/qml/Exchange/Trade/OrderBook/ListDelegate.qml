@@ -82,7 +82,7 @@ Item {
                 color: isAsk? Style.colorRed : Style.colorGreen
                 width: 0
                 Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
-                opacity: 1.1-(index * 0.1)
+                opacity: !isVertical? 1.1-(index * 0.1) :  1-(1.1-(index * 0.1))
                 Behavior on width {
                     NumberAnimation {
                         duration: 1000
@@ -116,10 +116,23 @@ Item {
         hoverEnabled: true
         onClicked: {
             if(is_mine) return
-            isAsk? selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume) : selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume)
+
+            if((min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume){
+                _modal.open()
+            }
+            else {
+                isAsk? selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume) : selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume)
+            }
+
 
         }
     }
+    DefaultModal {
+        id: _modal
+        width: 300
+        height: 300
+    }
+
     Qaterial.ColorIcon {
         id: cancel_button_text
         property bool requested_cancel: false

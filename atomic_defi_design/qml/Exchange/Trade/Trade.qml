@@ -828,7 +828,7 @@ Item {
                                             if(checked) {
                                                 setVolume(max_volume)
                                                 API.app.trading_pg.multi_order_enabled = checked
-                                            }else {
+                                            } else {
                                                 API.app.trading_pg.multi_order_enabled = checked
                                             }
                                         }

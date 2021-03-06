@@ -9,6 +9,7 @@ import "../../../Constants/"
 Item {
     id: _control
     property bool isAsk
+    property bool isVertical: false
     Header {
         is_ask: isAsk
     }
@@ -21,8 +22,16 @@ Item {
         clip: true
         snapMode: ListView.SnapToItem
         headerPositioning: ListView.OverlayHeader
-        Component.onCompleted: {
-            positionViewAtEnd()
+        Timer {
+            id: _tm
+            interval: 2000
+            onTriggered: orderList.positionViewAtEnd()
+        }
+
+        onCountChanged : {
+            if(isVertical) {
+                _tm.start()
+            }
         }
 
         delegate: ListDelegate {
