@@ -16,6 +16,8 @@
 
 //! Project
 #include "atomicdex/models/qt.orderbook.model.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace
 {
@@ -32,8 +34,8 @@ namespace
 
 namespace atomic_dex
 {
-    orderbook_model::orderbook_model(kind orderbook_kind, QObject* parent) :
-        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_model_proxy(new orderbook_proxy_model(this))
+    orderbook_model::orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent) :
+        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_system_mgr(system_mgr), m_model_proxy(new orderbook_proxy_model(this))
     {
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
@@ -99,6 +101,33 @@ namespace atomic_dex
         case MinVolumeRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).min_volume)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).min_volume);
+        case EnoughFundsToPayMinVolume:
+        {
+            bool        i_have_enough_funds = true;
+            const auto& model_data          = (m_current_orderbook_kind == kind::asks ? m_model_data.asks : m_model_data.bids).at(index.row());
+            const auto  min_volume_f        = t_float_50(model_data.min_volume);
+            const auto& trading_pg          = m_system_mgr.get_system<trading_page>();
+            t_float_50  mm2_min_trade_vol(trading_pg.get_mm2_min_trade_vol().toStdString());
+            t_float_50  taker_vol((m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol()
+                                                                          : trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol())
+                                     .toJsonObject()["decimal"]
+                                     .toString()
+                                     .toStdString());
+            //! If taker vol > min_volume_f we can take this order
+            i_have_enough_funds = min_volume_f > 0 && taker_vol > min_volume_f;
+            /*SPDLOG_INFO(
+                "i_have_enough_funds = {} coin: {}, min_volume: {}, taker_vol: {}, mm2_min_trade_vol: {}",
+                i_have_enough_funds,
+                model_data.coin,
+                model_data.min_volume,
+                taker_vol.str(),
+                mm2_min_trade_vol.str());*/
+            /*if (min_volume_f == mm2_min_trade_vol)
+            {
+                i_have_enough_funds = true;
+            }*/
+            return i_have_enough_funds;
+        }
         }
     }
 
@@ -148,28 +177,31 @@ namespace atomic_dex
         case MinVolumeRole:
             order.min_volume = value.toString().toStdString();
             break;
+        case EnoughFundsToPayMinVolume:
+            break;
         }
         emit dataChanged(index, index, {role});
         return true;
     }
 
-        QHash<int, QByteArray>
-        orderbook_model::roleNames() const
-        {
-            return {
-                {PriceRole, "price"},
-                {CoinRole, "coin"},
-                {QuantityRole, "quantity"},
-                {TotalRole, "total"},
-                {UUIDRole, "uuid"},
-                {IsMineRole, "is_mine"},
-                {PriceDenomRole, "price_denom"},
-                {PriceNumerRole, "price_numer"},
-                {QuantityDenomRole, "quantity_denom"},
-                {QuantityNumerRole, "quantity_numer"},
-                {PercentDepthRole, "depth"},
-                {MinVolumeRole, "min_volume"}};
-        }
+    QHash<int, QByteArray>
+    orderbook_model::roleNames() const
+    {
+        return {
+            {PriceRole, "price"},
+            {CoinRole, "coin"},
+            {QuantityRole, "quantity"},
+            {TotalRole, "total"},
+            {UUIDRole, "uuid"},
+            {IsMineRole, "is_mine"},
+            {PriceDenomRole, "price_denom"},
+            {PriceNumerRole, "price_numer"},
+            {QuantityDenomRole, "quantity_denom"},
+            {QuantityNumerRole, "quantity_numer"},
+            {PercentDepthRole, "depth"},
+            {MinVolumeRole, "min_volume"},
+            {EnoughFundsToPayMinVolume, "enough_funds_to_pay_min_volume"}};
+    }
 
     void
     orderbook_model::reset_orderbook(const t_orderbook_answer& orderbook) noexcept
@@ -224,6 +256,8 @@ namespace atomic_dex
             update_value(OrderbookRoles::QuantityRole, QString::fromStdString(order.maxvolume), idx, *this);
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
+            update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
+            //this->data(idx, OrderbookRoles::EnoughFundsToPayMinVolume);
         }
     }
 

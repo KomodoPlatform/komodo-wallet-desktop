@@ -55,6 +55,8 @@ namespace atomic_dex
             break;
         case orderbook_model::MinVolumeRole:
             break;
+        case orderbook_model::EnoughFundsToPayMinVolume:
+            break;
         }
         return true;
     }

@@ -53,10 +53,11 @@ namespace atomic_dex
             QuantityDenomRole,
             QuantityNumerRole,
             PercentDepthRole,
-            MinVolumeRole
+            MinVolumeRole,
+            EnoughFundsToPayMinVolume
         };
 
-        orderbook_model(kind orderbook_kind, QObject* parent = nullptr);
+        orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent = nullptr);
         ~orderbook_model() noexcept final = default;
 
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
@@ -80,6 +81,7 @@ namespace atomic_dex
 
       private:
         kind                            m_current_orderbook_kind{kind::asks};
+        ag::ecs::system_manager&        m_system_mgr;
         t_orderbook_answer              m_model_data;
         std::unordered_set<std::string> m_orders_id_registry;
         orderbook_proxy_model*          m_model_proxy;

@@ -24,9 +24,11 @@
 namespace atomic_dex
 {
     qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), m_system_manager(system_manager), m_asks(new orderbook_model(orderbook_model::kind::asks, this)),
-        m_bids(new orderbook_model(orderbook_model::kind::bids, this))
+        QObject(parent), m_system_manager(system_manager),
+        m_asks(new orderbook_model(orderbook_model::kind::asks, system_manager, this)),
+        m_bids(new orderbook_model(orderbook_model::kind::bids, system_manager, this))
     {
+
     }
 
     atomic_dex::orderbook_model*
