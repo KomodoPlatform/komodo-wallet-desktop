@@ -70,7 +70,7 @@ FloatingBackground {
 
                     field.left_text: qsTr("Price")
                     field.right_text: right_ticker
-
+                    enabled: !(API.app.trading_pg.preffered_order.price!==undefined)
                     field.text: backend_price
                     field.onTextChanged: setPrice(field.text)
                 }

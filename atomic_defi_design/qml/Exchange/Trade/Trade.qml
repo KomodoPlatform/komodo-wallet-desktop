@@ -693,6 +693,38 @@ Item {
                             anchors.fill: parent
                             anchors.topMargin: 5
                             spacing: 10
+                            Item {
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: 40
+                                visible: API.app.trading_pg.preffered_order.price!==undefined
+                                Rectangle {
+                                    width: parent.width-20
+                                    height: 40
+                                    color: 'transparent'
+                                    radius: 8
+                                    border.color: Style.colorRed
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    y: 5
+                                    DefaultText {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        leftPadding: 15
+                                        color: Style.colorRed
+                                        text: "Order Selected"
+                                    }
+                                    Qaterial.FlatButton {
+                                        foregroundColor: Style.colorRed
+                                        icon.source: Qaterial.Icons.close
+                                        anchors.right: parent.right
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        height: 40
+                                        width: 40
+                                        anchors.rightMargin: 15
+                                        onClicked: API.app.trading_pg.reset_order()
+                                    }
+                                }
+
+
+                            }
 
                             OrderForm {
                                 id: form_base

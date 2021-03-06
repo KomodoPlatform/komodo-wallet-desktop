@@ -117,6 +117,7 @@ Item {
         onClicked: {
             if(is_mine) return
             isAsk? selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume) : selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume)
+
         }
     }
     Qaterial.ColorIcon {
