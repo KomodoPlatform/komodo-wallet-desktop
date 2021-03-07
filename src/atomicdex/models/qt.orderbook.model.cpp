@@ -121,9 +121,9 @@ namespace atomic_dex
             t_float_50 taker_vol(taker_vol_std);
             //! If taker vol > min_volume_f we can take this order
             i_have_enough_funds = min_volume_f > 0 && taker_vol > min_volume_f;
-            /*SPDLOG_INFO(
-                "i_have_enough_funds = {} coin: {}, min_volume: {}, taker_vol: {}, mm2_min_trade_vol: {}", i_have_enough_funds, model_data.coin,
-                model_data.min_volume, taker_vol.str(), mm2_min_trade_vol.str());*/
+            //SPDLOG_INFO(
+            //    "i_have_enough_funds = {} coin: {}, min_volume: {}, taker_vol: {}, mm2_min_trade_vol: {}", i_have_enough_funds, model_data.coin,
+            //    model_data.min_volume, taker_vol.str(), mm2_min_trade_vol.str());
             return i_have_enough_funds;
         }
         }
