@@ -13,6 +13,7 @@ Item {
     property bool auto_set_size: true
     implicitWidth: auto_set_size ? inner_space.width : 0
     implicitHeight: auto_set_size ? inner_space.height : 0
+    property color bottomBorderColor: Style.colorRectangleBorderGradient1
 
     Item {
         id: rect_with_shadow
@@ -63,7 +64,7 @@ Item {
             }
             GradientStop {
                position: 0.65
-               color: Style.colorRectangleBorderGradient1 //Qaterial.Colors.blueA400//
+               color: control.bottomBorderColor //Qaterial.Colors.blueA400//
             }
         }
     }

@@ -16,7 +16,15 @@ BasicModal {
     onOpened: reset()
 
     function reset() {
+        API.app.trading_pg.determine_fees()
 
+    }
+    Connections {
+        target: API.app.trading_pg
+        function onFeesChanged() {
+            console.log("changed")
+            log_area.append(JSON.stringify(API.app.trading_pg.fees))
+        }
     }
 
     ModalContent {

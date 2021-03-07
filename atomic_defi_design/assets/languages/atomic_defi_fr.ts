@@ -709,69 +709,69 @@
 <context>
     <name>ConfirmTradeModal</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="23"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="31"/>
         <source>Confirm Exchange Details</source>
         <translation>Détails de la confirmation de l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="71"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="79"/>
         <source>This swap request can not be undone and is a final event!</source>
         <translation>La requête de ce swap ne peut pas être annulé, c&apos;est irréversible !</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="103"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="111"/>
         <source>Security configuration</source>
         <translation>Configuration de la sécurité</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="109"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="117"/>
         <source>dPoW protected</source>
         <translation>dPoW protégé</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="116"/>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="149"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="124"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="157"/>
         <source>Read more about dPoW</source>
         <translation>En savoir plus sur dPoW</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="126"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="134"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation>Utiliser les paramètres de protection personnalisés pour les transactions%1 entrantes</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="143"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="151"/>
         <source>Enable Komodo dPoW security</source>
         <translation>Activer la sécurité de Komodo dPoW</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="110"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="118"/>
         <source>%1 confirmations for incoming %2 transactions</source>
         <translation>Il y a %1 confirmations pour les transactions entrantes du ticker %2</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="77"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="85"/>
         <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
         <translation>Cette transaction peut prendre jusqu&apos;à 60 minutes - NE fermez PAS cette application !</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="167"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="175"/>
         <source>Required Confirmations</source>
         <translation>Confirmations requises</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="203"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="211"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation>Attention, ce swap atomique n&apos;est pas protégé par dPoW !</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="216"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="224"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="222"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="230"/>
         <source>Confirm</source>
         <translation>Confirmer</translation>
     </message>
@@ -2820,6 +2820,59 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Components/Toast.qml" line="51"/>
         <source>Click here to see the details</source>
         <translation>Cliquez ici pour voir les détails</translation>
+    </message>
+</context>
+<context>
+    <name>Trade</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="202"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="211"/>
+        <source>Placed the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="418"/>
+        <source>Exchange Rates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="424"/>
+        <source>Orders</source>
+        <translation type="unfinished">Ordres</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="430"/>
+        <source>history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="776"/>
+        <source>Start Swap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="840"/>
+        <source>Multi-Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="859"/>
+        <source>Select additional assets for multi-order creation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="867"/>
+        <source>Same funds will be used until an order matches.</source>
+        <translation type="unfinished">Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="871"/>
+        <source>Submit Trade</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

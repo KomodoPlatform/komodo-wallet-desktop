@@ -28,10 +28,10 @@ Item {
                 width: parent.width
                 DefaultText {
                     color: Style.colorWhite1
-                    text: "TOTAL "+API.app.settings_pg.current_fiat+" "+General.cex_icon
+                    text:"Total "+API.app.settings_pg.current_fiat+" "+General.cex_icon
                     font.pixelSize:  Style.textSizeSmall5
-                    Layout.preferredWidth: 90
-                    font.weight: Font.Light
+                    Layout.preferredWidth: 120
+                    font.weight: Font.DemiBold
                     CexInfoTrigger {}
                 }
                 Item {
@@ -57,10 +57,10 @@ Item {
                 width: parent.width
                 DefaultText {
                     color: Style.colorWhite1
-                    text: "TOTAL "+right_ticker
+                    text:  "Total "+right_ticker
                     font.pixelSize:  Style.textSizeSmall5
-                    Layout.preferredWidth: 90
-                    font.weight: Font.Light
+                    Layout.preferredWidth: 120
+                    font.weight: Font.DemiBold
 
                 }
                 Item {

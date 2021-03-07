@@ -618,6 +618,7 @@ Item {
                         hideHeader: true
                         //clip: true
                         visible: true
+                        bottomBorderColor: sell_mode? Style.colorGreen : Style.colorRed
                         TotalView {}
                     }
                     Item {
@@ -625,7 +626,7 @@ Item {
                         SplitView.preferredHeight: 30
                         SplitView.maximumHeight: 35
                         Row {
-                            width: parent.width - 120
+                            width: parent.width - 100
                             anchors.centerIn: parent
                             Rectangle {
                                 width: (parent.width / 2)
@@ -654,7 +655,7 @@ Item {
                                     anchors.centerIn: parent
                                     font.pixelSize: Style.textSizeSmall5
                                     opacity: !sell_mode ? 1 : .5
-                                    text: "Buy"
+                                    text: "Buy "+left_ticker
                                 }
                                 DefaultMouseArea {
                                     anchors.fill: parent
@@ -688,7 +689,7 @@ Item {
                                     anchors.centerIn: parent
                                     font.pixelSize: Style.textSizeSmall5
                                     opacity: sell_mode ? 1 : .5
-                                    text: "Sell"
+                                    text: "Sell "+left_ticker
                                 }
                                 DefaultMouseArea {
                                     anchors.fill: parent
