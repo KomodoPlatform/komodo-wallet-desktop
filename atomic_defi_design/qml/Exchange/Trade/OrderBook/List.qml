@@ -20,8 +20,7 @@ Item {
         anchors.fill: parent
         model: isAsk? API.app.trading_pg.orderbook.asks.proxy_mdl : API.app.trading_pg.orderbook.bids.proxy_mdl
         clip: true
-        snapMode: ListView.SnapToItem
-        headerPositioning: ListView.OverlayHeader
+        reuseItems: true
         Timer {
             id: _tm
             interval: 2000

@@ -11,8 +11,6 @@ import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 
-
-
 import "../../Components"
 import "../../Constants"
 import "../../Wallet"
@@ -45,21 +43,24 @@ Item {
     Component.onDestruction: {
         API.app.trading_pg.on_gui_leave_dex()
     }
-    property bool isUltraLarge: width>1400
-    onIsUltraLargeChanged:  {
-        if(isUltraLarge) {
-            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(0, Qt.DescendingOrder)
-        }else {
-            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(0, Qt.AscendingOrder)
+    property bool isUltraLarge: width > 1400
+    onIsUltraLargeChanged: {
+        if (isUltraLarge) {
+            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
+                        0, Qt.DescendingOrder)
+        } else {
+            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
+                        0, Qt.AscendingOrder)
         }
     }
 
-    readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
+    readonly property bool block_everything: swap_cooldown.running
+                                             || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
     readonly property alias multi_order_enabled: multi_order_switch.checked
 
-    signal prepareMultiOrder()
+    signal prepareMultiOrder
     property bool multi_order_values_are_valid: true
 
     readonly property string non_null_price: backend_price === '' ? '0' : backend_price
@@ -77,7 +78,8 @@ Item {
         API.app.trading_pg.volume = v
     }
 
-    property bool sell_mode: API.app.trading_pg.market_mode.toString()==="Sell"
+    property bool sell_mode: API.app.trading_pg.market_mode.toString(
+                                 ) === "Sell"
     function setMarketMode(v) {
         API.app.trading_pg.market_mode = v
     }
@@ -91,25 +93,24 @@ Item {
         interval: 1000
     }
 
-    property var onOrderSuccess: () => {
-        General.prevent_coin_disabling.restart()
-        tabView.currentIndex = 1
-        multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
-    }
+    property var onOrderSuccess: function (){
+    General.prevent_coin_disabling.restart()
+    tabView.currentIndex = 1
+    multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
+}
 
     onSell_modeChanged: {
         reset()
     }
 
     function inCurrentPage() {
-        return  exchange.inCurrentPage() &&
-                exchange.current_page === idx_exchange_trade
+        return exchange.inCurrentPage()
+                && exchange.current_page === idx_exchange_trade
     }
 
     function reset() {
         //API.app.trading_pg.multi_order_enabled = false
         multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
-
     }
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
@@ -117,7 +118,15 @@ Item {
     function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
-        API.app.trading_pg.preffered_order = { coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer }
+        API.app.trading_pg.preffered_order = {
+            "coin": coin,
+            "price": price,
+            "quantity": quantity,
+            "price_denom": price_denom,
+            "price_numer": price_numer,
+            "quantity_denom": quantity_denom,
+            "quantity_numer": quantity_numer
+        }
 
         form_base.focusVolumeField()
     }
@@ -127,23 +136,24 @@ Item {
     readonly property var curr_fee_info: API.app.trading_pg.fees
 
     // Trade
-    function onOpened(ticker="") {
-        if(!General.initialized_orderbook_pair) {
+    function onOpened(ticker) {
+        if (!General.initialized_orderbook_pair) {
             General.initialized_orderbook_pair = true
-            API.app.trading_pg.set_current_orderbook(General.default_base, General.default_rel)
+            API.app.trading_pg.set_current_orderbook(General.default_base,
+                                                     General.default_rel)
         }
 
         reset()
         setPair(true, ticker)
         console.log("HERE")
-        console.log(base_ticker,rel_ticker)
+        console.log(base_ticker, rel_ticker)
         app.pairChanged(base_ticker, rel_ticker)
     }
 
     function setPair(is_left_side, changed_ticker) {
         swap_cooldown.restart()
 
-        if(API.app.trading_pg.set_pair(is_left_side, changed_ticker))
+        if (API.app.trading_pg.set_pair(is_left_side, changed_ticker))
             pairChanged(base_ticker, rel_ticker)
     }
 
@@ -152,26 +162,26 @@ Item {
         let nota = ""
         let confs = ""
 
-        if(options.enable_custom_config) {
-            if(options.is_dpow_configurable) {
+        if (options.enable_custom_config) {
+            if (options.is_dpow_configurable) {
                 nota = options.enable_dpow_confs ? "1" : "0"
             }
 
-            if(nota !== "1") {
+            if (nota !== "1") {
                 confs = options.required_confirmation_count.toString()
             }
-        }
-        else {
-            if(General.exists(default_config.requires_notarization)) {
+        } else {
+            if (General.exists(default_config.requires_notarization)) {
                 nota = default_config.requires_notarization ? "1" : "0"
             }
 
-            if(nota !== "1" && General.exists(default_config.required_confirmations)) {
+            if (nota !== "1" && General.exists(
+                        default_config.required_confirmations)) {
                 confs = default_config.required_confirmations.toString()
             }
         }
 
-        if(sell_mode)
+        if (sell_mode)
             API.app.trading_pg.place_sell_order(nota, confs)
         else
             API.app.trading_pg.place_buy_order(nota, confs)
@@ -181,21 +191,25 @@ Item {
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
     onBuy_sell_rpc_busyChanged: {
-        if(buy_sell_rpc_busy) return
+        if (buy_sell_rpc_busy)
+            return
 
         const response = General.clone(buy_sell_last_rpc_data)
 
-        if(response.error_code) {
+        if (response.error_code) {
             confirm_trade_modal.close()
 
-            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, response.error_message)
+            toast.show(qsTr("Failed to place the order"),
+                       General.time_toast_important_error,
+                       response.error_message)
 
             return
-        }
-        else if(response.result && response.result.uuid) { // Make sure there is information
+        } else if (response.result && response.result.uuid) {
+            // Make sure there is information
             confirm_trade_modal.close()
 
-            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(response.result), false)
+            toast.show(qsTr("Placed the order"), General.time_toast_basic_info,
+                       General.prettifyJSON(response.result), false)
 
             General.prevent_coin_disabling.restart()
             tabView.currentIndex = 1
@@ -212,12 +226,12 @@ Item {
         anchors.leftMargin: 10
         anchors.fill: parent
         Component.onCompleted: splitView.restoreState(settings.splitView)
-         Component.onDestruction: settings.splitView = splitView.saveState()
+        Component.onDestruction: settings.splitView = splitView.saveState()
 
-         Settings {
-             id: settings
-             property var splitView
-         }
+        Settings {
+            id: settings
+            property var splitView
+        }
         SplitView {
             id: splitView
             Layout.fillWidth: true
@@ -302,7 +316,7 @@ Item {
                                 anchors.fill: parent
                                 hoverEnabled: true
                                 onClicked: {
-                                    if(!block_everything)
+                                    if (!block_everything)
                                         setPair(true, right_ticker)
                                 }
                             }
@@ -338,7 +352,6 @@ Item {
 
                         visible: !isUltraLarge
 
-
                         OrderBook.Horizontal {
                             anchors.topMargin: 40
                             anchors.fill: parent
@@ -348,13 +361,13 @@ Item {
                     }
                     ItemBox {
                         id: optionBox
-                        defaultHeight: tabView.currentIndex===0? 200 : 400
+                        defaultHeight: tabView.currentIndex === 0 ? 200 : 400
                         Connections {
                             target: tabView
-                            function onCurrentIndexChanged(){
-                                if(tabView.currentIndex!==0) {
+                            function onCurrentIndexChanged() {
+                                if (tabView.currentIndex !== 0) {
                                     optionBox.setHeight(400)
-                                }else {
+                                } else {
                                     optionBox.setHeight(200)
                                 }
                             }
@@ -383,44 +396,47 @@ Item {
                                 }
                                 onCurrentIndexChanged: {
                                     swipeView.pop()
-                                    switch(currentIndex) {
-                                        case 0: swipeView.push(priceLine)
-                                            break;
-                                        case 1: swipeView.push(order_component)
-                                            break;
-                                        case 2: swipeView.push(history_component)
-                                            break;
-                                        default: priceLine
+                                    switch (currentIndex) {
+                                    case 0:
+                                        swipeView.push(priceLine)
+                                        break
+                                    case 1:
+                                        swipeView.push(order_component)
+                                        break
+                                    case 2:
+                                        swipeView.push(history_component)
+                                        break
+                                    default:
+                                        priceLine
                                     }
-
                                 }
 
-                                y:5
+                                y: 5
                                 leftPadding: 15
                                 Qaterial.TabButton {
                                     width: 150
                                     text: qsTr("Exchange Rates")
-                                    foregroundColor: CheckBox? Qaterial.Style.buttonAccentColor : Style.colorWhite1
-                                    opacity: checked? 1 : .6
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    opacity: checked ? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("Orders")
-                                    foregroundColor: CheckBox? Qaterial.Style.buttonAccentColor : Style.colorWhite1
-                                    opacity: checked? 1 : .6
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    opacity: checked ? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("history")
-                                    foregroundColor: CheckBox? Qaterial.Style.buttonAccentColor : Style.colorWhite1
-                                    opacity: checked? 1 : .6
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    opacity: checked ? 1 : .6
                                 }
                             }
                             Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 //radius: 4
                                 width: parent.width
-                                height: parent.height-(tabView.height+40)
+                                height: parent.height - (tabView.height + 40)
                                 //verticalShadow: false
                                 StackView {
                                     id: swipeView
@@ -435,14 +451,12 @@ Item {
                                         id: priceLine
                                         PriceLine {
                                             id: price_line_obj
-
                                         }
                                     }
                                     Component {
                                         id: order_component
                                         OrdersView.OrdersPage {
                                             clip: true
-
                                         }
                                     }
                                     Component {
@@ -456,7 +470,6 @@ Item {
                             }
                         }
                     }
-
                 }
             }
 
@@ -530,10 +543,10 @@ Item {
                         }
                         FastBlur {
 
-                             anchors.fill: best_order_list
-                             source: best_order_list
-                             radius: 35
-                         }
+                            anchors.fill: best_order_list
+                            source: best_order_list
+                            radius: 35
+                        }
                         Rectangle {
                             anchors.fill: parent
                             color: parent.color
@@ -561,7 +574,7 @@ Item {
                                     running: false
                                     repeat: true
                                     interval: 1500
-                                    onTriggered: parent.rotation+=180
+                                    onTriggered: parent.rotation += 180
                                 }
                             }
                             DefaultText {
@@ -605,23 +618,22 @@ Item {
                         hideHeader: true
                         //clip: true
                         visible: true
-                        TotalView {
-
-                        }
+                        TotalView {}
                     }
                     Item {
                         SplitView.fillWidth: true
                         SplitView.preferredHeight: 30
                         SplitView.maximumHeight: 35
                         Row {
-                            width: parent.width-120
+                            width: parent.width - 120
                             anchors.centerIn: parent
                             Rectangle {
-                                width: (parent.width/2)
+                                width: (parent.width / 2)
                                 height: 30
                                 radius: 8
-                                color: !sell_mode? Qt.darker(Style.colorGreen) : Style.colorTheme7
-                                border.color: !sell_mode? Style.colorGreen : Style.colorWhite9
+                                color: !sell_mode ? Qt.darker(
+                                                        Style.colorGreen) : Style.colorTheme7
+                                border.color: !sell_mode ? Style.colorGreen : Style.colorWhite9
                                 Rectangle {
                                     anchors.right: parent.right
                                     color: parent.color
@@ -633,7 +645,7 @@ Item {
                                     Rectangle {
                                         anchors.left: parent.left
                                         color: parent.color
-                                        height: parent.height-(parent.border.width*2)
+                                        height: parent.height - (parent.border.width * 2)
                                         anchors.verticalCenter: parent.verticalCenter
                                         width: 2
                                     }
@@ -641,9 +653,8 @@ Item {
                                 DefaultText {
                                     anchors.centerIn: parent
                                     font.pixelSize: Style.textSizeSmall5
-                                    opacity: !sell_mode? 1 : .5
+                                    opacity: !sell_mode ? 1 : .5
                                     text: "Buy"
-
                                 }
                                 DefaultMouseArea {
                                     anchors.fill: parent
@@ -652,11 +663,12 @@ Item {
                                 }
                             }
                             Rectangle {
-                                width: (parent.width/2)
+                                width: (parent.width / 2)
                                 height: 30
                                 radius: 8
-                                color: sell_mode? Qt.darker(Style.colorRed) : Style.colorTheme7
-                                border.color: sell_mode? Style.colorRed : Style.colorWhite9
+                                color: sell_mode ? Qt.darker(
+                                                       Style.colorRed) : Style.colorTheme7
+                                border.color: sell_mode ? Style.colorRed : Style.colorWhite9
                                 Rectangle {
                                     anchors.left: parent.left
                                     color: parent.color
@@ -667,7 +679,7 @@ Item {
                                     Rectangle {
                                         anchors.right: parent.right
                                         color: parent.color
-                                        height: parent.height-(parent.border.width*2)
+                                        height: parent.height - (parent.border.width * 2)
                                         anchors.verticalCenter: parent.verticalCenter
                                         width: 2
                                     }
@@ -675,7 +687,7 @@ Item {
                                 DefaultText {
                                     anchors.centerIn: parent
                                     font.pixelSize: Style.textSizeSmall5
-                                    opacity: sell_mode? 1 : .5
+                                    opacity: sell_mode ? 1 : .5
                                     text: "Sell"
                                 }
                                 DefaultMouseArea {
@@ -698,9 +710,9 @@ Item {
                             Item {
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: 40
-                                visible: API.app.trading_pg.preffered_order.price!==undefined
+                                visible: API.app.trading_pg.preffered_order.price !== undefined
                                 Rectangle {
-                                    width: parent.width-20
+                                    width: parent.width - 20
                                     height: 40
                                     color: 'transparent'
                                     radius: 8
@@ -724,8 +736,6 @@ Item {
                                         onClicked: API.app.trading_pg.reset_order()
                                     }
                                 }
-
-
                             }
 
                             OrderForm {
@@ -757,14 +767,15 @@ Item {
 
                                     // Trade button
                                     DefaultButton {
-                                        width: parent.width-20
+                                        width: parent.width - 20
                                         anchors.horizontalCenter: parent.horizontalCenter
 
                                         button_type: sell_mode ? "danger" : "primary"
 
                                         text: qsTr("Start Swap")
                                         font.weight: Font.Medium
-                                        enabled: !multi_order_enabled && form_base.can_submit_trade
+                                        enabled: !multi_order_enabled
+                                                 && form_base.can_submit_trade
                                         onClicked: confirm_trade_modal.open()
                                     }
 
@@ -787,14 +798,16 @@ Item {
                                             font.pixelSize: Style.textSizeSmall4
                                             color: Style.colorRed
 
-                                            text_value: General.getTradingError(last_trading_error, curr_fee_info, base_ticker, rel_ticker)
+                                            text_value: General.getTradingError(
+                                                            last_trading_error,
+                                                            curr_fee_info,
+                                                            base_ticker,
+                                                            rel_ticker)
                                         }
                                     }
                                 }
                             }
-                            Item {
-
-                            }
+                            Item {}
                         }
                     }
                     ItemBox {
@@ -811,10 +824,10 @@ Item {
                             Item {
 
                                 width: parent.width
-                                height: multi_order_swith_col.height+10
+                                height: multi_order_swith_col.height + 10
                                 Column {
                                     id: multi_order_swith_col
-                                    width: parent.width-10
+                                    width: parent.width - 10
                                     padding: 5
                                     spacing: 10
                                     anchors.horizontalCenter: parent.horizontalCenter
@@ -824,11 +837,13 @@ Item {
                                         Layout.fillWidth: true
 
                                         text: qsTr("Multi-Order")
-                                        enabled: !block_everything && (form_base.can_submit_trade || checked)
+                                        enabled: !block_everything
+                                                 && (form_base.can_submit_trade
+                                                     || checked)
 
                                         checked: API.app.trading_pg.multi_order_enabled
                                         onCheckedChanged: {
-                                            if(checked) {
+                                            if (checked) {
                                                 setVolume(max_volume)
                                                 API.app.trading_pg.multi_order_enabled = checked
                                             } else {
@@ -838,14 +853,14 @@ Item {
                                     }
 
                                     DefaultText {
-                                        width: parent.width-20
+                                        width: parent.width - 20
                                         wrapMode: Label.Wrap
                                         text_value: qsTr("Select additional assets for multi-order creation.")
                                         font.pixelSize: Style.textSizeSmall2
                                     }
 
                                     DefaultText {
-                                        width: parent.width-10
+                                        width: parent.width - 10
                                         wrapMode: Label.Wrap
                                         font.pixelSize: Style.textSizeSmall2
                                         text_value: qsTr("Same funds will be used until an order matches.")
@@ -853,13 +868,14 @@ Item {
 
                                     DefaultButton {
                                         text: qsTr("Submit Trade")
-                                        width: parent.width-10
+                                        width: parent.width - 10
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        enabled: multi_order_enabled && form_base.can_submit_trade
+                                        enabled: multi_order_enabled
+                                                 && form_base.can_submit_trade
                                         onClicked: {
                                             multi_order_values_are_valid = true
                                             prepareMultiOrder()
-                                            if(multi_order_values_are_valid)
+                                            if (multi_order_values_are_valid)
                                                 confirm_multi_order_trade_modal.open()
                                         }
                                     }

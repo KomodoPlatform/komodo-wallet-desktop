@@ -115,18 +115,10 @@ Item {
         id: mouse_are
         anchors.fill: parent
         hoverEnabled: true
-        onContainsMouseChanged: {
-            app.appendLog("[ORDER INFO]: "+JSON.stringify([coin,
-                               price,
-                               quantity,
-                               min_volume,
-                               API.app.trading_pg.orderbook.base_max_taker_vol.decimal,
-                               API.app.trading_pg.mm2_min_trade_vol]))
-        }
         onClicked: {
             if(is_mine) return
 
-            if((min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume){
+            if(!enough_funds_to_pay_min_volume ){
 
             }
             else {
