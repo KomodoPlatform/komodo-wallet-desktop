@@ -2,6 +2,8 @@
 // Created by roman on 2/22/2021.
 //
 
+#include <iostream>
+
 //! Cred
 #include <wincred.h>
 
@@ -16,82 +18,58 @@ namespace antara::gaming::core::details
     void
     evaluate_authentication(const std::string& auth_reason, std::function<void(bool)> handler)
     {
-        std::wstring wreason(auth_reason.begin(), auth_reason.end());
+        std::wstring wauth_reason{auth_reason.begin(), auth_reason.end()};
         std::size_t  max_nb_try = 3;
         CREDUI_INFOW credui     = {
-            .cbSize = sizeof(CREDUI_INFOW), .hwndParent = nullptr, .pszMessageText = L"", .pszCaptionText = wreason.c_str(), .hbmBanner = nullptr};
+            .cbSize = sizeof(CREDUI_INFOW), .hwndParent = nullptr, .pszMessageText = L"", .pszCaptionText = wauth_reason.c_str(), .hbmBanner = nullptr};
 
-        ULONG       auth_package    = 0;
-        ULONG       out_cred_size   = 0;
-        LPVOID      out_cred_buffer = nullptr;
-        BOOL        save            = false;
-        DWORD       err             = 0;
-        std::size_t current_nb_try  = 0;
-        bool        need_to_re_ask  = false;
+        ULONG       auth_package       = 0;
+        ULONG       out_cred_buff_size = 0;
+        LPVOID      out_cred_buffer    = nullptr;
+        BOOL        save;
+        DWORD       err                = 0;
+        std::size_t current_nb_try     = 0;
 
         do {
             current_nb_try++;
 
-            if (CredUIPromptForWindowsCredentialsW(&credui, err, &auth_package, nullptr, 0, &out_cred_buffer, &out_cred_size, &save, CREDUIWIN_ENUMERATE_ADMINS)
-
+            // Gets auth buffer
+            if (CredUIPromptForWindowsCredentialsW(&credui, err, &auth_package, nullptr, 0, &out_cred_buffer, &out_cred_buff_size, &save, CREDUIWIN_ENUMERATE_CURRENT_USER)
                 != ERROR_SUCCESS)
             {
                 handler(false);
                 return;
             }
 
+            WCHAR username[CREDUI_MAX_USERNAME_LENGTH * sizeof(WCHAR)] = { 0 };
+            WCHAR password[CREDUI_MAX_PASSWORD_LENGTH * sizeof(WCHAR)] = { 0 };
+            DWORD username_length = CREDUI_MAX_USERNAME_LENGTH;
+            DWORD password_length = CREDUI_MAX_PASSWORD_LENGTH;
+            if (CredUnPackAuthenticationBufferW(CRED_PACK_PROTECTED_CREDENTIALS,
+                                                out_cred_buffer, out_cred_buff_size,
+                                                username, &username_length,
+                                                NULL, NULL,
+                                                password, &password_length) == TRUE)
+            {
+                SecureZeroMemory(out_cred_buffer, out_cred_buff_size);
 
-            ULONG        cch_username   = 0;
-            ULONG        cch_password   = 0;
-            ULONG        cch_domain     = 0;
-            ULONG        cch_need       = 0;
-            ULONG        cch_allocated  = 0;
-            static UCHAR guz            = 0;
-            auto         stack          = (PWSTR)alloca(guz);
-            PWSTR        sz_user_name   = nullptr;
-            PWSTR        sz_password    = nullptr;
-            PWSTR        sz_domain_name = nullptr;
+                HANDLE user_token{};
 
-            BOOL ret;
-
-            do {
-                cch_need = cch_username + cch_password + cch_domain;
-                if (cch_allocated < cch_need)
+                // Removes domain from username
+                std::wstring purified_username{username};
+                if (auto pos = purified_username.find(L'\\'); pos != std::wstring::npos)
                 {
-                    sz_user_name   = (PWSTR)alloca((cch_need - cch_allocated) * sizeof(WCHAR));
-                    cch_allocated  = (ULONG)(stack - sz_user_name);
-                    sz_password    = sz_user_name + cch_username;
-                    sz_domain_name = sz_password + cch_password;
+                    purified_username.erase(0, pos + 1);
                 }
 
-                ret = CredUnPackAuthenticationBufferW(
-                    CRED_PACK_PROTECTED_CREDENTIALS, out_cred_buffer, out_cred_size, sz_user_name, &cch_username, sz_domain_name, &cch_domain, sz_password,
-                    &cch_password);
-
-            } while (!ret && GetLastError() == ERROR_INSUFFICIENT_BUFFER);
-
-
-            SecureZeroMemory(out_cred_buffer, out_cred_size);
-            CoTaskMemFree(out_cred_buffer);
-
-            HANDLE handle = nullptr;
-
-            if (LogonUserW(sz_user_name, sz_domain_name, sz_password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, &handle))
-            {
-                CloseHandle(handle);
-                handler(true);
-                return;
+                if (LogonUserW(purified_username.c_str(), NULL, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, &user_token) != 0)
+                {
+                    handler(true);
+                    return;
+                }
+                std::cout << "Win32 evaluate_authentication error: " << GetLastError() << std::endl;
             }
-
-            else
-            {
-                err            = ERROR_LOGON_FAILURE;
-                need_to_re_ask = true;
-            }
-
-
-        } while (need_to_re_ask && (current_nb_try < max_nb_try));
-
+        } while (current_nb_try < max_nb_try);
         handler(false);
     }
 } // namespace antara::gaming::core::details
