@@ -105,27 +105,25 @@ namespace atomic_dex
         {
             bool        i_have_enough_funds = true;
             const auto& model_data          = (m_current_orderbook_kind == kind::asks ? m_model_data.asks : m_model_data.bids).at(index.row());
-            const auto  min_volume_f        = t_float_50(model_data.min_volume);
-            const auto& trading_pg          = m_system_mgr.get_system<trading_page>();
-            t_float_50  mm2_min_trade_vol(trading_pg.get_mm2_min_trade_vol().toStdString());
-            t_float_50  taker_vol((m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol()
-                                                                          : trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol())
+
+            const auto  min_volume_f  = t_float_50(model_data.min_volume);
+            const auto& trading_pg    = m_system_mgr.get_system<trading_page>();
+            auto        taker_vol_std = (m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol()
+                                                                                : trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol())
                                      .toJsonObject()["decimal"]
                                      .toString()
-                                     .toStdString());
+                                     .toStdString();
+            if (taker_vol_std.empty())
+            {
+                taker_vol_std = "0";
+            }
+            t_float_50 mm2_min_trade_vol(trading_pg.get_mm2_min_trade_vol().toStdString());
+            t_float_50 taker_vol(taker_vol_std);
             //! If taker vol > min_volume_f we can take this order
             i_have_enough_funds = min_volume_f > 0 && taker_vol > min_volume_f;
             /*SPDLOG_INFO(
-                "i_have_enough_funds = {} coin: {}, min_volume: {}, taker_vol: {}, mm2_min_trade_vol: {}",
-                i_have_enough_funds,
-                model_data.coin,
-                model_data.min_volume,
-                taker_vol.str(),
-                mm2_min_trade_vol.str());*/
-            /*if (min_volume_f == mm2_min_trade_vol)
-            {
-                i_have_enough_funds = true;
-            }*/
+                "i_have_enough_funds = {} coin: {}, min_volume: {}, taker_vol: {}, mm2_min_trade_vol: {}", i_have_enough_funds, model_data.coin,
+                model_data.min_volume, taker_vol.str(), mm2_min_trade_vol.str());*/
             return i_have_enough_funds;
         }
         }
