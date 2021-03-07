@@ -52,6 +52,7 @@ namespace antara::gaming::core::details
                                                 password, &password_length) == TRUE)
             {
                 SecureZeroMemory(out_cred_buffer, out_cred_buff_size);
+                CoTaskMemFree(out_cred_buffer);
 
                 HANDLE user_token{};
 
@@ -67,7 +68,12 @@ namespace antara::gaming::core::details
                     handler(true);
                     return;
                 }
-                std::cout << "Win32 evaluate_authentication error: " << GetLastError() << std::endl;
+                std::cout << "Win32 LogonUserW error: " << GetLastError() << std::endl;
+            }
+            else
+            {
+                SecureZeroMemory(out_cred_buffer, out_cred_buff_size);
+                CoTaskMemFree(out_cred_buffer);
             }
         } while (current_nb_try < max_nb_try);
         handler(false);
