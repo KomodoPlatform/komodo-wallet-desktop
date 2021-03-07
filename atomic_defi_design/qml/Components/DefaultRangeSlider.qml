@@ -18,8 +18,8 @@ RangeSlider {
     property alias halfText: _half_item.text
     property alias rightText: _right_item.text
 
-    property alias firstValueTooltipText: firstTooltip.text
-    property alias secondValueTooltipText: secondTooltip.text
+    property alias firstTooltip: firstTooltip
+    property alias secondTooltip: secondTooltip
     background: Rectangle {
         x: control.leftPadding
         y: control.topPadding + control.availableHeight / 2 - height / 2

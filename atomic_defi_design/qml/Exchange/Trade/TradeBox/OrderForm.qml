@@ -138,11 +138,11 @@ FloatingBackground {
 
                 second.value: parseFloat(non_null_volume)
                 second.onValueChanged: { if(second.pressed) setVolume(General.formatDouble(second.value)) }
-                //secondValueTooltipText: General.formatDouble(input_volumgetRealValue(), General.getRecommendedPrecision(second.to))
+                secondTooltip.text: General.formatDouble(second.value, General.getRecommendedPrecision(to))
 
                 first.value: parseFloat(API.app.trading_pg.min_trade_vol )
                 first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }
-                //firstValueTooltipText: General.formatDouble(getRealValue(), General.getRecommendedPrecision(second.value))
+                firstTooltip.text: General.formatDouble(first.value, General.getRecommendedPrecision(second.value))
             }
 
 //            DefaultSlider {
