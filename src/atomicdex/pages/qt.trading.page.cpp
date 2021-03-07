@@ -1143,18 +1143,18 @@ namespace atomic_dex
                     const auto trading_fee_ticker = this->get_market_pairs_mdl()->get_base_selected_coin();
 
                     //! Trading fee are taker_fee
-                    fees["trading_fee"]        = QString::fromStdString(success_answer.taker_fee.value_or("0"));
+                    fees["trading_fee"]        = QString::fromStdString(utils::adjust_precision(success_answer.taker_fee.value_or("0")));
                     fees["trading_fee_ticker"] = trading_fee_ticker;
 
 
-                    fees["base_transaction_fees"]        = QString::fromStdString(success_answer.base_coin_fee.amount);
+                    fees["base_transaction_fees"]        = QString::fromStdString(utils::adjust_precision(success_answer.base_coin_fee.amount));
                     fees["base_transaction_fees_ticker"] = QString::fromStdString(success_answer.base_coin_fee.coin);
 
                     fees["rel_transaction_fees"]        = QString::fromStdString(success_answer.rel_coin_fee.amount);
                     fees["rel_transaction_fees_ticker"] = QString::fromStdString(success_answer.rel_coin_fee.coin);
 
                     //! We are always in buy or sell mode, in this case show the fees
-                    fees["fee_to_send_taker_fee"]        = QString::fromStdString(success_answer.fee_to_send_taker_fee.value().amount);
+                    fees["fee_to_send_taker_fee"]        = QString::fromStdString(utils::adjust_precision(success_answer.fee_to_send_taker_fee.value().amount));
                     fees["fee_to_send_taker_fee_ticker"] = QString::fromStdString(success_answer.fee_to_send_taker_fee.value().coin);
 
                     //! RICK <-> MORTY (buy) trading_fee_ticker == MORTY, base_ticker_fee == RICK, rel_ticker_fee == MORTY, TOTAL_FEE_TICKER = MORTY
