@@ -735,7 +735,7 @@ namespace atomic_dex
             this->determine_cex_rates();
             emit priceChanged();
             emit priceReversedChanged();
-            if (this->m_last_trading_error == TradingError::None)
+            if (this->m_last_trading_error == TradingError::None && m_multi_order_enabled)
             {
                 this->determine_all_multi_ticker_forms();
             }
@@ -1365,7 +1365,10 @@ namespace atomic_dex
         }
         else
         {
-            last_trading_error = generate_fees_error(fees, get_max_balance_without_dust());
+            if (!m_fees.get().empty())
+            {
+                last_trading_error = generate_fees_error(fees, get_max_balance_without_dust());
+            }
         }
         set_multi_ticker_data(ticker, portfolio_model::MultiTickerError, static_cast<qint32>(last_trading_error), selection_box);
     }
