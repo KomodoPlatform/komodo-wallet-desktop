@@ -19,7 +19,7 @@ FloatingBackground {
 
     readonly property string total_amount: API.app.trading_pg.total_amount
 
-    readonly property bool can_submit_trade: valid_fee_info && last_trading_error === TradingError.None
+    readonly property bool can_submit_trade:  last_trading_error === TradingError.None
 
     // Will move to backend: Minimum Fee
     function getMaxBalance() {
