@@ -226,13 +226,13 @@ Item {
         anchors.topMargin: 40
         anchors.leftMargin: 10
         anchors.fill: parent
-        Component.onCompleted: splitView.restoreState(settings.splitView)
-        Component.onDestruction: settings.splitView = splitView.saveState()
+//        Component.onCompleted: splitView.restoreState(settings.splitView)
+//        Component.onDestruction: settings.splitView = splitView.saveState()
 
-        Settings {
-            id: settings
-            property var splitView
-        }
+//        Settings {
+//            id: settings
+//            property var splitView
+//        }
         SplitView {
             id: splitView
             Layout.fillWidth: true
