@@ -1120,7 +1120,7 @@ namespace atomic_dex
         const bool  is_max      = m_market_mode == MarketMode::Sell && m_volume == m_max_volume;
         const auto  swap_method = m_market_mode == MarketMode::Sell ? "sell"s : "buy"s;
 
-        t_trade_preimage_request req{.base_coin = base, .rel_coin = rel, .swap_method = swap_method, .volume = get_volume().toStdString(), .max = is_max};
+        t_trade_preimage_request req{.base_coin = base, .rel_coin = rel, .swap_method = swap_method, .volume = get_base_amount().toStdString(), .max = is_max};
 
         nlohmann::json batch;
         nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
