@@ -819,7 +819,10 @@ Item {
                         //clip: true
                         title: "Multi-Order"
                         visible: sell_mode
+
                         Item {
+                            id: multi
+                            enabled: false
                             clip: true
                             anchors.fill: parent
                             anchors.topMargin: 40
@@ -882,6 +885,49 @@ Item {
                                         }
                                     }
                                 }
+                            }
+                        }
+                        FastBlur {
+
+                            anchors.fill: multi
+                            source: multi
+                            radius: 35
+                        }
+                        Rectangle {
+                            anchors.fill: parent
+                            color: parent.color
+                            opacity: .9
+                        }
+                        Column {
+                            clip: true
+                            topPadding: 10
+                            visible: parent.contentVisible
+                            width: parent.width
+                            height: 100
+                            anchors.centerIn: parent
+                            spacing: 20
+                            Qaterial.ColorIcon {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                source: Qaterial.Icons.rocketLaunchOutline
+                                iconSize: 30
+                                Behavior on rotation {
+                                    NumberAnimation {
+                                        duration: 500
+                                    }
+                                }
+
+                                Timer {
+                                    running: false
+                                    repeat: true
+                                    interval: 1500
+                                    onTriggered: parent.rotation += 180
+                                }
+                            }
+                            DefaultText {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                text: "Coming Soon!"
+                                font.weight: Font.Light
+                                font.pixelSize: 16
                             }
                         }
                     }

@@ -397,5 +397,6 @@
         <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
         <file>atomic_defi_design/assets/images/logo/dex-logo.png</file>
         <file>atomic_defi_design/qml/Components/DefaultSplitView.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/DefaultSweetModal.qml</file>
     </qresource>
 </RCC>
