@@ -134,6 +134,7 @@ Item {
     // Cache Trade Info
     property bool valid_fee_info: API.app.trading_pg.fees.base_transaction_fees !== undefined
     readonly property var curr_fee_info: API.app.trading_pg.fees
+    property var fees_data: []
 
     // Trade
     function onOpened(ticker) {

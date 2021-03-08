@@ -22,7 +22,7 @@ Rectangle {
     }
     property string selected_wallet_name: ""
     property bool debug: debug_bar
-    property bool debug_log: true
+    property bool debug_log: false
 
     function appendLog(text){
         log_area.append(text)
