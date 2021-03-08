@@ -1469,10 +1469,6 @@ namespace atomic_dex
         const auto&  mm2                = m_system_manager.get_system<mm2_service>();
         const auto   is_selected_order  = m_preffered_order.has_value();
 
-        /*const auto transaction_fee_ticker = fees["trading_fee_ticker"].toString();
-                 fees["trading_fee_ticker"] != fees["base_transaction_fees_ticker"] &&
-                 not mm2.do_i_have_enough_funds(transaction_fee_ticker.toStdString(), t_float_50(fees["base_transaction_fees"].toString().toStdString()))*/
-
         //! Check taker fee only if it's a selected order
         if (is_selected_order && t_float_50(fees["trading_fee"].toString().toStdString()) > max_balance_without_dust)
         {
@@ -1569,5 +1565,11 @@ namespace atomic_dex
             m_rpc_preimage_busy = status;
             emit preImageRpcStatusChanged();
         }
+    }
+    void
+    trading_page::reset_fees() noexcept
+    {
+        this->set_fees(QVariantMap());
+        this->determine_error_cases();
     }
 } // namespace atomic_dex

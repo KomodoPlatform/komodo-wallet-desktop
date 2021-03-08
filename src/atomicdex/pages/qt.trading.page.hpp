@@ -170,6 +170,7 @@ namespace atomic_dex
 
         Q_INVOKABLE void determine_fees() noexcept;
         Q_INVOKABLE void determine_error_cases() noexcept;
+        Q_INVOKABLE void reset_fees() noexcept;
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper* get_orderbook_wrapper() const noexcept;
