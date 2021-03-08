@@ -1174,6 +1174,11 @@ namespace atomic_dex
                         total_fees_f += t_float_50(success_answer.rel_coin_fee.amount);
                     }
 
+                    if (trading_fee_ticker.toStdString() == success_answer.fee_to_send_taker_fee.value().coin)
+                    {
+                        total_fees_f += t_float_50(utils::adjust_precision(success_answer.fee_to_send_taker_fee.value().amount));
+                    }
+
                     fees["total_fees"]    = QString::fromStdString(atomic_dex::utils::format_float(total_fees_f));
                     fees["total_fees_fp"] = QString::fromStdString(total_fees_f.str(50, std::ios_base::fixed));
 
