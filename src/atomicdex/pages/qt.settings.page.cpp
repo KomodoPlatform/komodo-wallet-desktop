@@ -613,4 +613,14 @@ namespace atomic_dex
             emit privKeyStatusChanged();
         }
     }
+
+    void
+    settings_page::garbage_collect_qml()
+    {
+        SPDLOG_INFO("garbage_collect_qml");
+        m_qml_engine->collectGarbage();
+        //m_qml_engine->
+        m_qml_engine->trimComponentCache();
+        m_qml_engine->clearComponentCache();
+    }
 } // namespace atomic_dex

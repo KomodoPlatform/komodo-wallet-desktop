@@ -192,6 +192,7 @@ namespace atomic_dex
     void
     trading_page::on_gui_leave_dex()
     {
+        m_system_manager.get_system<settings_page>().garbage_collect_qml();
         dispatcher_.trigger<gui_leave_trading>();
     }
 
