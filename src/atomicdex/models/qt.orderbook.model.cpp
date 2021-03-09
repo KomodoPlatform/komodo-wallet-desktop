@@ -96,11 +96,7 @@ namespace atomic_dex
             const auto& order_model_data    = m_model_data.at(index.row());
             const auto  min_volume_f        = t_float_50(order_model_data.min_volume);
             const auto& trading_pg          = m_system_mgr.get_system<trading_page>();
-            auto        taker_vol_std       = (m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol()
-                                                                                      : trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol())
-                                     .toJsonObject()["decimal"]
-                                     .toString()
-                                     .toStdString();
+            auto        taker_vol_std       = trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
             if (taker_vol_std.empty())
             {
                 taker_vol_std = "0";
@@ -189,7 +185,7 @@ namespace atomic_dex
     orderbook_model::reset_orderbook(const t_orders_contents& orderbook) noexcept
     {
         this->beginResetModel();
-        m_model_data                                        = orderbook;
+        m_model_data = orderbook;
         m_orders_id_registry.clear();
         for (auto&& order: m_model_data)
         {
