@@ -291,7 +291,11 @@ namespace atomic_dex
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+#if !defined(WIN32)
             for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
+#else
+            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(_strdup(ticker.c_str())); }
+#endif
         }
     }
 

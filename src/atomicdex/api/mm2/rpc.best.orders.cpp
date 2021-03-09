@@ -41,7 +41,16 @@ namespace mm2::api
         }
         else
         {
-            for (auto&& [key, value]: j.items()) { SPDLOG_INFO("{} best orders size: {}", key, value.size()); }
+            for (auto&& [key, value]: j.items())
+            {
+                SPDLOG_INFO("{} best orders size: {}", key, value.size());
+                for (auto&& cur_order: value)
+                {
+                    order_contents contents;
+                    from_json(cur_order, contents);
+                    answer.result.emplace_back(std::move(contents));
+                }
+            }
         }
     }
 

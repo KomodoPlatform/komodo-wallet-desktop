@@ -24,5 +24,11 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     int res = run_app(argc, argv);
     // SPDLOG_INFO("Shutdown all loggers");
     // spdlog::drop_all();
+#if defined(WINDOWS_RELEASE_MAIN)
+    if (std::getenv("FORCE_ATOMICDEX_CONSOLE") != nullptr)
+    {
+        system("pause");
+    }
+#endif
     return res;
 }

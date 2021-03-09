@@ -38,6 +38,7 @@ namespace atomic_dex
         ag::ecs::system_manager&   m_system_manager;
         t_best_orders_synchronized m_best_orders_infos;
         t_update_time_point        m_update_clock;
+        std::atomic_bool           m_rpc_busy{false};
 
         //! Private member functions
         void process_best_orders() noexcept;
@@ -51,6 +52,9 @@ namespace atomic_dex
 
         //! Public override
         void update() noexcept final;
+
+        //! Public functions
+        [[nodiscard]] bool is_best_orders_busy() const noexcept;
     };
 } // namespace atomic_dex
 

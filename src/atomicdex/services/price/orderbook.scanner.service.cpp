@@ -56,6 +56,7 @@ namespace atomic_dex
                 to_json(best_orders_req_json, req);
                 batch.push_back(best_orders_req_json);
 
+                this->m_rpc_busy = true;
                 //! Treat answer
                 auto answer_functor = [this](web::http::http_response resp) {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -68,11 +69,15 @@ namespace atomic_dex
                             this->m_best_orders_infos = best_order_answer.result.value();
                         }
                     }
+                    this->m_rpc_busy = false;
                 };
 
                 ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
                     .then(answer_functor)
-                    .then(&handle_exception_pplx_task);
+                    .then([this](pplx::task<void> previous_task) {
+                        this->m_rpc_busy = false;
+                        handle_exception_pplx_task(previous_task);
+                    });
             }
             else
             {
@@ -102,5 +107,11 @@ namespace atomic_dex
             process_best_orders();
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
+    }
+
+    bool
+    orderbook_scanner_service::is_best_orders_busy() const noexcept
+    {
+        return m_rpc_busy.load();
     }
 } // namespace atomic_dex
