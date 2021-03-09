@@ -70,9 +70,32 @@ FloatingBackground {
 
                     field.left_text: qsTr("Price")
                     field.right_text: right_ticker
-                    enabled: !(API.app.trading_pg.preffered_order.price!==undefined)
+                    field.enabled: !(API.app.trading_pg.preffered_order.price!==undefined)
                     field.text: backend_price
                     field.onTextChanged: setPrice(field.text)
+
+                    DefaultTooltip {
+                        visible: handler.containsMouse
+                        width: 200
+                        contentItem: DefaultText {
+                            text_value: qsTr("Cancel pending order to change price")
+                            wrapMode: DefaultText.Wrap
+                            width: 200
+                        }
+                        delay: 200
+                    }
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: 30
+                        color: Style.colorTheme9
+                        opacity: .8
+                        visible: !parent.field.enabled
+                        MouseArea {
+                            id: handler
+                            anchors.fill: parent
+                            hoverEnabled: true
+                        }
+                    }
                 }
 
                 DefaultText {
