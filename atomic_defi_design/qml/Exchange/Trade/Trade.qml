@@ -725,7 +725,7 @@ Item {
                                         anchors.verticalCenter: parent.verticalCenter
                                         leftPadding: 15
                                         color: Style.colorRed
-                                        text: qsTr("Pending Order")
+                                        text: qsTr("Order Selected")
                                     }
                                     Qaterial.FlatButton {
                                         foregroundColor: Style.colorRed
