@@ -61,7 +61,12 @@ namespace atomic_dex
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
                     if (resp.status_code() == 200)
                     {
-                        //SPDLOG_WARN("Best Orders resp: {}", body);
+                        auto answers           = nlohmann::json::parse(body);
+                        auto best_order_answer = ::mm2::api::rpc_process_answer_batch<t_best_orders_answer>(answers[0], "best_orders");
+                        if (best_order_answer.result.has_value())
+                        {
+                            this->m_best_orders_infos = best_order_answer.result.value();
+                        }
                     }
                 };
 

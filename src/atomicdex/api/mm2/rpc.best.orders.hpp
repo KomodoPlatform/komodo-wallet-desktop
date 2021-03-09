@@ -22,6 +22,9 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
+//! Project Headers
+#include "atomicdex/api/mm2/orderbook.order.contents.hpp"
+
 namespace mm2::api
 {
     struct best_orders_request
@@ -33,18 +36,9 @@ namespace mm2::api
 
     void to_json(nlohmann::json& j, const best_orders_request& req);
 
-    struct best_order_infos
-    {
-        std::string price;
-        std::string volume;
-        std::string order_uuid;
-    };
-
-    void from_json(const nlohmann::json& j, best_order_infos& answer);
-
     struct best_orders_answer_success
     {
-        std::unordered_map<std::string, best_order_infos> result;
+        std::vector<order_contents> result;
     };
 
     void from_json(const nlohmann::json& j, best_orders_answer_success& answer);
@@ -62,6 +56,7 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_best_orders_request = ::mm2::api::best_orders_request;
-    using t_best_orders_answer  = ::mm2::api::best_orders_answer;
+    using t_best_orders_request        = ::mm2::api::best_orders_request;
+    using t_best_orders_answer         = ::mm2::api::best_orders_answer;
+    using t_best_orders_answer_success = ::mm2::api::best_orders_answer_success;
 } // namespace atomic_dex

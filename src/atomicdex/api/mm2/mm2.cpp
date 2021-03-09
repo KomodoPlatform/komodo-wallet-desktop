@@ -19,6 +19,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/mm2/rpc.best.orders.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
@@ -1027,6 +1028,7 @@ namespace mm2::api
     template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
     template mm2::api::trade_preimage_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    template mm2::api::best_orders_answer     rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
 
     template <typename RpcReturnType>
     RpcReturnType

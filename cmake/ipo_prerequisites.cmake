@@ -1,5 +1,5 @@
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    if (APPLE OR WIN32)
+    if (APPLE)
         include(CheckIPOSupported)
         check_ipo_supported(RESULT ipo_supported OUTPUT output)
         if (ipo_supported)

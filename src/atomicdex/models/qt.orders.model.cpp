@@ -408,7 +408,9 @@ namespace atomic_dex
     orders_model::init_model(const orders_and_swaps& contents)
     {
         const auto size = contents.orders_and_swaps.size();
-        SPDLOG_INFO("Full initialization, inserting {} elements, nb_elements / page {}", size, contents.limit);
+        if (size == 0)
+            return;
+        // SPDLOG_INFO("Full initialization, inserting {} elements, nb_elements / page {}", size, contents.limit);
         beginResetModel();
         m_model_data = std::move(contents);
         endResetModel();

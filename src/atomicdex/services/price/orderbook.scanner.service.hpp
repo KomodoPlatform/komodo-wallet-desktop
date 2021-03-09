@@ -21,6 +21,9 @@
 #include <boost/thread/synchronized_value.hpp>
 #include <nlohmann/json.hpp>
 
+//! Project Headers
+#include "atomicdex/api/mm2/rpc.best.orders.hpp"
+
 //! Namespace declaration
 namespace atomic_dex
 {
@@ -28,13 +31,13 @@ namespace atomic_dex
     class orderbook_scanner_service final : public ag::ecs::pre_update_system<orderbook_scanner_service>
     {
         //! Private typedefs
-        using t_update_time_point = std::chrono::high_resolution_clock::time_point;
-        using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
+        using t_update_time_point        = std::chrono::high_resolution_clock::time_point;
+        using t_best_orders_synchronized = boost::synchronized_value<t_best_orders_answer_success>;
 
         //! Private member fields
-        ag::ecs::system_manager& m_system_manager;
-        t_json_synchronized      m_best_orders_infos;
-        t_update_time_point      m_update_clock;
+        ag::ecs::system_manager&   m_system_manager;
+        t_best_orders_synchronized m_best_orders_infos;
+        t_update_time_point        m_update_clock;
 
         //! Private member functions
         void process_best_orders() noexcept;

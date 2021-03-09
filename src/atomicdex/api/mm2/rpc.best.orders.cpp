@@ -33,17 +33,16 @@ namespace mm2::api
     }
 
     void
-    from_json(const nlohmann::json& j, best_order_infos& answer)
-    {
-        j.at("volume").get_to(answer.volume);
-        j.at("price").get_to(answer.price);
-        j.at("order_uuid").get_to(answer.order_uuid);
-    }
-
-    void
     from_json(const nlohmann::json& j, best_orders_answer_success& answer)
     {
-        j.get_to(answer.result);
+        if (j.empty())
+        {
+            SPDLOG_WARN("best orders result not available yet - probably seed node unsync");
+        }
+        else
+        {
+            for (auto&& [key, value]: j.items()) { SPDLOG_INFO("{} best orders size: {}", key, value.size()); }
+        }
     }
 
     void

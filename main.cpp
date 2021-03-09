@@ -11,11 +11,18 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #if defined(WINDOWS_RELEASE_MAIN)
     int    argc = __argc;
     char** argv = __argv;
+    if (std::getenv("FORCE_ATOMICDEX_CONSOLE") != nullptr)
+    {
+        AllocConsole();
+        freopen("conin$", "r", stdin);
+        freopen("conout$", "w", stdout);
+        freopen("conout$", "w", stderr);
+    }
 #endif
 
     //! run app
     int res = run_app(argc, argv);
-    //SPDLOG_INFO("Shutdown all loggers");
-    //spdlog::drop_all();
+    // SPDLOG_INFO("Shutdown all loggers");
+    // spdlog::drop_all();
     return res;
 }
