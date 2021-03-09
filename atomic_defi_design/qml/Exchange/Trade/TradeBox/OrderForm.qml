@@ -78,7 +78,7 @@ FloatingBackground {
                         visible: handler.containsMouse
                         width: 200
                         contentItem: DefaultText {
-                            text_value: qsTr("Cancel pending order to change price")
+                            text_value: qsTr("Cancel selected order to change price")
                             wrapMode: DefaultText.Wrap
                             width: 200
                         }

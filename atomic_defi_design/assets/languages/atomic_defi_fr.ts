@@ -1812,12 +1812,12 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="104"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="127"/>
         <source>Amount to sell</source>
         <translation>Montant à vendre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="104"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="127"/>
         <source>Amount to receive</source>
         <translation>Montant à recevoir</translation>
     </message>
@@ -1827,7 +1827,12 @@
         <translation>Prix</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="102"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="81"/>
+        <source>Cancel pending order to change price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="125"/>
         <source>Volume</source>
         <translation>Volume</translation>
     </message>
@@ -2847,6 +2852,11 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="431"/>
         <source>history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="728"/>
+        <source>Pending Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
