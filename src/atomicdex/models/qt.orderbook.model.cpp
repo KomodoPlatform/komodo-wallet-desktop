@@ -16,7 +16,9 @@
 
 //! Project
 #include "atomicdex/models/qt.orderbook.model.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 namespace
@@ -40,13 +42,17 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(PriceRole);
-        if (this->m_current_orderbook_kind == kind::asks)
+        switch (m_current_orderbook_kind)
         {
+        case kind::asks:
             this->m_model_proxy->sort(0, Qt::AscendingOrder);
-        }
-        else
-        {
+            break;
+        case kind::bids:
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
+            break;
+        case kind::best_orders:
+            //! TODO: sortRole by CEX rates
+            break;
         }
     }
 
@@ -106,6 +112,41 @@ namespace atomic_dex
             i_have_enough_funds = min_volume_f > 0 && taker_vol > min_volume_f;
             return i_have_enough_funds;
         }
+        case CEXRatesRole:
+            return "0";
+        case SendRole:
+        {
+            if (m_current_orderbook_kind == kind::best_orders)
+            {
+                const auto& data           = m_model_data.at(index.row());
+                const auto& trading_pg     = m_system_mgr.get_system<trading_page>();
+                t_float_50  volume_f       = t_float_50(trading_pg.get_volume().toStdString());
+                const bool  is_buy         = trading_pg.get_market_mode() == MarketMode::Buy;
+                t_float_50  total_amount_f = is_buy ? volume_f * t_float_50(data.price) : volume_f / t_float_50(data.price);
+                const auto  total_amount   = atomic_dex::utils::format_float(total_amount_f);
+                return QString::fromStdString(total_amount);
+            }
+            else
+            {
+                return "0";
+            }
+        }
+        case PriceFiatRole:
+        {
+            if (m_current_orderbook_kind == kind::best_orders)
+            {
+                const auto& price_service = m_system_mgr.get_system<global_price_service>();
+                const auto& fiat          = m_system_mgr.get_system<settings_page>().get_cfg().current_fiat;
+                const auto  total_amount  = this->data(index, SendRole).toString().toStdString();
+                const auto  coin          = m_model_data.at(index.row()).coin;
+                const auto  result        = price_service.get_price_as_currency_from_amount(fiat, coin, total_amount);
+                return QString::fromStdString(result);
+            }
+            else
+            {
+                return "0";
+            }
+        }
         }
     }
 
@@ -157,6 +198,12 @@ namespace atomic_dex
             break;
         case EnoughFundsToPayMinVolume:
             break;
+        case CEXRatesRole:
+            break;
+        case SendRole:
+            break;
+        case PriceFiatRole:
+            break;
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -178,7 +225,10 @@ namespace atomic_dex
             {QuantityNumerRole, "quantity_numer"},
             {PercentDepthRole, "depth"},
             {MinVolumeRole, "min_volume"},
-            {EnoughFundsToPayMinVolume, "enough_funds_to_pay_min_volume"}};
+            {EnoughFundsToPayMinVolume, "enough_funds_to_pay_min_volume"},
+            {CEXRatesRole, "cex_rates"},
+            {SendRole, "send"},
+            {PriceFiatRole, "price_fiat"}};
     }
 
     void
@@ -233,6 +283,8 @@ namespace atomic_dex
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
+            update_value(OrderbookRoles::CEXRatesRole, "", idx, *this);
+            update_value(OrderbookRoles::PriceFiatRole, "", idx, *this);
         }
     }
 

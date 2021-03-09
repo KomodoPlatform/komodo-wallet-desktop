@@ -33,6 +33,7 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(orderbook_model* asks READ get_asks MEMBER m_asks NOTIFY asksChanged)
         Q_PROPERTY(orderbook_model* bids READ get_bids MEMBER m_bids NOTIFY bidsChanged)
+        Q_PROPERTY(orderbook_model* best_orders READ get_best_orders MEMBER m_best_orders NOTIFY bestOrdersChanged)
         Q_PROPERTY(QVariant base_max_taker_vol READ get_base_max_taker_vol NOTIFY baseMaxTakerVolChanged)
         Q_PROPERTY(QVariant rel_max_taker_vol READ get_rel_max_taker_vol NOTIFY relMaxTakerVolChanged)
       public:
@@ -45,6 +46,7 @@ namespace atomic_dex
         void                           clear_orderbook();
         [[nodiscard]] orderbook_model* get_asks() const noexcept;
         [[nodiscard]] orderbook_model* get_bids() const noexcept;
+        [[nodiscard]] orderbook_model* get_best_orders() const noexcept;
         [[nodiscard]] QVariant         get_base_max_taker_vol() const noexcept;
         [[nodiscard]] QVariant         get_rel_max_taker_vol() const noexcept;
 
@@ -60,6 +62,7 @@ namespace atomic_dex
         ag::ecs::system_manager& m_system_manager;
         orderbook_model*         m_asks;
         orderbook_model*         m_bids;
+        orderbook_model*         m_best_orders;
         QJsonObject              m_base_max_taker_vol;
         QJsonObject              m_rel_max_taker_vol;
     };

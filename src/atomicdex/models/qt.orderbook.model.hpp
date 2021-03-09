@@ -59,7 +59,10 @@ namespace atomic_dex
             QuantityNumerRole,
             PercentDepthRole,
             MinVolumeRole,
-            EnoughFundsToPayMinVolume
+            EnoughFundsToPayMinVolume,
+            CEXRatesRole,
+            SendRole,
+            PriceFiatRole,
         };
 
         orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent = nullptr);

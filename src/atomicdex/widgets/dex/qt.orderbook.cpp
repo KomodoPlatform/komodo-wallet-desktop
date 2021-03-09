@@ -24,11 +24,10 @@
 namespace atomic_dex
 {
     qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), m_system_manager(system_manager),
-        m_asks(new orderbook_model(orderbook_model::kind::asks, system_manager, this)),
-        m_bids(new orderbook_model(orderbook_model::kind::bids, system_manager, this))
+        QObject(parent), m_system_manager(system_manager), m_asks(new orderbook_model(orderbook_model::kind::asks, system_manager, this)),
+        m_bids(new orderbook_model(orderbook_model::kind::bids, system_manager, this)),
+        m_best_orders(new orderbook_model(orderbook_model::kind::best_orders, system_manager, this))
     {
-
     }
 
     atomic_dex::orderbook_model*
@@ -43,10 +42,15 @@ namespace atomic_dex
         return m_bids;
     }
 
+    atomic_dex::orderbook_model*
+    atomic_dex::qt_orderbook_wrapper::get_best_orders() const noexcept
+    {
+        return m_best_orders;
+    }
+
     void
     qt_orderbook_wrapper::refresh_orderbook(t_orderbook_answer answer)
     {
-        // SPDLOG_DEBUG("refresh orderbook");
         this->m_asks->refresh_orderbook(answer.asks);
         this->m_bids->refresh_orderbook(answer.bids);
         this->set_both_taker_vol();
@@ -55,7 +59,6 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::reset_orderbook(t_orderbook_answer answer)
     {
-        // SPDLOG_DEBUG("full reset orderbook");
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
         this->set_both_taker_vol();

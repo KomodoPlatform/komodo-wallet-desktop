@@ -57,6 +57,12 @@ namespace atomic_dex
             break;
         case orderbook_model::EnoughFundsToPayMinVolume:
             break;
+        case orderbook_model::CEXRatesRole:
+            break;
+        case orderbook_model::SendRole:
+            break;
+        case orderbook_model::PriceFiatRole:
+            break;
         }
         return true;
     }
