@@ -96,8 +96,8 @@ namespace atomic_dex
             const auto& order_model_data    = m_model_data.at(index.row());
             const auto  min_volume_f        = t_float_50(order_model_data.min_volume);
             const auto& trading_pg          = m_system_mgr.get_system<trading_page>();
-            auto        taker_vol_std       = (m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol()
-                                                                                      : trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol())
+            auto        taker_vol_std       = (m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol()
+                                                                                      : trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol())
                                      .toJsonObject()["decimal"]
                                      .toString()
                                      .toStdString();
