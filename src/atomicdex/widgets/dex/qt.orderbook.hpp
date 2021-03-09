@@ -54,6 +54,7 @@ namespace atomic_dex
       signals:
         void asksChanged();
         void bidsChanged();
+        void bestOrdersChanged();
         void baseMaxTakerVolChanged();
         void relMaxTakerVolChanged();
 
