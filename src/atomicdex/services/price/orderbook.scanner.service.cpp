@@ -57,6 +57,7 @@ namespace atomic_dex
                 batch.push_back(best_orders_req_json);
 
                 this->m_rpc_busy = true;
+                this->dispatcher_.trigger<best_orders_status_changed>();
                 //! Treat answer
                 auto answer_functor = [this](web::http::http_response resp) {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -70,12 +71,14 @@ namespace atomic_dex
                         }
                     }
                     this->m_rpc_busy = false;
+                    this->dispatcher_.trigger<best_orders_status_changed>();
                 };
 
                 ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
                     .then(answer_functor)
                     .then([this](pplx::task<void> previous_task) {
                         this->m_rpc_busy = false;
+                        this->dispatcher_.trigger<best_orders_status_changed>();
                         handle_exception_pplx_task(previous_task);
                     });
             }

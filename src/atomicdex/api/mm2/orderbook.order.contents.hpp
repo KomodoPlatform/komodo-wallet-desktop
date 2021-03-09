@@ -43,3 +43,9 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, order_contents& contents);
 } // namespace mm2::api
+
+namespace atomic_dex
+{
+    using t_order_contents  = ::mm2::api::order_contents;
+    using t_orders_contents = std::vector<t_order_contents>;
+} // namespace atomic_dex

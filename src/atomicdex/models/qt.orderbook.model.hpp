@@ -36,11 +36,13 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
         Q_PROPERTY(orderbook_proxy_model* proxy_mdl READ get_orderbook_proxy NOTIFY proxyMdlChanged)
+
       public:
         enum class kind
         {
-            asks,
-            bids
+            asks        = 1,
+            bids        = 2,
+            best_orders = 3,
         };
 
         enum OrderbookRoles
@@ -69,8 +71,8 @@ namespace atomic_dex
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                                 removeRows(int row, int count, const QModelIndex& parent) override;
 
-        void                                 reset_orderbook(const t_orderbook_answer& orderbook) noexcept;
-        void                                 refresh_orderbook(const t_orderbook_answer& orderbook) noexcept;
+        void                                 reset_orderbook(const t_orders_contents& orderbook) noexcept;
+        void                                 refresh_orderbook(const t_orders_contents& orderbook) noexcept;
         void                                 clear_orderbook() noexcept;
         [[nodiscard]] int                    get_length() const noexcept;
         [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const noexcept;
@@ -85,7 +87,7 @@ namespace atomic_dex
       private:
         kind                            m_current_orderbook_kind{kind::asks};
         ag::ecs::system_manager&        m_system_mgr;
-        t_orderbook_answer              m_model_data;
+        t_orders_contents               m_model_data;
         std::unordered_set<std::string> m_orders_id_registry;
         orderbook_proxy_model*          m_model_proxy;
     };

@@ -53,7 +53,7 @@ namespace atomic_dex
     int
     orderbook_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_current_orderbook_kind == kind::asks ? m_model_data.asks.size() : m_model_data.bids.size();
+        return m_model_data.size();
     }
 
     QVariant
@@ -67,49 +67,37 @@ namespace atomic_dex
         switch (static_cast<OrderbookRoles>(role))
         {
         case PriceRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).price);
+            return QString::fromStdString(m_model_data.at(index.row()).price);
         case CoinRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).coin)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).coin);
+            return QString::fromStdString(m_model_data.at(index.row()).coin);
         case PriceDenomRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price_fraction_denom)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).price_fraction_denom);
+            return QString::fromStdString(m_model_data.at(index.row()).price_fraction_denom);
         case PriceNumerRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price_fraction_numer)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).price_fraction_numer);
+            return QString::fromStdString(m_model_data.at(index.row()).price_fraction_numer);
         case QuantityRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).maxvolume)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).maxvolume);
+            return QString::fromStdString(m_model_data.at(index.row()).maxvolume);
         case TotalRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).total)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).total);
+            return QString::fromStdString(m_model_data.at(index.row()).total);
         case UUIDRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).uuid)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).uuid);
+            return QString::fromStdString(m_model_data.at(index.row()).uuid);
         case IsMineRole:
-            return m_current_orderbook_kind == kind::asks ? m_model_data.asks.at(index.row()).is_mine : m_model_data.bids.at(index.row()).is_mine;
+            return m_model_data.at(index.row()).is_mine;
         case PercentDepthRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).depth_percent)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).depth_percent);
+            return QString::fromStdString(m_model_data.at(index.row()).depth_percent);
         case QuantityDenomRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).max_volume_fraction_denom)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).max_volume_fraction_denom);
+            return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_denom);
         case QuantityNumerRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).max_volume_fraction_numer)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).max_volume_fraction_numer);
+            return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_numer);
         case MinVolumeRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).min_volume)
-                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).min_volume);
+            return QString::fromStdString(m_model_data.at(index.row()).min_volume);
         case EnoughFundsToPayMinVolume:
         {
             bool        i_have_enough_funds = true;
-            const auto& model_data          = (m_current_orderbook_kind == kind::asks ? m_model_data.asks : m_model_data.bids).at(index.row());
-
-            const auto  min_volume_f  = t_float_50(model_data.min_volume);
-            const auto& trading_pg    = m_system_mgr.get_system<trading_page>();
-            auto        taker_vol_std = (m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol()
-                                                                                : trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol())
+            const auto& order_model_data    = m_model_data.at(index.row());
+            const auto  min_volume_f        = t_float_50(order_model_data.min_volume);
+            const auto& trading_pg          = m_system_mgr.get_system<trading_page>();
+            auto        taker_vol_std       = (m_current_orderbook_kind == kind::asks ? trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol()
+                                                                                      : trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol())
                                      .toJsonObject()["decimal"]
                                      .toString()
                                      .toStdString();
@@ -119,11 +107,7 @@ namespace atomic_dex
             }
             t_float_50 mm2_min_trade_vol(trading_pg.get_mm2_min_trade_vol().toStdString());
             t_float_50 taker_vol(taker_vol_std);
-            //! If taker vol > min_volume_f we can take this order
             i_have_enough_funds = min_volume_f > 0 && taker_vol > min_volume_f;
-            //SPDLOG_INFO(
-            //    "i_have_enough_funds = {} coin: {}, min_volume: {}, taker_vol: {}, mm2_min_trade_vol: {}", i_have_enough_funds, model_data.coin,
-            //    model_data.min_volume, taker_vol.str(), mm2_min_trade_vol.str());
             return i_have_enough_funds;
         }
         }
@@ -136,7 +120,7 @@ namespace atomic_dex
         {
             return false;
         }
-        ::mm2::api::order_contents& order = m_current_orderbook_kind == kind::asks ? m_model_data.asks.at(index.row()) : m_model_data.bids.at(index.row());
+        ::mm2::api::order_contents& order = m_model_data.at(index.row());
         switch (static_cast<OrderbookRoles>(role))
         {
         case PriceRole:
@@ -202,13 +186,12 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::reset_orderbook(const t_orderbook_answer& orderbook) noexcept
+    orderbook_model::reset_orderbook(const t_orders_contents& orderbook) noexcept
     {
         this->beginResetModel();
         m_model_data                                        = orderbook;
-        std::vector<::mm2::api::order_contents>& model_data = this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks : this->m_model_data.bids;
         m_orders_id_registry.clear();
-        for (auto&& order: model_data)
+        for (auto&& order: m_model_data)
         {
             if (this->m_orders_id_registry.find(order.uuid) == m_orders_id_registry.end())
             {
@@ -230,14 +213,13 @@ namespace atomic_dex
     void
     orderbook_model::initialize_order(const ::mm2::api::order_contents& order) noexcept
     {
-        std::vector<::mm2::api::order_contents>& model_data = this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks : this->m_model_data.bids;
-        assert(model_data.size() == m_orders_id_registry.size());
-        beginInsertRows(QModelIndex(), model_data.size(), model_data.size());
-        model_data.push_back(order);
+        assert(m_model_data.size() == m_orders_id_registry.size());
+        beginInsertRows(QModelIndex(), m_model_data.size(), m_model_data.size());
+        m_model_data.push_back(order);
         this->m_orders_id_registry.emplace(order.uuid);
         endInsertRows();
         emit lengthChanged();
-        assert(model_data.size() == m_orders_id_registry.size());
+        assert(m_model_data.size() == m_orders_id_registry.size());
     }
 
     void
@@ -259,7 +241,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::refresh_orderbook(const t_orderbook_answer& orderbook) noexcept
+    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook) noexcept
     {
         auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents) {
             for (auto&& current_order: contents)
@@ -294,25 +276,16 @@ namespace atomic_dex
             }
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         };
-        switch (this->m_current_orderbook_kind)
-        {
-        case kind::asks:
-            refresh_functor(orderbook.asks);
-            break;
-        case kind::bids:
-            refresh_functor(orderbook.bids);
-            break;
-        }
+        refresh_functor(orderbook);
     }
 
     bool
     orderbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
-        std::vector<::mm2::api::order_contents>& model_data = this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks : this->m_model_data.bids;
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            model_data.erase(model_data.begin() + position);
+            m_model_data.erase(m_model_data.begin() + position);
             emit lengthChanged();
         }
         endRemoveRows();
@@ -324,7 +297,7 @@ namespace atomic_dex
     orderbook_model::clear_orderbook() noexcept
     {
         this->beginResetModel();
-        m_model_data = t_orderbook_answer{};
+        m_model_data = t_orders_contents{};
         m_orders_id_registry.clear();
         this->endResetModel();
         emit lengthChanged();
