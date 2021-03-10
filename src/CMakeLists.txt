@@ -161,8 +161,7 @@ if (LINUX)
         "dex-logo-64.png"
         ${PROJECT_NAME}
         AntaraAtomicDexAppDir
-        ${CMAKE_CURRENT_SOURCE_DIR}/assets
-        )
+        ${CMAKE_SOURCE_DIR}/assets)
 
     magic_game_app_image_generation("${CMAKE_SOURCE_DIR}/cmake/install/linux"
         "dex.desktop"
@@ -170,8 +169,7 @@ if (LINUX)
         "dex-logo-64.png"
         ${PROJECT_NAME}_tests
         AntaraAtomicDexTestsAppDir
-        ${CMAKE_CURRENT_SOURCE_DIR}/assets
-        )
+        ${CMAKE_SOURCE_DIR}/assets)
 
     set(from_dir "${CMAKE_SOURCE_DIR}/cmake/install/linux")
     set(desktop_file "dex.desktop")
