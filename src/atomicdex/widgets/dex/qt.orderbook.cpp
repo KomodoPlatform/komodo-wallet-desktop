@@ -19,15 +19,54 @@
 
 //! Project headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/price/orderbook.scanner.service.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
+
+namespace
+{
+    std::atomic_bool g_is_best_orders_reset{false};
+}
 
 namespace atomic_dex
 {
-    qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), m_system_manager(system_manager), m_asks(new orderbook_model(orderbook_model::kind::asks, system_manager, this)),
+    qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
+        QObject(parent), m_system_manager(system_manager), m_dispatcher(dispatcher),
+        m_asks(new orderbook_model(orderbook_model::kind::asks, system_manager, this)),
         m_bids(new orderbook_model(orderbook_model::kind::bids, system_manager, this)),
         m_best_orders(new orderbook_model(orderbook_model::kind::best_orders, system_manager, this))
     {
+        this->m_dispatcher.sink<best_orders_status_changed>().connect<&qt_orderbook_wrapper::on_best_orders_status_changed>(*this);
+    }
+
+    void
+    qt_orderbook_wrapper::on_best_orders_status_changed(const atomic_dex::best_orders_status_changed&)
+    {
+        emit bestOrdersBusyChanged();
+        if (g_is_best_orders_reset && !is_best_orders_busy())
+        {
+            SPDLOG_INFO("reset best orders book");
+            g_is_best_orders_reset = false;
+            this->m_best_orders->reset_orderbook(this->m_system_manager.get_system<orderbook_scanner_service>().get_data());
+        }
+        else if (!is_best_orders_busy())
+        {
+            SPDLOG_INFO("refresh best orders book");
+            const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
+            if (!data.empty() && this->m_best_orders->rowCount() > 0)
+            {
+                this->m_best_orders->refresh_orderbook(data);
+            }
+            else
+            {
+                this->m_best_orders->reset_orderbook(data);
+            }
+        }
+    }
+
+    bool
+    atomic_dex::qt_orderbook_wrapper::is_best_orders_busy() const noexcept
+    {
+        return this->m_system_manager.get_system<orderbook_scanner_service>().is_best_orders_busy();
     }
 
     atomic_dex::orderbook_model*
@@ -61,6 +100,8 @@ namespace atomic_dex
     {
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
+        g_is_best_orders_reset = true;
+        this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
         this->set_both_taker_vol();
     }
 
@@ -69,6 +110,7 @@ namespace atomic_dex
     {
         this->m_asks->clear_orderbook();
         this->m_bids->clear_orderbook();
+        this->m_best_orders->clear_orderbook();
     }
 
     QVariant

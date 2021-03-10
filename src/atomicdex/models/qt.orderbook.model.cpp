@@ -234,6 +234,10 @@ namespace atomic_dex
     void
     orderbook_model::reset_orderbook(const t_orders_contents& orderbook) noexcept
     {
+        if (!orderbook.empty())
+        {
+            SPDLOG_INFO("full orderbook initialization initial size: {} target size: {}", rowCount(), orderbook.size());
+        }
         this->beginResetModel();
         m_model_data = orderbook;
         m_orders_id_registry.clear();
@@ -292,6 +296,7 @@ namespace atomic_dex
     orderbook_model::refresh_orderbook(const t_orders_contents& orderbook) noexcept
     {
         auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents) {
+            SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
             for (auto&& current_order: contents)
             {
                 if (this->m_orders_id_registry.find(current_order.uuid) != this->m_orders_id_registry.end())
@@ -324,7 +329,10 @@ namespace atomic_dex
             }
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         };
-        refresh_functor(orderbook);
+        if (!orderbook.empty())
+        {
+            refresh_functor(orderbook);
+        }
     }
 
     bool

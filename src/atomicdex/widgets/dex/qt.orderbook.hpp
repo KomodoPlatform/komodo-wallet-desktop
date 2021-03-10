@@ -24,6 +24,7 @@
 #include <antara/gaming/ecs/system.manager.hpp>
 
 //! Project
+#include "atomicdex/events/events.hpp"
 #include "atomicdex/models/qt.orderbook.model.hpp"
 
 namespace atomic_dex
@@ -34,10 +35,11 @@ namespace atomic_dex
         Q_PROPERTY(orderbook_model* asks READ get_asks MEMBER m_asks NOTIFY asksChanged)
         Q_PROPERTY(orderbook_model* bids READ get_bids MEMBER m_bids NOTIFY bidsChanged)
         Q_PROPERTY(orderbook_model* best_orders READ get_best_orders MEMBER m_best_orders NOTIFY bestOrdersChanged)
+        Q_PROPERTY(bool best_orders_busy READ is_best_orders_busy NOTIFY bestOrdersBusyChanged)
         Q_PROPERTY(QVariant base_max_taker_vol READ get_base_max_taker_vol NOTIFY baseMaxTakerVolChanged)
         Q_PROPERTY(QVariant rel_max_taker_vol READ get_rel_max_taker_vol NOTIFY relMaxTakerVolChanged)
       public:
-        qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
+        qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
         ~qt_orderbook_wrapper() noexcept final = default;
 
       public:
@@ -47,20 +49,25 @@ namespace atomic_dex
         [[nodiscard]] orderbook_model* get_asks() const noexcept;
         [[nodiscard]] orderbook_model* get_bids() const noexcept;
         [[nodiscard]] orderbook_model* get_best_orders() const noexcept;
+        [[nodiscard]] bool             is_best_orders_busy() const noexcept;
         [[nodiscard]] QVariant         get_base_max_taker_vol() const noexcept;
         [[nodiscard]] QVariant         get_rel_max_taker_vol() const noexcept;
 
 
+        //! events
+        void on_best_orders_status_changed(const best_orders_status_changed&);
       signals:
         void asksChanged();
         void bidsChanged();
         void bestOrdersChanged();
+        void bestOrdersBusyChanged();
         void baseMaxTakerVolChanged();
         void relMaxTakerVolChanged();
 
       private:
         void                     set_both_taker_vol();
         ag::ecs::system_manager& m_system_manager;
+        entt::dispatcher&        m_dispatcher;
         orderbook_model*         m_asks;
         orderbook_model*         m_bids;
         orderbook_model*         m_best_orders;

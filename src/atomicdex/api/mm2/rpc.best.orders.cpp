@@ -43,7 +43,7 @@ namespace mm2::api
         {
             for (auto&& [key, value]: j.items())
             {
-                SPDLOG_INFO("{} best orders size: {}", key, value.size());
+                //SPDLOG_INFO("{} best orders size: {}", key, value.size());
                 for (auto&& cur_order: value)
                 {
                     order_contents contents;

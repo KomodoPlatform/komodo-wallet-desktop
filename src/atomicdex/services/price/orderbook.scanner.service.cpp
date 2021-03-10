@@ -117,4 +117,10 @@ namespace atomic_dex
     {
         return m_rpc_busy.load();
     }
+
+    t_orders_contents
+    orderbook_scanner_service::get_data() const noexcept
+    {
+        return m_best_orders_infos.get().result;
+    }
 } // namespace atomic_dex

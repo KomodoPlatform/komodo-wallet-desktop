@@ -40,9 +40,6 @@ namespace atomic_dex
         t_update_time_point        m_update_clock;
         std::atomic_bool           m_rpc_busy{false};
 
-        //! Private member functions
-        void process_best_orders() noexcept;
-
       public:
         //! Constructor
         explicit orderbook_scanner_service(entt::registry& registry, ag::ecs::system_manager& system_manager);
@@ -54,7 +51,11 @@ namespace atomic_dex
         void update() noexcept final;
 
         //! Public functions
+        void process_best_orders() noexcept;
+
         [[nodiscard]] bool is_best_orders_busy() const noexcept;
+
+        [[nodiscard]] t_orders_contents get_data() const noexcept;
     };
 } // namespace atomic_dex
 
