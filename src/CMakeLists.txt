@@ -155,7 +155,7 @@ if (LINUX)
     get_target_property(exe_runtime_directory_at ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
-    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux"
+    magic_game_app_image_generation("${CMAKE_SOURCE_DIR}/cmake/install/linux"
         "dex.desktop"
         "dex.appdata.xml"
         "dex-logo-64.png"
@@ -164,7 +164,7 @@ if (LINUX)
         ${CMAKE_CURRENT_SOURCE_DIR}/assets
         )
 
-    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/cmake/install/linux"
+    magic_game_app_image_generation("${CMAKE_SOURCE_DIR}/cmake/install/linux"
         "dex.desktop"
         "dex.appdata.xml"
         "dex-logo-64.png"
