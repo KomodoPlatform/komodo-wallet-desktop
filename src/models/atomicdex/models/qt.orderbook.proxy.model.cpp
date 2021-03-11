@@ -62,7 +62,7 @@ namespace atomic_dex
         case orderbook_model::SendRole:
             break;
         case orderbook_model::PriceFiatRole:
-            break;
+            return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         }
         return true;
     }
