@@ -5,6 +5,7 @@
 
 //! Deps
 #include <QrCode.hpp>
+#include <antara/gaming/core/security.authentification.hpp>
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
@@ -30,7 +31,7 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! Properties
+//! Getters/Setters
 namespace atomic_dex
 {
     QString
@@ -69,7 +70,6 @@ namespace atomic_dex
             emit rpcClaimingStatusChanged();
         }
     }
-
 
     bool
     wallet_page::is_claiming_faucet_busy() const noexcept
@@ -254,6 +254,12 @@ namespace atomic_dex
         m_send_rpc_result = rpc_data.toJsonObject();
         emit sendDataChanged();
     }
+
+    bool
+    wallet_page::has_auth_succeeded() const noexcept
+    {
+        return m_auth_succeeded;
+    }
 } // namespace atomic_dex
 
 //! Public api
@@ -370,7 +376,25 @@ namespace atomic_dex
     void
     wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) noexcept
     {
-        //! Preparation
+#if defined(__APPLE__) || defined(WIN32)
+        antara::gaming::core::evaluate_authentication(
+            "Password to send funds is required", [=](bool is_auth) { broadcast_on_auth_finished(is_auth, tx_hex, is_claiming, is_max, amount); });
+#else
+        broadcast_on_auth_finished(true, tx_hex, is_claiming, is_max, amount);
+#endif
+    }
+
+    void
+    wallet_page::broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
+    {
+        if (!is_auth)
+        {
+            m_auth_succeeded = false;
+            emit auth_succeededChanged();
+            return;
+        }
+        m_auth_succeeded = true;
+        emit auth_succeededChanged();
         this->set_rpc_broadcast_data("");
         this->set_broadcast_busy(true);
         auto&               mm2_system = m_system_manager.get_system<mm2_service>();

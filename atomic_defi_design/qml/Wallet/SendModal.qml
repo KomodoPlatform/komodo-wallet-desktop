@@ -14,6 +14,7 @@ BasicModal {
     property alias amount_field: input_amount.field
 
     onClosed: reset()
+    closePolicy: Popup.NoAutoClose
 
     // Local
     readonly property var default_send_result: ({ has_error: false, error_message: "",
@@ -26,6 +27,8 @@ BasicModal {
 
     readonly property bool is_send_busy: api_wallet_page.is_send_busy
     property var send_rpc_result: api_wallet_page.send_rpc_data
+
+    readonly property bool auth_succeeded: api_wallet_page.auth_succeeded
 
     readonly property bool is_broadcast_busy: api_wallet_page.is_broadcast_busy
     property string broadcast_result: api_wallet_page.broadcast_rpc_data
@@ -60,6 +63,15 @@ BasicModal {
         }
 
         send_result = result
+    }
+
+    onAuth_succeededChanged: {
+        if (!auth_succeeded) {
+            console.log("Double verification failed, cannot confirm sending.")
+        }
+        else {
+            console.log("Double verification succeeded, validate sending.");
+        }
     }
 
     onBroadcast_resultChanged: {
