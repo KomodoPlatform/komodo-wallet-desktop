@@ -12,7 +12,7 @@
 #include <nlohmann/json.hpp>
 
 //! Tests
-#include "atomicdex/tests/atomic.dex.tests.hpp"
+#include "../../atomic.dex.tests.hpp"
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
