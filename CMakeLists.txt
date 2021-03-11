@@ -87,26 +87,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-##Lang
-set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM TRUE)
-
-set(TS_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
-        ${CMAKE_CURRENT_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
-        ${CMAKE_CURRENT_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts
-        ${CMAKE_CURRENT_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_ru.ts)
-
-set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/atomic_defi_design/assets/languages/)
-
-qt5_create_translation(QM_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/atomic_defi_design/qml
-        ${TS_FILES}
-        OPTIONS -source-language en_US -no-obsolete)
-
-message(STATUS "QM FILES -> ${QM_FILES}")
-message(STATUS "TS FILES -> ${TS_FILES}")
-##! End Lang
-
 add_subdirectory(src)
 
 add_library(antara_qrcode STATIC)
