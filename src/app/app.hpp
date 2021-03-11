@@ -59,7 +59,7 @@ Q_DECLARE_METATYPE(portfolio_page_ptr)
 
 namespace atomic_dex
 {
-    struct ENTT_API application final : public QObject, public ag::world::app
+    struct application final : public QObject, public ag::world::app
     {
         Q_OBJECT
 
