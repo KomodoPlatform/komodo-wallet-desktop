@@ -14,11 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
+// Deps Headers
 #include <nlohmann/json.hpp>
+#include <antara/app/net/http.code.hpp>
 
-//! Project Headers
-#include "atomicdex/constants/http.code.hpp"
+// Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
 
 namespace
@@ -48,7 +48,7 @@ namespace atomic_dex::faucet::api
         const std::string resp_body = TO_STD_STR(claim_response.extract_string(true).get());
 
         //! request success.
-        if (claim_response.status_code() == e_http_code::ok)
+        if (claim_response.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
         {
             auto resp_body_json = nlohmann::json::parse(resp_body);
 

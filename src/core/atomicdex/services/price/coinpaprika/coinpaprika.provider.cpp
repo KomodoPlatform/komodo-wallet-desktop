@@ -14,8 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project Headers
-#include "atomicdex/constants/http.code.hpp"
+// Deps Headers
+#include <antara/app/net/http.code.hpp>
+
+// Project Headers
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 
@@ -108,7 +110,7 @@ namespace atomic_dex
         const auto answer_functor = [this, &mtx, &container, functor = std::forward<TExecutorFunctor>(functor), request, ticker = std::move(ticker),
                                      ... args = std::move(args)](web::http::http_response resp) mutable {
             const auto answer = process_generic_resp<TAnswer>(resp);
-            if (answer.rpc_result_code == e_http_code::too_many_requests)
+            if (answer.rpc_result_code == static_cast<web::http::status_code>(antara::app::http_code::too_many_requests))
             {
                 std::this_thread::sleep_for(1s);
                 generic_rpc_paprika_process<TAnswer>(request, std::move(ticker), mtx, container, std::forward<TExecutorFunctor>(functor), std::move(args)...);

@@ -96,7 +96,7 @@ namespace atomic_dex
         coinpaprika::api::async_price_converter(request)
             .then([this, quote_id, ticker, with_update_providers](web::http::http_response resp) {
                 auto answer = coinpaprika::api::process_generic_resp<t_price_converter_answer>(resp);
-                if (answer.rpc_result_code == e_http_code::too_many_requests)
+                if (answer.rpc_result_code == static_cast<web::http::status_code>(antara::app::http_code::too_many_requests))
                 {
                     std::this_thread::sleep_for(1s);
                     this->refresh_other_coins_rates(quote_id, ticker);

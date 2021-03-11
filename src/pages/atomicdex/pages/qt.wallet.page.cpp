@@ -6,10 +6,10 @@
 //! Deps
 #include <QrCode.hpp>
 #include <antara/gaming/core/security.authentification.hpp>
+#include <antara/app/net/http.code.hpp>
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
-#include "atomicdex/constants/http.code.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -461,7 +461,7 @@ namespace atomic_dex
             .then([this](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 // SPDLOG_DEBUG("resp claiming: {}", body);
-                if (resp.status_code() == e_http_code::ok)
+                if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
                 {
                     auto           answers              = nlohmann::json::parse(body);
                     auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");

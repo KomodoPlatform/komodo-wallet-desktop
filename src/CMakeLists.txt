@@ -6,7 +6,7 @@ DEX_NEW_LIB(core STATIC
         cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
         Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
         unofficial-btc::bitcoin ${PROJECT_NAME}::apis ${PROJECT_NAME}::pages komodo-date::date komodo-taskflow::taskflow
-        Boost::random Boost::filesystem komodo-sodium::sodium
+        Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
     PUBLIC_DEFS
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD> DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"

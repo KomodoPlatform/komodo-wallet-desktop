@@ -19,9 +19,9 @@
 //! Deps
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
+#include <antara/app/net/http.code.hpp>
 
 //! Project Headers
-#include "atomicdex/constants/http.code.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace
@@ -98,14 +98,14 @@ namespace atomic_dex
         {
             TAnswer     answer;
             std::string body = TO_STD_STR(resp.extract_string(true).get());
-            if (resp.status_code() == e_http_code::bad_request)
+            if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::bad_request))
             {
                 SPDLOG_WARN("rpc answer code is 400 (Bad Parameters), body: {}", body);
                 answer.rpc_result_code = resp.status_code();
                 answer.raw_result      = body;
                 return answer;
             }
-            if (resp.status_code() == e_http_code::too_many_requests)
+            if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::too_many_requests))
             {
                 SPDLOG_WARN("rpc answer code is 429 (Too Many requests), body: {}", body);
                 answer.rpc_result_code = resp.status_code();
