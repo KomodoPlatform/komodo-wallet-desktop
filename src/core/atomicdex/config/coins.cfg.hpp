@@ -27,7 +27,7 @@
 
 //! Project
 #include "atomicdex/config/electrum.cfg.hpp"
-#include "atomicdex/constants/mm2.constants.hpp"
+#include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
 namespace atomic_dex

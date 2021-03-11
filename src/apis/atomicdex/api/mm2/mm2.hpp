@@ -26,7 +26,7 @@
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
-#include "atomicdex/constants/mm2.constants.hpp"
+#include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 #include "atomicdex/data/dex/qt.orders.data.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"

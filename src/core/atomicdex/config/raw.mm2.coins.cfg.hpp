@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project
-#include "atomicdex/constants/mm2.constants.hpp"
+#include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/fs.prerequisites.hpp"
 
