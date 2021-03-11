@@ -251,7 +251,7 @@ namespace atomic_dex
         }
         this->endResetModel();
         emit lengthChanged();
-        assert(model_data.size() == m_orders_id_registry.size());
+        assert(m_model_data.size() == m_orders_id_registry.size());
     }
 
     int
