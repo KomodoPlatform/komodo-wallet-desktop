@@ -51,7 +51,8 @@ namespace atomic_dex
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
             break;
         case kind::best_orders:
-            //! TODO: sortRole by CEX rates
+            this->m_model_proxy->setSortRole(PriceFiatRole);
+            this->m_model_proxy->sort(0, Qt::AscendingOrder);
             break;
         }
     }
