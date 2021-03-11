@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/constants/mm2.error.code.hpp"
+#include "mm2.error.code.hpp"
 
 namespace
 {

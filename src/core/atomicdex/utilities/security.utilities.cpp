@@ -28,7 +28,7 @@
 #include <sodium/utils.h>
 
 //! Project Headers
-#include "atomicdex/constants/mm2.error.code.hpp"
+#include "atomicdex/api/mm2/mm2.error.code.hpp"
 #include "atomicdex/utilities/security.utilities.hpp"
 
 namespace
