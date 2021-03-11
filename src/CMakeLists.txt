@@ -204,7 +204,7 @@ endif ()
 
 if (WIN32)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-    file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+    file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(${CMAKE_SOURCE_DIR}/wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
