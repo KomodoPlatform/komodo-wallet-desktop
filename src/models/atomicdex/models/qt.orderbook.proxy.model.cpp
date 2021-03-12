@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Qt
+#include <QDebug>
+
 //! Project
 #include "atomicdex/models/qt.orderbook.model.hpp"
 #include "atomicdex/models/qt.orderbook.proxy.model.hpp"
@@ -26,9 +29,15 @@ namespace atomic_dex
     bool
     orderbook_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
+        if (!source_left.isValid() || !source_right.isValid())
+        {
+            SPDLOG_WARN("one of the index is invalid - skipping -> role: {}", this->sortRole());
+            return false;
+        }
         int      role       = this->sortRole();
         QVariant left_data  = sourceModel()->data(source_left, role);
         QVariant right_data = sourceModel()->data(source_right, role);
+
         switch (static_cast<atomic_dex::orderbook_model::OrderbookRoles>(role))
         {
         case orderbook_model::PriceRole:

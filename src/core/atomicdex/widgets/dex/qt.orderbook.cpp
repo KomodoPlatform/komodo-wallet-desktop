@@ -42,25 +42,7 @@ namespace atomic_dex
     qt_orderbook_wrapper::on_best_orders_status_changed(const atomic_dex::best_orders_status_changed&)
     {
         emit bestOrdersBusyChanged();
-        if (g_is_best_orders_reset && !is_best_orders_busy())
-        {
-            SPDLOG_INFO("reset best orders book");
-            g_is_best_orders_reset = false;
-            this->m_best_orders->reset_orderbook(this->m_system_manager.get_system<orderbook_scanner_service>().get_data());
-        }
-        else if (!is_best_orders_busy())
-        {
-            SPDLOG_INFO("refresh best orders book");
-            const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
-            if (!data.empty() && this->m_best_orders->rowCount() > 0)
-            {
-                this->m_best_orders->refresh_orderbook(data);
-            }
-            else
-            {
-                this->m_best_orders->reset_orderbook(data);
-            }
-        }
+        this->m_best_orders->reset_orderbook(this->m_system_manager.get_system<orderbook_scanner_service>().get_data());
     }
 
     bool

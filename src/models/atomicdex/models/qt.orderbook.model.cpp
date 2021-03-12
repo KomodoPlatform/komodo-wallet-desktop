@@ -141,7 +141,10 @@ namespace atomic_dex
                 const auto  total_amount  = this->data(index, SendRole).toString().toStdString();
                 const auto  coin          = m_model_data.at(index.row()).coin;
                 const auto  result        = price_service.get_price_as_currency_from_amount(fiat, coin, total_amount);
-                return QString::fromStdString(result);
+                auto final_result = QString::fromStdString(result);
+                //SPDLOG_INFO("Result is: [{}] for coin: {} role: {} total amount: {}", result, coin, PriceFiatRole, total_amount);
+                //qDebug() << "final_result[" << final_result << "]";
+                return final_result;
             }
             else
             {
@@ -288,8 +291,8 @@ namespace atomic_dex
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
-            update_value(OrderbookRoles::CEXRatesRole, "", idx, *this);
-            update_value(OrderbookRoles::PriceFiatRole, "", idx, *this);
+            update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
+            update_value(OrderbookRoles::PriceFiatRole, "0.00", idx, *this);
         }
     }
 
@@ -323,6 +326,9 @@ namespace atomic_dex
                     auto res_list = this->match(index(0, 0), UUIDRole, QString::fromStdString(id));
                     if (not res_list.empty())
                     {
+                        if (this->m_current_orderbook_kind == kind::best_orders) {
+                            SPDLOG_INFO("Removing order with UUID: {}", id);
+                        }
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
                     }

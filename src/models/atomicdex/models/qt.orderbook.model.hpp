@@ -47,7 +47,7 @@ namespace atomic_dex
 
         enum OrderbookRoles
         {
-            PriceRole,
+            PriceRole = Qt::UserRole + 1, //257
             CoinRole,
             QuantityRole,
             TotalRole,
