@@ -88,7 +88,8 @@ set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.0/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
     message(STATUS "Generating ${DEX_PROJECT_NAME}.7z")
-    execute_process(COMMAND ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app
+    execute_process(COMMAND
+            ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
