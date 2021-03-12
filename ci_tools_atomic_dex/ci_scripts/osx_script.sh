@@ -7,9 +7,8 @@ brew install autoconf \
             wget \
             nim \
             ninja \
-            git \
-            gnu-sed \
-            llvm
+            gnu-sed
+
 export CC=clang
 export CXX=clang++
 export MACOSX_DEPLOYMENT_TARGET=10.14
