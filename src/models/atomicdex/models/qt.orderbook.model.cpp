@@ -101,15 +101,15 @@ namespace atomic_dex
         {
             bool        i_have_enough_funds = true;
             const auto& order_model_data    = m_model_data.at(index.row());
-            const auto  min_volume_f        = t_float_50(order_model_data.min_volume);
+            const auto  min_volume_f        = safe_float(order_model_data.min_volume);
             const auto& trading_pg          = m_system_mgr.get_system<trading_page>();
             auto        taker_vol_std       = trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
             if (taker_vol_std.empty())
             {
                 taker_vol_std = "0";
             }
-            t_float_50 mm2_min_trade_vol(trading_pg.get_mm2_min_trade_vol().toStdString());
-            t_float_50 taker_vol(taker_vol_std);
+            //t_float_50 mm2_min_trade_vol = safe_float(trading_pg.get_mm2_min_trade_vol().toStdString());
+            t_float_50 taker_vol = safe_float(taker_vol_std);
             i_have_enough_funds = min_volume_f > 0 && taker_vol > min_volume_f;
             return i_have_enough_funds;
         }
@@ -121,9 +121,9 @@ namespace atomic_dex
             {
                 const auto& data           = m_model_data.at(index.row());
                 const auto& trading_pg     = m_system_mgr.get_system<trading_page>();
-                t_float_50  volume_f       = t_float_50(trading_pg.get_volume().toStdString());
+                t_float_50  volume_f       = safe_float(trading_pg.get_volume().toStdString());
                 const bool  is_buy         = trading_pg.get_market_mode() == MarketMode::Buy;
-                t_float_50  total_amount_f = is_buy ? volume_f * t_float_50(data.price) : volume_f / t_float_50(data.price);
+                t_float_50  total_amount_f = is_buy ? volume_f * safe_float(data.price) : volume_f / safe_float(data.price);
                 const auto  total_amount   = atomic_dex::utils::format_float(total_amount_f);
                 return QString::fromStdString(total_amount);
             }

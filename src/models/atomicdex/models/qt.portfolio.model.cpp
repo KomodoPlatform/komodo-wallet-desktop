@@ -438,8 +438,8 @@ namespace atomic_dex
     portfolio_model::balance_update_handler(const QString& prev_balance, const QString& new_balance, const QString& ticker)
     {
         using namespace std::chrono;
-        t_float_50 prev_balance_f(prev_balance.toStdString());
-        t_float_50 new_balance_f(new_balance.toStdString());
+        t_float_50 prev_balance_f = safe_float(prev_balance.toStdString());
+        t_float_50 new_balance_f = safe_float(new_balance.toStdString());
         bool       am_i_sender = false;
         if (prev_balance_f > new_balance_f)
         {

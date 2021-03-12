@@ -32,7 +32,7 @@ namespace atomic_dex
         switch (static_cast<atomic_dex::orderbook_model::OrderbookRoles>(role))
         {
         case orderbook_model::PriceRole:
-            return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
+            return safe_float(left_data.toString().toStdString()) < safe_float(right_data.toString().toStdString());
         case orderbook_model::QuantityRole:
             break;
         case orderbook_model::TotalRole:
@@ -62,7 +62,7 @@ namespace atomic_dex
         case orderbook_model::SendRole:
             break;
         case orderbook_model::PriceFiatRole:
-            return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
+            return safe_float(left_data.toString().toStdString()) < safe_float(right_data.toString().toStdString());
         }
         return true;
     }

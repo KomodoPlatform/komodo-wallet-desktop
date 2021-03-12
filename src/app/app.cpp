@@ -302,7 +302,7 @@ namespace atomic_dex
     bool
     application::do_i_have_enough_funds(const QString& ticker, const QString& amount) const
     {
-        t_float_50 amount_f(amount.toStdString());
+        t_float_50 amount_f = safe_float(amount.toStdString());
         return get_mm2().do_i_have_enough_funds(ticker.toStdString(), amount_f);
     }
 
