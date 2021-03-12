@@ -262,9 +262,9 @@ static void
 setup_default_themes()
 {
     SPDLOG_INFO("Checking for setup default themes");
-    const fs::path  theme_path = atomic_dex::utils::get_themes_path();
-    fs::path        original_theme_path{ag::core::assets_real_path() / "themes"};
-    std::error_code ec;
+    const fs::path theme_path = atomic_dex::utils::get_themes_path();
+    fs::path       original_theme_path{ag::core::assets_real_path() / "themes"};
+    fs_error_code  ec;
     if (fs::is_empty(theme_path, ec))
     {
         SPDLOG_INFO("{} is empty, copying default themes into this directory", theme_path.string());
@@ -285,7 +285,7 @@ check_settings_reconfiguration(const fs::path& path)
     const fs::path previous_path = get_atomic_dex_data_folder() / get_precedent_raw_version() / "configs" / "cfg.ini";
     if (fs::exists(previous_path) && !fs::exists(path))
     {
-        std::error_code ec;
+        fs_error_code ec;
         SPDLOG_INFO("Copying {} to {}", previous_path.string(), path.string());
         fs::copy(previous_path, path, ec);
         if (ec)
