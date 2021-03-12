@@ -52,7 +52,7 @@ namespace mm2::api
             contents.price = contents.price;
         }
         contents.maxvolume = atomic_dex::utils::adjust_precision(contents.maxvolume);
-        t_float_50 total_f = t_float_50(contents.price) * t_float_50(contents.maxvolume);
+        t_float_50 total_f = safe_float(contents.price) * safe_float(contents.maxvolume);
         contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
     }
 } // namespace mm2::api

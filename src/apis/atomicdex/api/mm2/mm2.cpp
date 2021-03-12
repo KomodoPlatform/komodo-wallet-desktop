@@ -554,7 +554,7 @@ namespace mm2::api
                                               : QString::fromStdString(value.at("request").at("rel").get<std::string>());
             const auto base_amount = is_maker ? QString::fromStdString(value.at("available_amount").get<std::string>())
                                               : QString::fromStdString(value.at("request").at("base_amount").get<std::string>());
-            const auto rel_amount  = is_maker ? QString::fromStdString((t_float_50(price) * t_float_50(base_amount.toStdString())).convert_to<std::string>())
+            const auto rel_amount  = is_maker ? QString::fromStdString((safe_float(price) * safe_float(base_amount.toStdString())).convert_to<std::string>())
                                               : QString::fromStdString(value.at("request").at("rel_amount").get<std::string>());
             order_swaps_data contents{
                 .is_maker       = is_maker,
