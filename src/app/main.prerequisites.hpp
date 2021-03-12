@@ -337,7 +337,7 @@ run_app(int argc, char** argv)
     setup_default_themes();
     fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
     check_settings_reconfiguration(settings_path);
-    QSettings settings(settings_path.c_str(), QSettings::IniFormat);
+    QSettings settings(settings_path.string().c_str(), QSettings::IniFormat);
     handle_settings(settings);
     init_dpi();
 
