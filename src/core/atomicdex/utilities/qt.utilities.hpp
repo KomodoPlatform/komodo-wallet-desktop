@@ -20,6 +20,7 @@
 #include <QJsonObject>
 #include <QModelIndex>
 #include <QString>
+#include <QStringList>
 #include <QVariant>
 #include <QVariantList>
 
@@ -59,5 +60,7 @@ namespace atomic_dex
         Q_INVOKABLE static void copy_text_to_clipboard(const QString& text);
 
         Q_INVOKABLE static QString get_qrcode_svg_from_string(const QString& str);
+
+        Q_INVOKABLE QStringList get_themes_list() const noexcept;
     };
 } // namespace atomic_dex

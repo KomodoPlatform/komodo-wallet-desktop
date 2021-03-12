@@ -111,4 +111,13 @@ namespace atomic_dex
 
         return QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
     }
+
+    QStringList
+    qt_utilities::get_themes_list() const noexcept
+    {
+        QStringList    out;
+        const fs::path theme_path = atomic_dex::utils::get_themes_path();
+        for (auto&& cur: fs::directory_iterator(theme_path)) { out << QString::fromStdString(cur.path().filename().string()); }
+        return out;
+    }
 } // namespace atomic_dex
