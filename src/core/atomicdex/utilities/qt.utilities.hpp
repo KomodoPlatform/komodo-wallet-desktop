@@ -61,6 +61,8 @@ namespace atomic_dex
 
         Q_INVOKABLE static QString get_qrcode_svg_from_string(const QString& str);
 
-        Q_INVOKABLE QStringList get_themes_list() const noexcept;
+        Q_INVOKABLE [[nodiscard]] QStringList get_themes_list() const noexcept;
+
+        Q_INVOKABLE bool save_theme(const QString& filename, const QVariantMap& theme_object, bool overwrite = false);
     };
 } // namespace atomic_dex

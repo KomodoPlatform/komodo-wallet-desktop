@@ -120,4 +120,23 @@ namespace atomic_dex
         for (auto&& cur: fs::directory_iterator(theme_path)) { out << QString::fromStdString(cur.path().filename().string()); }
         return out;
     }
+
+    bool
+    qt_utilities::save_theme(const QString& filename, const QVariantMap& theme_object, bool overwrite)
+    {
+        bool     result    = true;
+        fs::path file_path = atomic_dex::utils::get_themes_path() / filename.toStdString();
+        if (!overwrite && fs::exists(file_path))
+        {
+            result = false;
+        }
+        else
+        {
+            SPDLOG_INFO("saving new theme: {}", file_path.string());
+            std::ofstream ofs(file_path.string(), std::ios::trunc);
+            ofs << QJsonDocument(QJsonObject::fromVariantMap(theme_object)).toJson(QJsonDocument::Indented).toStdString();
+            ofs.close();
+        }
+        return result;
+    }
 } // namespace atomic_dex
