@@ -879,7 +879,7 @@ namespace atomic_dex
     mm2_service::get_balance(const std::string& ticker) const
     {
         std::error_code ec;
-        t_float_50      balance(my_balance(ticker, ec));
+        t_float_50      balance = safe_float(my_balance(ticker, ec));
         return balance;
     }
 

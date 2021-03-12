@@ -16,22 +16,14 @@
 
 #pragma once
 
-//! Boost
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-parameter"
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#include <boost/multiprecision/cpp_int.hpp>
-using t_float_50 = boost::multiprecision::cpp_dec_float_50;
-using t_rational = boost::multiprecision::cpp_rational;
-#pragma clang diagnostic pop
-
 //! Deps
-#include <date/date.h> ///< date::format
-#include <date/tz.h> ///< date::make_zoned
+#include <date/date.h>           ///< date::format
+#include <date/tz.h>             ///< date::make_zoned
 #include <entt/core/attribute.h> ///< ENTT_API
 #include <spdlog/spdlog.h>
 
 #include "fs.prerequisites.hpp"
+#include "safe.float.hpp"
 
 namespace atomic_dex::utils
 {

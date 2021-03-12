@@ -59,13 +59,13 @@ namespace
     QString
     calculate_total_amount(QString price, QString volume)
     {
-        t_float_50 price_f(price.toStdString());
-        t_float_50 volume_f(volume.toStdString());
+        t_float_50 price_f(safe_float(price.toStdString()));
+        t_float_50 volume_f(safe_float(volume.toStdString()));
         t_float_50 total_amount_f = volume_f * price_f;
         return QString::fromStdString(atomic_dex::utils::format_float(total_amount_f));
     }
 
-    QVariantMap
+    /*QVariantMap
     generate_fees_infos(const QString& base, const QString& rel, bool is_max, const QString& total_amount, const atomic_dex::mm2_service& mm2)
     {
         //! 1 / 777 * total_amount (if max is true, total_amount will be the balance);
@@ -110,7 +110,7 @@ namespace
             fees["total_base_fees_fp"]   = QString::fromStdString(total_base_fees_f.str(50, std::ios_base::fixed));
         }
         return fees;
-    }
+    }*/
 } // namespace
 
 //! Consttructor / Destructor
@@ -242,7 +242,7 @@ namespace atomic_dex
         const auto& rel               = market_selector->get_right_selected_coin();
         const bool  is_selected_order = m_preffered_order.has_value();
         const bool  is_selected_max =
-            is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+            is_selected_order ? QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
                                : false;
         const bool is_my_max = m_volume == m_max_volume;
         const bool is_exact_selected_order_volume =
@@ -354,7 +354,7 @@ namespace atomic_dex
         const bool  is_selected_order = m_preffered_order.has_value();
         const bool  is_max            = m_max_volume == m_volume;
         const bool  is_selected_max =
-            is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+            is_selected_order ? QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
                                : false;
 
         t_sell_request req{
@@ -775,7 +775,7 @@ namespace atomic_dex
     {
         if (m_volume != volume && not volume.isEmpty())
         {
-            if (t_float_50(volume.toStdString()) < 0)
+            if (safe_float(volume.toStdString()) < 0)
             {
                 volume = "0";
             }
@@ -813,13 +813,13 @@ namespace atomic_dex
             if (not max_taker_vol.empty())
             {
                 // SPDLOG_INFO("max_taker_vol is valid, processing...");
-                if (t_float_50(max_taker_vol) <= 0)
+                if (safe_float(max_taker_vol) <= 0)
                 {
                     this->set_max_volume("0");
                 }
                 else
                 {
-                    const auto max_vol_str = utils::format_float(t_float_50(max_taker_vol));
+                    const auto max_vol_str = utils::format_float(safe_float(max_taker_vol));
 
                     //! max_volume is max_taker_vol
                     this->set_max_volume(QString::fromStdString(max_vol_str));
@@ -838,14 +838,14 @@ namespace atomic_dex
             //! In MarketMode::Buy mode the max volume is rel_max_taker_vol / price
             if (not m_price.isEmpty())
             {
-                t_float_50 price_f(m_price.toStdString());
+                t_float_50 price_f = safe_float(m_price.toStdString());
                 //! It's selected let's use rat price
                 if (m_preffered_order.has_value())
                 {
                     const auto& rel_max_taker_json_obj = get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject();
                     const auto& denom                  = rel_max_taker_json_obj["denom"].toString().toStdString();
                     const auto& numer                  = rel_max_taker_json_obj["numer"].toString().toStdString();
-                    t_float_50  res_f                  = t_float_50(rel_max_taker_json_obj["decimal"].toString().toStdString());
+                    t_float_50  res_f                  = safe_float(rel_max_taker_json_obj["decimal"].toString().toStdString());
                     if (res_f <= 0)
                     {
                         res_f = 0;
@@ -873,9 +873,9 @@ namespace atomic_dex
                 }
                 else
                 {
-                    t_float_50 max_vol(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
-                    max_vol        = std::max(t_float_50(0), max_vol);
-                    t_float_50 res = price_f > t_float_50(0) ? max_vol / price_f : t_float_50(0);
+                    t_float_50 max_vol = safe_float(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                    max_vol            = std::max(t_float_50(0), max_vol);
+                    t_float_50 res     = price_f > t_float_50(0) ? max_vol / price_f : t_float_50(0);
                     if (res < 0)
                     {
                         res = 0;
@@ -896,7 +896,7 @@ namespace atomic_dex
          */
         if (auto std_volume = this->get_volume().toStdString(); not std_volume.empty())
         {
-            if (t_float_50(std_volume) > t_float_50(this->get_max_volume().toStdString()))
+            if (safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
             {
                 this->set_volume(this->get_max_volume());
             }
@@ -1036,8 +1036,8 @@ namespace atomic_dex
             emit prefferedOrderChanged();
             if (not m_preffered_order->empty() && m_preffered_order->contains("price"))
             {
-                this->set_price(QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("price").get<std::string>()))));
-                this->set_volume(QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))));
+                this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("price").get<std::string>()))));
+                this->set_volume(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))));
                 this->determine_max_volume();
             }
         }
@@ -1163,21 +1163,21 @@ namespace atomic_dex
                     //! ETH <-> MORTY (sell) trading_fee_ticker == ETH, base_ticker_fee == MORTY, rel_ticker_fee == ETH, TOTAL_FEE_TICKER = ETH
                     //! ETH <-> MORTY (buy) trading_fee_ticker == MORTY, base_ticker_fee == ETH, rel_ticker_fee == MORTY, TOTAL_FEE_TICKER = MORTY
 
-                    t_float_50 total_fees_f = t_float_50(success_answer.taker_fee.value_or("0"));
+                    t_float_50 total_fees_f = safe_float(success_answer.taker_fee.value_or("0"));
 
                     if (trading_fee_ticker.toStdString() == success_answer.base_coin_fee.coin)
                     {
-                        total_fees_f += t_float_50(success_answer.base_coin_fee.amount);
+                        total_fees_f += safe_float(success_answer.base_coin_fee.amount);
                     }
 
                     if (trading_fee_ticker.toStdString() == success_answer.rel_coin_fee.coin)
                     {
-                        total_fees_f += t_float_50(success_answer.rel_coin_fee.amount);
+                        total_fees_f += safe_float(success_answer.rel_coin_fee.amount);
                     }
 
                     if (trading_fee_ticker.toStdString() == success_answer.fee_to_send_taker_fee.value().coin)
                     {
-                        total_fees_f += t_float_50(utils::adjust_precision(success_answer.fee_to_send_taker_fee.value().amount));
+                        total_fees_f += safe_float(utils::adjust_precision(success_answer.fee_to_send_taker_fee.value().amount));
                     }
 
                     fees["total_fees"]    = QString::fromStdString(atomic_dex::utils::format_float(total_fees_f));
@@ -1220,11 +1220,11 @@ namespace atomic_dex
         {
             current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
         }
-        else if (t_float_50(get_base_amount().toStdString()) < utils::minimal_trade_amount())
+        else if (safe_float(get_base_amount().toStdString()) < utils::minimal_trade_amount())
         {
             current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
         }
-        else if (t_float_50(get_rel_amount().toStdString()) < utils::minimal_trade_amount())
+        else if (safe_float(get_rel_amount().toStdString()) < utils::minimal_trade_amount())
         {
             current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
@@ -1273,9 +1273,9 @@ namespace atomic_dex
     QString
     trading_page::get_price_reversed() const noexcept
     {
-        if (not m_price.isEmpty() && t_float_50(m_price.toStdString()) > 0)
+        if (not m_price.isEmpty() && safe_float(m_price.toStdString()) > 0)
         {
-            t_float_50 reversed_price = t_float_50(1) / t_float_50(m_price.toStdString());
+            t_float_50 reversed_price = t_float_50(1) / safe_float(m_price.toStdString());
             return QString::fromStdString(utils::format_float(reversed_price));
         }
 
@@ -1287,7 +1287,7 @@ namespace atomic_dex
     {
         if (not get_invalid_cex_price())
         {
-            t_float_50 reversed_cex_price = t_float_50(1) / t_float_50(m_cex_price.toStdString());
+            t_float_50 reversed_cex_price = t_float_50(1) / safe_float(m_cex_price.toStdString());
             return QString::fromStdString(utils::format_float(reversed_cex_price));
         }
         return "0";
@@ -1298,7 +1298,7 @@ namespace atomic_dex
     {
         t_float_50 price_diff = get_invalid_cex_price()
                                     ? t_float_50(0)
-                                    : t_float_50(100) * (t_float_50(1) - t_float_50(m_price.toStdString()) / t_float_50(m_cex_price.toStdString())) *
+                                    : t_float_50(100) * (t_float_50(1) - safe_float(m_price.toStdString()) / safe_float(m_cex_price.toStdString())) *
                                           (m_market_mode == MarketMode::Sell ? t_float_50(1) : t_float_50(-1));
         return QString::fromStdString(utils::format_float(price_diff));
     }
@@ -1310,10 +1310,10 @@ namespace atomic_dex
         auto*       selection_box   = market_selector->get_multiple_selection_box();
         const auto& mm2             = m_system_manager.get_system<mm2_service>();
         auto        total_amount    = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
-        auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
+        // auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
         // qDebug() << "fees multi_ticker: " << fees;
-        set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
-        this->determine_multi_ticker_error_cases(ticker, fees);
+        // set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
+        // this->determine_multi_ticker_error_cases(ticker, fees);
     }
 
     void
@@ -1365,7 +1365,7 @@ namespace atomic_dex
         {
             last_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
         }
-        else if (t_float_50(total_receive_amount.toStdString()) < utils::minimal_trade_amount())
+        else if (safe_float(total_receive_amount.toStdString()) < utils::minimal_trade_amount())
         {
             last_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
@@ -1432,9 +1432,11 @@ namespace atomic_dex
             }
             else
             {
-                t_float_50 rel_price_for_one_unit(model->data(idx, portfolio_model::PortfolioRoles::MainFiatPriceForOneUnit).toString().toStdString());
-                t_float_50 price_as_currency_from_amount(price_service.get_price_as_currency_from_amount(config.current_fiat, rel_ticker.toStdString(), "1"));
-                t_float_50 price_field_fiat       = t_float_50(m_price.toStdString()) * price_as_currency_from_amount;
+                t_float_50 rel_price_for_one_unit =
+                    safe_float(model->data(idx, portfolio_model::PortfolioRoles::MainFiatPriceForOneUnit).toString().toStdString());
+                t_float_50 price_as_currency_from_amount =
+                    safe_float(price_service.get_price_as_currency_from_amount(config.current_fiat, rel_ticker.toStdString(), "1"));
+                t_float_50 price_field_fiat       = safe_float(m_price.toStdString()) * price_as_currency_from_amount;
                 t_float_50 rel_price_relative     = rel_price_for_one_unit == t_float_50(0) ? t_float_50(0) : price_field_fiat / rel_price_for_one_unit;
                 const auto rel_price_relative_str = QString::fromStdString(utils::format_float(rel_price_relative));
                 if (rel_price_relative > 0) //< if there is no fiat data don't override it
@@ -1456,7 +1458,7 @@ namespace atomic_dex
                     .toString()
                     .toStdString();
             assert(not max_dust_str.empty());
-            t_float_50 max_balance_without_dust(max_dust_str);
+            t_float_50 max_balance_without_dust = safe_float(max_dust_str);
             return max_balance_without_dust;
         }
 
@@ -1471,24 +1473,24 @@ namespace atomic_dex
         const auto   is_selected_order  = m_preffered_order.has_value();
 
         //! Check taker fee only if it's a selected order
-        if (is_selected_order && t_float_50(fees["trading_fee"].toString().toStdString()) > max_balance_without_dust)
+        if (is_selected_order && safe_float(fees["trading_fee"].toString().toStdString()) > max_balance_without_dust)
         {
             last_trading_error = TradingError::TradingFeesNotEnoughFunds; ///< need to have for multi ticker check
         }
         //! Check base transaction fees, we do not need to check if it's a selected order, every order even maker_order need to pay transaction fees
         else if (!mm2.do_i_have_enough_funds(
-                     fees["base_transaction_fees_ticker"].toString().toStdString(), t_float_50(fees["base_transaction_fees"].toString().toStdString())))
+                     fees["base_transaction_fees_ticker"].toString().toStdString(), safe_float(fees["base_transaction_fees"].toString().toStdString())))
         {
             last_trading_error = TradingError::BaseTransactionFeesNotEnough; ///< need to have for multi ticker check
         }
-        else if (t_float_50(fees["total_fees_fp"].toString().toStdString()) > max_balance_without_dust)
+        else if (safe_float(fees["total_fees_fp"].toString().toStdString()) > max_balance_without_dust)
         {
             last_trading_error = TradingError::TotalFeesNotEnoughFunds; ///< need to have for multi ticker check
         }
         else if (fees.contains("rel_transaction_fees_ticker")) //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
         {
             const auto rel_ticker = fees["rel_transaction_fees_ticker"].toString().toStdString();
-            t_float_50 rel_amount(fees["rel_transaction_fees"].toString().toStdString());
+            t_float_50 rel_amount = safe_float(fees["rel_transaction_fees"].toString().toStdString());
             if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
             {
                 last_trading_error = TradingError::RelTransactionFeesNotEnough; ///< need to have for multi ticker check
@@ -1538,7 +1540,7 @@ namespace atomic_dex
     void
     trading_page::set_min_trade_vol(QString min_trade_vol) noexcept
     {
-        const bool is_valid = t_float_50(min_trade_vol.toStdString()) <= t_float_50(get_volume().toStdString());
+        const bool is_valid = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
 
         if (min_trade_vol != m_minimal_trading_amount && is_valid)
         {

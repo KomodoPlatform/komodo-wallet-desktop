@@ -49,7 +49,7 @@ namespace atomic_dex::utils
     {
         std::string       result;
         std::stringstream ss;
-        t_float_50        current_f(current);
+        t_float_50        current_f(safe_float(current));
 
         return format_float(current_f);
     }
