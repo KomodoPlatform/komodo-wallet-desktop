@@ -490,7 +490,7 @@ namespace atomic_dex
         const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name + ".json"s;
         const fs::path    wallet_cfg_path{utils::get_atomic_dex_config_folder() / wallet_cfg_file};
         const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
-        const auto        functor_remove = [](const auto&& path_to_remove) {
+        const auto        functor_remove = [](auto&& path_to_remove) {
             if (fs::exists(path_to_remove))
             {
                 fs_error_code ec;

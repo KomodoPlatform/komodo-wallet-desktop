@@ -59,6 +59,7 @@ namespace atomic_dex::utils
     {
         if (not fs::exists(path))
         {
+            SPDLOG_INFO("creating directory {}", path.string());
             fs::create_directories(path);
             return true;
         }
@@ -252,5 +253,13 @@ namespace atomic_dex::utils
         SPDLOG_INFO("Logger successfully initialized");
 
         return logger;
+    }
+
+    fs::path
+    get_themes_path()
+    {
+        fs::path theme_path = get_atomic_dex_data_folder() / "themes";
+        create_if_doesnt_exist(theme_path);
+        return theme_path;
     }
 } // namespace atomic_dex::utils

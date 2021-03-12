@@ -259,6 +259,43 @@ init_timezone_db()
 }
 
 static void
+setup_default_themes()
+{
+    SPDLOG_INFO("Checking for setup default themes");
+    const fs::path  theme_path = atomic_dex::utils::get_themes_path();
+    fs::path        original_theme_path{ag::core::assets_real_path() / "themes"};
+    std::error_code ec;
+    if (fs::is_empty(theme_path, ec))
+    {
+        SPDLOG_INFO("{} is empty, copying default themes into this directory", theme_path.string());
+        fs::copy(original_theme_path, theme_path, ec);
+    }
+    if (ec)
+    {
+        SPDLOG_ERROR("fs::error: {}", ec.message());
+    }
+}
+
+static void
+check_settings_reconfiguration(const fs::path& path)
+{
+    SPDLOG_INFO("Checking for settings ini reconfiguration");
+    using namespace atomic_dex::utils;
+    using namespace atomic_dex;
+    const fs::path previous_path = get_atomic_dex_data_folder() / get_precedent_raw_version() / "configs" / "cfg.ini";
+    if (fs::exists(previous_path) && !fs::exists(path))
+    {
+        std::error_code ec;
+        SPDLOG_INFO("Copying {} to {}", previous_path.string(), path.string());
+        fs::copy(previous_path, path, ec);
+        if (ec)
+        {
+            SPDLOG_ERROR("error occured when copying previous cfg.ini : {}", ec.message());
+        }
+    }
+}
+
+static void
 handle_settings(QSettings& settings)
 {
     auto create_settings_functor = [&settings](QString settings_name, QVariant value) {
@@ -273,6 +310,7 @@ handle_settings(QSettings& settings)
         }
     };
     SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
+    create_settings_functor("CurrentTheme", "dark.json");
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
@@ -295,7 +333,10 @@ run_app(int argc, char** argv)
     init_wally();
     init_sodium();
     clean_previous_run();
-    QSettings settings((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string().c_str(), QSettings::IniFormat);
+    setup_default_themes();
+    fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
+    check_settings_reconfiguration(settings_path);
+    QSettings settings(settings_path.c_str(), QSettings::IniFormat);
     handle_settings(settings);
     init_dpi();
 

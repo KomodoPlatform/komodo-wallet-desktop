@@ -92,5 +92,7 @@ namespace atomic_dex::utils
 
     fs::path get_atomic_dex_current_export_recent_swaps_file();
 
+    ENTT_API fs::path get_themes_path();
+
     void to_eth_checksum(std::string& address);
 } // namespace atomic_dex::utils
