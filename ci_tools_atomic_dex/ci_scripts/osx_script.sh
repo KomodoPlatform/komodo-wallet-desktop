@@ -6,12 +6,10 @@ brew install autoconf \
             pkgconfig \
             wget \
             nim \
-            cmake \
             ninja \
             git \
-            boost \
             gnu-sed \
-            llvm@9
+            llvm
 export CC=clang
 export CXX=clang++
 export MACOSX_DEPLOYMENT_TARGET=10.14
