@@ -311,6 +311,7 @@ handle_settings(QSettings& settings)
     };
     SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
     create_settings_functor("CurrentTheme", "dark.json");
+    create_settings_functor("ThemePath", atomic_dex::utils::get_themes_path().c_str());
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
