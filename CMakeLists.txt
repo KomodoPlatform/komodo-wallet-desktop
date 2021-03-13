@@ -11,14 +11,20 @@ include(vcpkg_prerequisites)
 include(qt_prerequisites)
 include(cfg_hash)
 
+if (APPLE)
+    message(STATUS "CMAKE_OSX_ARCHITECTURES: ${CMAKE_OSX_ARCHITECTURES}")
+endif ()
+
 project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.4.0)
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
+
 
 include(cmake_default_options)
 include(ipo_prerequisites)
 
 ##! Options
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
+option(WITH_BUILDSYSTEM_V2 "Enable it to use new build system V2 - WIP" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 
 ##! Antara
@@ -99,17 +105,17 @@ if (WITH_HOTRELOAD)
     add_subdirectory(hot_reload/qml/Qaterial/HotReload)
 
     add_library(${QATERIALHOTRELOAD_LIB} STATIC
-        ${QATERIALHOTRELOAD_SRC_DIR}/HotReload.hpp
-        ${QATERIALHOTRELOAD_SRC_DIR}/HotReload.cpp
-        ${QATERIALHOTRELOAD_QML_RES})
+            ${QATERIALHOTRELOAD_SRC_DIR}/HotReload.hpp
+            ${QATERIALHOTRELOAD_SRC_DIR}/HotReload.cpp
+            ${QATERIALHOTRELOAD_QML_RES})
     add_library(Qaterial::HotReload ALIAS ${QATERIALHOTRELOAD_LIB})
 
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PUBLIC
-        Qaterial
-        SortFilterProxyModel)
+            Qaterial
+            SortFilterProxyModel)
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PRIVATE
-        Qaterial::HotReload::Ui
-        )
+            Qaterial::HotReload::Ui
+            )
 
     function(target_link_quiet_libraries TARGET)
         foreach (LIB ${ARGN})
@@ -121,23 +127,23 @@ if (WITH_HOTRELOAD)
 
     # Optionnal Qt libs that might be interessant to have packaged with hotreloader
     find_package(Qt5 QUIET COMPONENTS
-        Charts)
+            Charts)
 
     target_link_quiet_libraries(${QATERIALHOTRELOAD_LIB}
-        Qt::Charts)
+            Qt::Charts)
 
     set_target_properties(${QATERIALHOTRELOAD_LIB} PROPERTIES
-        FOLDER ${QATERIALHOTRELOAD_FOLDER_PREFIX}
-        AUTORCC TRUE
-        AUTOMOC TRUE)
+            FOLDER ${QATERIALHOTRELOAD_FOLDER_PREFIX}
+            AUTORCC TRUE
+            AUTOMOC TRUE)
     target_include_directories(${QATERIALHOTRELOAD_LIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hot_reload/src)
     target_compile_definitions(${QATERIALHOTRELOAD_LIB}
-        PRIVATE -DQATERIALHOTRELOAD_VERSION_MAJOR=${QATERIALHOTRELOAD_VERSION_MAJOR}
-        PRIVATE -DQATERIALHOTRELOAD_VERSION_MINOR=${QATERIALHOTRELOAD_VERSION_MINOR}
-        PRIVATE -DQATERIALHOTRELOAD_VERSION_PATCH=${QATERIALHOTRELOAD_VERSION_PATCH}
-        PRIVATE -DQATERIALHOTRELOAD_VERSION_TAG=${QATERIALHOTRELOAD_VERSION_TAG}
-        PRIVATE -DQATERIALHOTRELOAD_VERSION_TAG_HEX=${QATERIALHOTRELOAD_VERSION_TAG_HEX}
-        )
+            PRIVATE -DQATERIALHOTRELOAD_VERSION_MAJOR=${QATERIALHOTRELOAD_VERSION_MAJOR}
+            PRIVATE -DQATERIALHOTRELOAD_VERSION_MINOR=${QATERIALHOTRELOAD_VERSION_MINOR}
+            PRIVATE -DQATERIALHOTRELOAD_VERSION_PATCH=${QATERIALHOTRELOAD_VERSION_PATCH}
+            PRIVATE -DQATERIALHOTRELOAD_VERSION_TAG=${QATERIALHOTRELOAD_VERSION_TAG}
+            PRIVATE -DQATERIALHOTRELOAD_VERSION_TAG_HEX=${QATERIALHOTRELOAD_VERSION_TAG_HEX}
+            )
 
     if (QATERIALHOTRELOAD_ENABLE_PCH AND COMMAND target_precompile_headers)
         target_precompile_headers(${QATERIALHOTRELOAD_LIB} PRIVATE ${PROJECT_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload/Pch/Pch.hpp)
