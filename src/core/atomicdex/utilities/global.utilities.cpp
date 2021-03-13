@@ -249,7 +249,7 @@ namespace atomic_dex::utils
         spdlog::register_logger(logger);
         spdlog::set_default_logger(logger);
         spdlog::set_level(spdlog::level::trace);
-        spdlog::set_pattern("[%T] [%^%l%$] [%s:%#]: %v");
+        spdlog::set_pattern("[%T] [%^%l%$] [%s:%#] [%t]: %v");
         SPDLOG_INFO("Logger successfully initialized");
 
         return logger;

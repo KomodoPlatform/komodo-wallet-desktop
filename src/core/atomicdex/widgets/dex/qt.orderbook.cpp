@@ -24,7 +24,7 @@
 
 namespace
 {
-    std::atomic_bool g_is_best_orders_reset{false};
+    // std::atomic_bool g_is_best_orders_reset{false};
 }
 
 namespace atomic_dex
@@ -41,8 +41,21 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::on_best_orders_status_changed(const atomic_dex::best_orders_status_changed&)
     {
-        emit bestOrdersBusyChanged();
-        this->m_best_orders->reset_orderbook(this->m_system_manager.get_system<orderbook_scanner_service>().get_data());
+        /*SPDLOG_INFO("best orders need to be updated");
+        emit       bestOrdersBusyChanged();
+        const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
+        if (data.empty())
+        {
+            this->m_best_orders->clear_orderbook();
+        }
+        else if (m_best_orders->rowCount() == 0)
+        {
+            this->m_best_orders->reset_orderbook(data);
+        }
+        else
+        {
+            this->m_best_orders->refresh_orderbook(data);
+        }*/
     }
 
     bool
@@ -74,6 +87,19 @@ namespace atomic_dex
     {
         this->m_asks->refresh_orderbook(answer.asks);
         this->m_bids->refresh_orderbook(answer.bids);
+        const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
+        if (data.empty())
+        {
+            m_best_orders->clear_orderbook();
+        }
+        else if (m_best_orders->rowCount() == 0)
+        {
+            m_best_orders->reset_orderbook(data);
+        }
+        else
+        {
+            m_best_orders->refresh_orderbook(data);
+        }
         this->set_both_taker_vol();
     }
 
@@ -82,8 +108,8 @@ namespace atomic_dex
     {
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
-        g_is_best_orders_reset = true;
-        this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
+        m_best_orders->clear_orderbook();                                                     ///< Remove all elements from the model
+        this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders(); ///< re process the model
         this->set_both_taker_vol();
     }
 

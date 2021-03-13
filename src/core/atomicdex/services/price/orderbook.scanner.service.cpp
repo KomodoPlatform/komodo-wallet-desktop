@@ -41,7 +41,7 @@ namespace atomic_dex
         if (m_system_manager.has_system<mm2_service>())
         {
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
-            if (mm2_system.is_mm2_running())
+            if (mm2_system.is_mm2_running() && mm2_system.is_orderbook_thread_active())
             {
                 using namespace std::string_literals;
                 const auto&           trading_pg = m_system_manager.get_system<trading_page>();
@@ -76,9 +76,16 @@ namespace atomic_dex
                 ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
                     .then(answer_functor)
                     .then([this](pplx::task<void> previous_task) {
-                        this->m_rpc_busy = false;
-                        this->dispatcher_.trigger<best_orders_status_changed>();
-                        handle_exception_pplx_task(previous_task);
+                        try
+                        {
+                            previous_task.wait();
+                        }
+                        catch (const std::exception& e)
+                        {
+                            SPDLOG_ERROR("pplx task error: {}", e.what());
+                            this->m_rpc_busy = false;
+                            this->dispatcher_.trigger<best_orders_status_changed>();
+                        }
                     });
             }
             else
