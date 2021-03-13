@@ -139,4 +139,19 @@ namespace atomic_dex
         }
         return result;
     }
+
+    QVariantMap
+    atomic_dex::qt_utilities::load_theme(const QString& theme_name) const noexcept
+    {
+        QVariantMap out;
+        using namespace std::string_literals;
+        fs::path file_path = atomic_dex::utils::get_themes_path() / (theme_name.toStdString() + ".json"s);
+        if (fs::exists(file_path))
+        {
+            std::ifstream ifs(file_path.string());
+            std::string   str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+            return QJsonDocument::fromJson(str.data()).object().toVariantMap();
+        }
+        return out;
+    }
 } // namespace atomic_dex

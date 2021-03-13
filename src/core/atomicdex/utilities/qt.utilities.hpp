@@ -61,8 +61,24 @@ namespace atomic_dex
 
         Q_INVOKABLE static QString get_qrcode_svg_from_string(const QString& str);
 
+        //! Themes
         Q_INVOKABLE [[nodiscard]] QStringList get_themes_list() const noexcept;
 
+        /**
+         *
+         * @param filename -> my_theme.json
+         * @param theme_object -> json object of my_theme.json
+         * @param overwrite -> if true replace current theme
+         * @return ->  if it's was overwritten or not
+         * @example -> save_theme(my_theme.json, "{}", false)
+         */
         Q_INVOKABLE bool save_theme(const QString& filename, const QVariantMap& theme_object, bool overwrite = false);
+
+        /**
+         * @param theme_name
+         * @return theme as a json object
+         * @example -> load_theme(dark);
+         */
+        Q_INVOKABLE QVariantMap load_theme(const QString& theme_name) const noexcept;
     };
 } // namespace atomic_dex

@@ -1308,7 +1308,7 @@ namespace atomic_dex
     {
         const auto* market_selector = get_market_pairs_mdl();
         auto*       selection_box   = market_selector->get_multiple_selection_box();
-        const auto& mm2             = m_system_manager.get_system<mm2_service>();
+        //const auto& mm2             = m_system_manager.get_system<mm2_service>();
         auto        total_amount    = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
         // auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
         // qDebug() << "fees multi_ticker: " << fees;
