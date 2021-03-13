@@ -261,10 +261,11 @@ init_timezone_db()
 static void
 setup_default_themes()
 {
-    SPDLOG_INFO("Checking for setup default themes");
+
     const fs::path theme_path = atomic_dex::utils::get_themes_path();
     fs::path       original_theme_path{ag::core::assets_real_path() / "themes"};
     fs_error_code  ec;
+    SPDLOG_INFO("Checking for setup default themes - theme_path: {} original_theme_path: {}", theme_path.string(), original_theme_path.string());
     if (fs::is_empty(theme_path, ec))
     {
         SPDLOG_INFO("{} is empty, copying default themes into this directory", theme_path.string());

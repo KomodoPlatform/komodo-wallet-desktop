@@ -505,7 +505,7 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::trading_page::disconnect_signals()
+    trading_page::disconnect_signals()
     {
         dispatcher_.sink<process_orderbook_finished>().disconnect<&trading_page::on_process_orderbook_finished_event>(*this);
         dispatcher_.sink<multi_ticker_enabled>().disconnect<&trading_page::on_multi_ticker_enabled>(*this);
