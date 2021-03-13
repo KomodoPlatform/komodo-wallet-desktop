@@ -73,7 +73,7 @@ Item {
 
     // Right side
     AnimatedRectangle {
-        color: Style.colorTheme8
+        color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
         height: parent.height
         x: sidebar.width
@@ -186,6 +186,7 @@ Item {
 
     // Sidebar, left side
     Sidebar {
+
         id: sidebar
     }
 

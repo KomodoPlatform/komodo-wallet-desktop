@@ -793,177 +793,177 @@
         <translation>Содержание этого раздела будет добавлено в следующих обновлениях. Следите за новостями!</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="282"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="283"/>
         <source>Matching</source>
         <translation>Матчинг</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="282"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="283"/>
         <source>Order Matching</source>
         <translation>Матчинг ордеров</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="284"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="285"/>
         <source>Matched</source>
         <translation>Сматчен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="284"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="285"/>
         <source>Order Matched</source>
         <translation>Ордер сматчен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="286"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="287"/>
         <source>Ongoing</source>
         <translation>В процессе</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="286"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="287"/>
         <source>Swap Ongoing</source>
         <translation>Своп продолжается</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="288"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="289"/>
         <source>Successful</source>
         <translation>Успешно</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="288"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="289"/>
         <source>Swap Successful</source>
         <translation>Своп успешно завершен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="290"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="291"/>
         <source>Refunding</source>
         <translation>Проводится возврат</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="292"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="293"/>
         <source>Failed</source>
         <translation>Не завершено</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="292"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="293"/>
         <source>Swap Failed</source>
         <translation>Своп не был завершен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="294"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="295"/>
         <source>Unknown</source>
         <translation>Неизвестно</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="294"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="295"/>
         <source>Unknown State</source>
         <translation>Статус неизвестен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="338"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
         <source>Started</source>
         <translation>Начат</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="340"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="341"/>
         <source>Negotiated</source>
         <translation>Согласован</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="342"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="343"/>
         <source>Taker fee sent</source>
         <translation>Комиссия тейкера отправлена</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="344"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="345"/>
         <source>Maker payment received</source>
         <translation>Платеж мейкера получен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="346"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="347"/>
         <source>Maker payment wait confirm started</source>
         <translation>Ожидание платежа мейкера</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="348"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="349"/>
         <source>Maker payment validated and confirmed</source>
         <translation>Платеж мейкера валидирован и подтвержден</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="350"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="351"/>
         <source>Taker payment sent</source>
         <translation>Платеж тейкера отправлен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="352"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="353"/>
         <source>Taker payment spent</source>
         <translation>Платеж тейкера потрачен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="354"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="355"/>
         <source>Maker payment spent</source>
         <translation>Платеж мейкера потрачен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="356"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="357"/>
         <source>Finished</source>
         <translation>Завершено</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="358"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="359"/>
         <source>Start failed</source>
         <translation>Не удалось начать</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="360"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="361"/>
         <source>Negotiate failed</source>
         <translation>Согласование не прошло</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="362"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="363"/>
         <source>Taker fee validate failed</source>
         <translation>Валидация комиссии тейкера не прошла</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="364"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="365"/>
         <source>Maker payment transaction failed</source>
         <translation>Платежная транзакция мейкера не прошла</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="366"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="367"/>
         <source>Maker payment Data send failed</source>
         <translation>Отправка платежных данных мейкера не прошла</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="368"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="369"/>
         <source>Maker payment wait confirm failed</source>
         <translation>Платежная транзакция мейкера не была подтверждена</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="370"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="371"/>
         <source>Taker payment validate failed</source>
         <translation>Не прошла валидация платежа тейкера</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="372"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="373"/>
         <source>Taker payment wait confirm failed</source>
         <translation>Платежная транзакция тейкера не была подтверждена</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="374"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="375"/>
         <source>Taker payment spend failed</source>
         <translation>Spend платежа тейкера не прошел</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="376"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="377"/>
         <source>Maker payment wait refund started</source>
         <translation>Ожидание возврата платежа мейкера</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="378"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="379"/>
         <source>Maker payment refunded</source>
         <translation>Платеж мейкера возвращен</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="380"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="381"/>
         <source>Maker payment refund failed</source>
         <translation>Возврат платежа мейкера не выполнен</translation>
     </message>
@@ -1826,7 +1826,7 @@
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="81"/>
-        <source>Cancel pending order to change price</source>
+        <source>Cancel selected order to change price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2297,150 +2297,150 @@
 <context>
     <name>SendModal</name>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="47"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="48"/>
         <source>Failed to send</source>
         <translation>Ошибка отправки</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="84"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="85"/>
         <source>Failed to Send</source>
         <translation>Отправка не прошла</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="216"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="217"/>
         <source>Prepare to send </source>
         <translation>Подготовка к отправке</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="225"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="394"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="226"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="395"/>
         <source>Recipient&apos;s address</source>
         <translation>Адрес получателя</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="226"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="227"/>
         <source>Enter address of the recipient</source>
         <translation>Введите адрес получателя</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="232"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="233"/>
         <source>Address Book</source>
         <translation>Адресная книга</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="245"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="246"/>
         <source>The address has to be mixed case.</source>
         <translation>Адрес должен быть написан в смешанном регистре.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="250"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="251"/>
         <source>Fix</source>
         <translation>Фикс</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="264"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="265"/>
         <source>Amount to send</source>
         <translation>Отправляемая сумма</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="265"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="266"/>
         <source>Enter the amount to send</source>
         <translation>Введите сумму для отправки</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="272"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="273"/>
         <source>MAX</source>
         <translation>МАКС</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="281"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="282"/>
         <source>Enable Custom Fees</source>
         <translation>Включить настройку комиссий</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="293"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="294"/>
         <source>Only use custom fees if you know what you are doing!</source>
         <translation>Используйте настраиваемые комиссии только если знаете, что делаете!</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="301"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="302"/>
         <source>Custom Fee</source>
         <translation>Комиссия</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="302"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="303"/>
         <source>Enter the custom fee</source>
         <translation>Введите комиссию сети</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="313"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="314"/>
         <source>Gas Limit</source>
         <translation>Gas лимит</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="314"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="315"/>
         <source>Enter the gas limit</source>
         <translation>Введите лимит gas</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="321"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="322"/>
         <source>Gas Price</source>
         <translation>Цена Gas</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="322"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="323"/>
         <source>Enter the gas price</source>
         <translation>Введите gas цену</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="337"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="338"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation>Комиссия не может больше выше суммы</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="347"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="348"/>
         <source>Not enough funds.</source>
         <translation>Недостаточно средств.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="347"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="348"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation>У вас %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="357"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="358"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="363"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="364"/>
         <source>Prepare</source>
         <translation>Подготовка</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="390"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="433"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="391"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="434"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="400"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="401"/>
         <source>Amount</source>
         <translation>Сумма</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="407"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="408"/>
         <source>Fees</source>
         <translation>Комиссии</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="414"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="415"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="426"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="427"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
@@ -2535,62 +2535,62 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="43"/>
+        <location filename="../../qml/Settings/Settings.qml" line="40"/>
         <source>Fiat</source>
         <translation>Валюта по умолчанию</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="70"/>
+        <location filename="../../qml/Settings/Settings.qml" line="67"/>
         <source>Recommended: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="132"/>
+        <location filename="../../qml/Settings/Settings.qml" line="129"/>
         <source>Enable Desktop Notifications</source>
         <translation>Включить уведомления для рабочего стола</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="142"/>
+        <location filename="../../qml/Settings/Settings.qml" line="139"/>
         <source>Use QtTextRendering Or NativeTextRendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="162"/>
+        <location filename="../../qml/Settings/Settings.qml" line="159"/>
         <source>Open Logs Folder</source>
         <translation>Открыть логи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="170"/>
+        <location filename="../../qml/Settings/Settings.qml" line="167"/>
         <source>View seed and private keys</source>
         <translation>Показать seed-фразу и приватные ключи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="189"/>
+        <location filename="../../qml/Settings/Settings.qml" line="186"/>
         <source>Disclaimer and ToS</source>
         <translation>Дисклеймер и TOS</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="208"/>
+        <location filename="../../qml/Settings/Settings.qml" line="205"/>
         <source>Setup Camouflage Password</source>
         <translation>Установить камуфляжный пароль</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="224"/>
+        <location filename="../../qml/Settings/Settings.qml" line="221"/>
         <source>Reset assets configuration</source>
         <translation>Сбросить конфигурацию ассетов</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="232"/>
+        <location filename="../../qml/Settings/Settings.qml" line="229"/>
         <source>Delete Wallet</source>
         <translation>Удалить кошелек</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="248"/>
+        <location filename="../../qml/Settings/Settings.qml" line="245"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="259"/>
+        <location filename="../../qml/Settings/Settings.qml" line="256"/>
         <source>mm2 version</source>
         <translation>версия mm2</translation>
     </message>
@@ -2864,7 +2864,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="728"/>
-        <source>Pending Order</source>
+        <source>Order Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -36,7 +36,7 @@ Item {
 
             GradientStop {
                 position: 0.0
-                color: Style.colorSidebarHighlightGradient1
+                color: theme.navigationSideBarButtonGradient1
             }
             GradientStop {
                 position: cursor_round_edge.radius / cursor.width
@@ -44,15 +44,15 @@ Item {
             }
             GradientStop {
                 position: 0.375
-                color: Style.colorSidebarHighlightGradient2
+                color: theme.navigationSideBarButtonGradient2
             }
             GradientStop {
                 position: 0.7292
-                color: Style.colorSidebarHighlightGradient3
+                color: theme.navigationSideBarButtonGradient3
             }
             GradientStop {
                 position: 1.0
-                color: Style.colorSidebarHighlightGradient4
+                color: theme.navigationSideBarButtonGradient4
             }
         }
     }
@@ -60,6 +60,7 @@ Item {
     // Top Rect
     SidebarPanel {
         id: top_rect
+        visible: true
         anchors.left: parent.left
         width: parent.width
         anchors.top: parent.top
@@ -102,6 +103,7 @@ Item {
         id: cursor_round_edge
         color: Style.colorSidebarHighlightGradient1
         width: radius*2
+
         anchors.rightMargin: -width/2
         height: Style.sidebarLineHeight
         anchors.right: cursor.left
@@ -148,7 +150,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        DefaultText {
+        DexLabel {
             id: version_text
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -157,7 +159,7 @@ Item {
             horizontalAlignment: DefaultText.AlignHCenter
             wrapMode: DefaultText.Wrap
             text_value: General.version_string
-            font.pixelSize: Style.textSizeSmall1
+            font: theme.textType.caption
             color: Style.colorThemeDarkLight
         }
 

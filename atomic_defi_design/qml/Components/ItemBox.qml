@@ -64,7 +64,7 @@ InnerBackground {
     }
 
     //shadowOff: true
-    color: Constants.Style.colorTheme9
+    color: theme.dexBoxBackgroundColor
     property alias titleLabel: _texto
 
     Connections {
@@ -145,7 +145,7 @@ InnerBackground {
             width: parent.width
             height: 40
             radius: parent.parent.height<41? parent.parent.radius : 0
-            color: Constants.Style.colorTheme9
+            color: theme.dexBoxBackgroundColor
             visible: visibility && !_control.hideHeader
             RowLayout {
                 anchors.fill: parent
@@ -214,7 +214,7 @@ InnerBackground {
             height: parent.height
             anchors.right: parent.right
             radius: parent.parent.height<41? parent.parent.radius : 0
-            color: Constants.Style.colorTheme9
+            color: theme.dexBoxBackgroundColor
             visible: !isVertical && hidden
             DefaultText {
                 id: _texto2

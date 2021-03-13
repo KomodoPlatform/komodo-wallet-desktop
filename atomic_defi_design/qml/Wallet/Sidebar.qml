@@ -135,7 +135,7 @@ Item {
                         radius: Style.rectangleCornerRadius
 
                         start_color: Style.applyOpacity(Style.colorCoinListHighlightGradient)
-                        end_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient : mouse_area.containsMouse ? Style.colorWhite8 : start_color
+                        end_color: api_wallet_page.ticker === ticker ? theme.hightlightColor : mouse_area.containsMouse ? Style.colorWhite8 : start_color
 
                         // Click area
                         DefaultMouseArea {

@@ -68,13 +68,12 @@ Item {
         color: txt.font.weight === Font.Medium ? Style.colorSidebarIconHighlighted : txt.color
     }
 
-    DefaultText {
+    DexLabel {
         id: txt
         anchors.left: parent.left
         anchors.leftMargin: 70
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: Style.textSizeSmall4
-        font.weight: selected ? Font.Medium : Font.Normal
+        font: theme.textType.body1
         color: !section_enabled ? Style.colorTextDisabled :
                 selected ? Style.colorSidebarSelectedText :
                 mouse_area.containsMouse ? Style.colorThemePassiveLight :

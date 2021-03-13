@@ -307,7 +307,8 @@ Item {
             content: Item {
                 property bool ticker_supported: false
                 readonly property bool is_fetching: chart.loadProgress < 100
-                readonly property string theme: Style.dark_theme ? "dark" : "light"
+                readonly property string chartTheme: Style.dark_theme ? "dark" : "light"
+                property color backgroundColor: theme.chartTradingLineBackgroundColor
                 property var ticker: api_wallet_page.ticker
 
                 function loadChart() {
@@ -361,36 +362,37 @@ Item {
                     console.debug("Wallet: Loading chart for %1".arg(symbol))
 
                     chart.loadHtml(`
-    <style>
-    body { margin: 0; background: ${ Style.colorInnerBackground } }
-    </style>
-    <!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-      {
-      "symbol": "${symbol}",
-      "width": "100%",
-      "height": "100%",
-      "locale": "en",
-      "dateRange": "1D",
-      "colorTheme": "${theme}",
-      "trendLineColor": "${ Style.colorTrendingLine }",
-      "underLineColor": "${ Style.colorTrendingUnderLine }",
-      "isTransparent": true,
-      "autosize": false,
-      "largeChartUrl": ""
-      }
-      </script>
-    </div>
-    <!-- TradingView Widget END -->`)
-                }
+                        <style>
+                        body { margin: 0; background: %1 }
+                        </style>
+                        <!-- TradingView Widget BEGIN -->
+                        <div class="tradingview-widget-container">
+                          <div class="tradingview-widget-container__widget"></div>
+                          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                          {
+                          "symbol": "${symbol}",
+                          "width": "100%",
+                          "height": "100%",
+                          "locale": "en",
+                          "dateRange": "1D",
+                          "colorTheme": "${chartTheme}",
+                          "trendLineColor": "%2",
+                          "underLineColor": "%3",
+                          "isTransparent": true,
+                          "autosize": false,
+                          "largeChartUrl": ""
+                          }
+                          </script>
+                        </div>
+                        <!-- TradingView Widget END -->`.arg(theme.backgroundColor).arg(theme.chartTradingLineColor).arg(theme.chartTradingLineBackgroundColor))
+                                    }
 
                 width: price_graph_bg.width
                 height: price_graph_bg.height
 
                 onTickerChanged: loadChart()
-                onThemeChanged: loadChart()
+                onChartThemeChanged: loadChart()
+                onBackgroundColorChanged: loadChart()
 
                 RowLayout {
                     visible: ticker_supported && !chart.visible

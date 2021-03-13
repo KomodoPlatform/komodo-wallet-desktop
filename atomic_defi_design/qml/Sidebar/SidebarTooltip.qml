@@ -11,8 +11,9 @@ Qaterial.ToolTip
 {	
 	id: _control
 	property string text_value: ""
-	contentItem: DefaultText {
+    contentItem: DexLabel {
 	   text: qsTr(_control.text_value)
+       font: theme.textType.caption
 	   padding: 5
 	}
 	visible: parent.mouse_area.containsMouse && !sidebar.expanded

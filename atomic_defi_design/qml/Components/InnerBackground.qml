@@ -23,7 +23,7 @@ Item {
             id: rect
             anchors.fill: parent
             border.color: "transparent"
-            color: Style.colorInnerBackground
+            color: theme.backgroundColor
 
             Loader {
                 anchors.centerIn: parent

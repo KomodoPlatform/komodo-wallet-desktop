@@ -24,7 +24,7 @@ RowLayout {
 
     Component.onCompleted: renewIndex()
 
-    DexComboBox {
+    SweetDexComboBox {
         id: combo
 
         enabled: !block_everything

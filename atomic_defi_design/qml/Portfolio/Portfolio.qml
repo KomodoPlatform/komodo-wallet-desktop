@@ -259,7 +259,7 @@ ColumnLayout {
         model: portfolio_coins
 
         delegate: AnimatedRectangle {
-            color: Qt.lighter(mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+            color: Qt.lighter(mouse_area.containsMouse ? theme.hightlightColor : index % 2 == 0 ? Qt.darker(theme.backgroundColor,0.8) : theme.backgroundColor, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
             width: portfolio.width
             height: 50
 
