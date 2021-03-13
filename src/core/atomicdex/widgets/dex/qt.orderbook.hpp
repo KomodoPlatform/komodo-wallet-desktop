@@ -24,7 +24,6 @@
 #include <antara/gaming/ecs/system.manager.hpp>
 
 //! Project
-#include "atomicdex/events/events.hpp"
 #include "atomicdex/models/qt.orderbook.model.hpp"
 
 namespace atomic_dex
@@ -53,9 +52,6 @@ namespace atomic_dex
         [[nodiscard]] QVariant         get_base_max_taker_vol() const noexcept;
         [[nodiscard]] QVariant         get_rel_max_taker_vol() const noexcept;
 
-
-        //! events
-        void on_best_orders_status_changed(const best_orders_status_changed&);
       signals:
         void asksChanged();
         void bidsChanged();

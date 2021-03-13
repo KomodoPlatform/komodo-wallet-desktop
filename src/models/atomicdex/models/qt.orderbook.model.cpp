@@ -108,9 +108,9 @@ namespace atomic_dex
             {
                 taker_vol_std = "0";
             }
-            //t_float_50 mm2_min_trade_vol = safe_float(trading_pg.get_mm2_min_trade_vol().toStdString());
+            // t_float_50 mm2_min_trade_vol = safe_float(trading_pg.get_mm2_min_trade_vol().toStdString());
             t_float_50 taker_vol = safe_float(taker_vol_std);
-            i_have_enough_funds = min_volume_f > 0 && taker_vol > min_volume_f;
+            i_have_enough_funds  = min_volume_f > 0 && taker_vol > min_volume_f;
             return i_have_enough_funds;
         }
         case CEXRatesRole:
@@ -141,9 +141,9 @@ namespace atomic_dex
                 const auto  total_amount  = this->data(index, SendRole).toString().toStdString();
                 const auto  coin          = m_model_data.at(index.row()).coin;
                 const auto  result        = price_service.get_price_as_currency_from_amount(fiat, coin, total_amount);
-                auto final_result = QString::fromStdString(result);
-                //SPDLOG_INFO("Result is: [{}] for coin: {} role: {} total amount: {}", result, coin, PriceFiatRole, total_amount);
-                //qDebug() << "final_result[" << final_result << "]";
+                auto        final_result  = QString::fromStdString(result);
+                // SPDLOG_INFO("Result is: [{}] for coin: {} role: {} total amount: {}", result, coin, PriceFiatRole, total_amount);
+                // qDebug() << "final_result[" << final_result << "]";
                 return final_result;
             }
             else
@@ -300,7 +300,7 @@ namespace atomic_dex
     orderbook_model::refresh_orderbook(const t_orders_contents& orderbook) noexcept
     {
         auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents) {
-            SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
+            // SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
             for (auto&& current_order: contents)
             {
                 if (this->m_orders_id_registry.find(current_order.uuid) != this->m_orders_id_registry.end())
@@ -326,7 +326,8 @@ namespace atomic_dex
                     auto res_list = this->match(index(0, 0), UUIDRole, QString::fromStdString(id));
                     if (not res_list.empty())
                     {
-                        if (this->m_current_orderbook_kind == kind::best_orders) {
+                        if (this->m_current_orderbook_kind == kind::best_orders)
+                        {
                             SPDLOG_INFO("Removing order with UUID: {}", id);
                         }
                         this->removeRow(res_list.at(0).row());
@@ -336,10 +337,8 @@ namespace atomic_dex
             }
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         };
-        if (!orderbook.empty())
-        {
-            refresh_functor(orderbook);
-        }
+
+        refresh_functor(orderbook);
     }
 
     bool

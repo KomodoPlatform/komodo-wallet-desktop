@@ -70,7 +70,7 @@ namespace atomic_dex
                         }
                     }
                     this->m_rpc_busy = false;
-                    this->dispatcher_.trigger<best_orders_status_changed>();
+                    this->dispatcher_.trigger<process_orderbook_finished>(false);
                 };
 
                 ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
@@ -84,7 +84,7 @@ namespace atomic_dex
                         {
                             SPDLOG_ERROR("pplx task error: {}", e.what());
                             this->m_rpc_busy = false;
-                            this->dispatcher_.trigger<best_orders_status_changed>();
+                            this->dispatcher_.trigger<process_orderbook_finished>(true);
                         }
                     });
             }

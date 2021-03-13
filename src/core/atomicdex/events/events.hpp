@@ -36,7 +36,6 @@ namespace atomic_dex
     using band_oracle_refreshed      = entt::tag<"band_oracle_refreshed"_hs>;
     using current_currency_changed   = entt::tag<"update_orders_and_swap_values"_hs>;
     using force_update_providers     = entt::tag<"force_update_providers"_hs>;
-    using best_orders_status_changed = entt::tag<"best_orders_status_changes"_hs>;
 
     struct process_swaps_and_orders_finished
     {

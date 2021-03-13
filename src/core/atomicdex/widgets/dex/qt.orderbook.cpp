@@ -22,11 +22,6 @@
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
 
-namespace
-{
-    // std::atomic_bool g_is_best_orders_reset{false};
-}
-
 namespace atomic_dex
 {
     qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
@@ -35,27 +30,6 @@ namespace atomic_dex
         m_bids(new orderbook_model(orderbook_model::kind::bids, system_manager, this)),
         m_best_orders(new orderbook_model(orderbook_model::kind::best_orders, system_manager, this))
     {
-        this->m_dispatcher.sink<best_orders_status_changed>().connect<&qt_orderbook_wrapper::on_best_orders_status_changed>(*this);
-    }
-
-    void
-    qt_orderbook_wrapper::on_best_orders_status_changed(const atomic_dex::best_orders_status_changed&)
-    {
-        /*SPDLOG_INFO("best orders need to be updated");
-        emit       bestOrdersBusyChanged();
-        const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
-        if (data.empty())
-        {
-            this->m_best_orders->clear_orderbook();
-        }
-        else if (m_best_orders->rowCount() == 0)
-        {
-            this->m_best_orders->reset_orderbook(data);
-        }
-        else
-        {
-            this->m_best_orders->refresh_orderbook(data);
-        }*/
     }
 
     bool
@@ -108,9 +82,9 @@ namespace atomic_dex
     {
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
+        this->set_both_taker_vol();
         m_best_orders->clear_orderbook();                                                     ///< Remove all elements from the model
         this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders(); ///< re process the model
-        this->set_both_taker_vol();
     }
 
     void
