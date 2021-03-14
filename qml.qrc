@@ -142,7 +142,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/DexComboBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SweetDexComboBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/FeeIcon.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/MultiOrder.qml</file>
@@ -398,5 +398,31 @@
         <file>atomic_defi_design/assets/images/logo/dex-logo.png</file>
         <file>atomic_defi_design/qml/Components/DefaultSplitView.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DefaultSweetModal.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLabel.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
+        <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
+        <file>atomic_defi_design/qml/Components/DexButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DexCheckBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexColorOverlay.qml</file>
+        <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexFlickable.qml</file>
+        <file>atomic_defi_design/qml/Components/DexImage.qml</file>
+        <file>atomic_defi_design/qml/Components/DexInnerShadow.qml</file>
+        <file>atomic_defi_design/qml/Components/DexListView.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
+        <file>atomic_defi_design/qml/Components/DexModal.qml</file>
+        <file>atomic_defi_design/qml/Components/DexMouseArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DexRangeSlider.qml</file>
+        <file>atomic_defi_design/qml/Components/DexRectangle.qml</file>
+        <file>atomic_defi_design/qml/Components/DexScrollBar.qml</file>
+        <file>atomic_defi_design/qml/Components/DexSplitView.qml</file>
+        <file>atomic_defi_design/qml/Components/DexSubstractRectangle.qml</file>
+        <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexSwitch.qml</file>
+        <file>atomic_defi_design/qml/Components/DexText.qml</file>
+        <file>atomic_defi_design/qml/Components/DexTextArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
+        <file>atomic_defi_design/qml/Components/DexTextField.qml</file>
+        <file>atomic_defi_design/qml/Components/DexTooltip.qml</file>
     </qresource>
 </RCC>
