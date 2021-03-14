@@ -10,7 +10,7 @@ import "../../../Constants"
 
 Item {
     id: _control
-    property int isAsk: {
+    property var isAsk: {
         if(parseInt(cex_rates)>0){
             false
         }else if(parseInt(cex_rates)<0) {
