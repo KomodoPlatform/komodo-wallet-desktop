@@ -526,11 +526,11 @@ Item {
                         }
                         BestOrder.List {
                             clip: !parent.contentVisible
-                            enabled: false
                             id: best_order_list
                             visible: parent.contentVisible
-                            anchors.topMargin: 40
-                            anchors.fill: parent
+                            y: 40
+                            width: parent.width
+                            height: parent.height-40
                         }
 
                     }

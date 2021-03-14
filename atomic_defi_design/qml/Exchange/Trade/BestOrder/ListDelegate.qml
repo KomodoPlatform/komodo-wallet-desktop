@@ -10,7 +10,15 @@ import "../../../Constants"
 
 Item {
     id: _control
-    property bool isAsk: Math.random() < 0.5;
+    property int isAsk: {
+        if(parseInt(cex_rates)>0){
+            false
+        }else if(parseInt(cex_rates)<0) {
+            true
+        }else {
+            undefined
+        }
+    }
     width: visible? list.width : 0
     height: 36
 
@@ -19,7 +27,7 @@ Item {
         visible: mouse_are.containsMouse
         width: parent.width
         height: parent.height
-        color: Style.colorWhite1
+        color: theme.foregroundColor
         opacity: 0.1
         anchors.left: parent.left
     }
@@ -36,7 +44,7 @@ Item {
             leftPadding: -10
             spacing: 5
             Image {
-                source: General.coinIcon((isAsk? "RVN": "KMD"))
+                source: General.coinIcon(coin)
                 width: 20
                 height: 20
                 anchors.verticalCenter: parent.verticalCenter
@@ -44,7 +52,7 @@ Item {
             DefaultText {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
-                text: send//parseFloat(Math.random(522222)).toFixed(8) + (isAsk? " RVN": " KMD")
+                text: send+" "+coin//parseFloat(Math.random(522222)).toFixed(8) + (isAsk? " RVN": " KMD")
                 font.pixelSize: Style.textSizeSmall1
 
             }
@@ -53,8 +61,8 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
-            text: price_fiat//parseFloat(Math.random()*(Math.random()*3)*1.5).toFixed(2)+"$"
-            font.pixelSize: Style.textSizeSmall1
+            text: price_fiat+API.app.settings_pg.current_fiat_sign //parseFloat(Math.random()*(Math.random()*3)*1.5).toFixed(2)+"$"
+            font: theme.textType.caption
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
@@ -68,13 +76,15 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 120
-            text: cex_rates+"%"//parseFloat(Math.random()*(Math.random()*3)*9.5).toFixed(2)+"%"
+            text: cex_rates==="0"? "N/A" : cex_rates+"%"
+
+
             Behavior on rightPadding {
                 NumberAnimation {
                     duration: 150
                 }
             }
-            color: isAsk? Style.colorRed : Style.colorGreen
+            color:cex_rates==="0"? Qt.darker(theme.foregroundColor) : isAsk? Style.colorRed : Style.colorGreen
             horizontalAlignment: Label.AlignRight
             font.pixelSize: Style.textSizeSmall1
             opacity: 1
