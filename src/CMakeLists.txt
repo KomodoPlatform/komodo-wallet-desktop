@@ -52,8 +52,8 @@ message(STATUS "TS FILES -> ${TS_FILES}")
 
 # Main executable
 add_executable(${PROJECT_NAME}
-        #MACOSX_BUNDLE
-        #${ICON}
+        MACOSX_BUNDLE
+        ${ICON}
 
         app/app.cpp
         app/main.cpp
@@ -68,11 +68,9 @@ add_executable(${PROJECT_NAME}
         ${TS_FILES})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}::core ${PROJECT_NAME}::pages ${PROJECT_NAME}::models Qaterial)
 target_compile_definitions(${PROJECT_NAME} PRIVATE ENTT_API_IMPORT)
-if (NOT WITH_BUILDSYSTEM_V2)
-    set_target_properties(${PROJECT_NAME}
-            PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
-endif ()
+set_target_properties(${PROJECT_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 
 # Testing executable
 add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
@@ -172,49 +170,7 @@ if (WIN32)
 endif ()
 
 if (APPLE)
-    if (CMAKE_GENERATOR STREQUAL "Xcode")
-        message(STATUS "Copy to Xcode binary directory")
-        file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/${PROJECT_NAME}.app/Contents/Resources)
-        file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/${PROJECT_NAME}_tests.app/Contents/Resources)
-    else ()
-        file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
-        file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_tests.app/Contents/Resources)
-    endif ()
-    if (WITH_BUILDSYSTEM_V2)
-        message(STATUS "Using QAterial OSX Helpers")
-
-        set(QTMACCMAKE_REPOSITORY "https://github.com/OlivierLDff/QtMacCMake.git" CACHE STRING "QtMacCMake repository, can be a local URL")
-        set(QTMACCMAKE_TAG "main" CACHE STRING "QtMacCMake git tag")
-
-        FetchContent_Declare(
-                QtMacCMake
-                GIT_REPOSITORY ${QTMACCMAKE_REPOSITORY}
-                GIT_TAG ${QTMACCMAKE_TAG}
-        )
-
-        FetchContent_MakeAvailable(QtMacCMake)
-
-        if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-            message(STATUS "->>> ${PROJECT_SOURCE_DIR}/cmake/install/macos/Assets.xcassets")
-            add_qt_mac_app(${PROJECT_NAME}
-                    NAME ${DEX_PROJECT_NAME}
-                    BUNDLE_IDENTIFIER "com.komodoplatform.atomicdex"
-                    LONG_VERSION ${PROJECT_VERSION}
-                    COPYRIGHT "Copyright Komodoplatform 2017-2021"
-                    APPLICATION_CATEGORY_TYPE "public.app-category.finance"
-                    QML_DIR ${PROJECT_SOURCE_DIR}/atomic_defi_design/qml
-                    RESOURCES
-                    "${PROJECT_SOURCE_DIR}/cmake/install/macos/Assets.xcassets"
-                    CUSTOM_ENTITLEMENTS "${PROJECT_SOURCE_DIR}/cmake/install/macos/dex.entitlements"
-                    DMG
-                    PKG
-                    # PKG_UPLOAD_SYMBOLS
-                    VERBOSE
-                    VERBOSE_LEVEL 3
-                    )
-
-        endif ()
-    else ()
-        include(${CMAKE_SOURCE_DIR}/cmake/install/macos/dex_install.cmake)
-    endif ()
+    file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
+    file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_tests.app/Contents/Resources)
+    include(${CMAKE_SOURCE_DIR}/cmake/install/macos/dex_install.cmake)
 endif ()

@@ -11,20 +11,14 @@ include(vcpkg_prerequisites)
 include(qt_prerequisites)
 include(cfg_hash)
 
-if (APPLE)
-    message(STATUS "CMAKE_OSX_ARCHITECTURES: ${CMAKE_OSX_ARCHITECTURES}")
-endif ()
-
 project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.4.0)
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
-
 
 include(cmake_default_options)
 include(ipo_prerequisites)
 
 ##! Options
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
-option(WITH_BUILDSYSTEM_V2 "Enable it to use new build system V2 - WIP" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 
 ##! Antara
