@@ -44,7 +44,7 @@ Item {
             DefaultText {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
-                text: parseFloat(Math.random(522222)).toFixed(8) + (isAsk? " RVN": " KMD")
+                text: send//parseFloat(Math.random(522222)).toFixed(8) + (isAsk? " RVN": " KMD")
                 font.pixelSize: Style.textSizeSmall1
 
             }
@@ -53,7 +53,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
-            text: parseFloat(Math.random()*(Math.random()*3)*1.5).toFixed(2)+"$"
+            text: price_fiat//parseFloat(Math.random()*(Math.random()*3)*1.5).toFixed(2)+"$"
             font.pixelSize: Style.textSizeSmall1
             horizontalAlignment: Label.AlignRight
             opacity: 1
@@ -68,7 +68,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 120
-            text: parseFloat(Math.random()*(Math.random()*3)*9.5).toFixed(2)+"%"
+            text: cex_rates+"%"//parseFloat(Math.random()*(Math.random()*3)*9.5).toFixed(2)+"%"
             Behavior on rightPadding {
                 NumberAnimation {
                     duration: 150

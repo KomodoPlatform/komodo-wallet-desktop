@@ -15,7 +15,7 @@ Item {
         id: list
         anchors.topMargin: 40
         anchors.fill: parent
-        model: 40
+        model: API.app.trading_pg.orderbook.best_order
         clip: true
         snapMode: ListView.SnapToItem
         headerPositioning: ListView.OverlayHeader

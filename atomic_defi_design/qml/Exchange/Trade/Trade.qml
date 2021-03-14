@@ -146,8 +146,6 @@ Item {
 
         reset()
         setPair(true, ticker)
-        console.log("HERE")
-        console.log(base_ticker, rel_ticker)
         app.pairChanged(base_ticker, rel_ticker)
     }
 
@@ -214,7 +212,6 @@ Item {
 
             General.prevent_coin_disabling.restart()
             tabView.currentIndex = 1
-            //exchange.current_page = idx_exchange_orders
         }
     }
 
@@ -226,13 +223,6 @@ Item {
         anchors.topMargin: 40
         anchors.leftMargin: 10
         anchors.fill: parent
-//        Component.onCompleted: splitView.restoreState(settings.splitView)
-//        Component.onDestruction: settings.splitView = splitView.saveState()
-
-//        Settings {
-//            id: settings
-//            property var splitView
-//        }
         SplitView {
             id: splitView
             Layout.fillWidth: true
@@ -542,49 +532,7 @@ Item {
                             anchors.topMargin: 40
                             anchors.fill: parent
                         }
-                        FastBlur {
 
-                            anchors.fill: best_order_list
-                            source: best_order_list
-                            radius: 35
-                        }
-                        Rectangle {
-                            anchors.fill: parent
-                            color: parent.color
-                            opacity: .9
-                        }
-                        Column {
-                            clip: true
-                            topPadding: 10
-                            visible: parent.contentVisible
-                            width: parent.width
-                            height: 100
-                            anchors.centerIn: parent
-                            spacing: 20
-                            Qaterial.ColorIcon {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                source: Qaterial.Icons.rocketLaunchOutline
-                                iconSize: 30
-                                Behavior on rotation {
-                                    NumberAnimation {
-                                        duration: 500
-                                    }
-                                }
-
-                                Timer {
-                                    running: false
-                                    repeat: true
-                                    interval: 1500
-                                    onTriggered: parent.rotation += 180
-                                }
-                            }
-                            DefaultText {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Coming Soon!"
-                                font.weight: Font.Light
-                                font.pixelSize: 16
-                            }
-                        }
                     }
                 }
             }
