@@ -14,9 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! Project headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
@@ -117,5 +114,15 @@ namespace atomic_dex
         this->m_rel_max_taker_vol = QJsonObject{
             {"denom", QString::fromStdString(rel.denom)}, {"numer", QString::fromStdString(rel.numer)}, {"decimal", QString::fromStdString(rel.decimal)}};
         emit relMaxTakerVolChanged();
+    }
+} // namespace atomic_dex
+
+//! Q_INVOKABLE
+namespace atomic_dex
+{
+    void
+    qt_orderbook_wrapper::refresh_best_orders() noexcept
+    {
+        this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
     }
 } // namespace atomic_dex

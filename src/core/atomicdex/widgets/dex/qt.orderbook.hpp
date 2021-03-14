@@ -52,6 +52,8 @@ namespace atomic_dex
         [[nodiscard]] QVariant         get_base_max_taker_vol() const noexcept;
         [[nodiscard]] QVariant         get_rel_max_taker_vol() const noexcept;
 
+        Q_INVOKABLE void refresh_best_orders() noexcept;
+
       signals:
         void asksChanged();
         void bidsChanged();
