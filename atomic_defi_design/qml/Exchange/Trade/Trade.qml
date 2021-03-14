@@ -383,7 +383,7 @@ Item {
                                 Material.foreground: Style.colorWhite4
                                 background: Rectangle {
                                     radius: 0
-                                    color: Style.colorTheme9
+                                    color: theme.dexBoxBackgroundColor
                                 }
                                 onCurrentIndexChanged: {
                                     swipeView.pop()
@@ -582,8 +582,8 @@ Item {
                                 height: 30
                                 radius: 8
                                 color: !sell_mode ? Qt.darker(
-                                                        Style.colorGreen) : Style.colorTheme7
-                                border.color: !sell_mode ? Style.colorGreen : Style.colorWhite9
+                                                        Style.colorGreen) : theme.backgroundColor
+                                border.color: !sell_mode ? Style.colorGreen : theme.dexBoxBackgroundColor
                                 Rectangle {
                                     anchors.right: parent.right
                                     color: parent.color
@@ -617,8 +617,8 @@ Item {
                                 height: 30
                                 radius: 8
                                 color: sell_mode ? Qt.darker(
-                                                       Style.colorRed) : Style.colorTheme7
-                                border.color: sell_mode ? Style.colorRed : Style.colorWhite9
+                                                       Style.colorRed) : theme.backgroundColor
+                                border.color: sell_mode ? Style.colorRed : theme.dexBoxBackgroundColor
                                 Rectangle {
                                     anchors.left: parent.left
                                     color: parent.color

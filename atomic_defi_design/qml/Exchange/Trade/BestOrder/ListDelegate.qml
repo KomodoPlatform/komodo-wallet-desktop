@@ -47,6 +47,8 @@ Item {
                 source: General.coinIcon(coin)
                 width: 20
                 height: 20
+                smooth: true
+                antialiasing: true
                 anchors.verticalCenter: parent.verticalCenter
             }
             DefaultText {
