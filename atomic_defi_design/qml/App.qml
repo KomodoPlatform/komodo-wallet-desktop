@@ -468,8 +468,8 @@ Rectangle {
         property color navigationSideBarButtonGradient3: Style.colorSidebarHighlightGradient3
         property color navigationSideBarButtonGradient4: Style.colorSidebarHighlightGradient4
 
-        property color chartTradingLineColor: 'red'//Style.colorTrendingLine
-        property color chartTradingLineBackgroundColor: 'black'//Style.colorTrendingUnderLine
+        property color chartTradingLineColor: Style.colorTrendingLine
+        property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
 
         property color foregroundColor: Style.colorText
 

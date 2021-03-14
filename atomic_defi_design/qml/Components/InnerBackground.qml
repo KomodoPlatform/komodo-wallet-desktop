@@ -14,6 +14,7 @@ Item {
     implicitWidth: auto_set_size ? inner_space.width : 0
     implicitHeight: auto_set_size ? inner_space.height : 0
     property color bottomBorderColor: Style.colorRectangleBorderGradient1
+    property color topBorderColor: Style.colorRectangleBorderGradient2
 
     Item {
         id: rect_with_shadow
@@ -60,7 +61,7 @@ Item {
         gradient: Gradient {
             GradientStop {
                position: 0.35
-               color: Style.colorRectangleBorderGradient2
+               color: control.topBorderColor
             }
             GradientStop {
                position: 0.65

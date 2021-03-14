@@ -1034,11 +1034,29 @@
     </message>
 </context>
 <context>
-    <name>DexComboBox</name>
+    <name>DexRangeSlider</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/DexComboBox.qml" line="110"/>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="98"/>
+        <source>Min</source>
+        <translation type="unfinished">Мин</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="105"/>
+        <source>Half</source>
+        <translation type="unfinished">Половина</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="112"/>
+        <source>Max</source>
+        <translation type="unfinished">Макс</translation>
+    </message>
+</context>
+<context>
+    <name>DexSweetComboBox</name>
+    <message>
+        <location filename="../../qml/Components/DexSweetComboBox.qml" line="61"/>
         <source>Search</source>
-        <translation>Поиск</translation>
+        <translation type="unfinished">Поиск</translation>
     </message>
 </context>
 <context>
@@ -1514,42 +1532,42 @@
         <translation>Фасет</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="408"/>
+        <location filename="../../qml/Wallet/Main.qml" line="410"/>
         <source>Loading market data</source>
         <translation type="unfinished">Загрузка данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="414"/>
+        <location filename="../../qml/Wallet/Main.qml" line="416"/>
         <source>There is no chart data for this ticker yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="439"/>
+        <location filename="../../qml/Wallet/Main.qml" line="441"/>
         <source>Loading</source>
         <translation>Загрузка</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="450"/>
+        <location filename="../../qml/Wallet/Main.qml" line="452"/>
         <source>Scanning blocks for TX History...</source>
         <translation>Сканирование блокчейна для получения данных о транзакциях...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="451"/>
+        <location filename="../../qml/Wallet/Main.qml" line="453"/>
         <source>Syncing TX History...</source>
         <translation>Синхронизация истории транзакций...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="482"/>
+        <location filename="../../qml/Wallet/Main.qml" line="484"/>
         <source>No transactions</source>
         <translation>Нет транзакций</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="482"/>
+        <location filename="../../qml/Wallet/Main.qml" line="484"/>
         <source>Refreshing</source>
         <translation>Обновление данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="514"/>
+        <location filename="../../qml/Wallet/Main.qml" line="516"/>
         <source>Fetching transactions</source>
         <translation>Получение данных о транзакциях</translation>
     </message>
@@ -2804,6 +2822,14 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Exchange/Trade/Orders/SwapProgress.qml" line="110"/>
         <source>Progress details</source>
         <translation>Прогресс</translation>
+    </message>
+</context>
+<context>
+    <name>SweetDexComboBox</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SweetDexComboBox.qml" line="110"/>
+        <source>Search</source>
+        <translation type="unfinished">Поиск</translation>
     </message>
 </context>
 <context>
