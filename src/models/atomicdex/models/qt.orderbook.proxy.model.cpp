@@ -70,13 +70,11 @@ namespace atomic_dex
             break;
         case orderbook_model::SendRole:
             break;
+        case orderbook_model::HaveCEXIDRole:
+            break;
         case orderbook_model::PriceFiatRole:
-            t_float_50 left       = safe_float(left_data.toString().toStdString());
-            t_float_50 right      = safe_float(right_data.toString().toStdString());
-            if (left > right && right <= 0)
-            {
-                return true;
-            }
+            t_float_50 left  = safe_float(left_data.toString().toStdString());
+            t_float_50 right = safe_float(right_data.toString().toStdString());
             return left < right;
         }
         return true;
@@ -86,5 +84,18 @@ namespace atomic_dex
     orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order) noexcept
     {
         this->sort(column, order);
+    }
+
+    bool
+    orderbook_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+    {
+        [[maybe_unused]] QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
+        assert(this->sourceModel()->hasIndex(idx.row(), 0));
+        if (this->filterRole() == orderbook_model::HaveCEXIDRole)
+        {
+            bool is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
+            return is_cex_id_available;
+        }
+        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 } // namespace atomic_dex

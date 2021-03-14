@@ -16,6 +16,7 @@
 
 //! Project
 #include "atomicdex/models/qt.orderbook.model.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -52,6 +53,7 @@ namespace atomic_dex
             break;
         case kind::best_orders:
             this->m_model_proxy->setSortRole(PriceFiatRole);
+            this->m_model_proxy->setFilterRole(HaveCEXIDRole);
             this->m_model_proxy->sort(0, Qt::AscendingOrder);
             break;
         }
@@ -114,7 +116,27 @@ namespace atomic_dex
             return i_have_enough_funds;
         }
         case CEXRatesRole:
+        {
+            const auto& price_service   = m_system_mgr.get_system<global_price_service>();
+            const auto& trading_pg      = m_system_mgr.get_system<trading_page>();
+            const auto* market_selector = trading_pg.get_market_pairs_mdl();
+            const auto& base            = market_selector->get_left_selected_coin().toStdString();
+            const auto& rel             = m_model_data.at(index.row()).coin;
+            const auto& price           = m_model_data.at(index.row()).price;
+            if (base == rel)
+            {
+                return "0";
+            }
+            const bool is_buy = trading_pg.get_market_mode() == MarketMode::Buy;
+            t_float_50 price_diff(0);
+            t_float_50 cex_price = safe_float(price_service.get_cex_rates(base, rel));
+            if (cex_price > 0)
+            {
+                price_diff = t_float_50(100) * (t_float_50(1) - safe_float(price) / cex_price) * (!is_buy ? t_float_50(1) : t_float_50(-1));
+                return QString::fromStdString(utils::format_float(price_diff));
+            }
             return "0";
+        }
         case SendRole:
         {
             if (m_current_orderbook_kind == kind::best_orders)
@@ -141,19 +163,24 @@ namespace atomic_dex
                 const auto  total_amount  = this->data(index, SendRole).toString().toStdString();
                 const auto  coin          = m_model_data.at(index.row()).coin;
                 const auto  result        = price_service.get_price_as_currency_from_amount(fiat, coin, total_amount);
-                auto        final_result  = QString::fromStdString(result);
+                auto        final_result  = result;
                 // SPDLOG_INFO("Result is: [{}] for coin: {} role: {} total amount: {}", result, coin, PriceFiatRole, total_amount);
                 // qDebug() << "final_result[" << final_result << "]";
-                if (final_result == "0")
+                if (safe_float(result) <= 0)
                 {
                     return "0.00";
                 }
-                return final_result;
+                return QString::fromStdString(final_result);
             }
             else
             {
                 return "0.00";
             }
+        }
+        case HaveCEXIDRole:
+        {
+            const auto* global_cfg = m_system_mgr.get_system<portfolio_page>().get_global_cfg();
+            return global_cfg->get_coin_info(data(index, CoinRole).toString().toStdString()).coingecko_id != "test-coin";
         }
         }
     }
@@ -211,6 +238,8 @@ namespace atomic_dex
         case SendRole:
             break;
         case PriceFiatRole:
+            break;
+        case HaveCEXIDRole:
             break;
         }
         emit dataChanged(index, index, {role});

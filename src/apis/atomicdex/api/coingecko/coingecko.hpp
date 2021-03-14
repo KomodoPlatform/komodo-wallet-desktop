@@ -45,7 +45,7 @@ namespace atomic_dex::coingecko::api
 
     ENTT_API std::string to_coingecko_uri(market_infos_request&& request);
     using t_coins_registry = std::unordered_map<std::string, coin_config>;
-    ENTT_API std::pair<std::vector<std::string>, t_coingecko_registry> from_enabled_coins(const t_coins_registry& coins);
+    ENTT_API std::pair<std::vector<std::string>, t_coingecko_registry> from_enabled_coins(const std::vector<coin_config>& coins);
 
     ENTT_API pplx::task<web::http::http_response> async_market_infos(market_infos_request&& request);
 

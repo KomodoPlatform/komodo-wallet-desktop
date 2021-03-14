@@ -37,5 +37,6 @@ namespace atomic_dex
       protected:
         //! Override member functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const final;
     };
 } // namespace atomic_dex

@@ -47,7 +47,7 @@ namespace atomic_dex
                 const auto&           trading_pg = m_system_manager.get_system<trading_page>();
                 auto                  volume     = trading_pg.get_volume().toStdString();
                 auto                  action     = trading_pg.get_market_mode() == MarketMode::Buy ? "buy"s : "sell"s;
-                auto                  coin       = trading_pg.get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+                auto                  coin       = trading_pg.get_market_pairs_mdl()->get_left_selected_coin().toStdString();
                 t_best_orders_request req{.coin = std::move(coin), .volume = std::move(volume), .action = std::move(action)};
 
                 //! Prepare request
@@ -55,6 +55,8 @@ namespace atomic_dex
                 nlohmann::json best_orders_req_json = ::mm2::api::template_request("best_orders");
                 to_json(best_orders_req_json, req);
                 batch.push_back(best_orders_req_json);
+
+                SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
 
                 this->m_rpc_busy = true;
                 //! Treat answer

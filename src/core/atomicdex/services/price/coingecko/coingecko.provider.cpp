@@ -64,14 +64,17 @@ namespace atomic_dex
         }
 
         internal_update(ids, registry, false, evt.tickers);
+
+        //! tmp
+        this->update_ticker_and_provider();
     }
 
     void
     coingecko_provider::on_coin_disabled(const coin_disabled& evt) noexcept
     {
-        SPDLOG_INFO("{} disabled, removing from coingecko provider", evt.ticker);
-        std::unique_lock lock(m_market_mutex);
-        m_market_registry.erase(evt.ticker);
+        //SPDLOG_INFO("{} disabled, removing from coingecko provider", evt.ticker);
+        //std::unique_lock lock(m_market_mutex);
+        //m_market_registry.erase(evt.ticker);
     }
 
 } // namespace atomic_dex
@@ -81,7 +84,7 @@ namespace atomic_dex
     void
     coingecko_provider::update_ticker_and_provider()
     {
-        const auto coins       = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+        const auto coins       = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_model_data();
         auto&& [ids, registry] = coingecko::api::from_enabled_coins(coins);
         internal_update(ids, registry);
     }

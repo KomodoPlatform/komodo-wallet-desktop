@@ -72,17 +72,17 @@ namespace atomic_dex::coingecko::api
     }
 
     std::pair<std::vector<std::string>, t_coingecko_registry>
-    from_enabled_coins(const t_coins_registry& coins)
+    from_enabled_coins(const std::vector<coin_config>& coins)
     {
         std::vector<std::string> out;
         t_coingecko_registry     registry;
 
-        for (auto&& [key, value]: coins)
+        for (auto&& coin: coins)
         {
-            if (value.coingecko_id != "test-coin")
+            if (coin.coingecko_id != "test-coin")
             {
-                registry[value.coingecko_id] = value.ticker;
-                out.emplace_back(value.coingecko_id);
+                registry[coin.coingecko_id] = coin.ticker;
+                out.emplace_back(coin.coingecko_id);
             }
         }
 

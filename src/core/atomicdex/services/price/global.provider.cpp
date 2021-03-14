@@ -167,7 +167,7 @@ namespace atomic_dex
     global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker, bool adjusted) const noexcept
     {
         //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
-        if (ticker.empty() || !m_system_manager.get_system<mm2_service>().get_coin_info(ticker).currently_enabled)
+        if (ticker.empty())
             return "0";
         auto&       coingecko       = m_system_manager.get_system<coingecko_provider>();
         auto&       band_service    = m_system_manager.get_system<band_oracle_price_service>();
@@ -382,7 +382,7 @@ namespace atomic_dex
         const std::string base_rate_str = get_rate_conversion("USD", base, false);
         const std::string rel_rate_str  = get_rate_conversion("USD", rel, false);
 
-        if (rel_rate_str == "0.00" || base_rate_str == "0.00")
+        if (safe_float(rel_rate_str) <= 0 || safe_float(base_rate_str) <= 0)
         {
             return "0.00";
         }
