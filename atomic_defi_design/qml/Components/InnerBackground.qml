@@ -13,8 +13,8 @@ Item {
     property bool auto_set_size: true
     implicitWidth: auto_set_size ? inner_space.width : 0
     implicitHeight: auto_set_size ? inner_space.height : 0
-    property color bottomBorderColor: Style.colorRectangleBorderGradient1
-    property color topBorderColor: Style.colorRectangleBorderGradient2
+    property color bottomBorderColor: theme.colorInnerShadowBottom
+    property color topBorderColor: theme.colorInnerShadowTop
 
     Item {
         id: rect_with_shadow
