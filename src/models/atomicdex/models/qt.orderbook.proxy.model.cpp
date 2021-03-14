@@ -71,7 +71,13 @@ namespace atomic_dex
         case orderbook_model::SendRole:
             break;
         case orderbook_model::PriceFiatRole:
-            return safe_float(left_data.toString().toStdString()) < safe_float(right_data.toString().toStdString());
+            t_float_50 left       = safe_float(left_data.toString().toStdString());
+            t_float_50 right      = safe_float(right_data.toString().toStdString());
+            if (left > right && right <= 0)
+            {
+                return true;
+            }
+            return left < right;
         }
         return true;
     }
