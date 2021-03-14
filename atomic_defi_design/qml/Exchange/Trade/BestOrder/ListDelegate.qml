@@ -109,7 +109,7 @@ Item {
                 }
             }
 
-            color:cex_rates==="0"? Qt.darker(theme.foregroundColor) : isAsk? Style.colorRed : Style.colorGreen
+            color:cex_rates==="0"? Qt.darker(theme.foregroundColor) : isAsk? Style.colorGreen : Style.colorRed
             horizontalAlignment: Label.AlignRight
             font.pixelSize: Style.textSizeSmall1
             opacity: 1
