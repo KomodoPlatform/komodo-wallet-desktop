@@ -424,5 +424,6 @@
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexTooltip.qml</file>
+        <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
     </qresource>
 </RCC>

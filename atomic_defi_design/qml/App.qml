@@ -409,7 +409,6 @@ Rectangle {
     }
     Component.onCompleted: {
         openFirstLaunch()
-        console.log()
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
         //save_currentTheme()
         // Load the chart

@@ -21,6 +21,7 @@ Item {
         model: isAsk? API.app.trading_pg.orderbook.asks.proxy_mdl : API.app.trading_pg.orderbook.bids.proxy_mdl
         clip: true
         reuseItems: true
+
         Timer {
             id: _tm
             interval: 2000

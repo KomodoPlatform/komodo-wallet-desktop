@@ -519,6 +519,11 @@ Item {
                         //clip: true
                         //smooth: true
                         title: "Best Orders"
+                        reloadable: true
+                        onReload: {
+                            API.app.trading_pg.orderbook.refresh_best_orders()
+                        }
+
                         Behavior on SplitView.preferredWidth {
                             NumberAnimation {
                                 duration: 100
