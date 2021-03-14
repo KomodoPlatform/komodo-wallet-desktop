@@ -14,7 +14,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     bool   is_parent_console = false;
     if (std::getenv("FORCE_ATOMICDEX_CONSOLE") != nullptr)
     {
-        if (is_parent_console = AttachConsole(ATTACH_PARENT_PROCESS); is_parent_console)
+        if (is_parent_console = (AttachConsole(ATTACH_PARENT_PROCESS) != 0); is_parent_console)
         {
             SPDLOG_INFO("Attaching console to the parent process");
             freopen("conin$", "r", stdin);
@@ -33,8 +33,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     //! run app
     int res = run_app(argc, argv);
-    // SPDLOG_INFO("Shutdown all loggers");
-    // spdlog::drop_all();
+
 #if defined(WINDOWS_RELEASE_MAIN)
     if (std::getenv("FORCE_ATOMICDEX_CONSOLE") != nullptr)
     {
