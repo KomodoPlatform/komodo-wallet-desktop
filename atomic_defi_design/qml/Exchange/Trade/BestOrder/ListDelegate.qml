@@ -100,7 +100,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             
-            text: cex_rates==="0"? "N/A" : cex_rates+"%"
+            text: cex_rates==="0"? "N/A" : cex_rates>0? "+"+cex_rates+"%" : cex_rates+"%"
 
 
             Behavior on rightPadding {
