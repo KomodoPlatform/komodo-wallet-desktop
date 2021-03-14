@@ -92,7 +92,7 @@ namespace atomic_dex
         std::vector<std::string> tickers;
     };
 
-    //! Event when paprika fetch all the data of this specific coin
+    //! Event when gecko fetch all the data of this specific coin
     struct coin_fully_initialized
     {
         std::vector<std::string> tickers;

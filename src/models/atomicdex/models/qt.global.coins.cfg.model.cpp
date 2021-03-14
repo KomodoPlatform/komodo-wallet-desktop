@@ -37,7 +37,8 @@ namespace
             {"explorer_url", QJsonArray::fromStringList(atomic_dex::vector_std_string_to_qt_string_list(coin.explorer_url))},
             {"tx_uri", QString::fromStdString(coin.tx_uri)},
             {"address_uri", QString::fromStdString(coin.address_url)},
-            {"is_custom_coin", coin.is_custom_coin}};
+            {"is_custom_coin", coin.is_custom_coin},
+            {"is_enabled", coin.currently_enabled}};
         return j;
     }
 } // namespace
@@ -200,7 +201,7 @@ namespace atomic_dex
     global_coins_cfg_model::update_status(const TArray& tickers, bool status) noexcept
     {
         auto update_functor = [this, status](QModelIndexList res, [[maybe_unused]] const QString& ticker) {
-            //SPDLOG_INFO("Changing Active/CurrentlyEnabled status to {} for ticker {}", status, ticker.toStdString());
+            // SPDLOG_INFO("Changing Active/CurrentlyEnabled status to {} for ticker {}", status, ticker.toStdString());
             const QModelIndex& idx = res.at(0);
             update_value(Active, status, idx, *this);
             update_value(CurrentlyEnabled, status, idx, *this);
