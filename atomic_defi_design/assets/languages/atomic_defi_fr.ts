@@ -2881,32 +2881,32 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="676"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="680"/>
         <source>Order Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="725"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="729"/>
         <source>Start Swap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="792"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="796"/>
         <source>Multi-Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="811"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="815"/>
         <source>Select additional assets for multi-order creation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="819"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="823"/>
         <source>Same funds will be used until an order matches.</source>
         <translation type="unfinished">Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="823"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="827"/>
         <source>Submit Trade</source>
         <translation type="unfinished"></translation>
     </message>

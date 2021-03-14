@@ -149,6 +149,7 @@ FloatingBackground {
                 function getRealValue2() {
                     return second.position * (second.to - second.from)
                 }
+                property real oldSecondValue: 0
 
                 enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
                 Layout.fillWidth: true
@@ -162,6 +163,15 @@ FloatingBackground {
                 second.value: parseFloat(non_null_volume)
                 second.onValueChanged: { if(second.pressed) setVolume(General.formatDouble(second.value)) }
                 secondTooltip.text: General.formatDouble(second.value, General.getRecommendedPrecision(to))
+                second.onPressedChanged: {
+                    if(second.pressed) {
+                        oldSecondValue = second.value
+                    }else {
+                        if(oldSecondValue!==second.value) {
+                            API.app.trading_pg.orderbook.refresh_best_orders()
+                        }
+                    }
+                }
 
                 first.value: parseFloat(API.app.trading_pg.min_trade_vol )
                 first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }

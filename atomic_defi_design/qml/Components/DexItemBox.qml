@@ -168,13 +168,27 @@ InnerBackground {
                     opacity: .8
                     spacing: -8
                     Qaterial.AppBarButton {
+                        Timer {
+                            id: _tm
+                            interval: 5000
+                            running: false
+                            onTriggered: {
+                                parent.enabled = true
+                            }
+                        }
+
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
                         visible: _control.reloadable
                         icon.source: Qaterial.Icons.refresh
-                        onClicked: _control.reload()
+                        onClicked: {
+                            _tm.restart()
+                            enabled = false
+                            _control.reload()
+
+                        }
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
