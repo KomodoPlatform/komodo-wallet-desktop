@@ -52,7 +52,7 @@ Item {
             }
             GradientStop {
                 position: 1.0
-                color: theme.navigationSideBarButtonGradient4
+                color: theme.navigationSideBarButtonGradient4 
             }
         }
     }
@@ -101,12 +101,13 @@ Item {
     // Cursor left edge
     AnimatedRectangle {
         id: cursor_round_edge
-        color: Style.colorSidebarHighlightGradient1
+        color: theme.navigationSideBarButtonGradient1
         width: radius*2
 
         anchors.rightMargin: -width/2
         height: Style.sidebarLineHeight
         anchors.right: cursor.left
+        visible: true
         radius: Style.rectangleCornerRadius
 
         y: {

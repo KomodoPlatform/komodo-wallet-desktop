@@ -425,7 +425,8 @@ Rectangle {
     property var global_theme_property: ["primaryColor","backgroundColor","backgroundColorDeep","dexBoxBackgroundColor", "surfaceColor","hightlightColor", "sideBarGradient1", "sideBarGradient2",
         "navigationSideBarButtonGradient1","navigationSideBarButtonGradient2","navigationSideBarButtonGradient3",
         "navigationSideBarButtonGradient4","chartTradingLineColor","chartTradingLineBackgroundColor","foregroundColor",
-        "buttonColorDisabled","buttonColorHovered","buttonColorEnabled","buttonColorTextDisabled","buttonColorTextHovered","buttonColorTextEnabled"]
+        "buttonColorDisabled","buttonColorHovered","buttonColorEnabled","buttonColorTextDisabled","buttonColorTextHovered","buttonColorTextEnabled",
+        "colorInnerShadowBottom","colorInnerShadowTop"]
 
     function save_currentTheme(name) {
         let data = {}
@@ -480,6 +481,11 @@ Rectangle {
         property color buttonColorTextDisabled: Style.colorButtonTextDisabled["default"]
         property color buttonColorTextHovered: Style.colorButtonTextHovered["default"]
         property color buttonColorTextEnabled: Style.colorButtonTextEnabled["default"]
+
+        property color colorInnerShadowBottom: Style.colorRectangleBorderGradient1
+        property color colorInnerShadowTop: Style.colorRectangleBorderGradient2
+
+
 
 
 
