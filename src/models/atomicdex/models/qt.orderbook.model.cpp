@@ -144,11 +144,15 @@ namespace atomic_dex
                 auto        final_result  = QString::fromStdString(result);
                 // SPDLOG_INFO("Result is: [{}] for coin: {} role: {} total amount: {}", result, coin, PriceFiatRole, total_amount);
                 // qDebug() << "final_result[" << final_result << "]";
+                if (final_result == "0")
+                {
+                    return "0.00";
+                }
                 return final_result;
             }
             else
             {
-                return "0";
+                return "0.00";
             }
         }
         }
