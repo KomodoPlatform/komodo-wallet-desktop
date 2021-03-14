@@ -8,8 +8,7 @@ import "../../../Constants/"
 
 Item {
     id: _control
-    Header {
-    }
+    Header {}
 
     ListView {
         id: list

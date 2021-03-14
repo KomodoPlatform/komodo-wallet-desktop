@@ -23,7 +23,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 90
+            Layout.preferredWidth: 130
             text: qsTr("You Send")
             font.family: Style.font_family
             font.pixelSize: 10
@@ -48,7 +48,7 @@ Item {
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 120
+            //Layout.preferredWidth: 120
             text: qsTr("CEX rate")
             horizontalAlignment: Label.AlignRight
             font.family: Style.font_family

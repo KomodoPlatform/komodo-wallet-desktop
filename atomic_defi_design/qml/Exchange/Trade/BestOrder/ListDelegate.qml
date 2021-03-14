@@ -40,7 +40,7 @@ Item {
         spacing: 10
         Row {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 90
+            Layout.preferredWidth: 130
             leftPadding: -10
             spacing: 5
             Image {
@@ -58,6 +58,28 @@ Item {
                 font.pixelSize: Style.textSizeSmall1
 
             }
+        }
+        DefaultTooltip {
+            id: _tooltip
+            dim: true
+            modal: true
+            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+        //visible: mouse_are.containsMouse && !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
+            width: 250
+            contentItem: DefaultText {
+                text_value: qsTr(" %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> -<a href='#no'>No</a>").arg(coin).arg(coin)
+                wrapMode: DefaultText.Wrap
+                width: 250
+                onLinkActivated: {
+                    if(link==="#no") {
+                        _tooltip.close()
+                    }else {
+
+                    }
+                }
+            }
+            delay: 200
         }
 
         DefaultText {
@@ -77,7 +99,7 @@ Item {
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 120
+            
             text: cex_rates==="0"? "N/A" : cex_rates+"%"
 
 
@@ -86,6 +108,7 @@ Item {
                     duration: 150
                 }
             }
+
             color:cex_rates==="0"? Qt.darker(theme.foregroundColor) : isAsk? Style.colorRed : Style.colorGreen
             horizontalAlignment: Label.AlignRight
             font.pixelSize: Style.textSizeSmall1
@@ -100,6 +123,10 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
+            if(!PI.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled){
+                _tooltip.open()
+            }
+            
             //if(is_mine) return
             //isAsk? selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume) : selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume)
         }
