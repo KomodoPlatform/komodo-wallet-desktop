@@ -409,7 +409,7 @@ Rectangle {
     }
     Component.onCompleted: {
         openFirstLaunch()
-        console.log(atomic_settings2.value("ThemePath"))
+        console.log()
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
         //save_currentTheme()
         // Load the chart
@@ -418,7 +418,8 @@ Rectangle {
 //            chart_object = chart_component.createObject(app)
 //            chart_object.visible = false
 //        }
-        //load_theme("GrayDark")
+        let current =  atomic_settings2.value("CurrentTheme")
+        load_theme(current.replace(".json",""))
     }
 
 
