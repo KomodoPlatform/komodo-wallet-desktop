@@ -50,9 +50,9 @@ cp -rpf "${APP_PATH}${APP_FILE_NAME}.app" "${STAGING_DIR}"
 
 pushd "${STAGING_DIR}"
 
-# strip the executable
-echo "Stripping ${APP_EXE}..."
-strip -u -r "${APP_EXE}"
+## strip the executable
+#echo "Stripping ${APP_EXE}..."
+##strip -u -r "${APP_EXE}"
 
 
 # ... optionally perform any other stripping/compressing of libs and executables

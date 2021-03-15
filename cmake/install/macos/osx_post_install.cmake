@@ -40,19 +40,16 @@ if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE
             )
-    #message(STATUS "Result -> ${MACDEPLOYQT_RESULT}")
-    #message(STATUS "Output -> ${MACDEPLOYQT_OUTPUT}")
-    #message(STATUS "Error -> ${MACDEPLOYQT_ERROR}")
     ##-------------------------------------------
 
     ##-------------------------------------------
-    #message(STATUS "Fixing QTWebengineProcess")
-    #set(QTWEBENGINE_BUNDLED_PATH ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess)
-    #message(STATUS "Executing: [install_name_tool -add_rpath @executable_path/../../../../../../Frameworks ${QTWEBENGINE_BUNDLED_PATH}]")
-    #execute_process(COMMAND install_name_tool -add_rpath "@executable_path/../../../../../../Frameworks" "${QTWEBENGINE_BUNDLED_PATH}"
-    #        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    #        ECHO_OUTPUT_VARIABLE
-    #        ECHO_ERROR_VARIABLE)
+    message(STATUS "Fixing QTWebengineProcess")
+    set(QTWEBENGINE_BUNDLED_PATH ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess)
+    message(STATUS "Executing: [install_name_tool -add_rpath @executable_path/../../../../../../Frameworks ${QTWEBENGINE_BUNDLED_PATH}]")
+    execute_process(COMMAND install_name_tool -add_rpath "@executable_path/../../../../../../Frameworks" "${QTWEBENGINE_BUNDLED_PATH}"
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            ECHO_OUTPUT_VARIABLE
+            ECHO_ERROR_VARIABLE)
 
     ##-------------------------------------------
     message(STATUS "Packaging the DMG")
