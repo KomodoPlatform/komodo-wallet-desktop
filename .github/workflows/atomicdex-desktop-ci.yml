@@ -181,9 +181,17 @@ jobs:
           ./ci_tools_atomic_dex build release
           ./ci_tools_atomic_dex bundle release
 
+      - name: import code signing certificates (macos)
+        if: runner.os == 'macOS'
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
       - name: Build AtomicDEX (MacOS)
         if: runner.os == 'macOS'
         run: |
+          export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           cd ci_tools_atomic_dex
