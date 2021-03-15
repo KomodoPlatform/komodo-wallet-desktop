@@ -121,8 +121,8 @@ namespace atomic_dex
         QObject(parent),
         system(registry), m_system_manager(system_manager),
         m_about_to_exit_the_app(exit_status), m_models{
-                                                  {new qt_orderbook_wrapper(m_system_manager, dispatcher_, this), new market_pairs(m_system_manager, portfolio, this),
-                                                   new qt_orders_widget(m_system_manager, this)}}
+                                                  {new qt_orderbook_wrapper(m_system_manager, dispatcher_, this),
+                                                   new market_pairs(m_system_manager, portfolio, this), new qt_orders_widget(m_system_manager, this)}}
     {
         //!
     }
@@ -696,6 +696,14 @@ namespace atomic_dex
             auto* market_selector_mdl = get_market_pairs_mdl();
             set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
             emit marketModeChanged();
+            if (m_market_mode == MarketMode::Buy)
+            {
+                this->get_orderbook_wrapper()->get_best_orders()->get_orderbook_proxy()->sort(0, Qt::AscendingOrder);
+            }
+            else
+            {
+                this->get_orderbook_wrapper()->get_best_orders()->get_orderbook_proxy()->sort(0, Qt::DescendingOrder);
+            }
         }
     }
 
@@ -720,7 +728,7 @@ namespace atomic_dex
                 this->m_preffered_order = std::nullopt;
                 emit prefferedOrderChanged();
             }
-            //SPDLOG_DEBUG("price is [{}]", m_price.toStdString());
+            // SPDLOG_DEBUG("price is [{}]", m_price.toStdString());
 
             //! When price change in MarketMode::Buy you want to redetermine max_volume
             if (m_market_mode == MarketMode::Buy)
@@ -780,7 +788,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            //SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
+            // SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
             this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
@@ -814,7 +822,7 @@ namespace atomic_dex
             if (not max_taker_vol.empty())
             {
                 // SPDLOG_INFO("max_taker_vol is valid, processing...");
-                //SPDLOG_INFO("max_taker_vol is: [{}]", max_taker_vol);
+                // SPDLOG_INFO("max_taker_vol is: [{}]", max_taker_vol);
                 if (safe_float(max_taker_vol) <= 0)
                 {
                     this->set_max_volume("0");
@@ -1311,8 +1319,8 @@ namespace atomic_dex
     {
         const auto* market_selector = get_market_pairs_mdl();
         auto*       selection_box   = market_selector->get_multiple_selection_box();
-        //const auto& mm2             = m_system_manager.get_system<mm2_service>();
-        auto        total_amount    = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
+        // const auto& mm2             = m_system_manager.get_system<mm2_service>();
+        auto total_amount = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
         // auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
         // qDebug() << "fees multi_ticker: " << fees;
         // set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);

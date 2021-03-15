@@ -54,7 +54,7 @@ namespace atomic_dex
         case kind::best_orders:
             this->m_model_proxy->setSortRole(PriceFiatRole);
             this->m_model_proxy->setFilterRole(HaveCEXIDRole);
-            this->m_model_proxy->sort(0, Qt::AscendingOrder);
+            this->m_model_proxy->sort(0, Qt::DescendingOrder);
             break;
         }
     }
