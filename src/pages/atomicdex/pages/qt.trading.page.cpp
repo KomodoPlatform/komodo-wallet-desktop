@@ -1215,7 +1215,7 @@ namespace atomic_dex
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
-        else if (m_volume.isEmpty() || m_volume == "0") ///< Volume is not set correctly
+        else if (m_volume.isEmpty()) ///< Volume is not set correctly
         {
             current_trading_error = TradingError::VolumeFieldNotFilled;
         }
