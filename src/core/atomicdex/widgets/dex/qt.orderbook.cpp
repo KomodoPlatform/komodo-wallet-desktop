@@ -83,6 +83,7 @@ namespace atomic_dex
         this->set_both_taker_vol();
         if (m_selected_best_order->has_value())
         {
+            SPDLOG_INFO("selected best orders have a value - set preffered order");
             m_system_manager.get_system<trading_page>().set_preffered_order(m_selected_best_order->value());
             m_selected_best_order = std::nullopt;
         }
