@@ -135,13 +135,14 @@ namespace atomic_dex
                 return "0";
             }
             const bool is_buy = trading_pg.get_market_mode() == MarketMode::Buy;
-            //SPDLOG_INFO("cex rates: {}/{} is_buy: {} price: {}", base, rel, is_buy, price);
+            // SPDLOG_INFO("cex rates: {}/{} is_buy: {} price: {}", base, rel, is_buy, price);
             t_float_50 price_diff(0);
             t_float_50 cex_price = safe_float(price_service.get_cex_rates(base, rel));
             if (cex_price > 0)
             {
                 price_diff = t_float_50(100) * (t_float_50(1) - safe_float(price) / cex_price) * (!is_buy ? t_float_50(1) : t_float_50(-1));
-                //SPDLOG_INFO("{}/{} price_diff({}%) = 100 * (1 - price[{}] / cex_price[{}])) * ({})", base, rel, utils::format_float(price_diff), utils::adjust_precision(price), utils::format_float(cex_price), !is_buy ? 1 : -1);
+                // SPDLOG_INFO("{}/{} price_diff({}%) = 100 * (1 - price[{}] / cex_price[{}])) * ({})", base, rel, utils::format_float(price_diff),
+                // utils::adjust_precision(price), utils::format_float(cex_price), !is_buy ? 1 : -1);
                 return QString::fromStdString(utils::format_float(price_diff));
             }
             return "0";
@@ -150,12 +151,12 @@ namespace atomic_dex
         {
             if (m_current_orderbook_kind == kind::best_orders)
             {
-                const auto& data           = m_model_data.at(index.row());
-                const auto& trading_pg     = m_system_mgr.get_system<trading_page>();
-                t_float_50  volume_f       = safe_float(trading_pg.get_volume().toStdString());
-                const bool  is_buy         = trading_pg.get_market_mode() == MarketMode::Buy;
-                t_float_50  total_amount_f = is_buy ? volume_f * safe_float(data.price) : volume_f / safe_float(data.price);
-                const auto  total_amount   = atomic_dex::utils::format_float(total_amount_f);
+                const auto& data       = m_model_data.at(index.row());
+                const auto& trading_pg = m_system_mgr.get_system<trading_page>();
+                t_float_50  volume_f   = safe_float(trading_pg.get_volume().toStdString());
+                // const bool  is_buy         = trading_pg.get_market_mode() == MarketMode::Buy;
+                t_float_50 total_amount_f = volume_f * safe_float(data.price);
+                const auto total_amount   = atomic_dex::utils::format_float(total_amount_f);
                 return QString::fromStdString(total_amount);
             }
             else
@@ -334,6 +335,7 @@ namespace atomic_dex
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
+            update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
             update_value(OrderbookRoles::PriceFiatRole, "0.00", idx, *this);
         }
     }
