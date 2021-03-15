@@ -40,7 +40,7 @@ Item {
         spacing: 10
         Row {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 130
+            Layout.preferredWidth: 140
             leftPadding: -10
             spacing: 5
             Image {
@@ -49,6 +49,7 @@ Item {
                 height: 20
                 smooth: true
                 antialiasing: true
+                opacity: !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled? .1 : 1
                 anchors.verticalCenter: parent.verticalCenter
             }
             DefaultText {
@@ -75,7 +76,8 @@ Item {
                     if(link==="#no") {
                         _tooltip.close()
                     }else {
-
+                        API.app.enable_coins([coin])
+                        _tooltip.close()
                     }
                 }
             }
@@ -100,7 +102,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             
-            text: cex_rates==="0"? "N/A" : cex_rates>0? "+"+cex_rates+"%" : cex_rates+"%"
+            text: cex_rates==="0"? "N/A" : cex_rates>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
 
 
             Behavior on rightPadding {
@@ -123,8 +125,10 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            if(!PI.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled){
+            if(!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled){
                 _tooltip.open()
+            }else {
+                API.app.trading_pg.orderbook.select_best_order(uuid)
             }
             
             //if(is_mine) return

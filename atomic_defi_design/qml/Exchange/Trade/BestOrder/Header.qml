@@ -23,7 +23,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 130
+            Layout.preferredWidth: 140
             text: qsTr("You Send")
             font.family: Style.font_family
             font.pixelSize: 10
