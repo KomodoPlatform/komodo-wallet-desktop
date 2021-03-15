@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <optional>
+
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
@@ -23,22 +25,23 @@ namespace mm2::api
 {
     struct order_contents
     {
-        std::string coin;
-        std::string address;
-        std::string price;
-        std::string price_fraction_numer;
-        std::string price_fraction_denom;
-        std::string max_volume_fraction_numer;
-        std::string max_volume_fraction_denom;
-        std::string maxvolume;
-        std::string pubkey;
-        std::size_t age;
-        std::size_t zcredits;
-        std::string total;
-        std::string uuid;
-        std::string depth_percent;
-        bool        is_mine;
-        std::string min_volume{"0"};
+        std::string                coin;
+        std::string                address;
+        std::string                price;
+        std::string                price_fraction_numer;
+        std::string                price_fraction_denom;
+        std::string                max_volume_fraction_numer;
+        std::string                max_volume_fraction_denom;
+        std::string                maxvolume;
+        std::string                pubkey;
+        std::size_t                age;
+        std::size_t                zcredits;
+        std::string                total;
+        std::string                uuid;
+        std::string                depth_percent;
+        bool                       is_mine;
+        std::string                min_volume{"0"};
+        std::optional<std::string> rel_coin{std::nullopt};
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);

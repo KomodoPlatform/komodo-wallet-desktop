@@ -67,7 +67,11 @@ namespace atomic_dex
         case orderbook_model::EnoughFundsToPayMinVolume:
             break;
         case orderbook_model::CEXRatesRole:
-            break;
+        {
+            t_float_50 left  = safe_float(left_data.toString().toStdString());
+            t_float_50 right = safe_float(right_data.toString().toStdString());
+            return left < right;
+        }
         case orderbook_model::SendRole:
             break;
         case orderbook_model::HaveCEXIDRole:

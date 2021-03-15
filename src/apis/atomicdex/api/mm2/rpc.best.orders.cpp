@@ -44,10 +44,11 @@ namespace mm2::api
         {
             for (auto&& [key, value]: j.items())
             {
-                //SPDLOG_INFO("{} best orders size: {}", key, value.size());
+                // SPDLOG_INFO("{} best orders size: {}", key, value.size());
                 for (auto&& cur_order: value)
                 {
                     order_contents contents;
+                    contents.rel_coin = key;
                     from_json(cur_order, contents);
                     answer.result.emplace_back(std::move(contents));
                 }

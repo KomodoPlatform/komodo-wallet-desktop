@@ -78,7 +78,14 @@ namespace atomic_dex
         case PriceRole:
             return QString::fromStdString(m_model_data.at(index.row()).price);
         case CoinRole:
+        {
+            if (m_current_orderbook_kind == kind::best_orders)
+            {
+                const auto coin = m_model_data.at(index.row()).rel_coin.value();
+                return QString::fromStdString(coin);
+            }
             return QString::fromStdString(m_model_data.at(index.row()).coin);
+        }
         case PriceDenomRole:
             return QString::fromStdString(m_model_data.at(index.row()).price_fraction_denom);
         case PriceNumerRole:
@@ -121,18 +128,20 @@ namespace atomic_dex
             const auto& trading_pg      = m_system_mgr.get_system<trading_page>();
             const auto* market_selector = trading_pg.get_market_pairs_mdl();
             const auto& base            = market_selector->get_left_selected_coin().toStdString();
-            const auto& rel             = m_model_data.at(index.row()).coin;
+            const auto& rel             = data(index, CoinRole).toString().toStdString();
             const auto& price           = m_model_data.at(index.row()).price;
             if (base == rel)
             {
                 return "0";
             }
             const bool is_buy = trading_pg.get_market_mode() == MarketMode::Buy;
+            //SPDLOG_INFO("cex rates: {}/{} is_buy: {} price: {}", base, rel, is_buy, price);
             t_float_50 price_diff(0);
             t_float_50 cex_price = safe_float(price_service.get_cex_rates(base, rel));
             if (cex_price > 0)
             {
                 price_diff = t_float_50(100) * (t_float_50(1) - safe_float(price) / cex_price) * (!is_buy ? t_float_50(1) : t_float_50(-1));
+                //SPDLOG_INFO("{}/{} price_diff({}%) = 100 * (1 - price[{}] / cex_price[{}])) * ({})", base, rel, utils::format_float(price_diff), utils::adjust_precision(price), utils::format_float(cex_price), !is_buy ? 1 : -1);
                 return QString::fromStdString(utils::format_float(price_diff));
             }
             return "0";
@@ -161,7 +170,7 @@ namespace atomic_dex
                 const auto& price_service = m_system_mgr.get_system<global_price_service>();
                 const auto& fiat          = m_system_mgr.get_system<settings_page>().get_cfg().current_fiat;
                 const auto  total_amount  = this->data(index, SendRole).toString().toStdString();
-                const auto  coin          = m_model_data.at(index.row()).coin;
+                const auto  coin          = data(index, CoinRole).toString().toStdString();
                 const auto  result        = price_service.get_price_as_currency_from_amount(fiat, coin, total_amount);
                 auto        final_result  = result;
                 // SPDLOG_INFO("Result is: [{}] for coin: {} role: {} total amount: {}", result, coin, PriceFiatRole, total_amount);

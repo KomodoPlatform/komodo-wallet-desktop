@@ -137,12 +137,13 @@ namespace atomic_dex
     qt_orderbook_wrapper::select_best_order(const QString& order_uuid) noexcept
     {
         QVariantMap out;
+        const bool is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
         const auto  res = m_best_orders->match(m_best_orders->index(0, 0), orderbook_model::UUIDRole, order_uuid, 1, Qt::MatchFlag::MatchExactly);
         if (!res.empty())
         {
             const QModelIndex& idx   = res.at(0);
             t_order_contents   order = m_best_orders->get_order_content(idx);
-            out["coin"]              = QString::fromStdString(order.coin);
+            out["coin"]              = QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin);
             out["price"]             = QString::fromStdString(order.price);
             out["quantity"]          = QString::fromStdString(order.maxvolume);
             out["price_denom"]       = QString::fromStdString(order.price_fraction_denom);
@@ -151,10 +152,10 @@ namespace atomic_dex
             out["quantity_numer"]    = QString::fromStdString(order.max_volume_fraction_numer);
             m_selected_best_order    = out;
             auto& trading_pg         = m_system_manager.get_system<trading_page>();
-            if (!trading_pg.set_pair(false, QString::fromStdString(order.coin)))
+            if (!trading_pg.set_pair(false, QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin)))
             {
                 //! If we are not able to set the selected pair reset immediatly
-                SPDLOG_ERROR("Was not able to set rel coin in the orderbook to : {}", order.coin);
+                SPDLOG_ERROR("Was not able to set rel coin in the orderbook to : {}", is_buy ? order.rel_coin.value() : order.coin);
                 m_selected_best_order = std::nullopt;
             }
         }
