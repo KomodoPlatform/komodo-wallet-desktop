@@ -121,7 +121,7 @@ namespace atomic_dex
         QObject(parent),
         system(registry), m_system_manager(system_manager),
         m_about_to_exit_the_app(exit_status), m_models{
-                                                  {new qt_orderbook_wrapper(m_system_manager, dispatcher_, this), new market_pairs(portfolio, this),
+                                                  {new qt_orderbook_wrapper(m_system_manager, dispatcher_, this), new market_pairs(m_system_manager, portfolio, this),
                                                    new qt_orders_widget(m_system_manager, this)}}
     {
         //!
