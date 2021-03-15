@@ -40,19 +40,18 @@ namespace atomic_dex
         Q_PROPERTY(portfolio_proxy_model* multiple_selection_box READ get_multiple_selection_box NOTIFY multipleSelectionBoxChanged) ///< List on dex page
         Q_PROPERTY(portfolio_proxy_model* multi_order_coins READ get_multiple_order_coins NOTIFY multipleOrderCoinsChanged)          ///< Confirmation modal
 
-        QString                m_left_selected_coin;
-        QString                m_right_selected_coin;
-        QString                m_base_selected_coin;
-        QString                m_rel_selected_coin;
-        portfolio_proxy_model* m_left_selection_box;
-        portfolio_proxy_model* m_right_selection_box;
-        portfolio_proxy_model* m_multiple_selection_box;
-        portfolio_proxy_model* m_multi_order_coins;
-
+        QString                  m_left_selected_coin;
+        QString                  m_right_selected_coin;
+        QString                  m_base_selected_coin;
+        QString                  m_rel_selected_coin;
+        portfolio_proxy_model*   m_left_selection_box;
+        portfolio_proxy_model*   m_right_selection_box;
+        portfolio_proxy_model*   m_multiple_selection_box;
+        portfolio_proxy_model*   m_multi_order_coins;
 
       public:
         //! Constructor / Destructor
-        market_pairs(portfolio_model* portfolio_mdl, QObject* parent = nullptr);
+        market_pairs(ag::ecs::system_manager& system_manager, portfolio_model* portfolio_mdl, QObject* parent = nullptr);
         ~market_pairs() noexcept final;
 
         //! Properties Getter/Setter

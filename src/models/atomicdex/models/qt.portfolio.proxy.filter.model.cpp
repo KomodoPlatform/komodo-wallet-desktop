@@ -17,11 +17,15 @@
 //! Project Headers
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 
 namespace atomic_dex
 {
     //! Constructor
-    portfolio_proxy_model::portfolio_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
+    portfolio_proxy_model::portfolio_proxy_model(ag::ecs::system_manager& system_manager, QObject* parent) :
+        QSortFilterProxyModel(parent), m_system_mgr(system_manager)
+    {
+    }
 
     //! Override member functions
     bool
@@ -83,6 +87,11 @@ namespace atomic_dex
             {
                 return false;
             }
+        }
+
+        if (am_i_a_market_selector && m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker.toStdString()).wallet_only)
+        {
+            return false;
         }
 
         if (m_excluded_coin == ticker)

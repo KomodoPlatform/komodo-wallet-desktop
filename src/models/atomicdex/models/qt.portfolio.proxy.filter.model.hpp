@@ -19,6 +19,9 @@
 //! Qt
 #include <QSortFilterProxyModel>
 
+//! Deps
+#include <antara/gaming/ecs/system.manager.hpp>
+
 namespace atomic_dex
 {
     class portfolio_proxy_model final : public QSortFilterProxyModel
@@ -26,20 +29,21 @@ namespace atomic_dex
         Q_OBJECT
         QString m_excluded_coin{""};
         bool    am_i_a_market_selector{false};
-        
+
         // Tells if the proxy should filter only coins with a balance over than 0.
-        bool    m_with_balance{false};
+        bool                     m_with_balance{false};
+        ag::ecs::system_manager& m_system_mgr;
 
       public:
         //! Constructor
-        portfolio_proxy_model(QObject* parent);
+        portfolio_proxy_model(ag::ecs::system_manager& system_manager, QObject* parent);
 
         //! Destructor
         ~portfolio_proxy_model() noexcept final = default;
-    
+
         //////// QML API
         ////////////////
-        
+
         Q_INVOKABLE void sort_by_name(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
         Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
@@ -48,11 +52,11 @@ namespace atomic_dex
       private:
         Q_PROPERTY(bool with_balance WRITE set_with_balance READ get_with_balance NOTIFY with_balanceChanged)
         [[nodiscard]] bool get_with_balance() const noexcept;
-        void set_with_balance(bool value) noexcept;
-        
+        void               set_with_balance(bool value) noexcept;
+
       signals:
         void with_balanceChanged();
-    
+
         ////////////////
 
       public:
@@ -63,10 +67,10 @@ namespace atomic_dex
       protected:
         //////// QSortFilterProxyModel functions
         ////////////////////////////////////////
-        
+
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
         [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
-        
+
         ////////////////////////////////////////
     };
 } // namespace atomic_dex

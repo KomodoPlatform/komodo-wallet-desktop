@@ -22,9 +22,12 @@
 
 namespace atomic_dex
 {
-    market_pairs::market_pairs(portfolio_model* portfolio_mdl, QObject* parent) :
-        QObject(parent), m_left_selection_box(new portfolio_proxy_model(nullptr)), m_right_selection_box(new portfolio_proxy_model(nullptr)),
-        m_multiple_selection_box(new portfolio_proxy_model(nullptr)), m_multi_order_coins(new portfolio_proxy_model(nullptr))
+    market_pairs::market_pairs(ag::ecs::system_manager& system_manager, portfolio_model* portfolio_mdl, QObject* parent) :
+        QObject(parent),
+        m_left_selection_box(new portfolio_proxy_model(system_manager, nullptr)),
+        m_right_selection_box(new portfolio_proxy_model(system_manager, nullptr)),
+        m_multiple_selection_box(new portfolio_proxy_model(system_manager, nullptr)),
+        m_multi_order_coins(new portfolio_proxy_model(system_manager, nullptr))
     {
         m_left_selection_box->is_a_market_selector(true);
         m_left_selection_box->setSourceModel(portfolio_mdl);

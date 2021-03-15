@@ -191,7 +191,8 @@
       "https://bet.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "BOTS": {
     "coin": "BOTS",
@@ -214,7 +215,8 @@
       "https://bots.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "BUSD": {
     "coin": "BUSD",
@@ -317,7 +319,8 @@
       "https://crypto.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "DAI": {
     "coin": "DAI",
@@ -583,7 +586,8 @@
     ],
     "type": "Smart Chain",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "JUMBLR": {
     "coin": "JUMBLR",
@@ -606,7 +610,8 @@
       "https://jumblr.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "KOIN": {
     "coin": "KOIN",
@@ -698,7 +703,8 @@
     ],
     "type": "Smart Chain",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "PAX": {
     "coin": "PAX",
@@ -871,7 +877,8 @@
       "https://mgw.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "DEX": {
     "coin": "DEX",
@@ -894,7 +901,8 @@
       "https://dex.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "RICK": {
     "coin": "RICK",
@@ -965,7 +973,8 @@
       "https://pangea.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "QIAIR": {
     "coin": "QIAIR",
@@ -1012,7 +1021,8 @@
       "https://revs.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "SOULJA": {
     "coin": "SOULJA",
@@ -1104,7 +1114,8 @@
       "https://supernet.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "SUSHI": {
     "coin": "SUSHI",

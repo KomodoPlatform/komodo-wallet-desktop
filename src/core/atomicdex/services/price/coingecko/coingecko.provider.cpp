@@ -70,7 +70,7 @@ namespace atomic_dex
     }
 
     void
-    coingecko_provider::on_coin_disabled(const coin_disabled& evt) noexcept
+    coingecko_provider::on_coin_disabled([[maybe_unused]] const coin_disabled& evt) noexcept
     {
         //SPDLOG_INFO("{} disabled, removing from coingecko provider", evt.ticker);
         //std::unique_lock lock(m_market_mutex);

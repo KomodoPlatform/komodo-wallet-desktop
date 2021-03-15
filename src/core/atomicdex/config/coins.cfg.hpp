@@ -58,6 +58,7 @@ namespace atomic_dex
         std::optional<bool>             is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
         CoinType                        coin_type;
         bool                            checked{false};
+        bool                            wallet_only{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);
