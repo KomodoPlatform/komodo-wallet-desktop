@@ -125,6 +125,8 @@ namespace atomic_dex
         mm2_service&                     get_mm2() noexcept;
         [[nodiscard]] const mm2_service& get_mm2() const noexcept;
         entt::dispatcher&                get_dispatcher() noexcept;
+        const entt::registry&            get_registry() const noexcept;
+        entt::registry&                  get_registry() noexcept;
         [[nodiscard]] addressbook_page*  get_addressbook_page() const noexcept;
         [[nodiscard]] portfolio_page*    get_portfolio_page() const noexcept;
         [[nodiscard]] wallet_page*       get_wallet_page() const noexcept;

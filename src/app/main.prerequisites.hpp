@@ -261,7 +261,6 @@ init_timezone_db()
 static void
 setup_default_themes()
 {
-
     const fs::path theme_path = atomic_dex::utils::get_themes_path();
     fs::path       original_theme_path{ag::core::assets_real_path() / "themes"};
     fs_error_code  ec;
@@ -319,6 +318,9 @@ handle_settings(QSettings& settings)
 #else
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
 #endif
+    settings.beginGroup("BestOrders");
+    create_settings_functor("show_affordable_offers", QVariant(true));
+    settings.endGroup();
 }
 
 inline int
@@ -338,14 +340,14 @@ run_app(int argc, char** argv)
     setup_default_themes();
     fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
     check_settings_reconfiguration(settings_path);
-    QSettings settings(settings_path.string().c_str(), QSettings::IniFormat);
-    handle_settings(settings);
     init_dpi();
-
-    int res = 0;
 
     //! App declaration
     atomic_dex::application atomic_app;
+    QSettings&              settings = atomic_app.get_registry().ctx<QSettings>();
+    handle_settings(settings);
+
+    int res = 0;
 
     //! Qt utilities declaration.
     atomic_dex::qt_utilities qt_utilities;

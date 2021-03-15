@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QProcess>
+#include <QSettings>
 #include <QTimer>
 
 #ifdef __APPLE__
@@ -239,8 +240,22 @@ namespace atomic_dex
         return this->dispatcher_;
     }
 
+    const entt::registry&
+    application::get_registry() const noexcept
+    {
+        return this->entity_registry_;
+    }
+
+    entt::registry&
+    application::get_registry() noexcept
+    {
+        return this->entity_registry_;
+    }
+
     application::application(QObject* pParent) noexcept : QObject(pParent)
     {
+        fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
+        this->entity_registry_.set<QSettings>(settings_path.string().c_str(), QSettings::IniFormat);
         //! Creates managers
         {
             system_manager_.create_system<qt_wallet_manager>(system_manager_);
