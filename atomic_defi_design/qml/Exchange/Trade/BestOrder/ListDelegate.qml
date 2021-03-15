@@ -10,6 +10,7 @@ import "../../../Constants"
 
 Item {
     id: _control
+    property bool coinEnable: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
     property var isAsk: {
         if(parseInt(cex_rates)>0){
             false
@@ -49,7 +50,7 @@ Item {
                 height: 20
                 smooth: true
                 antialiasing: true
-                opacity: !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled? .1 : 1
+                opacity: !_control.coinEnable? .1 : 1
                 anchors.verticalCenter: parent.verticalCenter
             }
             DefaultText {
@@ -77,6 +78,7 @@ Item {
                         _tooltip.close()
                     }else {
                         API.app.enable_coins([coin])
+                        _control.coinEnable = true
                         _tooltip.close()
                     }
                 }
