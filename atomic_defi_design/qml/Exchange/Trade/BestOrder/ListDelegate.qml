@@ -68,7 +68,7 @@ Item {
 
         //visible: mouse_are.containsMouse && !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
             width: 250
-            contentItem: DefaultText {
+            contentItem: DexLabelUnlinked {
                 text_value: qsTr(" %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> -<a href='#no'>No</a>").arg(coin).arg(coin)
                 wrapMode: DefaultText.Wrap
                 width: 250

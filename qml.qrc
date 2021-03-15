@@ -426,5 +426,6 @@
         <file>atomic_defi_design/qml/Components/DexTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexSlider.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
     </qresource>
 </RCC>
