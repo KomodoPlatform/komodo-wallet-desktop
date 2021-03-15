@@ -1041,6 +1041,7 @@ namespace atomic_dex
                 this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("price").get<std::string>()))));
                 this->determine_max_volume();
                 this->set_volume(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))));
+                this->get_orderbook_wrapper()->refresh_best_orders();
             }
         }
     }
