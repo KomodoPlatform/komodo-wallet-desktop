@@ -374,6 +374,12 @@ namespace atomic_dex
         refresh_functor(orderbook);
     }
 
+    t_order_contents
+    orderbook_model::get_order_content(const QModelIndex& index) const noexcept
+    {
+        return m_model_data.at(index.row());
+    }
+
     bool
     orderbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {

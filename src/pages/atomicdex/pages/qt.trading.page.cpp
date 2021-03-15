@@ -720,7 +720,7 @@ namespace atomic_dex
                 this->m_preffered_order = std::nullopt;
                 emit prefferedOrderChanged();
             }
-            SPDLOG_DEBUG("price is [{}]", m_price.toStdString());
+            //SPDLOG_DEBUG("price is [{}]", m_price.toStdString());
 
             //! When price change in MarketMode::Buy you want to redetermine max_volume
             if (m_market_mode == MarketMode::Buy)
@@ -780,6 +780,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
+            //SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
             this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
@@ -813,6 +814,7 @@ namespace atomic_dex
             if (not max_taker_vol.empty())
             {
                 // SPDLOG_INFO("max_taker_vol is valid, processing...");
+                //SPDLOG_INFO("max_taker_vol is: [{}]", max_taker_vol);
                 if (safe_float(max_taker_vol) <= 0)
                 {
                     this->set_max_volume("0");
@@ -1037,8 +1039,8 @@ namespace atomic_dex
             if (not m_preffered_order->empty() && m_preffered_order->contains("price"))
             {
                 this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("price").get<std::string>()))));
-                this->set_volume(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))));
                 this->determine_max_volume();
+                this->set_volume(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))));
             }
         }
     }

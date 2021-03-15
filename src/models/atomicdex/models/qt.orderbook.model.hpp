@@ -47,7 +47,7 @@ namespace atomic_dex
 
         enum OrderbookRoles
         {
-            PriceRole = Qt::UserRole + 1, //257
+            PriceRole = Qt::UserRole + 1, // 257
             CoinRole,
             QuantityRole,
             TotalRole,
@@ -80,6 +80,8 @@ namespace atomic_dex
         void                                 clear_orderbook() noexcept;
         [[nodiscard]] int                    get_length() const noexcept;
         [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const noexcept;
+        [[nodiscard]] t_order_contents       get_order_content(const QModelIndex& index) const noexcept;
+
       signals:
         void lengthChanged();
         void proxyMdlChanged();

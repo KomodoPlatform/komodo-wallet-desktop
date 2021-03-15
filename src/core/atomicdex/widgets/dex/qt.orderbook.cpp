@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 //! Project headers
+#include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 #include "atomicdex/widgets/dex/qt.orderbook.hpp"
@@ -80,6 +81,11 @@ namespace atomic_dex
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
         this->set_both_taker_vol();
+        if (m_selected_best_order->has_value())
+        {
+            m_system_manager.get_system<trading_page>().set_preffered_order(m_selected_best_order->value());
+            m_selected_best_order = std::nullopt;
+        }
         m_best_orders->clear_orderbook();                                                     ///< Remove all elements from the model
         this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders(); ///< re process the model
     }
@@ -124,5 +130,27 @@ namespace atomic_dex
     qt_orderbook_wrapper::refresh_best_orders() noexcept
     {
         this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
+    }
+
+    void
+    qt_orderbook_wrapper::select_best_order(const QString& order_uuid) noexcept
+    {
+        QVariantMap out;
+        const auto  res = m_best_orders->match(m_best_orders->index(0, 0), orderbook_model::UUIDRole, order_uuid, 1, Qt::MatchFlag::MatchExactly);
+        if (!res.empty())
+        {
+            const QModelIndex& idx   = res.at(0);
+            t_order_contents   order = m_best_orders->get_order_content(idx);
+            out["coin"]              = QString::fromStdString(order.coin);
+            out["price"]             = QString::fromStdString(order.price);
+            out["quantity"]          = QString::fromStdString(order.maxvolume);
+            out["price_denom"]       = QString::fromStdString(order.price_fraction_denom);
+            out["price_numer"]       = QString::fromStdString(order.price_fraction_numer);
+            out["quantity_denom"]    = QString::fromStdString(order.max_volume_fraction_denom);
+            out["quantity_numer"]    = QString::fromStdString(order.max_volume_fraction_numer);
+            m_selected_best_order    = out;
+            auto& trading_pg         = m_system_manager.get_system<trading_page>();
+            trading_pg.set_pair(false, QString::fromStdString(order.coin));
+        }
     }
 } // namespace atomic_dex

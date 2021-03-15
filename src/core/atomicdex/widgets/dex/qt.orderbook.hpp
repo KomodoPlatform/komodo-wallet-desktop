@@ -53,6 +53,7 @@ namespace atomic_dex
         [[nodiscard]] QVariant         get_rel_max_taker_vol() const noexcept;
 
         Q_INVOKABLE void refresh_best_orders() noexcept;
+        Q_INVOKABLE void select_best_order(const QString& order_uuid) noexcept;
 
       signals:
         void asksChanged();
@@ -63,13 +64,14 @@ namespace atomic_dex
         void relMaxTakerVolChanged();
 
       private:
-        void                     set_both_taker_vol();
-        ag::ecs::system_manager& m_system_manager;
-        entt::dispatcher&        m_dispatcher;
-        orderbook_model*         m_asks;
-        orderbook_model*         m_bids;
-        orderbook_model*         m_best_orders;
-        QJsonObject              m_base_max_taker_vol;
-        QJsonObject              m_rel_max_taker_vol;
+        void                                                  set_both_taker_vol();
+        ag::ecs::system_manager&                              m_system_manager;
+        entt::dispatcher&                                     m_dispatcher;
+        orderbook_model*                                      m_asks;
+        orderbook_model*                                      m_bids;
+        orderbook_model*                                      m_best_orders;
+        QJsonObject                                           m_base_max_taker_vol;
+        QJsonObject                                           m_rel_max_taker_vol;
+        boost::synchronized_value<std::optional<QVariantMap>> m_selected_best_order{std::nullopt};
     };
 } // namespace atomic_dex
