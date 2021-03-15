@@ -151,7 +151,12 @@ namespace atomic_dex
             out["quantity_numer"]    = QString::fromStdString(order.max_volume_fraction_numer);
             m_selected_best_order    = out;
             auto& trading_pg         = m_system_manager.get_system<trading_page>();
-            trading_pg.set_pair(false, QString::fromStdString(order.coin));
+            if (!trading_pg.set_pair(false, QString::fromStdString(order.coin)))
+            {
+                //! If we are not able to set the selected pair reset immediatly
+                SPDLOG_ERROR("Was not able to set rel coin in the orderbook to : {}", order.coin);
+                m_selected_best_order = std::nullopt;
+            }
         }
     }
 } // namespace atomic_dex
