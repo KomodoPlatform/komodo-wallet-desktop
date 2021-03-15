@@ -182,6 +182,156 @@ Rectangle {
         id: fatal_error_modal
         visible: false
     }
+    Qaterial.Dialog {
+        id: setting_modal
+        width: 850
+        height: 650
+        anchors.centerIn: parent
+        dim: true
+        modal: true
+        title: "Settings"
+        header: Item{}
+        Overlay.modal: Item {
+            Rectangle {
+                anchors.fill: parent
+                color: theme.surfaceColor
+                opacity: .7
+            }
+         }
+        background: FloatingBackground {
+            color: theme.dexBoxBackgroundColor
+            radius: 3
+        }
+        padding: 0
+        topPadding: 0
+        bottomPadding: 0
+        Item {
+            width: parent.width
+            height: 60
+            Qaterial.AppBarButton {
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+                icon.source: Qaterial.Icons.close
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: setting_modal.close()
+            }
+            Row {
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 20
+                DexLabel {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "Settings"
+                    font: theme.textType.head6
+                }
+                DexLabel {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: " - Géneral"
+                    opacity: .5
+                    font: theme.textType.head6
+                }
+            }
+            Rectangle {
+                anchors.bottom: parent.bottom
+                color: theme.foregroundColor
+                opacity: .10
+                width: parent.width
+                height: 1.5
+            }
+
+            Qaterial.DebugRectangle {
+                anchors.fill: parent
+                visible: false
+            }
+        }
+        Item {
+            width: parent.width
+            height: parent.height-110
+            y:60
+            RowLayout {
+                anchors.fill: parent
+                Item {
+                    Layout.fillHeight: true
+                    Layout.preferredWidth: 240
+                    Column {
+                        anchors.fill: parent
+                        topPadding: 10
+                        DexSelectableButton {
+                            selected: true
+                            text: "Géneral"
+                        }
+                        DexSelectableButton {
+                            text: "Language"
+                        }
+                        DexSelectableButton {
+                            text: "User Interface"
+                        }
+                        DexSelectableButton {
+                            text: "About"
+                        }
+                    }
+                }
+                Rectangle {
+                    Layout.fillHeight: true
+                    width: 2
+                    color: theme.foregroundColor
+                    opacity: .10
+                }
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
+            }
+
+            Qaterial.DebugRectangle {
+                anchors.fill: parent
+                visible: false
+            }
+        }
+        Item {
+            width: parent.width
+            height: 50
+            anchors.bottom: parent.bottom
+            DexSelectableButton {
+                selected: true
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+                anchors.horizontalCenter: undefined
+                anchors.verticalCenter: parent.verticalCenter
+                text: ""
+                height: 40
+                width: 130
+                Row {
+                    anchors.centerIn: parent
+                    Qaterial.ColorIcon {
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: Qaterial.Icons.logout
+                    }
+                    spacing: 10
+                    DexLabel {
+                        text: "Logout"
+                        anchors.verticalCenter: parent.verticalCenter
+                        font: theme.textType.button
+                    }
+                    opacity: .6
+                }
+
+            }
+
+            Rectangle {
+                anchors.top: parent.top
+                color: theme.foregroundColor
+                opacity: .10
+                width: parent.width
+                height: 1.5
+            }
+
+        }
+
+        Component.onCompleted: {
+            //open()
+        }
+    }
+
     Item {
         id: debug_control
         property var splitViewState
