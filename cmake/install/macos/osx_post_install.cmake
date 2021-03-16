@@ -32,7 +32,7 @@ endif ()
 
 if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
     ##-------------------------------------------
-    message(STATUS "${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -codesign=$ENV{MAC_SIGN_IDENTITY} -timestamp -verbose=3")
+    message(STATUS "${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -sign-for-notarization=$ENV{MAC_SIGN_IDENTITY}  -verbose=3")
     execute_process(
             COMMAND
             ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -codesign=$ENV{MAC_SIGN_IDENTITY} -timestamp -verbose=1
