@@ -1347,7 +1347,12 @@
     <name>Header</name>
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="27"/>
-        <source>You Send</source>
+        <source>You get</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="27"/>
+        <source>You send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1436,8 +1441,13 @@
 <context>
     <name>ListDelegate</name>
     <message>
+        <location filename="../../qml/Exchange/Trade/BestOrder/ListDelegate.qml" line="73"/>
+        <source> %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; -&lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/Trade/OrderBook/ListDelegate.qml" line="51"/>
-        <source>This order require a minimum amount of %1 %2 - &lt;br&gt;You don&apos;t have enough funds (%3)</source>
+        <source>This order require a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; Your max balance after fees is: (%3)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -428,5 +428,6 @@
         <file>atomic_defi_design/qml/Components/DexSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
         <file>atomic_defi_design/qml/Components/DexSelectableButton.qml</file>
+        <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
     </qresource>
 </RCC>

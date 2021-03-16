@@ -12,6 +12,8 @@ import Qaterial 1.0 as Qaterial
 Item {
     property bool selected: false
     property alias text: _label.text
+    property alias hovered: area.containsMouse
+    signal clicked()
     width: parent.width-20
     anchors.horizontalCenter: parent.horizontalCenter
     height: 45
@@ -19,7 +21,7 @@ Item {
         anchors.fill: parent
         height: 45
         radius: 5
-        opacity: !parent.selected? 0 : .9
+        opacity: parent.hovered? .4 : !parent.selected? 0 : .9
         color: theme.hightlightColor
     }
     DexLabel {
@@ -27,6 +29,12 @@ Item {
         anchors.centerIn: parent
         font: theme.textType.button
         text: ""
-        opacity: .8
+        opacity: area.containsMouse? 1 : .7
+    }
+    MouseArea {
+        id: area
+        cursorShape: "PointingHandCursor"
+        onClicked: parent.clicked()
+        anchors.fill: parent
     }
 }
