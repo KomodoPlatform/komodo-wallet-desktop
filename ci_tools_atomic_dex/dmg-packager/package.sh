@@ -45,7 +45,7 @@ rm -rf "${STAGING_DIR}" "${DMG_TMP}" "${DMG_FINAL}"
 
 # copy over the stuff we want in the final disk image to our staging dir
 mkdir -p "${STAGING_DIR}"
-cp -rpf "${APP_PATH}${APP_FILE_NAME}.app" "${STAGING_DIR}"
+cp -Rpf "${APP_PATH}${APP_FILE_NAME}.app" "${STAGING_DIR}"
 # ... cp anything else you want in the DMG - documentation, etc.
 
 pushd "${STAGING_DIR}"
