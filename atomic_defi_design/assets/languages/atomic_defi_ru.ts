@@ -1453,7 +1453,7 @@
 <context>
     <name>ListDelegate</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/BestOrder/ListDelegate.qml" line="73"/>
+        <location filename="../../qml/Exchange/Trade/BestOrder/ListDelegate.qml" line="72"/>
         <source> %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; -&lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2558,6 +2558,19 @@
         <location filename="../../qml/Wallet/SendResult.qml" line="58"/>
         <source>View on Explorer</source>
         <translation>Открыть в эксплорере</translation>
+    </message>
+</context>
+<context>
+    <name>SettingModal</name>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="140"/>
+        <source>Fiat</source>
+        <translation type="unfinished">Валюта по умолчанию</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="167"/>
+        <source>Recommended: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -8,10 +8,14 @@ import Qt.labs.settings 1.0
 import QtQuick.Window 2.12
 
 import Qaterial 1.0 as Qaterial
+
+// Project Imports
 import "../Components"
+import "../Constants"
 
 
 Qaterial.Dialog {
+
     function disconnect() {
         API.app.disconnect()
         onDisconnect()
