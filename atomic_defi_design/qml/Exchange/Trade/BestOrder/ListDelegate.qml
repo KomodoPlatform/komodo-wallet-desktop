@@ -56,7 +56,7 @@ Item {
             DefaultText {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
-                text: send+" "+coin//parseFloat(Math.random(522222)).toFixed(8) + (isAsk? " RVN": " KMD")
+                text: send+" "+coin
                 font.pixelSize: Style.textSizeSmall1
 
             }
@@ -67,7 +67,6 @@ Item {
             modal: true
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-        //visible: mouse_are.containsMouse && !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
             width: 250
             contentItem: DexLabelUnlinked {
                 text_value: qsTr(" %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> -<a href='#no'>No</a>").arg(coin).arg(coin)
@@ -89,7 +88,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
-            text: price_fiat+API.app.settings_pg.current_fiat_sign //parseFloat(Math.random()*(Math.random()*3)*1.5).toFixed(2)+"$"
+            text: price_fiat+API.app.settings_pg.current_fiat_sign
             font: theme.textType.caption
             horizontalAlignment: Label.AlignRight
             opacity: 1
@@ -104,7 +103,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             
-            text: cex_rates==="0"? "N/A" : cex_rates>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
+            text: cex_rates==="0"? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
 
 
             Behavior on rightPadding {
