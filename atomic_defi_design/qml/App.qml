@@ -415,14 +415,16 @@ Rectangle {
     Component.onCompleted: {
         openFirstLaunch()
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
-        //save_currentTheme()
-        // Load the chart
+//      save_currentTheme()
+//      Load the chart
 //        if(!chart_component) chart_component = Qt.createComponent("qrc:/atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml")//./Exchange/Trade/CandleStickChart.qml")
 //        if(!chart_object) {
 //            chart_object = chart_component.createObject(app)
 //            chart_object.visible = false
 //        }
+        atomic_settings2.sync()
         let current =  atomic_settings2.value("CurrentTheme")
+        console.log(current)
         load_theme(current.replace(".json",""))
     }
 
@@ -442,12 +444,13 @@ Rectangle {
         console.log(r)
     }
     function load_theme(name) {
-        atomic_settings2.value("CurrentTheme",name+".json")
+        //atomic_settings2.value("CurrentTheme",name+".json")
         let data = API.qt_utilities.load_theme(name)
         for(let i in data) {
             console.log("theme."+i.toString()+" = '"+ data[i]+"'")
             eval("theme."+i.toString()+" = '"+ data[i]+"'")
         }
+        console.log("END APPLY "+name)
     }
 
 

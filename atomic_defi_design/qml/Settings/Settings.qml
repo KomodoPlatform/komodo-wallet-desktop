@@ -168,10 +168,7 @@ Item {
                 onClicked: view_seed_modal.open()
             }
 
-            ModalLoader {
-                id: view_seed_modal
-                sourceComponent: RecoverSeedModal {}
-            }
+
 
             HorizontalLine {
                 Layout.fillWidth: true
@@ -220,7 +217,7 @@ Item {
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Reset assets configuration")
                 onClicked: {
-                    restart_modal.open()
+                    restarté_modal.open()
                     restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                 }
             }

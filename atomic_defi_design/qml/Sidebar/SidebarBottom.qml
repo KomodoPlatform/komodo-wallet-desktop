@@ -11,11 +11,12 @@ ColumnLayout {
     spacing: 0
 
     SidebarLine {
-        dashboard_index: idx_dashboard_settings
+        dashboard_index: -1
         text_value: sidebar.expanded? qsTr("Settings") : ""
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true
         separator: false
+        onCheckedChanged: settings_modal.open()
     }
 
     SidebarLine {

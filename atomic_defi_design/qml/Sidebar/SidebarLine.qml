@@ -99,6 +99,11 @@ Item {
         width: parent.width
         height: parent.height
         onClicked: function() {
+            if (dashboard_index===-1) {
+                settings_modal.open()
+                return
+            }
+
             if(!section_enabled) return
 
             if(dashboard_index === idx_dashboard_light_ui) {

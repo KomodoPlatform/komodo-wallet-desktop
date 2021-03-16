@@ -102,7 +102,7 @@ Qaterial.Dialog {
                     anchors.topMargin: 10
                     spacing: 10
                     currentIndex: 0
-                    model: ["Géneral", "Language","User Interface","About"]
+                    model: [qsTr("Géneral"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About")]
                     highlight: Item {
                         width: menu_list.width-20
                         x: 10
@@ -136,75 +136,257 @@ Qaterial.Dialog {
                     currentIndex: menu_list.currentIndex
                     Item {
                         anchors.margins: 10
-                        ComboBoxWithTitle {
-                            id: combo_fiat
-                            title: qsTr("Fiat")
-                            width: parent.width-30
-                            anchors.horizontalCenter: parent.horizontalCenter
-
-                            model: fiats
-
-                            property bool initialized: false
-                            onCurrentIndexChanged: {
-                                if(initialized) {
-                                    const new_fiat = fiats[currentIndex]
-                                    API.app.settings_pg.current_fiat = new_fiat
-                                    API.app.settings_pg.current_currency = new_fiat
-                                }
+                        Column {
+                            anchors.fill: parent
+                            topPadding: 10
+                            spacing: 15
+                            Combo_fiat {
+                                id: combo_fiat
                             }
-                            Component.onCompleted: {
-                                currentIndex = model.indexOf(API.app.settings_pg.current_fiat)
-                                initialized = true
-                            }
-
                             RowLayout {
-                                Layout.topMargin: 5
-                                Layout.fillWidth: true
-                                Layout.leftMargin: 2
-                                Layout.rightMargin: Layout.leftMargin
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 30
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Enable Desktop Notifications")
+                                }
+                                DefaultSwitch {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    //text: qsTr("Enable Desktop Notifications")
+                                    Component.onCompleted: checked = API.app.settings_pg.notification_enabled
+                                    onCheckedChanged: API.app.settings_pg.notification_enabled = checked
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Logs")
+                                }
+                                DexButton {
+                                    text: qsTr("Open Folder")
+                                    implicitHeight: 37
+                                     onClicked: {
+                                        openLogsFolder()
+                                    }
+                                }
+                            }
 
-                                DefaultText {
-                                    text: qsTr("Recommended: ")
-                                    font.pixelSize: Style.textSizeSmall4
+                        }
+                    }
+                    Item {
+                        Column {
+                            anchors.fill: parent
+                            topPadding: 10
+                            spacing: 15
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 30
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Language") + ":"
+                                }
+                                Languages {
+                                    Layout.alignment: Qt.AlignVCenter
                                 }
 
-                                Grid {
-                                    Layout.leftMargin: 30
+                            }
+                        }
+                    }
+
+
+                    Item {
+                        Column {
+                            anchors.fill: parent
+                            topPadding: 10
+                            spacing: 15
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 30
+                                DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
-
-                                    clip: true
-
-                                    columns: 6
-                                    spacing: 25
-
-                                    layoutDirection: Qt.LeftToRight
-
-                                    Repeater {
-                                        model: recommended_fiats
-
-                                        delegate: DefaultText {
-                                            text: modelData
-                                            color: fiats_mouse_area.containsMouse ? Style.colorText : Style.colorText2
-
-                                            DefaultMouseArea {
-                                                id: fiats_mouse_area
-                                                anchors.fill: parent
-                                                hoverEnabled: true
-                                                onClicked: {
-                                                    API.app.settings_pg.current_fiat = modelData
-                                                    API.app.settings_pg.current_currency = modelData
-                                                    combo_fiat.currentIndex = combo_fiat.model.indexOf(API.app.settings_pg.current_fiat)
-                                                }
-                                            }
+                                    Layout.fillWidth: true
+                                    text: qsTr("Use QtTextRendering Or NativeTextRendering")
+                                }
+                                DefaultSwitch {
+                                    property bool firstTime: true
+                                    Layout.alignment: Qt.AlignHCenter
+                                    Layout.leftMargin: combo_fiat.Layout.leftMargin
+                                    Layout.rightMargin: Layout.leftMargin
+                                    checked: parseInt(atomic_settings2.value("FontMode")) === 1
+                                    //text: qsTr("Use QtTextRendering Or NativeTextRendering")
+                                    onCheckedChanged: {
+                                        if(checked){
+                                            atomic_settings2.setValue("FontMode", 1)
+                                        }else {
+                                            atomic_settings2.setValue("FontMode", 0)
                                         }
+                                        if(firstTime) {
+                                            firstTime = false
+                                        }else {
+                                            restart_modal.open()
+                                        }
+
+                                    }
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 30
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Theme")
+                                }
+                                DexComboBox {
+                                    id: dexTheme
+                                    Layout.alignment: Qt.AlignVCenter
+                                    displayText: currentText.replace(".json","")
+                                    model: API.qt_utilities.get_themes_list()
+                                    Component.onCompleted: {
+                                        let current = atomic_settings2.value("CurrentTheme")
+                                        currentIndex = model.indexOf(current)
+                                    }
+                                    onCurrentTextChanged: {
+//                                        atomic_settings2.setValue("CurrentTheme", currentText)
+//                                        atomic_settings2.sync()
+//                                        app.load_theme(currentText.replace(".json",""))
+                                    }
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("")
+                                }
+                                DexButton {
+                                    text: qsTr("Apply Theme")
+                                    implicitHeight: 37
+                                     onClicked: {
+                                        atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
+                                        atomic_settings2.sync()
+                                        app.load_theme(dexTheme.currentText.replace(".json",""))
                                     }
                                 }
                             }
                         }
                     }
                     Item {
-                        DexLabel {
-                            text: "test p2"
+                        Column {
+                            anchors.fill: parent
+                            topPadding: 10
+                            spacing: 15
+                            ModalLoader {
+                                id: view_seed_modal
+                                sourceComponent: RecoverSeedModal {}
+                            }
+                            ModalLoader {
+                                id: eula_modal
+                                sourceComponent: EulaModal {
+                                    close_only: true
+                                }
+                            }
+                            ModalLoader {
+                                id: camouflage_password_modal
+                                sourceComponent: CamouflagePasswordModal {}
+                            }
+                            ModalLoader {
+                                id: delete_wallet_modal
+                                sourceComponent: DeleteWalletModal {}
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("View seed and private keys")
+                                }
+                                DexButton {
+                                    text: qsTr("Show")
+                                    implicitHeight: 37
+                                    onClicked: view_seed_modal.open()
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Disclaimer and ToS")
+                                }
+                                DexButton {
+                                    text: qsTr("Show")
+                                    implicitHeight: 37
+                                    onClicked: eula_modal.open()
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Setup Camouflage Password")
+                                }
+                                DexButton {
+                                    text: qsTr("Open")
+                                    implicitHeight: 37
+                                    onClicked: camouflage_password_modal.open()
+                                }
+                            }
+
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Reset assets configuration")
+                                }
+                                DexButton {
+                                    text: qsTr("Reset")
+                                    implicitHeight: 37
+                                    onClicked: {
+                                        restart_modal.open()
+                                        restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
+                                    }
+                                }
+                            }
+
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    //text:
+                                }
+                                DexButton {
+                                    text: qsTr("Delete Wallet")
+                                    implicitHeight: 37
+                                    onClicked: delete_wallet_modal.open()
+                                }
+                            }
                         }
                     }
                 }
@@ -243,6 +425,7 @@ Qaterial.Dialog {
                 }
                 opacity: .6
             }
+            onClicked: disconnect()
 
         }
 
