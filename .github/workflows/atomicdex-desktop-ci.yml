@@ -200,6 +200,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           cd ci_tools_atomic_dex
