@@ -48,7 +48,7 @@ Item {
             visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume //(min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
             width: 300
             contentItem: DefaultText {
-                text_value: qsTr("This order require a minimum amount of %1 %2 - <br>You don't have enough funds (%3)").arg(min_volume).arg(isAsk ? API.app.trading_pg.market_pairs_mdl.rel_selected_coin : API.app.trading_pg.market_pairs_mdl.base_selected_coin).arg(isAsk ? API.app.trading_pg.orderbook.rel_max_taker_vol.decimal : API.app.trading_pg.orderbook.base_max_taker_vol.decimal)
+                text_value: qsTr("This order require a minimum amount of %1 %2 <br>You don't have enough funds.<br> Your max balance after fees is: (%3)").arg(min_volume).arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin).arg(isAsk ? API.app.trading_pg.orderbook.rel_max_taker_vol.decimal : API.app.trading_pg.orderbook.base_max_taker_vol.decimal)
                 wrapMode: DefaultText.Wrap
                 width: 300
             }
