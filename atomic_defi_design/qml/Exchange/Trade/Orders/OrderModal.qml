@@ -32,7 +32,7 @@ BasicModal {
 
         // Loading symbol
         DefaultBusyIndicator {
-            visible: !details ? false :
+            running: !details ? false :
                         details.is_swap &&
                         details.order_status !== "successful" &&
                         details.order_status !== "failed"
