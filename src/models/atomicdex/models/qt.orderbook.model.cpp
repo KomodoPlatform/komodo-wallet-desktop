@@ -105,14 +105,22 @@ namespace atomic_dex
         case QuantityNumerRole:
             return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_numer);
         case MinVolumeRole:
-            return QString::fromStdString(m_model_data.at(index.row()).base_min_volume);
+        {
+            const bool is_asks = m_current_orderbook_kind == kind::asks;
+            return QString::fromStdString(is_asks ? m_model_data.at(index.row()).rel_min_volume : m_model_data.at(index.row()).base_min_volume);
+        }
         case EnoughFundsToPayMinVolume:
         {
             bool        i_have_enough_funds = true;
             const auto& order_model_data    = m_model_data.at(index.row());
             const auto& trading_pg          = m_system_mgr.get_system<trading_page>();
-            const auto  min_volume_f        = safe_float(order_model_data.base_min_volume);
-            auto        taker_vol_std       = trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
+            const bool  is_asks             = m_current_orderbook_kind == kind::asks;
+            const auto  min_volume_f        = safe_float(is_asks ? order_model_data.rel_min_volume : order_model_data.base_min_volume);
+            auto        taker_vol_std =
+                ((is_asks) ? trading_pg.get_orderbook_wrapper()->get_rel_max_taker_vol() : trading_pg.get_orderbook_wrapper()->get_base_max_taker_vol())
+                    .toJsonObject()["decimal"]
+                    .toString()
+                    .toStdString();
             if (taker_vol_std.empty())
             {
                 taker_vol_std = "0";
