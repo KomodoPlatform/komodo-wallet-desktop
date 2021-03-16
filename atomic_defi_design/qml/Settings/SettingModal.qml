@@ -176,6 +176,24 @@ Qaterial.Dialog {
                                     }
                                 }
                             }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Reset assets configuration")
+                                }
+                                DexButton {
+                                    text: qsTr("Reset")
+                                    implicitHeight: 37
+                                    onClicked: {
+                                        restart_modal.open()
+                                        restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
+                                    }
+                                }
+                            }
 
                         }
                     }
@@ -303,10 +321,7 @@ Qaterial.Dialog {
                                 id: camouflage_password_modal
                                 sourceComponent: CamouflagePasswordModal {}
                             }
-                            ModalLoader {
-                                id: delete_wallet_modal
-                                sourceComponent: DeleteWalletModal {}
-                            }
+
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -322,21 +337,7 @@ Qaterial.Dialog {
                                     onClicked: view_seed_modal.open()
                                 }
                             }
-                            RowLayout {
-                                width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("Disclaimer and ToS")
-                                }
-                                DexButton {
-                                    text: qsTr("Show")
-                                    implicitHeight: 37
-                                    onClicked: eula_modal.open()
-                                }
-                            }
+
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -353,24 +354,7 @@ Qaterial.Dialog {
                                 }
                             }
 
-                            RowLayout {
-                                width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("Reset assets configuration")
-                                }
-                                DexButton {
-                                    text: qsTr("Reset")
-                                    implicitHeight: 37
-                                    onClicked: {
-                                        restart_modal.open()
-                                        restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
-                                    }
-                                }
-                            }
+
 
                             RowLayout {
                                 width: parent.width-30
@@ -385,6 +369,32 @@ Qaterial.Dialog {
                                     text: qsTr("Delete Wallet")
                                     implicitHeight: 37
                                     onClicked: delete_wallet_modal.open()
+                                }
+                            }
+                        }
+                    }
+                    Item {
+                        Column {
+                            ModalLoader {
+                                id: delete_wallet_modal
+                                sourceComponent: DeleteWalletModal {}
+                            }
+                            anchors.fill: parent
+                            topPadding: 10
+                            spacing: 15
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Disclaimer and ToS")
+                                }
+                                DexButton {
+                                    text: qsTr("Show")
+                                    implicitHeight: 37
+                                    onClicked: eula_modal.open()
                                 }
                             }
                         }
