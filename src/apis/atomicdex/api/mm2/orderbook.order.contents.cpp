@@ -51,6 +51,10 @@ namespace mm2::api
             boost::trim_right_if(contents.price, boost::is_any_of("0"));
             contents.price = contents.price;
         }
+        j.at("base_max_volume").get_to(contents.base_max_volume);
+        j.at("base_min_volume").get_to(contents.base_min_volume);
+        j.at("rel_max_volume").get_to(contents.rel_max_volume);
+        j.at("rel_min_volume").get_to(contents.rel_min_volume);
         contents.maxvolume = atomic_dex::utils::adjust_precision(contents.maxvolume);
         t_float_50 total_f = safe_float(contents.price) * safe_float(contents.maxvolume);
         contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
