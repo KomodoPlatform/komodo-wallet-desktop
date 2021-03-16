@@ -135,12 +135,12 @@ Qaterial.Dialog {
                     anchors.fill: parent
                     currentIndex: menu_list.currentIndex
                     Item {
+                        anchors.margins: 10
                         ComboBoxWithTitle {
                             id: combo_fiat
                             title: qsTr("Fiat")
-                            Layout.fillWidth: true
-                            Layout.leftMargin: 30
-                            Layout.rightMargin: Layout.leftMargin
+                            width: parent.width-30
+                            anchors.horizontalCenter: parent.horizontalCenter
 
                             model: fiats
 
