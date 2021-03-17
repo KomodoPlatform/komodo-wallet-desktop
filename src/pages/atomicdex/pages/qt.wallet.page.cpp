@@ -152,7 +152,7 @@ namespace atomic_dex
             {"tx_state", "InProgress"},
             {"fiat_amount", "0.00"},
             {"trend_7d", QJsonArray()},
-            {"fee_ticker", "KMD"},
+            {"fee_ticker", DEX_PRIMARY_COIN},
             {"blocks_left", 1},
             {"transactions_left", 0},
             {"current_block", 1},
