@@ -379,6 +379,8 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_app_support_url", QString{DEX_SUPPORT_URL});
     engine.rootContext()->setContextProperty("atomic_app_discord_url", QString{DEX_DISCORD_URL});
     engine.rootContext()->setContextProperty("atomic_app_twitter_url", QString{DEX_TWITTER_URL});
+    engine.rootContext()->setContextProperty("atomic_app_primary_coin", QString{DEX_PRIMARY_COIN});
+    engine.rootContext()->setContextProperty("atomic_app_secondary_coin", QString{DEX_SECOND_PRIMARY_COIN});
     engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
     engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
