@@ -1015,7 +1015,7 @@ namespace atomic_dex
         {
             if (base == rel || base.isEmpty() || rel.isEmpty())
             {
-                set_current_orderbook("KMD", "BTC");
+                set_current_orderbook(DEX_PRIMARY_COIN, DEX_SECOND_PRIMARY_COIN);
             }
             else
             {
