@@ -101,7 +101,15 @@ namespace atomic_dex
 
         if (m_with_balance)
         {
-            if (this->sourceModel()->data(idx, portfolio_model::BalanceRole).toString().toFloat() == 0.f)
+            if (this->sourceModel()->data(idx, portfolio_model::BalanceRole).toString().toFloat() == 0.F)
+            {
+                return false;
+            }
+        }
+        
+        if (m_with_fiat_balance)
+        {
+            if (this->sourceModel()->data(idx, portfolio_model::MainCurrencyBalanceRole).toFloat() == 0.F)
             {
                 return false;
             }
@@ -176,5 +184,15 @@ namespace atomic_dex
             m_with_balance = value;
             this->invalidateFilter();
         }
+    }
+    
+    bool portfolio_proxy_model::get_with_fiat_balance() const noexcept
+    {
+        return m_with_fiat_balance;
+    }
+    
+    void portfolio_proxy_model::set_with_fiat_balance(bool value) noexcept
+    {
+        m_with_fiat_balance = value;
     }
 } // namespace atomic_dex

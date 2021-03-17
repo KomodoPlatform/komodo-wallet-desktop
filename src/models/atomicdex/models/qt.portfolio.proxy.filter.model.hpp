@@ -27,11 +27,12 @@ namespace atomic_dex
     class portfolio_proxy_model final : public QSortFilterProxyModel
     {
         Q_OBJECT
+        
         QString m_excluded_coin{""};
         bool    am_i_a_market_selector{false};
-
-        // Tells if the proxy should filter only coins with a balance over than 0.
-        bool                     m_with_balance{false};
+        
+        bool                     m_with_balance{false};      // Tells if the proxy should filter only coins with a balance over than 0.
+        bool                     m_with_fiat_balance{false}; // Tells if the proxy should filter only coins with a fiat equivalent over than 0.
         ag::ecs::system_manager& m_system_mgr;
 
       public:
@@ -40,37 +41,33 @@ namespace atomic_dex
 
         //! Destructor
         ~portfolio_proxy_model() noexcept final = default;
+    
+        void set_excluded_coin(const QString& ticker);
+        void is_a_market_selector(bool is_market_selector) noexcept;
+        void reset();
 
-        //////// QML API
-        ////////////////
-
+        // QML API
         Q_INVOKABLE void sort_by_name(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
         Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
 
+        // QML API Properties
       private:
         Q_PROPERTY(bool with_balance WRITE set_with_balance READ get_with_balance NOTIFY with_balanceChanged)
         [[nodiscard]] bool get_with_balance() const noexcept;
         void               set_with_balance(bool value) noexcept;
-
+        
+        Q_PROPERTY(bool with_fiat_balance WRITE set_with_fiat_balance READ get_with_fiat_balance NOTIFY with_fiat_balanceChanged)
+        [[nodiscard]] bool get_with_fiat_balance() const noexcept;
+        void               set_with_fiat_balance(bool value) noexcept;
       signals:
         void with_balanceChanged();
-
-        ////////////////
-
-      public:
-        void set_excluded_coin(const QString& ticker);
-        void is_a_market_selector(bool is_market_selector) noexcept;
-        void reset();
+        void with_fiat_balanceChanged();
 
       protected:
-        //////// QSortFilterProxyModel functions
-        ////////////////////////////////////////
-
+        // QSortFilterProxyModel functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
         [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
-
-        ////////////////////////////////////////
     };
 } // namespace atomic_dex

@@ -40,6 +40,7 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(portfolio_proxy_model* portfolio_proxy_mdl READ get_portfolio_proxy_mdl NOTIFY portfolioProxyChanged);
+        Q_PROPERTY(portfolio_proxy_model* pie_chart_proxy_mdl READ get_pie_char_proxy_mdl  NOTIFY pieChartProxyMdlChanged);
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
 
       public:
@@ -100,12 +101,14 @@ namespace atomic_dex
 
         //! Properties
         [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
+        [[nodiscard]] portfolio_proxy_model* get_pie_char_proxy_mdl() const noexcept;
         [[nodiscard]] int                    get_length() const noexcept;
 
         void reset();
 
       signals:
         void portfolioProxyChanged();
+        void pieChartProxyMdlChanged();
         void lengthChanged();
         void portfolioItemDataChanged();
 
@@ -118,6 +121,7 @@ namespace atomic_dex
 
         //! Properties
         portfolio_proxy_model* m_model_proxy;
+        portfolio_proxy_model* m_pie_chart_proxy_model;
         //! Data holders
         t_portfolio_datas m_model_data;
         t_ticker_registry m_ticker_registry;
