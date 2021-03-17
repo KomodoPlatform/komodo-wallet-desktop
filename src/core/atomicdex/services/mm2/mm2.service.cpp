@@ -18,10 +18,10 @@
 #include <unordered_set>
 
 //! Project Headers
+#include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
-#include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -486,12 +486,12 @@ namespace atomic_dex
         nlohmann::json btc_kmd_batch = nlohmann::json::array();
         if (first_time)
         {
-            coin_config        coin_info = get_coin_info("BTC");
+            coin_config        coin_info = get_coin_info(g_second_primary_dex_coin);
             t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
             nlohmann::json     j = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(j, request);
             btc_kmd_batch.push_back(j);
-            coin_info = get_coin_info("KMD");
+            coin_info = get_coin_info(g_primary_dex_coin);
             t_electrum_request request_kmd{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
             j = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(j, request_kmd);
@@ -504,7 +504,7 @@ namespace atomic_dex
 
         for (const auto& ticker: tickers)
         {
-            if (ticker == "BTC" || ticker == "KMD")
+            if (ticker == g_primary_dex_coin || ticker == g_second_primary_dex_coin)
                 continue;
             copy_tickers.push_back(ticker);
             coin_config coin_info = get_coin_info(ticker);
@@ -582,7 +582,7 @@ namespace atomic_dex
 
                             if (not tickers.empty())
                             {
-                                if (tickers == default_coins)
+                                if (tickers == g_default_coins)
                                 {
                                     this->dispatcher_.trigger<default_coins_enabled>();
                                 }
@@ -603,7 +603,7 @@ namespace atomic_dex
 
         if (not btc_kmd_batch.empty() && first_time)
         {
-            functor(btc_kmd_batch, default_coins);
+            functor(btc_kmd_batch, g_default_coins);
         }
 
         if (not batch_array.empty())
@@ -887,7 +887,7 @@ namespace atomic_dex
     mm2_service::get_tx(t_mm2_ec& ec) const noexcept
     {
         const auto& ticker = get_current_ticker();
-        //SPDLOG_DEBUG("asking history of ticker: {}", ticker);
+        // SPDLOG_DEBUG("asking history of ticker: {}", ticker);
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
         const auto coin_type                 = get_coin_info(ticker).coin_type;
         const auto it = !(coin_type == CoinType::ERC20) ? underlying_tx_history_map->find("result") : underlying_tx_history_map->find(ticker);
@@ -1028,7 +1028,7 @@ namespace atomic_dex
             //! Compute everything
             m_orders_and_swaps = std::move(result);
 
-            //SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
+            // SPDLOG_INFO("Time elasped for batch_orders_and_swaps: {} seconds", stopwatch);
             this->dispatcher_.trigger<process_swaps_and_orders_finished>(after_manual_reset);
         };
 

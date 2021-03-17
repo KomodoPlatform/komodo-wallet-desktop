@@ -17,8 +17,8 @@
 #pragma once
 
 #include <shared_mutex>
-#include <unordered_set>
 #include <thread>
+#include <unordered_set>
 
 //! Deps
 #include <antara/gaming/ecs/system.hpp>
@@ -28,14 +28,15 @@
 #include <reproc++/reproc.hpp>
 
 //! Project Headers
+#include "atomicdex/api/mm2/mm2.constants.hpp"
+#include "atomicdex/api/mm2/mm2.error.code.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.balance.hpp"
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
-#include "atomicdex/api/mm2/mm2.constants.hpp"
-#include "atomicdex/api/mm2/mm2.error.code.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/data/dex/orders.and.swaps.data.hpp"
 #include "atomicdex/data/wallet/tx.data.hpp"
 #include "atomicdex/events/events.hpp"
@@ -81,10 +82,10 @@ namespace atomic_dex
         reproc::process m_mm2_instance;
 
         //! Current ticker
-        t_synchronized_ticker m_current_ticker{"KMD"};
+        t_synchronized_ticker m_current_ticker{g_primary_dex_coin};
 
         //! Current orderbook
-        t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair("KMD", "BTC")};
+        t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair(g_primary_dex_coin, g_second_primary_dex_coin)};
         t_synchronized_max_taker_vol m_synchronized_max_taker_vol;
 
         //! Timers
