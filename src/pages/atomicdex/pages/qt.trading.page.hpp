@@ -29,9 +29,9 @@
 #include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/models/qt.candlestick.charts.model.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
-#include "atomicdex/widgets/dex/qt.market.pairs.hpp"
-#include "atomicdex/widgets/dex/qt.orderbook.hpp"
-#include "atomicdex/widgets/dex/qt.orders.widget.hpp"
+#include "widgets/dex/qt.market.pairs.hpp"
+#include "widgets/dex/qt.orderbook.hpp"
+#include "widgets/dex/qt.orders.widget.hpp"
 
 namespace atomic_dex
 {

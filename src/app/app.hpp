@@ -50,7 +50,6 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
-#include "atomicdex/widgets/dex/qt.orderbook.hpp"
 
 namespace ag = antara::gaming;
 

@@ -20,7 +20,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "atomicdex/widgets/dex/qt.orders.widget.hpp"
+#include "qt.orders.widget.hpp"
 
 //! Constructor / Destructor
 namespace atomic_dex

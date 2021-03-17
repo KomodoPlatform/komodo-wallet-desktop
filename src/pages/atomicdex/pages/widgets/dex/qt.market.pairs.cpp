@@ -18,7 +18,7 @@
 #include "atomicdex/pch.hpp"
 
 //! Project Headers
-#include "atomicdex/widgets/dex/qt.market.pairs.hpp"
+#include "qt.market.pairs.hpp"
 
 namespace atomic_dex
 {
