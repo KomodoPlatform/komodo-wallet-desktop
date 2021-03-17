@@ -1687,18 +1687,6 @@
     ],
     "type": "QRC-20"
   },
-  "ZAT": {
-    "coin": "ZAT",
-    "name": "Zatgo",
-    "coingecko_id": "zatgo",
-    "coinpaprika_id": "zat-zatgo",
-    "active": false,
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://explorer.qtum.org/"
-    ],
-    "type": "QRC-20"
-  },
   "QC": {
     "coin": "QC",
     "name": "Qcash",
@@ -1841,23 +1829,6 @@
   "name": "Bancor",
   "coinpaprika_id": "bnt-bancor",
   "coingecko_id": "bancor",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "BTRS": {
-  "coin": "BTRS",
-  "name": "BitBall Treasure",
-  "coinpaprika_id": "btrs-bitball-treasure",
-  "coingecko_id": "bitball-treasure",
   "eth_nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
@@ -2108,23 +2079,6 @@
   "active": false,
   "currently_enabled": false
  },
- "EUM": {
-  "coin": "EUM",
-  "name": "Elitium",
-  "coinpaprika_id": "eum-elitium",
-  "coingecko_id": "elitium",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "EURS": {
   "coin": "EURS",
   "name": "STASIS EURS Token",
@@ -2244,23 +2198,6 @@
   "active": false,
   "currently_enabled": false
  },
- "JWL": {
-  "coin": "JWL",
-  "name": "Jewel",
-  "coinpaprika_id": "jwl-jewel",
-  "coingecko_id": "jewel",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "KNC": {
   "coin": "KNC",
   "name": "KyberNetwork",
@@ -2363,23 +2300,6 @@
   "active": false,
   "currently_enabled": false
  },
- "MCO": {
-  "coin": "MCO",
-  "name": "MCO",
-  "coinpaprika_id": "mco-mco",
-  "coingecko_id": "test-coin",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "MKR": {
   "coin": "MKR",
   "name": "Maker",
@@ -2433,7 +2353,7 @@
  },
  "OCEAN": {
   "coin": "OCEAN",
-  "name": "Ocean Token",
+  "name": "Ocean Protocol",
   "coinpaprika_id": "ocean-ocean-protocol",
   "coingecko_id": "ocean-protocol",
   "eth_nodes": [
