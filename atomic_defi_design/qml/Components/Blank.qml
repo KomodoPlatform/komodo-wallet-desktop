@@ -11,8 +11,8 @@ import "../Constants/" as Constants
 
 Item {
     anchors.margins: 5
-    readonly property string left_ticker: "KMD"
-    readonly property string right_ticker: "BTC"
+    readonly property string left_ticker: atomic_app_primary_coin
+    readonly property string right_ticker: atomic_app_secondary_coin
 
     DefaultSplitView {
         anchors.fill: parent

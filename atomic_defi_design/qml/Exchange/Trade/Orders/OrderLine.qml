@@ -82,8 +82,8 @@ AnimatedRectangle {
 
         DefaultImage {
             id: base_icon
-            source: General.coinIcon(!details ? "KMD" :
-                                                details.base_coin?? "KMD")
+            source: General.coinIcon(!details ? atomic_app_primary_coin :
+                                                details.base_coin?? atomic_app_primary_coin)
             Layout.preferredWidth: Style.textSize1
             Layout.preferredHeight: Style.textSize1
             Layout.alignment: Qt.AlignVCenter
@@ -109,9 +109,9 @@ AnimatedRectangle {
                 height: 50
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                top_arrow_ticker: !details ? "KMD" :
+                top_arrow_ticker: !details ? atomic_app_primary_coin :
                                              details.base_coin?? ""
-                bottom_arrow_ticker: !details ? "KMD" :
+                bottom_arrow_ticker: !details ? atomic_app_primary_coin :
                                                 details.rel_coin?? ""
             }
         }
@@ -130,8 +130,8 @@ AnimatedRectangle {
         }
         DefaultImage {
             id: rel_icon
-            source: General.coinIcon(!details ? "KMD" :
-                                                details.rel_coin?? "BTC")
+            source: General.coinIcon(!details ? atomic_app_primary_coin :
+                                                details.rel_coin?? atomic_app_secondary_coin)
 
             width: base_icon.width
             Layout.preferredWidth: Style.textSize1

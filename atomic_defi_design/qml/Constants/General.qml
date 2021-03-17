@@ -65,8 +65,8 @@ QtObject {
 
 
     property bool initialized_orderbook_pair: false
-    readonly property string default_base: "KMD"
-    readonly property string default_rel: "BTC"
+    readonly property string default_base: atomic_app_primary_coin
+    readonly property string default_rel: atomic_app_secondary_coin
 
     function timestampToDouble(timestamp) {
         return (new Date(timestamp)).getTime()
@@ -300,7 +300,7 @@ QtObject {
         if(prevent_coin_disabling.running)
             return false
 
-        if(ticker === "KMD" || ticker === "BTC") return false
+        if(ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
         else if(ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
         else if(ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
 

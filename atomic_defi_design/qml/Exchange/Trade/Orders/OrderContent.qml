@@ -17,7 +17,7 @@ Item {
     // Base Icon
     DefaultImage {
         id: base_icon
-        source: General.coinIcon(!details ? "KMD" :
+        source: General.coinIcon(!details ? atomic_app_primary_coin :
                                             details.base_coin)
         width: in_modal ? Style.textSize5 : Style.textSize3
 
@@ -28,7 +28,7 @@ Item {
     // Rel Icon
     DefaultImage {
         id: rel_icon
-        source: General.coinIcon(!details ? "KMD" :
+        source: General.coinIcon(!details ? atomic_app_primary_coin :
                                             details.rel_coin)
         width: base_icon.width
         anchors.right: parent.right
@@ -52,9 +52,9 @@ Item {
     SwapIcon {
         anchors.verticalCenter: base_icon.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        top_arrow_ticker: !details ? "KMD" :
+        top_arrow_ticker: !details ? atomic_app_primary_coin :
                                      details.base_coin
-        bottom_arrow_ticker: !details ? "KMD" :
+        bottom_arrow_ticker: !details ? atomic_app_primary_coin :
                                         details.rel_coin
     }
 

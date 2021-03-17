@@ -48,7 +48,7 @@ InnerBackground {
             anchors.centerIn: parent
         }
 
-        Component.onCompleted: try{loadChart(left_ticker?? "KMD", right_ticker?? "BTC")}catch(e){}
+        Component.onCompleted: try{loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin)}catch(e){}
 
         Connections {
             target: app
@@ -58,7 +58,7 @@ InnerBackground {
         }
 
         readonly property string theme: Style.dark_theme ? "dark" : "light"
-        onThemeChanged:  try{loadChart(left_ticker?? "KMD", right_ticker?? "BTC", true)}catch(e){}
+        onThemeChanged:  try{loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin, true)}catch(e){}
 
         property string chart_base
         property string chart_rel
