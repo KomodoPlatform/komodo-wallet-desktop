@@ -312,15 +312,16 @@ handle_settings(QSettings& settings)
     SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
     create_settings_functor("CurrentTheme", QString("dark.json"));
     create_settings_functor("ThemePath", QString::fromStdString(atomic_dex::utils::get_themes_path().string()));
+    create_settings_functor("SecondSecuritySending", QVariant(false));
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
 #else
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
 #endif
-    settings.beginGroup("BestOrders");
+    /*settings.beginGroup("BestOrders");
     create_settings_functor("show_affordable_offers", QVariant(true));
-    settings.endGroup();
+    settings.endGroup();*/
 }
 
 inline int
