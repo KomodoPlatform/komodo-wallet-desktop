@@ -183,6 +183,9 @@ Item {
 
             DefaultBusyIndicator {
                 anchors.centerIn: parent
+                width: 60
+                height: 20
+                running: !loader.visible
             }
         }
     }

@@ -36,6 +36,7 @@ BasicModal {
                         details.is_swap &&
                         details.order_status !== "successful" &&
                         details.order_status !== "failed"
+            running: visible
             Layout.alignment: Qt.AlignHCenter
         }
 

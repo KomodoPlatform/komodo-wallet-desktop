@@ -217,7 +217,7 @@ Item {
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Reset assets configuration")
                 onClicked: {
-                    restarté_modal.open()
+                    restart_modal.open()
                     restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                 }
             }

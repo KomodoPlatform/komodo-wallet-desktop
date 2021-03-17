@@ -51,6 +51,7 @@ AnimatedRectangle {
             DefaultBusyIndicator {
                 Layout.alignment: Qt.AlignVCenter
                 visible: !isSwapDone(details.order_status)
+                running: !isSwapDone(details.order_status)
                 Layout.preferredWidth: 20
                 Layout.preferredHeight: Layout.preferredWidth
             }
