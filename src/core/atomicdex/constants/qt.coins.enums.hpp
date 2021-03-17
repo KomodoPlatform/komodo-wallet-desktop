@@ -33,11 +33,13 @@ namespace atomic_dex
         {
             QRC20      = 0,
             ERC20      = 1,
-            UTXO       = 2,
-            SmartChain = 3,
-            Disabled   = 4,
-            All        = 5,
-            Size       = 6
+            BEP20      = 2,
+            UTXO       = 3,
+            SmartChain = 4,
+            SLP        = 5,
+            Disabled   = 6,
+            All        = 7,
+            Size       = 8
         };
 
         Q_ENUM(CoinTypeEnum)
