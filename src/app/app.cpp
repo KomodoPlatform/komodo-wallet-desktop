@@ -84,10 +84,12 @@ namespace atomic_dex
     bool
     application::disable_coins(const QStringList& coins)
     {
+        QString     primary_coin   = QString::fromStdString(g_primary_dex_coin);
+        QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
         QStringList coins_copy;
         for (auto&& coin: coins)
         {
-            if (not get_orders()->swap_is_in_progress(coin) && coin != "KMD" && coin != "BTC")
+            if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
                 if (coin == "ETH" || coin == "QTUM")
                 {
@@ -108,9 +110,9 @@ namespace atomic_dex
             coins_std.reserve(coins_copy.size());
             for (auto&& coin: coins_copy)
             {
-                if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_kmd_fully_enabled)
+                if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_primary_coin_fully_enabled)
                 {
-                    system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
+                    system_manager_.get_system<wallet_page>().set_current_ticker(primary_coin);
                 }
                 coins_std.push_back(coin.toStdString());
             }
@@ -172,13 +174,13 @@ namespace atomic_dex
                 const char* ticker_cstr = nullptr;
                 m_portfolio_queue.pop(ticker_cstr);
                 std::string ticker(ticker_cstr);
-                if (ticker == "KMD")
+                if (ticker == g_primary_dex_coin)
                 {
-                    this->m_kmd_fully_enabled = true;
+                    this->m_primary_coin_fully_enabled = true;
                 }
-                if (ticker == "BTC")
+                if (ticker == g_second_primary_dex_coin)
                 {
-                    this->m_btc_fully_enabled = true;
+                    this->m_secondary_coin_fully_enabled = true;
                 }
                 to_init.push_back(ticker);
                 std::free((void*)ticker_cstr);
@@ -187,9 +189,9 @@ namespace atomic_dex
             if (not to_init.empty())
             {
                 system_manager_.get_system<portfolio_page>().initialize_portfolio(to_init);
-                if (m_kmd_fully_enabled && m_btc_fully_enabled)
+                if (m_primary_coin_fully_enabled && m_secondary_coin_fully_enabled)
                 {
-                    if (std::find(to_init.begin(), to_init.end(), "KMD") != to_init.end())
+                    if (std::find(to_init.begin(), to_init.end(), g_primary_dex_coin) != to_init.end())
                     {
                         get_wallet_page()->get_transactions_mdl()->reset();
                         this->dispatcher_.trigger<tx_fetch_finished>();
@@ -407,8 +409,8 @@ namespace atomic_dex
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
         wallet_manager.just_set_wallet_name("");
 
-        this->m_btc_fully_enabled = false;
-        this->m_kmd_fully_enabled = false;
+        this->m_secondary_coin_fully_enabled = false;
+        this->m_primary_coin_fully_enabled = false;
         system_manager_.get_system<qt_wallet_manager>().set_status("None");
         return fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
