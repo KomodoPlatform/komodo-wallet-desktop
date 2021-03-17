@@ -13,7 +13,9 @@ Text {
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap
 
-    onLinkActivated: Qt.openUrlExternally(link)
+    onLinkActivated: {
+        Qt.openUrlExternally(link)
+    }
     linkColor: color
 
     DefaultMouseArea {

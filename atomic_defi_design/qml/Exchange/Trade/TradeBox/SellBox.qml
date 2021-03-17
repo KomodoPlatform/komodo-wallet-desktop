@@ -10,32 +10,41 @@ import "../../../Components"
 import "../../../Constants"
 import "../../../Wallet"
 
-FloatingBackground {
+Item {
     property alias can_submit_trade: form_base.can_submit_trade
     property alias formBase: form_base
-    Layout.preferredHeight: sell_mode? 250 : 45
+    Layout.preferredHeight: sell_mode? 350 : 45
     Behavior on Layout.preferredHeight {
         NumberAnimation {
             duration: 200
         }
     }
-
+    //color: Style.colorTheme
     Layout.fillWidth: true
-    radius: sell_mode? 4 : 3
-    border.color: Style.colorRed
-    //color: Style.colorTheme9
+    //radius: sell_mode? 4 : 3
+    //border.color: Style.colorRed
+    //color: Style.colorTheme6
     opacity: mouse_area.containsMouse? 1 : sell_mode? 1 : .35
 
     Rectangle {
+        visible: false
         width: parent.width
         height: 45
         color: Style.colorRed
-        radius: 2
+        radius: 6
+        Rectangle {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: parent.radius
+            color: Style.colorTheme6
+        }
+
         DefaultText {
             anchors.centerIn: parent
+            anchors.verticalCenterOffset: -2
             text: qsTr("Sell")+" "+left_ticker
             color: Qaterial.Colors.gray200
-            font.pixelSize: Style.textSize2
+            font.pixelSize: Style.textSize1
         }
     }
     OrderForm {
@@ -43,7 +52,7 @@ FloatingBackground {
         y: 45
         width: parent.width-25
         height: parent.height-45
-        clip: true
+        //clip: true
         visible: sell_mode
         border.color: 'transparent'
         color: 'transparent'

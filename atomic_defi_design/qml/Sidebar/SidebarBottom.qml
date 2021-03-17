@@ -11,16 +11,17 @@ ColumnLayout {
     spacing: 0
 
     SidebarLine {
-        dashboard_index: idx_dashboard_settings
-        text_value: qsTr("Settings")
+        dashboard_index: -1
+        text_value: sidebar.expanded? qsTr("Settings") : ""
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true
         separator: false
+        onCheckedChanged: settings_modal.open()
     }
 
     SidebarLine {
         dashboard_index: idx_dashboard_support
-        text_value: qsTr("Support")
+        text_value: sidebar.expanded? qsTr("Support") : ""
         image: General.image_path + "menu-support-white.png"
         Layout.fillWidth: true
         separator: false
@@ -28,7 +29,7 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: idx_dashboard_privacy_mode
-        text_value: qsTr("Privacy")
+        text_value: sidebar.expanded? qsTr("Privacy") : ""
         image: ""
         Layout.fillWidth: true
         separator: false
@@ -37,7 +38,7 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: idx_dashboard_light_ui
-        text_value: qsTr("Light UI")
+        text_value:sidebar.expanded? qsTr("Light UI") : ""
         image: ""
         Layout.fillWidth: true
         separator: false

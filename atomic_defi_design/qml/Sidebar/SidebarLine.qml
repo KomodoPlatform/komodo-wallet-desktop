@@ -68,13 +68,12 @@ Item {
         color: txt.font.weight === Font.Medium ? Style.colorSidebarIconHighlighted : txt.color
     }
 
-    DefaultText {
+    DexLabel {
         id: txt
         anchors.left: parent.left
         anchors.leftMargin: 70
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: Style.textSizeSmall4
-        font.weight: selected ? Font.Medium : Font.Normal
+        font: theme.textType.body1
         color: !section_enabled ? Style.colorTextDisabled :
                 selected ? Style.colorSidebarSelectedText :
                 mouse_area.containsMouse ? Style.colorThemePassiveLight :
@@ -100,6 +99,11 @@ Item {
         width: parent.width
         height: parent.height
         onClicked: function() {
+            if (dashboard_index===-1) {
+                settings_modal.open()
+                return
+            }
+
             if(!section_enabled) return
 
             if(dashboard_index === idx_dashboard_light_ui) {
@@ -115,6 +119,7 @@ Item {
     Separator {
         id: separator
         anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 10
     }
 }
 

@@ -7,4 +7,5 @@ GradientRectangle {
     color: Style.colorRectangle
     border.color: Style.colorBorder
     border.width: 1
+
 }

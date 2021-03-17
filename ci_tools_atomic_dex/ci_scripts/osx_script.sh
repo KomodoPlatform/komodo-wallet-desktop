@@ -6,30 +6,28 @@ brew install autoconf \
             pkgconfig \
             wget \
             nim \
-            cmake \
             ninja \
-            git \
-            boost \
-            gcc \
-            gnu-sed \
-            llvm@9
+            gnu-sed
+
 export CC=clang
 export CXX=clang++
 export MACOSX_DEPLOYMENT_TARGET=10.14
 
 # get curl
-git clone https://github.com/KomodoPlatform/curl.git
-cd curl
-git checkout curl-7_70_0
-./buildconf
-./configure --disable-shared --enable-static --without-libidn2 --without-ssl --without-nghttp2 --disable-ldap --with-darwinssl
-make -j3 install
-cd ../
+#git clone https://github.com/KomodoPlatform/curl.git
+#cd curl
+#git checkout curl-7_70_0
+#./buildconf
+#./configure --disable-shared --enable-static --without-libidn2 --without-ssl --without-nghttp2 --disable-ldap --with-darwinssl
+#make -j3 install
+#cd ../
+
 git clone https://github.com/KomodoPlatform/libwally-core.git
 cd libwally-core
 ./tools/autogen.sh
 ./configure --disable-shared
 sudo make -j3 install
 cd ..
-# get SDKs 
+
+# get SDKs
 git clone https://github.com/KomodoPlatform/MacOSX-SDKs $HOME/sdk

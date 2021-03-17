@@ -39,6 +39,9 @@ Item {
     function openLogsFolder() {
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
+    SettingModal {
+        id: settings_modal
+    }
 
     readonly property var api_wallet_page: API.app.wallet_pg
     readonly property var current_ticker_infos: api_wallet_page.ticker_infos
@@ -47,6 +50,7 @@ Item {
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
+
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
 
@@ -72,7 +76,7 @@ Item {
 
     // Right side
     AnimatedRectangle {
-        color: Style.colorTheme8
+        color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
         height: parent.height
         x: sidebar.width
@@ -179,12 +183,14 @@ Item {
 
             DefaultBusyIndicator {
                 anchors.centerIn: parent
+                running: !loader.visible
             }
         }
     }
 
     // Sidebar, left side
     Sidebar {
+
         id: sidebar
     }
 
@@ -248,6 +254,10 @@ Item {
     ModalLoader {
         id: cex_rates_modal
         sourceComponent: CexInfoModal {}
+    }
+    ModalLoader {
+        id: min_trade_modal
+        sourceComponent: MinTradeModal {}
     }
 
     ModalLoader {

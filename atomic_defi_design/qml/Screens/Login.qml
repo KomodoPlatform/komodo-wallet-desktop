@@ -70,6 +70,7 @@ SetupPage {
             spacing: Style.buttonSpacing
 
             DefaultButton {
+                id: _back
                 text: qsTr("Back")
                 Layout.fillWidth: true
                 onClicked: {
@@ -81,6 +82,7 @@ SetupPage {
             PrimaryButton {
                 id: submit_button
                 Layout.fillWidth: true
+                implicitHeight: _back.implicitHeight
                 text: qsTr("Login")
                 onClicked: trySubmit()
                 enabled: input_password.isValid()

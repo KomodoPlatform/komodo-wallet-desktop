@@ -48,7 +48,7 @@ InnerBackground {
             anchors.centerIn: parent
         }
 
-        Component.onCompleted: loadChart(left_ticker, right_ticker)
+        Component.onCompleted: try{loadChart(left_ticker?? "KMD", right_ticker?? "BTC")}catch(e){}
 
         Connections {
             target: app
@@ -58,7 +58,7 @@ InnerBackground {
         }
 
         readonly property string theme: Style.dark_theme ? "dark" : "light"
-        onThemeChanged: loadChart(left_ticker, right_ticker, true)
+        onThemeChanged:  try{loadChart(left_ticker?? "KMD", right_ticker?? "BTC", true)}catch(e){}
 
         property string chart_base
         property string chart_rel

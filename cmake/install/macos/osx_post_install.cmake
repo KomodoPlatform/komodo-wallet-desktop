@@ -32,15 +32,14 @@ endif ()
 
 if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
     ##-------------------------------------------
-    message(STATUS "Executing macdeployqt to fix dependencies")
-    execute_process(COMMAND ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite
+    message(STATUS "${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -sign-for-notarization=$ENV{MAC_SIGN_IDENTITY}  -verbose=3")
+    execute_process(
+            COMMAND
+            ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -codesign=$ENV{MAC_SIGN_IDENTITY} -timestamp -verbose=1
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE MACDEPLOYQT_RESULT
-            OUTPUT_VARIABLE MACDEPLOYQT_OUTPUT
-            ERROR_VARIABLE MACDEPLOYQT_ERROR)
-    message(STATUS "Result -> ${MACDEPLOYQT_RESULT}")
-    message(STATUS "Output -> ${MACDEPLOYQT_OUTPUT}")
-    message(STATUS "Error -> ${MACDEPLOYQT_ERROR}")
+            ECHO_OUTPUT_VARIABLE
+            ECHO_ERROR_VARIABLE
+            )
     ##-------------------------------------------
 
     ##-------------------------------------------
@@ -49,14 +48,19 @@ if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
     message(STATUS "Executing: [install_name_tool -add_rpath @executable_path/../../../../../../Frameworks ${QTWEBENGINE_BUNDLED_PATH}]")
     execute_process(COMMAND install_name_tool -add_rpath "@executable_path/../../../../../../Frameworks" "${QTWEBENGINE_BUNDLED_PATH}"
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE QTWEBENGINE_FIX_RESULT
-            OUTPUT_VARIABLE QTWEBENGINE_FIX_OUTPUT
-            ERROR_VARIABLE QTWEBENGINE_FIX_ERROR)
+            ECHO_OUTPUT_VARIABLE
+            ECHO_ERROR_VARIABLE)
 
-    message(STATUS "Result -> ${QTWEBENGINE_FIX_RESULT}")
-    message(STATUS "Output -> ${QTWEBENGINE_FIX_OUTPUT}")
-    message(STATUS "Error -> ${QTWEBENGINE_FIX_ERROR}")
-    ##-------------------------------------------
+    execute_process(COMMAND codesign --deep --force -v -s "$ENV{MAC_SIGN_IDENTITY}" -o runtime --timestamp ${PROJECT_APP_PATH}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            ECHO_OUTPUT_VARIABLE
+            ECHO_ERROR_VARIABLE)
+
+    message(STATUS "Fixing QtWebEngineProcess signature codesign --force --verify --verbose --sign \"$ENV{MAC_SIGN_IDENTITY}\" --entitlements ${PROJECT_ROOT_DIR}/cmake/install/macos/QtWebEngineProcess.entitlements --options runtime --timestamp ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess")
+    execute_process(COMMAND codesign --force --verify --verbose --sign "$ENV{MAC_SIGN_IDENTITY}" --entitlements ${PROJECT_ROOT_DIR}/cmake/install/macos/QtWebEngineProcess.entitlements --options runtime --timestamp ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            ECHO_OUTPUT_VARIABLE
+            ECHO_ERROR_VARIABLE)
 
     ##-------------------------------------------
     message(STATUS "Packaging the DMG")
@@ -69,14 +73,8 @@ if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
 
     execute_process(COMMAND ${PACKAGER_PATH} ${DEX_PROJECT_NAME} ${DEX_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/bin/
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE PACKAGER_PATH_RESULT
-            OUTPUT_VARIABLE PACKAGER_PATH_OUTPUT
-            ERROR_VARIABLE PACKAGER_PATH_ERROR)
-
-    message(STATUS "Result -> ${PACKAGER_PATH_RESULT}")
-    message(STATUS "Output -> ${PACKAGER_PATH_OUTPUT}")
-    message(STATUS "Error -> ${PACKAGER_PATH_ERROR}")
-    ##-------------------------------------------
+            ECHO_OUTPUT_VARIABLE
+            ECHO_ERROR_VARIABLE)
 else()
     message(STATUS "dmg already generated - skipping")
 endif ()
@@ -88,7 +86,8 @@ set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.0/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
     message(STATUS "Generating ${DEX_PROJECT_NAME}.7z")
-    execute_process(COMMAND ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app
+    execute_process(COMMAND
+            ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
@@ -98,7 +97,7 @@ endif()
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
 
-execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer
+execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer -s $ENV{MAC_SIGN_IDENTITY}
         WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
