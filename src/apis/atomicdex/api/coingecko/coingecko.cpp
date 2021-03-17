@@ -113,7 +113,7 @@ namespace atomic_dex::coingecko::api
             }
             catch (const std::exception& error)
             {
-                SPDLOG_ERROR("Error when treating coingecko answer: {} - error: {}", cur_json_obj.dump(1), error.what());
+                //SPDLOG_ERROR("Error when treating coingecko answer: {} - error: {}", cur_json_obj.dump(1), error.what());
             }
         }
     }
