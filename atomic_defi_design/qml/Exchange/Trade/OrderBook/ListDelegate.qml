@@ -16,9 +16,8 @@ Item {
         visible: mouse_are.containsMouse
         width: parent.width
         height: parent.height
-        color: Style.colorWhite1
+        color: theme.foregroundColor
         opacity: 0.1
-        anchors.left: parent.left
     }
 
     Rectangle {
@@ -167,7 +166,7 @@ Item {
         visible: !enough_funds_to_pay_min_volume && mouse_are.containsMouse
         color: Style.colorTheme9
         anchors.fill: parent
-        opacity: .8
+        opacity: .3
     }
 
     HorizontalLine {

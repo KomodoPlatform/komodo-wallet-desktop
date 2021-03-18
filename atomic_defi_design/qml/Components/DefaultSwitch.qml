@@ -5,7 +5,7 @@ import "../Constants"
 
 Switch {
     Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light
-    Universal.accent: Style.colorQtThemeAccent
+    Universal.accent: theme.greenColor
     Universal.foreground: Style.colorQtThemeForeground
     Universal.background: Style.colorQtThemeBackground
 

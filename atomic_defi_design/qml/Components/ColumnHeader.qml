@@ -33,7 +33,7 @@ Item {
         anchors.left: icon_at_left ? parent.left : undefined
         anchors.right: icon_at_left ? undefined : parent.right
 
-        color: Qt.lighter(Style.colorWhite4, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+        color: Qt.lighter(theme.accentColor, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
     }
 
 

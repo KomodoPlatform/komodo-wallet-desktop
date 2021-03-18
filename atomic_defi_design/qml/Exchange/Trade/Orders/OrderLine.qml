@@ -7,7 +7,7 @@ import QtGraphicalEffects 1.0
 import "../../../Components"
 import "../../../Constants"
 
-AnimatedRectangle {
+Rectangle {
     property var details
     property alias clickable: mouse_area.enabled
     readonly property bool is_placed_order: !details ? false :
@@ -16,7 +16,7 @@ AnimatedRectangle {
     width: list.model.count>6? list.width-15 : list.width-8
     height: 40
 
-    color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme8)
+    color: mouse_area.containsMouse? theme.hightlightColor : "transparent"
 
     DefaultMouseArea {
         id: mouse_area
