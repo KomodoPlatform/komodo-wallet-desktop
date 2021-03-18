@@ -425,7 +425,7 @@ Rectangle {
         atomic_settings2.sync()
         let current =  atomic_settings2.value("CurrentTheme")
         console.log(current)
-        //load_theme(current.replace(".json",""))
+        load_theme(current.replace(".json",""))
     }
 
 
