@@ -52,6 +52,7 @@ namespace atomic_dex
         //! Trading logic
         Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
         Q_PROPERTY(TradingError last_trading_error READ get_trading_error WRITE set_trading_error NOTIFY tradingErrorChanged)
+        Q_PROPERTY(TradingMode current_trading_mode READ get_current_trading_mode WRITE set_current_trading_mode NOTIFY tradingModeChanged)
         Q_PROPERTY(QString price READ get_price WRITE set_price NOTIFY priceChanged)
         Q_PROPERTY(QString volume READ get_volume WRITE set_volume NOTIFY volumeChanged)
         Q_PROPERTY(QString max_volume READ get_max_volume WRITE set_max_volume NOTIFY maxVolumeChanged)
@@ -109,6 +110,7 @@ namespace atomic_dex
         //! Trading Logic
         MarketMode                             m_market_mode{MarketModeGadget::Sell};
         TradingError                           m_last_trading_error{TradingErrorGadget::None};
+        TradingMode                            m_current_trading_mode{TradingModeGadget::Pro};
         QString                                m_price{"0"};
         QString                                m_volume{"0"};
         QString                                m_max_volume{"0"};
@@ -178,6 +180,8 @@ namespace atomic_dex
         void                       set_market_mode(MarketMode market_mode) noexcept;
         [[nodiscard]] TradingError get_trading_error() const noexcept;
         void                       set_trading_error(TradingError trading_error) noexcept;
+        [[nodiscard]] TradingMode  get_current_trading_mode() const noexcept;
+        void                       set_current_trading_mode(TradingMode trading_mode) noexcept;
         [[nodiscard]] QString      get_price_reversed() const noexcept;
         [[nodiscard]] QString      get_price() const noexcept;
         void                       set_price(QString price) noexcept;
@@ -217,7 +221,6 @@ namespace atomic_dex
         void marketPairsChanged();
         void buySellLastRpcDataChanged();
         void buySellRpcStatusChanged();
-        void multiTickerFeesStatusChanged();
         void preImageRpcStatusChanged();
 
         //! Trading logic
@@ -226,6 +229,7 @@ namespace atomic_dex
         void marketModeChanged();
         void maxVolumeChanged();
         void tradingErrorChanged();
+        void tradingModeChanged();
         void prefferedOrderChanged();
         void totalAmountChanged();
         void baseAmountChanged();
@@ -236,7 +240,6 @@ namespace atomic_dex
         void cexPriceDiffChanged();
         void invalidCexPriceChanged();
         void priceReversedChanged();
-        void multiOrderEnabledChanged();
         void skipTakerChanged();
         void mm2MinTradeVolChanged();
         void minTradeVolChanged();

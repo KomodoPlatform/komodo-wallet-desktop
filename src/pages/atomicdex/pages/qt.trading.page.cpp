@@ -754,6 +754,23 @@ namespace atomic_dex
         }
     }
 
+    TradingMode
+    trading_page::get_current_trading_mode() const noexcept
+    {
+        return m_current_trading_mode;
+    }
+
+    void
+    trading_page::set_current_trading_mode(TradingMode trading_mode) noexcept
+    {
+        if (m_current_trading_mode != trading_mode)
+        {
+            m_current_trading_mode = trading_mode;
+            SPDLOG_INFO("new trading mode: {}", QMetaEnum::fromType<TradingMode>().valueToKey(trading_mode));
+            emit tradingModeChanged();
+        }
+    }
+
     bool
     trading_page::set_pair(bool is_left_side, QString changed_ticker) noexcept
     {

@@ -8,6 +8,24 @@
 
 namespace atomic_dex
 {
+    class ENTT_API TradingModeGadget
+    {
+        Q_GADGET
+
+      public:
+        enum TradingModeEnum
+        {
+            Pro        = 0,
+            Simple     = 1,
+            MultiOrder = 2
+        };
+
+        Q_ENUM(TradingModeEnum)
+
+      private:
+        explicit TradingModeGadget();
+    };
+
     class ENTT_API MarketModeGadget
     {
         Q_GADGET
@@ -53,3 +71,4 @@ namespace atomic_dex
 
 using MarketMode   = atomic_dex::MarketModeGadget::MarketModeEnum;
 using TradingError = atomic_dex::TradingErrorGadget::TradingErrorEnum;
+using TradingMode  = atomic_dex::TradingModeGadget::TradingModeEnum;
