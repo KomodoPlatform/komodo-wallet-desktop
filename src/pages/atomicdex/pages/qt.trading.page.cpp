@@ -637,7 +637,6 @@ namespace atomic_dex
             .then(answer_functor)
             .then(&handle_exception_pplx_task);
     }*/
-
 } // namespace atomic_dex
 
 //! Properties related to trading
