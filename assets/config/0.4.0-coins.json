@@ -1540,6 +1540,38 @@
     "name": "Bitcoin (testnet BTC)",
     "type": "UTXO"
   },
+  "JST": {
+    "coin": "JST",
+    "name": "JST (testnet)",
+    "is_testnet": true,
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "eth_nodes": [
+      "http://eth-ropsten.cipig.net:8645"
+    ],
+    "explorer_url": [
+      "https://ropsten.etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "DEC8": {
+    "coin": "DEC8",
+    "name": "DEC8 (testnet)",
+    "is_testnet": true,
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "eth_nodes": [
+      "http://eth-ropsten.cipig.net:8645"
+    ],
+    "explorer_url": [
+      "https://ropsten.etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "QRC20": {
     "is_testnet": true,
     "active": false,
