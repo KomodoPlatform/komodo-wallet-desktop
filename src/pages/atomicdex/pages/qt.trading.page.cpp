@@ -160,7 +160,7 @@ namespace atomic_dex
         dispatcher_.trigger<gui_leave_trading>();
     }
 
-    void
+    /*void
     trading_page::fetch_additional_fees(const QString& ticker) noexcept
     {
         //! Async start
@@ -186,14 +186,14 @@ namespace atomic_dex
                 auto           trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer, "get_trade_fee");
                 mm2_system.add_get_trade_fee_answer(ticker_std, trade_fee_base_answer);
             }
-            this->set_fetching_multi_ticker_fees_busy(false);
-            get_orders_widget()->determine_multi_ticker_fees(QString::fromStdString(ticker_std), get_market_pairs_mdl());
+            //this->set_fetching_multi_ticker_fees_busy(false);
+            //get_orders_widget()->determine_multi_ticker_fees(QString::fromStdString(ticker_std), get_market_pairs_mdl());
         };
 
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
             .then(&handle_exception_pplx_task);
-    }
+    }*/
 
     void
     trading_page::place_buy_order(const QString& base_nota, const QString& base_confs)
@@ -578,10 +578,10 @@ namespace atomic_dex
     trading_page::on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept
     {
         SPDLOG_INFO("multi ticker enabled {}", evt.ticker.toStdString());
-        this->fetch_additional_fees(evt.ticker);
+        // this->fetch_additional_fees(evt.ticker);
     }
 
-    void
+    /*void
     trading_page::place_multiple_sell_order() noexcept
     {
         nlohmann::json         batch    = nlohmann::json::array();
@@ -636,7 +636,7 @@ namespace atomic_dex
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
             .then(&handle_exception_pplx_task);
-    }
+    }*/
 
 } // namespace atomic_dex
 
@@ -708,10 +708,10 @@ namespace atomic_dex
             this->determine_cex_rates();
             emit priceChanged();
             emit priceReversedChanged();
-            if (this->m_last_trading_error == TradingError::None && m_multi_order_enabled)
+            /*if (this->m_last_trading_error == TradingError::None && m_multi_order_enabled)
             {
-                get_orders_widget()->determine_all_multi_ticker_forms(get_market_pairs_mdl(), m_price, m_total_amount, m_fees.get());
-            }
+                //get_orders_widget()->determine_all_multi_ticker_forms(get_market_pairs_mdl(), m_price, m_total_amount, m_fees.get());
+            }*/
         }
     }
 
@@ -1042,7 +1042,7 @@ namespace atomic_dex
     {
         if (not m_price.isEmpty() && not m_volume.isEmpty())
         {
-            this->set_total_amount(get_orders_widget()->calculate_total_amount(m_price, m_volume));
+            this->set_total_amount(calculate_total_amount(m_price, m_volume));
             // this->determine_fees();
             if (const std::string max_dust_str =
                     ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
@@ -1278,13 +1278,13 @@ namespace atomic_dex
         return QString::fromStdString(utils::format_float(price_diff));
     }
 
-    void
+    /*void
     trading_page::determine_multi_ticker_error_cases([[maybe_unused]] const QString& ticker, QVariantMap fees)
     {
-        auto*        selection_box        = get_market_pairs_mdl()->get_multiple_selection_box();
-        TradingError last_trading_error   = TradingError::None;
-        QString      input_price          = get_orders_widget()->get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerPrice, selection_box);
-        QString      total_receive_amount = get_orders_widget()->get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerReceiveAmount, selection_box);
+        auto*        selection_box      = get_market_pairs_mdl()->get_multiple_selection_box();
+        TradingError last_trading_error = TradingError::None;
+        QString      input_price        = get_orders_widget()->get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerPrice, selection_box);
+        QString total_receive_amount    = get_orders_widget()->get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerReceiveAmount, selection_box);
         if (input_price.isEmpty() || input_price == "0") ///< Price is not set correctly
         {
             last_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
@@ -1301,7 +1301,7 @@ namespace atomic_dex
             }
         }
         get_orders_widget()->set_multi_ticker_data(ticker, portfolio_model::MultiTickerError, static_cast<qint32>(last_trading_error), selection_box);
-    }
+    }*/
 
     bool
     trading_page::get_multi_order_enabled() const noexcept
@@ -1317,7 +1317,7 @@ namespace atomic_dex
             this->m_multi_order_enabled = multi_order_enabled;
             if (m_multi_order_enabled == true)
             {
-                get_orders_widget()->determine_all_multi_ticker_forms(get_market_pairs_mdl(), m_price, m_total_amount, m_fees.get());
+                // get_orders_widget()->determine_all_multi_ticker_forms(get_market_pairs_mdl(), m_price, m_total_amount, m_fees.get());
             }
             else
             {
@@ -1457,5 +1457,17 @@ namespace atomic_dex
     {
         this->set_fees(QVariantMap());
         this->determine_error_cases();
+    }
+} // namespace atomic_dex
+
+namespace atomic_dex
+{
+    QString
+    trading_page::calculate_total_amount(QString price, QString volume) const noexcept
+    {
+        t_float_50 price_f(safe_float(price.toStdString()));
+        t_float_50 volume_f(safe_float(volume.toStdString()));
+        t_float_50 total_amount_f = volume_f * price_f;
+        return QString::fromStdString(atomic_dex::utils::format_float(total_amount_f));
     }
 } // namespace atomic_dex
