@@ -36,6 +36,7 @@
         <file>atomic_defi_design/assets/images/dashboard-copy.svg</file>
         <file>atomic_defi_design/assets/images/dex-logo-sidebar.png</file>
         <file>atomic_defi_design/assets/images/dex-logo-sidebar-dark.png</file>
+        <file>atomic_defi_design/assets/images/logo/dex-logo.png</file>
         <file>atomic_defi_design/assets/images/komodo-icon.png</file>
         <file>atomic_defi_design/assets/images/exchange-exchange.svg</file>
         <file>atomic_defi_design/assets/images/exchange-search.svg</file>
@@ -389,7 +390,6 @@
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrdersPage.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
-        <file>atomic_defi_design/assets/images/logo/dex-logo.png</file>
         <file>atomic_defi_design/qml/Components/DefaultSplitView.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DefaultSweetModal.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabel.qml</file>
