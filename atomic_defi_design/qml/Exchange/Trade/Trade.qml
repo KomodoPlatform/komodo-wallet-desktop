@@ -764,6 +764,35 @@ Item {
                             Item {}
                         }
                     }
+                    ItemBox {
+                        id: _best_order_box2
+                        visible: !isUltraLarge
+                        SplitView.fillWidth: true
+                        SplitView.fillHeight: true
+                        defaultHeight: 250
+                        minimumHeight: 130
+                        //clip: true
+                        //smooth: true
+                        title: "Best Orders"
+                        reloadable: true
+                        onReload: {
+                            API.app.trading_pg.orderbook.refresh_best_orders()
+                        }
+
+                        Behavior on SplitView.preferredWidth {
+                            NumberAnimation {
+                                duration: 100
+                            }
+                        }
+                        BestOrder.List {
+                            clip: !parent.contentVisible
+                            id: best_order_list2
+                            visible: parent.contentVisible
+                            y: 40
+                            width: parent.width
+                            height: parent.height-40
+                        }
+                    }
                 }
             }
         }
