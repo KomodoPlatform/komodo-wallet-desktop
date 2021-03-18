@@ -27,56 +27,6 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
-namespace
-{
-    /*QVariantMap
-    generate_fees_infos(const QString& base, const QString& rel, bool is_max, const QString& total_amount, const atomic_dex::mm2_service& mm2)
-    {
-        //! 1 / 777 * total_amount (if max is true, total_amount will be the balance);
-        const t_float_50 trade_fee_f = mm2.get_trading_fees(base.toStdString(), total_amount.toStdString(), is_max);
-
-        //! Transaction Fees
-        const auto answer   = mm2.get_transaction_fees(base.toStdString());
-        t_float_50 tx_fee_f = 0;
-
-        //! If answer is valid
-        if (!answer.amount.empty())
-        {
-            tx_fee_f = t_float_50(answer.amount) * 2;
-        }
-
-        t_float_50        specific_fees(0);
-        const std::string extra_fees_ticker = mm2.apply_specific_fees(rel.toStdString(), specific_fees);
-
-        //! Write output
-        QVariantMap fees;
-
-        fees["trading_fee"] = QString::fromStdString(atomic_dex::utils::format_float(trade_fee_f));
-
-        //! for BCH <-> ETH, trading_fee_ticker will be BCH
-        fees["trading_fee_ticker"] = base;
-
-        //! Base transaction fees
-        fees["base_transaction_fees"]        = QString::fromStdString(atomic_dex::utils::format_float(tx_fee_f));
-        fees["base_transaction_fees_ticker"] = QString::fromStdString(answer.coin);
-
-        if (not extra_fees_ticker.empty())
-        {
-            fees["rel_transaction_fees"]        = QString::fromStdString(atomic_dex::utils::format_float(specific_fees));
-            fees["rel_transaction_fees_ticker"] = QString::fromStdString(extra_fees_ticker);
-        }
-
-        if (base.toStdString() == answer.coin)
-        {
-            //! It's the same coin for trading_fees and transaction fees let's add a total
-            t_float_50 total_base_fees_f = trade_fee_f + tx_fee_f;
-            fees["total_base_fees"]      = QString::fromStdString(atomic_dex::utils::format_float(total_base_fees_f));
-            fees["total_base_fees_fp"]   = QString::fromStdString(total_base_fees_f.str(50, std::ios_base::fixed));
-        }
-        return fees;
-    }*/
-} // namespace
-
 //! Consttructor / Destructor
 namespace atomic_dex
 {
@@ -159,41 +109,6 @@ namespace atomic_dex
         m_system_manager.get_system<settings_page>().garbage_collect_qml();
         dispatcher_.trigger<gui_leave_trading>();
     }
-
-    /*void
-    trading_page::fetch_additional_fees(const QString& ticker) noexcept
-    {
-        //! Async start
-        this->set_fetching_multi_ticker_fees_busy(true);
-
-        //! Batch preparation
-        nlohmann::json          batch = nlohmann::json::array();
-        t_get_trade_fee_request req_base{.coin = ticker.toStdString()};
-        nlohmann::json          current_request = ::mm2::api::template_request("get_trade_fee");
-        ::mm2::api::to_json(current_request, req_base);
-        batch.push_back(current_request);
-
-        //! System
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
-
-        auto answer_functor = [this, ticker_std = ticker.toStdString()](web::http::http_response resp) {
-            std::string body = TO_STD_STR(resp.extract_string(true).get());
-            if (resp.status_code() == 200)
-            {
-                auto           answers               = nlohmann::json::parse(body);
-                nlohmann::json answer                = answers[0];
-                auto&          mm2_system            = this->m_system_manager.get_system<mm2_service>();
-                auto           trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer, "get_trade_fee");
-                mm2_system.add_get_trade_fee_answer(ticker_std, trade_fee_base_answer);
-            }
-            //this->set_fetching_multi_ticker_fees_busy(false);
-            //get_orders_widget()->determine_multi_ticker_fees(QString::fromStdString(ticker_std), get_market_pairs_mdl());
-        };
-
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
-            .then(answer_functor)
-            .then(&handle_exception_pplx_task);
-    }*/
 
     void
     trading_page::place_buy_order(const QString& base_nota, const QString& base_confs)
@@ -465,14 +380,12 @@ namespace atomic_dex
     trading_page::connect_signals()
     {
         dispatcher_.sink<process_orderbook_finished>().connect<&trading_page::on_process_orderbook_finished_event>(*this);
-        dispatcher_.sink<multi_ticker_enabled>().connect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
     void
     trading_page::disconnect_signals()
     {
         dispatcher_.sink<process_orderbook_finished>().disconnect<&trading_page::on_process_orderbook_finished_event>(*this);
-        dispatcher_.sink<multi_ticker_enabled>().disconnect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
     void
@@ -557,86 +470,6 @@ namespace atomic_dex
         m_rpc_buy_sell_result = rpc_data.toJsonObject();
         emit buySellLastRpcDataChanged();
     }
-
-    bool
-    trading_page::is_fetching_multi_ticker_fees_busy() const noexcept
-    {
-        return m_fetching_multi_ticker_fees_busy.load();
-    }
-
-    void
-    trading_page::set_fetching_multi_ticker_fees_busy(bool status) noexcept
-    {
-        if (m_fetching_multi_ticker_fees_busy != status)
-        {
-            m_fetching_multi_ticker_fees_busy = status;
-            emit multiTickerFeesStatusChanged();
-        }
-    }
-
-    void
-    trading_page::on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept
-    {
-        SPDLOG_INFO("multi ticker enabled {}", evt.ticker.toStdString());
-        // this->fetch_additional_fees(evt.ticker);
-    }
-
-    /*void
-    trading_page::place_multiple_sell_order() noexcept
-    {
-        nlohmann::json         batch    = nlohmann::json::array();
-        portfolio_proxy_model* model    = this->get_market_pairs_mdl()->get_multiple_selection_box();
-        int                    nb_items = model->rowCount();
-        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
-        {
-            QModelIndex idx                  = model->index(cur_idx, 0);
-            bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerCurrentlyEnabled).toBool();
-            std::string ticker               = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString().toStdString();
-            if (multi_ticker_enabled)
-            {
-                QJsonObject obj = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
-                if (not obj.isEmpty())
-                {
-                    nlohmann::json json = nlohmann::json::parse(QJsonDocument(obj).toJson(QJsonDocument::Compact).toStdString());
-                    t_sell_request req{
-                        .base             = json.at("base").get<std::string>(),
-                        .rel              = json.at("rel").get<std::string>(),
-                        .price            = json.at("price").get<std::string>(),
-                        .volume           = json.at("volume").get<std::string>(),
-                        .is_created_order = json.at("is_created_order").get<bool>(),
-                        .price_denom      = "",
-                        .price_numer      = "",
-                        .rel_nota         = "",
-                        .rel_confs        = 0};
-                    nlohmann::json sell_request = ::mm2::api::template_request("sell");
-                    ::mm2::api::to_json(sell_request, req);
-                    batch.push_back(sell_request);
-                }
-                else
-                {
-                    SPDLOG_ERROR("empty json send from the front end for ticker: {} - ignoring", ticker);
-                }
-            }
-        }
-
-        auto& mm2_system     = m_system_manager.get_system<mm2_service>();
-        auto  answer_functor = [this](web::http::http_response resp) {
-            std::string body = TO_STD_STR(resp.extract_string(true).get());
-            if (resp.status_code() == 200)
-            {
-                auto answers = nlohmann::json::parse(body);
-                this->clear_forms();
-            }
-            else
-            {
-                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
-            }
-        };
-
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
-            .then(answer_functor)
-            .then(&handle_exception_pplx_task);
-    }*/
 } // namespace atomic_dex
 
 //! Properties related to trading
@@ -707,10 +540,6 @@ namespace atomic_dex
             this->determine_cex_rates();
             emit priceChanged();
             emit priceReversedChanged();
-            /*if (this->m_last_trading_error == TradingError::None && m_multi_order_enabled)
-            {
-                //get_orders_widget()->determine_all_multi_ticker_forms(get_market_pairs_mdl(), m_price, m_total_amount, m_fees.get());
-            }*/
         }
     }
 
@@ -724,7 +553,6 @@ namespace atomic_dex
         this->set_max_volume("0");
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
-        this->set_multi_order_enabled(false);
         this->m_preffered_order = std::nullopt;
         this->m_fees            = QVariantMap();
         this->m_cex_price       = "0";
@@ -1275,58 +1103,6 @@ namespace atomic_dex
                                     : t_float_50(100) * (t_float_50(1) - safe_float(m_price.toStdString()) / safe_float(m_cex_price.toStdString())) *
                                           (m_market_mode == MarketMode::Sell ? t_float_50(1) : t_float_50(-1));
         return QString::fromStdString(utils::format_float(price_diff));
-    }
-
-    /*void
-    trading_page::determine_multi_ticker_error_cases([[maybe_unused]] const QString& ticker, QVariantMap fees)
-    {
-        auto*        selection_box      = get_market_pairs_mdl()->get_multiple_selection_box();
-        TradingError last_trading_error = TradingError::None;
-        QString      input_price        = get_orders_widget()->get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerPrice, selection_box);
-        QString total_receive_amount    = get_orders_widget()->get_multi_ticker_data<QString>(ticker, portfolio_model::MultiTickerReceiveAmount, selection_box);
-        if (input_price.isEmpty() || input_price == "0") ///< Price is not set correctly
-        {
-            last_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
-        }
-        else if (safe_float(total_receive_amount.toStdString()) < utils::minimal_trade_amount())
-        {
-            last_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
-        }
-        else
-        {
-            if (!m_fees.get().empty())
-            {
-                last_trading_error = generate_fees_error(fees, get_max_balance_without_dust());
-            }
-        }
-        get_orders_widget()->set_multi_ticker_data(ticker, portfolio_model::MultiTickerError, static_cast<qint32>(last_trading_error), selection_box);
-    }*/
-
-    bool
-    trading_page::get_multi_order_enabled() const noexcept
-    {
-        return m_multi_order_enabled;
-    }
-
-    void
-    trading_page::set_multi_order_enabled(bool multi_order_enabled) noexcept
-    {
-        if (m_multi_order_enabled != multi_order_enabled)
-        {
-            this->m_multi_order_enabled = multi_order_enabled;
-            if (m_multi_order_enabled == true)
-            {
-                // get_orders_widget()->determine_all_multi_ticker_forms(get_market_pairs_mdl(), m_price, m_total_amount, m_fees.get());
-            }
-            else
-            {
-                SPDLOG_INFO("Reset multi order for the multi order model");
-                const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
-                auto       model = this->get_market_pairs_mdl()->get_multiple_order_coins();
-                model->reset();
-            }
-            emit multiOrderEnabledChanged();
-        }
     }
 
     t_float_50
