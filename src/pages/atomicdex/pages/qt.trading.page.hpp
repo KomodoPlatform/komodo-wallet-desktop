@@ -133,6 +133,8 @@ namespace atomic_dex
         [[nodiscard]] t_float_50   get_max_balance_without_dust(std::optional<QString> trade_with = std::nullopt) const noexcept;
         [[nodiscard]] TradingError generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const noexcept;
 
+        QString calculate_total_amount(QString price, QString volume) const noexcept;
+
       public:
         //! Constructor
         explicit trading_page(
@@ -163,8 +165,8 @@ namespace atomic_dex
         Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
         Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "");
 
-        Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
-        Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
+        // Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
+        // Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
 
         Q_INVOKABLE void reset_order() noexcept;
 
@@ -217,10 +219,7 @@ namespace atomic_dex
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
         void               set_fetching_multi_ticker_fees_busy(bool status) noexcept;
-        void               determine_multi_ticker_fees(const QString& ticker);
-        void               determine_multi_ticker_total_amount(const QString& ticker, const QString& input_price, bool is_enabled);
         void               determine_multi_ticker_error_cases(const QString& ticker, QVariantMap fees);
-        void               determine_all_multi_ticker_forms() noexcept;
 
         [[nodiscard]] QVariant get_buy_sell_last_rpc_data() const noexcept;
         void                   set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;

@@ -18,8 +18,11 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
+#include "../../qt.settings.page.hpp"
+#include "../../qt.trading.page.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
 #include "qt.orders.widget.hpp"
 
 //! Constructor / Destructor

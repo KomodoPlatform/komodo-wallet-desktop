@@ -87,17 +87,19 @@ namespace atomic_dex
         QString     primary_coin   = QString::fromStdString(g_primary_dex_coin);
         QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
         QStringList coins_copy;
+
         for (auto&& coin: coins)
         {
+            bool has_parent_fees = system_manager_.get_system<mm2_service>().get_coin_info(coin.toStdString()).has_parent_fees_ticker;
             if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
-                if (coin == "ETH" || coin == "QTUM")
+                if (has_parent_fees)
                 {
-                    coins_copy.push_back(coin);
+                    coins_copy.push_front(coin);
                 }
                 else
                 {
-                    coins_copy.push_front(coin);
+                    coins_copy.push_back(coin);
                 }
             }
         }
