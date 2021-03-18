@@ -48,8 +48,6 @@ namespace atomic_dex
         Q_PROPERTY(QVariant buy_sell_last_rpc_data READ get_buy_sell_last_rpc_data WRITE set_buy_sell_last_rpc_data NOTIFY buySellLastRpcDataChanged)
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
         Q_PROPERTY(bool preimage_rpc_busy READ is_preimage_busy WRITE set_preimage_busy NOTIFY preImageRpcStatusChanged)
-        // Q_PROPERTY(bool fetching_multi_ticker_fees_busy READ is_fetching_multi_ticker_fees_busy WRITE set_fetching_multi_ticker_fees_busy NOTIFY
-        //               multiTickerFeesStatusChanged)
 
         //! Trading logic
         Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
@@ -69,7 +67,6 @@ namespace atomic_dex
         Q_PROPERTY(QString mm2_min_trade_vol READ get_mm2_min_trade_vol NOTIFY mm2MinTradeVolChanged)
         Q_PROPERTY(QString min_trade_vol READ get_min_trade_vol WRITE set_min_trade_vol NOTIFY minTradeVolChanged)
         Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
-        // Q_PROPERTY(bool multi_order_enabled READ get_multi_order_enabled WRITE set_multi_order_enabled NOTIFY multiOrderEnabledChanged)
         Q_PROPERTY(bool skip_taker READ get_skip_taker WRITE set_skip_taker NOTIFY skipTakerChanged)
 
 
@@ -106,7 +103,6 @@ namespace atomic_dex
         t_models_actions         m_models_actions;
         t_actions_queue          m_actions_queue{g_max_actions_size};
         std::atomic_bool         m_rpc_buy_sell_busy{false};
-        std::atomic_bool         m_fetching_multi_ticker_fees_busy{false};
         std::atomic_bool         m_rpc_preimage_busy{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
 
@@ -121,8 +117,7 @@ namespace atomic_dex
         QString                                m_minimal_trading_amount{QString::fromStdString(atomic_dex::utils::minimal_trade_amount_str())};
         std::optional<nlohmann::json>          m_preffered_order;
         boost::synchronized_value<QVariantMap> m_fees;
-        // bool                                   m_multi_order_enabled{false};
-        bool m_skip_taker{false};
+        bool                                   m_skip_taker{false};
 
         //! Private function
         void                       clear_forms() noexcept;
@@ -209,22 +204,11 @@ namespace atomic_dex
         void                       set_skip_taker(bool skip_taker) noexcept;
         [[nodiscard]] bool         is_preimage_busy() const noexcept;
         void                       set_preimage_busy(bool status) noexcept;
-
-        //! For multi ticker part
-        //[[nodiscard]] bool get_multi_order_enabled() const noexcept;
-        // void               set_multi_order_enabled(bool multi_order_enabled) noexcept;
-        //[[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
-        // void               set_fetching_multi_ticker_fees_busy(bool status) noexcept;
-        // void               determine_multi_ticker_error_cases(const QString& ticker, QVariantMap fees);
-        // Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
-        // Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
-
-        [[nodiscard]] QVariant get_buy_sell_last_rpc_data() const noexcept;
-        void                   set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;
+        [[nodiscard]] QVariant     get_buy_sell_last_rpc_data() const noexcept;
+        void                       set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept;
-        // void on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept;
 
       signals:
         void orderbookChanged();
