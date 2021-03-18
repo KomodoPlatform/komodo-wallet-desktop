@@ -85,9 +85,9 @@ namespace atomic_dex::utils
     {
         fs::path appdata_path;
 #if defined(_WIN32) || defined(WIN32)
-        appdata_path = fs::path(std::getenv("APPDATA")) / "atomic_qt";
+        appdata_path = fs::path(std::getenv("APPDATA")) / std::string(DEX_COMMON_DATA_FOLDER);
 #else
-        appdata_path = fs::path(std::getenv("HOME")) / ".atomic_qt";
+        appdata_path = fs::path(std::getenv("HOME")) / ("." + std::string(DEX_COMMON_DATA_FOLDER));
 #endif
         return appdata_path;
     }
