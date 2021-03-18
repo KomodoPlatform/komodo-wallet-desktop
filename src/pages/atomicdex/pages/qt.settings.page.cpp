@@ -16,8 +16,8 @@
 
 //! QT
 #include <QDebug>
-#include <QLocale>
 #include <QJsonDocument>
+#include <QLocale>
 
 //! PCH
 #include "atomicdex/pch.hpp"
@@ -490,6 +490,7 @@ namespace atomic_dex
         const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name + ".json"s;
         const fs::path    wallet_cfg_path{utils::get_atomic_dex_config_folder() / wallet_cfg_file};
         const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+        const fs::path    ini_file_path  = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
         const auto        functor_remove = [](auto&& path_to_remove) {
             if (fs::exists(path_to_remove))
             {
@@ -508,6 +509,7 @@ namespace atomic_dex
 
         functor_remove(std::move(wallet_cfg_path));
         functor_remove(std::move(mm2_coins_file_path));
+        functor_remove(std::move(ini_file_path));
     }
 
     QStringList
@@ -619,7 +621,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("garbage_collect_qml");
         m_qml_engine->collectGarbage();
-        //m_qml_engine->
+        // m_qml_engine->
         m_qml_engine->trimComponentCache();
         m_qml_engine->clearComponentCache();
     }

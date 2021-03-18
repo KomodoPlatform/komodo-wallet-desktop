@@ -274,6 +274,25 @@ setup_default_themes()
     {
         SPDLOG_ERROR("fs::error: {}", ec.message());
     }
+
+    ec.clear();
+
+    //! Logo
+    {
+        const fs::path logo_path = atomic_dex::utils::get_logo_path();
+        fs::path       original_logo_path{ag::core::assets_real_path() / "logo"};
+
+        SPDLOG_INFO("Checking for setup default logo - logo_path: {} original_logo_path: {}", logo_path.string(), original_logo_path.string());
+        if (fs::is_empty(logo_path, ec))
+        {
+            SPDLOG_INFO("{} is empty, copying default logo into this directory", logo_path.string());
+            fs::copy(original_logo_path, logo_path, ec);
+        }
+        if (ec)
+        {
+            SPDLOG_ERROR("fs::error: {}", ec.message());
+        }
+    }
 }
 
 static void
@@ -383,6 +402,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_app_secondary_coin", QString{DEX_SECOND_PRIMARY_COIN});
     engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
     engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
+    engine.rootContext()->setContextProperty("atomic_logo_path", QString::fromStdString((atomic_dex::utils::get_atomic_dex_data_folder() / "logo").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
     // Load Qaterial.
 

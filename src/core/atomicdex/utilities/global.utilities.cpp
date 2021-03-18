@@ -262,4 +262,12 @@ namespace atomic_dex::utils
         create_if_doesnt_exist(theme_path);
         return theme_path;
     }
+
+    fs::path
+    get_logo_path()
+    {
+        fs::path logo_path = get_atomic_dex_data_folder() / "logo";
+        create_if_doesnt_exist(logo_path);
+        return logo_path;
+    }
 } // namespace atomic_dex::utils
