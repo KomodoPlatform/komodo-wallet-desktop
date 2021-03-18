@@ -57,8 +57,7 @@ Item {
     readonly property bool block_everything: swap_cooldown.running
                                              || fetching_multi_ticker_fees_busy
 
-    readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
-    readonly property alias multi_order_enabled: multi_order_switch.checked
+    readonly property bool fetching_multi_ticker_fees_busy: false
 
     signal prepareMultiOrder
     property bool multi_order_values_are_valid: true
@@ -110,7 +109,7 @@ Item {
 
     function reset() {
         //API.app.trading_pg.multi_order_enabled = false
-        multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
+        //multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
     }
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
@@ -325,11 +324,11 @@ Item {
                     ItemBox {
                         title: "Multi-Order"
                         defaultHeight: 250
-                        visible: API.app.trading_pg.multi_order_enabled
-                        MultiOrder {
-                            anchors.topMargin: 40
-                            anchors.fill: parent
-                        }
+                        visible: false
+//                        MultiOrder {
+//                            anchors.topMargin: 40
+//                            anchors.fill: parent
+//                        }
                     }
 
                     ItemBox {
@@ -380,7 +379,7 @@ Item {
                                 width: parent.width
                                 currentIndex: tabView.currentIndex
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                Material.foreground: theme
+                                Material.foreground: theme.foregroundColor
                                 background: Rectangle {
                                     radius: 0
                                     color: theme.dexBoxBackgroundColor
@@ -730,8 +729,7 @@ Item {
 
                                         text: qsTr("Start Swap")
                                         font.weight: Font.Medium
-                                        enabled: !multi_order_enabled
-                                                 && form_base.can_submit_trade
+                                        enabled: form_base.can_submit_trade
                                         onClicked: confirm_trade_modal.open()
                                     }
 
@@ -766,125 +764,6 @@ Item {
                             Item {}
                         }
                     }
-                    ItemBox {
-                        defaultHeight: 200
-                        maximumHeight: 300
-                        minimumHeight: 150
-                        //clip: true
-                        title: "Multi-Order"
-                        visible: sell_mode
-
-                        Item {
-                            id: multi
-                            enabled: false
-                            clip: true
-                            anchors.fill: parent
-                            anchors.topMargin: 40
-                            Item {
-
-                                width: parent.width
-                                height: multi_order_swith_col.height + 10
-                                Column {
-                                    id: multi_order_swith_col
-                                    width: parent.width - 10
-                                    padding: 5
-                                    spacing: 10
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    bottomPadding: 0
-                                    DefaultSwitch {
-                                        id: multi_order_switch
-                                        Layout.fillWidth: true
-
-                                        text: qsTr("Multi-Order")
-                                        enabled: !block_everything
-                                                 && (form_base.can_submit_trade
-                                                     || checked)
-
-                                        checked: API.app.trading_pg.multi_order_enabled
-                                        onCheckedChanged: {
-                                            if (checked) {
-                                                setVolume(max_volume)
-                                                API.app.trading_pg.multi_order_enabled = checked
-                                            } else {
-                                                API.app.trading_pg.multi_order_enabled = checked
-                                            }
-                                        }
-                                    }
-
-                                    DefaultText {
-                                        width: parent.width - 20
-                                        wrapMode: Label.Wrap
-                                        text_value: qsTr("Select additional assets for multi-order creation.")
-                                        font.pixelSize: Style.textSizeSmall2
-                                    }
-
-                                    DefaultText {
-                                        width: parent.width - 10
-                                        wrapMode: Label.Wrap
-                                        font.pixelSize: Style.textSizeSmall2
-                                        text_value: qsTr("Same funds will be used until an order matches.")
-                                    }
-
-                                    DefaultButton {
-                                        text: qsTr("Submit Trade")
-                                        width: parent.width - 10
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                        enabled: multi_order_enabled
-                                                 && form_base.can_submit_trade
-                                        onClicked: {
-                                            multi_order_values_are_valid = true
-                                            prepareMultiOrder()
-                                            if (multi_order_values_are_valid)
-                                                confirm_multi_order_trade_modal.open()
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        FastBlur {
-
-                            anchors.fill: multi
-                            source: multi
-                            radius: 35
-                        }
-                        Rectangle {
-                            anchors.fill: parent
-                            color: parent.color
-                            opacity: .9
-                        }
-                        Column {
-                            clip: true
-                            topPadding: 10
-                            visible: parent.contentVisible
-                            width: parent.width
-                            height: 100
-                            anchors.centerIn: parent
-                            spacing: 20
-                            Qaterial.ColorIcon {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                source: Qaterial.Icons.rocketLaunchOutline
-                                iconSize: 30
-                                Behavior on rotation {
-                                    NumberAnimation {
-                                        duration: 500
-                                    }
-                                }
-
-                                Timer {
-                                    running: false
-                                    repeat: true
-                                    interval: 1500
-                                    onTriggered: parent.rotation += 180
-                                }
-                            }
-                            DefaultText {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Coming Soon!"
-                                font.weight: Font.Light
-                                font.pixelSize: 16
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -894,10 +773,7 @@ Item {
             sourceComponent: ConfirmTradeModal {}
         }
 
-        ModalLoader {
-            id: confirm_multi_order_trade_modal
-            sourceComponent: ConfirmMultiOrderTradeModal {}
-        }
+
     }
 
     TradeViewHeader {

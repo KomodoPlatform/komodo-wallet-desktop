@@ -7,8 +7,22 @@ Text {
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
-    font: theme.textType.body1
-    color: theme.foregroundColor
+    font: try {
+              theme.textType.body1
+          }catch(e) {
+              Qt.font({
+                  pixelSize: 14,
+                  letterSpacing: 0.25,
+                  weight: Font.Normal
+              })
+          }
+
+    color: try {
+            theme.foregroundColor?? "white"
+        } catch(e) {
+            "white"
+        }
+
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap
 

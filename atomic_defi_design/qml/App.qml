@@ -19,13 +19,15 @@ Rectangle {
     id: app
 
     color: theme.surfaceColor
+
+    property alias globalTheme: theme
     Shortcut {
         sequence: "F11"
         onActivated: window.showNormal()
     }
     property string selected_wallet_name: ""
     property bool debug: debug_bar
-    property bool debug_log: true
+    property bool debug_log: false
 
     function appendLog(text){
         log_area.append(text)

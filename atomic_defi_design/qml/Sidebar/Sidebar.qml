@@ -134,7 +134,7 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: expanded? General.image_path + Style.sidebar_atomicdex_logo : General.image_path +  "logo/dex-logo.png"
+            source: expanded? "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo : "file:///"+atomic_logo_path +  "/"+ theme.smallSidebarLogo
             anchors.horizontalCenter: parent.horizontalCenter
             y: expanded? parent.width * 0.25 : parent.width * 0.40
             transformOrigin: Item.Center
