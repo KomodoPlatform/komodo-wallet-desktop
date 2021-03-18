@@ -32,7 +32,7 @@ Item {
             font.family: 'Ubuntu'
             font.pixelSize: 20
             font.weight: Font.Light
-            color: Style.colorWhite2
+            color: theme.foregroundColor
             text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
         }
         VerticalLine {
@@ -43,13 +43,13 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             Qaterial.LatoTabButton {
                 text: qsTr("Pro-Mode")
-                textColor: Style.colorWhite2
-                textSecondaryColor: Style.colorWhite8
+                textColor: theme.foregroundColor
+                textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
             }
             Qaterial.LatoTabButton {
                 text: qsTr("Starter")
-                textSecondaryColor: Style.colorWhite8
-                textColor: Style.colorWhite2
+                textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
+                textColor: theme.foregroundColor
                 ToolTip.text: "(Under Work)"
 
             }

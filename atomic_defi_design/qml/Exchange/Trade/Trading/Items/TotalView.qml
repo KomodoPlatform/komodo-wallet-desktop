@@ -27,7 +27,7 @@ Item {
             RowLayout {
                 width: parent.width
                 DefaultText {
-                    color: Style.colorWhite1
+                    color: theme.foregroundColor
                     text:"Total "+API.app.settings_pg.current_fiat+" "+General.cex_icon
                     font.pixelSize:  Style.textSizeSmall5
                     Layout.preferredWidth: 120
@@ -56,7 +56,7 @@ Item {
             RowLayout {
                 width: parent.width
                 DefaultText {
-                    color: Style.colorWhite1
+                    color: theme.foregroundColor
                     text:  "Total "+right_ticker
                     font.pixelSize:  Style.textSizeSmall5
                     Layout.preferredWidth: 120

@@ -203,7 +203,7 @@ Item {
 
         x: sidebar.app_logo.x + sidebar.app_logo.width - 20
         y: sidebar.app_logo.y
-        color: Qt.lighter(notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
+        color: Qt.lighter(notifications_list.length > 0 ? Style.colorRed : theme.backgroundColor, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
 
         DefaultText {
             id: count_text
@@ -211,7 +211,7 @@ Item {
             text_value: notifications_list.length
             font.pixelSize: Style.textSizeSmall1
             font.weight: Font.Medium
-            color: notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
+            color: notifications_list.length > 0 ? theme.foregroundColor : Qt.darker(theme.foregroundColor)
         }
     }
 
@@ -241,7 +241,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: Style.colorSidebarDropShadow
+        color: theme.colorSidebarDropShadow
         smooth: true
     }
 

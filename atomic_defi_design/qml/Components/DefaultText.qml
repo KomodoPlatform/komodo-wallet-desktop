@@ -7,9 +7,8 @@ Text {
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
-    font.family: Style.font_family
-    font.pixelSize: Style.textSize
-    color: Style.colorText
+    font: theme.textType.body1
+    color: theme.foregroundColor
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap
 

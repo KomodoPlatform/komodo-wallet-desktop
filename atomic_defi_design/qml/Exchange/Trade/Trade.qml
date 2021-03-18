@@ -380,7 +380,7 @@ Item {
                                 width: parent.width
                                 currentIndex: tabView.currentIndex
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                Material.foreground: Style.colorWhite4
+                                Material.foreground: theme
                                 background: Rectangle {
                                     radius: 0
                                     color: theme.dexBoxBackgroundColor
@@ -407,19 +407,19 @@ Item {
                                 Qaterial.TabButton {
                                     width: 150
                                     text: qsTr("Exchange Rates")
-                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                     opacity: checked ? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("Orders")
-                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                     opacity: checked ? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("history")
-                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                     opacity: checked ? 1 : .6
                                 }
                             }
@@ -571,7 +571,7 @@ Item {
                         hideHeader: true
                         //clip: true
                         visible: true
-                        bottomBorderColor: sell_mode? Style.colorGreen : Style.colorRed
+                        bottomBorderColor: sell_mode? theme.greenColor : theme.redColor
                         TotalView {}
                     }
                     Item {
@@ -586,8 +586,8 @@ Item {
                                 height: 30
                                 radius: 8
                                 color: !sell_mode ? Qt.darker(
-                                                        Style.colorGreen) : theme.backgroundColor
-                                border.color: !sell_mode ? Style.colorGreen : theme.dexBoxBackgroundColor
+                                                        theme.greenColor) : theme.backgroundColor
+                                border.color: !sell_mode ? theme.greenColor : theme.dexBoxBackgroundColor
                                 Rectangle {
                                     anchors.right: parent.right
                                     color: parent.color
@@ -606,9 +606,9 @@ Item {
                                 }
                                 DefaultText {
                                     anchors.centerIn: parent
-                                    font.pixelSize: Style.textSizeSmall5
                                     opacity: !sell_mode ? 1 : .5
                                     text: "Buy "+left_ticker
+                                    color: !sell_mode? Qaterial.Colors.white : theme.foregroundColor
                                 }
                                 DefaultMouseArea {
                                     anchors.fill: parent
@@ -621,8 +621,8 @@ Item {
                                 height: 30
                                 radius: 8
                                 color: sell_mode ? Qt.darker(
-                                                       Style.colorRed) : theme.backgroundColor
-                                border.color: sell_mode ? Style.colorRed : theme.dexBoxBackgroundColor
+                                                       theme.redColor) : theme.backgroundColor
+                                border.color: sell_mode ? theme.redColor : theme.dexBoxBackgroundColor
                                 Rectangle {
                                     anchors.left: parent.left
                                     color: parent.color
@@ -640,9 +640,11 @@ Item {
                                 }
                                 DefaultText {
                                     anchors.centerIn: parent
-                                    font.pixelSize: Style.textSizeSmall5
+
                                     opacity: sell_mode ? 1 : .5
                                     text: "Sell "+left_ticker
+                                    color: sell_mode? Qaterial.Colors.white : theme.foregroundColor
+
                                 }
                                 DefaultMouseArea {
                                     anchors.fill: parent
@@ -670,17 +672,17 @@ Item {
                                     height: 40
                                     color: 'transparent'
                                     radius: 8
-                                    border.color: Style.colorRed
+                                    border.color: theme.redColor
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     y: 5
                                     DefaultText {
                                         anchors.verticalCenter: parent.verticalCenter
                                         leftPadding: 15
-                                        color: Style.colorRed
+                                        color: theme.redColor
                                         text: qsTr("Order Selected")
                                     }
                                     Qaterial.FlatButton {
-                                        foregroundColor: Style.colorRed
+                                        foregroundColor: theme.redColor
                                         icon.source: Qaterial.Icons.close
                                         anchors.right: parent.right
                                         anchors.verticalCenter: parent.verticalCenter
@@ -750,7 +752,7 @@ Item {
                                             width: parent.width
                                             horizontalAlignment: DefaultText.AlignHCenter
                                             font.pixelSize: Style.textSizeSmall4
-                                            color: Style.colorRed
+                                            color: theme.redColor
 
                                             text_value: General.getTradingError(
                                                             last_trading_error,

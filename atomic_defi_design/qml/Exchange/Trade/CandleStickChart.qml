@@ -57,7 +57,7 @@ InnerBackground {
             }
         }
 
-        readonly property string theme: Style.dark_theme ? "dark" : "light"
+        readonly property string theme: theme.chartTheme
         onThemeChanged:  try{loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin, true)}catch(e){}
 
         property string chart_base

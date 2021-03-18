@@ -31,7 +31,7 @@ ComboBox {
     contentItem: DefaultText {
         leftPadding: 10
         rightPadding: control.indicator.width + control.spacing
-        color: Style.colorWhite1
+        color: theme.foregroundColor
         text: control.currentTicker//control.displayText
 
         verticalAlignment: Text.AlignVCenter
@@ -41,7 +41,7 @@ ComboBox {
     background: Rectangle {
         implicitWidth: 120
         implicitHeight: 40
-        color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
+        color: !control.enabled ? theme.hightlightColor : control.hovered ? theme.backgroundColor : theme.dexBoxBackgroundColor
         radius: 4
     }
 
@@ -126,7 +126,6 @@ ComboBox {
                         highlighted: control.highlightedIndex === index
                         contentItem: DefaultText {
                             text_value: ticker
-                            color: Style.colorText
                         }
                         onClicked: {
                             control.currentTicker = ticker
@@ -148,7 +147,7 @@ ComboBox {
                 width: parent.width
                 y: -5
                 height: parent.height+10
-                color: Style.colorTheme9
+                color: theme.dexBoxBackgroundColor
             }
         }
     }

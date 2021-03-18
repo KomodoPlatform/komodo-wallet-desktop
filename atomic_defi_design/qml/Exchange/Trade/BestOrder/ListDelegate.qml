@@ -30,7 +30,6 @@ Item {
         height: parent.height
         color: theme.foregroundColor
         opacity: 0.1
-        anchors.left: parent.left
     }
 
     RowLayout {

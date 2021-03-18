@@ -7,7 +7,7 @@ AnimatedRectangle {
 
     gradient: Gradient {
         orientation: Qt.Vertical
-        GradientStop { position: 0.0; color: light ? Style.colorLineGradient3 : Style.colorLineGradient2 }
-        GradientStop { position: 1.0; color: light ? Style.colorLineGradient4 : Style.colorLineGradient1 }
+        GradientStop { position: 0.0; color: light ? theme.colorLineGradient3 : theme.colorLineGradient2 }
+        GradientStop { position: 1.0; color: light ? theme.colorLineGradient4 : theme.colorLineGradient1 }
     }
 }

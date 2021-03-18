@@ -8,7 +8,7 @@ Text {
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
     font: theme.textType.body1
-    color: Style.colorText
+    color: theme.foregroundColor
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap
 
