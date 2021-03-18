@@ -23,6 +23,9 @@
 //! Deps
 #include <antara/gaming/ecs/system.manager.hpp>
 
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "qt.market.pairs.hpp"
+
 namespace atomic_dex
 {
     class qt_orders_widget final : public QObject
@@ -43,5 +46,16 @@ namespace atomic_dex
         Q_INVOKABLE void cancel_order(const QStringList& orders_id);
         Q_INVOKABLE void cancel_all_orders();
         Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
+    
+        template <typename T>
+        T get_multi_ticker_data(const QString& ticker, portfolio_model::PortfolioRoles role, portfolio_proxy_model* multi_ticker_model);
+        void set_multi_ticker_data(const QString& ticker, portfolio_model::PortfolioRoles role,
+                                   QVariant data, atomic_dex::portfolio_proxy_model* multi_ticker_model);
+        QString calculate_total_amount(QString price, QString volume);
+        void determine_multi_ticker_fees(const QString& ticker, market_pairs* market_pairs);
+        void determine_multi_ticker_total_amount(const QString& ticker, const QString& input_price, bool is_enabled,
+                                                 market_pairs* market_pairs, MarketMode market_mode, const QString& volume);
+        void determine_all_multi_ticker_forms(market_pairs* market_pairs, const QString& price,
+                                              const QString& total_amount, const QVariantMap& fees) noexcept;
     };
 } // namespace atomic_dex
