@@ -33,5 +33,6 @@
   "sideBarGradient1": "#0e1021",
   "sideBarGradient2": "#23273c",
   "surfaceColor": "#171a2c",
-  "whiteblack": "#ffffff"
+  "whiteblack": "#ffffff",
+  "bigSidebarLogo": "dex-logo-sidebar.png"
 }
