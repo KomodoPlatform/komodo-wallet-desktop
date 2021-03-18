@@ -5,8 +5,8 @@
 
 //! Deps
 #include <QrCode.hpp>
-#include <antara/gaming/core/security.authentification.hpp>
 #include <antara/app/net/http.code.hpp>
+#include <antara/gaming/core/security.authentification.hpp>
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
@@ -138,7 +138,7 @@ namespace atomic_dex
     QVariant
     wallet_page::get_ticker_infos() const noexcept
     {
-        //SPDLOG_DEBUG("get_ticker_infos");
+        // SPDLOG_DEBUG("get_ticker_infos");
         QJsonObject obj{
             {"balance", "0"},
             {"name", "Komodo"},
@@ -181,19 +181,11 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
-            obj["fee_ticker"]                         = QString::fromStdString(ticker);
-            if (coin_info.coin_type == CoinType::QRC20)
-            {
-                obj["fee_ticker"] = (coin_info.is_testnet.value_or(false)) ? "tQTUM" : "QTUM";
-            }
-            else if (coin_info.coin_type == CoinType::ERC20)
-            {
-                obj["fee_ticker"] = "ETH";
-            }
-            obj["blocks_left"]             = static_cast<qint64>(tx_state.blocks_left);
-            obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
-            obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
-            obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
+            obj["fee_ticker"]                         = QString::fromStdString(coin_info.fees_ticker);
+            obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
+            obj["is_smartchain_test_coin"]            = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
             std::error_code   ec;
             qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
             std::string       svg = qr0.toSvgString(2);
@@ -268,7 +260,7 @@ namespace atomic_dex
     void
     wallet_page::refresh_ticker_infos() noexcept
     {
-        //SPDLOG_DEBUG("refresh ticker infos");
+        // SPDLOG_DEBUG("refresh ticker infos");
         emit tickerInfosChanged();
     }
 

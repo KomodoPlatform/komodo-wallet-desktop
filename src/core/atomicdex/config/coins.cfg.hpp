@@ -59,6 +59,8 @@ namespace atomic_dex
         CoinType                        coin_type;
         bool                            checked{false};
         bool                            wallet_only{false};
+        bool                            has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens
+        std::string                     fees_ticker;
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);
