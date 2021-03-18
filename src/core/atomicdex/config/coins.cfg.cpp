@@ -91,6 +91,14 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::SmartChain;
         }
+        else if (cfg.type == "BEP-20")
+        {
+            cfg.coin_type = CoinType::BEP20;
+        }
+        else if (cfg.type == "SLP")
+        {
+            cfg.coin_type = CoinType::SLP;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
