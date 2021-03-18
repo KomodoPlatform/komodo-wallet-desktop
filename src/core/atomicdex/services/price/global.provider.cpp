@@ -130,13 +130,22 @@ namespace atomic_dex
     {
         m_update_clock = std::chrono::high_resolution_clock::now();
         this->dispatcher_.sink<force_update_providers>().connect<&global_price_service::on_force_update_providers>(*this);
-        async_fetch_fiat_rates()
+        /*async_fetch_fiat_rates()
             .then([this](web::http::http_response resp) {
                 this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
-                refresh_other_coins_rates("kmd-komodo", "KMD");
-                refresh_other_coins_rates("btc-bitcoin", "BTC");
+                if (this->m_system_manager.has_system<mm2_service>())
+                {
+                    const auto& mm2       = this->m_system_manager.get_system<mm2_service>();
+                    if (mm2.is_mm2_running())
+                    {
+                        const auto first_id  = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
+                        const auto second_id = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
+                        refresh_other_coins_rates(first_id, g_primary_dex_coin);
+                        refresh_other_coins_rates(second_id, g_second_primary_dex_coin);
+                    }
+                }
             })
-            .then(&handle_exception_pplx_task);
+            .then(&handle_exception_pplx_task);*/
     }
 } // namespace atomic_dex
 
@@ -196,13 +205,13 @@ namespace atomic_dex
         else
         {
             //! We use oracle
-            if (fiat != "KMD" && fiat != "BTC" && fiat != "USD")
+            if (fiat != g_primary_dex_coin && fiat != g_second_primary_dex_coin && fiat != "USD")
             {
                 t_float_50 tmp_current_price = t_float_50(current_price) * m_other_fiats_rates->at("rates").at(fiat).get<double>();
                 current_price                = tmp_current_price.str();
             }
 
-            else if ((fiat == "BTC" || fiat == "KMD") && is_oracle_ready)
+            else if ((fiat == g_second_primary_dex_coin || fiat == g_primary_dex_coin) && is_oracle_ready)
             {
                 t_float_50 tmp_current_price = (t_float_50(current_price)) * band_service.retrieve_rates(fiat);
                 current_price                = tmp_current_price.str();
@@ -236,7 +245,7 @@ namespace atomic_dex
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
-        if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+        if (mm2_instance.get_coin_info(ticker).coingecko_id == "test-coin")
         {
             return "0.00";
         }
@@ -262,7 +271,7 @@ namespace atomic_dex
 
             for (auto&& current_coin: coins)
             {
-                if (current_coin.coinpaprika_id == "test-coin")
+                if (current_coin.coingecko_id == "test-coin")
                 {
                     continue;
                 }
@@ -403,8 +412,12 @@ namespace atomic_dex
         async_fetch_fiat_rates()
             .then([this](web::http::http_response resp) {
                 this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
-                refresh_other_coins_rates("kmd-komodo", "KMD");
-                refresh_other_coins_rates("btc-bitcoin", "BTC", true);
+                const auto& mm2           = this->m_system_manager.get_system<mm2_service>();
+                const bool  with_update   = mm2.is_mm2_running();
+                const auto  first_id      = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
+                const auto  second_id     = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
+                refresh_other_coins_rates(first_id, g_primary_dex_coin);
+                refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update);
             })
             .then(&handle_exception_pplx_task);
     }
