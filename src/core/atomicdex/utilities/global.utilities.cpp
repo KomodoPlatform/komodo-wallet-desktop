@@ -85,9 +85,9 @@ namespace atomic_dex::utils
     {
         fs::path appdata_path;
 #if defined(_WIN32) || defined(WIN32)
-        appdata_path = fs::path(std::getenv("APPDATA")) / "atomic_qt";
+        appdata_path = fs::path(std::getenv("APPDATA")) / std::string(DEX_COMMON_DATA_FOLDER);
 #else
-        appdata_path = fs::path(std::getenv("HOME")) / ".atomic_qt";
+        appdata_path = fs::path(std::getenv("HOME")) / ("." + std::string(DEX_COMMON_DATA_FOLDER));
 #endif
         return appdata_path;
     }
@@ -261,5 +261,13 @@ namespace atomic_dex::utils
         fs::path theme_path = get_atomic_dex_data_folder() / "themes";
         create_if_doesnt_exist(theme_path);
         return theme_path;
+    }
+
+    fs::path
+    get_logo_path()
+    {
+        fs::path logo_path = get_atomic_dex_data_folder() / "logo";
+        create_if_doesnt_exist(logo_path);
+        return logo_path;
     }
 } // namespace atomic_dex::utils
