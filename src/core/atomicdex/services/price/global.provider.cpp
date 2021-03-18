@@ -144,14 +144,7 @@ namespace atomic_dex
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
         if (s >= 2min)
         {
-            async_fetch_fiat_rates()
-                .then([this](web::http::http_response resp) {
-                    this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
-                    refresh_other_coins_rates("kmd-komodo", "KMD");
-                    refresh_other_coins_rates("btc-bitcoin", "BTC", true);
-                })
-                .then(&handle_exception_pplx_task);
-
+            this->on_force_update_providers({});
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
     }
@@ -400,8 +393,14 @@ namespace atomic_dex
                 const bool  with_update   = mm2.is_mm2_running();
                 const auto  first_id      = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
                 const auto  second_id     = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
-                refresh_other_coins_rates(first_id, g_primary_dex_coin);
-                refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update);
+                if (!first_id.empty())
+                {
+                    refresh_other_coins_rates(first_id, g_primary_dex_coin);
+                }
+                if (!second_id.empty())
+                {
+                    refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update);
+                }
             })
             .then(&handle_exception_pplx_task);
     }
