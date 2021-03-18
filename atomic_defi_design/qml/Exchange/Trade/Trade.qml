@@ -657,6 +657,7 @@ Item {
                         expandedVert: true
                         hideHeader: true
                         title: "Form"
+                        minimumHeight: 300
                         ColumnLayout {
                             property int space: 10
                             anchors.fill: parent
