@@ -509,6 +509,7 @@ namespace atomic_dex
     {
         return m_price;
     }
+
     void
     trading_page::set_price(QString price) noexcept
     {
@@ -532,7 +533,10 @@ namespace atomic_dex
             {
                 this->determine_max_volume();
             }
-            this->determine_total_amount();
+            if (this->m_current_trading_mode != TradingMode::Simple)
+            {
+                this->determine_total_amount();
+            }
 
             if (this->m_preffered_order.has_value())
             {
@@ -581,7 +585,10 @@ namespace atomic_dex
             }
             m_volume = std::move(volume);
             // SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
-            this->determine_total_amount();
+            if (m_current_trading_mode != TradingMode::Simple)
+            {
+                this->determine_total_amount();
+            }
             emit volumeChanged();
             this->cap_volume();
         }
@@ -767,6 +774,8 @@ namespace atomic_dex
         {
             m_current_trading_mode = trading_mode;
             SPDLOG_INFO("new trading mode: {}", QMetaEnum::fromType<TradingMode>().valueToKey(trading_mode));
+            this->clear_forms();
+            this->set_market_mode(MarketMode::Sell);
             emit tradingModeChanged();
         }
     }
@@ -872,13 +881,28 @@ namespace atomic_dex
     void
     trading_page::set_total_amount(QString total_amount) noexcept
     {
-        if (m_total_amount != total_amount)
+        if (this->m_current_trading_mode != TradingMode::Simple)
         {
-            m_total_amount = std::move(total_amount);
-            // SPDLOG_DEBUG("total_amount is [{}]", m_total_amount.toStdString());
-            emit totalAmountChanged();
-            emit baseAmountChanged();
-            emit relAmountChanged();
+            if (m_total_amount != total_amount)
+            {
+                m_total_amount = std::move(total_amount);
+                // SPDLOG_DEBUG("total_amount is [{}]", m_total_amount.toStdString());
+                emit totalAmountChanged();
+                emit baseAmountChanged();
+                emit relAmountChanged();
+            }
+        }
+        else
+        {
+            m_total_amount = total_amount;
+            emit       totalAmountChanged();
+            emit       baseAmountChanged();
+            emit       relAmountChanged();
+            t_float_50 price_f(0);
+            t_float_50 total_amount_f(safe_float(total_amount.toStdString()));
+            t_float_50 volume_f(safe_float(m_volume.toStdString()));
+            price_f = total_amount_f / volume_f;
+            this->set_price(QString::fromStdString(utils::format_float(price_f)));
         }
     }
 
