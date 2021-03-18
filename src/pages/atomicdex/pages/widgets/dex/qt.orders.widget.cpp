@@ -22,6 +22,8 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "qt.orders.widget.hpp"
 #include "../../qt.trading.page.hpp"
+#include "../../qt.settings.page.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
 
 //! Constructor / Destructor
 namespace atomic_dex
@@ -112,7 +114,7 @@ namespace atomic_dex
 
 namespace atomic_dex
 {
-    QString calculate_total_amount(QString price, QString volume)
+    QString qt_orders_widget::calculate_total_amount(QString price, QString volume)
     {
         t_float_50 price_f(safe_float(price.toStdString()));
         t_float_50 volume_f(safe_float(volume.toStdString()));
@@ -121,7 +123,7 @@ namespace atomic_dex
     }
     
     template <typename T>
-    T get_multi_ticker_data(const QString& ticker, portfolio_model::PortfolioRoles role, portfolio_proxy_model* multi_ticker_model)
+    T qt_orders_widget::get_multi_ticker_data(const QString& ticker, portfolio_model::PortfolioRoles role, portfolio_proxy_model* multi_ticker_model)
     {
         if (const auto res = multi_ticker_model->sourceModel()->match(
                 multi_ticker_model->index(0, 0), portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
@@ -133,7 +135,7 @@ namespace atomic_dex
         return T{};
     }
     
-    void set_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role,
+    void qt_orders_widget::set_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role,
                                QVariant data, atomic_dex::portfolio_proxy_model* multi_ticker_model)
     {
         if (const auto res = multi_ticker_model->sourceModel()->match(
@@ -155,7 +157,6 @@ namespace atomic_dex
         // set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
         // this->determine_multi_ticker_error_cases(ticker, fees);
     }
-    
     
     void qt_orders_widget::determine_multi_ticker_total_amount(const QString& ticker, const QString& price, bool enabled,
                                                                market_pairs* market_pairs, MarketMode market_mode, const QString& volume)
@@ -181,7 +182,7 @@ namespace atomic_dex
                     set_multi_ticker_data(
                         ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, market_pairs->get_multiple_selection_box());
                     //! Here we need to use the real volume with trade_with
-                    this->determine_multi_ticker_fees(ticker);
+                    determine_multi_ticker_fees(ticker, market_pairs);
                 }
             }
             else
@@ -192,6 +193,47 @@ namespace atomic_dex
         else
         {
             // SPDLOG_ERROR("multi_ticker order are not available in buy mode");
+        }
+    }
+    
+    void qt_orders_widget::determine_all_multi_ticker_forms(market_pairs* market_pairs, const QString& price,
+                                                            const QString& total_amount, const QVariantMap& fees) noexcept
+    {
+        // SPDLOG_INFO("determine all multi ticker forms");
+        portfolio_proxy_model* model         = market_pairs->get_multiple_selection_box();
+        const auto&            price_service = m_system_mgr.get_system<global_price_service>();
+        const auto&            config        = m_system_mgr.get_system<settings_page>().get_cfg();
+        const auto             rel_ticker    = market_pairs->get_right_selected_coin();
+        int                    nb_items      = model->rowCount();
+        
+        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
+        {
+            //!
+            QModelIndex idx    = model->index(cur_idx, 0);
+            const auto  ticker = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString();
+            
+            // SPDLOG_INFO("setting info form ticker: {}", ticker.toStdString());
+            if (ticker == rel_ticker)
+            {
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerCurrentlyEnabled, true, model);
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerPrice, price, model);
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, total_amount, model);
+                set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerFeesInfo, fees, model);
+            }
+            else
+            {
+                t_float_50 rel_price_for_one_unit =
+                    safe_float(model->data(idx, portfolio_model::PortfolioRoles::MainFiatPriceForOneUnit).toString().toStdString());
+                t_float_50 price_as_currency_from_amount =
+                    safe_float(price_service.get_price_as_currency_from_amount(config.current_fiat, rel_ticker.toStdString(), "1"));
+                t_float_50 price_field_fiat       = safe_float(price.toStdString()) * price_as_currency_from_amount;
+                t_float_50 rel_price_relative     = rel_price_for_one_unit == t_float_50(0) ? t_float_50(0) : price_field_fiat / rel_price_for_one_unit;
+                const auto rel_price_relative_str = QString::fromStdString(utils::format_float(rel_price_relative));
+                if (rel_price_relative > 0) //< if there is no fiat data don't override it
+                {
+                    set_multi_ticker_data(ticker, portfolio_model::PortfolioRoles::MultiTickerPrice, rel_price_relative_str, model);
+                }
+            }
         }
     }
 }

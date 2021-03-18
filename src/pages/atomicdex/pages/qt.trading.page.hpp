@@ -218,7 +218,6 @@ namespace atomic_dex
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
         void               set_fetching_multi_ticker_fees_busy(bool status) noexcept;
         void               determine_multi_ticker_error_cases(const QString& ticker, QVariantMap fees);
-        void               determine_all_multi_ticker_forms() noexcept;
 
         [[nodiscard]] QVariant get_buy_sell_last_rpc_data() const noexcept;
         void                   set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;

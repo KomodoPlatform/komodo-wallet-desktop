@@ -305,10 +305,14 @@ namespace atomic_dex
             item.multi_ticker_error = static_cast<TradingError>(value.toInt());
             break;
         case MultiTickerPrice:
+        {
             item.multi_ticker_price = value.toString();
-            this->m_system_manager.get_system<trading_page>().determine_multi_ticker_total_amount(
-                item.ticker, item.multi_ticker_price.value(), item.is_multi_ticker_enabled);
+            auto& trade_page        = m_system_manager.get_system<trading_page>();
+            trade_page.get_orders_widget()->determine_multi_ticker_total_amount(
+                item.ticker, item.multi_ticker_price.value(), item.is_multi_ticker_enabled, trade_page.get_market_pairs_mdl(), trade_page.get_market_mode(),
+                trade_page.get_volume());
             break;
+        }
         case MultiTickerReceiveAmount:
             item.multi_ticker_receive_amount = value.toString();
             break;
