@@ -333,7 +333,7 @@ namespace atomic_dex
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
-        if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+        if (mm2_instance.get_coin_info(ticker).coingecko_id == "test-coin")
         {
             return "0.00";
         }
