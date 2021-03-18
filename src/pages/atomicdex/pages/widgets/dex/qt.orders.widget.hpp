@@ -45,5 +45,7 @@ namespace atomic_dex
         Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
 
         void determine_multi_ticker_fees(const QString& ticker, market_pairs* market_pairs);
+        void determine_multi_ticker_total_amount(const QString& ticker, const QString& input_price, bool is_enabled,
+                                                 market_pairs* market_pairs, MarketMode market_mode, const QString& volume);
     };
 } // namespace atomic_dex

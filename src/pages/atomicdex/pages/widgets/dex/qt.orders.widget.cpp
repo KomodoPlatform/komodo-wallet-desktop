@@ -21,6 +21,7 @@
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "qt.orders.widget.hpp"
+#include "../../qt.trading.page.hpp"
 
 //! Constructor / Destructor
 namespace atomic_dex
@@ -111,11 +112,19 @@ namespace atomic_dex
 
 namespace atomic_dex
 {
+    QString calculate_total_amount(QString price, QString volume)
+    {
+        t_float_50 price_f(safe_float(price.toStdString()));
+        t_float_50 volume_f(safe_float(volume.toStdString()));
+        t_float_50 total_amount_f = volume_f * price_f;
+        return QString::fromStdString(atomic_dex::utils::format_float(total_amount_f));
+    }
+    
     template <typename T>
-    T get_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, atomic_dex::portfolio_proxy_model* multi_ticker_model)
+    T get_multi_ticker_data(const QString& ticker, portfolio_model::PortfolioRoles role, portfolio_proxy_model* multi_ticker_model)
     {
         if (const auto res = multi_ticker_model->sourceModel()->match(
-                multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
+                multi_ticker_model->index(0, 0), portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
             not res.isEmpty())
         {
             const QModelIndex& idx = res.at(0);
@@ -124,14 +133,65 @@ namespace atomic_dex
         return T{};
     }
     
+    void set_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role,
+                               QVariant data, atomic_dex::portfolio_proxy_model* multi_ticker_model)
+    {
+        if (const auto res = multi_ticker_model->sourceModel()->match(
+                multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
+            not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            multi_ticker_model->sourceModel()->setData(idx, data, role);
+        }
+    }
+    
     void qt_orders_widget::determine_multi_ticker_fees(const QString& ticker, market_pairs* market_pairs)
     {
-        auto* selection_box   = market_pairs->get_multiple_selection_box();
+        auto* selection_box = market_pairs->get_multiple_selection_box();
         // const auto& mm2             = m_system_manager.get_system<mm2_service>();
-        auto  total_amount = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
+        auto  total_amount  = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
         // auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
         // qDebug() << "fees multi_ticker: " << fees;
         // set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
         // this->determine_multi_ticker_error_cases(ticker, fees);
+    }
+    
+    
+    void qt_orders_widget::determine_multi_ticker_total_amount(const QString& ticker, const QString& price, bool enabled,
+                                                               market_pairs* market_pairs, MarketMode market_mode, const QString& volume)
+    {
+        if (market_mode == MarketMode::Sell && not price.isEmpty() && not volume.isEmpty())
+        {
+            if (ticker != market_pairs->get_left_selected_coin())
+            {
+                // SPDLOG_INFO("setting total amount of {}", ticker.toStdString());
+                //! If not enabled use generic volume
+                if (not enabled)
+                {
+                    const auto total_amount = calculate_total_amount(price, volume);
+                    // SPDLOG_INFO("new total_amount: {}", total_amount.toStdString());
+                    set_multi_ticker_data(
+                        ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, market_pairs->get_multiple_selection_box());
+                }
+                else
+                {
+                    //! Use trade with later (instead of m_volume, use a fresh volume from max_taker_vol)
+                    const auto total_amount = calculate_total_amount(price, volume);
+                    // SPDLOG_INFO("new total_amount: {}", total_amount.toStdString());
+                    set_multi_ticker_data(
+                        ticker, portfolio_model::MultiTickerReceiveAmount, total_amount, market_pairs->get_multiple_selection_box());
+                    //! Here we need to use the real volume with trade_with
+                    this->determine_multi_ticker_fees(ticker);
+                }
+            }
+            else
+            {
+                // SPDLOG_WARN("Skipping for first multi-ticker element, it's the main trade info");
+            }
+        }
+        else
+        {
+            // SPDLOG_ERROR("multi_ticker order are not available in buy mode");
+        }
     }
 }

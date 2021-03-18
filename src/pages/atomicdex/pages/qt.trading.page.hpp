@@ -217,7 +217,6 @@ namespace atomic_dex
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
         void               set_fetching_multi_ticker_fees_busy(bool status) noexcept;
-        void               determine_multi_ticker_total_amount(const QString& ticker, const QString& input_price, bool is_enabled);
         void               determine_multi_ticker_error_cases(const QString& ticker, QVariantMap fees);
         void               determine_all_multi_ticker_forms() noexcept;
 
