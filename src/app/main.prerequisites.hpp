@@ -310,7 +310,7 @@ handle_settings(QSettings& settings)
         }
     };
     SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
-    create_settings_functor("CurrentTheme", QString("dark.json"));
+    create_settings_functor("CurrentTheme", QString("Dark.json"));
     create_settings_functor("ThemePath", QString::fromStdString(atomic_dex::utils::get_themes_path().string()));
     create_settings_functor("SecondSecuritySending", QVariant(false));
 #ifdef __APPLE__

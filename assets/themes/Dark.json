@@ -1,6 +1,8 @@
 {
+  "accentColor": "#2b6680",
   "backgroundColor": "#15182a",
   "backgroundColorDeep": "#171a2c",
+  "barColor": "#23273c",
   "buttonColorDisabled": "#0e1021",
   "buttonColorEnabled": "#15182a",
   "buttonColorHovered": "#22263a",
@@ -11,7 +13,16 @@
   "chartTradingLineColor": "#74fbee",
   "colorInnerShadowBottom": "#2a2f48",
   "colorInnerShadowTop": "#0d1021",
+  "colorLineGradient1": "#2c2f3c",
+  "colorLineGradient2": "#06070c",
+  "colorLineGradient3": "#090910",
+  "colorLineGradient4": "#24283b",
+  "colorSidebarDropShadow": "#90000000",
+  "colorThemeDarkLight": "#78808d",
   "dexBoxBackgroundColor": "#0e1021",
+  "floatBoxShadowDark": "#050615",
+  "floatShadow1": "#216975a4",
+  "floatShadow2": "#606975a4",
   "foregroundColor": "#ffffff",
   "hightlightColor": "#23273c",
   "navigationSideBarButtonGradient1": "#1b5e7d",
@@ -21,5 +32,6 @@
   "primaryColor": "#171a2c",
   "sideBarGradient1": "#0e1021",
   "sideBarGradient2": "#23273c",
-  "surfaceColor": "#171a2c"
+  "surfaceColor": "#171a2c",
+  "whiteblack": "#ffffff"
 }
