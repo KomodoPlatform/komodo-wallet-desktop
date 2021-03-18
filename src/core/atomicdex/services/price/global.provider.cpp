@@ -130,22 +130,6 @@ namespace atomic_dex
     {
         m_update_clock = std::chrono::high_resolution_clock::now();
         this->dispatcher_.sink<force_update_providers>().connect<&global_price_service::on_force_update_providers>(*this);
-        /*async_fetch_fiat_rates()
-            .then([this](web::http::http_response resp) {
-                this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
-                if (this->m_system_manager.has_system<mm2_service>())
-                {
-                    const auto& mm2       = this->m_system_manager.get_system<mm2_service>();
-                    if (mm2.is_mm2_running())
-                    {
-                        const auto first_id  = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
-                        const auto second_id = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
-                        refresh_other_coins_rates(first_id, g_primary_dex_coin);
-                        refresh_other_coins_rates(second_id, g_second_primary_dex_coin);
-                    }
-                }
-            })
-            .then(&handle_exception_pplx_task);*/
     }
 } // namespace atomic_dex
 
