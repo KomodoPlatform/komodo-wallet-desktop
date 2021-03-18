@@ -108,3 +108,30 @@ namespace atomic_dex
         common_cancel_all_orders(true, ticker);
     }
 } // namespace atomic_dex
+
+namespace atomic_dex
+{
+    template <typename T>
+    T get_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, atomic_dex::portfolio_proxy_model* multi_ticker_model)
+    {
+        if (const auto res = multi_ticker_model->sourceModel()->match(
+                multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
+            not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            return multi_ticker_model->sourceModel()->data(idx, role).value<T>();
+        }
+        return T{};
+    }
+    
+    void qt_orders_widget::determine_multi_ticker_fees(const QString& ticker, market_pairs* market_pairs)
+    {
+        auto* selection_box   = market_pairs->get_multiple_selection_box();
+        // const auto& mm2             = m_system_manager.get_system<mm2_service>();
+        auto  total_amount = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
+        // auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
+        // qDebug() << "fees multi_ticker: " << fees;
+        // set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
+        // this->determine_multi_ticker_error_cases(ticker, fees);
+    }
+}

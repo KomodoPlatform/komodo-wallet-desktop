@@ -42,20 +42,6 @@ namespace
         }
     }
 
-    template <typename T>
-    T
-    get_multi_ticker_data(const QString& ticker, atomic_dex::portfolio_model::PortfolioRoles role, atomic_dex::portfolio_proxy_model* multi_ticker_model)
-    {
-        if (const auto res = multi_ticker_model->sourceModel()->match(
-                multi_ticker_model->index(0, 0), atomic_dex::portfolio_model::TickerRole, ticker, 1, Qt::MatchFlag::MatchExactly);
-            not res.isEmpty())
-        {
-            const QModelIndex& idx = res.at(0);
-            return multi_ticker_model->sourceModel()->data(idx, role).value<T>();
-        }
-        return T{};
-    }
-
     QString
     calculate_total_amount(QString price, QString volume)
     {
@@ -1312,19 +1298,6 @@ namespace atomic_dex
                                     : t_float_50(100) * (t_float_50(1) - safe_float(m_price.toStdString()) / safe_float(m_cex_price.toStdString())) *
                                           (m_market_mode == MarketMode::Sell ? t_float_50(1) : t_float_50(-1));
         return QString::fromStdString(utils::format_float(price_diff));
-    }
-
-    void
-    trading_page::determine_multi_ticker_fees([[maybe_unused]] const QString& ticker)
-    {
-        const auto* market_selector = get_market_pairs_mdl();
-        auto*       selection_box   = market_selector->get_multiple_selection_box();
-        // const auto& mm2             = m_system_manager.get_system<mm2_service>();
-        auto total_amount = get_multi_ticker_data<QString>(ticker, portfolio_model::PortfolioRoles::MultiTickerReceiveAmount, selection_box);
-        // auto        fees            = generate_fees_infos(market_selector->get_left_selected_coin(), ticker, true, m_volume, mm2);
-        // qDebug() << "fees multi_ticker: " << fees;
-        // set_multi_ticker_data(ticker, portfolio_model::MultiTickerFeesInfo, fees, selection_box);
-        // this->determine_multi_ticker_error_cases(ticker, fees);
     }
 
     void
