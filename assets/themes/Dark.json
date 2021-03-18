@@ -42,7 +42,5 @@
  "textPlaceHolderColor": "#444444",
  "textSelectedColor": "#0e1021",
  "textSelectionColor": "#14bca6",
- "whiteblack": "#ffffff",
- "bigSidebarLogo": "dex-logo-sidebar.png",
- "smallSidebarLogo": "dex-logo.png"
+ "whiteblack": "#ffffff"
  }

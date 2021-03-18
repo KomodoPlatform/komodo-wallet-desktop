@@ -83,6 +83,7 @@ namespace atomic_dex
 
         if (to_change)
         {
+            this->get_orderbook_wrapper()->clear_orderbook();
             this->clear_forms();
         }
 
