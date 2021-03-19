@@ -536,6 +536,7 @@ namespace atomic_dex
                     .with_tx_history = false};
                 nlohmann::json j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
+                // SPDLOG_INFO("enable request: {}", j.dump(4));
                 batch_array.push_back(j);
             }
             //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
