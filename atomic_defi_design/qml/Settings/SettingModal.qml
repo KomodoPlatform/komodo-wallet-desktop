@@ -102,7 +102,7 @@ Qaterial.Dialog {
                     anchors.topMargin: 10
                     spacing: 10
                     currentIndex: 0
-                    model: [qsTr("Géneral"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About")]
+                    model: [qsTr("General"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About")]
                     highlight: Item {
                         width: menu_list.width-20
                         x: 10
@@ -140,9 +140,6 @@ Qaterial.Dialog {
                             anchors.fill: parent
                             topPadding: 10
                             spacing: 15
-                            Combo_fiat {
-                                id: combo_fiat
-                            }
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -215,6 +212,9 @@ Qaterial.Dialog {
                                     Layout.alignment: Qt.AlignVCenter
                                 }
 
+                            }
+                            Combo_fiat {
+                                id: combo_fiat
                             }
                         }
                     }
