@@ -27,6 +27,7 @@ Item {
     readonly property int idx_dashboard_support: 7
     readonly property int idx_dashboard_light_ui: 8
     readonly property int idx_dashboard_privacy_mode: 9
+    readonly property int idx_dashboard_fiat_ramp: 10
 
     //readonly property int idx_exchange_trade: 3
     readonly property int idx_exchange_trade: 0

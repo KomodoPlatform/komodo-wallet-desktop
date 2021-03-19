@@ -68,6 +68,16 @@ ColumnLayout {
         }
     }
 
+    SidebarLine {
+        dashboard_index: idx_dashboard_fiat_ramp
+        text_value: sidebar.expanded ? qsTr("Fiat") : ""
+        image: General.image_path + "bill.svg"
+        Layout.fillWidth: true
+        SidebarTooltip {
+            text_value: qsTr("Fiat")
+        }
+    }
+
 //    SidebarLine {
 //        dashboard_index: idx_dashboard_news
 //        text_value: qsTr("News")
