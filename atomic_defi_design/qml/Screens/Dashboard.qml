@@ -13,6 +13,7 @@ import "../Exchange"
 import "../Settings"
 import "../Support"
 import "../Sidebar"
+import "../Fiat"
 
 Item {
     id: dashboard
@@ -156,6 +157,14 @@ Item {
             }
         }
 
+        Component {
+            id: fiat_ramp
+
+            FiatRamp {
+
+            }
+        }
+
         DefaultLoader {
             id: loader
 
@@ -172,6 +181,7 @@ Item {
                 case idx_dashboard_dapps: return dapps
                 case idx_dashboard_settings: return settings
                 case idx_dashboard_support: return support
+                case idx_dashboard_fiat_ramp: return fiat_ramp
                 default: return undefined
                 }
             }
