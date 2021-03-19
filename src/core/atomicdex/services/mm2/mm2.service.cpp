@@ -532,6 +532,7 @@ namespace atomic_dex
                     .coin_name       = coin_info.ticker,
                     .urls            = (coin_info.coin_type == CoinType::ERC20) ? coin_info.eth_urls.value() : std::vector<std::string>(),
                     .coin_type       = coin_info.coin_type,
+                    .is_testnet      = coin_info.is_testnet.value_or(false),
                     .with_tx_history = false};
                 nlohmann::json j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
