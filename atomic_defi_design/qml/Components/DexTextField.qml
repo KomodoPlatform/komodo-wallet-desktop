@@ -8,11 +8,11 @@ TextField {
     property alias left_text: left_text.text_value
     property alias right_text: right_text.text_value
 
-    font.family: Style.font_family
-    placeholderTextColor: Style.colorPlaceholderText
-    selectedTextColor: Style.colorSelectedText
-    selectionColor: Style.colorSelection
-    color: Style.colorWhite1
+    font: theme.textType.body2
+    placeholderTextColor: theme.textPlaceHolderColor
+    selectedTextColor: theme.textSelectedColor
+    selectionColor: theme.textSelectionColor
+    color: theme.foregroundColor
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }

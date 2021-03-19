@@ -19,6 +19,8 @@ Rectangle {
     id: app
 
     color: theme.surfaceColor
+
+    property alias globalTheme: theme
     Shortcut {
         sequence: "F11"
         onActivated: window.showNormal()
@@ -429,18 +431,22 @@ Rectangle {
     }
 
 
-    property var global_theme_property: ["primaryColor","backgroundColor","backgroundColorDeep","dexBoxBackgroundColor", "surfaceColor","hightlightColor", "sideBarGradient1", "sideBarGradient2",
+    property var global_theme_property: ["primaryColor","accentColor","backgroundColor","backgroundColorDeep","dexBoxBackgroundColor", "surfaceColor","barColor","hightlightColor", "sideBarGradient1", "sideBarGradient2",
         "navigationSideBarButtonGradient1","navigationSideBarButtonGradient2","navigationSideBarButtonGradient3",
         "navigationSideBarButtonGradient4","chartTradingLineColor","chartTradingLineBackgroundColor","foregroundColor",
+        "colorSidebarDropShadow","whiteblack","colorThemeDarkLight","greenColor","redColor","textSelectionColor","textPlaceHolderColor","textSelectedColor",
         "buttonColorDisabled","buttonColorHovered","buttonColorEnabled","buttonColorTextDisabled","buttonColorTextHovered","buttonColorTextEnabled",
-        "colorInnerShadowBottom","colorInnerShadowTop"]
+        "colorInnerShadowBottom","colorInnerShadowTop","innerShadowColor","colorLineGradient1","colorLineGradient2","colorLineGradient3","colorLineGradient4", "floatShadow1", "floatShadow2","floatBoxShadowDark"]
 
     function save_currentTheme(name) {
         let data = {}
         global_theme_property.forEach(function(e){
             data[e] = eval("theme."+e).toString()
         })
-        let r = API.qt_utilities.save_theme(name+".json", data, false)
+        data["bigSidebarLogo"] = theme.bigSidebarLogo
+        data["smallSidebarLogo"] = theme.smallSidebarLogo
+        data["chartTheme"] = theme.chartTheme
+        let r = API.qt_utilities.save_theme(name+".json", data, true)
         console.log(r)
     }
     function load_theme(name) {
@@ -460,6 +466,7 @@ Rectangle {
 
         // Font
         property alias textType: _font
+        property string chartTheme: Style.dark_theme ? "dark" : "light"
         property color primaryColor: "#171A2C"//Qaterial.Colors.indigo900
         property color backgroundColor: Style.colorTheme7
         property color surfaceColor: Style.colorTheme8
@@ -492,6 +499,38 @@ Rectangle {
 
         property color colorInnerShadowBottom: Style.colorRectangleBorderGradient1
         property color colorInnerShadowTop: Style.colorRectangleBorderGradient2
+
+        property color colorSidebarDropShadow: Style.colorSidebarDropShadow
+
+        property color accentColor: Style.colorTheme4
+
+        property color barColor: Style.colorTheme5
+
+        property color colorLineGradient1: Style.colorLineGradient1
+        property color colorLineGradient2: Style.colorLineGradient2
+        property color colorLineGradient3: Style.colorLineGradient3
+        property color colorLineGradient4: Style.colorLineGradient4
+
+        property color floatShadow1: Style.colorDropShadowLight
+        property color floatShadow2: Style.colorDropShadowLight2
+        property color floatBoxShadowDark: Style.colorDropShadowDark
+
+        property color textSelectionColor: Style.colorSelection
+        property color textPlaceHolderColor: Style.colorPlaceholderText
+        property color textSelectedColor: Style.colorSelectedText
+        property color innerShadowColor: Style.colorInnerShadow
+
+        property color greenColor: Style.colorGreen
+        property color redColor: Style.colorRed
+
+        property color whiteblack: Style.colorWhite1
+        property color colorThemeDarkLight: Style.colorThemeDarkLight
+
+
+        property color rectangleBorderColor: Style.colorBorder
+        property int rectangleRadius: Style.rectangleCornerRadius
+        property string bigSidebarLogo: "dex-logo-sidebar.png"
+        property string smallSidebarLogo: "dex-logo.png"
 
 
 
@@ -637,7 +676,7 @@ Rectangle {
         readonly property string colorThemeDark:  dark_theme ? "#26282C" : "#26282C"
         readonly property string colorThemeDark2:  dark_theme ? "#3C4150" : "#E6E8ED"
         readonly property string colorThemeDark3:  dark_theme ? "#78808D" : "#78808D"
-        readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#456078"
+        //readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#456078"
 
         readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
         readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
@@ -646,10 +685,10 @@ Rectangle {
         readonly property string colorGradient2:  dark_theme ? colorTheme5 : colorTheme5
         readonly property string colorGradient3:  dark_theme ? "#24283D" : "#24283D"
         readonly property string colorGradient4:  dark_theme ? "#0D0F21" : "#0D0F21"
-        readonly property string colorLineGradient1:  dark_theme ? "#2c2f3c" : "#EEF1F7"
-        readonly property string colorLineGradient2:  dark_theme ? "#06070c" : "#DCE1E8"
-        readonly property string colorLineGradient3:  dark_theme ? "#090910" : "#EEF1F7"
-        readonly property string colorLineGradient4:  dark_theme ? "#24283b" : "#DCE1E8"
+        //readonly property string colorLineGradient1:  dark_theme ? "#2c2f3c" : "#EEF1F7"
+        //readonly property string colorLineGradient2:  dark_theme ? "#06070c" : "#DCE1E8"
+        //readonly property string colorLineGradient3:  dark_theme ? "#090910" : "#EEF1F7"
+        //readonly property string colorLineGradient4:  dark_theme ? "#24283b" : "#DCE1E8"
         readonly property string colorDropShadowLight:  dark_theme ? "#216975a4" : "#21FFFFFF"
         readonly property string colorDropShadowLight2:  dark_theme ? "#606975a4" : "#60FFFFFF"
         readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#BECDE2"
@@ -674,7 +713,7 @@ Rectangle {
         readonly property string colorSidebarHighlightGradient2:  dark_theme ? "#BA1B5E7D" : "#AD7faaf0"
         readonly property string colorSidebarHighlightGradient3:  dark_theme ? "#5F1B5E7D" : "#A06dc9f3"
         readonly property string colorSidebarHighlightGradient4:  dark_theme ? "#001B5E7D" : "#006bcef4"
-        readonly property string colorSidebarDropShadow:  dark_theme ? "#90000000" : "#BECDE2"
+        //readonly property string colorSidebarDropShadow:  dark_theme ? "#90000000" : "#BECDE2"
         readonly property string colorSidebarSelectedText:  dark_theme ? "#FFFFFF" : "#FFFFFF"
 
         readonly property string colorCoinListHighlightGradient:  dark_theme ? "#2C2E40" : "#E0E6F0"

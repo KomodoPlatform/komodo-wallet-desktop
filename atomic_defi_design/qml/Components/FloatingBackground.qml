@@ -8,8 +8,8 @@ Item {
     property alias color: rect.color
     property double border_gradient_start_pos: 0.35
     property double border_gradient_end_pos: 0.65
-    property color border_color_start: Style.colorRectangleBorderGradient1
-    property color border_color_end: Style.colorRectangleBorderGradient2
+    property color border_color_start: theme.colorInnerShadowTop
+    property color border_color_end: theme.colorInnerShadowBottom
     property alias radius: rect.radius
     property alias border: rect.border
     property alias inner_space: inner_space
@@ -79,7 +79,7 @@ Item {
         radius: verticalShadow ? 25 : 15
         samples: 32
         spread: 0
-        color: verticalShadow ? Style.colorDropShadowLight2 : Style.colorDropShadowLight
+        color: verticalShadow ? theme.floatShadow2 : theme.floatShadow1
         smooth: true
         z: -2
     }
@@ -95,7 +95,7 @@ Item {
         radius: verticalShadow ? 25 : 20
         samples: 32
         spread: 0
-        color: Style.colorDropShadowDark
+        color: theme.floatBoxShadowDark
         smooth: true
         z: -2
     }

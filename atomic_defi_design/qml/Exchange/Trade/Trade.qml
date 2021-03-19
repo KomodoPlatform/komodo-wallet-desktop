@@ -57,8 +57,7 @@ Item {
     readonly property bool block_everything: swap_cooldown.running
                                              || fetching_multi_ticker_fees_busy
 
-    readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
-    readonly property alias multi_order_enabled: multi_order_switch.checked
+    readonly property bool fetching_multi_ticker_fees_busy: false
 
     signal prepareMultiOrder
     property bool multi_order_values_are_valid: true
@@ -110,7 +109,7 @@ Item {
 
     function reset() {
         //API.app.trading_pg.multi_order_enabled = false
-        multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
+        //multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
     }
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
@@ -325,11 +324,11 @@ Item {
                     ItemBox {
                         title: "Multi-Order"
                         defaultHeight: 250
-                        visible: API.app.trading_pg.multi_order_enabled
-                        MultiOrder {
-                            anchors.topMargin: 40
-                            anchors.fill: parent
-                        }
+                        visible: false
+//                        MultiOrder {
+//                            anchors.topMargin: 40
+//                            anchors.fill: parent
+//                        }
                     }
 
                     ItemBox {
@@ -380,7 +379,7 @@ Item {
                                 width: parent.width
                                 currentIndex: tabView.currentIndex
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                Material.foreground: Style.colorWhite4
+                                Material.foreground: theme.foregroundColor
                                 background: Rectangle {
                                     radius: 0
                                     color: theme.dexBoxBackgroundColor
@@ -407,19 +406,19 @@ Item {
                                 Qaterial.TabButton {
                                     width: 150
                                     text: qsTr("Exchange Rates")
-                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                     opacity: checked ? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("Orders")
-                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                     opacity: checked ? 1 : .6
                                 }
                                 Qaterial.TabButton {
                                     width: 120
                                     text: qsTr("history")
-                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : Style.colorWhite1
+                                    foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                     opacity: checked ? 1 : .6
                                 }
                             }
@@ -571,7 +570,7 @@ Item {
                         hideHeader: true
                         //clip: true
                         visible: true
-                        bottomBorderColor: sell_mode? Style.colorGreen : Style.colorRed
+                        bottomBorderColor: sell_mode? theme.greenColor : theme.redColor
                         TotalView {}
                     }
                     Item {
@@ -586,8 +585,8 @@ Item {
                                 height: 30
                                 radius: 8
                                 color: !sell_mode ? Qt.darker(
-                                                        Style.colorGreen) : theme.backgroundColor
-                                border.color: !sell_mode ? Style.colorGreen : theme.dexBoxBackgroundColor
+                                                        theme.greenColor) : theme.backgroundColor
+                                border.color: !sell_mode ? theme.greenColor : theme.dexBoxBackgroundColor
                                 Rectangle {
                                     anchors.right: parent.right
                                     color: parent.color
@@ -606,9 +605,9 @@ Item {
                                 }
                                 DefaultText {
                                     anchors.centerIn: parent
-                                    font.pixelSize: Style.textSizeSmall5
                                     opacity: !sell_mode ? 1 : .5
                                     text: "Buy "+left_ticker
+                                    color: !sell_mode? Qaterial.Colors.white : theme.foregroundColor
                                 }
                                 DefaultMouseArea {
                                     anchors.fill: parent
@@ -621,8 +620,8 @@ Item {
                                 height: 30
                                 radius: 8
                                 color: sell_mode ? Qt.darker(
-                                                       Style.colorRed) : theme.backgroundColor
-                                border.color: sell_mode ? Style.colorRed : theme.dexBoxBackgroundColor
+                                                       theme.redColor) : theme.backgroundColor
+                                border.color: sell_mode ? theme.redColor : theme.dexBoxBackgroundColor
                                 Rectangle {
                                     anchors.left: parent.left
                                     color: parent.color
@@ -640,9 +639,11 @@ Item {
                                 }
                                 DefaultText {
                                     anchors.centerIn: parent
-                                    font.pixelSize: Style.textSizeSmall5
+
                                     opacity: sell_mode ? 1 : .5
                                     text: "Sell "+left_ticker
+                                    color: sell_mode? Qaterial.Colors.white : theme.foregroundColor
+
                                 }
                                 DefaultMouseArea {
                                     anchors.fill: parent
@@ -656,6 +657,7 @@ Item {
                         expandedVert: true
                         hideHeader: true
                         title: "Form"
+                        minimumHeight: 300
                         ColumnLayout {
                             property int space: 10
                             anchors.fill: parent
@@ -670,17 +672,17 @@ Item {
                                     height: 40
                                     color: 'transparent'
                                     radius: 8
-                                    border.color: Style.colorRed
+                                    border.color: theme.redColor
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     y: 5
                                     DefaultText {
                                         anchors.verticalCenter: parent.verticalCenter
                                         leftPadding: 15
-                                        color: Style.colorRed
+                                        color: theme.redColor
                                         text: qsTr("Order Selected")
                                     }
                                     Qaterial.FlatButton {
-                                        foregroundColor: Style.colorRed
+                                        foregroundColor: theme.redColor
                                         icon.source: Qaterial.Icons.close
                                         anchors.right: parent.right
                                         anchors.verticalCenter: parent.verticalCenter
@@ -728,8 +730,7 @@ Item {
 
                                         text: qsTr("Start Swap")
                                         font.weight: Font.Medium
-                                        enabled: !multi_order_enabled
-                                                 && form_base.can_submit_trade
+                                        enabled: form_base.can_submit_trade
                                         onClicked: confirm_trade_modal.open()
                                     }
 
@@ -750,7 +751,7 @@ Item {
                                             width: parent.width
                                             horizontalAlignment: DefaultText.AlignHCenter
                                             font.pixelSize: Style.textSizeSmall4
-                                            color: Style.colorRed
+                                            color: theme.redColor
 
                                             text_value: General.getTradingError(
                                                             last_trading_error,
@@ -765,122 +766,32 @@ Item {
                         }
                     }
                     ItemBox {
-                        defaultHeight: 200
-                        maximumHeight: 300
-                        minimumHeight: 150
+                        id: _best_order_box2
+                        visible: !isUltraLarge
+                        SplitView.fillWidth: true
+                        SplitView.fillHeight: true
+                        defaultHeight: 250
+                        minimumHeight: 130
                         //clip: true
-                        title: "Multi-Order"
-                        visible: sell_mode
+                        //smooth: true
+                        title: "Best Orders"
+                        reloadable: true
+                        onReload: {
+                            API.app.trading_pg.orderbook.refresh_best_orders()
+                        }
 
-                        Item {
-                            id: multi
-                            enabled: false
-                            clip: true
-                            anchors.fill: parent
-                            anchors.topMargin: 40
-                            Item {
-
-                                width: parent.width
-                                height: multi_order_swith_col.height + 10
-                                Column {
-                                    id: multi_order_swith_col
-                                    width: parent.width - 10
-                                    padding: 5
-                                    spacing: 10
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    bottomPadding: 0
-                                    DefaultSwitch {
-                                        id: multi_order_switch
-                                        Layout.fillWidth: true
-
-                                        text: qsTr("Multi-Order")
-                                        enabled: !block_everything
-                                                 && (form_base.can_submit_trade
-                                                     || checked)
-
-                                        checked: API.app.trading_pg.multi_order_enabled
-                                        onCheckedChanged: {
-                                            if (checked) {
-                                                setVolume(max_volume)
-                                                API.app.trading_pg.multi_order_enabled = checked
-                                            } else {
-                                                API.app.trading_pg.multi_order_enabled = checked
-                                            }
-                                        }
-                                    }
-
-                                    DefaultText {
-                                        width: parent.width - 20
-                                        wrapMode: Label.Wrap
-                                        text_value: qsTr("Select additional assets for multi-order creation.")
-                                        font.pixelSize: Style.textSizeSmall2
-                                    }
-
-                                    DefaultText {
-                                        width: parent.width - 10
-                                        wrapMode: Label.Wrap
-                                        font.pixelSize: Style.textSizeSmall2
-                                        text_value: qsTr("Same funds will be used until an order matches.")
-                                    }
-
-                                    DefaultButton {
-                                        text: qsTr("Submit Trade")
-                                        width: parent.width - 10
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                        enabled: multi_order_enabled
-                                                 && form_base.can_submit_trade
-                                        onClicked: {
-                                            multi_order_values_are_valid = true
-                                            prepareMultiOrder()
-                                            if (multi_order_values_are_valid)
-                                                confirm_multi_order_trade_modal.open()
-                                        }
-                                    }
-                                }
+                        Behavior on SplitView.preferredWidth {
+                            NumberAnimation {
+                                duration: 100
                             }
                         }
-                        FastBlur {
-
-                            anchors.fill: multi
-                            source: multi
-                            radius: 35
-                        }
-                        Rectangle {
-                            anchors.fill: parent
-                            color: parent.color
-                            opacity: .9
-                        }
-                        Column {
-                            clip: true
-                            topPadding: 10
+                        BestOrder.List {
+                            clip: !parent.contentVisible
+                            id: best_order_list2
                             visible: parent.contentVisible
+                            y: 40
                             width: parent.width
-                            height: 100
-                            anchors.centerIn: parent
-                            spacing: 20
-                            Qaterial.ColorIcon {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                source: Qaterial.Icons.rocketLaunchOutline
-                                iconSize: 30
-                                Behavior on rotation {
-                                    NumberAnimation {
-                                        duration: 500
-                                    }
-                                }
-
-                                Timer {
-                                    running: false
-                                    repeat: true
-                                    interval: 1500
-                                    onTriggered: parent.rotation += 180
-                                }
-                            }
-                            DefaultText {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Coming Soon!"
-                                font.weight: Font.Light
-                                font.pixelSize: 16
-                            }
+                            height: parent.height-40
                         }
                     }
                 }
@@ -892,10 +803,7 @@ Item {
             sourceComponent: ConfirmTradeModal {}
         }
 
-        ModalLoader {
-            id: confirm_multi_order_trade_modal
-            sourceComponent: ConfirmMultiOrderTradeModal {}
-        }
+
     }
 
     TradeViewHeader {

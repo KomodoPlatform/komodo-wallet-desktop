@@ -14,37 +14,17 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
-//! Qt
-#include <QObject>
-#include <QStringList>
-
-//! Deps
-#include <antara/gaming/ecs/system.manager.hpp>
-
-#include "atomicdex/models/qt.portfolio.model.hpp"
-#include "qt.market.pairs.hpp"
+#include "atomicdex/pages/widgets/dex/qt.multi.orders.widget.hpp"
 
 namespace atomic_dex
 {
-    class qt_orders_widget final : public QObject
+    qt_multi_orders_widget::qt_multi_orders_widget(antara::gaming::ecs::system_manager& system_manager, QObject* parent) noexcept :
+        QObject(parent), m_system_mgr(system_manager)
+
     {
-        Q_OBJECT
+        SPDLOG_INFO("qt_orders_widget created");
+    }
 
-        //! Private member fields
-        ag::ecs::system_manager& m_system_mgr;
+    qt_multi_orders_widget::~qt_multi_orders_widget() noexcept { SPDLOG_INFO("qt_orders widget destroyed"); }
 
-        //! Private member functions
-        void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
-
-      public:
-        qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
-        ~qt_orders_widget() noexcept final;
-
-        //! QML_API
-        Q_INVOKABLE void cancel_order(const QStringList& orders_id);
-        Q_INVOKABLE void cancel_all_orders();
-        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
-    };
 } // namespace atomic_dex

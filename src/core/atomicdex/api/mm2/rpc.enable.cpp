@@ -31,7 +31,7 @@ namespace mm2::api
         if (cfg.coin_type == CoinType::ERC20)
         {
             j["gas_station_url"]       = cfg.gas_station_url;
-            j["swap_contract_address"] = cfg.erc_swap_contract_address;
+            j["swap_contract_address"] = cfg.is_testnet ? cfg.erc_testnet_swap_contract_address : cfg.erc_swap_contract_address;
             j["urls"]                  = cfg.urls;
         }
         j["tx_history"] = cfg.with_tx_history;
@@ -44,5 +44,6 @@ namespace mm2::api
         j.at("address").get_to(cfg.address);
         j.at("balance").get_to(cfg.balance);
         j.at("result").get_to(cfg.result);
+        // SPDLOG_INFO("balance for {} is {}", cfg.address, cfg.balance);
     }
 } // namespace mm2::api

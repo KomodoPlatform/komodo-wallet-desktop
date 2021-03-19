@@ -2,7 +2,6 @@ import QtQuick 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
-import QtWebEngine 1.8
 import "../Exchange/Trade/"
 import "../Constants/" as Constants
 
@@ -160,7 +159,7 @@ InnerBackground {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                     text: _control.title
-                    color: Constants.Style.colorWhite4
+                    color: theme.foregroundColor
                     bottomPadding: 5
                 }
                 Row {
@@ -181,6 +180,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.reloadable
                         icon.source: Qaterial.Icons.refresh
                         onClicked: {
@@ -195,6 +195,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: _control.hidden =!_control.hidden
                     }
@@ -203,6 +204,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
@@ -212,6 +214,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
                         icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
                         onClicked: _control.expandedHort =!_control.expandedHort
@@ -221,6 +224,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -229,6 +233,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                     }
@@ -248,7 +253,7 @@ InnerBackground {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 text: _control.title
-                color: Constants.Style.colorWhite4
+                color: theme.foregroundColor
                 bottomPadding: 5
                 rotation: 90
                 anchors.centerIn: parent
@@ -266,6 +271,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: {
                             _control.hidden = !_control.hidden
@@ -276,6 +282,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
@@ -285,6 +292,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
                         icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
                         onClicked: _control.expandedHort =!_control.expandedHort
@@ -294,6 +302,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -302,6 +311,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
+                        foregroundColor: theme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                     }

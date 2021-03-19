@@ -8,4 +8,5 @@ namespace atomic_dex
 {
     MarketModeGadget::MarketModeGadget() {}
     TradingErrorGadget::TradingErrorGadget() {}
+    TradingModeGadget::TradingModeGadget() {}
 } // namespace atomic_dex

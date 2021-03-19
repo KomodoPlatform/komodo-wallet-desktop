@@ -32,7 +32,7 @@ RowLayout {
             anchors.verticalCenter: parent.verticalCenter
             DefaultText {
                 text_value: !details ? "" :
-                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`
+                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${theme.foregroundColor}">${details.name}</font>`
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }
@@ -41,8 +41,7 @@ RowLayout {
                 id: bottom_line
                 text_value: !details ? "" :
                             details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency) + ")"
-                color: Style.colorText2
-                font.pixelSize: Style.textSizeSmall2
+                color: theme.foregroundColor
             }
         }
     }
