@@ -141,12 +141,6 @@ namespace atomic_dex
     std::string
     band_oracle_price_service::last_oracle_reference() const noexcept
     {
-        std::string out;
-        if (is_oracle_ready())
-        {
-            const auto result = m_oracle_price_result.synchronize();
-            out               = result->band_oracle_data.at("BTC").reference;
-        }
-        return out;
+        return "";
     }
 } // namespace atomic_dex

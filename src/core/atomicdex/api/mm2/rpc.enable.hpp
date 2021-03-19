@@ -30,7 +30,9 @@ namespace mm2::api
         std::string              coin_name;
         std::vector<std::string> urls;
         CoinType                 coin_type;
+        bool                     is_testnet{false};
         const std::string        erc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
+        const std::string        erc_testnet_swap_contract_address{"0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94"};
         std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
         std::string              type; ///< QRC-20 ?
         bool                     with_tx_history{true};
