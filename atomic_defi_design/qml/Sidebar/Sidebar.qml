@@ -40,7 +40,7 @@ Item {
             }
             GradientStop {
                 position: cursor_round_edge.radius / cursor.width
-                color: zrtheme.navigationSideBarButtonGradient1
+                color: theme.navigationSideBarButtonGradient1
             }
             GradientStop {
                 position: 0.375

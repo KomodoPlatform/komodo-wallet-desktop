@@ -240,10 +240,22 @@ QtObject {
     }
 
     function getCoinTypeColor(type) {
-        return getCoinColor(type === "ERC-20" ? "ETH" :
-                            type === "QRC-20" ? "QTUM" :
-                            type === "Smart Chain" ? "KMD" :
-                                                     "BTC")
+        switch (type) {
+          case 'ERC-20':
+            return getCoinColor("ETH")
+          case 'QRC-20':
+            return getCoinColor("QTUM")
+          case 'Smart Chain':
+            return getCoinColor("KMD")
+          case 'UTXO':
+            return getCoinColor("BTC")
+          case 'BEP-20':
+            return getCoinColor("BNB")
+          case 'SLP':
+            return getCoinColor("BCH")
+          default:
+            return getCoinColor("BTC")
+        }
     }
 
     function getCoinColor(ticker) {
