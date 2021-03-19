@@ -72,6 +72,7 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
+        tests/api/oasis/oasis.tests.cpp
 
         ##! Utilities
         tests/utilities/qt.utilities.tests.cpp
