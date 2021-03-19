@@ -9,6 +9,8 @@ import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 
+import AtomicDEX.TradingMode 1.0
+
 import "../" as OtherPage
 
 import "../../../Components"

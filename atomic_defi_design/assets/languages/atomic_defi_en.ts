@@ -1863,17 +1863,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="126"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="125"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="128"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="127"/>
         <source>Amount to sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="128"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="127"/>
         <source>Amount to receive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2983,27 +2983,27 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="201"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="200"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="210"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="209"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="409"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="408"/>
         <source>Exchange Rates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="415"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="414"/>
         <source>Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="421"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="420"/>
         <source>history</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3015,21 +3015,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="731"/>
         <source>Start Swap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="798"/>
-        <source>Multi-Order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="817"/>
-        <source>Select additional assets for multi-order creation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="825"/>
-        <source>Same funds will be used until an order matches.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
