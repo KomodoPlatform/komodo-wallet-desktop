@@ -428,5 +428,6 @@
         <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Combo_fiat.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ProView.qml</file>
+        <file>atomic_defi_design/assets/images/bill.svg</file>
     </qresource>
 </RCC>
