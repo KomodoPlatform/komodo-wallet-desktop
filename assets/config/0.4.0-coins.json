@@ -1513,12 +1513,11 @@
     "currently_enabled": false
   },
   "tBTC": {
-    "is_testnet": true,
-    "active": false,
     "coin": "tBTC",
+    "name": "tBTC (testnet)",
+    "is_testnet": true,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
     "electrum": [
       {
         "url": "testnet.aranguren.org:51001",
@@ -1537,8 +1536,9 @@
     "explorer_url": [
       "https://blockstream.info/testnet/"
     ],
-    "name": "Bitcoin (testnet BTC)",
-    "type": "UTXO"
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
   },
   "ETHR": {
     "coin": "ETHR",
@@ -1602,13 +1602,12 @@
     "type": "QRC-20"
   },
   "tQTUM": {
+    "coin": "tQTUM",
+    "name": "tQTUM (testnet)",
     "need_electrum": true,
     "is_testnet": true,
-    "active": false,
-    "coin": "tQTUM",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10071"
@@ -1623,8 +1622,9 @@
     "explorer_url": [
       "https://testnet.qtum.info/"
     ],
-    "name": "QTUM (testnet)",
-    "type": "QRC-20"
+    "type": "QRC-20",
+    "active": false,
+    "currently_enabled": false
   },
   "INK": {
     "coin": "INK",
