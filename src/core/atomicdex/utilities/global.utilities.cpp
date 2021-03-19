@@ -87,7 +87,7 @@ namespace atomic_dex::utils
 #if defined(_WIN32) || defined(WIN32)
         appdata_path = fs::path(std::getenv("APPDATA")) / std::string(DEX_COMMON_DATA_FOLDER);
 #else
-        appdata_path = fs::path(std::getenv("HOME")) / ("." + std::string(DEX_COMMON_DATA_FOLDER));
+        appdata_path = fs::path(std::getenv("HOME")) / ".atomic_qt";
 #endif
         return appdata_path;
     }
@@ -98,7 +98,7 @@ namespace atomic_dex::utils
 #if defined(PREFER_BOOST_FILESYSTEM)
         return p.string();
 #else
-        auto res = p.u8string();
+        auto res     = p.u8string();
 
         auto functor = [](auto&& r) {
             if constexpr (std::is_same_v<std::remove_cvref_t<decltype(r)>, std::string>)
