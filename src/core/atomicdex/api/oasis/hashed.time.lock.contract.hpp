@@ -73,9 +73,21 @@ namespace atomic_dex::oasis::api
 
     void from_json(const nlohmann::json& j, clearing& cfg);
 
+    struct settlement_descriptor
+    {
+        std::string type;
+    };
+
+    void from_json(const nlohmann::json& j, settlement_descriptor& cfg);
+
     struct settlement
     {
+        std::string                                       status;
+        std::optional<std::string>                        type;
+        std::optional<std::vector<settlement_descriptor>> options;
     };
+
+    void from_json(const nlohmann::json& j, settlement& cfg);
 
     struct hashed_timed_lock_contract
     {
