@@ -7,7 +7,7 @@ import QtCharts 2.3
 
 import "../Components"
 import "../Constants"
-
+ 
 // Portfolio
 ColumnLayout {
     id: portfolio
