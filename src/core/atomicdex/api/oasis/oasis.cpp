@@ -24,8 +24,7 @@ namespace atomic_dex::oasis::api
         req.headers().set_content_type(FROM_STD_STR("application/json"));
         SPDLOG_INFO("req: {}", json_body.dump(4));
         req.set_body(json_body.dump());
-        req.set_request_uri("/htlc");
-
+        req.set_request_uri(FROM_STD_STR("/htlc"));
         return is_testing ? g_oasis_testing_client->request(req) : g_oasis_client->request(req);
     }
 } // namespace atomic_dex::oasis::api
