@@ -67,7 +67,7 @@ TEST_CASE("create an HTLC contract")
         .preimage    = oasis::api::preimage{.size = 32},
         .expires     = date::format("%FT%TZ", t),
         .include_fee = true};
-    const auto resp = oasis::api::create_htlc(std::move(htlc)).get();
+    const auto resp = oasis::api::create_htlc(std::move(htlc), true).get();
     auto       body = TO_STD_STR(resp.extract_string(true).get());
     CHECK_EQ(resp.status_code(), 200);
     SPDLOG_INFO("body: {}", body);
