@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 
 namespace atomic_dex
@@ -106,7 +106,7 @@ namespace atomic_dex
                 return false;
             }
         }
-        
+
         if (m_with_fiat_balance)
         {
             if (this->sourceModel()->data(idx, portfolio_model::MainCurrencyBalanceRole).toFloat() == 0.F)
@@ -185,13 +185,9 @@ namespace atomic_dex
             this->invalidateFilter();
         }
     }
-    
-    bool portfolio_proxy_model::get_with_fiat_balance() const noexcept
-    {
-        return m_with_fiat_balance;
-    }
-    
-    void portfolio_proxy_model::set_with_fiat_balance(bool value) noexcept
+
+    void
+    portfolio_proxy_model::set_with_fiat_balance(bool value) noexcept
     {
         m_with_fiat_balance = value;
     }

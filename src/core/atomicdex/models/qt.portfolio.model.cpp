@@ -45,6 +45,8 @@ namespace atomic_dex
 
         m_pie_chart_proxy_model->setSourceModel(this);
         m_pie_chart_proxy_model->setDynamicSortFilter(true);
+        m_pie_chart_proxy_model->set_with_fiat_balance(true);
+        m_pie_chart_proxy_model->sort_by_currency_balance(false);
         m_pie_chart_proxy_model->setFilterRole(NameAndTicker);
         m_pie_chart_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
