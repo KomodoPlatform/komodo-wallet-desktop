@@ -53,6 +53,26 @@ namespace atomic_dex::oasis::api
 namespace atomic_dex::oasis::api
 {
     void
+    from_json(const nlohmann::json& j, settlement_descriptor& cfg)
+    {
+        j.at("type").get_to(cfg.type);
+    }
+
+    void
+    from_json(const nlohmann::json& j, settlement& cfg)
+    {
+        j.at("status").get_to(cfg.status);
+        if (j.contains("type"))
+        {
+            cfg.type = j.at("type").get<std::string>();
+        }
+        if (j.contains("options"))
+        {
+            cfg.options = j.at("options").get<std::vector<settlement_descriptor>>();
+        }
+    }
+
+    void
     from_json(const nlohmann::json& j, sepa_recipient& cfg)
     {
         j.at("bic").get_to(cfg.bic);
@@ -135,6 +155,11 @@ namespace atomic_dex::oasis::api
         if (j.contains("preimage"))
         {
             htlc.preimage = j.at("preimage").get<preimage>();
+        }
+
+        if (j.contains("clearing"))
+        {
+            htlc.clearing = j.at("clearing").get<clearing>();
         }
 
         j.at("expires").get_to(htlc.expires);
