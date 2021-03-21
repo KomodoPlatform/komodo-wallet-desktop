@@ -18,8 +18,8 @@ RowLayout {
 
     // Local
     function onClickedSwap() {
+        API.app.trading_pg.set_pair(true, api_wallet_page.ticker)
         dashboard.current_page = idx_dashboard_exchange
-        dashboard.openTradeViewWithTicker()
     }
 
     function reset() {

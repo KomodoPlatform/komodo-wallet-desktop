@@ -17,8 +17,8 @@ ComboBox {
 
     font.family: Style.font_family
 
-    property color lineHoverColor: Style.colorTheme5
-    property color mainBorderColor: control.pressed ? Style.colorTheme8 : Style.colorTheme5
+    property color lineHoverColor: theme.hightlightColor
+    property color mainBorderColor: control.pressed ? theme.surfaceColor : theme.hightlightColor
     Behavior on lineHoverColor { ColorAnimation { duration: Style.animationDuration } }
     Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
 
@@ -54,7 +54,7 @@ ComboBox {
         id: bg_rect
         implicitWidth: 120
         implicitHeight: 40
-        color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
+        color: !control.enabled ? theme.hightlightColor : control.hovered ? theme.backgroundColor : theme.dexBoxBackgroundColor
         border.color: control.mainBorderColor
         border.width: control.visualFocus ? 2 : 1
         radius: Style.rectangleCornerRadius
@@ -81,7 +81,7 @@ ComboBox {
         }
 
         background: AnimatedRectangle {
-            color: Style.colorTheme9
+            color: theme.dexBoxBackgroundColor
             border.color: control.mainBorderColor
             radius: Style.rectangleCornerRadius
         }

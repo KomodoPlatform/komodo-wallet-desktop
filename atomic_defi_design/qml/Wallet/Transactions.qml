@@ -21,7 +21,7 @@ DefaultListView {
         implicitWidth: list.width
         height: row_height
 
-        color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
+        color: mouse_area.containsMouse? theme.hightlightColor : 'transparent'
 
         DefaultMouseArea {
             id: mouse_area

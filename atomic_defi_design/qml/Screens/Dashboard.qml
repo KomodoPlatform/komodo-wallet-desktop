@@ -13,6 +13,7 @@ import "../Exchange"
 import "../Settings"
 import "../Support"
 import "../Sidebar"
+import "../Fiat"
 
 Item {
     id: dashboard
@@ -27,6 +28,7 @@ Item {
     readonly property int idx_dashboard_support: 7
     readonly property int idx_dashboard_light_ui: 8
     readonly property int idx_dashboard_privacy_mode: 9
+    readonly property int idx_dashboard_fiat_ramp: 10
 
     //readonly property int idx_exchange_trade: 3
     readonly property int idx_exchange_trade: 0
@@ -39,6 +41,9 @@ Item {
     function openLogsFolder() {
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
+    SettingModal {
+        id: settings_modal
+    }
 
     readonly property var api_wallet_page: API.app.wallet_pg
     readonly property var current_ticker_infos: api_wallet_page.ticker_infos
@@ -47,6 +52,7 @@ Item {
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
+
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
 
@@ -72,7 +78,7 @@ Item {
 
     // Right side
     AnimatedRectangle {
-        color: Style.colorTheme8
+        color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
         height: parent.height
         x: sidebar.width
@@ -151,6 +157,14 @@ Item {
             }
         }
 
+        Component {
+            id: fiat_ramp
+
+            FiatRamp {
+
+            }
+        }
+
         DefaultLoader {
             id: loader
 
@@ -167,6 +181,7 @@ Item {
                 case idx_dashboard_dapps: return dapps
                 case idx_dashboard_settings: return settings
                 case idx_dashboard_support: return support
+                case idx_dashboard_fiat_ramp: return fiat_ramp
                 default: return undefined
                 }
             }
@@ -179,12 +194,14 @@ Item {
 
             DefaultBusyIndicator {
                 anchors.centerIn: parent
+                running: !loader.visible
             }
         }
     }
 
     // Sidebar, left side
     Sidebar {
+
         id: sidebar
     }
 
@@ -197,7 +214,7 @@ Item {
 
         x: sidebar.app_logo.x + sidebar.app_logo.width - 20
         y: sidebar.app_logo.y
-        color: Qt.lighter(notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
+        color: Qt.lighter(notifications_list.length > 0 ? Style.colorRed : theme.backgroundColor, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
 
         DefaultText {
             id: count_text
@@ -205,7 +222,7 @@ Item {
             text_value: notifications_list.length
             font.pixelSize: Style.textSizeSmall1
             font.weight: Font.Medium
-            color: notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
+            color: notifications_list.length > 0 ? theme.foregroundColor : Qt.darker(theme.foregroundColor)
         }
     }
 
@@ -235,7 +252,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: Style.colorSidebarDropShadow
+        color: theme.colorSidebarDropShadow
         smooth: true
     }
 
@@ -248,6 +265,10 @@ Item {
     ModalLoader {
         id: cex_rates_modal
         sourceComponent: CexInfoModal {}
+    }
+    ModalLoader {
+        id: min_trade_modal
+        sourceComponent: MinTradeModal {}
     }
 
     ModalLoader {

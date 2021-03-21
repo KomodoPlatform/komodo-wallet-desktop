@@ -92,13 +92,11 @@ macro(download_app_image)
 endmacro()
 
 macro(target_enable_asan target)
-    if (USE_ASAN AND NOT EMSCRIPTEN)
-        message("-- ASAN Enabled, Configuring...")
-        target_compile_options(${target} PUBLIC
-                $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fsanitize=address -fno-omit-frame-pointer>)
-        target_link_options(${target} PUBLIC
-                $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fsanitize=address -fno-omit-frame-pointer>)
-    endif ()
+    message("-- ASAN Enabled, Configuring...")
+    target_compile_options(${target} PUBLIC
+            $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fsanitize=address -fno-omit-frame-pointer>)
+    target_link_options(${target} PUBLIC
+            $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-fsanitize=address -fno-omit-frame-pointer>)
 endmacro()
 
 

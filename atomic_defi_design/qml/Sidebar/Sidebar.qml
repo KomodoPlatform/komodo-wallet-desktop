@@ -9,10 +9,17 @@ import "../Components"
 
 Item {
     id: sidebar
+    property bool expanded: dashboard.current_page===dashboard.idx_dashboard_exchange? false : true
     readonly property alias app_logo: app_logo
 
     x: -top_rect.radius
-    width: 200 - x
+    width: expanded? 200 - x : 80 - x
+    Behavior on width {
+        NumberAnimation {
+            duration: 300
+        }
+    }
+
     height: parent.height
 
     // Cursor
@@ -29,23 +36,23 @@ Item {
 
             GradientStop {
                 position: 0.0
-                color: Style.colorSidebarHighlightGradient1
+                color: theme.navigationSideBarButtonGradient1
             }
             GradientStop {
                 position: cursor_round_edge.radius / cursor.width
-                color: Style.colorSidebarHighlightGradient1
+                color: theme.navigationSideBarButtonGradient1
             }
             GradientStop {
                 position: 0.375
-                color: Style.colorSidebarHighlightGradient2
+                color: theme.navigationSideBarButtonGradient2
             }
             GradientStop {
                 position: 0.7292
-                color: Style.colorSidebarHighlightGradient3
+                color: theme.navigationSideBarButtonGradient3
             }
             GradientStop {
                 position: 1.0
-                color: Style.colorSidebarHighlightGradient4
+                color: theme.navigationSideBarButtonGradient4 
             }
         }
     }
@@ -53,12 +60,12 @@ Item {
     // Top Rect
     SidebarPanel {
         id: top_rect
+        visible: true
         anchors.left: parent.left
         width: parent.width
         anchors.top: parent.top
         anchors.bottom: cursor_round_edge.top
 
-        radius: Style.rectangleCornerRadius
     }
 
     // Bottom Rect
@@ -69,7 +76,6 @@ Item {
         anchors.top: cursor_round_edge.bottom
         anchors.bottom: parent.bottom
 
-        radius: Style.rectangleCornerRadius
     }
 
 
@@ -93,12 +99,14 @@ Item {
     // Cursor left edge
     AnimatedRectangle {
         id: cursor_round_edge
-        color: Style.colorSidebarHighlightGradient1
+        color: theme.navigationSideBarButtonGradient1
         width: radius*2
+
         anchors.rightMargin: -width/2
         height: Style.sidebarLineHeight
         anchors.right: cursor.left
-        radius: Style.rectangleCornerRadius
+        visible: true
+        radius: theme.rectangleRadius
 
         y: {
             switch(dashboard.current_page) {
@@ -126,26 +134,31 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: General.image_path + Style.sidebar_atomicdex_logo
+            source: expanded? "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo : "file:///"+atomic_logo_path +  "/"+ theme.smallSidebarLogo
             anchors.horizontalCenter: parent.horizontalCenter
-            y: parent.width * 0.25
+            y: expanded? parent.width * 0.25 : parent.width * 0.40
             transformOrigin: Item.Center
-            height: 85
+            height: expanded? 85 : 65
+            scale: expanded? 1 : .8
         }
 
         Separator {
             anchors.bottom: version_text.top
             anchors.bottomMargin: 6
+            width: parent.width-10
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        DefaultText {
+        DexLabel {
             id: version_text
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
-            anchors.topMargin: parent.width * 0.85
+            anchors.topMargin: expanded? parent.width * 0.85 : parent.width * 1.4
+            width: parent.width-5
+            horizontalAlignment: DefaultText.AlignHCenter
+            wrapMode: DefaultText.Wrap
             text_value: General.version_string
-            font.pixelSize: Style.textSizeSmall1
+            font: theme.textType.caption
             color: Style.colorThemeDarkLight
         }
 

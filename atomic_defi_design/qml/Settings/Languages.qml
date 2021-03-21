@@ -14,6 +14,7 @@ ColumnLayout {
         spacing: 20
         DefaultText {
             id: label
+            visible: false
             Layout.alignment: Qt.AlignVCenter
             text_value: qsTr("Language") + ":"
             font.pixelSize: Style.textSizeSmall2

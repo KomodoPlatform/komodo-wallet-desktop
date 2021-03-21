@@ -7,8 +7,8 @@ Rectangle {
     property alias start_pos: g_start.position
     property alias end_pos: g_end.position
 
-    property color start_color: Style.colorGradient1
-    property color end_color: Style.colorGradient2
+    property color start_color: theme.sideBarGradient1
+    property color end_color: theme.sideBarGradient2
     Behavior on start_color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on end_color { ColorAnimation { duration: Style.animationDuration } }
 

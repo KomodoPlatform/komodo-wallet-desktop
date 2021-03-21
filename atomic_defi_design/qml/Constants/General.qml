@@ -65,8 +65,8 @@ QtObject {
 
 
     property bool initialized_orderbook_pair: false
-    readonly property string default_base: "KMD"
-    readonly property string default_rel: "BTC"
+    readonly property string default_base: atomic_app_primary_coin
+    readonly property string default_rel: atomic_app_secondary_coin
 
     function timestampToDouble(timestamp) {
         return (new Date(timestamp)).getTime()
@@ -300,7 +300,7 @@ QtObject {
         if(prevent_coin_disabling.running)
             return false
 
-        if(ticker === "KMD" || ticker === "BTC") return false
+        if(ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
         else if(ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
         else if(ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
 
@@ -348,9 +348,10 @@ QtObject {
 
         const tx_fee = txFeeText(trade_info, base_ticker, has_info_icon, has_limited_space)
         const trading_fee = tradingFeeText(trade_info, base_ticker, has_info_icon)
+        const minimum_amount = minimumtradingFeeText(trade_info, base_ticker, has_info_icon)
 
 
-        return tx_fee + "\n" + trading_fee
+        return tx_fee + "\n" + trading_fee +"<br>"+minimum_amount
     }
 
     function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
@@ -396,11 +397,21 @@ QtObject {
     function tradingFeeText(trade_info, base_ticker, has_info_icon=true) {
         if(!trade_info || !trade_info.trading_fee) return ""
 
-        return qsTr('Trading Fee') + ': ' + General.formatCrypto("", trade_info.trading_fee, trade_info.trading_fee_ticker) +
+        return trade_info.trading_fee_ticker+" "+qsTr('Trading Fee') + ': ' + General.formatCrypto("", trade_info.trading_fee, "") +
 
                 // Fiat part
                 (" ("+
                     getFiatText(trade_info.trading_fee, trade_info.trading_fee_ticker, has_info_icon)
+                 +")")
+    }
+    function minimumtradingFeeText(trade_info, base_ticker, has_info_icon=true) {
+        if(!trade_info || !trade_info.trading_fee) return ""
+
+        return API.app.trading_pg.market_pairs_mdl.left_selected_coin+" "+qsTr('Minimum Trading Amount') + ': ' + General.formatCrypto("", API.app.trading_pg.min_trade_vol , "") +
+
+                // Fiat part
+                (" ("+
+                    getFiatText(API.app.trading_pg.min_trade_vol , API.app.trading_pg.market_pairs_mdl.left_selected_coin, has_info_icon)
                  +")")
     }
 
@@ -416,8 +427,8 @@ QtObject {
             return ""
         case TradingError.TradingFeesNotEnoughFunds:
             return qsTr("Not enough balance for trading fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.trading_fee, fee_info.trading_fee_ticker))
-        case TradingError.BaseNotEnoughFunds:
-            return qsTr("Not enough balance for fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.total_base_fees, base_ticker))
+        case TradingError.TotalFeesNotEnoughFunds:
+            return qsTr("Not enough balance for fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.total_fees, base_ticker))
         case TradingError.BaseTransactionFeesNotEnough:
             return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.base_transaction_fees, fee_info.base_transaction_fees_ticker))
         case TradingError.RelTransactionFeesNotEnough:
@@ -456,6 +467,7 @@ QtObject {
                                                 "BAL/HUSD": "HUOBI:BALHUSD",
                                                 "BAND/BTC": "BINANCE:BANDBTC",
                                                 "BAND/ETH": "HUOBI:BANDETH",
+                                                "BAND/BUSD": "BINANCE:BANDBUSD",
                                                 "BAND/HUSD": "HUOBI:BANDHUSD",
                                                 "BAT/BUSD": "BINANCE:BATBUSD",
                                                 "BAT/USDC": "BINANCE:BATUSDC",
@@ -470,6 +482,7 @@ QtObject {
                                                 "BCH/USDC": "BINANCE:BCHUSDC",
                                                 "BCH/PAX": "BINANCE:BCHPAX",
                                                 "BCH/TUSD": "BINANCE:BCHTUSD",
+                                                "BCH/DAI": "HITBTC:BCHDAI",
                                                 "BLK/BTC": "BITTREX:BLKBTC",
                                                 "BNT/BTC": "BINANCE:BNTBTC",
                                                 "BNT/BUSD": "BINANCE:BNTBUSD",
@@ -485,6 +498,8 @@ QtObject {
                                                 "BTU/BTC": "BITTREX:BTUBTC",
                                                 "CEL/BTC": "HITBTC:CELBTC",
                                                 "CEL/ETH": "HITBTC:CELETH",
+                                                "CENNZ/BTC": "HITBTC:CENNZBTC",
+                                                "CENNZ/ETH": "HITBTC:CENNZETH",
                                                 "CHSB/BTC": "KUCOIN:CHSBBTC",
                                                 "CHSB/ETH": "KUCOIN:CHSBETH",
                                                 "CHZ/BTC": "BINANCE:CHZBTC",
@@ -510,6 +525,7 @@ QtObject {
                                                 "DASH/EURS": "HITBTC:DASHEURS",
                                                 "DASH/HUSD": "HUOBI:DASHHUSD",
                                                 "DASH/USDC": "POLONIEX:DASHUSDC",
+                                                "DASH/HT": "HUOBI:DASHHT",
                                                 "DOGE/BTC": "BINANCE:DOGEBTC",
                                                 "DOGE/ETH": "HITBTC:DOGEETH",
                                                 "DOGE/BUSD": "BINANCE:DOGEBUSD",
@@ -593,6 +609,7 @@ QtObject {
                                                 "LTC/TUSD": "BINANCE:LTCTUSD",
                                                 "LTC/USDC": "BINANCE:LTCUSDC",
                                                 "LTC/BCH": "HITBTC:LTCBCH",
+                                                "LTC/HT": "HUOBI:LTCHT",
                                                 "MANA/BTC": "BINANCE:MANABTC",
                                                 "MANA/ETH": "BINANCE:MANAETH",
                                                 "MANA/BUSD": "BINANCE:MANABUSD",
@@ -600,8 +617,6 @@ QtObject {
                                                 "MATIC/BTC": "BINANCE:MATICBTC",
                                                 "MATIC/ETH": "HUOBI:MATICETH",
                                                 "MATIC/BUSD": "BINANCE:MATICBUSD",
-                                                "MCO/BTC": "OKEX:MCOBTC",
-                                                "MCO/ETH": "OKEX:MCOETH",
                                                 "MED/BTC": "BITTREX:MEDBTC",
                                                 "MKR/BTC": "BINANCE:MKRBTC",
                                                 "MKR/ETH": "BITFINEX:MKRETH",
@@ -645,6 +660,7 @@ QtObject {
                                                 "RSR/HUSD": "HUOBI:RSRHUSD",
                                                 "RVN/BUSD": "BINANCE:RVNBUSD",
                                                 "RVN/BTC": "BINANCE:RVNBTC",
+                                                "RVN/HT": "HUOBI:RVNHT",
                                                 "SHR/BTC": "KUCOIN:SHRBTC",
                                                 "SKL/BTC": "BINANCE:SKLBTC",
                                                 "SKL/ETH": "HUOBI:SKLETH",
@@ -665,6 +681,7 @@ QtObject {
                                                 "SUSHI/BUSD": "BINANCE:SUSHIBUSD",
                                                 "SXP/BTC": "BINANCE:SXPBTC",
                                                 "SXP/BUSD": "BINANCE:SXPBUSD",
+                                                "TMTG/BTC": "OKEX:TMTGBTC",
                                                 "TRAC/BTC": "KUCOIN:TRACBTC",
                                                 "TRAC/ETH": "KUCOIN:TRACETH",
                                                 "THC/BTC": "BITTREX:THCBTC",

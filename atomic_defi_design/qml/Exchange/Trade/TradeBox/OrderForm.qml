@@ -19,7 +19,7 @@ FloatingBackground {
 
     readonly property string total_amount: API.app.trading_pg.total_amount
 
-    readonly property bool can_submit_trade: valid_fee_info && last_trading_error === TradingError.None
+    readonly property bool can_submit_trade:  last_trading_error === TradingError.None
 
     // Will move to backend: Minimum Fee
     function getMaxBalance() {
@@ -40,6 +40,9 @@ FloatingBackground {
 
         return getMaxBalance()
     }
+    function setMinimumAmount(value){
+        API.app.trading_pg.min_trade_vol = value
+    }
 
     function reset() {
     }
@@ -55,12 +58,6 @@ FloatingBackground {
 
             Layout.fillWidth: true
             spacing: 15
-
-            HorizontalLine {
-                Layout.fillWidth: true
-            }
-
-
             Item {
                 Layout.fillWidth: true
                 Layout.bottomMargin: input_volume.field.font.pixelSize
@@ -73,9 +70,33 @@ FloatingBackground {
 
                     field.left_text: qsTr("Price")
                     field.right_text: right_ticker
-
+                    field.enabled: !(API.app.trading_pg.preffered_order.price!==undefined)
                     field.text: backend_price
                     field.onTextChanged: setPrice(field.text)
+
+                    DefaultTooltip {
+                        visible: handler.containsMouse
+                        width: 200
+                        contentItem: DefaultText {
+                            text_value: qsTr("Cancel selected order to change price")
+                            wrapMode: DefaultText.Wrap
+                            width: 200
+                        }
+                        delay: 200
+                    }
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        radius: 30
+                        color: Style.colorTheme9
+                        opacity: .8
+                        visible: !parent.field.enabled
+                        MouseArea {
+                            id: handler
+                            anchors.fill: parent
+                            hoverEnabled: true
+                        }
+                    }
                 }
 
                 DefaultText {
@@ -100,7 +121,6 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
-                    enabled: !multi_order_enabled
 
                     field.left_text: qsTr("Volume")
                     field.right_text: left_ticker
@@ -122,55 +142,40 @@ FloatingBackground {
                 }
             }
 
-            DefaultSlider {
-                id: input_volume_slider
-
+            DefaultRangeSlider {
                 function getRealValue() {
-                    return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
+                    return first.position * (first.to - first.from)
                 }
+                function getRealValue2() {
+                    return second.position * (second.to - second.from)
+                }
+                property real oldSecondValue: 0
 
                 enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
-                property bool updating_from_text_field: false
-                property bool updating_text_field: false
                 Layout.fillWidth: true
                 from: 0
                 to: Math.max(0, parseFloat(max_volume))
-                live: false
+                //live: false
 
-                value: parseFloat(non_null_volume)
+                rangeBackgroundColor: Style.colorTheme7
+                rangeDistanceColor: sell_mode? Style.colorRed : Style.colorGreen
 
-                onValueChanged: { if(pressed) setVolume(General.formatDouble(value)) }
-
-                DefaultText {
-                    visible: parent.pressed
-                    anchors.horizontalCenter: parent.handle.horizontalCenter
-                    anchors.bottom: parent.handle.top
-
-                    text_value: General.formatDouble(input_volume_slider.getRealValue(), General.getRecommendedPrecision(input_volume_slider.to))
-                    font.pixelSize: input_volume.field.font.pixelSize
+                second.value: parseFloat(non_null_volume)
+                second.onValueChanged: { if(second.pressed) setVolume(General.formatDouble(second.value)) }
+                secondTooltip.text: General.formatDouble(second.value, General.getRecommendedPrecision(to))
+                second.onPressedChanged: {
+                    if(second.pressed) {
+                        oldSecondValue = second.value
+                    }else {
+                        if(oldSecondValue!==second.value) {
+                            API.app.trading_pg.orderbook.refresh_best_orders()
+                        }
+                    }
                 }
 
-                DefaultText {
-                    anchors.left: parent.left
-                    anchors.top: parent.bottom
-
-                    text_value: qsTr("Min")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-                DefaultText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.bottom
-
-                    text_value: qsTr("Half")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
-                DefaultText {
-                    anchors.right: parent.right
-                    anchors.top: parent.bottom
-
-                    text_value: qsTr("Max")
-                    font.pixelSize: input_volume.field.font.pixelSize
-                }
+                first.value: parseFloat(API.app.trading_pg.min_trade_vol )
+                first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }
+                firstTooltip.text: General.formatDouble(first.value, General.getRecommendedPrecision(second.value))
             }
 
 

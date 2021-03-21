@@ -123,6 +123,8 @@ QtObject {
     readonly property string colorTheme7:  dark_theme ? "#15182A" : "#f2f2f7"
     readonly property string colorTheme8:  dark_theme ? "#171A2C" : "#f6f6f9"
     readonly property string colorTheme9:  dark_theme ? "#0E1021" : "#F9F9FB"
+    readonly property string colorTheme99:  dark_theme ? "#2A2C3B" : "#F9F9FB"
+
     readonly property string colorTheme10:  dark_theme ? "#2579E0" : "#2579E0"
     readonly property string colorTheme11:  dark_theme ? "#00A3FF" : "#00A3FF"
     readonly property string colorThemeLine:  dark_theme ? "#1D1F23" : "#1D1F23"
@@ -133,7 +135,7 @@ QtObject {
     readonly property string colorThemeDark3:  dark_theme ? "#78808D" : "#78808D"
     readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#456078"
 
-    readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
+    property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
     readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
 
     readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
@@ -238,10 +240,22 @@ QtObject {
     }
 
     function getCoinTypeColor(type) {
-        return getCoinColor(type === "ERC-20" ? "ETH" :
-                            type === "QRC-20" ? "QTUM" :
-                            type === "Smart Chain" ? "KMD" :
-                                                     "BTC")
+        switch (type) {
+          case 'ERC-20':
+            return getCoinColor("ETH")
+          case 'QRC-20':
+            return getCoinColor("QTUM")
+          case 'Smart Chain':
+            return getCoinColor("KMD")
+          case 'UTXO':
+            return getCoinColor("BTC")
+          case 'BEP-20':
+            return getCoinColor("BNB")
+          case 'SLP':
+            return getCoinColor("BCH")
+          default:
+            return getCoinColor("BTC")
+        }
     }
 
     function getCoinColor(ticker) {

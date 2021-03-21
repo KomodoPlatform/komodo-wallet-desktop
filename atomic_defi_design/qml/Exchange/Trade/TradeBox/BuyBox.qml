@@ -12,7 +12,7 @@ import "../../../Wallet"
 FloatingBackground {
     property alias can_submit_trade: form_base.can_submit_trade
     property alias formBase: form_base
-    Layout.preferredHeight: !sell_mode? 250 : 45
+    Layout.preferredHeight: !sell_mode? 350 : 45
     Behavior on Layout.preferredHeight {
         NumberAnimation {
             duration: 200

@@ -3,9 +3,9 @@ import "../Constants"
 
 AnimatedRectangle {
     id: rect
-    radius: Style.rectangleCornerRadius
-    color: Style.colorRectangle
-    border.color: Style.colorBorder
+    radius: theme.rectangleRadius
+    color: theme.backgroundColor
+    border.color: theme.rectangleBorderColor
     border.width: 1
 }
 

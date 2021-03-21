@@ -191,7 +191,8 @@
       "https://bet.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "BOTS": {
     "coin": "BOTS",
@@ -214,7 +215,8 @@
       "https://bots.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "BUSD": {
     "coin": "BUSD",
@@ -317,7 +319,8 @@
       "https://crypto.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "DAI": {
     "coin": "DAI",
@@ -583,7 +586,8 @@
     ],
     "type": "Smart Chain",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "JUMBLR": {
     "coin": "JUMBLR",
@@ -606,7 +610,8 @@
       "https://jumblr.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "KOIN": {
     "coin": "KOIN",
@@ -698,7 +703,8 @@
     ],
     "type": "Smart Chain",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "PAX": {
     "coin": "PAX",
@@ -871,7 +877,8 @@
       "https://mgw.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "DEX": {
     "coin": "DEX",
@@ -894,7 +901,8 @@
       "https://dex.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "RICK": {
     "coin": "RICK",
@@ -965,7 +973,8 @@
       "https://pangea.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "QIAIR": {
     "coin": "QIAIR",
@@ -1012,7 +1021,8 @@
       "https://revs.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "SOULJA": {
     "coin": "SOULJA",
@@ -1104,7 +1114,8 @@
       "https://supernet.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "SUSHI": {
     "coin": "SUSHI",
@@ -1502,12 +1513,11 @@
     "currently_enabled": false
   },
   "tBTC": {
-    "is_testnet": true,
-    "active": false,
     "coin": "tBTC",
+    "name": "tBTC (testnet)",
+    "is_testnet": true,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
     "electrum": [
       {
         "url": "testnet.aranguren.org:51001",
@@ -1526,8 +1536,57 @@
     "explorer_url": [
       "https://blockstream.info/testnet/"
     ],
-    "name": "Bitcoin (testnet BTC)",
-    "type": "UTXO"
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ETHR": {
+    "coin": "ETHR",
+    "name": "ETHR (testnet)",
+    "is_testnet": true,
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "eth_nodes": [
+      "http://eth-ropsten.cipig.net:8645"
+    ],
+    "explorer_url": [
+      "https://ropsten.etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "JST": {
+    "coin": "JST",
+    "name": "JST (testnet)",
+    "is_testnet": true,
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "eth_nodes": [
+      "http://eth-ropsten.cipig.net:8645"
+    ],
+    "explorer_url": [
+      "https://ropsten.etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "DEC8": {
+    "coin": "DEC8",
+    "name": "DEC8 (testnet)",
+    "is_testnet": true,
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "eth_nodes": [
+      "http://eth-ropsten.cipig.net:8645"
+    ],
+    "explorer_url": [
+      "https://ropsten.etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
   },
   "QRC20": {
     "is_testnet": true,
@@ -1543,13 +1602,12 @@
     "type": "QRC-20"
   },
   "tQTUM": {
+    "coin": "tQTUM",
+    "name": "tQTUM (testnet)",
     "need_electrum": true,
     "is_testnet": true,
-    "active": false,
-    "coin": "tQTUM",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10071"
@@ -1564,8 +1622,9 @@
     "explorer_url": [
       "https://testnet.qtum.info/"
     ],
-    "name": "QTUM (testnet)",
-    "type": "QRC-20"
+    "type": "QRC-20",
+    "active": false,
+    "currently_enabled": false
   },
   "INK": {
     "coin": "INK",
@@ -1680,18 +1739,6 @@
     "name": "Energo",
     "coingecko_id": "energo",
     "coinpaprika_id": "tsl-energo",
-    "active": false,
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://explorer.qtum.org/"
-    ],
-    "type": "QRC-20"
-  },
-  "ZAT": {
-    "coin": "ZAT",
-    "name": "Zatgo",
-    "coingecko_id": "zatgo",
-    "coinpaprika_id": "zat-zatgo",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -1841,23 +1888,6 @@
   "name": "Bancor",
   "coinpaprika_id": "bnt-bancor",
   "coingecko_id": "bancor",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "BTRS": {
-  "coin": "BTRS",
-  "name": "BitBall Treasure",
-  "coinpaprika_id": "btrs-bitball-treasure",
-  "coingecko_id": "bitball-treasure",
   "eth_nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
@@ -2108,23 +2138,6 @@
   "active": false,
   "currently_enabled": false
  },
- "EUM": {
-  "coin": "EUM",
-  "name": "Elitium",
-  "coinpaprika_id": "eum-elitium",
-  "coingecko_id": "elitium",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "EURS": {
   "coin": "EURS",
   "name": "STASIS EURS Token",
@@ -2244,23 +2257,6 @@
   "active": false,
   "currently_enabled": false
  },
- "JWL": {
-  "coin": "JWL",
-  "name": "Jewel",
-  "coinpaprika_id": "jwl-jewel",
-  "coingecko_id": "jewel",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "KNC": {
   "coin": "KNC",
   "name": "KyberNetwork",
@@ -2363,23 +2359,6 @@
   "active": false,
   "currently_enabled": false
  },
- "MCO": {
-  "coin": "MCO",
-  "name": "MCO",
-  "coinpaprika_id": "mco-mco",
-  "coingecko_id": "test-coin",
-  "eth_nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "MKR": {
   "coin": "MKR",
   "name": "Maker",
@@ -2433,7 +2412,7 @@
  },
  "OCEAN": {
   "coin": "OCEAN",
-  "name": "Ocean Token",
+  "name": "Ocean Protocol",
   "coinpaprika_id": "ocean-ocean-protocol",
   "coingecko_id": "ocean-protocol",
   "eth_nodes": [

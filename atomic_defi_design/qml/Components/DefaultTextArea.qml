@@ -7,9 +7,10 @@ TextArea {
 
     font.family: Style.font_family
 
-    placeholderTextColor: Style.colorPlaceholderText
-    selectedTextColor: Style.colorSelectedText
-    selectionColor: Style.colorSelection
+    placeholderTextColor: theme.textPlaceHolderColor
+    selectedTextColor: theme.textSelectedColor
+    selectionColor: theme.textSelectionColor
+    color: theme.foregroundColor
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }

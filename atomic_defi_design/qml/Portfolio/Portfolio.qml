@@ -7,7 +7,7 @@ import QtCharts 2.3
 
 import "../Components"
 import "../Constants"
-
+ 
 // Portfolio
 ColumnLayout {
     id: portfolio
@@ -176,7 +176,7 @@ ColumnLayout {
         // Line
         HorizontalLine {
             width: parent.width
-            color: Style.colorWhite5
+            color: theme.barColor
             anchors.top: parent.top
         }
 
@@ -244,7 +244,7 @@ ColumnLayout {
         HorizontalLine {
             id: bottom_separator
             width: parent.width
-            color: Style.colorWhite5
+            color: theme.barColor
             anchors.bottom: parent.bottom
         }
     }
@@ -259,7 +259,7 @@ ColumnLayout {
         model: portfolio_coins
 
         delegate: AnimatedRectangle {
-            color: Qt.lighter(mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+            color: Qt.lighter(mouse_area.containsMouse ? theme.hightlightColor : index % 2 == 0 ? Qt.darker(theme.backgroundColor,0.8) : theme.backgroundColor, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
             width: portfolio.width
             height: 50
 
@@ -340,7 +340,7 @@ ColumnLayout {
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
                 text_value: General.formatCrypto("", balance, ticker,  main_currency_balance, API.app.settings_pg.current_currency)
-                color: Style.colorWhite4
+                color: Qt.darker(theme.foregroundColor,0.8)
                 anchors.verticalCenter: parent.verticalCenter
                 privacy: true
             }
@@ -366,7 +366,7 @@ ColumnLayout {
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 text_value: General.formatFiat('', main_currency_price_for_one_unit, API.app.settings_pg.current_currency)
-                color: Style.colorThemeDarkLight
+                color: theme.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
 
             }

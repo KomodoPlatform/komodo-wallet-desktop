@@ -1,10 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import AtomicDEX.TradingError 1.0
 
 import "../../Components"
 import "../../Constants"
 import ".."
+
+import "Orders/"
 
 BasicModal {
     id: root
@@ -14,7 +17,31 @@ BasicModal {
     onOpened: reset()
 
     function reset() {
+        API.app.trading_pg.determine_fees()
+    }
+    function isEmpty(data){
+        console.log(JSON.stringify(data))
+        if(data.length<0) {
+            return true
+        }else {
+            return false
+        }
+    }
+    function isVisisble(n){
 
+        return isEmpty(fees_data)? false : parseFloat(n)===0? false: true
+    }
+
+    Connections {
+        target: API.app.trading_pg
+        function onFeesChanged() {
+            fees_data = API.app.trading_pg.fees
+            API.app.trading_pg.determine_error_cases()
+        }
+    }
+
+    onClosed:  {
+        API.app.trading_pg.reset_fees()
     }
 
     ModalContent {
@@ -81,6 +108,63 @@ BasicModal {
         HorizontalLine {
             Layout.bottomMargin: 10
             Layout.fillWidth: true
+            visible: !isEmpty(fees_data)
+        }
+
+        Item  {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 120
+            visible: !isEmpty(fees_data)
+            Column {
+                anchors.centerIn: parent
+                DefaultText {
+                    visible: isVisisble(fees_data.base_transaction_fees)
+                    text: qsTr("Base transaction fee: %1 %2 (%3)".arg(fees_data.base_transaction_fees).arg(fees_data.base_transaction_fees_ticker).arg(General.getFiatText(fees_data.base_transaction_fees, fees_data.base_transaction_fees_ticker, false)))
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                DefaultText {
+                    visible:isVisisble(fees_data.rel_transaction_fees)
+                    text: qsTr("Rel transaction fee: %1 %2 (%3)".arg(fees_data.rel_transaction_fees).arg(fees_data.rel_transaction_fees_ticker).arg(General.getFiatText(fees_data.rel_transaction_fees, fees_data.rel_transaction_fees_ticker, false)))
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                DefaultText {
+                    visible: isVisisble(fees_data.trading_fee)
+                    text: qsTr("Trading fee: %1 %2 (%3)".arg(fees_data.trading_fee).arg(fees_data.trading_fee_ticker).arg(General.getFiatText(fees_data.trading_fee, fees_data.trading_fee_ticker, false)))
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                DefaultText {
+                    visible: isVisisble(fees_data.fee_to_send_taker_fe)
+                    text: qsTr("Fee to send trading fee: %1 %2 (%3)".arg(fees_data.fee_to_send_taker_fee).arg(fees_data.fee_to_send_taker_fee_ticker).arg(General.getFiatText(fees_data.fee_to_send_taker_fee, fees_data.fee_to_send_taker_fee_ticker, false)))
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                DefaultText {
+                    visible: isVisisble(fees_data.total_fees)
+                    text: qsTr("Total %1 fees: %2 (%3)".arg(fees_data.trading_fee_ticker).arg(fees_data.total_fees).arg(General.getFiatText(fees_data.total_fees, fees_data.trading_fee_ticker, false)))
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                Item {width: 1; height: 10}
+                DefaultText {
+                    id: errors
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width
+                    horizontalAlignment: DefaultText.AlignHCenter
+                    font.pixelSize: Style.textSizeSmall4
+                    color: Style.colorRed
+
+                    text_value: General.getTradingError(
+                                    last_trading_error,
+                                    curr_fee_info,
+                                    base_ticker,
+                                    rel_ticker)
+                }
+                Item {width: 1; height: 10}
+            }
+        }
+
+        HorizontalLine {
+            Layout.bottomMargin: 10
+            Layout.fillWidth: true
         }
 
         ColumnLayout {
@@ -101,6 +185,7 @@ BasicModal {
                     text_value: qsTr("Security configuration")
                     font.weight: Font.Medium
                 }
+
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
@@ -213,13 +298,16 @@ BasicModal {
             DefaultButton {
                 text: qsTr("Cancel")
                 Layout.fillWidth: true
-                onClicked: root.close()
+                onClicked: {
+                    fees_data = []
+                    root.close()
+                }
             },
 
             PrimaryButton {
                 text: qsTr("Confirm")
                 Layout.fillWidth: true
-                enabled: !buy_sell_rpc_busy
+                enabled: !buy_sell_rpc_busy && last_trading_error === TradingError.None
                 onClicked: {
                     trade({
                             enable_custom_config: enable_custom_config.checked,
