@@ -37,7 +37,6 @@
 #include "atomicdex/managers/notification.manager.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/models/qt.addressbook.model.hpp"
-#include "atomicdex/models/qt.candlestick.charts.model.hpp"
 #include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/pages/qt.addressbook.page.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"

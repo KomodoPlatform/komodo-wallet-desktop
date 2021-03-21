@@ -772,10 +772,10 @@ namespace atomic_dex
     {
         if (m_current_trading_mode != trading_mode)
         {
-            m_current_trading_mode = trading_mode;
-            SPDLOG_INFO("new trading mode: {}", QMetaEnum::fromType<TradingMode>().valueToKey(trading_mode));
             this->clear_forms();
             this->set_market_mode(MarketMode::Sell);
+            m_current_trading_mode = trading_mode;
+            SPDLOG_INFO("new trading mode: {}", QMetaEnum::fromType<TradingMode>().valueToKey(trading_mode));
             emit tradingModeChanged();
         }
     }
@@ -901,7 +901,10 @@ namespace atomic_dex
             t_float_50 price_f(0);
             t_float_50 total_amount_f(safe_float(total_amount.toStdString()));
             t_float_50 volume_f(safe_float(m_volume.toStdString()));
-            price_f = total_amount_f / volume_f;
+            if (volume_f > 0)
+            {
+                price_f = total_amount_f / volume_f;
+            }
             this->set_price(QString::fromStdString(utils::format_float(price_f)));
         }
     }

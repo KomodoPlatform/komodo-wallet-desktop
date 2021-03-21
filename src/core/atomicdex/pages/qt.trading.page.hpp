@@ -27,7 +27,6 @@
 #include "atomicdex/constants/qt.trading.enums.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/events/qt.events.hpp"
-#include "atomicdex/models/qt.candlestick.charts.model.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "widgets/dex/qt.market.pairs.hpp"
 #include "widgets/dex/qt.orderbook.hpp"
