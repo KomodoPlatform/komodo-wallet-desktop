@@ -92,11 +92,10 @@ Item {
         interval: 1000
     }
 
-    property var onOrderSuccess: function (){
-    General.prevent_coin_disabling.restart()
-    tabView.currentIndex = 1
-    multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
-}
+//    property var onOrderSuccess: function (){
+//        General.prevent_coin_disabling.restart()
+//        tabView.currentIndex = 1
+//    }
 
     onSell_modeChanged: {
         reset()
@@ -114,21 +113,7 @@ Item {
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
 
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
-        setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
-        API.app.trading_pg.preffered_order = {
-            "coin": coin,
-            "price": price,
-            "quantity": quantity,
-            "price_denom": price_denom,
-            "price_numer": price_numer,
-            "quantity_denom": quantity_denom,
-            "quantity_numer": quantity_numer
-        }
-
-        form_base.focusVolumeField()
-    }
 
     // Cache Trade Info
     property bool valid_fee_info: API.app.trading_pg.fees.base_transaction_fees !== undefined
@@ -188,31 +173,7 @@ Item {
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
-    onBuy_sell_rpc_busyChanged: {
-        if (buy_sell_rpc_busy)
-            return
 
-        const response = General.clone(buy_sell_last_rpc_data)
-
-        if (response.error_code) {
-            confirm_trade_modal.close()
-
-            toast.show(qsTr("Failed to place the order"),
-                       General.time_toast_important_error,
-                       response.error_message)
-
-            return
-        } else if (response.result && response.result.uuid) {
-            // Make sure there is information
-            confirm_trade_modal.close()
-
-            toast.show(qsTr("Placed the order"), General.time_toast_basic_info,
-                       General.prettifyJSON(response.result), false)
-
-            General.prevent_coin_disabling.restart()
-            tabView.currentIndex = 1
-        }
-    }
 
     // Form
     ProView {

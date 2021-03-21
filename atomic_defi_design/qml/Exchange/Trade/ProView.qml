@@ -33,11 +33,58 @@ import "./" as Here
 
 ColumnLayout {
     id: form
+    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
+        setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
+
+        API.app.trading_pg.preffered_order = {
+            "coin": coin,
+            "price": price,
+            "quantity": quantity,
+            "price_denom": price_denom,
+            "price_numer": price_numer,
+            "quantity_denom": quantity_denom,
+            "quantity_numer": quantity_numer
+        }
+
+        form_base.focusVolumeField()
+    }
+    Connections {
+        target: exchange_trade
+        function onBuy_sell_rpc_busyChanged() {
+            if (buy_sell_rpc_busy)
+                return
+
+            const response = General.clone(buy_sell_last_rpc_data)
+
+            if (response.error_code) {
+                confirm_trade_modal.close()
+
+                toast.show(qsTr("Failed to place the order"),
+                           General.time_toast_important_error,
+                           response.error_message)
+
+                return
+            } else if (response.result && response.result.uuid) {
+                // Make sure there is information
+                confirm_trade_modal.close()
+
+                toast.show(qsTr("Placed the order"), General.time_toast_basic_info,
+                           General.prettifyJSON(response.result), false)
+
+                General.prevent_coin_disabling.restart()
+                tabView.currentIndex = 1
+            }
+        }
+    }
+    Connections {
+        target:exchange_trade
+    }
 
     spacing: 10
     anchors.topMargin: 40
     anchors.leftMargin: 10
     anchors.fill: parent
+
     SplitView {
         id: splitView
         Layout.fillWidth: true
