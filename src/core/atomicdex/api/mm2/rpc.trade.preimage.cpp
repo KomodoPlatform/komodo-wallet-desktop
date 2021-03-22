@@ -53,7 +53,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, trade_preimage_answer_success& answer)
     {
-        SPDLOG_INFO("HERE 1");
         j.at("base_coin_fee").get_to(answer.base_coin_fee);
         j.at("rel_coin_fee").get_to(answer.rel_coin_fee);
         if (j.contains("taker_fee"))
@@ -64,8 +63,7 @@ namespace mm2::api
         {
             answer.fee_to_send_taker_fee = j.at("fee_to_send_taker_fee").get<coin_fee>();
         }
-        j.at("total_fees")[0].get_to(answer.total_fees);
-        SPDLOG_INFO("HERE 2");
+        j.at("total_fees").get_to(answer.total_fees);
     }
 
     void

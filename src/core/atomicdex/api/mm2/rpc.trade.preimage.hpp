@@ -22,7 +22,7 @@
 
 //! Deps
 #include <entt/core/attribute.h>
-#include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project Headers
 #include "atomicdex/api/mm2/fraction.hpp"
@@ -56,7 +56,7 @@ namespace mm2::api
         coin_fee                rel_coin_fee;
         std::optional<coin_fee> taker_fee;
         std::optional<coin_fee> fee_to_send_taker_fee;
-        coin_fee                total_fees;
+        nlohmann::json          total_fees;
     };
 
     ENTT_API void from_json(const nlohmann::json& j, trade_preimage_answer_success& answer);
