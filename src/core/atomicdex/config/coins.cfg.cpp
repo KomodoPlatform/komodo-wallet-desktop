@@ -37,9 +37,9 @@ namespace atomic_dex
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();
         }
-        if (j.contains("eth_nodes"))
+        if (j.contains("nodes"))
         {
-            cfg.eth_urls = j.at("eth_nodes").get<std::vector<std::string>>();
+            cfg.urls = j.at("nodes").get<std::vector<std::string>>();
         }
         cfg.is_claimable         = j.count("is_claimable") > 0;
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
@@ -115,7 +115,7 @@ namespace atomic_dex
             cfg.fees_ticker            = cfg.is_testnet ? "ETHR" : "ETH";
         case CoinType::BEP20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = "BNB";
+            cfg.fees_ticker            = cfg.is_testnet ? "BNBT" : "BNB";
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = "BCH";

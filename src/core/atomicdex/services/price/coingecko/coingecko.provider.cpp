@@ -72,9 +72,9 @@ namespace atomic_dex
     void
     coingecko_provider::on_coin_disabled([[maybe_unused]] const coin_disabled& evt) noexcept
     {
-        //SPDLOG_INFO("{} disabled, removing from coingecko provider", evt.ticker);
-        //std::unique_lock lock(m_market_mutex);
-        //m_market_registry.erase(evt.ticker);
+        // SPDLOG_INFO("{} disabled, removing from coingecko provider", evt.ticker);
+        // std::unique_lock lock(m_market_mutex);
+        // m_market_registry.erase(evt.ticker);
     }
 
 } // namespace atomic_dex
@@ -92,6 +92,7 @@ namespace atomic_dex
     std::string
     coingecko_provider::get_change_24h(const std::string& ticker) const noexcept
     {
+        // SPDLOG_INFO("ticker change 24h: {}", ticker);
         return get_info_answer(ticker).price_change_24h;
     }
 

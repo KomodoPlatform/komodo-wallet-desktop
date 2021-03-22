@@ -67,7 +67,7 @@ namespace atomic_dex::coingecko::api
         // fill_single_field_functor("&page=", request.current_page);
         fill_single_field_functor("&sparkline=", request.with_sparkline);
         fill_single_field_functor("&price_change_percentage=", request.price_change_percentage);
-        //SPDLOG_TRACE("atomic_dex::coingecko::api uri: {}", uri);
+        // SPDLOG_TRACE("atomic_dex::coingecko::api uri: {}", uri);
         return uri;
     }
 
@@ -79,6 +79,7 @@ namespace atomic_dex::coingecko::api
 
         for (auto&& coin: coins)
         {
+            // SPDLOG_INFO("coin: {}", coin.coingecko_id);
             if (coin.coingecko_id != "test-coin")
             {
                 registry[coin.coingecko_id] = coin.ticker;
@@ -113,7 +114,7 @@ namespace atomic_dex::coingecko::api
             }
             catch (const std::exception& error)
             {
-                //SPDLOG_ERROR("Error when treating coingecko answer: {} - error: {}", cur_json_obj.dump(1), error.what());
+                // SPDLOG_ERROR("Error when treating coingecko answer: {} - error: {}", cur_json_obj.dump(1), error.what());
             }
         }
     }
@@ -124,7 +125,7 @@ namespace atomic_dex::coingecko::api
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
         std::string url = to_coingecko_uri(std::move(request));
-        //SPDLOG_INFO("url: {}", TO_STD_STR(g_coingecko_client->base_uri().to_string()) + url);
+        // SPDLOG_INFO("url: {}", TO_STD_STR(g_coingecko_client->base_uri().to_string()) + url);
         SPDLOG_INFO("processing coingecko prices");
         req.set_request_uri(FROM_STD_STR(url));
         return g_coingecko_client->request(req);

@@ -514,7 +514,7 @@ namespace atomic_dex
                 continue;
             }
 
-            if (!(coin_info.coin_type == CoinType::ERC20))
+            if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20)
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
@@ -530,7 +530,7 @@ namespace atomic_dex
             {
                 t_enable_request request{
                     .coin_name       = coin_info.ticker,
-                    .urls            = (coin_info.coin_type == CoinType::ERC20) ? coin_info.eth_urls.value() : std::vector<std::string>(),
+                    .urls            = coin_info.urls.value_or(std::vector<std::string>{}),
                     .coin_type       = coin_info.coin_type,
                     .is_testnet      = coin_info.is_testnet.value_or(false),
                     .with_tx_history = false};

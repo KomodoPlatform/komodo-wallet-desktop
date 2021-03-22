@@ -24,7 +24,6 @@ namespace atomic_dex
             std::vector<std::string> tickers = {});
 
         coingecko::api::single_infos_answer get_info_answer(const std::string& ticker) const;
-        ;
 
       public:
         //! Constructor
