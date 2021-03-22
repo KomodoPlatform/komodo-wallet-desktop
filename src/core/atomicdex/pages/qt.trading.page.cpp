@@ -730,7 +730,7 @@ namespace atomic_dex
                 SPDLOG_INFO("last_trading_error is None");
                 break;
             case TradingErrorGadget::TotalFeesNotEnoughFunds:
-                SPDLOG_WARN("last_trading_error is TotalBaseFeesNotEnoughFunds");
+                SPDLOG_WARN("last_trading_error is TotalFeesNotEnoughFunds");
                 break;
             case TradingErrorGadget::RelTransactionFeesNotEnough:
                 SPDLOG_WARN("last_trading_error is RelTransactionFeesNotEnough");
@@ -1171,11 +1171,6 @@ namespace atomic_dex
         {
             last_trading_error = TradingError::BaseTransactionFeesNotEnough; ///< need to have for multi ticker check
         }
-        /*else if (!mm2.do_i_have_enough_funds(
-                     fees["total_base_fees_ticker"].toString().toStdString(), safe_float(fees["total_base_fees_fp"].toString().toStdString())))
-        {
-            last_trading_error = TradingError::TotalBaseFeesNotEnoughFunds; ///< need to have for multi ticker check
-        }*/
         else if (fees.contains("rel_transaction_fees_ticker")) //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
         {
             const auto rel_ticker = fees["rel_transaction_fees_ticker"].toString().toStdString();
