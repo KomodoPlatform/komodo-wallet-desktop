@@ -27,7 +27,7 @@ BasicModal {
             return false
         }
     }
-    function isVisisble(n){
+    function isVisible(n){
 
         return isEmpty(fees_data)? false : parseFloat(n)===0? false: true
     }
@@ -118,31 +118,37 @@ BasicModal {
             Column {
                 anchors.centerIn: parent
                 DefaultText {
-                    visible: isVisisble(fees_data.base_transaction_fees)
+                    visible: isVisible(fees_data.base_transaction_fees)
                     text: qsTr("Base transaction fee: %1 %2 (%3)".arg(fees_data.base_transaction_fees).arg(fees_data.base_transaction_fees_ticker).arg(General.getFiatText(fees_data.base_transaction_fees, fees_data.base_transaction_fees_ticker, false)))
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 DefaultText {
-                    visible:isVisisble(fees_data.rel_transaction_fees)
+                    visible:isVisible(fees_data.rel_transaction_fees)
                     text: qsTr("Rel transaction fee: %1 %2 (%3)".arg(fees_data.rel_transaction_fees).arg(fees_data.rel_transaction_fees_ticker).arg(General.getFiatText(fees_data.rel_transaction_fees, fees_data.rel_transaction_fees_ticker, false)))
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 DefaultText {
-                    visible: isVisisble(fees_data.trading_fee)
+                    visible: isVisible(fees_data.trading_fee)
                     text: qsTr("Trading fee: %1 %2 (%3)".arg(fees_data.trading_fee).arg(fees_data.trading_fee_ticker).arg(General.getFiatText(fees_data.trading_fee, fees_data.trading_fee_ticker, false)))
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
                 DefaultText {
-                    visible: isVisisble(fees_data.fee_to_send_taker_fe)
+                    visible: isVisible(fees_data.fee_to_send_taker_fe)
                     text: qsTr("Fee to send trading fee: %1 %2 (%3)".arg(fees_data.fee_to_send_taker_fee).arg(fees_data.fee_to_send_taker_fee_ticker).arg(General.getFiatText(fees_data.fee_to_send_taker_fee, fees_data.fee_to_send_taker_fee_ticker, false)))
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
-                DefaultText {
-                    visible: isVisisble(fees_data.total_fees)
-                    text: qsTr("Total %1 fees: %2 (%3)".arg(fees_data.trading_fee_ticker).arg(fees_data.total_fees).arg(General.getFiatText(fees_data.total_fees, fees_data.trading_fee_ticker, false)))
-                    anchors.horizontalCenter: parent.horizontalCenter
+
+                DefaultListView {
+                  enabled: isVisible(fees_data.total_fees)
+                  model: fees_data.total_fees
+                  delegate: DefaultText {
+                    visible: isVisible(modelData.amount)
+                    text: qsTr("Total %1 fees: %2 (%3)").arg(modelData.coin).arg(parseFloat(modelData.amount).toFixed(8) / 1).arg(General.getFiatText(modelData.amount, modelData.coin, false))
+                  }
+                  anchors.horizontalCenter: parent.horizontalCenter
                 }
+
                 Item {width: 1; height: 10}
                 DefaultText {
                     id: errors

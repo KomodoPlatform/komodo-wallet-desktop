@@ -61,10 +61,9 @@ namespace
                                           "coin":"RICK"
                                         },
                                          "taker_fee": {
-                                                            "coin": "MYCOIN1",
-                                                            "amount": "0.02", // volume(7.77) * price(2) / 777
-                                                            "amount_fraction": { "numer": "1", "denom": "7770" },
-
+                                           "coin": "MYCOIN1",
+                                           "amount": "0.02",
+                                           "amount_fraction": { "numer": "1", "denom": "7770" }
                                         },
                                         "fee_to_send_taker_fee":{
                                           "amount":"0.0001",
