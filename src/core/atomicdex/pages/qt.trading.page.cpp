@@ -968,7 +968,13 @@ namespace atomic_dex
         const bool  is_max      = m_market_mode == MarketMode::Sell && m_volume == m_max_volume;
         const auto  swap_method = m_market_mode == MarketMode::Sell ? "sell"s : "buy"s;
 
-        t_trade_preimage_request req{.base_coin = base, .rel_coin = rel, .swap_method = swap_method, .volume = get_base_amount().toStdString(), .max = is_max};
+        t_trade_preimage_request req{
+            .base_coin   = base,
+            .rel_coin    = rel,
+            .swap_method = swap_method,
+            .volume      = get_base_amount().toStdString(),
+            .price       = get_price().toStdString(),
+            .max         = is_max};
 
         nlohmann::json batch;
         nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
@@ -988,10 +994,10 @@ namespace atomic_dex
                     const auto  success_answer = trade_preimage_answer.result.value();
                     QVariantMap fees;
 
-                    const auto trading_fee_ticker = this->get_market_pairs_mdl()->get_base_selected_coin();
+                    const auto trading_fee_ticker = QString::fromStdString(success_answer.taker_fee.value().coin);
 
                     //! Trading fee are taker_fee
-                    fees["trading_fee"]        = QString::fromStdString(utils::adjust_precision(success_answer.taker_fee.value_or("0")));
+                    fees["trading_fee"]        = QString::fromStdString(utils::adjust_precision(success_answer.taker_fee.value().amount));
                     fees["trading_fee_ticker"] = trading_fee_ticker;
 
 
@@ -1010,7 +1016,7 @@ namespace atomic_dex
                     //! ETH <-> MORTY (sell) trading_fee_ticker == ETH, base_ticker_fee == MORTY, rel_ticker_fee == ETH, TOTAL_FEE_TICKER = ETH
                     //! ETH <-> MORTY (buy) trading_fee_ticker == MORTY, base_ticker_fee == ETH, rel_ticker_fee == MORTY, TOTAL_FEE_TICKER = MORTY
 
-                    t_float_50 total_fees_f = safe_float(success_answer.taker_fee.value_or("0"));
+                    /*t_float_50 total_fees_f = safe_float(success_answer.taker_fee.value_or("0"));
 
                     if (trading_fee_ticker.toStdString() == success_answer.base_coin_fee.coin)
                     {
@@ -1025,10 +1031,11 @@ namespace atomic_dex
                     if (trading_fee_ticker.toStdString() == success_answer.fee_to_send_taker_fee.value().coin)
                     {
                         total_fees_f += safe_float(utils::adjust_precision(success_answer.fee_to_send_taker_fee.value().amount));
-                    }
+                    }*/
 
-                    fees["total_fees"]    = QString::fromStdString(atomic_dex::utils::format_float(total_fees_f));
-                    fees["total_fees_fp"] = QString::fromStdString(total_fees_f.str(50, std::ios_base::fixed));
+                    fees["total_fees"]        = QString::fromStdString(utils::adjust_precision(success_answer.total_fees.amount));
+                    fees["total_fees_fp"]     = QString::fromStdString(success_answer.total_fees.amount);
+                    fees["total_fees_ticker"] = QString::fromStdString(success_answer.total_fees.coin);
 
                     this->set_fees(fees);
                 }
@@ -1186,7 +1193,7 @@ namespace atomic_dex
         {
             last_trading_error = TradingError::BaseTransactionFeesNotEnough; ///< need to have for multi ticker check
         }
-        else if (safe_float(fees["total_fees_fp"].toString().toStdString()) > max_balance_without_dust)
+        else if (!mm2.do_i_have_enough_funds(fees["total_fees_ticker"].toString().toStdString(), safe_float(fees["total_fees_fp"].toString().toStdString())))
         {
             last_trading_error = TradingError::TotalFeesNotEnoughFunds; ///< need to have for multi ticker check
         }
