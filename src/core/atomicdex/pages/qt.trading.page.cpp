@@ -1012,8 +1012,6 @@ namespace atomic_dex
 
 
                     fees["total_fees"] = atomic_dex::nlohmann_json_array_to_qt_json_array(success_answer.total_fees);
-                    // fees["total_base_fees_fp"]     = QString::fromStdString(success_answer.total_base_fees.amount);
-                    // fees["total_base_fees_ticker"] = QString::fromStdString(success_answer.total_base_fees.coin);
 
                     this->set_fees(fees);
                 }
