@@ -428,7 +428,7 @@ QtObject {
         case TradingError.TradingFeesNotEnoughFunds:
             return qsTr("Not enough balance for trading fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.trading_fee, fee_info.trading_fee_ticker))
         case TradingError.TotalFeesNotEnoughFunds:
-            return qsTr("Not enough balance for fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.total_fees, base_ticker))
+            return qsTr("Not enough balance for total fees")
         case TradingError.BaseTransactionFeesNotEnough:
             return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", fee_info.base_transaction_fees, fee_info.base_transaction_fees_ticker))
         case TradingError.RelTransactionFeesNotEnough:

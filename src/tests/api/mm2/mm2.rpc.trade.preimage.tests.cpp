@@ -60,12 +60,11 @@ namespace
                                           "amount_rat":[[1,[1]],[1,[10000]]],
                                           "coin":"RICK"
                                         },
-                                        "taker_fee":"0.00012870012870012872",
-                                        "taker_fee_fraction":{
-                                          "denom":"7770",
-                                          "numer":"1"
+                                         "taker_fee": {
+                                           "coin": "MYCOIN1",
+                                           "amount": "0.02",
+                                           "amount_fraction": { "numer": "1", "denom": "7770" }
                                         },
-                                        "taker_rat":[[1,[1]],[1,[7770]]],
                                         "fee_to_send_taker_fee":{
                                           "amount":"0.0001",
                                           "amount_fraction":{
@@ -250,9 +249,7 @@ TEST_CASE("mm2::api::preimage_answer_success deserialization from buy")
     mm2::api::trade_preimage_answer_success answer;
     mm2::api::from_json(g_preimage_answer_success_buy, answer);
     CHECK(answer.taker_fee.has_value());
-    CHECK(answer.taker_fee_fraction.has_value());
     CHECK(answer.fee_to_send_taker_fee.has_value());
-    CHECK_FALSE(answer.volume.has_value());
 }
 
 TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
@@ -263,7 +260,6 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
         mm2::api::from_json(g_preimage_answer_setprice, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
-        CHECK_FALSE(answer.result.value().volume.has_value());
         CHECK_FALSE(answer.result.value().fee_to_send_taker_fee.has_value());
     }
 
@@ -273,7 +269,6 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
         mm2::api::from_json(g_preimage_answer_buy, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
-        CHECK_FALSE(answer.result.value().volume.has_value());
         CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
     }
 
@@ -283,7 +278,6 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
         mm2::api::from_json(g_preimage_answer_sell_max, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
-        CHECK(answer.result.value().volume.has_value());
         CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
     }
 
@@ -293,7 +287,6 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
         mm2::api::from_json(g_preimage_answer_setprice_erc, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
-        CHECK_FALSE(answer.result.value().volume.has_value());
         CHECK_FALSE(answer.result.value().fee_to_send_taker_fee.has_value());
         CHECK_EQ(answer.result.value().base_coin_fee.coin, "ETH");
     }
