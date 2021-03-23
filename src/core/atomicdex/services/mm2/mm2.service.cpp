@@ -367,9 +367,9 @@ namespace atomic_dex
     mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
         SPDLOG_INFO("batch_balance_and_tx");
-        auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx(only_tx);
+        auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
         return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client, m_token_source.get_token())
-            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
+            .then([this, tickers_idx = tickers_idx, tokens_to_fetch = tokens_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
                 try
                 {
                     auto answers = ::mm2::api::basic_batch_answer(resp);
@@ -399,7 +399,7 @@ namespace atomic_dex
                             ++idx;
                         }
 
-                        for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
+                        for (auto&& coin: tokens_to_fetch) { process_tx_tokenscan(coin, is_a_reset); }
                         this->dispatcher_.trigger<ticker_balance_updated>(tickers_idx);
                         if (is_during_enabling)
                         {
@@ -421,9 +421,9 @@ namespace atomic_dex
         const auto&              enabled_coins = get_enabled_coins();
         nlohmann::json           batch_array   = nlohmann::json::array();
         std::vector<std::string> tickers_idx;
-        std::vector<std::string> erc_to_fetch;
+        std::vector<std::string> tokens_to_fetch;
         const auto&              ticker = get_current_ticker();
-        if (!(get_coin_info(ticker).coin_type == CoinType::ERC20))
+        if (auto coin_type = get_coin_info(ticker).coin_type; coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20)
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -432,7 +432,7 @@ namespace atomic_dex
         }
         else
         {
-            erc_to_fetch.push_back(ticker);
+            tokens_to_fetch.push_back(ticker);
         }
         if (not only_tx)
         {
@@ -453,7 +453,7 @@ namespace atomic_dex
                 tickers_idx.push_back(coin.ticker);
             }
         }
-        return std::make_tuple(batch_array, tickers_idx, erc_to_fetch);
+        return std::make_tuple(batch_array, tickers_idx, tokens_to_fetch);
     }
 
     std::pair<bool, std::string>
@@ -599,9 +599,7 @@ namespace atomic_dex
                         //! Emit event here
                     }
                 })
-                .then([this](pplx::task<void> previous_task) {
-                    this->handle_exception_pplx_task(previous_task, "batch_enable_coins");
-                });
+                .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_enable_coins"); });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
@@ -896,7 +894,7 @@ namespace atomic_dex
         // SPDLOG_DEBUG("asking history of ticker: {}", ticker);
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
         const auto coin_type                 = get_coin_info(ticker).coin_type;
-        const auto it = !(coin_type == CoinType::ERC20) ? underlying_tx_history_map->find("result") : underlying_tx_history_map->find(ticker);
+        const auto it = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20) ? underlying_tx_history_map->find("result") : underlying_tx_history_map->find(ticker);
         if (it == underlying_tx_history_map->cend())
         {
             ec = dextop_error::tx_history_of_a_non_enabled_coin;
@@ -1044,13 +1042,45 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::process_tx_etherscan(const std::string& ticker, [[maybe_unused]] bool is_a_refresh)
+    mm2_service::process_tx_tokenscan(const std::string& ticker, [[maybe_unused]] bool is_a_refresh)
     {
         SPDLOG_DEBUG("process_tx ticker: {}", ticker);
         std::error_code ec;
         using namespace std::string_literals;
-        std::string url =
-            (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec) : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
+        auto retrieve_api_functor = [this](const std::string& ticker, const std::string& address) -> std::string {
+            const auto coin_info = this->get_coin_info(ticker);
+            std::string out;
+            switch (coin_info.coin_type)
+            {
+            case CoinTypeGadget::ERC20:
+                if (ticker == "ETH" || ticker == "ETHR")
+                {
+                    out =  "/api/v1/eth_tx_history/" + address;
+                }
+                else
+                {
+                    out = "/api/v1/erc_tx_history/" + ticker + "/" + address;
+                }
+                break;
+            case CoinTypeGadget::BEP20:
+                if (ticker == "BNB" || ticker == "BNBT")
+                {
+                    out = "/api/v1/bnb_tx_history/" + address;
+                }
+                else
+                {
+                    out = "/api/v1/bep_tx_history/" + ticker + "/" + address;
+                }
+            default:
+                break;
+            }
+            if (coin_info.is_testnet.value_or(false))
+            {
+                out += "&testnet=true";
+            }
+            return out;
+        };
+        std::string url = retrieve_api_functor(ticker, address(ticker, ec));
         ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "tx_history", url)
             .then([this, ticker](web::http::http_response resp) {
                 auto answer = ::mm2::api::rpc_process_answer<::mm2::api::tx_history_answer>(resp, "tx_history");
@@ -1107,6 +1137,7 @@ namespace atomic_dex
                     });
 
                     //! History
+                    SPDLOG_INFO("{} tx size {}", ticker, out.size());
                     m_tx_informations->insert_or_assign(ticker, std::make_pair(out, state));
 
                     //! Dispatch

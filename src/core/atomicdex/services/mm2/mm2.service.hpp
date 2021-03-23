@@ -129,7 +129,7 @@ namespace atomic_dex
         auto batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false, bool only_tx = false);
         void process_balance_answer(const nlohmann::json& answer);
         void process_tx_answer(const nlohmann::json& answer_json);
-        void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
+        void process_tx_tokenscan(const std::string& ticker, bool is_a_refresh);
 
         //!
         std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);

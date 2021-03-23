@@ -514,6 +514,7 @@ namespace atomic_dex
     {
         std::error_code ec;
         t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
+        SPDLOG_INFO("transaction size: {}", transactions.size());
         if (m_transactions_mdl->rowCount() == 0)
         {
             //! insert all transactions

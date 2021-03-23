@@ -221,7 +221,7 @@ namespace mm2::api
             cfg.normal_fees = fee_regular_coin{};
             from_json(j, cfg.normal_fees.value());
         }
-        else if (j.at("coin").get<std::string>() == "ETH")
+        else if (auto coin = j.at("coin").get<std::string>(); coin == "ETH" || coin == "BNB" || coin == "BNBT" || coin == "ETHR")
         {
             cfg.erc_fees = fee_erc_coin{};
             from_json(j, cfg.erc_fees.value());
@@ -245,7 +245,7 @@ namespace mm2::api
     {
         j.at("block_height").get_to(cfg.block_height);
         j.at("coin").get_to(cfg.coin);
-        if (j.count("confirmations") == 1)
+        if (j.contains("confirmations"))
         {
             cfg.confirmations = j.at("confirmations").get<std::size_t>();
         }
@@ -337,7 +337,7 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, tx_history_answer& answer)
     {
-        if (j.count("error") == 1)
+        if (j.contains("error"))
         {
             answer.error = j.at("error").get<std::string>();
         }
