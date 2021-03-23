@@ -137,7 +137,7 @@ namespace atomic_dex
         std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
         std::vector<atomic_dex::coin_config>                retrieve_coins_informations() noexcept;
 
-        void handle_exception_pplx_task(pplx::task<void> previous_task);
+        void handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from = "");
 
       public:
         //! Constructor

@@ -49,7 +49,8 @@ namespace atomic_dex
     void
     coingecko_provider::on_coin_enabled(const coin_enabled& evt) noexcept
     {
-        std::vector<std::string>             ids;
+        dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
+        /*std::vector<std::string>             ids;
         coingecko::api::t_coingecko_registry registry;
         const auto*                          global_cfg_system = m_system_manager.get_system<portfolio_page>().get_global_cfg();
         for (auto&& ticker: evt.tickers)
@@ -63,7 +64,7 @@ namespace atomic_dex
             }
         }
 
-        internal_update(ids, registry, false, evt.tickers);
+        internal_update(ids, registry, false, evt.tickers);*/
 
         //! tmp
         this->update_ticker_and_provider();

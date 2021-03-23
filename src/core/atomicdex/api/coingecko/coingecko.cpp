@@ -125,8 +125,8 @@ namespace atomic_dex::coingecko::api
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
         std::string url = to_coingecko_uri(std::move(request));
-        // SPDLOG_INFO("url: {}", TO_STD_STR(g_coingecko_client->base_uri().to_string()) + url);
-        SPDLOG_INFO("processing coingecko prices");
+        SPDLOG_INFO("url: {}", TO_STD_STR(g_coingecko_client->base_uri().to_string()) + url);
+        //SPDLOG_INFO("processing coingecko prices");
         req.set_request_uri(FROM_STD_STR(url));
         return g_coingecko_client->request(req);
     }

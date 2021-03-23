@@ -366,6 +366,7 @@ namespace atomic_dex
     auto
     mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
+        SPDLOG_INFO("batch_balance_and_tx");
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx(only_tx);
         return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client, m_token_source.get_token())
             .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
@@ -411,7 +412,7 @@ namespace atomic_dex
                     SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
                 }
             })
-            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
+            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx"); });
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -598,7 +599,7 @@ namespace atomic_dex
                         //! Emit event here
                     }
                 })
-                .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
+                .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_enable_coins"); });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
@@ -1611,7 +1612,7 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::handle_exception_pplx_task(pplx::task<void> previous_task)
+    mm2_service::handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from)
     {
         try
         {
@@ -1619,7 +1620,14 @@ namespace atomic_dex
         }
         catch (const std::exception& e)
         {
-            SPDLOG_ERROR("pplx task error: {}", e.what());
+            if (!from.empty())
+            {
+                SPDLOG_ERROR("pplx task error: {} from: {}", e.what(), from);
+            }
+            else
+            {
+                SPDLOG_ERROR("pplx task error: {}", e.what());
+            }
 #if defined(linux) || defined(__APPLE__)
             SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
 #endif
