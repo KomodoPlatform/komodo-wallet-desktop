@@ -32,11 +32,10 @@ BasicModal {
 
         // Loading symbol
         DefaultBusyIndicator {
-            visible: !details ? false :
+            running: (!details ? false :
                         details.is_swap &&
                         details.order_status !== "successful" &&
-                        details.order_status !== "failed"
-            running: visible
+                        details.order_status !== "failed") && Qt.platform.os != "osx"
             Layout.alignment: Qt.AlignHCenter
         }
 
