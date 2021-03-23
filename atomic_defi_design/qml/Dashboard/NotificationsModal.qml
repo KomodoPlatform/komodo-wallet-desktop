@@ -166,6 +166,19 @@ BasicModal {
         toast.show(title, General.time_toast_important_error, "", true, true)
     }
 
+    function onBatchFailed(reason, from, human_date, timestamp) {
+            const title = qsTr("Batch %1 failed. Reason: %2").arg(from).arg(reason)
+
+            newNotification("onBatchFailed",
+            { human_date, timestamp },
+            timestamp,
+            title,
+            reason,
+            human_date)
+
+            toast.show(title, General.time_toast_important_error, reason)
+        }
+
     // System
     Component.onCompleted: {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
@@ -173,6 +186,7 @@ BasicModal {
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
+        API.app.notification_mgr.batchFailed.connect(onBatchFailed)
     }
     Component.onDestruction: {
         API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
@@ -180,6 +194,7 @@ BasicModal {
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
+        API.app.notification_mgr.batchFailed.disconnect(onBatchFailed)
     }
 
     function displayMessage(title, message) {

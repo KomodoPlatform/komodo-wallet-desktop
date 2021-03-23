@@ -599,7 +599,9 @@ namespace atomic_dex
                         //! Emit event here
                     }
                 })
-                .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_enable_coins"); });
+                .then([this](pplx::task<void> previous_task) {
+                    this->handle_exception_pplx_task(previous_task, "batch_enable_coins");
+                });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
@@ -1623,6 +1625,7 @@ namespace atomic_dex
             if (!from.empty())
             {
                 SPDLOG_ERROR("pplx task error: {} from: {}", e.what(), from);
+                this->dispatcher_.trigger<batch_failed>(from, e.what());
             }
             else
             {
