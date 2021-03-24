@@ -372,6 +372,7 @@ QtObject {
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",
+                                          "XRP": "#2E353D",
                                           "YFI": "#006BE6",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
