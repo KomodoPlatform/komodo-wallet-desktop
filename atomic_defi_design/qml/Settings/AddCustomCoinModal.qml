@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.3
 
+import AtomicDEX.CoinType 1.0
+
 import "../Components"
 import "../Constants"
 
@@ -25,7 +27,7 @@ BasicModal {
         const fields = General.clone(config_fields)
         console.log("Fetching asset data:", JSON.stringify(fields))
         if(fields.type === "ERC-20") {
-            API.app.settings_pg.process_erc_20_token_add(fields.contract_address, fields.coingecko_id, fields.image_path)
+            API.app.settings_pg.process_token_add(fields.contract_address, fields.coingecko_id, fields.image_path, CoinType.ERC20)
         }
         else if(fields.type === "QRC-20") {
             API.app.settings_pg.process_qrc_20_token_add(fields.contract_address, fields.coingecko_id, fields.image_path)
