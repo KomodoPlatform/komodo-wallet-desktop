@@ -987,7 +987,6 @@ namespace atomic_dex
             {
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
-                SPDLOG_INFO("answer: {}", answer.dump(4));
                 auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
