@@ -259,7 +259,7 @@ QtObject {
     }
 
     function getCoinColor(ticker) {
-        const c = colorCoin[ticker]
+        const c = colorCoin[atomic_qt_utilities.retrieve_main_ticker(ticker)]
         return c || Style.colorTheme2
     }
 
