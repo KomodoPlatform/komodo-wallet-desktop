@@ -14,52 +14,17 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
-//! STD
-#include <optional>
-
-//! Project Headers
-#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
+#include "atomicdex/pages/widgets/dex/qt.multi.orders.widget.hpp"
 
 namespace atomic_dex
 {
-    struct ohlc_request
+    qt_multi_orders_widget::qt_multi_orders_widget(antara::gaming::ecs::system_manager& system_manager, QObject* parent) noexcept :
+        QObject(parent), m_system_mgr(system_manager)
+
     {
-        std::string base_asset;
-        std::string quote_asset;
-    };
+        SPDLOG_INFO("qt_orders_widget created");
+    }
 
-    struct ohlc_contents
-    {
-        std::size_t close_time_timestamp;
-        std::string human_readeable_closing_time;
-        std::string open;
-        std::string high;
-        std::string low;
-        std::string close;
-        std::string volume;
-        std::string quote_volume;
-    };
-
-    struct ohlc_answer_success
-    {
-        using t_format        = std::string;
-        using t_ohlc_contents = std::vector<ohlc_contents>;
-        std::unordered_map<t_format, t_ohlc_contents> result;
-        nlohmann::json                                raw_result;
-    };
-
-    struct ohlc_answer
-    {
-        std::optional<ohlc_answer_success> result;
-        std::optional<std::string>         error;
-    };
-
-    void from_json(const nlohmann::json& j, ohlc_answer_success& answer);
-    void from_json(const nlohmann::json& j, ohlc_answer& answer);
-
-    ohlc_answer                          ohlc_answer_from_async_resp(web::http::http_response resp);
-    pplx::task<web::http::http_response> async_rpc_ohlc_get_data(ohlc_request&& request);
+    qt_multi_orders_widget::~qt_multi_orders_widget() noexcept { SPDLOG_INFO("qt_orders widget destroyed"); }
 
 } // namespace atomic_dex

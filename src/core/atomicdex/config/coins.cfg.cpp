@@ -103,5 +103,26 @@ namespace atomic_dex
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
         }
+
+        switch (cfg.coin_type)
+        {
+        case CoinType::QRC20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet ? "tQTUM" : "QTUM";
+            break;
+        case CoinType::ERC20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet ? "ETHR" : "ETH";
+        case CoinType::BEP20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = "BNB";
+        case CoinType::SLP:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = "BCH";
+        default:
+            cfg.has_parent_fees_ticker = false;
+            cfg.fees_ticker            = cfg.ticker;
+            break;
+        }
     }
 } // namespace atomic_dex

@@ -3,17 +3,17 @@ include(DEX_NEW_LIB)
 # Core target
 DEX_NEW_LIB(core STATIC
         PUBLIC_DEPS
-        cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
-        Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
-        unofficial-btc::bitcoin ${PROJECT_NAME}::apis ${PROJECT_NAME}::pages komodo-date::date komodo-taskflow::taskflow
-        Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
+            cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
+            Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
+            unofficial-btc::bitcoin komodo-date::date komodo-taskflow::taskflow
+            Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
         PUBLIC_DEFS
-        $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
-        $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD> DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
-        DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
-        DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
+            $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
+            $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD> DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
+            DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
+            DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
         PRIVATE_DEFS
-        ENTT_API_EXPORT)
+            ENTT_API_EXPORT)
 target_precompile_headers(${PROJECT_NAME}_core PUBLIC core/atomicdex/pch.hpp)
 if (APPLE)
     set_source_files_properties(core/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
@@ -22,18 +22,6 @@ if (DISABLE_GEOBLOCKING)
     message(STATUS "Disabling Geoblocking for dev purpose")
     target_compile_definitions(${PROJECT_NAME}_core PUBLIC -DDISABLE_GEOBLOCKING)
 endif ()
-
-# Apis target
-DEX_NEW_LIB(apis STATIC
-        PRIVATE_DEPS nlohmann_json::nlohmann_json ${PROJECT_NAME}::core)
-
-# Models target
-DEX_NEW_LIB(models STATIC
-        PRIVATE_DEPS Qt::Core EnTT::EnTT antara::world ${PROJECT_NAME}::core ${PROJECT_NAME}::pages ${PROJECT_NAME}::apis)
-
-# Pages target
-DEX_NEW_LIB(pages STATIC
-        PUBLIC_DEPS Qt::Core ${PROJECT_NAME}::models PRIVATE_DEPS ${PROJECT_NAME}::core)
 
 
 # Translation files
@@ -67,7 +55,7 @@ add_executable(${PROJECT_NAME}
         ##! Linguistic
         ${QM_FILES}
         ${TS_FILES})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}::core ${PROJECT_NAME}::pages ${PROJECT_NAME}::models Qaterial)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}::core Qaterial)
 target_compile_definitions(${PROJECT_NAME} PRIVATE ENTT_API_IMPORT)
 set_target_properties(${PROJECT_NAME}
         PROPERTIES
@@ -98,7 +86,7 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 target_link_libraries(${PROJECT_NAME}_tests
         PUBLIC
-        ${PROJECT_NAME}::core ${PROJECT_NAME}::models ${PROJECT_NAME}::pages
+        ${PROJECT_NAME}::core
         doctest::doctest)
 set_target_properties(${PROJECT_NAME}_tests
         PROPERTIES

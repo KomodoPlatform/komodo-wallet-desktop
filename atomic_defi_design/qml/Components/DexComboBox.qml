@@ -17,8 +17,8 @@ ComboBox {
 
     font.family: Style.font_family
 
-    property color lineHoverColor: Style.colorTheme5
-    property color mainBorderColor: control.pressed ? Style.colorTheme8 : Style.colorTheme5
+    property color lineHoverColor: theme.hightlightColor
+    property color mainBorderColor: control.pressed ? theme.surfaceColor : theme.hightlightColor
     Behavior on lineHoverColor { ColorAnimation { duration: Style.animationDuration } }
     Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
 
@@ -44,7 +44,7 @@ ComboBox {
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
             text_value: control.mainLineText
-            color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
+            color: !control.enabled ? Qt.darker(theme.foregroundColor, 0.6) : control.pressed ? Qt.darker(theme.foregroundColor, 0.8) : theme.foregroundColor
         }
     }
 
@@ -54,7 +54,7 @@ ComboBox {
         id: bg_rect
         implicitWidth: 120
         implicitHeight: 40
-        color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
+        color: !control.enabled ? theme.hightlightColor : control.hovered ? theme.backgroundColor : theme.dexBoxBackgroundColor
         border.color: control.mainBorderColor
         border.width: control.visualFocus ? 2 : 1
         radius: Style.rectangleCornerRadius
@@ -81,9 +81,9 @@ ComboBox {
         }
 
         background: AnimatedRectangle {
-            color: Style.colorTheme9
-            border.color: control.mainBorderColor
-            radius: Style.rectangleCornerRadius
+            color: theme.dexBoxBackgroundColor
+            border.color: theme.rectangleBorderColor
+            radius: theme.rectangleCornerRadius
         }
     }
 
@@ -95,7 +95,6 @@ ComboBox {
 
         contentItem: DefaultText {
             text_value: control.dropdownLineText(model)
-            color: Style.colorText
         }
     }
 

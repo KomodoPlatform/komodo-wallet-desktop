@@ -56,22 +56,6 @@ namespace atomic_dex
         if (is_this_currency_a_fiat(config, config.current_currency))
         {
             change_24h = QString::fromStdString(coingecko.get_change_24h(coin.ticker));
-            if (config.current_currency != "USD")
-            {
-                // system_manager.get_system<>()
-                t_float_50 change_24h_f(change_24h.toStdString());
-            }
-        }
-        else
-        {
-            const auto res = coingecko.get_change_24h(config.current_currency);
-
-            if (res != "0" && coin.ticker != config.current_currency)
-            {
-                t_float_50 change_24h_f(res);
-                t_float_50 final_result = t_float_50(coingecko.get_change_24h(coin.ticker)) - change_24h_f;
-                change_24h              = QString::fromStdString(final_result.str(2));
-            }
         }
         return change_24h;
     }

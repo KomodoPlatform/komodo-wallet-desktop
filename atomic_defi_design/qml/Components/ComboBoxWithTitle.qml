@@ -15,7 +15,7 @@ ColumnLayout {
         id: title_text
     }
 
-    DefaultComboBox {
+    DexComboBox {
         id: input_field
         Layout.fillWidth: true
     }

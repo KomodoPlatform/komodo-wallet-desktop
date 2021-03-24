@@ -40,7 +40,7 @@ Item {
             }
             GradientStop {
                 position: cursor_round_edge.radius / cursor.width
-                color: Style.colorSidebarHighlightGradient1
+                color: theme.navigationSideBarButtonGradient1
             }
             GradientStop {
                 position: 0.375
@@ -66,7 +66,6 @@ Item {
         anchors.top: parent.top
         anchors.bottom: cursor_round_edge.top
 
-        radius: Style.rectangleCornerRadius
     }
 
     // Bottom Rect
@@ -77,7 +76,6 @@ Item {
         anchors.top: cursor_round_edge.bottom
         anchors.bottom: parent.bottom
 
-        radius: Style.rectangleCornerRadius
     }
 
 
@@ -108,7 +106,7 @@ Item {
         height: Style.sidebarLineHeight
         anchors.right: cursor.left
         visible: true
-        radius: Style.rectangleCornerRadius
+        radius: theme.rectangleRadius
 
         y: {
             switch(dashboard.current_page) {
@@ -136,7 +134,7 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: expanded? General.image_path + Style.sidebar_atomicdex_logo : General.image_path +  "logo/dex-logo.png"
+            source: expanded? "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo : "file:///"+atomic_logo_path +  "/"+ theme.smallSidebarLogo
             anchors.horizontalCenter: parent.horizontalCenter
             y: expanded? parent.width * 0.25 : parent.width * 0.40
             transformOrigin: Item.Center

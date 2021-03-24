@@ -85,7 +85,8 @@ FloatingBackground {
                         delay: 200
                     }
                     Rectangle {
-                        anchors.fill: parent
+                        width: parent.width
+                        height: parent.height
                         radius: 30
                         color: Style.colorTheme9
                         opacity: .8
@@ -120,7 +121,6 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
-                    enabled: !multi_order_enabled
 
                     field.left_text: qsTr("Volume")
                     field.right_text: left_ticker

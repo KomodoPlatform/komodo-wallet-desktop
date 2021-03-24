@@ -14,35 +14,37 @@
  *                                                                            *
  ******************************************************************************/
 
+#pragma once
+
+//! Qt
+#include <QObject>
+#include <QStringList>
+
 //! Deps
-#include <nlohmann/json.hpp>
+#include <antara/gaming/ecs/system.manager.hpp>
 
-//! Project Headers
-#include "atomicdex/api/mm2/rpc.enable.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "qt.market.pairs.hpp"
 
-//! Implementation RPC [enable]
-namespace mm2::api
+namespace atomic_dex
 {
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const enable_request& cfg)
+    class qt_orders_widget final : public QObject
     {
-        j["coin"] = cfg.coin_name;
-        if (cfg.coin_type == CoinType::ERC20)
-        {
-            j["gas_station_url"]       = cfg.gas_station_url;
-            j["swap_contract_address"] = cfg.erc_swap_contract_address;
-            j["urls"]                  = cfg.urls;
-        }
-        j["tx_history"] = cfg.with_tx_history;
-    }
+        Q_OBJECT
 
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, enable_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        j.at("result").get_to(cfg.result);
-    }
-} // namespace mm2::api
+        //! Private member fields
+        ag::ecs::system_manager& m_system_mgr;
+
+        //! Private member functions
+        void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
+
+      public:
+        qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
+        ~qt_orders_widget() noexcept final;
+
+        //! QML_API
+        Q_INVOKABLE void cancel_order(const QStringList& orders_id);
+        Q_INVOKABLE void cancel_all_orders();
+        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
+    };
+} // namespace atomic_dex

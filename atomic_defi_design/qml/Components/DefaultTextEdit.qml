@@ -12,9 +12,9 @@ TextEdit {
     selectByMouse: true
     readOnly: true
 
-    color: Style.colorText
-    selectedTextColor: Style.colorSelectedText
-    selectionColor: Style.colorSelection
+    selectedTextColor: theme.textSelectedColor
+    selectionColor: theme.textSelectionColor
+    color: theme.foregroundColor
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 

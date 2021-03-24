@@ -21,7 +21,7 @@ if (APPLE)
             TARGET_LINK_LIBRARIES(${appname} PRIVATE ${FRAMEWORK_${fwname}})
             MESSAGE(STATUS "Framework ${fwname} found at ${FRAMEWORK_${fwname}}")
         endif()
-    endmacro(ADD_FRAMEWORK)
+    endmacro()
 endif ()
 target_include_directories(antara_core_shared_sources PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} $<$<PLATFORM_ID:Darwin>:${APPLE_FOUNDATION_FRAMEWORK_INCLUDE_DIR}>)
 target_link_libraries(antara_core_shared_sources PUBLIC

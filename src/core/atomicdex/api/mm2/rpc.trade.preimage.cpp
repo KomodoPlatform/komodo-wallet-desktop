@@ -18,8 +18,8 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/api/mm2/generics.hpp"
+#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 
 namespace mm2::api
 {
@@ -34,6 +34,10 @@ namespace mm2::api
         if (request.max.has_value())
         {
             j["max"] = request.max.value();
+        }
+        if (request.price.has_value())
+        {
+            j["price"] = request.price.value();
         }
     }
 
@@ -53,24 +57,13 @@ namespace mm2::api
         j.at("rel_coin_fee").get_to(answer.rel_coin_fee);
         if (j.contains("taker_fee"))
         {
-            answer.taker_fee = j.at("taker_fee").get<std::string>();
-        }
-        if (j.contains("taker_fee_fraction"))
-        {
-            answer.taker_fee_fraction = j.at("taker_fee_fraction").get<fraction>();
+            answer.taker_fee = j.at("taker_fee").get<coin_fee>();
         }
         if (j.contains("fee_to_send_taker_fee"))
         {
             answer.fee_to_send_taker_fee = j.at("fee_to_send_taker_fee").get<coin_fee>();
         }
-        if (j.contains("volume"))
-        {
-            answer.volume = j.at("volume").get<std::string>();
-        }
-        if (j.contains("volume_fraction"))
-        {
-            answer.volume_fraction = j.at("volume_fraction").get<fraction>();
-        }
+        j.at("total_fees").get_to(answer.total_fees);
     }
 
     void

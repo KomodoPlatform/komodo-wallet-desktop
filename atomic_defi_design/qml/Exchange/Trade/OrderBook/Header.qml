@@ -15,7 +15,7 @@ Item {
     z: 2
     Rectangle {
         anchors.fill: parent
-        color: Style.colorTheme9
+        color: theme.dexBoxBackgroundColor
     }
 
     RowLayout {
@@ -29,7 +29,7 @@ Item {
             font.family: Style.font_family
             font.pixelSize: 10
             font.bold: true
-            color: is_ask? "#E31A93" : Style.colorGreen
+            color: is_ask? theme.redColor : theme.greenColor
             font.weight: Font.Black
         }
         DefaultText {

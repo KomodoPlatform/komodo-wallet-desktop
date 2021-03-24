@@ -11,7 +11,4 @@ DefaultButton {
     font.weight: Font.Normal
 
     verticalShadow: true
-
-    colorEnabled: Style.colorButtonHovered[button_type]
-    colorHovered: Style.colorButtonEnabled[button_type]
 }

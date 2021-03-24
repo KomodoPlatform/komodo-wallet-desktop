@@ -34,20 +34,19 @@
 namespace atomic_dex
 {
     portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
-        QAbstractListModel(parent),
-        m_system_manager(system_manager),
-        m_dispatcher(dispatcher),
-        m_model_proxy(new portfolio_proxy_model(m_system_manager, parent)),
-        m_pie_chart_proxy_model(new portfolio_proxy_model(m_system_manager, parent))
+        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher),
+        m_model_proxy(new portfolio_proxy_model(m_system_manager, parent)), m_pie_chart_proxy_model(new portfolio_proxy_model(m_system_manager, parent))
     {
         m_model_proxy->setSourceModel(this);
         m_model_proxy->setDynamicSortFilter(true);
         m_model_proxy->sort_by_currency_balance(false);
         m_model_proxy->setFilterRole(NameAndTicker);
         m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    
+
         m_pie_chart_proxy_model->setSourceModel(this);
         m_pie_chart_proxy_model->setDynamicSortFilter(true);
+        m_pie_chart_proxy_model->set_with_fiat_balance(true);
+        m_pie_chart_proxy_model->sort_by_currency_balance(false);
         m_pie_chart_proxy_model->setFilterRole(NameAndTicker);
         m_pie_chart_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
@@ -116,7 +115,8 @@ namespace atomic_dex
             }
             auto update_functor = [coin = std::move(coin), &coingecko, &mm2_system, &price_service, currency, fiat, this]() {
                 const std::string& ticker = coin.ticker;
-                if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
+                if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly);
+                    not res.isEmpty())
                 {
                     std::error_code    ec;
                     const QModelIndex& idx                         = res.at(0);
@@ -307,10 +307,10 @@ namespace atomic_dex
         case MultiTickerPrice:
         {
             item.multi_ticker_price = value.toString();
-            auto& trade_page        = m_system_manager.get_system<trading_page>();
-            trade_page.get_orders_widget()->determine_multi_ticker_total_amount(
+            // auto& trade_page        = m_system_manager.get_system<trading_page>();
+            /*trade_page.get_orders_widget()->determine_multi_ticker_total_amount(
                 item.ticker, item.multi_ticker_price.value(), item.is_multi_ticker_enabled, trade_page.get_market_pairs_mdl(), trade_page.get_market_mode(),
-                trade_page.get_volume());
+                trade_page.get_volume());*/
             break;
         }
         case MultiTickerReceiveAmount:
@@ -400,7 +400,7 @@ namespace atomic_dex
     {
         return m_model_proxy;
     }
-    
+
     portfolio_proxy_model*
     portfolio_model::get_pie_char_proxy_mdl() const noexcept
     {
@@ -457,8 +457,8 @@ namespace atomic_dex
     {
         using namespace std::chrono;
         t_float_50 prev_balance_f = safe_float(prev_balance.toStdString());
-        t_float_50 new_balance_f = safe_float(new_balance.toStdString());
-        bool       am_i_sender = false;
+        t_float_50 new_balance_f  = safe_float(new_balance.toStdString());
+        bool       am_i_sender    = false;
         if (prev_balance_f > new_balance_f)
         {
             am_i_sender = true;

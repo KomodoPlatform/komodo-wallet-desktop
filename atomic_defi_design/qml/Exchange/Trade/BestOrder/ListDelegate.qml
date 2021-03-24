@@ -30,7 +30,6 @@ Item {
         height: parent.height
         color: theme.foregroundColor
         opacity: 0.1
-        anchors.left: parent.left
     }
 
     RowLayout {
@@ -41,7 +40,7 @@ Item {
         spacing: 10
         Row {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 140
+            Layout.preferredWidth: 125
             leftPadding: -10
             spacing: 5
             Image {

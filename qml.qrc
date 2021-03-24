@@ -83,6 +83,7 @@
         <file>atomic_defi_design/assets/images/coins/ltc.png</file>
         <file>atomic_defi_design/assets/images/coins/mcl.png</file>
         <file>atomic_defi_design/assets/images/coins/eth.png</file>
+        <file>atomic_defi_design/assets/images/coins/ethr.png</file>
         <file>atomic_defi_design/assets/images/coins/kmd.png</file>
         <file>atomic_defi_design/assets/images/coins/chips.png</file>
         <file>atomic_defi_design/assets/images/coins/dex.png</file>
@@ -101,6 +102,8 @@
         <file>atomic_defi_design/assets/images/coins/pangea.png</file>
         <file>atomic_defi_design/assets/images/coins/pax.png</file>
         <file>atomic_defi_design/assets/images/coins/revs.png</file>
+        <file>atomic_defi_design/assets/images/coins/jst.png</file>
+        <file>atomic_defi_design/assets/images/coins/dec8.png</file>
         <file>atomic_defi_design/assets/images/coins/qtum.png</file>
         <file>atomic_defi_design/assets/images/coins/qrc20.png</file>
         <file>atomic_defi_design/assets/images/coins/qrc-20.png</file>
@@ -424,5 +427,8 @@
         <file>atomic_defi_design/qml/Components/DexSelectableButton.qml</file>
         <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Combo_fiat.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/ProView.qml</file>
+        <file>atomic_defi_design/assets/images/bill.svg</file>
+        <file>atomic_defi_design/qml/Fiat/FiatRamp.qml</file>
     </qresource>
 </RCC>
