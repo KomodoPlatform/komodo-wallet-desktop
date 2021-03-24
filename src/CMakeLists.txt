@@ -68,6 +68,7 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/atomic.dex.provider.cex.prices.tests.cpp
         tests/atomic.dex.qt.utilities.tests.cpp
 
+        tests/config/coins.cfg.tests.cpp
         ##! API
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
