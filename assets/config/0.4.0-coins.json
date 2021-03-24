@@ -399,12 +399,27 @@
     "currently_enabled": false,
     "wallet_only": true
   },
-  "DAI": {
-    "coin": "DAI",
+  "DAI-BEP20": {
+      "coin": "DAI-BEP20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "DAI-ERC20": {
+    "coin": "DAI-ERC20",
     "name": "Dai",
     "coinpaprika_id": "dai-dai",
     "coingecko_id": "dai",
-    "nodes": [
+    "eth_nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -2927,23 +2942,38 @@
   "active": false,
   "currently_enabled": false
  },
- "UNI": {
-  "coin": "UNI",
-  "name": "Uniswap",
-  "coinpaprika_id": "uni-uniswap",
-  "coingecko_id": "uniswap",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
+  "UNI-BEP20": {
+      "coin": "UNI-BEP20",
+      "name": "Uniswap",
+      "coinpaprika_id": "uni-uniswap",
+      "coingecko_id": "uniswap",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "UNI-ERC20": {
+    "coin": "UNI-ERC20",
+    "name": "Uniswap",
+    "coinpaprika_id": "uni-uniswap",
+    "coingecko_id": "uniswap",
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
  "UOS": {
   "coin": "UOS",
   "name": "Ultra Token",
