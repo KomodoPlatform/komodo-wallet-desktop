@@ -822,7 +822,7 @@
   "USDT-BEP20": {
       "coin": "USDT-BEP20",
       "name": "Tether",
-      "coinpaprika_id": "test-coin",
+      "coinpaprika_id": "usdt-tether",
       "coingecko_id": "tether",
       "nodes": [
         "https://bsc-dataseed.binance.org"
