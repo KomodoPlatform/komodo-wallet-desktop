@@ -56,13 +56,13 @@ namespace atomic_dex
       public:
         //! Constructor
         explicit ip_service_checker(entt::registry& registry, QObject* parent = nullptr);
-        ~ip_service_checker() noexcept final = default;
+        ~ip_service_checker()  final = default;
 
         //! Public override
-        void update() noexcept final;
+        void update()  final;
 
-        [[nodiscard]] bool    is_my_ip_authorized() const noexcept;
-        [[nodiscard]] QString my_country_ip() const noexcept;
+        [[nodiscard]] bool    is_my_ip_authorized() const ;
+        [[nodiscard]] QString my_country_ip() const ;
     };
 } // namespace atomic_dex
 

@@ -21,21 +21,21 @@
 namespace antara::gaming::world
 {
     //! Constructor
-    app::app([[maybe_unused]] std::string config_maker_name) noexcept
+    app::app([[maybe_unused]] std::string config_maker_name) 
     {
         dispatcher_.sink<event::quit_game>().connect<&app::receive_quit_game>(*this);
     }
 
     //! Public callbacks
     void
-    app::receive_quit_game(const event::quit_game& evt) noexcept
+    app::receive_quit_game(const event::quit_game& evt) 
     {
         this->is_running_        = false;
         this->game_return_value_ = evt.return_value_;
     }
 
     int
-    app::run() noexcept
+    app::run() 
     {
         if (not system_manager_.nb_systems())
         {
@@ -57,5 +57,5 @@ namespace antara::gaming::world
         this->system_manager_.update();
     }
 
-    app::~app() noexcept {}
+    app::~app()  {}
 } // namespace antara::gaming::world

@@ -32,7 +32,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    addressbook_page::update() noexcept
+    addressbook_page::update() 
     {
     }
 } // namespace atomic_dex
@@ -41,27 +41,27 @@ namespace atomic_dex
 namespace atomic_dex
 {
     addressbook_model*
-    addressbook_page::get_model() const noexcept
+    addressbook_page::get_model() const 
     {
         return m_model;
     }
 
     void
-    addressbook_page::connect_signals() noexcept
+    addressbook_page::connect_signals() 
     {
         SPDLOG_INFO("connecting addressbook signals");
         dispatcher_.sink<post_login>().connect<&addressbook_page::on_post_login>(*this);
     }
 
     void
-    addressbook_page::disconnect_signals() noexcept
+    addressbook_page::disconnect_signals() 
     {
         SPDLOG_INFO("disconnecting addressbook signals");
         dispatcher_.sink<post_login>().disconnect<&addressbook_page::on_post_login>(*this);
     }
 
     void
-    addressbook_page::on_post_login([[maybe_unused]] const post_login& evt) noexcept
+    addressbook_page::on_post_login([[maybe_unused]] const post_login& evt) 
     {
         SPDLOG_INFO("post_login: filling addressbook from cfg");
         m_system_manager.get_system<addressbook_manager>().load_configuration();
@@ -69,7 +69,7 @@ namespace atomic_dex
     }
 
     void
-    addressbook_page::clear() noexcept
+    addressbook_page::clear() 
     {
         SPDLOG_INFO("clear addressbook page");
         m_system_manager.get_system<addressbook_manager>().save_configuration();

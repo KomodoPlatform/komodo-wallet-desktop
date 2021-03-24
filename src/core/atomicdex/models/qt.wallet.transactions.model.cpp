@@ -29,7 +29,7 @@ namespace
 
 namespace atomic_dex
 {
-    transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
+    transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent)  :
         QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new transactions_proxy_model(this))
     {
         this->m_model_proxy->setSourceModel(this);
@@ -275,13 +275,13 @@ namespace atomic_dex
     }
 
     int
-    transactions_model::get_length() const noexcept
+    transactions_model::get_length() const 
     {
         return rowCount();
     }
 
     transactions_proxy_model*
-    transactions_model::get_transactions_proxy() const noexcept
+    transactions_model::get_transactions_proxy() const 
     {
         return m_model_proxy;
     }

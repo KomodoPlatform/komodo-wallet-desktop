@@ -51,7 +51,7 @@ namespace std
     };
 } // namespace std
 
-std::error_code make_error_code(dextop_error error) noexcept;
+std::error_code make_error_code(dextop_error error) ;
 
 namespace atomic_dex
 {

@@ -45,17 +45,17 @@ namespace atomic_dex
         explicit orderbook_scanner_service(entt::registry& registry, ag::ecs::system_manager& system_manager);
 
         //! Destructor
-        ~orderbook_scanner_service() noexcept final = default;
+        ~orderbook_scanner_service()  final = default;
 
         //! Public override
-        void update() noexcept final;
+        void update()  final;
 
         //! Public functions
-        void process_best_orders() noexcept;
+        void process_best_orders() ;
 
-        [[nodiscard]] bool is_best_orders_busy() const noexcept;
+        [[nodiscard]] bool is_best_orders_busy() const ;
 
-        [[nodiscard]] t_orders_contents get_data() const noexcept;
+        [[nodiscard]] t_orders_contents get_data() const ;
     };
 } // namespace atomic_dex
 

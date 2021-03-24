@@ -53,15 +53,15 @@ namespace antara::gaming::ecs
 
       public:
         //! Constructor
-        lambda_system(entt::registry& registry, ftor lambda_contents, std::string lambda_name = "") noexcept;
+        lambda_system(entt::registry& registry, ftor lambda_contents, std::string lambda_name = "") ;
 
         //! Destructor
-        ~lambda_system() noexcept;
+        ~lambda_system() ;
 
         //! Public member functions
-        void update() noexcept final;
+        void update()  final;
 
-        void post_update() noexcept final;
+        void post_update()  final;
     };
 
 

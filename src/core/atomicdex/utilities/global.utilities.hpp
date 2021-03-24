@@ -63,9 +63,9 @@ namespace atomic_dex::utils
     /// \return An fs::path object.
     [[nodiscard]] fs::path get_atomic_dex_addressbook_folder();
 
-    fs::path get_runtime_coins_path() noexcept;
+    fs::path get_runtime_coins_path() ;
 
-    fs::path get_atomic_dex_logs_folder() noexcept;
+    fs::path get_atomic_dex_logs_folder() ;
 
     ENTT_API fs::path get_atomic_dex_current_log_file();
     ENTT_API std::shared_ptr<spdlog::logger> register_logger();

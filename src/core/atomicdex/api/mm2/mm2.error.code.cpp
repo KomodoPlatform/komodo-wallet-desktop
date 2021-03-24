@@ -24,7 +24,7 @@ namespace
       public:
         [[nodiscard]] const char* name() const noexcept final;
 
-        [[nodiscard]] std::string message(int code) const noexcept final;
+        [[nodiscard]] std::string message(int code) const  final;
     };
 
     const char*
@@ -34,7 +34,7 @@ namespace
     }
 
     std::string
-    mm2_error_category_impl::message(int code) const noexcept
+    mm2_error_category_impl::message(int code) const 
     {
         switch (static_cast<dextop_error>(code))
         {
@@ -96,7 +96,7 @@ namespace
 } // namespace
 
 std::error_code
-make_error_code(dextop_error error) noexcept
+make_error_code(dextop_error error) 
 {
     return {static_cast<int>(error), g_err_categ};
 }

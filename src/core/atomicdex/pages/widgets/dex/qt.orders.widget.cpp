@@ -28,11 +28,11 @@
 //! Constructor / Destructor
 namespace atomic_dex
 {
-    qt_orders_widget::qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent) noexcept : QObject(parent), m_system_mgr(system_manager)
+    qt_orders_widget::qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent)  : QObject(parent), m_system_mgr(system_manager)
     {
         SPDLOG_INFO("qt_orders_widget created");
     }
-    qt_orders_widget::~qt_orders_widget() noexcept { SPDLOG_INFO("qt_orders widget destroyed"); }
+    qt_orders_widget::~qt_orders_widget()  { SPDLOG_INFO("qt_orders widget destroyed"); }
 } // namespace atomic_dex
 
 //! Private member functions

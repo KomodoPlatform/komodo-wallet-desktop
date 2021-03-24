@@ -27,13 +27,13 @@
 namespace atomic_dex
 {
     QString
-    qt_wallet_manager::get_wallet_default_name() const noexcept
+    qt_wallet_manager::get_wallet_default_name() const 
     {
         return m_current_default_wallet;
     }
 
     void
-    qt_wallet_manager::set_wallet_default_name(QString wallet_name) noexcept
+    qt_wallet_manager::set_wallet_default_name(QString wallet_name) 
     {
         using namespace std::string_literals;
         if (wallet_name == "")
@@ -103,7 +103,7 @@ namespace atomic_dex
     }
 
     QStringList
-    qt_wallet_manager::get_wallets() noexcept
+    qt_wallet_manager::get_wallets() 
     {
         QStringList out;
 
@@ -121,13 +121,13 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::is_there_a_default_wallet() noexcept
+    qt_wallet_manager::is_there_a_default_wallet() 
     {
         return fs::exists(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
 
     QString
-    qt_wallet_manager::get_default_wallet_name() noexcept
+    qt_wallet_manager::get_default_wallet_name() 
     {
         if (is_there_a_default_wallet())
         {
@@ -140,7 +140,7 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::delete_wallet(const QString& wallet_name) noexcept
+    qt_wallet_manager::delete_wallet(const QString& wallet_name) 
     {
         using namespace std::string_literals;
         return fs::remove(utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
@@ -197,7 +197,7 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::update_wallet_cfg() noexcept
+    qt_wallet_manager::update_wallet_cfg() 
     {
         using namespace std::string_literals;
         const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
@@ -228,7 +228,7 @@ namespace atomic_dex
     }
 
     void
-    qt_wallet_manager::update() noexcept
+    qt_wallet_manager::update() 
     {
         //! Disabled system
     }
@@ -314,13 +314,13 @@ namespace atomic_dex
     }
 
     QString
-    qt_wallet_manager::get_status() const noexcept
+    qt_wallet_manager::get_status() const 
     {
         return m_current_status;
     }
 
     void
-    qt_wallet_manager::set_status(QString status) noexcept
+    qt_wallet_manager::set_status(QString status) 
     {
         this->m_current_status = std::move(status);
         emit onStatusChanged();
@@ -333,13 +333,13 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::log_status() const noexcept
+    qt_wallet_manager::log_status() const 
     {
         return m_login_status;
     }
 
     void
-    qt_wallet_manager::set_log_status(bool status) noexcept
+    qt_wallet_manager::set_log_status(bool status) 
     {
         m_login_status = status;
     }

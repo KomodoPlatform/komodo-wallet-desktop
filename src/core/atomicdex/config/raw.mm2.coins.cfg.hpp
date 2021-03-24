@@ -6,8 +6,8 @@
 
 //! Project
 #include "atomicdex/api/mm2/mm2.constants.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/fs.prerequisites.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 #ifndef NLOHMANN_OPT_HELPER
 #    define NLOHMANN_OPT_HELPER
@@ -108,6 +108,7 @@ namespace atomic_dex
         std::optional<std::string>    n_spv{std::nullopt};
         std::optional<std::string>    version_group_id{std::nullopt};
         std::optional<std::string>    consensus_branch_id{std::nullopt};
+        std::optional<double>         avg_blocktime{std::nullopt};
         std::optional<int64_t>        dust{std::nullopt};
     };
 
@@ -175,6 +176,7 @@ namespace atomic_dex
         x.version_group_id       = atomic_dex::get_optional<std::string>(j, "version_group_id");
         x.consensus_branch_id    = atomic_dex::get_optional<std::string>(j, "consensus_branch_id");
         x.dust                   = atomic_dex::get_optional<int64_t>(j, "dust");
+        x.avg_blocktime          = atomic_dex::get_optional<double>(j, "avg_blocktime");
     }
 
     inline void
@@ -218,6 +220,7 @@ namespace atomic_dex
         to_json_functor("version_group_id", x.version_group_id);
         to_json_functor("consensus_branch_id", x.consensus_branch_id);
         to_json_functor("dust", x.dust);
+        to_json_functor("avg_blocktime", x.avg_blocktime);
     }
 
     inline t_mm2_raw_coins_registry

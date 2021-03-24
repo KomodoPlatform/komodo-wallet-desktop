@@ -30,6 +30,7 @@
 
 //! Project headers
 #include "atomicdex/config/app.cfg.hpp"
+#include "atomicdex/constants/qt.coins.enums.hpp"
 
 namespace atomic_dex
 {
@@ -66,48 +67,48 @@ namespace atomic_dex
 
       public:
         explicit settings_page(
-            entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent = nullptr) noexcept;
-        ~settings_page() noexcept final = default;
+            entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent = nullptr) ;
+        ~settings_page()  final = default;
 
         //! Public override
-        void update() noexcept final;
+        void update()  final;
 
         //! Properties
-        [[nodiscard]] QString  get_current_lang() const noexcept;
-        void                   set_current_lang(QString new_lang) noexcept;
-        [[nodiscard]] QString  get_empty_string() const noexcept;
-        [[nodiscard]] QString  get_current_currency() const noexcept;
-        [[nodiscard]] QString  get_current_currency_sign() const noexcept;
-        [[nodiscard]] QString  get_current_fiat_sign() const noexcept;
-        [[nodiscard]] QString  get_current_fiat() const noexcept;
-        [[nodiscard]] bool     is_notification_enabled() const noexcept;
-        void                   set_notification_enabled(bool is_enabled) noexcept;
-        void                   set_current_currency(const QString& current_currency) noexcept;
-        void                   set_current_fiat(const QString& current_fiat) noexcept;
-        [[nodiscard]] bool     is_fetching_custom_token_data_busy() const noexcept;
-        void                   set_fetching_custom_token_data_busy(bool status) noexcept;
-        [[nodiscard]] QVariant get_custom_token_data() const noexcept;
-        void                   set_custom_token_data(QVariant rpc_data) noexcept;
-        [[nodiscard]] bool     is_fetching_priv_key_busy() const noexcept;
-        void                   set_fetching_priv_key_busy(bool status) noexcept;
+        [[nodiscard]] QString  get_current_lang() const ;
+        void                   set_current_lang(QString new_lang) ;
+        [[nodiscard]] QString  get_empty_string() const ;
+        [[nodiscard]] QString  get_current_currency() const ;
+        [[nodiscard]] QString  get_current_currency_sign() const ;
+        [[nodiscard]] QString  get_current_fiat_sign() const ;
+        [[nodiscard]] QString  get_current_fiat() const ;
+        [[nodiscard]] bool     is_notification_enabled() const ;
+        void                   set_notification_enabled(bool is_enabled) ;
+        void                   set_current_currency(const QString& current_currency) ;
+        void                   set_current_fiat(const QString& current_fiat) ;
+        [[nodiscard]] bool     is_fetching_custom_token_data_busy() const ;
+        void                   set_fetching_custom_token_data_busy(bool status) ;
+        [[nodiscard]] QVariant get_custom_token_data() const ;
+        void                   set_custom_token_data(QVariant rpc_data) ;
+        [[nodiscard]] bool     is_fetching_priv_key_busy() const ;
+        void                   set_fetching_priv_key_busy(bool status) ;
 
         //! Public API
-        [[nodiscard]] atomic_dex::cfg&       get_cfg() noexcept;
-        [[nodiscard]] const atomic_dex::cfg& get_cfg() const noexcept;
-        void                                 init_lang() noexcept;
-        void                                 set_qml_engine(QQmlApplicationEngine* engine) noexcept;
+        [[nodiscard]] atomic_dex::cfg&       get_cfg() ;
+        [[nodiscard]] const atomic_dex::cfg& get_cfg() const ;
+        void                                 init_lang() ;
+        void                                 set_qml_engine(QQmlApplicationEngine* engine) ;
         void                                 garbage_collect_qml();
 
         // QML API
-        Q_INVOKABLE void                      remove_custom_coin(const QString& ticker) noexcept;
+        Q_INVOKABLE void                      remove_custom_coin(const QString& ticker) ;
         Q_INVOKABLE [[nodiscard]] QStringList get_available_langs() const;
         Q_INVOKABLE [[nodiscard]] QStringList get_available_fiats() const;
         Q_INVOKABLE [[nodiscard]] QStringList get_recommended_fiats() const; // Returns 6 recommended fiats. Basically, the first 6 values in cfg.json.
         Q_INVOKABLE [[nodiscard]] QStringList get_available_currencies() const;
-        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
-        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
-        Q_INVOKABLE [[nodiscard]] QString     get_custom_coins_icons_path() const noexcept;
-        Q_INVOKABLE void           process_erc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath);
+        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_raw_cfg(const QString& ticker) const ;
+        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_normal_cfg(const QString& ticker) const ;
+        Q_INVOKABLE [[nodiscard]] QString     get_custom_coins_icons_path() const ;
+        Q_INVOKABLE void           process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type);
         Q_INVOKABLE void           process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath);
         Q_INVOKABLE void           submit();
         Q_INVOKABLE void           reset_coin_cfg();
@@ -115,7 +116,7 @@ namespace atomic_dex
         Q_INVOKABLE static QString get_mm2_version();
         Q_INVOKABLE static QString get_log_folder();
         Q_INVOKABLE static QString get_export_folder();
-        Q_INVOKABLE static QString get_version() noexcept;
+        Q_INVOKABLE static QString get_version() ;
 
         // QML API Properties Signals
       signals:

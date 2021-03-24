@@ -26,8 +26,8 @@
 #include <nlohmann/json.hpp>
 
 //! Project
-#include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/api/mm2/mm2.constants.hpp"
+#include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
 namespace atomic_dex
@@ -37,12 +37,12 @@ namespace atomic_dex
       public:
         static constexpr const char* erc_gas_stations = "https://ethgasstation.info/json/ethgasAPI.json";
         using electrum_servers                        = std::vector<electrum_server>;
-        using eth_nodes                               = std::vector<std::string>;
+        using nodes                                   = std::vector<std::string>;
         std::string                     ticker;
         std::string                     gui_ticker; ///< Ticker displayed in the gui
         std::string                     name;       ///< nice name
         std::optional<electrum_servers> electrum_urls;
-        std::optional<eth_nodes>        eth_urls;
+        std::optional<nodes>            urls;
         bool                            is_claimable{false};
         std::string                     minimal_claim_amount{"0"};
         bool                            currently_enabled{false};

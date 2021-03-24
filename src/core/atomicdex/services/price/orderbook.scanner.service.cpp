@@ -36,7 +36,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    orderbook_scanner_service::process_best_orders() noexcept
+    orderbook_scanner_service::process_best_orders() 
     {
         if (m_system_manager.has_system<mm2_service>())
         {
@@ -106,7 +106,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    orderbook_scanner_service::update() noexcept
+    orderbook_scanner_service::update() 
     {
         //! Scan orderbook widget every 30 seconds if there is not any update
         using namespace std::chrono_literals;
@@ -121,13 +121,13 @@ namespace atomic_dex
     }
 
     bool
-    orderbook_scanner_service::is_best_orders_busy() const noexcept
+    orderbook_scanner_service::is_best_orders_busy() const 
     {
         return m_rpc_busy.load();
     }
 
     t_orders_contents
-    orderbook_scanner_service::get_data() const noexcept
+    orderbook_scanner_service::get_data() const 
     {
         return m_best_orders_infos.get().result;
     }

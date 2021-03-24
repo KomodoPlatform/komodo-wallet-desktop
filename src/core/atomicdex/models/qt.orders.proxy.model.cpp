@@ -88,13 +88,13 @@ namespace atomic_dex
     }
 
     bool
-    orders_proxy_model::am_i_in_history() const noexcept
+    orders_proxy_model::am_i_in_history() const 
     {
         return m_is_history;
     }
 
     void
-    orders_proxy_model::set_is_history(bool is_history) noexcept
+    orders_proxy_model::set_is_history(bool is_history) 
     {
         if (this->m_is_history != is_history)
         {
@@ -230,7 +230,7 @@ namespace atomic_dex
     }
 
     QStringList
-    orders_proxy_model::get_filtered_ids() const noexcept
+    orders_proxy_model::get_filtered_ids() const 
     {
         QStringList out;
         int         nb_items = this->rowCount();
@@ -336,12 +336,12 @@ namespace atomic_dex
     }
 
     bool
-    orders_proxy_model::get_apply_filtering() const noexcept
+    orders_proxy_model::get_apply_filtering() const 
     {
         return m_is_filtering_applicable;
     }
     void
-    orders_proxy_model::set_apply_filtering(bool status) noexcept
+    orders_proxy_model::set_apply_filtering(bool status) 
     {
         if (m_is_filtering_applicable != status)
         {

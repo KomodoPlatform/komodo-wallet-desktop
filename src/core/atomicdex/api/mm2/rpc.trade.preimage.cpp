@@ -63,7 +63,10 @@ namespace mm2::api
         {
             answer.fee_to_send_taker_fee = j.at("fee_to_send_taker_fee").get<coin_fee>();
         }
-        j.at("total_fees").get_to(answer.total_fees);
+        if (j.contains("total_fees"))
+        {
+            j.at("total_fees").get_to(answer.total_fees);
+        }
     }
 
     void

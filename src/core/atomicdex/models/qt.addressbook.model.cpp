@@ -25,7 +25,7 @@
 //! Ctor
 namespace atomic_dex
 {
-    addressbook_model::addressbook_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
+    addressbook_model::addressbook_model(ag::ecs::system_manager& system_manager, QObject* parent)  :
         QAbstractListModel(parent),
         m_system_manager(system_manager),
         m_addressbook_proxy(new addressbook_proxy_model(m_system_manager, this))
@@ -84,7 +84,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     addressbook_proxy_model*
-    addressbook_model::get_addressbook_proxy_mdl() const noexcept
+    addressbook_model::get_addressbook_proxy_mdl() const 
     {
         return m_addressbook_proxy;
     }

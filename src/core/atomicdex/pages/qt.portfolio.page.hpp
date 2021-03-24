@@ -47,30 +47,30 @@ namespace atomic_dex
       public:
         //! Constructor
         explicit portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
-        ~portfolio_page() noexcept final;
+        ~portfolio_page()  final;
 
         //! Public override
-        void update() noexcept final;
+        void update()  final;
 
         //! CPP API
         void initialize_portfolio(const std::vector<std::string>& tickers);
         void disable_coins(const QStringList& coins);
 
-        [[nodiscard]] portfolio_model*        get_portfolio() const noexcept;
-        [[nodiscard]] global_coins_cfg_model* get_global_cfg() const noexcept;
-        [[nodiscard]] QString                 get_oracle_last_price_reference() const noexcept;
-        [[nodiscard]] QStringList             get_oracle_price_supported_pairs() const noexcept;
-        [[nodiscard]] Q_INVOKABLE QStringList get_all_enabled_coins() const noexcept;
-        [[nodiscard]] Q_INVOKABLE QStringList get_all_coins_by_type(const QString& coin_type) const noexcept;
-        [[nodiscard]] Q_INVOKABLE bool        is_coin_enabled(const QString& coin_name) const noexcept;
+        [[nodiscard]] portfolio_model*        get_portfolio() const ;
+        [[nodiscard]] global_coins_cfg_model* get_global_cfg() const ;
+        [[nodiscard]] QString                 get_oracle_last_price_reference() const ;
+        [[nodiscard]] QStringList             get_oracle_price_supported_pairs() const ;
+        [[nodiscard]] Q_INVOKABLE QStringList get_all_enabled_coins() const ;
+        [[nodiscard]] Q_INVOKABLE QStringList get_all_coins_by_type(const QString& coin_type) const ;
+        [[nodiscard]] Q_INVOKABLE bool        is_coin_enabled(const QString& coin_name) const ;
 
-        [[nodiscard]] QString get_balance_fiat_all() const noexcept;
-        void                  set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
+        [[nodiscard]] QString get_balance_fiat_all() const ;
+        void                  set_current_balance_fiat_all(QString current_fiat_all_balance) ;
 
         //! Events
         void on_band_oracle_refreshed([[maybe_unused]] const band_oracle_refreshed& evt);
-        void on_update_portfolio_values_event(const update_portfolio_values&) noexcept;
-        void on_coin_cfg_parsed(const coin_cfg_parsed& evt) noexcept;
+        void on_update_portfolio_values_event(const update_portfolio_values&) ;
+        void on_coin_cfg_parsed(const coin_cfg_parsed& evt) ;
 
       signals:
         void portfolioChanged();

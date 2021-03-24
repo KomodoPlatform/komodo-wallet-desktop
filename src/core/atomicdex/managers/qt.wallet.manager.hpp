@@ -48,7 +48,7 @@ namespace atomic_dex
 
         //! Private functions
         bool load_wallet_cfg(const std::string& wallet_name);
-        bool update_wallet_cfg() noexcept;
+        bool update_wallet_cfg() ;
 
       signals:
         void onStatusChanged();
@@ -59,31 +59,31 @@ namespace atomic_dex
         qt_wallet_manager(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
 
         //! Properties
-        QString        get_status() const noexcept;
-        void           set_status(QString status) noexcept;
-        QString        get_wallet_default_name() const noexcept;
-        void           set_wallet_default_name(QString wallet_default_name) noexcept;
-        static QString get_default_wallet_name() noexcept; ///< Static version
+        QString        get_status() const ;
+        void           set_status(QString status) ;
+        QString        get_wallet_default_name() const ;
+        void           set_wallet_default_name(QString wallet_default_name) ;
+        static QString get_default_wallet_name() ; ///< Static version
 
         //! Q_INVOKABLE (QML API)
         Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
         Q_INVOKABLE bool               create(const QString& password, const QString& seed, const QString& wallet_name);
-        Q_INVOKABLE static QStringList get_wallets() noexcept;
-        Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name) noexcept;
+        Q_INVOKABLE static QStringList get_wallets() ;
+        Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name) ;
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void               set_emergency_password(const QString& emergency_password);
         Q_INVOKABLE static bool        mnemonic_validate(const QString& entropy);
-        Q_INVOKABLE bool               log_status() const noexcept;
-        Q_INVOKABLE void               set_log_status(bool status) noexcept;
+        Q_INVOKABLE bool               log_status() const ;
+        Q_INVOKABLE void               set_log_status(bool status) ;
 
         //! API
-        static bool is_there_a_default_wallet() noexcept;
+        static bool is_there_a_default_wallet() ;
         void        just_set_wallet_name(QString wallet_name);
         std::string retrieve_transactions_notes(const std::string& tx_hash) const;
         void        update_transactions_notes(const std::string& tx_hash, const std::string& notes);
 
         //! Override
-        void update() noexcept override;
+        void update()  override;
     };
 } // namespace atomic_dex
 

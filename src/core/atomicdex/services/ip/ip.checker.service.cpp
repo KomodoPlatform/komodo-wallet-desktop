@@ -100,18 +100,18 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    ip_service_checker::update() noexcept
+    ip_service_checker::update() 
     {
     }
 
     bool
-    ip_service_checker::is_my_ip_authorized() const noexcept
+    ip_service_checker::is_my_ip_authorized() const 
     {
         return m_external_ip_authorized.load();
     }
 
     QString
-    atomic_dex::ip_service_checker::my_country_ip() const noexcept
+    atomic_dex::ip_service_checker::my_country_ip() const 
     {
         return QString::fromStdString(m_country.get());
     }

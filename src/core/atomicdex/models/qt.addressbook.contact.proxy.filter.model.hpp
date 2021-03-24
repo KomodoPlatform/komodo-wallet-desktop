@@ -39,10 +39,10 @@ namespace atomic_dex
         explicit addressbook_contact_proxy_filter_model(ag::ecs::system_manager& system_manager, QObject* parent);
         ~addressbook_contact_proxy_filter_model() final = default;
         
-        [[nodiscard]] const QString& get_search_expression() const noexcept;
-        void                         set_search_expression(QString value) noexcept;
-        [[nodiscard]] const QString& get_filter_type() const noexcept;
-        void                         set_filter_type(QString value) noexcept;
+        [[nodiscard]] const QString& get_search_expression() const ;
+        void                         set_search_expression(QString value) ;
+        [[nodiscard]] const QString& get_filter_type() const ;
+        void                         set_filter_type(QString value) ;
         
         // QSortFilterProxyModel Functions
         [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;

@@ -129,15 +129,15 @@ namespace atomic_dex
         auto batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false, bool only_tx = false);
         void process_balance_answer(const nlohmann::json& answer);
         void process_tx_answer(const nlohmann::json& answer_json);
-        void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
+        void process_tx_tokenscan(const std::string& ticker, bool is_a_refresh);
 
         //!
         std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
-        [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const ;
         std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
-        std::vector<atomic_dex::coin_config>                retrieve_coins_informations() noexcept;
+        std::vector<atomic_dex::coin_config>                retrieve_coins_informations() ;
 
-        void handle_exception_pplx_task(pplx::task<void> previous_task);
+        void handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from = "");
 
       public:
         //! Constructor
@@ -150,14 +150,14 @@ namespace atomic_dex
         mm2_service& operator=(const mm2_service&& other) = delete;
 
         //! Destructor
-        ~mm2_service() noexcept final;
+        ~mm2_service()  final;
 
         //! Events
         void on_refresh_orderbook(const orderbook_refresh& evt);
 
-        void on_gui_enter_trading(const gui_enter_trading& evt) noexcept;
+        void on_gui_enter_trading(const gui_enter_trading& evt) ;
 
-        void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
+        void on_gui_leave_trading(const gui_leave_trading& evt) ;
 
         //! Spawn mm2 instance with given seed
         void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
@@ -166,34 +166,34 @@ namespace atomic_dex
         void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
 
         //! Enable coins
-        bool enable_default_coins() noexcept;
+        bool enable_default_coins() ;
 
         //! Batch Enable coins
-        void batch_enable_coins(const std::vector<std::string>& tickers, bool first_time = false) noexcept;
+        void batch_enable_coins(const std::vector<std::string>& tickers, bool first_time = false) ;
 
         //! Enable multiple coins
-        void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
+        void enable_multiple_coins(const std::vector<std::string>& tickers) ;
 
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
-        void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept;
-        void               remove_custom_coin(const std::string& ticker) noexcept;
-        [[nodiscard]] bool is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept;
-        [[nodiscard]] bool is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept;
+        void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) ;
+        void               remove_custom_coin(const std::string& ticker) ;
+        [[nodiscard]] bool is_this_ticker_present_in_raw_cfg(const std::string& ticker) const ;
+        [[nodiscard]] bool is_this_ticker_present_in_normal_cfg(const std::string& ticker) const ;
 
         //! Disable a single coin
-        bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;
+        bool disable_coin(const std::string& ticker, std::error_code& ec) ;
 
         //! Disable multiple coins, prefer this function if you want persistent disabling
-        void disable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
+        void disable_multiple_coins(const std::vector<std::string>& tickers) ;
 
         //! Called every ticks, and execute tasks if the timer expire.
-        void update() noexcept final;
+        void update()  final;
 
         //! Retrieve public address of the given ticker
-        std::string address(const std::string& ticker, t_mm2_ec& ec) const noexcept;
+        std::string address(const std::string& ticker, t_mm2_ec& ec) const ;
 
         //! Is MM2 Process correctly running ?
-        [[nodiscard]] const std::atomic_bool& is_mm2_running() const noexcept;
+        [[nodiscard]] const std::atomic_bool& is_mm2_running() const ;
 
         //! Retrieve my balance for a given ticker as a string.
         [[nodiscard]] std::string my_balance(const std::string& ticker, t_mm2_ec& ec) const;
@@ -210,10 +210,10 @@ namespace atomic_dex
         [[nodiscard]] t_tx_state get_tx_state(t_mm2_ec& ec) const;
 
         //! Get coins that are currently enabled
-        [[nodiscard]] t_coins get_enabled_coins() const noexcept;
+        [[nodiscard]] t_coins get_enabled_coins() const ;
 
         //! Get coins that are active, but may be not enabled
-        [[nodiscard]] t_coins get_active_coins() const noexcept;
+        [[nodiscard]] t_coins get_active_coins() const ;
 
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
@@ -225,10 +225,10 @@ namespace atomic_dex
         std::string apply_specific_fees(const std::string& ticker, t_float_50& value) const;
 
         //! Get Current orderbook
-        [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const ;
 
         //! Get Swaps
-        [[nodiscard]] orders_and_swaps get_orders_and_swaps() const noexcept;
+        [[nodiscard]] orders_and_swaps get_orders_and_swaps() const ;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
         [[nodiscard]] t_float_50 get_balance(const std::string& ticker) const;
@@ -236,29 +236,29 @@ namespace atomic_dex
         //! Return true if we the balance of the `ticker` > amount, false otherwise.
         [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 
-        [[nodiscard]] bool is_orderbook_thread_active() const noexcept;
+        [[nodiscard]] bool is_orderbook_thread_active() const ;
 
-        [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const noexcept;
+        [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const ;
 
-        [[nodiscard]] t_pair_max_vol get_taker_vol() const noexcept;
+        [[nodiscard]] t_pair_max_vol get_taker_vol() const ;
 
         //! Pin cfg api
-        [[nodiscard]] bool is_pin_cfg_enabled() const noexcept;
-        void               reset_fake_balance_to_zero(const std::string& ticker) noexcept;
-        void               decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
+        [[nodiscard]] bool is_pin_cfg_enabled() const ;
+        void               reset_fake_balance_to_zero(const std::string& ticker) ;
+        void               decrease_fake_balance(const std::string& ticker, const std::string& amount) ;
         void               batch_fetch_orders_and_swap(bool after_manual_reset = false);
         void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
-        std::shared_ptr<t_http_client>         get_mm2_client() noexcept;
-        [[nodiscard]] pplx::cancellation_token get_cancellation_token() const noexcept;
+        std::shared_ptr<t_http_client>         get_mm2_client() ;
+        [[nodiscard]] pplx::cancellation_token get_cancellation_token() const ;
 
         //! Wallet api
-        [[nodiscard]] std::string get_current_ticker() const noexcept;
-        bool                      set_current_ticker(const std::string& ticker) noexcept;
+        [[nodiscard]] std::string get_current_ticker() const ;
+        bool                      set_current_ticker(const std::string& ticker) ;
 
         //! Multi ticker
-        void add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept;
+        void add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) ;
 
         //! Pagination
         void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});

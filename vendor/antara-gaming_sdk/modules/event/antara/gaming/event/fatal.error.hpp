@@ -25,7 +25,7 @@ namespace antara::gaming::event
     struct fatal_error
     {
         //! Constructor
-        fatal_error(std::error_code ec) noexcept;
+        fatal_error(std::error_code ec) ;
 
         //! Fields
         std::error_code ec_;

@@ -123,7 +123,7 @@ namespace atomic_dex::utils
     }
 
     fs::path
-    get_runtime_coins_path() noexcept
+    get_runtime_coins_path() 
     {
         const auto fs_coins_path = get_atomic_dex_data_folder() / "custom_coins_icons";
         create_if_doesnt_exist(fs_coins_path);
@@ -131,7 +131,7 @@ namespace atomic_dex::utils
     }
 
     fs::path
-    get_atomic_dex_logs_folder() noexcept
+    get_atomic_dex_logs_folder() 
     {
         const auto fs_logs_path = get_atomic_dex_data_folder() / "logs";
         create_if_doesnt_exist(fs_logs_path);

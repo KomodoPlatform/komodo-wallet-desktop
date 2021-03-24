@@ -53,7 +53,7 @@ namespace
 //! Constructo destructor
 namespace atomic_dex
 {
-    settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) noexcept
+    settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) 
         :
         QObject(parent),
         system(registry), m_system_manager(system_manager), m_app(app)
@@ -65,7 +65,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    settings_page::update() noexcept
+    settings_page::update() 
     {
     }
 } // namespace atomic_dex
@@ -74,19 +74,19 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
-    settings_page::get_empty_string() const noexcept
+    settings_page::get_empty_string() const 
     {
         return m_empty_string;
     }
 
     QString
-    settings_page::get_current_lang() const noexcept
+    settings_page::get_current_lang() const 
     {
         return QString::fromStdString(m_config.current_lang);
     }
 
     void
-    atomic_dex::settings_page::set_current_lang(QString new_lang) noexcept
+    atomic_dex::settings_page::set_current_lang(QString new_lang) 
     {
         const std::string new_lang_std = new_lang.toStdString();
         change_lang(m_config, new_lang_std);
@@ -123,13 +123,13 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::settings_page::is_notification_enabled() const noexcept
+    atomic_dex::settings_page::is_notification_enabled() const 
     {
         return m_config.notification_enabled;
     }
 
     void
-    settings_page::set_notification_enabled(bool is_enabled) noexcept
+    settings_page::set_notification_enabled(bool is_enabled) 
     {
         if (m_config.notification_enabled != is_enabled)
         {
@@ -139,25 +139,25 @@ namespace atomic_dex
     }
 
     QString
-    settings_page::get_current_currency_sign() const noexcept
+    settings_page::get_current_currency_sign() const 
     {
         return QString::fromStdString(this->m_config.current_currency_sign);
     }
 
     QString
-    settings_page::get_current_fiat_sign() const noexcept
+    settings_page::get_current_fiat_sign() const 
     {
         return QString::fromStdString(this->m_config.current_fiat_sign);
     }
 
     QString
-    settings_page::get_current_currency() const noexcept
+    settings_page::get_current_currency() const 
     {
         return QString::fromStdString(this->m_config.current_currency);
     }
 
     void
-    settings_page::set_current_currency(const QString& current_currency) noexcept
+    settings_page::set_current_currency(const QString& current_currency) 
     {
         if (current_currency.toStdString() != m_config.current_currency)
         {
@@ -174,13 +174,13 @@ namespace atomic_dex
     }
 
     QString
-    settings_page::get_current_fiat() const noexcept
+    settings_page::get_current_fiat() const 
     {
         return QString::fromStdString(this->m_config.current_fiat);
     }
 
     void
-    settings_page::set_current_fiat(const QString& current_fiat) noexcept
+    settings_page::set_current_fiat(const QString& current_fiat) 
     {
         if (current_fiat.toStdString() != m_config.current_fiat)
         {
@@ -195,19 +195,19 @@ namespace atomic_dex
 namespace atomic_dex
 {
     atomic_dex::cfg&
-    settings_page::get_cfg() noexcept
+    settings_page::get_cfg() 
     {
         return m_config;
     }
 
     const atomic_dex::cfg&
-    settings_page::get_cfg() const noexcept
+    settings_page::get_cfg() const 
     {
         return m_config;
     }
 
     void
-    settings_page::init_lang() noexcept
+    settings_page::init_lang() 
     {
         set_current_lang(QString::fromStdString(m_config.current_lang));
     }
@@ -258,19 +258,19 @@ namespace atomic_dex
     }
 
     bool
-    settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept
+    settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const 
     {
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_raw_cfg(ticker.toStdString());
     }
 
     bool
-    settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept
+    settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const 
     {
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
     }
 
     QString
-    settings_page::get_custom_coins_icons_path() const noexcept
+    settings_page::get_custom_coins_icons_path() const 
     {
         return QString::fromStdString(utils::get_runtime_coins_path().string());
     }
@@ -364,19 +364,43 @@ namespace atomic_dex
     }
 
     void
-    settings_page::process_erc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath)
+    settings_page::process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type)
     {
         this->set_fetching_custom_token_data_busy(true);
         using namespace std::string_literals;
-        std::string url            = "/api/v1/erc_infos/"s + contract_address.toStdString();
-        auto        answer_functor = [this, contract_address, coingecko_id, icon_filepath](web::http::http_response resp) {
+
+        auto retrieve_functor_url = [ coin_type, contract_address ]() -> auto
+        {
+            switch (coin_type)
+            {
+            case CoinTypeGadget::QRC20:
+                return std::make_tuple(
+                    &::mm2::api::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s);
+            case CoinTypeGadget::ERC20:
+                return std::make_tuple(
+                    &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
+                    "ETH"s);
+            case CoinTypeGadget::BEP20:
+                return std::make_tuple(
+                    &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "ETH"s, "BEP-20"s,
+                    "BNB"s);
+            default:
+                return std::make_tuple(&::mm2::api::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s);
+            }
+        };
+        auto&& [endpoint, url, type, platform, adex_platform, parent_chain] = retrieve_functor_url();
+
+        auto answer_functor = [this, contract_address, coingecko_id, icon_filepath, type = type, platform = platform, adex_platform = adex_platform,
+                               parent_chain = parent_chain](web::http::http_response resp) {
             //! Extract answer
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
             out["mm2_cfg"]      = nlohmann::json::object();
             out["adex_cfg"]     = nlohmann::json::object();
+            const auto& mm2     = this->m_system_manager.get_system<mm2_service>();
             if (resp.status_code() == 200)
             {
+                nlohmann::json raw_parent_cfg = mm2.get_raw_mm2_ticker_cfg(parent_chain);
                 nlohmann::json body_json      = nlohmann::json::parse(body).at("result")[0];
                 const auto     ticker         = body_json.at("symbol").get<std::string>();
                 const auto     name_lowercase = body_json.at("tokenName").get<std::string>();
@@ -386,32 +410,32 @@ namespace atomic_dex
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
                     out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["type"]                      = "ERC20";
+                    out["mm2_cfg"]["protocol"]["type"]                      = type;
                     out["mm2_cfg"]["protocol"]["protocol_data"]             = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"] = "ETH";
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"] = platform;
                     std::string out_address                                 = contract_address.toStdString();
                     boost::algorithm::to_lower(out_address);
                     utils::to_eth_checksum(out_address);
                     out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
-                    out["mm2_cfg"]["rpcport"]                                       = 80;
+                    out["mm2_cfg"]["rpcport"]                                       = raw_parent_cfg.at("rpcport");
                     out["mm2_cfg"]["coin"]                                          = ticker;
                     out["mm2_cfg"]["mm2"]                                           = 1;
                     out["mm2_cfg"]["decimals"]                                      = std::stoi(body_json.at("divisor").get<std::string>());
-                    out["mm2_cfg"]["avg_blocktime"]                                 = 0.25;
-                    out["mm2_cfg"]["required_confirmations"]                        = 3;
+                    out["mm2_cfg"]["avg_blocktime"]                                 = raw_parent_cfg.at("avg_blocktime");
+                    out["mm2_cfg"]["required_confirmations"]                        = raw_parent_cfg.at("required_confirmations");
                     out["mm2_cfg"]["name"]                                          = name_lowercase;
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
                     //!
-                    out["adex_cfg"][ticker]                 = nlohmann::json::object();
-                    out["adex_cfg"][ticker]["coin"]         = ticker;
-                    out["adex_cfg"][ticker]["name"]         = name_lowercase;
-                    out["adex_cfg"][ticker]["coingecko_id"] = coingecko_id.toStdString();
-                    out["adex_cfg"][ticker]["eth_nodes"] =
-                        nlohmann::json::array({"http://eth1.cipig.net:8555", "http://eth2.cipig.net:8555", "http://eth3.cipig.net:8555"});
-                    out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://etherscan.io/"});
-                    out["adex_cfg"][ticker]["type"]              = "ERC-20";
+                    out["adex_cfg"][ticker]                      = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["coin"]              = ticker;
+                    out["adex_cfg"][ticker]["name"]              = name_lowercase;
+                    out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
+                    const auto& coin_info                        = mm2.get_coin_info(parent_chain);
+                    out["adex_cfg"][ticker]["nodes"]             = coin_info.urls.value_or(std::vector<std::string>());
+                    out["adex_cfg"][ticker]["explorer_url"]      = coin_info.explorer_url;
+                    out["adex_cfg"][ticker]["type"]              = adex_platform;
                     out["adex_cfg"][ticker]["active"]            = false;
                     out["adex_cfg"][ticker]["currently_enabled"] = false;
                     out["adex_cfg"][ticker]["is_custom_coin"]    = true;
@@ -427,17 +451,17 @@ namespace atomic_dex
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
-        ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "erc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+        ::mm2::api::async_process_rpc_get(*endpoint, "token_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     bool
-    settings_page::is_fetching_custom_token_data_busy() const noexcept
+    settings_page::is_fetching_custom_token_data_busy() const 
     {
         return m_fetching_erc_data_busy.load();
     }
 
     void
-    settings_page::set_fetching_custom_token_data_busy(bool status) noexcept
+    settings_page::set_fetching_custom_token_data_busy(bool status) 
     {
         if (m_fetching_erc_data_busy != status)
         {
@@ -447,13 +471,13 @@ namespace atomic_dex
     }
 
     QVariant
-    settings_page::get_custom_token_data() const noexcept
+    settings_page::get_custom_token_data() const 
     {
         return nlohmann_json_object_to_qt_json_object(m_custom_token_data.get());
     }
 
     void
-    settings_page::set_custom_token_data(QVariant rpc_data) noexcept
+    settings_page::set_custom_token_data(QVariant rpc_data) 
     {
         nlohmann::json out  = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
         m_custom_token_data = out;
@@ -470,14 +494,14 @@ namespace atomic_dex
     }
 
     void
-    settings_page::remove_custom_coin(const QString& ticker) noexcept
+    settings_page::remove_custom_coin(const QString& ticker) 
     {
         SPDLOG_DEBUG("remove ticker: {}", ticker.toStdString());
         this->m_system_manager.get_system<mm2_service>().remove_custom_coin(ticker.toStdString());
     }
 
     void
-    settings_page::set_qml_engine(QQmlApplicationEngine* engine) noexcept
+    settings_page::set_qml_engine(QQmlApplicationEngine* engine) 
     {
         m_qml_engine = engine;
     }
@@ -578,7 +602,7 @@ namespace atomic_dex
     }
 
     QString
-    settings_page::get_version() noexcept
+    settings_page::get_version() 
     {
         return QString::fromStdString(atomic_dex::get_version());
     }
@@ -602,12 +626,12 @@ namespace atomic_dex
     }
 
     bool
-    settings_page::is_fetching_priv_key_busy() const noexcept
+    settings_page::is_fetching_priv_key_busy() const 
     {
         return m_fetching_priv_keys_busy.load();
     }
     void
-    settings_page::set_fetching_priv_key_busy(bool status) noexcept
+    settings_page::set_fetching_priv_key_busy(bool status) 
     {
         if (m_fetching_priv_keys_busy != status)
         {

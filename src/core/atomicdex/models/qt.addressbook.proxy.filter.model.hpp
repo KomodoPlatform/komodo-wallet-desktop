@@ -45,10 +45,10 @@ namespace atomic_dex
         [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;     // Only if filter role equals addressbook_model::NameRoleAndCategoriesRole, accepts rows which match each word (not case sensitive) of m_search_exp. Also filters contacts which have at least one address of type equivalent to the one specified by the member `m_filter_type`.
     
         // Getters/Setters
-        [[nodiscard]] const QString& get_search_exp() const noexcept;
-        void                         set_search_exp(QString expression) noexcept;
-        [[nodiscard]] const QString& get_type_filter() const noexcept;
-        void                         set_type_filter(QString value) noexcept;
+        [[nodiscard]] const QString& get_search_exp() const ;
+        void                         set_search_exp(QString expression) ;
+        [[nodiscard]] const QString& get_type_filter() const ;
+        void                         set_type_filter(QString value) ;
         
         // QML Properties
         Q_PROPERTY(QString search_exp READ get_search_exp WRITE set_search_exp NOTIFY search_expChanged)

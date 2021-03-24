@@ -22,7 +22,7 @@
 
 namespace antara::gaming::core::details
 {
-    bool is_high_dpi_capable() noexcept
+    bool is_high_dpi_capable()
     {
   /*      NSBundle *bundle = [NSBundle mainBundle];
         if (!bundle)
@@ -31,7 +31,7 @@ namespace antara::gaming::core::details
   return true;
     }
 
-    std::pair<float, float> get_scaling_factor() noexcept
+    std::pair<float, float> get_scaling_factor()
     {
         /*auto factor = static_cast<float>([[NSScreen mainScreen] backingScaleFactor]);
         return {factor, factor};*/

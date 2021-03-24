@@ -1,10 +1,72 @@
 {
+  "BNB": {
+      "coin": "BNB",
+      "name": "Binance Coin",
+      "coinpaprika_id": "bnb-binance-coin",
+      "coingecko_id": "binancecoin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BNBT": {
+      "coin": "BNBT",
+      "name": "Binance Coin (Testnet)",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "https://data-seed-prebsc-1-s2.binance.org:8545"
+      ],
+      "explorer_url": [
+        "https://testnet.bscscan.com/"
+      ],
+      "is_testnet": true,
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ADEXBSCT": {
+    "coin": "ADEXBSCT",
+    "name": "Atomic Dex BSC (Testnet)",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nodes": [
+      "https://data-seed-prebsc-1-s2.binance.org:8545"
+    ],
+    "explorer_url": [
+      "https://testnet.bscscan.com/"
+    ],
+    "is_testnet": true,
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ADEXBSC": {
+      "coin": "ADEXBSC",
+      "name": "Atomic Dex BSC",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "1INCH": {
     "coin": "1INCH",
     "name": "1inch",
     "coinpaprika_id": "1inch-1inch",
     "coingecko_id": "1inch",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -21,7 +83,7 @@
     "name": "ARPA Chain",
     "coinpaprika_id": "arpa-arpa-chain",
     "coingecko_id": "arpa-chain",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -223,7 +285,7 @@
     "name": "Binance USD",
     "coinpaprika_id": "busd-binance-usd",
     "coingecko_id": "binance-usd",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -327,7 +389,7 @@
     "name": "Dai",
     "coinpaprika_id": "dai-dai",
     "coingecko_id": "dai",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -391,7 +453,7 @@
     "name": "DODO",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "dodo",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -711,7 +773,7 @@
     "name": "Paxos Standard",
     "coinpaprika_id": "pax-paxos-standard-token",
     "coingecko_id": "paxos-standard",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -729,7 +791,7 @@
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
     "currently_enabled": false,
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -746,7 +808,7 @@
     "coingecko_id": "usd-coin",
     "coinpaprika_id": "usdc-usd-coin",
     "currently_enabled": false,
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -763,7 +825,7 @@
     "coingecko_id": "atomic-wallet-coin",
     "coinpaprika_id": "awc-atomic-wallet-coin",
     "currently_enabled": false,
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -779,7 +841,7 @@
     "name": "Basic Attention Token",
     "coinpaprika_id": "bat-basic-attention-token",
     "coingecko_id": "basic-attention-token",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -797,7 +859,7 @@
     "coingecko_id": "true-usd",
     "coinpaprika_id": "tusd-trueusd",
     "currently_enabled": false,
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -1122,7 +1184,7 @@
     "name": "Sushi",
     "coinpaprika_id": "sushi-sushi",
     "coingecko_id": "sushi",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -1364,7 +1426,7 @@
     "name": "Verasity",
     "coingecko_id": "verasity",
     "coinpaprika_id": "vra-verasity",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -1546,7 +1608,7 @@
     "is_testnet": true,
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "eth_nodes": [
+    "nodes": [
       "http://eth-ropsten.cipig.net:8645"
     ],
     "explorer_url": [
@@ -1562,7 +1624,7 @@
     "is_testnet": true,
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "eth_nodes": [
+    "nodes": [
       "http://eth-ropsten.cipig.net:8645"
     ],
     "explorer_url": [
@@ -1578,7 +1640,7 @@
     "is_testnet": true,
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "eth_nodes": [
+    "nodes": [
       "http://eth-ropsten.cipig.net:8645"
     ],
     "explorer_url": [
@@ -1786,7 +1848,7 @@
   "name": "Aave Token",
   "coinpaprika_id": "aave-new",
   "coingecko_id": "aave",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1803,7 +1865,7 @@
   "name": "SingularityNET",
   "coinpaprika_id": "agi-singularitynet",
   "coingecko_id": "singularitynet",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1820,7 +1882,7 @@
   "name": "Aragon",
   "coinpaprika_id": "ant-aragon",
   "coingecko_id": "aragon",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1837,7 +1899,7 @@
   "name": "Balancer",
   "coinpaprika_id": "bal-balancer",
   "coingecko_id": "balancer",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1854,7 +1916,7 @@
   "name": "BandToken",
   "coinpaprika_id": "band-band-protocol",
   "coingecko_id": "band-protocol",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1871,7 +1933,7 @@
   "name": "Bitpanda Ecosystem Token",
   "coinpaprika_id": "best-bitpanda-ecosystem-token",
   "coingecko_id": "bitpanda-ecosystem-token",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1888,7 +1950,7 @@
   "name": "Bancor",
   "coinpaprika_id": "bnt-bancor",
   "coingecko_id": "bancor",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1905,7 +1967,7 @@
   "name": "BTU Protocol",
   "coinpaprika_id": "btu-btu-protocol",
   "coingecko_id": "btu-protocol",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1922,7 +1984,7 @@
   "name": "Celsius",
   "coinpaprika_id": "cel-celsius",
   "coingecko_id": "celsius-degree-token",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1939,7 +2001,7 @@
   "name": "Centrality Token",
   "coinpaprika_id": "cennz-centrality",
   "coingecko_id": "centrality",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1956,7 +2018,7 @@
   "name": "SwissBorg",
   "coinpaprika_id": "chsb-swissborg",
   "coingecko_id": "swissborg",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1973,7 +2035,7 @@
   "name": "chiliZ",
   "coinpaprika_id": "chz-chiliz",
   "coingecko_id": "chiliz",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -1990,7 +2052,7 @@
   "name": "Compound",
   "coinpaprika_id": "comp-compoundd",
   "coingecko_id": "compound-coin",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2007,7 +2069,7 @@
   "name": "Crypto.com Coin",
   "coinpaprika_id": "cro-cryptocom-chain",
   "coingecko_id": "crypto-com-chain",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2024,7 +2086,7 @@
   "name": "Curve DAO Token",
   "coinpaprika_id": "crv-curve-dao-token",
   "coingecko_id": "curve-dao-token",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2041,7 +2103,7 @@
   "name": "Civic",
   "coinpaprika_id": "cvc-civic",
   "coingecko_id": "civic",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2058,7 +2120,7 @@
   "name": "CyberVeinToken",
   "coinpaprika_id": "cvt-cybervein",
   "coingecko_id": "cybervein",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2075,7 +2137,7 @@
   "name": "DIAToken",
   "coinpaprika_id": "dia-dia",
   "coingecko_id": "dia-data",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2092,7 +2154,7 @@
   "name": "DxChain Token",
   "coinpaprika_id": "dx-dxchain-token",
   "coingecko_id": "dxchain",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2109,7 +2171,7 @@
   "name": "ELF",
   "coinpaprika_id": "elf-aelf",
   "coingecko_id": "aelf",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2126,7 +2188,7 @@
   "name": "EnjinCoin",
   "coinpaprika_id": "enj-enjin-coin",
   "coingecko_id": "enjincoin",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2143,7 +2205,7 @@
   "name": "STASIS EURS Token",
   "coinpaprika_id": "eurs-stasis-eurs",
   "coingecko_id": "stasis-eurs",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2160,7 +2222,7 @@
   "name": "Fetch",
   "coinpaprika_id": "fetch-ai",
   "coingecko_id": "fetch-ai",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2177,7 +2239,7 @@
   "name": "Gnosis",
   "coinpaprika_id": "gno-gnosis",
   "coingecko_id": "gnosis",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2194,7 +2256,7 @@
   "name": "HEX",
   "coinpaprika_id": "hex-hex",
   "coingecko_id": "hex",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2211,7 +2273,7 @@
   "name": "HoloToken",
   "coinpaprika_id": "hot-holo",
   "coingecko_id": "holotoken",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2228,7 +2290,7 @@
   "name": "HuobiToken",
   "coinpaprika_id": "ht-huobi-token",
   "coingecko_id": "huobi-token",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2245,7 +2307,7 @@
   "name": "HUSD",
   "coinpaprika_id": "husd-husd",
   "coingecko_id": "husd",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2262,7 +2324,7 @@
   "name": "KyberNetwork",
   "coinpaprika_id": "knc-kyber-network",
   "coingecko_id": "kyber-network",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2279,7 +2341,7 @@
   "name": "Bitfinex LEO Token",
   "coinpaprika_id": "leo-leo-token",
   "coingecko_id": "leo-token",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2296,7 +2358,7 @@
   "name": "ChainLink Token",
   "coinpaprika_id": "link-chainlink",
   "coingecko_id": "chainlink",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2313,7 +2375,7 @@
   "name": "Loopring",
   "coinpaprika_id": "lrc-loopring",
   "coingecko_id": "loopring",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2330,7 +2392,7 @@
   "name": "Decentraland",
   "coinpaprika_id": "mana-decentraland",
   "coingecko_id": "decentraland",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2347,7 +2409,7 @@
   "name": "Matic Token",
   "coinpaprika_id": "matic-matic-network",
   "coingecko_id": "matic-network",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2364,7 +2426,7 @@
   "name": "Maker",
   "coinpaprika_id": "mkr-maker",
   "coingecko_id": "maker",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2381,7 +2443,7 @@
   "name": "Melon Token",
   "coinpaprika_id": "mln-melon",
   "coingecko_id": "melon",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2398,7 +2460,7 @@
   "name": "Pundi X Token",
   "coinpaprika_id": "npxs-pundi-x",
   "coingecko_id": "pundi-x",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2415,7 +2477,7 @@
   "name": "Ocean Protocol",
   "coinpaprika_id": "ocean-ocean-protocol",
   "coingecko_id": "ocean-protocol",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2432,7 +2494,7 @@
   "name": "OKB",
   "coinpaprika_id": "okb-okb",
   "coingecko_id": "okb",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2449,7 +2511,7 @@
   "name": "Paxos Gold",
   "coinpaprika_id": "paxg-pax-gold",
   "coingecko_id": "pax-gold",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2466,7 +2528,7 @@
   "name": "Pinakion",
   "coinpaprika_id": "pnk-kleros",
   "coingecko_id": "kleros",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2483,7 +2545,7 @@
   "name": "PowerLedger",
   "coinpaprika_id": "powr-power-ledger",
   "coingecko_id": "power-ledger",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2500,7 +2562,7 @@
   "name": "QuarkChain Token",
   "coinpaprika_id": "qkc-quarkchain",
   "coingecko_id": "quark-chain",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2517,7 +2579,7 @@
   "name": "Quant",
   "coinpaprika_id": "qnt-quant",
   "coingecko_id": "quant-network",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2534,7 +2596,7 @@
   "name": "Republic",
   "coinpaprika_id": "ren-republic-protocol",
   "coingecko_id": "republic-protocol",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2551,7 +2613,7 @@
   "name": "Reputation",
   "coinpaprika_id": "rep-augur",
   "coingecko_id": "augur",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2568,7 +2630,7 @@
   "name": "Revain",
   "coinpaprika_id": "rev-revain",
   "coingecko_id": "revain",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2585,7 +2647,7 @@
   "name": "RLC",
   "coinpaprika_id": "rlc-iexec-rlc",
   "coingecko_id": "iexec-rlc",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2602,7 +2664,7 @@
   "name": "Reserve Rights",
   "coinpaprika_id": "rsr-reserve-rights",
   "coingecko_id": "reserve-rights-token",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2619,7 +2681,7 @@
   "name": "S4FE",
   "coinpaprika_id": "s4f-s4fe",
   "coingecko_id": "s4fe",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2636,7 +2698,7 @@
   "name": "ShareToken",
   "coinpaprika_id": "shr-sharetoken",
   "coingecko_id": "sharering",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2653,7 +2715,7 @@
   "name": "SKALE",
   "coinpaprika_id": "skl-skale",
   "coingecko_id": "skale",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2670,7 +2732,7 @@
   "name": "StatusNetwork",
   "coinpaprika_id": "snt-status",
   "coingecko_id": "status",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2687,7 +2749,7 @@
   "name": "Synthetix Network Token",
   "coinpaprika_id": "snx-synthetix-network-token",
   "coingecko_id": "havven",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2704,7 +2766,7 @@
   "name": "Serum",
   "coinpaprika_id": "srm-serum",
   "coingecko_id": "serum",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2721,7 +2783,7 @@
   "name": "Storj",
   "coinpaprika_id": "storj-storj",
   "coingecko_id": "storj",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2738,7 +2800,7 @@
   "name": "Swipe",
   "coinpaprika_id": "sxp-swipe",
   "coingecko_id": "swipe",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2755,7 +2817,7 @@
   "name": "The Midas Touch Gold",
   "coinpaprika_id": "tmtg-the-midas-touch-gold",
   "coingecko_id": "the-midas-touch-gold",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2772,7 +2834,7 @@
   "name": "Trace",
   "coinpaprika_id": "trac-origintrail",
   "coingecko_id": "origintrail",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2789,7 +2851,7 @@
   "name": "The Transfer Token",
   "coinpaprika_id": "ttt-the-transfer-token",
   "coingecko_id": "the-transfer-token",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2806,7 +2868,7 @@
   "name": "UniBright",
   "coinpaprika_id": "ubt-unibright",
   "coingecko_id": "unibright",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2823,7 +2885,7 @@
   "name": "UMA Voting Token v1",
   "coinpaprika_id": "uma-uma",
   "coingecko_id": "uma",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2840,7 +2902,7 @@
   "name": "Uniswap",
   "coinpaprika_id": "uni-uniswap",
   "coingecko_id": "uniswap",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2857,7 +2919,7 @@
   "name": "Ultra Token",
   "coinpaprika_id": "uos-ultra",
   "coingecko_id": "ultra",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2874,7 +2936,7 @@
   "name": "Uquid Coin",
   "coinpaprika_id": "uqc-uquid-coin",
   "coingecko_id": "uquid-coin",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2891,7 +2953,7 @@
   "name": "UTRUST",
   "coinpaprika_id": "utk-utrust",
   "coingecko_id": "utrust",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2908,7 +2970,7 @@
   "name": "Voyager",
   "coinpaprika_id": "ethos-ethos",
   "coingecko_id": "ethos",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2925,7 +2987,7 @@
   "name": "Wrapped BTC",
   "coinpaprika_id": "wbtc-wrapped-bitcoin",
   "coingecko_id": "wrapped-bitcoin",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2942,7 +3004,7 @@
   "name": "Sora Token",
   "coinpaprika_id": "xor-sora",
   "coingecko_id": "sora",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2959,7 +3021,7 @@
   "name": "yearn.finance",
   "coinpaprika_id": "yfi-yearnfinance",
   "coingecko_id": "yearn-finance",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2976,7 +3038,7 @@
   "name": "YFII.finance",
   "coinpaprika_id": "yfii-dfimoney",
   "coingecko_id": "yfii-finance",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"
@@ -2993,7 +3055,7 @@
   "name": "ZRX",
   "coinpaprika_id": "zrx-0x",
   "coingecko_id": "0x",
-  "eth_nodes": [
+  "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
    "http://eth3.cipig.net:8555"

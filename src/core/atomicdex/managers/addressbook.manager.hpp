@@ -36,13 +36,13 @@ namespace atomic_dex
         /// \defgroup Constructors
         /// {@
 
-        addressbook_manager(entt::registry& entity_registry, const ag::ecs::system_manager& system_manager) noexcept;
-        ~addressbook_manager() noexcept final = default;
+        addressbook_manager(entt::registry& entity_registry, const ag::ecs::system_manager& system_manager) ;
+        ~addressbook_manager()  final = default;
 
         /// @} End of Constructors section.
 
         /// \brief pre_update_system implementation.
-        void update() noexcept final;
+        void update()  final;
 
         /// \defgroup Element access
         /// {@
@@ -51,21 +51,21 @@ namespace atomic_dex
 
         [[nodiscard]] nlohmann::json& at(std::size_t pos);
 
-        [[nodiscard]] const nlohmann::json& data() const noexcept;
+        [[nodiscard]] const nlohmann::json& data() const ;
 
-        [[nodiscard]] nlohmann::json& data() noexcept;
+        [[nodiscard]] nlohmann::json& data() ;
 
         [[nodiscard]]
         /// \brief  Gets the existing contacts.
         ///         This call is equivalent to data().
         const nlohmann::json&
-        get_contacts() const noexcept;
+        get_contacts() const ;
 
         [[nodiscard]]
         /// \brief  Gets the existing contacts.
         ///         This call is equivalent to data().
         nlohmann::json&
-        get_contacts() noexcept;
+        get_contacts() ;
 
         /// \brief   Gets a contact from its name.
         /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
@@ -170,12 +170,12 @@ namespace atomic_dex
 
         /// \brief  Gets the current number of existing contacts.
         /// \return The number of existing contacts.
-        [[nodiscard]] std::size_t nb_contacts() const noexcept;
+        [[nodiscard]] std::size_t nb_contacts() const ;
 
         /// \brief  Tells if a contact exists.
         /// \param  name Name of the contact.
         /// \return True if the contact exists, false otherwise.
-        [[nodiscard]] bool has_contact(const std::string& name) const noexcept;
+        [[nodiscard]] bool has_contact(const std::string& name) const ;
 
         /// \brief   Tells if a contact name possesses wallet information.
         /// \warning If the contact does not exist, it throws an std::invalid_argument exception.
@@ -197,7 +197,7 @@ namespace atomic_dex
         /// \param   name     Contact name.
         /// \param   category A category.
         /// \return  True if the contact belongs to the category, false otherwise.
-        [[nodiscard]] bool has_category(const std::string& name, const std::string& category) const noexcept;
+        [[nodiscard]] bool has_category(const std::string& name, const std::string& category) const ;
 
         /// @} End of Lookup section.
 

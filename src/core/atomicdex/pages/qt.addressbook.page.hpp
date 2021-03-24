@@ -39,28 +39,28 @@ namespace atomic_dex
         /// {@
         
         explicit addressbook_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
-        ~addressbook_page() noexcept final = default;
+        ~addressbook_page()  final = default;
         
         /// @} End of Constructor(s)/destructor section
         
         /// \brief ag::ecs::pre_update_system implem
-        void update() noexcept final;
+        void update()  final;
 
         //! Signals
-        void connect_signals() noexcept;
-        void disconnect_signals() noexcept;
+        void connect_signals() ;
+        void disconnect_signals() ;
 
         //! Events
-        void on_post_login([[maybe_unused]] const post_login& evt) noexcept;
+        void on_post_login([[maybe_unused]] const post_login& evt) ;
 
         //! Public members functions
-        void clear() noexcept;
+        void clear() ;
         
         /// \defgroup QML API
 
       private:
         Q_PROPERTY(addressbook_model* model READ get_model NOTIFY addressbookChanged)
-        [[nodiscard]] addressbook_model* get_model() const noexcept;
+        [[nodiscard]] addressbook_model* get_model() const ;
         
       signals:
         void addressbookChanged();

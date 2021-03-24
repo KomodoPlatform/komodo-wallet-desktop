@@ -58,7 +58,7 @@ namespace atomic_dex
 
         //! Private templated member functions
         template <typename TAnswer, typename TRegistry, typename TLockable>
-        TAnswer get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const noexcept;
+        TAnswer get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const ;
 
         template <typename TContainer, typename TAnswer, typename... Args>
         void generic_post_verification(std::shared_mutex& mtx, TContainer& container, std::string&& ticker, TAnswer&& answer, Args... args);
@@ -84,10 +84,10 @@ namespace atomic_dex
         coinpaprika_provider& operator=(coinpaprika_provider&& other) = delete;
 
         //! Constructor
-        coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) noexcept;
+        coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) ;
 
         //! Destructor
-        ~coinpaprika_provider() noexcept final;
+        ~coinpaprika_provider()  final;
 
         ///< Public API
 
@@ -95,27 +95,27 @@ namespace atomic_dex
         void update_ticker_and_provider();
 
         //! Get the rate conversion for the given fiat.
-        [[nodiscard]] std::string get_rate_conversion(const std::string& ticker) const noexcept;
+        [[nodiscard]] std::string get_rate_conversion(const std::string& ticker) const ;
 
         //! Get the ticker informations.
-        [[nodiscard]] t_ticker_info_answer get_ticker_infos(const std::string& ticker) const noexcept;
+        [[nodiscard]] t_ticker_info_answer get_ticker_infos(const std::string& ticker) const ;
 
         //! Get the ticker informations.
-        [[nodiscard]] t_ticker_historical_answer get_ticker_historical(const std::string& ticker) const noexcept;
+        [[nodiscard]] t_ticker_historical_answer get_ticker_historical(const std::string& ticker) const ;
 
         ///< Events
 
         //! Event that occur when the mm2 process is launched correctly.
-        void on_mm2_started(const mm2_started& evt) noexcept;
+        void on_mm2_started(const mm2_started& evt) ;
 
         //! Event that occur when a coin is correctly enabled.
-        void on_coin_enabled(const coin_enabled& evt) noexcept;
+        void on_coin_enabled(const coin_enabled& evt) ;
 
         //! Event that occur when a coin is correctly disabled.
-        void on_coin_disabled(const coin_disabled& evt) noexcept;
+        void on_coin_disabled(const coin_disabled& evt) ;
 
         //! Override ag::system functions
-        void update() noexcept final;
+        void update()  final;
     };
 } // namespace atomic_dex
 

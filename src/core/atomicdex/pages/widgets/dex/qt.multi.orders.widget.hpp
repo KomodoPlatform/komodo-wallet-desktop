@@ -32,7 +32,7 @@ namespace atomic_dex
         ag::ecs::system_manager& m_system_mgr;
 
       public:
-        qt_multi_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
-        ~qt_multi_orders_widget() noexcept final;
+        qt_multi_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) ;
+        ~qt_multi_orders_widget()  final;
     };
 } // namespace atomic_dex

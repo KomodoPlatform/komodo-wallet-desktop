@@ -76,8 +76,8 @@ namespace atomic_dex
         };
 
         //! Constructor / destructor
-        orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
-        ~orders_model() noexcept final = default;
+        orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) ;
+        ~orders_model()  final = default;
 
         //! Official override from Qt Model
         int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
@@ -88,25 +88,25 @@ namespace atomic_dex
 
         //! Public api
         void refresh_or_insert(bool after_manual_reset = false);
-        void reset() noexcept;
-        void reset_backend() noexcept;
-        bool swap_is_in_progress(const QString& coin) const noexcept;
+        void reset() ;
+        void reset_backend() ;
+        bool swap_is_in_progress(const QString& coin) const ;
 
         //! Properties
-        [[nodiscard]] int                 get_length() const noexcept;
-        [[nodiscard]] orders_proxy_model* get_orders_proxy_mdl() const noexcept;
-        [[nodiscard]] QVariant            get_average_events_time_registry() const noexcept;
-        [[nodiscard]] int                 get_current_page() const noexcept;
-        void                              set_current_page(int current_page) noexcept;
-        [[nodiscard]] int                 get_limit_nb_elements() const noexcept;
-        void                              set_limit_nb_elements(int limit) noexcept;
-        [[nodiscard]] bool                is_fetching_busy() const noexcept;
-        void                              set_fetching_busy(bool fetching_status) noexcept;
-        [[nodiscard]] int                 get_nb_pages() const noexcept;
+        [[nodiscard]] int                 get_length() const ;
+        [[nodiscard]] orders_proxy_model* get_orders_proxy_mdl() const ;
+        [[nodiscard]] QVariant            get_average_events_time_registry() const ;
+        [[nodiscard]] int                 get_current_page() const ;
+        void                              set_current_page(int current_page) ;
+        [[nodiscard]] int                 get_limit_nb_elements() const ;
+        void                              set_limit_nb_elements(int limit) ;
+        [[nodiscard]] bool                is_fetching_busy() const ;
+        void                              set_fetching_busy(bool fetching_status) ;
+        [[nodiscard]] int                 get_nb_pages() const ;
 
         //! getter
-        [[nodiscard]] t_filtering_infos get_filtering_infos() const noexcept;
-        void                            set_filtering_infos(t_filtering_infos infos) noexcept;
+        [[nodiscard]] t_filtering_infos get_filtering_infos() const ;
+        void                            set_filtering_infos(t_filtering_infos infos) ;
 
 
       signals:
@@ -119,7 +119,7 @@ namespace atomic_dex
         void nbPageChanged();
 
       private:
-        void set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
+        void set_average_events_time_registry(const QVariant& average_time_registry) ;
         void common_insert(const std::vector<t_order_swaps_data>& contents, const std::string& kind);
 
         ag::ecs::system_manager& m_system_manager;
@@ -139,18 +139,18 @@ namespace atomic_dex
 
         //! Private common API
         void init_model(const orders_and_swaps& contents);
-        void set_common_data(const orders_and_swaps& contents) noexcept;
+        void set_common_data(const orders_and_swaps& contents) ;
 
         //! Private orders API
         void update_or_insert_orders(const orders_and_swaps& contents);
         void remove_orders(const t_orders_id_registry& are_present);
-        void update_existing_order(const t_order_swaps_data& contents) noexcept;
+        void update_existing_order(const t_order_swaps_data& contents) ;
 
         //! Private Swaps API
         void update_or_insert_swaps(const orders_and_swaps& contents);
-        void update_swap(const t_order_swaps_data& contents) noexcept;
+        void update_swap(const t_order_swaps_data& contents) ;
 
         //! Events
-        void on_current_currency_changed(const current_currency_changed&) noexcept;
+        void on_current_currency_changed(const current_currency_changed&) ;
     };
 } // namespace atomic_dex

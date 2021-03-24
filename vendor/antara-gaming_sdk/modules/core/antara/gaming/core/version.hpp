@@ -19,7 +19,7 @@
 namespace antara::gaming
 {
     /**
-     * @fn constexpr const char *version() noexcept
+     * @fn constexpr const char *version() 
      * @brief Function that allows us to find the current version of the SDK
      * @return the current version of the SDK as a `const char *`
      *
@@ -43,7 +43,7 @@ namespace antara::gaming
        \endverbatim
     */
     constexpr const char*
-    version() noexcept
+    version() 
     {
         return "0.0.1";
     }

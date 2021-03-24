@@ -44,7 +44,7 @@ namespace atomic_dex
         t_update_time_point m_update_clock;
 
         //! Private API
-        void fetch_update_status() noexcept;
+        void fetch_update_status() ;
 
       signals:
         void updateStatusChanged();
@@ -54,13 +54,13 @@ namespace atomic_dex
         explicit update_service_checker(entt::registry& registry, QObject* parent = nullptr);
 
         //! Destructor
-        ~update_service_checker() noexcept final = default;
+        ~update_service_checker()  final = default;
 
         //! Public override
-        void update() noexcept final;
+        void update()  final;
 
         //! Properties
-        [[nodiscard]] QVariant get_update_status() const noexcept;
+        [[nodiscard]] QVariant get_update_status() const ;
     };
 } // namespace atomic_dex
 

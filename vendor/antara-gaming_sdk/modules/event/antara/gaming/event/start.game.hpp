@@ -22,7 +22,7 @@ namespace antara::gaming::event
 {
     struct start_game
     {
-        start_game() noexcept = default;
+        start_game()  = default;
     };
 } // namespace antara::gaming::event
 

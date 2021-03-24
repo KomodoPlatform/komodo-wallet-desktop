@@ -40,12 +40,12 @@ namespace atomic_dex
         portfolio_proxy_model(ag::ecs::system_manager& system_manager, QObject* parent);
 
         //! Destructor
-        ~portfolio_proxy_model() noexcept final = default;
+        ~portfolio_proxy_model()  final = default;
 
         void set_excluded_coin(const QString& ticker);
-        void is_a_market_selector(bool is_market_selector) noexcept;
+        void is_a_market_selector(bool is_market_selector) ;
         void reset();
-        void set_with_fiat_balance(bool value) noexcept;
+        void set_with_fiat_balance(bool value) ;
 
         // QML API
         Q_INVOKABLE void sort_by_name(bool is_ascending);
@@ -56,8 +56,8 @@ namespace atomic_dex
         // QML API Properties
       private:
         Q_PROPERTY(bool with_balance WRITE set_with_balance READ get_with_balance NOTIFY with_balanceChanged)
-        [[nodiscard]] bool get_with_balance() const noexcept;
-        void               set_with_balance(bool value) noexcept;
+        [[nodiscard]] bool get_with_balance() const ;
+        void               set_with_balance(bool value) ;
 
       signals:
         void with_balanceChanged();

@@ -19,43 +19,43 @@ namespace atomic_dex
 
       public:
         explicit wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
-        void update() noexcept override;
-        ~wallet_page() noexcept final = default;
+        void update()  override;
+        ~wallet_page()  final = default;
 
-        void refresh_ticker_infos() noexcept;
+        void refresh_ticker_infos() ;
         
         void on_tx_fetch_finished(const tx_fetch_finished&);
 
         // Getters/Setters
-        [[nodiscard]] transactions_model* get_transactions_mdl() const noexcept;
-        [[nodiscard]] QString  get_current_ticker() const noexcept;
-        void                   set_current_ticker(const QString& ticker) noexcept;
-        [[nodiscard]] QVariant get_ticker_infos() const noexcept;
-        [[nodiscard]] bool     is_broadcast_busy() const noexcept;
-        void                   set_broadcast_busy(bool status) noexcept;
-        [[nodiscard]] bool     is_send_busy() const noexcept;
-        void                   set_send_busy(bool status) noexcept;
-        [[nodiscard]] bool     is_rpc_claiming_busy() const noexcept;
-        void                   set_claiming_is_busy(bool status) noexcept;
-        [[nodiscard]] bool     is_claiming_faucet_busy() const noexcept;
-        void                   set_claiming_faucet_is_busy(bool status) noexcept;
-        [[nodiscard]] QVariant get_rpc_claiming_data() const noexcept;
-        void                   set_rpc_claiming_data(QVariant rpc_data) noexcept;
-        [[nodiscard]] QVariant get_rpc_claiming_faucet_data() const noexcept;
-        void                   set_rpc_claiming_faucet_data(QVariant rpc_data) noexcept;
-        [[nodiscard]] QString  get_rpc_broadcast_data() const noexcept;
-        void                   set_rpc_broadcast_data(QString rpc_data) noexcept;
-        [[nodiscard]] QVariant get_rpc_send_data() const noexcept;
-        void                   set_rpc_send_data(QVariant rpc_data) noexcept;
-        [[nodiscard]] bool     is_tx_fetching_busy() const noexcept;
-        void                   set_tx_fetching_busy(bool status) noexcept;
-        [[nodiscard]] bool     has_auth_succeeded() const noexcept;
-        void                   set_auth_succeeded() noexcept;
+        [[nodiscard]] transactions_model* get_transactions_mdl() const ;
+        [[nodiscard]] QString  get_current_ticker() const ;
+        void                   set_current_ticker(const QString& ticker) ;
+        [[nodiscard]] QVariant get_ticker_infos() const ;
+        [[nodiscard]] bool     is_broadcast_busy() const ;
+        void                   set_broadcast_busy(bool status) ;
+        [[nodiscard]] bool     is_send_busy() const ;
+        void                   set_send_busy(bool status) ;
+        [[nodiscard]] bool     is_rpc_claiming_busy() const ;
+        void                   set_claiming_is_busy(bool status) ;
+        [[nodiscard]] bool     is_claiming_faucet_busy() const ;
+        void                   set_claiming_faucet_is_busy(bool status) ;
+        [[nodiscard]] QVariant get_rpc_claiming_data() const ;
+        void                   set_rpc_claiming_data(QVariant rpc_data) ;
+        [[nodiscard]] QVariant get_rpc_claiming_faucet_data() const ;
+        void                   set_rpc_claiming_faucet_data(QVariant rpc_data) ;
+        [[nodiscard]] QString  get_rpc_broadcast_data() const ;
+        void                   set_rpc_broadcast_data(QString rpc_data) ;
+        [[nodiscard]] QVariant get_rpc_send_data() const ;
+        void                   set_rpc_send_data(QVariant rpc_data) ;
+        [[nodiscard]] bool     is_tx_fetching_busy() const ;
+        void                   set_tx_fetching_busy(bool status) ;
+        [[nodiscard]] bool     has_auth_succeeded() const ;
+        void                   set_auth_succeeded() ;
         
         // QML API
         Q_INVOKABLE void claim_rewards();
         Q_INVOKABLE void claim_faucet();
-        Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) noexcept;
+        Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) ;
         void broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount); // Broadcast requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after entering credentials.
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
         

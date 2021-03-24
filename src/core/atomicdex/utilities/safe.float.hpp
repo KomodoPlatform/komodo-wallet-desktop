@@ -9,4 +9,4 @@ using t_float_50 = boost::multiprecision::cpp_dec_float_50;
 using t_rational = boost::multiprecision::cpp_rational;
 #pragma clang diagnostic pop
 
-t_float_50 safe_float(const std::string& from) noexcept;
+t_float_50 safe_float(const std::string& from) ;

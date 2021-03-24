@@ -37,7 +37,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    exporter_service::update() noexcept
+    exporter_service::update() 
     {
     }
 } // namespace atomic_dex
