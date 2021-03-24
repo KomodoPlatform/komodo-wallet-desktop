@@ -138,4 +138,10 @@ namespace atomic_dex
         }
         return out;
     }
+
+    QString
+    qt_utilities::retrieve_main_ticker(const QString& ticker) const
+    {
+        return QString::fromStdString(atomic_dex::utils::retrieve_main_ticker(ticker.toStdString()));
+    }
 } // namespace atomic_dex

@@ -270,4 +270,14 @@ namespace atomic_dex::utils
         create_if_doesnt_exist(logo_path);
         return logo_path;
     }
+
+    std::string
+    retrieve_main_ticker(const std::string& ticker)
+    {
+        if (const auto pos = ticker.find('-'); pos != std::string::npos)
+        {
+            return ticker.substr(0, pos);
+        }
+        return ticker;
+    }
 } // namespace atomic_dex::utils

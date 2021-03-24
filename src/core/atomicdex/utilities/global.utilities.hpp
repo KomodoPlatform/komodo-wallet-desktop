@@ -87,5 +87,7 @@ namespace atomic_dex::utils
     ENTT_API fs::path get_themes_path();
     ENTT_API fs::path get_logo_path();
 
+    std::string retrieve_main_ticker(const std::string& ticker);
+
     void to_eth_checksum(std::string& address);
 } // namespace atomic_dex::utils
