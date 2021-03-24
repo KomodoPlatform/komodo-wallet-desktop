@@ -110,6 +110,7 @@ namespace atomic_dex
         std::optional<std::string>    consensus_branch_id{std::nullopt};
         std::optional<double>         avg_blocktime{std::nullopt};
         std::optional<int64_t>        dust{std::nullopt};
+        nlohmann::json                protocol;
     };
 
     using coins = std::vector<coin_element>;
@@ -177,6 +178,7 @@ namespace atomic_dex
         x.consensus_branch_id    = atomic_dex::get_optional<std::string>(j, "consensus_branch_id");
         x.dust                   = atomic_dex::get_optional<int64_t>(j, "dust");
         x.avg_blocktime          = atomic_dex::get_optional<double>(j, "avg_blocktime");
+        x.protocol               = j.at("protocol");
     }
 
     inline void
@@ -221,6 +223,7 @@ namespace atomic_dex
         to_json_functor("consensus_branch_id", x.consensus_branch_id);
         to_json_functor("dust", x.dust);
         to_json_functor("avg_blocktime", x.avg_blocktime);
+        j["protocol"] = x.protocol;
     }
 
     inline t_mm2_raw_coins_registry

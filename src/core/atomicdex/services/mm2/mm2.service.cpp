@@ -1059,7 +1059,8 @@ namespace atomic_dex
                 }
                 else
                 {
-                    out = "/api/v1/erc_tx_history/" + ticker + "/" + address;
+                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
+                    out = "/api/v1/erc_tx_history/" + contract_address + "/" + address;
                 }
                 break;
             case CoinTypeGadget::BEP20:
@@ -1069,7 +1070,8 @@ namespace atomic_dex
                 }
                 else
                 {
-                    out = "/api/v1/bep_tx_history/" + ticker + "/" + address;
+                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
+                    out = "/api/v1/bep_tx_history/" + contract_address + "/" + address;
                 }
             default:
                 break;
