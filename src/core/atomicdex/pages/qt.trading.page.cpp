@@ -965,7 +965,7 @@ namespace atomic_dex
         auto&       mm2         = this->m_system_manager.get_system<mm2_service>();
         const auto  base        = market_pair->get_left_selected_coin().toStdString();
         const auto  rel         = market_pair->get_right_selected_coin().toStdString();
-        const bool  is_max      = m_market_mode == MarketMode::Sell && m_volume == m_max_volume;
+        //const bool  is_max      = m_market_mode == MarketMode::Sell && m_volume == m_max_volume;
         const auto  swap_method = m_market_mode == MarketMode::Sell ? "sell"s : "buy"s;
 
         t_trade_preimage_request req{
@@ -973,8 +973,7 @@ namespace atomic_dex
             .rel_coin    = rel,
             .swap_method = swap_method,
             .volume      = get_base_amount().toStdString(),
-            .price       = get_price().toStdString(),
-            .max         = is_max};
+            .price       = get_price().toStdString()};
 
         nlohmann::json batch;
         nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
@@ -988,6 +987,7 @@ namespace atomic_dex
             {
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
+                SPDLOG_INFO("answer: {}", answer.dump(4));
                 auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
