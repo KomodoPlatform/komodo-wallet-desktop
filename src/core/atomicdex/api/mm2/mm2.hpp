@@ -468,20 +468,20 @@ namespace mm2::api
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
     template <typename RpcReturnType>
-    RpcReturnType rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept;
+    RpcReturnType rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) ;
 
     template <typename RpcReturnType>
-    RpcReturnType rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
+    RpcReturnType rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) ;
 
     pplx::task<web::http::http_response> async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url);
 
-    nlohmann::json template_request(std::string method_name) noexcept;
+    nlohmann::json template_request(std::string method_name) ;
 
     template <typename TRequest, typename TAnswer>
     static TAnswer process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> http_mm2_client);
 
-    void               set_rpc_password(std::string rpc_password) noexcept;
-    const std::string& get_rpc_password() noexcept;
+    void               set_rpc_password(std::string rpc_password) ;
+    const std::string& get_rpc_password() ;
     void               set_system_manager(ag::ecs::system_manager& system_manager);
 } // namespace mm2::api
 

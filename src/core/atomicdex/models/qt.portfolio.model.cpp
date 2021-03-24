@@ -33,7 +33,7 @@
 
 namespace atomic_dex
 {
-    portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
+    portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent)  :
         QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher),
         m_model_proxy(new portfolio_proxy_model(m_system_manager, parent)), m_pie_chart_proxy_model(new portfolio_proxy_model(m_system_manager, parent))
     {
@@ -145,7 +145,7 @@ namespace atomic_dex
     }
 
     void
-    portfolio_model::update_balance_values(const std::vector<std::string>& tickers) noexcept
+    portfolio_model::update_balance_values(const std::vector<std::string>& tickers) 
     {
         for (auto&& ticker: tickers)
         {
@@ -396,25 +396,25 @@ namespace atomic_dex
     }
 
     portfolio_proxy_model*
-    atomic_dex::portfolio_model::get_portfolio_proxy_mdl() const noexcept
+    atomic_dex::portfolio_model::get_portfolio_proxy_mdl() const 
     {
         return m_model_proxy;
     }
 
     portfolio_proxy_model*
-    portfolio_model::get_pie_char_proxy_mdl() const noexcept
+    portfolio_model::get_pie_char_proxy_mdl() const 
     {
         return m_pie_chart_proxy_model;
     }
 
     int
-    portfolio_model::get_length() const noexcept
+    portfolio_model::get_length() const 
     {
         return this->rowCount(QModelIndex());
     }
 
     void
-    portfolio_model::set_cfg(cfg& cfg) noexcept
+    portfolio_model::set_cfg(cfg& cfg) 
     {
         m_config = &cfg;
     }
@@ -429,7 +429,7 @@ namespace atomic_dex
     }
 
     portfolio_model::t_portfolio_datas
-    portfolio_model::get_underlying_data() const noexcept
+    portfolio_model::get_underlying_data() const 
     {
         return m_model_data;
     }

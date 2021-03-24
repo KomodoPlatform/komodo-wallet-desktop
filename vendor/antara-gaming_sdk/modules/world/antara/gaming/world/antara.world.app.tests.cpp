@@ -43,7 +43,7 @@ namespace antara::gaming::world::tests
         }
 
         void
-        update() noexcept final
+        update()  final
         {
             counter += 1;
             if (counter == 10ull)

@@ -24,7 +24,7 @@
 //! Constructor
 namespace atomic_dex
 {
-    orders_model::orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
+    orders_model::orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent)  :
         QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new orders_proxy_model(this))
     {
         this->m_model_proxy->setSourceModel(this);
@@ -242,38 +242,38 @@ namespace atomic_dex
 namespace atomic_dex
 {
     int
-    orders_model::get_length() const noexcept
+    orders_model::get_length() const 
     {
         return this->m_model_proxy->rowCount(QModelIndex());
     }
 
     orders_proxy_model*
-    orders_model::get_orders_proxy_mdl() const noexcept
+    orders_model::get_orders_proxy_mdl() const 
     {
         return m_model_proxy;
     }
 
     QVariant
-    atomic_dex::orders_model::get_average_events_time_registry() const noexcept
+    atomic_dex::orders_model::get_average_events_time_registry() const 
     {
         return m_json_time_registry;
     }
 
     void
-    atomic_dex::orders_model::set_average_events_time_registry(const QVariant& average_time_registry) noexcept
+    atomic_dex::orders_model::set_average_events_time_registry(const QVariant& average_time_registry) 
     {
         m_json_time_registry = average_time_registry;
         emit onAverageEventsTimeRegistryChanged();
     }
 
     int
-    orders_model::get_current_page() const noexcept
+    orders_model::get_current_page() const 
     {
         return static_cast<int>(m_model_data.current_page);
     }
 
     void
-    orders_model::set_current_page(int current_page) noexcept
+    orders_model::set_current_page(int current_page) 
     {
         if (static_cast<std::size_t>(current_page) != m_model_data.current_page)
         {
@@ -286,13 +286,13 @@ namespace atomic_dex
     }
 
     int
-    orders_model::get_limit_nb_elements() const noexcept
+    orders_model::get_limit_nb_elements() const 
     {
         return static_cast<int>(m_model_data.limit);
     }
 
     void
-    orders_model::set_limit_nb_elements(int limit) noexcept
+    orders_model::set_limit_nb_elements(int limit) 
     {
         if (static_cast<std::size_t>(limit) != m_model_data.limit)
         {
@@ -313,13 +313,13 @@ namespace atomic_dex
     }
 
     bool
-    orders_model::is_fetching_busy() const noexcept
+    orders_model::is_fetching_busy() const 
     {
         return m_fetching_busy.load();
     }
 
     void
-    orders_model::set_fetching_busy(bool fetching_status) noexcept
+    orders_model::set_fetching_busy(bool fetching_status) 
     {
         if (fetching_status != m_fetching_busy)
         {
@@ -329,7 +329,7 @@ namespace atomic_dex
     }
 
     int
-    orders_model::get_nb_pages() const noexcept
+    orders_model::get_nb_pages() const 
     {
         return m_model_data.nb_pages;
     }
@@ -339,7 +339,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    orders_model::on_current_currency_changed([[maybe_unused]] const current_currency_changed&) noexcept
+    orders_model::on_current_currency_changed([[maybe_unused]] const current_currency_changed&) 
     {
         auto& mm2 = m_system_manager.get_system<mm2_service>();
 
@@ -351,7 +351,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    orders_model::update_existing_order(const t_order_swaps_data& contents) noexcept
+    orders_model::update_existing_order(const t_order_swaps_data& contents) 
     {
         if (const auto res = this->match(index(0, 0), OrderIdRole, contents.order_id); not res.isEmpty())
         {
@@ -371,7 +371,7 @@ namespace atomic_dex
     }
 
     void
-    orders_model::update_swap(const t_order_swaps_data& contents) noexcept
+    orders_model::update_swap(const t_order_swaps_data& contents) 
     {
         if (const auto res = this->match(index(0, 0), OrderIdRole, contents.order_id); not res.isEmpty())
         {
@@ -517,7 +517,7 @@ namespace atomic_dex
     }
 
     void
-    orders_model::set_common_data(const orders_and_swaps& contents) noexcept
+    orders_model::set_common_data(const orders_and_swaps& contents) 
     {
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(contents.average_events_time));
         m_model_data.nb_orders = contents.nb_orders;
@@ -546,7 +546,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    orders_model::reset() noexcept
+    orders_model::reset() 
     {
         SPDLOG_DEBUG("resetting orders, will be emitted");
         this->beginResetModel();
@@ -555,7 +555,7 @@ namespace atomic_dex
     }
 
     void
-    orders_model::reset_backend() noexcept
+    orders_model::reset_backend() 
     {
         SPDLOG_DEBUG("clearing orders in backend");
         const auto limit     = this->m_model_data.limit;
@@ -566,7 +566,7 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::orders_model::swap_is_in_progress(const QString& coin) const noexcept
+    atomic_dex::orders_model::swap_is_in_progress(const QString& coin) const 
     {
         for (auto&& cur_hist_swap: m_model_data.orders_and_swaps)
         {
@@ -609,7 +609,7 @@ namespace atomic_dex
     }
 
     void
-    orders_model::set_filtering_infos(t_filtering_infos infos) noexcept
+    orders_model::set_filtering_infos(t_filtering_infos infos) 
     {
         if (this->is_fetching_busy())
         {
@@ -635,7 +635,7 @@ namespace atomic_dex
     }
 
     t_filtering_infos
-    orders_model::get_filtering_infos() const noexcept
+    orders_model::get_filtering_infos() const 
     {
         return m_model_data.filtering_infos;
     }

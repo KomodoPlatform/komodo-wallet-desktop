@@ -59,13 +59,13 @@ namespace atomic_dex
         Q_ENUMS(CoinsRoles)
 
         // Constructor/Destructor
-        explicit global_coins_cfg_model(QObject* parent = nullptr) noexcept;
-        ~global_coins_cfg_model() noexcept final = default;
+        explicit global_coins_cfg_model(QObject* parent = nullptr) ;
+        ~global_coins_cfg_model()  final = default;
 
-        void initialize_model(std::vector<coin_config> cfg) noexcept;
+        void initialize_model(std::vector<coin_config> cfg) ;
 
         template <typename TArray>
-        void update_status(const TArray& tickers, bool status) noexcept;
+        void update_status(const TArray& tickers, bool status) ;
 
         // QAbstractListModel functions
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
@@ -74,24 +74,24 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
         // Getters/Setters
-        [[nodiscard]] const std::vector<coin_config>& get_model_data() const noexcept;
-        [[nodiscard]] coin_config                     get_coin_info(const std::string& ticker) const noexcept;
-        [[nodiscard]] t_enabled_coins_registry        get_enabled_coins() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_disabled_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_qrc20_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_erc20_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_smartchains_proxy() const noexcept;
-        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_utxo_proxy() const noexcept;
-        [[nodiscard]] int                             get_length() const noexcept;
-        [[nodiscard]] int                             get_checked_nb() const noexcept;
-        void                                          set_checked_nb(int value) noexcept;
-        [[nodiscard]] const QStringList&              get_all_coin_types() const noexcept;
+        [[nodiscard]] const std::vector<coin_config>& get_model_data() const ;
+        [[nodiscard]] coin_config                     get_coin_info(const std::string& ticker) const ;
+        [[nodiscard]] t_enabled_coins_registry        get_enabled_coins() const ;
+        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_disabled_proxy() const ;
+        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_proxy() const ;
+        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_qrc20_proxy() const ;
+        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_erc20_proxy() const ;
+        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_smartchains_proxy() const ;
+        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_utxo_proxy() const ;
+        [[nodiscard]] int                             get_length() const ;
+        [[nodiscard]] int                             get_checked_nb() const ;
+        void                                          set_checked_nb(int value) ;
+        [[nodiscard]] const QStringList&              get_all_coin_types() const ;
 
         // QML API functions
-        Q_INVOKABLE QStringList get_checked_coins() const noexcept;
-        Q_INVOKABLE QVariant    get_coin_info(const QString& ticker) const noexcept;
-        Q_INVOKABLE bool        is_coin_type(const QString& ticker) const noexcept;  // Tells if the given string is a valid coin type (e.g. QRC-20)
+        Q_INVOKABLE QStringList get_checked_coins() const ;
+        Q_INVOKABLE QVariant    get_coin_info(const QString& ticker) const ;
+        Q_INVOKABLE bool        is_coin_type(const QString& ticker) const ;  // Tells if the given string is a valid coin type (e.g. QRC-20)
 
         // QML API properties
         Q_PROPERTY(global_coins_cfg_proxy_model* all_disabled_proxy READ get_all_disabled_proxy NOTIFY all_disabled_proxyChanged)

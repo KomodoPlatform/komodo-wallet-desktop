@@ -61,7 +61,7 @@ namespace antara::gaming::event
          *          }
          * @endcode
          */
-        quit_game(int return_value) noexcept;
+        quit_game(int return_value) ;
 
         /**
          * default constructor (for scripting systems convenience)

@@ -33,11 +33,11 @@ namespace antara::gaming::ecs::tests
         }
 
         void
-        update() noexcept final
+        update()  final
         {
         }
 
-        ~logic_concrete_system() noexcept final = default;
+        ~logic_concrete_system()  final = default;
     };
 
     class pre_concrete_system final : public pre_update_system<pre_concrete_system>
@@ -48,11 +48,11 @@ namespace antara::gaming::ecs::tests
         }
 
         void
-        update() noexcept final
+        update()  final
         {
         }
 
-        ~pre_concrete_system() noexcept final = default;
+        ~pre_concrete_system()  final = default;
     };
 
     class post_concrete_system final : public post_update_system<post_concrete_system>
@@ -63,11 +63,11 @@ namespace antara::gaming::ecs::tests
         }
 
         void
-        update() noexcept final
+        update()  final
         {
         }
 
-        ~post_concrete_system() noexcept final = default;
+        ~post_concrete_system()  final = default;
     };
 
     TEST_SUITE("antara-gaming ecs test suite")
@@ -81,24 +81,24 @@ namespace antara::gaming::ecs::tests
                 }
 
                 [[nodiscard]] system_type
-                get_system_type_rtti() const noexcept final
+                get_system_type_rtti() const  final
                 {
                     return logic_update;
                 }
 
                 void
-                update() noexcept final
+                update()  final
                 {
                     //!
                 }
 
                 [[nodiscard]] std::string
-                get_name() const noexcept final
+                get_name() const  final
                 {
                     return "concrete_system";
                 }
 
-                ~concrete_system() noexcept final = default;
+                ~concrete_system()  final = default;
             };
 
             entt::registry registry{};

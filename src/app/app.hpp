@@ -109,37 +109,37 @@ namespace atomic_dex
         application& operator=(application&& other) = delete;
 
         //! Constructor
-        explicit application(QObject* pParent = nullptr) noexcept;
-        ~application() noexcept final = default;
+        explicit application(QObject* pParent = nullptr) ;
+        ~application()  final = default;
 
         //! entt::dispatcher events
-        void on_ticker_balance_updated_event(const ticker_balance_updated&) noexcept;
-        void on_fiat_rate_updated(const fiat_rate_updated&) noexcept;
-        void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;
-        void on_mm2_initialized_event(const mm2_initialized&) noexcept;
-        void on_process_orders_and_swaps_finished_event(const process_swaps_and_orders_finished&) noexcept;
+        void on_ticker_balance_updated_event(const ticker_balance_updated&) ;
+        void on_fiat_rate_updated(const fiat_rate_updated&) ;
+        void on_coin_fully_initialized_event(const coin_fully_initialized&) ;
+        void on_mm2_initialized_event(const mm2_initialized&) ;
+        void on_process_orders_and_swaps_finished_event(const process_swaps_and_orders_finished&) ;
 
         //! Properties Getter
-        mm2_service&                     get_mm2() noexcept;
-        [[nodiscard]] const mm2_service& get_mm2() const noexcept;
-        entt::dispatcher&                get_dispatcher() noexcept;
-        const entt::registry&            get_registry() const noexcept;
-        entt::registry&                  get_registry() noexcept;
-        [[nodiscard]] addressbook_page*  get_addressbook_page() const noexcept;
-        [[nodiscard]] portfolio_page*    get_portfolio_page() const noexcept;
-        [[nodiscard]] wallet_page*       get_wallet_page() const noexcept;
-        orders_model*                    get_orders() const noexcept;
-        notification_manager*            get_notification_manager() const noexcept;
-        trading_page*                    get_trading_page() const noexcept;
-        settings_page*                   get_settings_page() const noexcept;
-        qt_wallet_manager*               get_wallet_mgr() const noexcept;
-        internet_service_checker*        get_internet_checker() const noexcept;
-        ip_service_checker*              get_ip_checker() const noexcept;
-        update_service_checker*          get_update_checker() const noexcept;
-        exporter_service*                get_exporter_service() const noexcept;
+        mm2_service&                     get_mm2() ;
+        [[nodiscard]] const mm2_service& get_mm2() const ;
+        entt::dispatcher&                get_dispatcher() ;
+        const entt::registry&            get_registry() const ;
+        entt::registry&                  get_registry() ;
+        [[nodiscard]] addressbook_page*  get_addressbook_page() const ;
+        [[nodiscard]] portfolio_page*    get_portfolio_page() const ;
+        [[nodiscard]] wallet_page*       get_wallet_page() const ;
+        orders_model*                    get_orders() const ;
+        notification_manager*            get_notification_manager() const ;
+        trading_page*                    get_trading_page() const ;
+        settings_page*                   get_settings_page() const ;
+        qt_wallet_manager*               get_wallet_mgr() const ;
+        internet_service_checker*        get_internet_checker() const ;
+        ip_service_checker*              get_ip_checker() const ;
+        update_service_checker*          get_update_checker() const ;
+        exporter_service*                get_exporter_service() const ;
 
         //! Properties Setter
-        void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) noexcept;
+        void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) ;
 
         //! Launch the internal loop for the SDK.
         void launch();
@@ -148,7 +148,7 @@ namespace atomic_dex
         Q_INVOKABLE static void restart();
 
         //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
-        Q_INVOKABLE bool is_pin_cfg_enabled() const noexcept;
+        Q_INVOKABLE bool is_pin_cfg_enabled() const ;
 
         //! Misc
         Q_INVOKABLE static QString to_eth_checksum_qt(const QString& eth_lowercase_address);

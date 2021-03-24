@@ -39,8 +39,8 @@ namespace atomic_dex
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
 
       public:
-        qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
-        ~qt_orders_widget() noexcept final;
+        qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) ;
+        ~qt_orders_widget()  final;
 
         //! QML_API
         Q_INVOKABLE void cancel_order(const QStringList& orders_id);

@@ -53,7 +53,7 @@ namespace
 namespace atomic_dex
 {
     void
-    atomic_dex::internet_service_checker::set_internet_alive(bool internet_status) noexcept
+    atomic_dex::internet_service_checker::set_internet_alive(bool internet_status) 
     {
         if (internet_status != is_internet_reacheable)
         {
@@ -63,19 +63,19 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::internet_service_checker::is_internet_alive() const noexcept
+    atomic_dex::internet_service_checker::is_internet_alive() const 
     {
         return is_internet_reacheable.load();
     }
 
     double
-    atomic_dex::internet_service_checker::get_seconds_left_to_auto_retry() const noexcept
+    atomic_dex::internet_service_checker::get_seconds_left_to_auto_retry() const 
     {
         return m_timer;
     }
 
     void
-    atomic_dex::internet_service_checker::set_seconds_left_to_auto_retry(double time_left) noexcept
+    atomic_dex::internet_service_checker::set_seconds_left_to_auto_retry(double time_left) 
     {
         m_timer = time_left;
         emit secondsLeftToAutoRetryChanged();
@@ -94,7 +94,7 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::internet_service_checker::retry() noexcept
+    atomic_dex::internet_service_checker::retry() 
     {
         using namespace std::chrono_literals;
         m_update_clock = std::chrono::high_resolution_clock::now();
@@ -103,7 +103,7 @@ namespace atomic_dex
     }
 
     void
-    internet_service_checker::update() noexcept
+    internet_service_checker::update() 
     {
         using namespace std::chrono_literals;
 
@@ -151,7 +151,7 @@ namespace atomic_dex
     }
 
     void
-    internet_service_checker::query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept
+    internet_service_checker::query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) 
     {
         if (client != nullptr)
         {

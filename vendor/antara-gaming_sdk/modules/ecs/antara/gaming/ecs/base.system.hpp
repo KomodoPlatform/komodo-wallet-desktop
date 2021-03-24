@@ -32,70 +32,70 @@ namespace antara::gaming::ecs
     {
       public:
         //! Constructors
-        base_system(entt::registry& entity_registry, bool im_a_plugin_system = false) noexcept;
+        base_system(entt::registry& entity_registry, bool im_a_plugin_system = false) ;
 
         //! Destructor
-        virtual ~base_system() noexcept = default;
+        virtual ~base_system()  = default;
 
         //! Pure virtual functions
-        virtual void update() noexcept = 0;
+        virtual void update()  = 0;
 
-        virtual void post_update() noexcept {};
+        virtual void post_update()  {};
 
-        [[nodiscard]] virtual std::string get_name() const noexcept = 0;
+        [[nodiscard]] virtual std::string get_name() const  = 0;
 
-        [[nodiscard]] virtual system_type get_system_type_rtti() const noexcept = 0;
+        [[nodiscard]] virtual system_type get_system_type_rtti() const  = 0;
 
 
         /**
          * \note This function marks the system, it will be destroyed in the next turn of the game loop by the system_manager.
          */
-        void mark() noexcept;
+        void mark() ;
 
         /**
          * \note This function unmark the system, allows the prevention of a destruction in the next turn of the game loop by the system_manager.
          */
-        void unmark() noexcept;
+        void unmark() ;
 
         /**
          * \note This function tell you if a system is marked or no.
          * \return true if the system is marked, false otherwise
          */
-        [[nodiscard]] bool is_marked() const noexcept;
+        [[nodiscard]] bool is_marked() const ;
 
         /**
          * \note This function enable a system.
          * \note by default a system is enabled.
          */
-        void enable() noexcept;
+        void enable() ;
 
         /**
          * \note This function disable a system.
          */
-        void disable() noexcept;
+        void disable() ;
 
         /**
          * \note This function tell you if a system is enable or no.
          */
-        [[nodiscard]] bool is_enabled() const noexcept;
+        [[nodiscard]] bool is_enabled() const ;
 
         /**
          * \note This function defines the system as a plugin, and therefore will use more feature in runtime to work properly
          */
-        void im_a_plugin() noexcept;
+        void im_a_plugin() ;
 
         /**
          * \note This function tell you if a system is a plugin or no
          * \return true if the system is a plugin, false otherwise
          */
-        [[nodiscard]] bool is_a_plugin() const noexcept;
+        [[nodiscard]] bool is_a_plugin() const ;
 
         /**
          * \note This function retrieve a user data previously set by set_user_data
          * \note by default a user_data is a void pointer equal to nullptr.
          * \return user data of a system
          */
-        void* get_user_data() noexcept;
+        void* get_user_data() ;
 
         /**
          * \note This function set a user data for this system
@@ -105,7 +105,7 @@ namespace antara::gaming::ecs
          * \note user should be aware here, that's manipulating void pointer is as your own risk.
          * \param data a void pointer representing the user data
          */
-        void set_user_data(void* data) noexcept;
+        void set_user_data(void* data) ;
 
       protected:
         //! Protected data members

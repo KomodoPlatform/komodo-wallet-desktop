@@ -34,7 +34,7 @@ namespace
 //! Constructor/Destructor
 namespace atomic_dex
 {
-    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) noexcept :
+    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, ag::ecs::system_manager& system_manager)  :
         system(registry), m_system_manager(system_manager)
     {
         SPDLOG_INFO("coinpaprika_provider created");
@@ -44,7 +44,7 @@ namespace atomic_dex
         dispatcher_.sink<coin_disabled>().connect<&coinpaprika_provider::on_coin_disabled>(*this);
     }
 
-    coinpaprika_provider::~coinpaprika_provider() noexcept
+    coinpaprika_provider::~coinpaprika_provider() 
     {
         SPDLOG_INFO("coinpaprika_provider destroyed");
         dispatcher_.sink<mm2_started>().disconnect<&coinpaprika_provider::on_mm2_started>(*this);
@@ -58,7 +58,7 @@ namespace atomic_dex
 {
     template <typename TAnswer, typename TRegistry, typename TLockable>
     TAnswer
-    coinpaprika_provider::get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const noexcept
+    coinpaprika_provider::get_infos(const std::string& ticker, const TRegistry& registry, TLockable& mutex) const 
     {
         std::shared_lock lock(mutex);
         const auto       it = registry.find(ticker);
@@ -163,7 +163,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    coinpaprika_provider::update() noexcept
+    coinpaprika_provider::update() 
     {
     }
 } // namespace atomic_dex
@@ -172,13 +172,13 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    coinpaprika_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
+    coinpaprika_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) 
     {
         update_ticker_and_provider();
     }
 
     void
-    coinpaprika_provider::on_coin_enabled(const coin_enabled& evt) noexcept
+    coinpaprika_provider::on_coin_enabled(const coin_enabled& evt) 
     {
         SPDLOG_INFO("{} enabled, retrieve coinpaprika infos", fmt::format("{}", fmt::join(evt.tickers, ", ")));
         auto        idx{std::make_shared<std::atomic_uint16_t>(0)};
@@ -205,7 +205,7 @@ namespace atomic_dex
     }
 
     void
-    coinpaprika_provider::on_coin_disabled(const coin_disabled& evt) noexcept
+    coinpaprika_provider::on_coin_disabled(const coin_disabled& evt) 
     {
         SPDLOG_INFO("{} disabled, removing from paprika provider", evt.ticker);
         std::unique_lock lock(m_provider_mutex);
@@ -240,19 +240,19 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_rate_conversion(const std::string& ticker) const noexcept
+    coinpaprika_provider::get_rate_conversion(const std::string& ticker) const 
     {
         return get_infos<t_price_converter_answer>(ticker, m_usd_rate_providers, m_provider_mutex).price;
     }
 
     t_ticker_info_answer
-    coinpaprika_provider::get_ticker_infos(const std::string& ticker) const noexcept
+    coinpaprika_provider::get_ticker_infos(const std::string& ticker) const 
     {
         return get_infos<t_ticker_info_answer>(ticker, m_ticker_infos_registry, m_ticker_infos_mutex);
     }
 
     t_ticker_historical_answer
-    coinpaprika_provider::get_ticker_historical(const std::string& ticker) const noexcept
+    coinpaprika_provider::get_ticker_historical(const std::string& ticker) const 
     {
         return get_infos<t_ticker_historical_answer>(ticker, m_ticker_historical_registry, m_ticker_historical_mutex);
     }

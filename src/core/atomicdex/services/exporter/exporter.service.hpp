@@ -35,10 +35,10 @@ namespace atomic_dex
         explicit exporter_service(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
 
         //! Destructor
-        ~exporter_service() noexcept final = default;
+        ~exporter_service()  final = default;
 
         //! Public override
-        void update() noexcept final;
+        void update()  final;
 
         //! QML API
         Q_INVOKABLE void export_swaps_history_to_csv(const QString& path);

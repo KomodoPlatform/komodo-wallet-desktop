@@ -115,23 +115,23 @@ namespace atomic_dex
 // Getters/Setters
 namespace atomic_dex
 {
-    const QString& addressbook_proxy_model::get_search_exp() const noexcept
+    const QString& addressbook_proxy_model::get_search_exp() const 
     {
         return m_search_exp;
     }
     
-    void addressbook_proxy_model::set_search_exp(QString expression) noexcept
+    void addressbook_proxy_model::set_search_exp(QString expression) 
     {
         m_search_exp = std::move(expression);
         invalidateFilter();
     }
     
-    const QString& addressbook_proxy_model::get_type_filter() const noexcept
+    const QString& addressbook_proxy_model::get_type_filter() const 
     {
         return m_type_filter;
     }
     
-    void addressbook_proxy_model::set_type_filter(QString value) noexcept
+    void addressbook_proxy_model::set_type_filter(QString value) 
     {
         m_type_filter = std::move(value);
         invalidateFilter();

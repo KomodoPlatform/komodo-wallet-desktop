@@ -13,7 +13,7 @@
 #include "atomicdex/utilities/safe.float.hpp"
 
 t_float_50
-safe_float(const std::string& from) noexcept
+safe_float(const std::string& from) 
 {
     try
     {

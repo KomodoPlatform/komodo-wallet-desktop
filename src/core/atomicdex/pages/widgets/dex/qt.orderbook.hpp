@@ -39,21 +39,21 @@ namespace atomic_dex
         Q_PROPERTY(QVariant rel_max_taker_vol READ get_rel_max_taker_vol NOTIFY relMaxTakerVolChanged)
       public:
         qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
-        ~qt_orderbook_wrapper() noexcept final = default;
+        ~qt_orderbook_wrapper()  final = default;
 
       public:
         void                           refresh_orderbook(t_orderbook_answer answer);
         void                           reset_orderbook(t_orderbook_answer answer);
         void                           clear_orderbook();
-        [[nodiscard]] orderbook_model* get_asks() const noexcept;
-        [[nodiscard]] orderbook_model* get_bids() const noexcept;
-        [[nodiscard]] orderbook_model* get_best_orders() const noexcept;
-        [[nodiscard]] bool             is_best_orders_busy() const noexcept;
-        [[nodiscard]] QVariant         get_base_max_taker_vol() const noexcept;
-        [[nodiscard]] QVariant         get_rel_max_taker_vol() const noexcept;
+        [[nodiscard]] orderbook_model* get_asks() const ;
+        [[nodiscard]] orderbook_model* get_bids() const ;
+        [[nodiscard]] orderbook_model* get_best_orders() const ;
+        [[nodiscard]] bool             is_best_orders_busy() const ;
+        [[nodiscard]] QVariant         get_base_max_taker_vol() const ;
+        [[nodiscard]] QVariant         get_rel_max_taker_vol() const ;
 
-        Q_INVOKABLE void refresh_best_orders() noexcept;
-        Q_INVOKABLE void select_best_order(const QString& order_uuid) noexcept;
+        Q_INVOKABLE void refresh_best_orders() ;
+        Q_INVOKABLE void select_best_order(const QString& order_uuid) ;
 
       signals:
         void asksChanged();

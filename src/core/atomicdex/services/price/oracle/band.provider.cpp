@@ -33,7 +33,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     pplx::task<web::http::http_response>
-    band_oracle_price_service::async_fetch_oracle_result() noexcept
+    band_oracle_price_service::async_fetch_oracle_result() 
     {
         web::http::http_request req;
         req.set_method(web::http::methods::POST);
@@ -49,7 +49,7 @@ namespace atomic_dex
     }
 
     void
-    band_oracle_price_service::fetch_oracle() noexcept
+    band_oracle_price_service::fetch_oracle() 
     {
         SPDLOG_INFO("start fetching oracle");
         async_fetch_oracle_result()
@@ -87,7 +87,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    band_oracle_price_service::update() noexcept
+    band_oracle_price_service::update() 
     {
         using namespace std::chrono_literals;
 
@@ -101,13 +101,13 @@ namespace atomic_dex
     }
 
     bool
-    band_oracle_price_service::is_oracle_ready() const noexcept
+    band_oracle_price_service::is_oracle_ready() const 
     {
         return this->m_oracle_ready.load();
     }
 
     std::string
-    band_oracle_price_service::retrieve_if_this_ticker_supported(const std::string& ticker) const noexcept
+    band_oracle_price_service::retrieve_if_this_ticker_supported(const std::string& ticker) const 
     {
         std::string current_price = "";
         if (is_oracle_ready())
@@ -123,14 +123,14 @@ namespace atomic_dex
     }
 
     t_float_50
-    band_oracle_price_service::retrieve_rates(const std::string& fiat) const noexcept
+    band_oracle_price_service::retrieve_rates(const std::string& fiat) const 
     {
         const auto synchronized = m_oracle_price_result.synchronize();
         return synchronized->band_oracle_data.at(fiat).rate;
     }
 
     std::vector<std::string>
-    band_oracle_price_service::supported_pair() const noexcept
+    band_oracle_price_service::supported_pair() const 
     {
         std::vector<std::string> out;
         out.reserve(this->m_supported_tickers.size());
@@ -139,7 +139,7 @@ namespace atomic_dex
     }
 
     std::string
-    band_oracle_price_service::last_oracle_reference() const noexcept
+    band_oracle_price_service::last_oracle_reference() const 
     {
         return "";
     }

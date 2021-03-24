@@ -133,7 +133,7 @@ namespace atomic_dex
     }
 
     void
-    portfolio_proxy_model::is_a_market_selector(bool is_market_selector) noexcept
+    portfolio_proxy_model::is_a_market_selector(bool is_market_selector) 
     {
         this->am_i_a_market_selector = is_market_selector;
     }
@@ -171,13 +171,13 @@ namespace atomic_dex
     }
 
     bool
-    portfolio_proxy_model::get_with_balance() const noexcept
+    portfolio_proxy_model::get_with_balance() const 
     {
         return m_with_balance;
     }
 
     void
-    portfolio_proxy_model::set_with_balance(bool value) noexcept
+    portfolio_proxy_model::set_with_balance(bool value) 
     {
         if (value != m_with_balance)
         {
@@ -187,7 +187,7 @@ namespace atomic_dex
     }
 
     void
-    portfolio_proxy_model::set_with_fiat_balance(bool value) noexcept
+    portfolio_proxy_model::set_with_fiat_balance(bool value) 
     {
         m_with_fiat_balance = value;
     }

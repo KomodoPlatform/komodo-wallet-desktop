@@ -35,13 +35,13 @@
 namespace antara::gaming::core
 {
     bool
-    is_high_dpi_capable() noexcept
+    is_high_dpi_capable() 
     {
         return details::is_high_dpi_capable();
     }
 
     std::pair<float, float>
-    get_scaling_factor() noexcept
+    get_scaling_factor() 
     {
         return details::get_scaling_factor();
     }

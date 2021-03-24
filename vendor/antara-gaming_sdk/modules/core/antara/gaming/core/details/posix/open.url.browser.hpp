@@ -25,7 +25,7 @@
 namespace antara::gaming::core::details
 {
     inline void
-    open_url_browser(const std::string& url) noexcept
+    open_url_browser(const std::string& url) 
     {
         using namespace std::literals::string_literals;
         std::system(("open "s + url).c_str());

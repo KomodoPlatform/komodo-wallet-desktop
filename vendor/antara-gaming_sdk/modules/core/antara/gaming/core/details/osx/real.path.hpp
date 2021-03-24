@@ -27,7 +27,7 @@
 namespace antara::gaming::core::details
 {
     static std::string&
-    replace_all_mute(std::string& s, const std::string& from, const std::string& to) noexcept
+    replace_all_mute(std::string& s, const std::string& from, const std::string& to) 
     {
         if (not from.empty())
         {
@@ -37,13 +37,13 @@ namespace antara::gaming::core::details
     }
 
     static std::string
-    replace_all_copy(std::string s, const std::string& from, const std::string& to) noexcept
+    replace_all_copy(std::string s, const std::string& from, const std::string& to) 
     {
         return replace_all_mute(s, from, to);
     }
 
     fs::path
-    binary_real_path() noexcept
+    binary_real_path() 
     {
         std::array<char, PATH_MAX + 1> dir_name_buffer{};
         auto                           size   = static_cast<uint32_t>(dir_name_buffer.size());
@@ -55,7 +55,7 @@ namespace antara::gaming::core::details
     }
 
     fs::path
-    assets_real_path() noexcept
+    assets_real_path() 
     {
         return binary_real_path().parent_path().parent_path() / "Resources/assets";
     }

@@ -30,9 +30,9 @@ namespace atomic_dex
         orderbook_proxy_model(QObject* parent);
 
         //! Destructor
-        ~orderbook_proxy_model() noexcept final = default;
+        ~orderbook_proxy_model()  final = default;
 
-        Q_INVOKABLE void qml_sort(int column, Qt::SortOrder order = Qt::AscendingOrder) noexcept;
+        Q_INVOKABLE void qml_sort(int column, Qt::SortOrder order = Qt::AscendingOrder) ;
 
       protected:
         //! Override member functions

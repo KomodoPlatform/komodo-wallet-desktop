@@ -37,20 +37,20 @@ namespace atomic_dex
     }
 
     portfolio_model*
-    portfolio_page::get_portfolio() const noexcept
+    portfolio_page::get_portfolio() const 
     {
         return m_portfolio_mdl;
     }
 
     void
-    portfolio_page::update() noexcept
+    portfolio_page::update() 
     {
     }
 
-    portfolio_page::~portfolio_page() noexcept {}
+    portfolio_page::~portfolio_page()  {}
 
     QStringList
-    portfolio_page::get_oracle_price_supported_pairs() const noexcept
+    portfolio_page::get_oracle_price_supported_pairs() const 
     {
         auto        result = m_system_manager.get_system<band_oracle_price_service>().supported_pair();
         QStringList out;
@@ -60,7 +60,7 @@ namespace atomic_dex
     }
 
     QString
-    portfolio_page::get_oracle_last_price_reference() const noexcept
+    portfolio_page::get_oracle_last_price_reference() const 
     {
         return QString::fromStdString(m_system_manager.get_system<band_oracle_price_service>().last_oracle_reference());
     }
@@ -72,7 +72,7 @@ namespace atomic_dex
     }
 
     void
-    portfolio_page::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
+    portfolio_page::set_current_balance_fiat_all(QString current_fiat_all_balance) 
     {
         if (this->m_current_balance_all != current_fiat_all_balance)
         {
@@ -82,13 +82,13 @@ namespace atomic_dex
     }
 
     QString
-    portfolio_page::get_balance_fiat_all() const noexcept
+    portfolio_page::get_balance_fiat_all() const 
     {
         return m_current_balance_all;
     }
 
     void
-    portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt) noexcept
+    portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt) 
     {
         //SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
 
@@ -109,13 +109,13 @@ namespace atomic_dex
     }
 
     QStringList
-    atomic_dex::portfolio_page::get_all_enabled_coins() const noexcept
+    atomic_dex::portfolio_page::get_all_enabled_coins() const 
     {
         return get_all_coins_by_type("All");
     }
 
     QStringList
-    atomic_dex::portfolio_page::get_all_coins_by_type(const QString& coin_type) const noexcept
+    atomic_dex::portfolio_page::get_all_coins_by_type(const QString& coin_type) const 
     {
         QStringList enabled_coins;
         const auto& portfolio_list = this->get_portfolio()->get_underlying_data();
@@ -135,19 +135,19 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::portfolio_page::is_coin_enabled(const QString& coin_name) const noexcept
+    atomic_dex::portfolio_page::is_coin_enabled(const QString& coin_name) const 
     {
         return get_all_enabled_coins().contains(coin_name);
     }
 
     global_coins_cfg_model*
-    portfolio_page::get_global_cfg() const noexcept
+    portfolio_page::get_global_cfg() const 
     {
         return m_global_cfg_mdl;
     }
 
     void
-    portfolio_page::on_coin_cfg_parsed(const coin_cfg_parsed& evt) noexcept
+    portfolio_page::on_coin_cfg_parsed(const coin_cfg_parsed& evt) 
     {
         this->m_global_cfg_mdl->initialize_model(evt.cfg);
     }

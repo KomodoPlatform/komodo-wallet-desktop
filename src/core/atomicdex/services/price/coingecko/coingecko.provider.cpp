@@ -9,7 +9,7 @@
 
 namespace atomic_dex
 {
-    coingecko_provider::coingecko_provider(entt::registry& registry, ag::ecs::system_manager& system_manager) noexcept :
+    coingecko_provider::coingecko_provider(entt::registry& registry, ag::ecs::system_manager& system_manager)  :
         system(registry), m_system_manager(system_manager)
     {
         SPDLOG_INFO("coingecko_provider created");
@@ -19,7 +19,7 @@ namespace atomic_dex
         dispatcher_.sink<coin_disabled>().connect<&coingecko_provider::on_coin_disabled>(*this);
     }
 
-    coingecko_provider::~coingecko_provider() noexcept
+    coingecko_provider::~coingecko_provider() 
     {
         SPDLOG_INFO("coingecko_provider destroyed");
         dispatcher_.sink<mm2_started>().disconnect<&coingecko_provider::on_mm2_started>(*this);
@@ -32,7 +32,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    coingecko_provider::update() noexcept
+    coingecko_provider::update() 
     {
     }
 } // namespace atomic_dex
@@ -41,13 +41,13 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    coingecko_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
+    coingecko_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) 
     {
         update_ticker_and_provider();
     }
 
     void
-    coingecko_provider::on_coin_enabled(const coin_enabled& evt) noexcept
+    coingecko_provider::on_coin_enabled(const coin_enabled& evt) 
     {
         dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
         /*std::vector<std::string>             ids;
@@ -71,7 +71,7 @@ namespace atomic_dex
     }
 
     void
-    coingecko_provider::on_coin_disabled([[maybe_unused]] const coin_disabled& evt) noexcept
+    coingecko_provider::on_coin_disabled([[maybe_unused]] const coin_disabled& evt) 
     {
         // SPDLOG_INFO("{} disabled, removing from coingecko provider", evt.ticker);
         // std::unique_lock lock(m_market_mutex);
@@ -91,7 +91,7 @@ namespace atomic_dex
     }
 
     std::string
-    coingecko_provider::get_change_24h(const std::string& ticker) const noexcept
+    coingecko_provider::get_change_24h(const std::string& ticker) const 
     {
         // SPDLOG_INFO("ticker change 24h: {}", ticker);
         return get_info_answer(ticker).price_change_24h;
@@ -99,13 +99,13 @@ namespace atomic_dex
 
 
     nlohmann::json
-    coingecko_provider::get_ticker_historical(const std::string& ticker) const noexcept
+    coingecko_provider::get_ticker_historical(const std::string& ticker) const 
     {
         return get_info_answer(ticker).sparkline_in_7d;
     }
 
     std::string
-    coingecko_provider::get_rate_conversion(const std::string& ticker) const noexcept
+    coingecko_provider::get_rate_conversion(const std::string& ticker) const 
     {
         return get_info_answer(ticker).current_price;
     }

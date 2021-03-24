@@ -85,7 +85,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order) noexcept
+    orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order) 
     {
         this->sort(column, order);
     }

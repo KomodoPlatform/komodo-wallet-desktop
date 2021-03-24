@@ -17,7 +17,7 @@
 namespace antara::gaming::ecs
 {
     template <typename SystemType>
-    lambda_system<SystemType>::lambda_system(entt::registry& registry, ftor lambda_contents, std::string lambda_name) noexcept :
+    lambda_system<SystemType>::lambda_system(entt::registry& registry, ftor lambda_contents, std::string lambda_name)  :
         TSystem::system(registry), lambda_contents_(std::move(lambda_contents)), lambda_name_(std::move(lambda_name))
     {
         if (lambda_contents_.on_create != nullptr)
@@ -27,7 +27,7 @@ namespace antara::gaming::ecs
     }
 
     template <typename SystemType>
-    lambda_system<SystemType>::~lambda_system() noexcept
+    lambda_system<SystemType>::~lambda_system() 
     {
         if (lambda_contents_.on_destruct != nullptr)
         {
@@ -37,7 +37,7 @@ namespace antara::gaming::ecs
 
     template <typename SystemType>
     void
-    lambda_system<SystemType>::update() noexcept
+    lambda_system<SystemType>::update() 
     {
         if (lambda_contents_.on_update != nullptr)
         {
@@ -47,7 +47,7 @@ namespace antara::gaming::ecs
 
     template <typename SystemType>
     void
-    lambda_system<SystemType>::post_update() noexcept
+    lambda_system<SystemType>::post_update() 
     {
         if (lambda_contents_.on_post_update != nullptr)
         {

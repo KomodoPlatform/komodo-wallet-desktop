@@ -46,7 +46,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt) noexcept
+    trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt) 
     {
         if (not m_about_to_exit_the_app)
         {
@@ -61,7 +61,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QVariant
-    trading_page::get_raw_mm2_coin_cfg(const QString& ticker) const noexcept
+    trading_page::get_raw_mm2_coin_cfg(const QString& ticker) const 
     {
         QVariant       out;
         nlohmann::json j = m_system_manager.get_system<mm2_service>().get_raw_mm2_ticker_cfg(ticker.toStdString());
@@ -347,7 +347,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    trading_page::disable_coins(const QStringList& coins) noexcept
+    trading_page::disable_coins(const QStringList& coins) 
     {
         for (auto&& coin: coins)
         {
@@ -373,7 +373,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::update() noexcept
+    trading_page::update() 
     {
     }
 
@@ -426,31 +426,31 @@ namespace atomic_dex
 namespace atomic_dex
 {
     qt_orderbook_wrapper*
-    trading_page::get_orderbook_wrapper() const noexcept
+    trading_page::get_orderbook_wrapper() const 
     {
         return qobject_cast<qt_orderbook_wrapper*>(m_models[models::orderbook]);
     }
 
     qt_orders_widget*
-    trading_page::get_orders_widget() const noexcept
+    trading_page::get_orders_widget() const 
     {
         return qobject_cast<qt_orders_widget*>(m_models[models::orders]);
     }
 
     market_pairs*
-    trading_page::get_market_pairs_mdl() const noexcept
+    trading_page::get_market_pairs_mdl() const 
     {
         return qobject_cast<market_pairs*>(m_models[models::market_selector]);
     }
 
     bool
-    trading_page::is_buy_sell_rpc_busy() const noexcept
+    trading_page::is_buy_sell_rpc_busy() const 
     {
         return m_rpc_buy_sell_busy.load();
     }
 
     void
-    trading_page::set_buy_sell_rpc_busy(bool status) noexcept
+    trading_page::set_buy_sell_rpc_busy(bool status) 
     {
         if (m_rpc_buy_sell_busy != status)
         {
@@ -460,13 +460,13 @@ namespace atomic_dex
     }
 
     QVariant
-    trading_page::get_buy_sell_last_rpc_data() const noexcept
+    trading_page::get_buy_sell_last_rpc_data() const 
     {
         return m_rpc_buy_sell_result.get();
     }
 
     void
-    trading_page::set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept
+    trading_page::set_buy_sell_last_rpc_data(QVariant rpc_data) 
     {
         m_rpc_buy_sell_result = rpc_data.toJsonObject();
         emit buySellLastRpcDataChanged();
@@ -477,13 +477,13 @@ namespace atomic_dex
 namespace atomic_dex
 {
     MarketMode
-    trading_page::get_market_mode() const noexcept
+    trading_page::get_market_mode() const 
     {
         return m_market_mode;
     }
 
     void
-    trading_page::set_market_mode(MarketMode market_mode) noexcept
+    trading_page::set_market_mode(MarketMode market_mode) 
     {
         if (this->m_market_mode != market_mode)
         {
@@ -505,13 +505,13 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_price() const noexcept
+    trading_page::get_price() const 
     {
         return m_price;
     }
 
     void
-    trading_page::set_price(QString price) noexcept
+    trading_page::set_price(QString price) 
     {
         if (price.isEmpty())
         {
@@ -549,7 +549,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::clear_forms() noexcept
+    trading_page::clear_forms() 
     {
         SPDLOG_INFO("clearing forms");
         this->set_min_trade_vol(get_mm2_min_trade_vol());
@@ -569,13 +569,13 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_volume() const noexcept
+    trading_page::get_volume() const 
     {
         return m_volume;
     }
 
     void
-    trading_page::set_volume(QString volume) noexcept
+    trading_page::set_volume(QString volume) 
     {
         if (m_volume != volume && not volume.isEmpty())
         {
@@ -595,13 +595,13 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_max_volume() const noexcept
+    trading_page::get_max_volume() const 
     {
         return m_max_volume;
     }
 
     void
-    trading_page::set_max_volume(QString max_volume) noexcept
+    trading_page::set_max_volume(QString max_volume) 
     {
         if (m_max_volume != max_volume)
         {
@@ -612,7 +612,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_max_volume() noexcept
+    trading_page::determine_max_volume() 
     {
         if (this->m_market_mode == MarketMode::Sell)
         {
@@ -697,7 +697,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::cap_volume() noexcept
+    trading_page::cap_volume() 
     {
         /*
          * cap_volume is called only in MarketMode::Buy, and in Sell mode if prefered order
@@ -713,13 +713,13 @@ namespace atomic_dex
     }
 
     TradingError
-    trading_page::get_trading_error() const noexcept
+    trading_page::get_trading_error() const 
     {
         return m_last_trading_error;
     }
 
     void
-    trading_page::set_trading_error(TradingError trading_error) noexcept
+    trading_page::set_trading_error(TradingError trading_error) 
     {
         if (m_last_trading_error != trading_error)
         {
@@ -762,13 +762,13 @@ namespace atomic_dex
     }
 
     TradingMode
-    trading_page::get_current_trading_mode() const noexcept
+    trading_page::get_current_trading_mode() const 
     {
         return m_current_trading_mode;
     }
 
     void
-    trading_page::set_current_trading_mode(TradingMode trading_mode) noexcept
+    trading_page::set_current_trading_mode(TradingMode trading_mode) 
     {
         if (m_current_trading_mode != trading_mode)
         {
@@ -781,7 +781,7 @@ namespace atomic_dex
     }
 
     bool
-    trading_page::set_pair(bool is_left_side, QString changed_ticker) noexcept
+    trading_page::set_pair(bool is_left_side, QString changed_ticker) 
     {
         SPDLOG_INFO("Changed ticker: {}", changed_ticker.toStdString());
         auto* const market_pair = get_market_pairs_mdl();
@@ -844,7 +844,7 @@ namespace atomic_dex
     }
 
     QVariantMap
-    trading_page::get_preffered_order() noexcept
+    trading_page::get_preffered_order() 
     {
         if (m_preffered_order.has_value())
         {
@@ -855,7 +855,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::set_preffered_order(QVariantMap price_object) noexcept
+    trading_page::set_preffered_order(QVariantMap price_object) 
     {
         if (auto preffered_order = nlohmann::json::parse(QString(QJsonDocument(QJsonObject::fromVariantMap(price_object)).toJson()).toStdString());
             preffered_order != m_preffered_order)
@@ -873,13 +873,13 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_total_amount() const noexcept
+    trading_page::get_total_amount() const 
     {
         return m_total_amount;
     }
 
     void
-    trading_page::set_total_amount(QString total_amount) noexcept
+    trading_page::set_total_amount(QString total_amount) 
     {
         if (this->m_current_trading_mode != TradingMode::Simple)
         {
@@ -910,7 +910,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_total_amount() noexcept
+    trading_page::determine_total_amount() 
     {
         if (not m_price.isEmpty() && not m_volume.isEmpty())
         {
@@ -929,25 +929,25 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_base_amount() const noexcept
+    trading_page::get_base_amount() const 
     {
         return m_market_mode == MarketMode::Sell ? m_volume : m_total_amount;
     }
 
     QString
-    trading_page::get_rel_amount() const noexcept
+    trading_page::get_rel_amount() const 
     {
         return m_market_mode == MarketMode::Sell ? m_total_amount : m_volume;
     }
 
     QVariantMap
-    trading_page::get_fees() const noexcept
+    trading_page::get_fees() const 
     {
         return m_fees.get();
     }
 
     void
-    trading_page::set_fees(QVariantMap fees) noexcept
+    trading_page::set_fees(QVariantMap fees) 
     {
         if (fees != m_fees)
         {
@@ -958,7 +958,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_fees() noexcept
+    trading_page::determine_fees() 
     {
         using namespace std::string_literals;
         const auto* market_pair = get_market_pairs_mdl();
@@ -1029,7 +1029,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_error_cases() noexcept
+    trading_page::determine_error_cases() 
     {
         TradingError current_trading_error = TradingError::None;
 
@@ -1070,7 +1070,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::determine_cex_rates() noexcept
+    trading_page::determine_cex_rates() 
     {
         const auto& price_service   = m_system_manager.get_system<global_price_service>();
         const auto* market_selector = get_market_pairs_mdl();
@@ -1088,19 +1088,19 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_cex_price() const noexcept
+    trading_page::get_cex_price() const 
     {
         return m_cex_price;
     }
 
     bool
-    trading_page::get_invalid_cex_price() const noexcept
+    trading_page::get_invalid_cex_price() const 
     {
         return m_cex_price == "0" || m_cex_price == "0.00" || m_cex_price.isEmpty();
     }
 
     QString
-    trading_page::get_price_reversed() const noexcept
+    trading_page::get_price_reversed() const 
     {
         if (not m_price.isEmpty() && safe_float(m_price.toStdString()) > 0)
         {
@@ -1112,7 +1112,7 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_cex_price_reversed() const noexcept
+    trading_page::get_cex_price_reversed() const 
     {
         if (not get_invalid_cex_price())
         {
@@ -1123,7 +1123,7 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_cex_price_diff() const noexcept
+    trading_page::get_cex_price_diff() const 
     {
         t_float_50 price_diff = get_invalid_cex_price()
                                     ? t_float_50(0)
@@ -1133,7 +1133,7 @@ namespace atomic_dex
     }
 
     t_float_50
-    trading_page::get_max_balance_without_dust(std::optional<QString> trade_with) const noexcept
+    trading_page::get_max_balance_without_dust(std::optional<QString> trade_with) const 
     {
         if (!trade_with.has_value())
         {
@@ -1151,7 +1151,7 @@ namespace atomic_dex
     }
 
     TradingError
-    trading_page::generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const noexcept
+    trading_page::generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const 
     {
         TradingError last_trading_error = TradingError::None;
         const auto&  mm2                = m_system_manager.get_system<mm2_service>();
@@ -1193,13 +1193,13 @@ namespace atomic_dex
     }
 
     bool
-    trading_page::get_skip_taker() const noexcept
+    trading_page::get_skip_taker() const 
     {
         return m_skip_taker;
     }
 
     void
-    trading_page::set_skip_taker(bool skip_taker) noexcept
+    trading_page::set_skip_taker(bool skip_taker) 
     {
         if (m_skip_taker != skip_taker)
         {
@@ -1209,7 +1209,7 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_mm2_min_trade_vol() const noexcept
+    trading_page::get_mm2_min_trade_vol() const 
     {
         const auto& mm2           = m_system_manager.get_system<mm2_service>();
         const auto  base_coin     = get_market_pairs_mdl()->get_base_selected_coin().toStdString();
@@ -1225,13 +1225,13 @@ namespace atomic_dex
     }
 
     QString
-    trading_page::get_min_trade_vol() const noexcept
+    trading_page::get_min_trade_vol() const 
     {
         return m_minimal_trading_amount;
     }
 
     void
-    trading_page::set_min_trade_vol(QString min_trade_vol) noexcept
+    trading_page::set_min_trade_vol(QString min_trade_vol) 
     {
         const bool is_valid = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
 
@@ -1242,19 +1242,19 @@ namespace atomic_dex
         }
     }
     void
-    trading_page::reset_order() noexcept
+    trading_page::reset_order() 
     {
         this->clear_forms();
     }
 
     bool
-    trading_page::is_preimage_busy() const noexcept
+    trading_page::is_preimage_busy() const 
     {
         return m_rpc_preimage_busy.load();
     }
 
     void
-    trading_page::set_preimage_busy(bool status) noexcept
+    trading_page::set_preimage_busy(bool status) 
     {
         if (status != m_rpc_preimage_busy)
         {
@@ -1263,7 +1263,7 @@ namespace atomic_dex
         }
     }
     void
-    trading_page::reset_fees() noexcept
+    trading_page::reset_fees() 
     {
         this->set_fees(QVariantMap());
         this->determine_error_cases();
@@ -1273,7 +1273,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
-    trading_page::calculate_total_amount(QString price, QString volume) const noexcept
+    trading_page::calculate_total_amount(QString price, QString volume) const 
     {
         t_float_50 price_f(safe_float(price.toStdString()));
         t_float_50 volume_f(safe_float(volume.toStdString()));

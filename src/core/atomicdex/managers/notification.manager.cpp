@@ -20,7 +20,7 @@
 
 namespace atomic_dex
 {
-    notification_manager::notification_manager(entt::dispatcher& dispatcher, QObject* parent) noexcept : QObject(parent), m_dispatcher(dispatcher) {}
+    notification_manager::notification_manager(entt::dispatcher& dispatcher, QObject* parent)  : QObject(parent), m_dispatcher(dispatcher) {}
 
     void
     notification_manager::on_swap_status_notification(const atomic_dex::swap_status_notification& evt)
@@ -35,7 +35,7 @@ namespace atomic_dex
     }
 
     void
-    notification_manager::connect_signals() noexcept
+    notification_manager::connect_signals() 
     {
         m_dispatcher.sink<batch_failed>().connect<&notification_manager::on_batch_failed>(*this);
         m_dispatcher.sink<swap_status_notification>().connect<&notification_manager::on_swap_status_notification>(*this);
@@ -47,7 +47,7 @@ namespace atomic_dex
     }
 
     void
-    notification_manager::disconnect_signals() noexcept
+    notification_manager::disconnect_signals() 
     {
         m_dispatcher.sink<batch_failed>().disconnect<&notification_manager::on_batch_failed>(*this);
         m_dispatcher.sink<swap_status_notification>().disconnect<&notification_manager::on_swap_status_notification>(*this);

@@ -21,6 +21,6 @@
 
 namespace antara::gaming::core
 {
-    fs::path binary_real_path() noexcept;
-    fs::path assets_real_path() noexcept;
+    fs::path binary_real_path() ;
+    fs::path assets_real_path() ;
 } // namespace antara::gaming::core

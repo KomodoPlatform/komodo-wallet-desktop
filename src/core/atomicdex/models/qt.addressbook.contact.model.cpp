@@ -42,7 +42,7 @@ namespace atomic_dex
         m_proxy_filter->sort(0);
     }
 
-    addressbook_contact_model::~addressbook_contact_model() noexcept { clear(); }
+    addressbook_contact_model::~addressbook_contact_model()  { clear(); }
 }
 
 // QAbstractListModel Functions
@@ -93,13 +93,13 @@ namespace atomic_dex
 namespace atomic_dex
 {
     const QString&
-    addressbook_contact_model::get_name() const noexcept
+    addressbook_contact_model::get_name() const 
     {
         return m_name;
     }
     
     void
-    addressbook_contact_model::set_name(const QString& name) noexcept
+    addressbook_contact_model::set_name(const QString& name) 
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         
@@ -116,24 +116,24 @@ namespace atomic_dex
     }
     
     const QStringList&
-    addressbook_contact_model::get_categories() const noexcept
+    addressbook_contact_model::get_categories() const 
     {
         return m_categories;
     }
     
     void
-    addressbook_contact_model::set_categories(QStringList categories) noexcept
+    addressbook_contact_model::set_categories(QStringList categories) 
     {
         m_categories = std::move(categories);
         emit categoriesChanged();
     }
     
-    addressbook_contact_proxy_filter_model* addressbook_contact_model::get_proxy_filter() const noexcept
+    addressbook_contact_proxy_filter_model* addressbook_contact_model::get_proxy_filter() const 
     {
         return m_proxy_filter;
     }
     
-    const QVector<addressbook_contact_model::address_entry>& addressbook_contact_model::get_address_entries() const noexcept
+    const QVector<addressbook_contact_model::address_entry>& addressbook_contact_model::get_address_entries() const 
     {
         return m_address_entries;
     }
@@ -143,7 +143,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     bool
-    addressbook_contact_model::add_category(const QString& category) noexcept
+    addressbook_contact_model::add_category(const QString& category) 
     {
         if (m_categories.contains(category))
         {
@@ -155,14 +155,14 @@ namespace atomic_dex
     }
 
     void
-    addressbook_contact_model::remove_category(const QString& category) noexcept
+    addressbook_contact_model::remove_category(const QString& category) 
     {
         m_categories.removeOne(category);
         emit categoriesChanged();
     }
     
     bool
-    addressbook_contact_model::add_address_entry(QString type, QString key, QString value) noexcept
+    addressbook_contact_model::add_address_entry(QString type, QString key, QString value) 
     {
         // Returns false if the given key already exists.
         auto res = match(index(0), AddressTypeAndKeyRole, type + key, 1, Qt::MatchFlag::MatchExactly);
@@ -183,7 +183,7 @@ namespace atomic_dex
     }
     
     void
-    addressbook_contact_model::remove_address_entry(const QString& type, const QString& key) noexcept
+    addressbook_contact_model::remove_address_entry(const QString& type, const QString& key) 
     {
         auto res = match(index(0), AddressTypeAndKeyRole, type + key, 1, Qt::MatchFlag::MatchExactly);
     

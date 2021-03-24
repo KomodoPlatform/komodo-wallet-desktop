@@ -32,12 +32,12 @@ namespace atomic_dex
     {
         Q_OBJECT
       public:
-        notification_manager(entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
-        ~notification_manager() noexcept final = default;
+        notification_manager(entt::dispatcher& dispatcher, QObject* parent = nullptr) ;
+        ~notification_manager()  final = default;
 
         //! Public API
-        void connect_signals() noexcept;
-        void disconnect_signals() noexcept;
+        void connect_signals() ;
+        void disconnect_signals() ;
 
         //! Callbacks
         void on_batch_failed(const batch_failed& evt);;

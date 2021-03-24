@@ -25,7 +25,7 @@
 namespace antara::gaming::core::details
 {
     fs::path
-    binary_real_path() noexcept
+    binary_real_path() 
     {
         HMODULE hModule = GetModuleHandleW(nullptr);
         assert(hModule != nullptr);
@@ -36,7 +36,7 @@ namespace antara::gaming::core::details
     }
 
     fs::path
-    assets_real_path() noexcept
+    assets_real_path() 
     {
         return binary_real_path().parent_path() / "assets";
     }

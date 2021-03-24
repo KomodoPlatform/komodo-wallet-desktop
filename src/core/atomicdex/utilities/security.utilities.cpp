@@ -134,7 +134,7 @@ namespace atomic_dex
     }
 
     std::string
-    gen_random_password() noexcept
+    gen_random_password() 
     {
         std::string chars("abcdefghijklmnopqrstuvwxyz"
                           "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
