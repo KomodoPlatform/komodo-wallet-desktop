@@ -3046,6 +3046,21 @@
   "active": false,
   "currently_enabled": false
  },
+  "XRP-BEP20": {
+      "coin": "XRP-BEP20",
+      "name": "XRP",
+      "coinpaprika_id": "xrp-xrp",
+      "coingecko_id": "ripple",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
  "YFI": {
   "coin": "YFI",
   "name": "yearn.finance",
