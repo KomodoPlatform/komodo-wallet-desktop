@@ -10,6 +10,7 @@
 
 //! Project headers
 #include "atomicdex/api/coingecko/coingecko.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace
 {
@@ -82,7 +83,7 @@ namespace atomic_dex::coingecko::api
             // SPDLOG_INFO("coin: {}", coin.coingecko_id);
             if (coin.coingecko_id != "test-coin")
             {
-                registry[coin.coingecko_id] = coin.ticker;
+                registry[coin.coingecko_id] = ::atomic_dex::utils::retrieve_main_ticker(coin.ticker);
                 out.emplace_back(coin.coingecko_id);
             }
         }

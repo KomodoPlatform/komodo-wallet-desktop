@@ -150,8 +150,9 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker, bool adjusted) const 
+    global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker_in, bool adjusted) const
     {
+        std::string ticker = atomic_dex::utils::retrieve_main_ticker(ticker_in);
         //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
         if (ticker.empty())
             return "0";
