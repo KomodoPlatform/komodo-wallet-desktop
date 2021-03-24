@@ -419,7 +419,7 @@
     "name": "Dai",
     "coinpaprika_id": "dai-dai",
     "coingecko_id": "dai",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -2962,7 +2962,7 @@
     "name": "Uniswap",
     "coinpaprika_id": "uni-uniswap",
     "coingecko_id": "uniswap",
-    "eth_nodes": [
+    "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
