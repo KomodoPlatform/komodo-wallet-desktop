@@ -819,6 +819,21 @@
     "type": "ERC-20",
     "name": "USD Coin"
   },
+  "USDT-BEP20": {
+      "coin": "USDT-BEP20",
+      "name": "Tether",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "tether",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "AWC": {
     "active": false,
     "coin": "AWC",

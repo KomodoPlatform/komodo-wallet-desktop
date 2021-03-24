@@ -316,6 +316,7 @@ QtObject {
                                           "BUSD": "#EDB70B",
                                           "DAI": "#B68900",
                                           "USDC": "#317BCB",
+                                          "USDT": "#26A17B",
                                           "PAX": "#EDE70A",
                                           "SUSHI": "#E25DA8",
                                           "TUSD": "#2E3181",
