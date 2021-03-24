@@ -98,4 +98,11 @@ TEST_CASE("atomic_dex::utils::get_current_configs_path()")
     CHECK(fs::exists(result));
 }
 
+TEST_CASE("atomic_dex::utils::retrieve_main_ticker()")
+{
+    CHECK_EQ(atomic_dex::utils::retrieve_main_ticker("BUSD"), "BUSD");
+    CHECK_EQ(atomic_dex::utils::retrieve_main_ticker("BUSD-BEP2"), "BUSD");
+    CHECK_EQ(atomic_dex::utils::retrieve_main_ticker("BUSD-ERC20"), "BUSD");
+}
+
 #endif
