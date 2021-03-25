@@ -68,7 +68,6 @@ namespace atomic_dex
         Q_PROPERTY(notification_manager* notification_mgr READ get_notification_manager)
         Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
         Q_PROPERTY(ip_service_checker* ip_checker READ get_ip_checker NOTIFY ipCheckerChanged)
-        Q_PROPERTY(update_service_checker* update_checker READ get_update_checker NOTIFY updateCheckerChanged)
         Q_PROPERTY(exporter_service* exporter_service READ get_exporter_service NOTIFY exporterServiceChanged)
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
