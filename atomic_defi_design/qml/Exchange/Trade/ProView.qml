@@ -469,7 +469,7 @@ ColumnLayout {
                             DefaultText {
                                 anchors.centerIn: parent
                                 opacity: !sell_mode ? 1 : .5
-                                text: "Buy "+left_ticker
+                                text: "Buy "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                                 color: !sell_mode? Qaterial.Colors.white : theme.foregroundColor
                             }
                             DefaultMouseArea {
@@ -504,7 +504,7 @@ ColumnLayout {
                                 anchors.centerIn: parent
 
                                 opacity: sell_mode ? 1 : .5
-                                text: "Sell "+left_ticker
+                                text: "Sell "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                                 color: sell_mode? Qaterial.Colors.white : theme.foregroundColor
 
                             }
