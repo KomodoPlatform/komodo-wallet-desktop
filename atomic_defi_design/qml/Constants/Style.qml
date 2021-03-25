@@ -266,10 +266,12 @@ QtObject {
     readonly property var colorCoin: ({
                                           "ADA": "#11283F",
                                           "ARPA": "#CCD9E2",
+                                          "ATOM": "#2D3046",
                                           "BNB": "#F3BA2F",
                                           "BCH": "#8DC351",
                                           "BTC": "#F7931A",
                                           "CLC": "#0970DC",
+                                          "EOS": "#323232",
                                           "FTC": "#FFFFFF",
                                           "GLEEC": "#8C41FF",
                                           "GRS": "#377E96",

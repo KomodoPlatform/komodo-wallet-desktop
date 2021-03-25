@@ -110,6 +110,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "ATOM-BEP20": {
+      "coin": "ATOM-BEP20",
+      "name": "Cosmos",
+      "coinpaprika_id": "atom-cosmos",
+      "coingecko_id": "cosmos",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "AXE": {
     "coin": "AXE",
     "name": "Axe",
@@ -627,6 +642,21 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "EOS-BEP20": {
+      "coin": "EOS-BEP20",
+      "name": "EOS",
+      "coinpaprika_id": "eos-eos",
+      "coingecko_id": "eos",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "FTC": {
     "coin": "FTC",
