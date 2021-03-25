@@ -1,4 +1,19 @@
 {
+  "ADA-BEP20": {
+      "coin": "ADA-BEP20",
+      "name": "Cardano",
+      "coinpaprika_id": "ada-cardano",
+      "coingecko_id": "cardano",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BNB": {
       "coin": "BNB",
       "name": "Binance Coin",
@@ -532,6 +547,21 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "DOT-BEP20": {
+      "coin": "DOT-BEP20",
+      "name": "Polkadot",
+      "coinpaprika_id": "dot-polkadot",
+      "coingecko_id": "polkadot",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "DP": {
     "coin": "DP",
