@@ -57,7 +57,7 @@ Item {
                 width: parent.width
                 DefaultText {
                     color: theme.foregroundColor
-                    text:  "Total "+right_ticker
+                    text:  "Total "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
                     font.pixelSize:  Style.textSizeSmall5
                     Layout.preferredWidth: 120
                     font.weight: Font.DemiBold

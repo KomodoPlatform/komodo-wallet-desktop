@@ -55,7 +55,7 @@ Item {
             DefaultText {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
-                text: send+" "+coin
+                text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
                 font.pixelSize: Style.textSizeSmall1
 
             }

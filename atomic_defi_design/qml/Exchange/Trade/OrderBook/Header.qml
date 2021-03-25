@@ -25,7 +25,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 80
-            text: is_ask? qsTr("Price") + " ("+right_ticker+")" : qsTr("Price") + " ("+right_ticker+")"
+            text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
             font.family: Style.font_family
             font.pixelSize: 10
             font.bold: true
@@ -36,7 +36,7 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 90
 
-            text: qsTr("Quantity") + " ("+left_ticker+")"
+            text: qsTr("Quantity") + " ("+  atomic_qt_utilities.retrieve_main_ticker(left_ticker) +")"
             font.family: Style.font_family
             font.pixelSize: 10
             font.bold: true
@@ -51,7 +51,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 120
-            text: qsTr("Total") + "("+right_ticker+")"
+            text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"
             horizontalAlignment: Label.AlignRight
             font.family: Style.font_family
             font.pixelSize: 10
