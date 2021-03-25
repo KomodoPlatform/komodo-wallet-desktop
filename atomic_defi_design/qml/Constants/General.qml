@@ -701,6 +701,8 @@ QtObject {
                                                 "PAXG/BTC": "BINANCE:PAXGBTC",
                                                 "PAXG/ETH": "KRAKEN:PAXGETH",
                                                 "PAXG/USDT": "BINANCE:PAXGUSDT",
+                                                "PAXG/USDC": "UNISWAP:PAXGUSDC",
+                                                "PAXG/BNB": "BINANCE:PAXGBNB",
                                                 "PNK/BTC": "BITFINEX:PNKBTC",
                                                 "PNK/ETH": "BITFINEX:PNKETH",
                                                 "PNK/USDT": "OKEX:PNKUSDT",
