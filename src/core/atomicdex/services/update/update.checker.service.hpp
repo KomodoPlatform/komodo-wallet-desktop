@@ -50,6 +50,7 @@ namespace atomic_dex
         void updateStatusChanged();
 
       public:
+        [[deprecated("Use self_update_service instead.")]]
         //! Constructor
         explicit update_service_checker(entt::registry& registry, QObject* parent = nullptr);
 
