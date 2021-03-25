@@ -270,6 +270,7 @@ QtObject {
                                           "BNB": "#F3BA2F",
                                           "BCH": "#8DC351",
                                           "BTC": "#F7931A",
+                                          "CAKE": "#D1884F",
                                           "CLC": "#0970DC",
                                           "EOS": "#323232",
                                           "FTC": "#FFFFFF",
@@ -378,6 +379,7 @@ QtObject {
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",
                                           "XRP": "#2E353D",
+                                          "XTZ": "#A8E000",
                                           "YFI": "#006BE6",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
