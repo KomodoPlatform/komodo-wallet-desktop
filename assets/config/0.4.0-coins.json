@@ -166,6 +166,21 @@
     "active": true,
     "currently_enabled": false
   },
+  "BTC-BEP20": {
+      "coin": "BTC-BEP20",
+      "name": "Bitcoin",
+      "coinpaprika_id": "btc-bitcoin",
+      "coingecko_id": "bitcoin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BTCH": {
     "coin": "BTCH",
     "name": "Bitcoin Hush",
@@ -399,8 +414,23 @@
     "currently_enabled": false,
     "wallet_only": true
   },
-  "DAI": {
-    "coin": "DAI",
+  "DAI-BEP20": {
+      "coin": "DAI-BEP20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "DAI-ERC20": {
+    "coin": "DAI-ERC20",
     "name": "Dai",
     "coinpaprika_id": "dai-dai",
     "coingecko_id": "dai",
@@ -783,22 +813,69 @@
     "currently_enabled": false,
     "wallet_only": true
   },
-  "PAX": {
-    "coin": "PAX",
-    "name": "Paxos Standard",
-    "coinpaprika_id": "pax-paxos-standard-token",
-    "coingecko_id": "paxos-standard",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
+  "PAX-BEP20": {
+      "coin": "PAX-BEP20",
+      "name": "Paxos Standard",
+      "coinpaprika_id": "pax-paxos-standard-token",
+      "coingecko_id": "paxos-standard",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "PAX-ERC20": {
+      "coin": "PAX-ERC20",
+      "name": "Paxos Standard",
+      "coinpaprika_id": "pax-paxos-standard-token",
+      "coingecko_id": "paxos-standard",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "PAXG-BEP20": {
+      "coin": "PAXG-BEP20",
+      "name": "PAX Gold",
+      "coinpaprika_id": "paxg-pax-gold",
+      "coingecko_id": "pax-gold",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "PAXG-ERC20": {
+      "coin": "PAXG-ERC20",
+      "name": "PAX Gold",
+      "coinpaprika_id": "paxg-pax-gold",
+      "coingecko_id": "pax-gold",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ETH": {
     "active": false,
@@ -817,22 +894,52 @@
     "type": "ERC-20",
     "name": "Ethereum"
   },
-  "USDC": {
-    "active": false,
-    "coin": "USDC",
-    "coingecko_id": "usd-coin",
-    "coinpaprika_id": "usdc-usd-coin",
-    "currently_enabled": false,
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "name": "USD Coin"
+  "ETH-BEP20": {
+      "coin": "ETH-BEP20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "USDC-BEP20": {
+      "coin": "USDC-BEP20",
+      "name": "USD Coin",
+      "coinpaprika_id": "usdc-usd-coin",
+      "coingecko_id": "usd-coin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "USDC-ERC20": {
+      "coin": "USDC-ERC20",
+      "name": "USD Coin",
+      "coinpaprika_id": "usdc-usd-coin",
+      "coingecko_id": "usd-coin",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "USDT-BEP20": {
       "coin": "USDT-BEP20",
@@ -2536,23 +2643,6 @@
   "active": false,
   "currently_enabled": false
  },
- "PAXG": {
-  "coin": "PAXG",
-  "name": "Paxos Gold",
-  "coinpaprika_id": "paxg-pax-gold",
-  "coingecko_id": "pax-gold",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "PNK": {
   "coin": "PNK",
   "name": "Pinakion",
@@ -2927,23 +3017,38 @@
   "active": false,
   "currently_enabled": false
  },
- "UNI": {
-  "coin": "UNI",
-  "name": "Uniswap",
-  "coinpaprika_id": "uni-uniswap",
-  "coingecko_id": "uniswap",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
+  "UNI-BEP20": {
+      "coin": "UNI-BEP20",
+      "name": "Uniswap",
+      "coinpaprika_id": "uni-uniswap",
+      "coingecko_id": "uniswap",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "UNI-ERC20": {
+    "coin": "UNI-ERC20",
+    "name": "Uniswap",
+    "coinpaprika_id": "uni-uniswap",
+    "coingecko_id": "uniswap",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
  "UOS": {
   "coin": "UOS",
   "name": "Ultra Token",

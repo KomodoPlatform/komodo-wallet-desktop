@@ -318,6 +318,7 @@ QtObject {
                                           "USDC": "#317BCB",
                                           "USDT": "#26A17B",
                                           "PAX": "#EDE70A",
+                                          "PAXG": "#E5CB22",
                                           "SUSHI": "#E25DA8",
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
