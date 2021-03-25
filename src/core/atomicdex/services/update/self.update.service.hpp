@@ -24,6 +24,8 @@ namespace atomic_dex
         std::chrono::high_resolution_clock::time_point clock;
         
       public:
+        explicit self_update_service(entt::registry& entity_registry);
+        
         // ecs::pre_update_system::update implementation
         // Basically it fetches last release info and notifies the frontend if a new release is available.
         // Notification happens by modifying Q_PROPERTY `update_info`.

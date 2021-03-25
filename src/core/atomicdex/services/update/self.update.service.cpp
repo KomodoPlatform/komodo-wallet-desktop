@@ -4,6 +4,10 @@
 
 namespace atomic_dex
 {
+    self_update_service::self_update_service(entt::registry& entity_registry) :
+        system(entity_registry)
+    {}
+    
     void self_update_service::update() noexcept
     {
         using namespace std::chrono_literals;
