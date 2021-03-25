@@ -813,22 +813,69 @@
     "currently_enabled": false,
     "wallet_only": true
   },
-  "PAX": {
-    "coin": "PAX",
-    "name": "Paxos Standard",
-    "coinpaprika_id": "pax-paxos-standard-token",
-    "coingecko_id": "paxos-standard",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
+  "PAX-BEP20": {
+      "coin": "PAX-BEP20",
+      "name": "Paxos Standard",
+      "coinpaprika_id": "pax-paxos-standard-token",
+      "coingecko_id": "paxos-standard",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "PAX-ERC20": {
+      "coin": "PAX-ERC20",
+      "name": "Paxos Standard",
+      "coinpaprika_id": "pax-paxos-standard-token",
+      "coingecko_id": "paxos-standard",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "PAXG-BEP20": {
+      "coin": "PAXG-BEP20",
+      "name": "PAX Gold",
+      "coinpaprika_id": "paxg-pax-gold",
+      "coingecko_id": "pax-gold",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "PAXG-ERC20": {
+      "coin": "PAXG-ERC20",
+      "name": "PAX Gold",
+      "coinpaprika_id": "paxg-pax-gold",
+      "coingecko_id": "pax-gold",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ETH": {
     "active": false,
@@ -862,22 +909,37 @@
       "active": false,
       "currently_enabled": false
   },
-  "USDC": {
-    "active": false,
-    "coin": "USDC",
-    "coingecko_id": "usd-coin",
-    "coinpaprika_id": "usdc-usd-coin",
-    "currently_enabled": false,
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "name": "USD Coin"
+  "USDC-BEP20": {
+      "coin": "USDC-BEP20",
+      "name": "USD Coin",
+      "coinpaprika_id": "usdc-usd-coin",
+      "coingecko_id": "usd-coin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "USDC-ERC20": {
+      "coin": "USDC-ERC20",
+      "name": "USD Coin",
+      "coinpaprika_id": "usdc-usd-coin",
+      "coingecko_id": "usd-coin",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "USDT-BEP20": {
       "coin": "USDT-BEP20",
@@ -2569,23 +2631,6 @@
   "name": "OKB",
   "coinpaprika_id": "okb-okb",
   "coingecko_id": "okb",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "PAXG": {
-  "coin": "PAXG",
-  "name": "Paxos Gold",
-  "coinpaprika_id": "paxg-pax-gold",
-  "coingecko_id": "pax-gold",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
