@@ -973,8 +973,8 @@
     "type": "ERC-20",
     "name": "Atomic Wallet Coin"
   },
-  "BAT": {
-    "coin": "BAT",
+  "BAT-ERC20": {
+    "coin": "BAT-ERC20",
     "name": "Basic Attention Token",
     "coinpaprika_id": "bat-basic-attention-token",
     "coingecko_id": "basic-attention-token",
@@ -990,9 +990,24 @@
     "active": false,
     "currently_enabled": false
   },
-  "TUSD": {
+  "BAT-BEP20": {
+      "coin": "BAT-BEP20",
+      "name": "Basic Attention Token",
+      "coinpaprika_id": "bat-basic-attention-token",
+      "coingecko_id": "basic-attention-token",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-ERC20": {
     "active": false,
-    "coin": "TUSD",
+    "coin": "TUSD-ERC20",
     "coingecko_id": "true-usd",
     "coinpaprika_id": "tusd-trueusd",
     "currently_enabled": false,
@@ -1031,6 +1046,21 @@
     ],
     "active": true,
     "currently_enabled": false
+  },
+  "KMD-BEP20": {
+      "coin": "KMD-BEP20",
+      "name": "Komodo",
+      "coinpaprika_id": "kmd-komodo",
+      "coingecko_id": "komodo",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "LABS": {
     "coin": "LABS",
