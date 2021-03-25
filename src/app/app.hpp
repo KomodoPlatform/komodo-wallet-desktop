@@ -48,7 +48,7 @@
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
-#include "atomicdex/services/update/update.checker.service.hpp"
+#include "atomicdex/services/update/self.update.service.hpp"
 
 namespace ag = antara::gaming;
 
@@ -74,6 +74,7 @@ namespace atomic_dex
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
+        Q_PROPERTY(self_update_service* self_update_service READ get_self_update_service NOTIFY self_update_serviceChanged)
 
         //! Private function
         void connect_signals();
@@ -135,7 +136,7 @@ namespace atomic_dex
         qt_wallet_manager*               get_wallet_mgr() const noexcept;
         internet_service_checker*        get_internet_checker() const noexcept;
         ip_service_checker*              get_ip_checker() const noexcept;
-        update_service_checker*          get_update_checker() const noexcept;
+        self_update_service*             get_self_update_service() const noexcept;
         exporter_service*                get_exporter_service() const noexcept;
 
         //! Properties Setter
@@ -179,7 +180,7 @@ namespace atomic_dex
         void portfolioPageChanged();
         void walletPageChanged();
         void ordersChanged();
-        void updateCheckerChanged();
+        void self_update_serviceChanged();
         void tradingPageChanged();
         void settingsPageChanged();
         void internetCheckerChanged();

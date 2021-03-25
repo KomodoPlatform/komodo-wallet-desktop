@@ -289,7 +289,7 @@ namespace atomic_dex
         system_manager_.create_system<band_oracle_price_service>();
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<coingecko_provider>(system_manager_);
-        system_manager_.create_system<update_service_checker>(this);
+        system_manager_.create_system<self_update_service>();
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
@@ -663,10 +663,10 @@ namespace atomic_dex
 //! update checker
 namespace atomic_dex
 {
-    update_service_checker*
-    application::get_update_checker() const noexcept
+    self_update_service*
+    application::get_self_update_service() const noexcept
     {
-        auto ptr = const_cast<update_service_checker*>(std::addressof(system_manager_.get_system<update_service_checker>()));
+        auto ptr = const_cast<self_update_service*>(std::addressof(system_manager_.get_system<self_update_service>()));
         assert(ptr != nullptr);
         return ptr;
     }
