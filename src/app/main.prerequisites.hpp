@@ -406,6 +406,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
     engine.rootContext()->setContextProperty("atomic_logo_path", QString::fromStdString((atomic_dex::utils::get_atomic_dex_data_folder() / "logo").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
+    engine.rootContext()->setContextProperty("dex_current_version", QString::fromStdString(atomic_dex::get_version()));
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);
