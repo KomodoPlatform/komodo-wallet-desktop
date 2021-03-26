@@ -104,8 +104,8 @@ namespace atomic_dex
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
                     if (resp.status_code() == 200)
                     {
-                        auto& mm2_system = m_system_manager.get_system<mm2_service>();
-                        mm2_system.batch_fetch_orders_and_swap();
+                        //auto& mm2_system = m_system_manager.get_system<mm2_service>();
+                        //mm2_system.batch_fetch_orders_and_swap();
                     }
                     else
                     {
