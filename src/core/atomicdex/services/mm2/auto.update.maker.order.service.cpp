@@ -179,4 +179,11 @@ namespace atomic_dex
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
     }
+
+    void
+    auto_update_maker_order_service::force_update()
+    {
+        this->process_update_orders();
+        m_update_clock = std::chrono::high_resolution_clock::now();
+    }
 } // namespace atomic_dex

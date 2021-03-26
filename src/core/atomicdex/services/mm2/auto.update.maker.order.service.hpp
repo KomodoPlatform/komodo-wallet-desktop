@@ -53,6 +53,8 @@ namespace atomic_dex
 
         //! Public override
         void update() final;
+
+        void force_update();
     };
 } // namespace atomic_dex
 
