@@ -1,9 +1,9 @@
 // Deps headers
 #include <nlohmann/json.hpp>
-#include <antara/app/net/http.code.hpp>
 
 // Project headers
 #include "github.api.hpp"
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp" //> download_file()
 
 namespace atomic_dex::github_api
 {
@@ -25,14 +25,37 @@ namespace atomic_dex::github_api
     
     std::vector<repository_release> get_repository_releases_from_http_response(const web::http::http_response& resp)
     {
-        std::vector<repository_release> result;
+        // Returns the download url of the url which corresponds to your OS.
+        const auto get_matching_os_dl_url = [](const nlohmann::json& answer)
+        {
+            for (auto& asset : answer.at("assets"))
+            {
+                std::string asset_download_url = asset.at("browser_download_url");
+
+                if (asset_download_url.find(
+#ifdef __APPLE__
+                        "osx.dmg"
+#elif __linux__
+                        "linux.AppImage"
+#elif _WIN32
+                        "windows.zip"
+#endif
+                        ) != std::string::npos)
+                {
+                    return asset_download_url;
+                }
+            }
+            throw std::runtime_error("get_repository_releases_from_http_response: Cannot found a proper download url.");
+        };
+        
+        std::vector<repository_release> result{};
         const auto json_answer = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
         
         result.reserve(json_answer.size());
         for (auto& release_obj : json_answer)
         {
             result.push_back(repository_release{
-                                .url        = release_obj.at("url"),
+                                .url        = get_matching_os_dl_url(release_obj),
                                 .assets_url = release_obj.at("assets_url"),
                                 .name       = release_obj.at("name"),
                                 .tag_name   = release_obj.at("tag_name")});
@@ -48,4 +71,4 @@ namespace atomic_dex::github_api
                                      repository_release{.url        = json_answer.at(0).at("url"), .assets_url = json_answer.at(0).at("assets_url"),
                                                         .name       = json_answer.at(0).at("name"), .tag_name   = json_answer.at(0).at("tag_name")};
     }
-}
+    }
