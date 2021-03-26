@@ -332,14 +332,18 @@ handle_settings(QSettings& settings)
     create_settings_functor("CurrentTheme", QString("Dark.json"));
     create_settings_functor("ThemePath", QString::fromStdString(atomic_dex::utils::get_themes_path().string()));
     create_settings_functor("SecondSecuritySending", QVariant(false));
+    create_settings_functor("AutomaticUpdateOrderBot", QVariant(false));
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
 #else
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
 #endif
-    /*settings.beginGroup("BestOrders");
-    create_settings_functor("show_affordable_offers", QVariant(true));
+    /*settings.beginGroup("KMD_BUSD-BEP20");
+    create_settings_functor("Bidspread", QVariant(-1.0));
+    create_settings_functor("Askspread", QVariant(1.0));
+    create_settings_functor("Disabled", QVariant(true));
+    create_settings_functor("AutoCancel", QVariant(true));
     settings.endGroup();*/
 }
 
@@ -366,6 +370,7 @@ run_app(int argc, char** argv)
     atomic_dex::application atomic_app;
     QSettings&              settings = atomic_app.get_registry().ctx<QSettings>();
     handle_settings(settings);
+    atomic_app.post_handle_settings();
 
     int res = 0;
 
