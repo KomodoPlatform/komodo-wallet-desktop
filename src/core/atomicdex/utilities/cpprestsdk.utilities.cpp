@@ -57,18 +57,20 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
 
 pplx::task<std::filesystem::path> download_file(t_http_client& client, const std::string& url, std::filesystem::path& output_location)
 {
+    SPDLOG_DEBUG("Start downloading {} to {}", url, output_location);
     return client.request(web::http::methods::GET, url)
         .then([](web::http::http_response response)
         {
             return response.body();
         })
-        .then([output_location](Concurrency::streams::istream is)
+        .then([url, output_location](Concurrency::streams::istream is)
         {
             Concurrency::streams::streambuf<std::uint8_t> rwbuf =
                 Concurrency::streams::file_buffer<std::uint8_t>::open(output_location).get();
             
             is.read_to_end(rwbuf).get();
             rwbuf.close();
+            SPDLOG_DEBUG("Finished downloading {} to {}", url, output_location);
             return output_location;
         });
 }
