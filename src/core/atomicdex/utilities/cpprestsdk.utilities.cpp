@@ -55,9 +55,9 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
     }
 }
 
-void download_file(t_http_client& client, const std::string& url, std::filesystem::path& output_location)
+pplx::task<std::filesystem::path> download_file(t_http_client& client, const std::string& url, std::filesystem::path& output_location)
 {
-    client.request(web::http::methods::GET, url)
+    return client.request(web::http::methods::GET, url)
         .then([](web::http::http_response response)
         {
             return response.body();
@@ -69,6 +69,6 @@ void download_file(t_http_client& client, const std::string& url, std::filesyste
             
             is.read_to_end(rwbuf).get();
             rwbuf.close();
-        })
-        .then(&handle_exception_pplx_task);
+            return output_location;
+        });
 }
