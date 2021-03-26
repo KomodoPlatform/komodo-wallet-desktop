@@ -300,22 +300,6 @@ namespace mm2::api
 
     send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
-    struct setprice_request
-    {
-        std::string                base;
-        std::string                rel;
-        std::string                price;
-        std::string                volume;
-        bool                       max{false};
-        bool                       cancel_previous{false};
-        std::optional<bool>        base_nota;
-        std::optional<std::size_t> base_confs;
-        std::optional<bool>        rel_nota;
-        std::optional<std::size_t> rel_confs;
-    };
-
-    void to_json(nlohmann::json& j, const setprice_request& request);
-
     struct cancel_order_request
     {
         std::string uuid;
@@ -488,7 +472,6 @@ namespace mm2::api
 namespace atomic_dex
 {
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
-    using t_setprice_request        = ::mm2::api::setprice_request;
     using t_withdraw_request        = ::mm2::api::withdraw_request;
     using t_withdraw_fees           = ::mm2::api::withdraw_fees;
     using t_withdraw_answer         = ::mm2::api::withdraw_answer;

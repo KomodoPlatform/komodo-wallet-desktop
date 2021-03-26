@@ -18,8 +18,10 @@
 #include <QSettings>
 
 // Project Headers
+#include "atomicdex/api/mm2/rpc.setprice.hpp"
 #include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
 
 //! Constructor
 namespace atomic_dex
@@ -35,21 +37,82 @@ namespace atomic_dex
 //! Private member functions
 namespace atomic_dex
 {
+    std::string
+    auto_update_maker_order_service::get_new_price_from_order(const t_order_swaps_data& data, const t_float_50& spread)
+    {
+        const auto& price_service = m_system_manager.get_system<global_price_service>();
+        const auto& base          = data.base_coin.toStdString();
+        const auto& rel           = data.rel_coin.toStdString();
+        const auto& order         = data.order_id.toStdString();
+        t_float_50  price         = safe_float(data.rel_amount.toStdString()) / safe_float(data.base_amount.toStdString());
+        t_float_50  price_diff(0);
+        t_float_50  cex_price   = safe_float(price_service.get_cex_rates(base, rel));
+        price_diff              = t_float_50(100) * (t_float_50(1) - price / cex_price) * t_float_50(1);
+        t_float_50 percent      = spread / 100;
+        t_float_50 target_price = cex_price + (cex_price * percent);
+        SPDLOG_INFO("spread of the order {} for {}/{} is: {}%", order, base, rel, utils::format_float(price_diff));
+        SPDLOG_INFO("price of the order {} is {} {}", order, utils::format_float(price), rel);
+        SPDLOG_INFO("actual cex rates is: 1 {} = {} {}", base, utils::format_float(cex_price), rel);
+        SPDLOG_INFO(
+            "target price for the updated order is 1 {} = {} {}, target_spread: {}", base, utils::format_float(target_price), rel, utils::format_float(spread));
+        return utils::format_float(target_price);
+    }
+
     void
     auto_update_maker_order_service::update_order(const t_order_swaps_data& data)
     {
         const auto&   mm2               = this->m_system_manager.get_system<mm2_service>();
-        const auto    base_coin_info    = mm2.get_coin_info(data.base_coin.toStdString());
-        const auto    rel_coin_info     = mm2.get_coin_info(data.rel_coin.toStdString());
+        const auto    base_coin         = data.base_coin.toStdString();
+        const auto    rel_coin          = data.rel_coin.toStdString();
+        const auto    base_coin_info    = mm2.get_coin_info(base_coin);
+        const auto    rel_coin_info     = mm2.get_coin_info(rel_coin);
         QSettings&    settings          = entity_registry_.ctx<QSettings>();
         const auto    category_settings = data.base_coin + "_" + data.rel_coin;
         const QString target_settings   = "Disabled";
         settings.beginGroup(category_settings);
         const bool is_disabled = settings.value(target_settings, true).toBool();
+        t_float_50 spread      = settings.value("Spread", 1.0).toDouble();
+        // const bool       auto_cancel = settings.value("AutoCancel", true).toBool();
         settings.endGroup();
         if (base_coin_info.coingecko_id != "test-coin" && rel_coin_info.coingecko_id != "test-coin" && !is_disabled)
         {
             SPDLOG_INFO("Updating maker order: {}", data.order_id.toStdString());
+            nlohmann::json     batch         = nlohmann::json::array();
+            std::string        new_price     = get_new_price_from_order(data, spread);
+            nlohmann::json     conf_settings = data.conf_settings.value_or(nlohmann::json());
+            nlohmann::json     setprice_json = ::mm2::api::template_request("setprice");
+            t_setprice_request request{
+                .base            = base_coin,
+                .rel             = rel_coin,
+                .price           = new_price,
+                .volume          = data.base_amount.toStdString(),
+                .max             = false,
+                .cancel_previous = true,
+                .min_volume      = data.min_volume.value_or("0.00777").toStdString()};
+            if (!conf_settings.empty())
+            {
+                request.base_nota  = conf_settings.at("base_nota").get<bool>();
+                request.rel_nota   = conf_settings.at("rel_nota").get<bool>();
+                request.base_confs = conf_settings.at("base_confs").get<std::size_t>();
+                request.rel_confs  = conf_settings.at("rel_confs").get<std::size_t>();
+            }
+            ::mm2::api::to_json(setprice_json, request);
+            batch.push_back(setprice_json);
+            auto& mm2 = this->m_system_manager.get_system<mm2_service>();
+            ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), pplx::cancellation_token::none())
+                .then([this]([[maybe_unused]] web::http::http_response resp) {
+                    std::string body = TO_STD_STR(resp.extract_string(true).get());
+                    if (resp.status_code() == 200)
+                    {
+                        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+                        mm2_system.batch_fetch_orders_and_swap();
+                    }
+                    else
+                    {
+                        SPDLOG_WARN("An error occured during setprice: {}", body);
+                    }
+                })
+                .then(&handle_exception_pplx_task);
         }
     }
 

@@ -23,6 +23,7 @@
 
 //! Project Headers
 #include "atomicdex/data/dex/qt.orders.data.hpp"
+#include "atomicdex/utilities/safe.float.hpp"
 
 //! Namespace declaration
 namespace atomic_dex
@@ -38,9 +39,10 @@ namespace atomic_dex
         t_update_time_point      m_update_clock;
 
         //! Private member functions
-        void process_update_orders();
-        void internal_update();
-        void update_order(const t_order_swaps_data& data);
+        void        process_update_orders();
+        void        internal_update();
+        void        update_order(const t_order_swaps_data& data);
+        std::string get_new_price_from_order(const t_order_swaps_data& data, const t_float_50& spread);
 
       public:
         //! Constructor
