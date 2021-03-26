@@ -17,7 +17,6 @@
 //! Deps
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
-
 #if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
 #    if defined(__APPLE__)
@@ -25,6 +24,7 @@
 #    endif
 #    include <boost/stacktrace.hpp>
 #endif
+#include <cpprest/filestream.h>
 
 //! Project Headers
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
@@ -53,4 +53,22 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
         SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
 #endif
     }
+}
+
+void download_file(t_http_client& client, const std::string& url, std::filesystem::path& output_location)
+{
+    client.request(web::http::methods::GET, url)
+        .then([](web::http::http_response response)
+        {
+            return response.body();
+        })
+        .then([output_location](Concurrency::streams::istream is)
+        {
+            Concurrency::streams::streambuf<std::uint8_t> rwbuf =
+                Concurrency::streams::file_buffer<std::uint8_t>::open(output_location).get();
+            
+            is.read_to_end(rwbuf).get();
+            rwbuf.close();
+        })
+        .then(&handle_exception_pplx_task);
 }
