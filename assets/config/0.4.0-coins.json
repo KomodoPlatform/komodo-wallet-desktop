@@ -444,6 +444,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "COMP-BEP20": {
+      "coin": "COMP-BEP20",
+      "name": "Compound",
+      "coinpaprika_id": "comp-compoundd",
+      "coingecko_id": "compound-coin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "COMP-ERC20": {
+      "coin": "COMP-ERC20",
+      "name": "Compound",
+      "coinpaprika_id": "comp-compoundd",
+      "coingecko_id": "compound-coin",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "COQUI": {
     "coin": "COQUI",
     "name": "Coqui Cash",
@@ -1687,6 +1719,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "SNX-BEP20": {
+      "coin": "SNX-BEP20",
+      "name": "Synthetix",
+      "coinpaprika_id": "snx-synthetix-network-token",
+      "coingecko_id": "havven",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "SNX-ERC20": {
+      "coin": "SNX-ERC20",
+      "name": "Synthetix",
+      "coinpaprika_id": "snx-synthetix-network-token",
+      "coingecko_id": "havven",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SPACE": {
     "coin": "SPACE",
     "name": "Spacecoin",
@@ -2351,23 +2415,6 @@
   "active": false,
   "currently_enabled": false
  },
- "COMP": {
-  "coin": "COMP",
-  "name": "Compound",
-  "coinpaprika_id": "comp-compoundd",
-  "coingecko_id": "compound-coin",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "CRO": {
   "coin": "CRO",
   "name": "Crypto.com Coin",
@@ -3002,23 +3049,6 @@
   "name": "StatusNetwork",
   "coinpaprika_id": "snt-status",
   "coingecko_id": "status",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "SNX": {
-  "coin": "SNX",
-  "name": "Synthetix Network Token",
-  "coinpaprika_id": "snx-synthetix-network-token",
-  "coingecko_id": "havven",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
