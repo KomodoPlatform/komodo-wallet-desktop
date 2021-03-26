@@ -1,4 +1,36 @@
 {
+  "AAVE-BEP20": {
+      "coin": "AAVE-BEP20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AAVE-ERC20": {
+      "coin": "AAVE-ERC20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ADA-BEP20": {
       "coin": "ADA-BEP20",
       "name": "Cardano",
@@ -1160,6 +1192,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "LINK-BEP20": {
+      "coin": "LINK-BEP20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LINK-ERC20": {
+      "coin": "LINK-ERC20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MGW": {
     "coin": "MGW",
     "name": "MGW",
@@ -2100,23 +2164,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "AAVE": {
-  "coin": "AAVE",
-  "name": "Aave Token",
-  "coinpaprika_id": "aave-new",
-  "coingecko_id": "aave",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "AGI": {
   "coin": "AGI",
   "name": "SingularityNET",
@@ -2598,23 +2645,6 @@
   "name": "Bitfinex LEO Token",
   "coinpaprika_id": "leo-leo-token",
   "coingecko_id": "leo-token",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "LINK": {
-  "coin": "LINK",
-  "name": "ChainLink Token",
-  "coinpaprika_id": "link-chainlink",
-  "coingecko_id": "chainlink",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
