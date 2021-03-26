@@ -1493,6 +1493,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "SCA": {
+    "coin": "SCA",
+    "name": "Scalaris",
+    "type": "UTXO",
+    "coingecko_id": "scalaris",
+    "coinpaprika_id": "sca-scalaris",
+    "electrum": [
+      {
+        "url": "electrum1.scalaris.info:10001"
+      },
+      {
+        "url": "electrum2.scalaris.info:10001"
+      },
+      {
+        "url": "electrum3.scalaris.info:10001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.scalaris.info/"
+    ],
+    "active": true,
+    "currently_enabled": false
+  },
   "SUPERNET": {
     "coin": "SUPERNET",
     "name": "Supernet",
