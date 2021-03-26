@@ -541,7 +541,7 @@ QtObject {
                                                 "CAKE/BTC": "BINANCE:CAKEBTC",
                                                 "CAKE/BNB": "BINANCE:CAKEBNB",
                                                 "CAKE/USDT": "BINANCE:CAKEUSDT",
-                                                "CAKE/BUSD": "BINANCE:CAKEBUSD"
+                                                "CAKE/BUSD": "BINANCE:CAKEBUSD",
                                                 "CEL/BTC": "HITBTC:CELBTC",
                                                 "CEL/ETH": "HITBTC:CELETH",
                                                 "CEL/USDT": "BITTREX:CELUSDT",
