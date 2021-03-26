@@ -1,4 +1,51 @@
 {
+  "AAVE-BEP20": {
+      "coin": "AAVE-BEP20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AAVE-ERC20": {
+      "coin": "AAVE-ERC20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ADA-BEP20": {
+      "coin": "ADA-BEP20",
+      "name": "Cardano",
+      "coinpaprika_id": "ada-cardano",
+      "coingecko_id": "cardano",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BNB": {
       "coin": "BNB",
       "name": "Binance Coin",
@@ -94,6 +141,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "ATOM-BEP20": {
+      "coin": "ATOM-BEP20",
+      "name": "Cosmos",
+      "coinpaprika_id": "atom-cosmos",
+      "coingecko_id": "cosmos",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "AXE": {
     "coin": "AXE",
@@ -327,6 +389,21 @@
       "active": false,
       "currently_enabled": false
   },
+  "CAKE": {
+      "coin": "CAKE",
+      "name": "PancakeSwap",
+      "coinpaprika_id": "cake-pancakeswap",
+      "coingecko_id": "pancakeswap-token",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "CCL": {
     "coin": "CCL",
     "name": "CoinCollect",
@@ -366,6 +443,38 @@
     "type": "Smart Chain",
     "active": false,
     "currently_enabled": false
+  },
+  "COMP-BEP20": {
+      "coin": "COMP-BEP20",
+      "name": "Compound",
+      "coinpaprika_id": "comp-compoundd",
+      "coingecko_id": "compound-coin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "COMP-ERC20": {
+      "coin": "COMP-ERC20",
+      "name": "Compound",
+      "coinpaprika_id": "comp-compoundd",
+      "coingecko_id": "compound-coin",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "COQUI": {
     "coin": "COQUI",
@@ -533,6 +642,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "DOT-BEP20": {
+      "coin": "DOT-BEP20",
+      "name": "Polkadot",
+      "coinpaprika_id": "dot-polkadot",
+      "coingecko_id": "polkadot",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "DP": {
     "coin": "DP",
     "name": "DigitalPrice",
@@ -597,6 +721,21 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "EOS-BEP20": {
+      "coin": "EOS-BEP20",
+      "name": "EOS",
+      "coinpaprika_id": "eos-eos",
+      "coingecko_id": "eos",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "FTC": {
     "coin": "FTC",
@@ -1085,6 +1224,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "LINK-BEP20": {
+      "coin": "LINK-BEP20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LINK-ERC20": {
+      "coin": "LINK-ERC20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MGW": {
     "coin": "MGW",
     "name": "MGW",
@@ -1548,6 +1719,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "SNX-BEP20": {
+      "coin": "SNX-BEP20",
+      "name": "Synthetix",
+      "coinpaprika_id": "snx-synthetix-network-token",
+      "coingecko_id": "havven",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "SNX-ERC20": {
+      "coin": "SNX-ERC20",
+      "name": "Synthetix",
+      "coinpaprika_id": "snx-synthetix-network-token",
+      "coingecko_id": "havven",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SPACE": {
     "coin": "SPACE",
     "name": "Spacecoin",
@@ -1670,6 +1873,21 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "XTZ-BEP20": {
+      "coin": "XTZ-BEP20",
+      "name": "Tezos",
+      "coinpaprika_id": "xtz-tezos",
+      "coingecko_id": "tezos",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ZEC": {
     "active": false,
@@ -2010,23 +2228,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "AAVE": {
-  "coin": "AAVE",
-  "name": "Aave Token",
-  "coinpaprika_id": "aave-new",
-  "coingecko_id": "aave",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "AGI": {
   "coin": "AGI",
   "name": "SingularityNET",
@@ -2202,23 +2403,6 @@
   "name": "chiliZ",
   "coinpaprika_id": "chz-chiliz",
   "coingecko_id": "chiliz",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "COMP": {
-  "coin": "COMP",
-  "name": "Compound",
-  "coinpaprika_id": "comp-compoundd",
-  "coingecko_id": "compound-coin",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
@@ -2508,23 +2692,6 @@
   "name": "Bitfinex LEO Token",
   "coinpaprika_id": "leo-leo-token",
   "coingecko_id": "leo-token",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "LINK": {
-  "coin": "LINK",
-  "name": "ChainLink Token",
-  "coinpaprika_id": "link-chainlink",
-  "coingecko_id": "chainlink",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
@@ -2882,23 +3049,6 @@
   "name": "StatusNetwork",
   "coinpaprika_id": "snt-status",
   "coingecko_id": "status",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "SNX": {
-  "coin": "SNX",
-  "name": "Synthetix Network Token",
-  "coinpaprika_id": "snx-synthetix-network-token",
-  "coingecko_id": "havven",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
