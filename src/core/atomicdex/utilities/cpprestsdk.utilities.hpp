@@ -34,4 +34,4 @@ using t_http_request    = web::http::http_request;
 t_http_request create_json_post_request(nlohmann::json&& json_data);
 void handle_exception_pplx_task(pplx::task<void> previous_task);
 
-pplx::task<std::filesystem::path> download_file(t_http_client& client, const std::string& url, std::filesystem::path& output_location);
+pplx::task<std::filesystem::path> download_file(const t_http_client_ptr& client, const std::string& url, const std::filesystem::path& output_location);
