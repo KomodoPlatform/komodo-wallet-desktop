@@ -23,30 +23,31 @@ namespace atomic_dex::github_api
         return api_client->request(http_request);
     }
     
-    std::vector<repository_release> get_repository_releases_from_http_response(const web::http::http_response& resp)
+    // Returns the download url of the release which corresponds to your OS.
+    const auto get_matching_os_dl_url = [](const nlohmann::json& answer)
     {
-        // Returns the download url of the url which corresponds to your OS.
-        const auto get_matching_os_dl_url = [](const nlohmann::json& answer)
-        {
-            for (auto& asset : answer.at("assets"))
-            {
-                std::string asset_download_url = asset.at("browser_download_url");
-
-                if (asset_download_url.find(
+      for (auto& asset : answer.at("assets"))
+      {
+          std::string asset_download_url = asset.at("browser_download_url");
+          
+          if (asset_download_url.find(
 #ifdef __APPLE__
-                        "osx.dmg"
+              "osx.dmg"
 #elif __linux__
-                        "linux.AppImage"
+              "linux.AppImage"
 #elif _WIN32
                         "windows.zip"
 #endif
-                        ) != std::string::npos)
-                {
-                    return asset_download_url;
-                }
-            }
-            throw std::runtime_error("get_repository_releases_from_http_response: Cannot found a proper download url.");
-        };
+          ) != std::string::npos)
+          {
+              return asset_download_url;
+          }
+      }
+      throw std::runtime_error("get_repository_releases_from_http_response: Cannot found a proper download url.");
+    };
+    
+    std::vector<repository_release> get_repository_releases_from_http_response(const web::http::http_response& resp)
+    {
         
         std::vector<repository_release> result{};
         const auto json_answer = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
@@ -68,7 +69,7 @@ namespace atomic_dex::github_api
         const auto json_answer = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
         
         return json_answer.empty() ? repository_release{} :
-                                     repository_release{.url        = json_answer.at(0).at("url"), .assets_url = json_answer.at(0).at("assets_url"),
+                                     repository_release{.url        = get_matching_os_dl_url(json_answer.at(0)), .assets_url = json_answer.at(0).at("assets_url"),
                                                         .name       = json_answer.at(0).at("name"), .tag_name   = json_answer.at(0).at("tag_name")};
     }
     
