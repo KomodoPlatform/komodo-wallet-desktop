@@ -972,12 +972,13 @@ namespace atomic_dex
             .base_coin   = base,
             .rel_coin    = rel,
             .swap_method = swap_method,
-            .volume      = get_base_amount().toStdString(),
+            .volume      = get_volume().toStdString(),
             .price       = get_price().toStdString()};
 
         nlohmann::json batch;
         nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
         ::mm2::api::to_json(preimage_request, req);
+        //SPDLOG_INFO("request: {}", preimage_request.dump(4));
         batch.push_back(preimage_request);
 
         this->set_preimage_busy(true);
@@ -987,6 +988,7 @@ namespace atomic_dex
             {
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
+                //SPDLOG_INFO("preimage answer: {}", answer.dump(4));
                 auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
