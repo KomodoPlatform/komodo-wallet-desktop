@@ -74,6 +74,7 @@ ColumnLayout {
     Item {
         Layout.fillWidth: true
         height: 80
+        visible: false
         FloatingBackground {
             anchors.fill: parent
             anchors.margins: 15
@@ -84,6 +85,7 @@ ColumnLayout {
     }
     Item {
         Layout.fillWidth: true
+        visible: false
         Layout.preferredHeight: 360
         RowLayout {
             anchors.fill: parent
@@ -410,6 +412,7 @@ ColumnLayout {
     Item {
         Layout.fillWidth: true
         Layout.fillHeight: true
+        visible: false
         FloatingBackground {
             anchors.fill: parent
             anchors.margins: 15
