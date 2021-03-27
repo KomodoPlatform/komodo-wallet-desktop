@@ -1,14 +1,16 @@
 #pragma once
 
-#include <atomicdex/utilities/cpprestsdk.utilities.hpp>
+//! Deps
+#include <entt/core/attribute.h>
 
-//!
+//! Project Headers
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/api/mm2/rpc.disable.hpp"
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 
 namespace atomic_dex
 {
-    class mm2_client
+    class ENTT_API mm2_client
     {
         pplx::cancellation_token_source m_token_source;
 

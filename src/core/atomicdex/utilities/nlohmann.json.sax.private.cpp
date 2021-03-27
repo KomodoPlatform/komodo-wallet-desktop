@@ -18,7 +18,7 @@
 
 namespace atomic_dex::utils::details
 {
-    struct my_json_sax : nlohmann::json_sax<nlohmann::json>
+    /*struct my_json_sax : nlohmann::json_sax<nlohmann::json>
     {
         bool binary([[maybe_unused]] binary_t& val) override;
 
@@ -130,5 +130,5 @@ namespace atomic_dex::utils::details
         [[maybe_unused]] std::size_t position, [[maybe_unused]] const std::string& last_token, [[maybe_unused]] const nlohmann::detail::exception& ex)
     {
         return false;
-    }
+    }*/
 } // namespace atomic_dex::utils::details
