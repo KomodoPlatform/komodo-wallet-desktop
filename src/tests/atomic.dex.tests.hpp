@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#pragma once
+
 //! Deps
 #include <antara/gaming/world/world.app.hpp>
 

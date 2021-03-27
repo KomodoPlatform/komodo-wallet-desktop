@@ -97,6 +97,7 @@ target_link_libraries(${PROJECT_NAME}_tests
 set_target_properties(${PROJECT_NAME}_tests
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
+set_target_properties(${PROJECT_NAME}_tests PROPERTIES UNITY_BUILD ON)
 
 # Main executable installation related
 if (LINUX)
