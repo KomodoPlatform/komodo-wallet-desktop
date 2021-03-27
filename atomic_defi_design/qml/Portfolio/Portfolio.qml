@@ -86,7 +86,7 @@ ColumnLayout {
     Item {
         Layout.fillWidth: true
         visible: false
-        Layout.preferredHeight: 360
+        Layout.preferredHeight: 450
         RowLayout {
             anchors.fill: parent
             Item {}
@@ -95,7 +95,7 @@ ColumnLayout {
                 Layout.preferredHeight:370
                 ChartView {
                       width: 700
-                      height: 400
+                      height: 500
                       theme: ChartView.ChartView.ChartThemeLight
                       antialiasing: true
                       legend.visible: false
@@ -104,7 +104,7 @@ ColumnLayout {
                       PieSeries {
                           PieSlice {
                               label: "XRP"; value: 10; color: Qaterial.Colors.yellow500;
-                               labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
+                               labelColor: 'white';labelVisible: false; labelFont: theme.textType.head5
                                borderWidth: 3
                                Behavior on explodeDistanceFactor {
                                    NumberAnimation  {
@@ -112,22 +112,9 @@ ColumnLayout {
                                    }
                                }
 
-                            onHovered: {
-                                if(state){
-                                    exploded = true
-                                    explodeDistanceFactor = 0.2
-                                    borderColor= 'white'
-                                    borderWidth = 3
-                                }else {
-                                    exploded = false
-                                    explodeDistanceFactor = 0.0
-                                    borderColor =  'white'
-                                    borderWidth = 1
-                                }
-                            }
                           }
                           PieSlice { label: "USDT"; value: 15; color: Qaterial.Colors.lightBlue700;
-                              labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
+                              labelColor: 'white';labelVisible: false; labelFont: theme.textType.head5
                               borderWidth: 1
                               Behavior on explodeDistanceFactor {
                                   NumberAnimation  {
@@ -135,21 +122,8 @@ ColumnLayout {
                                   }
                               }
 
-                           onHovered: {
-                               if(state){
-                                   exploded = true
-                                   explodeDistanceFactor = 0.2
-                                   bborderColor= 'white'
-                                   borderWidth = 3
-                               }else {
-                                   exploded = false
-                                   explodeDistanceFactor = 0.0
-                                   borderColor =  'white'
-                                   borderWidth = 1
-                               }
-                           }
                           }
-                          PieSlice { label: "BTC"; value: 20;labelVisible: true; color: Qaterial.Colors.deepOrange700;
+                          PieSlice { label: "BTC"; value: 20;labelVisible: false; color: Qaterial.Colors.deepOrange700;
                               labelColor: 'white';labelFont: theme.textType.head5
                               borderWidth: 1
                               Behavior on explodeDistanceFactor {
@@ -158,22 +132,9 @@ ColumnLayout {
                                   }
                               }
 
-                           onHovered: {
-                               if(state){
-                                   exploded = true
-                                   explodeDistanceFactor = 0.2
-                                   borderColor= 'white'
-                                   borderWidth = 3
-                               }else {
-                                   exploded = false
-                                   explodeDistanceFactor = 0.0
-                                   borderColor =  'white'
-                                   borderWidth = 1
-                               }
-                           }
                           }
                           PieSlice { label: "Komodo"; value: 25.9; color: Qaterial.Colors.teal900;
-                              labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
+                              labelColor: 'white';labelVisible: false; labelFont: theme.textType.head5
                               borderWidth: 1
 
                               Behavior on explodeDistanceFactor {
@@ -182,22 +143,10 @@ ColumnLayout {
                                   }
                               }
 
-                           onHovered: {
-                               if(state){
-                                   exploded = true
-                                   explodeDistanceFactor =0.2
-                                   borderColor= 'white'
-                                   borderWidth = 3
-                               }else {
-                                   exploded = false
-                                   explodeDistanceFactor = 0.0
-                                   borderColor =  'white'
-                                   borderWidth = 1
-                               }
-                           }
+
                           }
                           PieSlice { label: "SMC"; value: 10;  color: Qaterial.Colors.pink600;
-                              labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
+                              labelColor: 'white';labelVisible: false; labelFont: theme.textType.head5
                               borderWidth: 1
                               Behavior on explodeDistanceFactor {
                                   NumberAnimation  {
@@ -205,41 +154,17 @@ ColumnLayout {
                                   }
                               }
 
-                           onHovered: {
-                               if(state){
-                                   exploded = true
-                                   explodeDistanceFactor = 0.2
-                                   borderColor= 'white'
-                                   borderWidth = 3
-                               }else {
-                                   exploded = false
-                                   explodeDistanceFactor = 0.0
-                                   borderColor =  'white'
-                                   borderWidth = 1
-                               }
-                           }}
-                          PieSlice { label: "RVN"; value: 20; color: Qaterial.Colors.deepPurple400;
-                              labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
-                              borderWidth: 1
-                              Behavior on explodeDistanceFactor {
-                                  NumberAnimation  {
-                                      duration: 150
-                                  }
-                              }
-
-                           onHovered: {
-                               if(state){
-                                   exploded = true
-                                   explodeDistanceFactor = 0.2
-                                   borderColor= 'white'
-                                   borderWidth = 3
-                               }else {
-                                   exploded = false
-                                   explodeDistanceFactor = 0.0
-                                   borderColor =  'white'
-                                   borderWidth = 1
-                               }
                            }
+                          PieSlice { label: "RVN"; value: 20; color: Qaterial.Colors.deepPurple400;
+                              labelColor: 'white';labelVisible: false; labelFont: theme.textType.head5
+                              borderWidth: 1
+                              Behavior on explodeDistanceFactor {
+                                  NumberAnimation  {
+                                      duration: 150
+                                  }
+                              }
+
+
                           }
                       }
 
@@ -247,7 +172,7 @@ ColumnLayout {
                           id: pieSeries
                           PieSlice {
                               label: "XRP"; value: 10; color: Qaterial.Colors.yellow500;
-                               labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
+                               labelColor: 'white'; labelFont: theme.textType.head5
                                borderWidth: 3
                                Behavior on explodeDistanceFactor {
                                    NumberAnimation  {
@@ -260,9 +185,10 @@ ColumnLayout {
                                     exploded = true
                                     explodeDistanceFactor = 0.2
                                     borderColor= 'white'
-                                    borderWidth = 3
+                                    labelVisible= true;
                                 }else {
                                     exploded = false
+                                    labelVisible= false
                                     explodeDistanceFactor = 0.0
                                     borderColor =  'white'
                                     borderWidth = 1
@@ -270,29 +196,6 @@ ColumnLayout {
                             }
                           }
                           PieSlice { label: "USDT"; value: 15; color: Qaterial.Colors.lightBlue700;
-                              labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
-                              borderWidth: 1
-                              Behavior on explodeDistanceFactor {
-                                  NumberAnimation  {
-                                      duration: 150
-                                  }
-                              }
-
-                           onHovered: {
-                               if(state){
-                                   exploded = true
-                                   explodeDistanceFactor = 0.2
-                                   borderColor= 'white'
-                                   borderWidth = 3
-                               }else {
-                                   exploded = false
-                                   explodeDistanceFactor = 0.0
-                                   borderColor =  'white'
-                                   borderWidth = 1
-                               }
-                           }
-                          }
-                          PieSlice { label: "BTC"; value: 20;labelVisible: true; color: Qaterial.Colors.deepOrange700;
                               labelColor: 'white';labelFont: theme.textType.head5
                               borderWidth: 1
                               Behavior on explodeDistanceFactor {
@@ -306,20 +209,19 @@ ColumnLayout {
                                    exploded = true
                                    explodeDistanceFactor = 0.2
                                    borderColor= 'white'
-                                   borderWidth = 3
+                                   labelVisible= true;
                                }else {
                                    exploded = false
+                                   labelVisible= false
                                    explodeDistanceFactor = 0.0
                                    borderColor =  'white'
                                    borderWidth = 1
                                }
                            }
                           }
-                          PieSlice { label: "26$"; value: 25.9; color: Qaterial.Colors.teal500;
-                              labelColor: 'white';labelVisible: true; labelFont: Qt.font({family:'lato', pixelSize: 28})
+                          PieSlice { label: "BTC"; value: 20;color: Qaterial.Colors.deepOrange700;
+                              labelColor: 'white';labelFont: theme.textType.head5
                               borderWidth: 1
-                              labelArmLengthFactor: 0.5
-                              //labelPosition: PieSlice.LabelInsideTangential
                               Behavior on explodeDistanceFactor {
                                   NumberAnimation  {
                                       duration: 150
@@ -329,19 +231,43 @@ ColumnLayout {
                            onHovered: {
                                if(state){
                                    exploded = true
-                                   explodeDistanceFactor =0.1
+                                   explodeDistanceFactor = 0.2
                                    borderColor= 'white'
-                                   borderWidth = 3
+                                   labelVisible= true;
                                }else {
                                    exploded = false
+                                   labelVisible= false
                                    explodeDistanceFactor = 0.0
+                                   borderColor =  'white'
+                                   borderWidth = 1
+                               }
+                           }
+                          }
+                          PieSlice { label: "KMD"; value: 25.9; color: Qaterial.Colors.teal500;
+                              labelColor: 'white'; labelFont: Qt.font({family:'lato', pixelSize: 28})
+                              borderWidth: 1
+                              Behavior on explodeDistanceFactor {
+                                  NumberAnimation  {
+                                      duration: 150
+                                  }
+                              }
+
+                           onHovered: {
+                               if(state){
+                                   exploded = true
+                                   borderColor= 'white'
+                                   borderWidth = 3
+                                   labelVisible= true;
+                               }else {
+                                   exploded = false
+                                   labelVisible= false
                                    borderColor =  'white'
                                    borderWidth = 1
                                }
                            }
                           }
                           PieSlice { label: "SMC"; value: 10;  color: Qaterial.Colors.pink600;
-                              labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
+                              labelColor: 'white'; labelFont: theme.textType.head5
                               borderWidth: 1
                               Behavior on explodeDistanceFactor {
                                   NumberAnimation  {
@@ -354,16 +280,17 @@ ColumnLayout {
                                    exploded = true
                                    explodeDistanceFactor = 0.2
                                    borderColor= 'white'
-                                   borderWidth = 3
+                                   labelVisible= true;
                                }else {
                                    exploded = false
+                                   labelVisible= false
                                    explodeDistanceFactor = 0.0
                                    borderColor =  'white'
                                    borderWidth = 1
                                }
                            }}
                           PieSlice { label: "RVN"; value: 20; color: Qaterial.Colors.deepPurple400;
-                              labelColor: 'white';labelVisible: true; labelFont: theme.textType.head5
+                              labelColor: 'white'; labelFont: theme.textType.head5
                               borderWidth: 1
                               Behavior on explodeDistanceFactor {
                                   NumberAnimation  {
@@ -376,9 +303,10 @@ ColumnLayout {
                                    exploded = true
                                    explodeDistanceFactor = 0.2
                                    borderColor= 'white'
-                                   borderWidth = 3
+                                   labelVisible= true;
                                }else {
                                    exploded = false
+                                   labelVisible= false
                                    explodeDistanceFactor = 0.0
                                    borderColor =  'white'
                                    borderWidth = 1
@@ -390,18 +318,37 @@ ColumnLayout {
                       Rectangle {
                           anchors.centerIn: parent
                           color: theme.backgroundColor
-                          width: 80
-                          height: 80
+                          width: 290
+                          height: 290
                           radius: 300
                           border.width: 2
                           border.color: 'white'
-                          Label {
+                          Column {
                               anchors.centerIn: parent
-                              text: "10$"
-                              font.family: 'Lato'
-                              font.pixelSize: 20
-                              color: 'white'
+                              spacing: 5
+                              DefaultText {
+                                  anchors.horizontalCenter: parent.horizontalCenter
+                                  text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
+                                  font: theme.textType.head4
+                                  color: Qt.lighter(Style.colorWhite4, currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                                  privacy: true
+                                  Component.onCompleted: {
+                                      font.family = 'Latof'
+                                  }
+                              }
+                              DefaultText {
+                                  anchors.horizontalCenter: parent.horizontalCenter
+                                  text_value: "325.551 DOGE"
+                                  font: theme.textType.body1
+                                  color: Qt.lighter(Style.colorWhite4, 0.6)
+                                  privacy: true
+                                  Component.onCompleted: {
+                                      font.family = 'Latof'
+                                  }
+                              }
                           }
+
+
                       }
                 }
             }
