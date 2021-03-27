@@ -37,7 +37,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    exporter_service::update() 
+    exporter_service::update()
     {
     }
 } // namespace atomic_dex
@@ -111,8 +111,6 @@ namespace atomic_dex
             }
         };
 
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), mm2.get_cancellation_token())
-            .then(answer_functor)
-            .then(&handle_exception_pplx_task);
+        mm2.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
     }
 } // namespace atomic_dex

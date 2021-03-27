@@ -596,7 +596,7 @@ namespace atomic_dex
                 }
                 this->set_fetching_priv_key_busy(false);
             };
-            ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none()).then(answer_functor);
+            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor);
         }
         return {QString::fromStdString(seed), QString::fromStdString(::mm2::api::get_rpc_password())};
     }

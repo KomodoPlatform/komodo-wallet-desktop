@@ -99,13 +99,14 @@ namespace atomic_dex
             ::mm2::api::to_json(setprice_json, request);
             batch.push_back(setprice_json);
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-            ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), pplx::cancellation_token::none())
+            mm2.get_mm2_client()
+                .async_rpc_batch_standalone(batch)
                 .then([this]([[maybe_unused]] web::http::http_response resp) {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
                     if (resp.status_code() == 200)
                     {
-                        //auto& mm2_system = m_system_manager.get_system<mm2_service>();
-                        //mm2_system.batch_fetch_orders_and_swap();
+                        // auto& mm2_system = m_system_manager.get_system<mm2_service>();
+                        // mm2_system.batch_fetch_orders_and_swap();
                     }
                     else
                     {

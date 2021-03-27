@@ -209,22 +209,20 @@ namespace atomic_dex
         };
 
         //! Async call
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
-            .then(answer_functor)
-            .then([this]([[maybe_unused]] pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait();
-                }
-                catch (const std::exception& e)
-                {
-                    SPDLOG_ERROR("pplx task error: {}", e.what());
-                    auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
-                    this->set_buy_sell_last_rpc_data(error_json);
-                    this->set_buy_sell_rpc_busy(false);
-                    this->clear_forms();
-                }
-            });
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then([this]([[maybe_unused]] pplx::task<void> previous_task) {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("pplx task error: {}", e.what());
+                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                this->set_buy_sell_last_rpc_data(error_json);
+                this->set_buy_sell_rpc_busy(false);
+                this->clear_forms();
+            }
+        });
     }
 
     void
@@ -329,22 +327,20 @@ namespace atomic_dex
         };
 
         //! Async call
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
-            .then(answer_functor)
-            .then([this]([[maybe_unused]] pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait();
-                }
-                catch (const std::exception& e)
-                {
-                    SPDLOG_ERROR("pplx task error: {}", e.what());
-                    auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
-                    this->set_buy_sell_last_rpc_data(error_json);
-                    this->set_buy_sell_rpc_busy(false);
-                    this->clear_forms();
-                }
-            });
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then([this]([[maybe_unused]] pplx::task<void> previous_task) {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("pplx task error: {}", e.what());
+                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                this->set_buy_sell_last_rpc_data(error_json);
+                this->set_buy_sell_rpc_busy(false);
+                this->clear_forms();
+            }
+        });
     }
 } // namespace atomic_dex
 
@@ -1020,9 +1016,7 @@ namespace atomic_dex
             }
             this->set_preimage_busy(false);
         };
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), mm2.get_cancellation_token())
-            .then(answer_functor)
-            .then(&handle_exception_pplx_task);
+        mm2.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
 
         //! (send) BCH <-> ETH (receive)
         /*

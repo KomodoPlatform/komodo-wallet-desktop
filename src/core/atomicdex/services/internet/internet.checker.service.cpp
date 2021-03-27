@@ -177,7 +177,7 @@ namespace atomic_dex
                 t_orderbook_request req_orderbook{.base = g_primary_dex_coin, .rel = g_second_primary_dex_coin};
                 ::mm2::api::to_json(current_request, req_orderbook);
                 batch.push_back(current_request);
-                auto async_answer = ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), mm2.get_cancellation_token());
+                auto async_answer = mm2.get_mm2_client().async_rpc_batch_standalone(batch);
                 generic_treat_answer(async_answer, "http://127.0.0.1:7783", &internet_service_checker::is_mm2_endpoint_alive);
             }
             else

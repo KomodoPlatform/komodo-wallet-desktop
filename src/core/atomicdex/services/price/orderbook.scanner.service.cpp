@@ -75,7 +75,7 @@ namespace atomic_dex
                     this->dispatcher_.trigger<process_orderbook_finished>(false);
                 };
 
-                ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+                mm2_system.get_mm2_client().async_rpc_batch_standalone(batch)
                     .then(answer_functor)
                     .then([this](pplx::task<void> previous_task) {
                         try
