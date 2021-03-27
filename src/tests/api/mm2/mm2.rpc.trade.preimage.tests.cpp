@@ -343,7 +343,7 @@ SCENARIO("mm2::api::preimage scenario")
     //! Generic resp functor that will be used in every tests
     auto generic_resp_process = [&mm2, &batch]() {
         //! Process the actual request
-        const auto resp = ::mm2::api::async_rpc_batch_standalone(batch, mm2.get_mm2_client(), mm2.get_cancellation_token()).get();
+        const auto resp = mm2.get_mm2_client().async_rpc_batch_standalone(batch).get();
 
         //! Retrieve the body
         std::string body = TO_STD_STR(resp.extract_string(true).get());
