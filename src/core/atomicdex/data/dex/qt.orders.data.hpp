@@ -3,6 +3,12 @@
 #include <QJsonArray>
 #include <QString>
 
+//! STD
+#include <optional>
+
+//! deps
+#include <nlohmann/json.hpp>
+
 namespace mm2::api
 {
     struct order_swaps_data
@@ -75,6 +81,10 @@ namespace mm2::api
         QStringList success_events;
 
         bool is_swap_active{false};
+
+        //! Only available for maker order
+        std::optional<QString>        min_volume{std::nullopt};
+        std::optional<nlohmann::json> conf_settings{std::nullopt};
     };
 } // namespace mm2::api
 

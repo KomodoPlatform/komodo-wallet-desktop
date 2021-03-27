@@ -27,7 +27,7 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::update() 
+    wallet_page::update()
     {
     }
 } // namespace atomic_dex
@@ -36,14 +36,14 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
-    wallet_page::get_current_ticker() const 
+    wallet_page::get_current_ticker() const
     {
         const auto& mm2_system = m_system_manager.get_system<mm2_service>();
         return QString::fromStdString(mm2_system.get_current_ticker());
     }
 
     void
-    wallet_page::set_current_ticker(const QString& ticker) 
+    wallet_page::set_current_ticker(const QString& ticker)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.set_current_ticker(ticker.toStdString()))
@@ -57,13 +57,13 @@ namespace atomic_dex
     }
 
     bool
-    wallet_page::is_rpc_claiming_busy() const 
+    wallet_page::is_rpc_claiming_busy() const
     {
         return m_is_claiming_busy.load();
     }
 
     void
-    wallet_page::set_claiming_is_busy(bool status) 
+    wallet_page::set_claiming_is_busy(bool status)
     {
         if (m_is_claiming_busy != status)
         {
@@ -73,13 +73,13 @@ namespace atomic_dex
     }
 
     bool
-    wallet_page::is_claiming_faucet_busy() const 
+    wallet_page::is_claiming_faucet_busy() const
     {
         return m_is_claiming_faucet_busy.load();
     }
 
     void
-    wallet_page::set_claiming_faucet_is_busy(bool status) 
+    wallet_page::set_claiming_faucet_is_busy(bool status)
     {
         if (m_is_claiming_faucet_busy != status)
         {
@@ -89,7 +89,7 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::set_send_busy(bool status) 
+    wallet_page::set_send_busy(bool status)
     {
         if (m_is_send_busy != status)
         {
@@ -99,19 +99,19 @@ namespace atomic_dex
     }
 
     bool
-    wallet_page::is_send_busy() const 
+    wallet_page::is_send_busy() const
     {
         return m_is_send_busy.load();
     }
 
     bool
-    wallet_page::is_broadcast_busy() const 
+    wallet_page::is_broadcast_busy() const
     {
         return m_is_broadcast_busy.load();
     }
 
     void
-    wallet_page::set_broadcast_busy(bool status) 
+    wallet_page::set_broadcast_busy(bool status)
     {
         if (m_is_broadcast_busy != status)
         {
@@ -121,13 +121,13 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::wallet_page::is_tx_fetching_busy() const 
+    atomic_dex::wallet_page::is_tx_fetching_busy() const
     {
         return m_tx_fetching_busy;
     }
 
     void
-    atomic_dex::wallet_page::set_tx_fetching_busy(bool status) 
+    atomic_dex::wallet_page::set_tx_fetching_busy(bool status)
     {
         if (m_tx_fetching_busy != status)
         {
@@ -137,7 +137,7 @@ namespace atomic_dex
     }
 
     QVariant
-    wallet_page::get_ticker_infos() const 
+    wallet_page::get_ticker_infos() const
     {
         // SPDLOG_DEBUG("get_ticker_infos");
         QJsonObject obj{
@@ -196,13 +196,13 @@ namespace atomic_dex
     }
 
     QVariant
-    wallet_page::get_rpc_claiming_data() const 
+    wallet_page::get_rpc_claiming_data() const
     {
         return m_claiming_rpc_result.get();
     }
 
     void
-    wallet_page::set_rpc_claiming_data(QVariant rpc_data) 
+    wallet_page::set_rpc_claiming_data(QVariant rpc_data)
     {
         m_claiming_rpc_result = rpc_data.toJsonObject();
         emit claimingRpcDataChanged();
@@ -210,46 +210,46 @@ namespace atomic_dex
 
 
     QVariant
-    wallet_page::get_rpc_claiming_faucet_data() const 
+    wallet_page::get_rpc_claiming_faucet_data() const
     {
         return m_claiming_rpc_faucet_result.get();
     }
 
     void
-    wallet_page::set_rpc_claiming_faucet_data(QVariant rpc_data) 
+    wallet_page::set_rpc_claiming_faucet_data(QVariant rpc_data)
     {
         m_claiming_rpc_faucet_result = rpc_data.toJsonObject();
         emit claimingFaucetRpcDataChanged();
     }
 
     QString
-    wallet_page::get_rpc_broadcast_data() const 
+    wallet_page::get_rpc_broadcast_data() const
     {
         return m_broadcast_rpc_result.get();
     }
 
     void
-    wallet_page::set_rpc_broadcast_data(QString rpc_data) 
+    wallet_page::set_rpc_broadcast_data(QString rpc_data)
     {
         m_broadcast_rpc_result = rpc_data;
         emit broadcastDataChanged();
     }
 
     QVariant
-    wallet_page::get_rpc_send_data() const 
+    wallet_page::get_rpc_send_data() const
     {
         return m_send_rpc_result.get();
     }
 
     void
-    wallet_page::set_rpc_send_data(QVariant rpc_data) 
+    wallet_page::set_rpc_send_data(QVariant rpc_data)
     {
         m_send_rpc_result = rpc_data.toJsonObject();
         emit sendDataChanged();
     }
 
     bool
-    wallet_page::has_auth_succeeded() const 
+    wallet_page::has_auth_succeeded() const
     {
         return m_auth_succeeded;
     }
@@ -259,7 +259,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    wallet_page::refresh_ticker_infos() 
+    wallet_page::refresh_ticker_infos()
     {
         // SPDLOG_DEBUG("refresh ticker infos");
         emit tickerInfosChanged();
@@ -361,13 +361,11 @@ namespace atomic_dex
         };
 
         //! Process
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
-            .then(answer_functor)
-            .then(&handle_exception_pplx_task);
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void
-    wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) 
+    wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
     {
 #if defined(__APPLE__) || defined(WIN32)
         QSettings& settings = this->entity_registry_.ctx<QSettings>();
@@ -440,9 +438,7 @@ namespace atomic_dex
             this->set_broadcast_busy(false);
         };
 
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
-            .then(answer_functor)
-            .then(&handle_exception_pplx_task);
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void
@@ -458,7 +454,8 @@ namespace atomic_dex
         batch.push_back(json_data);
         json_data = ::mm2::api::template_request("kmd_rewards_info");
         batch.push_back(json_data);
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+        mm2_system.get_mm2_client()
+            .async_rpc_batch_standalone(batch)
             .then([this](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 // SPDLOG_DEBUG("resp claiming: {}", body);
@@ -504,7 +501,7 @@ namespace atomic_dex
     }
 
     transactions_model*
-    wallet_page::get_transactions_mdl() const 
+    wallet_page::get_transactions_mdl() const
     {
         return m_transactions_mdl;
     }

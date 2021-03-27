@@ -21,7 +21,6 @@
 
 //! Deps
 #include <antara/gaming/ecs/system.manager.hpp>
-#include <meta/detection/detection.hpp>
 #include <nlohmann/json.hpp>
 
 //! Project Headers
@@ -42,67 +41,9 @@ namespace mm2::api
     inline std::unique_ptr<web::http::client::http_client> g_qtum_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(::atomic_dex::g_qtum_infos_endpoint))};
 
-    pplx::task<web::http::http_response>
-                   async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client, pplx::cancellation_token token);
     nlohmann::json basic_batch_answer(const web::http::http_response& resp);
 
     std::string rpc_version();
-
-    struct disable_coin_request
-    {
-        std::string coin;
-    };
-
-    void to_json(nlohmann::json& j, const disable_coin_request& req);
-
-    struct disable_coin_answer_success
-    {
-        std::string coin;
-    };
-
-    void from_json(const nlohmann::json& j, disable_coin_answer_success& resp);
-
-    struct disable_coin_answer
-    {
-        std::optional<std::string>                 error;
-        std::optional<disable_coin_answer_success> result;
-        int                                        rpc_result_code;
-        std::string                                raw_result;
-    };
-
-    void from_json(const nlohmann::json& j, disable_coin_answer& resp);
-
-    disable_coin_answer rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
-    struct recover_funds_of_swap_request
-    {
-        std::string swap_uuid;
-    };
-
-    void to_json(nlohmann::json& j, const recover_funds_of_swap_request& cfg);
-
-    struct recover_funds_of_swap_answer_success
-    {
-        std::string action;
-        std::string coin;
-        std::string tx_hash;
-        std::string tx_hex;
-    };
-
-    void from_json(const nlohmann::json& j, recover_funds_of_swap_answer_success& answer);
-
-    struct recover_funds_of_swap_answer
-    {
-        std::optional<std::string>                          error;
-        std::optional<recover_funds_of_swap_answer_success> result;
-        int                                                 rpc_result_code;
-        std::string                                         raw_result;
-    };
-
-    void from_json(const nlohmann::json& j, recover_funds_of_swap_answer& answer);
-
-    recover_funds_of_swap_answer rpc_recover_funds(recover_funds_of_swap_request&& request, std::shared_ptr<t_http_client> mm2_client);
-
 
     struct trade_fee_request
     {
@@ -300,22 +241,6 @@ namespace mm2::api
 
     send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
-    struct setprice_request
-    {
-        std::string                base;
-        std::string                rel;
-        std::string                price;
-        std::string                volume;
-        bool                       max{false};
-        bool                       cancel_previous{false};
-        std::optional<bool>        base_nota;
-        std::optional<std::size_t> base_confs;
-        std::optional<bool>        rel_nota;
-        std::optional<std::size_t> rel_confs;
-    };
-
-    void to_json(nlohmann::json& j, const setprice_request& request);
-
     struct cancel_order_request
     {
         std::string uuid;
@@ -464,21 +389,12 @@ namespace mm2::api
     // kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
     kmd_rewards_info_answer process_kmd_rewards_answer(nlohmann::json result);
 
-    template <typename T>
-    using have_error_field = decltype(std::declval<T&>().error.has_value());
-
-    template <typename RpcReturnType>
-    RpcReturnType rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) ;
-
     template <typename RpcReturnType>
     RpcReturnType rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) ;
 
     pplx::task<web::http::http_response> async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url);
 
     nlohmann::json template_request(std::string method_name) ;
-
-    template <typename TRequest, typename TAnswer>
-    static TAnswer process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> http_mm2_client);
 
     void               set_rpc_password(std::string rpc_password) ;
     const std::string& get_rpc_password() ;
@@ -488,12 +404,10 @@ namespace mm2::api
 namespace atomic_dex
 {
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
-    using t_setprice_request        = ::mm2::api::setprice_request;
     using t_withdraw_request        = ::mm2::api::withdraw_request;
     using t_withdraw_fees           = ::mm2::api::withdraw_fees;
     using t_withdraw_answer         = ::mm2::api::withdraw_answer;
     using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
-    using t_disable_coin_request    = ::mm2::api::disable_coin_request;
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;
     using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;

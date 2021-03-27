@@ -247,16 +247,16 @@ namespace atomic_dex
     void
     orders_proxy_model::set_coin_filter(const QString& to_filter)
     {
-        SPDLOG_INFO("filter pattern: {}", to_filter.toStdString());
+        SPDLOG_INFO("filter pattern: {}, is_history: {}", to_filter.toStdString(), m_is_history);
         this->setFilterFixedString(to_filter);
         if (this->m_is_history)
         {
             this->set_apply_filtering(true);
         }
-        else
-        {
-            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
-        }
+        //else
+        //{
+            //emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        //}
     }
 
     void

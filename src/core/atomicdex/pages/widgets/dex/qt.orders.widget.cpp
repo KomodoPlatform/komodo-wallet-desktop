@@ -28,11 +28,11 @@
 //! Constructor / Destructor
 namespace atomic_dex
 {
-    qt_orders_widget::qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent)  : QObject(parent), m_system_mgr(system_manager)
+    qt_orders_widget::qt_orders_widget(ag::ecs::system_manager& system_manager, QObject* parent) : QObject(parent), m_system_mgr(system_manager)
     {
         SPDLOG_INFO("qt_orders_widget created");
     }
-    qt_orders_widget::~qt_orders_widget()  { SPDLOG_INFO("qt_orders widget destroyed"); }
+    qt_orders_widget::~qt_orders_widget() { SPDLOG_INFO("qt_orders widget destroyed"); }
 } // namespace atomic_dex
 
 //! Private member functions
@@ -60,7 +60,8 @@ namespace atomic_dex
 
         batch.push_back(cancel_request);
         auto& mm2_system = m_system_mgr.get_system<mm2_service>();
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none())
+        mm2_system.get_mm2_client()
+            .async_rpc_batch_standalone(batch)
             .then([this]([[maybe_unused]] web::http::http_response resp) {
                 auto& mm2_system = m_system_mgr.get_system<mm2_service>();
                 mm2_system.batch_fetch_orders_and_swap();
@@ -88,7 +89,8 @@ namespace atomic_dex
         }
 
         auto& mm2_system = m_system_mgr.get_system<mm2_service>();
-        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none())
+        mm2_system.get_mm2_client()
+            .async_rpc_batch_standalone(batch)
             .then([this]([[maybe_unused]] web::http::http_response resp) {
                 auto& mm2_system = m_system_mgr.get_system<mm2_service>();
                 mm2_system.batch_fetch_orders_and_swap();

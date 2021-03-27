@@ -112,6 +112,9 @@ namespace atomic_dex
         explicit application(QObject* pParent = nullptr) ;
         ~application()  final = default;
 
+        //! Post constructor
+        void post_handle_settings();
+
         //! entt::dispatcher events
         void on_ticker_balance_updated_event(const ticker_balance_updated&) ;
         void on_fiat_rate_updated(const fiat_rate_updated&) ;
