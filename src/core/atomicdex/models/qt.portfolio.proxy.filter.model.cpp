@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 
 namespace atomic_dex
@@ -133,7 +133,7 @@ namespace atomic_dex
     }
 
     void
-    portfolio_proxy_model::is_a_market_selector(bool is_market_selector) 
+    portfolio_proxy_model::is_a_market_selector(bool is_market_selector)
     {
         this->am_i_a_market_selector = is_market_selector;
     }
@@ -171,13 +171,13 @@ namespace atomic_dex
     }
 
     bool
-    portfolio_proxy_model::get_with_balance() const 
+    portfolio_proxy_model::get_with_balance() const
     {
         return m_with_balance;
     }
 
     void
-    portfolio_proxy_model::set_with_balance(bool value) 
+    portfolio_proxy_model::set_with_balance(bool value)
     {
         if (value != m_with_balance)
         {
@@ -187,8 +187,24 @@ namespace atomic_dex
     }
 
     void
-    portfolio_proxy_model::set_with_fiat_balance(bool value) 
+    portfolio_proxy_model::set_with_fiat_balance(bool value)
     {
         m_with_fiat_balance = value;
+    }
+
+    QVariantMap
+    atomic_dex::portfolio_proxy_model::get(int row)
+    {
+        QHash<int, QByteArray>         names = roleNames();
+        QHashIterator<int, QByteArray> i(names);
+        QVariantMap                    res;
+        while (i.hasNext())
+        {
+            i.next();
+            QModelIndex idx  = index(row, 0);
+            QVariant    data = idx.data(i.key());
+            res[i.value()]   = data;
+        }
+        return res;
     }
 } // namespace atomic_dex

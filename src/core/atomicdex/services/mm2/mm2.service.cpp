@@ -413,7 +413,7 @@ namespace atomic_dex
                     SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
                 }
             })
-            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx"); });
+            .then([this, batch = batch_array](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch); });
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -600,7 +600,7 @@ namespace atomic_dex
                         //! Emit event here
                     }
                 })
-                .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_enable_coins"); });
+                .then([this, batch_array](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch_array); });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
@@ -739,7 +739,7 @@ namespace atomic_dex
                         }
                     }
                 })
-            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
+            .then([this, batch](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_process_fees_and_fetch_current_orderbook_thread", batch); });
     }
 
     void
@@ -780,7 +780,7 @@ namespace atomic_dex
                     }
                 }
             })
-            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
+            .then([this, batch](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_process_fees_and_fetch_current_orderbook_thread", batch); });
     }
 
     void
@@ -867,7 +867,7 @@ namespace atomic_dex
                 std::this_thread::sleep_for(1s);
             }
 
-            //m_mm2_client.connect_client();
+            // m_mm2_client.connect_client();
             fs::remove(mm2_cfg_path);
             SPDLOG_INFO("mm2 is initialized");
             dispatcher_.trigger<mm2_initialized>();
@@ -1035,8 +1035,9 @@ namespace atomic_dex
             this->dispatcher_.trigger<process_swaps_and_orders_finished>(after_manual_reset);
         };
 
-        m_mm2_client.async_rpc_batch_standalone(batch).then(answer_functor).then([this](pplx::task<void> previous_task) {
-            this->handle_exception_pplx_task(previous_task, "batch_fetch_orders_and_swap");
+        // SPDLOG_INFO("batch request:{}", batch.dump(4));
+        m_mm2_client.async_rpc_batch_standalone(batch).then(answer_functor).then([this, batch](pplx::task<void> previous_task) {
+            this->handle_exception_pplx_task(previous_task, "batch_fetch_orders_and_swap", batch);
         });
     }
 
@@ -1145,7 +1146,7 @@ namespace atomic_dex
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
-            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task); });
+            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {}); });
     }
 
     void
@@ -1646,7 +1647,7 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from)
+    mm2_service::handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from, nlohmann::json request)
     {
         try
         {
@@ -1654,15 +1655,11 @@ namespace atomic_dex
         }
         catch (const std::exception& e)
         {
-            if (!from.empty())
-            {
-                SPDLOG_ERROR("pplx task error: {} from: {}", e.what(), from);
-                this->dispatcher_.trigger<batch_failed>(from, e.what());
-            }
-            else
-            {
-                SPDLOG_ERROR("pplx task error: {}", e.what());
-            }
+            for (auto&& cur : request)
+                cur["userpass"] = "";
+            SPDLOG_ERROR("pplx task error: {} from: {}, request: {}", e.what(), from, request.dump(4));
+            this->dispatcher_.trigger<batch_failed>(from, e.what());
+
 #if defined(linux) || defined(__APPLE__)
             SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
 #endif

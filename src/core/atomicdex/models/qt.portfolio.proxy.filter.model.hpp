@@ -52,6 +52,7 @@ namespace atomic_dex
         Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
         Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
+        Q_INVOKABLE QVariantMap get(int row);
 
         // QML API Properties
       private:
