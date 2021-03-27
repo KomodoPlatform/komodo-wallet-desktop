@@ -4,154 +4,154 @@
 <context>
     <name>AddCustomCoinModal</name>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="84"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="86"/>
         <source>Choose the asset type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="89"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="91"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="97"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="99"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="103"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="164"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="223"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="105"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="166"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="225"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="115"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="132"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="117"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="134"/>
         <source>Enter the contract address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="115"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="117"/>
         <source>Choose the asset ticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="122"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="124"/>
         <source>Ticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="123"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="125"/>
         <source>Enter the ticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="131"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="133"/>
         <source>Contract Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="140"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="142"/>
         <source>Get the contract address from Etherscan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="141"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="143"/>
         <source>Get the contract address from QTUM Insight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="158"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="217"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="288"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="383"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="160"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="219"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="290"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="385"/>
         <source>Previous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="175"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="177"/>
         <source>Choose the asset logo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="179"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="181"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="191"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="193"/>
         <source>Please choose the asset logo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="233"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="235"/>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="238"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="240"/>
         <source>All configuration fields will be fetched using the contract address you provided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="246"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="248"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="247"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="249"/>
         <source>Enter the name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="253"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="255"/>
         <source>Coingecko ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="254"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="256"/>
         <source>Enter the Coingecko ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="260"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="262"/>
         <source>Get the Coingecko ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="277"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="279"/>
         <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="294"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="310"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="296"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="312"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="316"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="318"/>
         <source>WARNING: Application will restart immidiately to apply the changes!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="340"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="342"/>
         <source>Asset not found, please go back and make sure Contract Address is correct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="359"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="361"/>
         <source>Config Fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="372"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="374"/>
         <source>Fetched Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="389"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="391"/>
         <source>Submit &amp; Restart</source>
         <translation type="unfinished"></translation>
     </message>
@@ -737,54 +737,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="185"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="147"/>
+        <source>Total %1 fees: %2 (%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="191"/>
         <source>Security configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="192"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="198"/>
         <source>dPoW protected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="193"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="199"/>
         <source>%1 confirmations for incoming %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="199"/>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="232"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="205"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="238"/>
         <source>Read more about dPoW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="209"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="215"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="226"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="232"/>
         <source>Enable Komodo dPoW security</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="250"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="256"/>
         <source>Required Confirmations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="286"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="292"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="299"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="305"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="308"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="314"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1324,8 +1329,7 @@
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="431"/>
-        <source>Not enough balance for fees: %1</source>
-        <comment>AMT TICKER</comment>
+        <source>Not enough balance for total fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1797,32 +1801,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="207"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="170"/>
+        <source>Batch %1 failed. Reason: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="222"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="212"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="227"/>
         <source>Restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="217"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="232"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="224"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="239"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="241"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="256"/>
         <source>There isn&apos;t any notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="364"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="379"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1899,82 +1908,82 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="76"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
         <source>Maker Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="76"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
         <source>Taker Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="85"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="84"/>
         <source>Refund State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="87"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="86"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="95"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="94"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="103"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="102"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="113"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
         <source>Maker Payment Sent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="113"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
         <source>Maker Payment Spent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="123"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
         <source>Taker Payment Spent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="123"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
         <source>Taker Payment Sent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="132"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="131"/>
         <source>Error ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="140"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="139"/>
         <source>Error Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="167"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="166"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="177"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="176"/>
         <source>Cancel Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="186"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="185"/>
         <source>Recover Funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="191"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="190"/>
         <source>View on Explorer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2172,27 +2181,37 @@
 <context>
     <name>ProView</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="224"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="62"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="71"/>
+        <source>Placed the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="271"/>
         <source>Exchange Rates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="230"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="277"/>
         <source>Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="236"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="283"/>
         <source>history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="498"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="545"/>
         <source>Order Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="547"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="594"/>
         <source>Start Swap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2816,9 +2835,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Sidebar/SidebarCenter.qml" line="73"/>
-        <location filename="../../qml/Sidebar/SidebarCenter.qml" line="77"/>
+        <location filename="../../qml/Sidebar/SidebarCenter.qml" line="74"/>
+        <location filename="../../qml/Sidebar/SidebarCenter.qml" line="78"/>
         <source>Fiat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Sidebar/SidebarCenter.qml" line="84"/>
+        <source>Coming soon !</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3015,62 +3039,24 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     </message>
 </context>
 <context>
-    <name>Trade</name>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="200"/>
-        <source>Failed to place the order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="209"/>
-        <source>Placed the order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="408"/>
-        <source>Exchange Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="414"/>
-        <source>Orders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="420"/>
-        <source>history</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="682"/>
-        <source>Order Selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="731"/>
-        <source>Start Swap</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>TradeViewHeader</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="38"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="45"/>
         <source>Trading Mode - Multi Ordering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="38"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="45"/>
         <source>Trading Mode - Single Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="47"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="54"/>
         <source>Pro-Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="52"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="65"/>
         <source>Starter</source>
         <translation type="unfinished"></translation>
     </message>
