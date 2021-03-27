@@ -3,17 +3,17 @@ include(DEX_NEW_LIB)
 # Core target
 DEX_NEW_LIB(core INTERFACE
         INTERFACE_DEPS
-            cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
-            Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
-            unofficial-btc::bitcoin komodo-date::date komodo-taskflow::taskflow
-            Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
+        cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
+        Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
+        unofficial-btc::bitcoin komodo-date::date komodo-taskflow::taskflow
+        Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
         INTERFACE_DEFS
-            $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
-            $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD> DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
-            DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
-            DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
+        $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
+        $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD> DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
+        DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
+        DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
         INTERFACE_DEFS
-            ENTT_API_EXPORT)
+        ENTT_API_EXPORT)
 target_precompile_headers(${PROJECT_NAME}_core INTERFACE core/atomicdex/pch.hpp)
 if (APPLE)
     set_source_files_properties(core/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
@@ -60,6 +60,11 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE ENTT_API_IMPORT)
 set_target_properties(${PROJECT_NAME}
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
+
+set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+if (APPLE)
+    set_property(SOURCE core/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Testing executable
 add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
