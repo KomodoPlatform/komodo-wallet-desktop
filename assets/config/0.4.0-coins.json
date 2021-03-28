@@ -108,22 +108,37 @@
       "active": false,
       "currently_enabled": false
   },
-  "1INCH": {
-    "coin": "1INCH",
-    "name": "1inch",
-    "coinpaprika_id": "1inch-1inch",
-    "coingecko_id": "1inch",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
+  "1INCH-BEP20": {
+      "coin": "1INCH-BEP20",
+      "name": "1inch",
+      "coinpaprika_id": "1inch-1inch",
+      "coingecko_id": "1inch",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "1INCH-ERC20": {
+      "coin": "1INCH-ERC20",
+      "name": "1inch",
+      "coinpaprika_id": "1inch-1inch",
+      "coingecko_id": "1inch",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ARPA": {
     "coin": "ARPA",
@@ -179,6 +194,38 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "BAND-BEP20": {
+      "coin": "BAND-BEP20",
+      "name": "Band Protocol",
+      "coinpaprika_id": "band-band-protocol",
+      "coingecko_id": "band-protocol",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BAND-ERC20": {
+      "coin": "BAND-ERC20",
+      "name": "Band Protocol",
+      "coinpaprika_id": "band-band-protocol",
+      "coingecko_id": "band-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "BLK": {
     "coin": "BLK",
@@ -696,6 +743,38 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "ELF-BEP20": {
+      "coin": "ELF-BEP20",
+      "name": "aelf",
+      "coinpaprika_id": "elf-aelf",
+      "coingecko_id": "aelf",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ELF-ERC20": {
+      "coin": "ELF-ERC20",
+      "name": "aelf",
+      "coinpaprika_id": "elf-aelf",
+      "coingecko_id": "aelf",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "EMC2": {
     "coin": "EMC2",
@@ -1625,6 +1704,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "MKR-BEP20": {
+      "coin": "MKR-BEP20",
+      "name": "Maker",
+      "coinpaprika_id": "mkr-maker",
+      "coingecko_id": "maker",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "MKR-ERC20": {
+      "coin": "MKR-ERC20",
+      "name": "Maker",
+      "coinpaprika_id": "mkr-maker",
+      "coingecko_id": "maker",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MONA": {
     "coin": "MONA",
     "name": "MonaCoin",
@@ -2327,23 +2438,6 @@
   "active": false,
   "currently_enabled": false
  },
- "BAND": {
-  "coin": "BAND",
-  "name": "BandToken",
-  "coinpaprika_id": "band-band-protocol",
-  "coingecko_id": "band-protocol",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "BEST": {
   "coin": "BEST",
   "name": "Bitpanda Ecosystem Token",
@@ -2565,23 +2659,6 @@
   "active": false,
   "currently_enabled": false
  },
- "ELF": {
-  "coin": "ELF",
-  "name": "ELF",
-  "coinpaprika_id": "elf-aelf",
-  "coingecko_id": "aelf",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "ENJ": {
   "coin": "ENJ",
   "name": "EnjinCoin",
@@ -2791,23 +2868,6 @@
   "name": "Matic Token",
   "coinpaprika_id": "matic-matic-network",
   "coingecko_id": "matic-network",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "MKR": {
-  "coin": "MKR",
-  "name": "Maker",
-  "coinpaprika_id": "mkr-maker",
-  "coingecko_id": "maker",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
