@@ -1856,6 +1856,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "VOTE2021": {
+    "coin": "VOTE2021",
+    "name": "VOTE 2021",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10002"
+      },
+      {
+        "url": "electrum2.cipig.net:10002"
+      },
+      {
+        "url": "electrum3.cipig.net:10002"
+      }
+    ],
+    "explorer_url": [
+      "https://vote.kmdexplorer.io/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false,
+    "wallet_only": true
+  },
   "VRM": {
     "coin": "VRM",
     "name": "Verium Reserve",
