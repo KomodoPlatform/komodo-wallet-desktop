@@ -77,37 +77,6 @@
       "active": false,
       "currently_enabled": false
   },
-  "ADEXBSCT": {
-    "coin": "ADEXBSCT",
-    "name": "Atomic Dex BSC (Testnet)",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "https://data-seed-prebsc-1-s2.binance.org:8545"
-    ],
-    "explorer_url": [
-      "https://testnet.bscscan.com/"
-    ],
-    "is_testnet": true,
-    "type": "BEP-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "ADEXBSC": {
-      "coin": "ADEXBSC",
-      "name": "Atomic Dex BSC",
-      "coinpaprika_id": "test-coin",
-      "coingecko_id": "test-coin",
-      "nodes": [
-        "https://bsc-dataseed.binance.org"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
-  },
   "1INCH-BEP20": {
       "coin": "1INCH-BEP20",
       "name": "1inch",
@@ -816,6 +785,21 @@
       "active": false,
       "currently_enabled": false
   },
+  "ETC-BEP20": {
+      "coin": "ETC-BEP20",
+      "name": "Ethereum Classic",
+      "coinpaprika_id": "etc-ethereum-classic",
+      "coingecko_id": "ethereum-classic",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "FTC": {
     "coin": "FTC",
     "name": "Feathercoin",
@@ -913,6 +897,21 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "IOTX-BEP20": {
+      "coin": "IOTX-BEP20",
+      "name": "IoTeX",
+      "coinpaprika_id": "iotx-iotex",
+      "coingecko_id": "iotex",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "JUMBLR": {
     "coin": "JUMBLR",
@@ -1030,6 +1029,36 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "NEAR-BEP20": {
+      "coin": "NEAR-BEP20",
+      "name": "NEAR Protocol",
+      "coinpaprika_id": "near-near-protocol",
+      "coingecko_id": "near",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ONT-BEP20": {
+      "coin": "ONT-BEP20",
+      "name": "Ontology",
+      "coinpaprika_id": "ont-ontology",
+      "coingecko_id": "ontology",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "PAX-BEP20": {
       "coin": "PAX-BEP20",
@@ -2119,6 +2148,21 @@
       "active": false,
       "currently_enabled": false
   },
+  "XVS": {
+      "coin": "XVS",
+      "name": "Venus",
+      "coinpaprika_id": "xvs-venus",
+      "coingecko_id": "venus",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "YFI-BEP20": {
       "coin": "YFI-BEP20",
       "name": "yearn.finance",
@@ -2229,6 +2273,21 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "ZIL-BEP20": {
+      "coin": "ZIL-BEP20",
+      "name": "Zilliqa",
+      "coinpaprika_id": "zil-zilliqa",
+      "coingecko_id": "zilliqa",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ZILLA": {
     "coin": "ZILLA",

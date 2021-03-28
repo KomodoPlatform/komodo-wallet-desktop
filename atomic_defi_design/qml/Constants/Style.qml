@@ -277,6 +277,7 @@ QtObject {
                                           "GLEEC": "#8C41FF",
                                           "GRS": "#377E96",
                                           "DOGE": "#C3A634",
+                                          "ETC": "#328432",
                                           "ETH": "#627EEA",
                                           "KMD": "#2B6680",
                                           "MORTY": "#A4764D",
@@ -360,7 +361,9 @@ QtObject {
                                           "MATIC": "#1E61ED",
                                           "MED": "#00B5FF",
                                           "MKR": "#1BAF9F",
+                                          "NEAR": "#595959",
                                           "NPXS": "#F3CB00",
+                                          "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
                                           "QI": "#FFFFFF",
                                           "QIAIR": "#FEFEFE",
@@ -382,8 +385,10 @@ QtObject {
                                           "WBTC": "#CCCCCC",
                                           "XRP": "#2E353D",
                                           "XTZ": "#A8E000",
+                                          "XVS": "#F4BC54",
                                           "YFI": "#006BE6",
                                           "YFII": "#FF2A79",
+                                          "ZIL": "#42BBB9",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
                                       })

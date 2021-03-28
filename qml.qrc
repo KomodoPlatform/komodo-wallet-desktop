@@ -19,8 +19,6 @@
         <file>atomic_defi_design/assets/images/coins/1inch.png</file>
         <file>atomic_defi_design/assets/images/coins/aave.png</file>
         <file>atomic_defi_design/assets/images/coins/ada.png</file>
-        <file>atomic_defi_design/assets/images/coins/adexbsc.png</file>
-        <file>atomic_defi_design/assets/images/coins/adexbsct.png</file>
         <file>atomic_defi_design/assets/images/coins/agi.png</file>
         <file>atomic_defi_design/assets/images/coins/ant.png</file>
         <file>atomic_defi_design/assets/images/coins/arpa.png</file>
@@ -76,6 +74,7 @@
         <file>atomic_defi_design/assets/images/coins/enj.png</file>
         <file>atomic_defi_design/assets/images/coins/eos.png</file>
         <file>atomic_defi_design/assets/images/coins/erc-20.png</file>
+        <file>atomic_defi_design/assets/images/coins/etc.png</file>
         <file>atomic_defi_design/assets/images/coins/eth.png</file>
         <file>atomic_defi_design/assets/images/coins/ethr.png</file>
         <file>atomic_defi_design/assets/images/coins/eurs.png</file>
@@ -94,6 +93,7 @@
         <file>atomic_defi_design/assets/images/coins/husd.png</file>
         <file>atomic_defi_design/assets/images/coins/iln.png</file>
         <file>atomic_defi_design/assets/images/coins/ink.png</file>
+        <file>atomic_defi_design/assets/images/coins/iotx.png</file>
         <file>atomic_defi_design/assets/images/coins/jst.png</file>
         <file>atomic_defi_design/assets/images/coins/jumblr.png</file>
         <file>atomic_defi_design/assets/images/coins/kmd.png</file>
@@ -116,12 +116,14 @@
         <file>atomic_defi_design/assets/images/coins/morty.png</file>
         <file>atomic_defi_design/assets/images/coins/mshark.png</file>
         <file>atomic_defi_design/assets/images/coins/nav.png</file>
+        <file>atomic_defi_design/assets/images/coins/near.png</file>
         <file>atomic_defi_design/assets/images/coins/nmc.png</file>
         <file>atomic_defi_design/assets/images/coins/npxs.png</file>
         <file>atomic_defi_design/assets/images/coins/oc.png</file>
         <file>atomic_defi_design/assets/images/coins/ocean.png</file>
         <file>atomic_defi_design/assets/images/coins/okb.png</file>
         <file>atomic_defi_design/assets/images/coins/omg.png</file>
+        <file>atomic_defi_design/assets/images/coins/ont.png</file>
         <file>atomic_defi_design/assets/images/coins/oot.png</file>
         <file>atomic_defi_design/assets/images/coins/pangea.png</file>
         <file>atomic_defi_design/assets/images/coins/pax.png</file>
@@ -191,10 +193,12 @@
         <file>atomic_defi_design/assets/images/coins/xor.png</file>
         <file>atomic_defi_design/assets/images/coins/xrp.png</file>
         <file>atomic_defi_design/assets/images/coins/xtz.png</file>
+        <file>atomic_defi_design/assets/images/coins/xvs.png</file>
         <file>atomic_defi_design/assets/images/coins/yfi.png</file>
         <file>atomic_defi_design/assets/images/coins/yfii.png</file>
         <file>atomic_defi_design/assets/images/coins/zec.png</file>
         <file>atomic_defi_design/assets/images/coins/zer.png</file>
+        <file>atomic_defi_design/assets/images/coins/zil.png</file>
         <file>atomic_defi_design/assets/images/coins/zilla.png</file>
         <file>atomic_defi_design/assets/images/coins/zrx.png</file>
         <file>atomic_defi_design/assets/images/dashboard-copy.svg</file>
