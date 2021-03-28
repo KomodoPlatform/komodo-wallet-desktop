@@ -362,6 +362,7 @@ QtObject {
                                           "MED": "#00B5FF",
                                           "MKR": "#1BAF9F",
                                           "NPXS": "#F3CB00",
+                                          "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
                                           "QI": "#FFFFFF",
                                           "QIAIR": "#FEFEFE",

@@ -1061,6 +1061,21 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "ONT-BEP20": {
+      "coin": "ONT-BEP20",
+      "name": "Ontology",
+      "coinpaprika_id": "ont-ontology",
+      "coingecko_id": "ontology",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "PAX-BEP20": {
       "coin": "PAX-BEP20",
       "name": "Paxos Standard",
