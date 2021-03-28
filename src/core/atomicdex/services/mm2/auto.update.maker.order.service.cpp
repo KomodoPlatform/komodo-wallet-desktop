@@ -70,9 +70,10 @@ namespace atomic_dex
         const auto    category_settings = data.base_coin + "_" + data.rel_coin;
         const QString target_settings   = "Disabled";
         settings.beginGroup(category_settings);
-        const bool is_disabled = settings.value(target_settings, true).toBool();
-        t_float_50 spread      = settings.value("Spread", 1.0).toDouble();
-        // const bool       auto_cancel = settings.value("AutoCancel", true).toBool();
+        const bool is_disabled        = settings.value(target_settings, true).toBool();
+        t_float_50 spread             = settings.value("Spread", 1.0).toDouble();
+        const bool max                = settings.value("Max", false).toBool();
+        t_float_50 min_volume_percent = settings.value("MinVolume", 10.0).toDouble() / 100; ///< min volume is always 10% of the order or more
         settings.endGroup();
         if (base_coin_info.coingecko_id != "test-coin" && rel_coin_info.coingecko_id != "test-coin" && !is_disabled)
         {
@@ -81,14 +82,16 @@ namespace atomic_dex
             std::string        new_price     = get_new_price_from_order(data, spread);
             nlohmann::json     conf_settings = data.conf_settings.value_or(nlohmann::json());
             nlohmann::json     setprice_json = ::mm2::api::template_request("setprice");
+            t_float_50         volume        = safe_float(data.base_amount.toStdString());
+            t_float_50         min_volume    = volume * min_volume_percent;
             t_setprice_request request{
                 .base            = base_coin,
                 .rel             = rel_coin,
                 .price           = new_price,
                 .volume          = data.base_amount.toStdString(),
-                .max             = false,
+                .max             = max,
                 .cancel_previous = true,
-                .min_volume      = data.min_volume.value_or("0.00777").toStdString()};
+                .min_volume      = utils::format_float(min_volume)};
             if (!conf_settings.empty())
             {
                 request.base_nota  = conf_settings.at("base_nota").get<bool>();
@@ -98,15 +101,17 @@ namespace atomic_dex
             }
             ::mm2::api::to_json(setprice_json, request);
             batch.push_back(setprice_json);
+            setprice_json["userpass"] = "";
+            SPDLOG_INFO("request: {}", setprice_json.dump(4));
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
             mm2.get_mm2_client()
                 .async_rpc_batch_standalone(batch)
                 .then([this]([[maybe_unused]] web::http::http_response resp) {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
+                    SPDLOG_INFO("status_code: {}", resp.status_code());
                     if (resp.status_code() == 200)
                     {
-                        // auto& mm2_system = m_system_manager.get_system<mm2_service>();
-                        // mm2_system.batch_fetch_orders_and_swap();
+                        SPDLOG_INFO("order resp: {}", body);
                     }
                     else
                     {
