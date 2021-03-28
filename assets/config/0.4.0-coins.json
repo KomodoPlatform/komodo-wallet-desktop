@@ -77,37 +77,6 @@
       "active": false,
       "currently_enabled": false
   },
-  "ADEXBSCT": {
-    "coin": "ADEXBSCT",
-    "name": "Atomic Dex BSC (Testnet)",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "https://data-seed-prebsc-1-s2.binance.org:8545"
-    ],
-    "explorer_url": [
-      "https://testnet.bscscan.com/"
-    ],
-    "is_testnet": true,
-    "type": "BEP-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "ADEXBSC": {
-      "coin": "ADEXBSC",
-      "name": "Atomic Dex BSC",
-      "coinpaprika_id": "test-coin",
-      "coingecko_id": "test-coin",
-      "nodes": [
-        "https://bsc-dataseed.binance.org"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
-  },
   "1INCH-BEP20": {
       "coin": "1INCH-BEP20",
       "name": "1inch",
