@@ -374,6 +374,7 @@ QtObject {
                                           "SNX": "#00D1FF",
                                           "SOULJA": "#8F734A",
                                           "STORJ": "#2683FF",
+                                          "SXP": "#FD5F3B",
                                           "SYS": "#0084C7",
                                           "TSL": "#64B082",
                                           "VRM": "#586A7A",
@@ -382,6 +383,7 @@ QtObject {
                                           "XRP": "#2E353D",
                                           "XTZ": "#A8E000",
                                           "YFI": "#006BE6",
+                                          "YFII": "#FF2A79",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
                                       })
