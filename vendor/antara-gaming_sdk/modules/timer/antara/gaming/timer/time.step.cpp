@@ -37,13 +37,13 @@ namespace antara::gaming::timer
 namespace antara::gaming::timer
 {
     void
-    time_step::start() noexcept
+    time_step::start() 
     {
         start_ = clock::now();
     }
 
     void
-    time_step::start_frame() noexcept
+    time_step::start_frame() 
     {
         auto deltaTime = clock::now() - start_;
         start_         = clock::now();
@@ -67,13 +67,13 @@ namespace antara::gaming::timer
     }
 
     bool
-    time_step::is_update_required() const noexcept
+    time_step::is_update_required() const 
     {
         return lag_ >= tps_dt;
     }
 
     void
-    time_step::perform_update() noexcept
+    time_step::perform_update() 
     {
         lag_ -= tps_dt;
     }
@@ -86,19 +86,19 @@ namespace antara::gaming::timer
     }
 
     float
-    time_step::get_fixed_delta_time() noexcept
+    time_step::get_fixed_delta_time() 
     {
         return fixed_delta_time;
     }
 
     float
-    time_step::get_interpolation() const noexcept
+    time_step::get_interpolation() const 
     {
         return std::chrono::duration<float, std::ratio<1>>(lag_).count() / std::chrono::duration<float, std::ratio<1>>(tps_dt).count();
     }
 
     void
-    time_step::reset_lag() noexcept
+    time_step::reset_lag() 
     {
         lag_ = std::chrono::nanoseconds(0);
         start();

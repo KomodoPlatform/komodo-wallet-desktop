@@ -68,7 +68,7 @@ namespace
     }
 
     QString
-    determine_order_status_from_last_event(const nlohmann::json& events, const QStringList& error_events) noexcept
+    determine_order_status_from_last_event(const nlohmann::json& events, const QStringList& error_events)
     {
         if (events.empty())
         {
@@ -107,7 +107,7 @@ namespace
     }
 
     QString
-    determine_payment_id(const nlohmann::json& events, bool am_i_maker, bool want_taker_id) noexcept
+    determine_payment_id(const nlohmann::json& events, bool am_i_maker, bool want_taker_id)
     {
         QString result = "";
 
@@ -137,7 +137,7 @@ namespace
 
     std::pair<std::string, std::string>
     determine_amounts_in_current_currency(
-        const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount) noexcept
+        const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount)
     {
         try
         {
@@ -161,30 +161,6 @@ namespace
         return {};
     }
 } // namespace
-
-//! Implementation RPC [disable_coin]
-namespace mm2::api
-{
-    //! Serialization
-    void
-    to_json(nlohmann::json& j, const disable_coin_request& req)
-    {
-        j["coin"] = req.coin;
-    }
-
-    //! Deserialization
-    void
-    from_json(const nlohmann::json& j, disable_coin_answer_success& resp)
-    {
-        j.at("coin").get_to(resp.coin);
-    }
-
-    void
-    from_json(const nlohmann::json& j, disable_coin_answer& resp)
-    {
-        extract_rpc_json_answer<disable_coin_answer_success>(j, resp);
-    }
-} // namespace mm2::api
 
 namespace mm2::api
 {
@@ -221,7 +197,7 @@ namespace mm2::api
             cfg.normal_fees = fee_regular_coin{};
             from_json(j, cfg.normal_fees.value());
         }
-        else if (j.at("coin").get<std::string>() == "ETH")
+        else if (auto coin = j.at("coin").get<std::string>(); coin == "ETH" || coin == "BNB" || coin == "BNBT" || coin == "ETHR")
         {
             cfg.erc_fees = fee_erc_coin{};
             from_json(j, cfg.erc_fees.value());
@@ -245,7 +221,7 @@ namespace mm2::api
     {
         j.at("block_height").get_to(cfg.block_height);
         j.at("coin").get_to(cfg.coin);
-        if (j.count("confirmations") == 1)
+        if (j.contains("confirmations"))
         {
             cfg.confirmations = j.at("confirmations").get<std::size_t>();
         }
@@ -337,42 +313,13 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, tx_history_answer& answer)
     {
-        if (j.count("error") == 1)
+        if (j.contains("error"))
         {
             answer.error = j.at("error").get<std::string>();
         }
         else
         {
             answer.result = j.at("result").get<tx_history_answer_success>();
-        }
-    }
-
-    void
-    to_json(nlohmann::json& j, const recover_funds_of_swap_request& cfg)
-    {
-        j["params"]         = nlohmann::json::object();
-        j["params"]["uuid"] = cfg.swap_uuid;
-    }
-
-    void
-    from_json(const nlohmann::json& j, recover_funds_of_swap_answer_success& answer)
-    {
-        j.at("action").get_to(answer.action);
-        j.at("coin").get_to(answer.coin);
-        j.at("tx_hash").get_to(answer.tx_hash);
-        j.at("tx_hex").get_to(answer.tx_hex);
-    }
-
-    void
-    from_json(const nlohmann::json& j, recover_funds_of_swap_answer& answer)
-    {
-        if (j.count("error") == 1)
-        {
-            answer.error = j.at("error").get<std::string>();
-        }
-        else
-        {
-            answer.result = j.at("result").get<recover_funds_of_swap_answer_success>();
         }
     }
 
@@ -446,33 +393,6 @@ namespace mm2::api
     {
         j.at("result").at("amount").get_to(cfg.amount);
         j.at("result").at("coin").get_to(cfg.coin);
-    }
-
-    void
-    to_json(nlohmann::json& j, const setprice_request& request)
-    {
-        j["base"]            = request.base;
-        j["price"]           = request.price;
-        j["rel"]             = request.rel;
-        j["volume"]          = request.volume;
-        j["cancel_previous"] = request.cancel_previous;
-        j["max"]             = request.max;
-        if (request.base_nota.has_value())
-        {
-            j["base_nota"] = request.base_nota.value();
-        }
-        if (request.base_confs.has_value())
-        {
-            j["base_confs"] = request.base_confs.value();
-        }
-        if (request.rel_nota.has_value())
-        {
-            j["rel_nota"] = request.rel_nota.value();
-        }
-        if (request.rel_confs.has_value())
-        {
-            j["rel_confs"] = request.rel_confs.value();
-        }
     }
 
     void
@@ -556,6 +476,7 @@ namespace mm2::api
                                               : QString::fromStdString(value.at("request").at("base_amount").get<std::string>());
             const auto rel_amount  = is_maker ? QString::fromStdString((safe_float(price) * safe_float(base_amount.toStdString())).convert_to<std::string>())
                                               : QString::fromStdString(value.at("request").at("rel_amount").get<std::string>());
+            nlohmann::json conf_settings = is_maker ? value.at("conf_settings") : nlohmann::json();
             order_swaps_data contents{
                 .is_maker       = is_maker,
                 .base_coin      = action == "Sell" ? base_coin : rel_coin,
@@ -569,7 +490,9 @@ namespace mm2::api
                 .order_status   = "matching",
                 .is_swap        = false,
                 .is_cancellable = value.at("cancellable").get<bool>(),
-                .is_recoverable = false};
+                .is_recoverable = false,
+                .min_volume     = is_maker ? QString::fromStdString(value.at("min_base_vol").get<std::string>()) : std::optional<QString>(std::nullopt),
+                .conf_settings  = conf_settings};
             if (action.empty() && contents.order_type == "maker")
             {
                 contents.base_coin   = base_coin;
@@ -842,47 +765,8 @@ namespace mm2::api
         }
     }
 
-    disable_coin_answer
-    rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin", mm2_client);
-    }
-
-    recover_funds_of_swap_answer
-    rpc_recover_funds(recover_funds_of_swap_request&& request, std::shared_ptr<t_http_client> mm2_client)
-    {
-        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(
-            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap", mm2_client);
-    }
-
-    template <typename TRequest, typename TAnswer>
-    TAnswer
-    process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> mm2_http_client)
-    {
-        SPDLOG_INFO("Processing rpc call: {}", rpc_command);
-
-        nlohmann::json json_data = template_request(rpc_command);
-
-        to_json(json_data, request);
-
-        auto json_copy        = json_data;
-        json_copy["userpass"] = "*******";
-        SPDLOG_DEBUG("request: {}", json_copy.dump());
-
-        if (mm2_http_client != nullptr)
-        {
-            web::http::http_request request(web::http::methods::POST);
-            request.headers().set_content_type(FROM_STD_STR("application/json"));
-            request.set_body(json_data.dump());
-            auto resp = mm2_http_client->request(request).get();
-            return rpc_process_answer<TAnswer>(resp, rpc_command);
-        }
-
-        return TAnswer{};
-    }
-
     nlohmann::json
-    template_request(std::string method_name) noexcept
+    template_request(std::string method_name)
     {
         return {{"method", std::move(method_name)}, {"userpass", get_rpc_password()}};
     }
@@ -934,20 +818,6 @@ namespace mm2::api
         return out;
     }
 
-    pplx::task<web::http::http_response>
-    async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client, pplx::cancellation_token token)
-    {
-        if (mm2_http_client != nullptr)
-        {
-            web::http::http_request request;
-            request.set_method(web::http::methods::POST);
-            request.set_body(batch_array.dump());
-            auto resp = mm2_http_client->request(request, token);
-            return resp;
-        }
-        return {};
-    }
-
     nlohmann::json
     basic_batch_answer(const web::http::http_response& resp)
     {
@@ -966,20 +836,20 @@ namespace mm2::api
     }
 
     static inline std::string&
-    access_rpc_password() noexcept
+    access_rpc_password()
     {
         static std::string rpc_password;
         return rpc_password;
     }
 
     void
-    set_rpc_password(std::string rpc_password) noexcept
+    set_rpc_password(std::string rpc_password)
     {
         access_rpc_password() = std::move(rpc_password);
     }
 
     const std::string&
-    get_rpc_password() noexcept
+    get_rpc_password()
     {
         return access_rpc_password();
     }
@@ -1000,7 +870,7 @@ namespace mm2::api
 
     template <typename RpcReturnType>
     RpcReturnType
-    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
+    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command)
     {
         RpcReturnType answer;
 
@@ -1019,76 +889,20 @@ namespace mm2::api
         return answer;
     }
 
-    template mm2::api::withdraw_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::my_orders_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::orderbook_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::trade_fee_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::trade_preimage_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-    template mm2::api::best_orders_answer     rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept;
-
-    template <typename RpcReturnType>
-    RpcReturnType
-    rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept
-    {
-        std::string body = TO_STD_STR(resp.extract_string(true).get());
-        SPDLOG_INFO("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
-        RpcReturnType answer;
-
-        try
-        {
-            if (resp.status_code() not_eq 200)
-            {
-                SPDLOG_WARN("rpc answer code is not 200, body : {}", body);
-                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
-                {
-                    SPDLOG_DEBUG("error field detected inside the RpcReturnType");
-                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
-                    {
-                        SPDLOG_DEBUG("The error field type is string, parsing it from the response body");
-                        if (auto json_data = nlohmann::json::parse(body); json_data.at("error").is_string())
-                        {
-                            answer.error = json_data.at("error").get<std::string>();
-                        }
-                        else
-                        {
-                            answer.error = body;
-                        }
-                        SPDLOG_DEBUG("The error after getting extracted is: {}", answer.error.value());
-                    }
-                }
-                answer.rpc_result_code = resp.status_code();
-                answer.raw_result      = body;
-                return answer;
-            }
-
-
-            assert(not body.empty());
-            auto json_answer       = nlohmann::json::parse(body);
-            answer.rpc_result_code = resp.status_code();
-            answer.raw_result      = body;
-            from_json(json_answer, answer);
-        }
-        catch (const std::exception& error)
-        {
-            SPDLOG_ERROR(
-                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(),
-                rpc_command, body);
-            answer.rpc_result_code = -1;
-            answer.raw_result      = error.what();
-        }
-
-        return answer;
-    }
+    template mm2::api::withdraw_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::my_orders_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::orderbook_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::trade_fee_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::trade_preimage_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::best_orders_answer     rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
 
     void
     set_system_manager(ag::ecs::system_manager& system_manager)
     {
         g_system_mgr = std::addressof(system_manager);
     }
-
-    template mm2::api::tx_history_answer rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
 } // namespace mm2::api

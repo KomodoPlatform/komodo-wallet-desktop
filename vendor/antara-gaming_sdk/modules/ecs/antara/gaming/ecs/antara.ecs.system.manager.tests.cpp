@@ -29,27 +29,27 @@ class logic_concrete_system final : public antara::gaming::ecs::logic_update_sys
     logic_concrete_system() = default;
 
     void
-    update() noexcept final
+    update()  final
     {
     }
 
-    ~logic_concrete_system() noexcept final = default;
+    ~logic_concrete_system()  final = default;
 };
 
 class pre_concrete_system final : public antara::gaming::ecs::pre_update_system<pre_concrete_system>
 {
   public:
-    pre_concrete_system(entt::registry& registry) noexcept : system(registry)
+    pre_concrete_system(entt::registry& registry)  : system(registry)
     {
     }
 
 
     void
-    update() noexcept final
+    update()  final
     {
     }
 
-    ~pre_concrete_system() noexcept final = default;
+    ~pre_concrete_system()  final = default;
 };
 
 REFL_AUTO(type(logic_concrete_system))

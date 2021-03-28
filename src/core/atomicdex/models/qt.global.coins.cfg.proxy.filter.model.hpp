@@ -32,19 +32,19 @@ namespace atomic_dex
         explicit global_coins_cfg_proxy_model(QObject* parent, CoinType type);
 
         //! Destructor
-        ~global_coins_cfg_proxy_model() noexcept final = default;
+        ~global_coins_cfg_proxy_model()  final = default;
 
         //////// QML API
         ////////////////
         
         // Checks/Unchecks all coins
-        Q_INVOKABLE void set_all_state(bool checked) noexcept;
+        Q_INVOKABLE void set_all_state(bool checked) ;
       
       private:
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
         
         [[nodiscard]]
-        int get_length() const noexcept;
+        int get_length() const ;
   
       signals:
         void lengthChanged();

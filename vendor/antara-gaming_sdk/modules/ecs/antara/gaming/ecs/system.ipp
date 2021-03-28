@@ -20,7 +20,7 @@ namespace antara::gaming::ecs
 {
     template <typename TSystemDerived, typename TSystemType>
     template <typename... TArgs>
-    system<TSystemDerived, TSystemType>::system(TArgs&&... args) noexcept : base_system(std::forward<TArgs>(args)...)
+    system<TSystemDerived, TSystemType>::system(TArgs&&... args)  : base_system(std::forward<TArgs>(args)...)
     {
         //LOG_SCOPE_FUNCTION(INFO);
         //DVLOG_F(loguru::Verbosity_INFO, "creating system {}", this->get_name());
@@ -28,7 +28,7 @@ namespace antara::gaming::ecs
 
     template <typename TSystemDerived, typename TSystemType>
     constexpr system_type
-    system<TSystemDerived, TSystemType>::get_system_type() noexcept
+    system<TSystemDerived, TSystemType>::get_system_type() 
     {
         if constexpr (std::is_same_v<TSystemType, st_system_logic_update>)
             return system_type::logic_update;
@@ -42,27 +42,27 @@ namespace antara::gaming::ecs
 
     template <typename TSystemDerived, typename TSystemType>
     system_type
-    system<TSystemDerived, TSystemType>::get_system_type_rtti() const noexcept
+    system<TSystemDerived, TSystemType>::get_system_type_rtti() const 
     {
         return system::get_system_type();
     }
 
     template <typename TSystemDerived, typename TSystemType>
     std::string
-    system<TSystemDerived, TSystemType>::get_name() const noexcept
+    system<TSystemDerived, TSystemType>::get_name() const 
     {
         return system::get_class_name();
     }
 
     template <typename TSystemDerived, typename TSystemType>
     std::string
-    system<TSystemDerived, TSystemType>::get_class_name() noexcept
+    system<TSystemDerived, TSystemType>::get_class_name() 
     {
         return refl::reflect<TSystemDerived>().name.str();
     }
 
     template <typename TSystemDerived, typename TSystemType>
-    system<TSystemDerived, TSystemType>::~system() noexcept
+    system<TSystemDerived, TSystemType>::~system() 
     {
         //LOG_SCOPE_FUNCTION(INFO);
         //DVLOG_F(loguru::Verbosity_INFO, "destroying system {}", this->get_name());

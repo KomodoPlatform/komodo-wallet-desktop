@@ -50,8 +50,8 @@ Rectangle {
 
             DefaultBusyIndicator {
                 Layout.alignment: Qt.AlignVCenter
-                visible: !isSwapDone(details.order_status)
-                running: !isSwapDone(details.order_status)
+                //visible: true //!isSwapDone(details.order_status)
+                running: !isSwapDone(details.order_status) && Qt.platform.os != "osx"
                 Layout.preferredWidth: 20
                 Layout.preferredHeight: Layout.preferredWidth
             }

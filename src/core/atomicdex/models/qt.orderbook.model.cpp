@@ -287,7 +287,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::reset_orderbook(const t_orders_contents& orderbook) noexcept
+    orderbook_model::reset_orderbook(const t_orders_contents& orderbook) 
     {
         if (!orderbook.empty())
         {
@@ -309,14 +309,14 @@ namespace atomic_dex
     }
 
     int
-    orderbook_model::get_length() const noexcept
+    orderbook_model::get_length() const 
     {
         return rowCount();
     }
 
 
     void
-    orderbook_model::initialize_order(const ::mm2::api::order_contents& order) noexcept
+    orderbook_model::initialize_order(const ::mm2::api::order_contents& order) 
     {
         assert(m_model_data.size() == m_orders_id_registry.size());
         beginInsertRows(QModelIndex(), m_model_data.size(), m_model_data.size());
@@ -328,7 +328,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::update_order(const ::mm2::api::order_contents& order) noexcept
+    orderbook_model::update_order(const ::mm2::api::order_contents& order) 
     {
         if (const auto res = this->match(index(0, 0), UUIDRole, QString::fromStdString(order.uuid)); not res.isEmpty())
         {
@@ -349,7 +349,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook) noexcept
+    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook) 
     {
         auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents) {
             // SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
@@ -394,7 +394,7 @@ namespace atomic_dex
     }
 
     t_order_contents
-    orderbook_model::get_order_content(const QModelIndex& index) const noexcept
+    orderbook_model::get_order_content(const QModelIndex& index) const 
     {
         return m_model_data.at(index.row());
     }
@@ -414,7 +414,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::clear_orderbook() noexcept
+    orderbook_model::clear_orderbook() 
     {
         this->beginResetModel();
         m_model_data = t_orders_contents{};
@@ -424,7 +424,7 @@ namespace atomic_dex
     }
 
     orderbook_proxy_model*
-    orderbook_model::get_orderbook_proxy() const noexcept
+    orderbook_model::get_orderbook_proxy() const 
     {
         return m_model_proxy;
     }

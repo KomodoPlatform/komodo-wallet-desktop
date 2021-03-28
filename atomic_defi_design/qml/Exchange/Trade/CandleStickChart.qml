@@ -64,8 +64,8 @@ InnerBackground {
         property string chart_rel
         property string loaded_symbol
         function loadChart(base, rel, force=false) {
-            const pair = base + "/" + rel
-            const pair_reversed = rel + "/" + base
+            const pair = atomic_qt_utilities.retrieve_main_ticker(base) + "/" + atomic_qt_utilities.retrieve_main_ticker(rel)
+            const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(rel) + "/" + atomic_qt_utilities.retrieve_main_ticker(base)
 
             console.log("Will try to load TradingView chart", pair)
 
@@ -94,8 +94,8 @@ InnerBackground {
             loaded_symbol = symbol
             console.log("Loading TradingView chart", symbol, " theme: ", theme)
 
-            chart_base = base
-            chart_rel = rel
+            chart_base = atomic_qt_utilities.retrieve_main_ticker(base)
+            chart_rel = atomic_qt_utilities.retrieve_main_ticker(rel)
 
             chart.loadHtml(`
     <style>

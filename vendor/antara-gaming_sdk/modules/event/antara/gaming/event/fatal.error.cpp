@@ -19,7 +19,7 @@
 
 namespace antara::gaming::event
 {
-    fatal_error::fatal_error(std::error_code ec) noexcept : ec_(ec)
+    fatal_error::fatal_error(std::error_code ec)  : ec_(ec)
     {
     }
 } // namespace antara::gaming::event

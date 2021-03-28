@@ -37,6 +37,7 @@
 //! Project Headers
 #include "app.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
+#include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
@@ -233,30 +234,45 @@ namespace atomic_dex
     }
 
     mm2_service&
-    application::get_mm2() noexcept
+    application::get_mm2()
     {
         return this->system_manager_.get_system<mm2_service>();
     }
 
     entt::dispatcher&
-    application::get_dispatcher() noexcept
+    application::get_dispatcher()
     {
         return this->dispatcher_;
     }
 
     const entt::registry&
-    application::get_registry() const noexcept
+    application::get_registry() const
     {
         return this->entity_registry_;
     }
 
     entt::registry&
-    application::get_registry() noexcept
+    application::get_registry()
     {
         return this->entity_registry_;
     }
 
-    application::application(QObject* pParent) noexcept : QObject(pParent)
+    void
+    application::post_handle_settings()
+    {
+        QSettings& settings = get_registry().ctx<QSettings>();
+        if (settings.value("AutomaticUpdateOrderBot", false).toBool())
+        {
+            SPDLOG_INFO("AutomaticUpdateOrderBot is true, activating the service");
+            system_manager_.create_system<auto_update_maker_order_service>(system_manager_);
+        }
+        else
+        {
+            SPDLOG_WARN("AutomaticUpdateOrderBot is false, ignoring the service");
+        }
+    }
+
+    application::application(QObject* pParent) : QObject(pParent)
     {
         fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
         this->entity_registry_.set<QSettings>(settings_path.string().c_str(), QSettings::IniFormat);
@@ -304,7 +320,7 @@ namespace atomic_dex
     }
 
     void
-    application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
+    application::on_coin_fully_initialized_event(const coin_fully_initialized& evt)
     {
         //! This event is called when a call is enabled and cex provider finished fetch data
         if (not m_event_actions[events_action::about_to_exit_app])
@@ -326,7 +342,7 @@ namespace atomic_dex
     }
 
     const mm2_service&
-    application::get_mm2() const noexcept
+    application::get_mm2() const
     {
         return this->system_manager_.get_system<mm2_service>();
     }
@@ -340,7 +356,7 @@ namespace atomic_dex
     }
 
     void
-    application::on_mm2_initialized_event([[maybe_unused]] const mm2_initialized& evt) noexcept
+    application::on_mm2_initialized_event([[maybe_unused]] const mm2_initialized& evt)
     {
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         system_manager_.get_system<qt_wallet_manager>().set_status("enabling_coins");
@@ -412,7 +428,7 @@ namespace atomic_dex
         wallet_manager.just_set_wallet_name("");
 
         this->m_secondary_coin_fully_enabled = false;
-        this->m_primary_coin_fully_enabled = false;
+        this->m_primary_coin_fully_enabled   = false;
         system_manager_.get_system<qt_wallet_manager>().set_status("None");
         return fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
@@ -433,7 +449,7 @@ namespace atomic_dex
     }
 
     void
-    application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* engine) noexcept
+    application::set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* engine)
     {
         this->m_app = app;
         connect(m_app.get(), SIGNAL(aboutToQuit()), this, SLOT(exit_handler()));
@@ -449,7 +465,7 @@ namespace atomic_dex
         QString result;
 
         ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
-        auto                                      res = ::mm2::api::rpc_recover_funds(std::move(request), get_mm2().get_mm2_client());
+        auto                                      res = get_mm2().get_mm2_client().rpc_recover_funds(std::move(request));
         result                                        = QString::fromStdString(res.raw_result);
 
         return result;
@@ -485,7 +501,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    application::on_fiat_rate_updated(const fiat_rate_updated&) noexcept
+    application::on_fiat_rate_updated(const fiat_rate_updated&)
     {
         SPDLOG_DEBUG("on_fiat_rate_updated");
         this->dispatcher_.trigger<update_portfolio_values>();
@@ -493,7 +509,7 @@ namespace atomic_dex
     }
 
     void
-    application::on_ticker_balance_updated_event(const ticker_balance_updated& evt) noexcept
+    application::on_ticker_balance_updated_event(const ticker_balance_updated& evt)
     {
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
@@ -511,7 +527,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     /*void
-    application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt) noexcept
+    application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt)
     {
         if (not m_event_actions[events_action::about_to_exit_app])
         {
@@ -520,7 +536,7 @@ namespace atomic_dex
     }*/
 
     void
-    application::on_process_orders_and_swaps_finished_event([[maybe_unused]] const process_swaps_and_orders_finished& evt) noexcept
+    application::on_process_orders_and_swaps_finished_event([[maybe_unused]] const process_swaps_and_orders_finished& evt)
     {
         if (not m_event_actions[events_action::about_to_exit_app])
         {
@@ -530,7 +546,7 @@ namespace atomic_dex
     }
 
     orders_model*
-    application::get_orders() const noexcept
+    application::get_orders() const
     {
         return qobject_cast<orders_model*>(m_manager_models.at("orders"));
     }
@@ -540,7 +556,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     portfolio_page*
-    application::get_portfolio_page() const noexcept
+    application::get_portfolio_page() const
     {
         portfolio_page* ptr = const_cast<portfolio_page*>(std::addressof(system_manager_.get_system<portfolio_page>()));
         assert(ptr != nullptr);
@@ -552,7 +568,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     bool
-    application::is_pin_cfg_enabled() const noexcept
+    application::is_pin_cfg_enabled() const
     {
         return get_mm2().is_pin_cfg_enabled();
     }
@@ -596,7 +612,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     trading_page*
-    application::get_trading_page() const noexcept
+    application::get_trading_page() const
     {
         trading_page* ptr = const_cast<trading_page*>(std::addressof(system_manager_.get_system<trading_page>()));
         assert(ptr != nullptr);
@@ -608,7 +624,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     wallet_page*
-    application::get_wallet_page() const noexcept
+    application::get_wallet_page() const
     {
         auto ptr = const_cast<wallet_page*>(std::addressof(system_manager_.get_system<wallet_page>()));
         assert(ptr != nullptr);
@@ -620,7 +636,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     settings_page*
-    application::get_settings_page() const noexcept
+    application::get_settings_page() const
     {
         auto ptr = const_cast<settings_page*>(std::addressof(system_manager_.get_system<settings_page>()));
         assert(ptr != nullptr);
@@ -632,7 +648,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     addressbook_page*
-    application::get_addressbook_page() const noexcept
+    application::get_addressbook_page() const
     {
         auto ptr = const_cast<addressbook_page*>(std::addressof(system_manager_.get_system<addressbook_page>()));
         assert(ptr != nullptr);
@@ -644,7 +660,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     notification_manager*
-    application::get_notification_manager() const noexcept
+    application::get_notification_manager() const
     {
         return qobject_cast<notification_manager*>(m_manager_models.at("notifications"));
     }
@@ -654,7 +670,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     internet_service_checker*
-    application::get_internet_checker() const noexcept
+    application::get_internet_checker() const
     {
         return qobject_cast<internet_service_checker*>(m_manager_models.at("internet_service"));
     }
@@ -676,7 +692,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     ip_service_checker*
-    application::get_ip_checker() const noexcept
+    application::get_ip_checker() const
     {
         auto ptr = const_cast<ip_service_checker*>(std::addressof(system_manager_.get_system<ip_service_checker>()));
         assert(ptr != nullptr);
@@ -688,7 +704,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     exporter_service*
-    application::get_exporter_service() const noexcept
+    application::get_exporter_service() const
     {
         auto ptr = const_cast<exporter_service*>(std::addressof(system_manager_.get_system<exporter_service>()));
         assert(ptr != nullptr);
@@ -700,7 +716,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     qt_wallet_manager*
-    application::get_wallet_mgr() const noexcept
+    application::get_wallet_mgr() const
     {
         auto ptr = const_cast<qt_wallet_manager*>(std::addressof(system_manager_.get_system<qt_wallet_manager>()));
         assert(ptr != nullptr);
@@ -725,7 +741,17 @@ namespace atomic_dex
 
         if (appimage == nullptr || not QString(appimage).contains("atomicdex-desktop"))
         {
-            QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
+            // qDebug() << qApp->arguments();
+            // SPDLOG_INFO("arg: {}, dir path: {}", qApp->arguments()[0].toStdString(), qApp->applicationDirPath().toStdString());
+            bool res = QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
+            if (!res)
+            {
+                SPDLOG_ERROR("Couldn't start a new process");
+            }
+            else
+            {
+                SPDLOG_INFO("Successfully restarted the app");
+            }
         }
         else
         {

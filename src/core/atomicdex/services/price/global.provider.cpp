@@ -136,7 +136,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    global_price_service::update() noexcept
+    global_price_service::update() 
     {
         using namespace std::chrono_literals;
 
@@ -150,8 +150,9 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker, bool adjusted) const noexcept
+    global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker_in, bool adjusted) const
     {
+        std::string ticker = atomic_dex::utils::retrieve_main_ticker(ticker_in);
         //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
         if (ticker.empty())
             return "0";
@@ -218,7 +219,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx) const noexcept
+    global_price_service::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx) const 
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
@@ -236,7 +237,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept
+    global_price_service::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const 
     {
         auto&   mm2_instance = m_system_manager.get_system<mm2_service>();
         t_coins coins        = mm2_instance.get_enabled_coins();
@@ -286,7 +287,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount) const noexcept
+    global_price_service::get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount) const
     {
         try
         {
@@ -309,13 +310,13 @@ namespace atomic_dex
         }
         catch (const std::exception& error)
         {
-            SPDLOG_ERROR("Exception caught: {}", error.what());
+            SPDLOG_ERROR("Exception caught: {}, ticker: {}, currency: {}, amount: {}", error.what(), ticker, currency, amount);
             return "0.00";
         }
     }
 
     std::string
-    global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const noexcept
+    global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const 
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
@@ -363,7 +364,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_cex_rates(const std::string& base, const std::string& rel) const noexcept
+    global_price_service::get_cex_rates(const std::string& base, const std::string& rel) const 
     {
         const std::string base_rate_str = get_rate_conversion("USD", base, false);
         const std::string rel_rate_str  = get_rate_conversion("USD", rel, false);

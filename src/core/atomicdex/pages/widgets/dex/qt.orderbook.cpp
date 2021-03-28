@@ -31,25 +31,25 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::qt_orderbook_wrapper::is_best_orders_busy() const noexcept
+    atomic_dex::qt_orderbook_wrapper::is_best_orders_busy() const 
     {
         return this->m_system_manager.get_system<orderbook_scanner_service>().is_best_orders_busy();
     }
 
     atomic_dex::orderbook_model*
-    atomic_dex::qt_orderbook_wrapper::get_asks() const noexcept
+    atomic_dex::qt_orderbook_wrapper::get_asks() const 
     {
         return m_asks;
     }
 
     orderbook_model*
-    qt_orderbook_wrapper::get_bids() const noexcept
+    qt_orderbook_wrapper::get_bids() const 
     {
         return m_bids;
     }
 
     atomic_dex::orderbook_model*
-    atomic_dex::qt_orderbook_wrapper::get_best_orders() const noexcept
+    atomic_dex::qt_orderbook_wrapper::get_best_orders() const 
     {
         return m_best_orders;
     }
@@ -100,13 +100,13 @@ namespace atomic_dex
     }
 
     QVariant
-    qt_orderbook_wrapper::get_base_max_taker_vol() const noexcept
+    qt_orderbook_wrapper::get_base_max_taker_vol() const 
     {
         return m_base_max_taker_vol;
     }
 
     QVariant
-    qt_orderbook_wrapper::get_rel_max_taker_vol() const noexcept
+    qt_orderbook_wrapper::get_rel_max_taker_vol() const 
     {
         return m_rel_max_taker_vol;
     }
@@ -128,13 +128,13 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    qt_orderbook_wrapper::refresh_best_orders() noexcept
+    qt_orderbook_wrapper::refresh_best_orders() 
     {
         this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
     }
 
     void
-    qt_orderbook_wrapper::select_best_order(const QString& order_uuid) noexcept
+    qt_orderbook_wrapper::select_best_order(const QString& order_uuid) 
     {
         QVariantMap out;
         const bool is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;

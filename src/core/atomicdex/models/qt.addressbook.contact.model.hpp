@@ -50,7 +50,7 @@ namespace atomic_dex
         Q_ENUMS(ContactRoles)
 
         explicit addressbook_contact_model(ag::ecs::system_manager& system_manager, QString name, QObject* parent = nullptr);
-        ~addressbook_contact_model() noexcept final;
+        ~addressbook_contact_model()  final;
     
         // QAbstractListModel Functions
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
@@ -58,12 +58,12 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         
         // Getters/Setters
-        [[nodiscard]] const QString&                          get_name() const noexcept;
-        void                                                  set_name(const QString& name) noexcept;
-        [[nodiscard]] const QStringList&                      get_categories() const noexcept;
-        void                                                  set_categories(QStringList categories) noexcept;
-        [[nodiscard]] addressbook_contact_proxy_filter_model* get_proxy_filter() const noexcept;
-        [[nodiscard]] const QVector<address_entry>&           get_address_entries() const noexcept; // Returns contact's current addresses.
+        [[nodiscard]] const QString&                          get_name() const ;
+        void                                                  set_name(const QString& name) ;
+        [[nodiscard]] const QStringList&                      get_categories() const ;
+        void                                                  set_categories(QStringList categories) ;
+        [[nodiscard]] addressbook_contact_proxy_filter_model* get_proxy_filter() const ;
+        [[nodiscard]] const QVector<address_entry>&           get_address_entries() const ; // Returns contact's current addresses.
     
         // Loads this model data from the persistent data.
         void populate();
@@ -72,10 +72,10 @@ namespace atomic_dex
         void clear();
 
         // QML API
-        Q_INVOKABLE bool add_category(const QString& category) noexcept;                         // Adds a category to the current contact.
-        Q_INVOKABLE void remove_category(const QString& category) noexcept;                      // Removes a category from the current contact.
-        Q_INVOKABLE bool add_address_entry(QString type, QString key, QString value) noexcept;   // Adds an address entry to the current contact. Returns false if the key already exists in the given wallet type, false otherwise.
-        Q_INVOKABLE void remove_address_entry(const QString& type, const QString& key) noexcept; // Removes an address entry from the current contact.
+        Q_INVOKABLE bool add_category(const QString& category) ;                         // Adds a category to the current contact.
+        Q_INVOKABLE void remove_category(const QString& category) ;                      // Removes a category from the current contact.
+        Q_INVOKABLE bool add_address_entry(QString type, QString key, QString value) ;   // Adds an address entry to the current contact. Returns false if the key already exists in the given wallet type, false otherwise.
+        Q_INVOKABLE void remove_address_entry(const QString& type, const QString& key) ; // Removes an address entry from the current contact.
         Q_INVOKABLE void reload();                                                               // Reinitializes data from the persistent data ignoring pending changes.
         Q_INVOKABLE void save();                                                                 // Saves the current contact pending changes in the persistent data.
     

@@ -25,7 +25,7 @@
 namespace
 {
     QJsonObject
-    to_qt_binding(const atomic_dex::coin_config& coin) noexcept
+    to_qt_binding(const atomic_dex::coin_config& coin) 
     {
         QJsonObject j{
             {"active", coin.active},
@@ -46,7 +46,7 @@ namespace
 //! Constructor
 namespace atomic_dex
 {
-    global_coins_cfg_model::global_coins_cfg_model(QObject* parent) noexcept : QAbstractListModel(parent)
+    global_coins_cfg_model::global_coins_cfg_model(QObject* parent)  : QAbstractListModel(parent)
     {
         for (int i = 0; i < CoinType::Size; ++i)
         {
@@ -169,7 +169,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    global_coins_cfg_model::initialize_model(std::vector<coin_config> cfg) noexcept
+    global_coins_cfg_model::initialize_model(std::vector<coin_config> cfg) 
     {
         m_enabled_coins.clear();
         m_all_coin_types.clear();
@@ -198,7 +198,7 @@ namespace atomic_dex
 
     template <typename TArray>
     void
-    global_coins_cfg_model::update_status(const TArray& tickers, bool status) noexcept
+    global_coins_cfg_model::update_status(const TArray& tickers, bool status) 
     {
         auto update_functor = [this, status](QModelIndexList res, [[maybe_unused]] const QString& ticker) {
             // SPDLOG_INFO("Changing Active/CurrentlyEnabled status to {} for ticker {}", status, ticker.toStdString());
@@ -235,7 +235,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QStringList
-    global_coins_cfg_model::get_checked_coins() const noexcept
+    global_coins_cfg_model::get_checked_coins() const 
     {
         QStringList result;
 
@@ -250,13 +250,13 @@ namespace atomic_dex
     }
 
     QVariant
-    global_coins_cfg_model::get_coin_info(const QString& ticker) const noexcept
+    global_coins_cfg_model::get_coin_info(const QString& ticker) const 
     {
         return to_qt_binding(get_coin_info(ticker.toStdString()));
     }
 
     bool
-    global_coins_cfg_model::is_coin_type(const QString& ticker) const noexcept
+    global_coins_cfg_model::is_coin_type(const QString& ticker) const 
     {
         return get_all_coin_types().contains(ticker);
     }
@@ -266,55 +266,55 @@ namespace atomic_dex
 namespace atomic_dex
 {
     global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_all_disabled_proxy() const noexcept
+    global_coins_cfg_model::get_all_disabled_proxy() const 
     {
         return m_proxies[CoinType::Disabled];
     }
 
     global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_all_proxy() const noexcept
+    global_coins_cfg_model::get_all_proxy() const 
     {
         return m_proxies[CoinType::All];
     }
 
     global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_all_qrc20_proxy() const noexcept
+    global_coins_cfg_model::get_all_qrc20_proxy() const 
     {
         return m_proxies[CoinType::QRC20];
     }
 
     global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_all_erc20_proxy() const noexcept
+    global_coins_cfg_model::get_all_erc20_proxy() const 
     {
         return m_proxies[CoinType::ERC20];
     }
 
     global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_all_smartchains_proxy() const noexcept
+    global_coins_cfg_model::get_all_smartchains_proxy() const 
     {
         return m_proxies[CoinType::SmartChain];
     }
 
     global_coins_cfg_proxy_model*
-    global_coins_cfg_model::get_all_utxo_proxy() const noexcept
+    global_coins_cfg_model::get_all_utxo_proxy() const 
     {
         return m_proxies[CoinType::UTXO];
     }
 
     int
-    global_coins_cfg_model::get_length() const noexcept
+    global_coins_cfg_model::get_length() const 
     {
         return rowCount();
     }
 
     int
-    global_coins_cfg_model::get_checked_nb() const noexcept
+    global_coins_cfg_model::get_checked_nb() const 
     {
         return m_checked_nb;
     }
 
     void
-    global_coins_cfg_model::set_checked_nb(int value) noexcept
+    global_coins_cfg_model::set_checked_nb(int value) 
     {
         if (value == m_checked_nb)
         {
@@ -325,19 +325,19 @@ namespace atomic_dex
     }
 
     const QStringList&
-    global_coins_cfg_model::get_all_coin_types() const noexcept
+    global_coins_cfg_model::get_all_coin_types() const 
     {
         return m_all_coin_types;
     }
 
     const std::vector<coin_config>&
-    global_coins_cfg_model::get_model_data() const noexcept
+    global_coins_cfg_model::get_model_data() const 
     {
         return m_model_data;
     }
 
     coin_config
-    global_coins_cfg_model::get_coin_info(const std::string& ticker) const noexcept
+    global_coins_cfg_model::get_coin_info(const std::string& ticker) const 
     {
         if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
         {
@@ -349,7 +349,7 @@ namespace atomic_dex
     }
 
     global_coins_cfg_model::t_enabled_coins_registry
-    global_coins_cfg_model::get_enabled_coins() const noexcept
+    global_coins_cfg_model::get_enabled_coins() const 
     {
         return m_enabled_coins;
     }

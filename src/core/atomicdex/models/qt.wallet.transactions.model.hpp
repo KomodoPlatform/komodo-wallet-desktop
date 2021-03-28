@@ -55,8 +55,8 @@ namespace atomic_dex
             TransactionNoteRole
         };
 
-        transactions_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
-        ~transactions_model() noexcept final = default;
+        transactions_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) ;
+        ~transactions_model()  final = default;
 
         void reset();
         void init_transactions(const t_transactions& transactions);
@@ -72,8 +72,8 @@ namespace atomic_dex
         bool                                 canFetchMore(const QModelIndex& parent) const final;
 
         //! Props
-        [[nodiscard]] int                       get_length() const noexcept;
-        [[nodiscard]] transactions_proxy_model* get_transactions_proxy() const noexcept;
+        [[nodiscard]] int                       get_length() const ;
+        [[nodiscard]] transactions_proxy_model* get_transactions_proxy() const ;
 
       signals:
         void lengthChanged();

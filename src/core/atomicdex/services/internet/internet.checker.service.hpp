@@ -59,20 +59,20 @@ namespace atomic_dex
       public:
         //! Constructor
         explicit internet_service_checker(entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
-        ~internet_service_checker() noexcept final = default;
+        ~internet_service_checker()  final = default;
 
         //! Public override
-        void update() noexcept final;
+        void update()  final;
 
         //! QT Properties
-        [[nodiscard]] bool   is_internet_alive() const noexcept;
-        [[nodiscard]] double get_seconds_left_to_auto_retry() const noexcept;
-        void                 set_seconds_left_to_auto_retry(double time_left) noexcept;
+        [[nodiscard]] bool   is_internet_alive() const ;
+        [[nodiscard]] double get_seconds_left_to_auto_retry() const ;
+        void                 set_seconds_left_to_auto_retry(double time_left) ;
 
-        void set_internet_alive(bool internet_status) noexcept;
-        void query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept;
+        void set_internet_alive(bool internet_status) ;
+        void query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) ;
 
-        Q_INVOKABLE void retry() noexcept;
+        Q_INVOKABLE void retry() ;
 
         //! Events
         void on_default_coins_enabled([[maybe_unused]] const default_coins_enabled& evt);

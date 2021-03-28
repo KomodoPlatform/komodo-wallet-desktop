@@ -57,7 +57,7 @@ namespace atomic_dex
         this->m_multiple_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 
-    market_pairs::~market_pairs() noexcept
+    market_pairs::~market_pairs() 
     {
         delete m_left_selection_box;
         delete m_right_selection_box;
@@ -69,19 +69,19 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
-    market_pairs::get_left_selected_coin() const noexcept
+    market_pairs::get_left_selected_coin() const 
     {
         return m_left_selected_coin;
     }
 
     QString
-    market_pairs::get_right_selected_coin() const noexcept
+    market_pairs::get_right_selected_coin() const 
     {
         return m_right_selected_coin;
     }
 
     void
-    market_pairs::set_left_selected_coin(QString left_coin) noexcept
+    market_pairs::set_left_selected_coin(QString left_coin) 
     {
         if (left_coin != m_left_selected_coin)
         {
@@ -93,7 +93,7 @@ namespace atomic_dex
     }
 
     void
-    market_pairs::set_right_selected_coin(QString right_coin) noexcept
+    market_pairs::set_right_selected_coin(QString right_coin) 
     {
         if (right_coin != m_right_selected_coin)
         {
@@ -104,25 +104,25 @@ namespace atomic_dex
     }
 
     portfolio_proxy_model*
-    market_pairs::get_left_selection_box() const noexcept
+    market_pairs::get_left_selection_box() const 
     {
         return m_left_selection_box;
     }
 
     portfolio_proxy_model*
-    market_pairs::get_right_selection_box() const noexcept
+    market_pairs::get_right_selection_box() const 
     {
         return m_right_selection_box;
     }
 
     portfolio_proxy_model*
-    market_pairs::get_multiple_selection_box() const noexcept
+    market_pairs::get_multiple_selection_box() const 
     {
         return m_multiple_selection_box;
     }
 
     portfolio_proxy_model*
-    market_pairs::get_multiple_order_coins() const noexcept
+    market_pairs::get_multiple_order_coins() const 
     {
         return m_multi_order_coins;
     }
@@ -141,19 +141,19 @@ namespace atomic_dex
     }
 
     QString
-    market_pairs::get_base_selected_coin() const noexcept
+    market_pairs::get_base_selected_coin() const 
     {
         return m_base_selected_coin;
     }
 
     QString
-    market_pairs::get_rel_selected_coin() const noexcept
+    market_pairs::get_rel_selected_coin() const 
     {
         return m_rel_selected_coin;
     }
 
     void
-    market_pairs::set_base_selected_coin(QString base_coin) noexcept
+    market_pairs::set_base_selected_coin(QString base_coin) 
     {
         if (base_coin != m_base_selected_coin)
         {
@@ -164,7 +164,7 @@ namespace atomic_dex
     }
 
     void
-    market_pairs::set_rel_selected_coin(QString rel_coin) noexcept
+    market_pairs::set_rel_selected_coin(QString rel_coin) 
     {
         if (rel_coin != m_rel_selected_coin)
         {

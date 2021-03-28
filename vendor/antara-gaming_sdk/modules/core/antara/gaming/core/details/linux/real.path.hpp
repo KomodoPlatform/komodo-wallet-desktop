@@ -24,13 +24,13 @@
 namespace antara::gaming::core::details
 {
     fs::path
-    binary_real_path() noexcept
+    binary_real_path() 
     {
         return fs::read_symlink("/proc/" + std::to_string(getpid()) + "/exe");
     }
 
     fs::path
-    assets_real_path() noexcept
+    assets_real_path() 
     {
         return binary_real_path().parent_path().parent_path() / "share/assets/";
     }

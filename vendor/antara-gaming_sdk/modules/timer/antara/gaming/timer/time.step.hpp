@@ -41,22 +41,22 @@ namespace antara::gaming::timer
 
       public:
         //! Public static functions
-        static void start() noexcept;
+        static void start() ;
 
-        static void start_frame() noexcept;
+        static void start_frame() ;
 
-        static void perform_update() noexcept;
+        static void perform_update() ;
 
         static void change_tps(std::chrono::nanoseconds new_tps_rate);
 
-        static float get_fixed_delta_time() noexcept;
+        static float get_fixed_delta_time() ;
 
-        static void reset_lag() noexcept;
+        static void reset_lag() ;
 
         //! Public member functions
-        [[nodiscard]] bool is_update_required() const noexcept;
+        [[nodiscard]] bool is_update_required() const ;
 
-        [[nodiscard]] float get_interpolation() const noexcept;
+        [[nodiscard]] float get_interpolation() const ;
 
         //! Public Fields
         static std::string fps_str_;

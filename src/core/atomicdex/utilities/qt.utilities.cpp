@@ -97,7 +97,7 @@ namespace atomic_dex
     }
 
     QStringList
-    qt_utilities::get_themes_list() const noexcept
+    qt_utilities::get_themes_list() const 
     {
         QStringList    out;
         const fs::path theme_path = atomic_dex::utils::get_themes_path();
@@ -125,7 +125,7 @@ namespace atomic_dex
     }
 
     QVariantMap
-    atomic_dex::qt_utilities::load_theme(const QString& theme_name) const noexcept
+    atomic_dex::qt_utilities::load_theme(const QString& theme_name) const 
     {
         QVariantMap out;
         using namespace std::string_literals;
@@ -137,5 +137,11 @@ namespace atomic_dex
             return QJsonDocument::fromJson(str.data()).object().toVariantMap();
         }
         return out;
+    }
+
+    QString
+    qt_utilities::retrieve_main_ticker(const QString& ticker) const
+    {
+        return QString::fromStdString(atomic_dex::utils::retrieve_main_ticker(ticker.toStdString()));
     }
 } // namespace atomic_dex

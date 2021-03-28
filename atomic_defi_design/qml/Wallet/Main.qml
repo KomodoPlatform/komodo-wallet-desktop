@@ -312,12 +312,12 @@ Item {
                 property var ticker: api_wallet_page.ticker
 
                 function loadChart() {
-                    const pair = ticker + "/" + API.app.settings_pg.current_currency
-                    const pair_reversed = API.app.settings_pg.current_currency + "/" + ticker
-                    const pair_usd = ticker + "/" + "USD"
-                    const pair_usd_reversed = "USD" + "/" + ticker
-                    const pair_busd = ticker + "/" + "BUSD"
-                    const pair_busd_reversed = "BUSD" + "/" + ticker
+                    const pair = atomic_qt_utilities.retrieve_main_ticker(ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(API.app.settings_pg.current_currency)
+                    const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(API.app.settings_pg.current_currency) + "/" + atomic_qt_utilities.retrieve_main_ticker(ticker)
+                    const pair_usd = atomic_qt_utilities.retrieve_main_ticker(ticker) + "/" + "USD"
+                    const pair_usd_reversed = "USD" + "/" + atomic_qt_utilities.retrieve_main_ticker(ticker)
+                    const pair_busd = atomic_qt_utilities.retrieve_main_ticker(ticker) + "/" + "BUSD"
+                    const pair_busd_reversed = "BUSD" + "/" + atomic_qt_utilities.retrieve_main_ticker(ticker)
 
                     // Normal pair
                     let symbol = General.supported_pairs[pair]

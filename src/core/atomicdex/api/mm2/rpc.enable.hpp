@@ -33,6 +33,8 @@ namespace mm2::api
         bool                     is_testnet{false};
         const std::string        erc_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
         const std::string        erc_testnet_swap_contract_address{"0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94"};
+        const std::string        bnb_testnet_swap_contract_address{"0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150"};
+        const std::string        bnb_swap_contract_address{"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"};
         std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
         std::string              type; ///< QRC-20 ?
         bool                     with_tx_history{true};

@@ -26,6 +26,6 @@ namespace atomic_dex
     t_password_key derive_password(const std::string& password, std::error_code& ec);
     void           encrypt(const fs::path& target_path, const char* mnemonic, const unsigned char* key);
     std::string    decrypt(const fs::path& encrypted_file_path, const unsigned char* key, std::error_code& ec);
-    std::string    gen_random_password() noexcept;
+    std::string    gen_random_password() ;
     const char*    get_regex_password_policy();
 } // namespace atomic_dex

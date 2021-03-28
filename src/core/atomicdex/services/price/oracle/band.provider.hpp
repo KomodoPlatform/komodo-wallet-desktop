@@ -32,21 +32,21 @@ namespace atomic_dex
         std::atomic_bool             m_oracle_ready{false};
         std::vector<std::string>     m_supported_tickers{"BTC", "ETH", "DAI", "BAT", "KMD", "BCH", "LTC", "ZEC", "XZC", "RVN", "DOGE", "DGB", "SUSHI", "LINK", "BNB", "XTZ", "USDC", "YFI", "DASH", "BAL", "YFII", "BUSD", "CRV", "WBTC"};
 
-        void                                 fetch_oracle() noexcept;
-        pplx::task<web::http::http_response> async_fetch_oracle_result() noexcept;
+        void                                 fetch_oracle() ;
+        pplx::task<web::http::http_response> async_fetch_oracle_result() ;
 
       public:
         explicit band_oracle_price_service(entt::registry& registry);
-        ~band_oracle_price_service() noexcept final = default;
+        ~band_oracle_price_service()  final = default;
 
-        void update() noexcept final;
+        void update()  final;
 
         //! Public API
-        bool                     is_oracle_ready() const noexcept;
-        std::string              retrieve_if_this_ticker_supported(const std::string& ticker) const noexcept;
-        t_float_50               retrieve_rates(const std::string& fiat) const noexcept;
-        std::vector<std::string> supported_pair() const noexcept;
-        std::string              last_oracle_reference() const noexcept;
+        bool                     is_oracle_ready() const ;
+        std::string              retrieve_if_this_ticker_supported(const std::string& ticker) const ;
+        t_float_50               retrieve_rates(const std::string& fiat) const ;
+        std::vector<std::string> supported_pair() const ;
+        std::string              last_oracle_reference() const ;
     };
 } // namespace atomic_dex
 

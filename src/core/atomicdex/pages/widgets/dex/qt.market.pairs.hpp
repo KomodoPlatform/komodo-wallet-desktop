@@ -52,21 +52,21 @@ namespace atomic_dex
       public:
         //! Constructor / Destructor
         market_pairs(ag::ecs::system_manager& system_manager, portfolio_model* portfolio_mdl, QObject* parent = nullptr);
-        ~market_pairs() noexcept final;
+        ~market_pairs()  final;
 
         //! Properties Getter/Setter
-        [[nodiscard]] QString                get_left_selected_coin() const noexcept;
-        [[nodiscard]] QString                get_right_selected_coin() const noexcept;
-        [[nodiscard]] QString                get_base_selected_coin() const noexcept;
-        [[nodiscard]] QString                get_rel_selected_coin() const noexcept;
-        [[nodiscard]] portfolio_proxy_model* get_left_selection_box() const noexcept;
-        [[nodiscard]] portfolio_proxy_model* get_right_selection_box() const noexcept;
-        [[nodiscard]] portfolio_proxy_model* get_multiple_selection_box() const noexcept;
-        [[nodiscard]] portfolio_proxy_model* get_multiple_order_coins() const noexcept;
-        void                                 set_left_selected_coin(QString left_coin) noexcept;
-        void                                 set_right_selected_coin(QString right_coin) noexcept;
-        void                                 set_base_selected_coin(QString base_coin) noexcept;
-        void                                 set_rel_selected_coin(QString rel_coin) noexcept;
+        [[nodiscard]] QString                get_left_selected_coin() const ;
+        [[nodiscard]] QString                get_right_selected_coin() const ;
+        [[nodiscard]] QString                get_base_selected_coin() const ;
+        [[nodiscard]] QString                get_rel_selected_coin() const ;
+        [[nodiscard]] portfolio_proxy_model* get_left_selection_box() const ;
+        [[nodiscard]] portfolio_proxy_model* get_right_selection_box() const ;
+        [[nodiscard]] portfolio_proxy_model* get_multiple_selection_box() const ;
+        [[nodiscard]] portfolio_proxy_model* get_multiple_order_coins() const ;
+        void                                 set_left_selected_coin(QString left_coin) ;
+        void                                 set_right_selected_coin(QString right_coin) ;
+        void                                 set_base_selected_coin(QString base_coin) ;
+        void                                 set_rel_selected_coin(QString rel_coin) ;
         void                                 reset();
 
       signals:

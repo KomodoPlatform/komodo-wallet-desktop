@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#pragma once
+
 //! Deps
 #include <antara/gaming/world/world.app.hpp>
 
@@ -106,7 +108,7 @@ struct tests_context : public antara::gaming::world::app
     }
 
     antara::gaming::ecs::system_manager&
-    system_manager() noexcept
+    system_manager() 
     {
         return system_manager_;
     }

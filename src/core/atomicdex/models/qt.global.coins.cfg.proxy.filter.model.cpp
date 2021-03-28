@@ -91,7 +91,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    global_coins_cfg_proxy_model::set_all_state(bool checked) noexcept
+    global_coins_cfg_proxy_model::set_all_state(bool checked) 
     {
         int nb_items = this->rowCount();
         for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
@@ -106,7 +106,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     int
-    global_coins_cfg_proxy_model::get_length() const noexcept
+    global_coins_cfg_proxy_model::get_length() const 
     {
         return rowCount();
     }

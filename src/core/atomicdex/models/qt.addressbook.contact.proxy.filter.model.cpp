@@ -86,23 +86,23 @@ namespace atomic_dex
 
 namespace atomic_dex
 {
-    const QString& addressbook_contact_proxy_filter_model::get_search_expression() const noexcept
+    const QString& addressbook_contact_proxy_filter_model::get_search_expression() const 
     {
         return m_search_expression;
     }
     
-    void addressbook_contact_proxy_filter_model::set_search_expression(QString value) noexcept
+    void addressbook_contact_proxy_filter_model::set_search_expression(QString value) 
     {
         m_search_expression = std::move(value);
         invalidateFilter();
     }
     
-    const QString& addressbook_contact_proxy_filter_model::get_filter_type() const noexcept
+    const QString& addressbook_contact_proxy_filter_model::get_filter_type() const 
     {
         return m_filter_type;
     }
     
-    void addressbook_contact_proxy_filter_model::set_filter_type(QString value) noexcept
+    void addressbook_contact_proxy_filter_model::set_filter_type(QString value) 
     {
         m_filter_type = std::move(value);
         invalidateFilter();

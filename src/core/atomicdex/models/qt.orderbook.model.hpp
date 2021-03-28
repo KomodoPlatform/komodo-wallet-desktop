@@ -67,7 +67,7 @@ namespace atomic_dex
         };
 
         orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent = nullptr);
-        ~orderbook_model() noexcept final = default;
+        ~orderbook_model()  final = default;
 
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
@@ -75,20 +75,20 @@ namespace atomic_dex
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                                 removeRows(int row, int count, const QModelIndex& parent) override;
 
-        void                                 reset_orderbook(const t_orders_contents& orderbook) noexcept;
-        void                                 refresh_orderbook(const t_orders_contents& orderbook) noexcept;
-        void                                 clear_orderbook() noexcept;
-        [[nodiscard]] int                    get_length() const noexcept;
-        [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const noexcept;
-        [[nodiscard]] t_order_contents       get_order_content(const QModelIndex& index) const noexcept;
+        void                                 reset_orderbook(const t_orders_contents& orderbook) ;
+        void                                 refresh_orderbook(const t_orders_contents& orderbook) ;
+        void                                 clear_orderbook() ;
+        [[nodiscard]] int                    get_length() const ;
+        [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const ;
+        [[nodiscard]] t_order_contents       get_order_content(const QModelIndex& index) const ;
 
       signals:
         void lengthChanged();
         void proxyMdlChanged();
 
       private:
-        void initialize_order(const ::mm2::api::order_contents& order) noexcept;
-        void update_order(const ::mm2::api::order_contents& order) noexcept;
+        void initialize_order(const ::mm2::api::order_contents& order) ;
+        void update_order(const ::mm2::api::order_contents& order) ;
 
       private:
         kind                            m_current_orderbook_kind{kind::asks};

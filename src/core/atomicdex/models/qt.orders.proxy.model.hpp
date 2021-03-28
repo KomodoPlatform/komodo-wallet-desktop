@@ -35,13 +35,13 @@ namespace atomic_dex
         orders_proxy_model(QObject* parent);
 
         //! Destructor
-        ~orders_proxy_model() noexcept final = default;
+        ~orders_proxy_model()  final = default;
 
-        [[nodiscard]] bool am_i_in_history() const noexcept;
-        void               set_is_history(bool is_history) noexcept;
+        [[nodiscard]] bool am_i_in_history() const ;
+        void               set_is_history(bool is_history) ;
 
-        [[nodiscard]] bool get_apply_filtering() const noexcept;
-        void               set_apply_filtering(bool status) noexcept;
+        [[nodiscard]] bool get_apply_filtering() const ;
+        void               set_apply_filtering(bool status) ;
 
         [[nodiscard]] QDate filter_minimum_date() const;
         void                set_filter_minimum_date(QDate date);
@@ -49,13 +49,13 @@ namespace atomic_dex
         [[nodiscard]] QDate filter_maximum_date() const;
         void                set_filter_maximum_date(QDate date);
 
-        Q_INVOKABLE QStringList get_filtered_ids() const noexcept;
+        Q_INVOKABLE QStringList get_filtered_ids() const ;
         Q_INVOKABLE void        set_coin_filter(const QString& to_filter);
         Q_INVOKABLE void        export_csv_visible_history(const QString& path);
         Q_INVOKABLE void        apply_all_filtering(); ///< call it only once
        
 
-        void on_layout_changed() noexcept;
+        void on_layout_changed() ;
 
 
       signals:

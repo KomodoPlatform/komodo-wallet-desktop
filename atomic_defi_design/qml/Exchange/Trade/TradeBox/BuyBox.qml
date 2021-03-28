@@ -30,7 +30,7 @@ FloatingBackground {
         radius: 2
         DefaultText {
             anchors.centerIn: parent
-            text: qsTr("Buy")+" "+left_ticker
+            text: qsTr("Buy")+" "+ atomic_qt_utilities.retrieve_main_ticker(left_ticker)
             color: Style.colorTheme9
             font.pixelSize: Style.textSize2
         }

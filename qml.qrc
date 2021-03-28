@@ -1,12 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>atomic_defi_design/qml/Constants</file>
-        <file>atomic_defi_design/qml/main.qml</file>
-        <file>atomic_defi_design/qml/NoConnection.qml</file>
-        <file>atomic_defi_design/assets/languages/atomic_defi_en.qm</file>
-        <file>atomic_defi_design/assets/languages/atomic_defi_tr.qm</file>
-        <file>atomic_defi_design/assets/languages/atomic_defi_fr.qm</file>
-        <file>atomic_defi_design/assets/languages/atomic_defi_ru.qm</file>
         <file>atomic_defi_design/assets/fonts/Ubuntu-B.ttf</file>
         <file>atomic_defi_design/assets/fonts/Ubuntu-BI.ttf</file>
         <file>atomic_defi_design/assets/fonts/Ubuntu-L.ttf</file>
@@ -16,386 +9,280 @@
         <file>atomic_defi_design/assets/fonts/Ubuntu-R.ttf</file>
         <file>atomic_defi_design/assets/fonts/Ubuntu-RI.ttf</file>
         <file>atomic_defi_design/assets/fonts/Ubuntu-Th.ttf</file>
-        <file>atomic_defi_design/assets/images/guide_contract_address_qrc.gif</file>
-        <file>atomic_defi_design/assets/images/guide_contract_address_erc.gif</file>
-        <file>atomic_defi_design/assets/images/guide_coingecko_id.gif</file>
-        <file>atomic_defi_design/assets/images/icon-discord.png</file>
-        <file>atomic_defi_design/assets/images/icon-twitter.png</file>
-        <file>atomic_defi_design/assets/images/icon-email.png</file>
-        <file>atomic_defi_design/assets/images/icon-support.png</file>
-        <file>atomic_defi_design/assets/images/dex-tray-icon.png</file>
-        <file>atomic_defi_design/assets/images/arrow_up.svg</file>
-        <file>atomic_defi_design/assets/images/arrow_down.svg</file>
-        <file>atomic_defi_design/assets/images/arrow-up.svg</file>
         <file>atomic_defi_design/assets/images/arrow-down.svg</file>
-        <file>atomic_defi_design/assets/images/setup-logs.svg</file>
-        <file>atomic_defi_design/assets/images/setup-welcome-wallet.svg</file>
-        <file>atomic_defi_design/assets/images/setup-wallet-restore-2.svg</file>
-        <file>atomic_defi_design/assets/images/dashboard-eye.svg</file>
-        <file>atomic_defi_design/assets/images/dashboard-eye-hide.svg</file>
-        <file>atomic_defi_design/assets/images/dashboard-copy.svg</file>
-        <file>atomic_defi_design/assets/images/dex-logo-sidebar.png</file>
-        <file>atomic_defi_design/assets/images/dex-logo-sidebar-dark.png</file>
-        <file>atomic_defi_design/assets/images/logo/dex-logo.png</file>
-        <file>atomic_defi_design/assets/images/komodo-icon.png</file>
-        <file>atomic_defi_design/assets/images/exchange-exchange.svg</file>
-        <file>atomic_defi_design/assets/images/exchange-search.svg</file>
-        <file>atomic_defi_design/assets/images/settings-seed.svg</file>
-        <file>atomic_defi_design/assets/images/menu-assets-portfolio.svg</file>
-        <file>atomic_defi_design/assets/images/menu-settings-white.svg</file>
-        <file>atomic_defi_design/assets/images/menu-dapp-white.svg</file>
-        <file>atomic_defi_design/assets/images/menu-news-white.svg</file>
-        <file>atomic_defi_design/assets/images/menu-exchange-white.svg</file>
-        <file>atomic_defi_design/assets/images/menu-assets-white.svg</file>
-        <file>atomic_defi_design/assets/images/menu-support-white.png</file>
-        <file>atomic_defi_design/assets/images/exchange-trade-complete.svg</file>
-        <file>atomic_defi_design/assets/images/dashboard-info.svg</file>
-        <file>atomic_defi_design/assets/images/trade_icon.svg</file>
-        <file>atomic_defi_design/assets/images/circle-success.png</file>
+        <file>atomic_defi_design/assets/images/arrow-up.svg</file>
+        <file>atomic_defi_design/assets/images/arrow_down.svg</file>
+        <file>atomic_defi_design/assets/images/arrow_up.svg</file>
+        <file>atomic_defi_design/assets/images/bill.svg</file>
         <file>atomic_defi_design/assets/images/circle-failed.png</file>
-        <file>atomic_defi_design/assets/images/shadowed_circle_green.svg</file>
-        <file>atomic_defi_design/assets/images/shadowed_circle_blue.svg</file>
+        <file>atomic_defi_design/assets/images/circle-success.png</file>
+        <file>atomic_defi_design/assets/images/coins/1inch.png</file>
+        <file>atomic_defi_design/assets/images/coins/aave.png</file>
+        <file>atomic_defi_design/assets/images/coins/ada.png</file>
+        <file>atomic_defi_design/assets/images/coins/adexbsc.png</file>
+        <file>atomic_defi_design/assets/images/coins/adexbsct.png</file>
+        <file>atomic_defi_design/assets/images/coins/agi.png</file>
+        <file>atomic_defi_design/assets/images/coins/ant.png</file>
+        <file>atomic_defi_design/assets/images/coins/arpa.png</file>
+        <file>atomic_defi_design/assets/images/coins/atom.png</file>
         <file>atomic_defi_design/assets/images/coins/awc.png</file>
         <file>atomic_defi_design/assets/images/coins/axe.png</file>
+        <file>atomic_defi_design/assets/images/coins/bal.png</file>
+        <file>atomic_defi_design/assets/images/coins/band.png</file>
         <file>atomic_defi_design/assets/images/coins/band.png</file>
         <file>atomic_defi_design/assets/images/coins/bat.png</file>
+        <file>atomic_defi_design/assets/images/coins/bch.png</file>
+        <file>atomic_defi_design/assets/images/coins/best.png</file>
+        <file>atomic_defi_design/assets/images/coins/bet.png</file>
+        <file>atomic_defi_design/assets/images/coins/blk.png</file>
+        <file>atomic_defi_design/assets/images/coins/bnb.png</file>
+        <file>atomic_defi_design/assets/images/coins/bnbt.png</file>
+        <file>atomic_defi_design/assets/images/coins/bnt.png</file>
+        <file>atomic_defi_design/assets/images/coins/bots.png</file>
         <file>atomic_defi_design/assets/images/coins/btc.png</file>
         <file>atomic_defi_design/assets/images/coins/btch.png</file>
         <file>atomic_defi_design/assets/images/coins/btcz.png</file>
-        <file>atomic_defi_design/assets/images/coins/bch.png</file>
-        <file>atomic_defi_design/assets/images/coins/bet.png</file>
-        <file>atomic_defi_design/assets/images/coins/bots.png</file>
+        <file>atomic_defi_design/assets/images/coins/btu.png</file>
         <file>atomic_defi_design/assets/images/coins/busd.png</file>
+        <file>atomic_defi_design/assets/images/coins/cake.png</file>
         <file>atomic_defi_design/assets/images/coins/ccl.png</file>
+        <file>atomic_defi_design/assets/images/coins/cel.png</file>
+        <file>atomic_defi_design/assets/images/coins/cennz.png</file>
+        <file>atomic_defi_design/assets/images/coins/chips.png</file>
+        <file>atomic_defi_design/assets/images/coins/chsb.png</file>
+        <file>atomic_defi_design/assets/images/coins/chz.png</file>
+        <file>atomic_defi_design/assets/images/coins/clc.png</file>
+        <file>atomic_defi_design/assets/images/coins/comp.png</file>
         <file>atomic_defi_design/assets/images/coins/coqui.png</file>
+        <file>atomic_defi_design/assets/images/coins/cro.png</file>
+        <file>atomic_defi_design/assets/images/coins/crv.png</file>
         <file>atomic_defi_design/assets/images/coins/crypto.png</file>
+        <file>atomic_defi_design/assets/images/coins/cvc.png</file>
+        <file>atomic_defi_design/assets/images/coins/cvt.png</file>
         <file>atomic_defi_design/assets/images/coins/dai.png</file>
         <file>atomic_defi_design/assets/images/coins/dash.png</file>
+        <file>atomic_defi_design/assets/images/coins/dec8.png</file>
+        <file>atomic_defi_design/assets/images/coins/dex.png</file>
         <file>atomic_defi_design/assets/images/coins/dgb.png</file>
+        <file>atomic_defi_design/assets/images/coins/dia.png</file>
+        <file>atomic_defi_design/assets/images/coins/dodo.png</file>
         <file>atomic_defi_design/assets/images/coins/doge.png</file>
+        <file>atomic_defi_design/assets/images/coins/dot.png</file>
         <file>atomic_defi_design/assets/images/coins/dp.png</file>
+        <file>atomic_defi_design/assets/images/coins/dx.png</file>
         <file>atomic_defi_design/assets/images/coins/eca.png</file>
-        <file>atomic_defi_design/assets/images/coins/ftc.png</file>
-        <file>atomic_defi_design/assets/images/coins/gleec.png</file>
-        <file>atomic_defi_design/assets/images/coins/grs.png</file>
-        <file>atomic_defi_design/assets/images/coins/jumblr.png</file>
-        <file>atomic_defi_design/assets/images/coins/koin.png</file>
-        <file>atomic_defi_design/assets/images/coins/ltc.png</file>
-        <file>atomic_defi_design/assets/images/coins/mcl.png</file>
+        <file>atomic_defi_design/assets/images/coins/elf.png</file>
+        <file>atomic_defi_design/assets/images/coins/emc2.png</file>
+        <file>atomic_defi_design/assets/images/coins/enj.png</file>
+        <file>atomic_defi_design/assets/images/coins/eos.png</file>
+        <file>atomic_defi_design/assets/images/coins/erc-20.png</file>
         <file>atomic_defi_design/assets/images/coins/eth.png</file>
         <file>atomic_defi_design/assets/images/coins/ethr.png</file>
-        <file>atomic_defi_design/assets/images/coins/kmd.png</file>
-        <file>atomic_defi_design/assets/images/coins/chips.png</file>
-        <file>atomic_defi_design/assets/images/coins/dex.png</file>
-        <file>atomic_defi_design/assets/images/coins/emc2.png</file>
+        <file>atomic_defi_design/assets/images/coins/eurs.png</file>
+        <file>atomic_defi_design/assets/images/coins/fet.png</file>
+        <file>atomic_defi_design/assets/images/coins/firo.png</file>
+        <file>atomic_defi_design/assets/images/coins/ftc.png</file>
+        <file>atomic_defi_design/assets/images/coins/gleec.png</file>
+        <file>atomic_defi_design/assets/images/coins/gno.png</file>
+        <file>atomic_defi_design/assets/images/coins/grs.png</file>
+        <file>atomic_defi_design/assets/images/coins/hex.png</file>
+        <file>atomic_defi_design/assets/images/coins/hlc.png</file>
         <file>atomic_defi_design/assets/images/coins/hodl.png</file>
+        <file>atomic_defi_design/assets/images/coins/hot.png</file>
+        <file>atomic_defi_design/assets/images/coins/hpy.png</file>
+        <file>atomic_defi_design/assets/images/coins/ht.png</file>
+        <file>atomic_defi_design/assets/images/coins/husd.png</file>
         <file>atomic_defi_design/assets/images/coins/iln.png</file>
+        <file>atomic_defi_design/assets/images/coins/ink.png</file>
+        <file>atomic_defi_design/assets/images/coins/jst.png</file>
+        <file>atomic_defi_design/assets/images/coins/jumblr.png</file>
+        <file>atomic_defi_design/assets/images/coins/kmd.png</file>
+        <file>atomic_defi_design/assets/images/coins/knc.png</file>
+        <file>atomic_defi_design/assets/images/coins/koin.png</file>
         <file>atomic_defi_design/assets/images/coins/labs.png</file>
-        <file>atomic_defi_design/assets/images/coins/mona.png</file>
-        <file>atomic_defi_design/assets/images/coins/mshark.png</file>
-        <file>atomic_defi_design/assets/images/coins/rick.png</file>
+        <file>atomic_defi_design/assets/images/coins/leo.png</file>
+        <file>atomic_defi_design/assets/images/coins/link.png</file>
+        <file>atomic_defi_design/assets/images/coins/lrc.png</file>
+        <file>atomic_defi_design/assets/images/coins/lstr.png</file>
+        <file>atomic_defi_design/assets/images/coins/ltc.png</file>
+        <file>atomic_defi_design/assets/images/coins/mana.png</file>
+        <file>atomic_defi_design/assets/images/coins/matic.png</file>
+        <file>atomic_defi_design/assets/images/coins/mcl.png</file>
+        <file>atomic_defi_design/assets/images/coins/med.png</file>
         <file>atomic_defi_design/assets/images/coins/mgw.png</file>
+        <file>atomic_defi_design/assets/images/coins/mkr.png</file>
+        <file>atomic_defi_design/assets/images/coins/mln.png</file>
+        <file>atomic_defi_design/assets/images/coins/mona.png</file>
         <file>atomic_defi_design/assets/images/coins/morty.png</file>
+        <file>atomic_defi_design/assets/images/coins/mshark.png</file>
         <file>atomic_defi_design/assets/images/coins/nav.png</file>
         <file>atomic_defi_design/assets/images/coins/nmc.png</file>
+        <file>atomic_defi_design/assets/images/coins/npxs.png</file>
+        <file>atomic_defi_design/assets/images/coins/oc.png</file>
+        <file>atomic_defi_design/assets/images/coins/ocean.png</file>
+        <file>atomic_defi_design/assets/images/coins/okb.png</file>
+        <file>atomic_defi_design/assets/images/coins/omg.png</file>
         <file>atomic_defi_design/assets/images/coins/oot.png</file>
         <file>atomic_defi_design/assets/images/coins/pangea.png</file>
         <file>atomic_defi_design/assets/images/coins/pax.png</file>
-        <file>atomic_defi_design/assets/images/coins/revs.png</file>
-        <file>atomic_defi_design/assets/images/coins/jst.png</file>
-        <file>atomic_defi_design/assets/images/coins/dec8.png</file>
-        <file>atomic_defi_design/assets/images/coins/qtum.png</file>
-        <file>atomic_defi_design/assets/images/coins/qrc20.png</file>
+        <file>atomic_defi_design/assets/images/coins/paxg.png</file>
+        <file>atomic_defi_design/assets/images/coins/pnk.png</file>
+        <file>atomic_defi_design/assets/images/coins/powr.png</file>
+        <file>atomic_defi_design/assets/images/coins/put.png</file>
+        <file>atomic_defi_design/assets/images/coins/qbt.png</file>
+        <file>atomic_defi_design/assets/images/coins/qc.png</file>
+        <file>atomic_defi_design/assets/images/coins/qi.png</file>
+        <file>atomic_defi_design/assets/images/coins/qiair.png</file>
+        <file>atomic_defi_design/assets/images/coins/qkc.png</file>
+        <file>atomic_defi_design/assets/images/coins/qnt.png</file>
         <file>atomic_defi_design/assets/images/coins/qrc-20.png</file>
-        <file>atomic_defi_design/assets/images/coins/tqtum.png</file>
+        <file>atomic_defi_design/assets/images/coins/qrc20.png</file>
+        <file>atomic_defi_design/assets/images/coins/qtum.png</file>
+        <file>atomic_defi_design/assets/images/coins/ren.png</file>
+        <file>atomic_defi_design/assets/images/coins/rep.png</file>
+        <file>atomic_defi_design/assets/images/coins/rev.png</file>
+        <file>atomic_defi_design/assets/images/coins/revs.png</file>
+        <file>atomic_defi_design/assets/images/coins/rick.png</file>
+        <file>atomic_defi_design/assets/images/coins/rlc.png</file>
+        <file>atomic_defi_design/assets/images/coins/rsr.png</file>
         <file>atomic_defi_design/assets/images/coins/rvn.png</file>
+        <file>atomic_defi_design/assets/images/coins/s4f.png</file>
+        <file>atomic_defi_design/assets/images/coins/sfusd.png</file>
+        <file>atomic_defi_design/assets/images/coins/shr.png</file>
+        <file>atomic_defi_design/assets/images/coins/skl.png</file>
+        <file>atomic_defi_design/assets/images/coins/smart-chain.png</file>
+        <file>atomic_defi_design/assets/images/coins/snt.png</file>
+        <file>atomic_defi_design/assets/images/coins/snx.png</file>
+        <file>atomic_defi_design/assets/images/coins/soulja.png</file>
         <file>atomic_defi_design/assets/images/coins/space.png</file>
+        <file>atomic_defi_design/assets/images/coins/spc.png</file>
+        <file>atomic_defi_design/assets/images/coins/srm.png</file>
+        <file>atomic_defi_design/assets/images/coins/storj.png</file>
         <file>atomic_defi_design/assets/images/coins/supernet.png</file>
         <file>atomic_defi_design/assets/images/coins/sushi.png</file>
-        <file>atomic_defi_design/assets/images/coins/thc.png</file>
-        <file>atomic_defi_design/assets/images/coins/usdc.png</file>
-        <file>atomic_defi_design/assets/images/coins/vra.png</file>
-        <file>atomic_defi_design/assets/images/coins/vrsc.png</file>
-        <file>atomic_defi_design/assets/images/coins/qc.png</file>
-        <file>atomic_defi_design/assets/images/coins/sfusd.png</file>
-        <file>atomic_defi_design/assets/images/coins/vote2020.png</file>
-        <file>atomic_defi_design/assets/images/coins/wlc.png</file>
-        <file>atomic_defi_design/assets/images/coins/tusd.png</file>
+        <file>atomic_defi_design/assets/images/coins/sxp.png</file>
         <file>atomic_defi_design/assets/images/coins/tbtc.png</file>
-        <file>atomic_defi_design/assets/images/coins/firo.png</file>
+        <file>atomic_defi_design/assets/images/coins/thc.png</file>
+        <file>atomic_defi_design/assets/images/coins/thx.png</file>
+        <file>atomic_defi_design/assets/images/coins/tmtg.png</file>
+        <file>atomic_defi_design/assets/images/coins/tqtum.png</file>
+        <file>atomic_defi_design/assets/images/coins/trac.png</file>
+        <file>atomic_defi_design/assets/images/coins/tsl.png</file>
+        <file>atomic_defi_design/assets/images/coins/ttt.png</file>
+        <file>atomic_defi_design/assets/images/coins/tusd.png</file>
+        <file>atomic_defi_design/assets/images/coins/ubt.png</file>
+        <file>atomic_defi_design/assets/images/coins/uma.png</file>
+        <file>atomic_defi_design/assets/images/coins/uni.png</file>
+        <file>atomic_defi_design/assets/images/coins/uos.png</file>
+        <file>atomic_defi_design/assets/images/coins/uqc.png</file>
+        <file>atomic_defi_design/assets/images/coins/usdc.png</file>
+        <file>atomic_defi_design/assets/images/coins/usdt.png</file>
+        <file>atomic_defi_design/assets/images/coins/utk.png</file>
+        <file>atomic_defi_design/assets/images/coins/vgx.png</file>
+        <file>atomic_defi_design/assets/images/coins/vote2020.png</file>
+        <file>atomic_defi_design/assets/images/coins/vra.png</file>
+        <file>atomic_defi_design/assets/images/coins/vrm.png</file>
+        <file>atomic_defi_design/assets/images/coins/vrsc.png</file>
+        <file>atomic_defi_design/assets/images/coins/wbtc.png</file>
+        <file>atomic_defi_design/assets/images/coins/wlc.png</file>
+        <file>atomic_defi_design/assets/images/coins/wsb.png</file>
+        <file>atomic_defi_design/assets/images/coins/xor.png</file>
+        <file>atomic_defi_design/assets/images/coins/xrp.png</file>
+        <file>atomic_defi_design/assets/images/coins/xtz.png</file>
+        <file>atomic_defi_design/assets/images/coins/yfi.png</file>
+        <file>atomic_defi_design/assets/images/coins/yfii.png</file>
         <file>atomic_defi_design/assets/images/coins/zec.png</file>
         <file>atomic_defi_design/assets/images/coins/zer.png</file>
         <file>atomic_defi_design/assets/images/coins/zilla.png</file>
-        <file>atomic_defi_design/assets/images/coins/erc-20.png</file>
-        <file>atomic_defi_design/assets/images/coins/smart-chain.png</file>
+        <file>atomic_defi_design/assets/images/coins/zrx.png</file>
+        <file>atomic_defi_design/assets/images/dashboard-copy.svg</file>
+        <file>atomic_defi_design/assets/images/dashboard-eye-hide.svg</file>
+        <file>atomic_defi_design/assets/images/dashboard-eye.svg</file>
+        <file>atomic_defi_design/assets/images/dashboard-info.svg</file>
+        <file>atomic_defi_design/assets/images/dex-logo-sidebar-dark.png</file>
+        <file>atomic_defi_design/assets/images/dex-logo-sidebar.png</file>
+        <file>atomic_defi_design/assets/images/dex-tray-icon.png</file>
+        <file>atomic_defi_design/assets/images/exchange-exchange.svg</file>
+        <file>atomic_defi_design/assets/images/exchange-search.svg</file>
+        <file>atomic_defi_design/assets/images/exchange-trade-complete.svg</file>
+        <file>atomic_defi_design/assets/images/guide_coingecko_id.gif</file>
+        <file>atomic_defi_design/assets/images/guide_contract_address_erc.gif</file>
+        <file>atomic_defi_design/assets/images/guide_contract_address_qrc.gif</file>
+        <file>atomic_defi_design/assets/images/icon-discord.png</file>
+        <file>atomic_defi_design/assets/images/icon-email.png</file>
+        <file>atomic_defi_design/assets/images/icon-support.png</file>
+        <file>atomic_defi_design/assets/images/icon-twitter.png</file>
+        <file>atomic_defi_design/assets/images/komodo-icon.png</file>
         <file>atomic_defi_design/assets/images/lang/en.png</file>
         <file>atomic_defi_design/assets/images/lang/fr.png</file>
-        <file>atomic_defi_design/assets/images/lang/tr.png</file>
         <file>atomic_defi_design/assets/images/lang/ru.png</file>
+        <file>atomic_defi_design/assets/images/lang/tr.png</file>
+        <file>atomic_defi_design/assets/images/logo/dex-logo.png</file>
+        <file>atomic_defi_design/assets/images/menu-assets-portfolio.svg</file>
+        <file>atomic_defi_design/assets/images/menu-assets-white.svg</file>
+        <file>atomic_defi_design/assets/images/menu-dapp-white.svg</file>
+        <file>atomic_defi_design/assets/images/menu-exchange-white.svg</file>
+        <file>atomic_defi_design/assets/images/menu-news-white.svg</file>
+        <file>atomic_defi_design/assets/images/menu-settings-white.svg</file>
+        <file>atomic_defi_design/assets/images/menu-support-white.png</file>
+        <file>atomic_defi_design/assets/images/settings-seed.svg</file>
+        <file>atomic_defi_design/assets/images/setup-logs.svg</file>
+        <file>atomic_defi_design/assets/images/setup-wallet-restore-2.svg</file>
+        <file>atomic_defi_design/assets/images/setup-welcome-wallet.svg</file>
+        <file>atomic_defi_design/assets/images/shadowed_circle_blue.svg</file>
+        <file>atomic_defi_design/assets/images/shadowed_circle_green.svg</file>
+        <file>atomic_defi_design/assets/images/trade_icon.svg</file>
+        <file>atomic_defi_design/assets/languages/atomic_defi_en.qm</file>
+        <file>atomic_defi_design/assets/languages/atomic_defi_fr.qm</file>
+        <file>atomic_defi_design/assets/languages/atomic_defi_ru.qm</file>
+        <file>atomic_defi_design/assets/languages/atomic_defi_tr.qm</file>
         <file>atomic_defi_design/qml/App.qml</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>atomic_defi_design/qml/Screens/FirstLaunch.qml</file>
-        <file>atomic_defi_design/qml/Screens/Dashboard.qml</file>
-        <file>atomic_defi_design/qml/Screens/Login.qml</file>
-        <file>atomic_defi_design/qml/Screens/NewUser.qml</file>
-        <file>atomic_defi_design/qml/Screens/RecoverSeed.qml</file>
-        <file>atomic_defi_design/qml/Screens/InitialLoading.qml</file>
-        <file>atomic_defi_design/qml/Constants/General.qml</file>
-        <file>atomic_defi_design/qml/Constants/API.qml</file>
-        <file>atomic_defi_design/qml/Constants/Style.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/SweetDexComboBox.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/FeeIcon.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/MultiOrder.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Orders/Orders.qml</file>
-        <file>atomic_defi_design/qml/Exchange/History/History.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
-        <file>atomic_defi_design/qml/Sidebar/Sidebar.qml</file>
-        <file>atomic_defi_design/qml/Sidebar/SidebarCenter.qml</file>
-        <file>atomic_defi_design/qml/Sidebar/SidebarBottom.qml</file>
-        <file>atomic_defi_design/qml/Sidebar/SidebarLine.qml</file>
-        <file>atomic_defi_design/qml/Components/CoinMenu.qml</file>
-        <file>atomic_defi_design/qml/Components/AnimatedRectangle.qml</file>
-        <file>atomic_defi_design/qml/Components/Arrow.qml</file>
-        <file>atomic_defi_design/qml/Components/EulaModal.qml</file>
-        <file>atomic_defi_design/qml/Components/Toast.qml</file>
-        <file>atomic_defi_design/qml/Components/Circle.qml</file>
-        <file>atomic_defi_design/qml/Components/ToastManager.qml</file>
-        <file>atomic_defi_design/qml/Components/ColumnHeader.qml</file>
-        <file>atomic_defi_design/qml/Components/RightClickMenu.qml</file>
-        <file>atomic_defi_design/qml/Components/PlusButton.qml</file>
-        <file>atomic_defi_design/qml/Components/SwapIcon.qml</file>
         <file>atomic_defi_design/qml/Components/AddressField.qml</file>
         <file>atomic_defi_design/qml/Components/AddressFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/AmountField.qml</file>
         <file>atomic_defi_design/qml/Components/AmountFieldWithInfo.qml</file>
         <file>atomic_defi_design/qml/Components/AmountIntField.qml</file>
+        <file>atomic_defi_design/qml/Components/AnimatedRectangle.qml</file>
+        <file>atomic_defi_design/qml/Components/Arrow.qml</file>
+        <file>atomic_defi_design/qml/Components/BasicModal.qml</file>
+        <file>atomic_defi_design/qml/Components/Blank.qml</file>
+        <file>atomic_defi_design/qml/Components/CexInfoModal.qml</file>
+        <file>atomic_defi_design/qml/Components/CexInfoTrigger.qml</file>
+        <file>atomic_defi_design/qml/Components/Circle.qml</file>
+        <file>atomic_defi_design/qml/Components/ClipRRect.qml</file>
+        <file>atomic_defi_design/qml/Components/CoinMenu.qml</file>
+        <file>atomic_defi_design/qml/Components/CoinTypeTag.qml</file>
+        <file>atomic_defi_design/qml/Components/ColumnHeader.qml</file>
+        <file>atomic_defi_design/qml/Components/ComboBoxWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/ComponentWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/CopyFieldButton.qml</file>
-        <file>atomic_defi_design/qml/Components/HideFieldButton.qml</file>
-        <file>atomic_defi_design/qml/Components/PasswordField.qml</file>
-        <file>atomic_defi_design/qml/Components/PasswordForm.qml</file>
-        <file>atomic_defi_design/qml/Components/WalletNameField.qml</file>
         <file>atomic_defi_design/qml/Components/DangerButton.qml</file>
-        <file>atomic_defi_design/qml/Components/PrimaryButton.qml</file>
-        <file>atomic_defi_design/qml/Components/InnerBackground.qml</file>
-        <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultTooltip.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultImage.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultAnimatedImage.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultInnerShadow.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultButton.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultMouseArea.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultBusyIndicator.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultCheckBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultColorOverlay.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultComboBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultFlickable.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultImage.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultInnerShadow.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultListView.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultLoader.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultModal.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultMouseArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultRangeSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultScrollBar.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultText.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultTextEdit.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultColorOverlay.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultTextField.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultTextArea.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultLoader.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultListView.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultFlickable.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSlider.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultSwitch.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultComboBox.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultCheckBox.qml</file>
-        <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
-        <file>atomic_defi_design/qml/Components/LogModal.qml</file>
-        <file>atomic_defi_design/qml/Components/LinkIcon.qml</file>
-        <file>atomic_defi_design/qml/Components/LinksRow.qml</file>
-        <file>atomic_defi_design/qml/Components/ModalLoader.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultModal.qml</file>
-        <file>atomic_defi_design/qml/Components/BasicModal.qml</file>
-        <file>atomic_defi_design/qml/Components/SidebarPanel.qml</file>
-        <file>atomic_defi_design/qml/Components/SetupPage.qml</file>
-        <file>atomic_defi_design/qml/Components/Pagination.qml</file>
-        <file>atomic_defi_design/qml/Components/PaginationButton.qml</file>
-        <file>atomic_defi_design/qml/Components/Separator.qml</file>
-        <file>atomic_defi_design/qml/Components/RestartModal.qml</file>
-        <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>
-        <file>atomic_defi_design/qml/Components/CoinTypeTag.qml</file>
-        <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
-        <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>
-        <file>atomic_defi_design/qml/Components/ComboBoxWithTitle.qml</file>
-        <file>atomic_defi_design/qml/Components/TitleText.qml</file>
-        <file>atomic_defi_design/qml/Components/TextWithTitle.qml</file>
-        <file>atomic_defi_design/qml/Components/TextEditWithTitle.qml</file>
-        <file>atomic_defi_design/qml/Components/TextFieldWithTitle.qml</file>
-        <file>atomic_defi_design/qml/Components/TextAreaWithTitle.qml</file>
-        <file>atomic_defi_design/qml/Components/ModalHeader.qml</file>
-        <file>atomic_defi_design/qml/Components/ModalContent.qml</file>
-        <file>atomic_defi_design/qml/Components/CexInfoTrigger.qml</file>
-        <file>atomic_defi_design/qml/Components/CexInfoModal.qml</file>
-        <file>atomic_defi_design/qml/Dashboard/NotificationsModal.qml</file>
-        <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
-        <file>atomic_defi_design/qml/Portfolio/Portfolio.qml</file>
-        <file>atomic_defi_design/qml/Wallet/Wallet.qml</file>
-        <file>atomic_defi_design/qml/Wallet/ClaimRewardsModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/ClaimFaucetResultModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/ReceiveModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/SendModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/SendModalContactList.qml</file>
-        <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>
-        <file>atomic_defi_design/qml/Wallet/PriceGraph.qml</file>
-        <file>atomic_defi_design/qml/Wallet/EnableCoinModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/Sidebar.qml</file>
-        <file>atomic_defi_design/qml/Wallet/Main.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBook.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookNewContactModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookNewContactCategoryModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookEditContactModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeList.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListRow.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookAddContactAddressModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressBookSendWalletSelector.qml</file>
-        <file>atomic_defi_design/qml/Wallet/Transactions.qml</file>
-        <file>atomic_defi_design/qml/Wallet/TransactionDetailsModal.qml</file>
-        <file>atomic_defi_design/qml/Wallet/AddressList.qml</file>
-        <file>atomic_defi_design/qml/Settings/Settings.qml</file>
-        <file>atomic_defi_design/qml/Settings/RecoverSeedModal.qml</file>
-        <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
-        <file>atomic_defi_design/qml/Settings/CamouflagePasswordModal.qml</file>
-        <file>atomic_defi_design/qml/Settings/AddCustomCoinModal.qml</file>
-        <file>atomic_defi_design/qml/Settings/Languages.qml</file>
-        <file>atomic_defi_design/qml/Support/Support.qml</file>
-        <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
-        <file>atomic_defi_design/assets/images/coins/arpa.png</file>
-        <file>atomic_defi_design/assets/images/coins/clc.png</file>
-        <file>atomic_defi_design/assets/images/coins/1inch.png</file>
-        <file>atomic_defi_design/assets/images/coins/link.png</file>
-        <file>atomic_defi_design/assets/images/coins/wbtc.png</file>
-        <file>atomic_defi_design/assets/images/coins/okb.png</file>
-        <file>atomic_defi_design/assets/images/coins/leo.png</file>
-        <file>atomic_defi_design/assets/images/coins/hex.png</file>
-        <file>atomic_defi_design/assets/images/coins/thx.png</file>
-        <file>atomic_defi_design/assets/images/coins/cro.png</file>
-        <file>atomic_defi_design/assets/images/coins/cel.png</file>
-        <file>atomic_defi_design/assets/images/coins/ht.png</file>
-        <file>atomic_defi_design/assets/images/coins/aave.png</file>
-        <file>atomic_defi_design/assets/images/coins/yfi.png</file>
-        <file>atomic_defi_design/assets/images/coins/uni.png</file>
-        <file>atomic_defi_design/assets/images/coins/uma.png</file>
-        <file>atomic_defi_design/assets/images/coins/mkr.png</file>
-        <file>atomic_defi_design/assets/images/coins/snx.png</file>
-        <file>atomic_defi_design/assets/images/coins/comp.png</file>
-        <file>atomic_defi_design/assets/images/coins/omg.png</file>
-        <file>atomic_defi_design/assets/images/coins/zrx.png</file>
-        <file>atomic_defi_design/assets/images/coins/husd.png</file>
-        <file>atomic_defi_design/assets/images/coins/ren.png</file>
-        <file>atomic_defi_design/assets/images/coins/lrc.png</file>
-        <file>atomic_defi_design/assets/images/coins/rsr.png</file>
-        <file>atomic_defi_design/assets/images/coins/knc.png</file>
-        <file>atomic_defi_design/assets/images/coins/rep.png</file>
-        <file>atomic_defi_design/assets/images/coins/ocean.png</file>
-        <file>atomic_defi_design/assets/images/coins/chsb.png</file>
-        <file>atomic_defi_design/assets/images/coins/qnt.png</file>
-        <file>atomic_defi_design/assets/images/coins/rev.png</file>
-        <file>atomic_defi_design/assets/images/coins/band.png</file>
-        <file>atomic_defi_design/assets/images/coins/mana.png</file>
-        <file>atomic_defi_design/assets/images/coins/enj.png</file>
-        <file>atomic_defi_design/assets/images/coins/snt.png</file>
-        <file>atomic_defi_design/assets/images/coins/bnt.png</file>
-        <file>atomic_defi_design/assets/images/coins/ant.png</file>
-        <file>atomic_defi_design/assets/images/coins/hot.png</file>
-        <file>atomic_defi_design/assets/images/coins/best.png</file>
-        <file>atomic_defi_design/assets/images/coins/bal.png</file>
-        <file>atomic_defi_design/assets/images/coins/blk.png</file>
-        <file>atomic_defi_design/assets/images/coins/cvt.png</file>
-        <file>atomic_defi_design/assets/images/coins/dx.png</file>
-        <file>atomic_defi_design/assets/images/coins/rlc.png</file>
-        <file>atomic_defi_design/assets/images/coins/matic.png</file>
-        <file>atomic_defi_design/assets/images/coins/storj.png</file>
-        <file>atomic_defi_design/assets/images/coins/trac.png</file>
-        <file>atomic_defi_design/assets/images/coins/ubt.png</file>
-        <file>atomic_defi_design/assets/images/coins/gno.png</file>
-        <file>atomic_defi_design/assets/images/coins/sxp.png</file>
-        <file>atomic_defi_design/assets/images/coins/chz.png</file>
-        <file>atomic_defi_design/assets/images/coins/yfii.png</file>
-        <file>atomic_defi_design/assets/images/coins/paxg.png</file>
-        <file>atomic_defi_design/assets/images/coins/qiair.png</file>
-        <file>atomic_defi_design/assets/images/coins/qi.png</file>
-        <file>atomic_defi_design/assets/images/coins/skl.png</file>
-        <file>atomic_defi_design/assets/images/coins/pnk.png</file>
-        <file>atomic_defi_design/assets/images/coins/crv.png</file>
-        <file>atomic_defi_design/assets/images/coins/cvc.png</file>
-        <file>atomic_defi_design/assets/images/coins/dodo.png</file>
-        <file>atomic_defi_design/assets/images/coins/elf.png</file>
-        <file>atomic_defi_design/assets/images/coins/srm.png</file>
-        <file>atomic_defi_design/assets/images/coins/tmtg.png</file>
-        <file>atomic_defi_design/assets/images/coins/cennz.png</file>
-        <file>atomic_defi_design/assets/images/coins/utk.png</file>
-        <file>atomic_defi_design/assets/images/coins/qkc.png</file>
-        <file>atomic_defi_design/assets/images/coins/mln.png</file>
-        <file>atomic_defi_design/assets/images/coins/ttt.png</file>
-        <file>atomic_defi_design/assets/images/coins/npxs.png</file>
-        <file>atomic_defi_design/assets/images/coins/xor.png</file>
-        <file>atomic_defi_design/assets/images/coins/btu.png</file>
-        <file>atomic_defi_design/assets/images/coins/powr.png</file>
-        <file>atomic_defi_design/assets/images/coins/vgx.png</file>
-        <file>atomic_defi_design/assets/images/coins/fet.png</file>
-        <file>atomic_defi_design/assets/images/coins/dia.png</file>
-        <file>atomic_defi_design/assets/images/coins/agi.png</file>
-        <file>atomic_defi_design/assets/images/coins/eurs.png</file>
-        <file>atomic_defi_design/assets/images/coins/uqc.png</file>
-        <file>atomic_defi_design/assets/images/coins/uos.png</file>
-        <file>atomic_defi_design/assets/images/coins/s4f.png</file>
-        <file>atomic_defi_design/assets/images/coins/shr.png</file>
-        <file>atomic_defi_design/assets/images/coins/ink.png</file>
-        <file>atomic_defi_design/assets/images/coins/spc.png</file>
-        <file>atomic_defi_design/assets/images/coins/tsl.png</file>
-        <file>atomic_defi_design/assets/images/coins/hpy.png</file>
-        <file>atomic_defi_design/assets/images/coins/hlc.png</file>
-        <file>atomic_defi_design/assets/images/coins/med.png</file>
-        <file>atomic_defi_design/assets/images/coins/lstr.png</file>
-        <file>atomic_defi_design/assets/images/coins/qbt.png</file>
-        <file>atomic_defi_design/assets/images/coins/oc.png</file>
-        <file>atomic_defi_design/assets/images/coins/put.png</file>
-        <file>atomic_defi_design/assets/images/coins/soulja.png</file>
-        <file>atomic_defi_design/assets/images/coins/vrm.png</file>
-        <file>atomic_defi_design/assets/images/coins/wsb.png</file>
-        <file>atomic_defi_design/qml/Components/DefaultSubstractRectangle.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/SellBox.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/OrderForm.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/BuyBox.qml</file>
-        <file>atomic_defi_design/qml/Components/LoaderBusyIndicator.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultSweetComboBox.qml</file>
-        <file>atomic_defi_design/qml/Components/Blank.qml</file>
-        <file>atomic_defi_design/qml/Components/ClipRRect.qml</file>
-        <file>atomic_defi_design/qml/Components/ItemBox.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
-        <file>atomic_defi_design/qml/Components/MinTradeModal.qml</file>
-        <file>atomic_defi_design/qml/Components/DefaultRangeSlider.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Trading/TradeViewHeader.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Trading/Items/TotalView.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Trading/Items/FeeInfo.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/ListDelegate.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/List.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Header.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Vertical.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Horizontal.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/List.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/Header.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/ListDelegate.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderContent.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderLine.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderList.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderModal.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrdersPage.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
-        <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSplitView.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/DefaultSweetModal.qml</file>
-        <file>atomic_defi_design/qml/Components/DexLabel.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSubstractRectangle.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSweetComboBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSwitch.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultText.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultTextArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultTextEdit.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultTextField.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
         <file>atomic_defi_design/qml/Components/DexButton.qml</file>
@@ -405,6 +292,9 @@
         <file>atomic_defi_design/qml/Components/DexFlickable.qml</file>
         <file>atomic_defi_design/qml/Components/DexImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexInnerShadow.qml</file>
+        <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLabel.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
         <file>atomic_defi_design/qml/Components/DexListView.qml</file>
         <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
@@ -412,6 +302,8 @@
         <file>atomic_defi_design/qml/Components/DexRangeSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DexRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexScrollBar.qml</file>
+        <file>atomic_defi_design/qml/Components/DexSelectableButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DexSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DexSplitView.qml</file>
         <file>atomic_defi_design/qml/Components/DexSubstractRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
@@ -421,14 +313,134 @@
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexTooltip.qml</file>
-        <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
-        <file>atomic_defi_design/qml/Components/DexSlider.qml</file>
-        <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
-        <file>atomic_defi_design/qml/Components/DexSelectableButton.qml</file>
-        <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
-        <file>atomic_defi_design/qml/Settings/Combo_fiat.qml</file>
+        <file>atomic_defi_design/qml/Components/EulaModal.qml</file>
+        <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
+        <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
+        <file>atomic_defi_design/qml/Components/HideFieldButton.qml</file>
+        <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>
+        <file>atomic_defi_design/qml/Components/InnerBackground.qml</file>
+        <file>atomic_defi_design/qml/Components/ItemBox.qml</file>
+        <file>atomic_defi_design/qml/Components/LinkIcon.qml</file>
+        <file>atomic_defi_design/qml/Components/LinksRow.qml</file>
+        <file>atomic_defi_design/qml/Components/LoaderBusyIndicator.qml</file>
+        <file>atomic_defi_design/qml/Components/LogModal.qml</file>
+        <file>atomic_defi_design/qml/Components/MinTradeModal.qml</file>
+        <file>atomic_defi_design/qml/Components/ModalContent.qml</file>
+        <file>atomic_defi_design/qml/Components/ModalHeader.qml</file>
+        <file>atomic_defi_design/qml/Components/ModalLoader.qml</file>
+        <file>atomic_defi_design/qml/Components/Pagination.qml</file>
+        <file>atomic_defi_design/qml/Components/PaginationButton.qml</file>
+        <file>atomic_defi_design/qml/Components/PasswordField.qml</file>
+        <file>atomic_defi_design/qml/Components/PasswordForm.qml</file>
+        <file>atomic_defi_design/qml/Components/PlusButton.qml</file>
+        <file>atomic_defi_design/qml/Components/PrimaryButton.qml</file>
+        <file>atomic_defi_design/qml/Components/RestartModal.qml</file>
+        <file>atomic_defi_design/qml/Components/RightClickMenu.qml</file>
+        <file>atomic_defi_design/qml/Components/Separator.qml</file>
+        <file>atomic_defi_design/qml/Components/SetupPage.qml</file>
+        <file>atomic_defi_design/qml/Components/SidebarPanel.qml</file>
+        <file>atomic_defi_design/qml/Components/SwapIcon.qml</file>
+        <file>atomic_defi_design/qml/Components/TextAreaWithTitle.qml</file>
+        <file>atomic_defi_design/qml/Components/TextEditWithTitle.qml</file>
+        <file>atomic_defi_design/qml/Components/TextFieldWithTitle.qml</file>
+        <file>atomic_defi_design/qml/Components/TextWithTitle.qml</file>
+        <file>atomic_defi_design/qml/Components/TitleText.qml</file>
+        <file>atomic_defi_design/qml/Components/Toast.qml</file>
+        <file>atomic_defi_design/qml/Components/ToastManager.qml</file>
+        <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
+        <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
+        <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
+        <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>
+        <file>atomic_defi_design/qml/Components/WalletNameField.qml</file>
+        <file>atomic_defi_design/qml/Constants</file>
+        <file>atomic_defi_design/qml/Constants/API.qml</file>
+        <file>atomic_defi_design/qml/Constants/General.qml</file>
+        <file>atomic_defi_design/qml/Constants/Style.qml</file>
+        <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
+        <file>atomic_defi_design/qml/Dashboard/NotificationsModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
+        <file>atomic_defi_design/qml/Exchange/History/History.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Orders/Orders.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/Header.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/List.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/BestOrder/ListDelegate.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/DefaultSweetModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/FeeIcon.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/MultiOrder.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Header.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Horizontal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/List.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/ListDelegate.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/OrderBook/Vertical.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderContent.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderLine.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderList.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrderModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrdersPage.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ProView.qml</file>
-        <file>atomic_defi_design/assets/images/bill.svg</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SweetDexComboBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/BuyBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/OrderForm.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/TradeBox/SellBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Trading/Items/FeeInfo.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Trading/Items/TotalView.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/Trading/TradeViewHeader.qml</file>
         <file>atomic_defi_design/qml/Fiat/FiatRamp.qml</file>
+        <file>atomic_defi_design/qml/NoConnection.qml</file>
+        <file>atomic_defi_design/qml/Portfolio/Portfolio.qml</file>
+        <file>atomic_defi_design/qml/Screens/Dashboard.qml</file>
+        <file>atomic_defi_design/qml/Screens/FirstLaunch.qml</file>
+        <file>atomic_defi_design/qml/Screens/InitialLoading.qml</file>
+        <file>atomic_defi_design/qml/Screens/Login.qml</file>
+        <file>atomic_defi_design/qml/Screens/NewUser.qml</file>
+        <file>atomic_defi_design/qml/Screens/RecoverSeed.qml</file>
+        <file>atomic_defi_design/qml/Settings/AddCustomCoinModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/CamouflagePasswordModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/Combo_fiat.qml</file>
+        <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/Languages.qml</file>
+        <file>atomic_defi_design/qml/Settings/RecoverSeedModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/Settings.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/Sidebar.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/SidebarBottom.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/SidebarCenter.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/SidebarLine.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
+        <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
+        <file>atomic_defi_design/qml/Support/Support.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBook.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookAddContactAddressModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookEditContactModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookNewContactCategoryModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookNewContactModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookSendWalletSelector.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeList.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressBookWalletTypeListRow.qml</file>
+        <file>atomic_defi_design/qml/Wallet/AddressList.qml</file>
+        <file>atomic_defi_design/qml/Wallet/ClaimFaucetResultModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/ClaimRewardsModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/EnableCoinModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/Main.qml</file>
+        <file>atomic_defi_design/qml/Wallet/PriceGraph.qml</file>
+        <file>atomic_defi_design/qml/Wallet/ReceiveModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/SendModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/SendModalContactList.qml</file>
+        <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>
+        <file>atomic_defi_design/qml/Wallet/Sidebar.qml</file>
+        <file>atomic_defi_design/qml/Wallet/TransactionDetailsModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/Transactions.qml</file>
+        <file>atomic_defi_design/qml/Wallet/Wallet.qml</file>
+        <file>atomic_defi_design/qml/main.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

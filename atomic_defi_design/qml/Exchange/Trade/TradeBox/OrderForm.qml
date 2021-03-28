@@ -69,7 +69,7 @@ FloatingBackground {
                     width: parent.width
 
                     field.left_text: qsTr("Price")
-                    field.right_text: right_ticker
+                    field.right_text: atomic_qt_utilities.retrieve_main_ticker(right_ticker)
                     field.enabled: !(API.app.trading_pg.preffered_order.price!==undefined)
                     field.text: backend_price
                     field.onTextChanged: setPrice(field.text)
@@ -123,7 +123,7 @@ FloatingBackground {
                     width: parent.width
 
                     field.left_text: qsTr("Volume")
-                    field.right_text: left_ticker
+                    field.right_text: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                     field.placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
 
                     field.text: backend_volume

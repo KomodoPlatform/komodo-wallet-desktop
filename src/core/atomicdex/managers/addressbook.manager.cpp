@@ -24,7 +24,7 @@
 //! Constructors
 namespace atomic_dex
 {
-    addressbook_manager::addressbook_manager(entt::registry& entity_registry, const ag::ecs::system_manager& system_manager) noexcept :
+    addressbook_manager::addressbook_manager(entt::registry& entity_registry, const ag::ecs::system_manager& system_manager)  :
         system(entity_registry), m_system_manager(system_manager), m_data(nlohmann::json::array())
     {}
 }
@@ -42,22 +42,22 @@ namespace atomic_dex
         return m_data.at(pos);
     }
     
-    const nlohmann::json& addressbook_manager::data() const noexcept
+    const nlohmann::json& addressbook_manager::data() const 
     {
         return m_data;
     }
     
-    nlohmann::json& addressbook_manager::data() noexcept
+    nlohmann::json& addressbook_manager::data() 
     {
         return m_data;
     }
     
-    const nlohmann::json& addressbook_manager::get_contacts() const noexcept
+    const nlohmann::json& addressbook_manager::get_contacts() const 
     {
         return data();
     }
     
-    nlohmann::json& addressbook_manager::get_contacts() noexcept
+    nlohmann::json& addressbook_manager::get_contacts() 
     {
         return data();
     }
@@ -246,12 +246,12 @@ namespace atomic_dex
 //! Lookup
 namespace atomic_dex
 {
-    std::size_t addressbook_manager::nb_contacts() const noexcept
+    std::size_t addressbook_manager::nb_contacts() const 
     {
         return get_contacts().size();
     }
     
-    bool addressbook_manager::has_contact(const std::string& name) const noexcept
+    bool addressbook_manager::has_contact(const std::string& name) const 
     {
         for (auto it = m_data.begin(); it != m_data.end(); ++it)
         {
@@ -284,7 +284,7 @@ namespace atomic_dex
         return false;
     }
     
-    bool addressbook_manager::has_category(const std::string& name, const std::string& category) const noexcept
+    bool addressbook_manager::has_category(const std::string& name, const std::string& category) const 
     {
         const auto& categories = get_categories(name);
         
@@ -302,7 +302,7 @@ namespace atomic_dex
 //! Misc
 namespace atomic_dex
 {
-    void addressbook_manager::update() noexcept
+    void addressbook_manager::update() 
     { }
     
     void addressbook_manager::load_configuration()

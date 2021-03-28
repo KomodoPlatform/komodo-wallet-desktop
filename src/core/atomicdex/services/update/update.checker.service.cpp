@@ -36,7 +36,7 @@ namespace
     t_http_client_ptr     g_komodolive_client{std::make_unique<t_http_client>(FROM_STD_STR(g_komodolive_endpoint))};
 
     pplx::task<web::http::http_response>
-    async_check_retrieve() noexcept
+    async_check_retrieve() 
     {
         nlohmann::json json_data{{"currentVersion", atomic_dex::get_raw_version()}};
         return g_komodolive_client->request(create_json_post_request(std::move(json_data)));
@@ -84,7 +84,7 @@ namespace atomic_dex
 
     //! Public override
     void
-    update_service_checker::update() noexcept
+    update_service_checker::update() 
     {
         using namespace std::chrono_literals;
 
@@ -99,7 +99,7 @@ namespace atomic_dex
 
     //! Private api
     void
-    update_service_checker::fetch_update_status() noexcept
+    update_service_checker::fetch_update_status() 
     {
         SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         SPDLOG_INFO("fetching update status");
@@ -112,7 +112,7 @@ namespace atomic_dex
     }
 
     QVariant
-    update_service_checker::get_update_status() const noexcept
+    update_service_checker::get_update_status() const 
     {
         nlohmann::json status = *m_update_status;
         QJsonDocument  doc    = QJsonDocument::fromJson(QString::fromStdString(status.dump()).toUtf8());

@@ -47,8 +47,8 @@ namespace atomic_dex
         void
         from_json(const nlohmann::json& j, price_converter_answer& evt)
         {
-            utils::details::my_json_sax sx;
-            nlohmann::json::sax_parse(j.dump(), &sx);
+            // utils::details::my_json_sax sx;
+            // nlohmann::json::sax_parse(j.dump(), &sx);
 
             evt.base_currency_id         = j.at("base_currency_id").get<std::string>();
             evt.base_currency_name       = j.at("base_currency_name").get<std::string>();
@@ -57,7 +57,7 @@ namespace atomic_dex
             evt.quote_currency_name      = j.at("quote_currency_name").get<std::string>();
             evt.quote_price_last_updated = j.at("quote_price_last_updated").get<std::string>();
             evt.amount                   = j.at("amount").get<int64_t>();
-            evt.price                    = sx.float_as_string;
+            evt.price                    = std::to_string(j.at("price").get<double>());
 
             std::replace(evt.price.begin(), evt.price.end(), ',', '.');
         }

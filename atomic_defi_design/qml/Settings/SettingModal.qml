@@ -69,7 +69,7 @@ Qaterial.Dialog {
             }
             DexLabel {
                 anchors.verticalCenter: parent.verticalCenter
-                text: " - Géneral"
+                text: " - "+qsTr(menu_list.model[menu_list.currentIndex])
                 opacity: .5
                 font: theme.textType.head6
             }

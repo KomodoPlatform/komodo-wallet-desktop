@@ -78,8 +78,8 @@ namespace atomic_dex
         using t_portfolio_datas = QVector<portfolio_data>;
 
         //! Constructor / Destructor
-        explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
-        ~portfolio_model() noexcept final = default;
+        explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) ;
+        ~portfolio_model()  final = default;
 
         //! Overrides
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
@@ -94,15 +94,15 @@ namespace atomic_dex
         //! Public api
         void                            initialize_portfolio(const std::vector<std::string>& tickers);
         void                            update_currency_values();
-        void                            update_balance_values(const std::vector<std::string>& tickers) noexcept;
+        void                            update_balance_values(const std::vector<std::string>& tickers) ;
         void                            disable_coins(const QStringList& coins);
-        void                            set_cfg(atomic_dex::cfg& cfg) noexcept;
-        [[nodiscard]] t_portfolio_datas get_underlying_data() const noexcept;
+        void                            set_cfg(atomic_dex::cfg& cfg) ;
+        [[nodiscard]] t_portfolio_datas get_underlying_data() const ;
 
         //! Properties
-        [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
-        [[nodiscard]] portfolio_proxy_model* get_pie_char_proxy_mdl() const noexcept;
-        [[nodiscard]] int                    get_length() const noexcept;
+        [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const ;
+        [[nodiscard]] portfolio_proxy_model* get_pie_char_proxy_mdl() const ;
+        [[nodiscard]] int                    get_length() const ;
 
         void reset();
 

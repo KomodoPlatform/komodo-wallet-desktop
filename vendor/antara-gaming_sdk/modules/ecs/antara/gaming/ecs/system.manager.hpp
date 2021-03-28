@@ -72,15 +72,15 @@ namespace antara::gaming::ecs
         using systems_queue = std::queue<system_ptr>;
 
         //! Private member functions
-        base_system& add_system_(system_ptr&& system, system_type sys_type) noexcept;
+        base_system& add_system_(system_ptr&& system, system_type sys_type) ;
 
-        void sweep_systems_() noexcept;
-
-        template <typename TSystem>
-        tl::expected<std::reference_wrapper<TSystem>, std::error_code> get_system_() noexcept;
+        void sweep_systems_() ;
 
         template <typename TSystem>
-        [[nodiscard]] tl::expected<std::reference_wrapper<const TSystem>, std::error_code> get_system_() const noexcept;
+        tl::expected<std::reference_wrapper<TSystem>, std::error_code> get_system_() ;
+
+        template <typename TSystem>
+        [[nodiscard]] tl::expected<std::reference_wrapper<const TSystem>, std::error_code> get_system_() const ;
 
         //! Private data members
         [[maybe_unused]] entt::registry& entity_registry_;
@@ -116,17 +116,17 @@ namespace antara::gaming::ecs
          *          }
          * @endcode
          */
-        explicit system_manager(entt::registry& registry) noexcept;
+        explicit system_manager(entt::registry& registry) ;
 
         //! Destructor
-        ~system_manager() noexcept;
+        ~system_manager() ;
 
         //! Public member functions
 
         /**
          * @param evt The event that contains the system to add
          */
-        void receive_add_base_system(const ecs::event::add_base_system& evt) noexcept;
+        void receive_add_base_system(const ecs::event::add_base_system& evt) ;
 
         /**
          * @brief This function tells the system manager that you start your game
@@ -153,7 +153,7 @@ namespace antara::gaming::ecs
          *          }
          * @endcode
          */
-        void start() noexcept;
+        void start() ;
 
         /**
          * @verbatim embed:rst:leading-asterisk
@@ -197,7 +197,7 @@ namespace antara::gaming::ecs
          *
          * @return number of systems which are successfully updated
          */
-        std::size_t update() noexcept;
+        std::size_t update() ;
 
         /**
          * @verbatim embed:rst:leading-asterisk
@@ -212,7 +212,7 @@ namespace antara::gaming::ecs
          * @return number of systems which are successfully updated
          * @see update
          */
-        std::size_t update_systems(system_type system_type_to_update) noexcept;
+        std::size_t update_systems(system_type system_type_to_update) ;
 
         /**
          * @brief This function allows you to get a system through a template parameter.
@@ -263,7 +263,7 @@ namespace antara::gaming::ecs
          * @see get_system
          */
         template <typename... TSystems>
-        std::tuple<std::add_lvalue_reference_t<TSystems>...> get_systems() noexcept;
+        std::tuple<std::add_lvalue_reference_t<TSystems>...> get_systems() ;
 
         /**
          * @brief const version overload of get_systems
@@ -300,7 +300,7 @@ namespace antara::gaming::ecs
          * @see get_systems
          */
         template <typename... TSystems>
-        [[nodiscard]] std::tuple<std::add_lvalue_reference_t<std::add_const_t<TSystems>>...> get_systems() const noexcept;
+        [[nodiscard]] std::tuple<std::add_lvalue_reference_t<std::add_const_t<TSystems>>...> get_systems() const ;
 
         /**
          * @brief This function allow you to verify if a system is already registered in the system_manager.
@@ -334,7 +334,7 @@ namespace antara::gaming::ecs
          * @return true if the system has been loaded, false otherwise
          */
         template <typename TSystem>
-        [[nodiscard]] bool has_system() const noexcept;
+        [[nodiscard]] bool has_system() const ;
 
         /**
          * @brief This function allow you to verify if a list of systems is already registered in the system_manager.
@@ -374,7 +374,7 @@ namespace antara::gaming::ecs
          * @return true if the list of systems has been loaded, false otherwise
          */
         template <typename... TSystems>
-        [[nodiscard]] bool has_systems() const noexcept;
+        [[nodiscard]] bool has_systems() const ;
 
         /**
          * @brief This function marks a system that will be destroyed at the next tick of the game loop.
@@ -404,7 +404,7 @@ namespace antara::gaming::ecs
          * @return true if the system has been marked, false otherwise@n
          */
         template <typename TSystem>
-        bool mark_system() noexcept;
+        bool mark_system() ;
 
         /**
          * @brief This function marks a list of systems, marked systems will be destroyed at the next tick of the game loop.
@@ -445,7 +445,7 @@ namespace antara::gaming::ecs
          * @see mark_system
          */
         template <typename... TSystems>
-        bool mark_systems() noexcept;
+        bool mark_systems() ;
 
         /**
          * @brief This function enable a system
@@ -475,7 +475,7 @@ namespace antara::gaming::ecs
          * @return true if the system has been enabled, false otherwise
          */
         template <typename TSystem>
-        bool enable_system() noexcept;
+        bool enable_system() ;
 
         /**
          * @brief This function enable a list of systems
@@ -510,7 +510,7 @@ namespace antara::gaming::ecs
          * @see enable_system
          */
         template <typename... TSystems>
-        bool enable_systems() noexcept;
+        bool enable_systems() ;
 
         /**
          * @brief This function disable a system
@@ -544,7 +544,7 @@ namespace antara::gaming::ecs
          * @return true if the the system has been disabled, false otherwise
          */
         template <typename TSystem>
-        bool disable_system() noexcept;
+        bool disable_system() ;
 
         /**
          * @brief This function disable a list of systems
@@ -578,7 +578,7 @@ namespace antara::gaming::ecs
          * @return true if the list of systems has been disabled, false otherwise
          */
         template <typename... TSystems>
-        bool disable_systems() noexcept;
+        bool disable_systems() ;
 
         /**
          * @brief This function returns the number of systems registered in the system manager.
@@ -605,7 +605,7 @@ namespace antara::gaming::ecs
          *
          * @return number of systems
          */
-        [[nodiscard]] std::size_t nb_systems() const noexcept;
+        [[nodiscard]] std::size_t nb_systems() const ;
 
         /**
          * @brief This function returns the system number of a certain type to register in the system manager.
@@ -633,7 +633,7 @@ namespace antara::gaming::ecs
          *
          * @return number of systems of a specific type.
          */
-        [[nodiscard]] std::size_t nb_systems(system_type sys_type) const noexcept;
+        [[nodiscard]] std::size_t nb_systems(system_type sys_type) const ;
 
         /**
          * @brief This function allow you to create a system with the given argument.\n
@@ -661,11 +661,11 @@ namespace antara::gaming::ecs
          * @return Returns a reference to the created system
          */
         template <typename TSystem, typename... TSystemArgs>
-        TSystem& create_system(TSystemArgs&&... args) noexcept;
+        TSystem& create_system(TSystemArgs&&... args) ;
 
         //! TODO: Document it
         template <typename TSystem, typename... TSystemArgs>
-        void create_system_rt(TSystemArgs&&... args) noexcept;
+        void create_system_rt(TSystemArgs&&... args) ;
 
         /**
          * @brief This function load a bunch os systems
@@ -698,15 +698,15 @@ namespace antara::gaming::ecs
          * @see create_system
          */
         template <typename... TSystems, typename... TArgs>
-        auto load_systems(TArgs&&... args) noexcept;
+        auto load_systems(TArgs&&... args) ;
 
 
         template <typename SystemToSwap, typename SystemB>
-        bool prioritize_system() noexcept;
+        bool prioritize_system() ;
 
-        void mark_all_systems() noexcept;
+        void mark_all_systems() ;
 
-        system_manager& operator+=(system_ptr system) noexcept;
+        system_manager& operator+=(system_ptr system) ;
     };
 } // namespace antara::gaming::ecs
 

@@ -62,7 +62,7 @@ namespace atomic_dex
         Q_INVOKABLE static QString get_qrcode_svg_from_string(const QString& str);
 
         //! Themes
-        Q_INVOKABLE [[nodiscard]] QStringList get_themes_list() const noexcept;
+        Q_INVOKABLE [[nodiscard]] QStringList get_themes_list() const ;
 
         /**
          *
@@ -79,6 +79,14 @@ namespace atomic_dex
          * @return theme as a json object
          * @example -> load_theme(dark);
          */
-        Q_INVOKABLE QVariantMap load_theme(const QString& theme_name) const noexcept;
+        Q_INVOKABLE QVariantMap load_theme(const QString& theme_name) const;
+
+        /**
+         *
+         * @param ticker
+         * @return a ticker
+         * @example -> retrieve_main_ticker("BUSD") -> BUSD retrieve_main_ticker("BUSD-ERC20") -> BUSD
+         */
+        Q_INVOKABLE QString retrieve_main_ticker(const QString& ticker) const;
     };
 } // namespace atomic_dex

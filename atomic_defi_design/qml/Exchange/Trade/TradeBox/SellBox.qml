@@ -42,7 +42,7 @@ Item {
         DefaultText {
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -2
-            text: qsTr("Sell")+" "+left_ticker
+            text: qsTr("Sell")+" "+ atomic_qt_utilities.retrieve_main_ticker(left_ticker)
             color: Qaterial.Colors.gray200
             font.pixelSize: Style.textSize1
         }
