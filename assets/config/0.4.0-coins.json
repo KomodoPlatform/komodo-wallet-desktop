@@ -816,6 +816,21 @@
       "active": false,
       "currently_enabled": false
   },
+  "ETC-BEP20": {
+      "coin": "ETC-BEP20",
+      "name": "Ethereum Classic",
+      "coinpaprika_id": "etc-ethereum-classic",
+      "coingecko_id": "ethereum-classic",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "FTC": {
     "coin": "FTC",
     "name": "Feathercoin",
@@ -913,6 +928,21 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "IOTX-BEP20": {
+      "coin": "IOTX-BEP20",
+      "name": "IoTeX",
+      "coinpaprika_id": "iotx-iotex",
+      "coingecko_id": "iotex",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "JUMBLR": {
     "coin": "JUMBLR",
@@ -2205,6 +2235,21 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "ZIL-BEP20": {
+      "coin": "ZIL-BEP20",
+      "name": "Zilliqa",
+      "coinpaprika_id": "zil-zilliqa",
+      "coingecko_id": "zilliqa",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ZILLA": {
     "coin": "ZILLA",
