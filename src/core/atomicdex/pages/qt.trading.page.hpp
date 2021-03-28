@@ -121,97 +121,97 @@ namespace atomic_dex
         bool                                   m_skip_taker{false};
 
         //! Private function
-        void                       clear_forms() ;
-        void                       determine_max_volume() ;
-        void                       determine_total_amount() ;
-        void                       determine_cex_rates() ;
-        void                       cap_volume() ;
-        [[nodiscard]] t_float_50   get_max_balance_without_dust(std::optional<QString> trade_with = std::nullopt) const ;
-        [[nodiscard]] TradingError generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const ;
-
-        QString calculate_total_amount(QString price, QString volume) const ;
+        void                       clear_forms();
+        void                       determine_max_volume();
+        void                       determine_total_amount();
+        void                       determine_cex_rates();
+        void                       cap_volume();
+        [[nodiscard]] t_float_50   get_max_balance_without_dust(std::optional<QString> trade_with = std::nullopt) const;
+        [[nodiscard]] TradingError generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const;
+        void                       set_preffered_settings();
+        QString                    calculate_total_amount(QString price, QString volume) const;
 
       public:
         //! Constructor
         explicit trading_page(
             entt::registry& registry, ag::ecs::system_manager& system_manager, std::atomic_bool& exit_status, portfolio_model* portfolio,
             QObject* parent = nullptr);
-        ~trading_page()  final = default;
+        ~trading_page() final = default;
 
         //! Public override
-        void update()  final;
+        void update() final;
 
         //! Public API
         void process_action();
         void connect_signals();
         void disconnect_signals();
         void clear_models();
-        void disable_coins(const QStringList& coins) ;
+        void disable_coins(const QStringList& coins);
 
         //! Public QML API
         Q_INVOKABLE void     on_gui_enter_dex();
         Q_INVOKABLE void     on_gui_leave_dex();
-        Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const ;
+        Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const;
 
         //! Trading business
         Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)
-        Q_INVOKABLE bool set_pair(bool is_left_side, QString changed_ticker) ;
+        Q_INVOKABLE bool set_pair(bool is_left_side, QString changed_ticker);
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
         Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
         Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "");
 
-        Q_INVOKABLE void reset_order() ;
+        Q_INVOKABLE void reset_order();
 
-        Q_INVOKABLE void determine_fees() ;
-        Q_INVOKABLE void determine_error_cases() ;
-        Q_INVOKABLE void reset_fees() ;
+        Q_INVOKABLE void determine_fees();
+        Q_INVOKABLE void determine_error_cases();
+        Q_INVOKABLE void reset_fees();
 
         //! Properties
-        [[nodiscard]] qt_orderbook_wrapper* get_orderbook_wrapper() const ;
-        [[nodiscard]] qt_orders_widget*     get_orders_widget() const ;
-        [[nodiscard]] market_pairs*         get_market_pairs_mdl() const ;
-        [[nodiscard]] bool                  is_buy_sell_rpc_busy() const ;
-        void                                set_buy_sell_rpc_busy(bool status) ;
+        [[nodiscard]] qt_orderbook_wrapper* get_orderbook_wrapper() const;
+        [[nodiscard]] qt_orders_widget*     get_orders_widget() const;
+        [[nodiscard]] market_pairs*         get_market_pairs_mdl() const;
+        [[nodiscard]] bool                  is_buy_sell_rpc_busy() const;
+        void                                set_buy_sell_rpc_busy(bool status);
 
         //! Trading Logic
-        [[nodiscard]] MarketMode   get_market_mode() const ;
-        void                       set_market_mode(MarketMode market_mode) ;
-        [[nodiscard]] TradingError get_trading_error() const ;
-        void                       set_trading_error(TradingError trading_error) ;
-        [[nodiscard]] TradingMode  get_current_trading_mode() const ;
-        void                       set_current_trading_mode(TradingMode trading_mode) ;
-        [[nodiscard]] QString      get_price_reversed() const ;
-        [[nodiscard]] QString      get_price() const ;
-        void                       set_price(QString price) ;
-        [[nodiscard]] QString      get_mm2_min_trade_vol() const ;
-        [[nodiscard]] QString      get_min_trade_vol() const ;
-        void                       set_min_trade_vol(QString min_trade_vol) ;
-        [[nodiscard]] QString      get_volume() const ;
-        void                       set_volume(QString volume) ;
-        [[nodiscard]] QString      get_max_volume() const ;
-        void                       set_max_volume(QString max_volume) ;
-        [[nodiscard]] QString      get_total_amount() const ;
-        void                       set_total_amount(QString total_amount) ;
-        [[nodiscard]] QString      get_base_amount() const ;
-        [[nodiscard]] QString      get_rel_amount() const ;
-        [[nodiscard]] QString      get_cex_price() const ;
-        [[nodiscard]] QString      get_cex_price_reversed() const ;
-        [[nodiscard]] QString      get_cex_price_diff() const ;
-        [[nodiscard]] bool         get_invalid_cex_price() const ;
-        [[nodiscard]] QVariantMap  get_preffered_order() ;
-        void                       set_preffered_order(QVariantMap price_object) ;
-        [[nodiscard]] QVariantMap  get_fees() const ;
-        void                       set_fees(QVariantMap fees) ;
-        [[nodiscard]] bool         get_skip_taker() const ;
-        void                       set_skip_taker(bool skip_taker) ;
-        [[nodiscard]] bool         is_preimage_busy() const ;
-        void                       set_preimage_busy(bool status) ;
-        [[nodiscard]] QVariant     get_buy_sell_last_rpc_data() const ;
-        void                       set_buy_sell_last_rpc_data(QVariant rpc_data) ;
+        [[nodiscard]] MarketMode   get_market_mode() const;
+        void                       set_market_mode(MarketMode market_mode);
+        [[nodiscard]] TradingError get_trading_error() const;
+        void                       set_trading_error(TradingError trading_error);
+        [[nodiscard]] TradingMode  get_current_trading_mode() const;
+        void                       set_current_trading_mode(TradingMode trading_mode);
+        [[nodiscard]] QString      get_price_reversed() const;
+        [[nodiscard]] QString      get_price() const;
+        void                       set_price(QString price);
+        [[nodiscard]] QString      get_mm2_min_trade_vol() const;
+        [[nodiscard]] QString      get_min_trade_vol() const;
+        void                       set_min_trade_vol(QString min_trade_vol);
+        [[nodiscard]] QString      get_volume() const;
+        void                       set_volume(QString volume);
+        [[nodiscard]] QString      get_max_volume() const;
+        void                       set_max_volume(QString max_volume);
+        [[nodiscard]] QString      get_total_amount() const;
+        void                       set_total_amount(QString total_amount);
+        [[nodiscard]] QString      get_base_amount() const;
+        [[nodiscard]] QString      get_rel_amount() const;
+        [[nodiscard]] QString      get_cex_price() const;
+        [[nodiscard]] QString      get_cex_price_reversed() const;
+        [[nodiscard]] QString      get_cex_price_diff() const;
+        [[nodiscard]] bool         get_invalid_cex_price() const;
+        [[nodiscard]] QVariantMap  get_preffered_order();
+        void                       set_preffered_order(QVariantMap price_object);
+        [[nodiscard]] QVariantMap  get_fees() const;
+        void                       set_fees(QVariantMap fees);
+        [[nodiscard]] bool         get_skip_taker() const;
+        void                       set_skip_taker(bool skip_taker);
+        [[nodiscard]] bool         is_preimage_busy() const;
+        void                       set_preimage_busy(bool status);
+        [[nodiscard]] QVariant     get_buy_sell_last_rpc_data() const;
+        void                       set_buy_sell_last_rpc_data(QVariant rpc_data);
 
         //! Events Callbacks
-        void on_process_orderbook_finished_event(const process_orderbook_finished& evt) ;
+        void on_process_orderbook_finished_event(const process_orderbook_finished& evt);
 
       signals:
         void orderbookChanged();
