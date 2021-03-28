@@ -448,7 +448,7 @@
       "coin": "COMP-BEP20",
       "name": "Compound",
       "coinpaprika_id": "comp-compoundd",
-      "coingecko_id": "compound-coin",
+      "coingecko_id": "compound-governance-token",
       "nodes": [
         "https://bsc-dataseed.binance.org"
       ],
@@ -463,7 +463,7 @@
       "coin": "COMP-ERC20",
       "name": "Compound",
       "coinpaprika_id": "comp-compoundd",
-      "coingecko_id": "compound-coin",
+      "coingecko_id": "compound-governance-token",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
