@@ -1526,6 +1526,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "SXP-BEP20": {
+      "coin": "SXP-BEP20",
+      "name": "Swipe",
+      "coinpaprika_id": "sxp-swipe",
+      "coingecko_id": "swipe",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "SXP-ERC20": {
+      "coin": "SXP-ERC20",
+      "name": "Swipe",
+      "coinpaprika_id": "sxp-swipe",
+      "coingecko_id": "swipe",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SYS": {
     "coin": "SYS",
     "name": "Syscoin",
@@ -2057,6 +2089,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "XRP-BEP20": {
+      "coin": "XRP-BEP20",
+      "name": "XRP",
+      "coinpaprika_id": "xrp-xrp",
+      "coingecko_id": "ripple",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "XTZ-BEP20": {
       "coin": "XTZ-BEP20",
       "name": "Tezos",
@@ -2069,6 +2116,70 @@
         "https://bscscan.com/"
       ],
       "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "YFI-BEP20": {
+      "coin": "YFI-BEP20",
+      "name": "yearn.finance",
+      "coinpaprika_id": "yfi-yearnfinance",
+      "coingecko_id": "yearn-finance",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "YFI-ERC20": {
+      "coin": "YFI-ERC20",
+      "name": "yearn.finance",
+      "coinpaprika_id": "yfi-yearnfinance",
+      "coingecko_id": "yearn-finance",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "YFII-BEP20": {
+      "coin": "YFII-BEP20",
+      "name": "DFI.Money",
+      "coinpaprika_id": "yfii-dfimoney",
+      "coingecko_id": "yfii-finance",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "YFII-ERC20": {
+      "coin": "YFII-ERC20",
+      "name": "DFI.Money",
+      "coinpaprika_id": "yfii-dfimoney",
+      "coingecko_id": "yfii-finance",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -3227,23 +3338,6 @@
   "active": false,
   "currently_enabled": false
  },
- "SXP": {
-  "coin": "SXP",
-  "name": "Swipe",
-  "coinpaprika_id": "sxp-swipe",
-  "coingecko_id": "swipe",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "TMTG": {
   "coin": "TMTG",
   "name": "The Midas Touch Gold",
@@ -3345,21 +3439,21 @@
       "currently_enabled": false
   },
   "UNI-ERC20": {
-    "coin": "UNI-ERC20",
-    "name": "Uniswap",
-    "coinpaprika_id": "uni-uniswap",
-    "coingecko_id": "uniswap",
-    "nodes": [
+     "coin": "UNI-ERC20",
+     "name": "Uniswap",
+     "coinpaprika_id": "uni-uniswap",
+     "coingecko_id": "uniswap",
+     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
+     ],
+     "explorer_url": [
       "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
+     ],
+     "type": "ERC-20",
+     "active": false,
+     "currently_enabled": false
   },
  "UOS": {
   "coin": "UOS",
@@ -3451,55 +3545,6 @@
   "name": "Sora Token",
   "coinpaprika_id": "xor-sora",
   "coingecko_id": "sora",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
-  "XRP-BEP20": {
-      "coin": "XRP-BEP20",
-      "name": "XRP",
-      "coinpaprika_id": "xrp-xrp",
-      "coingecko_id": "ripple",
-      "nodes": [
-        "https://bsc-dataseed.binance.org"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
-  },
- "YFI": {
-  "coin": "YFI",
-  "name": "yearn.finance",
-  "coinpaprika_id": "yfi-yearnfinance",
-  "coingecko_id": "yearn-finance",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "YFII": {
-  "coin": "YFII",
-  "name": "YFII.finance",
-  "coinpaprika_id": "yfii-dfimoney",
-  "coingecko_id": "yfii-finance",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
