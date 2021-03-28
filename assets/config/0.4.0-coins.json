@@ -1061,6 +1061,21 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "NEAR-BEP20": {
+      "coin": "NEAR-BEP20",
+      "name": "NEAR Protocol",
+      "coinpaprika_id": "near-near-protocol",
+      "coingecko_id": "near",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ONT-BEP20": {
       "coin": "ONT-BEP20",
       "name": "Ontology",
