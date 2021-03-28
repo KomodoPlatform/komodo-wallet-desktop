@@ -385,6 +385,7 @@ QtObject {
                                           "WBTC": "#CCCCCC",
                                           "XRP": "#2E353D",
                                           "XTZ": "#A8E000",
+                                          "XVS": "#F4BC54",
                                           "YFI": "#006BE6",
                                           "YFII": "#FF2A79",
                                           "ZIL": "#42BBB9",

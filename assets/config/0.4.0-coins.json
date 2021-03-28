@@ -2155,6 +2155,21 @@
       "active": false,
       "currently_enabled": false
   },
+  "XVS": {
+      "coin": "XVS",
+      "name": "Venus",
+      "coinpaprika_id": "xvs-venus",
+      "coingecko_id": "venus",
+      "nodes": [
+        "https://bsc-dataseed.binance.org"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "YFI-BEP20": {
       "coin": "YFI-BEP20",
       "name": "yearn.finance",
