@@ -5,7 +5,9 @@
       "coinpaprika_id": "aave-new",
       "coingecko_id": "aave",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -37,7 +39,9 @@
       "coinpaprika_id": "ada-cardano",
       "coingecko_id": "cardano",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -52,7 +56,9 @@
       "coinpaprika_id": "bnb-binance-coin",
       "coingecko_id": "binancecoin",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -83,7 +89,9 @@
       "coinpaprika_id": "1inch-1inch",
       "coingecko_id": "1inch",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -132,7 +140,9 @@
       "coinpaprika_id": "atom-cosmos",
       "coingecko_id": "cosmos",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -170,7 +180,9 @@
       "coinpaprika_id": "band-band-protocol",
       "coingecko_id": "band-protocol",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -250,7 +262,9 @@
       "coinpaprika_id": "btc-bitcoin",
       "coingecko_id": "bitcoin",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -396,7 +410,9 @@
       "coinpaprika_id": "busd-binance-usd",
       "coingecko_id": "binance-usd",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -411,7 +427,9 @@
       "coinpaprika_id": "cake-pancakeswap",
       "coingecko_id": "pancakeswap-token",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -466,7 +484,9 @@
       "coinpaprika_id": "comp-compoundd",
       "coingecko_id": "compound-governance-token",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -545,7 +565,9 @@
       "coinpaprika_id": "dai-dai",
       "coingecko_id": "dai",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -624,7 +646,9 @@
       "coinpaprika_id": "dodo-dodo",
       "coingecko_id": "dodo",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -679,7 +703,9 @@
       "coinpaprika_id": "dot-polkadot",
       "coingecko_id": "polkadot",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -734,7 +760,9 @@
       "coinpaprika_id": "elf-aelf",
       "coingecko_id": "aelf",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -791,7 +819,9 @@
       "coinpaprika_id": "eos-eos",
       "coingecko_id": "eos",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -806,7 +836,9 @@
       "coinpaprika_id": "etc-ethereum-classic",
       "coingecko_id": "ethereum-classic",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -919,7 +951,9 @@
       "coinpaprika_id": "iotx-iotex",
       "coingecko_id": "iotex",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1051,7 +1085,9 @@
       "coinpaprika_id": "near-near-protocol",
       "coingecko_id": "near",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1066,7 +1102,9 @@
       "coinpaprika_id": "ont-ontology",
       "coingecko_id": "ontology",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1081,7 +1119,9 @@
       "coinpaprika_id": "pax-paxos-standard-token",
       "coingecko_id": "paxos-standard",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1113,7 +1153,9 @@
       "coinpaprika_id": "paxg-pax-gold",
       "coingecko_id": "pax-gold",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1162,7 +1204,9 @@
       "coinpaprika_id": "eth-ethereum",
       "coingecko_id": "ethereum",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1177,7 +1221,9 @@
       "coinpaprika_id": "usdc-usd-coin",
       "coingecko_id": "usd-coin",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1209,7 +1255,9 @@
       "coinpaprika_id": "usdt-tether",
       "coingecko_id": "tether",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1258,7 +1306,9 @@
       "coinpaprika_id": "bat-basic-attention-token",
       "coingecko_id": "basic-attention-token",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1315,7 +1365,9 @@
       "coinpaprika_id": "kmd-komodo",
       "coingecko_id": "komodo",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1353,7 +1405,9 @@
       "coinpaprika_id": "link-chainlink",
       "coingecko_id": "chainlink",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1576,7 +1630,9 @@
       "coinpaprika_id": "sxp-swipe",
       "coingecko_id": "swipe",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1786,7 +1842,9 @@
       "coinpaprika_id": "mkr-maker",
       "coingecko_id": "maker",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1960,7 +2018,9 @@
       "coinpaprika_id": "snx-synthetix-network-token",
       "coingecko_id": "havven",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2139,7 +2199,9 @@
       "coinpaprika_id": "xrp-xrp",
       "coingecko_id": "ripple",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2154,7 +2216,9 @@
       "coinpaprika_id": "xtz-tezos",
       "coingecko_id": "tezos",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2169,7 +2233,9 @@
       "coinpaprika_id": "xvs-venus",
       "coingecko_id": "venus",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2184,7 +2250,9 @@
       "coinpaprika_id": "yfi-yearnfinance",
       "coingecko_id": "yearn-finance",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2216,7 +2284,9 @@
       "coinpaprika_id": "yfii-dfimoney",
       "coingecko_id": "yfii-finance",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2295,7 +2365,9 @@
       "coinpaprika_id": "zil-zilliqa",
       "coingecko_id": "zilliqa",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -3503,7 +3575,9 @@
       "coinpaprika_id": "uni-uniswap",
       "coingecko_id": "uniswap",
       "nodes": [
-        "https://bsc-dataseed.binance.org"
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
       ],
       "explorer_url": [
         "https://bscscan.com/"
