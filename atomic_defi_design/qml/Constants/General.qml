@@ -517,7 +517,7 @@ QtObject {
                                                 "AVAX/DAI": "BINANCE:AVAXUSD",
                                                 "AVAX/PAX": "BINANCE:AVAXUSD",
                                                 "AVAX/BNB": "BINANCE:AVAXBNB",
-                                                "AVAX/EURS": "BINANCE:AVAXEUR"
+                                                "AVAX/EURS": "BINANCE:AVAXEUR",
                                                 "BAL/BTC": "BINANCE:BALBTC",
                                                 "BAL/ETH": "HUOBI:BALETH",
                                                 "BAL/USDT": "BINANCE:BALUSD",
