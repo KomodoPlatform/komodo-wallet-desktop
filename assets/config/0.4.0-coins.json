@@ -151,6 +151,23 @@
       "active": false,
       "currently_enabled": false
   },
+  "AVAX-BEP20": {
+      "coin": "AVAX-BEP20",
+      "name": "Avalanche",
+      "coinpaprika_id": "avax-avalanche",
+      "coingecko_id": "avalanche-2",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "AXE": {
     "coin": "AXE",
     "name": "Axe",
@@ -173,6 +190,40 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "BAL-BEP20": {
+      "coin": "BAL-BEP20",
+      "name": "Balancer",
+      "coinpaprika_id": "bal-balancer",
+      "coingecko_id": "balancer",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BAL-ERC20": {
+      "coin": "BAL-ERC20",
+      "name": "Balancer",
+      "coinpaprika_id": "bal-balancer",
+      "coingecko_id": "balancer",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "BAND-BEP20": {
       "coin": "BAND-BEP20",
@@ -232,6 +283,40 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "BNT-BEP20": {
+      "coin": "BNT-BEP20",
+      "name": "Bancor",
+      "coinpaprika_id": "bnt-bancor",
+      "coingecko_id": "bancor",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BNT-ERC20": {
+      "coin": "BNT-ERC20",
+      "name": "Bancor",
+      "coinpaprika_id": "bnt-bancor",
+      "coingecko_id": "bancor",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "BTC": {
     "coin": "BTC",
@@ -978,6 +1063,23 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "IOTA-BEP20": {
+      "coin": "IOTA-BEP20",
+      "name": "IOTA",
+      "coinpaprika_id": "miota-iota",
+      "coingecko_id": "iota",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "IOTX-BEP20": {
       "coin": "IOTX-BEP20",
@@ -2809,23 +2911,6 @@
   "name": "Bitpanda Ecosystem Token",
   "coinpaprika_id": "best-bitpanda-ecosystem-token",
   "coingecko_id": "bitpanda-ecosystem-token",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "BNT": {
-  "coin": "BNT",
-  "name": "Bancor",
-  "coinpaprika_id": "bnt-bancor",
-  "coingecko_id": "bancor",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
