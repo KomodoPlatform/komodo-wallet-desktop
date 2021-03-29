@@ -2889,23 +2889,6 @@
   "active": false,
   "currently_enabled": false
  },
- "BAL": {
-  "coin": "BAL",
-  "name": "Balancer",
-  "coinpaprika_id": "bal-balancer",
-  "coingecko_id": "balancer",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "BEST": {
   "coin": "BEST",
   "name": "Bitpanda Ecosystem Token",
