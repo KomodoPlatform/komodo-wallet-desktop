@@ -16,7 +16,7 @@ ColumnLayout {
     Layout.fillHeight: true
     Layout.bottomMargin: 40
     Layout.margins: 40
-
+    property string total: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
     readonly property int sort_by_name: 0
     readonly property int sort_by_value: 1
     readonly property int sort_by_change: 3
@@ -39,15 +39,24 @@ ColumnLayout {
         }
     }
     function refresh() {
+        pieSeries.clear()
         for(var i =0; i<portfolio_mdl.pie_chart_proxy_mdl.rowCount();i++) {
             let data = portfolio_mdl.pie_chart_proxy_mdl.get(i)
              addItem(data)
         }
     }
+    Timer {
+        id: pieTimer
+        interval: 500
+        onTriggered: refresh()
+    }
+    onTotalChanged: {
+       refresh()
+       pieTimer.restart()
+    }
 
     Component.onCompleted: {
        reset()
-       refresh()
     }
 
     function reset() {
@@ -90,6 +99,7 @@ ColumnLayout {
         item.labelColor = 'white';
         item.color = Style.getCoinColor(value.ticker)
         item.borderColor = theme.backgroundColor
+        item.holeSize = 1
         item.labelFont = theme.textType.body2
         item.hovered.connect(function(state){
             if(state){
@@ -101,7 +111,7 @@ ColumnLayout {
             }else {
                 item.exploded = false
                 item.labelVisible= false
-                item.explodeDistanceFactor = 0.0
+                item.explodeDistanceFactor = 0.01
                 item.borderWidth = 1
                 portfolio.currentValue = ""
                 portfolio.currentTotal = ""
