@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 #include <QJsonDocument>
+#include <QSettings>
 
 //! Project Headers
 #include "atomicdex/api/mm2/rpc.buy.hpp"
@@ -413,6 +414,10 @@ namespace atomic_dex
                     auto* wrapper = get_orderbook_wrapper();
                     m_models_actions[orderbook_need_a_reset] ? wrapper->reset_orderbook(result) : wrapper->refresh_orderbook(result);
                     this->determine_error_cases();
+                    if (m_models_actions[orderbook_need_a_reset] && this->m_current_trading_mode == TradingModeGadget::Pro)
+                    {
+                        this->set_preffered_settings();
+                    }
                 }
                 break;
             }
@@ -1017,12 +1022,6 @@ namespace atomic_dex
             this->set_preimage_busy(false);
         };
         mm2.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
-
-        //! (send) BCH <-> ETH (receive)
-        /*
-        const bool is_max = m_market_mode == MarketMode::Sell && m_volume == m_max_volume;
-
-        this->set_fees(generate_fees_infos(base, rel, is_max, get_base_amount(), mm2));*/
     }
 
     void
@@ -1122,10 +1121,23 @@ namespace atomic_dex
     QString
     trading_page::get_cex_price_diff() const
     {
-        t_float_50 price_diff = get_invalid_cex_price()
-                                    ? t_float_50(0)
-                                    : t_float_50(100) * (t_float_50(1) - safe_float(m_price.toStdString()) / safe_float(m_cex_price.toStdString())) *
-                                          (m_market_mode == MarketMode::Sell ? t_float_50(1) : t_float_50(-1));
+        bool is_invalid = get_invalid_cex_price();
+        if (is_invalid)
+        {
+            return "0";
+        }
+        const bool is_sell    = m_market_mode == MarketMode::Sell;
+        t_float_50 price      = safe_float(m_price.toStdString());
+        t_float_50 cex_price  = safe_float(m_cex_price.toStdString());
+        t_float_50 sign       = (is_sell ? t_float_50(1) : t_float_50(-1));
+        t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (price / cex_price)) * sign;
+        if (is_sell)
+        {
+            price_diff = boost::multiprecision::abs(price_diff);
+        }
+        SPDLOG_INFO(
+            "100 * (1 - ({} / {})) * {} = {}%", utils::format_float(price), utils::format_float(cex_price), utils::format_float(sign),
+            utils::format_float(price_diff));
         return QString::fromStdString(utils::format_float(price_diff));
     }
 
@@ -1276,5 +1288,49 @@ namespace atomic_dex
         t_float_50 volume_f(safe_float(volume.toStdString()));
         t_float_50 total_amount_f = volume_f * price_f;
         return QString::fromStdString(atomic_dex::utils::format_float(total_amount_f));
+    }
+
+    void
+    trading_page::set_preffered_settings()
+    {
+        QSettings&    settings            = entity_registry_.ctx<QSettings>();
+        auto*         market_selector_mdl = get_market_pairs_mdl();
+        const auto    left                = market_selector_mdl->get_left_selected_coin();
+        const auto    right               = market_selector_mdl->get_right_selected_coin();
+        const auto    category_settings   = left + "_" + right;
+        const QString target_settings     = "Disabled";
+        settings.beginGroup(category_settings);
+        const bool is_disabled = settings.value(target_settings, true).toBool();
+        t_float_50 spread      = settings.value("Spread", 1.0).toDouble();
+        // const bool max                = settings.value("Max", false).toBool();
+        t_float_50 min_volume_percent = settings.value("MinVolume", 10.0).toDouble() / 100; ///< min volume is always 10% of the order or more
+        settings.endGroup();
+        if (!is_disabled)
+        {
+            SPDLOG_WARN("{}/{} have trading settings - using them", left.toStdString(), right.toStdString());
+            const auto& price_service = m_system_manager.get_system<global_price_service>();
+            t_float_50  cex_price     = safe_float(price_service.get_cex_rates(left.toStdString(), right.toStdString()));
+            t_float_50  percent       = spread / 100;
+            t_float_50  target_price =
+                (m_market_mode == MarketMode::Sell) ? t_float_50(cex_price + (cex_price * percent)) : t_float_50(cex_price - (cex_price * percent));
+
+            //t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (target_price / cex_price)) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1) : t_float_50(-1));
+            //t_float_50 reversed_price_diff = t_float_50(100) * (t_float_50(1) - ((1 / target_price) / (1 / cex_price))) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1) : t_float_50(-1));
+            //SPDLOG_INFO("cex price: {}, target_price: {}, price_diff: {}", utils::format_float(cex_price), utils::format_float(target_price), utils::format_float(price_diff));
+            //SPDLOG_INFO("reversed_cex price: {}, reversed_target_price: {}, reversed_price_diff: {}", utils::format_float(1 / cex_price), utils::format_float(1 / target_price), utils::format_float(reversed_price_diff));
+            this->set_price(QString::fromStdString(utils::format_float(target_price)));
+            if (m_market_mode == MarketMode::Buy)
+            {
+                this->determine_max_volume();
+            }
+            this->set_volume(get_max_volume());
+            t_float_50 volume     = safe_float(get_volume().toStdString());
+            t_float_50 min_volume = volume * min_volume_percent;
+            this->set_min_trade_vol(QString::fromStdString(utils::format_float(min_volume)));
+        }
+        else
+        {
+            SPDLOG_WARN("{}/{} doesn't have any trading settings - skipping", left.toStdString(), right.toStdString());
+        }
     }
 } // namespace atomic_dex
