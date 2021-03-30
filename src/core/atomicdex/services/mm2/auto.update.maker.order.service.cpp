@@ -102,7 +102,7 @@ namespace atomic_dex
             ::mm2::api::to_json(setprice_json, request);
             batch.push_back(setprice_json);
             setprice_json["userpass"] = "";
-            SPDLOG_INFO("request: {}", setprice_json.dump(4));
+            SPDLOG_INFO("request: {}", setprice_json.dump(1));
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
             mm2.get_mm2_client()
                 .async_rpc_batch_standalone(batch)

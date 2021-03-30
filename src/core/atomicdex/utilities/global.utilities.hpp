@@ -57,7 +57,7 @@ namespace atomic_dex::utils
         }
     }
 
-    fs::path get_atomic_dex_data_folder();
+    ENTT_API fs::path get_atomic_dex_data_folder();
 
     /// \brief  Gets the path where addressbook configs are stored.
     /// \return An fs::path object.
