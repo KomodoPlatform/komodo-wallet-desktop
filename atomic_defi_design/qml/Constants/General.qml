@@ -146,7 +146,7 @@ QtObject {
     function viewTxAtExplorer(ticker, id, add_0x=true) {
         if(id !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            const id_prefix = add_0x && coin_info.type === 'ERC-20' || coin_info.type === 'BEP-20' ? '0x' : ''
+            const id_prefix = add_0x && (coin_info.type === 'ERC-20' || coin_info.type === 'BEP-20') ? '0x' : ''
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
         }
     }
