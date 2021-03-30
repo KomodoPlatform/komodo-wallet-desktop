@@ -33,7 +33,7 @@
 
 namespace atomic_dex
 {
-    portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent)  :
+    portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
         QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher),
         m_model_proxy(new portfolio_proxy_model(m_system_manager, parent)), m_pie_chart_proxy_model(new portfolio_proxy_model(m_system_manager, parent))
     {
@@ -136,6 +136,8 @@ namespace atomic_dex
                     {
                         balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                     }
+                    QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
+                    update_value(Trend7D, trend, idx, *this);
                     // SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
             };
@@ -145,7 +147,7 @@ namespace atomic_dex
     }
 
     void
-    portfolio_model::update_balance_values(const std::vector<std::string>& tickers) 
+    portfolio_model::update_balance_values(const std::vector<std::string>& tickers)
     {
         for (auto&& ticker: tickers)
         {
@@ -182,6 +184,8 @@ namespace atomic_dex
                 {
                     balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                 }
+                QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
+                update_value(Trend7D, trend, idx, *this);
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {
                     m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
@@ -396,25 +400,25 @@ namespace atomic_dex
     }
 
     portfolio_proxy_model*
-    atomic_dex::portfolio_model::get_portfolio_proxy_mdl() const 
+    atomic_dex::portfolio_model::get_portfolio_proxy_mdl() const
     {
         return m_model_proxy;
     }
 
     portfolio_proxy_model*
-    portfolio_model::get_pie_char_proxy_mdl() const 
+    portfolio_model::get_pie_char_proxy_mdl() const
     {
         return m_pie_chart_proxy_model;
     }
 
     int
-    portfolio_model::get_length() const 
+    portfolio_model::get_length() const
     {
         return this->rowCount(QModelIndex());
     }
 
     void
-    portfolio_model::set_cfg(cfg& cfg) 
+    portfolio_model::set_cfg(cfg& cfg)
     {
         m_config = &cfg;
     }
@@ -429,7 +433,7 @@ namespace atomic_dex
     }
 
     portfolio_model::t_portfolio_datas
-    portfolio_model::get_underlying_data() const 
+    portfolio_model::get_underlying_data() const
     {
         return m_model_data;
     }
