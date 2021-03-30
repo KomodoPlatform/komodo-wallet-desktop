@@ -99,22 +99,24 @@ ColumnLayout {
         item.labelColor = 'white';
         item.color = Style.getCoinColor(value.ticker)
         item.borderColor = theme.backgroundColor
+        item.borderWidth = 8
         item.holeSize = 1
         item.labelFont = theme.textType.body2
         item.hovered.connect(function(state){
             if(state){
                 item.exploded = true
-                item.explodeDistanceFactor = 0.08
+                item.explodeDistanceFactor = 0.01
                 item.labelVisible= true;
                 portfolio.currentTotal = "$ "+value.main_currency_balance
                 portfolio.currentValue = value.balance +" "+item.label
+                item.color = Qt.lighter(Style.getCoinColor(value.ticker))
             }else {
                 item.exploded = false
                 item.labelVisible= false
                 item.explodeDistanceFactor = 0.01
-                item.borderWidth = 1
                 portfolio.currentValue = ""
                 portfolio.currentTotal = ""
+                item.color = Style.getCoinColor(value.ticker)
             }
         })
     }
@@ -189,18 +191,19 @@ ColumnLayout {
                       legend.visible: false
                       backgroundColor: 'transparent'
                       anchors.centerIn: parent
+                      dropShadowEnabled: true
                       PieSeries {
-//                          PieSlice {
-//                              label: "XRP"; value: 10; color: Qaterial.Colors.yellow500;
-//                               labelColor: 'white';labelVisible: false; labelFont: theme.textType.head5
-//                               borderWidth: 3
-//                               Behavior on explodeDistanceFactor {
-//                                   NumberAnimation  {
-//                                       duration: 150
-//                                   }
-//                               }
+                          PieSlice {
+                              label: "XRP"; value: 100; color: Qaterial.Colors.gray900;
+                               labelColor: 'white';labelVisible: false; labelFont: theme.textType.head5
+                               borderWidth: 3
+                               Behavior on explodeDistanceFactor {
+                                   NumberAnimation  {
+                                       duration: 150
+                                   }
+                               }
 
-//                          }
+                          }
 
                       }
 
