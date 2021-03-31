@@ -35,8 +35,8 @@ namespace atomic_dex
         // Notification happens by modifying Q_PROPERTY `update_info`.
         Q_INVOKABLE void fetch_last_release_info();
         
-        // Updates the program to the latest release.
-        Q_INVOKABLE void run_update();
+        // Downloads last release.
+        Q_INVOKABLE void download_update();
         
         [[nodiscard]] QVariant get_last_release_info() const noexcept;
         

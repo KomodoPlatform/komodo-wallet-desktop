@@ -4,6 +4,8 @@
 
 namespace atomic_dex
 {
+    const auto update_archive_path{antara::gaming::core::binary_real_path().parent_path() / "update.archive"};
+    
     self_update_service::self_update_service(entt::registry& entity_registry) :
         system(entity_registry)
     {}
@@ -31,6 +33,18 @@ namespace atomic_dex
                 auto last_release = github_api::get_last_repository_release_from_http_response(resp);
                 last_release_info = last_release;
                 emit last_release_infoChanged();
+    void self_update_service::download_update()
+    {
+        auto release_info = last_release_info.get();
+        auto download_request = github_api::download_repository_release_request{.owner = "KomodoPlatform", .repository = "atomicDEX-Desktop",
+                                                                                .tag_name = release_info.tag_name, .name = release_info.name};
+        
+        github_api::download_repository_release(download_request, update_archive_path)
+            .then([this](std::filesystem::path download_location)
+            {
+                SPDLOG_DEBUG("Successfully downloaded last release to {}", download_location.string());
+                update_ready = true;
+                emit update_readyChanged();
             })
             .then(&handle_exception_pplx_task);
     }
