@@ -996,6 +996,29 @@
     "coingecko_id": "gleec-coin",
     "electrum": [
       {
+        "url": "electrum1.cipig.net:10022"
+      },
+      {
+        "url": "electrum2.cipig.net:10022"
+      },
+      {
+        "url": "electrum3.cipig.net:10022"
+      }
+    ],
+    "explorer_url": [
+      "https://gleec.explorer.dexstats.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "GLEEC-OLD": {
+    "coin": "GLEEC-OLD",
+    "name": "Gleec",
+    "coinpaprika_id": "gleec-gleec-coin",
+    "coingecko_id": "gleec-coin",
+    "electrum": [
+      {
         "url": "electrum1.cipig.net:10069"
       },
       {
