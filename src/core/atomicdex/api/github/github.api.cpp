@@ -7,8 +7,10 @@
 
 namespace atomic_dex::github_api
 {
-    const std::string base_remote_url{"https://api.github.com/"};
-    const auto api_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(base_remote_url));
+    const std::string api_remote_url{"https://api.github.com/"};
+    const auto api_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(api_remote_url));
+    const std::string github_url{"https://github.com/"};
+    const auto github_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(github_url));
 
     pplx::task<web::http::http_response> get_repository_releases_async(const repository_releases_request& request)
     {
@@ -37,7 +39,7 @@ namespace atomic_dex::github_api
 #elif __linux__
               "linux.AppImage"
 #elif _WIN32
-                        "windows.zip"
+              "windows.zip"
 #endif
           ) != std::string::npos)
           {
@@ -75,14 +77,20 @@ namespace atomic_dex::github_api
         if (json_answer.empty())
         {
             return repository_release{};
-    }
-    
+        }
+        
         const auto asset = get_matching_os_asset(json_answer.at(0));
         
         return repository_release{.url = asset.at("browser_download_url"), .assets_url = json_answer.at(0).at("assets_url"),
                                   .name = asset.at("name"), .tag_name   = json_answer.at(0).at("tag_name")};
     }
+    
+    pplx::task<std::filesystem::path> download_repository_release(download_repository_release_request download_request,
+                                                                  const std::filesystem::path& output_file_location)
     {
-        return download_file(api_client, release.url, output_file_location);
+        auto url = fmt::format("/{}/{}/{}/{}/{}/{}", download_request.owner, download_request.repository, "releases",
+                                                     "download", download_request.tag_name, download_request.name);
+        
+        return download_file(github_client, FROM_STD_STR(url), output_file_location);
     }
 }

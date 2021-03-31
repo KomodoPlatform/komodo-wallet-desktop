@@ -34,5 +34,13 @@ namespace atomic_dex::github_api
     // Parses only the first release returned by `get_repository_releases_async`. Be careful, resp must have returned 200.
     [[nodiscard]] repository_release                get_last_repository_release_from_http_response(const web::http::http_response& resp);
     
-    [[nodiscard]] pplx::task<std::filesystem::path> download_repository_release(repository_release release, const std::filesystem::path& output_file_location);
+    struct download_repository_release_request
+    {
+        std::string owner;
+        std::string repository;
+        std::string tag_name;
+        std::string name;
+    };
+    
+    [[nodiscard]] pplx::task<std::filesystem::path> download_repository_release(download_repository_release_request release, const std::filesystem::path& output_file_location);
 }
