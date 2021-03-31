@@ -64,6 +64,7 @@ namespace atomic_dex
     
     void self_update_service::perform_update()
     {
+    }
     
     QString self_update_service::get_last_release_tag_name() const noexcept
     {
