@@ -314,6 +314,7 @@ QtObject {
                                           "MCL": "#EA0000",
                                           "CCL": "#FFE400",
                                           "BET": "#F69B57",
+                                          "JRT": "#5EFC84",
                                           "SUPERNET": "#F69B57",
                                           "OOT": "#25AAE1",
                                           "REVS": "#F69B57",
