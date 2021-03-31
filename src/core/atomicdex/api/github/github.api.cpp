@@ -15,6 +15,7 @@ namespace atomic_dex::github_api
         web::http::http_request http_request;
         web::uri_builder        uri_builder;
     
+        uri_builder.append_path("repos");
         uri_builder.append_path(FROM_STD_STR(request.owner));
         uri_builder.append_path(FROM_STD_STR(request.repository));
         uri_builder.append_path(FROM_STD_STR("releases"));
