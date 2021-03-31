@@ -1,6 +1,13 @@
+// Qt headers
 #include <QJsonObject>
 
+// Deps headers
+#include <antara/gaming/core/real.path.hpp>
+
+// Project headers
 #include "self.update.service.hpp"
+#include "atomicdex/version/version.hpp"                //> get_version()
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp" //> download_file()
 
 namespace atomic_dex
 {
@@ -8,7 +15,9 @@ namespace atomic_dex
     
     self_update_service::self_update_service(entt::registry& entity_registry) :
         system(entity_registry)
-    {}
+    {
+        fetch_last_release_info();
+    }
     
     void self_update_service::update() noexcept
     {
