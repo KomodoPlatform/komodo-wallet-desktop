@@ -41,7 +41,11 @@ namespace atomic_dex
             .then([this](web::http::http_response resp) {
                 auto last_release = github_api::get_last_repository_release_from_http_response(resp);
                 last_release_info = last_release;
-                emit last_release_infoChanged();
+                emit last_release_tag_nameChanged();
+            })
+            .then(&handle_exception_pplx_task);
+    }
+    
     void self_update_service::download_update()
     {
         auto release_info = last_release_info.get();
@@ -58,15 +62,21 @@ namespace atomic_dex
             .then(&handle_exception_pplx_task);
     }
     
-    void self_update_service::run_update()
+    void self_update_service::perform_update()
     {
     
+    QString self_update_service::get_last_release_tag_name() const noexcept
+    {
+        return QString::fromStdString(last_release_info.get().tag_name);
     }
     
-    QVariant self_update_service::get_last_release_info() const noexcept
+    bool self_update_service::is_update_needed() const noexcept
     {
-        auto last_update_info = last_release_info.get();
-        return QJsonObject({{"tag_name", QString::fromStdString(last_update_info.tag_name)},
-                            {"url", QString::fromStdString(last_update_info.url)}});
+        return last_release_info.get().tag_name != get_version();
+    }
+    
+    bool self_update_service::is_update_ready() const noexcept
+    {
+        return update_ready.get();
     }
 }
