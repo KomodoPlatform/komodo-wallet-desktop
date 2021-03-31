@@ -24,8 +24,8 @@ namespace atomic_dex::github_api
         return api_client->request(http_request);
     }
     
-    // Returns the download url of the release which corresponds to your OS.
-    const auto get_matching_os_dl_url = [](const nlohmann::json& answer)
+    // Returns the asset element of the release which corresponds to your OS.
+    const auto get_matching_os_asset = [](const nlohmann::json& answer)
     {
       for (auto& asset : answer.at("assets"))
       {
@@ -41,7 +41,7 @@ namespace atomic_dex::github_api
 #endif
           ) != std::string::npos)
           {
-              return asset_download_url;
+              return asset;
           }
       }
       throw std::runtime_error("get_repository_releases_from_http_response: Cannot found a proper download url.");
@@ -56,10 +56,12 @@ namespace atomic_dex::github_api
         result.reserve(json_answer.size());
         for (auto& release_obj : json_answer)
         {
+            const auto asset = get_matching_os_asset(release_obj);
+            
             result.push_back(repository_release{
-                                .url        = get_matching_os_dl_url(release_obj),
+                                .url        = asset.at("browser_download_url"),
                                 .assets_url = release_obj.at("assets_url"),
-                                .name       = release_obj.at("name"),
+                                .name       = asset.at("name"),
                                 .tag_name   = release_obj.at("tag_name")});
         }
         return result;
@@ -67,14 +69,19 @@ namespace atomic_dex::github_api
     
     repository_release get_last_repository_release_from_http_response(const web::http::http_response& resp)
     {
-        const auto json_answer = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
+        const std::string string_answer = TO_STD_STR(resp.extract_string(true).get());
+        const auto json_answer = nlohmann::json::parse(string_answer);
         
-        return json_answer.empty() ? repository_release{} :
-                                     repository_release{.url        = get_matching_os_dl_url(json_answer.at(0)), .assets_url = json_answer.at(0).at("assets_url"),
-                                                        .name       = json_answer.at(0).at("name"), .tag_name   = json_answer.at(0).at("tag_name")};
+        if (json_answer.empty())
+        {
+            return repository_release{};
     }
     
-    pplx::task<std::filesystem::path> download_repository_release(repository_release release, const std::filesystem::path& output_file_location)
+        const auto asset = get_matching_os_asset(json_answer.at(0));
+        
+        return repository_release{.url = asset.at("browser_download_url"), .assets_url = json_answer.at(0).at("assets_url"),
+                                  .name = asset.at("name"), .tag_name   = json_answer.at(0).at("tag_name")};
+    }
     {
         return download_file(api_client, release.url, output_file_location);
     }
