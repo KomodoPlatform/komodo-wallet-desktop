@@ -338,6 +338,23 @@
       "active": false,
       "currently_enabled": false
   },
+  "BSTY": {
+    "coin": "BSTY",
+    "name": "GlobalBoost-Y",
+    "coinpaprika_id": "bsty-globalboost-y",
+    "coingecko_id": "globalboost",
+    "electrum": [
+      {
+        "url": "66.172.33.175:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://insight.globalboost.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "BTC": {
     "coin": "BTC",
     "name": "Bitcoin",
