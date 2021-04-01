@@ -33,6 +33,26 @@
       "active": false,
       "currently_enabled": false
   },
+  "ABY": {
+    "coin": "ABY",
+    "name": "ArtByte",
+    "coinpaprika_id": "aby-artbyte",
+    "coingecko_id": "artbyte",
+    "electrum": [
+      {
+        "url": "electrumx.aby.ewmcx.biz:50001"
+      },
+      {
+        "url": "161.97.142.60:50001"
+      }
+    ],
+    "explorer_url": [
+      "http://aby-explorer.ewmcx.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "ADA-BEP20": {
       "coin": "ADA-BEP20",
       "name": "Cardano",
