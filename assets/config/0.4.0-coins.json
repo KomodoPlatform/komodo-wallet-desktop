@@ -546,6 +546,57 @@
     "active": false,
     "currently_enabled": false
   },
+  "CDN": {
+    "coin": "CDN",
+    "name": "Canada eCoin",
+    "coinpaprika_id": "cdn-canada-ecoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "mumbai.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "holland.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "oakland.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "miami.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "seattle.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "chicago.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "lenoir.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/cdn/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",

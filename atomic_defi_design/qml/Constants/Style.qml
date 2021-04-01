@@ -273,6 +273,7 @@ QtObject {
                                           "BCH": "#8DC351",
                                           "BTC": "#F7931A",
                                           "CAKE": "#D1884F",
+                                          "CDN": "#90191C",
                                           "CLC": "#0970DC",
                                           "EOS": "#323232",
                                           "FTC": "#FFFFFF",
