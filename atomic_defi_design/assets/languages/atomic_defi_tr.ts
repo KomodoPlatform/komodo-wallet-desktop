@@ -2090,42 +2090,37 @@
 <context>
     <name>Portfolio</name>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="87"/>
-        <source>TOTAL</source>
-        <translation>TOPLAM</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="144"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="162"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="160"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="143"/>
         <source>Show only coins with balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="191"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="301"/>
         <source>Asset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="203"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="313"/>
         <source>Balance</source>
         <translation>Bakiye</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="215"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="325"/>
         <source>Change 24h</source>
         <translation>Değişim 24sa</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="227"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="337"/>
         <source>Trend 7d</source>
         <translation>Trend 7g</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="239"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="349"/>
         <source>Price</source>
         <translation>Fiyat</translation>
     </message>
@@ -2631,6 +2626,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="150"/>
         <source>Enable Desktop Notifications</source>
         <translation type="unfinished"></translation>
@@ -2663,6 +2663,21 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="266"/>
         <source>Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="414"/>
+        <source>Application version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="428"/>
+        <source>MM2 version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="442"/>
+        <source>Qt version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
