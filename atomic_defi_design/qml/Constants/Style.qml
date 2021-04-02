@@ -277,6 +277,7 @@ QtObject {
                                           "CAKE": "#D1884F",
                                           "CDN": "#90191C",
                                           "CLC": "#0970DC",
+                                          "DGC": "#BC7600",
                                           "EOS": "#323232",
                                           "FTC": "#FFFFFF",
                                           "GLEEC": "#8C41FF",

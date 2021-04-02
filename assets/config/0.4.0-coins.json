@@ -813,6 +813,34 @@
     ],
     "type": "UTXO"
   },
+  "DGC": {
+    "coin": "DGC",
+    "name": "Digitalcoin",
+    "coinpaprika_id": "dgc-digitalcoin",
+    "coingecko_id": "digitalcoin",
+    "electrum": [
+      {
+        "url": "electrumx.dgc.ewmcx.org:50001"
+      },
+      {
+        "url": "78.57.248.53:50001"
+      },
+      {
+        "url": "62.171.190.3:50001"
+      },
+      {
+        "url": "failover.dgc.ewmcx.biz:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/dgc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "DODO-BEP20": {
       "coin": "DODO-BEP20",
       "name": "DODO",
