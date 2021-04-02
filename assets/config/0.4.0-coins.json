@@ -2700,6 +2700,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "ZET": {
+    "coin": "ZET",
+    "name": "Zetacoin",
+    "coinpaprika_id": "zet-zetacoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "164.68.110.224:50001"
+      },
+      {
+        "url": "failover.zet.ewmci.xyz:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/zet/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "ZIL-BEP20": {
       "coin": "ZIL-BEP20",
       "name": "Zilliqa",
