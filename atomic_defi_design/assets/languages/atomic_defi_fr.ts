@@ -1638,6 +1638,29 @@
     </message>
 </context>
 <context>
+    <name>NewUpdateModal</name>
+    <message>
+        <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="23"/>
+        <source>New update detected !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="30"/>
+        <source>Do you want to update %1 from %2 to %3 ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="38"/>
+        <source>Download</source>
+        <translation type="unfinished">Téléchargement</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="42"/>
+        <source>Remind me later</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>NewUser</name>
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="58"/>
