@@ -359,6 +359,22 @@ run_app(int argc, char** argv)
     qInstallMessageHandler(&qt_message_handler);
 #endif
 
+#if defined(Q_OS_MACOS)
+    fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
+    fs::path target_path = atomic_dex::utils::get_atomic_dex_data_folder();
+    SPDLOG_INFO("{} exists -> {}", old_path.string(), fs::exists(old_path));
+    SPDLOG_INFO("{} exists -> {}", target_path.string(), fs::exists(target_path));
+    if (fs::exists(old_path) && !fs::exists(target_path))
+    {
+        SPDLOG_INFO("Renaming: {} to {}", old_path.string(), target_path.string());
+        QDir dir;
+        if (!dir.rename(QString::fromStdString(old_path.string()), QString::fromStdString(target_path.string())))
+        {
+            SPDLOG_ERROR("Cannot rename directory {} to {} - aborting", old_path.string(), target_path.string());
+            exit(1);
+        }
+    }
+#endif
     init_logging();
     connect_signals_handler();
     init_timezone_db();
@@ -416,6 +432,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_logo_path", QString::fromStdString((atomic_dex::utils::get_atomic_dex_data_folder() / "logo").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
     engine.rootContext()->setContextProperty("dex_current_version", QString::fromStdString(atomic_dex::get_version()));
+    engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);

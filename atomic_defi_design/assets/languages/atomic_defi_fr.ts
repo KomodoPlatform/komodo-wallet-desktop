@@ -2099,42 +2099,37 @@
 <context>
     <name>Portfolio</name>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="87"/>
-        <source>TOTAL</source>
-        <translation>TOTAL</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="144"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="162"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="160"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="143"/>
         <source>Show only coins with balance</source>
         <translation>Afficher uniquement les assets avec solde</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="191"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="301"/>
         <source>Asset</source>
         <translation>Asset</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="203"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="313"/>
         <source>Balance</source>
         <translation>Balance</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="215"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="325"/>
         <source>Change 24h</source>
         <translation>Changement 24H</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="227"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="337"/>
         <source>Trend 7d</source>
         <translation>Tendance 7j</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="239"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="349"/>
         <source>Price</source>
         <translation>Prix</translation>
     </message>
@@ -2640,6 +2635,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="150"/>
         <source>Enable Desktop Notifications</source>
         <translation type="unfinished">Activer les notifications</translation>
@@ -2672,6 +2672,21 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="266"/>
         <source>Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="414"/>
+        <source>Application version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="428"/>
+        <source>MM2 version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="442"/>
+        <source>Qt version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

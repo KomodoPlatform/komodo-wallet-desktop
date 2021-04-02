@@ -102,7 +102,7 @@ Qaterial.Dialog {
                     anchors.topMargin: 10
                     spacing: 10
                     currentIndex: 0
-                    model: [qsTr("General"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About")]
+                    model: [qsTr("General"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About"),qsTr("Version")]
                     highlight: Item {
                         width: menu_list.width-20
                         x: 10
@@ -395,6 +395,55 @@ Qaterial.Dialog {
                                     text: qsTr("Show")
                                     implicitHeight: 37
                                     onClicked: eula_modal.open()
+                                }
+                            }
+                        }
+                    }
+                    Item {
+                        Column {
+                            anchors.fill: parent
+                            topPadding: 10
+                            spacing: 15
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Application version")
+                                }
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    text: API.app.settings_pg.get_version()
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("MM2 version")
+                                }
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    text: API.app.settings_pg.get_mm2_version()
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Qt version")
+                                }
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    text: qtversion
                                 }
                             }
                         }
