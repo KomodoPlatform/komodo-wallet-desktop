@@ -1,5 +1,10 @@
+// Std headers
+#include <cstdlib>
+
 // Qt headers
 #include <QJsonObject>
+#include <QApplication> //> qApp
+#include <QProcess>
 
 // Deps headers
 #include <antara/gaming/core/real.path.hpp>
@@ -11,7 +16,7 @@
 
 namespace atomic_dex
 {
-    const auto update_archive_path{antara::gaming::core::binary_real_path().parent_path() / "update_archive.dmg"};
+    const auto update_archive_path{antara::gaming::core::binary_real_path().parent_path() / ".update_archive"};
     
     self_update_service::self_update_service(entt::registry& entity_registry) :
         system(entity_registry)
@@ -64,6 +69,41 @@ namespace atomic_dex
     
     void self_update_service::perform_update()
     {
+        qApp->quit();
+        
+        // Installs update for MacOS.
+#ifdef __APPLE__
+        try
+        {
+            const auto image_mount_path = update_archive_path.parent_path() / ".update_image";
+            auto image_mount_cmd = fmt::format("hdiutil attach {} -mountpoint {}/", update_archive_path.c_str(), image_mount_path.c_str());
+            auto image_unmount_cmd = fmt::format("hdiutil detach {}", image_mount_path.c_str());
+            auto image_copy_cmd = fmt::format("cp -rf {}/{}/Contents {}", image_mount_path.c_str(), DEX_PROJECT_NAME ".app",
+                                              update_archive_path.parent_path().parent_path().parent_path().c_str());
+        
+            fs::create_directories(image_mount_path);
+            if (!std::system(image_mount_cmd.c_str()))
+            {
+                std::system(image_copy_cmd.c_str());
+    }
+            std::system(image_unmount_cmd.c_str());
+        }
+        catch (std::exception& ex)
+        {
+            SPDLOG_ERROR(ex.what());
+        }
+#endif
+    
+        // Restarts application.
+        bool res = QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
+        if (!res)
+        {
+            SPDLOG_ERROR("Couldn't start a new process");
+        }
+        else
+        {
+            SPDLOG_INFO("Successfully restarted the app");
+        }
     }
     
     QString self_update_service::get_last_release_tag_name() const noexcept
