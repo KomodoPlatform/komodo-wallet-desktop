@@ -19,7 +19,7 @@ namespace atomic_dex
         fetch_last_release_info();
     }
     
-    void self_update_service::update() noexcept
+    void self_update_service::update()
     {
         using namespace std::chrono_literals;
         

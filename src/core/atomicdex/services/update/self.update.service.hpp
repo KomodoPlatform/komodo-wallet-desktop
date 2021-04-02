@@ -32,7 +32,7 @@ namespace atomic_dex
         // ecs::pre_update_system::update implementation
         // Basically it fetches last release info and notifies the frontend if a new release is available.
         // Notification happens by modifying Q_PROPERTY `update_info`.
-        void update() noexcept;
+        void update();
         
         // Fetches last release info and notifies the frontend if a new release is available.
         // Notification happens by modifying Q_PROPERTY `update_info`.
