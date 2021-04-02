@@ -357,6 +357,7 @@
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
+        <file>atomic_defi_design/qml/Dashboard/NewUpdateModal.qml</file>
         <file>atomic_defi_design/qml/Dashboard/NotificationsModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_defi_design/qml/Exchange/History/History.qml</file>

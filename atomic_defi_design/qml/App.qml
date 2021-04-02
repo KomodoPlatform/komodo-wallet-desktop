@@ -168,11 +168,9 @@ Rectangle {
     }
 
     // Update Modal
-    readonly property bool status_good: API.app.update_checker.update_status.rpc_code === 200
-    readonly property bool update_needed: status_good && API.app.update_checker.update_status.update_needed
-    ModalLoader {
-        id: update_modal
-        sourceComponent: UpdateModal {}
+    NewUpdateModal
+    {
+        id: new_update_modal
     }
 
     UpdateNotificationLine {
