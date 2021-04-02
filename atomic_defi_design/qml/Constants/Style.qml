@@ -392,6 +392,7 @@ QtObject {
                                           "SYS": "#0084C7",
                                           "TRC": "#096432",
                                           "TSL": "#64B082",
+                                          "UIS": "#008DCD",
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",

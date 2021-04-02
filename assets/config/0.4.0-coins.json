@@ -1550,6 +1550,29 @@
       "active": false,
       "currently_enabled": false
   },
+  "UIS": {
+    "coin": "UIS",
+    "name": "Unitus",
+    "coinpaprika_id": "uis-unitus",
+    "coingecko_id": "unitus",
+    "electrum": [
+      {
+        "url": "failover.trc-uis.ewmcx.biz:50001"
+      },
+      {
+        "url": "electrumx.uis.ewmcx.info:50001"
+      },
+      {
+        "url": "164.68.110.226:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.unitus.network/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "USDC-BEP20": {
       "coin": "USDC-BEP20",
       "name": "USD Coin",
