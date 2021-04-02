@@ -66,7 +66,7 @@ pplx::task<fs::path> download_file(const t_http_client_ptr& client, const std::s
         .then([url, output_location](Concurrency::streams::istream is)
         {
             Concurrency::streams::streambuf<std::uint8_t> rwbuf =
-                Concurrency::streams::file_buffer<std::uint8_t>::open(output_location).get();
+                Concurrency::streams::file_buffer<std::uint8_t>::open(output_location.c_str()).get();
             
             is.read_to_end(rwbuf).get();
             rwbuf.close();
