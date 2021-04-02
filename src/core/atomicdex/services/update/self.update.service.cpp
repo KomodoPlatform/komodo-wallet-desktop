@@ -113,7 +113,8 @@ namespace atomic_dex
     
     bool self_update_service::is_update_needed() const noexcept
     {
-        return last_release_info.get().tag_name != get_version();
+        auto tag = last_release_info.get().tag_name;
+        return !tag.empty() && tag != get_version();
     }
     
     bool self_update_service::is_update_ready() const noexcept
