@@ -21,7 +21,13 @@ namespace atomic_dex
     constexpr const char*
     get_version()
     {
-        return "0.4.0-beta-test-self-update";
+        return "0.4.0-beta-test-self-update"; // Temporary name for self update feature. TODO: Fix it when feature is complete.
+    }
+    
+    constexpr int
+    get_num_version() noexcept
+    {
+        return 39; // Temporary value for self update feature. TODO: Fix it when feature is complete.
     }
 
     constexpr const char*
