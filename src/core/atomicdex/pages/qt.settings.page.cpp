@@ -53,10 +53,8 @@ namespace
 //! Constructo destructor
 namespace atomic_dex
 {
-    settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) 
-        :
-        QObject(parent),
-        system(registry), m_system_manager(system_manager), m_app(app)
+    settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) :
+        QObject(parent), system(registry), m_system_manager(system_manager), m_app(app)
     {
     }
 } // namespace atomic_dex
@@ -65,7 +63,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    settings_page::update() 
+    settings_page::update()
     {
     }
 } // namespace atomic_dex
@@ -74,19 +72,19 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
-    settings_page::get_empty_string() const 
+    settings_page::get_empty_string() const
     {
         return m_empty_string;
     }
 
     QString
-    settings_page::get_current_lang() const 
+    settings_page::get_current_lang() const
     {
         return QString::fromStdString(m_config.current_lang);
     }
 
     void
-    atomic_dex::settings_page::set_current_lang(QString new_lang) 
+    atomic_dex::settings_page::set_current_lang(QString new_lang)
     {
         const std::string new_lang_std = new_lang.toStdString();
         change_lang(m_config, new_lang_std);
@@ -123,13 +121,13 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::settings_page::is_notification_enabled() const 
+    atomic_dex::settings_page::is_notification_enabled() const
     {
         return m_config.notification_enabled;
     }
 
     void
-    settings_page::set_notification_enabled(bool is_enabled) 
+    settings_page::set_notification_enabled(bool is_enabled)
     {
         if (m_config.notification_enabled != is_enabled)
         {
@@ -139,25 +137,25 @@ namespace atomic_dex
     }
 
     QString
-    settings_page::get_current_currency_sign() const 
+    settings_page::get_current_currency_sign() const
     {
         return QString::fromStdString(this->m_config.current_currency_sign);
     }
 
     QString
-    settings_page::get_current_fiat_sign() const 
+    settings_page::get_current_fiat_sign() const
     {
         return QString::fromStdString(this->m_config.current_fiat_sign);
     }
 
     QString
-    settings_page::get_current_currency() const 
+    settings_page::get_current_currency() const
     {
         return QString::fromStdString(this->m_config.current_currency);
     }
 
     void
-    settings_page::set_current_currency(const QString& current_currency) 
+    settings_page::set_current_currency(const QString& current_currency)
     {
         if (current_currency.toStdString() != m_config.current_currency)
         {
@@ -174,13 +172,13 @@ namespace atomic_dex
     }
 
     QString
-    settings_page::get_current_fiat() const 
+    settings_page::get_current_fiat() const
     {
         return QString::fromStdString(this->m_config.current_fiat);
     }
 
     void
-    settings_page::set_current_fiat(const QString& current_fiat) 
+    settings_page::set_current_fiat(const QString& current_fiat)
     {
         if (current_fiat.toStdString() != m_config.current_fiat)
         {
@@ -195,19 +193,19 @@ namespace atomic_dex
 namespace atomic_dex
 {
     atomic_dex::cfg&
-    settings_page::get_cfg() 
+    settings_page::get_cfg()
     {
         return m_config;
     }
 
     const atomic_dex::cfg&
-    settings_page::get_cfg() const 
+    settings_page::get_cfg() const
     {
         return m_config;
     }
 
     void
-    settings_page::init_lang() 
+    settings_page::init_lang()
     {
         set_current_lang(QString::fromStdString(m_config.current_lang));
     }
@@ -258,19 +256,19 @@ namespace atomic_dex
     }
 
     bool
-    settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const 
+    settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const
     {
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_raw_cfg(ticker.toStdString());
     }
 
     bool
-    settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const 
+    settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const
     {
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
     }
 
     QString
-    settings_page::get_custom_coins_icons_path() const 
+    settings_page::get_custom_coins_icons_path() const
     {
         return QString::fromStdString(utils::get_runtime_coins_path().string());
     }
@@ -289,16 +287,14 @@ namespace atomic_dex
             if (resp.status_code() == 200)
             {
                 nlohmann::json body_json      = nlohmann::json::parse(body);
-                const auto     ticker         = body_json.at("qrc20").at("symbol").get<std::string>();
-                const auto     adex_ticker    = ticker + "-QRC";
+                const auto     ticker         = body_json.at("qrc20").at("symbol").get<std::string>() + "-QRC20";
                 const auto     name_lowercase = boost::algorithm::to_lower_copy(body_json.at("qrc20").at("name").get<std::string>());
-                out["adex_ticker"]            = adex_ticker;
                 out["ticker"]                 = ticker;
                 out["name"]                   = name_lowercase;
-                copy_icon(icon_filepath, get_custom_coins_icons_path(), adex_ticker);
+                copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
                 const auto&    mm2      = this->m_system_manager.get_system<mm2_service>();
                 nlohmann::json qtum_cfg = mm2.get_raw_mm2_ticker_cfg("QTUM");
-                if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(adex_ticker)))
+                if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
                     out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
                     out["mm2_cfg"]["protocol"]["type"]                              = "QRC20";
@@ -306,9 +302,9 @@ namespace atomic_dex
                     out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = "QTUM";
                     std::string out_address                                         = "0x" + contract_address.toStdString();
                     out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
-                    out["mm2_cfg"]["coin"]                                          = adex_ticker;
-                    out["mm2_cfg"]["gui_coin"]                                      = ticker;
-                    out["mm2_cfg"]["mm2"]                                           = 1;
+                    out["mm2_cfg"]["coin"]                                          = ticker;
+                    // out["mm2_cfg"]["gui_coin"]                                      = ticker;
+                    out["mm2_cfg"]["mm2"] = 1;
                     if (body_json.at("qrc20").contains("decimals"))
                     {
                         out["mm2_cfg"]["decimals"] = body_json.at("qrc20").at("decimals").get<int>();
@@ -323,30 +319,30 @@ namespace atomic_dex
                     out["mm2_cfg"]["required_confirmations"] = 3;
                     out["mm2_cfg"]["fname"]                  = name_lowercase;
                 }
-                if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(adex_ticker)))
+                if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
                     //!
-                    out["adex_cfg"][adex_ticker]                      = nlohmann::json::object();
-                    out["adex_cfg"][adex_ticker]["coin"]              = adex_ticker;
-                    out["adex_cfg"][adex_ticker]["gui_coin"]          = ticker;
-                    out["adex_cfg"][adex_ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
-                    out["adex_cfg"][adex_ticker]["coingecko_id"]      = coingecko_id.toStdString();
-                    out["adex_cfg"][adex_ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
-                    out["adex_cfg"][adex_ticker]["type"]              = "QRC-20";
-                    out["adex_cfg"][adex_ticker]["active"]            = false;
-                    out["adex_cfg"][adex_ticker]["currently_enabled"] = false;
-                    out["adex_cfg"][adex_ticker]["is_custom_coin"]    = true;
+                    out["adex_cfg"][ticker]                      = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["coin"]              = ticker;
+                    out["adex_cfg"][ticker]["gui_coin"]          = ticker;
+                    out["adex_cfg"][ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
+                    out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
+                    out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
+                    out["adex_cfg"][ticker]["type"]              = "QRC-20";
+                    out["adex_cfg"][ticker]["active"]            = false;
+                    out["adex_cfg"][ticker]["currently_enabled"] = false;
+                    out["adex_cfg"][ticker]["is_custom_coin"]    = true;
                     if (not out.at("mm2_cfg").empty())
                     {
                         SPDLOG_INFO("mm2_cfg found, backup from new cfg");
-                        out["adex_cfg"][adex_ticker]["mm2_backup"] = out["mm2_cfg"];
+                        out["adex_cfg"][ticker]["mm2_backup"] = out["mm2_cfg"];
                     }
                     else
                     {
-                        if (mm2.is_this_ticker_present_in_raw_cfg(adex_ticker))
+                        if (mm2.is_this_ticker_present_in_raw_cfg(ticker))
                         {
-                            SPDLOG_INFO("mm2_cfg not found backup {} cfg from current cfg", adex_ticker);
-                            out["adex_cfg"][adex_ticker]["mm2_backup"] = mm2.get_raw_mm2_ticker_cfg(adex_ticker);
+                            SPDLOG_INFO("mm2_cfg not found backup {} cfg from current cfg", ticker);
+                            out["adex_cfg"][ticker]["mm2_backup"] = mm2.get_raw_mm2_ticker_cfg(ticker);
                         }
                     }
                 }
@@ -375,23 +371,23 @@ namespace atomic_dex
             {
             case CoinTypeGadget::QRC20:
                 return std::make_tuple(
-                    &::mm2::api::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s);
+                    &::mm2::api::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
             case CoinTypeGadget::ERC20:
                 return std::make_tuple(
                     &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
-                    "ETH"s);
+                    "ETH"s, "ERC20"s);
             case CoinTypeGadget::BEP20:
                 return std::make_tuple(
                     &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "ETH"s, "BEP-20"s,
-                    "BNB"s);
+                    "BNB"s, "ERC20"s);
             default:
-                return std::make_tuple(&::mm2::api::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s);
+                return std::make_tuple(&::mm2::api::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s, ""s);
             }
         };
-        auto&& [endpoint, url, type, platform, adex_platform, parent_chain] = retrieve_functor_url();
+        auto&& [endpoint, url, type, platform, adex_platform, parent_chain, parent_type] = retrieve_functor_url();
 
         auto answer_functor = [this, contract_address, coingecko_id, icon_filepath, type = type, platform = platform, adex_platform = adex_platform,
-                               parent_chain = parent_chain](web::http::http_response resp) {
+                               parent_chain = parent_chain, parent_type = parent_type](web::http::http_response resp) {
             //! Extract answer
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
@@ -402,15 +398,15 @@ namespace atomic_dex
             {
                 nlohmann::json raw_parent_cfg = mm2.get_raw_mm2_ticker_cfg(parent_chain);
                 nlohmann::json body_json      = nlohmann::json::parse(body).at("result")[0];
-                const auto     ticker         = body_json.at("symbol").get<std::string>();
+                const auto     ticker         = body_json.at("symbol").get<std::string>() + "-" + type;
                 const auto     name_lowercase = body_json.at("tokenName").get<std::string>();
                 out["ticker"]                 = ticker;
                 out["name"]                   = name_lowercase;
-                copy_icon(icon_filepath, get_custom_coins_icons_path(), ticker);
+                copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
                     out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["type"]                      = type;
+                    out["mm2_cfg"]["protocol"]["type"]                      = parent_type;
                     out["mm2_cfg"]["protocol"]["protocol_data"]             = nlohmann::json::object();
                     out["mm2_cfg"]["protocol"]["protocol_data"]["platform"] = platform;
                     std::string out_address                                 = contract_address.toStdString();
@@ -455,13 +451,13 @@ namespace atomic_dex
     }
 
     bool
-    settings_page::is_fetching_custom_token_data_busy() const 
+    settings_page::is_fetching_custom_token_data_busy() const
     {
         return m_fetching_erc_data_busy.load();
     }
 
     void
-    settings_page::set_fetching_custom_token_data_busy(bool status) 
+    settings_page::set_fetching_custom_token_data_busy(bool status)
     {
         if (m_fetching_erc_data_busy != status)
         {
@@ -471,13 +467,13 @@ namespace atomic_dex
     }
 
     QVariant
-    settings_page::get_custom_token_data() const 
+    settings_page::get_custom_token_data() const
     {
         return nlohmann_json_object_to_qt_json_object(m_custom_token_data.get());
     }
 
     void
-    settings_page::set_custom_token_data(QVariant rpc_data) 
+    settings_page::set_custom_token_data(QVariant rpc_data)
     {
         nlohmann::json out  = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
         m_custom_token_data = out;
@@ -494,14 +490,14 @@ namespace atomic_dex
     }
 
     void
-    settings_page::remove_custom_coin(const QString& ticker) 
+    settings_page::remove_custom_coin(const QString& ticker)
     {
         SPDLOG_DEBUG("remove ticker: {}", ticker.toStdString());
         this->m_system_manager.get_system<mm2_service>().remove_custom_coin(ticker.toStdString());
     }
 
     void
-    settings_page::set_qml_engine(QQmlApplicationEngine* engine) 
+    settings_page::set_qml_engine(QQmlApplicationEngine* engine)
     {
         m_qml_engine = engine;
     }
@@ -602,7 +598,7 @@ namespace atomic_dex
     }
 
     QString
-    settings_page::get_version() 
+    settings_page::get_version()
     {
         return QString::fromStdString(atomic_dex::get_version());
     }
@@ -626,12 +622,12 @@ namespace atomic_dex
     }
 
     bool
-    settings_page::is_fetching_priv_key_busy() const 
+    settings_page::is_fetching_priv_key_busy() const
     {
         return m_fetching_priv_keys_busy.load();
     }
     void
-    settings_page::set_fetching_priv_key_busy(bool status) 
+    settings_page::set_fetching_priv_key_busy(bool status)
     {
         if (m_fetching_priv_keys_busy != status)
         {
