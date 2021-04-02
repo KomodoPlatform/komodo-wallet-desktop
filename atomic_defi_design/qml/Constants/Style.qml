@@ -398,7 +398,7 @@ QtObject {
                                           "XVS": "#F4BC54",
                                           "YFI": "#006BE6",
                                           "YFII": "#FF2A79",
-                                          "ZET": "#155169,
+                                          "ZET": "#155169",
                                           "ZIL": "#42BBB9",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
