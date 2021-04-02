@@ -76,9 +76,9 @@ namespace atomic_dex
         try
         {
             const auto image_mount_path = update_archive_path.parent_path() / ".update_image";
-            auto image_mount_cmd = fmt::format("hdiutil attach {} -mountpoint {}/", update_archive_path.c_str(), image_mount_path.c_str());
-            auto image_unmount_cmd = fmt::format("hdiutil detach {}", image_mount_path.c_str());
-            auto image_copy_cmd = fmt::format("cp -rf {}/{}/Contents {}", image_mount_path.c_str(), DEX_PROJECT_NAME ".app",
+            const auto image_mount_cmd = fmt::format("hdiutil attach {} -mountpoint {}/", update_archive_path.c_str(), image_mount_path.c_str());
+            const auto image_unmount_cmd = fmt::format("hdiutil detach {}", image_mount_path.c_str());
+            const auto image_copy_cmd = fmt::format("cp -rf {}/{}/Contents {}", image_mount_path.c_str(), DEX_PROJECT_NAME ".app",
                                               update_archive_path.parent_path().parent_path().parent_path().c_str());
         
             fs::create_directories(image_mount_path);
