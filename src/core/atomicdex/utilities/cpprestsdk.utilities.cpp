@@ -58,7 +58,7 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
 pplx::task<fs::path> download_file(const t_http_client_ptr& client, const std::string& url, const fs::path& output_location)
 {
     SPDLOG_DEBUG("Start downloading {} to {}", url, output_location.c_str());
-    return client->request(web::http::methods::GET, url)
+    return client->request(web::http::methods::GET, FROM_STD_STR(url))
         .then([](web::http::http_response response)
         {
             return response.body();
