@@ -27,6 +27,9 @@
 #    define TO_STD_STR(ws_str) ws_str
 #    define FROM_STD_STR(utf8str) utf8str
 #endif
+
+#include "fs.prerequisites.hpp"
+
 using t_http_client_ptr = std::unique_ptr<web::http::client::http_client>;
 using t_http_client     = web::http::client::http_client;
 using t_http_request    = web::http::http_request;
@@ -34,4 +37,4 @@ using t_http_request    = web::http::http_request;
 t_http_request create_json_post_request(nlohmann::json&& json_data);
 void handle_exception_pplx_task(pplx::task<void> previous_task);
 
-pplx::task<std::filesystem::path> download_file(const t_http_client_ptr& client, const std::string& url, const std::filesystem::path& output_location);
+pplx::task<std::filesystem::path> download_file(const t_http_client_ptr& client, const std::string& url, const fs::path& output_location);

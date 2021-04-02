@@ -55,7 +55,7 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
     }
 }
 
-pplx::task<std::filesystem::path> download_file(const t_http_client_ptr& client, const std::string& url, const std::filesystem::path& output_location)
+pplx::task<std::filesystem::path> download_file(const t_http_client_ptr& client, const std::string& url, const fs::path& output_location)
 {
     SPDLOG_DEBUG("Start downloading {} to {}", url, output_location.string());
     return client->request(web::http::methods::GET, url)

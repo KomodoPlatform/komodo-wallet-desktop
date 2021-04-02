@@ -11,7 +11,7 @@
 
 namespace atomic_dex
 {
-    const auto update_archive_path{antara::gaming::core::binary_real_path().parent_path() / "update.archive"};
+    const auto update_archive_path{antara::gaming::core::binary_real_path().parent_path() / "update_archive.dmg"};
     
     self_update_service::self_update_service(entt::registry& entity_registry) :
         system(entity_registry)
