@@ -53,7 +53,7 @@ namespace atomic_dex
                                                                                 .tag_name = release_info.tag_name, .name = release_info.name};
         
         github_api::download_repository_release(download_request, update_archive_path)
-            .then([this](std::filesystem::path download_location)
+            .then([this](fs::path download_location)
             {
                 SPDLOG_DEBUG("Successfully downloaded last release to {}", download_location.string());
                 update_ready = true;
