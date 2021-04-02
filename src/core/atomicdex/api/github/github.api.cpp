@@ -90,7 +90,7 @@ namespace atomic_dex::github_api
     {
         auto url = fmt::format("/{}/{}/{}/{}/{}/{}", download_request.owner, download_request.repository, "releases",
                                                      "download", download_request.tag_name, download_request.name);
-        
+
         return download_file(github_client, FROM_STD_STR(url), output_file_location);
     }
 }
