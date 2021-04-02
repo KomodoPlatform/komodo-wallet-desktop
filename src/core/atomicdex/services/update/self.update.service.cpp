@@ -1,5 +1,7 @@
 // Std headers
 #include <cstdlib>
+#include <algorithm>
+#include <cctype>   //> std::isdigit
 
 // Qt headers
 #include <QJsonObject>
@@ -27,7 +29,7 @@ namespace atomic_dex
     void self_update_service::update()
     {
         using namespace std::chrono_literals;
-        
+
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - clock);
         if (s >= 1h)
@@ -85,7 +87,7 @@ namespace atomic_dex
             if (!std::system(image_mount_cmd.c_str()))
             {
                 std::system(image_copy_cmd.c_str());
-    }
+            }
             std::system(image_unmount_cmd.c_str());
         }
         catch (std::exception& ex)
@@ -93,7 +95,7 @@ namespace atomic_dex
             SPDLOG_ERROR(ex.what());
         }
 #endif
-    
+        
         // Restarts application.
         bool res = QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
         if (!res)
@@ -114,7 +116,8 @@ namespace atomic_dex
     bool self_update_service::is_update_needed() const noexcept
     {
         auto tag = last_release_info.get().tag_name;
-        return !tag.empty() && tag != get_version();
+        tag.erase(std::remove_if(tag.begin(), tag.end(), [](char c) { return not std::isdigit(c); }), tag.end());
+        return std::stoi(tag) > get_num_version();
     }
     
     bool self_update_service::is_update_ready() const noexcept
