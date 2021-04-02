@@ -42,7 +42,7 @@ namespace atomic_dex
         Q_INVOKABLE void download_update();
         
         // Updates the program to the latest release (downloaded by self_update_service::download_update()).
-        void perform_update();
+        Q_INVOKABLE void perform_update();
     
         [[nodiscard]] QString get_last_release_tag_name() const noexcept;
     
