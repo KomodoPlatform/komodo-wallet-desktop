@@ -680,7 +680,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     self_update_service*
-    application::get_self_update_service() const noexcept
+    application::get_self_update_service() const
     {
         auto ptr = const_cast<self_update_service*>(std::addressof(system_manager_.get_system<self_update_service>()));
         assert(ptr != nullptr);
