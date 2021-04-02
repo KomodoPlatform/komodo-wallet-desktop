@@ -2455,6 +2455,31 @@
     "active": false,
     "currently_enabled": false
   },
+  "TRC": {
+    "coin": "TRC",
+    "name": "Terracoin",
+    "coinpaprika_id": "trc-terracoin",
+    "coingecko_id": "terracoin",
+    "electrum": [
+      {
+        "url": "failover.trc-uis.ewmcx.biz:50005"
+      },
+      {
+        "url": "electrum.terracoin.io:50001"
+      },
+      {
+        "url": "electrum.southofheaven.ca:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/trc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "VRA": {
     "coin": "VRA",
     "name": "Verasity",
