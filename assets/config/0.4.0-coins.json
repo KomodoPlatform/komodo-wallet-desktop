@@ -33,6 +33,26 @@
       "active": false,
       "currently_enabled": false
   },
+  "ABY": {
+    "coin": "ABY",
+    "name": "ArtByte",
+    "coinpaprika_id": "aby-artbyte",
+    "coingecko_id": "artbyte",
+    "electrum": [
+      {
+        "url": "electrumx.aby.ewmcx.biz:50001"
+      },
+      {
+        "url": "161.97.142.60:50001"
+      }
+    ],
+    "explorer_url": [
+      "http://aby-explorer.ewmcx.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "ADA-BEP20": {
       "coin": "ADA-BEP20",
       "name": "Cardano",
@@ -318,6 +338,23 @@
       "active": false,
       "currently_enabled": false
   },
+  "BSTY": {
+    "coin": "BSTY",
+    "name": "GlobalBoost-Y",
+    "coinpaprika_id": "bsty-globalboost-y",
+    "coingecko_id": "globalboost",
+    "electrum": [
+      {
+        "url": "66.172.33.175:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://insight.globalboost.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "BTC": {
     "coin": "BTC",
     "name": "Bitcoin",
@@ -543,6 +580,57 @@
       "https://ccl.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
+  "CDN": {
+    "coin": "CDN",
+    "name": "Canada eCoin",
+    "coinpaprika_id": "cdn-canada-ecoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "mumbai.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "holland.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "oakland.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "miami.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "seattle.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "chicago.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "lenoir.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/cdn/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   },
@@ -839,6 +927,32 @@
     "active": false,
     "currently_enabled": false
   },
+  "EFL": {
+    "coin": "EFL",
+    "name": "e-Gulden",
+    "coinpaprika_id": "efl-e-gulden",
+    "coingecko_id": "electronicgulden",
+    "electrum": [
+      {
+        "url": "holland.ecoincore.com:11017",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "lenoir.ecoincore.com:11017",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/efl/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "EGLD-BEP20": {
       "coin": "EGLD-BEP20",
       "name": "Elrond",
@@ -991,6 +1105,29 @@
   },
   "GLEEC": {
     "coin": "GLEEC",
+    "name": "Gleec",
+    "coinpaprika_id": "gleec-gleec-coin",
+    "coingecko_id": "gleec-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10022"
+      },
+      {
+        "url": "electrum2.cipig.net:10022"
+      },
+      {
+        "url": "electrum3.cipig.net:10022"
+      }
+    ],
+    "explorer_url": [
+      "https://gleec.explorer.dexstats.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "GLEEC-OLD": {
+    "coin": "GLEEC-OLD",
     "name": "Gleec",
     "coinpaprika_id": "gleec-gleec-coin",
     "coingecko_id": "gleec-coin",

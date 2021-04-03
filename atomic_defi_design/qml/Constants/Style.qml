@@ -264,6 +264,7 @@ QtObject {
     }
 
     readonly property var colorCoin: ({
+                                          "ABY": "#8B0D10",
                                           "ADA": "#11283F",
                                           "ARPA": "#CCD9E2",
                                           "ATOM": "#2D3046",
@@ -271,8 +272,10 @@ QtObject {
                                           "BAL": "#282828",
                                           "BNB": "#F3BA2F",
                                           "BCH": "#8DC351",
+                                          "BSTY": "#78570D",
                                           "BTC": "#F7931A",
                                           "CAKE": "#D1884F",
+                                          "CDN": "#90191C",
                                           "CLC": "#0970DC",
                                           "EOS": "#323232",
                                           "FTC": "#FFFFFF",
@@ -350,6 +353,7 @@ QtObject {
                                           "CVC": "#3AB03E",
                                           "CVT": "#4B0082",
                                           "DODO": "#FFF706",
+                                          "EFL": "#FF940B",
                                           "EGLD": "#0D022B",
                                           "ELF": "#2B5EBB",
                                           "ENJ": "#6752C3",
