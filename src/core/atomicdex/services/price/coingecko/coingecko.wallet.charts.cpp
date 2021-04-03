@@ -66,7 +66,8 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                SPDLOG_ERROR("Caught exception: {}", error.what());
+                SPDLOG_ERROR("Caught exception: {} - retrying.", error.what());
+                fetch_data_of_single_coin(cfg);
             }
         }
     }
@@ -113,7 +114,11 @@ namespace atomic_dex
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
         if (s >= 1min)
         {
-            m_taskflow.clear();
+            {
+                SPDLOG_INFO("Waiting for previous call to be finished");
+                m_executor.wait_for_all();
+                m_taskflow.clear();
+            }
             fetch_all_charts_data();
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
