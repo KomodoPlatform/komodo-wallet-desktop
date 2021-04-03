@@ -106,7 +106,7 @@ namespace atomic_dex
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
             mm2.get_mm2_client()
                 .async_rpc_batch_standalone(batch)
-                .then([this]([[maybe_unused]] web::http::http_response resp) {
+                .then([]([[maybe_unused]] web::http::http_response resp) {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
                     SPDLOG_INFO("status_code: {}", resp.status_code());
                     if (resp.status_code() == 200)
@@ -134,6 +134,7 @@ namespace atomic_dex
         {
             if (cur->is_maker)
             {
+                SPDLOG_INFO("Updating order: {}", cur->order_id.toStdString());
                 this->update_order(*cur);
             }
         }
@@ -189,6 +190,7 @@ namespace atomic_dex
     void
     auto_update_maker_order_service::force_update()
     {
+        SPDLOG_INFO("Force update");
         this->process_update_orders();
         m_update_clock = std::chrono::high_resolution_clock::now();
     }
