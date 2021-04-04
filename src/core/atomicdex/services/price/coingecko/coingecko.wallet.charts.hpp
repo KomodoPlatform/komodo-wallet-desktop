@@ -45,6 +45,8 @@ namespace atomic_dex
 
         //! Override ag::system functions
         void update() final;
+
+        void manual_refresh();
     };
 } // namespace atomic_dex
 
