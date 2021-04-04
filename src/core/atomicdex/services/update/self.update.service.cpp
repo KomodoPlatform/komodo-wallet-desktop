@@ -49,7 +49,7 @@ namespace atomic_dex
     void
     self_update_service::fetch_last_release_info()
     {
-        auto releases_request = github_api::repository_releases_request{.owner = "KomodoPlatform", .repository = "atomicDEX-Desktop"};
+        auto releases_request = github_api::repository_releases_request{.owner = DEX_REPOSITORY_OWNER, .repository = DEX_REPOSITORY_NAME};
 
         github_api::get_repository_releases_async(releases_request)
             .then([this](web::http::http_response resp) {
@@ -65,7 +65,7 @@ namespace atomic_dex
     {
         auto release_info     = last_release_info.get();
         auto download_request = github_api::download_repository_release_request{
-            .owner = "KomodoPlatform", .repository = "atomicDEX-Desktop", .tag_name = release_info.tag_name, .name = release_info.name};
+            .owner = DEX_REPOSITORY_OWNER, .repository = DEX_REPOSITORY_NAME, .tag_name = release_info.tag_name, .name = release_info.name};
 
         auto url = fmt::format(
             "https://github.com/{}/{}/{}/{}/{}/{}", download_request.owner, download_request.repository, "releases", "download", download_request.tag_name,
