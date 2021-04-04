@@ -32,6 +32,7 @@
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
@@ -184,6 +185,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
             atomic_dex::change_fiat(m_config, current_fiat.toStdString());
+            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh();
             emit onFiatChanged();
         }
     }
