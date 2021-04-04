@@ -10,6 +10,8 @@
 
 //! Project Headers
 #include "atomicdex/api/github/github.api.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
+#include "atomicdex/events/events.hpp"
 
 namespace atomic_dex
 {
@@ -25,6 +27,7 @@ namespace atomic_dex
         boost::synchronized_value<bool>                           update_ready{false};
         
         std::chrono::high_resolution_clock::time_point clock;
+        qt_download_manager m_download_mgr;
         
       public:
         explicit self_update_service(entt::registry& entity_registry);
@@ -42,7 +45,7 @@ namespace atomic_dex
         Q_INVOKABLE void download_update();
         
         // Updates the program to the latest release (downloaded by self_update_service::download_update()).
-        Q_INVOKABLE static void perform_update();
+        Q_INVOKABLE void perform_update();
     
         [[nodiscard]] QString get_last_release_tag_name() const noexcept;
     
@@ -50,6 +53,9 @@ namespace atomic_dex
         [[nodiscard]] bool is_update_needed() const noexcept;
         
         [[nodiscard]] bool is_update_ready() const noexcept;
+
+        //! Events
+        void on_download_release_finished([[maybe_unused]] const download_release_finished& evt);;
         
       signals:
         void last_release_tag_nameChanged();
