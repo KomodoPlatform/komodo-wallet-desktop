@@ -136,7 +136,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    global_price_service::update() 
+    global_price_service::update()
     {
         using namespace std::chrono_literals;
 
@@ -219,7 +219,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx) const 
+    global_price_service::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx) const
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
@@ -237,7 +237,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const 
+    global_price_service::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const
     {
         auto&   mm2_instance = m_system_manager.get_system<mm2_service>();
         t_coins coins        = mm2_instance.get_enabled_coins();
@@ -316,7 +316,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const 
+    global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
@@ -364,7 +364,7 @@ namespace atomic_dex
     }
 
     std::string
-    global_price_service::get_cex_rates(const std::string& base, const std::string& rel) const 
+    global_price_service::get_cex_rates(const std::string& base, const std::string& rel) const
     {
         const std::string base_rate_str = get_rate_conversion("USD", base, false);
         const std::string rel_rate_str  = get_rate_conversion("USD", rel, false);
@@ -404,5 +404,15 @@ namespace atomic_dex
                 }
             })
             .then(&handle_exception_pplx_task);
+    }
+
+    std::string
+    global_price_service::get_fiat_rates(const std::string& fiat) const
+    {
+        if (fiat == "USD")
+        {
+            return "1";
+        }
+        return std::to_string(m_other_fiats_rates->at("rates").at(fiat).get<double>());
     }
 } // namespace atomic_dex

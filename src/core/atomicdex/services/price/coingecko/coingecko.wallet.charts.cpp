@@ -51,6 +51,8 @@ namespace atomic_dex
             try
             {
                 SPDLOG_INFO("Generate fiat chart");
+                const auto fiat = m_system_manager.get_system<settings_page>().get_current_fiat().toStdString();
+                t_float_50 rate = safe_float(m_system_manager.get_system<global_price_service>().get_fiat_rates(fiat));
                 auto           chart_registry = this->m_chart_data_registry.get();
                 nlohmann::json out            = nlohmann::json::array();
                 const auto&    data           = chart_registry.begin()->second;
@@ -70,7 +72,7 @@ namespace atomic_dex
                             to_skip = true;
                             continue;
                         }
-                        total += t_float_50(value[idx][1].get<float>()) * mm2.get_balance(key);
+                        total += (t_float_50(value[idx][1].get<float>()) * mm2.get_balance(key)) * rate;
                     }
                     if (to_skip)
                     {
