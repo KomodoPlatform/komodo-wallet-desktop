@@ -186,7 +186,15 @@ namespace atomic_dex
     self_update_service::is_update_needed() const noexcept
     {
         auto tag = last_release_info.get().tag_name;
-        tag.erase(std::remove_if(tag.begin(), tag.end(), [](char c) { return not std::isdigit(c); }), tag.end());
+        try
+        {
+            tag.erase(std::remove_if(tag.begin(), tag.end(), [](char c) { return not std::isdigit(c); }), tag.end());
+        }
+        catch (std::exception& ex)
+        {
+            SPDLOG_ERROR(ex.what());
+            return false;
+        }
         return std::stoi(tag) > get_num_version();
     }
 
