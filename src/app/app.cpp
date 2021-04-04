@@ -751,7 +751,7 @@ namespace atomic_dex
 
         qApp->quit();
 
-        if (appimage == nullptr || not QString(appimage).contains("atomicdex-desktop"))
+        if (appimage == nullptr || not QString(appimage).contains(DEX_PROJECT_NAME))
         {
             // qDebug() << qApp->arguments();
             // SPDLOG_INFO("arg: {}, dir path: {}", qApp->arguments()[0].toStdString(), qApp->applicationDirPath().toStdString());

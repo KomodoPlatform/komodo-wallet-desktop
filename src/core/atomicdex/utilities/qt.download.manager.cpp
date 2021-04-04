@@ -4,6 +4,8 @@
 
 #include <QFile>
 
+//! Project
+#include "atomicdex/events/events.hpp"
 #include "qt.download.manager.hpp"
 
 namespace atomic_dex

@@ -8,6 +8,12 @@
 #include <QJsonObject>
 #include <QProcess>
 
+//! System Headers
+#if defined(Q_OS_LINUX)
+#    include <stdlib.h>
+#    include <sys/stat.h>
+#endif
+
 // Deps headers
 #include <antara/gaming/core/real.path.hpp>
 
@@ -77,7 +83,7 @@ namespace atomic_dex
         bool res = false;
 
         // Installs update for MacOS.
-#ifdef __APPLE__
+#if defined(Q_OS_MACOS)
         try
         {
             const auto image_mount_path = fs::path("/Volumes") / DEX_PROJECT_NAME;
@@ -114,6 +120,49 @@ namespace atomic_dex
         }
         qDebug() << "cmd: " << cmd;
         res = QProcess::startDetached(cmd, args, dir_path);
+#elif defined(Q_OS_LINUX)
+        try
+        {
+            const char* appimage{nullptr};
+            if (appimage = std::getenv("APPIMAGE"); appimage != nullptr)
+            {
+                SPDLOG_INFO("APPIMAGE path is {}", appimage);
+            }
+            if (appimage == nullptr || not QString(appimage).contains(DEX_PROJECT_NAME))
+            {
+                SPDLOG_INFO("Need to handle zip");
+            }
+            else
+            {
+                SPDLOG_INFO("Need to handle appimage");
+
+                SPDLOG_INFO("Changing rights of the downloaded appimage");
+                char mode[] = "0755";
+                int  i;
+                i = strtol(mode, 0, 8);
+                chmod(m_download_mgr.get_last_download_path().c_str(), i);
+
+                //! Download old appimage
+                SPDLOG_INFO("Removing old appimage: {}", appimage);
+                fs::remove(appimage);
+
+                SPDLOG_INFO("Copying new appimage: {} to {}", m_download_mgr.get_last_download_path().c_str(), fs::path(appimage).parent_path().c_str());
+                fs::copy(m_download_mgr.get_last_download_path(), fs::path(appimage).parent_path());
+
+                SPDLOG_INFO("Removing: {}", m_download_mgr.get_last_download_path().c_str());
+                fs::remove(m_download_mgr.get_last_download_path());
+
+                auto    release_info = last_release_info.get();
+                QString path((fs::path(appimage).parent_path() / release_info.name).c_str());
+
+                SPDLOG_INFO("Starting: {}", path.toStdString());
+                QProcess::startDetached(path, qApp->arguments());
+            }
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("{}", error.what());
+        }
 #endif
 
         // Restarts application.
