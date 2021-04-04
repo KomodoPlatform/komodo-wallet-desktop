@@ -7,6 +7,8 @@ import QtWebEngine 1.8
 import QtGraphicalEffects 1.0
 import QtCharts 2.3
 import Qaterial 1.0 as Qaterial
+import ModelHelper 0.1
+
 
 import "../Components"
 import "../Constants"
@@ -35,6 +37,7 @@ Item {
     readonly property int sort_by_price: 5
     property string currentValue: ""
     property string currentTotal: ""
+    property var portfolio_helper: portfolio_mdl.pie_chart_proxy_mdl.ModelHelper
 
     property int current_sort: sort_by_value
     property bool ascending: false
@@ -154,126 +157,33 @@ Item {
             spacing: 35
 
             Item {
-                width: parent.width-70
+                width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: true
                 height: 600
                 RowLayout {
                     anchors.fill: parent
+                    anchors.rightMargin: 40
+                    anchors.leftMargin: 40
                     spacing: 35
                     InnerBackground {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
-                        ChartView {
-                            anchors.fill: parent
-                            anchors.margins: -15
-                            anchors.topMargin: 0
-                            theme: ChartView.ChartView.ChartThemeLight
-                            antialiasing: true
-                            legend.visible: false
-                            backgroundColor: 'transparent'
-                            dropShadowEnabled: true
-                            plotAreaColor: 'transparent'
-                            layer.enabled: true
-                            layer.effect: FastBlur {
-                                radius: 32
-                            }
-                            AreaSeries {
-                                name: "Russian"
-                                //axisX: valueAxis
-                                color: theme.accentColor
-                                axisX: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                axisY: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                upperSeries: LineSeries {
-                                    axisX: ValueAxis {
-                                        visible: false
-                                        gridVisible: false
-                                    }
-                                    axisY: ValueAxis {
-                                        visible: false
-                                        gridVisible: false
-                                    }
-                                    XYPoint { x: 0; y: 0 }
-                                    XYPoint { x: 1.1; y: 2.1 }
-                                    XYPoint { x: 1.9; y: 3.3 }
-                                    XYPoint { x: 2.1; y: 2.1 }
-                                    XYPoint { x: 2.9; y: 4.9 }
-                                    XYPoint { x: 3.4; y: 3.0 }
-                                    XYPoint { x: 4.1; y: 3.3 }
-                                }
-                            }
-                            LineSeries {
-                                 name: "LineSeries"
-                                 axisX: ValueAxis {
-                                     visible: false
-                                     gridVisible: false
-                                 }
-                                 axisY: ValueAxis {
-                                     visible: false
-                                     gridVisible: false
-                                 }
-
-                                 XYPoint { x: 0; y: 0 }
-                                 XYPoint { x: 1.1; y: 2.1 }
-                                 XYPoint { x: 1.9; y: 3.3 }
-                                 XYPoint { x: 2.1; y: 2.1 }
-                                 XYPoint { x: 2.9; y: 4.9 }
-                                 XYPoint { x: 3.4; y: 3.0 }
-                                 XYPoint { x: 4.1; y: 3.3 }
-                             }
-                            ScatterSeries {
-                                axisX: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                axisY: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                XYPoint { x: 0; y: 0 }
-                                XYPoint { x: 1.1; y: 2.1 }
-                                XYPoint { x: 1.9; y: 3.3 }
-                                XYPoint { x: 2.1; y: 2.1 }
-                                XYPoint { x: 2.9; y: 4.9 }
-                                XYPoint { x: 3.4; y: 3.0 }
-                                XYPoint { x: 4.1; y: 3.3 }
-                            }
-
-                        }
-                        Rectangle {
+                        ClipRRect {
                             anchors.fill: parent
                             radius: parent.radius
-                            color: parent.color
-                            opacity: .95
-                            layer.enabled: true
-                            layer.effect: FastBlur {
-                                radius: 32
+                            ChartView {
+
                             }
                         }
-                        Column {
-                            anchors.centerIn: parent
-                            Qaterial.ColorIcon {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                source: Qaterial.Icons.rocketLaunchOutline
-                            }
-                            spacing: 10
-                            DexLabel {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                font: theme.textType.body1
-                                text: "Coming Soon."
-                            }
-                        }
+
+
                     }
 
                     Item {
                         Layout.preferredWidth: 350
-                        Layout.fillHeight: true
+                        Layout.preferredHeight: 600
+                        Layout.alignment: Qt.AlignTop
                         FloatingBackground {
                             y: 35
                             height: parent.height
@@ -352,14 +262,17 @@ Item {
                                             }
                                         }
                                         DefaultText {
+                                            id: count_label
                                             anchors.horizontalCenter: parent.horizontalCenter
-                                            text_value: portfolio_mdl.rowCount()+" "+qsTr("Assets")
+                                            text_value: portfolio_helper.count +" "+qsTr("Assets")
                                             font: theme.textType.body2
                                             DexFadebehavior on text {
                                                 fadeDuration: 100
                                             }
                                             color: Qt.lighter(Style.colorWhite4, 0.8)
                                             privacy: true
+                                            visible: portfolio.currentValue==""
+
                                             Component.onCompleted: {
                                                 font.family = 'Lato'
                                             }
@@ -403,7 +316,7 @@ Item {
                                             spacing: 20
                                             DexLabel {
                                                 Layout.preferredWidth: 60
-                                                text: `${ticker}`
+                                                text: atomic_qt_utilities.retrieve_main_ticker(ticker)
                                                 Layout.alignment: Qt.AlignVCenter
                                                 Component.onCompleted: font.weight = Font.Medium
                                             }
@@ -438,112 +351,6 @@ Item {
                         }
                     }
 
-                }
-            }
-            Item {
-                width: parent.width
-                height: 80
-                visible: false
-                FloatingBackground {
-                    height: 80
-                    width: parent.width-70
-                    anchors.centerIn: parent
-                    RowLayout {
-                        anchors.fill: parent
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: portfolio_mdl.rowCount()
-                                    font: theme.textType.head5
-                                    color: theme.greenColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("ASSETS")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        }
-                        VerticalLine {
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: 3
-
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: total
-                                    font: theme.textType.head5
-                                    color: theme.greenColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("TOTAL BALANCE")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        }
-                        VerticalLine {
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: 3
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: total
-                                    font: theme.textType.head5
-                                    color: theme.greenColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("BALANCE 24H AGO")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        }
-                        VerticalLine {
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: 3
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: "-0.0%"
-                                    font: theme.textType.head5
-                                    color: theme.redColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("SINCE 24H AGO")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        }
-                    }
                 }
             }
             Item {
