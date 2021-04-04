@@ -60,8 +60,8 @@ namespace atomic_dex
                 for (std::size_t idx = 0; idx < data.size(); idx++)
                 {
                     nlohmann::json cur = nlohmann::json::object();
-                    cur["timestamp"]   = data[idx][0];
-                    cur["human_date"]  = utils::to_human_date<std::chrono::milliseconds>(cur.at("timestamp").get<std::size_t>(), "%e %b %Y, %H:%M");
+                    cur["timestamp"]   = data[idx][0].get<std::size_t>() / 1000;
+                    //cur["human_date"]  = utils::to_human_date<std::chrono::milliseconds>(cur.at("timestamp").get<std::size_t>(), "%e %b %Y, %H:%M");
                     t_float_50 total(0);
                     bool       to_skip = false;
                     for (auto&& [key, value]: chart_registry)
@@ -82,10 +82,10 @@ namespace atomic_dex
                     out.push_back(cur);
                 }
                 auto        now                   = std::chrono::system_clock::now();
-                std::size_t timestamp             = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+                std::size_t timestamp             = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
                 out[out.size() - 1]["timestamp"]  = timestamp;
                 out[out.size() - 1]["total"]      = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
-                out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
+                //out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
                 SPDLOG_INFO("out: {}", out.dump());
                 m_fiat_charts = std::move(out);
             }
