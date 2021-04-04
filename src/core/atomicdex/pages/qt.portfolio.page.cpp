@@ -187,4 +187,10 @@ namespace atomic_dex
             emit chartCategoryChanged();
         }
     }
+
+    bool
+    portfolio_page::is_chart_busy() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().is_busy();
+    }
 } // namespace atomic_dex

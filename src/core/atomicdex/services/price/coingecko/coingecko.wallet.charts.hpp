@@ -48,6 +48,8 @@ namespace atomic_dex
         void update() final;
 
         void manual_refresh();
+
+        [[nodiscard]] bool is_busy() const;
     };
 } // namespace atomic_dex
 

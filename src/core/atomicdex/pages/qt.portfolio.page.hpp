@@ -39,6 +39,7 @@ namespace atomic_dex
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY onFiatBalanceAllChanged)
         Q_PROPERTY(global_coins_cfg_model* global_cfg_mdl READ get_global_cfg NOTIFY globalCfgMdlChanged)
         Q_PROPERTY(WalletChartsCategories chart_category READ get_chart_category WRITE set_chart_category NOTIFY chartCategoryChanged)
+        Q_PROPERTY(bool chart_busy_fetching READ is_chart_busy NOTIFY chartBusyChanged)
 
         //! Private members fields
         ag::ecs::system_manager& m_system_manager;
@@ -71,6 +72,7 @@ namespace atomic_dex
         void                                 set_current_balance_fiat_all(QString current_fiat_all_balance);
         [[nodiscard]] WalletChartsCategories get_chart_category() const;
         void                                 set_chart_category(WalletChartsCategories category);
+        [[nodiscard]] bool                   is_chart_busy() const;
 
         //! Events
         void on_band_oracle_refreshed([[maybe_unused]] const band_oracle_refreshed& evt);
@@ -83,6 +85,7 @@ namespace atomic_dex
         void onFiatBalanceAllChanged();
         void globalCfgMdlChanged();
         void chartCategoryChanged();
+        void chartBusyChanged();
     };
 } // namespace atomic_dex
 

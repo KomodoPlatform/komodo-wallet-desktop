@@ -93,6 +93,7 @@ namespace atomic_dex
         };
         functor();
         this->m_is_busy = false;
+        emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
     }
 
     void
@@ -137,6 +138,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("fetch all charts data");
         this->m_is_busy            = true;
+        emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
         const auto coins           = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         auto*      portfolio_model = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
         auto       final_task      = m_taskflow.emplace([this]() { this->generate_fiat_chart(); }).name("Post task");
@@ -217,5 +219,11 @@ namespace atomic_dex
         };
         //[[maybe_unused]] auto res = std::async(functor);
         functor();
+    }
+
+    bool
+    coingecko_wallet_charts_service::is_busy() const
+    {
+        return m_is_busy.load();
     }
 } // namespace atomic_dex
