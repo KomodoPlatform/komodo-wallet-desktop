@@ -39,6 +39,7 @@
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
@@ -121,6 +122,10 @@ namespace atomic_dex
             }
             get_mm2().disable_multiple_coins(coins_std);
             this->dispatcher_.trigger<update_portfolio_values>(false);
+            if (system_manager_.has_system<coingecko_wallet_charts_service>())
+            {
+                system_manager_.get_system<coingecko_wallet_charts_service>().manual_refresh();
+            }
         }
 
         return true;
@@ -203,6 +208,10 @@ namespace atomic_dex
                     system_manager_.get_system<qt_wallet_manager>().set_status("complete");
                 }
                 this->dispatcher_.trigger<update_portfolio_values>();
+                if (system_manager_.has_system<coingecko_wallet_charts_service>())
+                {
+                    system_manager_.get_system<coingecko_wallet_charts_service>().manual_refresh();
+                }
             }
         }
 
@@ -270,6 +279,8 @@ namespace atomic_dex
         {
             SPDLOG_WARN("AutomaticUpdateOrderBot is false, ignoring the service");
         }
+        auto category_chart = static_cast<WalletChartsCategories>(settings.value("WalletChartsCategory", 2).toInt());
+        system_manager_.get_system<portfolio_page>().set_chart_category(category_chart);
     }
 
     application::application(QObject* pParent) : QObject(pParent)
@@ -306,6 +317,7 @@ namespace atomic_dex
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<coingecko_provider>(system_manager_);
         system_manager_.create_system<self_update_service>();
+        system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);

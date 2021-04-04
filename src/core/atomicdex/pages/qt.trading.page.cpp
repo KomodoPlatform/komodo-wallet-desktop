@@ -103,8 +103,9 @@ namespace atomic_dex
     void
     trading_page::on_gui_enter_dex()
     {
+        SPDLOG_INFO("Enter DEX");
         dispatcher_.trigger<gui_enter_trading>();
-        if (this->m_system_manager.has_system<auto_update_maker_order_service>())
+        if (this->m_system_manager.has_system<auto_update_maker_order_service>() && !m_system_manager.get_system<mm2_service>().is_orderbook_thread_active())
         {
             this->m_system_manager.get_system<auto_update_maker_order_service>().force_update();
         }

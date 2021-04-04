@@ -22,6 +22,18 @@ namespace
 
 namespace atomic_dex::coingecko::api
 {
+    std::string
+    to_coingecko_uri(market_chart_request&& request)
+    {
+        std::string uri = "/coins/" + request.id + "/market_chart?vs_currency=" + request.vs_currency + "&days=" + request.days;
+        if (request.interval.has_value())
+        {
+            uri.append("&interval=");
+            uri.append(request.interval.value());
+        }
+        return uri;
+    }
+
     ENTT_API std::string
              to_coingecko_uri(market_infos_request&& request)
     {
@@ -130,7 +142,18 @@ namespace atomic_dex::coingecko::api
         req.set_method(web::http::methods::GET);
         std::string url = to_coingecko_uri(std::move(request));
         SPDLOG_INFO("url: {}", TO_STD_STR(g_coingecko_client->base_uri().to_string()) + url);
-        //SPDLOG_INFO("processing coingecko prices");
+        // SPDLOG_INFO("processing coingecko prices");
+        req.set_request_uri(FROM_STD_STR(url));
+        return g_coingecko_client->request(req);
+    }
+
+    pplx::task<web::http::http_response>
+    async_market_charts(market_chart_request&& request)
+    {
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        std::string url = to_coingecko_uri(std::move(request));
+        SPDLOG_INFO("url: {}", TO_STD_STR(g_coingecko_client->base_uri().to_string()) + url);
         req.set_request_uri(FROM_STD_STR(url));
         return g_coingecko_client->request(req);
     }

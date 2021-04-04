@@ -18,6 +18,13 @@ Item {
     Layout.fillHeight: true
     Layout.bottomMargin: 40
     Layout.margins: 40
+    function getPercent(fiat_amount) {
+        const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
+        if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
+
+        return General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false)
+    }
+
     property string total: General.formatFiat(
                                "", API.app.portfolio_pg.balance_fiat_all,
                                API.app.settings_pg.current_currency)
@@ -154,14 +161,118 @@ Item {
                 RowLayout {
                     anchors.fill: parent
                     spacing: 35
-                    SmartChartView {
-                        MouseArea {
+                    InnerBackground {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        ChartView {
                             anchors.fill: parent
-                            preventStealing: true
+                            anchors.margins: -15
+                            anchors.topMargin: 0
+                            theme: ChartView.ChartView.ChartThemeLight
+                            antialiasing: true
+                            legend.visible: false
+                            backgroundColor: 'transparent'
+                            dropShadowEnabled: true
+                            plotAreaColor: 'transparent'
+                            layer.enabled: true
+                            layer.effect: FastBlur {
+                                radius: 32
+                            }
+                            AreaSeries {
+                                name: "Russian"
+                                //axisX: valueAxis
+                                color: theme.accentColor
+                                axisX: ValueAxis {
+                                    visible: false
+                                    gridVisible: false
+                                }
+                                axisY: ValueAxis {
+                                    visible: false
+                                    gridVisible: false
+                                }
+                                upperSeries: LineSeries {
+                                    axisX: ValueAxis {
+                                        visible: false
+                                        gridVisible: false
+                                    }
+                                    axisY: ValueAxis {
+                                        visible: false
+                                        gridVisible: false
+                                    }
+                                    XYPoint { x: 0; y: 0 }
+                                    XYPoint { x: 1.1; y: 2.1 }
+                                    XYPoint { x: 1.9; y: 3.3 }
+                                    XYPoint { x: 2.1; y: 2.1 }
+                                    XYPoint { x: 2.9; y: 4.9 }
+                                    XYPoint { x: 3.4; y: 3.0 }
+                                    XYPoint { x: 4.1; y: 3.3 }
+                                }
+                            }
+                            LineSeries {
+                                 name: "LineSeries"
+                                 axisX: ValueAxis {
+                                     visible: false
+                                     gridVisible: false
+                                 }
+                                 axisY: ValueAxis {
+                                     visible: false
+                                     gridVisible: false
+                                 }
+
+                                 XYPoint { x: 0; y: 0 }
+                                 XYPoint { x: 1.1; y: 2.1 }
+                                 XYPoint { x: 1.9; y: 3.3 }
+                                 XYPoint { x: 2.1; y: 2.1 }
+                                 XYPoint { x: 2.9; y: 4.9 }
+                                 XYPoint { x: 3.4; y: 3.0 }
+                                 XYPoint { x: 4.1; y: 3.3 }
+                             }
+                            ScatterSeries {
+                                axisX: ValueAxis {
+                                    visible: false
+                                    gridVisible: false
+                                }
+                                axisY: ValueAxis {
+                                    visible: false
+                                    gridVisible: false
+                                }
+                                XYPoint { x: 0; y: 0 }
+                                XYPoint { x: 1.1; y: 2.1 }
+                                XYPoint { x: 1.9; y: 3.3 }
+                                XYPoint { x: 2.1; y: 2.1 }
+                                XYPoint { x: 2.9; y: 4.9 }
+                                XYPoint { x: 3.4; y: 3.0 }
+                                XYPoint { x: 4.1; y: 3.3 }
+                            }
+
+                        }
+                        Rectangle {
+                            anchors.fill: parent
+                            radius: parent.radius
+                            color: parent.color
+                            opacity: .95
+                            layer.enabled: true
+                            layer.effect: FastBlur {
+                                radius: 32
+                            }
+                        }
+                        Column {
+                            anchors.centerIn: parent
+                            Qaterial.ColorIcon {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                source: Qaterial.Icons.rocketLaunchOutline
+                            }
+                            spacing: 10
+                            DexLabel {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                font: theme.textType.body1
+                                text: "Coming Soon."
+                            }
                         }
                     }
+
                     Item {
-                        Layout.preferredWidth: 400
+                        Layout.preferredWidth: 350
                         Layout.fillHeight: true
                         FloatingBackground {
                             y: 35
@@ -169,7 +280,7 @@ Item {
                             width: parent.width
                             anchors.centerIn: parent
                             ChartView {
-                                width: 700
+                                width: 550
                                 height: 500
                                 theme: ChartView.ChartView.ChartThemeLight
                                 antialiasing: true
@@ -304,14 +415,14 @@ Item {
                                                 color: theme.dexBoxBackgroundColor
                                                 Rectangle {
                                                     height: parent.height
-                                                    width: parseFloat(main_currency_balance)*2
+                                                    width: (parseFloat(getPercent(main_currency_balance).replace("%",""))*parent.width)/100
                                                     radius: 10
                                                     color: rootItem.itemColor
                                                 }
                                             }
 
                                             DexLabel {
-                                                text: "35%"
+                                                text: getPercent(main_currency_balance)
                                                 Component.onCompleted: font.family = 'lato'
                                                 Layout.alignment: Qt.AlignVCenter
                                             }
@@ -332,6 +443,7 @@ Item {
             Item {
                 width: parent.width
                 height: 80
+                visible: false
                 FloatingBackground {
                     height: 80
                     width: parent.width-70
@@ -743,14 +855,7 @@ Item {
                         }
                     }
                 }
-                Qaterial.FabButton {
-                    icon.source: Qaterial.Icons.plus
-                    onClicked: enable_coin_modal.open()
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    anchors.rightMargin: 20
-                    anchors.bottomMargin: 20
-                }
+
             }
             Item {
                 width: 1
@@ -794,6 +899,7 @@ Item {
                                 text: qsTr("Add asset")
                             }
                         }
+                        onClicked: enable_coin_modal.open()
                     }
                 }
 

@@ -14,13 +14,14 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "atomicdex/pch.hpp"
+//! Qt
+#include <QSettings>
 
 //! Project Headers
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 
@@ -37,20 +38,20 @@ namespace atomic_dex
     }
 
     portfolio_model*
-    portfolio_page::get_portfolio() const 
+    portfolio_page::get_portfolio() const
     {
         return m_portfolio_mdl;
     }
 
     void
-    portfolio_page::update() 
+    portfolio_page::update()
     {
     }
 
-    portfolio_page::~portfolio_page()  {}
+    portfolio_page::~portfolio_page() {}
 
     QStringList
-    portfolio_page::get_oracle_price_supported_pairs() const 
+    portfolio_page::get_oracle_price_supported_pairs() const
     {
         auto        result = m_system_manager.get_system<band_oracle_price_service>().supported_pair();
         QStringList out;
@@ -60,7 +61,7 @@ namespace atomic_dex
     }
 
     QString
-    portfolio_page::get_oracle_last_price_reference() const 
+    portfolio_page::get_oracle_last_price_reference() const
     {
         return QString::fromStdString(m_system_manager.get_system<band_oracle_price_service>().last_oracle_reference());
     }
@@ -72,7 +73,7 @@ namespace atomic_dex
     }
 
     void
-    portfolio_page::set_current_balance_fiat_all(QString current_fiat_all_balance) 
+    portfolio_page::set_current_balance_fiat_all(QString current_fiat_all_balance)
     {
         if (this->m_current_balance_all != current_fiat_all_balance)
         {
@@ -82,15 +83,15 @@ namespace atomic_dex
     }
 
     QString
-    portfolio_page::get_balance_fiat_all() const 
+    portfolio_page::get_balance_fiat_all() const
     {
         return m_current_balance_all;
     }
 
     void
-    portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt) 
+    portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt)
     {
-        //SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
+        // SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
 
         if (evt.with_update_model)
         {
@@ -109,13 +110,13 @@ namespace atomic_dex
     }
 
     QStringList
-    atomic_dex::portfolio_page::get_all_enabled_coins() const 
+    atomic_dex::portfolio_page::get_all_enabled_coins() const
     {
         return get_all_coins_by_type("All");
     }
 
     QStringList
-    atomic_dex::portfolio_page::get_all_coins_by_type(const QString& coin_type) const 
+    atomic_dex::portfolio_page::get_all_coins_by_type(const QString& coin_type) const
     {
         QStringList enabled_coins;
         const auto& portfolio_list = this->get_portfolio()->get_underlying_data();
@@ -135,19 +136,19 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::portfolio_page::is_coin_enabled(const QString& coin_name) const 
+    atomic_dex::portfolio_page::is_coin_enabled(const QString& coin_name) const
     {
         return get_all_enabled_coins().contains(coin_name);
     }
 
     global_coins_cfg_model*
-    portfolio_page::get_global_cfg() const 
+    portfolio_page::get_global_cfg() const
     {
         return m_global_cfg_mdl;
     }
 
     void
-    portfolio_page::on_coin_cfg_parsed(const coin_cfg_parsed& evt) 
+    portfolio_page::on_coin_cfg_parsed(const coin_cfg_parsed& evt)
     {
         this->m_global_cfg_mdl->initialize_model(evt.cfg);
     }
@@ -164,5 +165,38 @@ namespace atomic_dex
     {
         m_portfolio_mdl->disable_coins(coins);
         m_global_cfg_mdl->update_status(coins, false);
+    }
+
+    WalletChartsCategories
+    portfolio_page::get_chart_category() const
+    {
+        return m_current_chart_category;
+    }
+    void
+    portfolio_page::set_chart_category(WalletChartsCategories category)
+    {
+        if (m_current_chart_category != category)
+        {
+            m_current_chart_category = category;
+            QSettings& settings      = entity_registry_.ctx<QSettings>();
+            settings.setValue("WalletChartsCategory", qint32(m_current_chart_category));
+            if (m_system_manager.get_system<mm2_service>().is_mm2_running() && m_system_manager.has_system<coingecko_wallet_charts_service>())
+            {
+                m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh();
+            }
+            emit chartCategoryChanged();
+        }
+    }
+
+    bool
+    portfolio_page::is_chart_busy() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().is_busy();
+    }
+
+    QVariant
+    portfolio_page::get_charts() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_charts();
     }
 } // namespace atomic_dex
