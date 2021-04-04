@@ -113,7 +113,7 @@ namespace atomic_dex
             SPDLOG_ERROR(ex.what());
         }
         qDebug() << "cmd: " << cmd;
-        res = QProcess::startDetached(cmd, args);
+        res = QProcess::startDetached(cmd, args, dir_path);
 #endif
 
         // Restarts application.
