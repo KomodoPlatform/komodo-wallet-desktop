@@ -25,26 +25,49 @@ namespace atomic_dex
     void
     coingecko_wallet_charts_service::generate_fiat_chart()
     {
-        SPDLOG_INFO("Generate fiat chart");
-        auto                     chart_registry = this->m_chart_data_registry.get();
-        //std::vector<std::string> keys;
-        //keys.reserve(chart_registry.size());
-        //for (auto&& [key, value]: chart_registry) { keys.emplace_back(key); }
-        nlohmann::json out = nlohmann::json::array();
-        const auto& data = chart_registry.begin()->second[WalletChartsCategories::OneMonth];
-        const auto& mm2 = m_system_manager.get_system<mm2_service>();
-        for (std::size_t idx = 0; idx < data.size(); ++idx)
+        try
         {
-            nlohmann::json cur = nlohmann::json::object();
-            cur["timestamp"] = data[idx][0];
-            t_float_50 price(0);
-            for (auto&& [key, value]: chart_registry) {
-                price += t_float_50(value[WalletChartsCategories::OneMonth][idx][1].get<float>()) * mm2.get_balance(key);
+            SPDLOG_INFO("Generate fiat chart");
+            auto           chart_registry = this->m_chart_data_registry.get();
+            nlohmann::json out            = nlohmann::json::array();
+            const auto&    data           = chart_registry.begin()->second[WalletChartsCategories::OneMonth];
+            //SPDLOG_INFO("data: {}", data.dump(4));
+            const auto& mm2 = m_system_manager.get_system<mm2_service>();
+            for (std::size_t idx = 0; idx < data.size(); idx++)
+            {
+                nlohmann::json cur = nlohmann::json::object();
+                cur["timestamp"]   = data[idx][0];
+                cur["human_date"] = utils::to_human_date<std::chrono::milliseconds>(cur.at("timestamp").get<std::size_t>(), "%e %b %Y, %H:%M");
+                t_float_50 total(0);
+                bool       to_skip = false;
+                for (auto&& [key, value]: chart_registry)
+                {
+                    if (idx >= value[WalletChartsCategories::OneMonth].size())
+                    {
+                        SPDLOG_ERROR("skipping idx: {}", idx);
+                        to_skip = true;
+                        continue;
+                    }
+                    total += t_float_50(value[WalletChartsCategories::OneMonth][idx][1].get<float>()) * mm2.get_balance(key);
+                }
+                if (to_skip)
+                {
+                    continue;
+                }
+                cur["total"] = utils::format_float(total);
+                out.push_back(cur);
             }
-            cur["price"] = utils::format_float(price);
-            out.push_back(cur);
+            auto now = std::chrono::system_clock::now();
+            std::size_t timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+            out[out.size() - 1]["timestamp"] = timestamp;
+            out[out.size() - 1]["total"] = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
+            out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
+            SPDLOG_INFO("out: {}", out.dump(4));
         }
-        SPDLOG_INFO("out: {}", out.dump(4));
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("Exception caught: {}", error.what());
+        }
     }
 
     void
@@ -118,6 +141,7 @@ namespace atomic_dex
                 SPDLOG_INFO("Waiting for previous call to be finished");
                 m_executor.wait_for_all();
                 m_taskflow.clear();
+                m_chart_data_registry->clear();
             }
             fetch_all_charts_data();
             m_update_clock = std::chrono::high_resolution_clock::now();
