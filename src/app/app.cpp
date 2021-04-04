@@ -279,6 +279,8 @@ namespace atomic_dex
         {
             SPDLOG_WARN("AutomaticUpdateOrderBot is false, ignoring the service");
         }
+        auto category_chart = static_cast<WalletChartsCategories>(settings.value("WalletChartsCategory", 2).toInt());
+        system_manager_.get_system<portfolio_page>().set_chart_category(category_chart);
     }
 
     application::application(QObject* pParent) : QObject(pParent)

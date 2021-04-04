@@ -19,7 +19,7 @@ namespace atomic_dex
     {
         //! Private typedefs
         using t_update_time_point   = std::chrono::high_resolution_clock::time_point;
-        using t_array_chart_data    = std::array<nlohmann::json, WalletChartsCategories::Size>;
+        using t_array_chart_data    = nlohmann::json;
         using t_chart_data_registry = boost::synchronized_value<std::unordered_map<std::string, t_array_chart_data>>;
         using t_fiat_data_registry  = boost::synchronized_value<t_array_chart_data>;
 
@@ -30,6 +30,7 @@ namespace atomic_dex
         t_fiat_data_registry     m_fiat_data_registry;
         tf::Executor             m_executor;
         tf::Taskflow             m_taskflow;
+        std::atomic_bool         m_is_busy{false};
 
         //! Private member functions
         void fetch_data_of_single_coin(const coin_config& cfg);

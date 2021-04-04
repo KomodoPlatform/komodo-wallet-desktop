@@ -6,6 +6,27 @@
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 
+namespace
+{
+    std::string
+    get_days_from_wallet_category(WalletChartsCategories category)
+    {
+        switch (category)
+        {
+        case atomic_dex::WalletChartsCategoriesGadget::OneDay:
+            return "1";
+        case atomic_dex::WalletChartsCategoriesGadget::OneWeek:
+            return "7";
+        case atomic_dex::WalletChartsCategoriesGadget::OneMonth:
+            return "30";
+        case atomic_dex::WalletChartsCategoriesGadget::Ytd:
+            return "";
+        case atomic_dex::WalletChartsCategoriesGadget::Size:
+            return "";
+        }
+    }
+} // namespace
+
 //! Constructor / Destructor
 namespace atomic_dex
 {
@@ -25,13 +46,13 @@ namespace atomic_dex
     void
     coingecko_wallet_charts_service::generate_fiat_chart()
     {
-        auto functor = [this](WalletChartsCategories category) {
+        auto functor = [this]() {
             try
             {
                 SPDLOG_INFO("Generate fiat chart");
                 auto           chart_registry = this->m_chart_data_registry.get();
                 nlohmann::json out            = nlohmann::json::array();
-                const auto&    data           = chart_registry.begin()->second[category];
+                const auto&    data           = chart_registry.begin()->second;
                 const auto&    mm2            = m_system_manager.get_system<mm2_service>();
                 for (std::size_t idx = 0; idx < data.size(); idx++)
                 {
@@ -42,13 +63,13 @@ namespace atomic_dex
                     bool       to_skip = false;
                     for (auto&& [key, value]: chart_registry)
                     {
-                        if (idx >= value[category].size())
+                        if (idx >= value.size())
                         {
                             SPDLOG_ERROR("skipping idx: {}", idx);
                             to_skip = true;
                             continue;
                         }
-                        total += t_float_50(value[category][idx][1].get<float>()) * mm2.get_balance(key);
+                        total += t_float_50(value[idx][1].get<float>()) * mm2.get_balance(key);
                     }
                     if (to_skip)
                     {
@@ -63,48 +84,59 @@ namespace atomic_dex
                 out[out.size() - 1]["total"]      = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
                 out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
                 SPDLOG_INFO("out: {}", out.dump());
-                m_fiat_data_registry->operator[](category) = std::move(out);
+                m_fiat_data_registry = std::move(out);
             }
             catch (const std::exception& error)
             {
                 SPDLOG_ERROR("Exception caught: {}", error.what());
             }
         };
-        functor(WalletChartsCategories::OneMonth);
+        functor();
+        this->m_is_busy = false;
     }
 
     void
     coingecko_wallet_charts_service::fetch_data_of_single_coin(const coin_config& cfg)
     {
+        using namespace std::chrono_literals;
         SPDLOG_INFO("fetch charts data of {} {}", cfg.ticker, cfg.coingecko_id);
-        auto market_functor = [this, cfg](WalletChartsCategories category, std::string days) {
+        std::function<void(WalletChartsCategories, std::string)> market_functor;
+
+        market_functor = [this, cfg, &market_functor](WalletChartsCategories category, std::string days) {
             //! 30 days
             {
                 try
                 {
-                    t_coingecko_market_chart_request request{.id = cfg.coingecko_id, .vs_currency = "usd", .days = std::move(days), .interval = "daily"};
+                    t_coingecko_market_chart_request request{.id = cfg.coingecko_id, .vs_currency = "usd", .days = days, .interval = "daily"};
                     auto                             resp = atomic_dex::coingecko::api::async_market_charts(std::move(request)).get();
                     std::string                      body = TO_STD_STR(resp.extract_string(true).get());
                     if (resp.status_code() == 200)
                     {
-                        m_chart_data_registry->operator[](cfg.ticker)[category] = nlohmann::json::parse(body).at("prices");
+                        m_chart_data_registry->operator[](cfg.ticker) = nlohmann::json::parse(body).at("prices");
                         SPDLOG_INFO("Successfully retrieve chart data for: {} {}", cfg.ticker, cfg.coingecko_id);
+                    }
+                    else
+                    {
+                        std::this_thread::sleep_for(1s);
+                        market_functor(category, days);
                     }
                 }
                 catch (const std::exception& error)
                 {
                     SPDLOG_ERROR("Caught exception: {} - retrying.", error.what());
-                    fetch_data_of_single_coin(cfg);
+                    std::this_thread::sleep_for(1s);
+                    market_functor(category, days);
                 }
             }
         };
-        market_functor(WalletChartsCategories::OneMonth, "30");
+        market_functor(WalletChartsCategories::OneMonth, get_days_from_wallet_category(WalletChartsCategories::OneMonth));
     }
 
     void
     coingecko_wallet_charts_service::fetch_all_charts_data()
     {
         SPDLOG_INFO("fetch all charts data");
+        this->m_is_busy            = true;
         const auto coins           = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         auto*      portfolio_model = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
         auto       final_task      = m_taskflow.emplace([this]() { this->generate_fiat_chart(); }).name("Post task");
@@ -161,20 +193,29 @@ namespace atomic_dex
     void
     coingecko_wallet_charts_service::manual_refresh()
     {
-        try
+        if (m_is_busy)
         {
+            SPDLOG_WARN("Service is busy, try later");
+            return;
+        }
+        auto functor = [this]() {
+            try
             {
-                SPDLOG_INFO("Waiting for previous call to be finished");
-                m_executor.wait_for_all();
-                m_taskflow.clear();
-                m_chart_data_registry->clear();
+                {
+                    SPDLOG_INFO("Waiting for previous call to be finished");
+                    m_executor.wait_for_all();
+                    m_taskflow.clear();
+                    m_chart_data_registry->clear();
+                }
+                fetch_all_charts_data();
+                m_update_clock = std::chrono::high_resolution_clock::now();
             }
-            fetch_all_charts_data();
-            m_update_clock = std::chrono::high_resolution_clock::now();
-        }
-        catch (const std::exception& error)
-        {
-            SPDLOG_ERROR("Exception caught: {}", error.what());
-        }
+            catch (const std::exception& error)
+            {
+                SPDLOG_ERROR("Exception caught: {}", error.what());
+            }
+        };
+        //[[maybe_unused]] auto res = std::async(functor);
+        functor();
     }
 } // namespace atomic_dex
