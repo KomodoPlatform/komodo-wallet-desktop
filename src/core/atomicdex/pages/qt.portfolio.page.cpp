@@ -193,4 +193,10 @@ namespace atomic_dex
     {
         return m_system_manager.get_system<coingecko_wallet_charts_service>().is_busy();
     }
+
+    QVariant
+    portfolio_page::get_charts() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_charts();
+    }
 } // namespace atomic_dex

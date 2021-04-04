@@ -21,13 +21,13 @@ namespace atomic_dex
         using t_update_time_point   = std::chrono::high_resolution_clock::time_point;
         using t_array_chart_data    = nlohmann::json;
         using t_chart_data_registry = boost::synchronized_value<std::unordered_map<std::string, t_array_chart_data>>;
-        using t_fiat_data_registry  = boost::synchronized_value<t_array_chart_data>;
+        using t_fiat_charts         = boost::synchronized_value<t_array_chart_data>;
 
         //! Private member functions
         ag::ecs::system_manager& m_system_manager;
         t_update_time_point      m_update_clock;
         t_chart_data_registry    m_chart_data_registry;
-        t_fiat_data_registry     m_fiat_data_registry;
+        t_fiat_charts            m_fiat_charts;
         tf::Executor             m_executor;
         tf::Taskflow             m_taskflow;
         std::atomic_bool         m_is_busy{false};
@@ -50,6 +50,8 @@ namespace atomic_dex
         void manual_refresh();
 
         [[nodiscard]] bool is_busy() const;
+
+        QVariant get_charts() const;
     };
 } // namespace atomic_dex
 

@@ -18,6 +18,7 @@
 
 //! QT
 #include <QObject>
+#include <QVariant>
 
 //! Project headers
 #include "atomicdex/constants/qt.wallet.enums.hpp"
@@ -40,6 +41,7 @@ namespace atomic_dex
         Q_PROPERTY(global_coins_cfg_model* global_cfg_mdl READ get_global_cfg NOTIFY globalCfgMdlChanged)
         Q_PROPERTY(WalletChartsCategories chart_category READ get_chart_category WRITE set_chart_category NOTIFY chartCategoryChanged)
         Q_PROPERTY(bool chart_busy_fetching READ is_chart_busy NOTIFY chartBusyChanged)
+        Q_PROPERTY(QVariant charts READ get_charts NOTIFY chartsChanged)
 
         //! Private members fields
         ag::ecs::system_manager& m_system_manager;
@@ -73,6 +75,7 @@ namespace atomic_dex
         [[nodiscard]] WalletChartsCategories get_chart_category() const;
         void                                 set_chart_category(WalletChartsCategories category);
         [[nodiscard]] bool                   is_chart_busy() const;
+        [[nodiscard]] QVariant               get_charts() const;
 
         //! Events
         void on_band_oracle_refreshed([[maybe_unused]] const band_oracle_refreshed& evt);
@@ -86,6 +89,7 @@ namespace atomic_dex
         void globalCfgMdlChanged();
         void chartCategoryChanged();
         void chartBusyChanged();
+        void chartsChanged();
     };
 } // namespace atomic_dex
 

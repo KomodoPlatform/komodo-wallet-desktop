@@ -316,7 +316,7 @@ namespace atomic_dex
         system_manager_.create_system<band_oracle_price_service>();
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<coingecko_provider>(system_manager_);
-        //system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
+        system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<update_service_checker>(this);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(

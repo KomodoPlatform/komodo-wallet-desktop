@@ -5,6 +5,7 @@
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace
 {
@@ -84,7 +85,7 @@ namespace atomic_dex
                 out[out.size() - 1]["total"]      = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
                 out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
                 SPDLOG_INFO("out: {}", out.dump());
-                m_fiat_data_registry = std::move(out);
+                m_fiat_charts = std::move(out);
             }
             catch (const std::exception& error)
             {
@@ -94,6 +95,7 @@ namespace atomic_dex
         functor();
         this->m_is_busy = false;
         emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+        emit m_system_manager.get_system<portfolio_page>().chartsChanged();
     }
 
     void
@@ -137,8 +139,8 @@ namespace atomic_dex
     coingecko_wallet_charts_service::fetch_all_charts_data()
     {
         SPDLOG_INFO("fetch all charts data");
-        this->m_is_busy            = true;
-        emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+        this->m_is_busy = true;
+        emit       m_system_manager.get_system<portfolio_page>().chartBusyChanged();
         const auto coins           = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         auto*      portfolio_model = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
         auto       final_task      = m_taskflow.emplace([this]() { this->generate_fiat_chart(); }).name("Post task");
@@ -225,5 +227,11 @@ namespace atomic_dex
     coingecko_wallet_charts_service::is_busy() const
     {
         return m_is_busy.load();
+    }
+
+    QVariant
+    coingecko_wallet_charts_service::get_charts() const
+    {
+        return atomic_dex::nlohmann_json_array_to_qt_json_array(m_fiat_charts.get());
     }
 } // namespace atomic_dex
