@@ -88,9 +88,5 @@ namespace atomic_dex::github_api
     pplx::task<fs::path> download_repository_release(download_repository_release_request download_request,
                                                                   const fs::path& output_file_location)
     {
-        auto url = fmt::format("/{}/{}/{}/{}/{}/{}", download_request.owner, download_request.repository, "releases",
-                                                     "download", download_request.tag_name, download_request.name);
-
-        return download_file(github_client, FROM_STD_STR(url), output_file_location);
     }
 }
