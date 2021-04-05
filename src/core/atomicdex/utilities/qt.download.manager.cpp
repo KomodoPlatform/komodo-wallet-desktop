@@ -40,10 +40,10 @@ namespace atomic_dex
     qt_download_manager::download_finished(QNetworkReply* reply)
     {
         auto save_disk_functor = [this](QIODevice* data) {
-            QFile file(m_last_downloaded_path.c_str());
+            QFile file(utils::u8string(m_last_downloaded_path).c_str());
             if (!file.open(QIODevice::WriteOnly))
             {
-                SPDLOG_ERROR("Could not open {} for writing: {}", m_last_downloaded_path.c_str(), file.errorString().toStdString());
+                SPDLOG_ERROR("Could not open {} for writing: {}", utils::u8string(m_last_downloaded_path), file.errorString().toStdString());
                 return false;
             }
 
@@ -62,7 +62,7 @@ namespace atomic_dex
             SPDLOG_INFO("Successfully downloaded: {}", m_current_filename);
             if (save_disk_functor(reply))
             {
-                SPDLOG_INFO("Successfully saved {} to {}", url.toString().toStdString(), m_last_downloaded_path.c_str());
+                SPDLOG_INFO("Successfully saved {} to {}", url.toString().toStdString(), utils::u8string(m_last_downloaded_path));
                 m_dispatcher.trigger<download_release_finished>();
             }
         }
