@@ -72,11 +72,20 @@ namespace atomic_dex
                             to_skip = true;
                             continue;
                         }
-                        total += (t_float_50(value[idx][1].get<float>()) * mm2.get_balance(key)) * rate;
+                        t_float_50 cur_total = (t_float_50(value[idx][1].get<float>()) * mm2.get_balance(key)) * rate;
+                        total += cur_total;
                     }
                     if (to_skip)
                     {
                         continue;
+                    }
+                    if (safe_float(m_min_value) <= 0 || total < safe_float(m_min_value))
+                    {
+                        m_min_value = utils::format_float(total);
+                    }
+                    if (total > safe_float(m_max_value))
+                    {
+                        m_max_value = utils::format_float(total);
                     }
                     cur["total"] = utils::format_float(total);
                     out.push_back(cur);
@@ -86,7 +95,7 @@ namespace atomic_dex
                 out[out.size() - 1]["timestamp"] = timestamp;
                 out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
                 // out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
-                SPDLOG_INFO("out: {}", out.dump());
+                SPDLOG_INFO("out: {}\n min_value: {} - max_value: {}", out.dump(), m_min_value, m_max_value);
                 m_fiat_charts = std::move(out);
             }
             catch (const std::exception& error)
@@ -96,8 +105,11 @@ namespace atomic_dex
         };
         functor();
         this->m_is_busy = false;
-        emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
-        emit m_system_manager.get_system<portfolio_page>().chartsChanged();
+        auto& portfolio_pg = m_system_manager.get_system<portfolio_page>();
+        emit portfolio_pg.chartBusyChanged();
+        emit portfolio_pg.chartsChanged();
+        emit portfolio_pg.minTotalChartChanged();
+        emit portfolio_pg.maxTotalChartChanged();
     }
 
     void
@@ -245,5 +257,16 @@ namespace atomic_dex
     coingecko_wallet_charts_service::get_charts() const
     {
         return atomic_dex::nlohmann_json_array_to_qt_json_array(m_fiat_charts.get());
+    }
+
+    QString
+    coingecko_wallet_charts_service::get_min_total() const
+    {
+        return QString::fromStdString(m_min_value);
+    }
+    QString
+    coingecko_wallet_charts_service::get_max_total() const
+    {
+        return QString::fromStdString(m_max_value);
     }
 } // namespace atomic_dex

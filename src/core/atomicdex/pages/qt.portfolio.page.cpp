@@ -199,4 +199,16 @@ namespace atomic_dex
     {
         return m_system_manager.get_system<coingecko_wallet_charts_service>().get_charts();
     }
+
+    QString
+    atomic_dex::portfolio_page::get_min_total_chart() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_min_total();
+    }
+
+    QString
+    atomic_dex::portfolio_page::get_max_total_chart() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_max_total();
+    }
 } // namespace atomic_dex

@@ -31,6 +31,8 @@ namespace atomic_dex
         tf::Executor             m_executor;
         tf::Taskflow             m_taskflow;
         std::atomic_bool         m_is_busy{false};
+        std::string              m_min_value{"0"};
+        std::string              m_max_value{"0"};
 
         //! Private member functions
         void fetch_data_of_single_coin(const coin_config& cfg);
@@ -52,6 +54,9 @@ namespace atomic_dex
         [[nodiscard]] bool is_busy() const;
 
         QVariant get_charts() const;
+
+        [[nodiscard]] QString get_min_total() const;
+        [[nodiscard]] QString get_max_total() const;
     };
 } // namespace atomic_dex
 

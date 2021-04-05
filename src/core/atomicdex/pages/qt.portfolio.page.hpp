@@ -42,6 +42,8 @@ namespace atomic_dex
         Q_PROPERTY(WalletChartsCategories chart_category READ get_chart_category WRITE set_chart_category NOTIFY chartCategoryChanged)
         Q_PROPERTY(bool chart_busy_fetching READ is_chart_busy NOTIFY chartBusyChanged)
         Q_PROPERTY(QVariant charts READ get_charts NOTIFY chartsChanged)
+        Q_PROPERTY(QString min_total_chart READ get_min_total_chart NOTIFY minTotalChartChanged)
+        Q_PROPERTY(QString max_total_chart READ get_max_total_chart NOTIFY maxTotalChartChanged)
 
         //! Private members fields
         ag::ecs::system_manager& m_system_manager;
@@ -76,6 +78,8 @@ namespace atomic_dex
         void                                 set_chart_category(WalletChartsCategories category);
         [[nodiscard]] bool                   is_chart_busy() const;
         [[nodiscard]] QVariant               get_charts() const;
+        [[nodiscard]] QString                get_min_total_chart() const;
+        [[nodiscard]] QString                get_max_total_chart() const;
 
         //! Events
         void on_band_oracle_refreshed([[maybe_unused]] const band_oracle_refreshed& evt);
@@ -90,6 +94,8 @@ namespace atomic_dex
         void chartCategoryChanged();
         void chartBusyChanged();
         void chartsChanged();
+        void minTotalChartChanged();
+        void maxTotalChartChanged();
     };
 } // namespace atomic_dex
 
