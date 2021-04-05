@@ -1,4 +1,4 @@
- import QtQuick 2.15
+import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
@@ -9,6 +9,7 @@ import QtCharts 2.3
 import Qaterial 1.0 as Qaterial
 import ModelHelper 0.1
 
+import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
 import "../Constants"
@@ -21,10 +22,13 @@ Item {
     Layout.bottomMargin: 40
     Layout.margins: 40
     function getPercent(fiat_amount) {
-        const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
-        if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
+        const portfolio_balance = parseFloat(
+                                    API.app.portfolio_pg.balance_fiat_all)
+        if (fiat_amount <= 0 || portfolio_balance <= 0)
+            return "-"
 
-        return General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false)
+        return General.formatPercent(
+                    (100 * fiat_amount / portfolio_balance).toFixed(2), false)
     }
 
     property string total: General.formatFiat(
@@ -60,25 +64,60 @@ Item {
             break
         }
     }
+    function drawChart() {
+        areaLine.clear()
+        areaLine2.clear()
+
+        for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
+            let el = API.app.portfolio_pg.charts[ii]
+            try {
+                areaLine2.append(parseInt(el.timestamp), parseFloat(el.total))
+                areaLine.append(parseInt(el.timestamp), parseFloat(el.total))
+                scatter.append(parseInt(el.timestamp), parseFloat(el.total))
+            }catch(e) {
+
+            }
+        }
+    }
+
     function refresh() {
         pieSeries.clear()
         for (var i = 0; i < portfolio_mdl.pie_chart_proxy_mdl.rowCount(); i++) {
             let data = portfolio_mdl.pie_chart_proxy_mdl.get(i)
             addItem(data)
         }
+        drawChart()
+
     }
     Timer {
         id: pieTimer
         interval: 500
-        onTriggered: refresh()
+        onTriggered: {
+            refresh()
+            drawChart()
+        }
     }
     onTotalChanged: {
         refresh()
         pieTimer.restart()
     }
+    Connections {
+        target: API.app.portfolio_pg
+        function onChartsChanged() {
+            drawChart()
+        }
+    }
 
     Component.onCompleted: {
         reset()
+        console.log("CHART " + API.app.portfolio_pg.chart_category,
+                    API.app.portfolio_pg.chart_busy_fetching)
+        console.log(JSON.stringify(API.app.portfolio_pg.charts))
+        let series = chart_2.createSeries(ChartView.SeriesTypeSpline,
+                                        "Price", chart_2.axes[0],
+                                        chart_2.axes[1])
+
+
     }
 
     function reset() {
@@ -167,17 +206,119 @@ Item {
                     anchors.leftMargin: 40
                     spacing: 35
                     InnerBackground {
+                        id: willyBG
+                        property real mX: 0
+                        property real mY: 0
                         Layout.fillHeight: true
                         Layout.fillWidth: true
                         ClipRRect {
                             anchors.fill: parent
                             radius: parent.radius
-                            ChartView {
+                            Glow {
+                                id: glow
+                                anchors.fill: chart_2
+                                radius: 8
+                                samples: 168
+                                color: 'purple'
+                                source: chart_2
+                            }
+                            LinearGradient {
+                                id: gradient
+                                start: Qt.point(willyBG.mX,willyBG.mY-100)
+                                end: Qt.point(willyBG.mX,willyBG.mY+100)
+                                gradient: Gradient {
+                                    GradientStop {
+                                        position: 1;
+                                        color: theme.accentColor
+                                    }
+                                    GradientStop {
+                                        position: 0.3;
+                                        color: Qt.rgba(86,128,189,0.09)
+                                    }
+                                    GradientStop {
+                                        position: 0.2;
+                                        color: Qt.rgba(86,128,189,0.00)
+                                    }
+                                }
+                                anchors.fill: glow
+                                source: glow
+                            }
 
+                            ChartView {
+                                id: chart_2
+                                anchors.fill: parent
+                                anchors.margins: -20
+                                theme: ChartView.ChartThemeLight
+                                antialiasing: true
+                                legend.visible: false
+                                backgroundColor: 'transparent'
+                                dropShadowEnabled: true
+
+                                opacity: .8
+                                AreaSeries {
+                                    axisX: DateTimeAxis {
+                                        gridVisible: false
+                                        lineVisible: false
+                                        format: "MMM d"
+                                    }
+                                    axisY: ValueAxis {
+                                       lineVisible: false
+
+                                       gridLineColor: Qt.rgba(77,198,255,0.12)
+                                    }
+                                    color: Qt.rgba(77,198,255,0.02)
+                                    borderColor: 'transparent'
+
+
+                                    upperSeries: LineSeries {
+                                         id: areaLine
+                                         axisY: ValueAxis {
+                                             visible: false
+                                         }
+                                         axisX: ValueAxis {
+                                             visible: false
+                                         }
+
+                                     }
+
+                                }
+                                SplineSeries {
+                                    id: areaLine2
+                                    axisY: ValueAxis {
+                                        visible: false
+                                    }
+                                    axisX: ValueAxis {
+                                        visible: false
+                                    }
+                                }
+                                ScatterSeries {
+                                    id: scatter
+                                    visible: false
+                                    color: 'white'
+                                    borderColor: theme.accentColor
+                                    borderWidth: 6
+                                    axisY: ValueAxis {
+                                        visible: false
+                                    }
+                                    axisX: ValueAxis {
+                                        visible: false
+                                    }
+                                    onHovered: {
+                                        pointsVisible = false
+                                    }
+
+                                }
+                            }
+                            MouseArea {
+                                id: area
+                                hoverEnabled: true
+                                anchors.fill: parent
+                                onMouseXChanged: {
+                                    willyBG.mX = mouseX
+                                    willyBG.mY = mouseY
+                                }
                             }
                         }
-
-
                     }
 
                     Item {
@@ -231,11 +372,7 @@ Item {
                                         spacing: 5
                                         DefaultText {
                                             anchors.horizontalCenter: parent.horizontalCenter
-                                            text_value: currentTotal
-                                                        !== "" ? currentTotal : General.formatFiat(
-                                                                     "",
-                                                                     API.app.portfolio_pg.balance_fiat_all,
-                                                                     API.app.settings_pg.current_currency)
+                                            text_value: currentTotal !== "" ? currentTotal : General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                                             font: theme.textType.head4
                                             color: Qt.lighter(
                                                        Style.colorWhite4,
@@ -255,7 +392,8 @@ Item {
                                             DexFadebehavior on text {
                                                 fadeDuration: 100
                                             }
-                                            color: Qt.lighter(Style.colorWhite4, 0.6)
+                                            color: Qt.lighter(
+                                                       Style.colorWhite4, 0.6)
                                             privacy: true
                                             Component.onCompleted: {
                                                 font.family = 'Lato'
@@ -264,14 +402,16 @@ Item {
                                         DefaultText {
                                             id: count_label
                                             anchors.horizontalCenter: parent.horizontalCenter
-                                            text_value: portfolio_helper.count +" "+qsTr("Assets")
+                                            text_value: portfolio_helper.count + " " + qsTr(
+                                                            "Assets")
                                             font: theme.textType.body2
                                             DexFadebehavior on text {
                                                 fadeDuration: 100
                                             }
-                                            color: Qt.lighter(Style.colorWhite4, 0.8)
+                                            color: Qt.lighter(
+                                                       Style.colorWhite4, 0.8)
                                             privacy: true
-                                            visible: portfolio.currentValue==""
+                                            visible: portfolio.currentValue == ""
 
                                             Component.onCompleted: {
                                                 font.family = 'Lato'
@@ -291,7 +431,8 @@ Item {
                                             const available_fiats = API.app.settings_pg.get_available_currencies()
                                             const current_index = available_fiats.indexOf(
                                                                     current_fiat)
-                                            const next_index = (current_index + 1) % available_fiats.length
+                                            const next_index = (current_index + 1)
+                                                             % available_fiats.length
                                             const next_fiat = available_fiats[next_index]
                                             API.app.settings_pg.current_currency = next_fiat
                                         }
@@ -300,44 +441,57 @@ Item {
                             }
                             Item {
                                 y: 380
-                                width: parent.width-50
+                                width: parent.width - 50
                                 height: 200
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                Column {
+                                Flickable {
                                     anchors.fill: parent
-                                    Repeater {
-                                        model: portfolio_mdl.pie_chart_proxy_mdl
+                                    contentHeight: colo.height
+                                    clip: true
+                                    Column {
+                                        width: parent.width
+                                        id: colo
+                                        Repeater {
+                                            model: portfolio_mdl.pie_chart_proxy_mdl
 
-                                        RowLayout {
-                                            id: rootItem
-                                            property color itemColor: Style.getCoinColor(ticker)
-                                            width: parent.width
-                                            height: 50
-                                            spacing: 20
-                                            DexLabel {
-                                                Layout.preferredWidth: 60
-                                                text: atomic_qt_utilities.retrieve_main_ticker(ticker)
-                                                Layout.alignment: Qt.AlignVCenter
-                                                Component.onCompleted: font.weight = Font.Medium
-                                            }
-                                            Rectangle {
-                                                Layout.alignment: Qt.AlignVCenter
-                                                Layout.fillWidth: true
-                                                height: 8
-                                                radius: 10
-                                                color: theme.dexBoxBackgroundColor
-                                                Rectangle {
-                                                    height: parent.height
-                                                    width: (parseFloat(getPercent(main_currency_balance).replace("%",""))*parent.width)/100
-                                                    radius: 10
-                                                    color: rootItem.itemColor
+                                            RowLayout {
+                                                id: rootItem
+                                                property color itemColor: Style.getCoinColor(
+                                                                              ticker)
+                                                width: parent.width
+                                                height: 50
+                                                spacing: 20
+                                                DexLabel {
+                                                    Layout.preferredWidth: 60
+                                                    text: atomic_qt_utilities.retrieve_main_ticker(
+                                                              ticker)
+                                                    Layout.alignment: Qt.AlignVCenter
+                                                    Component.onCompleted: font.weight = Font.Medium
                                                 }
-                                            }
+                                                Rectangle {
+                                                    Layout.alignment: Qt.AlignVCenter
+                                                    Layout.fillWidth: true
+                                                    height: 8
+                                                    radius: 10
+                                                    color: theme.dexBoxBackgroundColor
+                                                    Rectangle {
+                                                        height: parent.height
+                                                        width: (parseFloat(
+                                                                    getPercent(
+                                                                        main_currency_balance).replace(
+                                                                        "%",
+                                                                        "")) * parent.width) / 100
+                                                        radius: 10
+                                                        color: rootItem.itemColor
+                                                    }
+                                                }
 
-                                            DexLabel {
-                                                text: getPercent(main_currency_balance)
-                                                Component.onCompleted: font.family = 'lato'
-                                                Layout.alignment: Qt.AlignVCenter
+                                                DexLabel {
+                                                    text: getPercent(
+                                                              main_currency_balance)
+                                                    Component.onCompleted: font.family = 'lato'
+                                                    Layout.alignment: Qt.AlignVCenter
+                                                }
                                             }
                                         }
                                     }
@@ -350,7 +504,6 @@ Item {
                             }
                         }
                     }
-
                 }
             }
             Item {
@@ -501,10 +654,7 @@ Item {
 
                         delegate: AnimatedRectangle {
                             color: Qt.lighter(
-                                       mouse_area.containsMouse ? theme.hightlightColor : index % 2
-                                                                  == 0 ? Qt.darker(
-                                                                             theme.backgroundColor,
-                                                                             0.8) : theme.backgroundColor,
+                                       mouse_area.containsMouse ? theme.hightlightColor : index % 2 == 0 ? Qt.darker(theme.backgroundColor, 0.8) : theme.backgroundColor,
                                        mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
                             width: list.width
                             height: 50
@@ -605,7 +755,8 @@ Item {
 
                                 text_value: {
                                     const v = parseFloat(change_24h)
-                                    return v === 0 ? '-' : General.formatPercent(v)
+                                    return v === 0 ? '-' : General.formatPercent(
+                                                         v)
                                 }
                                 color: Style.getValueColor(change_24h)
                                 anchors.verticalCenter: parent.verticalCenter
@@ -618,7 +769,8 @@ Item {
                                 anchors.rightMargin: price_header.anchors.rightMargin
 
                                 text_value: General.formatFiat(
-                                                '', main_currency_price_for_one_unit,
+                                                '',
+                                                main_currency_price_for_one_unit,
                                                 API.app.settings_pg.current_currency)
                                 color: theme.colorThemeDarkLight
                                 anchors.verticalCenter: parent.verticalCenter
@@ -645,7 +797,8 @@ Item {
                                 height: 100
                                 antialiasing: true
                                 anchors.right: parent.right
-                                anchors.rightMargin: trend_7d_header.anchors.rightMargin - width * 0.4
+                                anchors.rightMargin: trend_7d_header.anchors.rightMargin
+                                                     - width * 0.4
                                 anchors.verticalCenter: parent.verticalCenter
                                 legend.visible: false
 
@@ -662,7 +815,6 @@ Item {
                         }
                     }
                 }
-
             }
             Item {
                 width: 1
@@ -717,10 +869,6 @@ Item {
             }
         }
     }
-
-
-
-
 
     // Top part
 
