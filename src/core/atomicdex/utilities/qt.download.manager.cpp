@@ -19,16 +19,11 @@ namespace atomic_dex
     void
     qt_download_manager::do_download(const QUrl& url)
     {
-#if defined(Q_OS_WINDOWS)
-        auto wstr = fs::path(url.toString().toStdString()).filename().string();
-        m_current_filename = std::string(wstr.begin(), wstr.end());
-#else
-        m_current_filename = fs::path(url.toString().toStdString()).filename().c_str();
-#endif
+        m_current_filename     = utils::u8string(fs::path(url.toString().toStdString()).filename());
         m_last_downloaded_path = fs::temp_directory_path() / m_current_filename;
         QNetworkRequest request(url);
         request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::RedirectPolicy::NoLessSafeRedirectPolicy);
-        QNetworkReply*  reply = m_manager.get(request);
+        QNetworkReply* reply = m_manager.get(request);
         connect(reply, &QNetworkReply::downloadProgress, this, &qt_download_manager::download_progress);
         m_current_downloads.append(reply);
     }

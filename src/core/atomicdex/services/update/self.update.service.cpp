@@ -207,7 +207,7 @@ namespace atomic_dex
     void
     self_update_service::on_download_release_finished([[maybe_unused]] const download_release_finished& evt)
     {
-        SPDLOG_DEBUG("Successfully downloaded last release to {}", m_download_mgr.get_last_download_path().c_str());
+        SPDLOG_DEBUG("Successfully downloaded last release to {}", utils::u8string(m_download_mgr.get_last_download_path()));
         update_ready = true;
         emit update_readyChanged();
     }
