@@ -68,6 +68,9 @@ Item {
         areaLine.clear()
         areaLine2.clear()
 
+        areaLine.axisY.max =  parseFloat(API.app.portfolio_pg.max_total_chart)
+        areaLine.axisY.min =  parseFloat(API.app.portfolio_pg.min_total_chart)
+
         for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
             let el = API.app.portfolio_pg.charts[ii]
             try {
@@ -104,6 +107,7 @@ Item {
     Connections {
         target: API.app.portfolio_pg
         function onChartsChanged() {
+            console.log("chart changed")
             drawChart()
         }
     }
@@ -170,7 +174,7 @@ Item {
                 item.exploded = true
                 item.explodeDistanceFactor = 0.01
                 item.labelVisible = true
-                portfolio.currentTotal = "$ " + value.main_currency_balance
+                portfolio.currentTotal = API.app.settings_pg.current_fiat_sign+" "+ value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
                 item.color = Qt.lighter(Style.getCoinColor(value.ticker))
             } else {
@@ -309,6 +313,19 @@ Item {
 
                                 }
                             }
+                            Rectangle {
+                                anchors.fill: parent
+                                opacity: .6
+                                color: theme.dexBoxBackgroundColor
+                                visible: API.app.portfolio_pg.chart_busy_fetching
+                                radius: parent.radius
+                                DexBusyIndicator {
+                                    anchors.centerIn: parent
+                                    running: visible
+                                    visible: API.app.portfolio_pg.chart_busy_fetching
+                                }
+                            }
+
                             MouseArea {
                                 id: area
                                 hoverEnabled: true
