@@ -19,7 +19,7 @@ namespace atomic_dex
     void
     qt_download_manager::do_download(const QUrl& url)
     {
-        m_current_filename = fs::path(url.toString().toStdString()).filename();
+        m_current_filename = fs::path(url.toString().toStdString()).filename().c_str();
         m_last_downloaded_path = fs::temp_directory_path() / m_current_filename;
         QNetworkRequest request(url);
         request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::RedirectPolicy::NoLessSafeRedirectPolicy);
