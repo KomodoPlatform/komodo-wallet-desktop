@@ -51,8 +51,8 @@ namespace atomic_dex
             try
             {
                 SPDLOG_INFO("Generate fiat chart");
-                const auto fiat = m_system_manager.get_system<settings_page>().get_current_fiat().toStdString();
-                t_float_50 rate = safe_float(m_system_manager.get_system<global_price_service>().get_fiat_rates(fiat));
+                const auto     fiat           = m_system_manager.get_system<settings_page>().get_current_fiat().toStdString();
+                t_float_50     rate           = safe_float(m_system_manager.get_system<global_price_service>().get_fiat_rates(fiat));
                 auto           chart_registry = this->m_chart_data_registry.get();
                 nlohmann::json out            = nlohmann::json::array();
                 const auto&    data           = chart_registry.begin()->second;
@@ -61,7 +61,7 @@ namespace atomic_dex
                 {
                     nlohmann::json cur = nlohmann::json::object();
                     cur["timestamp"]   = data[idx][0].get<std::size_t>() / 1000;
-                    //cur["human_date"]  = utils::to_human_date<std::chrono::milliseconds>(cur.at("timestamp").get<std::size_t>(), "%e %b %Y, %H:%M");
+                    // cur["human_date"]  = utils::to_human_date<std::chrono::milliseconds>(cur.at("timestamp").get<std::size_t>(), "%e %b %Y, %H:%M");
                     t_float_50 total(0);
                     bool       to_skip = false;
                     for (auto&& [key, value]: chart_registry)
@@ -81,11 +81,11 @@ namespace atomic_dex
                     cur["total"] = utils::format_float(total);
                     out.push_back(cur);
                 }
-                auto        now                   = std::chrono::system_clock::now();
-                std::size_t timestamp             = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
-                out[out.size() - 1]["timestamp"]  = timestamp;
-                out[out.size() - 1]["total"]      = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
-                //out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
+                auto        now                  = std::chrono::system_clock::now();
+                std::size_t timestamp            = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+                out[out.size() - 1]["timestamp"] = timestamp;
+                out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
+                // out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
                 SPDLOG_INFO("out: {}", out.dump());
                 m_fiat_charts = std::move(out);
             }
@@ -164,8 +164,18 @@ namespace atomic_dex
                 }
             }
         }
-        SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
-        m_executor.run(m_taskflow);
+        if (m_taskflow.num_tasks() == 1)
+        {
+            SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
+            SPDLOG_WARN("No coins available for chart update - skipping");
+            m_is_busy = false;
+            emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+        }
+        else
+        {
+            SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
+            m_executor.run(m_taskflow);
+        }
     }
 } // namespace atomic_dex
 
