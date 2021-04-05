@@ -84,9 +84,4 @@ namespace atomic_dex::github_api
         return repository_release{.url = asset.at("browser_download_url"), .assets_url = json_answer.at(0).at("assets_url"),
                                   .name = asset.at("name"), .tag_name   = json_answer.at(0).at("tag_name")};
     }
-    
-    pplx::task<fs::path> download_repository_release(download_repository_release_request download_request,
-                                                                  const fs::path& output_file_location)
-    {
-    }
 }

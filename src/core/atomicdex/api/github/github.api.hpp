@@ -41,6 +41,4 @@ namespace atomic_dex::github_api
         std::string tag_name;
         std::string name;
     };
-    
-    [[nodiscard]] pplx::task<fs::path> download_repository_release(download_repository_release_request release, const fs::path& output_file_location);
 }

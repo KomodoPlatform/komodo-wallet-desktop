@@ -6,6 +6,7 @@
 
 //! Project
 #include "atomicdex/events/events.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 #include "qt.download.manager.hpp"
 
 namespace atomic_dex
@@ -19,7 +20,7 @@ namespace atomic_dex
     void
     qt_download_manager::do_download(const QUrl& url)
     {
-        m_current_filename     = utils::u8string(fs::path(url.toString().toStdString()).filename());
+        m_current_filename     = atomic_dex::utils::u8string(fs::path(url.toString().toStdString()).filename());
         m_last_downloaded_path = fs::temp_directory_path() / m_current_filename;
         QNetworkRequest request(url);
         request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::RedirectPolicy::NoLessSafeRedirectPolicy);
