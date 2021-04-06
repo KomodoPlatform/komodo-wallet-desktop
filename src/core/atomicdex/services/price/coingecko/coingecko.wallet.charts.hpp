@@ -53,7 +53,7 @@ namespace atomic_dex
         //! Override ag::system functions
         void update() final;
 
-        void manual_refresh();
+        void manual_refresh(const std::string& from);
 
         [[nodiscard]] bool is_busy() const;
 

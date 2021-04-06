@@ -75,12 +75,12 @@ namespace atomic_dex
     void
     portfolio_page::set_current_balance_fiat_all(QString current_fiat_all_balance)
     {
-        SPDLOG_INFO("current_balance_all changed");
         if (this->m_current_balance_all != current_fiat_all_balance)
         {
+            SPDLOG_INFO("current_balance_all changed previous: {}, new: {}", m_current_balance_all.toStdString(), current_fiat_all_balance.toStdString());
             this->m_current_balance_all = std::move(current_fiat_all_balance);
             emit onFiatBalanceAllChanged();
-            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh();
+            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_current_balance_fiat_all");
         }
     }
 
@@ -186,7 +186,7 @@ namespace atomic_dex
             settings.setValue("WalletChartsCategory", qint32(m_current_chart_category));
             if (m_system_manager.get_system<mm2_service>().is_mm2_running() && m_system_manager.has_system<coingecko_wallet_charts_service>())
             {
-                m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh();
+                m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_chart_category");
             }
             emit chartCategoryChanged();
         }

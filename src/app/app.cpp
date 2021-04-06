@@ -89,10 +89,11 @@ namespace atomic_dex
         QString     primary_coin   = QString::fromStdString(g_primary_dex_coin);
         QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
         QStringList coins_copy;
-
+        const auto& mm2 = system_manager_.get_system<mm2_service>();
         for (auto&& coin: coins)
         {
-            bool has_parent_fees = system_manager_.get_system<mm2_service>().get_coin_info(coin.toStdString()).has_parent_fees_ticker;
+            const auto coin_info       = mm2.get_coin_info(coin.toStdString());
+            bool       has_parent_fees = coin_info.has_parent_fees_ticker;
             if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
                 if (has_parent_fees)
@@ -122,10 +123,6 @@ namespace atomic_dex
             }
             get_mm2().disable_multiple_coins(coins_std);
             this->dispatcher_.trigger<update_portfolio_values>(false);
-            if (system_manager_.has_system<coingecko_wallet_charts_service>())
-            {
-                system_manager_.get_system<coingecko_wallet_charts_service>().manual_refresh();
-            }
         }
 
         return true;
@@ -208,10 +205,6 @@ namespace atomic_dex
                     system_manager_.get_system<qt_wallet_manager>().set_status("complete");
                 }
                 this->dispatcher_.trigger<update_portfolio_values>();
-                if (system_manager_.has_system<coingecko_wallet_charts_service>())
-                {
-                    system_manager_.get_system<coingecko_wallet_charts_service>().manual_refresh();
-                }
             }
         }
 

@@ -253,8 +253,9 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    coingecko_wallet_charts_service::manual_refresh()
+    coingecko_wallet_charts_service::manual_refresh(const std::string& from)
     {
+        SPDLOG_INFO("manual refresh from: {}", from);
         if (m_is_busy)
         {
             SPDLOG_WARN("Service is busy, try later");
