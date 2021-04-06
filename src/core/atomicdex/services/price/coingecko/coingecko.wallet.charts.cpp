@@ -147,7 +147,8 @@ namespace atomic_dex
                 }
             }
         };
-        market_functor(WalletChartsCategories::OneMonth, get_days_from_wallet_category(WalletChartsCategories::OneMonth));
+        auto current_category = m_system_manager.get_system<portfolio_page>().get_chart_category();
+        market_functor(current_category, get_days_from_wallet_category(current_category));
     }
 
     void
