@@ -95,7 +95,7 @@ namespace atomic_dex
                 out[out.size() - 1]["timestamp"] = timestamp;
                 out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
                 // out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
-                SPDLOG_INFO("out: {}\n min_value: {} - max_value: {}", out.dump(), m_min_value, m_max_value);
+                SPDLOG_INFO("chart nb elements: {} min_value: {} - max_value: {}", out.size(), m_min_value, m_max_value);
                 m_fiat_charts = std::move(out);
             }
             catch (const std::exception& error)
