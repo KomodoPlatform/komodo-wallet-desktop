@@ -99,7 +99,7 @@ namespace atomic_dex
                 std::size_t timestamp            = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
                 out[out.size() - 1]["timestamp"] = timestamp;
                 out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
-                std::string wallet_perf = utils::format_float(safe_float(out[out.size() - 1].at("total").get<std::string>()) - first_total);
+                std::string wallet_perf          = utils::format_float(safe_float(out[out.size() - 1].at("total").get<std::string>()) - first_total);
                 m_wallet_performance->insert("wallet_performance", QString::fromStdString(wallet_perf));
                 // out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
                 SPDLOG_INFO("chart nb elements: {} min_value: {} - max_value: {} wallet_perf: {}", out.size(), m_min_value, m_max_value, wallet_perf);
@@ -176,42 +176,49 @@ namespace atomic_dex
     coingecko_wallet_charts_service::fetch_all_charts_data()
     {
         SPDLOG_INFO("fetch all charts data");
-        this->m_is_busy = true;
-        emit       m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+
         const auto coins           = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         auto*      portfolio_model = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
         auto       final_task      = m_taskflow.emplace([this]() { this->generate_fiat_chart(); }).name("Post task");
-        for (auto&& [coin, cfg]: coins)
+        auto       active_coins    = m_system_manager.get_system<mm2_service>().get_active_coins().size();
+
+        SPDLOG_INFO("active_coins: {} coins_size: {}", active_coins, coins.size());
+        if (active_coins == coins.size())
         {
-            if (cfg.coingecko_id == "test-coin")
+            this->m_is_busy = true;
+            emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+            for (auto&& [coin, cfg]: coins)
             {
-                continue;
-            }
-            SPDLOG_INFO("retrieve coin: {}", coin);
-            auto res =
-                portfolio_model->match(portfolio_model->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(coin), 1, Qt::MatchFlag::MatchExactly);
-            // assert(not res.empty());
-            if (not res.empty())
-            {
-                t_float_50 balance = safe_float(portfolio_model->data(res.at(0), portfolio_model::MainCurrencyBalanceRole).toString().toStdString());
-                SPDLOG_INFO("coin: {} not empty - checking now - balance: {}", coin, utils::format_float(balance));
-                if (balance > 0)
+                if (cfg.coingecko_id == "test-coin")
                 {
-                    final_task.succeed(m_taskflow.emplace([this, cfg = cfg]() { fetch_data_of_single_coin(cfg); }).name(cfg.ticker));
+                    continue;
+                }
+                //SPDLOG_INFO("retrieve coin: {}", coin);
+                auto res = portfolio_model->match(
+                    portfolio_model->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(coin), 1, Qt::MatchFlag::MatchExactly);
+                // assert(not res.empty());
+                if (not res.empty())
+                {
+                    t_float_50 balance = safe_float(portfolio_model->data(res.at(0), portfolio_model::MainCurrencyBalanceRole).toString().toStdString());
+                    SPDLOG_INFO("coin: {} not empty - checking now - balance: {}", coin, utils::format_float(balance));
+                    if (balance > 0)
+                    {
+                        final_task.succeed(m_taskflow.emplace([this, cfg = cfg]() { fetch_data_of_single_coin(cfg); }).name(cfg.ticker));
+                    }
                 }
             }
-        }
-        if (m_taskflow.num_tasks() == 1)
-        {
-            SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
-            SPDLOG_WARN("No coins available for chart update - skipping");
-            m_is_busy = false;
-            emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
-        }
-        else
-        {
-            SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
-            m_executor.run(m_taskflow);
+            if (m_taskflow.num_tasks() == 1)
+            {
+                SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
+                SPDLOG_WARN("No coins available for chart update - skipping");
+                m_is_busy = false;
+                emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+            }
+            else
+            {
+                SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
+                m_executor.run(m_taskflow);
+            }
         }
     }
 } // namespace atomic_dex

@@ -99,8 +99,9 @@ namespace
     }
 
     void
-    update_coin_status(const std::string& wallet_name, const std::vector<std::string>& tickers, bool status = true)
+    update_coin_status(const std::string& wallet_name, const std::vector<std::string>& tickers, bool status, atomic_dex::t_coins_registry& registry, std::shared_mutex& registry_mtx)
     {
+        SPDLOG_INFO("Update coins status to: {}", status);
         fs::path       cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::ifstream  ifs((cfg_path / filename).c_str());
@@ -109,7 +110,14 @@ namespace
         assert(ifs.is_open());
         ifs >> config_json_data;
 
-        for (auto&& ticker: tickers) { config_json_data.at(ticker)["active"] = status; }
+        {
+            std::shared_lock lock(registry_mtx);
+            for (auto&& ticker: tickers)
+            {
+                config_json_data.at(ticker)["active"] = status;
+                registry[ticker].active               = status;
+            }
+        }
 
         ifs.close();
 
@@ -350,7 +358,7 @@ namespace atomic_dex
     void
     mm2_service::disable_multiple_coins(const std::vector<std::string>& tickers)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("disable_multiple_coins");
         for (const auto& ticker: tickers)
         {
             std::error_code ec;
@@ -361,7 +369,7 @@ namespace atomic_dex
             }
         }
 
-        update_coin_status(this->m_current_wallet_name, tickers, false);
+        update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
     }
 
     auto
@@ -620,7 +628,7 @@ namespace atomic_dex
     mm2_service::enable_multiple_coins(const std::vector<std::string>& tickers)
     {
         batch_enable_coins(tickers);
-        update_coin_status(this->m_current_wallet_name, tickers, true);
+        update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
     }
 
     coin_config

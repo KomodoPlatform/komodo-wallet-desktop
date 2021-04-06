@@ -523,13 +523,15 @@ namespace atomic_dex
     void
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt)
     {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("on_ticker_balance_updated_event");
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             if (not evt.tickers.empty())
             {
-                get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers);
-                this->dispatcher_.trigger<update_portfolio_values>(false);
+                if (get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers))
+                {
+                    this->dispatcher_.trigger<update_portfolio_values>(false);
+                }
             }
         }
     }
