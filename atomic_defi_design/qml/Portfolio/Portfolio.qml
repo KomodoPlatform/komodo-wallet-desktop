@@ -21,6 +21,8 @@ Item {
     Layout.fillHeight: true
     Layout.bottomMargin: 40
     Layout.margins: 40
+    property bool isUltraLarge: width > 1400
+    property bool isSpline: true
     function getPercent(fiat_amount) {
         const portfolio_balance = parseFloat(
                                     API.app.portfolio_pg.balance_fiat_all)
@@ -67,20 +69,21 @@ Item {
     function drawChart() {
         areaLine.clear()
         areaLine2.clear()
+        areaLine3.clear()
 
-        areaLine.axisY.max =  parseFloat(API.app.portfolio_pg.max_total_chart)
-        areaLine.axisY.min =  parseFloat(API.app.portfolio_pg.min_total_chart)
-
+        dateA.min = new Date(API.app.portfolio_pg.charts[0].timestamp*1000)
+        dateA.max = new Date(API.app.portfolio_pg.charts[API.app.portfolio_pg.charts.length-1].timestamp*1000)
+        chart_2.update()
         for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
             let el = API.app.portfolio_pg.charts[ii]
             try {
-                areaLine2.append(parseInt(el.timestamp), parseFloat(el.total))
-                areaLine.append(parseInt(el.timestamp), parseFloat(el.total))
-                scatter.append(parseInt(el.timestamp), parseFloat(el.total))
-            }catch(e) {
-
-            }
+                areaLine3.append(el.timestamp*1000, parseFloat(el.total))
+                areaLine2.append(el.timestamp*1000, parseFloat(el.total))
+                areaLine.append(el.timestamp*1000, parseFloat(el.total))
+            }catch(e) {}
         }
+        chart_2.update()
+
     }
 
     function refresh() {
@@ -89,7 +92,6 @@ Item {
             let data = portfolio_mdl.pie_chart_proxy_mdl.get(i)
             addItem(data)
         }
-        drawChart()
 
     }
     Timer {
@@ -97,35 +99,46 @@ Item {
         interval: 500
         onTriggered: {
             refresh()
-            drawChart()
         }
     }
+    Timer {
+        id: chart2Timer
+        interval: 500
+        onTriggered: {
+            if(API.app.portfolio_pg.charts.length===0){
+                restart()
+            }else {
+                drawTimer.restart()
+            }
+        }
+    }
+    Timer {
+        id: drawTimer
+        interval: 2000
+        onTriggered: portfolio.drawChart()
+    }
+
     onTotalChanged: {
         refresh()
         pieTimer.restart()
     }
     Connections {
         target: API.app.portfolio_pg
-        function onChartsChanged() {
-            console.log("chart changed")
-            drawChart()
+        function onChart_busy_fetchingChanged() {
+            if(!API.app.portfolio_pg.chart_busy_fetching){
+                chart2Timer.restart()
+            }
         }
     }
 
     Component.onCompleted: {
         reset()
-        console.log("CHART " + API.app.portfolio_pg.chart_category,
-                    API.app.portfolio_pg.chart_busy_fetching)
-        console.log(JSON.stringify(API.app.portfolio_pg.charts))
-        let series = chart_2.createSeries(ChartView.SeriesTypeSpline,
-                                        "Price", chart_2.axes[0],
-                                        chart_2.axes[1])
+        chart2Timer.restart()
 
 
     }
 
     function reset() {
-        // Reset the coin name filter
         input_coin_filter.reset()
     }
 
@@ -171,15 +184,15 @@ Item {
         item.labelFont = theme.textType.body2
         item.hovered.connect(function (state) {
             if (state) {
-                item.exploded = true
+                //item.exploded = true
                 item.explodeDistanceFactor = 0.01
-                item.labelVisible = true
+                //item.labelVisible = true
                 portfolio.currentTotal = API.app.settings_pg.current_fiat_sign+" "+ value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
                 item.color = Qt.lighter(Style.getCoinColor(value.ticker))
             } else {
-                item.exploded = false
-                item.labelVisible = false
+                //item.exploded = false
+                //item.labelVisible = false
                 item.explodeDistanceFactor = 0.01
                 portfolio.currentValue = ""
                 portfolio.currentTotal = ""
@@ -203,7 +216,7 @@ Item {
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: true
-                height: 600
+                height: portfolio.isUltraLarge? 600 : 350
                 RowLayout {
                     anchors.fill: parent
                     anchors.rightMargin: 40
@@ -261,12 +274,15 @@ Item {
                                 opacity: .8
                                 AreaSeries {
                                     axisX: DateTimeAxis {
+                                        id: dateA
                                         gridVisible: false
                                         lineVisible: false
                                         format: "MMM d"
                                     }
                                     axisY: ValueAxis {
                                        lineVisible: false
+                                       max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                       min:  parseFloat(API.app.portfolio_pg.min_total_chart)
 
                                        gridLineColor: Qt.rgba(77,198,255,0.12)
                                     }
@@ -278,9 +294,16 @@ Item {
                                          id: areaLine
                                          axisY: ValueAxis {
                                              visible: false
+                                             max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                             min:  parseFloat(API.app.portfolio_pg.min_total_chart)
                                          }
-                                         axisX: ValueAxis {
-                                             visible: false
+                                         axisX: DateTimeAxis {
+                                             id: dateA2
+                                             min: dateA.min
+                                             max: dateA.max
+                                             gridVisible: false
+                                             lineVisible: false
+                                             format: "MMM d"
                                          }
 
                                      }
@@ -288,31 +311,59 @@ Item {
                                 }
                                 SplineSeries {
                                     id: areaLine2
+                                    visible: isSpline
                                     axisY: ValueAxis {
                                         visible: false
+                                        max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                        min:  parseFloat(API.app.portfolio_pg.min_total_chart)
                                     }
-                                    axisX: ValueAxis {
+                                    axisX: DateTimeAxis {
                                         visible: false
+                                        id: dateA3
+                                        min: dateA.min
+                                        max: dateA.max
+                                        gridVisible: false
+                                        lineVisible: false
+                                        format: "MMM d"
                                     }
                                 }
-                                ScatterSeries {
-                                    id: scatter
-                                    visible: false
-                                    color: 'white'
-                                    borderColor: theme.accentColor
-                                    borderWidth: 6
+                                LineSeries {
+                                    id: areaLine3
+                                    visible: !isSpline
                                     axisY: ValueAxis {
                                         visible: false
+                                        max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                        min:  parseFloat(API.app.portfolio_pg.min_total_chart)
                                     }
-                                    axisX: ValueAxis {
+                                    axisX: DateTimeAxis {
                                         visible: false
+                                        min: dateA.min
+                                        max: dateA.max
+                                        gridVisible: false
+                                        lineVisible: false
+                                        format: "MMM d"
                                     }
-                                    onHovered: {
-                                        pointsVisible = false
-                                    }
+                                }
+//                                ScatterSeries {
+//                                    id: scatter
+//                                    visible: false
+//                                    color: 'white'
+//                                    borderColor: theme.accentColor
+//                                    borderWidth: 6
+//                                    axisY: ValueAxis {
+//                                        visible: false
+//                                    }
+//                                    axisX: ValueAxis {
+//                                        visible: false
+//                                    }
+//                                    onHovered: {
+//                                        pointsVisible = false
+//                                    }
 
-                                }
+//                                }
                             }
+
+
                             Rectangle {
                                 anchors.fill: parent
                                 opacity: .6
@@ -335,12 +386,77 @@ Item {
                                     willyBG.mY = mouseY
                                 }
                             }
+                            Row {
+                                x: -20
+                                y: 30
+                                spacing: 20
+                                scale: .8
+                                FloatingBackground {
+                                    width: rd.width+10
+                                    height: 50
+
+                                    Row {
+                                        id: rd
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        x: 5
+                                        Qaterial.OutlineButton {
+                                            text: "1Y"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
+                                            onClicked: {
+                                                API.app.portfolio_pg.chart_category = WalletChartsCategories.Ytd
+                                            }
+                                        }
+                                        Qaterial.OutlineButton {
+                                            text: "1M"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 2? theme.accentColor : theme.backgroundColor
+                                            onClicked: {
+                                                API.app.portfolio_pg.chart_category = WalletChartsCategories.OneMonth
+                                            }
+                                        }
+                                        Qaterial.OutlineButton {
+                                            text: "7D"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 1? theme.accentColor : theme.backgroundColor
+                                            onClicked: API.app.portfolio_pg.chart_category = WalletChartsCategories.OneWeek
+                                        }
+                                        Qaterial.OutlineButton {
+                                            text: "24H"
+                                            enabled: false
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? theme.accentColor : theme.backgroundColor
+                                            onClicked: API.app.portfolio_pg.chart_category = 0
+                                        }
+                                    }
+                                }
+                                FloatingBackground {
+                                    width: rdd.width+10
+                                    height: 50
+
+                                    Row {
+                                        id: rdd
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        x: 5
+                                        Qaterial.OutlineButton {
+                                            text: "Line"
+                                            icon.source: Qaterial.Icons.chartLineVariant
+                                            outlinedColor: !isSpline? theme.accentColor : theme.backgroundColor
+                                            onClicked: {
+                                                isSpline = false
+                                            }
+                                        }
+                                        Qaterial.OutlineButton {
+                                            text: "Spline"
+                                            icon.source: Qaterial.Icons.chartBellCurveCumulative
+                                            outlinedColor: isSpline? theme.accentColor : theme.backgroundColor
+                                            onClicked: isSpline = true
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
                     Item {
-                        Layout.preferredWidth: 350
-                        Layout.preferredHeight: 600
+                        Layout.preferredWidth: portfolio.isUltraLarge? 350 : 250
+                        Layout.preferredHeight: portfolio.isUltraLarge? 600 : 350
                         Layout.alignment: Qt.AlignTop
                         FloatingBackground {
                             y: 35
@@ -353,8 +469,15 @@ Item {
                                 theme: ChartView.ChartView.ChartThemeLight
                                 antialiasing: true
                                 legend.visible: false
+                                scale: portfolio.isUltraLarge? 1: 0.6
+                                Behavior on scale {
+                                    NumberAnimation {
+                                        duration: 200
+                                    }
+                                }
+                                y: portfolio.isUltraLarge? -55:-150
                                 backgroundColor: 'transparent'
-                                y: -55
+
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 dropShadowEnabled: true
                                 PieSeries {
@@ -457,9 +580,21 @@ Item {
                                 }
                             }
                             Item {
-                                y: 380
-                                width: parent.width - 50
+                                scale: portfolio.isUltraLarge? 1: 0.8
+                                y: portfolio.isUltraLarge? 380 : 170
+                                Behavior on scale {
+                                    NumberAnimation {
+                                        duration: 200
+                                    }
+                                }
+
+                                width: portfolio.isUltraLarge? parent.width - 50 : parent.width+20
                                 height: 200
+                                Qaterial.DebugRectangle {
+                                    anchors.fill: parent
+                                    visible: false
+                                }
+
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 Flickable {
                                     anchors.fill: parent

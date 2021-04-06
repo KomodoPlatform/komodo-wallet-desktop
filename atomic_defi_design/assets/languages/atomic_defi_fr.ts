@@ -2099,39 +2099,54 @@
 <context>
     <name>Portfolio</name>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="162"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="639"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="143"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="618"/>
         <source>Show only coins with balance</source>
         <translation>Afficher uniquement les assets avec solde</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="301"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="498"/>
+        <source>Assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="679"/>
         <source>Asset</source>
         <translation>Asset</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="313"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="691"/>
         <source>Balance</source>
         <translation>Balance</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="325"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="703"/>
         <source>Change 24h</source>
         <translation>Changement 24H</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="337"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="715"/>
         <source>Trend 7d</source>
         <translation>Tendance 7j</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="349"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="727"/>
         <source>Price</source>
         <translation>Prix</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="933"/>
+        <source>Portfolio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="951"/>
+        <source>Add asset</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2858,6 +2873,19 @@
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="84"/>
         <source>Coming soon !</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmartChartView</name>
+    <message>
+        <location filename="../../qml/Portfolio/SmartChartView.qml" line="125"/>
+        <source>Loading market data</source>
+        <translation type="unfinished">Chargement des données de marché</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/SmartChartView.qml" line="131"/>
+        <source>There is no chart data for this ticker yet</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
