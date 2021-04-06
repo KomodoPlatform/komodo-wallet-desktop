@@ -104,12 +104,13 @@ namespace atomic_dex
             }
         };
         functor();
-        this->m_is_busy = false;
+        SPDLOG_INFO("Fetching new charts is finished, emitting event to front-end");
+        this->m_is_busy    = false;
         auto& portfolio_pg = m_system_manager.get_system<portfolio_page>();
-        emit portfolio_pg.chartBusyChanged();
-        emit portfolio_pg.chartsChanged();
-        emit portfolio_pg.minTotalChartChanged();
-        emit portfolio_pg.maxTotalChartChanged();
+        emit  portfolio_pg.chartBusyChanged();
+        emit  portfolio_pg.chartsChanged();
+        emit  portfolio_pg.minTotalChartChanged();
+        emit  portfolio_pg.maxTotalChartChanged();
     }
 
     void
