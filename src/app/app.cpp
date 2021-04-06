@@ -205,6 +205,10 @@ namespace atomic_dex
                     system_manager_.get_system<qt_wallet_manager>().set_status("complete");
                 }
                 this->dispatcher_.trigger<update_portfolio_values>();
+                if (system_manager_.has_system<coingecko_wallet_charts_service>())
+                {
+                    system_manager_.get_system<coingecko_wallet_charts_service>().manual_refresh("tick");
+                }
             }
         }
 

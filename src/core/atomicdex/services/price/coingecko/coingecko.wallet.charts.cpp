@@ -99,10 +99,20 @@ namespace atomic_dex
                 std::size_t timestamp            = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
                 out[out.size() - 1]["timestamp"] = timestamp;
                 out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
-                std::string wallet_perf          = utils::format_float(safe_float(out[out.size() - 1].at("total").get<std::string>()) - first_total);
-                m_wallet_performance->insert("wallet_performance", QString::fromStdString(wallet_perf));
-                // out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
-                SPDLOG_INFO("chart nb elements: {} min_value: {} - max_value: {} wallet_perf: {}", out.size(), m_min_value, m_max_value, wallet_perf);
+                t_float_50  total                = safe_float(out[out.size() - 1].at("total").get<std::string>());
+                t_float_50  wallet_perf_f        = total - first_total;
+                std::string wallet_perf          = utils::format_float(wallet_perf_f);
+                std::string ratio                = utils::format_float(wallet_perf_f / first_total);
+                std::string percent              = utils::format_float((wallet_perf_f / first_total) * 100);
+                QJsonObject obj;
+                obj.insert("change", QString::fromStdString(wallet_perf));
+                obj.insert("ratio", QString::fromStdString(ratio));
+                obj.insert("percent", QString::fromStdString(percent));
+                m_wallet_performance->insert("wallet_evolution", obj);
+                SPDLOG_INFO(
+                    "chart nb elements: {}\nmin_axis_value: {}\nmax_axis_value: {}\nfirst_total: {}\ntotal: {}\nwallet_perf: {}\nratio: {}\npercent: {}", out.size(),
+                    m_min_value, m_max_value, utils::format_float(first_total), out[out.size() - 1].at("total").get<std::string>(), wallet_perf, ratio,
+                    percent);
                 m_fiat_charts = std::move(out);
             }
             catch (const std::exception& error)
@@ -193,7 +203,7 @@ namespace atomic_dex
                 {
                     continue;
                 }
-                //SPDLOG_INFO("retrieve coin: {}", coin);
+                // SPDLOG_INFO("retrieve coin: {}", coin);
                 auto res = portfolio_model->match(
                     portfolio_model->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(coin), 1, Qt::MatchFlag::MatchExactly);
                 // assert(not res.empty());
