@@ -125,9 +125,23 @@ namespace atomic_dex
             {
                 try
                 {
-                    t_coingecko_market_chart_request request{.id = cfg.coingecko_id, .vs_currency = "usd", .days = days, .interval = "daily"};
-                    auto                             resp = atomic_dex::coingecko::api::async_market_charts(std::move(request)).get();
-                    std::string                      body = TO_STD_STR(resp.extract_string(true).get());
+                    web::http::http_response resp;
+                    if (days.empty() && category >= WalletChartsCategories::Ytd)
+                    {
+                        auto                                   now       = std::chrono::system_clock::now();
+                        std::size_t                            timestamp = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+                        date::year_month_day                   today     = date::floor<date::days>(std::chrono::system_clock::now());
+                        std::size_t                            ytd_timestamp  = date::sys_seconds{date::sys_days{today.year() / 1 / 1}}.time_since_epoch().count();
+                        t_coingecko_market_chart_range_request request{
+                            .id = cfg.coingecko_id, .vs_currency = "usd", .from = std::to_string(ytd_timestamp), .to = std::to_string(timestamp)};
+                        resp = atomic_dex::coingecko::api::async_market_charts_range(std::move(request)).get();
+                    }
+                    else
+                    {
+                        t_coingecko_market_chart_request request{.id = cfg.coingecko_id, .vs_currency = "usd", .days = days, .interval = "daily"};
+                        resp = atomic_dex::coingecko::api::async_market_charts(std::move(request)).get();
+                    }
+                    std::string body = TO_STD_STR(resp.extract_string(true).get());
                     if (resp.status_code() == 200)
                     {
                         m_chart_data_registry->operator[](cfg.ticker) = nlohmann::json::parse(body).at("prices");
