@@ -128,10 +128,10 @@ namespace atomic_dex
                     web::http::http_response resp;
                     if (days.empty() && category >= WalletChartsCategories::Ytd)
                     {
-                        auto                                   now       = std::chrono::system_clock::now();
-                        std::size_t                            timestamp = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
-                        date::year_month_day                   today     = date::floor<date::days>(std::chrono::system_clock::now());
-                        std::size_t                            ytd_timestamp  = date::sys_seconds{date::sys_days{today.year() / 1 / 1}}.time_since_epoch().count();
+                        auto                 now           = std::chrono::system_clock::now();
+                        std::size_t          timestamp     = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+                        date::year_month_day today         = date::floor<date::days>(std::chrono::system_clock::now());
+                        std::size_t          ytd_timestamp = date::sys_seconds{date::sys_days{today.year() / 1 / 1}}.time_since_epoch().count();
                         t_coingecko_market_chart_range_request request{
                             .id = cfg.coingecko_id, .vs_currency = "usd", .from = std::to_string(ytd_timestamp), .to = std::to_string(timestamp)};
                         resp = atomic_dex::coingecko::api::async_market_charts_range(std::move(request)).get();
@@ -224,6 +224,8 @@ namespace atomic_dex
                 m_executor.wait_for_all();
                 m_taskflow.clear();
                 m_chart_data_registry->clear();
+                m_min_value = "0";
+                m_max_value = "0";
             }
             fetch_all_charts_data();
             m_update_clock = std::chrono::high_resolution_clock::now();
@@ -250,6 +252,8 @@ namespace atomic_dex
                     m_executor.wait_for_all();
                     m_taskflow.clear();
                     m_chart_data_registry->clear();
+                    m_min_value = "0";
+                    m_max_value = "0";
                 }
                 fetch_all_charts_data();
                 m_update_clock = std::chrono::high_resolution_clock::now();
