@@ -175,6 +175,7 @@ namespace atomic_dex
     void
     portfolio_page::set_chart_category(WalletChartsCategories category)
     {
+        SPDLOG_INFO("new chart category: {}", QMetaEnum::fromType<WalletChartsCategories>().valueToKey(category));
         if (m_current_chart_category != category)
         {
             m_current_chart_category = category;
