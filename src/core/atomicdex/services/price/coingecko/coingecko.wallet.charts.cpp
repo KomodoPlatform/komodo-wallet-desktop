@@ -275,6 +275,7 @@ namespace atomic_dex
                 m_chart_data_registry->clear();
                 m_min_value = "0";
                 m_max_value = "0";
+                m_wallet_performance = QJsonObject();
             }
             fetch_all_charts_data();
             m_update_clock = std::chrono::high_resolution_clock::now();
@@ -302,8 +303,9 @@ namespace atomic_dex
                     m_executor.wait_for_all();
                     m_taskflow.clear();
                     m_chart_data_registry->clear();
-                    m_min_value = "0";
-                    m_max_value = "0";
+                    m_min_value          = "0";
+                    m_max_value          = "0";
+                    m_wallet_performance = QJsonObject();
                 }
                 fetch_all_charts_data();
                 m_update_clock = std::chrono::high_resolution_clock::now();
