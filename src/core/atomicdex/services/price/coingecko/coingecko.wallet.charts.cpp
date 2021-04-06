@@ -1,3 +1,4 @@
+#include <QJsonDocument>
 
 //! Project Headers
 #include "atomicdex/api/coingecko/coingecko.hpp"
@@ -108,11 +109,13 @@ namespace atomic_dex
                 obj.insert("change", QString::fromStdString(wallet_perf));
                 obj.insert("ratio", QString::fromStdString(ratio));
                 obj.insert("percent", QString::fromStdString(percent));
+                obj.insert("last_total_balance_fiat_all", QString::fromStdString(utils::format_float(total)));
+                obj.insert("initial_total_balance_fiat_all", QString::fromStdString(utils::format_float(first_total)));
+                obj.insert("all_time_low", QString::fromStdString(m_min_value));
+                obj.insert("all_time_high", QString::fromStdString(m_max_value));
+                obj.insert("nb_elements", qint64(out.size()));
                 m_wallet_performance->insert("wallet_evolution", obj);
-                SPDLOG_INFO(
-                    "chart nb elements: {}\nmin_axis_value: {}\nmax_axis_value: {}\nfirst_total: {}\ntotal: {}\nwallet_perf: {}\nratio: {}\npercent: {}", out.size(),
-                    m_min_value, m_max_value, utils::format_float(first_total), out[out.size() - 1].at("total").get<std::string>(), wallet_perf, ratio,
-                    percent);
+                SPDLOG_INFO("metrics: {}", QString(QJsonDocument(*m_wallet_performance).toJson()).toStdString());
                 m_fiat_charts = std::move(out);
             }
             catch (const std::exception& error)
@@ -196,7 +199,11 @@ namespace atomic_dex
         if (active_coins == coins.size())
         {
             this->m_is_busy = true;
-            emit m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+            emit        m_system_manager.get_system<portfolio_page>().chartBusyChanged();
+            QJsonObject best_performer;
+            QJsonObject worst_performer;
+            std::string best_change_24h("");
+            std::string worst_change_24h("");
             for (auto&& [coin, cfg]: coins)
             {
                 if (cfg.coingecko_id == "test-coin")
@@ -213,6 +220,20 @@ namespace atomic_dex
                     SPDLOG_INFO("coin: {} not empty - checking now - balance: {}", coin, utils::format_float(balance));
                     if (balance > 0)
                     {
+                        t_float_50 cur_change_24h = safe_float(portfolio_model->data(res.at(0), portfolio_model::Change24H).toString().toStdString());
+
+                        if (worst_change_24h.empty() || cur_change_24h < safe_float(worst_change_24h))
+                        {
+                            worst_change_24h           = utils::format_float(cur_change_24h);
+                            worst_performer["ticker"]  = QString::fromStdString(coin);
+                            worst_performer["percent"] = QString::fromStdString(worst_change_24h);
+                        }
+                        if (best_change_24h.empty() || cur_change_24h > safe_float(best_change_24h))
+                        {
+                            best_change_24h           = utils::format_float(cur_change_24h);
+                            best_performer["ticker"]  = QString::fromStdString(coin);
+                            best_performer["percent"] = QString::fromStdString(best_change_24h);
+                        }
                         final_task.succeed(m_taskflow.emplace([this, cfg = cfg]() { fetch_data_of_single_coin(cfg); }).name(cfg.ticker));
                     }
                 }
@@ -226,6 +247,8 @@ namespace atomic_dex
             }
             else
             {
+                m_wallet_performance->insert("best_performance", best_performer);
+                m_wallet_performance->insert("worst_performance", worst_performer);
                 SPDLOG_INFO("taskflow: {}", m_taskflow.dump());
                 m_executor.run(m_taskflow);
             }
