@@ -57,6 +57,7 @@ namespace atomic_dex
                 nlohmann::json out            = nlohmann::json::array();
                 const auto&    data           = chart_registry.begin()->second;
                 const auto&    mm2            = m_system_manager.get_system<mm2_service>();
+                t_float_50     first_total    = 0;
                 for (std::size_t idx = 0; idx < data.size(); idx++)
                 {
                     nlohmann::json cur = nlohmann::json::object();
@@ -88,14 +89,20 @@ namespace atomic_dex
                         m_max_value = utils::format_float(total);
                     }
                     cur["total"] = utils::format_float(total);
+                    if (idx == 0)
+                    {
+                        first_total = total;
+                    }
                     out.push_back(cur);
                 }
                 auto        now                  = std::chrono::system_clock::now();
                 std::size_t timestamp            = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
                 out[out.size() - 1]["timestamp"] = timestamp;
                 out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
+                std::string wallet_perf = utils::format_float(safe_float(out[out.size() - 1].at("total").get<std::string>()) - first_total);
+                m_wallet_performance->insert("wallet_performance", QString::fromStdString(wallet_perf));
                 // out[out.size() - 1]["human_date"] = utils::to_human_date<std::chrono::milliseconds>(timestamp, "%e %b %Y, %H:%M");
-                SPDLOG_INFO("chart nb elements: {} min_value: {} - max_value: {}", out.size(), m_min_value, m_max_value);
+                SPDLOG_INFO("chart nb elements: {} min_value: {} - max_value: {} wallet_perf: {}", out.size(), m_min_value, m_max_value, wallet_perf);
                 m_fiat_charts = std::move(out);
             }
             catch (const std::exception& error)
@@ -180,12 +187,14 @@ namespace atomic_dex
             {
                 continue;
             }
+            SPDLOG_INFO("retrieve coin: {}", coin);
             auto res =
                 portfolio_model->match(portfolio_model->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(coin), 1, Qt::MatchFlag::MatchExactly);
             // assert(not res.empty());
             if (not res.empty())
             {
                 t_float_50 balance = safe_float(portfolio_model->data(res.at(0), portfolio_model::MainCurrencyBalanceRole).toString().toStdString());
+                SPDLOG_INFO("coin: {} not empty - checking now - balance: {}", coin, utils::format_float(balance));
                 if (balance > 0)
                 {
                     final_task.succeed(m_taskflow.emplace([this, cfg = cfg]() { fetch_data_of_single_coin(cfg); }).name(cfg.ticker));

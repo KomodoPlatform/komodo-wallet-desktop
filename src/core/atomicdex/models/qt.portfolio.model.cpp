@@ -98,12 +98,12 @@ namespace atomic_dex
     void
     portfolio_model::update_currency_values()
     {
-        const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
-        const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
-        const auto&        coingecko     = this->m_system_manager.get_system<coingecko_provider>();
-        const auto         coins         = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
-        const std::string& currency      = m_config->current_currency;
-        const std::string& fiat          = m_config->current_fiat;
+        const auto&        mm2_system          = this->m_system_manager.get_system<mm2_service>();
+        const auto&        price_service       = this->m_system_manager.get_system<global_price_service>();
+        const auto&        coingecko           = this->m_system_manager.get_system<coingecko_provider>();
+        const auto         coins               = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+        const std::string& currency            = m_config->current_currency;
+        const std::string& fiat                = m_config->current_fiat;
         tf::Executor       executor;
         tf::Taskflow       taskflow;
         for (auto&& [_, coin]: coins)

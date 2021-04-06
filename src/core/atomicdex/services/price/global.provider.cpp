@@ -91,6 +91,7 @@ namespace atomic_dex
     void
     global_price_service::refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker, bool with_update_providers)
     {
+        SPDLOG_INFO("refresh_other_coins_rates");
         using namespace std::chrono_literals;
         coinpaprika::api::price_converter_request request{.base_currency_id = "usd-us-dollars", .quote_currency_id = quote_id};
         coinpaprika::api::async_price_converter(request)
