@@ -1,6 +1,7 @@
 // Qt imports
-import QtQml 2.15           //> Component
-import QtQuick.Layouts 1.15 //> Layout.fillWidth
+import QtQml 2.15            //> Component
+import QtQuick.Layouts 1.15  //> Layout.fillWidth
+import QtQuick.Controls 2.15 //> ProgressBar
 
 // Project imports
 import "../Components" //> BasicModal
@@ -10,10 +11,12 @@ BasicModal
 {
     id: root
 
-    readonly property var    self_update_service:   API.app.self_update_service
-    readonly property string last_release_tag_name: self_update_service.last_release_tag_name
-    readonly property bool   update_needed:         self_update_service.update_needed
-    readonly property bool   update_ready:          self_update_service.update_ready
+    readonly property var    self_update_service:      API.app.self_update_service
+    readonly property string last_release_tag_name:    self_update_service.last_release_tag_name
+    readonly property bool   update_needed:            self_update_service.update_needed
+    readonly property bool   update_downloading:       self_update_service.update_downloading
+    readonly property real   update_download_progress: self_update_service.update_download_progress
+    readonly property bool   update_ready:             self_update_service.update_ready
 
     onUpdate_neededChanged:
     {
@@ -24,11 +27,20 @@ BasicModal
         }
     }
 
+    onUpdate_downloadingChanged:
+    {
+        if (update_downloading)
+        {
+            currentIndex = 1
+            visible = true
+        }
+    }
+
     onUpdate_readyChanged:
     {
         if (update_ready)
         {
-            currentIndex = 1
+            currentIndex = 2
             visible = true
         }
     }
@@ -56,11 +68,7 @@ BasicModal
             {
                 text: qsTr("Download")
 
-                onClicked:
-                {
-                    self_update_service.download_update()
-                    root.visible = false
-                }
+                onClicked: self_update_service.download_update()
             },
             DefaultButton
             {
@@ -69,6 +77,29 @@ BasicModal
                 onClicked: root.visible = false
             }
         ]
+    }
+
+    // Progress bar
+    ModalContent
+    {
+        title: qsTr("Download in progress...")
+
+        RowLayout
+        {
+            Layout.fillWidth: true
+
+            ProgressBar
+            {
+                Layout.fillWidth: true
+                value: update_download_progress
+            }
+
+            DefaultText
+            {
+                Layout.preferredWidth: 40
+                text: "%1 %".arg(Math.round(update_download_progress * 100))
+            }
+        }
     }
 
     ModalContent
