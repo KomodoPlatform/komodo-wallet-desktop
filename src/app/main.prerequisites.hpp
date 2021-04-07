@@ -136,7 +136,7 @@ static void
 signal_handler(int signal)
 {
     SPDLOG_ERROR("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2.service");
+    atomic_dex::kill_executable("mm2");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
     std::ifstream                 ifs("./backtrace.dump");
