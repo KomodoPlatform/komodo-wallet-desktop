@@ -18,6 +18,7 @@
 #include <antara/gaming/core/real.path.hpp>
 
 // Project headers
+#include "atomicdex/utilities/global.utilities.hpp"     //> utils::u8string()
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp" //> download_file()
 #include "atomicdex/version/version.hpp"                //> get_version()
 #include "self.update.service.hpp"
@@ -29,6 +30,7 @@ namespace atomic_dex
     self_update_service::self_update_service(entt::registry& entity_registry) : system(entity_registry), m_download_mgr(dispatcher_)
     {
         dispatcher_.sink<download_release_finished>().connect<&self_update_service::on_download_release_finished>(*this);
+        dispatcher_.sink<qt_download_progressed>().connect<&self_update_service::on_download_release_progressed>(*this);
         fetch_last_release_info();
     }
 
@@ -71,6 +73,8 @@ namespace atomic_dex
             "https://github.com/{}/{}/{}/{}/{}/{}", download_request.owner, download_request.repository, "releases", "download", download_request.tag_name,
             download_request.name);
         m_download_mgr.do_download(QUrl(QString::fromStdString(url)));
+        m_update_downloading = true;
+        emit updateDownloadingChanged();
     }
 
     void
@@ -197,17 +201,36 @@ namespace atomic_dex
         }
         return std::stoi(tag) > get_num_version();
     }
+    
+    bool
+    self_update_service::is_update_downloading() const noexcept
+    {
+        return m_update_downloading;
+    }
+    
+    float self_update_service::get_update_download_progress() const noexcept
+    {
+        return m_update_download_progress;
+    }
 
     bool
     self_update_service::is_update_ready() const noexcept
     {
         return update_ready.get();
     }
+    
+    void self_update_service::on_download_release_progressed(qt_download_progressed download_progressed)
+    {
+        m_update_download_progress = download_progressed.progress;
+        emit updateDownloadProgressChanged();
+    }
 
     void
     self_update_service::on_download_release_finished([[maybe_unused]] const download_release_finished& evt)
     {
         SPDLOG_DEBUG("Successfully downloaded last release to {}", utils::u8string(m_download_mgr.get_last_download_path()));
+        m_update_downloading = false;
+        emit updateDownloadingChanged();
         update_ready = true;
         emit update_readyChanged();
     }
