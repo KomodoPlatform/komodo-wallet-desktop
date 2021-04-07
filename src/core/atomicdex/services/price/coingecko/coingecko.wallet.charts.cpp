@@ -101,6 +101,10 @@ namespace atomic_dex
                 out[out.size() - 1]["timestamp"] = timestamp;
                 out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
                 t_float_50  total                = safe_float(out[out.size() - 1].at("total").get<std::string>());
+                if (total > safe_float(m_max_value))
+                {
+                    m_max_value = out[out.size() - 1].at("total").get<std::string>();
+                }
                 t_float_50  wallet_perf_f        = total - first_total;
                 std::string wallet_perf          = utils::format_float(wallet_perf_f);
                 std::string ratio                = utils::format_float(wallet_perf_f / first_total);
