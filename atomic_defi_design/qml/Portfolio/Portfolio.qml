@@ -70,6 +70,7 @@ Item {
         areaLine.clear()
         areaLine2.clear()
         areaLine3.clear()
+        scatter.clear()
 
         dateA.min = new Date(API.app.portfolio_pg.charts[0].timestamp*1000)
         dateA.max = new Date(API.app.portfolio_pg.charts[API.app.portfolio_pg.charts.length-1].timestamp*1000)
@@ -80,24 +81,27 @@ Item {
                 areaLine3.append(el.timestamp*1000, parseFloat(el.total))
                 areaLine2.append(el.timestamp*1000, parseFloat(el.total))
                 areaLine.append(el.timestamp*1000, parseFloat(el.total))
+                scatter.append(el.timestamp*1000, parseFloat(el.total))
             }catch(e) {}
         }
         chart_2.update()
 
     }
     function getScatter(x) {
-        if (API.app.portfolio_pg.charts.length!==0){
-            for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
-                let el = API.app.portfolio_pg.charts[ii]
-                console.log( el.timestamp+10000,el.timestamp, el.timestamp-10000)
-                if(el.timestamp+10000>x && x<el.timestamp-10000) {
-                    scatter.clear()
-                    scatter.append(el.timestamp*1000, parseFloat(el.total))
-                    console.log("breaking")
-                    break;
-                }
-            }
-        }
+//        let real_v = (x*124)/area.width
+//        let xx = API.app.portfolio_pg.charts[parseInt(real_v)].timestamp
+//        if (API.app.portfolio_pg.charts.length!==0){
+//            for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
+//                let el = API.app.portfolio_pg.charts[ii]
+//                console.log( el.timestamp+10000,el.timestamp, el.timestamp-10000)
+//                if(el.timestamp+10000>xx && xx<el.timestamp-10000) {
+//                    scatter.clear()
+//                    scatter.append(el.timestamp*1000, parseFloat(el.total))
+//                    console.log("breaking")
+//                    break;
+//                }
+//            }
+//        }
     }
 
     function refresh() {
@@ -326,6 +330,7 @@ Item {
                                 SplineSeries {
                                     id: areaLine2
                                     visible: isSpline
+                                    color: theme.accentColor
                                     axisY: ValueAxis {
                                         visible: false
                                         max:  parseFloat(API.app.portfolio_pg.max_total_chart)
@@ -343,6 +348,7 @@ Item {
                                 }
                                 LineSeries {
                                     id: areaLine3
+                                    color: theme.accentColor
                                     visible: !isSpline
                                     axisY: ValueAxis {
                                         visible: false
@@ -360,10 +366,10 @@ Item {
                                 }
                                 ScatterSeries {
                                     id: scatter
-                                    visible: false
-                                    color: 'white'
+                                    visible: true
+                                    color: theme.accentColor
                                     borderColor: theme.accentColor
-                                    borderWidth: 6
+                                    borderWidth: 2
                                     axisY: ValueAxis {
                                         visible: false
                                         max:  parseFloat(API.app.portfolio_pg.max_total_chart)
