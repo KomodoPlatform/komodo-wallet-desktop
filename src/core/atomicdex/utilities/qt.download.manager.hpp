@@ -19,6 +19,7 @@ namespace atomic_dex
         std::string             m_current_filename;
         fs::path                m_last_downloaded_path;
         QVector<QNetworkReply*> m_current_downloads;
+        float                   m_current_progress;
 
       public:
         qt_download_manager(entt::dispatcher& dispatcher);
@@ -30,6 +31,10 @@ namespace atomic_dex
       public slots:
         void download_finished(QNetworkReply* reply);
         void download_progress(qint64 bytes_received, qint64 bytes_total);
-        ;
+    };
+    
+    struct qt_download_progressed
+    {
+        float progress;
     };
 } // namespace atomic_dex

@@ -32,8 +32,9 @@ namespace atomic_dex
     void
     qt_download_manager::download_progress(qint64 bytes_received, qint64 bytes_total)
     {
-        float percent = (float(bytes_received) / float(bytes_total)) * 100;
-        SPDLOG_INFO("bytes_received : {}, bytes_total: {}, percent {}%", bytes_received, bytes_total, percent);
+        m_current_progress = float(bytes_received) / float(bytes_total);
+        m_dispatcher.trigger(qt_download_progressed{m_current_progress});
+        SPDLOG_INFO("bytes_received : {}, bytes_total: {}, percent {}%", bytes_received, bytes_total, m_current_progress * 100);
     }
 
     void
