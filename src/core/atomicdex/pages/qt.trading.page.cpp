@@ -739,17 +739,8 @@ namespace atomic_dex
             case TradingErrorGadget::TotalFeesNotEnoughFunds:
                 SPDLOG_WARN("last_trading_error is TotalFeesNotEnoughFunds");
                 break;
-            case TradingErrorGadget::RelTransactionFeesNotEnough:
-                SPDLOG_WARN("last_trading_error is RelTransactionFeesNotEnough");
-                break;
             case TradingErrorGadget::BalanceIsLessThanTheMinimalTradingAmount:
                 SPDLOG_WARN("last_trading_error is BalanceIsLessThanTheMinimalTradingAmount");
-                break;
-            case TradingErrorGadget::TradingFeesNotEnoughFunds:
-                SPDLOG_WARN("last_trading_error is TradingFeesNotEnoughFunds");
-                break;
-            case TradingErrorGadget::BaseTransactionFeesNotEnough:
-                SPDLOG_WARN("last_trading_error is BaseTransactionFeesNotEnough");
                 break;
             case TradingErrorGadget::PriceFieldNotFilled:
                 SPDLOG_WARN("last_trading_error is PriceFieldNotFilled");
@@ -985,7 +976,7 @@ namespace atomic_dex
         batch.push_back(preimage_request);
 
         this->set_preimage_busy(true);
-        auto answer_functor = [this](web::http::http_response resp) {
+        auto answer_functor = [this, &mm2](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
@@ -995,7 +986,7 @@ namespace atomic_dex
                 auto trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
-                    const auto  success_answer = trade_preimage_answer.result.value();
+                    auto        success_answer = trade_preimage_answer.result.value();
                     QVariantMap fees;
 
                     const auto trading_fee_ticker = QString::fromStdString(success_answer.taker_fee.value().coin);
@@ -1015,6 +1006,14 @@ namespace atomic_dex
                     fees["fee_to_send_taker_fee_ticker"] = QString::fromStdString(success_answer.fee_to_send_taker_fee.value().coin);
 
 
+                    for (auto&& cur: success_answer.total_fees)
+                    {
+                        if (!mm2.do_i_have_enough_funds(cur.at("coin").get<std::string>(), safe_float(cur.at("required_balance").get<std::string>())))
+                        {
+                            fees["error_fees"] = atomic_dex::nlohmann_json_object_to_qt_json_object(cur);
+                            break;
+                        }
+                    }
                     fees["total_fees"] = atomic_dex::nlohmann_json_array_to_qt_json_array(success_answer.total_fees);
 
                     this->set_fees(fees);
@@ -1058,7 +1057,7 @@ namespace atomic_dex
         {
             if (!get_fees().empty())
             {
-                current_trading_error = generate_fees_error(get_fees(), max_balance_without_dust);
+                current_trading_error = generate_fees_error(get_fees());
             }
         }
 
@@ -1161,42 +1160,17 @@ namespace atomic_dex
     }
 
     TradingError
-    trading_page::generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const
+    trading_page::generate_fees_error(QVariantMap fees) const
     {
         TradingError last_trading_error = TradingError::None;
         const auto&  mm2                = m_system_manager.get_system<mm2_service>();
-        const auto   is_selected_order  = m_preffered_order.has_value();
 
-        //! Check taker fee only if it's a selected order
-        if (is_selected_order && safe_float(fees["trading_fee"].toString().toStdString()) > max_balance_without_dust)
+        if (fees.contains("error_fees"))
         {
-            last_trading_error = TradingError::TradingFeesNotEnoughFunds; ///< need to have for multi ticker check
-        }
-        //! Check base transaction fees, we do not need to check if it's a selected order, every order even maker_order need to pay transaction fees
-        else if (!mm2.do_i_have_enough_funds(
-                     fees["base_transaction_fees_ticker"].toString().toStdString(), safe_float(fees["base_transaction_fees"].toString().toStdString())))
-        {
-            last_trading_error = TradingError::BaseTransactionFeesNotEnough; ///< need to have for multi ticker check
-        }
-        else if (fees.contains("rel_transaction_fees_ticker")) //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
-        {
-            const auto rel_ticker = fees["rel_transaction_fees_ticker"].toString().toStdString();
-            t_float_50 rel_amount = safe_float(fees["rel_transaction_fees"].toString().toStdString());
-            if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
+            auto&& cur_obj = fees.value("error_fees").toJsonObject();
+            if (!mm2.do_i_have_enough_funds(cur_obj["coin"].toString().toStdString(), safe_float(cur_obj["required_balance"].toString().toStdString())))
             {
-                last_trading_error = TradingError::RelTransactionFeesNotEnough; ///< need to have for multi ticker check
-            }
-        }
-        else
-        {
-            for (auto&& cur: fees["total_fees"].toJsonArray())
-            {
-                auto&& cur_obj = cur.toObject();
-                if (!mm2.do_i_have_enough_funds(cur_obj["coin"].toString().toStdString(), safe_float(fees["amount"].toString().toStdString())))
-                {
-                    last_trading_error = TradingError::TotalFeesNotEnoughFunds;
-                    break;
-                }
+                last_trading_error = TradingError::TotalFeesNotEnoughFunds;
             }
         }
         return last_trading_error;
@@ -1315,10 +1289,12 @@ namespace atomic_dex
             t_float_50  target_price =
                 (m_market_mode == MarketMode::Sell) ? t_float_50(cex_price + (cex_price * percent)) : t_float_50(cex_price - (cex_price * percent));
 
-            //t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (target_price / cex_price)) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1) : t_float_50(-1));
-            //t_float_50 reversed_price_diff = t_float_50(100) * (t_float_50(1) - ((1 / target_price) / (1 / cex_price))) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1) : t_float_50(-1));
-            //SPDLOG_INFO("cex price: {}, target_price: {}, price_diff: {}", utils::format_float(cex_price), utils::format_float(target_price), utils::format_float(price_diff));
-            //SPDLOG_INFO("reversed_cex price: {}, reversed_target_price: {}, reversed_price_diff: {}", utils::format_float(1 / cex_price), utils::format_float(1 / target_price), utils::format_float(reversed_price_diff));
+            // t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (target_price / cex_price)) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1) :
+            // t_float_50(-1)); t_float_50 reversed_price_diff = t_float_50(100) * (t_float_50(1) - ((1 / target_price) / (1 / cex_price))) * ((m_market_mode ==
+            // MarketMode::Sell) ? t_float_50(1) : t_float_50(-1)); SPDLOG_INFO("cex price: {}, target_price: {}, price_diff: {}",
+            // utils::format_float(cex_price), utils::format_float(target_price), utils::format_float(price_diff)); SPDLOG_INFO("reversed_cex price: {},
+            // reversed_target_price: {}, reversed_price_diff: {}", utils::format_float(1 / cex_price), utils::format_float(1 / target_price),
+            // utils::format_float(reversed_price_diff));
             this->set_price(QString::fromStdString(utils::format_float(target_price)));
             if (m_market_mode == MarketMode::Buy)
             {
