@@ -85,6 +85,20 @@ Item {
         chart_2.update()
 
     }
+    function getScatter(x) {
+        if (API.app.portfolio_pg.charts.length!==0){
+            for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
+                let el = API.app.portfolio_pg.charts[ii]
+                console.log( el.timestamp+10000,el.timestamp, el.timestamp-10000)
+                if(el.timestamp+10000>x && x<el.timestamp-10000) {
+                    scatter.clear()
+                    scatter.append(el.timestamp*1000, parseFloat(el.total))
+                    console.log("breaking")
+                    break;
+                }
+            }
+        }
+    }
 
     function refresh() {
         pieSeries.clear()
@@ -344,26 +358,44 @@ Item {
                                         format: "MMM d"
                                     }
                                 }
-//                                ScatterSeries {
-//                                    id: scatter
-//                                    visible: false
-//                                    color: 'white'
-//                                    borderColor: theme.accentColor
-//                                    borderWidth: 6
-//                                    axisY: ValueAxis {
-//                                        visible: false
-//                                    }
-//                                    axisX: ValueAxis {
-//                                        visible: false
-//                                    }
-//                                    onHovered: {
-//                                        pointsVisible = false
-//                                    }
+                                ScatterSeries {
+                                    id: scatter
+                                    visible: false
+                                    color: 'white'
+                                    borderColor: theme.accentColor
+                                    borderWidth: 6
+                                    axisY: ValueAxis {
+                                        visible: false
+                                        max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                        min:  parseFloat(API.app.portfolio_pg.min_total_chart)
+                                    }
+                                    axisX: DateTimeAxis {
+                                        visible: false
+                                        min: dateA.min
+                                        max: dateA.max
+                                        gridVisible: false
+                                        lineVisible: false
+                                        format: "MMM d"
+                                    }
 
-//                                }
+
+                                }
                             }
 
-
+                            Rectangle {
+                                id: yAxis
+                                height: 1
+                                visible: area.containsMouse
+                                width: parent.width
+                                opacity: .3
+                            }
+                            Rectangle {
+                                id: xAxis
+                                visible: area.containsMouse
+                                height: parent.height
+                                width: 1
+                                opacity: .3
+                            }
                             Rectangle {
                                 anchors.fill: parent
                                 opacity: .6
@@ -382,8 +414,15 @@ Item {
                                 hoverEnabled: true
                                 anchors.fill: parent
                                 onMouseXChanged: {
+                                    yAxis.y = mouseY
+                                    xAxis.x = mouseX
                                     willyBG.mX = mouseX
                                     willyBG.mY = mouseY
+                                    getScatter(mouseX)
+                                }
+                                onMouseYChanged:  {
+                                    yAxis.y = mouseY
+                                    xAxis.x = mouseX
                                 }
                             }
                             Row {
@@ -399,6 +438,8 @@ Item {
                                         id: rd
                                         anchors.verticalCenter: parent.verticalCenter
                                         x: 5
+                                        layoutDirection: Qt.RightToLeft
+
                                         Qaterial.OutlineButton {
                                             text: "1Y"
                                             outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
@@ -579,6 +620,8 @@ Item {
                                     }
                                 }
                             }
+
+
                             Item {
                                 scale: portfolio.isUltraLarge? 1: 0.8
                                 y: portfolio.isUltraLarge? 380 : 170
