@@ -127,7 +127,7 @@ namespace atomic_dex
         void                       determine_cex_rates();
         void                       cap_volume();
         [[nodiscard]] t_float_50   get_max_balance_without_dust(std::optional<QString> trade_with = std::nullopt) const;
-        [[nodiscard]] TradingError generate_fees_error(QVariantMap fees, t_float_50 max_balance_without_dust) const;
+        [[nodiscard]] TradingError generate_fees_error(QVariantMap fees) const;
         void                       set_preffered_settings();
         QString                    calculate_total_amount(QString price, QString volume) const;
 

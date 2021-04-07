@@ -52,11 +52,12 @@ namespace mm2::api
 
     struct trade_preimage_answer_success
     {
-        coin_fee                base_coin_fee;
-        coin_fee                rel_coin_fee;
-        std::optional<coin_fee> taker_fee;
-        std::optional<coin_fee> fee_to_send_taker_fee;
-        nlohmann::json          total_fees;
+        coin_fee                      base_coin_fee;
+        coin_fee                      rel_coin_fee;
+        std::optional<coin_fee>       taker_fee;
+        std::optional<coin_fee>       fee_to_send_taker_fee;
+        nlohmann::json                total_fees;
+        std::optional<nlohmann::json> error_fees;
     };
 
     ENTT_API void from_json(const nlohmann::json& j, trade_preimage_answer_success& answer);

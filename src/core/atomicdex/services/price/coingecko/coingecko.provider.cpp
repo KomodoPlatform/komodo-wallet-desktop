@@ -85,6 +85,7 @@ namespace atomic_dex
     void
     coingecko_provider::update_ticker_and_provider()
     {
+        SPDLOG_INFO("update_ticker_and_provider");
         const auto coins       = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_model_data();
         auto&& [ids, registry] = coingecko::api::from_enabled_coins(coins);
         internal_update(ids, registry);
@@ -153,6 +154,7 @@ namespace atomic_dex
                     {
                         dispatcher_.trigger<fiat_rate_updated>("");
                     }
+                    SPDLOG_INFO("Coingecko rates successfully updated");
                 }
                 else
                 {
