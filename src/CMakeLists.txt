@@ -171,6 +171,17 @@ if (WIN32)
             COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
     include(${CMAKE_SOURCE_DIR}/cmake/install/windows/dex_install.cmake)
+
+    # Configures OpenSSL
+    set(DEX_OPENSSL_FOLDER ${CMAKE_SOURCE_DIR}/vendor/OpenSSL/Win_x64)
+    configure_file(${DEX_OPENSSL_FOLDER}/openssl.exe ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
+    configure_file(${DEX_OPENSSL_FOLDER}/libcrypto-1_1-x64.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
+    configure_file(${DEX_OPENSSL_FOLDER}/libssl-1_1-x64.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
+    configure_file(${DEX_OPENSSL_FOLDER}/c_rehash.pl ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")     ## Add pdb files (DEBUG mode only)
+        configure_file(${DEX_OPENSSL_FOLDER}/libcrypto-1_1-x64.pdb ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
+        configure_file(${DEX_OPENSSL_FOLDER}/libssl-1_1-x64.pdb ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
+    endif ()
 endif ()
 
 if (APPLE)
