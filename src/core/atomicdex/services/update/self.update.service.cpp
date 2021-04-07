@@ -167,6 +167,28 @@ namespace atomic_dex
         {
             SPDLOG_ERROR("{}", error.what());
         }
+#elif defined(Q_OS_WIN)
+    try
+    {
+        const auto binary_path = antara::gaming::core::binary_real_path();
+        const auto current_install_folder = binary_path.parent_path();
+        const auto unzip_cmd = fmt::format("powershell.exe -nologo -noprofile -command \"Expand-Archive -Path {} -DestinationPath {} -Force\"",
+                                           m_download_mgr.get_last_download_path().string(), current_install_folder.string());
+
+        for (const auto& file : fs::recursive_directory_iterator(current_install_folder))
+        {
+            if (file.path().extension() == ".dll" || file.path().extension() == ".exe" || file.path().extension() == ".qmlc" || file.path().extension() == ".jsc")
+            {
+                fs::rename(file.path(), file.path().string() + ".old");
+            }
+        }
+        std::system(unzip_cmd.c_str());
+        res = QProcess::startDetached(cmd, args, dir_path);
+    }
+    catch (std::exception& ex)
+    {
+        SPDLOG_ERROR(ex.what());
+    }
 #endif
 
         // Restarts application.
