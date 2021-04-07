@@ -17,7 +17,14 @@ namespace
     //! Constants
     constexpr const char* g_coingecko_endpoint = "https://api.coingecko.com/api/v3";
     constexpr const char* g_coingecko_base_uri{"/coins/markets"};
-    t_http_client_ptr     g_coingecko_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coingecko_endpoint));
+    web::http::client::http_client_config g_cfg{[]() {
+      web::http::client::http_client_config cfg;
+      cfg.set_validate_certificates(false);
+      cfg.set_timeout(std::chrono::seconds(5));
+      return cfg;
+    }()};
+    t_http_client_ptr     g_coingecko_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coingecko_endpoint), g_cfg);
+
 } // namespace
 
 namespace atomic_dex::coingecko::api
@@ -31,6 +38,14 @@ namespace atomic_dex::coingecko::api
             uri.append("&interval=");
             uri.append(request.interval.value());
         }
+        return uri;
+    }
+
+    std::string
+    to_coingecko_uri(market_chart_request_range&& request)
+    {
+        // https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232
+        std::string uri = "/coins/" + request.id + "/market_chart/range?vs_currency=" + request.vs_currency + "&from=" + request.from + "&to=" + request.to;
         return uri;
     }
 
@@ -149,6 +164,17 @@ namespace atomic_dex::coingecko::api
 
     pplx::task<web::http::http_response>
     async_market_charts(market_chart_request&& request)
+    {
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        std::string url = to_coingecko_uri(std::move(request));
+        SPDLOG_INFO("url: {}", TO_STD_STR(g_coingecko_client->base_uri().to_string()) + url);
+        req.set_request_uri(FROM_STD_STR(url));
+        return g_coingecko_client->request(req);
+    }
+
+    pplx::task<web::http::http_response>
+    async_market_charts_range(market_chart_request_range&& request)
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);

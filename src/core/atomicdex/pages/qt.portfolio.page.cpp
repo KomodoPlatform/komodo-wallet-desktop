@@ -77,8 +77,10 @@ namespace atomic_dex
     {
         if (this->m_current_balance_all != current_fiat_all_balance)
         {
+            SPDLOG_INFO("current_balance_all changed previous: {}, new: {}", m_current_balance_all.toStdString(), current_fiat_all_balance.toStdString());
             this->m_current_balance_all = std::move(current_fiat_all_balance);
             emit onFiatBalanceAllChanged();
+            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_current_balance_fiat_all");
         }
     }
 
@@ -91,11 +93,12 @@ namespace atomic_dex
     void
     portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt)
     {
-        // SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
+        SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
 
+        bool res = true;
         if (evt.with_update_model)
         {
-            m_portfolio_mdl->update_currency_values();
+            res = m_portfolio_mdl->update_currency_values();
             m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
         }
 
@@ -103,7 +106,7 @@ namespace atomic_dex
         const auto&     config           = m_system_manager.get_system<settings_page>().get_cfg();
         const auto&     price_service    = m_system_manager.get_system<global_price_service>();
         auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
-        if (!ec)
+        if (!ec && res)
         {
             set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
         }
@@ -175,6 +178,7 @@ namespace atomic_dex
     void
     portfolio_page::set_chart_category(WalletChartsCategories category)
     {
+        SPDLOG_INFO("new chart category: {}", QMetaEnum::fromType<WalletChartsCategories>().valueToKey(category));
         if (m_current_chart_category != category)
         {
             m_current_chart_category = category;
@@ -182,7 +186,7 @@ namespace atomic_dex
             settings.setValue("WalletChartsCategory", qint32(m_current_chart_category));
             if (m_system_manager.get_system<mm2_service>().is_mm2_running() && m_system_manager.has_system<coingecko_wallet_charts_service>())
             {
-                m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh();
+                m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_chart_category");
             }
             emit chartCategoryChanged();
         }
@@ -198,5 +202,17 @@ namespace atomic_dex
     portfolio_page::get_charts() const
     {
         return m_system_manager.get_system<coingecko_wallet_charts_service>().get_charts();
+    }
+
+    QString
+    atomic_dex::portfolio_page::get_min_total_chart() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_min_total();
+    }
+
+    QString
+    atomic_dex::portfolio_page::get_max_total_chart() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_max_total();
     }
 } // namespace atomic_dex

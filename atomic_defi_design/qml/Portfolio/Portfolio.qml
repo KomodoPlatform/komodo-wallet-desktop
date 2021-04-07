@@ -1,4 +1,4 @@
- import QtQuick 2.15
+import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
@@ -7,6 +7,9 @@ import QtWebEngine 1.8
 import QtGraphicalEffects 1.0
 import QtCharts 2.3
 import Qaterial 1.0 as Qaterial
+import ModelHelper 0.1
+
+import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
 import "../Constants"
@@ -18,11 +21,16 @@ Item {
     Layout.fillHeight: true
     Layout.bottomMargin: 40
     Layout.margins: 40
+    property bool isUltraLarge: width > 1400
+    property bool isSpline: true
     function getPercent(fiat_amount) {
-        const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
-        if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
+        const portfolio_balance = parseFloat(
+                                    API.app.portfolio_pg.balance_fiat_all)
+        if (fiat_amount <= 0 || portfolio_balance <= 0)
+            return "-"
 
-        return General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false)
+        return General.formatPercent(
+                    (100 * fiat_amount / portfolio_balance).toFixed(2), false)
     }
 
     property string total: General.formatFiat(
@@ -35,6 +43,7 @@ Item {
     readonly property int sort_by_price: 5
     property string currentValue: ""
     property string currentTotal: ""
+    property var portfolio_helper: portfolio_mdl.pie_chart_proxy_mdl.ModelHelper
 
     property int current_sort: sort_by_value
     property bool ascending: false
@@ -57,29 +66,79 @@ Item {
             break
         }
     }
+    function drawChart() {
+        areaLine.clear()
+        areaLine2.clear()
+        areaLine3.clear()
+
+        dateA.min = new Date(API.app.portfolio_pg.charts[0].timestamp*1000)
+        dateA.max = new Date(API.app.portfolio_pg.charts[API.app.portfolio_pg.charts.length-1].timestamp*1000)
+        chart_2.update()
+        for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
+            let el = API.app.portfolio_pg.charts[ii]
+            try {
+                areaLine3.append(el.timestamp*1000, parseFloat(el.total))
+                areaLine2.append(el.timestamp*1000, parseFloat(el.total))
+                areaLine.append(el.timestamp*1000, parseFloat(el.total))
+            }catch(e) {}
+        }
+        chart_2.update()
+
+    }
+
     function refresh() {
         pieSeries.clear()
         for (var i = 0; i < portfolio_mdl.pie_chart_proxy_mdl.rowCount(); i++) {
             let data = portfolio_mdl.pie_chart_proxy_mdl.get(i)
             addItem(data)
         }
+
     }
     Timer {
         id: pieTimer
         interval: 500
-        onTriggered: refresh()
+        onTriggered: {
+            refresh()
+        }
     }
+    Timer {
+        id: chart2Timer
+        interval: 500
+        onTriggered: {
+            if(API.app.portfolio_pg.charts.length===0){
+                restart()
+            }else {
+                drawTimer.restart()
+            }
+        }
+    }
+    Timer {
+        id: drawTimer
+        interval: 2000
+        onTriggered: portfolio.drawChart()
+    }
+
     onTotalChanged: {
         refresh()
         pieTimer.restart()
     }
+    Connections {
+        target: API.app.portfolio_pg
+        function onChart_busy_fetchingChanged() {
+            if(!API.app.portfolio_pg.chart_busy_fetching){
+                chart2Timer.restart()
+            }
+        }
+    }
 
     Component.onCompleted: {
         reset()
+        chart2Timer.restart()
+
+
     }
 
     function reset() {
-        // Reset the coin name filter
         input_coin_filter.reset()
     }
 
@@ -125,15 +184,15 @@ Item {
         item.labelFont = theme.textType.body2
         item.hovered.connect(function (state) {
             if (state) {
-                item.exploded = true
+                //item.exploded = true
                 item.explodeDistanceFactor = 0.01
-                item.labelVisible = true
-                portfolio.currentTotal = "$ " + value.main_currency_balance
+                //item.labelVisible = true
+                portfolio.currentTotal = API.app.settings_pg.current_fiat_sign+" "+ value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
                 item.color = Qt.lighter(Style.getCoinColor(value.ticker))
             } else {
-                item.exploded = false
-                item.labelVisible = false
+                //item.exploded = false
+                //item.labelVisible = false
                 item.explodeDistanceFactor = 0.01
                 portfolio.currentValue = ""
                 portfolio.currentTotal = ""
@@ -154,126 +213,254 @@ Item {
             spacing: 35
 
             Item {
-                width: parent.width-70
+                width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: true
-                height: 600
+                height: portfolio.isUltraLarge? 600 : 350
                 RowLayout {
                     anchors.fill: parent
+                    anchors.rightMargin: 40
+                    anchors.leftMargin: 40
                     spacing: 35
                     InnerBackground {
+                        id: willyBG
+                        property real mX: 0
+                        property real mY: 0
                         Layout.fillHeight: true
                         Layout.fillWidth: true
-                        ChartView {
-                            anchors.fill: parent
-                            anchors.margins: -15
-                            anchors.topMargin: 0
-                            theme: ChartView.ChartView.ChartThemeLight
-                            antialiasing: true
-                            legend.visible: false
-                            backgroundColor: 'transparent'
-                            dropShadowEnabled: true
-                            plotAreaColor: 'transparent'
-                            layer.enabled: true
-                            layer.effect: FastBlur {
-                                radius: 32
-                            }
-                            AreaSeries {
-                                name: "Russian"
-                                //axisX: valueAxis
-                                color: theme.accentColor
-                                axisX: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                axisY: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                upperSeries: LineSeries {
-                                    axisX: ValueAxis {
-                                        visible: false
-                                        gridVisible: false
-                                    }
-                                    axisY: ValueAxis {
-                                        visible: false
-                                        gridVisible: false
-                                    }
-                                    XYPoint { x: 0; y: 0 }
-                                    XYPoint { x: 1.1; y: 2.1 }
-                                    XYPoint { x: 1.9; y: 3.3 }
-                                    XYPoint { x: 2.1; y: 2.1 }
-                                    XYPoint { x: 2.9; y: 4.9 }
-                                    XYPoint { x: 3.4; y: 3.0 }
-                                    XYPoint { x: 4.1; y: 3.3 }
-                                }
-                            }
-                            LineSeries {
-                                 name: "LineSeries"
-                                 axisX: ValueAxis {
-                                     visible: false
-                                     gridVisible: false
-                                 }
-                                 axisY: ValueAxis {
-                                     visible: false
-                                     gridVisible: false
-                                 }
-
-                                 XYPoint { x: 0; y: 0 }
-                                 XYPoint { x: 1.1; y: 2.1 }
-                                 XYPoint { x: 1.9; y: 3.3 }
-                                 XYPoint { x: 2.1; y: 2.1 }
-                                 XYPoint { x: 2.9; y: 4.9 }
-                                 XYPoint { x: 3.4; y: 3.0 }
-                                 XYPoint { x: 4.1; y: 3.3 }
-                             }
-                            ScatterSeries {
-                                axisX: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                axisY: ValueAxis {
-                                    visible: false
-                                    gridVisible: false
-                                }
-                                XYPoint { x: 0; y: 0 }
-                                XYPoint { x: 1.1; y: 2.1 }
-                                XYPoint { x: 1.9; y: 3.3 }
-                                XYPoint { x: 2.1; y: 2.1 }
-                                XYPoint { x: 2.9; y: 4.9 }
-                                XYPoint { x: 3.4; y: 3.0 }
-                                XYPoint { x: 4.1; y: 3.3 }
-                            }
-
-                        }
-                        Rectangle {
+                        ClipRRect {
                             anchors.fill: parent
                             radius: parent.radius
-                            color: parent.color
-                            opacity: .95
-                            layer.enabled: true
-                            layer.effect: FastBlur {
-                                radius: 32
+                            Glow {
+                                id: glow
+                                anchors.fill: chart_2
+                                radius: 8
+                                samples: 168
+                                color: 'purple'
+                                source: chart_2
                             }
-                        }
-                        Column {
-                            anchors.centerIn: parent
-                            Qaterial.ColorIcon {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                source: Qaterial.Icons.rocketLaunchOutline
+                            LinearGradient {
+                                id: gradient
+                                start: Qt.point(willyBG.mX,willyBG.mY-100)
+                                end: Qt.point(willyBG.mX,willyBG.mY+100)
+                                gradient: Gradient {
+                                    GradientStop {
+                                        position: 1;
+                                        color: theme.accentColor
+                                    }
+                                    GradientStop {
+                                        position: 0.3;
+                                        color: Qt.rgba(86,128,189,0.09)
+                                    }
+                                    GradientStop {
+                                        position: 0.2;
+                                        color: Qt.rgba(86,128,189,0.00)
+                                    }
+                                }
+                                anchors.fill: glow
+                                source: glow
                             }
-                            spacing: 10
-                            DexLabel {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                font: theme.textType.body1
-                                text: "Coming Soon."
+
+                            ChartView {
+                                id: chart_2
+                                anchors.fill: parent
+                                anchors.margins: -20
+                                theme: ChartView.ChartThemeLight
+                                antialiasing: true
+                                legend.visible: false
+                                backgroundColor: 'transparent'
+                                dropShadowEnabled: true
+
+                                opacity: .8
+                                AreaSeries {
+                                    axisX: DateTimeAxis {
+                                        id: dateA
+                                        gridVisible: false
+                                        lineVisible: false
+                                        format: "MMM d"
+                                    }
+                                    axisY: ValueAxis {
+                                       lineVisible: false
+                                       max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                       min:  parseFloat(API.app.portfolio_pg.min_total_chart)
+
+                                       gridLineColor: Qt.rgba(77,198,255,0.12)
+                                    }
+                                    color: Qt.rgba(77,198,255,0.02)
+                                    borderColor: 'transparent'
+
+
+                                    upperSeries: LineSeries {
+                                         id: areaLine
+                                         axisY: ValueAxis {
+                                             visible: false
+                                             max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                             min:  parseFloat(API.app.portfolio_pg.min_total_chart)
+                                         }
+                                         axisX: DateTimeAxis {
+                                             id: dateA2
+                                             min: dateA.min
+                                             max: dateA.max
+                                             gridVisible: false
+                                             lineVisible: false
+                                             format: "MMM d"
+                                         }
+
+                                     }
+
+                                }
+                                SplineSeries {
+                                    id: areaLine2
+                                    visible: isSpline
+                                    axisY: ValueAxis {
+                                        visible: false
+                                        max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                        min:  parseFloat(API.app.portfolio_pg.min_total_chart)
+                                    }
+                                    axisX: DateTimeAxis {
+                                        visible: false
+                                        id: dateA3
+                                        min: dateA.min
+                                        max: dateA.max
+                                        gridVisible: false
+                                        lineVisible: false
+                                        format: "MMM d"
+                                    }
+                                }
+                                LineSeries {
+                                    id: areaLine3
+                                    visible: !isSpline
+                                    axisY: ValueAxis {
+                                        visible: false
+                                        max:  parseFloat(API.app.portfolio_pg.max_total_chart)
+                                        min:  parseFloat(API.app.portfolio_pg.min_total_chart)
+                                    }
+                                    axisX: DateTimeAxis {
+                                        visible: false
+                                        min: dateA.min
+                                        max: dateA.max
+                                        gridVisible: false
+                                        lineVisible: false
+                                        format: "MMM d"
+                                    }
+                                }
+//                                ScatterSeries {
+//                                    id: scatter
+//                                    visible: false
+//                                    color: 'white'
+//                                    borderColor: theme.accentColor
+//                                    borderWidth: 6
+//                                    axisY: ValueAxis {
+//                                        visible: false
+//                                    }
+//                                    axisX: ValueAxis {
+//                                        visible: false
+//                                    }
+//                                    onHovered: {
+//                                        pointsVisible = false
+//                                    }
+
+//                                }
+                            }
+
+
+                            Rectangle {
+                                anchors.fill: parent
+                                opacity: .6
+                                color: theme.dexBoxBackgroundColor
+                                visible: API.app.portfolio_pg.chart_busy_fetching
+                                radius: parent.radius
+                                DexBusyIndicator {
+                                    anchors.centerIn: parent
+                                    running: visible
+                                    visible: API.app.portfolio_pg.chart_busy_fetching
+                                }
+                            }
+
+                            MouseArea {
+                                id: area
+                                hoverEnabled: true
+                                anchors.fill: parent
+                                onMouseXChanged: {
+                                    willyBG.mX = mouseX
+                                    willyBG.mY = mouseY
+                                }
+                            }
+                            Row {
+                                x: -20
+                                y: 30
+                                spacing: 20
+                                scale: .8
+                                FloatingBackground {
+                                    width: rd.width+10
+                                    height: 50
+
+                                    Row {
+                                        id: rd
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        x: 5
+                                        Qaterial.OutlineButton {
+                                            text: "24H"
+                                            enabled: false
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? theme.accentColor : theme.backgroundColor
+                                            onClicked: API.app.portfolio_pg.chart_category = 0
+                                        }
+
+                                        Qaterial.OutlineButton {
+                                            text: "7D"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 1? theme.accentColor : theme.backgroundColor
+                                            onClicked: API.app.portfolio_pg.chart_category = WalletChartsCategories.OneWeek
+                                        }
+
+                                        Qaterial.OutlineButton {
+                                            text: "1M"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 2? theme.accentColor : theme.backgroundColor
+                                            onClicked: {
+                                                API.app.portfolio_pg.chart_category = WalletChartsCategories.OneMonth
+                                            }
+                                        }
+
+                                        Qaterial.OutlineButton {
+                                            text: "YTD"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
+                                            onClicked: {
+                                                API.app.portfolio_pg.chart_category = WalletChartsCategories.Ytd
+                                                }
+                                        }
+                                    }
+                                }
+                                FloatingBackground {
+                                    width: rdd.width+10
+                                    height: 50
+
+                                    Row {
+                                        id: rdd
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        x: 5
+                                        Qaterial.OutlineButton {
+                                            text: "Line"
+                                            icon.source: Qaterial.Icons.chartLineVariant
+                                            outlinedColor: !isSpline? theme.accentColor : theme.backgroundColor
+                                            onClicked: {
+                                                isSpline = false
+                                            }
+                                        }
+                                        Qaterial.OutlineButton {
+                                            text: "Spline"
+                                            icon.source: Qaterial.Icons.chartBellCurveCumulative
+                                            outlinedColor: isSpline? theme.accentColor : theme.backgroundColor
+                                            onClicked: isSpline = true
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
 
                     Item {
-                        Layout.preferredWidth: 350
-                        Layout.fillHeight: true
+                        Layout.preferredWidth: portfolio.isUltraLarge? 350 : 250
+                        Layout.preferredHeight: portfolio.isUltraLarge? 600 : 350
+                        Layout.alignment: Qt.AlignTop
                         FloatingBackground {
                             y: 35
                             height: parent.height
@@ -285,8 +472,15 @@ Item {
                                 theme: ChartView.ChartView.ChartThemeLight
                                 antialiasing: true
                                 legend.visible: false
+                                scale: portfolio.isUltraLarge? 1: 0.6
+                                Behavior on scale {
+                                    NumberAnimation {
+                                        duration: 200
+                                    }
+                                }
+                                y: portfolio.isUltraLarge? -55:-150
                                 backgroundColor: 'transparent'
-                                y: -55
+
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 dropShadowEnabled: true
                                 PieSeries {
@@ -321,11 +515,7 @@ Item {
                                         spacing: 5
                                         DefaultText {
                                             anchors.horizontalCenter: parent.horizontalCenter
-                                            text_value: currentTotal
-                                                        !== "" ? currentTotal : General.formatFiat(
-                                                                     "",
-                                                                     API.app.portfolio_pg.balance_fiat_all,
-                                                                     API.app.settings_pg.current_currency)
+                                            text_value: currentTotal !== "" ? currentTotal : General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                                             font: theme.textType.head4
                                             color: Qt.lighter(
                                                        Style.colorWhite4,
@@ -345,21 +535,27 @@ Item {
                                             DexFadebehavior on text {
                                                 fadeDuration: 100
                                             }
-                                            color: Qt.lighter(Style.colorWhite4, 0.6)
+                                            color: Qt.lighter(
+                                                       Style.colorWhite4, 0.6)
                                             privacy: true
                                             Component.onCompleted: {
                                                 font.family = 'Lato'
                                             }
                                         }
                                         DefaultText {
+                                            id: count_label
                                             anchors.horizontalCenter: parent.horizontalCenter
-                                            text_value: portfolio_mdl.rowCount()+" "+qsTr("Assets")
+                                            text_value: portfolio_helper.count + " " + qsTr(
+                                                            "Assets")
                                             font: theme.textType.body2
                                             DexFadebehavior on text {
                                                 fadeDuration: 100
                                             }
-                                            color: Qt.lighter(Style.colorWhite4, 0.8)
+                                            color: Qt.lighter(
+                                                       Style.colorWhite4, 0.8)
                                             privacy: true
+                                            visible: portfolio.currentValue == ""
+
                                             Component.onCompleted: {
                                                 font.family = 'Lato'
                                             }
@@ -378,7 +574,8 @@ Item {
                                             const available_fiats = API.app.settings_pg.get_available_currencies()
                                             const current_index = available_fiats.indexOf(
                                                                     current_fiat)
-                                            const next_index = (current_index + 1) % available_fiats.length
+                                            const next_index = (current_index + 1)
+                                                             % available_fiats.length
                                             const next_fiat = available_fiats[next_index]
                                             API.app.settings_pg.current_currency = next_fiat
                                         }
@@ -386,45 +583,70 @@ Item {
                                 }
                             }
                             Item {
-                                y: 380
-                                width: parent.width-50
+                                scale: portfolio.isUltraLarge? 1: 0.8
+                                y: portfolio.isUltraLarge? 380 : 170
+                                Behavior on scale {
+                                    NumberAnimation {
+                                        duration: 200
+                                    }
+                                }
+
+                                width: portfolio.isUltraLarge? parent.width - 50 : parent.width+20
                                 height: 200
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                Column {
+                                Qaterial.DebugRectangle {
                                     anchors.fill: parent
-                                    Repeater {
-                                        model: portfolio_mdl.pie_chart_proxy_mdl
+                                    visible: false
+                                }
 
-                                        RowLayout {
-                                            id: rootItem
-                                            property color itemColor: Style.getCoinColor(ticker)
-                                            width: parent.width
-                                            height: 50
-                                            spacing: 20
-                                            DexLabel {
-                                                Layout.preferredWidth: 60
-                                                text: `${ticker}`
-                                                Layout.alignment: Qt.AlignVCenter
-                                                Component.onCompleted: font.weight = Font.Medium
-                                            }
-                                            Rectangle {
-                                                Layout.alignment: Qt.AlignVCenter
-                                                Layout.fillWidth: true
-                                                height: 8
-                                                radius: 10
-                                                color: theme.dexBoxBackgroundColor
-                                                Rectangle {
-                                                    height: parent.height
-                                                    width: (parseFloat(getPercent(main_currency_balance).replace("%",""))*parent.width)/100
-                                                    radius: 10
-                                                    color: rootItem.itemColor
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                Flickable {
+                                    anchors.fill: parent
+                                    contentHeight: colo.height
+                                    clip: true
+                                    Column {
+                                        width: parent.width
+                                        id: colo
+                                        Repeater {
+                                            model: portfolio_mdl.pie_chart_proxy_mdl
+
+                                            RowLayout {
+                                                id: rootItem
+                                                property color itemColor: Style.getCoinColor(
+                                                                              ticker)
+                                                width: parent.width
+                                                height: 50
+                                                spacing: 20
+                                                DexLabel {
+                                                    Layout.preferredWidth: 60
+                                                    text: atomic_qt_utilities.retrieve_main_ticker(
+                                                              ticker)
+                                                    Layout.alignment: Qt.AlignVCenter
+                                                    Component.onCompleted: font.weight = Font.Medium
                                                 }
-                                            }
+                                                Rectangle {
+                                                    Layout.alignment: Qt.AlignVCenter
+                                                    Layout.fillWidth: true
+                                                    height: 8
+                                                    radius: 10
+                                                    color: theme.dexBoxBackgroundColor
+                                                    Rectangle {
+                                                        height: parent.height
+                                                        width: (parseFloat(
+                                                                    getPercent(
+                                                                        main_currency_balance).replace(
+                                                                        "%",
+                                                                        "")) * parent.width) / 100
+                                                        radius: 10
+                                                        color: rootItem.itemColor
+                                                    }
+                                                }
 
-                                            DexLabel {
-                                                text: getPercent(main_currency_balance)
-                                                Component.onCompleted: font.family = 'lato'
-                                                Layout.alignment: Qt.AlignVCenter
+                                                DexLabel {
+                                                    text: getPercent(
+                                                              main_currency_balance)
+                                                    Component.onCompleted: font.family = 'lato'
+                                                    Layout.alignment: Qt.AlignVCenter
+                                                }
                                             }
                                         }
                                     }
@@ -433,113 +655,6 @@ Item {
                                 Qaterial.DebugRectangle {
                                     anchors.fill: parent
                                     visible: false
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-            Item {
-                width: parent.width
-                height: 80
-                visible: false
-                FloatingBackground {
-                    height: 80
-                    width: parent.width-70
-                    anchors.centerIn: parent
-                    RowLayout {
-                        anchors.fill: parent
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: portfolio_mdl.rowCount()
-                                    font: theme.textType.head5
-                                    color: theme.greenColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("ASSETS")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        }
-                        VerticalLine {
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: 3
-
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: total
-                                    font: theme.textType.head5
-                                    color: theme.greenColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("TOTAL BALANCE")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        }
-                        VerticalLine {
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: 3
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: total
-                                    font: theme.textType.head5
-                                    color: theme.greenColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("BALANCE 24H AGO")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        }
-                        VerticalLine {
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: 3
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Column {
-                                anchors.centerIn: parent
-                                DexLabel {
-                                    text: "-0.0%"
-                                    font: theme.textType.head5
-                                    color: theme.redColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: font.family= 'Lato'
-                                }
-                                DexLabel {
-                                    text: qsTr("SINCE 24H AGO")
-                                    font: theme.textType.head6
-                                    opacity: .7
-                                    anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
                         }
@@ -694,10 +809,7 @@ Item {
 
                         delegate: AnimatedRectangle {
                             color: Qt.lighter(
-                                       mouse_area.containsMouse ? theme.hightlightColor : index % 2
-                                                                  == 0 ? Qt.darker(
-                                                                             theme.backgroundColor,
-                                                                             0.8) : theme.backgroundColor,
+                                       mouse_area.containsMouse ? theme.hightlightColor : index % 2 == 0 ? Qt.darker(theme.backgroundColor, 0.8) : theme.backgroundColor,
                                        mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
                             width: list.width
                             height: 50
@@ -798,7 +910,8 @@ Item {
 
                                 text_value: {
                                     const v = parseFloat(change_24h)
-                                    return v === 0 ? '-' : General.formatPercent(v)
+                                    return v === 0 ? '-' : General.formatPercent(
+                                                         v)
                                 }
                                 color: Style.getValueColor(change_24h)
                                 anchors.verticalCenter: parent.verticalCenter
@@ -811,7 +924,8 @@ Item {
                                 anchors.rightMargin: price_header.anchors.rightMargin
 
                                 text_value: General.formatFiat(
-                                                '', main_currency_price_for_one_unit,
+                                                '',
+                                                main_currency_price_for_one_unit,
                                                 API.app.settings_pg.current_currency)
                                 color: theme.colorThemeDarkLight
                                 anchors.verticalCenter: parent.verticalCenter
@@ -838,7 +952,8 @@ Item {
                                 height: 100
                                 antialiasing: true
                                 anchors.right: parent.right
-                                anchors.rightMargin: trend_7d_header.anchors.rightMargin - width * 0.4
+                                anchors.rightMargin: trend_7d_header.anchors.rightMargin
+                                                     - width * 0.4
                                 anchors.verticalCenter: parent.verticalCenter
                                 legend.visible: false
 
@@ -855,7 +970,6 @@ Item {
                         }
                     }
                 }
-
             }
             Item {
                 width: 1
@@ -910,10 +1024,6 @@ Item {
             }
         }
     }
-
-
-
-
 
     // Top part
 

@@ -3,6 +3,9 @@
 #include <array>
 #include <unordered_map>
 
+//! Qt
+#include <QJsonObject>
+
 //! Deps
 #include <boost/thread/synchronized_value.hpp>
 #include <entt/entity/registry.hpp>
@@ -24,13 +27,16 @@ namespace atomic_dex
         using t_fiat_charts         = boost::synchronized_value<t_array_chart_data>;
 
         //! Private member functions
-        ag::ecs::system_manager& m_system_manager;
-        t_update_time_point      m_update_clock;
-        t_chart_data_registry    m_chart_data_registry;
-        t_fiat_charts            m_fiat_charts;
-        tf::Executor             m_executor;
-        tf::Taskflow             m_taskflow;
-        std::atomic_bool         m_is_busy{false};
+        ag::ecs::system_manager&               m_system_manager;
+        t_update_time_point                    m_update_clock;
+        t_chart_data_registry                  m_chart_data_registry;
+        t_fiat_charts                          m_fiat_charts;
+        tf::Executor                           m_executor;
+        tf::Taskflow                           m_taskflow;
+        std::atomic_bool                       m_is_busy{false};
+        std::string                            m_min_value{"0"};
+        std::string                            m_max_value{"0"};
+        boost::synchronized_value<QJsonObject> m_wallet_performance;
 
         //! Private member functions
         void fetch_data_of_single_coin(const coin_config& cfg);
@@ -47,11 +53,14 @@ namespace atomic_dex
         //! Override ag::system functions
         void update() final;
 
-        void manual_refresh();
+        void manual_refresh(const std::string& from);
 
         [[nodiscard]] bool is_busy() const;
 
         QVariant get_charts() const;
+
+        [[nodiscard]] QString get_min_total() const;
+        [[nodiscard]] QString get_max_total() const;
     };
 } // namespace atomic_dex
 

@@ -95,7 +95,7 @@ namespace atomic_dex
         }
     }
 
-    void
+    bool
     portfolio_model::update_currency_values()
     {
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
@@ -111,7 +111,7 @@ namespace atomic_dex
             if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
-                continue;
+                return false;
             }
             auto update_functor = [coin = std::move(coin), &coingecko, &mm2_system, &price_service, currency, fiat, this]() {
                 const std::string& ticker = coin.ticker;
@@ -144,17 +144,19 @@ namespace atomic_dex
             taskflow.emplace(update_functor);
         }
         executor.run(taskflow).wait();
+        return true;
     }
 
-    void
+    bool
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers)
     {
+        SPDLOG_INFO("update_balance_values");
         for (auto&& ticker: tickers)
         {
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", ticker);
-                continue;
+                return false;
             }
             // SPDLOG_DEBUG("trying updating balance values of: {}", ticker);
             if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
@@ -192,6 +194,7 @@ namespace atomic_dex
                 }
             }
         }
+        return true;
     }
 
     QVariant

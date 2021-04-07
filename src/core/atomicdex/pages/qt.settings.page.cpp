@@ -185,7 +185,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
             atomic_dex::change_fiat(m_config, current_fiat.toStdString());
-            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh();
+            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_current_fiat");
             emit onFiatChanged();
         }
     }
