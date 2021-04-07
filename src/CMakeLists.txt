@@ -174,7 +174,6 @@ if (WIN32)
 
     # Configures OpenSSL
     set(DEX_OPENSSL_FOLDER ${CMAKE_SOURCE_DIR}/vendor/OpenSSL/Win_x64)
-    configure_file(${DEX_OPENSSL_FOLDER}/openssl.exe ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     configure_file(${DEX_OPENSSL_FOLDER}/libcrypto-1_1-x64.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     configure_file(${DEX_OPENSSL_FOLDER}/libssl-1_1-x64.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     configure_file(${DEX_OPENSSL_FOLDER}/c_rehash.pl ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
