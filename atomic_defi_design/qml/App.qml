@@ -171,6 +171,7 @@ Rectangle {
     NewUpdateModal
     {
         id: new_update_modal
+        visible: false
     }
 
     UpdateNotificationLine {

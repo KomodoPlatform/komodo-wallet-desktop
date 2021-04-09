@@ -18,38 +18,68 @@ BasicModal
     readonly property real   update_download_progress: self_update_service.update_download_progress
     readonly property bool   update_ready:             self_update_service.update_ready
 
-    onUpdate_neededChanged:
-    {
-        if (update_needed)
-        {
-            currentIndex = 0
-            visible = true
-        }
-    }
-
-    onUpdate_downloadingChanged:
-    {
-        if (update_downloading)
-        {
-            currentIndex = 1
-            visible = true
-        }
-    }
-
-    onUpdate_readyChanged:
+    // Display the good modal section according to current self update service state
+    function select_index()
     {
         if (update_ready)
+        {
+            currentIndex = 4
+            visible = true
+        }
+        else if (update_downloading)
+        {
+            currentIndex = 3
+            visible = true
+        }
+        else if (update_needed)
         {
             currentIndex = 2
             visible = true
         }
+        else if (currentIndex === 1)
+        {
+            currentIndex = 0
+        }
+        else
+        {
+            currentIndex = 1
+        }
     }
 
-    Component.onCompleted: self_update_service.fetch_last_release_info()
+    // Fetches latest update info when opening this modal.
+    onOpened:
+    {
+        select_index()
+        self_update_service.fetch_last_release_info()
+    }
 
-    visible: false
+    onUpdate_neededChanged: select_index()
+    onUpdate_downloadingChanged: select_index()
+    onUpdate_readyChanged: select_index()
 
-    // First section. Asks user to update its client.
+    // Section when fetching update
+    ModalContent
+    {
+        title: qsTr("Searching new updates...")
+
+        DefaultText
+        {
+            text: qsTr("Please wait while the application is finding a new update... You can close this modal if you want.")
+        }
+    }
+
+    // Section when no new update is found.
+    ModalContent
+    {
+        title: qsTr("Already updated")
+
+        DefaultText
+        {
+            text: qsTr("%1 is already up-to-date !").arg(API.app_name)
+        }
+    }
+
+    // Second section. Asks user to update its client.
     ModalContent
     {
         title: qsTr("New update detected !")
@@ -79,7 +109,7 @@ BasicModal
         ]
     }
 
-    // Progress bar
+    // Download progress bar
     ModalContent
     {
         title: qsTr("Download in progress...")
@@ -102,9 +132,15 @@ BasicModal
         }
     }
 
+    // Update download finished... Asks for restart
     ModalContent
     {
-        title: qsTr("Update is ready !")
+        title: qsTr("Update downloaded")
+
+        DefaultText
+        {
+            text: qsTr("Update has been successfully downloaded. Do you want to restart the application now ?")
+        }
 
         footer:
         [
