@@ -43,6 +43,9 @@
         "url": "electrumx.aby.ewmcx.biz:50001"
       },
       {
+        "url": "failover.aby.ewmcx.biz:50001"
+      },
+      {
         "url": "161.97.142.60:50001"
       }
     ],
@@ -282,7 +285,7 @@
   "BLK": {
     "coin": "BLK",
     "name": "BlackCoin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "blk-blackcoin",
     "coingecko_id": "blackcoin",
     "electrum": [
       {
@@ -2838,8 +2841,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "tBTC": {
-    "coin": "tBTC",
+  "tBTC-TEST": {
+    "coin": "tBTC-TEST",
     "name": "tBTC (testnet)",
     "is_testnet": true,
     "coingecko_id": "test-coin",
