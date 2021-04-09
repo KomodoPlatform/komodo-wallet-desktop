@@ -52,15 +52,20 @@ namespace atomic_dex
     void
     self_update_service::fetch_last_release_info()
     {
+        // If an update is already in preparation, just returns.
+        if (m_update_downloading || update_ready.get() || is_update_needed())
+        {
+            return;
+        }
+        
         auto releases_request = github_api::repository_releases_request{.owner = DEX_REPOSITORY_OWNER, .repository = DEX_REPOSITORY_NAME};
-
         github_api::get_repository_releases_async(releases_request)
             .then([this](web::http::http_response resp) {
                 if (resp.status_code() == 200)
                 {
-                auto last_release = github_api::get_last_repository_release_from_http_response(resp);
-                last_release_info = last_release;
-                emit last_release_tag_nameChanged();
+                    auto last_release = github_api::get_last_repository_release_from_http_response(resp);
+                    last_release_info = last_release;
+                    emit last_release_tag_nameChanged();
                     emit update_neededChanged();
                 }
             })
