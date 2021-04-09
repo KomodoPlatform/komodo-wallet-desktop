@@ -61,6 +61,9 @@ namespace atomic_dex
         [[nodiscard]] float get_update_download_progress() const noexcept;
         
         [[nodiscard]] bool is_update_ready() const noexcept;
+        
+        // Removes files used for recent update.
+        void remove_update_files() const noexcept;
 
         //! Events
         void on_download_release_progressed(qt_download_progressed download_progressed);

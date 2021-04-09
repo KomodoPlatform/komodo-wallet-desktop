@@ -29,6 +29,7 @@ namespace atomic_dex
 
     self_update_service::self_update_service(entt::registry& entity_registry) : system(entity_registry), m_download_mgr(dispatcher_)
     {
+        remove_update_files();
         dispatcher_.sink<download_release_finished>().connect<&self_update_service::on_download_release_finished>(*this);
         dispatcher_.sink<qt_download_progressed>().connect<&self_update_service::on_download_release_progressed>(*this);
         fetch_last_release_info();
@@ -255,5 +256,18 @@ namespace atomic_dex
         emit updateDownloadingChanged();
         update_ready = true;
         emit update_readyChanged();
+    }
+    
+    void self_update_service::remove_update_files() const noexcept
+    {
+        const auto current_install_folder = antara::gaming::core::binary_real_path().parent_path();
+        
+        for (auto file : fs::recursive_directory_iterator(current_install_folder))
+        {
+            if (file.path().extension().string() == ".old")
+            {
+                fs::remove(file.path());
+            }
+        }
     }
 } // namespace atomic_dex
