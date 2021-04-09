@@ -216,13 +216,13 @@ namespace atomic_dex
         try
         {
             tag.erase(std::remove_if(tag.begin(), tag.end(), [](char c) { return not std::isdigit(c); }), tag.end());
+            return std::stoi(tag) > get_num_version();
         }
         catch (std::exception& ex)
         {
             SPDLOG_ERROR(ex.what());
             return false;
         }
-        return std::stoi(tag) > get_num_version();
     }
     
     bool
