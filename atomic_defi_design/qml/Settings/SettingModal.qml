@@ -478,7 +478,7 @@ Qaterial.Dialog {
                 }
                 spacing: 10
                 DexLabel {
-                    text: "Logout"
+                    text: qsTr("Logout")
                     anchors.verticalCenter: parent.verticalCenter
                     font: theme.textType.button
                 }
