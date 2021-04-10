@@ -148,8 +148,7 @@ namespace atomic_dex
             .is_exact_selected_order_volume = is_exact_selected_order_volume,
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
-            .min_volume =
-                m_minimal_trading_amount != get_mm2_min_trade_vol() ? m_minimal_trading_amount.toStdString() : std::optional<std::string>{std::nullopt}};
+            .min_volume                     = m_minimal_trading_amount.toStdString()};
 
         if (m_preffered_order.has_value())
         {
@@ -181,7 +180,8 @@ namespace atomic_dex
 
         //! Answer
         // SPDLOG_INFO("buy_request is : {}", batch.dump(4));
-        auto answer_functor = [this](web::http::http_response resp) {
+        auto answer_functor = [this](web::http::http_response resp)
+        {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
@@ -211,20 +211,25 @@ namespace atomic_dex
         };
 
         //! Async call
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then([this]([[maybe_unused]] pplx::task<void> previous_task) {
-            try
-            {
-                previous_task.wait();
-            }
-            catch (const std::exception& e)
-            {
-                SPDLOG_ERROR("pplx task error: {}", e.what());
-                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
-                this->set_buy_sell_last_rpc_data(error_json);
-                this->set_buy_sell_rpc_busy(false);
-                this->clear_forms();
-            }
-        });
+        mm2_system.get_mm2_client()
+            .async_rpc_batch_standalone(batch)
+            .then(answer_functor)
+            .then(
+                [this]([[maybe_unused]] pplx::task<void> previous_task)
+                {
+                    try
+                    {
+                        previous_task.wait();
+                    }
+                    catch (const std::exception& e)
+                    {
+                        SPDLOG_ERROR("pplx task error: {}", e.what());
+                        auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                        this->set_buy_sell_last_rpc_data(error_json);
+                        this->set_buy_sell_rpc_busy(false);
+                        this->clear_forms();
+                    }
+                });
     }
 
     void
@@ -254,11 +259,10 @@ namespace atomic_dex
             .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
             .is_exact_selected_order_volume =
                 (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false,
-            .rel_nota  = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
-            .rel_confs = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
-            .is_max    = is_max,
-            .min_volume =
-                m_minimal_trading_amount != get_mm2_min_trade_vol() ? m_minimal_trading_amount.toStdString() : std::optional<std::string>{std::nullopt}};
+            .rel_nota   = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs  = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
+            .is_max     = is_max,
+            .min_volume = m_minimal_trading_amount.toStdString()};
 
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
         if (m_preffered_order.has_value())
@@ -300,7 +304,8 @@ namespace atomic_dex
 
         // SPDLOG_INFO("batch sell request: {}", batch.dump(4));
         //! Answer
-        auto answer_functor = [this](web::http::http_response resp) {
+        auto answer_functor = [this](web::http::http_response resp)
+        {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
@@ -329,20 +334,25 @@ namespace atomic_dex
         };
 
         //! Async call
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then([this]([[maybe_unused]] pplx::task<void> previous_task) {
-            try
-            {
-                previous_task.wait();
-            }
-            catch (const std::exception& e)
-            {
-                SPDLOG_ERROR("pplx task error: {}", e.what());
-                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
-                this->set_buy_sell_last_rpc_data(error_json);
-                this->set_buy_sell_rpc_busy(false);
-                this->clear_forms();
-            }
-        });
+        mm2_system.get_mm2_client()
+            .async_rpc_batch_standalone(batch)
+            .then(answer_functor)
+            .then(
+                [this]([[maybe_unused]] pplx::task<void> previous_task)
+                {
+                    try
+                    {
+                        previous_task.wait();
+                    }
+                    catch (const std::exception& e)
+                    {
+                        SPDLOG_ERROR("pplx task error: {}", e.what());
+                        auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                        this->set_buy_sell_last_rpc_data(error_json);
+                        this->set_buy_sell_rpc_busy(false);
+                        this->clear_forms();
+                    }
+                });
     }
 } // namespace atomic_dex
 
@@ -414,11 +424,41 @@ namespace atomic_dex
                 {
                     auto* wrapper = get_orderbook_wrapper();
                     m_models_actions[orderbook_need_a_reset] ? wrapper->reset_orderbook(result) : wrapper->refresh_orderbook(result);
-                    this->determine_error_cases();
+
                     if (m_models_actions[orderbook_need_a_reset] && this->m_current_trading_mode == TradingModeGadget::Pro)
                     {
                         this->set_preffered_settings();
                     }
+                    else
+                    {
+                        this->determine_max_volume();
+                        if (m_market_mode == MarketMode::Buy)
+                        {
+                            t_float_50 min_vol_f = safe_float(wrapper->get_rel_min_taker_vol().toStdString());
+                            if (safe_float(get_volume().toStdString()) <= min_vol_f)
+                            {
+                                this->set_volume(get_max_volume());
+                            }
+                            if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
+                            {
+                                this->set_min_trade_vol(wrapper->get_rel_min_taker_vol());
+                            }
+                        }
+                        else
+                        {
+                            t_float_50 min_vol_f = safe_float(wrapper->get_base_min_taker_vol().toStdString());
+                            if (safe_float(get_volume().toStdString()) <= min_vol_f)
+                            {
+                                this->set_volume(get_max_volume());
+                            }
+                            if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
+                            {
+                                this->set_min_trade_vol(wrapper->get_base_min_taker_vol());
+                            }
+                        }
+                    }
+
+                    this->determine_error_cases();
                 }
                 break;
             }
@@ -559,7 +599,9 @@ namespace atomic_dex
     trading_page::clear_forms()
     {
         SPDLOG_INFO("clearing forms");
-        this->set_min_trade_vol(get_mm2_min_trade_vol());
+        // this->set_min_trade_vol("0");
+        m_minimal_trading_amount = "0";
+        emit minTradeVolChanged();
         this->set_price("0");
         this->set_volume("0");
         this->set_max_volume("0");
@@ -591,7 +633,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            // SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
+            SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
             if (m_current_trading_mode != TradingMode::Simple)
             {
                 this->determine_total_amount();
@@ -976,7 +1018,8 @@ namespace atomic_dex
         batch.push_back(preimage_request);
 
         this->set_preimage_busy(true);
-        auto answer_functor = [this, &mm2](web::http::http_response resp) {
+        auto answer_functor = [this, &mm2](web::http::http_response resp)
+        {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
@@ -1030,10 +1073,14 @@ namespace atomic_dex
         TradingError current_trading_error = TradingError::None;
 
         //! Check minimal trading amount
-        const std::string base                     = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
-        t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
+        const std::string base                       = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+        t_float_50        max_balance_without_dust   = this->get_max_balance_without_dust();
+        const auto&       base_min_taker_vol         = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
+        const auto&       rel_min_taker_vol          = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
+        const auto&       current_taker_vol          = m_market_mode == MarketMode::Buy ? rel_min_taker_vol : base_min_taker_vol;
+        const auto&       current_reversed_taker_vol = m_market_mode == MarketMode::Buy ? base_min_taker_vol : rel_min_taker_vol;
 
-        if (max_balance_without_dust < utils::minimal_trade_amount()) //<! Checking balance < minimal_trading_amount
+        if (max_balance_without_dust < safe_float(current_taker_vol)) //<! Checking balance < minimal_trading_amount
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
@@ -1045,11 +1092,11 @@ namespace atomic_dex
         {
             current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
         }
-        else if (safe_float(get_base_amount().toStdString()) < utils::minimal_trade_amount())
+        else if (safe_float(get_base_amount().toStdString()) < safe_float(current_taker_vol))
         {
             current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
         }
-        else if (safe_float(get_rel_amount().toStdString()) < utils::minimal_trade_amount())
+        else if (safe_float(get_rel_amount().toStdString()) < safe_float(current_reversed_taker_vol))
         {
             current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
@@ -1184,7 +1231,7 @@ namespace atomic_dex
         }
     }
 
-    QString
+    /*QString
     trading_page::get_mm2_min_trade_vol() const
     {
         const auto& mm2           = m_system_manager.get_system<mm2_service>();
@@ -1198,7 +1245,7 @@ namespace atomic_dex
             min_trade_vol = QString::fromStdString(atomic_dex::utils::format_float(min_volume));
         }
         return min_trade_vol;
-    }
+    }*/
 
     QString
     trading_page::get_min_trade_vol() const
@@ -1209,14 +1256,26 @@ namespace atomic_dex
     void
     trading_page::set_min_trade_vol(QString min_trade_vol)
     {
-        const bool is_valid = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
+        const auto& base_min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
+        const auto& rel_min_taker_vol  = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
+        const auto& current_taker_vol  = m_market_mode == MarketMode::Buy ? rel_min_taker_vol : base_min_taker_vol;
+        t_float_50  min_vol_f          = safe_float(current_taker_vol);
+        const bool  is_valid =
+            safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
+
+        if (safe_float(min_trade_vol.toStdString()) <= min_vol_f)
+        {
+            min_trade_vol = QString::fromStdString(current_taker_vol);
+        }
 
         if (min_trade_vol != m_minimal_trading_amount && is_valid)
         {
+            SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
         }
     }
+
     void
     trading_page::reset_order()
     {
@@ -1281,9 +1340,9 @@ namespace atomic_dex
             t_float_50  target_price =
                 (m_market_mode == MarketMode::Sell) ? t_float_50(cex_price + (cex_price * percent)) : t_float_50(cex_price - (cex_price * percent));
 
-            // t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (target_price / cex_price)) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1) :
-            // t_float_50(-1)); t_float_50 reversed_price_diff = t_float_50(100) * (t_float_50(1) - ((1 / target_price) / (1 / cex_price))) * ((m_market_mode ==
-            // MarketMode::Sell) ? t_float_50(1) : t_float_50(-1)); SPDLOG_INFO("cex price: {}, target_price: {}, price_diff: {}",
+            // t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (target_price / cex_price)) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1)
+            // : t_float_50(-1)); t_float_50 reversed_price_diff = t_float_50(100) * (t_float_50(1) - ((1 / target_price) / (1 / cex_price))) *
+            // ((m_market_mode == MarketMode::Sell) ? t_float_50(1) : t_float_50(-1)); SPDLOG_INFO("cex price: {}, target_price: {}, price_diff: {}",
             // utils::format_float(cex_price), utils::format_float(target_price), utils::format_float(price_diff)); SPDLOG_INFO("reversed_cex price: {},
             // reversed_target_price: {}, reversed_price_diff: {}", utils::format_float(1 / cex_price), utils::format_float(1 / target_price),
             // utils::format_float(reversed_price_diff));

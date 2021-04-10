@@ -64,7 +64,7 @@ namespace atomic_dex
         Q_PROPERTY(QString cex_price READ get_cex_price NOTIFY cexPriceChanged)
         Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
-        Q_PROPERTY(QString mm2_min_trade_vol READ get_mm2_min_trade_vol NOTIFY mm2MinTradeVolChanged)
+        //Q_PROPERTY(QString mm2_min_trade_vol READ get_mm2_min_trade_vol NOTIFY mm2MinTradeVolChanged)
         Q_PROPERTY(QString min_trade_vol READ get_min_trade_vol WRITE set_min_trade_vol NOTIFY minTradeVolChanged)
         Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
         Q_PROPERTY(bool skip_taker READ get_skip_taker WRITE set_skip_taker NOTIFY skipTakerChanged)
@@ -115,7 +115,7 @@ namespace atomic_dex
         QString                                m_max_volume{"0"};
         QString                                m_total_amount{"0"};
         QString                                m_cex_price{"0"};
-        QString                                m_minimal_trading_amount{QString::fromStdString(atomic_dex::utils::minimal_trade_amount_str())};
+        QString                                m_minimal_trading_amount{"0"};
         std::optional<nlohmann::json>          m_preffered_order;
         boost::synchronized_value<QVariantMap> m_fees;
         bool                                   m_skip_taker{false};
@@ -184,7 +184,7 @@ namespace atomic_dex
         [[nodiscard]] QString      get_price_reversed() const;
         [[nodiscard]] QString      get_price() const;
         void                       set_price(QString price);
-        [[nodiscard]] QString      get_mm2_min_trade_vol() const;
+        //[[nodiscard]] QString      get_mm2_min_trade_vol() const;
         [[nodiscard]] QString      get_min_trade_vol() const;
         void                       set_min_trade_vol(QString min_trade_vol);
         [[nodiscard]] QString      get_volume() const;

@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick 2.15
 import AtomicDEX.TradingError 1.0
+import AtomicDEX.MarketMode 1.0
 
 QtObject {
     readonly property int width: 1280
@@ -259,8 +260,18 @@ QtObject {
     }
 
     function getMinTradeAmount() {
-        return 0.00777
+        if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+            return API.app.trading_pg.orderbook.rel_min_taker_vol
+        }
+        return API.app.trading_pg.orderbook.base_min_taker_vol
     }
+
+    function getReversedMinTradeAmount() {
+            if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+               return API.app.trading_pg.orderbook.base_min_taker_vol
+            }
+            return API.app.trading_pg.orderbook.rel_min_taker_vol
+        }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
@@ -436,7 +447,7 @@ QtObject {
         case TradingError.VolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
-            return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getMinTradeAmount()
+            return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getReversedMinTradeAmount()
         default:
             return qsTr("Unknown Error") + ": " + error
         }

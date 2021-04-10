@@ -15,10 +15,10 @@
  ******************************************************************************/
 
 //! Project headers
+#include "qt.orderbook.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
-#include "qt.orderbook.hpp"
 
 namespace atomic_dex
 {
@@ -31,25 +31,25 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::qt_orderbook_wrapper::is_best_orders_busy() const 
+    atomic_dex::qt_orderbook_wrapper::is_best_orders_busy() const
     {
         return this->m_system_manager.get_system<orderbook_scanner_service>().is_best_orders_busy();
     }
 
     atomic_dex::orderbook_model*
-    atomic_dex::qt_orderbook_wrapper::get_asks() const 
+    atomic_dex::qt_orderbook_wrapper::get_asks() const
     {
         return m_asks;
     }
 
     orderbook_model*
-    qt_orderbook_wrapper::get_bids() const 
+    qt_orderbook_wrapper::get_bids() const
     {
         return m_bids;
     }
 
     atomic_dex::orderbook_model*
-    atomic_dex::qt_orderbook_wrapper::get_best_orders() const 
+    atomic_dex::qt_orderbook_wrapper::get_best_orders() const
     {
         return m_best_orders;
     }
@@ -100,13 +100,13 @@ namespace atomic_dex
     }
 
     QVariant
-    qt_orderbook_wrapper::get_base_max_taker_vol() const 
+    qt_orderbook_wrapper::get_base_max_taker_vol() const
     {
         return m_base_max_taker_vol;
     }
 
     QVariant
-    qt_orderbook_wrapper::get_rel_max_taker_vol() const 
+    qt_orderbook_wrapper::get_rel_max_taker_vol() const
     {
         return m_rel_max_taker_vol;
     }
@@ -121,6 +121,14 @@ namespace atomic_dex
         this->m_rel_max_taker_vol = QJsonObject{
             {"denom", QString::fromStdString(rel.denom)}, {"numer", QString::fromStdString(rel.numer)}, {"decimal", QString::fromStdString(rel.decimal)}};
         emit relMaxTakerVolChanged();
+
+        auto&& [min_base, min_rel] = m_system_manager.get_system<mm2_service>().get_min_vol();
+        this->m_base_min_taker_vol = QString::fromStdString(min_base.min_trading_vol);
+        emit baseMinTakerVolChanged();
+        this->m_rel_min_taker_vol = QString::fromStdString(min_rel.min_trading_vol);
+        emit relMinTakerVolChanged();
+
+        emit currentMinTakerVolChanged();
     }
 } // namespace atomic_dex
 
@@ -128,17 +136,17 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    qt_orderbook_wrapper::refresh_best_orders() 
+    qt_orderbook_wrapper::refresh_best_orders()
     {
         this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
     }
 
     void
-    qt_orderbook_wrapper::select_best_order(const QString& order_uuid) 
+    qt_orderbook_wrapper::select_best_order(const QString& order_uuid)
     {
         QVariantMap out;
-        const bool is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
-        const auto  res = m_best_orders->match(m_best_orders->index(0, 0), orderbook_model::UUIDRole, order_uuid, 1, Qt::MatchFlag::MatchExactly);
+        const bool  is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
+        const auto  res    = m_best_orders->match(m_best_orders->index(0, 0), orderbook_model::UUIDRole, order_uuid, 1, Qt::MatchFlag::MatchExactly);
         if (!res.empty())
         {
             const QModelIndex& idx   = res.at(0);
@@ -159,5 +167,24 @@ namespace atomic_dex
                 m_selected_best_order = std::nullopt;
             }
         }
+    }
+    QString
+    qt_orderbook_wrapper::get_base_min_taker_vol() const
+    {
+        return m_base_min_taker_vol;
+    }
+
+    QString
+    qt_orderbook_wrapper::get_rel_min_taker_vol() const
+    {
+        return m_rel_min_taker_vol;
+    }
+
+    QString
+    qt_orderbook_wrapper::get_current_min_taker_vol() const
+    {
+        bool is_buy         = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
+        QString taker_vol = is_buy ? get_rel_min_taker_vol() : get_base_min_taker_vol();
+        return taker_vol.isEmpty() ? "0" : taker_vol;
     }
 } // namespace atomic_dex

@@ -153,7 +153,7 @@ FloatingBackground {
 
                 enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
                 Layout.fillWidth: true
-                from: 0
+                from: API.app.trading_pg.orderbook.current_min_taker_vol
                 to: Math.max(0, parseFloat(max_volume))
                 //live: false
 
@@ -173,7 +173,7 @@ FloatingBackground {
                     }
                 }
 
-                first.value: parseFloat(API.app.trading_pg.min_trade_vol )
+                first.value: parseFloat(API.app.trading_pg.min_trade_vol)
                 first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }
                 firstTooltip.text: General.formatDouble(first.value, General.getRecommendedPrecision(second.value))
             }

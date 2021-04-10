@@ -37,23 +37,29 @@ namespace atomic_dex
         Q_PROPERTY(bool best_orders_busy READ is_best_orders_busy NOTIFY bestOrdersBusyChanged)
         Q_PROPERTY(QVariant base_max_taker_vol READ get_base_max_taker_vol NOTIFY baseMaxTakerVolChanged)
         Q_PROPERTY(QVariant rel_max_taker_vol READ get_rel_max_taker_vol NOTIFY relMaxTakerVolChanged)
+        Q_PROPERTY(QString base_min_taker_vol READ get_base_min_taker_vol NOTIFY baseMinTakerVolChanged)
+        Q_PROPERTY(QString rel_min_taker_vol READ get_rel_min_taker_vol NOTIFY relMinTakerVolChanged)
+        Q_PROPERTY(QString current_min_taker_vol READ get_current_min_taker_vol NOTIFY currentMinTakerVolChanged)
       public:
         qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
-        ~qt_orderbook_wrapper()  final = default;
+        ~qt_orderbook_wrapper() final = default;
 
       public:
         void                           refresh_orderbook(t_orderbook_answer answer);
         void                           reset_orderbook(t_orderbook_answer answer);
         void                           clear_orderbook();
-        [[nodiscard]] orderbook_model* get_asks() const ;
-        [[nodiscard]] orderbook_model* get_bids() const ;
-        [[nodiscard]] orderbook_model* get_best_orders() const ;
-        [[nodiscard]] bool             is_best_orders_busy() const ;
-        [[nodiscard]] QVariant         get_base_max_taker_vol() const ;
-        [[nodiscard]] QVariant         get_rel_max_taker_vol() const ;
+        [[nodiscard]] orderbook_model* get_asks() const;
+        [[nodiscard]] orderbook_model* get_bids() const;
+        [[nodiscard]] orderbook_model* get_best_orders() const;
+        [[nodiscard]] bool             is_best_orders_busy() const;
+        [[nodiscard]] QVariant         get_base_max_taker_vol() const;
+        [[nodiscard]] QVariant         get_rel_max_taker_vol() const;
+        [[nodiscard]] QString          get_base_min_taker_vol() const;
+        [[nodiscard]] QString          get_rel_min_taker_vol() const;
+        [[nodiscard]] QString          get_current_min_taker_vol() const;
 
-        Q_INVOKABLE void refresh_best_orders() ;
-        Q_INVOKABLE void select_best_order(const QString& order_uuid) ;
+        Q_INVOKABLE void refresh_best_orders();
+        Q_INVOKABLE void select_best_order(const QString& order_uuid);
 
       signals:
         void asksChanged();
@@ -62,6 +68,9 @@ namespace atomic_dex
         void bestOrdersBusyChanged();
         void baseMaxTakerVolChanged();
         void relMaxTakerVolChanged();
+        void baseMinTakerVolChanged();
+        void relMinTakerVolChanged();
+        void currentMinTakerVolChanged();
 
       private:
         void                                                  set_both_taker_vol();
@@ -72,6 +81,8 @@ namespace atomic_dex
         orderbook_model*                                      m_best_orders;
         QJsonObject                                           m_base_max_taker_vol;
         QJsonObject                                           m_rel_max_taker_vol;
+        QString                                               m_base_min_taker_vol;
+        QString                                               m_rel_min_taker_vol;
         boost::synchronized_value<std::optional<QVariantMap>> m_selected_best_order{std::nullopt};
     };
 } // namespace atomic_dex
