@@ -438,6 +438,7 @@ namespace atomic_dex
                             if (safe_float(get_volume().toStdString()) <= min_vol_f)
                             {
                                 this->set_volume(get_max_volume());
+                                this->get_orderbook_wrapper()->refresh_best_orders();
                             }
                             if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
                             {
@@ -450,6 +451,7 @@ namespace atomic_dex
                             if (safe_float(get_volume().toStdString()) <= min_vol_f)
                             {
                                 this->set_volume(get_max_volume());
+                                this->get_orderbook_wrapper()->refresh_best_orders();
                             }
                             if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
                             {
