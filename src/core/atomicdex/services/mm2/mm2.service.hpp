@@ -37,6 +37,7 @@
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.balance.hpp"
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
+#include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
@@ -65,17 +66,18 @@ namespace atomic_dex
     {
       public:
         using t_pair_max_vol = std::pair<t_max_taker_vol_answer_success, t_max_taker_vol_answer_success>;
+        using t_pair_min_vol = std::pair<t_min_volume_answer_success, t_min_volume_answer_success>;
 
       private:
         //! Private typedefs
         using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
         using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
         using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
-        using t_fees_registry              = t_shared_synchronized_value<std::unordered_map<t_ticker, t_get_trade_fee_answer>>;
         using t_orderbook                  = boost::synchronized_value<t_orderbook_answer>;
         using t_orders_and_swaps           = boost::synchronized_value<orders_and_swaps>;
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
+        using t_synchronized_min_taker_vol = boost::synchronized_value<t_pair_min_vol>;
         using t_synchronized_ticker        = boost::synchronized_value<std::string>;
 
         ag::ecs::system_manager& m_system_manager;
@@ -94,6 +96,7 @@ namespace atomic_dex
         //! Current orderbook
         t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair(g_primary_dex_coin, g_second_primary_dex_coin)};
         t_synchronized_max_taker_vol m_synchronized_max_taker_vol;
+        t_synchronized_min_taker_vol m_synchronized_min_taker_vol;
 
         //! Timers
         t_mm2_time_point m_orderbook_clock;
@@ -116,7 +119,6 @@ namespace atomic_dex
         t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
         t_balance_registry       m_balance_informations;
         t_tx_registry            m_tx_informations;
-        t_fees_registry          m_trade_fees_registry;
         t_orderbook              m_orderbook{t_orderbook_answer{}};
         t_orders_and_swaps       m_orders_and_swaps{orders_and_swaps{}};
         t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
@@ -126,10 +128,6 @@ namespace atomic_dex
 
         //! Refresh the orderbook registry (internal)
         nlohmann::json prepare_batch_orderbook();
-
-        //! Batch process fees and fetch current_orderbook thread
-        void           batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
-        nlohmann::json prepare_process_fees_and_current_orderbook();
 
         //! Batch balance / tx
         std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx(bool only_tx = false) const;
@@ -225,12 +223,6 @@ namespace atomic_dex
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
-        [[nodiscard]] t_float_50 get_trading_fees(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
-
-        [[nodiscard]] t_get_trade_fee_answer get_transaction_fees(const std::string& ticker) const;
-
-        std::string apply_specific_fees(const std::string& ticker, t_float_50& value) const;
-
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const;
 
@@ -257,15 +249,12 @@ namespace atomic_dex
         void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
-        mm2_client&                            get_mm2_client();
+        mm2_client& get_mm2_client();
         //[[nodiscard]] pplx::cancellation_token get_cancellation_token() const;
 
         //! Wallet api
         [[nodiscard]] std::string get_current_ticker() const;
         bool                      set_current_ticker(const std::string& ticker);
-
-        //! Multi ticker
-        void add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer);
 
         //! Pagination
         void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});

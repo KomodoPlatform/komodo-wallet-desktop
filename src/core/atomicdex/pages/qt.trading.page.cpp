@@ -1122,22 +1122,14 @@ namespace atomic_dex
     trading_page::get_cex_price_diff() const
     {
         bool is_invalid = get_invalid_cex_price();
-        if (is_invalid)
+        if (is_invalid || safe_float(m_price.toStdString()) <= 0)
         {
             return "0";
         }
-        const bool is_sell    = m_market_mode == MarketMode::Sell;
+        const bool is_buy     = m_market_mode == MarketMode::Buy;
         t_float_50 price      = safe_float(m_price.toStdString());
         t_float_50 cex_price  = safe_float(m_cex_price.toStdString());
-        t_float_50 sign       = (is_sell ? t_float_50(1) : t_float_50(-1));
-        t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (price / cex_price)) * sign;
-        if (is_sell)
-        {
-            price_diff = boost::multiprecision::abs(price_diff);
-        }
-        SPDLOG_INFO(
-            "100 * (1 - ({} / {})) * {} = {}%", utils::format_float(price), utils::format_float(cex_price), utils::format_float(sign),
-            utils::format_float(price_diff));
+        t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - price / cex_price) * (!is_buy ? t_float_50(1) : t_float_50(-1));
         return QString::fromStdString(utils::format_float(price_diff));
     }
 

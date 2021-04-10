@@ -58,6 +58,7 @@ namespace atomic_dex
         [[nodiscard]] bool is_busy() const;
 
         QVariant get_charts() const;
+        QVariant get_wallet_stats() const;
 
         [[nodiscard]] QString get_min_total() const;
         [[nodiscard]] QString get_max_total() const;

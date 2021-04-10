@@ -135,6 +135,13 @@ namespace atomic_dex
         emit  portfolio_pg.chartsChanged();
         emit  portfolio_pg.minTotalChartChanged();
         emit  portfolio_pg.maxTotalChartChanged();
+        emit  portfolio_pg.walletStatsChanged();
+    }
+
+    QVariant
+    coingecko_wallet_charts_service::get_wallet_stats() const
+    {
+        return QVariant(m_wallet_performance.get());
     }
 
     void
