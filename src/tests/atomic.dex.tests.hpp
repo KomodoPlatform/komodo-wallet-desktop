@@ -30,7 +30,7 @@ struct tests_context : public antara::gaming::world::app
   private:
     std::atomic_bool         m_test_context_ready{false};
     std::atomic_bool         m_extra_coins_ready{false};
-    std::vector<std::string> m_extra_coins{"tQTUM", "tBTC", "QRC20", "RICK", "MORTY"};
+    std::vector<std::string> m_extra_coins{"tQTUM", "tBTC-TEST", "QRC20", "RICK", "MORTY"};
 
   public:
     void
@@ -96,7 +96,7 @@ struct tests_context : public antara::gaming::world::app
         while (!mm2.is_mm2_running() && !m_test_context_ready) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
         const auto& enabled_coins = mm2.get_enabled_coins();
         bool        found =
-            std::any_of(enabled_coins.begin(), enabled_coins.end(), [](const auto& item) -> bool { return item.ticker == "tBTC" || item.ticker == "tQTUM"; });
+            std::any_of(enabled_coins.begin(), enabled_coins.end(), [](const auto& item) -> bool { return item.ticker == "tBTC-TEST" || item.ticker == "tQTUM"; });
         if (!found)
         {
             SPDLOG_INFO("Extra coins not enabled yet, enabling now");
