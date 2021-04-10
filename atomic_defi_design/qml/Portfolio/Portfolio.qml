@@ -369,7 +369,7 @@ Item {
                                     visible: true
                                     color: theme.accentColor
                                     borderColor: theme.accentColor
-                                    borderWidth: 2
+                                    markerSize: 8
                                     axisY: ValueAxis {
                                         visible: false
                                         max:  parseFloat(API.app.portfolio_pg.max_total_chart)
@@ -447,18 +447,12 @@ Item {
                                         layoutDirection: Qt.RightToLeft
 
                                         Qaterial.OutlineButton {
-                                            text: "24H"
-                                            enabled: false
-                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? theme.accentColor : theme.backgroundColor
-                                            onClicked: API.app.portfolio_pg.chart_category = 0
+                                            text: "1Y"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
+                                            onClicked: {
+                                                API.app.portfolio_pg.chart_category = WalletChartsCategories.Ytd
+                                            }
                                         }
-
-                                        Qaterial.OutlineButton {
-                                            text: "7D"
-                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 1? theme.accentColor : theme.backgroundColor
-                                            onClicked: API.app.portfolio_pg.chart_category = WalletChartsCategories.OneWeek
-                                        }
-
                                         Qaterial.OutlineButton {
                                             text: "1M"
                                             outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 2? theme.accentColor : theme.backgroundColor
@@ -466,13 +460,16 @@ Item {
                                                 API.app.portfolio_pg.chart_category = WalletChartsCategories.OneMonth
                                             }
                                         }
-
                                         Qaterial.OutlineButton {
-                                            text: "YTD"
-                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
-                                            onClicked: {
-                                                API.app.portfolio_pg.chart_category = WalletChartsCategories.Ytd
-                                                }
+                                            text: "7D"
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 1? theme.accentColor : theme.backgroundColor
+                                            onClicked: API.app.portfolio_pg.chart_category = WalletChartsCategories.OneWeek
+                                        }
+                                        Qaterial.OutlineButton {
+                                            text: "24H"
+                                            enabled: false
+                                            outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? theme.accentColor : theme.backgroundColor
+                                            onClicked: API.app.portfolio_pg.chart_category = 0
                                         }
                                     }
                                 }
