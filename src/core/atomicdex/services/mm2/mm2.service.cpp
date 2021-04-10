@@ -21,6 +21,7 @@
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
+#include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
@@ -678,75 +679,19 @@ namespace atomic_dex
             return nlohmann::json::array();
         nlohmann::json batch = nlohmann::json::array();
 
-        nlohmann::json      current_request = ::mm2::api::template_request("orderbook");
-        t_orderbook_request req_orderbook{.base = base, .rel = rel};
-        ::mm2::api::to_json(current_request, req_orderbook);
-        batch.push_back(current_request);
-        current_request = ::mm2::api::template_request("max_taker_vol");
-        ::mm2::api::max_taker_vol_request req_base_max_taker_vol{.coin = base};
-        ::mm2::api::to_json(current_request, req_base_max_taker_vol);
-        batch.push_back(current_request);
-        current_request = ::mm2::api::template_request("max_taker_vol");
-        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = rel};
-        ::mm2::api::to_json(current_request, req_rel_max_taker_vol);
-        batch.push_back(current_request);
+        auto generate_req = [&batch](std::string request_name, auto request)
+        {
+            nlohmann::json current_request = ::mm2::api::template_request(std::move(request_name));
+            ::mm2::api::to_json(current_request, request);
+            batch.push_back(current_request);
+        };
+
+        generate_req("orderbook", t_orderbook_request{.base = base, .rel = rel});
+        generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = base});
+        generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = rel});
+        generate_req("min_trading_vol", t_min_volume_request{.coin = base});
+        generate_req("min_trading_vol", t_min_volume_request{.coin = rel});
         return batch;
-    }
-
-    void
-    mm2_service::batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset)
-    {
-        SPDLOG_INFO("batch orderbook/fees");
-        if (not m_orderbook_thread_active)
-        {
-            SPDLOG_WARN("Nothing to achieve, sleeping");
-            return;
-        }
-
-        //! Prepare fees
-        auto batch = prepare_batch_orderbook();
-        // SPDLOG_INFO("Request: {}", batch.dump(4));
-        if (batch.empty())
-        {
-            return;
-        }
-        auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
-
-        m_mm2_client.async_rpc_batch_standalone(batch)
-            .then(
-                [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp)
-                {
-                    auto answer = ::mm2::api::basic_batch_answer(resp);
-                    // SPDLOG_INFO("Debug output: {}", answer.dump(4));
-                    if (answer.is_array())
-                    {
-                        auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
-
-                        if (orderbook_answer.rpc_result_code == 200)
-                        {
-                            m_orderbook = orderbook_answer;
-                            this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
-                        }
-
-                        auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
-                        if (base_max_taker_vol_answer.rpc_result_code == 200)
-                        {
-                            this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
-                            t_float_50 base_res                       = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                            this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-                        }
-
-                        auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
-                        if (rel_max_taker_vol_answer.rpc_result_code == 200)
-                        {
-                            this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
-                            t_float_50 rel_res                         = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
-                            this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
-                        }
-                    }
-                })
-            .then([this, batch](pplx::task<void> previous_task)
-                  { this->handle_exception_pplx_task(previous_task, "batch_process_fees_and_fetch_current_orderbook_thread", batch); });
     }
 
     void
@@ -757,40 +702,40 @@ namespace atomic_dex
             return;
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
 
+        auto answer_functor = [this, is_a_reset, base = base, rel = rel](web::http::http_response resp)
+        {
+          auto answer = ::mm2::api::basic_batch_answer(resp);
+          if (answer.is_array())
+          {
+              auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
+
+              if (orderbook_answer.rpc_result_code == 200)
+              {
+                  m_orderbook = orderbook_answer;
+                  this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+              }
+
+              auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
+              if (base_max_taker_vol_answer.rpc_result_code == 200)
+              {
+                  this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+                  t_float_50 base_res                       = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                  this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
+              }
+
+              auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
+              if (rel_max_taker_vol_answer.rpc_result_code == 200)
+              {
+                  this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+                  t_float_50 rel_res                         = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                  this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
+              }
+          }
+        };
+
         m_mm2_client.async_rpc_batch_standalone(batch)
-            .then(
-                [this, is_a_reset, base = base, rel = rel](web::http::http_response resp)
-                {
-                    auto answer = ::mm2::api::basic_batch_answer(resp);
-                    if (answer.is_array())
-                    {
-                        auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
-
-                        if (orderbook_answer.rpc_result_code == 200)
-                        {
-                            m_orderbook = orderbook_answer;
-                            this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
-                        }
-
-                        auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
-                        if (base_max_taker_vol_answer.rpc_result_code == 200)
-                        {
-                            this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
-                            t_float_50 base_res                       = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                            this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-                        }
-
-                        auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
-                        if (rel_max_taker_vol_answer.rpc_result_code == 200)
-                        {
-                            this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
-                            t_float_50 rel_res                         = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
-                            this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
-                        }
-                    }
-                })
-            .then([this, batch](pplx::task<void> previous_task)
-                  { this->handle_exception_pplx_task(previous_task, "batch_process_fees_and_fetch_current_orderbook_thread", batch); });
+            .then(answer_functor)
+            .then([this, batch](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "process_orderbook", batch); });
     }
 
     void
@@ -1171,14 +1116,14 @@ namespace atomic_dex
     void
     mm2_service::on_refresh_orderbook(const orderbook_refresh& evt)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("on_refresh_orderbook");
 
         SPDLOG_INFO("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
         this->m_synchronized_ticker_pair = std::make_pair(evt.base, evt.rel);
 
-        if (this->m_mm2_running)
+        if (this->m_mm2_running && this->m_orderbook_thread_active)
         {
-            batch_process_fees_and_fetch_current_orderbook_thread(true);
+            process_orderbook(true);
         }
     }
 

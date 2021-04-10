@@ -37,6 +37,7 @@
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.balance.hpp"
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
+#include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
@@ -65,6 +66,7 @@ namespace atomic_dex
     {
       public:
         using t_pair_max_vol = std::pair<t_max_taker_vol_answer_success, t_max_taker_vol_answer_success>;
+        using t_pair_min_vol = std::pair<t_min_volume_answer_success, t_min_volume_answer_success>;
 
       private:
         //! Private typedefs
@@ -75,6 +77,7 @@ namespace atomic_dex
         using t_orders_and_swaps           = boost::synchronized_value<orders_and_swaps>;
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
+        using t_synchronized_min_taker_vol = boost::synchronized_value<t_pair_min_vol>;
         using t_synchronized_ticker        = boost::synchronized_value<std::string>;
 
         ag::ecs::system_manager& m_system_manager;
@@ -93,6 +96,7 @@ namespace atomic_dex
         //! Current orderbook
         t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair(g_primary_dex_coin, g_second_primary_dex_coin)};
         t_synchronized_max_taker_vol m_synchronized_max_taker_vol;
+        t_synchronized_min_taker_vol m_synchronized_min_taker_vol;
 
         //! Timers
         t_mm2_time_point m_orderbook_clock;
@@ -124,9 +128,6 @@ namespace atomic_dex
 
         //! Refresh the orderbook registry (internal)
         nlohmann::json prepare_batch_orderbook();
-
-        //! Batch process fees and fetch current_orderbook thread
-        void           batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
 
         //! Batch balance / tx
         std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx(bool only_tx = false) const;
@@ -248,7 +249,7 @@ namespace atomic_dex
         void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
-        mm2_client&                            get_mm2_client();
+        mm2_client& get_mm2_client();
         //[[nodiscard]] pplx::cancellation_token get_cancellation_token() const;
 
         //! Wallet api
