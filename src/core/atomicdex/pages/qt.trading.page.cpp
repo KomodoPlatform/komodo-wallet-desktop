@@ -642,7 +642,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
+            //SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
             if (m_current_trading_mode != TradingMode::Simple)
             {
                 this->determine_total_amount();
@@ -1278,7 +1278,7 @@ namespace atomic_dex
 
         if (min_trade_vol != m_minimal_trading_amount && is_valid)
         {
-            SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
+            //SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
         }
