@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick 2.15
 import AtomicDEX.TradingError 1.0
+import AtomicDEX.MarketMode 1.0
 
 QtObject {
     readonly property int width: 1280
@@ -259,8 +260,18 @@ QtObject {
     }
 
     function getMinTradeAmount() {
-        return 0.00777
+        if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+            return API.app.trading_pg.orderbook.rel_min_taker_vol
+        }
+        return API.app.trading_pg.orderbook.base_min_taker_vol
     }
+
+    function getReversedMinTradeAmount() {
+            if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+               return API.app.trading_pg.orderbook.base_min_taker_vol
+            }
+            return API.app.trading_pg.orderbook.rel_min_taker_vol
+        }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
@@ -436,7 +447,7 @@ QtObject {
         case TradingError.VolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
-            return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getMinTradeAmount()
+            return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getReversedMinTradeAmount()
         default:
             return qsTr("Unknown Error") + ": " + error
         }
@@ -488,9 +499,15 @@ QtObject {
                                                 "ANT/BNB": "BINANCE:ANTBNB",
                                                 "ANT/EURS": "KRAKEN:ANTEUR",
                                                 "ARPA/BTC": "BINANCE:ARPABTC",
-                                                "ARPA/USDT": "BINANCE:ARPAUSDT",
                                                 "ARPA/BNB": "BINANCE:ARPABNB",
                                                 "ARPA/HT": "HUOBI:ARPAHT",
+                                                "ARPA/USDT": "BINANCE:ARPAUSD",
+                                                "ARPA/BUSD": "BINANCE:ARPAUSD",
+                                                "ARPA/USDC": "BINANCE:ARPAUSD",
+                                                "ARPA/TUSD": "BINANCE:ARPAUSD",
+                                                "ARPA/HUSD": "BINANCE:ARPAUSD",
+                                                "ARPA/DAI": "BINANCE:ARPAUSD",
+                                                "ARPA/PAX": "BINANCE:ARPAUSD",
                                                 "ATOM/BTC": "BINANCE:ATOMBTC",
                                                 "ATOM/ETH": "KRAKEN:ATOMETH",
                                                 "ATOM/USDT": "COINBASE:ATOMUSD",
@@ -601,7 +618,13 @@ QtObject {
                                                 "CAKE/BNB": "BINANCE:CAKEBNB",
                                                 "CEL/BTC": "HITBTC:CELBTC",
                                                 "CEL/ETH": "HITBTC:CELETH",
-                                                "CEL/USDT": "BITTREX:CELUSDT",
+                                                "CEL/USDT": "HITBTC:CELUSD",
+                                                "CEL/BUSD": "HITBTC:CELUSD",
+                                                "CEL/USDC": "HITBTC:CELUSD",
+                                                "CEL/TUSD": "HITBTC:CELUSD",
+                                                "CEL/HUSD": "HITBTC:CELUSD",
+                                                "CEL/DAI": "HITBTC:CELUSD",
+                                                "CEL/PAX": "HITBTC:CELUSD",
                                                 "CENNZ/BTC": "HITBTC:CENNZBTC",
                                                 "CENNZ/ETH": "HITBTC:CENNZETH",
                                                 "CENNZ/USDT": "HITBTC:CENNZUSDT",
@@ -609,8 +632,15 @@ QtObject {
                                                 "CHSB/ETH": "KUCOIN:CHSBETH",
                                                 "CHZ/BTC": "BINANCE:CHZBTC",
                                                 "CHZ/ETH": "HUOBI:CHZETH",
-                                                "CHZ/USDT": "BINANCE:CHZUSDT",
-                                                "CHZ/BUSD": "BINANCE:CHZBUSD",
+                                                "CHZ/USDT": "BINANCE:CHZUSD",
+                                                "CHZ/BUSD": "BINANCE:CHZUSD",
+                                                "CHZ/USDC": "BINANCE:CHZUSD",
+                                                "CHZ/TUSD": "BINANCE:CHZUSD",
+                                                "CHZ/HUSD": "BINANCE:CHZUSD",
+                                                "CHZ/DAI": "BINANCE:CHZUSD",
+                                                "CHZ/PAX": "BINANCE:CHZUSD",
+                                                "CHZ/BNB": "BINANCE:CHZBNB",
+                                                "CHZ/EURS": "BINANCE:CHZEUR",
                                                 "COMP/BTC": "BINANCE:COMPBTC",
                                                 "COMP/ETH": "KRAKEN:COMPETH",
                                                 "COMP/USDT": "BINANCE:COMPUSD",
@@ -925,9 +955,6 @@ QtObject {
                                                 "NEAR/DAI": "BINANCE:NEARUSD",
                                                 "NEAR/PAX": "BINANCE:NEARUSD",
                                                 "NEAR/BNB": "BINANCE:NEARBNB",
-                                                "NPXS/BTC": "HUOBI:NPXSBTC",
-                                                "NPXS/ETH": "BINANCE:NPXSETH",
-                                                "NPXS/USDT": "BINANCE:NPXSUSDT",
                                                 "OCEAN/BTC": "BINANCE:OCEANBTC",
                                                 "OCEAN/ETH": "KUCOIN:OCEANETH",
                                                 "OCEAN/USDT": "BINANCE:OCEANUSDT",

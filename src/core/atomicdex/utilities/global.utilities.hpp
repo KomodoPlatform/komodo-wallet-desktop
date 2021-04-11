@@ -76,9 +76,9 @@ namespace atomic_dex::utils
 
     fs::path get_atomic_dex_config_folder();
 
-    std::string minimal_trade_amount_str();
+    //std::string minimal_trade_amount_str();
 
-    const t_float_50 minimal_trade_amount();
+    //const t_float_50 minimal_trade_amount();
 
     fs::path get_atomic_dex_export_folder();
 

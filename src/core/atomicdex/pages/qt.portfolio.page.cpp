@@ -205,14 +205,20 @@ namespace atomic_dex
     }
 
     QString
-    atomic_dex::portfolio_page::get_min_total_chart() const
+    portfolio_page::get_min_total_chart() const
     {
         return m_system_manager.get_system<coingecko_wallet_charts_service>().get_min_total();
     }
 
     QString
-    atomic_dex::portfolio_page::get_max_total_chart() const
+    portfolio_page::get_max_total_chart() const
     {
         return m_system_manager.get_system<coingecko_wallet_charts_service>().get_max_total();
+    }
+
+    QVariant
+    portfolio_page::get_wallet_stats() const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_wallet_stats();
     }
 } // namespace atomic_dex

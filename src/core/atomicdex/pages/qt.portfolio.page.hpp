@@ -44,6 +44,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant charts READ get_charts NOTIFY chartsChanged)
         Q_PROPERTY(QString min_total_chart READ get_min_total_chart NOTIFY minTotalChartChanged)
         Q_PROPERTY(QString max_total_chart READ get_max_total_chart NOTIFY maxTotalChartChanged)
+        Q_PROPERTY(QVariant wallet_stats READ get_wallet_stats NOTIFY walletStatsChanged)
 
         //! Private members fields
         ag::ecs::system_manager& m_system_manager;
@@ -78,6 +79,7 @@ namespace atomic_dex
         void                                 set_chart_category(WalletChartsCategories category);
         [[nodiscard]] bool                   is_chart_busy() const;
         [[nodiscard]] QVariant               get_charts() const;
+        [[nodiscard]] QVariant               get_wallet_stats() const;;
         [[nodiscard]] QString                get_min_total_chart() const;
         [[nodiscard]] QString                get_max_total_chart() const;
 
@@ -96,6 +98,7 @@ namespace atomic_dex
         void chartsChanged();
         void minTotalChartChanged();
         void maxTotalChartChanged();
+        void walletStatsChanged();
     };
 } // namespace atomic_dex
 
