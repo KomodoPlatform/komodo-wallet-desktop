@@ -46,10 +46,6 @@ namespace atomic_dex
                 using namespace std::string_literals;
                 const auto&           trading_pg = m_system_manager.get_system<trading_page>();
                 auto                  volume     = trading_pg.get_volume().toStdString();
-                if (safe_float(volume) <= 0)
-                {
-                    return;
-                }
                 auto                  action     = trading_pg.get_market_mode() == MarketMode::Buy ? "buy"s : "sell"s;
                 auto                  coin       = trading_pg.get_market_pairs_mdl()->get_left_selected_coin().toStdString();
                 t_best_orders_request req{.coin = std::move(coin), .volume = std::move(volume), .action = std::move(action)};

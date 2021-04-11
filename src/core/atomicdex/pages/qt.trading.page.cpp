@@ -134,6 +134,8 @@ namespace atomic_dex
         const bool is_my_max = m_volume == m_max_volume;
         const bool is_exact_selected_order_volume =
             (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
+        t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
+        t_float_50 min_volume_f   = safe_float(get_underlying_min_trade_vol().toStdString());
 
         t_buy_request req{
             .base                           = base.toStdString(),
@@ -148,7 +150,7 @@ namespace atomic_dex
             .is_exact_selected_order_volume = is_exact_selected_order_volume,
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
-            .min_volume                     = m_minimal_trading_amount.toStdString()};
+            .min_volume = (min_volume_f <= base_min_trade) ? std::optional<std::string>{std::nullopt} : get_underlying_min_trade_vol().toStdString()};
 
         if (m_preffered_order.has_value())
         {
@@ -1262,8 +1264,7 @@ namespace atomic_dex
         const auto& rel_min_taker_vol  = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
         const auto& current_taker_vol  = m_market_mode == MarketMode::Buy ? rel_min_taker_vol : base_min_taker_vol;
         t_float_50  min_vol_f          = safe_float(current_taker_vol);
-        const bool  is_valid =
-            safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
+        const bool  is_valid           = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
 
         if (safe_float(min_trade_vol.toStdString()) <= min_vol_f)
         {
@@ -1361,6 +1362,27 @@ namespace atomic_dex
         else
         {
             SPDLOG_WARN("{}/{} doesn't have any trading settings - skipping", left.toStdString(), right.toStdString());
+        }
+    }
+
+    QString
+    trading_page::get_underlying_min_trade_vol() const
+    {
+        if (m_market_mode == MarketModeGadget::Sell)
+        {
+            return get_min_trade_vol();
+        }
+        else
+        {
+            const bool  is_selected_order = m_preffered_order.has_value();
+            t_float_50  cur_rel_min_trade = safe_float(get_min_trade_vol().toStdString());
+            t_float_50  price_f = is_selected_order ? safe_float(m_preffered_order->at("price").get<std::string>()) : safe_float(m_price.toStdString());
+            t_float_50  cur_base_min_trade = cur_rel_min_trade * price_f;
+            std::string result             = cur_base_min_trade.str(50, std::ios_base::fixed);
+            boost::trim_right_if(result, boost::is_any_of("0"));
+            boost::trim_right_if(result, boost::is_any_of("."));
+            SPDLOG_INFO("base_min_vol: [{}]", result);
+            return QString::fromStdString(result);
         }
     }
 } // namespace atomic_dex
