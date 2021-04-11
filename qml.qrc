@@ -461,5 +461,6 @@
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
         <file>atomic_defi_design/qml/Portfolio/SmartChartView.qml</file>
         <file>atomic_defi_design/qml/Portfolio/ChartJs.qml</file>
+        <file>atomic_defi_design/qml/Portfolio/ChartJs.js</file>
     </qresource>
 </RCC>
