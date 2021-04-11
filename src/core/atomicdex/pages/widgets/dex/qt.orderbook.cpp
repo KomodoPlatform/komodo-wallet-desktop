@@ -171,20 +171,19 @@ namespace atomic_dex
     QString
     qt_orderbook_wrapper::get_base_min_taker_vol() const
     {
-        return m_base_min_taker_vol;
+        return m_base_min_taker_vol.isEmpty() ? "0" : m_base_min_taker_vol;
     }
 
     QString
     qt_orderbook_wrapper::get_rel_min_taker_vol() const
     {
-        return m_rel_min_taker_vol;
+        return m_rel_min_taker_vol.isEmpty() ? "0" : m_rel_min_taker_vol;
     }
 
     QString
     qt_orderbook_wrapper::get_current_min_taker_vol() const
     {
-        bool is_buy         = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
-        QString taker_vol = is_buy ? get_rel_min_taker_vol() : get_base_min_taker_vol();
-        return taker_vol.isEmpty() ? "0" : taker_vol;
+        bool is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
+        return is_buy ? get_rel_min_taker_vol() : get_base_min_taker_vol();
     }
 } // namespace atomic_dex
