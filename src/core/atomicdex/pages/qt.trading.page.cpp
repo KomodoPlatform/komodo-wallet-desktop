@@ -433,9 +433,13 @@ namespace atomic_dex
                     }
                     else
                     {
-                        this->determine_max_volume();
-                        if (m_market_mode == MarketMode::Buy)
+                        const auto base_max_taker_vol =
+                            safe_float(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                        const auto rel_max_taker_vol =
+                            safe_float(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                        if (m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0)
                         {
+                            this->determine_max_volume();
                             t_float_50 min_vol_f = safe_float(wrapper->get_rel_min_taker_vol().toStdString());
                             if (safe_float(get_volume().toStdString()) <= min_vol_f)
                             {
@@ -447,8 +451,9 @@ namespace atomic_dex
                                 this->set_min_trade_vol(wrapper->get_rel_min_taker_vol());
                             }
                         }
-                        else
+                        else if (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0)
                         {
+                            this->determine_max_volume();
                             t_float_50 min_vol_f = safe_float(wrapper->get_base_min_taker_vol().toStdString());
                             if (safe_float(get_volume().toStdString()) <= min_vol_f)
                             {
