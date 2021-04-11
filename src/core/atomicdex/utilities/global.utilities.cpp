@@ -172,7 +172,7 @@ namespace atomic_dex::utils
         return fs_cfg_path;
     }
 
-    std::string
+    /*std::string
     minimal_trade_amount_str()
     {
         return "0.00777";
@@ -182,7 +182,7 @@ namespace atomic_dex::utils
     minimal_trade_amount()
     {
         return t_float_50(minimal_trade_amount_str());
-    }
+    }*/
 
     fs::path
     get_atomic_dex_export_folder()

@@ -704,33 +704,45 @@ namespace atomic_dex
 
         auto answer_functor = [this, is_a_reset, base = base, rel = rel](web::http::http_response resp)
         {
-          auto answer = ::mm2::api::basic_batch_answer(resp);
-          if (answer.is_array())
-          {
-              auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
+            auto answer = ::mm2::api::basic_batch_answer(resp);
+            if (answer.is_array())
+            {
+                auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
 
-              if (orderbook_answer.rpc_result_code == 200)
-              {
-                  m_orderbook = orderbook_answer;
-                  this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
-              }
+                auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
+                if (base_max_taker_vol_answer.rpc_result_code == 200)
+                {
+                    this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
+                    t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                    this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
+                }
 
-              auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
-              if (base_max_taker_vol_answer.rpc_result_code == 200)
-              {
-                  this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
-                  t_float_50 base_res                       = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                  this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-              }
+                auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
+                if (rel_max_taker_vol_answer.rpc_result_code == 200)
+                {
+                    this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
+                    t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                    this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
+                }
 
-              auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
-              if (rel_max_taker_vol_answer.rpc_result_code == 200)
-              {
-                  this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
-                  t_float_50 rel_res                         = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
-                  this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
-              }
-          }
+                auto base_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
+                if (base_min_taker_vol_answer.rpc_result_code == 200)
+                {
+                    m_synchronized_min_taker_vol->first = base_min_taker_vol_answer.result.value();
+                }
+
+                auto rel_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
+                if (rel_min_taker_vol_answer.rpc_result_code == 200)
+                {
+                    m_synchronized_min_taker_vol->second = rel_min_taker_vol_answer.result.value();
+                }
+
+                if (orderbook_answer.rpc_result_code == 200)
+                {
+                    m_orderbook = orderbook_answer;
+                    this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+                }
+            }
         };
 
         m_mm2_client.async_rpc_batch_standalone(batch)
@@ -1190,6 +1202,12 @@ namespace atomic_dex
     mm2_service::get_taker_vol() const
     {
         return m_synchronized_max_taker_vol.get();
+    }
+
+    mm2_service::t_pair_min_vol
+    mm2_service::get_min_vol() const
+    {
+        return m_synchronized_min_taker_vol.get();
     }
 
     bool

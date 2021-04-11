@@ -20,6 +20,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
@@ -51,9 +52,9 @@ namespace
     {
         for (auto&& cur_event: events)
         {
-            if (std::any_of(std::begin(error_events), std::end(error_events), [&cur_event](auto&& error_str) {
-                    return cur_event.at("state").get<std::string>() == error_str.toStdString();
-                }))
+            if (std::any_of(
+                    std::begin(error_events), std::end(error_events),
+                    [&cur_event](auto&& error_str) { return cur_event.at("state").get<std::string>() == error_str.toStdString(); }))
             {
                 //! It's an error
                 if (cur_event.contains("data") && cur_event.at("data").contains("error"))
@@ -94,9 +95,9 @@ namespace
             for (auto&& cur_event: events)
             {
                 if (cur_event.contains("data") && cur_event.at("data").contains("error") &&
-                    std::any_of(std::begin(error_events), std::end(error_events), [&cur_event](auto&& error_str) {
-                        return cur_event.at("state").get<std::string>() == error_str.toStdString();
-                    }))
+                    std::any_of(
+                        std::begin(error_events), std::end(error_events),
+                        [&cur_event](auto&& error_str) { return cur_event.at("state").get<std::string>() == error_str.toStdString(); }))
                 {
                     status = "failed";
                 }
@@ -457,7 +458,8 @@ namespace mm2::api
     {
         // answer.orders.reserve(j.at("result").at("maker_orders").size() + j.at("result").at("taker_orders").size());
 
-        auto filler_functor = [&answer](const std::string& key, const nlohmann::json& value, bool is_maker) {
+        auto filler_functor = [&answer](const std::string& key, const nlohmann::json& value, bool is_maker)
+        {
             using namespace date;
             const auto time_key = value.at("created_at").get<std::size_t>();
 
@@ -467,15 +469,15 @@ namespace mm2::api
                 value.at("request").at("action").get_to(action);
             }
             using namespace atomic_dex;
-            const auto price       = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0";
-            const auto base_coin   = is_maker ? QString::fromStdString(value.at("base").get<std::string>())
-                                              : QString::fromStdString(value.at("request").at("base").get<std::string>());
-            const auto rel_coin    = is_maker ? QString::fromStdString(value.at("rel").get<std::string>())
-                                              : QString::fromStdString(value.at("request").at("rel").get<std::string>());
-            const auto base_amount = is_maker ? QString::fromStdString(value.at("available_amount").get<std::string>())
-                                              : QString::fromStdString(value.at("request").at("base_amount").get<std::string>());
-            const auto rel_amount  = is_maker ? QString::fromStdString((safe_float(price) * safe_float(base_amount.toStdString())).convert_to<std::string>())
-                                              : QString::fromStdString(value.at("request").at("rel_amount").get<std::string>());
+            const auto     price       = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0";
+            const auto     base_coin   = is_maker ? QString::fromStdString(value.at("base").get<std::string>())
+                                                  : QString::fromStdString(value.at("request").at("base").get<std::string>());
+            const auto     rel_coin    = is_maker ? QString::fromStdString(value.at("rel").get<std::string>())
+                                                  : QString::fromStdString(value.at("request").at("rel").get<std::string>());
+            const auto     base_amount = is_maker ? QString::fromStdString(value.at("available_amount").get<std::string>())
+                                                  : QString::fromStdString(value.at("request").at("base_amount").get<std::string>());
+            const auto     rel_amount = is_maker ? QString::fromStdString((safe_float(price) * safe_float(base_amount.toStdString())).convert_to<std::string>())
+                                                 : QString::fromStdString(value.at("request").at("rel_amount").get<std::string>());
             nlohmann::json conf_settings = is_maker ? value.at("conf_settings") : nlohmann::json();
             order_swaps_data contents{
                 .is_maker       = is_maker,
@@ -630,8 +632,9 @@ namespace mm2::api
             std::string           human_date = atomic_dex::utils::to_human_date<std::chrono::seconds>(timestamp / 1000, "%F    %H:%M:%S");
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
-            auto rate_bundler = [&event_timestamp_registry,
-                                 &total_time_in_ms](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
+            auto rate_bundler =
+                [&event_timestamp_registry, &total_time_in_ms](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event)
+            {
                 if (event_timestamp_registry.count(previous_event) != 0)
                 {
                     std::int64_t ts                               = event_timestamp_registry.at(previous_event);
@@ -803,7 +806,8 @@ namespace mm2::api
     {
         kmd_rewards_info_answer out;
         out.result                                       = result;
-        auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
+        auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field)
+        {
             if (obj.contains(field))
             {
                 auto obj_timestamp         = obj.at(field).get<std::size_t>();
@@ -894,6 +898,7 @@ namespace mm2::api
     template mm2::api::orderbook_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::api::trade_fee_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::min_volume_answer      rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
