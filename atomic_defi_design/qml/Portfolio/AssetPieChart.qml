@@ -69,6 +69,7 @@ Item {
             theme: ChartView.ChartView.ChartThemeLight
             antialiasing: true
             legend.visible: false
+            smooth: true
             scale: portfolio.isUltraLarge? 1: 0.6
             Behavior on scale {
                 NumberAnimation {

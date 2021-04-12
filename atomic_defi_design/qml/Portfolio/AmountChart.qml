@@ -20,7 +20,6 @@ InnerBackground {
     property bool isProgress: true
     function drawChart() {
         areaLine.clear()
-        areaLine2.clear()
         areaLine3.clear()
         scatter.clear()
 
@@ -31,7 +30,6 @@ InnerBackground {
             let el = API.app.portfolio_pg.charts[ii]
             try {
                 areaLine3.append(el.timestamp*1000, parseFloat(el.total))
-                areaLine2.append(el.timestamp*1000, parseFloat(el.total))
                 areaLine.append(el.timestamp*1000, parseFloat(el.total))
                 scatter.append(el.timestamp*1000, parseFloat(el.total))
             }catch(e) {}
@@ -167,25 +165,6 @@ InnerBackground {
                 }
 
             }
-            SplineSeries {
-                id: areaLine2
-                visible: isSpline
-                color: theme.accentColor
-                axisY: ValueAxis {
-                    visible: false
-                    max:  parseFloat(API.app.portfolio_pg.max_total_chart)
-                    min:  parseFloat(API.app.portfolio_pg.min_total_chart)
-                }
-                axisX: DateTimeAxis {
-                    visible: false
-                    id: dateA3
-                    min: dateA.min
-                    max: dateA.max
-                    gridVisible: false
-                    lineVisible: false
-                    format: "MMM d"
-                }
-            }
             LineSeries {
                 id: areaLine3
                 color: theme.accentColor
@@ -209,7 +188,7 @@ InnerBackground {
                 visible: true
                 color: theme.accentColor
                 borderColor: theme.accentColor
-                markerSize: 10
+                markerSize: 7
                 borderWidth: 3
 
                 onHovered: {
@@ -280,7 +259,7 @@ InnerBackground {
                     layoutDirection: Qt.RightToLeft
 
                     Qaterial.OutlineButton {
-                        text: "1Y"
+                        text: "YTD"
                         outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
                         onClicked: {
                             API.app.portfolio_pg.chart_category = WalletChartsCategories.Ytd
@@ -303,30 +282,6 @@ InnerBackground {
                         enabled: false
                         outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? theme.accentColor : theme.backgroundColor
                         onClicked: API.app.portfolio_pg.chart_category = 0
-                    }
-                }
-            }
-            FloatingBackground {
-                width: rdd.width+10
-                height: 50
-
-                Row {
-                    id: rdd
-                    anchors.verticalCenter: parent.verticalCenter
-                    x: 5
-                    Qaterial.OutlineButton {
-                        text: "Line"
-                        icon.source: Qaterial.Icons.chartLineVariant
-                        outlinedColor: !isSpline? theme.accentColor : theme.backgroundColor
-                        onClicked: {
-                            isSpline = false
-                        }
-                    }
-                    Qaterial.OutlineButton {
-                        text: "Spline"
-                        icon.source: Qaterial.Icons.chartBellCurveCumulative
-                        outlinedColor: isSpline? theme.accentColor : theme.backgroundColor
-                        onClicked: isSpline = true
                     }
                 }
             }
