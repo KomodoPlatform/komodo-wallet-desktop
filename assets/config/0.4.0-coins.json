@@ -174,6 +174,27 @@
       "active": false,
       "currently_enabled": false
   },
+  "AUR": {
+    "coin": "AUR",
+    "name": "Auroracoin",
+    "coinpaprika_id": "aur-auroracoin",
+    "coingecko_id": "auroracoin",
+    "electrum": [
+      {
+        "url": "lenoir.ecoincore.com:12343",
+        "protocol": "SSL",
+        "disable_cert_verification": false
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/aur/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "AVAX-BEP20": {
       "coin": "AVAX-BEP20",
       "name": "Avalanche",

@@ -138,7 +138,14 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::refresh_best_orders()
     {
-        this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
+        if (safe_float(m_system_manager.get_system<trading_page>().get_volume().toStdString()) > 0)
+        {
+            this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
+        }
+        else
+        {
+            get_best_orders()->clear_orderbook();
+        }
     }
 
     void
@@ -184,6 +191,9 @@ namespace atomic_dex
     qt_orderbook_wrapper::get_current_min_taker_vol() const
     {
         bool is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
-        return is_buy ? get_rel_min_taker_vol() : get_base_min_taker_vol();
+        t_float_50 volume = is_buy ? safe_float(get_rel_min_taker_vol().toStdString()) : safe_float(get_base_min_taker_vol().toStdString());
+        t_float_50 price = safe_float(m_system_manager.get_system<trading_page>().get_price().toStdString());
+        t_float_50 threshold = volume * price;
+        return QString::fromStdString(utils::format_float(threshold));
     }
 } // namespace atomic_dex
