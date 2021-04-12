@@ -180,11 +180,6 @@ Rectangle {
         visible: false
     }
 
-    UpdateNotificationLine {
-        anchors.top: parent.top
-        anchors.right: parent.right
-    }
-
     // Fatal Error Modal
     FatalErrorModal {
         id: fatal_error_modal

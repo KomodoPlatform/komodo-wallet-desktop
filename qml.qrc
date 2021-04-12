@@ -364,8 +364,6 @@
         <file>atomic_defi_design/qml/Components/TitleText.qml</file>
         <file>atomic_defi_design/qml/Components/Toast.qml</file>
         <file>atomic_defi_design/qml/Components/ToastManager.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>
         <file>atomic_defi_design/qml/Components/WalletNameField.qml</file>
