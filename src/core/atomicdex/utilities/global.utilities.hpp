@@ -57,7 +57,7 @@ namespace atomic_dex::utils
         }
     }
 
-    fs::path get_atomic_dex_data_folder();
+    ENTT_API fs::path get_atomic_dex_data_folder();
 
     /// \brief  Gets the path where addressbook configs are stored.
     /// \return An fs::path object.
@@ -76,9 +76,9 @@ namespace atomic_dex::utils
 
     fs::path get_atomic_dex_config_folder();
 
-    std::string minimal_trade_amount_str();
+    //std::string minimal_trade_amount_str();
 
-    const t_float_50 minimal_trade_amount();
+    //const t_float_50 minimal_trade_amount();
 
     fs::path get_atomic_dex_export_folder();
 

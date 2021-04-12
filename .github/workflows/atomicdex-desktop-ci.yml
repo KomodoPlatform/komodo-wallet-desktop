@@ -205,6 +205,8 @@ jobs:
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
+          export APPLE_ID="${{ secrets.APPLE_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           cd ci_tools_atomic_dex
@@ -237,10 +239,10 @@ jobs:
           ./ci_tools_atomic_dex tests release
           cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
           cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
-          curl https://report.ci/upload.py --output upload.py
+          #curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
-          echo "Uploading tests on Linux finished"
+          #python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+          #echo "Uploading tests on Linux finished"
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
@@ -255,10 +257,10 @@ jobs:
           ./ci_tools_atomic_dex tests ${{ matrix.type }}
           cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
           cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
-          curl https://report.ci/upload.py --output upload.py
+          #curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.type }}]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
-          echo "Uploading tests on OSX finished"
+          #python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.type }}]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+          #echo "Uploading tests on OSX finished"
 
       - name: Running Tests (Windows)
         shell: powershell
@@ -272,8 +274,8 @@ jobs:
           cd build-Release
           cd bin
           ls
-          Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
-          python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+          #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
+          #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
 
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'

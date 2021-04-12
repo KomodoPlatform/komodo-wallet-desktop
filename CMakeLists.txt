@@ -21,6 +21,24 @@ include(ipo_prerequisites)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 option(WITH_HOTRELOAD "Enable to use qml Hot reload" OFF)
 
+if (NOT WITH_HOTRELOAD)
+    message(STATUS "Hot Reload is not active download SortFilterProxyModel")
+    include(FetchContent)
+
+    set(SFPM_REPOSITORY "https://github.com/OlivierLDff/SortFilterProxyModel.git" CACHE STRING "SortFilterProxyModel repository url")
+    set(SFPM_TAG master CACHE STRING "SortFilterProxyModel git tag")
+
+    FetchContent_Declare(
+            SortFilterProxyModel
+            GIT_REPOSITORY ${SFPM_REPOSITORY}
+            GIT_TAG        ${SFPM_TAG}
+            GIT_SHALLOW    1
+    )
+
+    set(SFPM_FOLDER_PREFIX "Dependencies" CACHE STRING "Prefix folder for all SortFilterProxyModel generated targets in generated project (only decorative)")
+    FetchContent_MakeAvailable(SortFilterProxyModel)
+endif()
+
 ##! Antara
 include(antara)
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
@@ -43,16 +61,16 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3226/mm2-fdc44f512-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3329/mm2-dd24de2a5-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3226/mm2-fdc44f512-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3329/mm2-dd24de2a5-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3226/mm2-fdc44f512-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3329/mm2-dd24de2a5-Windows_NT-Release.zip)
 endif ()
 
-FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
+FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
 
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)

@@ -39,6 +39,7 @@
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
@@ -53,13 +54,13 @@ namespace atomic_dex
     void
     atomic_dex::application::change_state([[maybe_unused]] int visibility)
     {
-#ifdef __APPLE__
+/*#ifdef __APPLE__
         {
             QWindowList windows = QGuiApplication::allWindows();
             auto        win     = windows.first();
             atomic_dex::mac_window_setup(win->winId(), visibility == QWindow::FullScreen);
         }
-#endif
+#endif*/
     }
 
     bool
@@ -88,10 +89,11 @@ namespace atomic_dex
         QString     primary_coin   = QString::fromStdString(g_primary_dex_coin);
         QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
         QStringList coins_copy;
-
+        const auto& mm2 = system_manager_.get_system<mm2_service>();
         for (auto&& coin: coins)
         {
-            bool has_parent_fees = system_manager_.get_system<mm2_service>().get_coin_info(coin.toStdString()).has_parent_fees_ticker;
+            const auto coin_info       = mm2.get_coin_info(coin.toStdString());
+            bool       has_parent_fees = coin_info.has_parent_fees_ticker;
             if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
                 if (has_parent_fees)
@@ -203,6 +205,10 @@ namespace atomic_dex
                     system_manager_.get_system<qt_wallet_manager>().set_status("complete");
                 }
                 this->dispatcher_.trigger<update_portfolio_values>();
+                if (system_manager_.has_system<coingecko_wallet_charts_service>())
+                {
+                    system_manager_.get_system<coingecko_wallet_charts_service>().manual_refresh("tick");
+                }
             }
         }
 
@@ -270,6 +276,8 @@ namespace atomic_dex
         {
             SPDLOG_WARN("AutomaticUpdateOrderBot is false, ignoring the service");
         }
+        auto category_chart = static_cast<WalletChartsCategories>(settings.value("WalletChartsCategory", 2).toInt());
+        system_manager_.get_system<portfolio_page>().set_chart_category(category_chart);
     }
 
     application::application(QObject* pParent) : QObject(pParent)
@@ -305,6 +313,7 @@ namespace atomic_dex
         system_manager_.create_system<band_oracle_price_service>();
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<coingecko_provider>(system_manager_);
+        system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<update_service_checker>(this);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
@@ -325,7 +334,7 @@ namespace atomic_dex
         //! This event is called when a call is enabled and cex provider finished fetch data
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+            SPDLOG_DEBUG("on_coin_fully_initialized_event");
 #if !defined(_WIN32)
             for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
 #else
@@ -511,13 +520,15 @@ namespace atomic_dex
     void
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt)
     {
-        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+        SPDLOG_DEBUG("on_ticker_balance_updated_event");
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             if (not evt.tickers.empty())
             {
-                get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers);
-                this->dispatcher_.trigger<update_portfolio_values>(false);
+                if (get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers))
+                {
+                    this->dispatcher_.trigger<update_portfolio_values>(false);
+                }
             }
         }
     }

@@ -33,6 +33,29 @@
       "active": false,
       "currently_enabled": false
   },
+  "ABY": {
+    "coin": "ABY",
+    "name": "ArtByte",
+    "coinpaprika_id": "aby-artbyte",
+    "coingecko_id": "artbyte",
+    "electrum": [
+      {
+        "url": "electrumx.aby.ewmcx.biz:50001"
+      },
+      {
+        "url": "failover.aby.ewmcx.biz:50001"
+      },
+      {
+        "url": "161.97.142.60:50001"
+      }
+    ],
+    "explorer_url": [
+      "http://aby-explorer.ewmcx.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "ADA-BEP20": {
       "coin": "ADA-BEP20",
       "name": "Cardano",
@@ -151,6 +174,27 @@
       "active": false,
       "currently_enabled": false
   },
+  "AUR": {
+    "coin": "AUR",
+    "name": "Auroracoin",
+    "coinpaprika_id": "aur-auroracoin",
+    "coingecko_id": "auroracoin",
+    "electrum": [
+      {
+        "url": "lenoir.ecoincore.com:12343",
+        "protocol": "SSL",
+        "disable_cert_verification": false
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/aur/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "AVAX-BEP20": {
       "coin": "AVAX-BEP20",
       "name": "Avalanche",
@@ -262,7 +306,7 @@
   "BLK": {
     "coin": "BLK",
     "name": "BlackCoin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "blk-blackcoin",
     "coingecko_id": "blackcoin",
     "electrum": [
       {
@@ -317,6 +361,23 @@
       "type": "ERC-20",
       "active": false,
       "currently_enabled": false
+  },
+  "BSTY": {
+    "coin": "BSTY",
+    "name": "GlobalBoost-Y",
+    "coinpaprika_id": "bsty-globalboost-y",
+    "coingecko_id": "globalboost",
+    "electrum": [
+      {
+        "url": "66.172.33.175:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://insight.globalboost.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
   },
   "BTC": {
     "coin": "BTC",
@@ -546,6 +607,57 @@
     "active": false,
     "currently_enabled": false
   },
+  "CDN": {
+    "coin": "CDN",
+    "name": "Canada eCoin",
+    "coinpaprika_id": "cdn-canada-ecoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "mumbai.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "holland.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "oakland.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "miami.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "seattle.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "chicago.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "lenoir.ecoincore.com:34333",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/cdn/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",
@@ -725,6 +837,34 @@
     ],
     "type": "UTXO"
   },
+  "DGC": {
+    "coin": "DGC",
+    "name": "Digitalcoin",
+    "coinpaprika_id": "dgc-digitalcoin",
+    "coingecko_id": "digitalcoin",
+    "electrum": [
+      {
+        "url": "electrumx.dgc.ewmcx.org:50001"
+      },
+      {
+        "url": "78.57.248.53:50001"
+      },
+      {
+        "url": "62.171.190.3:50001"
+      },
+      {
+        "url": "failover.dgc.ewmcx.biz:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/dgc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "DODO-BEP20": {
       "coin": "DODO-BEP20",
       "name": "DODO",
@@ -835,6 +975,32 @@
     "explorer_url": [
       "https://eca.ccore.online/"
     ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "EFL": {
+    "coin": "EFL",
+    "name": "e-Gulden",
+    "coinpaprika_id": "efl-e-gulden",
+    "coingecko_id": "electronicgulden",
+    "electrum": [
+      {
+        "url": "holland.ecoincore.com:11017",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "lenoir.ecoincore.com:11017",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/efl/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
@@ -991,6 +1157,29 @@
   },
   "GLEEC": {
     "coin": "GLEEC",
+    "name": "Gleec",
+    "coinpaprika_id": "gleec-gleec-coin",
+    "coingecko_id": "gleec-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10022"
+      },
+      {
+        "url": "electrum2.cipig.net:10022"
+      },
+      {
+        "url": "electrum3.cipig.net:10022"
+      }
+    ],
+    "explorer_url": [
+      "https://gleec.explorer.dexstats.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "GLEEC-OLD": {
+    "coin": "GLEEC-OLD",
     "name": "Gleec",
     "coinpaprika_id": "gleec-gleec-coin",
     "coingecko_id": "gleec-coin",
@@ -1385,6 +1574,29 @@
       "active": false,
       "currently_enabled": false
   },
+  "UIS": {
+    "coin": "UIS",
+    "name": "Unitus",
+    "coinpaprika_id": "uis-unitus",
+    "coingecko_id": "unitus",
+    "electrum": [
+      {
+        "url": "failover.trc-uis.ewmcx.biz:50001"
+      },
+      {
+        "url": "electrumx.uis.ewmcx.info:50001"
+      },
+      {
+        "url": "164.68.110.226:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.unitus.network/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "USDC-BEP20": {
       "coin": "USDC-BEP20",
       "name": "USD Coin",
@@ -1452,6 +1664,23 @@
     ],
     "type": "ERC-20",
     "name": "Atomic Wallet Coin"
+  },
+  "JRT-ERC20": {
+    "coin": "JRT-ERC20",
+    "name": "Jarvis Reward Token",
+    "coinpaprika_id": "jrt-jarvis-reward-token",
+    "coingecko_id": "jarvis-reward-token",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
   },
   "BAT-ERC20": {
     "coin": "BAT-ERC20",
@@ -2273,6 +2502,31 @@
     "active": false,
     "currently_enabled": false
   },
+  "TRC": {
+    "coin": "TRC",
+    "name": "Terracoin",
+    "coinpaprika_id": "trc-terracoin",
+    "coingecko_id": "terracoin",
+    "electrum": [
+      {
+        "url": "failover.trc-uis.ewmcx.biz:50005"
+      },
+      {
+        "url": "electrum.terracoin.io:50001"
+      },
+      {
+        "url": "electrum.southofheaven.ca:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/trc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "VRA": {
     "coin": "VRA",
     "name": "Verasity",
@@ -2546,6 +2800,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "ZET": {
+    "coin": "ZET",
+    "name": "Zetacoin",
+    "coinpaprika_id": "zet-zetacoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "164.68.110.224:50001"
+      },
+      {
+        "url": "failover.zet.ewmci.xyz:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/zet/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "ZIL-BEP20": {
       "coin": "ZIL-BEP20",
       "name": "Zilliqa",
@@ -2586,8 +2862,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "tBTC": {
-    "coin": "tBTC",
+  "tBTC-TEST": {
+    "coin": "tBTC-TEST",
     "name": "tBTC (testnet)",
     "is_testnet": true,
     "coingecko_id": "test-coin",
@@ -2617,38 +2893,6 @@
   "ETHR": {
     "coin": "ETHR",
     "name": "ETHR (testnet)",
-    "is_testnet": true,
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "http://eth-ropsten.cipig.net:8645"
-    ],
-    "explorer_url": [
-      "https://ropsten.etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "JST": {
-    "coin": "JST",
-    "name": "JST (testnet)",
-    "is_testnet": true,
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "http://eth-ropsten.cipig.net:8645"
-    ],
-    "explorer_url": [
-      "https://ropsten.etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "DEC8": {
-    "coin": "DEC8",
-    "name": "DEC8 (testnet)",
     "is_testnet": true,
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
@@ -3302,23 +3546,6 @@
   "name": "Melon Token",
   "coinpaprika_id": "mln-melon",
   "coingecko_id": "melon",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "NPXS": {
-  "coin": "NPXS",
-  "name": "Pundi X Token",
-  "coinpaprika_id": "npxs-pundi-x",
-  "coingecko_id": "pundi-x",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",

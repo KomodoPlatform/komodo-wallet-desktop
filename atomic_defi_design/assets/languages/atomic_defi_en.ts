@@ -2099,43 +2099,53 @@
 <context>
     <name>Portfolio</name>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="87"/>
-        <source>TOTAL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="144"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="639"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="160"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="618"/>
         <source>Show only coins with balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="191"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="498"/>
+        <source>Assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="679"/>
         <source>Asset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="203"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="691"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="215"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="703"/>
         <source>Change 24h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="227"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="715"/>
         <source>Trend 7d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="239"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="727"/>
         <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="933"/>
+        <source>Portfolio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="951"/>
+        <source>Add asset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2640,6 +2650,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="150"/>
         <source>Enable Desktop Notifications</source>
         <translation type="unfinished"></translation>
@@ -2672,6 +2687,21 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="266"/>
         <source>Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="414"/>
+        <source>Application version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="428"/>
+        <source>MM2 version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="442"/>
+        <source>Qt version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2843,6 +2873,19 @@
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="84"/>
         <source>Coming soon !</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmartChartView</name>
+    <message>
+        <location filename="../../qml/Portfolio/SmartChartView.qml" line="125"/>
+        <source>Loading market data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Portfolio/SmartChartView.qml" line="131"/>
+        <source>There is no chart data for this ticker yet</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

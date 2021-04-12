@@ -8,6 +8,6 @@ InnerShadow {
     verticalOffset: 0.7
     radius: 13
     samples: 32
-    color: Style.colorInnerShadow
+    color: theme.innerShadowColor
     smooth: true
 }

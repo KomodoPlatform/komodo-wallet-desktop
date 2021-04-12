@@ -7,8 +7,11 @@ brew install autoconf \
             wget \
             nim \
             ninja \
-            gnu-sed
+            gnu-sed \
+            coreutils \
+            gnu-getopt
 
+pip3 install yq
 export CC=clang
 export CXX=clang++
 export MACOSX_DEPLOYMENT_TARGET=10.14

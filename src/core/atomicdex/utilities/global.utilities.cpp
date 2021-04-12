@@ -86,6 +86,8 @@ namespace atomic_dex::utils
         fs::path appdata_path;
 #if defined(_WIN32) || defined(WIN32)
         appdata_path = fs::path(std::getenv("APPDATA")) / "atomic_qt";
+#elif defined(__APPLE__)
+        appdata_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / "AtomicDex Desktop";
 #else
         appdata_path = fs::path(std::getenv("HOME")) / ".atomic_qt";
 #endif
@@ -98,7 +100,7 @@ namespace atomic_dex::utils
 #if defined(PREFER_BOOST_FILESYSTEM)
         return p.string();
 #else
-        auto res     = p.u8string();
+        auto res = p.u8string();
 
         auto functor = [](auto&& r) {
             if constexpr (std::is_same_v<std::remove_cvref_t<decltype(r)>, std::string>)
@@ -123,7 +125,7 @@ namespace atomic_dex::utils
     }
 
     fs::path
-    get_runtime_coins_path() 
+    get_runtime_coins_path()
     {
         const auto fs_coins_path = get_atomic_dex_data_folder() / "custom_coins_icons";
         create_if_doesnt_exist(fs_coins_path);
@@ -131,7 +133,7 @@ namespace atomic_dex::utils
     }
 
     fs::path
-    get_atomic_dex_logs_folder() 
+    get_atomic_dex_logs_folder()
     {
         const auto fs_logs_path = get_atomic_dex_data_folder() / "logs";
         create_if_doesnt_exist(fs_logs_path);
@@ -170,7 +172,7 @@ namespace atomic_dex::utils
         return fs_cfg_path;
     }
 
-    std::string
+    /*std::string
     minimal_trade_amount_str()
     {
         return "0.00777";
@@ -180,7 +182,7 @@ namespace atomic_dex::utils
     minimal_trade_amount()
     {
         return t_float_50(minimal_trade_amount_str());
-    }
+    }*/
 
     fs::path
     get_atomic_dex_export_folder()

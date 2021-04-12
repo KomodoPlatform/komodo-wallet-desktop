@@ -10,6 +10,8 @@
 #    include <boost/stacktrace.hpp>
 #endif
 
+#include <boost/algorithm/string/replace.hpp>
+
 #include "atomicdex/utilities/safe.float.hpp"
 
 t_float_50
@@ -17,7 +19,7 @@ safe_float(const std::string& from)
 {
     try
     {
-        t_float_50 out(from);
+        t_float_50 out(boost::algorithm::replace_all_copy(from, ",", "."));
         return out;
     }
     catch (const std::exception& error)

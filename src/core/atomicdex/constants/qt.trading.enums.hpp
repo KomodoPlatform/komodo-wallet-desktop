@@ -50,16 +50,13 @@ namespace atomic_dex
       public:
         enum TradingErrorEnum
         {
-            None                         = 0,
-            TradingFeesNotEnoughFunds    = 1, ///< If trading_fee_ticker != transaction_fee_ticker this error can happens BAT <-> ETH (not enough BAT)
-            TotalFeesNotEnoughFunds      = 2, ///< KMD <-> BTC (not enough KMD), ETH<->BAT (not enough ETH)
-            BaseTransactionFeesNotEnough = 3, ///< If trading_fee_ticker != transaction_fee_ticker this error can happens BAT <-> ETH (not enough ETH)
-            RelTransactionFeesNotEnough  = 4, ///< KMD <-> ETH (not enough ETH)
-            BalanceIsLessThanTheMinimalTradingAmount = 5, ///< max_trading_vol < 0.00777
-            PriceFieldNotFilled                      = 6, ///< Price empty or 0
-            VolumeFieldNotFilled                     = 7, ///< Volume empty or 0
-            VolumeIsLowerThanTheMinimum              = 8, ///< Volume field < 0.00777
-            ReceiveVolumeIsLowerThanTheMinimum       = 9
+            None                                     = 0,
+            TotalFeesNotEnoughFunds                  = 1, ///< Not enough to pay any kind of fees
+            BalanceIsLessThanTheMinimalTradingAmount = 2, ///< max_trading_vol < 0.00777
+            PriceFieldNotFilled                      = 3, ///< Price empty or 0
+            VolumeFieldNotFilled                     = 4, ///< Volume empty or 0
+            VolumeIsLowerThanTheMinimum              = 5, ///< Volume field < 0.00777
+            ReceiveVolumeIsLowerThanTheMinimum       = 6
         };
 
         Q_ENUM(TradingErrorEnum)
