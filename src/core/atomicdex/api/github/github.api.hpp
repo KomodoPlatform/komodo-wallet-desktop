@@ -1,10 +1,10 @@
 #pragma once
 
-// Std headers
+//! Std
 #include <string> //> std::string
 #include <vector> //> std::vector
 
-// Project headers
+//! Project
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace atomic_dex::github_api

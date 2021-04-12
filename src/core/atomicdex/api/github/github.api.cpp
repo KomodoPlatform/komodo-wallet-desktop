@@ -1,9 +1,8 @@
-// Deps headers
+//! 3rdParty
 #include <nlohmann/json.hpp>
 
-// Project headers
+//! Project
 #include "github.api.hpp"
-#include "atomicdex/utilities/cpprestsdk.utilities.hpp" //> download_file()
 
 namespace atomic_dex::github_api
 {
@@ -51,7 +50,6 @@ namespace atomic_dex::github_api
     
     std::vector<repository_release> get_repository_releases_from_http_response(const web::http::http_response& resp)
     {
-        
         std::vector<repository_release> result{};
         const auto json_answer = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
         
