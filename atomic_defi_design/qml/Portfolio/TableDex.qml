@@ -102,9 +102,20 @@ Item {
                         id: trend_7d_header
                         icon_at_left: false
                         anchors.verticalCenter: parent.verticalCenter
-
-                        text: qsTr("Trend 7d")
+                        DefaultText {
+                            //text: qsTr("Trend 7d")
+                            //anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter: parent.horizontalCenter
+                        }
+                        //text: qsTr("Trend 7d")
                         sort_type: sort_by_trend
+                    }
+                    DefaultText {
+                        text: qsTr("Trend 7d")
+                        //anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
                 Item {
