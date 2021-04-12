@@ -70,7 +70,7 @@ else ()
             URL http://195.201.0.6/mm2.1-min-volume/mm2-684ad15cb-Windows_NT-Release.zip)
 endif ()
 
-FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
+FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
 
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)

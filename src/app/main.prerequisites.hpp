@@ -318,7 +318,8 @@ check_settings_reconfiguration(const fs::path& path)
 static void
 handle_settings(QSettings& settings)
 {
-    auto create_settings_functor = [&settings](QString settings_name, QVariant value) {
+    auto create_settings_functor = [&settings](QString settings_name, QVariant value)
+    {
         if (!settings.contains(settings_name))
         {
             SPDLOG_INFO("Settings {} doesn't exist yet for this application, creating now", settings_name.toStdString());
@@ -440,7 +441,10 @@ run_app(int argc, char** argv)
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);
-    // qaterial::registerQmlTypes("Qaterial", 1, 0);
+    qaterial::registerQmlTypes("Qaterial", 1, 0);
+    //QQuickStyle::setStyle(QStringLiteral("Qaterial"));
+    // SPDLOG_INFO("{}",  QQuickStyle::ge))
+
     engine.addImportPath("qrc:/atomic_defi_design/imports");
     engine.addImportPath("qrc:/atomic_defi_design/Constants");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
@@ -463,7 +467,8 @@ run_app(int argc, char** argv)
     const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),
-        [url](QObject* obj, const QUrl& objUrl) {
+        [url](QObject* obj, const QUrl& objUrl)
+        {
             if ((obj == nullptr) && url == objUrl)
             {
                 QCoreApplication::exit(-1);
