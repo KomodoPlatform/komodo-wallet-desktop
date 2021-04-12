@@ -1345,12 +1345,6 @@ namespace atomic_dex
             t_float_50  target_price =
                 (m_market_mode == MarketMode::Sell) ? t_float_50(cex_price + (cex_price * percent)) : t_float_50(cex_price - (cex_price * percent));
 
-            // t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (target_price / cex_price)) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1)
-            // : t_float_50(-1)); t_float_50 reversed_price_diff = t_float_50(100) * (t_float_50(1) - ((1 / target_price) / (1 / cex_price))) *
-            // ((m_market_mode == MarketMode::Sell) ? t_float_50(1) : t_float_50(-1)); SPDLOG_INFO("cex price: {}, target_price: {}, price_diff: {}",
-            // utils::format_float(cex_price), utils::format_float(target_price), utils::format_float(price_diff)); SPDLOG_INFO("reversed_cex price: {},
-            // reversed_target_price: {}, reversed_price_diff: {}", utils::format_float(1 / cex_price), utils::format_float(1 / target_price),
-            // utils::format_float(reversed_price_diff));
             this->set_price(QString::fromStdString(utils::format_float(target_price)));
             if (m_market_mode == MarketMode::Buy)
             {
@@ -1382,8 +1376,9 @@ namespace atomic_dex
             t_float_50 price_f = is_selected_order ? safe_float(m_preffered_order->at("price").get<std::string>()) : safe_float(m_price.toStdString());
             if (price_f > 0)
             {
-                t_float_50  cur_base_min_trade = cur_rel_min_trade / price_f;
-                std::string result             = cur_base_min_trade.str(50, std::ios_base::fixed);
+                t_float_50 cur_base_min_trade = cur_rel_min_trade / price_f;
+                cur_base_min_trade += t_float_50("1e-50");
+                std::string result = cur_base_min_trade.str(50, std::ios_base::fixed);
                 boost::trim_right_if(result, boost::is_any_of("0"));
                 boost::trim_right_if(result, boost::is_any_of("."));
                 SPDLOG_INFO("base_min_vol: [{}]", result);

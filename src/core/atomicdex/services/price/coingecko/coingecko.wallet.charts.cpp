@@ -48,7 +48,8 @@ namespace atomic_dex
     void
     coingecko_wallet_charts_service::generate_fiat_chart()
     {
-        auto functor = [this]() {
+        auto functor = [this]()
+        {
             try
             {
                 SPDLOG_INFO("Generate fiat chart");
@@ -100,15 +101,15 @@ namespace atomic_dex
                 std::size_t timestamp            = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
                 out[out.size() - 1]["timestamp"] = timestamp;
                 out[out.size() - 1]["total"]     = m_system_manager.get_system<portfolio_page>().get_balance_fiat_all().toStdString();
-                t_float_50  total                = safe_float(out[out.size() - 1].at("total").get<std::string>());
+                t_float_50 total                 = safe_float(out[out.size() - 1].at("total").get<std::string>());
                 if (total > safe_float(m_max_value))
                 {
                     m_max_value = out[out.size() - 1].at("total").get<std::string>();
                 }
-                t_float_50  wallet_perf_f        = total - first_total;
-                std::string wallet_perf          = utils::format_float(wallet_perf_f);
-                std::string ratio                = utils::format_float(wallet_perf_f / first_total);
-                std::string percent              = utils::format_float((wallet_perf_f / first_total) * 100);
+                t_float_50  wallet_perf_f = total - first_total;
+                std::string wallet_perf   = utils::format_float(wallet_perf_f);
+                std::string ratio         = utils::format_float(wallet_perf_f / first_total);
+                std::string percent       = utils::format_float((wallet_perf_f / first_total) * 100);
                 QJsonObject obj;
                 obj.insert("change", QString::fromStdString(wallet_perf));
                 obj.insert("ratio", QString::fromStdString(ratio));
@@ -119,6 +120,8 @@ namespace atomic_dex
                 obj.insert("all_time_high", QString::fromStdString(m_max_value));
                 obj.insert("nb_elements", qint64(out.size()));
                 m_wallet_performance->insert("wallet_evolution", obj);
+                m_min_value = utils::format_float(safe_float(m_min_value) * 0.9);
+                m_max_value = utils::format_float(safe_float(m_max_value) * 1.1);
                 SPDLOG_INFO("metrics: {}", QString(QJsonDocument(*m_wallet_performance).toJson()).toStdString());
                 m_fiat_charts = std::move(out);
             }
@@ -151,7 +154,8 @@ namespace atomic_dex
         SPDLOG_INFO("fetch charts data of {} {}", cfg.ticker, cfg.coingecko_id);
         std::function<void(WalletChartsCategories, std::string)> market_functor;
 
-        market_functor = [this, cfg, &market_functor](WalletChartsCategories category, std::string days) {
+        market_functor = [this, cfg, &market_functor](WalletChartsCategories category, std::string days)
+        {
             //! 30 days
             {
                 try
@@ -284,8 +288,8 @@ namespace atomic_dex
                 m_executor.wait_for_all();
                 m_taskflow.clear();
                 m_chart_data_registry->clear();
-                m_min_value = "0";
-                m_max_value = "0";
+                m_min_value          = "0";
+                m_max_value          = "0";
                 m_wallet_performance = QJsonObject();
             }
             fetch_all_charts_data();
@@ -306,7 +310,8 @@ namespace atomic_dex
             SPDLOG_WARN("Service is busy, try later");
             return;
         }
-        auto functor = [this]() {
+        auto functor = [this]()
+        {
             try
             {
                 {
