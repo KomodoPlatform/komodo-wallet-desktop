@@ -21,7 +21,6 @@
 #include <csignal>
 
 //! Qt
-#include <QQuickStyle>
 #include <QApplication>
 #include <QDebug>
 #include <QDesktopWidget>
@@ -441,7 +440,6 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
     // Load Qaterial.
 
-    //qDebug() << QQuickStyle::name();
     qaterial::loadQmlResources(false);
     qaterial::registerQmlTypes("Qaterial", 1, 0);
     //QQuickStyle::setStyle(QStringLiteral("Qaterial"));
