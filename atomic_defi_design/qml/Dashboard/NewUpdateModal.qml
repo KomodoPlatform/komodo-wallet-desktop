@@ -17,11 +17,19 @@ BasicModal
     readonly property bool   update_downloading:       self_update_service.update_downloading
     readonly property real   update_download_progress: self_update_service.update_download_progress
     readonly property bool   update_ready:             self_update_service.update_ready
+    property bool            invalid_update_files:     self_update_service.invalid_update_files
 
     // Display the good modal section according to current self update service state
     function select_index()
     {
-        if (update_ready)
+        if (invalid_update_files)
+        {
+            invalid_update_files = false
+            currentIndex = 0
+            close()
+            update_invalid_checksum.open()
+        }
+        else if (update_ready)
         {
             currentIndex = 4
             visible = true
@@ -56,6 +64,7 @@ BasicModal
     onUpdate_neededChanged: select_index()
     onUpdate_downloadingChanged: select_index()
     onUpdate_readyChanged: select_index()
+    onInvalid_update_filesChanged: select_index()
 
     // Section when fetching update
     ModalContent

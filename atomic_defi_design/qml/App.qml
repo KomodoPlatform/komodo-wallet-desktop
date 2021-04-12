@@ -174,6 +174,12 @@ Rectangle {
         visible: false
     }
 
+    UpdateInvalidChecksum
+    {
+        id: update_invalid_checksum
+        visible: false
+    }
+
     UpdateNotificationLine {
         anchors.top: parent.top
         anchors.right: parent.right
