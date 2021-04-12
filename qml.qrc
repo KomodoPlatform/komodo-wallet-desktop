@@ -462,8 +462,6 @@
         <file>atomic_defi_design/qml/Portfolio/PieItem.qml</file>
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
         <file>atomic_defi_design/qml/Portfolio/SmartChartView.qml</file>
-        <file>atomic_defi_design/qml/Portfolio/ChartJs.qml</file>
-        <file>atomic_defi_design/qml/Portfolio/ChartJs.js</file>
         <file>atomic_defi_design/qml/Portfolio/AmountChart.qml</file>
         <file>atomic_defi_design/qml/Portfolio/AssetPieChart.qml</file>
         <file>atomic_defi_design/qml/Portfolio/TableDex.qml</file>
