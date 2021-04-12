@@ -54,13 +54,13 @@ namespace atomic_dex
     void
     atomic_dex::application::change_state([[maybe_unused]] int visibility)
     {
-#ifdef __APPLE__
+/*#ifdef __APPLE__
         {
             QWindowList windows = QGuiApplication::allWindows();
             auto        win     = windows.first();
             atomic_dex::mac_window_setup(win->winId(), visibility == QWindow::FullScreen);
         }
-#endif
+#endif*/
     }
 
     bool

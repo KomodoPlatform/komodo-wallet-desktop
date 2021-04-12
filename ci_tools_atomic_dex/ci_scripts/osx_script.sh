@@ -1,5 +1,6 @@
 #!/bin/bash
 
+brew update
 brew install autoconf \
             automake \
             libtool \

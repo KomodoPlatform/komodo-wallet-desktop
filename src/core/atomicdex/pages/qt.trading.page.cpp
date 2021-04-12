@@ -248,6 +248,8 @@ namespace atomic_dex
         const bool  is_selected_max =
             is_selected_order ? QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
                                : false;
+        t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
+        t_float_50 cur_min_trade  = safe_float(m_minimal_trading_amount.toStdString());
 
         t_sell_request req{
             .base             = base.toStdString(),
@@ -264,7 +266,7 @@ namespace atomic_dex
             .rel_nota   = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
             .rel_confs  = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
             .is_max     = is_max,
-            .min_volume = m_minimal_trading_amount.toStdString()};
+            .min_volume = cur_min_trade <= base_min_trade ? std::optional<std::string>{std::nullopt} : m_minimal_trading_amount.toStdString()};
 
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
         if (m_preffered_order.has_value())
@@ -433,14 +435,12 @@ namespace atomic_dex
                     }
                     else
                     {
-                        const auto base_max_taker_vol =
-                            safe_float(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
-                        const auto rel_max_taker_vol =
-                            safe_float(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
-                        if (m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0)
+                        const auto base_max_taker_vol = safe_float(wrapper->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                        const auto rel_max_taker_vol  = safe_float(wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                        auto       adjust_functor     = [this, wrapper]()
                         {
                             this->determine_max_volume();
-                            t_float_50 min_vol_f = safe_float(wrapper->get_rel_min_taker_vol().toStdString());
+                            t_float_50 min_vol_f = safe_float(wrapper->get_current_min_taker_vol().toStdString());
                             if (safe_float(get_volume().toStdString()) <= min_vol_f)
                             {
                                 this->set_volume(get_max_volume());
@@ -448,22 +448,12 @@ namespace atomic_dex
                             }
                             if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
                             {
-                                this->set_min_trade_vol(wrapper->get_rel_min_taker_vol());
+                                this->set_min_trade_vol(wrapper->get_current_min_taker_vol());
                             }
-                        }
-                        else if (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0)
+                        };
+                        if ((m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0) || (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0))
                         {
-                            this->determine_max_volume();
-                            t_float_50 min_vol_f = safe_float(wrapper->get_base_min_taker_vol().toStdString());
-                            if (safe_float(get_volume().toStdString()) <= min_vol_f)
-                            {
-                                this->set_volume(get_max_volume());
-                                this->get_orderbook_wrapper()->refresh_best_orders();
-                            }
-                            if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
-                            {
-                                this->set_min_trade_vol(wrapper->get_base_min_taker_vol());
-                            }
+                            adjust_functor();
                         }
                     }
 
@@ -601,6 +591,13 @@ namespace atomic_dex
             this->determine_cex_rates();
             emit priceChanged();
             emit priceReversedChanged();
+            emit get_orderbook_wrapper()->currentMinTakerVolChanged();
+            //! Cap min_vol
+            t_float_50 min_vol_f = safe_float(get_orderbook_wrapper()->get_current_min_taker_vol().toStdString());
+            if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
+            {
+                this->set_min_trade_vol(get_orderbook_wrapper()->get_current_min_taker_vol());
+            }
         }
     }
 
@@ -642,7 +639,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            //SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
+            // SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
             if (m_current_trading_mode != TradingMode::Simple)
             {
                 this->determine_total_amount();
@@ -1278,7 +1275,7 @@ namespace atomic_dex
 
         if (min_trade_vol != m_minimal_trading_amount && is_valid)
         {
-            //SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
+            SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
         }
@@ -1348,12 +1345,6 @@ namespace atomic_dex
             t_float_50  target_price =
                 (m_market_mode == MarketMode::Sell) ? t_float_50(cex_price + (cex_price * percent)) : t_float_50(cex_price - (cex_price * percent));
 
-            // t_float_50 price_diff = t_float_50(100) * (t_float_50(1) - (target_price / cex_price)) * ((m_market_mode == MarketMode::Sell) ? t_float_50(1)
-            // : t_float_50(-1)); t_float_50 reversed_price_diff = t_float_50(100) * (t_float_50(1) - ((1 / target_price) / (1 / cex_price))) *
-            // ((m_market_mode == MarketMode::Sell) ? t_float_50(1) : t_float_50(-1)); SPDLOG_INFO("cex price: {}, target_price: {}, price_diff: {}",
-            // utils::format_float(cex_price), utils::format_float(target_price), utils::format_float(price_diff)); SPDLOG_INFO("reversed_cex price: {},
-            // reversed_target_price: {}, reversed_price_diff: {}", utils::format_float(1 / cex_price), utils::format_float(1 / target_price),
-            // utils::format_float(reversed_price_diff));
             this->set_price(QString::fromStdString(utils::format_float(target_price)));
             if (m_market_mode == MarketMode::Buy)
             {
@@ -1379,15 +1370,24 @@ namespace atomic_dex
         }
         else
         {
-            const bool  is_selected_order = m_preffered_order.has_value();
-            t_float_50  cur_rel_min_trade = safe_float(get_min_trade_vol().toStdString());
-            t_float_50  price_f = is_selected_order ? safe_float(m_preffered_order->at("price").get<std::string>()) : safe_float(m_price.toStdString());
-            t_float_50  cur_base_min_trade = cur_rel_min_trade * price_f;
-            std::string result             = cur_base_min_trade.str(50, std::ios_base::fixed);
-            boost::trim_right_if(result, boost::is_any_of("0"));
-            boost::trim_right_if(result, boost::is_any_of("."));
-            SPDLOG_INFO("base_min_vol: [{}]", result);
-            return QString::fromStdString(result);
+            //! Here i have to calculate the volume in base coin because MM2 accept min_volume only for base coin
+            const bool is_selected_order = m_preffered_order.has_value();
+            t_float_50 cur_rel_min_trade = safe_float(get_min_trade_vol().toStdString());
+            t_float_50 price_f = is_selected_order ? safe_float(m_preffered_order->at("price").get<std::string>()) : safe_float(m_price.toStdString());
+            if (price_f > 0)
+            {
+                t_float_50 cur_base_min_trade = cur_rel_min_trade / price_f;
+                cur_base_min_trade += t_float_50("1e-50");
+                std::string result = cur_base_min_trade.str(50, std::ios_base::fixed);
+                boost::trim_right_if(result, boost::is_any_of("0"));
+                boost::trim_right_if(result, boost::is_any_of("."));
+                SPDLOG_INFO("base_min_vol: [{}]", result);
+                return QString::fromStdString(result);
+            }
+            else
+            {
+                return get_orderbook_wrapper()->get_base_min_taker_vol();
+            }
         }
     }
 } // namespace atomic_dex
