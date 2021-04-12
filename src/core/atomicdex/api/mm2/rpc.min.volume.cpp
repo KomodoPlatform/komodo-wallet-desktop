@@ -18,6 +18,8 @@ namespace mm2::api
     {
         j.at("min_trading_vol").get_to(cfg.min_trading_vol);
         j.at("coin").get_to(cfg.coin);
+
+        SPDLOG_INFO("coin {} have min_trading_vol: {}", cfg.coin, cfg.min_trading_vol);
     }
 
     void

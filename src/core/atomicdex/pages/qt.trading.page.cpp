@@ -248,6 +248,8 @@ namespace atomic_dex
         const bool  is_selected_max =
             is_selected_order ? QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
                                : false;
+        t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
+        t_float_50 cur_min_trade  = safe_float(m_minimal_trading_amount.toStdString());
 
         t_sell_request req{
             .base             = base.toStdString(),
@@ -264,7 +266,7 @@ namespace atomic_dex
             .rel_nota   = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
             .rel_confs  = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
             .is_max     = is_max,
-            .min_volume = m_minimal_trading_amount.toStdString()};
+            .min_volume = cur_min_trade <= base_min_trade ? std::optional<std::string>{std::nullopt} : m_minimal_trading_amount.toStdString()};
 
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
         if (m_preffered_order.has_value())
@@ -642,7 +644,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            //SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
+            // SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
             if (m_current_trading_mode != TradingMode::Simple)
             {
                 this->determine_total_amount();
@@ -1278,7 +1280,7 @@ namespace atomic_dex
 
         if (min_trade_vol != m_minimal_trading_amount && is_valid)
         {
-            //SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
+            SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
         }
