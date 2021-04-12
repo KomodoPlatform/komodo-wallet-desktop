@@ -202,7 +202,7 @@ namespace atomic_dex
                     SPDLOG_INFO("Removing: {}", m_download_mgr.get_last_download_path().c_str());
                     fs::remove(m_download_mgr.get_last_download_path());
     
-                    auto    release_info = last_release_info.get();
+                    auto    release_info = m_last_release_info.get();
                     QString path((fs::path(appimage).parent_path() / release_info.name).c_str());
     
                     SPDLOG_INFO("Starting: {}", path.toStdString());
