@@ -23,6 +23,7 @@
 #include <QStringList>
 #include <QVariant>
 #include <QVariantList>
+#include <QCryptographicHash> //> QCryptographicHash::hash, QCryptographicHash::Keccak_256
 
 //! Project Headers
 #include "atomicdex/config/app.cfg.hpp"
@@ -51,6 +52,12 @@ namespace atomic_dex
     QString              retrieve_change_24h(
                      const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
                      const ag::ecs::system_manager& system_manager);
+    
+    [[nodiscard]] QString
+    inline sha256_qstring_from_qt_byte_array(const QByteArray& byte_array)
+    {
+        return QLatin1String(QCryptographicHash::hash(byte_array, QCryptographicHash::Sha256).toHex());
+    }
 
     class ENTT_API qt_utilities : public QObject
     {
