@@ -15,5 +15,6 @@ TEST_CASE("Fetch last GitHub release and compare with current")
             REQUIRE(resp.status_code() == static_cast<unsigned>(antara::app::http_code::ok));
             CHECK(atomic_dex::github_api::get_last_repository_release_from_http_response(resp).tag_name == atomic_dex::get_version());
         })
-        .then(&handle_exception_pplx_task);
+        .then(&handle_exception_pplx_task)
+        .wait();
 }
