@@ -587,6 +587,7 @@ namespace atomic_dex
             emit priceChanged();
             emit priceReversedChanged();
             emit get_orderbook_wrapper()->currentMinTakerVolChanged();
+            get_orderbook_wrapper()->adjust_min_vol();
         }
     }
 
