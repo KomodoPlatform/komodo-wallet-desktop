@@ -28,7 +28,7 @@ namespace atomic_dex
         
         boost::synchronized_value<github_api::repository_release> m_last_release_info;
         bool                                                      m_update_downloading{false};
-        float                                                     m_update_download_progress;
+        float                                                     m_update_download_progress{0.0F};
         boost::synchronized_value<bool>                           m_update_ready{false};
         bool                                                      m_update_files_invalid{false};
         

@@ -96,7 +96,7 @@ namespace atomic_dex
     {
         // Checks update file integrity by comparing checksum
         {
-            QFile       file{m_download_mgr.get_last_download_path().c_str()};
+            QFile       file{QString::fromStdString(m_download_mgr.get_last_download_path().string())};
             std::string hashed;
     
             file.open(QIODevice::ReadOnly);
