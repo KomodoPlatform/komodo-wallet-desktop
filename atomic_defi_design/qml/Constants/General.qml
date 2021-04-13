@@ -263,12 +263,12 @@ QtObject {
         if (API.app.trading_pg.market_mode == MarketMode.Buy) {
             return API.app.trading_pg.orderbook.rel_min_taker_vol
         }
-        return API.app.trading_pg.orderbook.base_min_taker_vol
+        return API.app.trading_pg.min_trade_vol
     }
 
     function getReversedMinTradeAmount() {
             if (API.app.trading_pg.market_mode == MarketMode.Buy) {
-               return API.app.trading_pg.orderbook.base_min_taker_vol
+               return API.app.trading_pg.min_trade_vol
             }
             return API.app.trading_pg.orderbook.rel_min_taker_vol
         }
