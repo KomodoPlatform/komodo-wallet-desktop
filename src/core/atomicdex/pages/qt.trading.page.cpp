@@ -1069,10 +1069,10 @@ namespace atomic_dex
         TradingError current_trading_error = TradingError::None;
 
         //! Check minimal trading amount
-        const std::string base                       = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
-        t_float_50        max_balance_without_dust   = this->get_max_balance_without_dust();
-        const auto&       cur_min_taker_vol          = get_min_trade_vol().toStdString();
-        const auto&       rel_min_taker_vol          = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
+        const std::string base                     = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+        t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
+        const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
+        const auto&       cur_min_taker_vol        = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
 
         if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
         {
@@ -1088,10 +1088,12 @@ namespace atomic_dex
         }
         else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
         {
+            SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
             current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
         }
         else if (safe_float(get_rel_amount().toStdString()) < safe_float(rel_min_taker_vol))
         {
+            SPDLOG_INFO("rel_amount: {}, rel_min_taker_vol: {}, price: {}", get_rel_amount().toStdString(), rel_min_taker_vol, get_price().toStdString());
             current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
         else
@@ -1239,7 +1241,7 @@ namespace atomic_dex
         //! rel_min_vol -> 10 DOGE
         const auto& min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
         t_float_50  min_vol_f     = safe_float(min_taker_vol);
-        //const bool  is_valid      = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
+        // const bool  is_valid      = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
 
         if (safe_float(min_trade_vol.toStdString()) <= min_vol_f)
         {
