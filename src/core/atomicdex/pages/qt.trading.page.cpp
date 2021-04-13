@@ -140,10 +140,10 @@ namespace atomic_dex
         const bool is_my_max = m_volume == m_max_volume;
         const bool is_exact_selected_order_volume =
             (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
-        t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
-        t_float_50 min_volume_f   = safe_float(get_underlying_min_trade_vol().toStdString());
-        SPDLOG_INFO("base_min_trade: {}", base_min_trade.str(50, std::ios::fixed));
-        SPDLOG_INFO("cur_base_min_trade: {}", min_volume_f.str(50, std::ios::fixed));
+        t_float_50 rel_min_trade = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
+        t_float_50 rel_min_volume_f   = safe_float(get_underlying_min_trade_vol().toStdString());
+        SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
+        SPDLOG_INFO("rel_min_volume: {} (will be use for mm2)", rel_min_volume_f.str(50, std::ios::fixed));
 
         t_buy_request req{
             .base                           = base.toStdString(),
@@ -158,7 +158,7 @@ namespace atomic_dex
             .is_exact_selected_order_volume = is_exact_selected_order_volume,
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
-            .min_volume = (min_volume_f <= base_min_trade) ? std::optional<std::string>{std::nullopt} : get_underlying_min_trade_vol().toStdString()};
+            .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_underlying_min_trade_vol().toStdString()};
 
         if (m_preffered_order.has_value())
         {
@@ -602,6 +602,7 @@ namespace atomic_dex
             emit get_orderbook_wrapper()->currentMinTakerVolChanged();
             //! Cap min_vol
             t_float_50 min_vol_f = safe_float(get_orderbook_wrapper()->get_current_min_taker_vol().toStdString());
+            //SPDLOG_INFO("min_vol_f: {}", min_vol_f.str(50, std::ios::fixed));
             if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
             {
                 this->set_min_trade_vol(get_orderbook_wrapper()->get_current_min_taker_vol());
@@ -1380,16 +1381,18 @@ namespace atomic_dex
         {
             //! Here i have to calculate the volume in base coin because MM2 accept min_volume only for base coin
             const bool is_selected_order = m_preffered_order.has_value();
-            t_float_50 cur_rel_min_trade = safe_float(get_min_trade_vol().toStdString());
+            //!
+            t_float_50 cur_base_min_trade = safe_float(get_min_trade_vol().toStdString());
+            t_float_50 rel_min = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
             t_float_50 price_f = is_selected_order ? safe_float(m_preffered_order->at("price").get<std::string>()) : safe_float(m_price.toStdString());
             if (price_f > 0)
             {
-                t_float_50 cur_base_min_trade = cur_rel_min_trade / price_f;
-                cur_base_min_trade += t_float_50("1e-50");
-                std::string result = cur_base_min_trade.str(50, std::ios_base::fixed);
+                t_float_50 cur_rel_min_trade = (cur_base_min_trade / price_f) * rel_min;
+                cur_rel_min_trade += t_float_50("1e-50");
+                std::string result = cur_rel_min_trade.str(50, std::ios_base::fixed);
                 boost::trim_right_if(result, boost::is_any_of("0"));
                 boost::trim_right_if(result, boost::is_any_of("."));
-                SPDLOG_INFO("base_min_vol: [{}]", result);
+                //SPDLOG_INFO("base_min_vol: [{}]", result);
                 return QString::fromStdString(result);
             }
             else
