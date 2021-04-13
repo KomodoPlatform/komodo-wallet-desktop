@@ -142,8 +142,8 @@ namespace atomic_dex
             (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
         t_float_50 rel_min_trade    = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
         t_float_50 rel_min_volume_f = safe_float(get_min_trade_vol().toStdString());
-        SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
-        SPDLOG_INFO("rel_min_volume: {} (will be use for mm2)", rel_min_volume_f.str(50, std::ios::fixed));
+        // SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
+        // SPDLOG_INFO("rel_min_volume: {} (will be use for mm2)", rel_min_volume_f.str(50, std::ios::fixed));
 
         t_buy_request req{
             .base                           = base.toStdString(),
@@ -1071,12 +1071,10 @@ namespace atomic_dex
         //! Check minimal trading amount
         const std::string base                       = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
         t_float_50        max_balance_without_dust   = this->get_max_balance_without_dust();
-        const auto&       base_min_taker_vol         = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
+        const auto&       cur_min_taker_vol          = get_min_trade_vol().toStdString();
         const auto&       rel_min_taker_vol          = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
-        const auto&       current_taker_vol          = m_market_mode == MarketMode::Buy ? rel_min_taker_vol : base_min_taker_vol;
-        const auto&       current_reversed_taker_vol = m_market_mode == MarketMode::Buy ? base_min_taker_vol : rel_min_taker_vol;
 
-        if (max_balance_without_dust < safe_float(current_taker_vol)) //<! Checking balance < minimal_trading_amount
+        if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
@@ -1088,11 +1086,11 @@ namespace atomic_dex
         {
             current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
         }
-        else if (safe_float(get_base_amount().toStdString()) < safe_float(current_taker_vol))
+        else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
         {
             current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
         }
-        else if (safe_float(get_rel_amount().toStdString()) < safe_float(current_reversed_taker_vol))
+        else if (safe_float(get_rel_amount().toStdString()) < safe_float(rel_min_taker_vol))
         {
             current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
@@ -1240,19 +1238,20 @@ namespace atomic_dex
         //! base_min_vol -> 0.0001 KMD
         //! rel_min_vol -> 10 DOGE
         const auto& min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        t_float_50  min_vol_f          = safe_float(min_taker_vol);
-        const bool  is_valid           = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
+        t_float_50  min_vol_f     = safe_float(min_taker_vol);
+        //const bool  is_valid      = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
 
         if (safe_float(min_trade_vol.toStdString()) <= min_vol_f)
         {
             min_trade_vol = QString::fromStdString(min_taker_vol);
         }
 
-        if (min_trade_vol != m_minimal_trading_amount && is_valid)
+        if (min_trade_vol != m_minimal_trading_amount)
         {
-            SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
+            // SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
+            this->determine_error_cases();
         }
     }
 

@@ -31,8 +31,9 @@ namespace
             t_float_50 base_min_f             = safe_float(wrapper.get_base_min_taker_vol().toStdString());
             t_float_50 base_min_by_rel        = safe_float(wrapper.get_rel_min_taker_vol().toStdString()) / price_f;
             t_float_50 base_min_vol_threshold = boost::multiprecision::max(base_min_by_rel, base_min_f);
-            t_float_50 cur_min_volume_f       = safe_float(trading_pg.get_min_trade_vol().toStdString());
-            QString    cur_taker_vol          = QString::fromStdString(atomic_dex::utils::format_float(base_min_vol_threshold));
+            base_min_vol_threshold += t_float_50("1e-8");
+            t_float_50 cur_min_volume_f = safe_float(trading_pg.get_min_trade_vol().toStdString());
+            QString    cur_taker_vol    = QString::fromStdString(atomic_dex::utils::format_float(base_min_vol_threshold));
 
             // If cur_min_volume in the UI < base_min_vol_threshold override
             if (cur_min_volume_f < base_min_vol_threshold)
@@ -232,8 +233,9 @@ namespace atomic_dex
         t_float_50 base_min_f             = safe_float(get_base_min_taker_vol().toStdString());
         t_float_50 base_min_by_rel        = safe_float(get_rel_min_taker_vol().toStdString()) / price_f;
         t_float_50 base_min_vol_threshold = boost::multiprecision::max(base_min_by_rel, base_min_f);
-        //t_float_50 cur_min_volume_f       = safe_float(trading_pg.get_min_trade_vol().toStdString());
-        cur_taker_vol                     = QString::fromStdString(utils::format_float(base_min_vol_threshold));
+        base_min_vol_threshold += t_float_50("1e-8");
+        // t_float_50 cur_min_volume_f       = safe_float(trading_pg.get_min_trade_vol().toStdString());
+        cur_taker_vol = QString::fromStdString(utils::format_float(base_min_vol_threshold));
 
         return cur_taker_vol;
     }
