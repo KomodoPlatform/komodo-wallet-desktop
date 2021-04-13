@@ -190,10 +190,41 @@ namespace atomic_dex
     QString
     qt_orderbook_wrapper::get_current_min_taker_vol() const
     {
-        bool is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
-        t_float_50 volume = is_buy ? safe_float(get_rel_min_taker_vol().toStdString()) : safe_float(get_base_min_taker_vol().toStdString());
-        t_float_50 price = safe_float(m_system_manager.get_system<trading_page>().get_price().toStdString());
-        t_float_50 threshold = volume * price;
-        return QString::fromStdString(utils::format_float(threshold));
+        QString    cur_taker_vol = get_base_min_taker_vol();
+        auto& trading_pg = m_system_manager.get_system<trading_page>();
+        t_float_50 price_f = safe_float(trading_pg.get_price().toStdString());
+        if (price_f <= 0)
+        {
+            //! Price is not set yet in the UI in this particular case return the min volume calculated by mm2
+            return cur_taker_vol;
+        }
+
+        /**
+         * for 1 KMD = DOGE
+         * Sell KMD for DOGE:
+            1. If price is 1, the KMD min vol is 10
+            2. If price is 2, the KMD min vol is 5.
+            3. If price is 0.5, the KMD min vol is 20.
+
+               let price = &self.rel_amount / &self.base_amount;
+        let base_min_by_rel = &min_rel_amount / &price;
+        let base_min_vol_threshold = min_base_amount.max(base_min_by_rel);
+         */
+
+        t_float_50 base_min_f = safe_float(get_base_min_taker_vol().toStdString());
+        t_float_50 base_min_by_rel = safe_float(get_rel_min_taker_vol().toStdString()) / price_f;
+        t_float_50 base_min_vol_threshold = boost::multiprecision::max(base_min_by_rel, base_min_f);
+        t_float_50 cur_min_volume_f = safe_float(trading_pg.get_min_trade_vol().toStdString());
+        cur_taker_vol = QString::fromStdString(utils::format_float(base_min_vol_threshold));
+        //base_min_vol_threshold += t_float_50("1e-50");
+
+        // If cur_min_volume in the UI < base_min_vol_threshold override
+        if (cur_min_volume_f < base_min_vol_threshold)
+        {
+            SPDLOG_INFO("cur_min_taker_vol: {}", cur_taker_vol.toStdString());
+            trading_pg.set_min_trade_vol(cur_taker_vol);
+        }
+
+        return cur_taker_vol;
     }
 } // namespace atomic_dex
