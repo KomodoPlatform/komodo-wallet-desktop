@@ -74,6 +74,12 @@ namespace atomic_dex
     void
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
+        bool is_wallet_only = m_system_manager.get_system<mm2_service>().get_coin_info(base.toStdString()).wallet_only;
+        if (is_wallet_only)
+        {
+            SPDLOG_WARN("{} is wallet only - skipping", base.toStdString());
+            return ;
+        }
         SPDLOG_INFO("Setting current orderbook: {} / {}", base.toStdString(), rel.toStdString());
         auto* market_selector_mdl = get_market_pairs_mdl();
 
@@ -136,6 +142,8 @@ namespace atomic_dex
             (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
         t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50 min_volume_f   = safe_float(get_underlying_min_trade_vol().toStdString());
+        SPDLOG_INFO("base_min_trade: {}", base_min_trade.str(50, std::ios::fixed));
+        SPDLOG_INFO("cur_base_min_trade: {}", min_volume_f.str(50, std::ios::fixed));
 
         t_buy_request req{
             .base                           = base.toStdString(),
