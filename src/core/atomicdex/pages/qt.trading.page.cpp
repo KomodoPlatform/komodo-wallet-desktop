@@ -1393,11 +1393,15 @@ namespace atomic_dex
                 boost::trim_right_if(result, boost::is_any_of("0"));
                 boost::trim_right_if(result, boost::is_any_of("."));
                 //SPDLOG_INFO("base_min_vol: [{}]", result);
+                if (cur_rel_min_trade < rel_min)
+                {
+                    return get_orderbook_wrapper()->get_rel_min_taker_vol();
+                }
                 return QString::fromStdString(result);
             }
             else
             {
-                return get_orderbook_wrapper()->get_base_min_taker_vol();
+                return get_orderbook_wrapper()->get_rel_min_taker_vol();
             }
         }
     }
