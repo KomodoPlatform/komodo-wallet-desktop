@@ -18,7 +18,9 @@
 
 #include <nlohmann/json_fwd.hpp>
 
-#define _TURN_OFF_PLATFORM_STRING
+#ifndef _TURN_OFF_PLATFORM_STRING
+#   define _TURN_OFF_PLATFORM_STRING
+#endif
 #include <cpprest/http_client.h>
 #ifdef _WIN32
 #    define TO_STD_STR(ws_str) utility::conversions::to_utf8string(ws_str)
