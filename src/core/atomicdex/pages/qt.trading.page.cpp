@@ -142,6 +142,8 @@ namespace atomic_dex
             (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
         t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50 min_volume_f   = safe_float(get_underlying_min_trade_vol().toStdString());
+        SPDLOG_INFO("base_min_trade: {}", base_min_trade.str(50, std::ios::fixed));
+        SPDLOG_INFO("cur_base_min_trade: {}", min_volume_f.str(50, std::ios::fixed));
 
         t_buy_request req{
             .base                           = base.toStdString(),
