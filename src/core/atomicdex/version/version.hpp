@@ -33,12 +33,12 @@ namespace atomic_dex
     constexpr const char*
     get_raw_version()
     {
-        return "0.4.0";
+        return "0.4.1";
     }
 
     constexpr const char*
     get_precedent_raw_version()
     {
-        return "0.3.1";
+        return "0.4.0";
     }
 } // namespace atomic_dex

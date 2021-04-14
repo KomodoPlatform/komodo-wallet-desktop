@@ -31,7 +31,7 @@
     }
 
     std::unordered_set<std::string> visited;
-    fs::path                        cfg_path = antara::gaming::core::assets_real_path() / "config" / "0.4.0-coins.json";
+    fs::path                        cfg_path = antara::gaming::core::assets_real_path() / "config" / "0.4.1-coins.json";
     std::ifstream                   ifs(cfg_path.string());
     nlohmann::json                  j;
     ifs >> j;
@@ -60,4 +60,4 @@
         }
     }
 #endif
-}*/
+}

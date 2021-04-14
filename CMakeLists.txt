@@ -11,7 +11,7 @@ include(vcpkg_prerequisites)
 include(qt_prerequisites)
 include(cfg_hash)
 
-project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.4.0)
+project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.4.1)
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
 include(cmake_default_options)
@@ -124,9 +124,11 @@ if (WITH_HOTRELOAD)
 
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PUBLIC
             Qaterial
-            SortFilterProxyModel)
+            SortFilterProxyModel
+            )
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PRIVATE
             Qaterial::HotReload::Ui
+            spdlog::spdlog
             )
 
     function(target_link_quiet_libraries TARGET)
