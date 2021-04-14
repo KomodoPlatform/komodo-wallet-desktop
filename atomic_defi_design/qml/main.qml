@@ -46,8 +46,7 @@ DexWindow {
         height: 40
         Rectangle {
             anchors.fill: parent
-            opacity: .7
-            color: app.globalTheme.dexBoxBackgroundColor
+            color: app.globalTheme.surfaceColor
         }
         DragHandler {
             onActiveChanged: if (active) window.startSystemMove();
