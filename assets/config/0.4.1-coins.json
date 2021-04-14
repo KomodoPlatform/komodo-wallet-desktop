@@ -2530,7 +2530,7 @@
   "VAL": {
     "coin": "VAL",
     "name": "Validity",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "val-validity",
     "coingecko_id": "radium",
     "electrum": [
       {
