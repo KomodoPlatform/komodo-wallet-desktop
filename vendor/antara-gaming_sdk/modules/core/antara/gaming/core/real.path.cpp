@@ -36,13 +36,13 @@
 namespace antara::gaming::core
 {
     fs::path
-    binary_real_path() noexcept
+    binary_real_path() 
     {
         return details::binary_real_path();
     }
 
     fs::path
-    assets_real_path() noexcept
+    assets_real_path() 
     {
         return details::assets_real_path();
     }

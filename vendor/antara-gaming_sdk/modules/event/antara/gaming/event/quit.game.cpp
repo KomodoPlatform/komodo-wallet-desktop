@@ -19,7 +19,7 @@
 
 namespace antara::gaming::event
 {
-    quit_game::quit_game(int return_value) noexcept : return_value_(return_value)
+    quit_game::quit_game(int return_value)  : return_value_(return_value)
     {
     }
 

@@ -89,7 +89,7 @@ QtObject {
     readonly property string colorQtThemeForeground: colorWhite1
     readonly property string colorQtThemeBackground: colorTheme9
 
-    readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
+    readonly property string sidebar_atomicdex_logo: dark_theme ? "dex-logo-sidebar.png" : "dex-logo-sidebar-dark.png"
     readonly property string colorRed: dark_theme ? "#D13990" : "#9a1165" // Light is 15% darker than Red2, same with the green set
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
     readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#D13990"
@@ -123,6 +123,8 @@ QtObject {
     readonly property string colorTheme7:  dark_theme ? "#15182A" : "#f2f2f7"
     readonly property string colorTheme8:  dark_theme ? "#171A2C" : "#f6f6f9"
     readonly property string colorTheme9:  dark_theme ? "#0E1021" : "#F9F9FB"
+    readonly property string colorTheme99:  dark_theme ? "#2A2C3B" : "#F9F9FB"
+
     readonly property string colorTheme10:  dark_theme ? "#2579E0" : "#2579E0"
     readonly property string colorTheme11:  dark_theme ? "#00A3FF" : "#00A3FF"
     readonly property string colorThemeLine:  dark_theme ? "#1D1F23" : "#1D1F23"
@@ -133,7 +135,7 @@ QtObject {
     readonly property string colorThemeDark3:  dark_theme ? "#78808D" : "#78808D"
     readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#456078"
 
-    readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
+    property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
     readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
 
     readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
@@ -238,26 +240,52 @@ QtObject {
     }
 
     function getCoinTypeColor(type) {
-        return getCoinColor(type === "ERC-20" ? "ETH" :
-                            type === "QRC-20" ? "QTUM" :
-                            type === "Smart Chain" ? "KMD" :
-                                                     "BTC")
+        switch (type) {
+          case 'ERC-20':
+            return getCoinColor("ETH")
+          case 'QRC-20':
+            return getCoinColor("QTUM")
+          case 'Smart Chain':
+            return getCoinColor("KMD")
+          case 'UTXO':
+            return getCoinColor("BTC")
+          case 'BEP-20':
+            return getCoinColor("BNB")
+          case 'SLP':
+            return getCoinColor("BCH")
+          default:
+            return getCoinColor("BTC")
+        }
     }
 
     function getCoinColor(ticker) {
-        const c = colorCoin[ticker]
+        const c = colorCoin[atomic_qt_utilities.retrieve_main_ticker(ticker)]
         return c || Style.colorTheme2
     }
 
     readonly property var colorCoin: ({
+                                          "ABY": "#8B0D10",
+                                          "ADA": "#11283F",
                                           "ARPA": "#CCD9E2",
+                                          "ATOM": "#2D3046",
+                                          "AUR": "#0A6C5E",
+                                          "AVAX": "#E84142",
+                                          "BAL": "#282828",
+                                          "BNB": "#F3BA2F",
                                           "BCH": "#8DC351",
+                                          "BSTY": "#78570D",
                                           "BTC": "#F7931A",
+                                          "CAKE": "#D1884F",
+                                          "CDN": "#90191C",
                                           "CLC": "#0970DC",
+                                          "DGC": "#BC7600",
+                                          "EOS": "#323232",
                                           "FTC": "#FFFFFF",
                                           "GLEEC": "#8C41FF",
                                           "GRS": "#377E96",
+                                          "IOTA": "#303030",
                                           "DOGE": "#C3A634",
+                                          "ETC": "#328432",
                                           "ETH": "#627EEA",
                                           "KMD": "#2B6680",
                                           "MORTY": "#A4764D",
@@ -266,6 +294,7 @@ QtObject {
                                           "DASH": "#008CE7",
                                           "RVN": "#384182",
                                           "DGB": "#006AD2",
+                                          "DOT": "#E80082",
                                           "FIRO": "#BB2100",
                                           "LTC": "#BFBBBB",
                                           "ZEC": "#ECB244",
@@ -290,6 +319,7 @@ QtObject {
                                           "MCL": "#EA0000",
                                           "CCL": "#FFE400",
                                           "BET": "#F69B57",
+                                          "JRT": "#5EFC84",
                                           "SUPERNET": "#F69B57",
                                           "OOT": "#25AAE1",
                                           "REVS": "#F69B57",
@@ -301,7 +331,9 @@ QtObject {
                                           "BUSD": "#EDB70B",
                                           "DAI": "#B68900",
                                           "USDC": "#317BCB",
+                                          "USDT": "#26A17B",
                                           "PAX": "#EDE70A",
+                                          "PAXG": "#E5CB22",
                                           "SUSHI": "#E25DA8",
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
@@ -323,9 +355,12 @@ QtObject {
                                           "CVC": "#3AB03E",
                                           "CVT": "#4B0082",
                                           "DODO": "#FFF706",
+                                          "EFL": "#FF940B",
+                                          "EGLD": "#1D4CB5",
                                           "ELF": "#2B5EBB",
                                           "ENJ": "#6752C3",
                                           "EURS": "#2F77ED",
+                                          "FIL": "#4CCAD2",
                                           "FUN": "#EF1C70",
                                           "GNO": "#00B0CC",
                                           "HOT": "#983EFF",
@@ -338,7 +373,8 @@ QtObject {
                                           "MATIC": "#1E61ED",
                                           "MED": "#00B5FF",
                                           "MKR": "#1BAF9F",
-                                          "NPXS": "#F3CB00",
+                                          "NEAR": "#595959",
+                                          "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
                                           "QI": "#FFFFFF",
                                           "QIAIR": "#FEFEFE",
@@ -347,16 +383,26 @@ QtObject {
                                           "REP": "#0E0E21",
                                           "REV": "#78034D",
                                           "RLC": "#FFE100",
-                                          "SFUSD": "#F54D4C",
+                                          "SFUSD": "#9881B8",
                                           "SNT": "#596BED",
                                           "SNX": "#00D1FF",
                                           "SOULJA": "#8F734A",
                                           "STORJ": "#2683FF",
+                                          "SXP": "#FD5F3B",
+                                          "SYS": "#0084C7",
+                                          "TRC": "#096432",
                                           "TSL": "#64B082",
+                                          "UIS": "#008DCD",
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",
+                                          "XRP": "#2E353D",
+                                          "XTZ": "#A8E000",
+                                          "XVS": "#F4BC54",
                                           "YFI": "#006BE6",
+                                          "YFII": "#FF2A79",
+                                          "ZET": "#155169",
+                                          "ZIL": "#42BBB9",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
                                       })

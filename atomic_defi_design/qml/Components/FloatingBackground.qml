@@ -8,8 +8,8 @@ Item {
     property alias color: rect.color
     property double border_gradient_start_pos: 0.35
     property double border_gradient_end_pos: 0.65
-    property color border_color_start: Style.colorRectangleBorderGradient1
-    property color border_color_end: Style.colorRectangleBorderGradient2
+    property color border_color_start: theme.colorInnerShadowTop
+    property color border_color_end: theme.colorInnerShadowBottom
     property alias radius: rect.radius
     property alias border: rect.border
     property alias inner_space: inner_space
@@ -18,6 +18,9 @@ Item {
     property bool verticalShadow: false
     property bool opacity_mask_enabled: false
     property bool auto_set_size: true
+    property bool show_shadow: true
+    property alias light_gradient: _linear_gradient
+    property alias black_shadow: _black_shadow
 
     readonly property var visible_rect: opacity_mask_enabled ? mask_loader : rect
 
@@ -43,6 +46,7 @@ Item {
     }
 
     LinearGradient {
+        id: _linear_gradient
         visible: rect.border.width > 0
         source: visible_rect
         width: parent.width + rect.border.width*2
@@ -69,26 +73,29 @@ Item {
         anchors.fill: visible_rect
         source: visible_rect
         cached: false
+        visible: show_shadow
         horizontalOffset: verticalShadow ? 0 : -6
         verticalOffset: verticalShadow ? -10 : -6
         radius: verticalShadow ? 25 : 15
         samples: 32
         spread: 0
-        color: verticalShadow ? Style.colorDropShadowLight2 : Style.colorDropShadowLight
+        color: verticalShadow ? theme.floatShadow2 : theme.floatShadow1
         smooth: true
         z: -2
     }
 
     DropShadow {
+        id: _black_shadow
         anchors.fill: visible_rect
         source: visible_rect
         cached: false
+        visible: show_shadow
         horizontalOffset: verticalShadow ? 0 : 6
         verticalOffset: verticalShadow ? 10 : 6
         radius: verticalShadow ? 25 : 20
         samples: 32
         spread: 0
-        color: Style.colorDropShadowDark
+        color: theme.floatBoxShadowDark
         smooth: true
         z: -2
     }

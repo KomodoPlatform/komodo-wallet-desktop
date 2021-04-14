@@ -23,7 +23,7 @@ namespace antara::gaming::ecs
     // LCOV_EXCL_START
     template <typename SystemToSwap, typename SystemB>
     bool
-    system_manager::prioritize_system() noexcept
+    system_manager::prioritize_system() 
     {
         using namespace ranges;
 
@@ -69,21 +69,21 @@ namespace antara::gaming::ecs
 
     template <typename... TSystems>
     std::tuple<std::add_lvalue_reference_t<TSystems>...>
-    system_manager::get_systems() noexcept
+    system_manager::get_systems() 
     {
         return {get_system<TSystems>()...};
     }
 
     template <typename... TSystems>
     std::tuple<std::add_lvalue_reference_t<std::add_const_t<TSystems>>...>
-    system_manager::get_systems() const noexcept
+    system_manager::get_systems() const 
     {
         return {get_system<TSystems>()...};
     }
 
     template <typename TSystem, typename... TSystemArgs>
     TSystem&
-    system_manager::create_system(TSystemArgs&&... args) noexcept
+    system_manager::create_system(TSystemArgs&&... args) 
     {
         // LOG_SCOPE_FUNCTION(INFO);
         if (has_system<TSystem>())
@@ -98,7 +98,7 @@ namespace antara::gaming::ecs
 
     template <typename TSystem, typename... TSystemArgs>
     void
-    system_manager::create_system_rt(TSystemArgs&&... args) noexcept
+    system_manager::create_system_rt(TSystemArgs&&... args) 
     {
         // LOG_SCOPE_FUNCTION(INFO);
         if (has_system<TSystem>())
@@ -112,7 +112,7 @@ namespace antara::gaming::ecs
 
     template <typename... TSystems, typename... TArgs>
     auto
-    system_manager::load_systems(TArgs&&... args) noexcept
+    system_manager::load_systems(TArgs&&... args) 
     {
         (create_system<TSystems>(std::forward<TArgs>(args)...), ...);
         return get_systems<TSystems...>();
@@ -120,7 +120,7 @@ namespace antara::gaming::ecs
 
     template <typename TSystem>
     bool
-    system_manager::has_system() const noexcept
+    system_manager::has_system() const 
     {
         constexpr const auto sys_type = TSystem::get_system_type();
         return ranges::any_of(systems_[sys_type], [](auto&& ptr) {
@@ -132,14 +132,14 @@ namespace antara::gaming::ecs
 
     template <typename... TSystems>
     bool
-    system_manager::has_systems() const noexcept
+    system_manager::has_systems() const 
     {
         return (has_system<TSystems>() && ...);
     }
 
     template <typename TSystem>
     bool
-    system_manager::mark_system() noexcept
+    system_manager::mark_system() 
     {
         if (has_system<TSystem>())
         {
@@ -153,14 +153,14 @@ namespace antara::gaming::ecs
 
     template <typename... TSystems>
     bool
-    system_manager::mark_systems() noexcept
+    system_manager::mark_systems() 
     {
         return (mark_system<TSystems>() && ...);
     }
 
     template <typename TSystem>
     bool
-    system_manager::enable_system() noexcept
+    system_manager::enable_system() 
     {
         if (has_system<TSystem>())
         {
@@ -172,14 +172,14 @@ namespace antara::gaming::ecs
 
     template <typename... TSystems>
     bool
-    system_manager::enable_systems() noexcept
+    system_manager::enable_systems() 
     {
         return (enable_system<TSystems>() && ...);
     }
 
     template <typename TSystem>
     bool
-    system_manager::disable_system() noexcept
+    system_manager::disable_system() 
     {
         if (has_system<TSystem>())
         {
@@ -191,14 +191,14 @@ namespace antara::gaming::ecs
 
     template <typename... TSystems>
     bool
-    system_manager::disable_systems() noexcept
+    system_manager::disable_systems() 
     {
         return (disable_system<TSystems>() && ...);
     }
 
     template <typename TSystem>
     tl::expected<std::reference_wrapper<TSystem>, std::error_code>
-    system_manager::get_system_() noexcept
+    system_manager::get_system_() 
     {
         if (not nb_systems(TSystem::get_system_type()))
         {
@@ -224,7 +224,7 @@ namespace antara::gaming::ecs
 
     template <typename TSystem>
     tl::expected<std::reference_wrapper<const TSystem>, std::error_code>
-    system_manager::get_system_() const noexcept
+    system_manager::get_system_() const 
     {
         if (not nb_systems(TSystem::get_system_type()))
         {

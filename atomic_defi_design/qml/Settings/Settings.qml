@@ -21,10 +21,7 @@ Item {
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
 
-    Settings {
-        id: atomic_settings2
-        fileName: atomic_cfg_file
-    }
+
 
     InnerBackground {
         id: layout_background
@@ -171,10 +168,7 @@ Item {
                 onClicked: view_seed_modal.open()
             }
 
-            ModalLoader {
-                id: view_seed_modal
-                sourceComponent: RecoverSeedModal {}
-            }
+
 
             HorizontalLine {
                 Layout.fillWidth: true

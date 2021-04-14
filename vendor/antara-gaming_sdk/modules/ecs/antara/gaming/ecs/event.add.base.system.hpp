@@ -30,7 +30,7 @@ namespace antara::gaming::ecs::event
         using base_system_ptr = std::unique_ptr<ecs::base_system>;
 
         //! Constructor
-        add_base_system(base_system_ptr system_ptr_ = nullptr) noexcept;
+        add_base_system(base_system_ptr system_ptr_ = nullptr) ;
 
         //! Fields
         std::unique_ptr<ecs::base_system> system_ptr{nullptr};

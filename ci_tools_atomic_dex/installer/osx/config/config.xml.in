@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>${DEX_DISPLAY_NAME}</Name>
+    <Version>0.4.1</Version>
+    <Title>${DEX_DISPLAY_NAME} Installer</Title>
+    <ProductUrl>${DEX_WEBSITE}</ProductUrl>
+    <Publisher>${DEX_COMPANY}</Publisher>
+	<TargetDir>${DEX_TARGET_DIR}</TargetDir>
+    <RunProgram>${DEX_RUN_CMD}</RunProgram>
+	<RunProgramDescription>Run ${DEX_DISPLAY_NAME} now.</RunProgramDescription>
+    <StartMenuDir>${DEX_DISPLAY_NAME}</StartMenuDir>
+    <MaintenanceToolName>${DEX_DISPLAY_NAME} Maintenance Tool</MaintenanceToolName>
+	<InstallerWindowIcon>install_icon</InstallerWindowIcon>
+    <InstallerApplicationIcon>install_icon</InstallerApplicationIcon>
+    <Logo>install_icon.png</Logo>
+    <WizardStyle>Mac</WizardStyle>
+</Installer>

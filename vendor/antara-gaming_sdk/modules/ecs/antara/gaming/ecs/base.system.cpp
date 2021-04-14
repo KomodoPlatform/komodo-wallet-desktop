@@ -19,67 +19,67 @@
 
 namespace antara::gaming::ecs
 {
-    base_system::base_system(entt::registry& entity_registry, bool im_a_plugin_system) noexcept :
+    base_system::base_system(entt::registry& entity_registry, bool im_a_plugin_system)  :
         entity_registry_(entity_registry), dispatcher_(entity_registry_.ctx<entt::dispatcher>()), is_plugin_{im_a_plugin_system}
     {
     }
 
     void
-    base_system::mark() noexcept
+    base_system::mark() 
     {
         marked_ = true;
     }
 
     void
-    base_system::unmark() noexcept
+    base_system::unmark() 
     {
         marked_ = false;
     }
 
     bool
-    base_system::is_marked() const noexcept
+    base_system::is_marked() const 
     {
         return marked_;
     }
 
     void
-    base_system::enable() noexcept
+    base_system::enable() 
     {
         enabled_ = true;
     }
 
     void
-    base_system::disable() noexcept
+    base_system::disable() 
     {
         enabled_ = false;
     }
 
     bool
-    base_system::is_enabled() const noexcept
+    base_system::is_enabled() const 
     {
         return enabled_;
     }
 
     void
-    base_system::im_a_plugin() noexcept
+    base_system::im_a_plugin() 
     {
         is_plugin_ = true;
     }
 
     bool
-    base_system::is_a_plugin() const noexcept
+    base_system::is_a_plugin() const 
     {
         return is_plugin_;
     }
 
     void*
-    base_system::get_user_data() noexcept
+    base_system::get_user_data() 
     {
         return user_data_;
     }
 
     void
-    base_system::set_user_data(void* data) noexcept
+    base_system::set_user_data(void* data) 
     {
         user_data_ = data;
     }

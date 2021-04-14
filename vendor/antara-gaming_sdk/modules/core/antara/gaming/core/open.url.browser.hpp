@@ -30,7 +30,7 @@
 namespace antara::gaming::core
 {
     inline void
-    open_url_browser(const std::string& url) noexcept
+    open_url_browser(const std::string& url) 
     {
         details::open_url_browser(url);
     }

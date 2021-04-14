@@ -28,7 +28,7 @@ namespace antara::gaming::event
     template <typename Event, typename... Arguments>
     struct invoker_dispatcher
     {
-        constexpr invoker_dispatcher() noexcept = default;
+        constexpr invoker_dispatcher()  = default;
 
         void
         operator()(entt::dispatcher& self, Arguments&&... args)

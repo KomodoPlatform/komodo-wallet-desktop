@@ -37,16 +37,16 @@ namespace antara::gaming::world
 
       public:
         //! Constructors
-        app(std::string config_maker_name = "game.config.maker.json") noexcept;
+        app(std::string config_maker_name = "game.config.maker.json") ;
 
         //! Destructor
-        ~app() noexcept;
+        ~app() ;
 
         //! Public callbacks
-        void receive_quit_game(const event::quit_game& evt) noexcept;
+        void receive_quit_game(const event::quit_game& evt) ;
 
         //! Public member functions
-        int run() noexcept;
+        int run() ;
 
         void process_one_frame();
 
