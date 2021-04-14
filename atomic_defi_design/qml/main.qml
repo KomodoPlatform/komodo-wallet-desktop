@@ -53,16 +53,16 @@ DexWindow {
     }
     Item {
         width: parent.width
+        y: 1
         height: 40
         Rectangle {
             anchors.fill: parent
-            anchors.topMargin: 1
             visible: false
             color: app.globalTheme.surfaceColor
         }
-        DragHandler {
-            onActiveChanged: if (active) window.startSystemMove();
-            target: null
+        MouseArea {
+            onPressed: window.startSystemMove();
+            anchors.fill: parent
         }
         RowLayout {
             width: 195
