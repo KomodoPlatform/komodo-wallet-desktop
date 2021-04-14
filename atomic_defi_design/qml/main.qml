@@ -20,6 +20,9 @@ DexWindow {
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
     title: API.app_name
+
+    property int previousX: 0
+    property int previousY: 0
     //flags: Qt.Window | Qt.WindowFullscreenButtonHint
 
     property int real_visibility
@@ -37,7 +40,7 @@ DexWindow {
         anchors.fill: parent
         color: "transparent"//app.globalTheme.dexBoxBackgroundColor
         border.color: app.globalTheme.dexBoxBackgroundColor
-        border.width: 1
+        border.width: 0
     }
 
 
@@ -149,6 +152,21 @@ DexWindow {
         id: _top_resize
         height: 3
         width: parent.width
+        MouseArea {
+           height: 5
+           anchors.fill: parent
+
+           cursorShape: Qt.SizeVerCursor
+
+           onPressed: previousY = mouseY
+
+           onMouseYChanged: {
+               var dy = mouseY - previousY
+               window.setY(window.y + dy)
+               window.setHeight(window.height - dy)
+
+           }
+       }
         MouseArea {
             onPressed: if (active) window.startSystemResize(Qt.TopEdge)
             //target: null
