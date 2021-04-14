@@ -37,7 +37,7 @@ else()
 endif()
 
 message(STATUS "Creating Installer")
-set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.0/bin)
+set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.1/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
 	execute_process(COMMAND ${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z .
