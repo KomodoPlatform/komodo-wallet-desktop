@@ -38,7 +38,7 @@ namespace
             // If cur_min_volume in the UI < base_min_vol_threshold override
             if (cur_min_volume_f < base_min_vol_threshold)
             {
-                SPDLOG_INFO("cur_min_taker_vol: {}", cur_taker_vol.toStdString());
+                //SPDLOG_INFO("cur_min_taker_vol: {}", cur_taker_vol.toStdString());
                 trading_pg.set_min_trade_vol(cur_taker_vol);
             }
         }

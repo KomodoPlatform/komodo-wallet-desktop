@@ -124,9 +124,11 @@ if (WITH_HOTRELOAD)
 
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PUBLIC
             Qaterial
-            SortFilterProxyModel)
+            SortFilterProxyModel
+            )
     target_link_libraries(${QATERIALHOTRELOAD_LIB} PRIVATE
             Qaterial::HotReload::Ui
+            spdlog::spdlog
             )
 
     function(target_link_quiet_libraries TARGET)

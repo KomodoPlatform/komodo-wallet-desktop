@@ -1088,12 +1088,12 @@ namespace atomic_dex
         }
         else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
         {
-            SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
+            //SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
             current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
         }
         else if (safe_float(get_rel_amount().toStdString()) < safe_float(rel_min_taker_vol))
         {
-            SPDLOG_INFO("rel_amount: {}, rel_min_taker_vol: {}, price: {}", get_rel_amount().toStdString(), rel_min_taker_vol, get_price().toStdString());
+            //SPDLOG_INFO("rel_amount: {}, rel_min_taker_vol: {}, price: {}", get_rel_amount().toStdString(), rel_min_taker_vol, get_price().toStdString());
             current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
         else
@@ -1250,7 +1250,7 @@ namespace atomic_dex
 
         if (min_trade_vol != m_minimal_trading_amount)
         {
-            // SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
+            SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
             this->determine_error_cases();
