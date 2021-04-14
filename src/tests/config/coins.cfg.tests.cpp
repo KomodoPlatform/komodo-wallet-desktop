@@ -15,10 +15,10 @@
 #include <atomicdex/services/mm2/mm2.service.hpp>
 #include <atomicdex/utilities/cpprestsdk.utilities.hpp>
 
-//constexpr const char* g_komodolive_endpoint = "http://95.216.160.96:8080/api/v1";
-//t_http_client_ptr     g_komodolive_client{std::make_unique<t_http_client>(FROM_STD_STR(g_komodolive_endpoint))};
+constexpr const char* g_komodolive_endpoint = "http://95.216.160.96:8080/api/v1";
+t_http_client_ptr     g_komodolive_client{std::make_unique<t_http_client>(FROM_STD_STR(g_komodolive_endpoint))};
 
-/*TEST_CASE("generate all coinpaprika possibilities")
+TEST_CASE("generate all coinpaprika possibilities")
 {
 #if defined(__APPLE__)
     const auto     resp      = ::mm2::api::async_process_rpc_get(g_komodolive_client, "tickers", "/ticker").get();
