@@ -186,7 +186,6 @@ namespace atomic_dex
         void                       set_price(QString price);
         //[[nodiscard]] QString      get_mm2_min_trade_vol() const;
         [[nodiscard]] QString      get_min_trade_vol() const;
-        [[nodiscard]] QString      get_underlying_min_trade_vol() const;
         void                       set_min_trade_vol(QString min_trade_vol);
         [[nodiscard]] QString      get_volume() const;
         void                       set_volume(QString volume);
