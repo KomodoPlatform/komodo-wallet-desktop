@@ -2527,6 +2527,37 @@
     "active": false,
     "currently_enabled": false
   },
+  "VAL": {
+    "coin": "VAL",
+    "name": "Validity",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "radium",
+    "electrum": [
+      {
+        "url": "e1.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "e2.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "e3.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/val/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "VRA": {
     "coin": "VRA",
     "name": "Verasity",
