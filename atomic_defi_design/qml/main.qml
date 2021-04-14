@@ -131,7 +131,14 @@ DexWindow {
         anchors.right: parent.right
         width: 3
         DragHandler {
-            onActiveChanged: if (active) window.startSystemResize(Qt.RightEdge)
+            onActiveChanged: {
+                if (active) {
+                    if(!window.startSystemResize(Qt.RightEdge)){
+                        window.width = width
+                    }
+                }
+            }
+
             //target: null
             //anchors.fill: parent
             cursorShape: "SizeHorCursor"
