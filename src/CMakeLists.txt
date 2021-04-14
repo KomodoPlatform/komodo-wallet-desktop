@@ -16,7 +16,7 @@ DEX_NEW_LIB(core INTERFACE
             DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
             DEX_PROJECT_NAME="${DEX_PROJECT_NAME}" DEX_COMPANY_NAME="${DEX_COMPANY_NAME}"
             DEX_REPOSITORY_OWNER="${DEX_REPOSITORY_OWNER}" DEX_REPOSITORY_NAME="${DEX_REPOSITORY_NAME}"
-            DEX_CHECKSUM_API_URL="${DEX_CHECKSUM_API_URL}" _TURN_OFF_PLATFORM_STRING
+            DEX_CHECKSUM_API_URL="${DEX_CHECKSUM_API_URL}"
         INTERFACE_DEFS
             ENTT_API_EXPORT)
 target_precompile_headers(${PROJECT_NAME}_core INTERFACE core/atomicdex/pch.hpp)
@@ -86,8 +86,8 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
-        tests/api/github/github.api.tests.cpp
-        tests/api/checksum/checksum.api.tests.cpp
+        #tests/api/github/github.api.tests.cpp
+        #tests/api/checksum/checksum.api.tests.cpp
 
         ##! Utilities
         tests/utilities/qt.utilities.tests.cpp
