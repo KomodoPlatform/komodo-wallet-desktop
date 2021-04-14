@@ -56,6 +56,7 @@ DexWindow {
         height: 40
         Rectangle {
             anchors.fill: parent
+            anchors.topMargin: 1
             visible: false
             color: app.globalTheme.surfaceColor
         }
