@@ -22,6 +22,7 @@
 
 //! Deps
 #include <antara/gaming/ecs/system.manager.hpp>
+#include <boost/thread/synchronized_value.hpp>
 
 //! Project
 #include "atomicdex/models/qt.orderbook.model.hpp"

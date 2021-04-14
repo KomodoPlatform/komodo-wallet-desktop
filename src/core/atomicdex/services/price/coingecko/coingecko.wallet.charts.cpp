@@ -4,6 +4,7 @@
 #include "atomicdex/api/coingecko/coingecko.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
