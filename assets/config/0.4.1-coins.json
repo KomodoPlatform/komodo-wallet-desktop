@@ -310,13 +310,19 @@
     "coingecko_id": "blackcoin",
     "electrum": [
       {
-        "url": "electrum1.blackcoin.nl:10001"
+        "url": "electrum1.blackcoin.nl:10002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "electrum2.blackcoin.nl:20001"
+        "url": "electrum2.blackcoin.nl:20002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "electrum3.blackcoin.nl:30001"
+        "url": "electrum3.blackcoin.nl:30002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
