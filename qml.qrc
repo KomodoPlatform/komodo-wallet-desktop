@@ -325,6 +325,7 @@
         <file>atomic_defi_design/qml/Components/DexSubstractRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexSwitch.qml</file>
+        <file>atomic_defi_design/qml/Components/DexWindow.qml</file>
         <file>atomic_defi_design/qml/Components/DexText.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
