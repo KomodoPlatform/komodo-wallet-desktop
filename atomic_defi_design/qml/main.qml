@@ -37,7 +37,7 @@ DexWindow {
         anchors.fill: parent
         color: "transparent"//app.globalTheme.dexBoxBackgroundColor
         border.color: app.globalTheme.dexBoxBackgroundColor
-        border.width: 2
+        border.width: 1
     }
 
 
