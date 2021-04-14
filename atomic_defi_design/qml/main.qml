@@ -41,11 +41,19 @@ DexWindow {
     }
 
 
+
+
+    App {
+        id: app
+        anchors.fill: parent
+        anchors.margins: 2
+    }
     Item {
         width: parent.width
         height: 40
         Rectangle {
             anchors.fill: parent
+            visible: false
             color: app.globalTheme.surfaceColor
         }
         DragHandler {
@@ -106,7 +114,7 @@ DexWindow {
     Item {
         id: _left_resize
         height: parent.height
-        width: 2
+        width: 3
         MouseArea {
             onPressed: if (active) window.startSystemResize(Qt.LeftEdge)
             anchors.fill: parent
@@ -117,7 +125,7 @@ DexWindow {
         id: _right_resize
         height: parent.height
         anchors.right: parent.right
-        width: 2
+        width: 3
         MouseArea {
             onPressed: if (active) window.startSystemResize(Qt.RightEdge)
             //target: null
@@ -127,7 +135,7 @@ DexWindow {
     }
     Item {
         id: _bottom_resize
-        height: 2
+        height: 3
         width: parent.width
         anchors.bottom: parent.bottom
         MouseArea {
@@ -139,7 +147,7 @@ DexWindow {
     }
     Item {
         id: _top_resize
-        height: 2
+        height: 3
         width: parent.width
         MouseArea {
             onPressed: if (active) window.startSystemResize(Qt.TopEdge)
@@ -159,12 +167,5 @@ DexWindow {
             anchors.fill: parent
             cursorShape: "SizeFDiagCursor"
         }
-    }
-
-    App {
-        id: app
-        anchors.fill: parent
-        anchors.margins: 2
-        anchors.topMargin: 40
     }
 }
