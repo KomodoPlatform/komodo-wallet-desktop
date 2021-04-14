@@ -116,7 +116,7 @@ DexWindow {
         height: parent.height
         width: 3
         MouseArea {
-            onPressed: if (active) window.startSystemResize(Qt.LeftEdge)
+            onPressed: window.startSystemResize(Qt.LeftEdge)
             anchors.fill: parent
             cursorShape: "SizeHorCursor"
         }
@@ -126,10 +126,10 @@ DexWindow {
         height: parent.height
         anchors.right: parent.right
         width: 3
-        MouseArea {
-            onPressed: if (active) window.startSystemResize(Qt.RightEdge)
+        DragHandler {
+            onActiveChanged: if (active) window.startSystemResize(Qt.RightEdge)
             //target: null
-            anchors.fill: parent
+            //anchors.fill: parent
             cursorShape: "SizeHorCursor"
         }
     }
