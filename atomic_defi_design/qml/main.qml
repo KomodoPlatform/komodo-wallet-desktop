@@ -130,12 +130,11 @@ DexWindow {
         height: parent.height
         anchors.right: parent.right
         width: 3
-        DragHandler {
-            onActiveChanged: {
-                if (active) {
-                    if(!window.startSystemResize(Qt.RightEdge)){
-                        window.width = width
-                    }
+        MouseArea {
+            onPressed: {
+                if(!window.startSystemResize(Qt.RightEdge)){
+                    window.width = width
+
                 }
             }
 
