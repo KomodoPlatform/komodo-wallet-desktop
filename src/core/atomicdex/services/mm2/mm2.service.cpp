@@ -753,7 +753,7 @@ namespace atomic_dex
     void
     mm2_service::fetch_current_orderbook_thread(bool is_a_reset)
     {
-        !m_orderbook_thread_active ? SPDLOG_WARN("Nothing to achieve, sleeping") : SPDLOG_INFO("Fetch current orderbook");
+        //!m_orderbook_thread_active ? SPDLOG_WARN("Nothing to achieve, sleeping") : SPDLOG_INFO("Fetch current orderbook");
 
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
         if (!m_orderbook_thread_active)
@@ -1130,7 +1130,7 @@ namespace atomic_dex
     {
         SPDLOG_DEBUG("on_refresh_orderbook");
 
-        SPDLOG_INFO("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
+        //SPDLOG_INFO("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
         this->m_synchronized_ticker_pair = std::make_pair(evt.base, evt.rel);
 
         if (this->m_mm2_running && this->m_orderbook_thread_active)

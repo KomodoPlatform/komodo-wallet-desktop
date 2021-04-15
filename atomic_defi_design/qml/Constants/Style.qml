@@ -356,7 +356,7 @@ QtObject {
                                           "CVT": "#4B0082",
                                           "DODO": "#FFF706",
                                           "EFL": "#FF940B",
-                                          "EGLD": "#0D022B",
+                                          "EGLD": "#1D4CB5",
                                           "ELF": "#2B5EBB",
                                           "ENJ": "#6752C3",
                                           "EURS": "#2F77ED",

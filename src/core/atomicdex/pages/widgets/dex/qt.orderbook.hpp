@@ -45,6 +45,7 @@ namespace atomic_dex
         ~qt_orderbook_wrapper() final = default;
 
       public:
+        void                           adjust_min_vol();
         void                           refresh_orderbook(t_orderbook_answer answer);
         void                           reset_orderbook(t_orderbook_answer answer);
         void                           clear_orderbook();
