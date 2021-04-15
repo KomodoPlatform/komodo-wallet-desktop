@@ -15,10 +15,6 @@ import "../Exchange/Trade"
 Item {
     property alias send_modal: send_modal
     readonly property int layout_margin: 30
-
-    function reset() {
-    }
-
     function loadingPercentage(remaining) {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
