@@ -43,6 +43,7 @@
 //! Deps
 #include <sodium/core.h>
 #include <wally.hpp>
+#include <QSslSocket>
 
 #if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
@@ -361,6 +362,7 @@ run_app(int argc, char** argv)
     SPDLOG_INFO("Installing qt_message_handler");
     qInstallMessageHandler(&qt_message_handler);
 #endif
+    SPDLOG_INFO("SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(), QSslSocket::sslLibraryVersionString().toStdString());
 
 #if defined(Q_OS_MACOS)
     fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
