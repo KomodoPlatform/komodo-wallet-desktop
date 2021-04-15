@@ -633,7 +633,7 @@ ColumnLayout {
                     visible: !isUltraLarge
                     SplitView.fillWidth: true
                     SplitView.fillHeight: true
-                    defaultHeight: 180
+                    defaultHeight: 140
                     minimumHeight: 80
                     title: "Best Orders"
                     reloadable: true
