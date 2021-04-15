@@ -520,7 +520,7 @@ ColumnLayout {
                     expandedVert: true
                     hideHeader: true
                     title: "Form"
-                    minimumHeight: 300
+                    minimumHeight: 350
                     ColumnLayout {
                         property int space: 10
                         anchors.fill: parent
