@@ -17,6 +17,20 @@ DEX_NEW_LIB(core INTERFACE
 target_precompile_headers(${PROJECT_NAME}_core INTERFACE core/atomicdex/pch.hpp)
 if (APPLE)
     set_source_files_properties(core/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+    macro(adex_add_framework fwname appname)
+        find_library(FRAMEWORK_${fwname}
+                NAMES ${fwname}
+                PATHS ${CMAKE_OSX_SYSROOT}/System/Library
+                PATH_SUFFIXES Frameworks
+                NO_DEFAULT_PATH)
+        if( ${FRAMEWORK_${fwname}} STREQUAL FRAMEWORK_${fwname}-NOTFOUND)
+            MESSAGE(ERROR ": Framework ${fwname} not found")
+        else()
+            TARGET_LINK_LIBRARIES(${appname} INTERFACE ${FRAMEWORK_${fwname}})
+            MESSAGE(STATUS "Framework ${fwname} found at ${FRAMEWORK_${fwname}}")
+        endif()
+    endmacro()
+    adex_add_framework(Security ${PROJECT_NAME}_core)
 endif ()
 if (DISABLE_GEOBLOCKING)
     message(STATUS "Disabling Geoblocking for dev purpose")

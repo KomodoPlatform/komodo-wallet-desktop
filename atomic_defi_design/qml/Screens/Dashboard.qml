@@ -80,7 +80,8 @@ Item {
     AnimatedRectangle {
         color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
-        height: parent.height
+        height: parent.height-40
+        y: 40
         x: sidebar.width
 
         // Modals
