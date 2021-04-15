@@ -67,15 +67,12 @@ Item {
         }
     }
 
-
-
     onTotalChanged: {
         pie.refresh()
         pie.pieTimer2.restart()
     }
     Component.onCompleted: {
         reset()
-
     }
 
     function reset() {
@@ -113,8 +110,6 @@ Item {
             chart.axes[i].visible = false
     }
 
-
-
     Flickable {
         id: flick
         anchors.fill: parent
@@ -132,7 +127,7 @@ Item {
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: true
-                height: portfolio.isUltraLarge? 600 : 350
+                height: portfolio.isUltraLarge ? 600 : 350
                 RowLayout {
                     anchors.fill: parent
                     anchors.rightMargin: 40
@@ -146,8 +141,8 @@ Item {
 
                     AssetPieChart {
                         id: pie
-                        Layout.preferredWidth: portfolio.isUltraLarge? 350 : 250
-                        Layout.preferredHeight: portfolio.isUltraLarge? 600 : 350
+                        Layout.preferredWidth: portfolio.isUltraLarge ? 350 : 250
+                        Layout.preferredHeight: portfolio.isUltraLarge ? 600 : 350
                         Layout.alignment: Qt.AlignTop
                     }
                 }
@@ -198,8 +193,7 @@ Item {
                     }
                 }
             }
-            TableDex {
-            }
+            TableDex {}
             Item {
                 width: 1
                 height: 10
@@ -254,10 +248,4 @@ Item {
             }
         }
     }
-
-    // Top part
-
-    // List header
-
-    // List
 }
