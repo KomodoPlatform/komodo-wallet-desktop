@@ -31,7 +31,6 @@ Item {
         item.color = Style.getCoinColor(value.ticker)
         item.borderColor = theme.backgroundColor
         item.borderWidth = 1
-        item.size = 1
         item.holeSize = 1
         item.labelFont = theme.textType.body2
         item.hovered.connect(function (state) {
@@ -102,8 +101,8 @@ Item {
             Rectangle {
                 anchors.centerIn: parent
                 color: theme.backgroundColor
-                width: 285
-                height: 285
+                width: 260
+                height: 260
                 radius: 300
                 Column {
                     anchors.centerIn: parent
