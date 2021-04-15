@@ -21,10 +21,7 @@
 
 #include <Availability.h>
 #include "manager.hpp"
-
-#ifdef __MAC_10_15
 #import <AppKit/AppKit.h>
-#endif
 
 #ifdef __MAC_10_15
 static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
@@ -37,7 +34,6 @@ void atomic_dex::mac_window_setup(long winid, bool fullscreen)
 {
     (void)winid;
     (void)fullscreen;
-#ifdef __MAC_10_15
     @try {
     SPDLOG_INFO("mac_window_setup");
     NSView *nativeView = reinterpret_cast<NSView *>(winid);
@@ -57,5 +53,4 @@ void atomic_dex::mac_window_setup(long winid, bool fullscreen)
         std::string reason = std::string([exception.reason UTF8String]);
         SPDLOG_ERROR("Exception caught in mac_window_setup {}", reason);
     }
-#endif
 }
