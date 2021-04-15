@@ -480,13 +480,13 @@ run_app(int argc, char** argv)
 #endif
 
 
-/*#ifdef __APPLE__
+#ifdef __APPLE__
 #    if !defined(ATOMICDEX_HOT_RELOAD)
     QWindowList windows = QGuiApplication::allWindows();
     QWindow*    win     = windows.first();
     atomic_dex::mac_window_setup(win->winId());
 #    endif
-#endif*/
+#endif
     atomic_app.launch();
 
     res = app->exec();

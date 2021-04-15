@@ -9,6 +9,7 @@ endif ()
 message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
 set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/qml)
 message(STATUS "PROJECT_QML_DIR -> ${PROJECT_QML_DIR}")
+message(STATUS "bin dir -> ${CMAKE_CURRENT_SOURCE_DIR}/bin")
 set(TARGET_APP_PATH ${PROJECT_ROOT_DIR}/bundled/osx/)
 set(PROJECT_APP_DIR ${DEX_PROJECT_NAME}.app)
 set(PROJECT_APP_PATH ${CMAKE_SOURCE_DIR}/bin/${PROJECT_APP_DIR})
@@ -97,10 +98,10 @@ endif ()
 file(COPY ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg DESTINATION ${TARGET_APP_PATH})
 
 get_filename_component(QT_ROOT_DIR  $ENV{QT_ROOT} DIRECTORY)
-set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.0/bin)
+set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.1/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
-    message(STATUS "Generating ${DEX_PROJECT_NAME}.7z")
+    message(STATUS "Generating ${DEX_PROJECT_NAME}.7z with [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
     execute_process(COMMAND
             ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin

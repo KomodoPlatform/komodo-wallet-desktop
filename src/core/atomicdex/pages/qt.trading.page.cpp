@@ -78,7 +78,7 @@ namespace atomic_dex
         if (is_wallet_only)
         {
             SPDLOG_WARN("{} is wallet only - skipping", base.toStdString());
-            return ;
+            return;
         }
         SPDLOG_INFO("Setting current orderbook: {} / {}", base.toStdString(), rel.toStdString());
         auto* market_selector_mdl = get_market_pairs_mdl();
@@ -140,10 +140,10 @@ namespace atomic_dex
         const bool is_my_max = m_volume == m_max_volume;
         const bool is_exact_selected_order_volume =
             (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
-        t_float_50 rel_min_trade = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
-        t_float_50 rel_min_volume_f   = safe_float(get_underlying_min_trade_vol().toStdString());
-        SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
-        SPDLOG_INFO("rel_min_volume: {} (will be use for mm2)", rel_min_volume_f.str(50, std::ios::fixed));
+        t_float_50 rel_min_trade    = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
+        t_float_50 rel_min_volume_f = safe_float(get_min_trade_vol().toStdString());
+        // SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
+        // SPDLOG_INFO("rel_min_volume: {} (will be use for mm2)", rel_min_volume_f.str(50, std::ios::fixed));
 
         t_buy_request req{
             .base                           = base.toStdString(),
@@ -158,7 +158,7 @@ namespace atomic_dex
             .is_exact_selected_order_volume = is_exact_selected_order_volume,
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
-            .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_underlying_min_trade_vol().toStdString()};
+            .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_min_trade_vol().toStdString()};
 
         if (m_preffered_order.has_value())
         {
@@ -257,7 +257,7 @@ namespace atomic_dex
             is_selected_order ? QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
                                : false;
         t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
-        t_float_50 cur_min_trade  = safe_float(m_minimal_trading_amount.toStdString());
+        t_float_50 cur_min_trade  = safe_float(get_min_trade_vol().toStdString());
 
         t_sell_request req{
             .base             = base.toStdString(),
@@ -445,20 +445,7 @@ namespace atomic_dex
                     {
                         const auto base_max_taker_vol = safe_float(wrapper->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
                         const auto rel_max_taker_vol  = safe_float(wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
-                        auto       adjust_functor     = [this, wrapper]()
-                        {
-                            this->determine_max_volume();
-                            t_float_50 min_vol_f = safe_float(wrapper->get_current_min_taker_vol().toStdString());
-                            if (safe_float(get_volume().toStdString()) <= min_vol_f)
-                            {
-                                this->set_volume(get_max_volume());
-                                this->get_orderbook_wrapper()->refresh_best_orders();
-                            }
-                            if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
-                            {
-                                this->set_min_trade_vol(wrapper->get_current_min_taker_vol());
-                            }
-                        };
+                        auto       adjust_functor     = [this, wrapper]() { this->set_min_trade_vol(wrapper->get_current_min_taker_vol()); };
                         if ((m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0) || (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0))
                         {
                             adjust_functor();
@@ -600,13 +587,7 @@ namespace atomic_dex
             emit priceChanged();
             emit priceReversedChanged();
             emit get_orderbook_wrapper()->currentMinTakerVolChanged();
-            //! Cap min_vol
-            t_float_50 min_vol_f = safe_float(get_orderbook_wrapper()->get_current_min_taker_vol().toStdString());
-            //SPDLOG_INFO("min_vol_f: {}", min_vol_f.str(50, std::ios::fixed));
-            if (safe_float(get_min_trade_vol().toStdString()) < min_vol_f)
-            {
-                this->set_min_trade_vol(get_orderbook_wrapper()->get_current_min_taker_vol());
-            }
+            get_orderbook_wrapper()->adjust_min_vol();
         }
     }
 
@@ -1088,14 +1069,12 @@ namespace atomic_dex
         TradingError current_trading_error = TradingError::None;
 
         //! Check minimal trading amount
-        const std::string base                       = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
-        t_float_50        max_balance_without_dust   = this->get_max_balance_without_dust();
-        const auto&       base_min_taker_vol         = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        const auto&       rel_min_taker_vol          = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
-        const auto&       current_taker_vol          = m_market_mode == MarketMode::Buy ? rel_min_taker_vol : base_min_taker_vol;
-        const auto&       current_reversed_taker_vol = m_market_mode == MarketMode::Buy ? base_min_taker_vol : rel_min_taker_vol;
+        const std::string base                     = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+        t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
+        const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
+        const auto&       cur_min_taker_vol        = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
 
-        if (max_balance_without_dust < safe_float(current_taker_vol)) //<! Checking balance < minimal_trading_amount
+        if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
@@ -1107,12 +1086,14 @@ namespace atomic_dex
         {
             current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
         }
-        else if (safe_float(get_base_amount().toStdString()) < safe_float(current_taker_vol))
+        else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
         {
+            //SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
             current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
         }
-        else if (safe_float(get_rel_amount().toStdString()) < safe_float(current_reversed_taker_vol))
+        else if (safe_float(get_rel_amount().toStdString()) < safe_float(rel_min_taker_vol))
         {
+            //SPDLOG_INFO("rel_amount: {}, rel_min_taker_vol: {}, price: {}", get_rel_amount().toStdString(), rel_min_taker_vol, get_price().toStdString());
             current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
         }
         else
@@ -1246,22 +1227,6 @@ namespace atomic_dex
         }
     }
 
-    /*QString
-    trading_page::get_mm2_min_trade_vol() const
-    {
-        const auto& mm2           = m_system_manager.get_system<mm2_service>();
-        const auto  base_coin     = get_market_pairs_mdl()->get_base_selected_coin().toStdString();
-        const auto& raw_cfg       = mm2.get_raw_mm2_ticker_cfg(base_coin);
-        QString     min_trade_vol = QString::fromStdString(atomic_dex::utils::minimal_trade_amount_str());
-        if (raw_cfg.contains("dust"))
-        {
-            t_float_50 min_volume(raw_cfg.at("dust").get<int64_t>());
-            min_volume /= 100000000;
-            min_trade_vol = QString::fromStdString(atomic_dex::utils::format_float(min_volume));
-        }
-        return min_trade_vol;
-    }*/
-
     QString
     trading_page::get_min_trade_vol() const
     {
@@ -1271,22 +1236,24 @@ namespace atomic_dex
     void
     trading_page::set_min_trade_vol(QString min_trade_vol)
     {
-        const auto& base_min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        const auto& rel_min_taker_vol  = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
-        const auto& current_taker_vol  = m_market_mode == MarketMode::Buy ? rel_min_taker_vol : base_min_taker_vol;
-        t_float_50  min_vol_f          = safe_float(current_taker_vol);
-        const bool  is_valid           = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
+        //! KMD<->DOGE Buy -> base_min_vol, sell base_min_vol ->
+        //! base_min_vol -> 0.0001 KMD
+        //! rel_min_vol -> 10 DOGE
+        const auto& min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
+        t_float_50  min_vol_f     = safe_float(min_taker_vol);
+        // const bool  is_valid      = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
 
         if (safe_float(min_trade_vol.toStdString()) <= min_vol_f)
         {
-            min_trade_vol = QString::fromStdString(current_taker_vol);
+            min_trade_vol = QString::fromStdString(min_taker_vol);
         }
 
-        if (min_trade_vol != m_minimal_trading_amount && is_valid)
+        if (min_trade_vol != m_minimal_trading_amount)
         {
             SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
+            this->determine_error_cases();
         }
     }
 
@@ -1367,42 +1334,6 @@ namespace atomic_dex
         else
         {
             SPDLOG_WARN("{}/{} doesn't have any trading settings - skipping", left.toStdString(), right.toStdString());
-        }
-    }
-
-    QString
-    trading_page::get_underlying_min_trade_vol() const
-    {
-        if (m_market_mode == MarketModeGadget::Sell)
-        {
-            return get_min_trade_vol();
-        }
-        else
-        {
-            //! Here i have to calculate the volume in base coin because MM2 accept min_volume only for base coin
-            const bool is_selected_order = m_preffered_order.has_value();
-            //!
-            t_float_50 cur_base_min_trade = safe_float(get_min_trade_vol().toStdString());
-            t_float_50 rel_min = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
-            t_float_50 price_f = is_selected_order ? safe_float(m_preffered_order->at("price").get<std::string>()) : safe_float(m_price.toStdString());
-            if (price_f > 0)
-            {
-                t_float_50 cur_rel_min_trade = (cur_base_min_trade / price_f) * rel_min;
-                cur_rel_min_trade += t_float_50("1e-50");
-                std::string result = cur_rel_min_trade.str(50, std::ios_base::fixed);
-                boost::trim_right_if(result, boost::is_any_of("0"));
-                boost::trim_right_if(result, boost::is_any_of("."));
-                //SPDLOG_INFO("base_min_vol: [{}]", result);
-                if (cur_rel_min_trade < rel_min)
-                {
-                    return get_orderbook_wrapper()->get_rel_min_taker_vol();
-                }
-                return QString::fromStdString(result);
-            }
-            else
-            {
-                return get_orderbook_wrapper()->get_rel_min_taker_vol();
-            }
         }
     }
 } // namespace atomic_dex

@@ -263,12 +263,12 @@ QtObject {
         if (API.app.trading_pg.market_mode == MarketMode.Buy) {
             return API.app.trading_pg.orderbook.rel_min_taker_vol
         }
-        return API.app.trading_pg.orderbook.base_min_taker_vol
+        return API.app.trading_pg.min_trade_vol
     }
 
     function getReversedMinTradeAmount() {
             if (API.app.trading_pg.market_mode == MarketMode.Buy) {
-               return API.app.trading_pg.orderbook.base_min_taker_vol
+               return API.app.trading_pg.min_trade_vol
             }
             return API.app.trading_pg.orderbook.rel_min_taker_vol
         }
@@ -893,26 +893,36 @@ QtObject {
                                                 "LINK/EURS": "KRAKEN:LINKEUR",
                                                 "LRC/BTC": "BINANCE:LRCBTC",
                                                 "LRC/ETH": "BINANCE:LRCETH",
-                                                "LRC/USDT": "BINANCE:LRCUSDT",
-                                                "LRC/BUSD": "BINANCE:LRCBUSD",
+                                                "LRC/USDT": "BINANCE:LRCUSD",
+                                                "LRC/BUSD": "BINANCE:LRCUSD",
+                                                "LRC/USDC": "BINANCE:LRCUSD",
+                                                "LRC/TUSD": "BINANCE:LRCUSD",
+                                                "LRC/HUSD": "BINANCE:LRCUSD",
+                                                "LRC/DAI": "BINANCE:LRCUSD",
+                                                "LRC/PAX": "BINANCE:LRCUSD",
                                                 "LTC/BTC": "BINANCE:LTCBTC",
                                                 "LTC/ETH": "BINANCE:LTCETH",
+                                                "LTC/USDT": "COINBASE:LTCUSD",
+                                                "LTC/BUSD": "COINBASE:LTCUSD",
+                                                "LTC/USDC": "COINBASE:LTCUSD",
+                                                "LTC/TUSD": "COINBASE:LTCUSD",
+                                                "LTC/HUSD": "COINBASE:LTCUSD",
+                                                "LTC/DAI": "COINBASE:LTCUSD",
+                                                "LTC/PAX": "COINBASE:LTCUSD",
                                                 "LTC/BNB": "BINANCE:LTCBNB",
-                                                "LTC/USDT": "BINANCE:LTCUSDT",
-                                                "LTC/BUSD": "BINANCE:LTCBUSD",
-                                                "LTC/DAI": "HITBTC:LTCDAI",
-                                                "LTC/EURS": "HITBTC:LTCEURS",
-                                                "LTC/HUSD": "HUOBI:LTCHUSD",
-                                                "LTC/PAX": "BINANCE:LTCPAX",
-                                                "LTC/TUSD": "BINANCE:LTCTUSD",
-                                                "LTC/USDC": "BINANCE:LTCUSDC",
+                                                "LTC/EURS": "COINBASE:LTCEUR",
                                                 "LTC/BCH": "HITBTC:LTCBCH",
                                                 "LTC/HT": "HUOBI:LTCHT",
                                                 "MANA/BTC": "BINANCE:MANABTC",
                                                 "MANA/ETH": "BINANCE:MANAETH",
-                                                "MANA/USDT": "BINANCE:MANAUSDT",
-                                                "MANA/BUSD": "BINANCE:MANABUSD",
-                                                "MANA/USDC": "COINBASE:MANAUSDC",
+                                                "MANA/USDT": "BINANCE:MANAUSD",
+                                                "MANA/BUSD": "BINANCE:MANAUSD",
+                                                "MANA/USDC": "BINANCE:MANAUSD",
+                                                "MANA/TUSD": "BINANCE:MANAUSD",
+                                                "MANA/HUSD": "BINANCE:MANAUSD",
+                                                "MANA/DAI": "BINANCE:MANAUSD",
+                                                "MANA/PAX": "BINANCE:MANAUSD",
+                                                "MANA/EURS": "KRAKEN:MANAEUR",
                                                 "MATIC/BTC": "BINANCE:MATICBTC",
                                                 "MATIC/ETH": "HUOBI:MATICETH",
                                                 "MATIC/USDT": "BINANCE:MATICUSD",

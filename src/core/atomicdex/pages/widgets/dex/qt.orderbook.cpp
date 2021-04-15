@@ -20,6 +20,31 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
+namespace
+{
+    void
+    adjust_vol(atomic_dex::trading_page& trading_pg, atomic_dex::qt_orderbook_wrapper& wrapper)
+    {
+        t_float_50 price_f = safe_float(trading_pg.get_price().toStdString());
+        if (price_f > 0)
+        {
+            t_float_50 base_min_f             = safe_float(wrapper.get_base_min_taker_vol().toStdString());
+            t_float_50 base_min_by_rel        = safe_float(wrapper.get_rel_min_taker_vol().toStdString()) / price_f;
+            t_float_50 base_min_vol_threshold = boost::multiprecision::max(base_min_by_rel, base_min_f);
+            base_min_vol_threshold += t_float_50("1e-8");
+            t_float_50 cur_min_volume_f = safe_float(trading_pg.get_min_trade_vol().toStdString());
+            QString    cur_taker_vol    = QString::fromStdString(atomic_dex::utils::format_float(base_min_vol_threshold));
+
+            // If cur_min_volume in the UI < base_min_vol_threshold override
+            if (cur_min_volume_f < base_min_vol_threshold)
+            {
+                //SPDLOG_INFO("cur_min_taker_vol: {}", cur_taker_vol.toStdString());
+                trading_pg.set_min_trade_vol(cur_taker_vol);
+            }
+        }
+    }
+} // namespace
+
 namespace atomic_dex
 {
     qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
@@ -187,13 +212,31 @@ namespace atomic_dex
         return m_rel_min_taker_vol.isEmpty() ? "0" : m_rel_min_taker_vol;
     }
 
+    void
+    qt_orderbook_wrapper::adjust_min_vol()
+    {
+        adjust_vol(m_system_manager.get_system<trading_page>(), *this);
+    }
+
     QString
     qt_orderbook_wrapper::get_current_min_taker_vol() const
     {
-        bool is_buy = m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
-        t_float_50 volume = is_buy ? safe_float(get_rel_min_taker_vol().toStdString()) : safe_float(get_base_min_taker_vol().toStdString());
-        t_float_50 price = safe_float(m_system_manager.get_system<trading_page>().get_price().toStdString());
-        t_float_50 threshold = volume * price;
-        return QString::fromStdString(utils::format_float(threshold));
+        QString    cur_taker_vol = get_base_min_taker_vol();
+        auto&      trading_pg    = m_system_manager.get_system<trading_page>();
+        t_float_50 price_f       = safe_float(trading_pg.get_price().toStdString());
+        if (price_f <= 0)
+        {
+            //! Price is not set yet in the UI in this particular case return the min volume calculated by mm2
+            return cur_taker_vol;
+        }
+
+        t_float_50 base_min_f             = safe_float(get_base_min_taker_vol().toStdString());
+        t_float_50 base_min_by_rel        = safe_float(get_rel_min_taker_vol().toStdString()) / price_f;
+        t_float_50 base_min_vol_threshold = boost::multiprecision::max(base_min_by_rel, base_min_f);
+        base_min_vol_threshold += t_float_50("1e-8");
+        // t_float_50 cur_min_volume_f       = safe_float(trading_pg.get_min_trade_vol().toStdString());
+        cur_taker_vol = QString::fromStdString(utils::format_float(base_min_vol_threshold));
+
+        return cur_taker_vol;
     }
 } // namespace atomic_dex
