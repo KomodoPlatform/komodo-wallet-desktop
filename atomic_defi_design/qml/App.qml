@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 
 
-import QtQuick.Window 2.12
+import QtQuick.Window 2.15
 
 import Qaterial 1.0 as Qaterial
 
@@ -279,8 +279,9 @@ Rectangle {
             }
         }
     }
-    Window {
+    /*Window {
         visible: debug_log
+        //transientParent: null
         width: 500
         height: 400
         InnerBackground {
@@ -409,11 +410,13 @@ Rectangle {
 
             }
         }
-    }
+    }*/
+
     Settings {
         id: atomic_settings2
         fileName: atomic_cfg_file
     }
+
     Component.onCompleted: {
         openFirstLaunch()
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))

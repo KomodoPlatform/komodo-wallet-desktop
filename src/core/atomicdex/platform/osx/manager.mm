@@ -39,18 +39,19 @@ void atomic_dex::mac_window_setup(long winid, bool fullscreen)
     (void)fullscreen;
 #ifdef __MAC_10_15
     @try {
+    SPDLOG_INFO("mac_window_setup");
     NSView *nativeView = reinterpret_cast<NSView *>(winid);
     NSWindow* nativeWindow = [nativeView window];
-    NSWindowStyleMask windowMask = NSWindowStyleMaskFullSizeContentView | NSWindowStyleMaskBorderless | NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
-    if (fullscreen) {
+    NSWindowStyleMask windowMask = NSWindowStyleMaskBorderless | NSWindowStyleMaskResizable;
+    /*if (fullscreen) {
         windowMask |= NSWindowStyleMaskFullScreen;
-    }
+    }*/
     [nativeWindow setStyleMask: windowMask];
-    [nativeWindow setTitlebarAppearsTransparent:YES];
-    NSColor *myColor = colorFromRGB(30, 41, 56);
-    [myColor set];
-    [nativeWindow setBackgroundColor: myColor];
-    [nativeWindow setTitleVisibility: static_cast<NSWindowTitleVisibility>(1)];
+    //[nativeWindow setTitlebarAppearsTransparent:YES];
+    //NSColor *myColor = colorFromRGB(30, 41, 56);
+    //[myColor set];
+    //[nativeWindow setBackgroundColor: myColor];
+    //[nativeWindow setTitleVisibility: static_cast<NSWindowTitleVisibility>(1)];
     }
     @catch (NSException *exception) {
         std::string reason = std::string([exception.reason UTF8String]);

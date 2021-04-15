@@ -813,183 +813,183 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="126"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="139"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="127"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="140"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation>Bu kısmın içeriği daha sonra eklenecektir. Takipte kalın!</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="298"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="299"/>
         <source>Matching</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="298"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="299"/>
         <source>Order Matching</source>
         <translation type="unfinished">Emir Eşleşiyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="300"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="301"/>
         <source>Matched</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="300"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="301"/>
         <source>Order Matched</source>
         <translation type="unfinished">Emir Eşleşti</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="302"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="303"/>
         <source>Ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="302"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="303"/>
         <source>Swap Ongoing</source>
         <translation type="unfinished">Takas Devam Ediyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="304"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="305"/>
         <source>Successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="304"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="305"/>
         <source>Swap Successful</source>
         <translation type="unfinished">Takas Başarılı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="306"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="307"/>
         <source>Refunding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="308"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="309"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="308"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="309"/>
         <source>Swap Failed</source>
         <translation type="unfinished">Takas Başarısız</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="310"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="311"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="310"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="311"/>
         <source>Unknown State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="354"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="355"/>
         <source>Started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="356"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="357"/>
         <source>Negotiated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="358"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="359"/>
         <source>Taker fee sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="360"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="361"/>
         <source>Maker payment received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="362"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="363"/>
         <source>Maker payment wait confirm started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="364"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="365"/>
         <source>Maker payment validated and confirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="366"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="367"/>
         <source>Taker payment sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="368"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="369"/>
         <source>Taker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="370"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="371"/>
         <source>Maker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="372"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="373"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="374"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="375"/>
         <source>Start failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="376"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="377"/>
         <source>Negotiate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="378"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="379"/>
         <source>Taker fee validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="380"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="381"/>
         <source>Maker payment transaction failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="382"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="383"/>
         <source>Maker payment Data send failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="384"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="385"/>
         <source>Maker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="386"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="387"/>
         <source>Taker payment validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="388"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="389"/>
         <source>Taker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="390"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="391"/>
         <source>Taker payment spend failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="392"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="393"/>
         <source>Maker payment wait refund started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="394"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="395"/>
         <source>Maker payment refunded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="396"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="397"/>
         <source>Maker payment refund failed</source>
         <translation type="unfinished"></translation>
     </message>

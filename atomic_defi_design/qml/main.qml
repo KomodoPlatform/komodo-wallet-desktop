@@ -27,14 +27,15 @@ DexWindow {
 
     property int real_visibility
 
-    onVisibilityChanged: {
+    /*onVisibilityChanged: {
         // 3 is minimized, ignore that
         if(visibility !== 3)
             real_visibility = visibility
 
         API.app.change_state(visibility)
 
-    }
+    }*/
+
     background: Item{}
     Rectangle {
         anchors.fill: parent
