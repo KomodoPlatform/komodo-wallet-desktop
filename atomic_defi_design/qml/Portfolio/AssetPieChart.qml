@@ -30,20 +30,17 @@ Item {
         item.labelColor = 'white'
         item.color = Style.getCoinColor(value.ticker)
         item.borderColor = theme.backgroundColor
-        item.borderWidth = 14
+        item.borderWidth = 1
+        item.size = 1
         item.holeSize = 1
         item.labelFont = theme.textType.body2
         item.hovered.connect(function (state) {
             if (state) {
-                //item.exploded = true
                 item.explodeDistanceFactor = 0.01
-                //item.labelVisible = true
                 portfolio.currentTotal = API.app.settings_pg.current_fiat_sign+" "+ value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
                 item.color = Qt.lighter(Style.getCoinColor(value.ticker))
             } else {
-                //item.exploded = false
-                //item.labelVisible = false
                 item.explodeDistanceFactor = 0.01
                 portfolio.currentValue = ""
                 portfolio.currentTotal = ""
@@ -89,7 +86,7 @@ Item {
                     labelColor: 'white'
                     labelVisible: false
                     labelFont: theme.textType.head5
-                    borderWidth: 3
+                    borderWidth: 10
                     Behavior on explodeDistanceFactor {
                         NumberAnimation {
                             duration: 150
