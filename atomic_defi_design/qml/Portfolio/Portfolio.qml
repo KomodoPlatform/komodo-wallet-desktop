@@ -116,10 +116,12 @@ Item {
 
 
     Flickable {
+        id: flick
         anchors.fill: parent
         anchors.topMargin: 90
         contentHeight: _column.height
         clip: true
+        onHeightChanged: console.log(height)
         Column {
             id: _column
             topPadding: 10
@@ -179,8 +181,6 @@ Item {
                                     resetCoinFilter()
                                 else
                                     text = ""
-
-                                //applyCurrentSort()
                             }
 
                             Layout.alignment: Qt.AlignVCenter
@@ -236,10 +236,11 @@ Item {
                             spacing: 10
                             Qaterial.ColorIcon {
                                 source: Qaterial.Icons.plus
+                                anchors.verticalCenter: parent.verticalCenter
                             }
-
                             DexLabel {
                                 text: qsTr("Add asset")
+                                anchors.verticalCenter: parent.verticalCenter
                             }
                         }
                         onClicked: enable_coin_modal.open()
