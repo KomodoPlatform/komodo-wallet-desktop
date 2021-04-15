@@ -43,9 +43,6 @@ DexWindow {
         border.width: 0
     }
 
-
-
-
     App {
         id: app
         anchors.fill: parent
@@ -132,14 +129,8 @@ DexWindow {
         width: 3
         MouseArea {
             onPressed: {
-                if(!window.startSystemResize(Qt.RightEdge)){
-                    window.width = width
-
-                }
+                window.startSystemResize(Qt.RightEdge)
             }
-
-            //target: null
-            //anchors.fill: parent
             cursorShape: "SizeHorCursor"
         }
     }
@@ -160,22 +151,7 @@ DexWindow {
         height: 3
         width: parent.width
         MouseArea {
-           height: 5
-           anchors.fill: parent
-
-           cursorShape: Qt.SizeVerCursor
-
-           onPressed: previousY = mouseY
-
-           onMouseYChanged: {
-               var dy = mouseY - previousY
-               window.setY(window.y + dy)
-               window.setHeight(window.height - dy)
-
-           }
-       }
-        MouseArea {
-            onPressed: if (active) window.startSystemResize(Qt.TopEdge)
+            onPressed: window.startSystemResize(Qt.TopEdge)
             //target: null
             anchors.fill: parent
             cursorShape: "SizeVerCursor"
