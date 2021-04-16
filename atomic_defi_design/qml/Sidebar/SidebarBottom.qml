@@ -35,13 +35,4 @@ ColumnLayout {
         separator: false
         checked: General.privacy_mode
     }
-
-    SidebarLine {
-        dashboard_index: idx_dashboard_light_ui
-        text_value:sidebar.expanded? qsTr("Light UI") : ""
-        image: ""
-        Layout.fillWidth: true
-        separator: false
-        checked: !Style.dark_theme
-    }
 }
