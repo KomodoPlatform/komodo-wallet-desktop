@@ -1181,7 +1181,7 @@
       "https://gleec.explorer.dexstats.info/"
     ],
     "type": "UTXO",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "GLEEC-OLD": {
@@ -1761,7 +1761,7 @@
     "explorer_url": [
       "https://kmdexplorer.io/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   },
   "KMD-BEP20": {
