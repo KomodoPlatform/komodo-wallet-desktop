@@ -87,7 +87,7 @@ namespace atomic_dex::utils
 #if defined(_WIN32) || defined(WIN32)
         appdata_path = fs::path(std::getenv("APPDATA")) / DEX_APPDATA_FOLDER;
 #elif defined(__APPLE__)
-        appdata_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / DEX_NAME;
+        appdata_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / DEX_APPDATA_FOLDER;
 #else
         appdata_path = fs::path(std::getenv("HOME")) / "." DEX_APPDATA_FOLDER;
 #endif
