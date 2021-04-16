@@ -520,7 +520,7 @@ ColumnLayout {
                     expandedVert: true
                     hideHeader: true
                     title: "Form"
-                    minimumHeight: 300
+                    minimumHeight: 350
                     ColumnLayout {
                         property int space: 10
                         anchors.fill: parent
@@ -633,10 +633,8 @@ ColumnLayout {
                     visible: !isUltraLarge
                     SplitView.fillWidth: true
                     SplitView.fillHeight: true
-                    defaultHeight: 250
-                    minimumHeight: 130
-                    //clip: true
-                    //smooth: true
+                    defaultHeight: 140
+                    minimumHeight: 80
                     title: "Best Orders"
                     reloadable: true
                     onReload: {

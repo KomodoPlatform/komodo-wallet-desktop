@@ -35,6 +35,8 @@ Item {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
+    property var current_ticker
+
     property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
