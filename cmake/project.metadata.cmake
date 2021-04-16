@@ -1,11 +1,11 @@
 # Default project values
 set(DEX_PROJECT_NAME "GleecDEX")
 set(DEX_DISPLAY_NAME "GleecDEX")
-set(DEX_COMPANY "KomodoPlatform")
-set(DEX_WEBSITE "https://atomicdex.io/")
+set(DEX_COMPANY "Gleec")
+set(DEX_WEBSITE "https://gleec.com/")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
-set(DEX_DISCORD "https://komodoplatform.com/discord")
-set(DEX_TWITTER "https://twitter.com/AtomicDEX")
+set(DEX_DISCORD "")
+set(DEX_TWITTER "https://twitter.com/GleecOfficial")
 #set(DEX_COMMON_DATA_FOLDER "atomic_qt")
 set(DEX_PRIMARY_COIN "BTC") ## Main coin of the DEX, will enable it by default and will be the default left ticker for trading
 set(DEX_SECOND_PRIMARY_COIN "GLEEC")  ## Second main coin of the DEX, will enable it by default and will be the default right ticker for trading
