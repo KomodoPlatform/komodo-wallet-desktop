@@ -354,8 +354,6 @@ Qaterial.Dialog {
                                 }
                             }
 
-
-
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -462,6 +460,7 @@ Qaterial.Dialog {
         height: 50
         anchors.bottom: parent.bottom
         DexSelectableButton {
+            enabled: false
             selected: true
             anchors.right: logout_button.left
             anchors.rightMargin: 10
