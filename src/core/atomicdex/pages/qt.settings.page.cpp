@@ -90,7 +90,8 @@ namespace atomic_dex
         const std::string new_lang_std = new_lang.toStdString();
         change_lang(m_config, new_lang_std);
 
-        auto get_locale = [](const std::string& current_lang) {
+        auto get_locale = [](const std::string& current_lang)
+        {
             if (current_lang == "tr")
             {
                 return QLocale::Language::Turkish;
@@ -281,7 +282,8 @@ namespace atomic_dex
         this->set_fetching_custom_token_data_busy(true);
         using namespace std::string_literals;
         std::string url            = "/contract/"s + contract_address.toStdString();
-        auto        answer_functor = [this, contract_address, coingecko_id, icon_filepath](web::http::http_response resp) {
+        auto        answer_functor = [this, contract_address, coingecko_id, icon_filepath](web::http::http_response resp)
+        {
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
             out["mm2_cfg"]      = nlohmann::json::object();
@@ -389,7 +391,8 @@ namespace atomic_dex
         auto&& [endpoint, url, type, platform, adex_platform, parent_chain, parent_type] = retrieve_functor_url();
 
         auto answer_functor = [this, contract_address, coingecko_id, icon_filepath, type = type, platform = platform, adex_platform = adex_platform,
-                               parent_chain = parent_chain, parent_type = parent_type](web::http::http_response resp) {
+                               parent_chain = parent_chain, parent_type = parent_type](web::http::http_response resp)
+        {
             //! Extract answer
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
@@ -513,11 +516,20 @@ namespace atomic_dex
         const fs::path    wallet_cfg_path{utils::get_atomic_dex_config_folder() / wallet_cfg_file};
         const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
         const fs::path    ini_file_path  = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
-        const auto        functor_remove = [](auto&& path_to_remove) {
+        const fs::path    logo_path      = atomic_dex::utils::get_logo_path();
+        const auto        functor_remove = [](auto&& path_to_remove)
+        {
             if (fs::exists(path_to_remove))
             {
                 fs_error_code ec;
-                fs::remove(path_to_remove, ec);
+                if (fs::is_directory(path_to_remove))
+                {
+                    fs::remove_all(path_to_remove, ec);
+                }
+                else
+                {
+                    fs::remove(path_to_remove, ec);
+                }
                 if (ec)
                 {
                     SPDLOG_ERROR("error when removing {}: {}", path_to_remove.string(), ec.message());
@@ -532,6 +544,7 @@ namespace atomic_dex
         functor_remove(std::move(wallet_cfg_path));
         functor_remove(std::move(mm2_coins_file_path));
         functor_remove(std::move(ini_file_path));
+        functor_remove(std::move(logo_path));
     }
 
     QStringList
@@ -572,7 +585,8 @@ namespace atomic_dex
                 batch.push_back(req_json);
             }
             auto&      mm2_system     = m_system_manager.get_system<mm2_service>();
-            const auto answer_functor = [this](web::http::http_response resp) {
+            const auto answer_functor = [this](web::http::http_response resp)
+            {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 if (resp.status_code() == 200)
                 {
