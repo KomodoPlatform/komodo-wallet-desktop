@@ -81,11 +81,12 @@ Item {
                 PieSlice {
                     label: "XRP"
                     value: 100
-                    color: Qaterial.Colors.gray900
+                    color: Qaterial.Colors.gray600
                     labelColor: 'white'
                     labelVisible: false
                     labelFont: theme.textType.head5
-                    borderWidth: 10
+                    borderWidth: 1
+                    borderColor: '#fff'
                     Behavior on explodeDistanceFactor {
                         NumberAnimation {
                             duration: 150
@@ -130,7 +131,7 @@ Item {
                             fadeDuration: 100
                         }
                         color: Qt.lighter(
-                                   Style.colorWhite4, 0.6)
+                                   theme.foregroundColor, 0.6)
                         privacy: true
                         Component.onCompleted: {
                             font.family = 'Lato'
@@ -146,7 +147,7 @@ Item {
                             fadeDuration: 100
                         }
                         color: Qt.lighter(
-                                   Style.colorWhite4, 0.8)
+                                   theme.foregroundColor, 0.8)
                         privacy: true
                         visible: portfolio.currentValue == ""
 
