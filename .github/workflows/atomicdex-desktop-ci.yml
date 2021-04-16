@@ -209,9 +209,10 @@ jobs:
           export APPLE_ID="${{ secrets.APPLE_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export MACOSX_DEPLOYMENT_TARGET=10.13
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm/bin/clang++
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'

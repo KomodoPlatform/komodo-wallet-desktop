@@ -11,3 +11,8 @@ if (PREFER_BOOST_FILESYSTEM)
     message(STATUS "Boost filesystem over std::filesystem")
     add_compile_definitions(PREFER_BOOST_FILESYSTEM)
 endif ()
+
+#if (PREFER_BOOST_OPTIONAL)
+#    message(STATUS "Boost optional over std::optional")
+#    add_compile_definitions(PREFER_BOOST_OPTIONAL)
+#endif()
