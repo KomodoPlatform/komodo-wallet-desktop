@@ -81,7 +81,7 @@ Item {
         color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
         height: parent.height-40
-        y: 40
+        y: Qt.platform.os == "windows" || "linux"? 40 : 0
         x: sidebar.width
 
         // Modals
@@ -202,8 +202,8 @@ Item {
 
     // Sidebar, left side
     Sidebar {
-
         id: sidebar
+
     }
 
     // Unread notifications count
