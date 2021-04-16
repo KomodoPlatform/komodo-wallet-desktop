@@ -8,6 +8,7 @@ import "../Constants"
 
 RowLayout {
     id: wallet
+    y: -40
 
     property alias send_modal: main.send_modal
 
@@ -36,6 +37,8 @@ RowLayout {
     // Coins bar at left side
     Sidebar {
         id: sidebar
+
+
     }
 
     // Right side, main

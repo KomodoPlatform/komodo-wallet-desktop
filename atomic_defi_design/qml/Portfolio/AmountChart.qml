@@ -16,7 +16,7 @@ import "../Constants"
 
 // Portfolio
 InnerBackground {
-    id: willyBG
+    id: portfolio_asset_chart
     property bool isProgress: true
     function drawChart() {
         areaLine.clear()
@@ -35,7 +35,7 @@ InnerBackground {
             }catch(e) {}
         }
         chart_2.update()
-        willyBG.isProgress = false
+        portfolio_asset_chart.isProgress = false
 
     }
 
@@ -50,31 +50,34 @@ InnerBackground {
         id: chart2Timer
         interval: 500
         onTriggered: {
-            if(API.app.portfolio_pg.charts.length===0){
-                restart()
-            }else {
-                willyBG.isProgress = true
-                drawTimer.restart()
-            }
+            if(parseFloat(API.app.portfolio_pg.balance_fiat_all)>0){
+                if(API.app.portfolio_pg.charts.length===0){
+                    restart()
+                }else {
+                    portfolio_asset_chart.isProgress = true
+                    drawTimer.restart()
+                }
+            }  
+            
         }
     }
     Timer {
         id: drawTimer
         interval: 2000
-        onTriggered: willyBG.drawChart()
+        onTriggered: portfolio_asset_chart.drawChart()
     }
     Connections {
         target: API.app.portfolio_pg
         function onChart_busy_fetchingChanged() {
             if(!API.app.portfolio_pg.chart_busy_fetching){
-                willyBG.isProgress = true
+                portfolio_asset_chart.isProgress = true
                 chart2Timer.restart()
             }
         }
     }
 
     Component.onCompleted: {
-        willyBG.isProgress = true
+        portfolio_asset_chart.isProgress = true
         chart2Timer.restart()
 
 
@@ -94,8 +97,8 @@ InnerBackground {
         }
         LinearGradient {
             id: gradient
-            start: Qt.point(willyBG.mX,willyBG.mY-100)
-            end: Qt.point(willyBG.mX,willyBG.mY+100)
+            start: Qt.point(portfolio_asset_chart.mX,portfolio_asset_chart.mY-100)
+            end: Qt.point(portfolio_asset_chart.mX,portfolio_asset_chart.mY+100)
             gradient: Gradient {
                 GradientStop {
                     position: 1;
@@ -234,12 +237,12 @@ InnerBackground {
             anchors.fill: parent
             opacity: .6
             color: theme.dexBoxBackgroundColor
-            visible: willyBG.isProgress
+            visible: portfolio_asset_chart.isProgress
             radius: parent.radius
             DexBusyIndicator {
                 anchors.centerIn: parent
                 running: visible
-                visible: willyBG.isProgress
+                visible: portfolio_asset_chart.isProgress && parseFloat(API.app.portfolio_pg.balance_fiat_all)>0
             }
         }
 
@@ -260,6 +263,7 @@ InnerBackground {
 
                     Qaterial.OutlineButton {
                         text: "YTD"
+                        foregroundColor: theme.foregroundColor
                         outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
                         onClicked: {
                             API.app.portfolio_pg.chart_category = WalletChartsCategories.Ytd
@@ -267,6 +271,7 @@ InnerBackground {
                     }
                     Qaterial.OutlineButton {
                         text: "1M"
+                        foregroundColor: theme.foregroundColor
                         outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 2? theme.accentColor : theme.backgroundColor
                         onClicked: {
                             API.app.portfolio_pg.chart_category = WalletChartsCategories.OneMonth
@@ -274,11 +279,14 @@ InnerBackground {
                     }
                     Qaterial.OutlineButton {
                         text: "7D"
+                        foregroundColor: theme.foregroundColor
                         outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 1? theme.accentColor : theme.backgroundColor
                         onClicked: API.app.portfolio_pg.chart_category = WalletChartsCategories.OneWeek
                     }
                     Qaterial.OutlineButton {
                         text: "24H"
+                        opacity: .4
+                        foregroundColor: theme.foregroundColor
                         enabled: false
                         outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? theme.accentColor : theme.backgroundColor
                         onClicked: API.app.portfolio_pg.chart_category = 0
