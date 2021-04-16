@@ -14,9 +14,9 @@ brew install autoconf \
             gnu-getopt
 
 pip3 install yq
-export CC=/usr/local/opt/llvm/bin/clang
-export CXX=/usr/local/opt/llvm/bin/clang++
-export MACOSX_DEPLOYMENT_TARGET=10.13
+export CC=clang
+export CXX=clang++
+export MACOSX_DEPLOYMENT_TARGET=10.14
 
 # get curl
 #git clone https://github.com/KomodoPlatform/curl.git
