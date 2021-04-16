@@ -1761,7 +1761,7 @@
     "explorer_url": [
       "https://kmdexplorer.io/"
     ],
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "KMD-BEP20": {
