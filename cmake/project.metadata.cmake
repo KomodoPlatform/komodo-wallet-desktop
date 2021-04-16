@@ -13,6 +13,7 @@ option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF
 set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
 set(DEX_REPOSITORY_NAME "atomicDEX-Desktop")
 set(DEX_CHECKSUM_API_URL "https://komodo.live/static/checksum.json")
+set(DEX_APPDATA_FOLDER "atomic_qt")
 
 if (UNIX AND NOT APPLE)
     set(DEX_LINUX_APP_ID "dex.desktop")
