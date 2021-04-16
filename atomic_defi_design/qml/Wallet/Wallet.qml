@@ -36,6 +36,8 @@ RowLayout {
     // Coins bar at left side
     Sidebar {
         id: sidebar
+        
+
     }
 
     // Right side, main

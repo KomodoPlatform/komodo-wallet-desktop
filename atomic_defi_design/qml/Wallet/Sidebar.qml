@@ -19,6 +19,7 @@ Item {
     Layout.alignment: Qt.AlignLeft
     width: 175
     Layout.fillHeight: true
+    Layout.topMargin: -40
 
     // Background
     SidebarPanel {
@@ -26,7 +27,7 @@ Item {
         anchors.right: parent.right
         width: sidebar.width + parent.width
 
-        height: parent.height
+        height: parent.height+40
 
         // Panel contents
         Item {
@@ -77,7 +78,7 @@ Item {
 
                             anchors.fill: search_button
                             source: search_button
-                            color: Style.colorText
+                            color: theme.foregroundColor
                         }
                     }
 
