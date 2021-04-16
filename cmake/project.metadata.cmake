@@ -10,6 +10,9 @@ set(DEX_TWITTER "https://twitter.com/AtomicDEX")
 set(DEX_PRIMARY_COIN "KMD") ## Main coin of the DEX, will enable it by default and will be the default left ticker for trading
 set(DEX_SECOND_PRIMARY_COIN "BTC")  ## Second main coin of the DEX, will enable it by default and will be the default right ticker for trading
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
+set(DEX_REPOSITORY_NAME "atomicDEX-Desktop")
+set(DEX_CHECKSUM_API_URL "https://komodo.live/static/checksum.json")
 
 if (UNIX AND NOT APPLE)
     set(DEX_LINUX_APP_ID "dex.desktop")

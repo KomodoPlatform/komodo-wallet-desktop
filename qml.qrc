@@ -366,8 +366,6 @@
         <file>atomic_defi_design/qml/Components/TitleText.qml</file>
         <file>atomic_defi_design/qml/Components/Toast.qml</file>
         <file>atomic_defi_design/qml/Components/ToastManager.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>
         <file>atomic_defi_design/qml/Components/WalletNameField.qml</file>
@@ -376,6 +374,8 @@
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
+        <file>atomic_defi_design/qml/Dashboard/NewUpdateModal.qml</file>
+        <file>atomic_defi_design/qml/Dashboard/UpdateInvalidChecksum.qml</file>
         <file>atomic_defi_design/qml/Dashboard/NotificationsModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_defi_design/qml/Exchange/History/History.qml</file>

@@ -18,7 +18,9 @@
 
 #include <nlohmann/json_fwd.hpp>
 
-#define _TURN_OFF_PLATFORM_STRING
+#ifndef _TURN_OFF_PLATFORM_STRING
+#   define _TURN_OFF_PLATFORM_STRING
+#endif
 #include <cpprest/http_client.h>
 #ifdef _WIN32
 #    define TO_STD_STR(ws_str) utility::conversions::to_utf8string(ws_str)
@@ -27,6 +29,9 @@
 #    define TO_STD_STR(ws_str) ws_str
 #    define FROM_STD_STR(utf8str) utf8str
 #endif
+
+#include "fs.prerequisites.hpp"
+
 using t_http_client_ptr = std::unique_ptr<web::http::client::http_client>;
 using t_http_client     = web::http::client::http_client;
 using t_http_request    = web::http::http_request;

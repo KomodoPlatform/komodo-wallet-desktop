@@ -43,6 +43,7 @@
 //! Deps
 #include <sodium/core.h>
 #include <wally.hpp>
+#include <QSslSocket>
 
 #if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
@@ -136,7 +137,7 @@ static void
 signal_handler(int signal)
 {
     SPDLOG_ERROR("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2.service");
+    atomic_dex::kill_executable("mm2");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
     std::ifstream                 ifs("./backtrace.dump");
@@ -361,6 +362,7 @@ run_app(int argc, char** argv)
     SPDLOG_INFO("Installing qt_message_handler");
     qInstallMessageHandler(&qt_message_handler);
 #endif
+    SPDLOG_INFO("SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(), QSslSocket::sslLibraryVersionString().toStdString());
 
 #if defined(Q_OS_MACOS)
     fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
@@ -437,6 +439,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
     engine.rootContext()->setContextProperty("atomic_logo_path", QString::fromStdString((atomic_dex::utils::get_atomic_dex_data_folder() / "logo").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
+    engine.rootContext()->setContextProperty("dex_current_version", QString::fromStdString(atomic_dex::get_version()));
     engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
     // Load Qaterial.
 

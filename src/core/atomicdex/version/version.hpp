@@ -24,6 +24,12 @@ namespace atomic_dex
         return "0.4.1-beta";
     }
 
+    constexpr int
+    get_num_version() noexcept
+    {
+        return 41;
+    }
+
     constexpr const char*
     get_raw_version()
     {
