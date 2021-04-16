@@ -31,7 +31,7 @@ namespace atomic_dex
         std::unordered_map<std::string, std::string> available_currency_signs;
         std::vector<std::string>                     available_lang;
         std::vector<std::string>                     available_fiat;
-        std::array<std::string, 3>                   possible_currencies;
+        std::vector<std::string>                     possible_currencies;
         bool                                         notification_enabled;
     };
 
