@@ -14,22 +14,19 @@ import AtomicDEX.WalletChartsCategories 1.0
 import "../Components"
 import "../Constants"
 
-// Portfolio
 Item {
     width: parent.width
-    height: 500
+    height: 150+(list.count*65)
     visible: true
     Item {
         anchors.fill: parent
         anchors.margins: 15
         anchors.leftMargin: 40
         anchors.rightMargin: 40
-        //radius: 2
         Rectangle {
             width: parent.width
             height: 60
             color:  Qt.darker(theme.backgroundColor, 0.8)
-            // Coin
             RowLayout {
                 anchors.fill: parent
                 Item {
@@ -84,7 +81,6 @@ Item {
                         DefaultText {
                             id: title
                             text: qsTr("Change 24h")
-                            //anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         sort_type: sort_by_change
@@ -103,17 +99,13 @@ Item {
                         icon_at_left: false
                         anchors.verticalCenter: parent.verticalCenter
                         DefaultText {
-                            //text: qsTr("Trend 7d")
-                            //anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.horizontalCenter: parent.horizontalCenter
                         }
-                        //text: qsTr("Trend 7d")
                         sort_type: sort_by_trend
                     }
                     DefaultText {
                         text: qsTr("Trend 7d")
-                        //anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
@@ -143,12 +135,12 @@ Item {
 
             model: portfolio_coins
             cacheBuffer: 2000
+            scrollbar_visible: false
 
             delegate: AnimatedRectangle {
                 color: Qt.lighter(
                            mouse_area.containsMouse ? theme.hightlightColor : index % 2 !== 0 ? Qt.darker(theme.backgroundColor, 0.8) : "transparent",
                            mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
-                //Qt.darker(theme.backgroundColor, 0.8)
                 width: list.width
                 height: 65
                 AnimatedRectangle {
@@ -325,6 +317,38 @@ Item {
                             CexInfoTrigger {}
                         }
                     }
+                }
+            }
+            footer: Item {
+                width: parent.width
+                height: 60
+                Rectangle {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width-2
+                    height: parent.height-2
+                    color: 'transparent'
+                    border.color: theme.foregroundColor
+                    opacity: .15
+                    radius: 4
+                }
+                Row {
+                    anchors.centerIn: parent
+                    spacing: 10
+                    opacity: .5
+                    Qaterial.ColorIcon {
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: Qaterial.Icons.plusBox
+                    }
+                    DexLabel {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "Add new asset"
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: "PointingHandCursor"
+                    onClicked: enable_coin_modal.open()
                 }
             }
         }

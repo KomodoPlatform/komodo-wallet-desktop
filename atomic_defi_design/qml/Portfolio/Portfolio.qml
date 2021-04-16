@@ -67,15 +67,12 @@ Item {
         }
     }
 
-
-
     onTotalChanged: {
         pie.refresh()
         pie.pieTimer2.restart()
     }
     Component.onCompleted: {
         reset()
-
     }
 
     function reset() {
@@ -113,13 +110,13 @@ Item {
             chart.axes[i].visible = false
     }
 
-
-
     Flickable {
+        id: flick
         anchors.fill: parent
         anchors.topMargin: 90
         contentHeight: _column.height
         clip: true
+        onHeightChanged: console.log(height)
         Column {
             id: _column
             topPadding: 10
@@ -130,7 +127,7 @@ Item {
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: true
-                height: portfolio.isUltraLarge? 600 : 350
+                height: portfolio.isUltraLarge ? 600 : 350
                 RowLayout {
                     anchors.fill: parent
                     anchors.rightMargin: 40
@@ -144,8 +141,8 @@ Item {
 
                     AssetPieChart {
                         id: pie
-                        Layout.preferredWidth: portfolio.isUltraLarge? 350 : 250
-                        Layout.preferredHeight: portfolio.isUltraLarge? 600 : 350
+                        Layout.preferredWidth: portfolio.isUltraLarge ? 350 : 250
+                        Layout.preferredHeight: portfolio.isUltraLarge ? 600 : 350
                         Layout.alignment: Qt.AlignTop
                     }
                 }
@@ -179,8 +176,6 @@ Item {
                                     resetCoinFilter()
                                 else
                                     text = ""
-
-                                //applyCurrentSort()
                             }
 
                             Layout.alignment: Qt.AlignVCenter
@@ -198,8 +193,7 @@ Item {
                     }
                 }
             }
-            TableDex {
-            }
+            TableDex {}
             Item {
                 width: 1
                 height: 10
@@ -236,10 +230,11 @@ Item {
                             spacing: 10
                             Qaterial.ColorIcon {
                                 source: Qaterial.Icons.plus
+                                anchors.verticalCenter: parent.verticalCenter
                             }
-
                             DexLabel {
                                 text: qsTr("Add asset")
+                                anchors.verticalCenter: parent.verticalCenter
                             }
                         }
                         onClicked: enable_coin_modal.open()
@@ -253,10 +248,4 @@ Item {
             }
         }
     }
-
-    // Top part
-
-    // List header
-
-    // List
 }

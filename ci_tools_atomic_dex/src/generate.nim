@@ -17,6 +17,6 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
                     os.getCurrentDir().parentDir().parentDir()
     when defined(osx):
         if not osx_sdk_path.isNil() and osx_sdk_path != "nil":
-            cmd_line = cmd_line & " -DCMAKE_OSX_SYSROOT=" & osx_sdk_path & " -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 -DPREFER_BOOST_FILESYSTEM=ON"
+            cmd_line = cmd_line & " -DCMAKE_OSX_SYSROOT=" & osx_sdk_path & " -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DPREFER_BOOST_FILESYSTEM=ON"
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)

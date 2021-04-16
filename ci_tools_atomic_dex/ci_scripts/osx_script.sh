@@ -10,12 +10,13 @@ brew install autoconf \
             ninja \
             gnu-sed \
             coreutils \
+            llvm \
             gnu-getopt
 
 pip3 install yq
-export CC=clang
-export CXX=clang++
-export MACOSX_DEPLOYMENT_TARGET=10.14
+export CC=/usr/local/opt/llvm/bin/clang
+export CXX=/usr/local/opt/llvm/bin/clang++
+export MACOSX_DEPLOYMENT_TARGET=10.13
 
 # get curl
 #git clone https://github.com/KomodoPlatform/curl.git
