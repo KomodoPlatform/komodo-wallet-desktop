@@ -41,8 +41,9 @@ Item {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 1
+                opacity: .3
                 anchors.topMargin: anchors.bottomMargin
-                color: Style.colorWhite12
+                color: theme.backgroundColorDeep
             }
 
             InnerBackground {
@@ -50,6 +51,7 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: 30
                 width: list_bg.width
+                color: theme.backgroundColor
                 anchors.horizontalCenter: list_bg.horizontalCenter
 
                 content: RowLayout {
