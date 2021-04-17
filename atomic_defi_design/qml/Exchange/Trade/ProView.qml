@@ -81,7 +81,7 @@ ColumnLayout {
     }
 
     spacing: 10
-    anchors.topMargin: 40
+    anchors.topMargin: 5
     anchors.leftMargin: 10
     anchors.fill: parent
 
