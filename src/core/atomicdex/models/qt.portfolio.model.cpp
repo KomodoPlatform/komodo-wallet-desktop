@@ -337,7 +337,7 @@ namespace atomic_dex
             return false;
         }
 
-        emit dataChanged(index, index, {role});
+        //emit dataChanged(index, index, {role});
         return true;
     }
 
