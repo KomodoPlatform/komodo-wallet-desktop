@@ -55,6 +55,7 @@ Qaterial.Dialog {
         Qaterial.AppBarButton {
             anchors.right: parent.right
             anchors.rightMargin: 10
+            foregroundColor: theme.foregroundColor
             icon.source: Qaterial.Icons.close
             anchors.verticalCenter: parent.verticalCenter
             onClicked: setting_modal.close()

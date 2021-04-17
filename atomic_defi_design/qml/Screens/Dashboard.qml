@@ -252,7 +252,7 @@ Item {
         cached: false
         horizontalOffset: 0
         verticalOffset: 0
-        radius: 32
+        radius: theme.sidebarShadowRadius
         samples: 32
         spread: 0
         color: theme.colorSidebarDropShadow
