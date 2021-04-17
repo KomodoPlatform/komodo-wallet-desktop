@@ -327,6 +327,7 @@ Rectangle {
             console.log("theme."+i.toString()+" = '"+ data[i]+"'")
             eval("theme."+i.toString()+" = '"+ data[i]+"'")
         }
+        Qaterial.Style.accentColor = theme.accentColor
         console.log("END APPLY "+name)
     }
 
