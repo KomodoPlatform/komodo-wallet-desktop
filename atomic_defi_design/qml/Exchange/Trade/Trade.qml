@@ -171,6 +171,6 @@ Item {
     }
 
     TradeViewHeader {
-        y: -20
+        y: -45
     }
 }

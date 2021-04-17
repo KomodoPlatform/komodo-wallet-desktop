@@ -6,10 +6,8 @@ import "../Constants"
 
 ColumnLayout {
     id: window_layout
-
     transformOrigin: Item.Center
     spacing: 0
-
     SidebarLine {
         dashboard_index: -1
         text_value: sidebar.expanded? qsTr("Settings") : ""
