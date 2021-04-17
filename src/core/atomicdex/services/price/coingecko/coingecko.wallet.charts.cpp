@@ -123,7 +123,7 @@ namespace atomic_dex
                 m_wallet_performance->insert("wallet_evolution", obj);
                 m_min_value = utils::format_float(safe_float(m_min_value) * 0.9);
                 m_max_value = utils::format_float(safe_float(m_max_value) * 1.1);
-                SPDLOG_INFO("metrics: {}", QString(QJsonDocument(*m_wallet_performance).toJson()).toStdString());
+                //SPDLOG_INFO("metrics: {}", QString(QJsonDocument(*m_wallet_performance).toJson()).toStdString());
                 m_fiat_charts = std::move(out);
             }
             catch (const std::exception& error)
@@ -233,7 +233,7 @@ namespace atomic_dex
                 if (not res.empty())
                 {
                     t_float_50 balance = safe_float(portfolio_model->data(res.at(0), portfolio_model::MainCurrencyBalanceRole).toString().toStdString());
-                    SPDLOG_INFO("coin: {} not empty - checking now - balance: {}", coin, utils::format_float(balance));
+                    //SPDLOG_INFO("coin: {} not empty - checking now - balance: {}", coin, utils::format_float(balance));
                     if (balance > 0)
                     {
                         t_float_50 cur_change_24h = safe_float(portfolio_model->data(res.at(0), portfolio_model::Change24H).toString().toStdString());
