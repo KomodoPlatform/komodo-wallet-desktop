@@ -98,6 +98,7 @@ namespace atomic_dex
     bool
     portfolio_model::update_currency_values()
     {
+        SPDLOG_INFO("update_currency_values");
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
         const auto&        coingecko     = this->m_system_manager.get_system<coingecko_provider>();
@@ -336,7 +337,7 @@ namespace atomic_dex
             return false;
         }
 
-        emit dataChanged(index, index, {role});
+        //emit dataChanged(index, index, {role});
         return true;
     }
 

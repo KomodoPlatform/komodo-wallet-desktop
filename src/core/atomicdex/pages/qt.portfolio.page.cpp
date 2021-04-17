@@ -77,10 +77,16 @@ namespace atomic_dex
     {
         if (this->m_current_balance_all != current_fiat_all_balance)
         {
-            SPDLOG_INFO("current_balance_all changed previous: {}, new: {}", m_current_balance_all.toStdString(), current_fiat_all_balance.toStdString());
+            // SPDLOG_INFO("current_balance_all changed previous: {}, new: {}", m_current_balance_all.toStdString(), current_fiat_all_balance.toStdString());
             this->m_current_balance_all = std::move(current_fiat_all_balance);
-            emit onFiatBalanceAllChanged();
-            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_current_balance_fiat_all");
+            emit       onFiatBalanceAllChanged();
+            const auto currency = m_system_manager.get_system<settings_page>().get_current_currency().toStdString();
+            if (currency != g_primary_dex_coin && currency != g_second_primary_dex_coin)
+            {
+                m_main_current_balance_all = m_current_balance_all;
+                emit onMainFiatBalanceAllChanged();
+                m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_current_balance_fiat_all");
+            }
         }
     }
 
@@ -220,5 +226,11 @@ namespace atomic_dex
     portfolio_page::get_wallet_stats() const
     {
         return m_system_manager.get_system<coingecko_wallet_charts_service>().get_wallet_stats();
+    }
+
+    QString
+    portfolio_page::get_main_balance_fiat_all() const
+    {
+        return m_main_current_balance_all;
     }
 } // namespace atomic_dex
