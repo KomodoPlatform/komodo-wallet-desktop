@@ -376,7 +376,7 @@ namespace atomic_dex
     {
         nlohmann::json res = m_fiat_charts.get();
         auto it = std::lower_bound(begin(res), end(res), timestamp, [](const nlohmann::json& current_json, int timestamp) {
-          int res = current_json.at("timestamp").get<std::size_t>();;
+          int res = current_json.at("timestamp").get<std::size_t>();
           return res < timestamp;
         });
         if (it != res.end())
