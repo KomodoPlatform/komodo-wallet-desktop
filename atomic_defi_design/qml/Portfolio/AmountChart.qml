@@ -21,7 +21,7 @@ InnerBackground {
     function drawChart() {
         areaLine.clear()
         areaLine3.clear()
-        scatter.clear()
+        //scatter.clear()
 
         dateA.min = new Date(API.app.portfolio_pg.charts[0].timestamp*1000)
         dateA.max = new Date(API.app.portfolio_pg.charts[API.app.portfolio_pg.charts.length-1].timestamp*1000)
@@ -31,7 +31,7 @@ InnerBackground {
             try {
                 areaLine3.append(el.timestamp*1000, parseFloat(el.total))
                 areaLine.append(el.timestamp*1000, parseFloat(el.total))
-                scatter.append(el.timestamp*1000, parseFloat(el.total))
+                //scatter.append(el.timestamp*1000, parseFloat(el.total))
             }catch(e) {}
         }
         chart_2.update()
@@ -87,7 +87,7 @@ InnerBackground {
     ClipRRect {
         anchors.fill: parent
         radius: parent.radius
-        Glow {
+        /*Glow {
             id: glow
             anchors.fill: chart_2
             radius: 8
@@ -115,7 +115,7 @@ InnerBackground {
             }
             anchors.fill: glow
             source: glow
-        }
+        }*/
 
         ChartView {
             id: chart_2
@@ -172,6 +172,7 @@ InnerBackground {
                 id: areaLine3
                 color: theme.accentColor
                 visible: !isSpline
+                width: 3.0
                 axisY: ValueAxis {
                     visible: false
                     max:  parseFloat(API.app.portfolio_pg.max_total_chart)
@@ -186,12 +187,12 @@ InnerBackground {
                     format: "MMM d"
                 }
             }
-            ScatterSeries {
+            /*ScatterSeries {
                 id: scatter
                 visible: true
                 color: theme.accentColor
                 borderColor: theme.accentColor
-                markerSize: 7
+                markerSize: 1
                 borderWidth: 3
 
                 onHovered: {
@@ -230,7 +231,7 @@ InnerBackground {
                 }
 
 
-            }
+            }*/
         }
 
         Rectangle {
