@@ -25,12 +25,11 @@ Item {
         }
     }
     function addItem(value) {
-
         var item = pieSeries.append(value.ticker, value.main_currency_balance)
         item.labelColor = 'white'
-        item.color = Style.getCoinColor(value.ticker)
+        item.color = Qt.lighter(Style.getCoinColor(value.ticker))
         item.borderColor = theme.backgroundColor
-        item.borderWidth = 1
+        item.borderWidth = 2
         item.holeSize = 1
         item.labelFont = theme.textType.body2
         item.hovered.connect(function (state) {
@@ -38,7 +37,7 @@ Item {
                 item.explodeDistanceFactor = 0.01
                 portfolio.currentTotal = API.app.settings_pg.current_fiat_sign+" "+ value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
-                item.color = Qt.lighter(Style.getCoinColor(value.ticker))
+                item.color = Qt.lighter(Qt.lighter(Style.getCoinColor(value.ticker)))
             } else {
                 item.explodeDistanceFactor = 0.01
                 portfolio.currentValue = ""
@@ -77,34 +76,18 @@ Item {
 
             anchors.horizontalCenter: parent.horizontalCenter
             dropShadowEnabled: true
-            PieSeries {
-                PieSlice {
-                    label: "XRP"
-                    value: 100
-                    color: Qaterial.Colors.gray600
-                    labelColor: 'white'
-                    labelVisible: false
-                    labelFont: theme.textType.head5
-                    borderWidth: 1
-                    borderColor: '#fff'
-                    Behavior on explodeDistanceFactor {
-                        NumberAnimation {
-                            duration: 150
-                        }
-                    }
-                }
-            }
 
             PieSeries {
                 id: pieSeries
             }
-
             Rectangle {
                 anchors.centerIn: parent
                 color: theme.backgroundColor
-                width: 260
-                height: 260
-                radius: 300
+                width: 295
+                height: width
+                radius: width/2
+                //border.color: theme.accentColor
+                //border.width: 2
                 Column {
                     anchors.centerIn: parent
                     spacing: 5
@@ -126,7 +109,7 @@ Item {
                     DefaultText {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: portfolio.currentValue
-                        font: theme.textType.body1
+                        font: theme.textType.body2
                         DexFadebehavior on text {
                             fadeDuration: 100
                         }
@@ -176,7 +159,17 @@ Item {
                     }
                 }
             }
+            Rectangle {
+            anchors.centerIn: parent
+            width: 295
+            height: width
+            color: 'transparent'
+            radius: width/2
+            border.width: 0
+            border.color: theme.backgroundColor
         }
+        }
+        
 
 
         Item {
