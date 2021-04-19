@@ -366,6 +366,7 @@ Rectangle {
 
         property color chartTradingLineColor: Style.colorTrendingLine
         property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
+        property color  lineChartColor: "#277AD5"//Qt.lighter(theme.accentColor)
 
         property color foregroundColor: Style.colorText
 

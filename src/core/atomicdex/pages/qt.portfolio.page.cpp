@@ -234,4 +234,10 @@ namespace atomic_dex
     {
         return m_main_current_balance_all;
     }
+
+    int
+    portfolio_page::get_neareast_point(int timestamp) const
+    {
+        return m_system_manager.get_system<coingecko_wallet_charts_service>().get_neareast_point(timestamp);
+    }
 } // namespace atomic_dex

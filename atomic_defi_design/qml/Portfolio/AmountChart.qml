@@ -21,7 +21,7 @@ InnerBackground {
     function drawChart() {
         areaLine.clear()
         areaLine3.clear()
-        scatter.clear()
+        //scatter.clear()
 
         dateA.min = new Date(API.app.portfolio_pg.charts[0].timestamp*1000)
         dateA.max = new Date(API.app.portfolio_pg.charts[API.app.portfolio_pg.charts.length-1].timestamp*1000)
@@ -29,9 +29,10 @@ InnerBackground {
         for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
             let el = API.app.portfolio_pg.charts[ii]
             try {
+                //console.log("timestamp: " + el.timestamp*1000)
                 areaLine3.append(el.timestamp*1000, parseFloat(el.total))
                 areaLine.append(el.timestamp*1000, parseFloat(el.total))
-                scatter.append(el.timestamp*1000, parseFloat(el.total))
+                //scatter.append(el.timestamp*1000, parseFloat(el.total))
             }catch(e) {}
         }
         chart_2.update()
@@ -87,7 +88,7 @@ InnerBackground {
     ClipRRect {
         anchors.fill: parent
         radius: parent.radius
-        Glow {
+        /*Glow {
             id: glow
             anchors.fill: chart_2
             radius: 8
@@ -115,10 +116,11 @@ InnerBackground {
             }
             anchors.fill: glow
             source: glow
-        }
+        }*/
 
         ChartView {
             id: chart_2
+            title: "View"
             anchors.fill: parent
             anchors.margins: -20
             anchors.topMargin: 50
@@ -132,6 +134,7 @@ InnerBackground {
 
             opacity: .8
             AreaSeries {
+                id: area
                 axisX: DateTimeAxis {
                     id: dateA
                     gridVisible: false
@@ -166,12 +169,98 @@ InnerBackground {
                     }
 
                 }
+                /*onHovered: {
+                    let p = chart_2.mapToValue(point, area)
+                    console.log(p)
+                    if(p.x<170) {
+                         boxi.x = p.x
+                    }else {
+                        boxi.x = p.x-170
+                    }
+
+
+                    boxi.y = p.y+10
+                    if(state){
+                        boxi.visible = true
+                    }else {
+                        boxi.visible = false
+                    }
+                    boxi.value = point.y
+                    boxi.timestamp = point.x
+
+                }*/
+            }
+            MouseArea {
+                id: mouse_area
+                width: parent.width
+                height: parent.height
+                x: -40
+                hoverEnabled: true
+                onPositionChanged:  {
+                    let point = Qt.point(mouseX, mouseY)
+                    let p = chart_2.mapToValue(point, area)
+                    let idx = API.app.portfolio_pg.get_neareast_point(Math.floor(p.x) / 1000);
+                    let pos = areaLine3.at(idx);
+                    //console.log("p.x: " + Math.floor(p.x) + " p.y: " + p.y)
+
+                    //chart_2.title = pos.x.toFixed(0) + " - " + pos.y.toFixed(0)
+
+                    //let value = areaLine3.at(p.x)
+                    let chartPosition = chart_2.mapToPosition(pos, areaLine3)
+                    //console.log(chartPosition)
+                    
+                    if(mouseX<170) {
+                         boxi.x = mouseX
+                    }else {
+                        boxi.x = mouseX-170
+                    }
+                    myCanvas.xx = mouseX
+			        myCanvas.yy = chartPosition.y
+	                myCanvas.requestPaint()
+
+
+                    boxi.y = chartPosition.y+10
+                    boxi.visible = true
+                    boxi.value = pos.y
+                    boxi.timestamp = pos.x
+                }
 
             }
+            	    Canvas{
+	        id:myCanvas
+	        anchors.fill: chart_2
+	        property double xx: 0
+	        property double yy: 0
+            visible: mouse_area.containsMouse
+	        onPaint: {
+	            if(xx+yy>0){
+	                var ctx = getContext ("2d") // Draw cross cross vertical line
+	                ctx.clearRect(0,0,parent.width,parent.height)
+	                ctx.strokeStyle = theme.lineChartColor
+	                ctx.lineWidth = 3
+	                ctx.beginPath()
+                    ctx.arc(xx, yy-4, 8, 0, 2 * Math.PI, false);
+                    context.fillStyle = theme.lineChartColor;
+                    context.fill();
+	                ctx.moveTo(xx,chart_2.plotArea.y)
+	                ctx.lineTo(xx,chart_2.plotArea.height+chart_2.plotArea.y)
+	                ctx.stroke()
+                    
+	                //ctx.beginPath () // Draw cross cross horizontal line
+	                //ctx.moveTo(chart_2.plotArea.x,yy)
+	                //ctx.lineTo(chart_2.plotArea.x+chart_2.plotArea.width,yy)
+	                //ctx.stroke()
+	             } else {// Mouse leaves the chart area to clear the cross line
+	                var ctx = getContext("2d")
+	                ctx.clearRect(0,0,parent.width,parent.height)
+	            }
+	        }
+	    }
             LineSeries {
                 id: areaLine3
                 color: theme.accentColor
                 visible: !isSpline
+                width: 3.0
                 axisY: ValueAxis {
                     visible: false
                     max:  parseFloat(API.app.portfolio_pg.max_total_chart)
@@ -186,12 +275,13 @@ InnerBackground {
                     format: "MMM d"
                 }
             }
-            ScatterSeries {
+            
+            /*ScatterSeries {
                 id: scatter
                 visible: true
                 color: theme.accentColor
                 borderColor: theme.accentColor
-                markerSize: 7
+                markerSize: 1
                 borderWidth: 3
 
                 onHovered: {
@@ -230,7 +320,7 @@ InnerBackground {
                 }
 
 
-            }
+            }*/
         }
 
         Rectangle {
@@ -299,7 +389,7 @@ InnerBackground {
             id: boxi
             property real value: 0
             property var timestamp
-            visible: false
+            visible: mouse_area.containsMouse
             width: 130
             height: 60
             x: 99999

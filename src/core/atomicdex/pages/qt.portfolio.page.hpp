@@ -74,6 +74,7 @@ namespace atomic_dex
         [[nodiscard]] Q_INVOKABLE QStringList get_all_enabled_coins() const;
         [[nodiscard]] Q_INVOKABLE QStringList get_all_coins_by_type(const QString& coin_type) const;
         [[nodiscard]] Q_INVOKABLE bool        is_coin_enabled(const QString& coin_name) const;
+        [[nodiscard]] Q_INVOKABLE int     get_neareast_point(int timestamp) const;
 
         [[nodiscard]] QString                get_balance_fiat_all() const;
         void                                 set_current_balance_fiat_all(QString current_fiat_all_balance);
