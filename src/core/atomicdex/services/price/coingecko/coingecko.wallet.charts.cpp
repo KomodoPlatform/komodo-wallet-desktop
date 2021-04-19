@@ -370,4 +370,20 @@ namespace atomic_dex
     {
         return QString::fromStdString(m_max_value);
     }
+
+    int
+    coingecko_wallet_charts_service::get_neareast_point(int timestamp)
+    {
+        nlohmann::json res = m_fiat_charts.get();
+        auto it = std::lower_bound(begin(res), end(res), timestamp, [](const nlohmann::json& current_json, int timestamp) {
+          int res = current_json.at("timestamp").get<std::size_t>();
+          return res < timestamp;
+        });
+        if (it != res.end())
+        {
+            auto idx = std::distance(begin(res), it);
+            return idx;
+        }
+        return 0;
+    }
 } // namespace atomic_dex
