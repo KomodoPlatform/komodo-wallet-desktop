@@ -29,7 +29,7 @@ Item {
         item.labelColor = 'white'
         item.color = Qt.lighter(Style.getCoinColor(value.ticker))
         item.borderColor = theme.backgroundColor
-        item.borderWidth = 0
+        item.borderWidth = 2
         item.holeSize = 1
         item.labelFont = theme.textType.body2
         item.hovered.connect(function (state) {
@@ -83,9 +83,9 @@ Item {
             Rectangle {
                 anchors.centerIn: parent
                 color: theme.backgroundColor
-                width: 280
-                height: 280
-                radius: 300
+                width: 295
+                height: width
+                radius: width/2
                 //border.color: theme.accentColor
                 //border.width: 2
                 Column {
@@ -161,12 +161,12 @@ Item {
             }
             Rectangle {
             anchors.centerIn: parent
-            width: 310
+            width: 295
             height: width
             color: 'transparent'
             radius: width/2
             border.width: 0
-            border.color: theme.accentColor
+            border.color: theme.backgroundColor
         }
         }
         
