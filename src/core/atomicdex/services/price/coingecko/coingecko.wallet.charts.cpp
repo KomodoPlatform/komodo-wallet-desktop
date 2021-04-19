@@ -309,7 +309,7 @@ namespace atomic_dex
         const auto wallet_obj       = m_wallet_performance.get();
         const bool is_valid         = wallet_obj.contains("wallet_evolution");
         const auto balance_fiat_all = m_system_manager.get_system<portfolio_page>().get_main_balance_fiat_all();
-        if (is_valid)
+        if (is_valid && from.find("set_chart_category") == std::string::npos)
         {
             const auto previous = wallet_obj["wallet_evolution"].toObject().value("last_total_balance_fiat_all").toString();
             if (previous == balance_fiat_all)

@@ -115,6 +115,7 @@ namespace atomic_dex
         if (!ec && res)
         {
             set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+            m_portfolio_mdl->adjust_percent_current_currency(QString::fromStdString(fiat_balance_std));
         }
     }
 

@@ -50,23 +50,6 @@ namespace atomic_dex
     coingecko_provider::on_coin_enabled(const coin_enabled& evt)
     {
         dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
-        /*std::vector<std::string>             ids;
-        coingecko::api::t_coingecko_registry registry;
-        const auto*                          global_cfg_system = m_system_manager.get_system<portfolio_page>().get_global_cfg();
-        for (auto&& ticker: evt.tickers)
-        {
-            const auto config = global_cfg_system->get_coin_info(ticker);
-            //!
-            if (config.coingecko_id != "test-coin")
-            {
-                ids.emplace_back(config.coingecko_id);
-                registry[config.coingecko_id] = config.ticker;
-            }
-        }
-
-        internal_update(ids, registry, false, evt.tickers);*/
-
-        //! tmp
         this->update_ticker_and_provider();
     }
 
@@ -94,7 +77,7 @@ namespace atomic_dex
     std::string
     coingecko_provider::get_change_24h(const std::string& ticker) const
     {
-        // SPDLOG_INFO("ticker change 24h: {}", ticker);
+        //SPDLOG_INFO("ticker change 24h: {}", ticker);
         return get_info_answer(ticker).price_change_24h;
     }
 

@@ -77,5 +77,7 @@ namespace atomic_dex
         //! Address
         QString public_address; ///< Public address
         QString priv_key;       ///< Private key (required password to be shown)
+
+        QString percent_main_currency;
     };
 } // namespace atomic_dex

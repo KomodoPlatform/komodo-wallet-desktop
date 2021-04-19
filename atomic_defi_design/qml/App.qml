@@ -324,8 +324,15 @@ Rectangle {
         //atomic_settings2.value("CurrentTheme",name+".json")
         let data = API.qt_utilities.load_theme(name)
         for(let i in data) {
-            console.log("theme."+i.toString()+" = '"+ data[i]+"'")
-            eval("theme."+i.toString()+" = '"+ data[i]+"'")
+            if (i.toString().indexOf("[int]")!==-1){
+                let real_i = i;
+                i = i.replace("[int]","")
+                console.log("theme."+i.toString()+" = "+ data[real_i]+"")
+                eval("theme."+i.toString()+" = "+ data[real_i])
+            }else {
+                console.log("theme."+i.toString()+" = '"+ data[i]+"'")
+                eval("theme."+i.toString()+" = '"+ data[i]+"'")
+            }
         }
         Qaterial.Style.accentColor = theme.accentColor
         console.log("END APPLY "+name)
@@ -346,6 +353,7 @@ Rectangle {
         property color dexBoxBackgroundColor: Style.colorTheme9
 
         property color hightlightColor: Style.colorTheme5
+        property int sidebarShadowRadius: 32
 
         property color sideBarGradient1: Style.colorGradient1
         property color sideBarGradient2: Style.colorGradient2

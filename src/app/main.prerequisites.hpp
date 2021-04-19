@@ -343,16 +343,6 @@ handle_settings(QSettings& settings)
 #else
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
 #endif
-
-    /*settings.beginGroup("KMD_BUSD-BEP20");
-    create_settings_functor("Spread", QVariant(2.0));
-    create_settings_functor("Disabled", QVariant(false));
-    settings.endGroup();
-
-    settings.beginGroup("BUSD-BEP20_KMD");
-    create_settings_functor("Spread", QVariant(2.0));
-    create_settings_functor("Disabled", QVariant(false));
-    settings.endGroup();*/
 }
 
 inline int
