@@ -132,6 +132,7 @@ InnerBackground {
 
             opacity: .8
             AreaSeries {
+                id: area
                 axisX: DateTimeAxis {
                     id: dateA
                     gridVisible: false
@@ -166,8 +167,80 @@ InnerBackground {
                     }
 
                 }
+                /*onHovered: {
+                    let p = chart_2.mapToValue(point, area)
+                    console.log(p)
+                    if(p.x<170) {
+                         boxi.x = p.x
+                    }else {
+                        boxi.x = p.x-170
+                    }
+
+
+                    boxi.y = p.y+10
+                    if(state){
+                        boxi.visible = true
+                    }else {
+                        boxi.visible = false
+                    }
+                    boxi.value = point.y
+                    boxi.timestamp = point.x
+
+                }*/
+            }
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onPositionChanged:  {
+                    let point = Qt.point(mouseX, mouseY)
+                    let p = chart_2.mapToValue(point, area)
+                    let areapoint = chart_2.mapToValue (point, area) 
+                    let value = areaLine.at(areapoint.x)
+                    let chartPosition = chart_2.mapToPosition (value, areaLine) 
+                    console.log(chartPosition)
+                    
+                    if(mouseX<170) {
+                         boxi.x = mouseX
+                    }else {
+                        boxi.x = mouseX-170
+                    }
+                    myCanvas.xx = mouseX           
+			        myCanvas.yy = chartPosition.y
+	                myCanvas.requestPaint()
+
+
+                    boxi.y = chartPosition.y+10
+                     boxi.visible = true
+                    boxi.value = p.y
+                    boxi.timestamp = p.x
+                }
 
             }
+            	    Canvas{
+	        id:myCanvas
+	        anchors.fill: chart_2
+	        property double xx: 0
+	        property double yy: 0
+	        onPaint: {
+	            if(xx+yy>0){
+	                var ctx = getContext ("2d") // Draw cross cross vertical line
+	                ctx.clearRect(0,0,parent.width,parent.height)
+	                ctx.strokeStyle = '#ccf48993'
+	                ctx.lineWidth = 3
+	                ctx.beginPath()
+	                ctx.moveTo(xx,chart_2.plotArea.y)
+	                ctx.lineTo(xx,chart_2.plotArea.height+chart_2.plotArea.y)
+	                ctx.stroke()
+	                 ctx.beginPath () // Draw cross cross horizontal line
+	                ctx.moveTo(chart_2.plotArea.x,yy)
+	                ctx.lineTo(chart_2.plotArea.x+chart_2.plotArea.width,yy)
+	                ctx.stroke()
+	             } else {// Mouse leaves the chart area to clear the cross line
+	                var ctx = getContext("2d")
+	                ctx.clearRect(0,0,parent.width,parent.height)
+	            }
+	        }
+	    }
             LineSeries {
                 id: areaLine3
                 color: theme.accentColor
@@ -187,6 +260,7 @@ InnerBackground {
                     format: "MMM d"
                 }
             }
+            
             /*ScatterSeries {
                 id: scatter
                 visible: true
