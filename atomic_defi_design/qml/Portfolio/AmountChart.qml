@@ -191,7 +191,10 @@ InnerBackground {
                 }*/
             }
             MouseArea {
-                anchors.fill: parent
+                id: mouse_area
+                width: parent.width
+                height: parent.height
+                x: -40
                 hoverEnabled: true
                 onPositionChanged:  {
                     let point = Qt.point(mouseX, mouseY)
@@ -200,7 +203,7 @@ InnerBackground {
                     let pos = areaLine3.at(idx);
                     //console.log("p.x: " + Math.floor(p.x) + " p.y: " + p.y)
 
-                    chart_2.title = pos.x.toFixed(0) + " - " + pos.y.toFixed(0)
+                    //chart_2.title = pos.x.toFixed(0) + " - " + pos.y.toFixed(0)
 
                     //let value = areaLine3.at(p.x)
                     let chartPosition = chart_2.mapToPosition(pos, areaLine3)
@@ -212,7 +215,7 @@ InnerBackground {
                         boxi.x = mouseX-170
                     }
                     myCanvas.xx = mouseX
-			        //myCanvas.yy = chartPosition.y
+			        myCanvas.yy = chartPosition.y
 	                myCanvas.requestPaint()
 
 
@@ -228,16 +231,21 @@ InnerBackground {
 	        anchors.fill: chart_2
 	        property double xx: 0
 	        property double yy: 0
+            visible: mouse_area.containsMouse
 	        onPaint: {
 	            if(xx+yy>0){
 	                var ctx = getContext ("2d") // Draw cross cross vertical line
 	                ctx.clearRect(0,0,parent.width,parent.height)
-	                ctx.strokeStyle = '#ccf48993'
+	                ctx.strokeStyle = theme.lineChartColor
 	                ctx.lineWidth = 3
 	                ctx.beginPath()
+                    ctx.arc(xx, yy-4, 8, 0, 2 * Math.PI, false);
+                    context.fillStyle = theme.lineChartColor;
+                    context.fill();
 	                ctx.moveTo(xx,chart_2.plotArea.y)
 	                ctx.lineTo(xx,chart_2.plotArea.height+chart_2.plotArea.y)
 	                ctx.stroke()
+                    
 	                //ctx.beginPath () // Draw cross cross horizontal line
 	                //ctx.moveTo(chart_2.plotArea.x,yy)
 	                //ctx.lineTo(chart_2.plotArea.x+chart_2.plotArea.width,yy)
@@ -381,7 +389,7 @@ InnerBackground {
             id: boxi
             property real value: 0
             property var timestamp
-            visible: false
+            visible: mouse_area.containsMouse
             width: 130
             height: 60
             x: 99999
