@@ -16,14 +16,13 @@ import "../Constants"
 
 Item {
     width: parent.width
-    height: column.height//150+(list.count*65)
+    height: 150+(list.count*65)
     visible: true
-    Column {
-        id: column
-        width: parent.width-80
-        padding: 15
-        x: 30
-
+    Item {
+        anchors.fill: parent
+        anchors.margins: 15
+        anchors.leftMargin: 40
+        anchors.rightMargin: 40
         Rectangle {
             width: parent.width
             height: 60
@@ -127,15 +126,22 @@ Item {
                 }
             }
         }
-        Repeater {
+        DefaultListView {
             id: list
+            visible: true
+            y: 60
+            width: parent.width
+            height: parent.height - 50
+            interactive: false
             model: portfolio_coins
+            cacheBuffer: 2000
+            scrollbar_visible: false
 
-            AnimatedRectangle {
+            delegate: AnimatedRectangle {
                 color: Qt.lighter(
                            mouse_area.containsMouse ? theme.hightlightColor : index % 2 !== 0 ? Qt.darker(theme.backgroundColor, 0.8) : "transparent",
                            mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
-                width: parent.width
+                width: list.width
                 height: 65
                 AnimatedRectangle {
                     id: main_color
@@ -289,7 +295,7 @@ Item {
                         DefaultText {
                             id: price_value
                             anchors.right: parent.right
-                            anchors.rightMargin: 25
+                            anchors.rightMargin: 10
                             font: theme.textType.body2
 
                             text_value: General.formatFiat(
@@ -300,24 +306,20 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DefaultImage {
-                            anchors.right: parent.right
-                            anchors.rightMargin: 10
-                            anchors.verticalCenter: parent.verticalCenter
                             visible: API.app.portfolio_pg.oracle_price_supported_pairs.join(
                                          ",").indexOf(ticker) !== -1
                             source: General.coinIcon('BAND')
                             width: 12
                             height: width
-                            
+                            anchors.left: parent.right
+                            anchors.leftMargin: 5
 
                             CexInfoTrigger {}
                         }
                     }
                 }
             }
-            
-        }
-        Item {
+            footer: Item {
                 width: parent.width
                 height: 60
                 Rectangle {
@@ -349,5 +351,6 @@ Item {
                     onClicked: enable_coin_modal.open()
                 }
             }
+        }
     }
 }
