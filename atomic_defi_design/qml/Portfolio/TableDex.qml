@@ -132,7 +132,7 @@ Item {
             y: 60
             width: parent.width
             height: parent.height - 50
-
+            interactive: false
             model: portfolio_coins
             cacheBuffer: 2000
             scrollbar_visible: false
