@@ -109,7 +109,7 @@ Item {
                     DefaultText {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: portfolio.currentValue
-                        font: theme.textType.body1
+                        font: theme.textType.body2
                         DexFadebehavior on text {
                             fadeDuration: 100
                         }
