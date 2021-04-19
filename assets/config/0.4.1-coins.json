@@ -1180,7 +1180,7 @@
     "explorer_url": [
       "https://gleec.explorer.dexstats.info/"
     ],
-    "type": "UTXO",
+    "type": "Smart Chain",
     "active": false,
     "currently_enabled": false
   },
