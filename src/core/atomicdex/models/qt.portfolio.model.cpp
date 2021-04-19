@@ -66,8 +66,8 @@ namespace atomic_dex
             auto        coin          = mm2_system.get_coin_info(ticker);
 
             std::error_code ec;
-            const QString   change_24h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
-            portfolio_data  data{
+            const QString   change_24h      = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
+            portfolio_data data{
                 .ticker                           = QString::fromStdString(coin.ticker),
                 .gui_ticker                       = QString::fromStdString(coin.gui_ticker),
                 .coin_type                        = QString::fromStdString(coin.type),
@@ -80,8 +80,9 @@ namespace atomic_dex
                 .trend_7d                         = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(coin.ticker)),
                 .is_excluded                      = false,
                 .public_address                   = QString::fromStdString(mm2_system.address(coin.ticker, ec))};
-            data.display         = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
-            data.ticker_and_name = QString::fromStdString(coin.gui_ticker) + data.name;
+            //data.percent_main_currency = percent_functor(data.main_currency_balance);
+            data.display               = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
+            data.ticker_and_name       = QString::fromStdString(coin.gui_ticker) + data.name;
             datas.push_back(std::move(data));
             m_ticker_registry.emplace(ticker);
         }
@@ -114,7 +115,8 @@ namespace atomic_dex
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 return false;
             }
-            auto update_functor = [coin = std::move(coin), &coingecko, &mm2_system, &price_service, currency, fiat, this]() {
+            auto update_functor = [coin = std::move(coin), &coingecko, &mm2_system, &price_service, currency, fiat, this]()
+            {
                 const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly);
                     not res.isEmpty())
@@ -251,6 +253,8 @@ namespace atomic_dex
             return item.public_address;
         case PrivKey:
             return item.priv_key;
+        case PercentMainCurrency:
+            return item.percent_main_currency;
         }
         return {};
     }
@@ -273,8 +277,10 @@ namespace atomic_dex
             item.balance = value.toString();
             break;
         case MainCurrencyBalanceRole:
+        {
             item.main_currency_balance = value.toString();
             break;
+        }
         case Change24H:
             item.change_24h = value.toString();
             break;
@@ -333,11 +339,15 @@ namespace atomic_dex
         case PrivKey:
             item.priv_key = value.toString();
             break;
+        case PercentMainCurrency:
+            item.percent_main_currency = value.toString();
+            emit dataChanged(index, index, {role});
+            break;
         default:
             return false;
         }
 
-        //emit dataChanged(index, index, {role});
+        // emit dataChanged(index, index, {role});
         return true;
     }
 
@@ -400,7 +410,8 @@ namespace atomic_dex
             {MultiTickerReceiveAmount, "multi_ticker_receive_amount"},
             {MultiTickerFeesInfo, "multi_ticker_fees_info"},
             {Address, "public_address"},
-            {PrivKey, "priv_key"}};
+            {PrivKey, "priv_key"},
+            {PercentMainCurrency, "percent_main_currency"}};
     }
 
     portfolio_proxy_model*
@@ -477,5 +488,28 @@ namespace atomic_dex
         QString    human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, ticker, human_date, timestamp);
         emit portfolioItemDataChanged();
+    }
+
+    void
+    portfolio_model::adjust_percent_current_currency(QString balance_all)
+    {
+        const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+        for (auto&& [coin, cfg]: coins)
+        {
+            auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin), 1, Qt::MatchFlag::MatchExactly);
+            // assert(not res.empty());
+            if (not res.empty())
+            {
+                t_float_50 balance_all_f         = safe_float(balance_all.toStdString());
+                t_float_50 main_currency_balance = safe_float(this->data(res.at(0), MainCurrencyBalanceRole).toString().toStdString());
+                if (balance_all_f > 0 && main_currency_balance > 0)
+                {
+                    t_float_50 res_f   = (100 * main_currency_balance) / balance_all_f;
+                    auto       percent = QString::fromStdString(res_f.str(2, std::ios::fixed));
+                    update_value(PortfolioRoles::PercentMainCurrency, percent, res.at(0), *this);
+                }
+                // update_value(PortfolioRoles::PrivKey, "", res.at(0), *this);
+            }
+        }
     }
 } // namespace atomic_dex

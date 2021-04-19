@@ -228,19 +228,14 @@ Item {
                                 color: theme.dexBoxBackgroundColor
                                 Rectangle {
                                     height: parent.height
-                                    width: (parseFloat(
-                                                getPercent(
-                                                    main_currency_balance).replace(
-                                                    "%",
-                                                    "")) * parent.width) / 100
+                                    width: (parseFloat(percent_main_currency) * parent.width) / 100
                                     radius: 10
                                     color: rootItem.itemColor
                                 }
                             }
 
                             DexLabel {
-                                text: getPercent(
-                                          main_currency_balance)
+                                text: percent_main_currency
                                 Component.onCompleted: font.family = 'lato'
                                 Layout.alignment: Qt.AlignVCenter
                             }
