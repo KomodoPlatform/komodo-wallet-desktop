@@ -29,6 +29,7 @@ InnerBackground {
         for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
             let el = API.app.portfolio_pg.charts[ii]
             try {
+                //console.log("timestamp: " + el.timestamp*1000)
                 areaLine3.append(el.timestamp*1000, parseFloat(el.total))
                 areaLine.append(el.timestamp*1000, parseFloat(el.total))
                 //scatter.append(el.timestamp*1000, parseFloat(el.total))
@@ -119,6 +120,7 @@ InnerBackground {
 
         ChartView {
             id: chart_2
+            title: "View"
             anchors.fill: parent
             anchors.margins: -20
             anchors.topMargin: 50
@@ -194,25 +196,30 @@ InnerBackground {
                 onPositionChanged:  {
                     let point = Qt.point(mouseX, mouseY)
                     let p = chart_2.mapToValue(point, area)
-                    let areapoint = chart_2.mapToValue (point, area) 
-                    let value = areaLine.at(areapoint.x)
-                    let chartPosition = chart_2.mapToPosition (value, areaLine) 
-                    console.log(chartPosition)
+                    let idx = API.app.portfolio_pg.get_neareast_point(Math.floor(p.x) / 1000);
+                    let pos = areaLine3.at(idx);
+                    //console.log("p.x: " + Math.floor(p.x) + " p.y: " + p.y)
+
+                    chart_2.title = pos.x.toFixed(0) + " - " + pos.y.toFixed(0)
+
+                    //let value = areaLine3.at(p.x)
+                    let chartPosition = chart_2.mapToPosition(pos, areaLine3)
+                    //console.log(chartPosition)
                     
                     if(mouseX<170) {
                          boxi.x = mouseX
                     }else {
                         boxi.x = mouseX-170
                     }
-                    myCanvas.xx = mouseX           
-			        myCanvas.yy = chartPosition.y
+                    myCanvas.xx = mouseX
+			        //myCanvas.yy = chartPosition.y
 	                myCanvas.requestPaint()
 
 
                     boxi.y = chartPosition.y+10
-                     boxi.visible = true
-                    boxi.value = p.y
-                    boxi.timestamp = p.x
+                    boxi.visible = true
+                    boxi.value = pos.y
+                    boxi.timestamp = pos.x
                 }
 
             }
@@ -231,10 +238,10 @@ InnerBackground {
 	                ctx.moveTo(xx,chart_2.plotArea.y)
 	                ctx.lineTo(xx,chart_2.plotArea.height+chart_2.plotArea.y)
 	                ctx.stroke()
-	                 ctx.beginPath () // Draw cross cross horizontal line
-	                ctx.moveTo(chart_2.plotArea.x,yy)
-	                ctx.lineTo(chart_2.plotArea.x+chart_2.plotArea.width,yy)
-	                ctx.stroke()
+	                //ctx.beginPath () // Draw cross cross horizontal line
+	                //ctx.moveTo(chart_2.plotArea.x,yy)
+	                //ctx.lineTo(chart_2.plotArea.x+chart_2.plotArea.width,yy)
+	                //ctx.stroke()
 	             } else {// Mouse leaves the chart area to clear the cross line
 	                var ctx = getContext("2d")
 	                ctx.clearRect(0,0,parent.width,parent.height)
