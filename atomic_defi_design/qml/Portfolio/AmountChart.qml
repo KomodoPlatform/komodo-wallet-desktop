@@ -145,10 +145,10 @@ InnerBackground {
             }
             Rectangle {
                 id: verticalLine
-                height: parent.height-80
+                height: parent.height-84
                 opacity: .7
                 visible: mouse_area.containsMouse  && mouse_area.mouseX>60
-                anchors.verticalCenterOffset: -4
+                anchors.verticalCenterOffset: -6
                 anchors.verticalCenter: parent.verticalCenter
                 width: 3
                 radius: 4
