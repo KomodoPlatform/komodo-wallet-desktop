@@ -201,13 +201,7 @@ InnerBackground {
                     let p = chart_2.mapToValue(point, area)
                     let idx = API.app.portfolio_pg.get_neareast_point(Math.floor(p.x) / 1000);
                     let pos = areaLine3.at(idx);
-                    //console.log("p.x: " + Math.floor(p.x) + " p.y: " + p.y)
-
-                    //chart_2.title = pos.x.toFixed(0) + " - " + pos.y.toFixed(0)
-
-                    //let value = areaLine3.at(p.x)
                     let chartPosition = chart_2.mapToPosition(pos, areaLine3)
-                    //console.log(chartPosition)
                     
                     if(mouseX<170) {
                          boxi.x = mouseX
@@ -220,7 +214,6 @@ InnerBackground {
 
 
                     boxi.y = chartPosition.y+10
-                    boxi.visible = true
                     boxi.value = pos.y
                     boxi.timestamp = pos.x
                 }
@@ -245,11 +238,6 @@ InnerBackground {
 	                ctx.moveTo(xx,chart_2.plotArea.y)
 	                ctx.lineTo(xx,chart_2.plotArea.height+chart_2.plotArea.y)
 	                ctx.stroke()
-                    
-	                //ctx.beginPath () // Draw cross cross horizontal line
-	                //ctx.moveTo(chart_2.plotArea.x,yy)
-	                //ctx.lineTo(chart_2.plotArea.x+chart_2.plotArea.width,yy)
-	                //ctx.stroke()
 	             } else {// Mouse leaves the chart area to clear the cross line
 	                var ctx = getContext("2d")
 	                ctx.clearRect(0,0,parent.width,parent.height)
