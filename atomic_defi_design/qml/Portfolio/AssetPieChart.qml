@@ -228,7 +228,7 @@ Item {
                             }
 
                             DexLabel {
-                                text: percent_main_currency
+                                text: percent_main_currency +" %"
                                 Component.onCompleted: font.family = 'lato'
                                 Layout.alignment: Qt.AlignVCenter
                             }

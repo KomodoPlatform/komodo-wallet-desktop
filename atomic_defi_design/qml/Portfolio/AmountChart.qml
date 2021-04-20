@@ -144,12 +144,12 @@ InnerBackground {
                 }
             }
             
-            Canvas{
+            /*Canvas{
 	            id:myCanvas
                 anchors.fill: chart_2
                 property double xx: 0
                 property double yy: 0
-                visible: (mouse_area.mouseX>60 && mouse_area.mouseX<938) && mouse_area.containsMouse
+                visible:  mouse_area.containsMouse
                 onPaint: {
                     if(xx+yy>0){
                         var ctx = getContext ("2d") // Draw cross cross vertical line
@@ -168,7 +168,20 @@ InnerBackground {
                         ctx.clearRect(0,0,parent.width,parent.height)
                     }
                 }
-	        }
+	        }*/
+            Rectangle {
+                id: verticalLine
+                height: parent.height-80
+                opacity: .7
+                visible: mouse_area.containsMouse
+                anchors.verticalCenterOffset: -4
+                anchors.verticalCenter: parent.verticalCenter
+                width: 3
+                radius: 4
+                border.color: theme.accentColor
+                color: theme.foregroundColor
+                x: mouse_area.mouseX
+            }
             LineSeries {
                 id: areaLine3
                 color: theme.accentColor
@@ -214,9 +227,9 @@ InnerBackground {
                     }else {
                         boxi.x = mx-170
                     }
-                    myCanvas.xx = mx
-			        myCanvas.yy = chartPosition.y
-	                myCanvas.requestPaint()
+                   // myCanvas.xx = mx
+			        //myCanvas.yy = chartPosition.y
+	                //myCanvas.requestPaint()
 
 
                     boxi.y = chartPosition.y+10
@@ -294,7 +307,7 @@ InnerBackground {
             id: boxi
             property real value: 0
             property var timestamp
-            visible: (mouse_area.mouseX>60 && mouse_area.mouseX<938) && mouse_area.containsMouse
+            visible:  mouse_area.containsMouse //(mouse_area.mouseX>60 && mouse_area.mouseX<938) &&
             width: 130
             height: 60
             x: 99999
