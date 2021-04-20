@@ -143,41 +143,16 @@ InnerBackground {
 
                 }
             }
-            
-            /*Canvas{
-	            id:myCanvas
-                anchors.fill: chart_2
-                property double xx: 0
-                property double yy: 0
-                visible:  mouse_area.containsMouse
-                onPaint: {
-                    if(xx+yy>0){
-                        var ctx = getContext ("2d") // Draw cross cross vertical line
-                        ctx.clearRect(0,0,parent.width,parent.height)
-                        ctx.strokeStyle = theme.lineChartColor
-                        ctx.lineWidth = 3
-                        ctx.beginPath()
-                        ctx.arc(xx, yy-4, 4 , 0, 2 * Math.PI, false);
-                        ctx.fillStyle = theme.lineChartColor;
-                        ctx.fill();
-                        ctx.moveTo(xx,chart_2.plotArea.y)
-                        ctx.lineTo(xx,chart_2.plotArea.height+chart_2.plotArea.y)
-                        ctx.stroke()
-                    } else {// Mouse leaves the chart area to clear the cross line
-                        var ctx = getContext("2d")
-                        ctx.clearRect(0,0,parent.width,parent.height)
-                    }
-                }
-	        }*/
             Rectangle {
                 id: verticalLine
                 height: parent.height-80
                 opacity: .7
-                visible: mouse_area.containsMouse
+                visible: mouse_area.containsMouse  && mouse_area.mouseX>60
                 anchors.verticalCenterOffset: -4
                 anchors.verticalCenter: parent.verticalCenter
                 width: 3
                 radius: 4
+                
                 border.color: theme.accentColor
                 color: theme.foregroundColor
                 x: mouse_area.mouseX
@@ -207,8 +182,6 @@ InnerBackground {
             }
             MouseArea {
                 id: mouse_area
-                //anchors.margins: -40
-                //anchors.fill: parent
                 width: parent.width+200
                 height: parent.height
                 x: -40
@@ -227,10 +200,6 @@ InnerBackground {
                     }else {
                         boxi.x = mx-170
                     }
-                   // myCanvas.xx = mx
-			        //myCanvas.yy = chartPosition.y
-	                //myCanvas.requestPaint()
-
 
                     boxi.y = chartPosition.y+10
                     boxi.value = pos.y
@@ -307,7 +276,7 @@ InnerBackground {
             id: boxi
             property real value: 0
             property var timestamp
-            visible:  mouse_area.containsMouse //(mouse_area.mouseX>60 && mouse_area.mouseX<938) &&
+            visible:  mouse_area.containsMouse && mouse_area.mouseX>60
             width: 130
             height: 60
             x: 99999
