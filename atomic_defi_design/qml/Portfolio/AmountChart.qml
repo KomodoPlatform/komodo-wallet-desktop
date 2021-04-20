@@ -143,20 +143,28 @@ InnerBackground {
 
                 }
             }
-            Rectangle {
-                id: verticalLine
-                height: parent.height-84
-                opacity: .7
-                visible: mouse_area.containsMouse  && mouse_area.mouseX>60
-                anchors.verticalCenterOffset: -6
-                anchors.verticalCenter: parent.verticalCenter
-                width: 3
-                radius: 4
+            Qaterial.ClipRRect {
+                width: parent.width-110
+                anchors.horizontalCenterOffset: 10
+                height: parent.height
                 
-                border.color: theme.accentColor
-                color: theme.foregroundColor
-                x: mouse_area.mouseX
+                anchors.horizontalCenter: parent.horizontalCenter
+                Rectangle {
+                    id: verticalLine
+                    height: parent.height-84
+                    opacity: .7
+                    visible: mouse_area.containsMouse  && mouse_area.mouseX>60
+                    anchors.verticalCenterOffset: -6
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 3
+                    radius: 4
+                    
+                    border.color: theme.accentColor
+                    color: theme.foregroundColor
+                    x: mouse_area.mouseX-80
+                }
             }
+            
             LineSeries {
                 id: areaLine3
                 color: theme.accentColor
