@@ -165,8 +165,8 @@ Item {
             height: width
             color: 'transparent'
             radius: width/2
-            border.width: 0
-            border.color: theme.backgroundColor
+            border.width: API.app.portfolio_pg.balance_fiat_all>0 ? 0 : 5
+            border.color: Qt.lighter(theme.backgroundColor)
         }
         }
         
@@ -228,7 +228,7 @@ Item {
                             }
 
                             DexLabel {
-                                text: percent_main_currency
+                                text: percent_main_currency +" %"
                                 Component.onCompleted: font.family = 'lato'
                                 Layout.alignment: Qt.AlignVCenter
                             }
