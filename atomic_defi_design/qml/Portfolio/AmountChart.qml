@@ -117,7 +117,7 @@ InnerBackground {
                     lineVisible: false
                     max:  parseFloat(API.app.portfolio_pg.max_total_chart)
                     min:  parseFloat(API.app.portfolio_pg.min_total_chart)
-                    labelsColor: theme.accentColor  
+                    labelsColor: theme.foregroundColor  
                     gridLineColor: theme.chartGridLineColor
                 }
                 color: Qt.rgba(77,198,255,0.02)
@@ -131,8 +131,6 @@ InnerBackground {
                         max:  parseFloat(API.app.portfolio_pg.max_total_chart)
                         min:  parseFloat(API.app.portfolio_pg.min_total_chart)
                         color: theme.foregroundColor
-                        gridLineColor: 'red'
-                    labelsColor: 'red'//theme.foregroundColor
                     }
                     axisX: DateTimeAxis {
                         id: dateA2
@@ -141,8 +139,6 @@ InnerBackground {
                         gridVisible: false
                         lineVisible: false
                         format: "MMM d"
-                        gridLineColor: 'red'
-                    labelsColor: 'red'//theme.foregroundColor
                     }
 
                 }
