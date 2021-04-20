@@ -27,7 +27,7 @@ BasicModal {
 
         DefaultText {
             text: message === "connection dropped" ? qsTr("Connection has been lost. You have been disconnected.") :
-                                                     qsTr("An error occurred. You have been disconnected.")
+                                                     message
         }
 
         footer: [

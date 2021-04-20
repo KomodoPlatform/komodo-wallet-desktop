@@ -35,6 +35,8 @@ Item {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
+    property var current_ticker
+
     property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
@@ -80,7 +82,8 @@ Item {
     AnimatedRectangle {
         color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
-        height: parent.height
+        height: parent.height-40
+        y: 40
         x: sidebar.width
 
         // Modals
@@ -249,7 +252,7 @@ Item {
         cached: false
         horizontalOffset: 0
         verticalOffset: 0
-        radius: 32
+        radius: theme.sidebarShadowRadius
         samples: 32
         spread: 0
         color: theme.colorSidebarDropShadow

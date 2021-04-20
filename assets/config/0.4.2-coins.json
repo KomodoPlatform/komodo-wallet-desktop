@@ -310,13 +310,19 @@
     "coingecko_id": "blackcoin",
     "electrum": [
       {
-        "url": "electrum1.blackcoin.nl:10001"
+        "url": "electrum1.blackcoin.nl:10002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "electrum2.blackcoin.nl:20001"
+        "url": "electrum2.blackcoin.nl:20002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "electrum3.blackcoin.nl:30001"
+        "url": "electrum3.blackcoin.nl:30002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -1174,7 +1180,7 @@
     "explorer_url": [
       "https://gleec.explorer.dexstats.info/"
     ],
-    "type": "UTXO",
+    "type": "Smart Chain",
     "active": false,
     "currently_enabled": false
   },
@@ -2520,6 +2526,37 @@
     ],
     "explorer_url": [
       "https://chainz.cryptoid.info/trc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "VAL": {
+    "coin": "VAL",
+    "name": "Validity",
+    "coinpaprika_id": "val-validity",
+    "coingecko_id": "radium",
+    "electrum": [
+      {
+        "url": "e1.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "e2.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "e3.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/val/"
     ],
     "explorer_tx_url": "tx.dws?",
     "explorer_address_url": "address.dws?",

@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 
 
-import QtQuick.Window 2.12
+import QtQuick.Window 2.15
 
 import Qaterial 1.0 as Qaterial
 
@@ -168,16 +168,16 @@ Rectangle {
     }
 
     // Update Modal
-    readonly property bool status_good: API.app.update_checker.update_status.rpc_code === 200
-    readonly property bool update_needed: status_good && API.app.update_checker.update_status.update_needed
-    ModalLoader {
-        id: update_modal
-        sourceComponent: UpdateModal {}
+    NewUpdateModal
+    {
+        id: new_update_modal
+        visible: false
     }
 
-    UpdateNotificationLine {
-        anchors.top: parent.top
-        anchors.right: parent.right
+    UpdateInvalidChecksum
+    {
+        id: update_invalid_checksum
+        visible: false
     }
 
     // Fatal Error Modal
@@ -279,141 +279,12 @@ Rectangle {
             }
         }
     }
-    Window {
-        visible: debug_log
-        width: 500
-        height: 400
-        InnerBackground {
-            anchors.fill: parent
-        }
 
-
-        DefaultFlickable {
-            anchors.fill: parent
-            contentHeight:  ccol.height
-            Column {
-                id: ccol
-                width: parent.width
-
-
-                padding: 10
-                RowLayout {
-                    width: parent.width-40
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 10
-                    height: 20
-                    DefaultText {
-                        text: "Font Density"
-                        Layout.alignment: Qt.AlignVCenter
-                        Layout.preferredWidth: 200
-                    }
-                    DefaultSlider {
-                        onValueChanged: {
-                            _font.fontDensity = value
-                            console.log(value)
-                        }
-
-                        to: 3.0
-                        live: true
-                        from: 0.5
-                        stepSize: 0.25
-                        value: 1.0
-                        snapMode: Slider.SnapOnRelease
-                        Layout.fillWidth: true
-                    }
-                }
-                spacing: 25
-                RowLayout {
-                    width: parent.width-40
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 10
-                    height: 20
-                    DefaultText {
-                        text: "Font "
-                        Layout.alignment: Qt.AlignVCenter
-                        Layout.preferredWidth: 200
-                    }
-                    DefaultComboBox {
-                        onCurrentTextChanged: {
-                            _font.fontFamily = currentText
-                        }
-                        model: ["Ubuntu", "Roboto", "Arial","Source Code pro", "Comic Sans Ms"]
-
-                        Layout.fillWidth: true
-                    }
-                }
-                Repeater {
-                    model: global_theme_property
-                    RowLayout {
-                        width: parent.width-40
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        spacing: 10
-                        height: 30
-                        DefaultText {
-                            text: modelData
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 200
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                            height: 30
-                            DefaultTextField{
-                                anchors.fill: parent
-                                text: eval("theme."+modelData)
-                                Keys.onReturnPressed:  {
-                                   eval("theme."+modelData+" = text")
-                                }
-                                Rectangle {
-                                    anchors.right: parent.right
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.rightMargin: 10
-                                    width: 18
-                                    height: 18
-                                    border.color: 'white'
-                                    color: eval("theme."+modelData)
-                                    radius: 50
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        onClicked: {
-                                            parent.color = eval(Qaterial.Clipboard.text)
-                                            eval("theme."+modelData+" = "+Qaterial.Clipboard.text)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-                RowLayout {
-                    width: parent.width-40
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 5
-                    height: 50
-                    DefaultText {
-                        text: ""
-                        Layout.alignment: Qt.AlignVCenter
-                        Layout.preferredWidth: 200
-                        Layout.fillWidth: true
-                    }
-                    DefaultButton {
-                        text: "Save Current"
-                        onClicked: {
-                            Qaterial.DialogManager.openTextField({title: "Theme Register", text: "themeName",standardButtons: Dialog.Save | Dialog.Cancel, onAccepted: function(text){
-                                save_currentTheme(text)
-                            }})
-                        }
-
-                    }
-                }
-
-            }
-        }
-    }
     Settings {
         id: atomic_settings2
         fileName: atomic_cfg_file
     }
+
     Component.onCompleted: {
         openFirstLaunch()
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
@@ -453,9 +324,17 @@ Rectangle {
         //atomic_settings2.value("CurrentTheme",name+".json")
         let data = API.qt_utilities.load_theme(name)
         for(let i in data) {
-            console.log("theme."+i.toString()+" = '"+ data[i]+"'")
-            eval("theme."+i.toString()+" = '"+ data[i]+"'")
+            if (i.toString().indexOf("[int]")!==-1){
+                let real_i = i;
+                i = i.replace("[int]","")
+                console.log("theme."+i.toString()+" = "+ data[real_i]+"")
+                eval("theme."+i.toString()+" = "+ data[real_i])
+            }else {
+                console.log("theme."+i.toString()+" = '"+ data[i]+"'")
+                eval("theme."+i.toString()+" = '"+ data[i]+"'")
+            }
         }
+        Qaterial.Style.accentColor = theme.accentColor
         console.log("END APPLY "+name)
     }
 
@@ -474,6 +353,7 @@ Rectangle {
         property color dexBoxBackgroundColor: Style.colorTheme9
 
         property color hightlightColor: Style.colorTheme5
+        property int sidebarShadowRadius: 32
 
         property color sideBarGradient1: Style.colorGradient1
         property color sideBarGradient2: Style.colorGradient2
@@ -486,6 +366,8 @@ Rectangle {
 
         property color chartTradingLineColor: Style.colorTrendingLine
         property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
+        property color  lineChartColor: theme.accentColor
+        property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
         property color foregroundColor: Style.colorText
 

@@ -25,25 +25,20 @@ Item {
         }
     }
     function addItem(value) {
-
         var item = pieSeries.append(value.ticker, value.main_currency_balance)
         item.labelColor = 'white'
-        item.color = Style.getCoinColor(value.ticker)
+        item.color = Qt.lighter(Style.getCoinColor(value.ticker))
         item.borderColor = theme.backgroundColor
-        item.borderWidth = 14
+        item.borderWidth = 2
         item.holeSize = 1
         item.labelFont = theme.textType.body2
         item.hovered.connect(function (state) {
             if (state) {
-                //item.exploded = true
                 item.explodeDistanceFactor = 0.01
-                //item.labelVisible = true
                 portfolio.currentTotal = API.app.settings_pg.current_fiat_sign+" "+ value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
-                item.color = Qt.lighter(Style.getCoinColor(value.ticker))
+                item.color = Qt.lighter(Qt.lighter(Style.getCoinColor(value.ticker)))
             } else {
-                //item.exploded = false
-                //item.labelVisible = false
                 item.explodeDistanceFactor = 0.01
                 portfolio.currentValue = ""
                 portfolio.currentTotal = ""
@@ -81,33 +76,18 @@ Item {
 
             anchors.horizontalCenter: parent.horizontalCenter
             dropShadowEnabled: true
-            PieSeries {
-                PieSlice {
-                    label: "XRP"
-                    value: 100
-                    color: Qaterial.Colors.gray900
-                    labelColor: 'white'
-                    labelVisible: false
-                    labelFont: theme.textType.head5
-                    borderWidth: 3
-                    Behavior on explodeDistanceFactor {
-                        NumberAnimation {
-                            duration: 150
-                        }
-                    }
-                }
-            }
 
             PieSeries {
                 id: pieSeries
             }
-
             Rectangle {
                 anchors.centerIn: parent
                 color: theme.backgroundColor
-                width: 285
-                height: 285
-                radius: 300
+                width: 295
+                height: width
+                radius: width/2
+                //border.color: theme.accentColor
+                //border.width: 2
                 Column {
                     anchors.centerIn: parent
                     spacing: 5
@@ -129,12 +109,12 @@ Item {
                     DefaultText {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: portfolio.currentValue
-                        font: theme.textType.body1
+                        font: theme.textType.body2
                         DexFadebehavior on text {
                             fadeDuration: 100
                         }
                         color: Qt.lighter(
-                                   Style.colorWhite4, 0.6)
+                                   theme.foregroundColor, 0.6)
                         privacy: true
                         Component.onCompleted: {
                             font.family = 'Lato'
@@ -150,7 +130,7 @@ Item {
                             fadeDuration: 100
                         }
                         color: Qt.lighter(
-                                   Style.colorWhite4, 0.8)
+                                   theme.foregroundColor, 0.8)
                         privacy: true
                         visible: portfolio.currentValue == ""
 
@@ -179,7 +159,17 @@ Item {
                     }
                 }
             }
+            Rectangle {
+            anchors.centerIn: parent
+            width: 295
+            height: width
+            color: 'transparent'
+            radius: width/2
+            border.width: API.app.portfolio_pg.balance_fiat_all>0 ? 0 : 5
+            border.color: Qt.lighter(theme.backgroundColor)
         }
+        }
+        
 
 
         Item {
@@ -231,19 +221,14 @@ Item {
                                 color: theme.dexBoxBackgroundColor
                                 Rectangle {
                                     height: parent.height
-                                    width: (parseFloat(
-                                                getPercent(
-                                                    main_currency_balance).replace(
-                                                    "%",
-                                                    "")) * parent.width) / 100
+                                    width: (parseFloat(percent_main_currency) * parent.width) / 100
                                     radius: 10
                                     color: rootItem.itemColor
                                 }
                             }
 
                             DexLabel {
-                                text: getPercent(
-                                          main_currency_balance)
+                                text: percent_main_currency +" %"
                                 Component.onCompleted: font.family = 'lato'
                                 Layout.alignment: Qt.AlignVCenter
                             }

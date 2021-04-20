@@ -37,7 +37,12 @@ Item {
     //property var form_base: sell_mode? form_base.formBase : buyBox.formBase
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
-        onOpened()
+        if(dashboard.current_ticker!==undefined){
+            onOpened(dashboard.current_ticker)
+        }else {
+            onOpened()
+        }
+        dashboard.current_ticker = undefined
     }
 
     Component.onDestruction: {
@@ -92,23 +97,9 @@ Item {
         interval: 1000
     }
 
-//    property var onOrderSuccess: function (){
-//        General.prevent_coin_disabling.restart()
-//        tabView.currentIndex = 1
-//    }
-
-    onSell_modeChanged: {
-        reset()
-    }
-
     function inCurrentPage() {
         return exchange.inCurrentPage()
                 && exchange.current_page === idx_exchange_trade
-    }
-
-    function reset() {
-        //API.app.trading_pg.multi_order_enabled = false
-        //multi_order_switch.checked = API.app.trading_pg.multi_order_enabled
     }
 
     readonly property var preffered_order: API.app.trading_pg.preffered_order
@@ -122,13 +113,12 @@ Item {
 
     // Trade
     function onOpened(ticker) {
+
         if (!General.initialized_orderbook_pair) {
             General.initialized_orderbook_pair = true
             API.app.trading_pg.set_current_orderbook(General.default_base,
                                                      General.default_rel)
         }
-
-        reset()
         setPair(true, ticker)
         app.pairChanged(base_ticker, rel_ticker)
     }
@@ -181,6 +171,6 @@ Item {
     }
 
     TradeViewHeader {
-        y: -20
+        y: -45
     }
 }

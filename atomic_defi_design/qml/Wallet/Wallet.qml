@@ -18,12 +18,12 @@ RowLayout {
 
     // Local
     function onClickedSwap() {
-        API.app.trading_pg.set_pair(true, api_wallet_page.ticker)
         dashboard.current_page = idx_dashboard_exchange
+        dashboard.current_ticker = api_wallet_page.ticker
+        API.app.trading_pg.set_pair(true, api_wallet_page.ticker)
     }
 
     function reset() {
-        main.reset()
         sidebar.reset()
     }
 
@@ -36,6 +36,8 @@ RowLayout {
     // Coins bar at left side
     Sidebar {
         id: sidebar
+        
+
     }
 
     // Right side, main

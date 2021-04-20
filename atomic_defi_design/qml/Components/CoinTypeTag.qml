@@ -16,6 +16,5 @@ AnimatedRectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         text: type
         font: theme.textType.overLine
-        color: theme.whiteblack
     }
 }

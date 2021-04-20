@@ -43,6 +43,7 @@
 //! Deps
 #include <sodium/core.h>
 #include <wally.hpp>
+#include <QSslSocket>
 
 #if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
@@ -136,7 +137,7 @@ static void
 signal_handler(int signal)
 {
     SPDLOG_ERROR("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2.service");
+    atomic_dex::kill_executable("mm2");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
     std::ifstream                 ifs("./backtrace.dump");
@@ -342,16 +343,6 @@ handle_settings(QSettings& settings)
 #else
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
 #endif
-
-    /*settings.beginGroup("KMD_BUSD-BEP20");
-    create_settings_functor("Spread", QVariant(2.0));
-    create_settings_functor("Disabled", QVariant(false));
-    settings.endGroup();
-
-    settings.beginGroup("BUSD-BEP20_KMD");
-    create_settings_functor("Spread", QVariant(2.0));
-    create_settings_functor("Disabled", QVariant(false));
-    settings.endGroup();*/
 }
 
 inline int
@@ -361,6 +352,7 @@ run_app(int argc, char** argv)
     SPDLOG_INFO("Installing qt_message_handler");
     qInstallMessageHandler(&qt_message_handler);
 #endif
+    SPDLOG_INFO("SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(), QSslSocket::sslLibraryVersionString().toStdString());
 
 #if defined(Q_OS_MACOS)
     fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
@@ -437,6 +429,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
     engine.rootContext()->setContextProperty("atomic_logo_path", QString::fromStdString((atomic_dex::utils::get_atomic_dex_data_folder() / "logo").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
+    engine.rootContext()->setContextProperty("dex_current_version", QString::fromStdString(atomic_dex::get_version()));
     engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
     // Load Qaterial.
 
@@ -480,13 +473,13 @@ run_app(int argc, char** argv)
 #endif
 
 
-/*#ifdef __APPLE__
+#ifdef __APPLE__
 #    if !defined(ATOMICDEX_HOT_RELOAD)
     QWindowList windows = QGuiApplication::allWindows();
     QWindow*    win     = windows.first();
     atomic_dex::mac_window_setup(win->winId());
 #    endif
-#endif*/
+#endif
     atomic_app.launch();
 
     res = app->exec();

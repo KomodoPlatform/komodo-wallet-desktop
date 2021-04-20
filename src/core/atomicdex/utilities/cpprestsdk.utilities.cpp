@@ -17,7 +17,6 @@
 //! Deps
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
-
 #if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
 #    if defined(__APPLE__)
@@ -25,6 +24,7 @@
 #    endif
 #    include <boost/stacktrace.hpp>
 #endif
+#include <cpprest/filestream.h>
 
 //! Project Headers
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"

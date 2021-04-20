@@ -192,6 +192,7 @@
         <file>atomic_defi_design/assets/images/coins/usdc.png</file>
         <file>atomic_defi_design/assets/images/coins/usdt.png</file>
         <file>atomic_defi_design/assets/images/coins/utk.png</file>
+        <file>atomic_defi_design/assets/images/coins/val.png</file>
         <file>atomic_defi_design/assets/images/coins/vgx.png</file>
         <file>atomic_defi_design/assets/images/coins/vote2021.png</file>
         <file>atomic_defi_design/assets/images/coins/vra.png</file>
@@ -325,6 +326,7 @@
         <file>atomic_defi_design/qml/Components/DexSubstractRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexSwitch.qml</file>
+        <file>atomic_defi_design/qml/Components/DexWindow.qml</file>
         <file>atomic_defi_design/qml/Components/DexText.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
@@ -364,8 +366,6 @@
         <file>atomic_defi_design/qml/Components/TitleText.qml</file>
         <file>atomic_defi_design/qml/Components/Toast.qml</file>
         <file>atomic_defi_design/qml/Components/ToastManager.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
-        <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>
         <file>atomic_defi_design/qml/Components/WalletNameField.qml</file>
@@ -374,6 +374,8 @@
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
+        <file>atomic_defi_design/qml/Dashboard/NewUpdateModal.qml</file>
+        <file>atomic_defi_design/qml/Dashboard/UpdateInvalidChecksum.qml</file>
         <file>atomic_defi_design/qml/Dashboard/NotificationsModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_defi_design/qml/Exchange/History/History.qml</file>
