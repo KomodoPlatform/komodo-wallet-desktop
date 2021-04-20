@@ -27,7 +27,7 @@ namespace atomic_dex
     constexpr int
     get_num_version() noexcept
     {
-        return 41;
+        return 42;
     }
 
     constexpr const char*
