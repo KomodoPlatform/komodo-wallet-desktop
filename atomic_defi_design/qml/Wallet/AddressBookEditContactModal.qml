@@ -101,6 +101,7 @@ BasicModal {
                 Layout.fillWidth: true
 
                 backgroundVisible: false
+                frameVisible: false
 
                 headerDelegate: RowLayout {
                     Layout.preferredWidth: styleData.column === 0 ? 90 :
@@ -205,7 +206,7 @@ BasicModal {
                 }
 
                 TableViewColumn { // Actions Column
-                    width: 60
+                    width: 80
                     title: qsTr("Actions")
 
                     resizable: false
