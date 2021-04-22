@@ -285,73 +285,73 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="141"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="142"/>
         <source>Type</source>
         <translation type="unfinished">Type</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="164"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="165"/>
         <source>Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="187"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="188"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="209"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="210"/>
         <source>Actions</source>
         <translation type="unfinished">Actions</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="275"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="277"/>
         <source>New Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="320"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="322"/>
         <source>Tags</source>
         <translation>Tags</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="346"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="348"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="363"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="365"/>
         <source>Confirm</source>
         <translation>Confirmer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="372"/>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="417"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="374"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="419"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="400"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="402"/>
         <source>The selected address belongs to a disabled coin, you need to enabled it before sending.</source>
         <translation>L&apos;adresse sélectionnée appartient à un actif désactivée, vous devez l&apos;activer avant l&apos;envoi.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="406"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="408"/>
         <source>Enable</source>
         <translation>Activer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="460"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="462"/>
         <source>Cannot send to this address</source>
         <translation>Impossible d&apos;envoyer à cette adresse</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="463"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="465"/>
         <source>Your balance is empty</source>
         <translation>Votre solde est vide</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="467"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="469"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
