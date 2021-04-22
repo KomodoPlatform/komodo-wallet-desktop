@@ -1340,6 +1340,25 @@
     "active": false,
     "currently_enabled": false
   },
+  "LCC": {
+    "coin": "LCC",
+    "name": "Litecoin Cash",
+    "coinpaprika_id": "lcc-litecoin-cash",
+    "coingecko_id": "litecoin-cash",
+    "electrum": [
+      {
+        "url": "188.166.117.139:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/lcc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "LTC": {
     "active": false,
     "coin": "LTC",
