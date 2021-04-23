@@ -305,7 +305,8 @@ namespace atomic_dex
         }
 
         //! Answer
-        auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp) {
+        auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
+        {
             const auto& settings_system     = m_system_manager.get_system<settings_page>();
             const auto& global_price_system = m_system_manager.get_system<global_price_service>();
             const auto& current_fiat        = settings_system.get_current_fiat().toStdString();
@@ -405,7 +406,8 @@ namespace atomic_dex
         batch.push_back(json_data);
 
         //! Answer
-        auto answer_functor = [this, is_claiming, is_max, amount](web::http::http_response resp) {
+        auto answer_functor = [this, is_claiming, is_max, amount](web::http::http_response resp)
+        {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
@@ -456,27 +458,29 @@ namespace atomic_dex
         batch.push_back(json_data);
         mm2_system.get_mm2_client()
             .async_rpc_batch_standalone(batch)
-            .then([this](web::http::http_response resp) {
-                std::string body = TO_STD_STR(resp.extract_string(true).get());
-                // SPDLOG_DEBUG("resp claiming: {}", body);
-                if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+            .then(
+                [this](web::http::http_response resp)
                 {
-                    auto           answers              = nlohmann::json::parse(body);
-                    auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
-                    nlohmann::json j_out                = nlohmann::json::object();
-                    j_out["withdraw_answer"]            = answers[0];
-                    j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
-                    auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
-                    j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
-                    this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
-                }
-                else
-                {
-                    auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
-                    this->set_rpc_claiming_data(error_json);
-                }
-                this->set_claiming_is_busy(false);
-            })
+                    std::string body = TO_STD_STR(resp.extract_string(true).get());
+                    // SPDLOG_DEBUG("resp claiming: {}", body);
+                    if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+                    {
+                        auto           answers              = nlohmann::json::parse(body);
+                        auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                        nlohmann::json j_out                = nlohmann::json::object();
+                        j_out["withdraw_answer"]            = answers[0];
+                        j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
+                        auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
+                        j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
+                        this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
+                    }
+                    else
+                    {
+                        auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                        this->set_rpc_claiming_data(error_json);
+                    }
+                    this->set_claiming_is_busy(false);
+                })
             .then(&handle_exception_pplx_task);
     }
 
@@ -491,12 +495,14 @@ namespace atomic_dex
 
         this->set_claiming_faucet_is_busy(true);
         faucet::api::claim(claim_request)
-            .then([this](web::http::http_response resp) {
-                auto claim_result = faucet::api::get_claim_result(resp);
-                this->set_rpc_claiming_faucet_data(
-                    QJsonObject({{"message", QString::fromStdString(claim_result.message)}, {"status", QString::fromStdString(claim_result.status)}}));
-                this->set_claiming_faucet_is_busy(false);
-            })
+            .then(
+                [this](web::http::http_response resp)
+                {
+                    auto claim_result = faucet::api::get_claim_result(resp);
+                    this->set_rpc_claiming_faucet_data(
+                        QJsonObject({{"message", QString::fromStdString(claim_result.message)}, {"status", QString::fromStdString(claim_result.status)}}));
+                    this->set_claiming_faucet_is_busy(false);
+                })
             .then(&handle_exception_pplx_task);
     }
 
@@ -507,21 +513,28 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::on_tx_fetch_finished(const tx_fetch_finished&)
+    wallet_page::on_tx_fetch_finished(const tx_fetch_finished& evt)
     {
-        std::error_code ec;
-        t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
-        SPDLOG_INFO("transaction size: {}", transactions.size());
-        if (m_transactions_mdl->rowCount() == 0)
+        if (!evt.with_error)
         {
-            //! insert all transactions
-            m_transactions_mdl->init_transactions(transactions);
+            std::error_code ec;
+            t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
+            SPDLOG_INFO("transaction size: {}", transactions.size());
+            if (m_transactions_mdl->rowCount() == 0)
+            {
+                //! insert all transactions
+                m_transactions_mdl->init_transactions(transactions);
+            }
+            else
+            {
+                //! Update tx (only unconfirmed) or insert (new tx)
+                SPDLOG_DEBUG("updating / insert tx");
+                m_transactions_mdl->update_or_insert_transactions(transactions);
+            }
         }
         else
         {
-            //! Update tx (only unconfirmed) or insert (new tx)
-            SPDLOG_DEBUG("updating / insert tx");
-            m_transactions_mdl->update_or_insert_transactions(transactions);
+            this->m_transactions_mdl->reset();
         }
         this->set_tx_fetching_busy(false);
     }
