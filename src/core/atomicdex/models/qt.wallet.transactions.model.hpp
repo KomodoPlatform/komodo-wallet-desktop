@@ -47,6 +47,7 @@ namespace atomic_dex
             AmountFiatRole,
             TxHashRole,
             FeesRole,
+            FeesAmountFiatRole,
             FromRole,
             ToRole,
             BlockheightRole,
