@@ -181,6 +181,22 @@
     "coingecko_id": "auroracoin",
     "electrum": [
       {
+        "url": "electrumx.aur.ewmcx.info:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "62.171.189.219:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "161.97.137.213:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "failover.aur.ewmcx.biz:50001",
+        "protocol": "TCP"
+      },
+      {
         "url": "lenoir.ecoincore.com:12343",
         "protocol": "SSL",
         "disable_cert_verification": false
