@@ -182,6 +182,7 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
+            SPDLOG_INFO("fee_ticker of ticker :{} is {}", ticker, coin_info.fees_ticker);
             obj["fee_ticker"]                         = QString::fromStdString(coin_info.fees_ticker);
             obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
             obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
@@ -348,7 +349,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, fee);
+                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
                 }
 
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
