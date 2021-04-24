@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/models/qt.wallet.transactions.model.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -29,7 +29,7 @@ namespace
 
 namespace atomic_dex
 {
-    transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent)  :
+    transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent) :
         QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new transactions_proxy_model(this))
     {
         this->m_model_proxy->setSourceModel(this);
@@ -49,6 +49,7 @@ namespace atomic_dex
             {AmountFiatRole, "amount_fiat"},
             {TxHashRole, "tx_hash"},
             {FeesRole, "fees"},
+            {FeesAmountFiatRole, "fees_amount_fiat"},
             {FromRole, "from"},
             {ToRole, "to"},
             {BlockheightRole, "blockheight"},
@@ -90,6 +91,8 @@ namespace atomic_dex
         case TxHashRole:
             break;
         case FeesRole:
+            break;
+        case FeesAmountFiatRole:
             break;
         case FromRole:
             break;
@@ -145,6 +148,14 @@ namespace atomic_dex
             return QString::fromStdString(item.tx_hash);
         case FeesRole:
             return QString::fromStdString(item.fees);
+        case FeesAmountFiatRole:
+        {
+            const auto& currency      = this->m_system_manager.get_system<settings_page>().get_cfg().current_currency;
+            const auto& price_service = this->m_system_manager.get_system<global_price_service>();
+            const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
+            const auto& fee_ticker    = mm2_system.get_coin_info(mm2_system.get_current_ticker()).fees_ticker;
+            return QString::fromStdString(price_service.get_price_as_currency_from_amount(currency, fee_ticker, item.fees));
+        }
         case FromRole:
         {
             QStringList out;
@@ -275,13 +286,13 @@ namespace atomic_dex
     }
 
     int
-    transactions_model::get_length() const 
+    transactions_model::get_length() const
     {
         return rowCount();
     }
 
     transactions_proxy_model*
-    transactions_model::get_transactions_proxy() const 
+    transactions_model::get_transactions_proxy() const
     {
         return m_model_proxy;
     }

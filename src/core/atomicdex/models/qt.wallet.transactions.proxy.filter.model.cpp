@@ -46,6 +46,8 @@ namespace atomic_dex
             break;
         case transactions_model::FeesRole:
             break;
+        case transactions_model::FeesAmountFiatRole:
+            break;
         case transactions_model::FromRole:
             break;
         case transactions_model::ToRole:

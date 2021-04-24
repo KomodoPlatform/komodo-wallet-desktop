@@ -181,6 +181,22 @@
     "coingecko_id": "auroracoin",
     "electrum": [
       {
+        "url": "electrumx.aur.ewmcx.info:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "62.171.189.219:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "161.97.137.213:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "failover.aur.ewmcx.biz:50001",
+        "protocol": "TCP"
+      },
+      {
         "url": "lenoir.ecoincore.com:12343",
         "protocol": "SSL",
         "disable_cert_verification": false
@@ -1337,6 +1353,25 @@
       "https://koin.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
+  "LCC": {
+    "coin": "LCC",
+    "name": "Litecoin Cash",
+    "coinpaprika_id": "lcc-litecoin-cash",
+    "coingecko_id": "litecoin-cash",
+    "electrum": [
+      {
+        "url": "188.166.117.139:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/lcc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   },

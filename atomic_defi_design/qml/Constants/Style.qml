@@ -311,6 +311,7 @@ QtObject {
                                           "COQUI": "#79A541",
                                           "CRYPTO": "#F58736",
                                           "LABS": "#C1F6E1",
+                                          "LCC": "#068210",
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
                                           "NMC": "#186C9D",

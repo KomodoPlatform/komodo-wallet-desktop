@@ -1,12 +1,5 @@
 {
   "notification_enabled": true,
-  "lang": "en",
-  "available_lang": [
-    "en",
-    "fr",
-    "tr",
-    "ru"
-  ],
   "current_currency": "USD",
   "current_fiat": "USD",
   "current_currency_sign": "$",

@@ -73,22 +73,19 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
-    settings_page::get_empty_string() const
-    {
-        return m_empty_string;
-    }
-
-    QString
     settings_page::get_current_lang() const
     {
-        return QString::fromStdString(m_config.current_lang);
+        QSettings&    settings          = entity_registry_.ctx<QSettings>();
+        return settings.value("CurrentLang").toString();
     }
 
     void
     atomic_dex::settings_page::set_current_lang(QString new_lang)
     {
         const std::string new_lang_std = new_lang.toStdString();
-        change_lang(m_config, new_lang_std);
+        QSettings&    settings          = entity_registry_.ctx<QSettings>();
+        settings.setValue("CurrentLang", new_lang);
+        settings.sync();
 
         auto get_locale = [](const std::string& current_lang)
         {
@@ -112,14 +109,13 @@ namespace atomic_dex
         };
 
         SPDLOG_INFO("Locale before parsing AtomicDEX settings: {}", QLocale().name().toStdString());
-        QLocale::setDefault(get_locale(m_config.current_lang));
+        QLocale::setDefault(get_locale(new_lang.toStdString()));
         SPDLOG_INFO("Locale after parsing AtomicDEX settings: {}", QLocale().name().toStdString());
         [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/atomic_defi_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
         this->m_qml_engine->retranslate();
         emit onLangChanged();
-        // emit langChanged();
     }
 
     bool
@@ -210,7 +206,7 @@ namespace atomic_dex
     void
     settings_page::init_lang()
     {
-        set_current_lang(QString::fromStdString(m_config.current_lang));
+        set_current_lang(get_current_lang());
     }
 } // namespace atomic_dex
 
@@ -220,10 +216,8 @@ namespace atomic_dex
     QStringList
     settings_page::get_available_langs() const
     {
-        QStringList out;
-        out.reserve(m_config.available_lang.size());
-        for (auto&& cur_lang: m_config.available_lang) { out.push_back(QString::fromStdString(cur_lang)); }
-        return out;
+        QSettings&    settings          = entity_registry_.ctx<QSettings>();
+        return settings.value("AvailableLang").toStringList();
     }
 
     QStringList
