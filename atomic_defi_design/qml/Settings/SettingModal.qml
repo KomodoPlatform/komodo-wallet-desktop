@@ -323,6 +323,32 @@ Qaterial.Dialog {
                                 sourceComponent: CamouflagePasswordModal {}
                             }
 
+                            // Enabled 2FA option. (Disabled on Linux since the feature is not available on this platform yet)
+                            RowLayout {
+                                enabled: API.qt_utilities.get_current_os() !== "LINUX" // Disable for Linux.
+                                visible: enabled
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.fillWidth: true
+                                    Layout.alignment: Qt.AlignVCenter
+                                    text: qsTr("Ask system's password before sending coins ? (2FA)")
+                                }
+                                DexSwitch {
+                                    implicitHeight: 37
+                                    checked: parseInt(atomic_settings2.value("2FA")) === 1
+                                    onCheckedChanged: {
+                                        if (checked)
+                                            atomic_settings2.setValue("2FA", 1)
+                                        else
+                                            atomic_settings2.setValue("2FA", 0)
+                                        atomic_settings2.sync()
+                                    }
+                                    Component.onCompleted: console.log("AAAH: %1".arg(checked))
+                                }
+                            }
+
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
