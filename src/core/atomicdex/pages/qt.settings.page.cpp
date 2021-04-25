@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QLocale>
+#include <QSettings>
 
 //! PCH
 #include "atomicdex/pch.hpp"
