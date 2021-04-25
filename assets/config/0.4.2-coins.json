@@ -861,7 +861,7 @@
     "electrum": [
       {
         "url": "electrumx.dgc.ewmcx.org:50001",
-        "protocol": "TCP",
+        "protocol": "TCP"
       },
       {
         "url": "failover.dgc.ewmcx.biz:50002",
