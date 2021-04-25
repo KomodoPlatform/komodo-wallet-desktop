@@ -144,15 +144,4 @@ namespace atomic_dex
     {
         return QString::fromStdString(atomic_dex::utils::retrieve_main_ticker(ticker.toStdString()));
     }
-    
-    QString qt_utilities::get_current_os() const noexcept
-    {
-#ifdef _WIN32
-        return "WINDOWS";
-#elif __linux__
-        return "LINUX";
-#elif __APPLE__
-        return "MACOS";
-#endif
-    }
 } // namespace atomic_dex

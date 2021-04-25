@@ -95,11 +95,5 @@ namespace atomic_dex
          * @example -> retrieve_main_ticker("BUSD") -> BUSD retrieve_main_ticker("BUSD-ERC20") -> BUSD
          */
         Q_INVOKABLE QString retrieve_main_ticker(const QString& ticker) const;
-        
-        /*
-         * @brief  Returns the current operating system running the program.
-         * @return Windows -> returns "WINDOWS" | Linux -> returns "LINUX" | MacOS -> returns "MACOS"
-         */
-        Q_INVOKABLE QString get_current_os() const noexcept;
     };
 } // namespace atomic_dex
