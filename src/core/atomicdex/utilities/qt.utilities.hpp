@@ -98,7 +98,7 @@ namespace atomic_dex
         
         /*
          * @brief  Returns the current operating system running the program.
-         * @return Windows -> returns "WIN" | Linux -> returns "LINUX" | MacOS -> returns "MACOS"
+         * @return Windows -> returns "WINDOWS" | Linux -> returns "LINUX" | MacOS -> returns "MACOS"
          */
         Q_INVOKABLE QString get_current_os() const noexcept;
     };
