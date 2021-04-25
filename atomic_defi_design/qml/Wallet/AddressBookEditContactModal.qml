@@ -101,6 +101,7 @@ BasicModal {
                 Layout.fillWidth: true
 
                 backgroundVisible: false
+                frameVisible: false
 
                 headerDelegate: RowLayout {
                     Layout.preferredWidth: styleData.column === 0 ? 90 :
@@ -205,7 +206,7 @@ BasicModal {
                 }
 
                 TableViewColumn { // Actions Column
-                    width: 60
+                    width: 80
                     title: qsTr("Actions")
 
                     resizable: false
@@ -220,8 +221,12 @@ BasicModal {
 
                             outlined: false
 
-                            icon.source: Qaterial.Icons.leadPencil
-                            icon.color: Style.colorGreen2
+                            Qaterial.ColorIcon {
+                                anchors.centerIn: parent
+                                source:  Qaterial.Icons.leadPencil
+                                color: theme.foregroundColor
+                                opacity: .8
+                            }
 
                             onClicked: {
                                 address_edition_modal.walletType = model.address_type
@@ -233,13 +238,15 @@ BasicModal {
 
                         Qaterial.OutlineButton { // Delete Button
                             implicitHeight: 35
-                            implicitWidth: 35
-
+                            implicitWidth: 35 
                             outlined: false
 
-                            icon.source: Qaterial.Icons.trashCan
-                            icon.color: Style.colorRed
-
+                            Qaterial.ColorIcon {
+                                anchors.centerIn: parent
+                                source:  Qaterial.Icons.trashCan
+                                color: theme.redColor
+                                opacity: .8
+                            }
                             onClicked: contactModel.remove_address_entry(model.address_type, model.address_key)
                         }
 
@@ -248,9 +255,12 @@ BasicModal {
                             implicitWidth: 35
 
                             outlined: false
-
-                            icon.source: Qaterial.Icons.contentCopy
-                            icon.color: Style.colorWhite1
+                            Qaterial.ColorIcon {
+                                anchors.centerIn: parent
+                                source:  Qaterial.Icons.contentCopy
+                                color: theme.foregroundColor
+                                opacity: .8
+                            }
 
                             onClicked: API.qt_utilities.copy_text_to_clipboard(model.address_value)
                         }
@@ -260,9 +270,12 @@ BasicModal {
                             implicitWidth: 35
 
                             outlined: false
-
-                            icon.source: Qaterial.Icons.send
-                            icon.color: Style.colorWhite1
+                            Qaterial.ColorIcon {
+                                anchors.centerIn: parent
+                                source:  Qaterial.Icons.send
+                                color: theme.foregroundColor
+                                opacity: .8
+                            }
 
                             onClicked: trySend(model.address_type, model.address_value)
                         }
