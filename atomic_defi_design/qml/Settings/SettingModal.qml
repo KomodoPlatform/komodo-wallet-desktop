@@ -345,7 +345,6 @@ Qaterial.Dialog {
                                             atomic_settings2.setValue("2FA", 0)
                                         atomic_settings2.sync()
                                     }
-                                    Component.onCompleted: console.log("AAAH: %1".arg(checked))
                                 }
                             }
 
