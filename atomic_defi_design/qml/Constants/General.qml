@@ -1195,6 +1195,7 @@ QtObject {
                                                 "SRM/BTC": "BINANCE:SRMBTC",
                                                 "SRM/USDT": "BINANCE:SRMUSDT",
                                                 "SRM/BUSD": "BINANCE:SRMBUSD",
+                                                "STFIRO/ETH": "SUSHISWAP:STFIROWETH",
                                                 "STORJ/BTC": "BINANCE:STORJBTC",
                                                 "STORJ/ETH": "KRAKEN:STORJETH",
                                                 "STORJ/USDT": "BINANCE:STORJUSD",

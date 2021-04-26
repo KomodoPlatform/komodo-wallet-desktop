@@ -1145,6 +1145,63 @@
       "active": false,
       "currently_enabled": false
   },
+  "FIRO": {
+      "coin": "FIRO",
+      "name": "Firo",
+      "coinpaprika_id": "firo-firo",
+      "coingecko_id": "zcoin",
+      "electrum": [
+        {
+          "url": "electrumx01.firo.org:50001"
+        },
+        {
+          "url": "electrumx02.firo.org:50001"
+        },
+        {
+          "url": "electrumx03.firo.org:50001"
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.firo.org/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
+  "FIRO-BEP20": {
+      "coin": "FIRO-BEP20",
+      "name": "Firo",
+      "coinpaprika_id": "firo-firo",
+      "coingecko_id": "zcoin",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "STFIRO": {
+      "coin": "STFIRO",
+      "name": "StakedFIRO",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "stakehound",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "FTC": {
     "coin": "FTC",
     "name": "Feathercoin",
@@ -2672,29 +2729,6 @@
       "https://wlc21.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
-    "active": false,
-    "currently_enabled": false
-  },
-  "FIRO": {
-    "coin": "FIRO",
-    "name": "Firo",
-    "coinpaprika_id": "firo-firo",
-    "coingecko_id": "zcoin",
-    "electrum": [
-      {
-        "url": "electrumx01.firo.org:50001"
-      },
-      {
-        "url": "electrumx02.firo.org:50001"
-      },
-      {
-        "url": "electrumx03.firo.org:50001"
-      }
-    ],
-    "explorer_url": [
-      "https://explorer.firo.org/"
-    ],
-    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   },

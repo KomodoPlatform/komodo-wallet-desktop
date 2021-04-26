@@ -388,6 +388,7 @@ QtObject {
                                           "SNT": "#596BED",
                                           "SNX": "#00D1FF",
                                           "SOULJA": "#8F734A",
+                                          "STFIRO": "#00D4F7",
                                           "STORJ": "#2683FF",
                                           "SXP": "#FD5F3B",
                                           "SYS": "#0084C7",
