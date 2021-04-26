@@ -258,6 +258,10 @@ namespace atomic_dex
                                : false;
         t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50 cur_min_trade  = safe_float(get_min_trade_vol().toStdString());
+        t_float_50 delta          = (cur_min_trade * 100) / safe_float(m_max_volume.toStdString());
+        t_float_50 delta_cur      = (cur_min_trade * 100) / safe_float(m_volume.toStdString());
+        SPDLOG_INFO("delta min_vol compare to max volume is: {}", utils::format_float(delta));
+        SPDLOG_INFO("delta min_vol compare to current volume is: {}", utils::format_float(delta_cur));
 
         t_sell_request req{
             .base             = base.toStdString(),
@@ -1072,8 +1076,8 @@ namespace atomic_dex
         const std::string base                     = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
         t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
         const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
-        //const auto&       base_min_taker_vol        = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        const auto&       cur_min_taker_vol        = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
+        // const auto&       base_min_taker_vol        = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
+        const auto& cur_min_taker_vol = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
 
         if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
         {
@@ -1089,7 +1093,7 @@ namespace atomic_dex
         }
         else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
         {
-            //SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
+            // SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
             current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
         }
         /*else if (safe_float(get_rel_amount().toStdString()) < safe_float(m_market_mode == Sell ? rel_min_taker_vol : base_min_taker_vol))
