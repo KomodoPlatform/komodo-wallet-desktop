@@ -1341,4 +1341,10 @@ namespace atomic_dex
             SPDLOG_WARN("{}/{} doesn't have any trading settings - skipping", left.toStdString(), right.toStdString());
         }
     }
+
+    std::optional<nlohmann::json>
+    trading_page::get_raw_preffered_order() const
+    {
+        return m_preffered_order;
+    }
 } // namespace atomic_dex
