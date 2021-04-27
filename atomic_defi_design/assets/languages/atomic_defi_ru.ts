@@ -2173,7 +2173,7 @@
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="166"/>
         <source>Show only coins with balance</source>
-        <translation>Показывать только монеты с не нулевым балансом</translation>
+        <translation>Показывать только монеты с балансом</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="218"/>
@@ -2754,7 +2754,6 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="291"/>
         <source></source>
-        <translatorcomment>Настройки</translatorcomment>
         <translation></translation>
     </message>
     <message>
@@ -2771,7 +2770,7 @@
         <location filename="../../qml/Settings/SettingModal.qml" line="336"/>
         <location filename="../../qml/Settings/SettingModal.qml" line="396"/>
         <source>Show</source>
-        <translation>Прочитать</translation>
+        <translation>Показать</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="349"/>
