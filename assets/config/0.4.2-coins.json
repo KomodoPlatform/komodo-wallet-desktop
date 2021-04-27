@@ -1856,23 +1856,6 @@
       "active": false,
       "currently_enabled": false
   },
-  "TUSD-ERC20": {
-    "active": false,
-    "coin": "TUSD-ERC20",
-    "coingecko_id": "true-usd",
-    "coinpaprika_id": "tusd-trueusd",
-    "currently_enabled": false,
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "name": "True USD"
-  },
   "KMD": {
     "coin": "KMD",
     "name": "Komodo",
@@ -2683,6 +2666,40 @@
         "https://bscscan.com/"
       ],
       "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-BEP20": {
+      "coin": "TUSD-BEP20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-ERC20": {
+      "coin": "TUSD-ERC20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
       "active": false,
       "currently_enabled": false
   },
