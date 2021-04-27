@@ -74,6 +74,40 @@
       "active": false,
       "currently_enabled": false
   },
+  "ANKR-BEP20": {
+      "coin": "ANKR-BEP20",
+      "name": "Ankr",
+      "coinpaprika_id": "ankr-ankr-network",
+      "coingecko_id": "ankr",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ANKR-ERC20": {
+      "coin": "ANKR-ERC20",
+      "name": "Ankr",
+      "coinpaprika_id": "ankr-ankr-network",
+      "coingecko_id": "ankr",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BNB": {
       "coin": "BNB",
       "name": "Binance Coin",
