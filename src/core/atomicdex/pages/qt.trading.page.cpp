@@ -449,8 +449,10 @@ namespace atomic_dex
                     {
                         const auto base_max_taker_vol = safe_float(wrapper->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
                         const auto rel_max_taker_vol  = safe_float(wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                        t_float_50 min_vol            = safe_float(m_minimal_trading_amount.toStdString());
                         auto       adjust_functor     = [this, wrapper]() { this->set_min_trade_vol(wrapper->get_current_min_taker_vol()); };
-                        if ((m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0) || (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0))
+                        if ((m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0 && min_vol <= 0) ||
+                            (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0 && min_vol <= 0))
                         {
                             adjust_functor();
                         }
@@ -633,7 +635,7 @@ namespace atomic_dex
                 volume = "0";
             }
             m_volume = std::move(volume);
-            // SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
+            SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
             if (m_current_trading_mode != TradingMode::Simple)
             {
                 this->determine_total_amount();
@@ -655,7 +657,7 @@ namespace atomic_dex
         if (m_max_volume != max_volume)
         {
             m_max_volume = std::move(max_volume);
-            // SPDLOG_DEBUG("max_volume is [{}]", m_max_volume.toStdString());
+            SPDLOG_DEBUG("max_volume is [{}]", m_max_volume.toStdString());
             emit maxVolumeChanged();
         }
     }
@@ -1327,10 +1329,7 @@ namespace atomic_dex
                 (m_market_mode == MarketMode::Sell) ? t_float_50(cex_price + (cex_price * percent)) : t_float_50(cex_price - (cex_price * percent));
 
             this->set_price(QString::fromStdString(utils::format_float(target_price)));
-            if (m_market_mode == MarketMode::Buy)
-            {
-                this->determine_max_volume();
-            }
+            this->determine_max_volume();
             this->set_volume(get_max_volume());
             t_float_50 volume     = safe_float(get_volume().toStdString());
             t_float_50 min_volume = volume * min_volume_percent;
