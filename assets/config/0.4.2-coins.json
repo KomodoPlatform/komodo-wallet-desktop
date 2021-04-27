@@ -2652,6 +2652,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "TRX-BEP20": {
+      "coin": "TRX-BEP20",
+      "name": "TRON",
+      "coinpaprika_id": "trx-tron",
+      "coingecko_id": "tron",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "VAL": {
     "coin": "VAL",
     "name": "Validity",
@@ -3036,22 +3053,6 @@
       "https://blockstream.info/testnet/"
     ],
     "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
-  },
-  "ETHR": {
-    "coin": "ETHR",
-    "name": "ETHR (testnet)",
-    "is_testnet": true,
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "http://eth-ropsten.cipig.net:8645"
-    ],
-    "explorer_url": [
-      "https://ropsten.etherscan.io/"
-    ],
-    "type": "ERC-20",
     "active": false,
     "currently_enabled": false
   },

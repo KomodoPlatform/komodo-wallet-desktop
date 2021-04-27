@@ -84,7 +84,6 @@
         <file>atomic_defi_design/assets/images/coins/erc-20.png</file>
         <file>atomic_defi_design/assets/images/coins/etc.png</file>
         <file>atomic_defi_design/assets/images/coins/eth.png</file>
-        <file>atomic_defi_design/assets/images/coins/ethr.png</file>
         <file>atomic_defi_design/assets/images/coins/eurs.png</file>
         <file>atomic_defi_design/assets/images/coins/fet.png</file>
         <file>atomic_defi_design/assets/images/coins/fil.png</file>
@@ -183,6 +182,7 @@
         <file>atomic_defi_design/assets/images/coins/tqtum.png</file>
         <file>atomic_defi_design/assets/images/coins/trac.png</file>
         <file>atomic_defi_design/assets/images/coins/trc.png</file>
+        <file>atomic_defi_design/assets/images/coins/trx.png</file>
         <file>atomic_defi_design/assets/images/coins/tsl.png</file>
         <file>atomic_defi_design/assets/images/coins/ttt.png</file>
         <file>atomic_defi_design/assets/images/coins/tusd.png</file>

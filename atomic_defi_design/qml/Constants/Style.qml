@@ -394,6 +394,7 @@ QtObject {
                                           "SXP": "#FD5F3B",
                                           "SYS": "#0084C7",
                                           "TRC": "#096432",
+                                          "TRX": "#F30031",
                                           "TSL": "#64B082",
                                           "UIS": "#008DCD",
                                           "VAL": "#1EEC84",
