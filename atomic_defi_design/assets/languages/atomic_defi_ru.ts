@@ -133,7 +133,7 @@
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="318"/>
         <source>WARNING: Application will restart immidiately to apply the changes!</source>
-        <translation>ПРЕДУПРЕЖДЕНИЕ: Приложение будет перезапущено немедленно для применения изменений!</translation>
+        <translation>ПРЕДУПРЕЖДЕНИЕ: Приложение будет немедленно перезапущено для применения изменений!</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="342"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="33"/>
         <source>Edit address entry</source>
-        <translation>Внести изменения в адресс</translation>
+        <translation>Внести изменения в адрес</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="188"/>
         <source>Address</source>
-        <translation>Адресс</translation>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="210"/>
@@ -307,7 +307,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="277"/>
         <source>New Address</source>
-        <translation>Новый Адресс</translation>
+        <translation>Новый Адрес</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="322"/>
@@ -523,7 +523,7 @@
     <message>
         <location filename="../../qml/Components/CexInfoTrigger.qml" line="6"/>
         <source>Price oracle powered by Band Protocol</source>
-        <translation>Цена базируеться на данных полученных от Band Protocol</translation>
+        <translation>Ценовой оракул на базе Band Protocol</translation>
     </message>
 </context>
 <context>
@@ -1095,7 +1095,7 @@
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="38"/>
         <source>Add a custom asset to the list</source>
-        <translation>Добавить кастомный актив</translation>
+        <translation>Добавить пользовательский ассет в список</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="125"/>
@@ -1128,7 +1128,7 @@
     <message>
         <location filename="../../qml/Components/EulaModal.qml" line="20"/>
         <source>Disclaimer &amp; Terms of Service</source>
-        <translation>Дисклеймер и условия пользования</translation>
+        <translation>Дисклеймер и условия использования</translation>
     </message>
     <message>
         <location filename="../../qml/Components/EulaModal.qml" line="48"/>
@@ -1322,7 +1322,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="421"/>
         <source>Minimum Trading Amount</source>
-        <translation>Минимальный объем торгов</translation>
+        <translation>Минимальный объем сделки</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="431"/>
@@ -1333,7 +1333,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="440"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
-        <translation>%1 Баланс менее чем стоимость комиссий: %2 %3</translation>
+        <translation>%1 баланс менее чем размер комиссий: %2 %3</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="442"/>
@@ -1367,22 +1367,22 @@
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="27"/>
         <source>You get</source>
-        <translation>Получить</translation>
+        <translation>Вы получите</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="27"/>
         <source>You send</source>
-        <translation>Отправить</translation>
+        <translation>Вы отправите</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="37"/>
         <source>Fiat Price</source>
-        <translation>Цена за Фиат</translation>
+        <translation>фиатная цена</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="52"/>
         <source>CEX rate</source>
-        <translation>Цена на Централизованных Биржах</translation>
+        <translation>Цена на CEX</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderBook/Header.qml" line="28"/>
@@ -1444,17 +1444,17 @@
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="18"/>
         <source>Join our Discord server</source>
-        <translation>Присоединяйтесь к нашему Дискорд серверу</translation>
+        <translation>Присоединяйтесь к нашему Discord серверу</translation>
     </message>
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="27"/>
         <source>Follow us on Twitter</source>
-        <translation>Подписывайтесь на наш Твиттер</translation>
+        <translation>Подписывайтесь на наш Twitter</translation>
     </message>
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="36"/>
         <source>Go to Support Guides</source>
-        <translation>Саппорт гайды</translation>
+        <translation>Саппорт руководство</translation>
     </message>
 </context>
 <context>
@@ -1462,7 +1462,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/ListDelegate.qml" line="71"/>
         <source> %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; -&lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation> %1 не подключен - хотите ли вы его включить чтобы иметь возможность видеть %2 лучших ордеров ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Да&lt;/a&gt; -&lt;a href=&apos;#no&apos;&gt;Нет&lt;/a&gt;</translation>
+        <translation> %1 не включен - хотите ли вы его включить чтобы иметь возможность выбирать среди %2 лучших ордеров ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Да&lt;/a&gt; -&lt;a href=&apos;#no&apos;&gt;Нет&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderBook/ListDelegate.qml" line="50"/>
@@ -1506,7 +1506,7 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="89"/>
         <source>Wallet Balance</source>
-        <translation>Баланс</translation>
+        <translation>Баланс кошелька</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="116"/>
@@ -1516,7 +1516,7 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="134"/>
         <source>Change 24h</source>
-        <translation>Изменение 24ч</translation>
+        <translation>Изменение за 24ч</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="156"/>
@@ -1556,7 +1556,7 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="412"/>
         <source>There is no chart data for this ticker yet</source>
-        <translation>Для данного актива пока еще нету графиков данных</translation>
+        <translation>Для данного актива пока еще нет графиков данных</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="437"/>
@@ -1594,12 +1594,12 @@
     <message>
         <location filename="../../qml/Components/MinTradeModal.qml" line="13"/>
         <source>Minimum Trading Amount</source>
-        <translation>Минимальный торговый объем ордера</translation>
+        <translation>Минимальный торговый объем</translation>
     </message>
     <message>
         <location filename="../../qml/Components/MinTradeModal.qml" line="19"/>
         <source>the minimum amount of %1 coin available for the order; the min_volume must be greater than or equal to %2; it must be also less or equal than volume param; default is %3</source>
-        <translation>Минимальное кол-во %1 монеты доступное для торгов; минимальный объем должен быть больше или равен %2; Также он должен быть менее или равен параметру объема; Дефолтное значение %3</translation>
+        <translation>Минимальное кол-во %1 монеты доступное для торгов; минимальный объем должен быть больше или равен %2; Также он должен быть меньше или равен объему; Значение по умолчанию %3</translation>
     </message>
 </context>
 <context>
@@ -1638,7 +1638,7 @@
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="72"/>
         <source>Searching new updates...</source>
-        <translation>Ищем новое обновление...</translation>
+        <translation>Ищем обновление...</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="76"/>
@@ -1658,7 +1658,7 @@
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="94"/>
         <source>New update detected !</source>
-        <translation>Обнаружено новое обновление !</translation>
+        <translation>Обнаружено обновление !</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="100"/>
@@ -2067,12 +2067,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="202"/>
         <source>From</source>
-        <translation>Отправитель</translation>
+        <translation>От</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="213"/>
         <source>To</source>
-        <translation>Получатель</translation>
+        <translation>Кому</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="120"/>
@@ -2255,7 +2255,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="545"/>
         <source>Order Selected</source>
-        <translation>Выбранный Ордер</translation>
+        <translation>Ордер выбран</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="594"/>
@@ -2576,7 +2576,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="20"/>
         <source>Select a contact with an %1 address</source>
-        <translation>Выберете контакт с %1 адресом</translation>
+        <translation>Выберите контакт с %1 адресом</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="24"/>
@@ -2591,7 +2591,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="99"/>
         <source>1 address</source>
-        <translation>1 адресс</translation>
+        <translation>1 адрес</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="113"/>
@@ -2602,7 +2602,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="131"/>
         <source>Choose an %1 address of %2</source>
-        <translation>Выбрать %1 адресс из %2</translation>
+        <translation>Выбрать %1 адрес из %2</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="141"/>
@@ -2612,7 +2612,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="146"/>
         <source>Address</source>
-        <translation>Адресс</translation>
+        <translation>Адрес</translation>
     </message>
 </context>
 <context>
@@ -2734,7 +2734,7 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="429"/>
         <source>MM2 version</source>
-        <translation>Версия мм2</translation>
+        <translation>Версия MM2</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="443"/>
@@ -2780,7 +2780,7 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="352"/>
         <source>Open</source>
-        <translation>Установить</translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="370"/>
@@ -2808,7 +2808,7 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="129"/>
         <source>Enable Desktop Notifications</source>
-        <translation>Включить уведомления на рабочем столе</translation>
+        <translation>Включить уведомления для рабочего стола</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="139"/>
@@ -2853,7 +2853,7 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="253"/>
         <source>mm2 version</source>
-        <translation>версия mm2</translation>
+        <translation>версия MM2</translation>
     </message>
 </context>
 <context>
@@ -2966,19 +2966,19 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="116"/>
         <source>No! %1 is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets.</source>
-        <translation>Нет! %1 не хранит вашу персональную информацию, включая ваши приватные ключи, seed фразы, или PIN. Эти данные храняться только на юзер девайсе и никогда не отправляеться ни в какие сторонние сервисы. Ваши активы всегда в вашем и только вашем распоряжении.</translation>
+        <translation>Нет! %1 не хранит персональную информацию, включая приватные ключи, seed фразы, или PIN. Эти данные хранятся только у вас и никогда не покидают ваше устройство. Ваши активы всегда в вашем и только вашем распоряжении.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="120"/>
         <source>How is trading on %1 different from trading on other DEXs?</source>
-        <translation>На сколько отличаеться торговля на %1 от других децентрализованных бирж?</translation>
+        <translation>Как торговля на %1 отличается от других торговли на других децентрализованных биржах?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="121"/>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
 %1 enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
-        <translation>Другие Децентрализованные обменники обычно позволяют торговать активами которые базируються лишь на единственном блокчейне, Используют прокси-токены, и разрешают размещать лишь один ордер с вашего баланса.
+        <translation>Другие Децентрализованные биржи обычно позволяют торговать активами которые базируются лишь на единственном блокчейне, используют прокси - токены и разрешают размещать только один ордер одними и теми же средств.
 
 %1 же позволяет вам торговать нативно через две разные блокчейн сети без прокси токенов. Также вы можете размещать несколько ордеов одним и тем же балансом. Например вы можете продать 0.1 BTC за KMD, QTUM или VRSC –  первый сматченный ордер автоматически отменит остальные.</translation>
     </message>
@@ -2990,7 +2990,7 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="148"/>
         <source>Yes! %1 offers support through the &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord server&lt;/a&gt;. The team and the community are always happy to help!</source>
-        <translation>Да! %1 поддерживает пользователей с помощью нашего &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Дискорд сервера&lt;/a&gt;.Команда и комьюнити всегда готовы помочь!</translation>
+        <translation>Да! %1 поддерживает пользователей с помощью &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord сервера&lt;/a&gt;.Команда и комьюнити всегда готовы помочь!</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="152"/>
@@ -3005,7 +3005,7 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="157"/>
         <source>Is it possible to develop my own white-label exchange on %1?</source>
-        <translation>Возможно ли разработать децентрализованный обменник с моим брендом на %1?</translation>
+        <translation>Возможно ли разработать децентрализованную биржу с моим брендом на %1?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="158"/>
@@ -3015,12 +3015,12 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="162"/>
         <source>Which devices can I use %1 on?</source>
-        <translation>На каких девайсах я могу использовать %1 ?</translation>
+        <translation>На каких устройствах я могу использовать %1 ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="163"/>
         <source>%1 is available for mobile on both &lt;a href=&quot;https://%1.io/&quot;&gt;Android and iPhone, and for desktop on Windows, Mac, and Linux&lt;/a&gt; operating systems.</source>
-        <translation>%1 доступен для мобильных устройств на &lt;a href=&quot;https://%1.io/&quot;&gt;Android и iPhone, а также для десктопных операционных систем Windows, Mac, and Linux&lt;/a&gt; operating systems.</translation>
+        <translation>%1 доступен для мобильных устройств на &lt;a href=&quot;https://%1.io/&quot;&gt;Android и iPhone, а также для десктопных операционных систем Windows, Mac, and Linux&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="133"/>
@@ -3062,11 +3062,10 @@
 Network fees can vary greatly depending on your selected trading pair.</source>
         <translation>Две категории комиссий каждый трейдер должен иметь ввиду когда использует %1.
 
-1. %1 комиссия это примерно 0.13% (1/777 от объема торга но не менее чем 0.0001) в качестве торговой комиссия за тейкер ордеры, а мейкер ордеры в данном случае не платят комиссию.
-2. Но и мейкер и тейкер в любом случае должны себе позволить оплатить комиссиии сети за обычный транзакции во время проведения Атомарного Свопа.
+1. %1 комиссия это примерно 0.13% (1/777 от объема торга но не менее чем 0.0001) в качестве торговой комиссия за тейкер ордеры, а мейкер ордеры в данном случае комиссию не платят.
+2. Но и мейкер и тейкер в любом случае должны иметь возможность оплатить комиссиии сети за обычные транзакции во время проведения Атомарного Свопа.
 
-Комиссии сети могут очень сильно варироваться в зависимости от выбранной торговой пары.
-Network fees can vary greatly depending on your selected trading pair.</translation>
+Комиссии сети могут очень сильно варьироваться в зависимости от выбранной торговой пары.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="147"/>
@@ -3117,7 +3116,7 @@ Network fees can vary greatly depending on your selected trading pair.</translat
     <message>
         <location filename="../../qml/Portfolio/TableDex.qml" line="83"/>
         <source>Change 24h</source>
-        <translation>Изменение 24ч</translation>
+        <translation>Изменение за 24ч</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/TableDex.qml" line="108"/>
@@ -3164,12 +3163,12 @@ Network fees can vary greatly depending on your selected trading pair.</translat
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="44"/>
         <source>Trading Mode - Multi Ordering</source>
-        <translation>Торговый Мод - Мульти Ордер</translation>
+        <translation>Торговый режим - Мульти Ордер</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="44"/>
         <source>Trading Mode - Single Order</source>
-        <translation>Торговый Мод - Единичный ордер</translation>
+        <translation>Торговый режим - Единичный ордер</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="53"/>
@@ -3192,7 +3191,7 @@ Network fees can vary greatly depending on your selected trading pair.</translat
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="28"/>
         <source>Amount</source>
-        <translation>Общая сумма транзакции</translation>
+        <translation>Сумма</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="38"/>
@@ -3217,17 +3216,17 @@ Network fees can vary greatly depending on your selected trading pair.</translat
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="63"/>
         <source>Confirmations</source>
-        <translation>Полученные подтверждения</translation>
+        <translation>Подтверждения</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="70"/>
         <source>Block Height</source>
-        <translation>Добавлена в Блок</translation>
+        <translation>Блок</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="76"/>
         <source>From</source>
-        <translation>Отправитель</translation>
+        <translation>От</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="82"/>
@@ -3237,7 +3236,7 @@ Network fees can vary greatly depending on your selected trading pair.</translat
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="90"/>
         <source>Notes</source>
-        <translation>Заметка</translation>
+        <translation>Заметки</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="110"/>
@@ -3270,7 +3269,7 @@ Network fees can vary greatly depending on your selected trading pair.</translat
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="91"/>
         <source>fees</source>
-        <translation>комиссия</translation>
+        <translation>комиссии</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="102"/>
