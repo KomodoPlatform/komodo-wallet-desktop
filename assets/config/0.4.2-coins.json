@@ -2767,6 +2767,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "XLM-BEP20": {
+      "coin": "XLM-BEP20",
+      "name": "Stellar",
+      "coinpaprika_id": "xlm-stellar",
+      "coingecko_id": "stellar",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "XRP-BEP20": {
       "coin": "XRP-BEP20",
       "name": "XRP",
