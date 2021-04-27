@@ -104,6 +104,7 @@ namespace atomic_dex
         t_actions_queue          m_actions_queue{g_max_actions_size};
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_rpc_preimage_busy{false};
+        std::atomic_bool         m_post_clear_forms{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
 
         //! Trading Logic

@@ -450,7 +450,16 @@ namespace atomic_dex
                         const auto base_max_taker_vol = safe_float(wrapper->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
                         const auto rel_max_taker_vol  = safe_float(wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
                         t_float_50 min_vol            = safe_float(m_minimal_trading_amount.toStdString());
-                        auto       adjust_functor     = [this, wrapper]() { this->set_min_trade_vol(wrapper->get_current_min_taker_vol()); };
+                        auto       adjust_functor     = [this, wrapper]()
+                        {
+                            if (m_post_clear_forms)
+                            {
+                                this->determine_max_volume();
+                                this->set_volume(get_max_volume());
+                                this->set_min_trade_vol(wrapper->get_current_min_taker_vol());
+                                m_post_clear_forms = false;
+                            }
+                        };
                         if ((m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0 && min_vol <= 0) ||
                             (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0 && min_vol <= 0))
                         {
@@ -609,9 +618,10 @@ namespace atomic_dex
         this->set_max_volume("0");
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
-        this->m_preffered_order = std::nullopt;
-        this->m_fees            = QVariantMap();
-        this->m_cex_price       = "0";
+        this->m_preffered_order  = std::nullopt;
+        this->m_fees             = QVariantMap();
+        this->m_cex_price        = "0";
+        this->m_post_clear_forms = true;
         emit cexPriceChanged();
         emit invalidCexPriceChanged();
         emit cexPriceReversedChanged();
