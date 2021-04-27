@@ -40,13 +40,14 @@
     "coingecko_id": "artbyte",
     "electrum": [
       {
-        "url": "electrumx.aby.ewmcx.biz:50001"
+        "url": "electrumx.aby.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "failover.aby.ewmcx.biz:50001"
-      },
-      {
-        "url": "161.97.142.60:50001"
+        "url": "failover.aby.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
