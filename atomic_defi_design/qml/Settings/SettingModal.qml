@@ -3,8 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
-
-
+import QtQml 2.12
 import QtQuick.Window 2.12
 
 import Qaterial 1.0 as Qaterial
@@ -321,6 +320,32 @@ Qaterial.Dialog {
                             ModalLoader {
                                 id: camouflage_password_modal
                                 sourceComponent: CamouflagePasswordModal {}
+                            }
+
+                            // Enabled 2FA option. (Disabled on Linux since the feature is not available on this platform yet)
+                            RowLayout {
+                                enabled: Qt.platform.os !== "linux" // Disable for Linux.
+                                Component.onCompleted: console.log(Qt.platform.os)
+                                visible: enabled
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+                                DexLabel {
+                                    Layout.fillWidth: true
+                                    Layout.alignment: Qt.AlignVCenter
+                                    text: qsTr("Ask system's password before sending coins ? (2FA)")
+                                }
+                                DexSwitch {
+                                    implicitHeight: 37
+                                    checked: parseInt(atomic_settings2.value("2FA")) === 1
+                                    onCheckedChanged: {
+                                        if (checked)
+                                            atomic_settings2.setValue("2FA", 1)
+                                        else
+                                            atomic_settings2.setValue("2FA", 0)
+                                        atomic_settings2.sync()
+                                    }
+                                }
                             }
 
                             RowLayout {
