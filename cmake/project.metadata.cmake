@@ -46,8 +46,6 @@ macro(generate_dex_project_metafiles)
     # Configures installers
     if (APPLE)
         generate_macos_metafiles()
-        generate_windows_metafiles()
-        generate_linux_metafiles()
     elseif (WIN32)
         generate_windows_metafiles()
     else ()
@@ -65,10 +63,9 @@ macro(generate_dex_project_metafiles)
 endmacro()
 
 macro(generate_macos_metafiles)
+    set(DEX_APP_DIR "@ApplicationsDir@")
     set(DEX_TARGET_DIR "@TargetDir@")
-    set(DEX_START_MENU_DIR "@StartMenuDir@")
-    set(DEX_DESKTOP_DIR "@DesktopDir@")
-    set(DEX_ICON_DIR "@TargetDir@/${DEX_PROJECT_NAME}.ico")
+    set(DEX_RUN_CMD "@TargetDir@/${DEX_PROJECT_NAME}.app/Contents/MacOS/${DEX_PROJECT_NAME}")
 
     configure_file(${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/config/config.xml.in
                    ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/config/config.xml)
@@ -88,6 +85,7 @@ macro(generate_windows_metafiles)
     set(DEX_DESKTOP_DIR "@DesktopDir@")
     set(DEX_ICON_DIR "@TargetDir@/${DEX_PROJECT_NAME}.ico")
     set(DEX_MANIFEST_DESCRIPTION "${DEX_DISPLAY_NAME}, a desktop wallet application")
+    set(DEX_INSTALL_TARGET_DIR_WIN64 "@ApplicationsDirX64@")
 
     configure_file(${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/config/config.xml.in
                    ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/windows/config/config.xml)
