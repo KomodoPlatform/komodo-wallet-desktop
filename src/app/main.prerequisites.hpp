@@ -41,9 +41,9 @@
 
 
 //! Deps
+#include <QSslSocket>
 #include <sodium/core.h>
 #include <wally.hpp>
-#include <QSslSocket>
 
 #if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
@@ -337,6 +337,8 @@ handle_settings(QSettings& settings)
     create_settings_functor("SecondSecuritySending", QVariant(false));
     create_settings_functor("AutomaticUpdateOrderBot", QVariant(false));
     create_settings_functor("WalletChartsCategory", qint32(WalletChartsCategories::OneMonth));
+    create_settings_functor("AvailableLang", QStringList{"en", "fr", "tr", "ru"});
+    create_settings_functor("CurrentLang", QString("en"));
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
@@ -352,7 +354,9 @@ run_app(int argc, char** argv)
     SPDLOG_INFO("Installing qt_message_handler");
     qInstallMessageHandler(&qt_message_handler);
 #endif
-    SPDLOG_INFO("SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(), QSslSocket::sslLibraryVersionString().toStdString());
+    SPDLOG_INFO(
+        "SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(),
+        QSslSocket::sslLibraryVersionString().toStdString());
 
 #if defined(Q_OS_MACOS)
     fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
@@ -435,8 +439,8 @@ run_app(int argc, char** argv)
 
     qaterial::loadQmlResources(false);
     qaterial::registerQmlTypes("Qaterial", 1, 0);
-    //QQuickStyle::setStyle(QStringLiteral("Qaterial"));
-    // SPDLOG_INFO("{}",  QQuickStyle::ge))
+    // QQuickStyle::setStyle(QStringLiteral("Qaterial"));
+    //  SPDLOG_INFO("{}",  QQuickStyle::ge))
 
     engine.addImportPath("qrc:/atomic_defi_design/imports");
     engine.addImportPath("qrc:/atomic_defi_design/Constants");

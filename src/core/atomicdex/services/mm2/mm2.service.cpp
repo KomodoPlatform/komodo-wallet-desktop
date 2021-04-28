@@ -404,6 +404,7 @@ namespace atomic_dex
                                 {
                                     const std::string error = answer.dump(4);
                                     SPDLOG_ERROR("error answer for tx or my_balance: {}", error);
+                                    this->dispatcher_.trigger<tx_fetch_finished>(true);
                                     if (error.find("future timed out") != std::string::npos)
                                     {
                                         SPDLOG_WARN("Future timed out error detected, probably a connection issue");

@@ -40,7 +40,7 @@ Item {
         spacing: 10
         Row {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 125
+            Layout.preferredWidth: 140
             leftPadding: -10
             spacing: 5
             Image {
