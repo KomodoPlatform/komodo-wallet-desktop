@@ -808,6 +808,18 @@ namespace atomic_dex
             case TradingErrorGadget::ReceiveVolumeIsLowerThanTheMinimum:
                 SPDLOG_WARN("last_trading_error is ReceiveVolumeIsLowerThanTheMinimum");
                 break;
+            case TradingErrorGadget::LeftParentChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is LeftParentChainNotEnabled");
+                break;
+            case TradingErrorGadget::LeftParentChainNotEnoughBalance:
+                SPDLOG_WARN("last_trading_error is LeftParentChainNotEnoughBalance");
+                break;
+            case TradingErrorGadget::RightParentChainNotEnoughBalance:
+                SPDLOG_WARN("last_trading_error is RightParentChainNotEnoughBalance");
+                break;
+            case TradingErrorGadget::RightParentChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is RightParentChainNotEnabled");
+                break;
             }
             emit tradingErrorChanged();
         }
@@ -1086,12 +1098,41 @@ namespace atomic_dex
 
         //! Check minimal trading amount
         const std::string base                     = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+        const std::string left                     = this->get_market_pairs_mdl()->get_left_selected_coin().toStdString();
+        const std::string right                    = this->get_market_pairs_mdl()->get_right_selected_coin().toStdString();
         t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
         const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
         // const auto&       base_min_taker_vol        = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
         const auto& cur_min_taker_vol = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
+        const auto& mm2               = m_system_manager.get_system<mm2_service>();
 
-        if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
+        const auto left_cfg  = mm2.get_coin_info(left);
+        const auto right_cfg = mm2.get_coin_info(right);
+        if (left_cfg.has_parent_fees_ticker)
+        {
+            const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
+            if (!left_fee_cfg.currently_enabled)
+            {
+                current_trading_error = TradingError::LeftParentChainNotEnabled;
+            }
+            else if (mm2.get_balance(left_fee_cfg.ticker) <= 0)
+            {
+                current_trading_error = TradingError::LeftParentChainNotEnoughBalance;
+            }
+        }
+        else if (right_cfg.has_parent_fees_ticker)
+        {
+            const auto right_fee_cfg = mm2.get_coin_info(right_cfg.fees_ticker);
+            if (!right_fee_cfg.currently_enabled)
+            {
+                current_trading_error = TradingError::RightParentChainNotEnabled;
+            }
+            else if (mm2.get_balance(right_fee_cfg.ticker) <= 0)
+            {
+                current_trading_error = TradingError::RightParentChainNotEnoughBalance;
+            }
+        }
+        else if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
