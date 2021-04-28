@@ -38,7 +38,7 @@ namespace
             // If cur_min_volume in the UI < base_min_vol_threshold override
             if (cur_min_volume_f < base_min_vol_threshold)
             {
-                //SPDLOG_INFO("cur_min_taker_vol: {}", cur_taker_vol.toStdString());
+                // SPDLOG_INFO("cur_min_taker_vol: {}", cur_taker_vol.toStdString());
                 trading_pg.set_min_trade_vol(cur_taker_vol);
             }
         }
@@ -221,9 +221,15 @@ namespace atomic_dex
     QString
     qt_orderbook_wrapper::get_current_min_taker_vol() const
     {
-        QString    cur_taker_vol = get_base_min_taker_vol();
-        auto&      trading_pg    = m_system_manager.get_system<trading_page>();
-        t_float_50 price_f       = safe_float(trading_pg.get_price().toStdString());
+        QString    cur_taker_vol   = get_base_min_taker_vol();
+        auto&      trading_pg      = m_system_manager.get_system<trading_page>();
+        auto       preffered_order = trading_pg.get_raw_preffered_order();
+        t_float_50 price_f         = safe_float(trading_pg.get_price().toStdString());
+        if (preffered_order.has_value())
+        {
+            price_f = safe_float(preffered_order->at("price").get<std::string>());
+        }
+        // if (trading_pg.)
         if (price_f <= 0)
         {
             //! Price is not set yet in the UI in this particular case return the min volume calculated by mm2

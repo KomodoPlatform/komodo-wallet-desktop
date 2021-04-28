@@ -64,7 +64,7 @@ namespace atomic_dex
         Q_PROPERTY(QString cex_price READ get_cex_price NOTIFY cexPriceChanged)
         Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
-        //Q_PROPERTY(QString mm2_min_trade_vol READ get_mm2_min_trade_vol NOTIFY mm2MinTradeVolChanged)
+        // Q_PROPERTY(QString mm2_min_trade_vol READ get_mm2_min_trade_vol NOTIFY mm2MinTradeVolChanged)
         Q_PROPERTY(QString min_trade_vol READ get_min_trade_vol WRITE set_min_trade_vol NOTIFY minTradeVolChanged)
         Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
         Q_PROPERTY(bool skip_taker READ get_skip_taker WRITE set_skip_taker NOTIFY skipTakerChanged)
@@ -104,6 +104,7 @@ namespace atomic_dex
         t_actions_queue          m_actions_queue{g_max_actions_size};
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_rpc_preimage_busy{false};
+        std::atomic_bool         m_post_clear_forms{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
 
         //! Trading Logic
@@ -185,30 +186,31 @@ namespace atomic_dex
         [[nodiscard]] QString      get_price() const;
         void                       set_price(QString price);
         //[[nodiscard]] QString      get_mm2_min_trade_vol() const;
-        [[nodiscard]] QString      get_min_trade_vol() const;
-        void                       set_min_trade_vol(QString min_trade_vol);
-        [[nodiscard]] QString      get_volume() const;
-        void                       set_volume(QString volume);
-        [[nodiscard]] QString      get_max_volume() const;
-        void                       set_max_volume(QString max_volume);
-        [[nodiscard]] QString      get_total_amount() const;
-        void                       set_total_amount(QString total_amount);
-        [[nodiscard]] QString      get_base_amount() const;
-        [[nodiscard]] QString      get_rel_amount() const;
-        [[nodiscard]] QString      get_cex_price() const;
-        [[nodiscard]] QString      get_cex_price_reversed() const;
-        [[nodiscard]] QString      get_cex_price_diff() const;
-        [[nodiscard]] bool         get_invalid_cex_price() const;
-        [[nodiscard]] QVariantMap  get_preffered_order();
-        void                       set_preffered_order(QVariantMap price_object);
-        [[nodiscard]] QVariantMap  get_fees() const;
-        void                       set_fees(QVariantMap fees);
-        [[nodiscard]] bool         get_skip_taker() const;
-        void                       set_skip_taker(bool skip_taker);
-        [[nodiscard]] bool         is_preimage_busy() const;
-        void                       set_preimage_busy(bool status);
-        [[nodiscard]] QVariant     get_buy_sell_last_rpc_data() const;
-        void                       set_buy_sell_last_rpc_data(QVariant rpc_data);
+        [[nodiscard]] QString         get_min_trade_vol() const;
+        void                          set_min_trade_vol(QString min_trade_vol);
+        [[nodiscard]] QString         get_volume() const;
+        void                          set_volume(QString volume);
+        [[nodiscard]] QString         get_max_volume() const;
+        void                          set_max_volume(QString max_volume);
+        [[nodiscard]] QString         get_total_amount() const;
+        void                          set_total_amount(QString total_amount);
+        [[nodiscard]] QString         get_base_amount() const;
+        [[nodiscard]] QString         get_rel_amount() const;
+        [[nodiscard]] QString         get_cex_price() const;
+        [[nodiscard]] QString         get_cex_price_reversed() const;
+        [[nodiscard]] QString         get_cex_price_diff() const;
+        [[nodiscard]] bool            get_invalid_cex_price() const;
+        [[nodiscard]] QVariantMap     get_preffered_order();
+        void                          set_preffered_order(QVariantMap price_object);
+        std::optional<nlohmann::json> get_raw_preffered_order() const;
+        [[nodiscard]] QVariantMap     get_fees() const;
+        void                          set_fees(QVariantMap fees);
+        [[nodiscard]] bool            get_skip_taker() const;
+        void                          set_skip_taker(bool skip_taker);
+        [[nodiscard]] bool            is_preimage_busy() const;
+        void                          set_preimage_busy(bool status);
+        [[nodiscard]] QVariant        get_buy_sell_last_rpc_data() const;
+        void                          set_buy_sell_last_rpc_data(QVariant rpc_data);
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt);
