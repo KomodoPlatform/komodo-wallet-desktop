@@ -584,6 +584,23 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "BTT-BEP20": {
+      "coin": "BTT-BEP20",
+      "name": "BitTorrent",
+      "coinpaprika_id": "btt-bittorrent",
+      "coingecko_id": "bittorrent-2",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BUSD-ERC20": {
     "coin": "BUSD-ERC20",
     "name": "Binance USD",
@@ -1839,23 +1856,6 @@
       "active": false,
       "currently_enabled": false
   },
-  "TUSD-ERC20": {
-    "active": false,
-    "coin": "TUSD-ERC20",
-    "coingecko_id": "true-usd",
-    "coinpaprika_id": "tusd-trueusd",
-    "currently_enabled": false,
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "name": "True USD"
-  },
   "KMD": {
     "coin": "KMD",
     "name": "Komodo",
@@ -2652,6 +2652,57 @@
     "active": false,
     "currently_enabled": false
   },
+  "TRX-BEP20": {
+      "coin": "TRX-BEP20",
+      "name": "TRON",
+      "coinpaprika_id": "trx-tron",
+      "coingecko_id": "tron",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-BEP20": {
+      "coin": "TUSD-BEP20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-ERC20": {
+      "coin": "TUSD-ERC20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "VAL": {
     "coin": "VAL",
     "name": "Validity",
@@ -2766,6 +2817,23 @@
     "type": "Smart Chain",
     "active": false,
     "currently_enabled": false
+  },
+  "XLM-BEP20": {
+      "coin": "XLM-BEP20",
+      "name": "Stellar",
+      "coinpaprika_id": "xlm-stellar",
+      "coingecko_id": "stellar",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "XRP-BEP20": {
       "coin": "XRP-BEP20",
@@ -3019,22 +3087,6 @@
       "https://blockstream.info/testnet/"
     ],
     "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
-  },
-  "ETHR": {
-    "coin": "ETHR",
-    "name": "ETHR (testnet)",
-    "is_testnet": true,
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "http://eth-ropsten.cipig.net:8645"
-    ],
-    "explorer_url": [
-      "https://ropsten.etherscan.io/"
-    ],
-    "type": "ERC-20",
     "active": false,
     "currently_enabled": false
   },
