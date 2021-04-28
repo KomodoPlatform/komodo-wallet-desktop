@@ -334,11 +334,11 @@ handle_settings(QSettings& settings)
     SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
     create_settings_functor("CurrentTheme", QString("Dark.json"));
     create_settings_functor("ThemePath", QString::fromStdString(atomic_dex::utils::get_themes_path().string()));
-    create_settings_functor("SecondSecuritySending", QVariant(false));
     create_settings_functor("AutomaticUpdateOrderBot", QVariant(false));
     create_settings_functor("WalletChartsCategory", qint32(WalletChartsCategories::OneMonth));
     create_settings_functor("AvailableLang", QStringList{"en", "fr", "tr", "ru"});
     create_settings_functor("CurrentLang", QString("en"));
+    create_settings_functor("2FA", 0);
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
