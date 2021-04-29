@@ -1277,6 +1277,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "FTM-BEP20": {
+      "coin": "FTM-BEP20",
+      "name": "Fantom",
+      "coinpaprika_id": "ftm-fantom",
+      "coingecko_id": "fantom",
+      "nodes": [
+        "https://bsc-dataseed.binance.org",
+        "https://bsc-dataseed1.defibit.io",
+        "https://bsc-dataseed1.ninicoin.io"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "FTM-ERC20": {
+      "coin": "FTM-ERC20",
+      "name": "Fantom",
+      "coinpaprika_id": "ftm-fantom",
+      "coingecko_id": "fantom",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "GLEEC": {
     "coin": "GLEEC",
     "name": "Gleec",
