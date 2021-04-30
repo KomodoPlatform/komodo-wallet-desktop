@@ -7,10 +7,22 @@ import Qaterial 1.0 as Qaterial
 import "../Constants"
 import "../Components"
 
-BasicModal {
+Popup {
     id: root
 
-    width: 900
+    width: 400
+    height: 440
+    x: !sidebar.expanded? 100 : 230
+    y: 30
+    dim: true
+    modal: true
+    background: FloatingBackground {}
+//    DexModel {
+//        id: notification_model
+//        dbName: "Notification.%1".arg(selected_wallet_name)
+//        tableName: "NotificaitonTable001"
+//        columns: "id INTEGER PRIMARY KEY,event_name TEXT, title TEXT, message TEXT, human_date TEXT, click_action TEXT, long_message TEXT, ticker TEXT, params TEXT"
+//    }
 
     function reset() {
         notifications_list = []
@@ -73,6 +85,9 @@ BasicModal {
                 break
             }
         }
+        //var data = {event_name:event_name, params: JSON.stringify(params),title: title, message: message, human_date:human_date,long_message: long_message, click_action: click_action, ticker: ticker}
+
+        //notification_model.append(data)
 
         // Add new line
         if(!updated_existing_one) {
@@ -214,9 +229,6 @@ BasicModal {
         }
 
         tooltip: API.app_name
-
-//        onActivated: showApp()
-
         menu: Menu {
             MenuItem {
                 text: qsTr("Show")
@@ -235,20 +247,53 @@ BasicModal {
         }
     }
 
-    ModalContent {
-        title: qsTr("Notifications")
+    ColumnLayout {
+        anchors.fill: parent
+        //title: qsTr("Notifications")
 
         Qaterial.AppBarButton {
-            visible: list.visible
+            visible: false//list.visible
 
             icon.source: General.qaterialIcon("check-all")
             onClicked: notifications_list = []
         }
+        Item {
+            Layout.preferredHeight: 65
+            Layout.fillWidth: parent
+            RowLayout {
+                anchors.fill: parent
+                DexLabel {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                    leftPadding: 15
+                    font: theme.textType.head6
+                    text: "Notifications"
+                }
+                DexLabel {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: 40
+                    leftPadding: 15
+                    text: list.count
+                    font: Qt.font({
+                        pixelSize: 20,
+                        family: 'Lato'
+                    })
+                    
+                }
+            }
+            Rectangle {
+                height: 2
+                color: theme.foregroundColor
+                opacity: .05
+                width: parent.width-20
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+            }
+        }
 
-        InnerBackground {
+        Item {
             Layout.fillWidth: true
-
-            Layout.preferredHeight: 500
+            Layout.fillHeight: true
 
             DefaultText {
                 anchors.centerIn: parent
@@ -265,7 +310,7 @@ BasicModal {
                 anchors.fill: parent
                 model: notifications_list
 
-                delegate: Item {
+                /*delegate: Item {
                     width: list.width
                     height: 60
 
@@ -368,17 +413,119 @@ BasicModal {
                             }
                         }
                     }
+                
+                }*/
+                delegate: ItemDelegate {
+                    function removeNotification() {
+                        notifications_list.splice(index, 1)
+                        notifications_list = notifications_list
+                    }
+                    onClicked: {
+                        // Action might create another event so we save it and then remove the current one, then take the action
+                        const event_before_removal = General.clone(modelData)
+
+                        // Action
+                        switch(event_before_removal.event_name) {
+                        case "onEnablingCoinFailedStatus":
+                            removeNotification()
+                            console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
+                            API.app.enable_coins([event_before_removal.params.coin])
+                            break
+                        case "onMismatchCustomCoinConfiguration":
+                            console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
+                            root.close()
+                            restart_modal.open()
+                            break
+                        default:
+                            removeNotification()
+                            break
+                        }
+                    }
+                    height: _column.height+10
+                    width: list.width
+                    property int stat: {
+                        if (notifications_list[index].title.indexOf("You received")!==-1 ) {
+                            return 0
+                        } else if(notifications_list[index].title.indexOf("You sent")!==-1) {
+                            return 1
+                        } else {
+                            return 2
+                        }
+                    }
+                    function getIcon(){
+                        if(stat===0) {
+                            return  Qaterial.Icons.arrowDownCircleOutline
+                        }else if(stat===1) {
+                            return  Qaterial.Icons.arrowUpCircleOutline
+                        }else if(stat===2) {
+                            return Qaterial.Icons.emailOutline
+                        }
+                    }
+                    function getIconColor(){
+                        if(stat===0) {
+                            return  theme.greenColor
+                        }else if(stat===1) {
+                            return  theme.redColor
+                        }else if(stat===2) {
+                            return theme.foregroundColor
+                        }
+                    }
+                    RowLayout {
+                        anchors.fill: parent
+                        Item {
+                            Layout.fillHeight: true 
+                            Layout.preferredWidth: 60
+                            Qaterial.ColorIcon {
+                                anchors.verticalCenter: parent.verticalCenter
+                                source: getIcon()
+                                iconSize: 32
+                                x: 10
+                                color: getIconColor()
+                                opacity: .6
+                            }
+                        }
+                        VerticalLine {
+                            Layout.preferredHeight: 50
+                            Layout.preferredWidth: 1
+                        }
+                        Item {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            Column {
+                                id: _column
+                                width: parent.width
+                                leftPadding: 15
+                                spacing: 5
+                                DexLabel {
+                                    text: notifications_list[index].title
+                                    font: theme.textType.body1
+                                }
+                                DexLabel {
+                                    text: notifications_list[index].message
+                                    font: theme.textType.subtitle2
+                                    width: parent.width
+                                    wrapMode: Label.Wrap
+                                    color: theme.accentColor
+                                }
+                                 DexLabel {
+                                    text: notifications_list[index].human_date
+                                    font: theme.textType.caption
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        height: 2
+                        color: theme.foregroundColor
+                        opacity: .05
+                        visible: !(list.count==index+1)
+                        width: parent.width-20
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                    }
                 }
             }
         }
 
-
-        footer: [
-            DefaultButton {
-                Layout.fillWidth: true
-                text: qsTr("Close")
-                onClicked: root.close()
-            }
-        ]
     }
 }
