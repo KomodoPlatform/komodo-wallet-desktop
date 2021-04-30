@@ -422,24 +422,8 @@ Popup {
                     }
                     onClicked: {
                         // Action might create another event so we save it and then remove the current one, then take the action
-                        const event_before_removal = General.clone(modelData)
-
-                        // Action
-                        switch(event_before_removal.event_name) {
-                        case "onEnablingCoinFailedStatus":
-                            removeNotification()
-                            console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
-                            API.app.enable_coins([event_before_removal.params.coin])
-                            break
-                        case "onMismatchCustomCoinConfiguration":
-                            console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
-                            root.close()
-                            restart_modal.open()
-                            break
-                        default:
-                            removeNotification()
-                            break
-                        }
+                        performNotificationAction(notifications_list[index])
+                        removeNotification()
                     }
                     height: _column.height+10
                     width: list.width
