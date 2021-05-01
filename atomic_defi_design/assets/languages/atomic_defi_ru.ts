@@ -181,7 +181,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="90"/>
         <source>Tags (first 6)</source>
-        <translation>Тэги (первые 6)</translation>
+        <translation>Теги (первые 6)</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="98"/>
@@ -1454,7 +1454,7 @@
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="36"/>
         <source>Go to Support Guides</source>
-        <translation>Саппорт руководство</translation>
+        <translation>Форум и база знаний</translation>
     </message>
 </context>
 <context>
@@ -2780,7 +2780,7 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="352"/>
         <source>Open</source>
-        <translation>Открыть</translation>
+        <translation>Установить</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="370"/>
@@ -3079,13 +3079,13 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Exchange/Trade/Orders/SwapProgress.qml" line="100"/>
         <source>act</source>
         <comment>SHORT FOR ACTUAL TIME</comment>
-        <translation>фактический</translation>
+        <translation>факт</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/SwapProgress.qml" line="102"/>
         <source>est</source>
         <comment>SHORT FOR ESTIMATED</comment>
-        <translation>прогнозируемый</translation>
+        <translation>прогноз</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/SwapProgress.qml" line="110"/>
