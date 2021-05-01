@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>${DEX_DISPLAY_NAME}</Name>
+    <Name>@DEX_DISPLAY_NAME@</Name>
     <Version>0.4.2</Version>
-    <Title>${DEX_DISPLAY_NAME} Installer</Title>
-    <ProductUrl>${DEX_WEBSITE}</ProductUrl>
-    <Publisher>${DEX_COMPANY}</Publisher>
-	<TargetDir>${DEX_TARGET_DIR_WIN64}</TargetDir>
-    <RunProgram>${DEX_RUN_CMD_WIN64}</RunProgram>
-	<RunProgramDescription>Run ${DEX_DISPLAY_NAME} now.</RunProgramDescription>
-    <StartMenuDir>${DEX_DISPLAY_NAME}</StartMenuDir>
-    <MaintenanceToolName>${DEX_DISPLAY_NAME} Maintenance Tool</MaintenanceToolName>
+    <Title>@DEX_DISPLAY_NAME@ Installer</Title>
+    <ProductUrl>@DEX_WEBSITE@</ProductUrl>
+    <Publisher>@DEX_COMPANY@</Publisher>
+	<TargetDir>@DEX_INSTALL_TARGET_DIR_WIN64@/@DEX_DISPLAY_NAME@</TargetDir>
+    <RunProgram>@DEX_TARGET_DIR@/@DEX_PROJECT_NAME@.exe</RunProgram>
+	<RunProgramDescription>Run @DEX_DISPLAY_NAME@ now.</RunProgramDescription>
+    <StartMenuDir>@DEX_DISPLAY_NAME@</StartMenuDir>
+    <MaintenanceToolName>@DEX_MAINTENANCE_TOOL_NAME@</MaintenanceToolName>
 	<InstallerWindowIcon>install_icon</InstallerWindowIcon>
     <InstallerApplicationIcon>install_icon</InstallerApplicationIcon>
     <Logo>install_icon.png</Logo>
