@@ -930,6 +930,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "DIMI": {
+      "coin": "DIMI",
+      "name": "Diminutive Coin",
+      "coinpaprika_id": "dimi-diminutive-coin",
+      "coingecko_id": "diminutive-coin",
+      "electrum": [
+        {
+          "url": "electrumx1.diminutivecoin.com:50012",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "electrumx2.diminutivecoin.com:50012",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.diminutivecoin.com/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "DODO-BEP20": {
       "coin": "DODO-BEP20",
       "name": "DODO",

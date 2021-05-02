@@ -281,6 +281,7 @@ QtObject {
                                           "CDN": "#90191C",
                                           "CLC": "#0970DC",
                                           "DGC": "#BC7600",
+                                          "DIMI": "#0BFBE2",
                                           "EOS": "#4D4D4D",
                                           "FTC": "#FFFFFF",
                                           "FTM": "#13B5EC",
