@@ -17,12 +17,6 @@ Popup {
     dim: true
     modal: true
     background: FloatingBackground {}
-//    DexModel {
-//        id: notification_model
-//        dbName: "Notification.%1".arg(selected_wallet_name)
-//        tableName: "NotificaitonTable001"
-//        columns: "id INTEGER PRIMARY KEY,event_name TEXT, title TEXT, message TEXT, human_date TEXT, click_action TEXT, long_message TEXT, ticker TEXT, params TEXT"
-//    }
 
     function reset() {
         notifications_list = []
@@ -85,9 +79,6 @@ Popup {
                 break
             }
         }
-        //var data = {event_name:event_name, params: JSON.stringify(params),title: title, message: message, human_date:human_date,long_message: long_message, click_action: click_action, ticker: ticker}
-
-        //notification_model.append(data)
 
         // Add new line
         if(!updated_existing_one) {
@@ -224,7 +215,6 @@ Popup {
         onMessageClicked: {
             if(notifications_list.length > 0)
                 performNotificationAction(notifications_list[0])
-
             showApp()
         }
 
@@ -249,14 +239,6 @@ Popup {
 
     ColumnLayout {
         anchors.fill: parent
-        //title: qsTr("Notifications")
-
-        Qaterial.AppBarButton {
-            visible: false//list.visible
-
-            icon.source: General.qaterialIcon("check-all")
-            onClicked: notifications_list = []
-        }
         Item {
             Layout.preferredHeight: 65
             Layout.fillWidth: parent
@@ -278,7 +260,12 @@ Popup {
                         pixelSize: 20,
                         family: 'Lato'
                     })
-                    
+                }
+                Qaterial.AppBarButton {
+                    enabled: list.count>0
+                    Layout.alignment: Qt.AlignVCenter
+                    icon.source: Qaterial.Icons.checkAll
+                    onClicked: notifications_list = []
                 }
             }
             Rectangle {
@@ -309,112 +296,6 @@ Popup {
 
                 anchors.fill: parent
                 model: notifications_list
-
-                /*delegate: Item {
-                    width: list.width
-                    height: 60
-
-                    DefaultText {
-                        anchors.top: parent.top
-                        anchors.topMargin: 10
-                        anchors.right: parent.right
-                        anchors.rightMargin: 200
-                        text_value: modelData.human_date
-                        font.pixelSize: Style.textSizeSmall
-                    }
-
-                    ColumnLayout {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-
-                        DefaultText {
-                            text_value: modelData.title
-                            font.pixelSize: Style.textSizeSmall4
-                            font.weight: Font.Medium
-                        }
-
-                        DefaultText {
-                            text_value: modelData.message
-                            font.pixelSize: Style.textSizeSmall1
-                        }
-                    }
-
-                    HorizontalLine {
-                        visible: index !== notifications_list.length - 1
-                        width: parent.width - 4
-
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: -height/2
-                        light: true
-                    }
-
-                    // Info button
-                    Qaterial.AppBarButton {
-                        visible: modelData.click_action !== "open_notifications"
-                        anchors.verticalCenter: action_button.verticalCenter
-                        anchors.right: action_button.left
-                        anchors.rightMargin: 15
-
-                        icon.source: General.qaterialIcon("information-variant")
-                        onClicked: performNotificationAction(modelData)
-                    }
-
-                    // Action button
-                    Qaterial.AppBarButton {
-                        id: action_button
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
-                        anchors.right: parent.right
-                        anchors.rightMargin: anchors.bottomMargin + 20
-
-                        icon.source: {
-                            let name
-                            switch(modelData.event_name) {
-                            case "onEnablingCoinFailedStatus":
-                                name = "repeat"
-                                break
-                            case "onMismatchCustomCoinConfiguration":
-                                name = "restart-alert"
-                                break
-                            default:
-                                name = "check"
-                                break
-                            }
-
-                            return General.qaterialIcon(name)
-                        }
-
-                        function removeNotification() {
-                            notifications_list.splice(index, 1)
-                            notifications_list = notifications_list
-                        }
-
-                        onClicked: {
-                            // Action might create another event so we save it and then remove the current one, then take the action
-                            const event_before_removal = General.clone(modelData)
-
-                            // Action
-                            switch(event_before_removal.event_name) {
-                            case "onEnablingCoinFailedStatus":
-                                removeNotification()
-                                console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
-                                API.app.enable_coins([event_before_removal.params.coin])
-                                break
-                            case "onMismatchCustomCoinConfiguration":
-                                console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
-                                root.close()
-                                restart_modal.open()
-                                break
-                            default:
-                                removeNotification()
-                                break
-                            }
-                        }
-                    }
-                
-                }*/
                 delegate: ItemDelegate {
                     function removeNotification() {
                         notifications_list.splice(index, 1)
