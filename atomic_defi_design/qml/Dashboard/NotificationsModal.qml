@@ -364,6 +364,8 @@ Popup {
                                 DexLabel {
                                     text: notifications_list[index].title
                                     font: theme.textType.body1
+                                    width: parent.width
+                                    wrapMode: Label.Wrap
                                 }
                                 DexLabel {
                                     text: notifications_list[index].message
