@@ -14,8 +14,8 @@ Popup {
     height: 440
     x: !sidebar.expanded? 100 : 230
     y: 30
-    dim: true
-    modal: true
+    dim: false
+    modal: false
     background: FloatingBackground {}
 
     function reset() {
