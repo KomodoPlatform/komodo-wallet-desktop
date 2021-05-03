@@ -622,7 +622,7 @@ ColumnLayout {
                                                         last_trading_error,
                                                         curr_fee_info,
                                                         base_ticker,
-                                                        rel_ticker)
+                                                        rel_ticker, left_ticker, right_ticker)
                                     }
                                 }
                             }

@@ -432,7 +432,7 @@ QtObject {
         return ""
     }
 
-    function getTradingError(error, fee_info, base_ticker, rel_ticker) {
+    function getTradingError(error, fee_info, base_ticker, rel_ticker, left_ticker, right_ticker) {
         switch(error) {
         case TradingError.None:
             return ""
@@ -449,13 +449,13 @@ QtObject {
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getReversedMinTradeAmount()
         case TradingError.LeftParentChainNotEnabled:
-            return qsTr("%1 parent chain is not enabled").arg(base_ticker)
+            return qsTr("%1 parent chain is not enabled").arg(left_ticker)
         case TradingError.LeftParentChainNotEnoughBalance:
-            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(base_ticker)
+            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(left_ticker)
         case TradingError.RightParentChainNotEnabled:
-            return qsTr("%1 parent chain is not enabled").arg(rel_ticker)
+            return qsTr("%1 parent chain is not enabled").arg(right_ticker)
         case TradingError.RightParentChainNotEnoughBalance:
-            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(rel_ticker)
+            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(right_ticker)
         default:
             return qsTr("Unknown Error") + ": " + error
         }
