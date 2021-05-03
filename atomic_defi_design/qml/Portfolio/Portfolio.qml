@@ -224,12 +224,12 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     Qaterial.ExtendedFabButton {
-                        width: 180
+                        width: 250
                         backgroundColor: theme.accentColor
                         foregroundColor: theme.foregroundColor
                         Row {
                             anchors.centerIn: parent
-                            spacing: 10
+                            spacing: 6
                             Qaterial.ColorIcon {
                                 source: Qaterial.Icons.plus
                                 color: theme.foregroundColor

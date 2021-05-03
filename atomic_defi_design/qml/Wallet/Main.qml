@@ -67,14 +67,14 @@ Item {
                         DefaultText {
                             id: name
                             text_value: current_ticker_infos.name
-                            Layout.alignment: Qt.AlignLeft
+                            Layout.alignment: Qt.AlignHCenter
                             font.pixelSize: Style.textSizeMid
                         }
 
                         DefaultText {
                             id: name_value
                             text_value: General.formatCrypto("", current_ticker_infos.balance, api_wallet_page.ticker)
-                            Layout.alignment: Qt.AlignLeft
+                            Layout.alignment: Qt.AlignHCenter
                             font.pixelSize: name.font.pixelSize
                             privacy: true
                         }
@@ -83,7 +83,7 @@ Item {
 
                 // Wallet Balance
                 ColumnLayout {
-                    Layout.alignment: Qt.AlignLeft
+                    Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
                     DefaultText {
                         text_value: qsTr("Wallet Balance")
@@ -94,14 +94,14 @@ Item {
 
                     DefaultText {
                         text_value: General.formatFiat("", current_ticker_infos.fiat_amount, API.app.settings_pg.current_currency)
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         privacy: true
                     }
                 }
 
                 VerticalLine {
-                    Layout.alignment: Qt.AlignLeft
+                    Layout.alignment: Qt.AlignHCenter
                     Layout.rightMargin: 30
                     height: balance_layout.height * 0.8
                     color: Style.colorThemeDarkLight
@@ -114,14 +114,14 @@ Item {
                     DefaultText {
                         id: price
                         text_value: qsTr("Price")
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: Style.colorText2
                     }
 
                     DefaultText {
                         text_value: General.formatFiat('', current_ticker_infos.current_currency_ticker_price, API.app.settings_pg.current_currency)
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                     }
                 }
@@ -132,7 +132,7 @@ Item {
                     spacing: balance_layout.spacing
                     DefaultText {
                         text_value: qsTr("Change 24h")
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
@@ -142,7 +142,7 @@ Item {
                             const v = parseFloat(current_ticker_infos.change_24h)
                             return v === 0 ? '-' : General.formatPercent(v)
                         }
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: Style.getValueColor(current_ticker_infos.change_24h)
                     }
@@ -154,7 +154,7 @@ Item {
                     spacing: balance_layout.spacing
                     DefaultText {
                         text_value: qsTr("Portfolio %")
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
@@ -167,7 +167,7 @@ Item {
 
                             return General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false)
                         }
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         privacy: true
                     }
@@ -194,7 +194,7 @@ Item {
                 Arrow {
                     id: arrow_send
                     up: true
-                    color: Style.colorGreen
+                    color: Style.colorRed
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 12
@@ -214,7 +214,7 @@ Item {
 
                 Arrow {
                     up: false
-                    color: Style.colorBlue
+                    color: Style.colorGreen
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: arrow_send.anchors.rightMargin
@@ -232,18 +232,17 @@ Item {
                 onClicked: onClickedSwap()
                 Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
-
                 Arrow {
                     up: true
-                    color: Style.colorGreen
+                    color: Style.colorRed
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: arrow_send.anchors.rightMargin*2.4
+                    anchors.left: parent.left
+                    anchors.leftMargin: arrow_send.anchors.rightMargin
                 }
 
                 Arrow {
                     up: false
-                    color: Style.colorBlue
+                    color: Style.colorGreen
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: arrow_send.anchors.rightMargin
