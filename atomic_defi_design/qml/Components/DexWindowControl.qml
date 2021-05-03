@@ -4,10 +4,6 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
 
-import "Screens"
-import "Constants"
-import "Components"
-
 Item {
     anchors.fill: parent
     Item {
@@ -51,7 +47,7 @@ Item {
                 opacity: .7
                 foregroundColor: app.globalTheme.foregroundColor
                 onClicked: {
-                    if(window.visibility==ApplicationWindow.Maximized){
+                    if(window.visibility===ApplicationWindow.Maximized){
                         showNormal()
                     }else {
                         showMaximized()
