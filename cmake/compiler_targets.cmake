@@ -18,7 +18,7 @@ target_compile_options(
 
 # $<$<AND:$<PLATFORM_ID:Windows>,$<NOT:$<BOOL:${ClangCL}>>,$<CXX_COMPILER_ID:Clang>>:-Wall -Wextra -Wfatal-errors>
 # $<$<AND:$<PLATFORM_ID:Windows>,$<BOOL:${ClangCL}>,$<CXX_COMPILER_ID:Clang>>:/W4 /permissive->
-##! We are using C++ 17 for all of our targets
+##! We are using C++20 for all of our targets
 add_library(antara_defaults_features INTERFACE)
 add_library(antara::defaults_features ALIAS antara_defaults_features)
 target_compile_features(antara_defaults_features INTERFACE cxx_std_20)

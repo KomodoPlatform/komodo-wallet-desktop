@@ -283,6 +283,7 @@ QtObject {
                                           "DGC": "#BC7600",
                                           "EOS": "#4D4D4D",
                                           "FTC": "#FFFFFF",
+                                          "FTM": "#13B5EC",
                                           "GLEEC": "#8C41FF",
                                           "GRS": "#377E96",
                                           "IOTA": "#404040",

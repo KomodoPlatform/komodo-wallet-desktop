@@ -56,7 +56,11 @@ namespace atomic_dex
             PriceFieldNotFilled                      = 3, ///< Price empty or 0
             VolumeFieldNotFilled                     = 4, ///< Volume empty or 0
             VolumeIsLowerThanTheMinimum              = 5, ///< Volume field < 0.00777
-            ReceiveVolumeIsLowerThanTheMinimum       = 6
+            ReceiveVolumeIsLowerThanTheMinimum       = 6,
+            LeftParentChainNotEnabled                = 7,
+            LeftParentChainNotEnoughBalance          = 8,
+            RightParentChainNotEnoughBalance         = 9,
+            RightParentChainNotEnabled               = 10,
         };
 
         Q_ENUM(TradingErrorEnum)
