@@ -3079,13 +3079,13 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Exchange/Trade/Orders/SwapProgress.qml" line="100"/>
         <source>act</source>
         <comment>SHORT FOR ACTUAL TIME</comment>
-        <translation>факт</translation>
+        <translation>фактич</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/SwapProgress.qml" line="102"/>
         <source>est</source>
         <comment>SHORT FOR ESTIMATED</comment>
-        <translation>прогноз</translation>
+        <translation>прибл</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/SwapProgress.qml" line="110"/>
