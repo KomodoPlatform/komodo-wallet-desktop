@@ -22,7 +22,6 @@ Popup {
         notifications_list = []
         root.close()
     }
-
     function showApp() {
         switch(window.real_visibility) {
             case 4:
@@ -66,7 +65,6 @@ Popup {
             break
         }
     }
-
     function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "") {
         const obj = { event_name, params, id, title, message, human_date, click_action, long_message }
 
@@ -207,18 +205,17 @@ Popup {
         if(API.app.settings_pg.notification_enabled)
             tray.showMessage(title, message)
     }
-
     SystemTrayIcon {
         id: tray
         visible: true
         iconSource: General.image_path + "dex-tray-icon.png"
-        onMessageClicked: {
-            if(notifications_list.length > 0)
-                performNotificationAction(notifications_list[0])
-            showApp()
-        }
 
         tooltip: API.app_name
+        onMessageClicked: {
+                    if(notifications_list.length > 0)
+                        performNotificationAction(notifications_list[0])
+                    showApp()
+                }
         menu: Menu {
             MenuItem {
                 text: qsTr("Show")

@@ -470,5 +470,6 @@
         <file>atomic_defi_design/qml/Portfolio/AssetPieChart.qml</file>
         <file>atomic_defi_design/qml/Portfolio/TableDex.qml</file>
         <file>atomic_defi_design/qml/Components/DexModel.qml</file>
+        <file>atomic_defi_design/qml/Components/DexWindowControl.qml</file>
     </qresource>
 </RCC>

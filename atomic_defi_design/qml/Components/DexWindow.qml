@@ -9,4 +9,6 @@ import "../Constants"
 ApplicationWindow {
     id: window
     flags: Qt.FramelessWindowHint | Qt.Window
+
+
 }
