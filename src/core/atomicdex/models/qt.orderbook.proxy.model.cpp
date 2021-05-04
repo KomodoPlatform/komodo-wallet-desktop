@@ -64,6 +64,8 @@ namespace atomic_dex
             break;
         case orderbook_model::MinVolumeRole:
             break;
+        case orderbook_model::BaseMinVolumeRole:
+            break;
         case orderbook_model::EnoughFundsToPayMinVolume:
             break;
         case orderbook_model::CEXRatesRole:
@@ -85,7 +87,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order) 
+    orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order)
     {
         this->sort(column, order);
     }
