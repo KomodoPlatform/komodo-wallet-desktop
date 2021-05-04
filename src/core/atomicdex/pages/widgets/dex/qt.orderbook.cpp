@@ -190,6 +190,8 @@ namespace atomic_dex
             out["price_numer"]       = QString::fromStdString(order.price_fraction_numer);
             out["quantity_denom"]    = QString::fromStdString(order.max_volume_fraction_denom);
             out["quantity_numer"]    = QString::fromStdString(order.max_volume_fraction_numer);
+            out["min_volume"]        = QString::fromStdString(order.min_volume);
+            out["base_min_volume"]   = QString::fromStdString(order.base_min_volume);
             m_selected_best_order    = out;
             auto& trading_pg         = m_system_manager.get_system<trading_page>();
             if (!trading_pg.set_pair(false, QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin)))
@@ -248,7 +250,7 @@ namespace atomic_dex
             if (trading_pg.get_market_mode() == MarketMode::Sell)
             {
                 cur_taker_vol = QString::fromStdString(preffered_order->at("base_min_volume").get<std::string>());
-                //SPDLOG_INFO("cur_taker_vol: {}", cur_taker_vol.toStdString());
+                // SPDLOG_INFO("cur_taker_vol: {}", cur_taker_vol.toStdString());
             }
         }
 
