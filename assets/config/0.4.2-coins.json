@@ -1237,6 +1237,32 @@
       "active": false,
       "currently_enabled": false
   },
+    "FJC": {
+    "coin": "FJC",
+    "name": "Fujicoin",
+    "coinpaprika_id": "fjc-fujicoin",
+    "coingecko_id": "fujicoin",
+    "electrum": [
+      {
+        "url": "electrumx1.fujicoin.org",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx2.fujicoin.org",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.fujicoin.org/"
+    ],
+    "explorer_tx_url": "tx/",
+    "explorer_address_url": "address/",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "STFIRO": {
       "coin": "STFIRO",
       "name": "StakedFIRO",
