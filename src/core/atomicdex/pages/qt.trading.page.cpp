@@ -264,7 +264,7 @@ namespace atomic_dex
         // SPDLOG_INFO("delta min_vol compare to max volume is: {}", utils::format_float(delta));
         // SPDLOG_INFO("delta min_vol compare to current volume is: {}", utils::format_float(delta_cur));
         // SPDLOG_INFO("base: {} base_min_vol: {}", base_resp.coin, base_resp.min_trading_vol);
-        SPDLOG_INFO("rel: {} rel_min_vol: {}", rel_resp.coin, rel_resp.min_trading_vol);
+        //SPDLOG_INFO("rel: {} rel_min_vol: {}", rel_resp.coin, rel_resp.min_trading_vol);
         //SPDLOG_INFO("cur_min_trade {}", cur_min_trade.str());
         //SPDLOG_INFO("base_min_trade {}", base_min_trade.str());
         SPDLOG_INFO("min_trade_amount_field {}", m_minimal_trading_amount.toStdString());
