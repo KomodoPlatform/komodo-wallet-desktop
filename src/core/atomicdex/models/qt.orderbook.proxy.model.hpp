@@ -19,6 +19,7 @@
 //! Qt
 #include <QSortFilterProxyModel>
 
+
 namespace atomic_dex
 {
     class orderbook_proxy_model final : public QSortFilterProxyModel

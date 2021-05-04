@@ -43,6 +43,7 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(PriceRole);
+
         switch (m_current_orderbook_kind)
         {
         case kind::asks:
@@ -437,5 +438,10 @@ namespace atomic_dex
     orderbook_model::get_orderbook_proxy() const
     {
         return m_model_proxy;
+    }
+    orderbook_model::kind
+    orderbook_model::get_orderbook_kind() const
+    {
+        return m_current_orderbook_kind;
     }
 } // namespace atomic_dex
