@@ -921,9 +921,11 @@ namespace atomic_dex
     void
     trading_page::set_preffered_order(QVariantMap price_object)
     {
+        SPDLOG_INFO("order pick from orderbook");
         if (auto preffered_order = nlohmann::json::parse(QString(QJsonDocument(QJsonObject::fromVariantMap(price_object)).toJson()).toStdString());
             preffered_order != m_preffered_order)
         {
+            SPDLOG_INFO("preffered_order: {}", preffered_order.dump(4));
             m_preffered_order = std::move(preffered_order);
             emit prefferedOrderChanged();
             if (not m_preffered_order->empty() && m_preffered_order->contains("price"))
@@ -1108,7 +1110,7 @@ namespace atomic_dex
 
         const auto left_cfg  = mm2.get_coin_info(left);
         const auto right_cfg = mm2.get_coin_info(right);
-        if (left_cfg.has_parent_fees_ticker)
+        if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
         {
             const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
             if (!left_fee_cfg.currently_enabled)
@@ -1120,7 +1122,7 @@ namespace atomic_dex
                 current_trading_error = TradingError::LeftParentChainNotEnoughBalance;
             }
         }
-        else if (right_cfg.has_parent_fees_ticker)
+        else if (right_cfg.has_parent_fees_ticker && right_cfg.ticker != "QTUM")
         {
             const auto right_fee_cfg = mm2.get_coin_info(right_cfg.fees_ticker);
             if (!right_fee_cfg.currently_enabled)

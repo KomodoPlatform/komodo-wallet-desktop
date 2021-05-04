@@ -495,7 +495,7 @@ Qaterial.Dialog {
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             height: 40
-            width: 175
+            width: 300
             Row {
                 anchors.centerIn: parent
                 Qaterial.ColorIcon {

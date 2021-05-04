@@ -33,7 +33,7 @@ import "./" as Here
 
 ColumnLayout {
     id: form
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
+    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = {
@@ -43,7 +43,9 @@ ColumnLayout {
             "price_denom": price_denom,
             "price_numer": price_numer,
             "quantity_denom": quantity_denom,
-            "quantity_numer": quantity_numer
+            "quantity_numer": quantity_numer,
+            "min_volume": min_volume,
+            "base_min_volume": base_min_volume
         }
 
         form_base.focusVolumeField()
@@ -620,7 +622,7 @@ ColumnLayout {
                                                         last_trading_error,
                                                         curr_fee_info,
                                                         base_ticker,
-                                                        rel_ticker)
+                                                        rel_ticker, left_ticker, right_ticker)
                                     }
                                 }
                             }
