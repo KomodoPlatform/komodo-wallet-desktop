@@ -241,7 +241,7 @@ namespace atomic_dex
         t_float_50 base_min_f             = safe_float(get_base_min_taker_vol().toStdString());
         t_float_50 base_min_by_rel        = safe_float(get_rel_min_taker_vol().toStdString()) / price_f;
         t_float_50 base_min_vol_threshold = boost::multiprecision::max(base_min_by_rel, base_min_f);
-        base_min_vol_threshold += t_float_50("1e-8");
+        base_min_vol_threshold *= t_float_50("1.05");
         // t_float_50 cur_min_volume_f       = safe_float(trading_pg.get_min_trade_vol().toStdString());
         cur_taker_vol = QString::fromStdString(utils::format_float(base_min_vol_threshold));
 
@@ -250,10 +250,11 @@ namespace atomic_dex
             if (trading_pg.get_market_mode() == MarketMode::Sell)
             {
                 cur_taker_vol = QString::fromStdString(preffered_order->at("base_min_volume").get<std::string>());
-                SPDLOG_INFO("Overriding min_volume with the one from orderbook: {}", cur_taker_vol.toStdString());
+                //SPDLOG_INFO("Overriding min_volume with the one from orderbook: {}", cur_taker_vol.toStdString());
             }
         }
 
+        //SPDLOG_INFO("final_taker_vol: {}", cur_taker_vol.toStdString());
         return cur_taker_vol;
     }
 } // namespace atomic_dex
