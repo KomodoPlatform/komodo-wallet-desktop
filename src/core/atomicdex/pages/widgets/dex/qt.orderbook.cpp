@@ -250,7 +250,7 @@ namespace atomic_dex
             if (trading_pg.get_market_mode() == MarketMode::Sell)
             {
                 cur_taker_vol = QString::fromStdString(preffered_order->at("base_min_volume").get<std::string>());
-                // SPDLOG_INFO("cur_taker_vol: {}", cur_taker_vol.toStdString());
+                SPDLOG_INFO("Overriding min_volume with the one from orderbook: {}", cur_taker_vol.toStdString());
             }
         }
 
