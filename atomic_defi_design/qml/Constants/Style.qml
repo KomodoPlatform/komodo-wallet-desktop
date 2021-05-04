@@ -301,6 +301,7 @@ QtObject {
                                           "DOT": "#E80082",
                                           "FIRO": "#BB2100",
                                           "LTC": "#BFBBBB",
+                                          "LYNX": "#0071BA",
                                           "ZEC": "#ECB244",
                                           "ZER": "#FFFFFF",
                                           "NAV": "#7D59B5",
