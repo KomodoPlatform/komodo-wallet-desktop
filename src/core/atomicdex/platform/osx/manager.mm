@@ -37,7 +37,7 @@ void atomic_dex::mac_window_setup(long winid, bool fullscreen)
     SPDLOG_INFO("mac_window_setup");
     NSView *nativeView = reinterpret_cast<NSView *>(winid);
     NSWindow* nativeWindow = [nativeView window];
-    NSWindowStyleMask windowMask = NSWindowStyleMaskBorderless | NSWindowStyleMaskResizable;
+    NSWindowStyleMask windowMask = NSWindowStyleMaskBorderless | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
     /*if (fullscreen) {
         windowMask |= NSWindowStyleMaskFullScreen;
     }*/
