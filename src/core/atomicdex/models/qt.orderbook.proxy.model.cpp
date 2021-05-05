@@ -107,7 +107,7 @@ namespace atomic_dex
                 break;
             case orderbook_model::kind::best_orders:
                 t_float_50 rates = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
-                if (rates > 20)
+                if (rates > 100)
                 {
                     return false;
                 }
