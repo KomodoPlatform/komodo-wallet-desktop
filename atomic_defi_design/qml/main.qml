@@ -10,22 +10,18 @@ import "Components"
 
 DexWindow {
     id: window
-
+    title: API.app_name
+    visible: true
+    property int previousX: 0
+    property int previousY: 0
+    property int real_visibility
+    minimumWidth: General.minimumWidth
+    minimumHeight: General.minimumHeight
+    
     Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light
     Universal.accent: Style.colorQtThemeAccent
     Universal.foreground: Style.colorQtThemeForeground
     Universal.background: Style.colorQtThemeBackground
-
-    visible: true
-    minimumWidth: General.minimumWidth
-    minimumHeight: General.minimumHeight
-    title: API.app_name
-
-    property int previousX: 0
-    property int previousY: 0
-    //flags: Qt.Window | Qt.WindowFullscreenButtonHint
-
-    property int real_visibility
 
     onVisibilityChanged: {
         // 3 is minimized, ignore that
@@ -37,6 +33,7 @@ DexWindow {
     }
 
     background: Item{}
+    
     Rectangle {
         anchors.fill: parent
         color: "transparent"
@@ -50,9 +47,6 @@ DexWindow {
         anchors.fill: parent
         anchors.margins: 2
     }
-    DexWindowControl {
-    }
 
-
-
+    DexWindowControl { }
 }

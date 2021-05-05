@@ -16,12 +16,19 @@ Popup {
     y: 30
     dim: false
     modal: false
+    property var notification_map: [{icon: Qaterial.Icons.arrowUpCircleOutline,color: theme.redColor}, {icon: Qaterial.Icons.arrowDownCircleOutline,color: theme.greenColor}, {icon: Qaterial.Icons.emailOutline,color: theme.foregroundColor}]
     background: FloatingBackground {}
 
     function reset() {
         notifications_list = []
         root.close()
     }
+    enum NotificationKind
+	{
+	   Send,
+	   Receive,
+	   Others
+	}
     function showApp() {
         switch(window.real_visibility) {
             case 4:
@@ -34,7 +41,6 @@ Popup {
                 window.show()
                 break
         }
-
         window.raise()
         window.requestActivate()
     }
@@ -66,8 +72,16 @@ Popup {
         }
     }
     function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "") {
-        const obj = { event_name, params, id, title, message, human_date, click_action, long_message }
-
+        
+        let obj;
+        if (title.indexOf("You received")!==-1 ) {
+            obj = { event_name, params, id, title, message, human_date, click_action, long_message, kind:NotificationsModal.NotificationKind.Receive }
+        } else if(title.indexOf("You sent")!==-1) {
+            obj = { event_name, params, id, title, message, human_date, click_action, long_message, kind:NotificationsModal.NotificationKind.Send }
+        } else {
+            obj = { event_name, params, id, title, message, human_date, click_action, long_message, kind:NotificationsModal.NotificationKind.Others }
+        }
+        
         // Update if it already exists
         let updated_existing_one = false
         for(let i = 0; i < notifications_list.length; ++i) {
@@ -248,16 +262,6 @@ Popup {
                     font: theme.textType.head6
                     text: "Notifications"
                 }
-                DexLabel {
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: 40
-                    leftPadding: 15
-                    text: list.count
-                    font: Qt.font({
-                        pixelSize: 20,
-                        family: 'Lato'
-                    })
-                }
                 Qaterial.AppBarButton {
                     enabled: list.count>0
                     Layout.alignment: Qt.AlignVCenter
@@ -305,33 +309,6 @@ Popup {
                     }
                     height: _column.height+10
                     width: list.width
-                    property int stat: {
-                        if (notifications_list[index].title.indexOf("You received")!==-1 ) {
-                            return 0
-                        } else if(notifications_list[index].title.indexOf("You sent")!==-1) {
-                            return 1
-                        } else {
-                            return 2
-                        }
-                    }
-                    function getIcon(){
-                        if(stat===0) {
-                            return  Qaterial.Icons.arrowDownCircleOutline
-                        }else if(stat===1) {
-                            return  Qaterial.Icons.arrowUpCircleOutline
-                        }else if(stat===2) {
-                            return Qaterial.Icons.emailOutline
-                        }
-                    }
-                    function getIconColor(){
-                        if(stat===0) {
-                            return  theme.greenColor
-                        }else if(stat===1) {
-                            return  theme.redColor
-                        }else if(stat===2) {
-                            return theme.foregroundColor
-                        }
-                    }
                     RowLayout {
                         anchors.fill: parent
                         Item {
@@ -339,10 +316,10 @@ Popup {
                             Layout.preferredWidth: 60
                             Qaterial.ColorIcon {
                                 anchors.verticalCenter: parent.verticalCenter
-                                source: getIcon()
+                                source: notification_map[notifications_list[index].kind].icon
                                 iconSize: 32
                                 x: 10
-                                color: getIconColor()
+                                color: notification_map[notifications_list[index].kind].color
                                 opacity: .6
                             }
                         }
@@ -390,6 +367,5 @@ Popup {
                 }
             }
         }
-
     }
 }
