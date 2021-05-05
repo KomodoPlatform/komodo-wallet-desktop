@@ -1563,6 +1563,11 @@
       "coingecko_id": "lynx",
       "electrum": [
         {
+          "url": "electrum.deliverypath.com:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
           "url": "electrum.getlynx.io:50001",
           "protocol": "TCP"
         }
