@@ -1244,14 +1244,12 @@
     "coingecko_id": "fujicoin",
     "electrum": [
       {
-        "url": "electrumx1.fujicoin.org",
-        "protocol": "SSL",
-        "disable_cert_verification": true
+        "url": "electrumx1.fujicoin.org:50001",
+        "protocol": "TCP"
       },
       {
-        "url": "electrumx2.fujicoin.org",
-        "protocol": "SSL",
-        "disable_cert_verification": true
+        "url": "electrumx2.fujicoin.org:50001",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
