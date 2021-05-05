@@ -3357,7 +3357,7 @@
   },
   "SFUSD": {
     "coin": "SFUSD",
-    "name": "SmartFi",
+    "name": "SmartUSD",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "electrum": [
