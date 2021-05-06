@@ -32,6 +32,34 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
+//! Private API
+namespace atomic_dex
+{
+    void wallet_page::check_send_availability()
+    {
+        auto& mm2 = m_system_manager.get_system<mm2_service>();
+        auto  ticker_info = mm2.get_coin_info(mm2.get_current_ticker());
+        
+        if (not mm2.get_balance(ticker_info.ticker) > 0)
+        {
+            m_send_available = false;
+            m_send_availability_state = "You do not have enough founds.";
+        }
+        else if (ticker_info.has_parent_fees_ticker && not mm2.get_balance(ticker_info.fees_ticker) > 0)
+        {
+            m_send_available = false;
+            m_send_availability_state = QString::fromStdString(fmt::format("You do not have enough {} founds to pay the fees.", ticker_info.fees_ticker));
+        }
+        else
+        {
+            m_send_available = true;
+            m_send_availability_state = "";
+        }
+        emit sendAvailableChanged();
+        emit sendAvailabilityStateChanged();
+    }
+}
+
 //! Getters/Setters
 namespace atomic_dex
 {
@@ -53,6 +81,7 @@ namespace atomic_dex
             emit currentTickerChanged();
             mm2_system.fetch_infos_thread(true, true);
             refresh_ticker_infos();
+            check_send_availability();
         }
     }
 
@@ -253,6 +282,17 @@ namespace atomic_dex
     wallet_page::has_auth_succeeded() const
     {
         return m_auth_succeeded;
+    }
+    
+    bool
+    wallet_page::is_send_available()
+    {
+        return m_send_available;
+    }
+    
+    QString wallet_page::get_send_availability_state()
+    {
+        return m_send_availability_state;
     }
 } // namespace atomic_dex
 

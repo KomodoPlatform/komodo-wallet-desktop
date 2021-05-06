@@ -16,6 +16,9 @@ namespace atomic_dex
         
         using t_qt_synchronized_json   = boost::synchronized_value<QJsonObject>;
         using t_qt_synchronized_string = boost::synchronized_value<QString>;
+        
+        // Private API
+        void check_send_availability(); // When called, refreshes `m_send_availability_state` and `m_send_available` respective values. `m_send_available` is equal to false when you cannot send the selected coin, thus `m_send_availability_state` will contain the reason of why it's not possible.
 
       public:
         explicit wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
@@ -51,6 +54,8 @@ namespace atomic_dex
         void                   set_tx_fetching_busy(bool status) ;
         [[nodiscard]] bool     has_auth_succeeded() const ;
         void                   set_auth_succeeded() ;
+        [[nodiscard]] bool     is_send_available();
+        [[nodiscard]] QString  get_send_availability_state();
         
         // QML API
         Q_INVOKABLE void claim_rewards();
@@ -73,6 +78,8 @@ namespace atomic_dex
         Q_PROPERTY(QVariant send_rpc_data READ get_rpc_send_data WRITE set_rpc_send_data NOTIFY sendDataChanged)
         Q_PROPERTY(bool tx_fetching_busy READ is_tx_fetching_busy WRITE set_tx_fetching_busy NOTIFY txFetchingStatusChanged)
         Q_PROPERTY(bool auth_succeeded READ has_auth_succeeded NOTIFY auth_succeededChanged)
+        Q_PROPERTY(bool send_available READ is_send_available NOTIFY sendAvailableChanged)
+        Q_PROPERTY(QString send_availability_state READ get_send_availability_state NOTIFY sendAvailabilityStateChanged)
         
         // QML API Properties Signals
       signals:
@@ -89,6 +96,8 @@ namespace atomic_dex
         void transactionsMdlChanged();
         void txFetchingStatusChanged();
         void auth_succeededChanged();
+        void sendAvailabilityStateChanged();
+        void sendAvailableChanged();
 
       private:
         ag::ecs::system_manager& m_system_manager;
@@ -103,6 +112,8 @@ namespace atomic_dex
         t_qt_synchronized_json   m_send_rpc_result;
         t_qt_synchronized_string m_broadcast_rpc_result;
         bool                     m_auth_succeeded;
+        bool                     m_send_available{true};
+        QString                  m_send_availability_state;
     };
 } // namespace atomic_dex
 
