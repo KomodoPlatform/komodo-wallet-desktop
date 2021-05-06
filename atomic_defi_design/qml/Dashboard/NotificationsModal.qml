@@ -292,23 +292,26 @@ Popup {
 
             DefaultListView {
                 id: list
-
                 visible: notifications_list.length !== 0
-
                 anchors.fill: parent
                 model: notifications_list
-                delegate: ItemDelegate {
+                delegate: Rectangle {
+                	color: mouseArea.containsMouse? theme.dexBoxBackgroundColor : 'transparent'
                     function removeNotification() {
                         notifications_list.splice(index, 1)
                         notifications_list = notifications_list
                     }
-                    onClicked: {
-                        // Action might create another event so we save it and then remove the current one, then take the action
-                        performNotificationAction(notifications_list[index])
-                        removeNotification()
-                    }
                     height: _column.height+10
                     width: list.width
+                    MouseArea {
+                    	id: mouseArea 
+                    	hoverEnabled: true
+                    	anchors.fill: parent
+                    	onClicked: {
+                    		performNotificationAction(notifications_list[index])
+                        	removeNotification()
+                    	}
+                    }
                     RowLayout {
                         anchors.fill: parent
                         Item {
@@ -316,10 +319,10 @@ Popup {
                             Layout.preferredWidth: 60
                             Qaterial.ColorIcon {
                                 anchors.verticalCenter: parent.verticalCenter
-                                source: notification_map[notifications_list[index].kind].icon
+                                source: notification_map[modelData.kind].icon
                                 iconSize: 32
                                 x: 10
-                                color: notification_map[notifications_list[index].kind].color
+                                color: notification_map[modelData.kind].color
                                 opacity: .6
                             }
                         }
@@ -334,27 +337,81 @@ Popup {
                                 id: _column
                                 width: parent.width
                                 leftPadding: 15
+                                topPadding: 5
+                                bottomPadding: 5
                                 spacing: 5
                                 DexLabel {
-                                    text: notifications_list[index].title
+                                    text: modelData.title
                                     font: theme.textType.body1
                                     width: parent.width
                                     wrapMode: Label.Wrap
                                 }
                                 DexLabel {
-                                    text: notifications_list[index].message
+                                    text: modelData.message
                                     font: theme.textType.subtitle2
                                     width: parent.width
                                     wrapMode: Label.Wrap
                                     color: theme.accentColor
                                 }
-                                 DexLabel {
-                                    text: notifications_list[index].human_date
+                                DexLabel {
+                                    text: modelData.human_date
                                     font: theme.textType.caption
                                 }
+                            	
                             }
+                            Qaterial.AppBarButton {
+		                        id: action_button
+		                        scale: .6
+		                        anchors.bottom: parent.bottom
+		                        anchors.right: parent.right 
+		                        anchors.bottomMargin: -4
+		                        icon.source: {
+		                            let name
+		                            switch(modelData.event_name) {
+		                            case "onEnablingCoinFailedStatus":
+		                                name = "repeat"
+		                                break
+		                            case "onMismatchCustomCoinConfiguration":
+		                                name = "restart-alert"
+		                                break
+		                            default:
+		                                name = "check"
+		                                break
+		                            }
+
+		                            return General.qaterialIcon(name)
+		                        }
+		                        
+		                        function removeNotification() {
+		                            notifications_list.splice(index, 1)
+		                            notifications_list = notifications_list
+		                        }
+
+		                        onClicked: {
+		                            // Action might create another event so we save it and then remove the current one, then take the action
+		                            const event_before_removal = General.clone(modelData)
+
+		                            // Action
+		                            switch(event_before_removal.event_name) {
+		                            case "onEnablingCoinFailedStatus":
+		                                removeNotification()
+		                                console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
+		                                API.app.enable_coins([event_before_removal.params.coin])
+		                                break
+		                            case "onMismatchCustomCoinConfiguration":
+		                                console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
+		                                root.close()
+		                                restart_modal.open()
+		                                break
+		                            default:
+		                                removeNotification()
+		                                break
+		                            }
+		                        }
+		                    }
                         }
                     }
+                    
                     Rectangle {
                         height: 2
                         color: theme.foregroundColor
