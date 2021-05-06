@@ -23,6 +23,10 @@ Item {
 
     readonly property var transactions_mdl: api_wallet_page.transactions_mdl
 
+    // Refreshes `Send` availability of current ticker when a new coin is added/removed
+    readonly property int portfolio_length: API.app.portfolio_pg.portfolio_mdl.length
+    onPortfolio_lengthChanged: API.app.wallet_pg.refresh_send_availability()
+
     Layout.fillHeight: true
     Layout.fillWidth: true
 
@@ -193,7 +197,10 @@ Item {
                     id: send_button
                     enabled: API.app.wallet_pg.send_available
                     text: qsTr("Send")
-                    onClicked: if (API.app.wallet_pg.send_available) send_modal.open()
+                    onClicked: {
+                        if (API.app.wallet_pg.current_ticker_fees_coin_enabled) send_modal.open()
+                        else enable_fees_coin_modal.open()
+                    }
                     width: parent.width
                     anchors.top: parent.top
                     font.pixelSize: Style.textSize
@@ -231,6 +238,37 @@ Item {
             ModalLoader {
                 id: send_modal
                 sourceComponent: SendModal {}
+            }
+
+            ModalLoader {
+                id: enable_fees_coin_modal
+                sourceComponent: BasicModal {
+                    width: 300
+                    id: root
+                    property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
+                    ModalContent {
+                        Layout.fillWidth: true
+                        title: qsTr("Enable %1 ?").arg(root.coin_to_enable_ticker)
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            DefaultButton {
+                                Layout.fillWidth: true
+                                text: qsTr("Yes")
+                                onClicked: {
+                                    API.app.enable_coin(root.coin_to_enable_ticker)
+                                    API.app.wallet_pg.refresh_send_availability()
+                                    close()
+                                }
+                            }
+                            DefaultButton {
+                                Layout.fillWidth: true
+                                text: qsTr("No")
+                                onClicked: close()
+                            }
+                        }
+                    }
+                }
             }
 
             DefaultButton {

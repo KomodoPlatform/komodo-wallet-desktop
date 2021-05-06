@@ -56,11 +56,13 @@ namespace atomic_dex
         void                   set_auth_succeeded() ;
         [[nodiscard]] bool     is_send_available();
         [[nodiscard]] QString  get_send_availability_state();
+        [[nodiscard]] bool     is_current_ticker_fees_coin_enabled();
         
         // QML API
         Q_INVOKABLE void claim_rewards();
         Q_INVOKABLE void claim_faucet();
-        Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) ;
+        Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount);
+        Q_INVOKABLE void refresh_send_availability(); // Calls `wallet_page::check_send_availability()` from QML.
         void broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount); // Broadcast requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after entering credentials.
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
         
@@ -80,6 +82,7 @@ namespace atomic_dex
         Q_PROPERTY(bool auth_succeeded READ has_auth_succeeded NOTIFY auth_succeededChanged)
         Q_PROPERTY(bool send_available READ is_send_available NOTIFY sendAvailableChanged)
         Q_PROPERTY(QString send_availability_state READ get_send_availability_state NOTIFY sendAvailabilityStateChanged)
+        Q_PROPERTY(bool current_ticker_fees_coin_enabled READ is_current_ticker_fees_coin_enabled NOTIFY currentTickerFeesCoinEnabledChanged)
         
         // QML API Properties Signals
       signals:
@@ -98,6 +101,7 @@ namespace atomic_dex
         void auth_succeededChanged();
         void sendAvailabilityStateChanged();
         void sendAvailableChanged();
+        void currentTickerFeesCoinEnabledChanged();
 
       private:
         ag::ecs::system_manager& m_system_manager;
@@ -114,6 +118,7 @@ namespace atomic_dex
         bool                     m_auth_succeeded;
         bool                     m_send_available{true};
         QString                  m_send_availability_state;
+        bool                     m_current_ticker_fees_coin_enabled{true}; // Tells if the current ticker's fees coin is enabled.
     };
 } // namespace atomic_dex
 

@@ -43,20 +43,40 @@ namespace atomic_dex
         if (not mm2.get_balance(ticker_info.ticker) > 0)
         {
             m_send_available = false;
-            m_send_availability_state = "You do not have enough founds.";
+            m_send_availability_state = tr("You do not have enough founds.");
+            m_current_ticker_fees_coin_enabled = true;
         }
-        else if (ticker_info.has_parent_fees_ticker && not mm2.get_balance(ticker_info.fees_ticker) > 0)
+        else if (ticker_info.has_parent_fees_ticker)
         {
-            m_send_available = false;
-            m_send_availability_state = QString::fromStdString(fmt::format("You do not have enough {} founds to pay the fees.", ticker_info.fees_ticker));
+            auto parent_ticker_info = mm2.get_coin_info(ticker_info.fees_ticker);
+            
+            if (!parent_ticker_info.currently_enabled)
+            {
+                m_send_available                   = true;
+                m_send_availability_state =
+                    tr("%1 is not activated: click on the button to enable it or enable it manually")
+                        .arg(QString::fromStdString(parent_ticker_info.ticker));
+                m_current_ticker_fees_coin_enabled = false;
+            }
+            else if (not mm2.get_balance(parent_ticker_info.ticker) > 0)
+            {
+                m_send_available                   = false;
+                m_send_availability_state =
+                    tr("You need to have %1 to pay the gas for %2 transactions.")
+                        .arg(QString::fromStdString(parent_ticker_info.ticker))
+                        .arg(QString::fromStdString(parent_ticker_info.type));
+                m_current_ticker_fees_coin_enabled = true;
+            }
         }
         else
         {
             m_send_available = true;
             m_send_availability_state = "";
+            m_current_ticker_fees_coin_enabled = true;
         }
         emit sendAvailableChanged();
         emit sendAvailabilityStateChanged();
+        emit currentTickerFeesCoinEnabledChanged();
     }
 }
 
@@ -294,6 +314,11 @@ namespace atomic_dex
     {
         return m_send_availability_state;
     }
+    
+    bool wallet_page::is_current_ticker_fees_coin_enabled()
+    {
+        return m_current_ticker_fees_coin_enabled;
+    }
 } // namespace atomic_dex
 
 //! Public api
@@ -423,6 +448,12 @@ namespace atomic_dex
 #else
         broadcast_on_auth_finished(true, tx_hex, is_claiming, is_max, amount);
 #endif
+    }
+    
+    void wallet_page::refresh_send_availability()
+    {
+        refresh_ticker_infos();
+        check_send_availability();
     }
 
     void
