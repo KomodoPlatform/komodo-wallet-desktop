@@ -285,16 +285,15 @@ Rectangle {
         fileName: atomic_cfg_file
     }
 
+    Settings {
+    	id: ui_font_settings
+    	property alias fontDensity: _font.fontDensity
+    	property alias fontFamily: _font.fontFamily
+    }
+
     Component.onCompleted: {
         openFirstLaunch()
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
-//      save_currentTheme()
-//      Load the chart
-//        if(!chart_component) chart_component = Qt.createComponent("qrc:/atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml")//./Exchange/Trade/CandleStickChart.qml")
-//        if(!chart_object) {
-//            chart_object = chart_component.createObject(app)
-//            chart_object.visible = false
-//        }
         atomic_settings2.sync()
         let current =  atomic_settings2.value("CurrentTheme")
         console.log(current)
@@ -321,7 +320,6 @@ Rectangle {
         console.log(r)
     }
     function load_theme(name) {
-        //atomic_settings2.value("CurrentTheme",name+".json")
         let data = API.qt_utilities.load_theme(name)
         for(let i in data) {
             if (i.toString().indexOf("[int]")!==-1){
@@ -792,82 +790,83 @@ Rectangle {
     QtObject {
         id: _font
         property real fontDensity: 1.0
+        property real languageDensity: 1.0
         property string fontFamily: "Ubuntu"
         property font head1: Qt.font({
-            pixelSize: 96*fontDensity,
+            pixelSize: 96*fontDensity*languageDensity,
             letterSpacing: -1.5,
             family: fontFamily,
             weight: Font.Light
         })
         property font head2: Qt.font({
-            pixelSize: 60*fontDensity,
+            pixelSize: 60*fontDensity*languageDensity,
             letterSpacing: -0.5,
             family: fontFamily,
             weight: Font.Light
         })
         property font head3: Qt.font({
-            pixelSize: 48*fontDensity,
+            pixelSize: 48*fontDensity*languageDensity,
             letterSpacing: 0,
             family: fontFamily,
             weight: Font.Normal
         })
         property font head4: Qt.font({
-            pixelSize: 34*fontDensity,
+            pixelSize: 34*fontDensity*languageDensity,
             letterSpacing: 0.25,
             family: fontFamily,
             weight: Font.Normal
         })
         property font head5: Qt.font({
-            pixelSize: 24*fontDensity,
+            pixelSize: 24*fontDensity*languageDensity,
             letterSpacing: 0,
             family: fontFamily,
             weight: Font.Normal
         })
         property font head6: Qt.font({
-            pixelSize: 20*fontDensity,
+            pixelSize: 20*fontDensity*languageDensity,
             letterSpacing: 0.15,
             family: fontFamily,
             weight: Font.Medium
         })
         property font subtitle1: Qt.font({
-            pixelSize: 16*fontDensity,
+            pixelSize: 16*fontDensity*languageDensity,
             letterSpacing: 0.15,
             family: fontFamily,
             weight: Font.Normal
         })
         property font subtitle2: Qt.font({
-            pixelSize: 14*fontDensity,
+            pixelSize: 14*fontDensity*languageDensity,
             letterSpacing: 0.1,
             family: fontFamily,
             weight: Font.Medium
         })
         property font body1: Qt.font({
-            pixelSize: 16*fontDensity,
+            pixelSize: 16*fontDensity*languageDensity,
             letterSpacing: 0.5,
             family: fontFamily,
             weight: Font.Normal
         })
         property font body2: Qt.font({
-            pixelSize: 14*fontDensity,
+            pixelSize: 14*fontDensity*languageDensity,
             letterSpacing: 0.25,
             family: fontFamily,
             weight: Font.Normal
         })
         property font button: Qt.font({
-            pixelSize: 14*fontDensity,
+            pixelSize: 14*fontDensity*languageDensity,
             letterSpacing: 1.25,
             capitalization: Font.AllUppercase,
             family: fontFamily,
             weight: Font.Medium
         })
         property font caption: Qt.font({
-            pixelSize: 12*fontDensity,
+            pixelSize: 12*fontDensity*languageDensity,
             letterSpacing: 0.4,
             family: fontFamily,
             weight: Font.Normal
         })
         property font overLine: Qt.font({
-            pixelSize: 10*fontDensity,
+            pixelSize: 10*fontDensity*languageDensity,
             letterSpacing: 1.25,
             capitalization: Font.AllUppercase,
             family: fontFamily,

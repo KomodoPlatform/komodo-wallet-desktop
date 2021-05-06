@@ -151,7 +151,6 @@ Qaterial.Dialog {
                                 }
                                 DefaultSwitch {
                                     Layout.alignment: Qt.AlignVCenter
-                                    //text: qsTr("Enable Desktop Notifications")
                                     Component.onCompleted: checked = API.app.settings_pg.notification_enabled
                                     onCheckedChanged: API.app.settings_pg.notification_enabled = checked
                                 }
@@ -240,19 +239,35 @@ Qaterial.Dialog {
                                     Layout.leftMargin: combo_fiat.Layout.leftMargin
                                     Layout.rightMargin: Layout.leftMargin
                                     checked: parseInt(atomic_settings2.value("FontMode")) === 1
-                                    //text: qsTr("Use QtTextRendering Or NativeTextRendering")
                                     onCheckedChanged: {
                                         if(checked){
                                             atomic_settings2.setValue("FontMode", 1)
                                         }else {
                                             atomic_settings2.setValue("FontMode", 0)
                                         }
-                                        if(firstTime) {
-                                            firstTime = false
-                                        }else {
-                                            restart_modal.open()
-                                        }
+                                        restart_modal.open()
 
+                                    }
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 30
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Current Font")
+                                }
+                                DexComboBox {
+                                    id: dexFont
+                                    editable: true
+                                    Layout.alignment: Qt.AlignVCenter
+                                    displayText: _font.fontFamily
+                                    model: Qt.fontFamilies()
+                                    Component.onCompleted: {
+                                        let current = _font.fontFamily
+                                        currentIndex = Qt.fontFamilies().indexOf(current)
                                     }
                                 }
                             }
@@ -274,11 +289,6 @@ Qaterial.Dialog {
                                         let current = atomic_settings2.value("CurrentTheme")
                                         currentIndex = model.indexOf(current)
                                     }
-                                    onCurrentTextChanged: {
-//                                        atomic_settings2.setValue("CurrentTheme", currentText)
-//                                        atomic_settings2.sync()
-//                                        app.load_theme(currentText.replace(".json",""))
-                                    }
                                 }
                             }
                             RowLayout {
@@ -297,6 +307,7 @@ Qaterial.Dialog {
                                         atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                         atomic_settings2.sync()
                                         app.load_theme(dexTheme.currentText.replace(".json",""))
+                                        _font.fontFamily = dexFont.currentText
                                     }
                                 }
                             }

@@ -305,53 +305,53 @@
         <translation>Действия</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="277"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="288"/>
         <source>New Address</source>
         <translation>Новый Адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="322"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="333"/>
         <source>Tags</source>
         <translation>Теги</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="348"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="359"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="365"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="376"/>
         <source>Confirm</source>
         <translation>Подтвердить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="374"/>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="419"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="385"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="430"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="402"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="413"/>
         <source>The selected address belongs to a disabled coin, you need to enabled it before sending.</source>
         <translation>Вы выбрали адрес отключенной монеты, ее необходимо включить перед отправкой.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="408"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="419"/>
         <source>Enable</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="462"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="473"/>
         <source>Cannot send to this address</source>
         <translation>Отправка на этот адрес невозможна</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="465"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="476"/>
         <source>Your balance is empty</source>
         <translation>Баланс отсутствует</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="469"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="480"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -1358,6 +1358,18 @@
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="452"/>
+        <location filename="../../qml/Constants/General.qml" line="456"/>
+        <source>%1 parent chain is not enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Constants/General.qml" line="454"/>
+        <location filename="../../qml/Constants/General.qml" line="458"/>
+        <source>%1 parent chain balance is 0, a non-zero balance is required to pay the gas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Constants/General.qml" line="460"/>
         <source>Unknown Error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
@@ -1539,52 +1551,52 @@
         <translation>Обменять</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="255"/>
+        <location filename="../../qml/Wallet/Main.qml" line="254"/>
         <source>Claim Rewards</source>
         <translation>Получить вознаграждение</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="275"/>
+        <location filename="../../qml/Wallet/Main.qml" line="274"/>
         <source>Faucet</source>
         <translation>Фаусет</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="406"/>
+        <location filename="../../qml/Wallet/Main.qml" line="405"/>
         <source>Loading market data</source>
         <translation>Загрузка рыночных данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="412"/>
+        <location filename="../../qml/Wallet/Main.qml" line="411"/>
         <source>There is no chart data for this ticker yet</source>
         <translation>Для данного актива пока еще нет графиков данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="437"/>
+        <location filename="../../qml/Wallet/Main.qml" line="436"/>
         <source>Loading</source>
         <translation>Загрузка</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="448"/>
+        <location filename="../../qml/Wallet/Main.qml" line="447"/>
         <source>Scanning blocks for TX History...</source>
         <translation>Сканирование блокчейна для получения данных о транзакциях...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="449"/>
+        <location filename="../../qml/Wallet/Main.qml" line="448"/>
         <source>Syncing TX History...</source>
         <translation>Синхронизация истории транзакций...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="480"/>
+        <location filename="../../qml/Wallet/Main.qml" line="479"/>
         <source>No transactions</source>
         <translation>Нет транзакций</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="480"/>
+        <location filename="../../qml/Wallet/Main.qml" line="479"/>
         <source>Refreshing</source>
         <translation>Обновление данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="512"/>
+        <location filename="../../qml/Wallet/Main.qml" line="511"/>
         <source>Fetching transactions</source>
         <translation>Получение данных о транзакциях</translation>
     </message>
@@ -2228,37 +2240,37 @@
 <context>
     <name>ProView</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="62"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="64"/>
         <source>Failed to place the order</source>
         <translation>Не удалось разместить ордер</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="71"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="73"/>
         <source>Placed the order</source>
         <translation>Ордер размещен</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="271"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="273"/>
         <source>Exchange Rates</source>
         <translation>Курс обмена</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="277"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="279"/>
         <source>Orders</source>
         <translation>Ордеры</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="283"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="285"/>
         <source>history</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="545"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="547"/>
         <source>Order Selected</source>
         <translation>Ордер выбран</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="594"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="596"/>
         <source>Start Swap</source>
         <translation>Начать Своп</translation>
     </message>
@@ -2661,93 +2673,103 @@
 <context>
     <name>SettingModal</name>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="106"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="210"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="208"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="106"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>User Interface</source>
         <translation>Интерфейс</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="106"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>Security</source>
         <translation>Приватность</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="106"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>About</source>
         <translation>Дисклеймер</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="106"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>General</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="106"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>Version</source>
         <translation>Версия</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="151"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="150"/>
         <source>Enable Desktop Notifications</source>
         <translation>Включить уведомления для рабочего стола</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="167"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="165"/>
         <source>Logs</source>
         <translation>Логи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="170"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="168"/>
         <source>Open Folder</source>
         <translation>Открыть папку с логами</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="184"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="182"/>
         <source>Reset assets configuration</source>
         <translation>Сбросить конфигурацию ассетов</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="187"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="185"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="236"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="234"/>
         <source>Use QtTextRendering Or NativeTextRendering</source>
         <translation>Использовать QtTextRendering или NativeTextRendering</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="267"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="264"/>
+        <source>Current Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="285"/>
         <source>Theme</source>
         <translation>Тема</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="415"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="351"/>
+        <source>Ask system&apos;s password before sending coins ? (2FA)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="455"/>
         <source>Application version</source>
         <translation>Версия приложения</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="429"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="469"/>
         <source>MM2 version</source>
         <translation>Версия MM2</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="443"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="483"/>
         <source>Qt version</source>
         <translation>Версия Qt</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="482"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="522"/>
         <source>Search Update</source>
         <translation>Проверить на обновления</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="509"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="549"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
@@ -2757,38 +2779,38 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="295"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="308"/>
         <source>Apply Theme</source>
         <translation>Применить тему</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="333"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="373"/>
         <source>View seed and private keys</source>
         <translation>Показать seed-фразу и приватные ключи</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="336"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="396"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="376"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="436"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="349"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="389"/>
         <source>Setup Camouflage Password</source>
         <translation>Установить камуфляжный пароль</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="352"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="392"/>
         <source>Open</source>
         <translation>Установить</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="370"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="410"/>
         <source>Delete Wallet</source>
         <translation>Удалить кошелек</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="393"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="433"/>
         <source>Disclaimer and ToS</source>
         <translation>Дисклеймер и Условия Использования</translation>
     </message>
