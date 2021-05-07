@@ -16,9 +16,6 @@ namespace atomic_dex
         
         using t_qt_synchronized_json   = boost::synchronized_value<QJsonObject>;
         using t_qt_synchronized_string = boost::synchronized_value<QString>;
-        
-        // Private API
-        void check_send_availability(); // When called, refreshes `m_send_availability_state` and `m_send_available` respective values. `m_send_available` is equal to false when you cannot send the selected coin, thus `m_send_availability_state` will contain the reason of why it's not possible.
 
       public:
         explicit wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
@@ -58,11 +55,12 @@ namespace atomic_dex
         [[nodiscard]] QString  get_send_availability_state();
         [[nodiscard]] bool     is_current_ticker_fees_coin_enabled();
         
+        void check_send_availability(); // When called, refreshes `m_send_availability_state` and `m_send_available` respective values. `m_send_available` is equal to false when you cannot send the selected coin, thus `m_send_availability_state` will contain the reason of why it's not possible.
+    
         // QML API
         Q_INVOKABLE void claim_rewards();
         Q_INVOKABLE void claim_faucet();
         Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount);
-        Q_INVOKABLE void refresh_send_availability(); // Calls `wallet_page::check_send_availability()` from QML.
         void broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount); // Broadcast requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after entering credentials.
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
         

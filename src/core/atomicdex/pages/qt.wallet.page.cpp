@@ -17,6 +17,7 @@
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.settings.page.hpp"
 #include "qt.wallet.page.hpp"
+#include "qt.portfolio.page.hpp"
 
 namespace atomic_dex
 {
@@ -28,8 +29,7 @@ namespace atomic_dex
 
     void
     wallet_page::update()
-    {
-    }
+    {}
 } // namespace atomic_dex
 
 //! Private API
@@ -38,12 +38,12 @@ namespace atomic_dex
     void wallet_page::check_send_availability()
     {
         auto& mm2 = m_system_manager.get_system<mm2_service>();
-        auto  ticker_info = mm2.get_coin_info(mm2.get_current_ticker());
-        
-        SPDLOG_INFO("CHECK SEND ! {}<-{}", ticker_info.ticker, ticker_info.fees_ticker);
-        SPDLOG_INFO("Last error was: {}. SendAvailable:{}. CurrentTickerFeesCoinEnabled:{}",
-                    m_send_availability_state.toStdString(), m_send_available, m_current_ticker_fees_coin_enabled);
-        
+        auto  global_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
+        auto  ticker_info = global_coins_cfg->get_coin_info(mm2.get_current_ticker());
+
+        m_send_available = true;
+        m_send_availability_state = "";
+        m_current_ticker_fees_coin_enabled = true;
         if (not mm2.get_balance(ticker_info.ticker) > 0)
         {
             m_send_available = false;
@@ -52,7 +52,7 @@ namespace atomic_dex
         }
         else if (ticker_info.has_parent_fees_ticker)
         {
-            auto parent_ticker_info = mm2.get_coin_info(ticker_info.fees_ticker);
+            auto parent_ticker_info = global_coins_cfg->get_coin_info(ticker_info.fees_ticker);
             
             if (!parent_ticker_info.currently_enabled)
             {
@@ -72,14 +72,6 @@ namespace atomic_dex
                 m_current_ticker_fees_coin_enabled = true;
             }
         }
-        else
-        {
-            m_send_available = true;
-            m_send_availability_state = "";
-            m_current_ticker_fees_coin_enabled = true;
-        }
-        SPDLOG_INFO("New error is: {}. SendAvailable:{}. CurrentTickerFeesCoinEnabled:{}",
-                    m_send_availability_state.toStdString(), m_send_available, m_current_ticker_fees_coin_enabled);
         emit sendAvailableChanged();
         emit sendAvailabilityStateChanged();
         emit currentTickerFeesCoinEnabledChanged();
@@ -454,13 +446,6 @@ namespace atomic_dex
 #else
         broadcast_on_auth_finished(true, tx_hex, is_claiming, is_max, amount);
 #endif
-    }
-    
-    void wallet_page::refresh_send_availability()
-    {
-        SPDLOG_INFO("REFRESH SEND !");
-        refresh_ticker_infos();
-        check_send_availability();
     }
 
     void

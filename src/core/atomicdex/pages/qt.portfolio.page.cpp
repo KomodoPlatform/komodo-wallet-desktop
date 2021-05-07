@@ -168,6 +168,7 @@ namespace atomic_dex
     {
         m_portfolio_mdl->initialize_portfolio(tickers);
         m_global_cfg_mdl->update_status(tickers, true);
+        m_system_manager.get_system<wallet_page>().check_send_availability();
     }
 
     void
@@ -175,6 +176,7 @@ namespace atomic_dex
     {
         m_portfolio_mdl->disable_coins(coins);
         m_global_cfg_mdl->update_status(coins, false);
+        m_system_manager.get_system<wallet_page>().check_send_availability();
     }
 
     WalletChartsCategories

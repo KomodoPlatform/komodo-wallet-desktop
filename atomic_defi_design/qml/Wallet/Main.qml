@@ -23,10 +23,6 @@ Item {
 
     readonly property var transactions_mdl: api_wallet_page.transactions_mdl
 
-    // Refreshes `Send` availability of current ticker when a new coin is added/removed
-    readonly property int portfolio_length: API.app.portfolio_pg.portfolio_mdl.length
-    onPortfolio_lengthChanged: API.app.wallet_pg.refresh_send_availability()
-
     Layout.fillHeight: true
     Layout.fillWidth: true
 
@@ -257,7 +253,6 @@ Item {
                                 text: qsTr("Yes")
                                 onClicked: {
                                     API.app.enable_coin(root.coin_to_enable_ticker)
-                                    API.app.wallet_pg.refresh_send_availability()
                                     close()
                                 }
                             }
