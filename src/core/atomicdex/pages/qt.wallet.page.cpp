@@ -41,6 +41,8 @@ namespace atomic_dex
         auto  ticker_info = mm2.get_coin_info(mm2.get_current_ticker());
         
         SPDLOG_INFO("CHECK SEND ! {}<-{}", ticker_info.ticker, ticker_info.fees_ticker);
+        SPDLOG_INFO("Last error was: {}. SendAvailable:{}. CurrentTickerFeesCoinEnabled:{}",
+                    m_send_availability_state.toStdString(), m_send_available, m_current_ticker_fees_coin_enabled);
         
         if (not mm2.get_balance(ticker_info.ticker) > 0)
         {
@@ -76,6 +78,8 @@ namespace atomic_dex
             m_send_availability_state = "";
             m_current_ticker_fees_coin_enabled = true;
         }
+        SPDLOG_INFO("New error is: {}. SendAvailable:{}. CurrentTickerFeesCoinEnabled:{}",
+                    m_send_availability_state.toStdString(), m_send_available, m_current_ticker_fees_coin_enabled);
         emit sendAvailableChanged();
         emit sendAvailabilityStateChanged();
         emit currentTickerFeesCoinEnabledChanged();
