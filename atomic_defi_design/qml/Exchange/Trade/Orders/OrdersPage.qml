@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.3
+import Qt.labs.platform 1.1
 
 import Qaterial 1.0 as Qaterial
 
@@ -33,11 +33,6 @@ Item {
         recover_funds_result = result
         recover_funds_modal.open()
     }
-
-//    function inCurrentPage() {
-//        return  exchange.inCurrentPage() &&
-//                exchange.current_page === page_index
-//    }
 
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = min_date.date
@@ -95,7 +90,7 @@ Item {
                 }
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -15
-                visible: false//orders_settings.height>75
+                visible: false
                 color: Style.colorTheme5
             }
 
@@ -103,7 +98,6 @@ Item {
                 x: 5
                 y: 0
                 spacing: 0
-                //anchors.verticalCenter: parent.verticalCenter
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
                     text: "Filter"
@@ -130,7 +124,6 @@ Item {
                 anchors.right: parent.right
                 y: 0
                 rightPadding: 5
-                //anchors.verticalCenter: parent.verticalCenter
                 Qaterial.OutlineButton {
                     visible: root.is_history
                     Layout.leftMargin: 30
@@ -217,8 +210,6 @@ Item {
                     onAccepted: applyDateFilter()
                     Layout.preferredWidth: 130
                 }
-
-
             }
         }
 
@@ -237,20 +228,17 @@ Item {
             }
 
         }
-
-        ModalLoader {
-            id: order_modal
-            sourceComponent: OrderModal {}
-        }
+    }
+    ModalLoader {
+        id: order_modal
+        sourceComponent: OrderModal {}
     }
 
     FileDialog {
         id: export_csv_dialog
 
         title: qsTr("Please choose the CSV export name and location")
-        selectMultiple: false
-        selectExisting: false
-        selectFolder: false
+        fileMode: FileDialog.OpenFile
 
         defaultSuffix: "csv"
         nameFilters: [ "CSV files (*.csv)", "All files (*)" ]

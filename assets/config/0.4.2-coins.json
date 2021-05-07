@@ -930,6 +930,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "DIMI": {
+      "coin": "DIMI",
+      "name": "Diminutive Coin",
+      "coinpaprika_id": "dimi-diminutive-coin",
+      "coingecko_id": "diminutive-coin",
+      "electrum": [
+        {
+          "url": "electrumx1.diminutivecoin.com:50012",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "electrumx2.diminutivecoin.com:50012",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.diminutivecoin.com/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "DODO-BEP20": {
       "coin": "DODO-BEP20",
       "name": "DODO",
@@ -1237,6 +1261,38 @@
       "active": false,
       "currently_enabled": false
   },
+    "FJC": {
+    "coin": "FJC",
+    "name": "Fujicoin",
+    "coinpaprika_id": "fjc-fujicoin",
+    "coingecko_id": "fujicoin",
+    "electrum": [
+      {
+        "url": "electrumx1.fujicoin.org:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx2.fujicoin.org:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx1.fujicoin.org:50003",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrumx2.fujicoin.org:50003",
+        "protocol": "SSL"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.fujicoin.org/"
+    ],
+    "explorer_tx_url": "tx/",
+    "explorer_address_url": "address/",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "STFIRO": {
       "coin": "STFIRO",
       "name": "StakedFIRO",
@@ -1531,6 +1587,26 @@
     ],
     "type": "UTXO",
     "name": "Litecoin"
+  },
+  "LYNX": {
+      "coin": "LYNX",
+      "name": "Lynx",
+      "coinpaprika_id": "lynx-lynx",
+      "coingecko_id": "lynx",
+      "electrum": [
+        {
+          "url": "electrum.getlynx.io:50001",
+          "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/lynx/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
   },
   "MATIC-BEP20": {
       "coin": "MATIC-BEP20",
@@ -2156,6 +2232,23 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "SMTF": {
+      "coin": "SMTF",
+      "name": "SmartFi",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "SOULJA": {
     "coin": "SOULJA",
@@ -3296,7 +3389,7 @@
   },
   "SFUSD": {
     "coin": "SFUSD",
-    "name": "SmartFi",
+    "name": "SmartUSD",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "electrum": [

@@ -130,7 +130,11 @@ Item {
 
             FAQLine {
                 title: qsTr("Do I need to be online for the duration of the swap?")
-                text: qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.")
+                text: qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker.
+The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.
+If you go offline, so will your orders, and any that are in progress will fail, leading to potential loss of trade / transaction fees, and a wait for the swap to timeout and issue a refund. It may also negatively affect your wallet's reputation score for future trade matching.
+When you come back online, your orders will begin to broadcast again at the price you set before you went offline. If there has been significant price movement in the meantime, you might unintentionally offer someone a bargain!
+For this reason, we recommend cancelling orders before closing %1, or reviewing and revising your prices when restarting %1.").arg(API.app_name)
             }
 
             FAQLine {

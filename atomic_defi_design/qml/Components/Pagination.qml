@@ -39,11 +39,9 @@ RowLayout {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
 
-            color: enabled? Style.colorWhite : Style.colorWhite6
+            color: theme.foregroundColor
             source: Qaterial.Icons.skipPreviousOutline
         }
-
-        //text: qsTr("Previous")
         enabled: visible_page > 1
         onClicked: --API.app.orders_mdl.current_page
     }
@@ -72,11 +70,9 @@ RowLayout {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
 
-            color: enabled? Style.colorWhite : Style.colorWhite6
+            color: theme.foregroundColor
             source: Qaterial.Icons.skipNextOutline
         }
-
-        //text: qsTr("Next")
         enabled: page_count > 1 && visible_page < page_count
         onClicked:  ++API.app.orders_mdl.current_page
     }

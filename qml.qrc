@@ -70,6 +70,7 @@
         <file>atomic_defi_design/assets/images/coins/dgb.png</file>
         <file>atomic_defi_design/assets/images/coins/dgc.png</file>
         <file>atomic_defi_design/assets/images/coins/dia.png</file>
+        <file>atomic_defi_design/assets/images/coins/dimi.png</file>
         <file>atomic_defi_design/assets/images/coins/dodo.png</file>
         <file>atomic_defi_design/assets/images/coins/doge.png</file>
         <file>atomic_defi_design/assets/images/coins/dot.png</file>
@@ -89,6 +90,7 @@
         <file>atomic_defi_design/assets/images/coins/fet.png</file>
         <file>atomic_defi_design/assets/images/coins/fil.png</file>
         <file>atomic_defi_design/assets/images/coins/firo.png</file>
+        <file>atomic_defi_design/assets/images/coins/fjc.png</file>
         <file>atomic_defi_design/assets/images/coins/ftc.png</file>
         <file>atomic_defi_design/assets/images/coins/ftm.png</file>
         <file>atomic_defi_design/assets/images/coins/gleec.png</file>
@@ -117,6 +119,7 @@
         <file>atomic_defi_design/assets/images/coins/lrc.png</file>
         <file>atomic_defi_design/assets/images/coins/lstr.png</file>
         <file>atomic_defi_design/assets/images/coins/ltc.png</file>
+        <file>atomic_defi_design/assets/images/coins/lynx.png</file>
         <file>atomic_defi_design/assets/images/coins/mana.png</file>
         <file>atomic_defi_design/assets/images/coins/matic.png</file>
         <file>atomic_defi_design/assets/images/coins/mcl.png</file>
@@ -164,6 +167,7 @@
         <file>atomic_defi_design/assets/images/coins/shr.png</file>
         <file>atomic_defi_design/assets/images/coins/skl.png</file>
         <file>atomic_defi_design/assets/images/coins/smart-chain.png</file>
+        <file>atomic_defi_design/assets/images/coins/smtf.png</file>
         <file>atomic_defi_design/assets/images/coins/snt.png</file>
         <file>atomic_defi_design/assets/images/coins/snx.png</file>
         <file>atomic_defi_design/assets/images/coins/soulja.png</file>
@@ -313,6 +317,7 @@
         <file>atomic_defi_design/qml/Components/DexCheckBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexColorOverlay.qml</file>
         <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
         <file>atomic_defi_design/qml/Components/DexFlickable.qml</file>
         <file>atomic_defi_design/qml/Components/DexImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexInnerShadow.qml</file>
@@ -332,12 +337,13 @@
         <file>atomic_defi_design/qml/Components/DexSubstractRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexSwitch.qml</file>
-        <file>atomic_defi_design/qml/Components/DexWindow.qml</file>
         <file>atomic_defi_design/qml/Components/DexText.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexTooltip.qml</file>
+        <file>atomic_defi_design/qml/Components/DexWindow.qml</file>
+        <file>atomic_defi_design/qml/Components/DexWindowControl.qml</file>
         <file>atomic_defi_design/qml/Components/EulaModal.qml</file>
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
         <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
@@ -465,13 +471,12 @@
         <file>atomic_defi_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_defi_design/qml/Wallet/Wallet.qml</file>
-        <file>atomic_defi_design/qml/main.qml</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>atomic_defi_design/qml/Portfolio/PieItem.qml</file>
-        <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
-        <file>atomic_defi_design/qml/Portfolio/SmartChartView.qml</file>
         <file>atomic_defi_design/qml/Portfolio/AmountChart.qml</file>
         <file>atomic_defi_design/qml/Portfolio/AssetPieChart.qml</file>
+        <file>atomic_defi_design/qml/Portfolio/PieItem.qml</file>
+        <file>atomic_defi_design/qml/Portfolio/SmartChartView.qml</file>
         <file>atomic_defi_design/qml/Portfolio/TableDex.qml</file>
+        <file>atomic_defi_design/qml/main.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

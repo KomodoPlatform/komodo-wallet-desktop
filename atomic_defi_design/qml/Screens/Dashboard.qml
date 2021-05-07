@@ -241,10 +241,9 @@ Item {
 
         onClicked: notifications_modal.open()
     }
+    
 
-    NotificationsModal {
-        id: notifications_modal
-    }
+   
 
     DropShadow {
         anchors.fill: sidebar
@@ -257,6 +256,14 @@ Item {
         spread: 0
         color: theme.colorSidebarDropShadow
         smooth: true
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: '#000'
+        visible: notifications_modal.visible
+        anchors.leftMargin: sidebar.width
+        opacity: .6
     }
 
     ModalLoader {
@@ -277,6 +284,10 @@ Item {
     ModalLoader {
         id: restart_modal
         sourceComponent: RestartModal {}
+    }
+
+     NotificationsModal {
+        id: notifications_modal
     }
 
     function getStatusColor(status) {
