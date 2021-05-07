@@ -61,7 +61,7 @@ namespace atomic_dex
         if (not mm2.get_balance(ticker_info.ticker) > 0)
         {
             m_send_available = false;
-            m_send_availability_state = tr("You do not have enough founds.");
+            m_send_availability_state = tr("You do not have enough funds.");
             m_current_ticker_fees_coin_enabled = true;
         }
         else if (ticker_info.has_parent_fees_ticker)
