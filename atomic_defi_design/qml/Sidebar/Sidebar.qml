@@ -13,7 +13,7 @@ Item {
     readonly property alias app_logo: app_logo
 
     x: -top_rect.radius
-    width: expanded? 200 - x : 90 - x
+    width: expanded? 200 - x : 80 - x
     Behavior on width {
         NumberAnimation {
             duration: 300
@@ -129,7 +129,7 @@ Item {
     // Content
     Item {
         anchors.right: parent.right
-        width: parent.width + parent.x + 10
+        width: parent.width + parent.x
         height: parent.height
 
         DefaultImage {
