@@ -796,7 +796,7 @@ Rectangle {
         			return 0.99999
         			break
         		case "fr":
-        			return 0.98999
+        			return Qt.platform.os === "windows"? 0.98999 : 0.90
         			break
         		case "tr":
         			return 0.99999
