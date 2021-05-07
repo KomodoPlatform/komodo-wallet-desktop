@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! STD
+#include <vector>
+
 //! Deps
 #include <date/date.h>           ///< date::format
 #include <date/tz.h>             ///< date::make_zoned
@@ -24,6 +27,7 @@
 
 #include "fs.prerequisites.hpp"
 #include "safe.float.hpp"
+#include "atomicdex/config/coins.cfg.hpp"
 
 namespace atomic_dex::utils
 {
@@ -90,4 +94,7 @@ namespace atomic_dex::utils
     std::string retrieve_main_ticker(const std::string& ticker);
 
     void to_eth_checksum(std::string& address);
+
+    std::vector<std::string> coin_cfg_to_ticker_cfg(std::vector<coin_config> in);
+
 } // namespace atomic_dex::utils
