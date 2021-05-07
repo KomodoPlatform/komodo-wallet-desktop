@@ -64,14 +64,14 @@ Item {
                         id: balance_layout
                         spacing: 3
 
-                        DefaultText {
+                        DexLabel {
                             id: name
                             text_value: current_ticker_infos.name
                             Layout.alignment: Qt.AlignHCenter
                             font.pixelSize: Style.textSizeMid
                         }
 
-                        DefaultText {
+                        DexLabel {
                             id: name_value
                             text_value: General.formatCrypto("", current_ticker_infos.balance, api_wallet_page.ticker)
                             Layout.alignment: Qt.AlignHCenter
@@ -85,14 +85,14 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Wallet Balance")
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: General.formatFiat("", current_ticker_infos.fiat_amount, API.app.settings_pg.current_currency)
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
@@ -111,7 +111,7 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         id: price
                         text_value: qsTr("Price")
                         Layout.alignment: Qt.AlignHCenter
@@ -119,7 +119,7 @@ Item {
                         color: Style.colorText2
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: General.formatFiat('', current_ticker_infos.current_currency_ticker_price, API.app.settings_pg.current_currency)
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
@@ -130,14 +130,14 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Change 24h")
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: {
                             const v = parseFloat(current_ticker_infos.change_24h)
                             return v === 0 ? '-' : General.formatPercent(v)
@@ -152,14 +152,14 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Portfolio %")
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: {
                             const fiat_amount = parseFloat(current_ticker_infos.fiat_amount)
                             const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
@@ -183,7 +183,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
 
-            DefaultButton {
+            DexButton {
                 id: send_button
                 enabled: parseFloat(current_ticker_infos.balance) > 0
                 text: qsTr("Send")
@@ -206,7 +206,7 @@ Item {
                 sourceComponent: SendModal {}
             }
 
-            DefaultButton {
+            DexButton {
                 text: qsTr("Receive")
                 onClicked: receive_modal.open()
                 Layout.fillWidth: true
@@ -226,7 +226,7 @@ Item {
                 sourceComponent: ReceiveModal {}
             }
 
-            DefaultButton {
+            DexButton {
                 visible: !is_dex_banned
                 text: qsTr("Swap")
                 onClicked: onClickedSwap()
@@ -249,7 +249,7 @@ Item {
                 }
             }
 
-            PrimaryButton {
+            DexButton {
                 id: button_claim_rewards
                 text: qsTr("Claim Rewards")
                 Layout.fillWidth: true
@@ -269,7 +269,7 @@ Item {
             }
 
             // Faucet for RICK/MORTY coins
-            PrimaryButton {
+            DexButton {
                 id: button_claim_faucet
                 text: qsTr("Faucet")
                 Layout.fillWidth: true
@@ -400,12 +400,12 @@ Item {
                         scale: 0.5
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Loading market data") + "..."
                     }
                 }
 
-                DefaultText {
+                DexLabel {
                     visible: !ticker_supported
                     text_value: qsTr("There is no chart data for this ticker yet")
                     anchors.centerIn: parent
@@ -431,7 +431,7 @@ Item {
             ColumnLayout {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                DefaultText {
+                DexLabel {
                     text_value: qsTr("Loading")
                     Layout.alignment: Qt.AlignHCenter
                     font.pixelSize: Style.textSize2
@@ -441,7 +441,7 @@ Item {
                     Layout.alignment: Qt.AlignHCenter
                 }
 
-                DefaultText {
+                DexLabel {
                     text_value: General.isTokenType(current_ticker_infos.type) ?
                                 (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
                                 (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
