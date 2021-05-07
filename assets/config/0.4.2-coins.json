@@ -1250,6 +1250,14 @@
       {
         "url": "electrumx2.fujicoin.org:50001",
         "protocol": "TCP"
+      },
+      {
+        "url": "electrumx1.fujicoin.org:50003",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrumx2.fujicoin.org:50003",
+        "protocol": "SSL"
       }
     ],
     "explorer_url": [
