@@ -18,6 +18,14 @@ Item {
         MouseArea {
             onPressed: window.startSystemMove();
             anchors.fill: parent
+            anchors.rightMargin: window.isOsx? 280 : 0
+            onDoubleClicked: {
+                if(window.visibility===ApplicationWindow.Maximized){
+                    window.showNormal()
+                }else {
+                    window.showMaximized()
+                }
+            }
         }
         DexWindowHeaderControl {
             visible: !window.isOsx //Qt.platform.os == "windows" || "linux"
