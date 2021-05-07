@@ -11,9 +11,9 @@ Row {
     property real size: 15
     property bool hovered: minimizeButton.containsMouse || closeButton.containsMouse || extendButton.containsMouse
     width: 195
-    x: 15
+    x: 13
     height: 40
-    spacing: 15
+    spacing: 13
     anchors.top: parent.top
     anchors.topMargin: 0
     Rectangle {

@@ -83,7 +83,7 @@ ColumnLayout {
     }
 
     spacing: 10
-    anchors.topMargin: 5
+    anchors.topMargin: window.isOsx? 60 : 5
     anchors.leftMargin: 10
     anchors.fill: parent
 
