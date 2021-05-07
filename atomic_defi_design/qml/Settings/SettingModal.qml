@@ -234,20 +234,12 @@ Qaterial.Dialog {
                                     text: qsTr("Use QtTextRendering Or NativeTextRendering")
                                 }
                                 DefaultSwitch {
+                                    id: render_switch
                                     property bool firstTime: true
                                     Layout.alignment: Qt.AlignHCenter
                                     Layout.leftMargin: combo_fiat.Layout.leftMargin
                                     Layout.rightMargin: Layout.leftMargin
                                     checked: parseInt(atomic_settings2.value("FontMode")) === 1
-                                    onCheckedChanged: {
-                                        if(checked){
-                                            atomic_settings2.setValue("FontMode", 1)
-                                        }else {
-                                            atomic_settings2.setValue("FontMode", 0)
-                                        }
-                                        restart_modal.open()
-
-                                    }
                                 }
                             }
                             RowLayout {
@@ -301,13 +293,20 @@ Qaterial.Dialog {
                                     text: qsTr("")
                                 }
                                 DexButton {
-                                    text: qsTr("Apply Theme")
+                                    text: qsTr("Apply Changement")
                                     implicitHeight: 37
                                      onClicked: {
                                         atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                         atomic_settings2.sync()
                                         app.load_theme(dexTheme.currentText.replace(".json",""))
                                         _font.fontFamily = dexFont.currentText
+                                        let render_value = render_switch.checked? 1 : 0
+                                        if(render_value == parseInt(atomic_settings2.value("FontMode"))){}
+                                        else {
+                                            atomic_settings2.setValue("FontMode", render_value)
+                                            restart_modal.open()
+                                        }
+                                        
                                     }
                                 }
                             }
