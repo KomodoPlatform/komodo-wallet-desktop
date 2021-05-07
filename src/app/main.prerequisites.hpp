@@ -41,6 +41,7 @@
 
 
 //! Deps
+#include <QSslSocket>
 #include <sodium/core.h>
 #include <wally.hpp>
 
@@ -136,7 +137,7 @@ static void
 signal_handler(int signal)
 {
     SPDLOG_ERROR("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2.service");
+    atomic_dex::kill_executable("mm2");
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
     std::ifstream                 ifs("./backtrace.dump");
@@ -333,25 +334,17 @@ handle_settings(QSettings& settings)
     SPDLOG_INFO("file name settings: {}", settings.fileName().toStdString());
     create_settings_functor("CurrentTheme", QString("Dark.json"));
     create_settings_functor("ThemePath", QString::fromStdString(atomic_dex::utils::get_themes_path().string()));
-    create_settings_functor("SecondSecuritySending", QVariant(false));
     create_settings_functor("AutomaticUpdateOrderBot", QVariant(false));
     create_settings_functor("WalletChartsCategory", qint32(WalletChartsCategories::OneMonth));
+    create_settings_functor("AvailableLang", QStringList{"en", "fr", "tr", "ru"});
+    create_settings_functor("CurrentLang", QString("en"));
+    create_settings_functor("2FA", 0);
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
 #else
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
 #endif
-
-    /*settings.beginGroup("KMD_BUSD-BEP20");
-    create_settings_functor("Spread", QVariant(2.0));
-    create_settings_functor("Disabled", QVariant(false));
-    settings.endGroup();
-
-    settings.beginGroup("BUSD-BEP20_KMD");
-    create_settings_functor("Spread", QVariant(2.0));
-    create_settings_functor("Disabled", QVariant(false));
-    settings.endGroup();*/
 }
 
 inline int
@@ -361,6 +354,9 @@ run_app(int argc, char** argv)
     SPDLOG_INFO("Installing qt_message_handler");
     qInstallMessageHandler(&qt_message_handler);
 #endif
+    SPDLOG_INFO(
+        "SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(),
+        QSslSocket::sslLibraryVersionString().toStdString());
 
 #if defined(Q_OS_MACOS)
     fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
@@ -437,13 +433,14 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").string()));
     engine.rootContext()->setContextProperty("atomic_logo_path", QString::fromStdString((atomic_dex::utils::get_atomic_dex_data_folder() / "logo").string()));
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
+    engine.rootContext()->setContextProperty("dex_current_version", QString::fromStdString(atomic_dex::get_version()));
     engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);
     qaterial::registerQmlTypes("Qaterial", 1, 0);
-    //QQuickStyle::setStyle(QStringLiteral("Qaterial"));
-    // SPDLOG_INFO("{}",  QQuickStyle::ge))
+    // QQuickStyle::setStyle(QStringLiteral("Qaterial"));
+    //  SPDLOG_INFO("{}",  QQuickStyle::ge))
 
     engine.addImportPath("qrc:/atomic_defi_design/imports");
     engine.addImportPath("qrc:/atomic_defi_design/Constants");

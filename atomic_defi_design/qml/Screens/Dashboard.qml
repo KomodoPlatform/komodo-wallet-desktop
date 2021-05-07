@@ -35,6 +35,8 @@ Item {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
+    property var current_ticker
+
     property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
@@ -239,10 +241,9 @@ Item {
 
         onClicked: notifications_modal.open()
     }
+    
 
-    NotificationsModal {
-        id: notifications_modal
-    }
+   
 
     DropShadow {
         anchors.fill: sidebar
@@ -250,11 +251,19 @@ Item {
         cached: false
         horizontalOffset: 0
         verticalOffset: 0
-        radius: 32
+        radius: theme.sidebarShadowRadius
         samples: 32
         spread: 0
         color: theme.colorSidebarDropShadow
         smooth: true
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: '#000'
+        visible: notifications_modal.visible
+        anchors.leftMargin: sidebar.width
+        opacity: .6
     }
 
     ModalLoader {
@@ -275,6 +284,10 @@ Item {
     ModalLoader {
         id: restart_modal
         sourceComponent: RestartModal {}
+    }
+
+     NotificationsModal {
+        id: notifications_modal
     }
 
     function getStatusColor(status) {

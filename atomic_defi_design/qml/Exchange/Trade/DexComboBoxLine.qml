@@ -37,11 +37,12 @@ RowLayout {
                 font.pixelSize: Style.textSizeSmall3
             }
 
-            DefaultText {
+            DexLabel {
                 id: bottom_line
                 text_value: !details ? "" :
                             details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency) + ")"
                 color: theme.foregroundColor
+                font: theme.textType.body2
             }
         }
     }

@@ -60,6 +60,8 @@ namespace atomic_dex
         QVariant get_charts() const;
         QVariant get_wallet_stats() const;
 
+        int get_neareast_point(int timestamp);
+
         [[nodiscard]] QString get_min_total() const;
         [[nodiscard]] QString get_max_total() const;
     };

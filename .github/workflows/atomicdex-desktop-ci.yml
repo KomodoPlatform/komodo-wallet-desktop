@@ -32,7 +32,7 @@ jobs:
 
         include:
           - name: ubuntu-qt-5-15-2
-            os: ubuntu-16.04
+            os: ubuntu-18.04
             qt: '5.15.2'
             type: 'release'
 
@@ -116,6 +116,7 @@ jobs:
       - name: Install QT IFW (Windows)
         if: runner.os == 'Windows'
         run: |
+          python -m pip install --upgrade pip
           python -m aqt tool windows tools_ifw 4.1.0-202104091029 qt.tools.ifw.41 -b https://qt-mirror.dannhauer.de/ --outputdir C:/Qt
           echo "C:/Qt/Tools/QtInstallerFramework/4.0/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo $env:GITHUB_PATH
@@ -209,6 +210,9 @@ jobs:
           export APPLE_ID="${{ secrets.APPLE_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export MACOSX_DEPLOYMENT_TARGET=10.13
+          export CC=clang
+          export CXX=clang++
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
@@ -253,6 +257,8 @@ jobs:
           export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export CC=clang
+          export CXX=clang++
           echo "Running tests"
           ./ci_tools_atomic_dex tests ${{ matrix.type }}
           cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS

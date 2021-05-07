@@ -10,22 +10,18 @@ import "Components"
 
 DexWindow {
     id: window
-
+    title: API.app_name
+    visible: true
+    property int previousX: 0
+    property int previousY: 0
+    property int real_visibility
+    minimumWidth: General.minimumWidth
+    minimumHeight: General.minimumHeight
+    
     Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light
     Universal.accent: Style.colorQtThemeAccent
     Universal.foreground: Style.colorQtThemeForeground
     Universal.background: Style.colorQtThemeBackground
-
-    visible: true
-    minimumWidth: General.minimumWidth
-    minimumHeight: General.minimumHeight
-    title: API.app_name
-
-    property int previousX: 0
-    property int previousY: 0
-    //flags: Qt.Window | Qt.WindowFullscreenButtonHint
-
-    property int real_visibility
 
     onVisibilityChanged: {
         // 3 is minimized, ignore that
@@ -37,6 +33,7 @@ DexWindow {
     }
 
     background: Item{}
+    
     Rectangle {
         anchors.fill: parent
         color: "transparent"
@@ -44,93 +41,12 @@ DexWindow {
         border.width: 0
     }
 
+
     App {
         id: app
         anchors.fill: parent
         anchors.margins: 2
     }
-    Item {
-        width: parent.width
-        y: 1
-        height: 40
-        Rectangle {
-            anchors.fill: parent
-            visible: false
-            color: app.globalTheme.surfaceColor
-        }
-        MouseArea {
-            onPressed: window.startSystemMove();
-            anchors.fill: parent
-            onDoubleClicked: {
-                if(window.visibility===ApplicationWindow.Maximized) {
-                    window.showNormal()
-                }else {
-                    window.showMaximized()
-                }
-            }
-        }
-        DexWindowHeaderControl {
-            visible: Qt.platform.os == "windows" || "linux"
-        }
-        DexMacosHeaderControl {
-            visible: Qt.platform.os == "osx"
-        }
-    }
-    Item {
-        id: _left_resize
-        height: parent.height
-        width: 3
-        MouseArea {
-            onPressed: window.startSystemResize(Qt.LeftEdge)
-            anchors.fill: parent
-            cursorShape: "SizeHorCursor"
-        }
-    }
-    Item {
-        id: _right_resize
-        height: parent.height
-        anchors.right: parent.right
-        width: 3
-        MouseArea {
-            onPressed: {
-                window.startSystemResize(Qt.RightEdge)
-            }
-            cursorShape: "SizeHorCursor"
-        }
-    }
-    Item {
-        id: _bottom_resize
-        height: 3
-        width: parent.width
-        anchors.bottom: parent.bottom
-        MouseArea {
-            onPressed: if (active) window.startSystemResize(Qt.BottomEdge)
-            //target: null
-            anchors.fill: parent
-            cursorShape: "SizeVerCursor"
-        }
-    }
-    Item {
-        id: _top_resize
-        height: 3
-        width: parent.width
-        MouseArea {
-            onPressed: window.startSystemResize(Qt.TopEdge)
-            //target: null
-            anchors.fill: parent
-            cursorShape: "SizeVerCursor"
-        }
-    }
-    Item {
-        id: _bottom_right_resize
-        height: 6
-        width: 6
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        MouseArea {
-            onPressed: if (active) window.startSystemResize(Qt.BottomEdge | Qt.RightEdge)
-            anchors.fill: parent
-            cursorShape: "SizeFDiagCursor"
-        }
-    }
+
+    DexWindowControl { }
 }

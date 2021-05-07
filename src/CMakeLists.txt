@@ -3,17 +3,22 @@ include(DEX_NEW_LIB)
 # Core target
 DEX_NEW_LIB(core INTERFACE
         INTERFACE_DEPS
-        cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
-        Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
-        unofficial-btc::bitcoin komodo-date::date komodo-taskflow::taskflow
-        Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
+            cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
+            Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
+            unofficial-btc::bitcoin komodo-date::date komodo-taskflow::taskflow
+            Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
         INTERFACE_DEFS
-        $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
-        $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD> DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
-        DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
-        DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
+            $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
+            $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+            $<$<PLATFORM_ID:Windows>:SPDLOG_WCHAR_TO_UTF8_SUPPORT>
+            DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
+            DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
+            DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
+            DEX_PROJECT_NAME="${DEX_PROJECT_NAME}" DEX_COMPANY_NAME="${DEX_COMPANY_NAME}"
+            DEX_REPOSITORY_OWNER="${DEX_REPOSITORY_OWNER}" DEX_REPOSITORY_NAME="${DEX_REPOSITORY_NAME}"
+            DEX_CHECKSUM_API_URL="${DEX_CHECKSUM_API_URL}" DEX_APPDATA_FOLDER="${DEX_APPDATA_FOLDER}"
         INTERFACE_DEFS
-        ENTT_API_EXPORT)
+            ENTT_API_EXPORT)
 target_precompile_headers(${PROJECT_NAME}_core INTERFACE core/atomicdex/pch.hpp)
 if (APPLE)
     set_source_files_properties(core/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
@@ -95,6 +100,8 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
+        #tests/api/github/github.api.tests.cpp
+        #tests/api/checksum/checksum.api.tests.cpp
 
         ##! Utilities
         tests/utilities/qt.utilities.tests.cpp
@@ -180,6 +187,11 @@ if (WIN32)
             COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
             )
     include(${CMAKE_SOURCE_DIR}/cmake/install/windows/dex_install.cmake)
+
+    # Configures OpenSSL
+    set(DEX_OPENSSL_FOLDER ${CMAKE_SOURCE_DIR}/vendor/OpenSSL/Win_x64)
+    configure_file(${DEX_OPENSSL_FOLDER}/libcrypto-1_1-x64.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
+    configure_file(${DEX_OPENSSL_FOLDER}/libssl-1_1-x64.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
 endif ()
 
 if (APPLE)

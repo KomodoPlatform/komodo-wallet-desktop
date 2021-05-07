@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 
 namespace atomic_dex
@@ -68,6 +68,7 @@ namespace atomic_dex
         case portfolio_model::CoinType:
         case portfolio_model::Address:
         case portfolio_model::PrivKey:
+        case portfolio_model::PercentMainCurrency:
             return false;
         }
     }

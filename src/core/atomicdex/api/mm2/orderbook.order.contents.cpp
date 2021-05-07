@@ -27,6 +27,7 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, order_contents& contents)
     {
+        //SPDLOG_INFO("contents: {}", j.dump(4));
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);

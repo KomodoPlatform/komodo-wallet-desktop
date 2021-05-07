@@ -5,9 +5,9 @@
       "coinpaprika_id": "aave-new",
       "coingecko_id": "aave",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -40,13 +40,14 @@
     "coingecko_id": "artbyte",
     "electrum": [
       {
-        "url": "electrumx.aby.ewmcx.biz:50001"
+        "url": "electrumx.aby.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "failover.aby.ewmcx.biz:50001"
-      },
-      {
-        "url": "161.97.142.60:50001"
+        "url": "failover.aby.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -62,14 +63,48 @@
       "coinpaprika_id": "ada-cardano",
       "coingecko_id": "cardano",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
       ],
       "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ANKR-BEP20": {
+      "coin": "ANKR-BEP20",
+      "name": "Ankr",
+      "coinpaprika_id": "ankr-ankr-network",
+      "coingecko_id": "ankr",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ANKR-ERC20": {
+      "coin": "ANKR-ERC20",
+      "name": "Ankr",
+      "coinpaprika_id": "ankr-ankr-network",
+      "coingecko_id": "ankr",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -79,9 +114,9 @@
       "coinpaprika_id": "bnb-binance-coin",
       "coingecko_id": "binancecoin",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -112,9 +147,9 @@
       "coinpaprika_id": "1inch-1inch",
       "coingecko_id": "1inch",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -163,9 +198,9 @@
       "coinpaprika_id": "atom-cosmos",
       "coingecko_id": "cosmos",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -180,6 +215,16 @@
     "coinpaprika_id": "aur-auroracoin",
     "coingecko_id": "auroracoin",
     "electrum": [
+      {
+        "url": "electrumx.aur.ewmcx.info:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "failover.aur.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
       {
         "url": "lenoir.ecoincore.com:12343",
         "protocol": "SSL",
@@ -201,9 +246,9 @@
       "coinpaprika_id": "avax-avalanche",
       "coingecko_id": "avalanche-2",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -229,7 +274,7 @@
       }
     ],
     "explorer_url": [
-      "https://insight.axerunners.com/"
+      "https://axe-explorer.arcpool.com/"
     ],
     "type": "UTXO",
     "active": false,
@@ -241,9 +286,9 @@
       "coinpaprika_id": "bal-balancer",
       "coingecko_id": "balancer",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -275,9 +320,9 @@
       "coinpaprika_id": "band-band-protocol",
       "coingecko_id": "band-protocol",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -310,13 +355,19 @@
     "coingecko_id": "blackcoin",
     "electrum": [
       {
-        "url": "electrum1.blackcoin.nl:10001"
+        "url": "electrum1.blackcoin.nl:10002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "electrum2.blackcoin.nl:20001"
+        "url": "electrum2.blackcoin.nl:20002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "electrum3.blackcoin.nl:30001"
+        "url": "electrum3.blackcoin.nl:30002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -334,9 +385,9 @@
       "coinpaprika_id": "bnt-bancor",
       "coingecko_id": "bancor",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -408,9 +459,9 @@
       "coinpaprika_id": "btc-bitcoin",
       "coingecko_id": "bitcoin",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -533,6 +584,23 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "BTT-BEP20": {
+      "coin": "BTT-BEP20",
+      "name": "BitTorrent",
+      "coinpaprika_id": "btt-bittorrent",
+      "coingecko_id": "bittorrent-2",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BUSD-ERC20": {
     "coin": "BUSD-ERC20",
     "name": "Binance USD",
@@ -556,9 +624,9 @@
       "coinpaprika_id": "busd-binance-usd",
       "coingecko_id": "binance-usd",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -573,9 +641,9 @@
       "coinpaprika_id": "cake-pancakeswap",
       "coingecko_id": "pancakeswap-token",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -681,9 +749,9 @@
       "coinpaprika_id": "comp-compoundd",
       "coingecko_id": "compound-governance-token",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -762,9 +830,9 @@
       "coinpaprika_id": "dai-dai",
       "coingecko_id": "dai",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -844,16 +912,13 @@
     "coingecko_id": "digitalcoin",
     "electrum": [
       {
-        "url": "electrumx.dgc.ewmcx.org:50001"
+        "url": "electrumx.dgc.ewmcx.org:50001",
+        "protocol": "TCP"
       },
       {
-        "url": "78.57.248.53:50001"
-      },
-      {
-        "url": "62.171.190.3:50001"
-      },
-      {
-        "url": "failover.dgc.ewmcx.biz:50001"
+        "url": "failover.dgc.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -865,15 +930,39 @@
     "active": false,
     "currently_enabled": false
   },
+  "DIMI": {
+      "coin": "DIMI",
+      "name": "Diminutive Coin",
+      "coinpaprika_id": "dimi-diminutive-coin",
+      "coingecko_id": "diminutive-coin",
+      "electrum": [
+        {
+          "url": "electrumx1.diminutivecoin.com:50012",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "electrumx2.diminutivecoin.com:50012",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.diminutivecoin.com/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "DODO-BEP20": {
       "coin": "DODO-BEP20",
       "name": "DODO",
       "coinpaprika_id": "dodo-dodo",
       "coingecko_id": "dodo",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -928,9 +1017,9 @@
       "coinpaprika_id": "dot-polkadot",
       "coingecko_id": "polkadot",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1011,9 +1100,9 @@
       "coinpaprika_id": "egld-elrond",
       "coingecko_id": "elrond-erd-2",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1028,9 +1117,9 @@
       "coinpaprika_id": "elf-aelf",
       "coingecko_id": "aelf",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1087,9 +1176,9 @@
       "coinpaprika_id": "eos-eos",
       "coingecko_id": "eos",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1104,9 +1193,9 @@
       "coinpaprika_id": "etc-ethereum-classic",
       "coingecko_id": "ethereum-classic",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1121,14 +1210,71 @@
       "coinpaprika_id": "fil-filecoin",
       "coingecko_id": "filecoin",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
       ],
       "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "FIRO": {
+      "coin": "FIRO",
+      "name": "Firo",
+      "coinpaprika_id": "firo-firo",
+      "coingecko_id": "zcoin",
+      "electrum": [
+        {
+          "url": "electrumx01.firo.org:50001"
+        },
+        {
+          "url": "electrumx02.firo.org:50001"
+        },
+        {
+          "url": "electrumx03.firo.org:50001"
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.firo.org/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
+  "FIRO-BEP20": {
+      "coin": "FIRO-BEP20",
+      "name": "Firo",
+      "coinpaprika_id": "firo-firo",
+      "coingecko_id": "zcoin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "STFIRO": {
+      "coin": "STFIRO",
+      "name": "StakedFIRO",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "stakehound",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -1155,6 +1301,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "FTM-BEP20": {
+      "coin": "FTM-BEP20",
+      "name": "Fantom",
+      "coinpaprika_id": "ftm-fantom",
+      "coingecko_id": "fantom",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "FTM-ERC20": {
+      "coin": "FTM-ERC20",
+      "name": "Fantom",
+      "coinpaprika_id": "ftm-fantom",
+      "coingecko_id": "fantom",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "GLEEC": {
     "coin": "GLEEC",
     "name": "Gleec",
@@ -1174,7 +1354,7 @@
     "explorer_url": [
       "https://gleec.explorer.dexstats.info/"
     ],
-    "type": "UTXO",
+    "type": "Smart Chain",
     "active": false,
     "currently_enabled": false
   },
@@ -1259,9 +1439,9 @@
       "coinpaprika_id": "miota-iota",
       "coingecko_id": "iota",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1276,9 +1456,9 @@
       "coinpaprika_id": "iotx-iotex",
       "coingecko_id": "iotex",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1334,6 +1514,25 @@
     "active": false,
     "currently_enabled": false
   },
+  "LCC": {
+    "coin": "LCC",
+    "name": "Litecoin Cash",
+    "coinpaprika_id": "lcc-litecoin-cash",
+    "coingecko_id": "litecoin-cash",
+    "electrum": [
+      {
+        "url": "188.166.117.139:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/lcc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "LTC": {
     "active": false,
     "coin": "LTC",
@@ -1357,15 +1556,35 @@
     "type": "UTXO",
     "name": "Litecoin"
   },
+  "LYNX": {
+      "coin": "LYNX",
+      "name": "Lynx",
+      "coinpaprika_id": "lynx-lynx",
+      "coingecko_id": "lynx",
+      "electrum": [
+        {
+          "url": "electrum.getlynx.io:50001",
+          "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/lynx/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "MATIC-BEP20": {
       "coin": "MATIC-BEP20",
       "name": "Polygon",
       "coinpaprika_id": "matic-matic-network",
       "coingecko_id": "matic-network",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1444,9 +1663,9 @@
       "coinpaprika_id": "near-near-protocol",
       "coingecko_id": "near",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1461,9 +1680,9 @@
       "coinpaprika_id": "ont-ontology",
       "coingecko_id": "ontology",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1478,9 +1697,9 @@
       "coinpaprika_id": "pax-paxos-standard-token",
       "coingecko_id": "paxos-standard",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1512,9 +1731,9 @@
       "coinpaprika_id": "paxg-pax-gold",
       "coingecko_id": "pax-gold",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1563,9 +1782,9 @@
       "coinpaprika_id": "eth-ethereum",
       "coingecko_id": "ethereum",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1581,13 +1800,12 @@
     "coingecko_id": "unitus",
     "electrum": [
       {
-        "url": "failover.trc-uis.ewmcx.biz:50001"
+        "url": "failover.trc-uis.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
         "url": "electrumx.uis.ewmcx.info:50001"
-      },
-      {
-        "url": "164.68.110.226:50001"
       }
     ],
     "explorer_url": [
@@ -1603,9 +1821,9 @@
       "coinpaprika_id": "usdc-usd-coin",
       "coingecko_id": "usd-coin",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1637,9 +1855,9 @@
       "coinpaprika_id": "usdt-tether",
       "coingecko_id": "tether",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1705,9 +1923,9 @@
       "coinpaprika_id": "bat-basic-attention-token",
       "coingecko_id": "basic-attention-token",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1715,23 +1933,6 @@
       "type": "BEP-20",
       "active": false,
       "currently_enabled": false
-  },
-  "TUSD-ERC20": {
-    "active": false,
-    "coin": "TUSD-ERC20",
-    "coingecko_id": "true-usd",
-    "coinpaprika_id": "tusd-trueusd",
-    "currently_enabled": false,
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "name": "True USD"
   },
   "KMD": {
     "coin": "KMD",
@@ -1764,9 +1965,9 @@
       "coinpaprika_id": "kmd-komodo",
       "coingecko_id": "komodo",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1804,9 +2005,9 @@
       "coinpaprika_id": "link-chainlink",
       "coingecko_id": "chainlink",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -1899,7 +2100,7 @@
       }
     ],
     "explorer_url": [
-      "https://rick.kmd.dev/"
+      "https://rick.explorer.dexstats.info/"
     ],
     "active": false,
     "currently_enabled": false
@@ -1923,7 +2124,7 @@
       }
     ],
     "explorer_url": [
-      "https://morty.kmd.dev/"
+      "https://morty.explorer.dexstats.info/"
     ],
     "active": false,
     "currently_enabled": false
@@ -2000,6 +2201,23 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "SMTF": {
+      "coin": "SMTF",
+      "name": "SmartFi",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SOULJA": {
     "coin": "SOULJA",
     "name": "SouljaCoin",
@@ -2029,9 +2247,9 @@
       "coinpaprika_id": "sxp-swipe",
       "coingecko_id": "swipe",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2181,9 +2399,9 @@
       "coinpaprika_id": "sushi-sushi",
       "coingecko_id": "sushi",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2258,9 +2476,9 @@
       "coinpaprika_id": "mkr-maker",
       "coingecko_id": "maker",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2434,9 +2652,9 @@
       "coinpaprika_id": "snx-synthetix-network-token",
       "coingecko_id": "havven",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2466,7 +2684,7 @@
     "coin": "SPACE",
     "name": "Spacecoin",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "space-spacecoin7367",
     "electrum": [
       {
         "url": "electrum1.spaceworks.co:50001"
@@ -2509,7 +2727,9 @@
     "coingecko_id": "terracoin",
     "electrum": [
       {
-        "url": "failover.trc-uis.ewmcx.biz:50005"
+        "url": "failover.trc-uis.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
         "url": "electrum.terracoin.io:50001"
@@ -2520,6 +2740,88 @@
     ],
     "explorer_url": [
       "https://chainz.cryptoid.info/trc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "TRX-BEP20": {
+      "coin": "TRX-BEP20",
+      "name": "TRON",
+      "coinpaprika_id": "trx-tron",
+      "coingecko_id": "tron",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-BEP20": {
+      "coin": "TUSD-BEP20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-ERC20": {
+      "coin": "TUSD-ERC20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "VAL": {
+    "coin": "VAL",
+    "name": "Validity",
+    "coinpaprika_id": "val-validity",
+    "coingecko_id": "radium",
+    "electrum": [
+      {
+        "url": "e1.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "e2.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "e3.validitytech.com:11002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/val/"
     ],
     "explorer_tx_url": "tx.dws?",
     "explorer_address_url": "address.dws?",
@@ -2611,28 +2913,22 @@
     "active": false,
     "currently_enabled": false
   },
-  "FIRO": {
-    "coin": "FIRO",
-    "name": "Firo",
-    "coinpaprika_id": "firo-firo",
-    "coingecko_id": "zcoin",
-    "electrum": [
-      {
-        "url": "electrumx01.firo.org:50001"
-      },
-      {
-        "url": "electrumx02.firo.org:50001"
-      },
-      {
-        "url": "electrumx03.firo.org:50001"
-      }
-    ],
-    "explorer_url": [
-      "https://explorer.firo.org/"
-    ],
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
+  "XLM-BEP20": {
+      "coin": "XLM-BEP20",
+      "name": "Stellar",
+      "coinpaprika_id": "xlm-stellar",
+      "coingecko_id": "stellar",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "XRP-BEP20": {
       "coin": "XRP-BEP20",
@@ -2640,9 +2936,9 @@
       "coinpaprika_id": "xrp-xrp",
       "coingecko_id": "ripple",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2657,9 +2953,9 @@
       "coinpaprika_id": "xtz-tezos",
       "coingecko_id": "tezos",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2674,9 +2970,9 @@
       "coinpaprika_id": "xvs-venus",
       "coingecko_id": "venus",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2691,9 +2987,9 @@
       "coinpaprika_id": "yfi-yearnfinance",
       "coingecko_id": "yearn-finance",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2725,9 +3021,9 @@
       "coinpaprika_id": "yfii-dfimoney",
       "coingecko_id": "yfii-finance",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2807,10 +3103,9 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "164.68.110.224:50001"
-      },
-      {
-        "url": "failover.zet.ewmci.xyz:50001"
+        "url": "failover.zet.ewmci.xyz:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -2828,9 +3123,9 @@
       "coinpaprika_id": "zil-zilliqa",
       "coingecko_id": "zilliqa",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"
@@ -2887,22 +3182,6 @@
       "https://blockstream.info/testnet/"
     ],
     "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
-  },
-  "ETHR": {
-    "coin": "ETHR",
-    "name": "ETHR (testnet)",
-    "is_testnet": true,
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "http://eth-ropsten.cipig.net:8645"
-    ],
-    "explorer_url": [
-      "https://ropsten.etherscan.io/"
-    ],
-    "type": "ERC-20",
     "active": false,
     "currently_enabled": false
   },
@@ -3078,7 +3357,7 @@
   },
   "SFUSD": {
     "coin": "SFUSD",
-    "name": "SmartFi",
+    "name": "SmartUSD",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "electrum": [
@@ -3938,9 +4217,9 @@
       "coinpaprika_id": "uni-uniswap",
       "coingecko_id": "uniswap",
       "nodes": [
-        "https://bsc-dataseed.binance.org",
-        "https://bsc-dataseed1.defibit.io",
-        "https://bsc-dataseed1.ninicoin.io"
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
       ],
       "explorer_url": [
         "https://bscscan.com/"

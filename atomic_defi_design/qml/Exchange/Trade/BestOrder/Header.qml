@@ -23,7 +23,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 125
+            Layout.preferredWidth: 140
             text: sell_mode? qsTr("You get") : qsTr("You send")
             font.family: Style.font_family
             font.pixelSize: 10

@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
+import Qt.labs.platform 1.0
 
 
 import QtQuick.Window 2.15
@@ -168,16 +169,16 @@ Rectangle {
     }
 
     // Update Modal
-    readonly property bool status_good: API.app.update_checker.update_status.rpc_code === 200
-    readonly property bool update_needed: status_good && API.app.update_checker.update_status.update_needed
-    ModalLoader {
-        id: update_modal
-        sourceComponent: UpdateModal {}
+    NewUpdateModal
+    {
+        id: new_update_modal
+        visible: false
     }
 
-    UpdateNotificationLine {
-        anchors.top: parent.top
-        anchors.right: parent.right
+    UpdateInvalidChecksum
+    {
+        id: update_invalid_checksum
+        visible: false
     }
 
     // Fatal Error Modal
@@ -324,9 +325,17 @@ Rectangle {
         //atomic_settings2.value("CurrentTheme",name+".json")
         let data = API.qt_utilities.load_theme(name)
         for(let i in data) {
-            console.log("theme."+i.toString()+" = '"+ data[i]+"'")
-            eval("theme."+i.toString()+" = '"+ data[i]+"'")
+            if (i.toString().indexOf("[int]")!==-1){
+                let real_i = i;
+                i = i.replace("[int]","")
+                console.log("theme."+i.toString()+" = "+ data[real_i]+"")
+                eval("theme."+i.toString()+" = "+ data[real_i])
+            }else {
+                console.log("theme."+i.toString()+" = '"+ data[i]+"'")
+                eval("theme."+i.toString()+" = '"+ data[i]+"'")
+            }
         }
+        Qaterial.Style.accentColor = theme.accentColor
         console.log("END APPLY "+name)
     }
 
@@ -345,6 +354,7 @@ Rectangle {
         property color dexBoxBackgroundColor: Style.colorTheme9
 
         property color hightlightColor: Style.colorTheme5
+        property int sidebarShadowRadius: 32
 
         property color sideBarGradient1: Style.colorGradient1
         property color sideBarGradient2: Style.colorGradient2
@@ -357,6 +367,8 @@ Rectangle {
 
         property color chartTradingLineColor: Style.colorTrendingLine
         property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
+        property color  lineChartColor: theme.accentColor
+        property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
         property color foregroundColor: Style.colorText
 

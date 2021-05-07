@@ -48,7 +48,7 @@
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
-#include "atomicdex/services/update/update.checker.service.hpp"
+#include "atomicdex/services/update/self.update.service.hpp"
 
 namespace ag = antara::gaming;
 
@@ -68,12 +68,12 @@ namespace atomic_dex
         Q_PROPERTY(notification_manager* notification_mgr READ get_notification_manager)
         Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
         Q_PROPERTY(ip_service_checker* ip_checker READ get_ip_checker NOTIFY ipCheckerChanged)
-        Q_PROPERTY(update_service_checker* update_checker READ get_update_checker NOTIFY updateCheckerChanged)
         Q_PROPERTY(exporter_service* exporter_service READ get_exporter_service NOTIFY exporterServiceChanged)
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
+        Q_PROPERTY(self_update_service* self_update_service READ get_self_update_service NOTIFY selfUpdateServiceChanged)
 
         //! Private function
         void connect_signals();
@@ -138,7 +138,7 @@ namespace atomic_dex
         qt_wallet_manager*               get_wallet_mgr() const ;
         internet_service_checker*        get_internet_checker() const ;
         ip_service_checker*              get_ip_checker() const ;
-        update_service_checker*          get_update_checker() const ;
+        self_update_service*             get_self_update_service() const;
         exporter_service*                get_exporter_service() const ;
 
         //! Properties Setter
@@ -182,7 +182,7 @@ namespace atomic_dex
         void portfolioPageChanged();
         void walletPageChanged();
         void ordersChanged();
-        void updateCheckerChanged();
+        void selfUpdateServiceChanged();
         void tradingPageChanged();
         void settingsPageChanged();
         void internetCheckerChanged();

@@ -10,6 +10,7 @@ brew install autoconf \
             ninja \
             gnu-sed \
             coreutils \
+            llvm \
             gnu-getopt
 
 pip3 install yq

@@ -43,6 +43,7 @@ namespace atomic_dex
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
             if (mm2_system.is_mm2_running() && mm2_system.is_orderbook_thread_active())
             {
+                SPDLOG_INFO("process_best_orders");
                 using namespace std::string_literals;
                 const auto&           trading_pg = m_system_manager.get_system<trading_page>();
                 auto                  volume     = trading_pg.get_volume().toStdString();

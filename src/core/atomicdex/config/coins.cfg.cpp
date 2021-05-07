@@ -108,17 +108,20 @@ namespace atomic_dex
         {
         case CoinType::QRC20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet ? "tQTUM" : "QTUM";
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "tQTUM" : "QTUM";
             break;
         case CoinType::ERC20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet ? "ETHR" : "ETH";
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR" : "ETH";
+            break;
         case CoinType::BEP20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet ? "BNBT" : "BNB";
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "BNBT" : "BNB";
+            break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = "BCH";
+            break;
         default:
             cfg.has_parent_fees_ticker = false;
             cfg.fees_ticker            = cfg.ticker;

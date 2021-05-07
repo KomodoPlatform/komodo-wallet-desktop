@@ -40,7 +40,7 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(portfolio_proxy_model* portfolio_proxy_mdl READ get_portfolio_proxy_mdl NOTIFY portfolioProxyChanged);
-        Q_PROPERTY(portfolio_proxy_model* pie_chart_proxy_mdl READ get_pie_char_proxy_mdl  NOTIFY pieChartProxyMdlChanged);
+        Q_PROPERTY(portfolio_proxy_model* pie_chart_proxy_mdl READ get_pie_char_proxy_mdl NOTIFY pieChartProxyMdlChanged);
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
 
       public:
@@ -66,7 +66,8 @@ namespace atomic_dex
             MultiTickerFeesInfo,         ///< the fees json infos (it's readonly from front-end)
             CoinType,                    ///< Type of the coin
             Address,                     ///< Public address
-            PrivKey                      ///< Priv key
+            PrivKey,                     ///< Priv key
+            PercentMainCurrency
         };
         Q_ENUM(PortfolioRoles)
 
@@ -78,8 +79,8 @@ namespace atomic_dex
         using t_portfolio_datas = QVector<portfolio_data>;
 
         //! Constructor / Destructor
-        explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) ;
-        ~portfolio_model()  final = default;
+        explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
+        ~portfolio_model() final = default;
 
         //! Overrides
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
@@ -94,15 +95,16 @@ namespace atomic_dex
         //! Public api
         void                            initialize_portfolio(const std::vector<std::string>& tickers);
         bool                            update_currency_values();
-        bool                            update_balance_values(const std::vector<std::string>& tickers) ;
+        bool                            update_balance_values(const std::vector<std::string>& tickers);
+        void                            adjust_percent_current_currency(QString balance_all);
         void                            disable_coins(const QStringList& coins);
-        void                            set_cfg(atomic_dex::cfg& cfg) ;
-        [[nodiscard]] t_portfolio_datas get_underlying_data() const ;
+        void                            set_cfg(atomic_dex::cfg& cfg);
+        [[nodiscard]] t_portfolio_datas get_underlying_data() const;
 
         //! Properties
-        [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const ;
-        [[nodiscard]] portfolio_proxy_model* get_pie_char_proxy_mdl() const ;
-        [[nodiscard]] int                    get_length() const ;
+        [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const;
+        [[nodiscard]] portfolio_proxy_model* get_pie_char_proxy_mdl() const;
+        [[nodiscard]] int                    get_length() const;
 
         void reset();
 
