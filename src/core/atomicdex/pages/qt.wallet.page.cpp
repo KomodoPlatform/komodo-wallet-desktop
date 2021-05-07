@@ -29,7 +29,21 @@ namespace atomic_dex
 
     void
     wallet_page::update()
-    {}
+    {
+        if (!m_page_open)
+        {
+            return;
+        }
+        using namespace std::chrono_literals;
+    
+        const auto now = std::chrono::high_resolution_clock::now();
+        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
+        if (s >= 1s)
+        {
+            check_send_availability();
+            m_update_clock = std::chrono::high_resolution_clock::now();
+        }
+    }
 } // namespace atomic_dex
 
 //! Private API
@@ -317,6 +331,17 @@ namespace atomic_dex
     {
         return m_current_ticker_fees_coin_enabled;
     }
+    
+    bool wallet_page::is_page_open() const
+    {
+        return m_page_open;
+    }
+    
+    void wallet_page::set_page_open(bool value)
+    {
+        m_page_open = value;
+        emit isPageOpenChanged();
+    }
 } // namespace atomic_dex
 
 //! Public api
@@ -325,7 +350,6 @@ namespace atomic_dex
     void
     wallet_page::refresh_ticker_infos()
     {
-        // SPDLOG_DEBUG("refresh ticker infos");
         emit tickerInfosChanged();
     }
 

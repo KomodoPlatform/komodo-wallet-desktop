@@ -22,7 +22,7 @@ namespace atomic_dex
         void update()  override;
         ~wallet_page()  final = default;
 
-        void refresh_ticker_infos() ;
+        void refresh_ticker_infos();
         
         void on_tx_fetch_finished(const tx_fetch_finished&);
 
@@ -54,6 +54,8 @@ namespace atomic_dex
         [[nodiscard]] bool     is_send_available();
         [[nodiscard]] QString  get_send_availability_state();
         [[nodiscard]] bool     is_current_ticker_fees_coin_enabled();
+        [[nodiscard]] bool     is_page_open() const;
+        void                   set_page_open(bool value);
         
         void check_send_availability(); // When called, refreshes `m_send_availability_state` and `m_send_available` respective values. `m_send_available` is equal to false when you cannot send the selected coin, thus `m_send_availability_state` will contain the reason of why it's not possible.
     
@@ -81,6 +83,7 @@ namespace atomic_dex
         Q_PROPERTY(bool send_available READ is_send_available NOTIFY sendAvailableChanged)
         Q_PROPERTY(QString send_availability_state READ get_send_availability_state NOTIFY sendAvailabilityStateChanged)
         Q_PROPERTY(bool current_ticker_fees_coin_enabled READ is_current_ticker_fees_coin_enabled NOTIFY currentTickerFeesCoinEnabledChanged)
+        Q_PROPERTY(bool page_open READ is_page_open WRITE set_page_open NOTIFY isPageOpenChanged)
         
         // QML API Properties Signals
       signals:
@@ -100,6 +103,7 @@ namespace atomic_dex
         void sendAvailabilityStateChanged();
         void sendAvailableChanged();
         void currentTickerFeesCoinEnabledChanged();
+        void isPageOpenChanged();
 
       private:
         ag::ecs::system_manager& m_system_manager;
@@ -117,6 +121,8 @@ namespace atomic_dex
         bool                     m_send_available{true};
         QString                  m_send_availability_state;
         bool                     m_current_ticker_fees_coin_enabled{true}; // Tells if the current ticker's fees coin is enabled.
+        std::chrono::high_resolution_clock::time_point m_update_clock;      // Clock used to time the `update()` loop of this ecs system.
+        bool                     m_page_open{false};
     };
 } // namespace atomic_dex
 
