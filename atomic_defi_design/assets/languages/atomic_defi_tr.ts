@@ -2716,42 +2716,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="264"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="252"/>
         <source>Current Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="285"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="273"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="351"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="296"/>
+        <source>Apply Changement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="346"/>
         <source>Ask system&apos;s password before sending coins ? (2FA)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="455"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="450"/>
         <source>Application version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="469"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="464"/>
         <source>MM2 version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="483"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="478"/>
         <source>Qt version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="522"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="517"/>
         <source>Search Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="549"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="544"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2761,38 +2766,33 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="308"/>
-        <source>Apply Theme</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="373"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="368"/>
         <source>View seed and private keys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="376"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="436"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="371"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="431"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="389"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="384"/>
         <source>Setup Camouflage Password</source>
         <translation type="unfinished">Kamuflaj Parolasını Ayarla</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="392"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="387"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="410"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="405"/>
         <source>Delete Wallet</source>
         <translation type="unfinished">Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="433"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="428"/>
         <source>Disclaimer and ToS</source>
         <translation type="unfinished">Sorumluluk Reddi ve K.Ş.</translation>
     </message>
