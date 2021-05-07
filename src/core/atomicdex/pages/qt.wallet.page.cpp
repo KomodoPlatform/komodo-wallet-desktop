@@ -40,6 +40,8 @@ namespace atomic_dex
         auto& mm2 = m_system_manager.get_system<mm2_service>();
         auto  ticker_info = mm2.get_coin_info(mm2.get_current_ticker());
         
+        SPDLOG_INFO("CHECK SEND ! {}<-{}", ticker_info.ticker, ticker_info.fees_ticker);
+        
         if (not mm2.get_balance(ticker_info.ticker) > 0)
         {
             m_send_available = false;
@@ -452,6 +454,7 @@ namespace atomic_dex
     
     void wallet_page::refresh_send_availability()
     {
+        SPDLOG_INFO("REFRESH SEND !");
         refresh_ticker_infos();
         check_send_availability();
     }
