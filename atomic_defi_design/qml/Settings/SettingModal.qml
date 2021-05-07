@@ -163,6 +163,21 @@ Qaterial.Dialog {
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
+                                    text: qsTr("Maximum number of enabled coins")
+                                }
+                                DexComboBox {
+                                    model: [10, 20, 50, 75, 100, 150, 200]
+                                    currentIndex: model.indexOf(atomic_settings2.value("MaximumNbCoinsEnabled"))
+                                    onCurrentValueChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", currentValue)
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
                                     text: qsTr("Logs")
                                 }
                                 DexButton {
