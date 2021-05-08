@@ -8,12 +8,12 @@ import "../Constants"
 
 Row {
     id: _headerControlRow
-    property real size: 15
+    property real size: 13
     property bool hovered: minimizeButton.containsMouse || closeButton.containsMouse || extendButton.containsMouse
     width: 195
-    x: 13
+    x: 15
     height: 40
-    spacing: 13
+    spacing: 9
     anchors.top: parent.top
     anchors.topMargin: 0
     Rectangle {
