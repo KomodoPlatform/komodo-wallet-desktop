@@ -33,7 +33,10 @@ Row {
             id: closeButton
             hoverEnabled: true
             anchors.fill: parent
-            onClicked: Qt.quit()
+            onClicked: {
+                Qt.quit()
+                console.log("Window.visibility: "+window.visibility)
+            }
         }
     }
     Rectangle {
@@ -54,11 +57,7 @@ Row {
             hoverEnabled: true
             anchors.fill: parent
             onClicked: {
-                if(window.visibility===ApplicationWindow.FullScreen) {
-                    window.showNormal()
-                }else {
-                    window.showMinimized()
-                }
+                window.showMinimized()
             }
         }
     }
@@ -70,7 +69,7 @@ Row {
         Qaterial.ColorIcon {
             visible: _headerControlRow.hovered
             anchors.centerIn: parent
-            source: window.visibility===ApplicationWindow.FullScreen? Qaterial.Icons.arrowCollapse : Qaterial.Icons.arrowExpand
+            source: window.visibility===ApplicationWindow.Maximized? Qaterial.Icons.arrowCollapse : Qaterial.Icons.arrowExpand
             iconSize: parent.width-2
             color: 'black'
         }
@@ -80,10 +79,10 @@ Row {
             hoverEnabled: true
             anchors.fill: parent
             onClicked: {
-                if(window.visibility===ApplicationWindow.FullScreen){
+                if(window.visibility===ApplicationWindow.Maximized){
                     window.showNormal()
                 }else {
-                    window.showFullScreen()
+                    window.showMaximized()
                 }
             }
         }
