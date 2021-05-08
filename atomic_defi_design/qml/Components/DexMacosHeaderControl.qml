@@ -53,7 +53,13 @@ Row {
             id: minimizeButton
             hoverEnabled: true
             anchors.fill: parent
-            onClicked: window.showMinimized()
+            onClicked: {
+                if(window.visibility===ApplicationWindow.FullScreen) {
+                    window.showNormal()
+                }else {
+                    window.showMinimized()
+                }
+            }
         }
     }
     Rectangle {
