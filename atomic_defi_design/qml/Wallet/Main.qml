@@ -6,6 +6,8 @@ import QtCharts 2.3
 import QtWebEngine 1.8
 import QtGraphicalEffects 1.0
 
+import Qaterial 1.0 as Qaterial
+
 // Project Imports
 import "../Components"
 import "../Constants"
@@ -183,27 +185,85 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
 
-            DefaultButton {
-                id: send_button
-                enabled: parseFloat(current_ticker_infos.balance) > 0
-                text: qsTr("Send")
-                onClicked: send_modal.open()
+            Item {
                 Layout.fillWidth: true
-                font.pixelSize: Style.textSize
+                Layout.preferredWidth: 100
+                Layout.preferredHeight: send_button.height
+                DefaultButton {
+                    id: send_button
+                    enabled: API.app.wallet_pg.send_available
+                    text: qsTr("Send")
+                    onClicked: {
+                        if (API.app.wallet_pg.current_ticker_fees_coin_enabled) send_modal.open()
+                        else enable_fees_coin_modal.open()
+                    }
+                    width: parent.width
+                    anchors.top: parent.top
+                    font.pixelSize: Style.textSize
+                    Arrow {
+                        id: arrow_send
+                        up: true
+                        color: Style.colorRed
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 12
+                    }
+                }
 
-                Arrow {
-                    id: arrow_send
-                    up: true
-                    color: Style.colorRed
+                Image {
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 12
+                    anchors.horizontalCenterOffset: -36
+                    visible: API.app.wallet_pg.send_availability_state !== ""
+                    source: Qaterial.Icons.alert
+                    ToolTip.visible: send_alert_mouse_area.containsMouse
+                    ToolTip.text: API.app.wallet_pg.send_availability_state
+                    DefaultColorOverlay {
+                        anchors.fill: parent
+                        source: parent
+                        color: "yellow"
+                    }
+                    MouseArea {
+                        id: send_alert_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
                 }
             }
 
             ModalLoader {
                 id: send_modal
                 sourceComponent: SendModal {}
+            }
+
+            ModalLoader {
+                id: enable_fees_coin_modal
+                sourceComponent: BasicModal {
+                    width: 300
+                    id: root
+                    property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
+                    ModalContent {
+                        Layout.fillWidth: true
+                        title: qsTr("Enable %1 ?").arg(root.coin_to_enable_ticker)
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            DefaultButton {
+                                Layout.fillWidth: true
+                                text: qsTr("Yes")
+                                onClicked: {
+                                    API.app.enable_coin(root.coin_to_enable_ticker)
+                                    close()
+                                }
+                            }
+                            DefaultButton {
+                                Layout.fillWidth: true
+                                text: qsTr("No")
+                                onClicked: close()
+                            }
+                        }
+                    }
+                }
             }
 
             DefaultButton {
