@@ -127,7 +127,7 @@ namespace atomic_dex
         double m_balance_factor{1.0};
 
         //! Refresh the orderbook registry (internal)
-        nlohmann::json prepare_batch_orderbook();
+        nlohmann::json prepare_batch_orderbook(bool is_a_reset);
 
         //! Batch balance / tx
         std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx(bool only_tx = false) const;
