@@ -76,7 +76,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 70
         anchors.verticalCenter: parent.verticalCenter
-        scale: Qt.platform.os==="windows"? 1.2 : API.app.settings_pg.lang=="fr"? 0.9 : 1
+        scale: Qt.platform.os==="windows"? 1.2 : API.app.settings_pg.lang=="fr"? 0.85 : 1
         font: Qt.font({
             pixelSize: 16*_font.fontDensity*_font.languageDensity,
             letterSpacing: 0.5,
@@ -98,7 +98,7 @@ Item {
         radius: 3
         samples: 4
         spread: 0
-        scale: Qt.platform.os==="windows"? 1.2 : 1
+        scale: Qt.platform.os==="windows"? 1.2 : API.app.settings_pg.lang=="fr"? 0.85 : 1
         color: "#40000000"
         smooth: true
     }
