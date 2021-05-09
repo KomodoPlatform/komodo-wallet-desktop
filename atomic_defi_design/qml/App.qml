@@ -286,16 +286,15 @@ Rectangle {
         fileName: atomic_cfg_file
     }
 
+    Settings {
+    	id: ui_font_settings
+    	property alias fontDensity: _font.fontDensity
+    	property alias fontFamily: _font.fontFamily
+    }
+
     Component.onCompleted: {
         openFirstLaunch()
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
-//      save_currentTheme()
-//      Load the chart
-//        if(!chart_component) chart_component = Qt.createComponent("qrc:/atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml")//./Exchange/Trade/CandleStickChart.qml")
-//        if(!chart_object) {
-//            chart_object = chart_component.createObject(app)
-//            chart_object.visible = false
-//        }
         atomic_settings2.sync()
         let current =  atomic_settings2.value("CurrentTheme")
         console.log(current)
@@ -322,7 +321,6 @@ Rectangle {
         console.log(r)
     }
     function load_theme(name) {
-        //atomic_settings2.value("CurrentTheme",name+".json")
         let data = API.qt_utilities.load_theme(name)
         for(let i in data) {
             if (i.toString().indexOf("[int]")!==-1){
@@ -793,6 +791,24 @@ Rectangle {
     QtObject {
         id: _font
         property real fontDensity: 1.0
+        property real languageDensity: {
+        	switch(API.app.settings_pg.lang) {
+        		case "en":
+        			return 0.99999
+        			break
+        		case "fr":
+        			return Qt.platform.os === "windows"? 0.98999 : 0.90
+        			break
+        		case "tr":
+        			return 0.99999
+        			break
+        		case "ru":
+        			return 0.99999
+        			break
+        		default:
+        			return 0.99999
+        	}
+        }
         property string fontFamily: "Ubuntu"
         property font head1: Qt.font({
             pixelSize: 96*fontDensity,
