@@ -30,7 +30,7 @@ struct tests_context : public antara::gaming::world::app
   private:
     std::atomic_bool         m_test_context_ready{false};
     std::atomic_bool         m_extra_coins_ready{false};
-    std::vector<std::string> m_extra_coins{"tQTUM", "tBTC-TEST", "QRC20", "RICK", "MORTY"};
+    std::vector<std::string> m_extra_coins{"RICK", "MORTY"};
 
   public:
     void
