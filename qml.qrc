@@ -344,6 +344,8 @@
         <file>atomic_defi_design/qml/Components/DexTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DexWindow.qml</file>
         <file>atomic_defi_design/qml/Components/DexWindowControl.qml</file>
+        <file>atomic_defi_design/qml/Components/DexWindowHeaderControl.qml</file>
+        <file>atomic_defi_design/qml/Components/DexMacosHeaderControl.qml</file>
         <file>atomic_defi_design/qml/Components/EulaModal.qml</file>
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
         <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>

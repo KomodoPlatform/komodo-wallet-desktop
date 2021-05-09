@@ -18,56 +18,20 @@ Item {
         MouseArea {
             onPressed: window.startSystemMove();
             anchors.fill: parent
-        }
-        RowLayout {
-            width: 195
-            anchors.right: parent.right
-            height: 40
-            spacing: 0
-            anchors.top: parent.top
-            anchors.topMargin: 0
-            Qaterial.FlatButton {
-                topInset: 0
-                leftInset: 0
-                rightInset: 0
-                bottomInset: 0
-                radius: 0
-                opacity: .7
-                foregroundColor: app.globalTheme.foregroundColor
-                icon.source: Qaterial.Icons.windowMinimize
-                onClicked: window.showMinimized()
-
-            }
-            Qaterial.FlatButton {
-                topInset: 0
-                leftInset: 0
-                rightInset: 0
-                bottomInset: 0
-                radius: 0
-                opacity: .7
-                foregroundColor: app.globalTheme.foregroundColor
-                onClicked: {
-                    if(window.visibility===ApplicationWindow.Maximized){
-                        showNormal()
-                    }else {
-                        showMaximized()
-                    }
+            anchors.rightMargin: window.isOsx? 280 : 0
+            onDoubleClicked: {
+                if(window.visibility===ApplicationWindow.Maximized){
+                    window.showNormal()
+                }else {
+                    window.showMaximized()
                 }
-
-                icon.source: window.visibility===ApplicationWindow.Maximized? Qaterial.Icons.dockWindow : Qaterial.Icons.windowMaximize
             }
-            Qaterial.FlatButton {
-                topInset: 0
-                leftInset: 0
-                rightInset: 0
-                bottomInset: 0
-                radius: 0
-                opacity: .7
-                accentRipple: Qaterial.Colors.red
-                foregroundColor: app.globalTheme.foregroundColor
-                icon.source: Qaterial.Icons.windowClose
-                onClicked: Qt.quit()
-            }
+        }
+        DexWindowHeaderControl {
+            visible: !window.isOsx //Qt.platform.os == "windows" || "linux"
+        }
+        DexMacosHeaderControl {
+            visible: window.isOsx//Qt.platform.os == "osx"
         }
     }
     Item {
