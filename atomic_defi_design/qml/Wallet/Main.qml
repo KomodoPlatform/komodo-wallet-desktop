@@ -234,20 +234,21 @@ Item {
                 id: send_modal
                 sourceComponent: SendModal {}
             }
-            ModalLoader {
-                property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
-                id: enable_fees_coin_modal
-                sourceComponent: BasicModal {
+
+            Component {
+                id: enable_fees_coin_comp
+                BasicModal {
+                    id: root
                     width: 300
                     ModalContent {
-                        title: qsTr("Enable %1 ?").arg(enable_fees_coin_modal.coin_to_enable_ticker)
+                        title: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
                         RowLayout {
                             Layout.fillWidth: true
                             DefaultButton {
                                 Layout.fillWidth: true
                                 text: qsTr("Yes")
                                 onClicked: {
-                                    if (API.app.enable_coin(enable_fees_coin_modal.coin_to_enable_ticker) === false)
+                                    if (API.app.enable_coin(coin_to_enable_ticker) === false)
                                     {
                                         enable_fees_coin_failed_modal.open()
                                     }
@@ -265,21 +266,48 @@ Item {
             }
 
             ModalLoader {
-                id: enable_fees_coin_failed_modal
-                sourceComponent: BasicModal {
+                property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
+                id: enable_fees_coin_modal
+                sourceComponent: enable_fees_coin_comp
+            }
+
+            Component {
+                id: enable_fees_failed_comp
+                BasicModal {
+                    id: root
+                    width: 600
                     ModalContent {
                         title: qsTr("Failed to enable %1").arg(enable_fees_coin_modal.coin_to_enable_ticker)
+                        DefaultText {
+                            Layout.fillWidth: true
+                            text: qsTr("Enabling %1 did not succeed. Limit of enabled coins might have been reached.")
+                                    .arg(enable_fees_coin_modal.coin_to_enable_ticker)
+                        }
                         RowLayout {
                             Layout.fillWidth: true
-                            DefaultText {
+                            DefaultButton {
                                 Layout.fillWidth: true
-                                text: qsTr("Enabling %1 did not succeed. Limit of enabled coins might have been reached.")
-                                        .arg(enable_fees_coin_modal.coin_to_enable_ticker)
+                                text: qsTr("Increase limit in settings")
+                                onClicked: {
+                                    settings_modal.open()
+                                    close()
+                                }
+                            }
+                            DefaultButton {
+                                Layout.fillWidth: true
+                                text: qsTr("Cancel")
+                                onClicked: close()
                             }
                         }
                     }
 
                 }
+            }
+
+            ModalLoader {
+                property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
+                id: enable_fees_coin_failed_modal
+                sourceComponent: enable_fees_failed_comp
             }
 
             DexButton {
