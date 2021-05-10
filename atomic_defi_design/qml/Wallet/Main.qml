@@ -235,22 +235,22 @@ Item {
                 sourceComponent: SendModal {}
             }
             ModalLoader {
+                property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
                 id: enable_fees_coin_modal
                 sourceComponent: BasicModal {
                     width: 300
-                    id: root
-                    property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
                     ModalContent {
-                        Layout.fillWidth: true
-                        title: qsTr("Enable %1 ?").arg(root.coin_to_enable_ticker)
-
+                        title: qsTr("Enable %1 ?").arg(enable_fees_coin_modal.coin_to_enable_ticker)
                         RowLayout {
                             Layout.fillWidth: true
                             DefaultButton {
                                 Layout.fillWidth: true
                                 text: qsTr("Yes")
                                 onClicked: {
-                                    API.app.enable_coin(root.coin_to_enable_ticker)
+                                    if (API.app.enable_coin(enable_fees_coin_modal.coin_to_enable_ticker) === false)
+                                    {
+                                        enable_fees_coin_failed_modal.open()
+                                    }
                                     close()
                                 }
                             }
@@ -261,6 +261,24 @@ Item {
                             }
                         }
                     }
+                }
+            }
+
+            ModalLoader {
+                id: enable_fees_coin_failed_modal
+                sourceComponent: BasicModal {
+                    ModalContent {
+                        title: qsTr("Failed to enable %1").arg(enable_fees_coin_modal.coin_to_enable_ticker)
+                        RowLayout {
+                            Layout.fillWidth: true
+                            DefaultText {
+                                Layout.fillWidth: true
+                                text: qsTr("Enabling %1 did not succeed. Limit of enabled coins might have been reached.")
+                                        .arg(enable_fees_coin_modal.coin_to_enable_ticker)
+                            }
+                        }
+                    }
+
                 }
             }
 

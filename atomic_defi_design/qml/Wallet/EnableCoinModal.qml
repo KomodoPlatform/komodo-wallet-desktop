@@ -92,9 +92,7 @@ BasicModal {
                 leftPadding: indicator.width
 
                 readonly property bool backend_checked: model.checked
-                onBackend_checkedChanged: {
-                    if(checked !== backend_checked) checked = backend_checked
-                }
+                onBackend_checkedChanged: if(checked !== backend_checked) checked = backend_checked
                 onCheckStateChanged: {
                     if(checked !== backend_checked)
                     {
