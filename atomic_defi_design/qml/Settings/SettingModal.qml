@@ -166,8 +166,8 @@ Qaterial.Dialog {
                                 }
                                 DexComboBox {
                                     model: [10, 20, 50, 75, 100, 150, 200]
-                                    currentIndex: model.indexOf(atomic_settings2.value("MaximumNbCoinsEnabled"))
-                                    onCurrentValueChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", currentValue)
+                                    currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
+                                    onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
                                 }
                             }
                             RowLayout {
