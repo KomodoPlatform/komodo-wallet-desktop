@@ -96,7 +96,14 @@ BasicModal {
                     if(checked !== backend_checked) checked = backend_checked
                 }
                 onCheckStateChanged: {
-                    if(checked !== backend_checked) model.checked = checked
+                    if(checked !== backend_checked)
+                    {
+                        var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
+                        if ((coin_cfg_model.all_disabled_proxy.setData(data_index, checked, Qt.UserRole + 11)) === false)
+                        {
+                            checked = false
+                        }
+                    }
                 }
 
                 // Icon
