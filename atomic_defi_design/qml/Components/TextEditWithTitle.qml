@@ -7,7 +7,7 @@ ComponentWithTitle {
     property alias value_color: text.color
     property alias privacy: text.privacy
 
-    DefaultTextEdit {
+    DexLabel {
         id: text
 
         clip: true

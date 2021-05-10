@@ -81,7 +81,8 @@ namespace atomic_dex
         void                                 clear_orderbook() ;
         [[nodiscard]] int                    get_length() const ;
         [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const ;
-        [[nodiscard]] t_order_contents       get_order_content(const QModelIndex& index) const ;
+        [[nodiscard]] t_order_contents       get_order_content(const QModelIndex& index) const;
+        kind                                 get_orderbook_kind() const;
 
       signals:
         void lengthChanged();

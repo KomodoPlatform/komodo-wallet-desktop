@@ -83,7 +83,7 @@ ColumnLayout {
     }
 
     spacing: 10
-    anchors.topMargin: 5
+    anchors.topMargin: window.isOsx? 60 : 5
     anchors.leftMargin: 10
     anchors.fill: parent
 
@@ -216,12 +216,12 @@ ColumnLayout {
                 }
                 ItemBox {
                     id: optionBox
-                    defaultHeight: tabView.currentIndex === 0 ? 200 : 400
+                    defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270
                     Connections {
                         target: tabView
                         function onCurrentIndexChanged() {
                             if (tabView.currentIndex !== 0) {
-                                optionBox.setHeight(400)
+                                optionBox.setHeight(isUltraLarge? 400 : 270)
                             } else {
                                 optionBox.setHeight(200)
                             }
@@ -249,22 +249,6 @@ ColumnLayout {
                                 radius: 0
                                 color: theme.dexBoxBackgroundColor
                             }
-                            onCurrentIndexChanged: {
-                                swipeView.pop()
-                                switch (currentIndex) {
-                                case 0:
-                                    swipeView.push(priceLine)
-                                    break
-                                case 1:
-                                    swipeView.push(order_component)
-                                    break
-                                case 2:
-                                    swipeView.push(history_component)
-                                    break
-                                default:
-                                    priceLine
-                                }
-                            }
 
                             y: 5
                             leftPadding: 15
@@ -289,37 +273,34 @@ ColumnLayout {
                         }
                         Item {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            //radius: 4
                             width: parent.width
-                            height: parent.height - (tabView.height + 40)
-                            //verticalShadow: false
-                            StackView {
+                            height: optionBox.height - (tabView.height + 40)
+                            SwipeView {
                                 id: swipeView
-
-                                initialItem: priceLine
+                                clip: true
+                                interactive: false
+                                currentIndex: tabView.currentIndex
                                 anchors.fill: parent
+                                onCurrentIndexChanged: {
+                                    if(currentIndex===2) {
+                                        history_component.list_model_proxy.is_history = true
+                                    } else {
+                                        history_component.list_model_proxy.is_history = false
+                                    }
+                                }
 
-                                LoaderBusyIndicator {
-                                    visible: swipeView.busy
+                                PriceLine {
+                                    id: price_line_obj
                                 }
-                                Component {
-                                    id: priceLine
-                                    PriceLine {
-                                        id: price_line_obj
-                                    }
-                                }
-                                Component {
+
+                                OrdersView.OrdersPage {
                                     id: order_component
-                                    OrdersView.OrdersPage {
-                                        clip: true
-                                    }
+                                    clip: true
                                 }
-                                Component {
+                                OrdersView.OrdersPage {
                                     id: history_component
-                                    OrdersView.OrdersPage {
-                                        is_history: true
-                                        clip: true
-                                    }
+                                    is_history: true
+                                    clip: true
                                 }
                             }
                         }
@@ -622,7 +603,7 @@ ColumnLayout {
                                                         last_trading_error,
                                                         curr_fee_info,
                                                         base_ticker,
-                                                        rel_ticker)
+                                                        rel_ticker, left_ticker, right_ticker)
                                     }
                                 }
                             }
@@ -635,7 +616,7 @@ ColumnLayout {
                     visible: !isUltraLarge
                     SplitView.fillWidth: true
                     SplitView.fillHeight: true
-                    defaultHeight: 140
+                    defaultHeight: 130
                     minimumHeight: 80
                     title: "Best Orders"
                     reloadable: true

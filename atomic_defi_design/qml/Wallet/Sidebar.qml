@@ -19,7 +19,7 @@ Item {
     Layout.alignment: Qt.AlignLeft
     width: 175
     Layout.fillHeight: true
-    Layout.topMargin: -40
+    Layout.topMargin: !window.isOsx? -40 : 0
 
     // Background
     SidebarPanel {

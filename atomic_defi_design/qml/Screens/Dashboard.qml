@@ -82,8 +82,8 @@ Item {
     AnimatedRectangle {
         color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
-        height: parent.height-40
-        y: 40
+        height: window.isOsx? parent.height : parent.height-40
+        y: !window.isOsx? 40 : 0
         x: sidebar.width
 
         // Modals
@@ -204,8 +204,8 @@ Item {
 
     // Sidebar, left side
     Sidebar {
-
         id: sidebar
+
     }
 
     // Unread notifications count
@@ -241,10 +241,9 @@ Item {
 
         onClicked: notifications_modal.open()
     }
+    
 
-    NotificationsModal {
-        id: notifications_modal
-    }
+   
 
     DropShadow {
         anchors.fill: sidebar
@@ -257,6 +256,14 @@ Item {
         spread: 0
         color: theme.colorSidebarDropShadow
         smooth: true
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: '#000'
+        visible: notifications_modal.visible
+        anchors.leftMargin: sidebar.width
+        opacity: .6
     }
 
     ModalLoader {
@@ -277,6 +284,10 @@ Item {
     ModalLoader {
         id: restart_modal
         sourceComponent: RestartModal {}
+    }
+
+     NotificationsModal {
+        id: notifications_modal
     }
 
     function getStatusColor(status) {

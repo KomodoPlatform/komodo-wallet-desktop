@@ -43,6 +43,7 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(PriceRole);
+
         switch (m_current_orderbook_kind)
         {
         case kind::asks:
@@ -347,6 +348,8 @@ namespace atomic_dex
             update_value(OrderbookRoles::QuantityRole, QString::fromStdString(order.maxvolume), idx, *this);
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
+            update_value(OrderbookRoles::BaseMinVolumeRole, QString::fromStdString(order.base_min_volume), idx, *this);
+            update_value(OrderbookRoles::MinVolumeRole, QString::fromStdString(order.min_volume), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
             update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
@@ -423,6 +426,7 @@ namespace atomic_dex
     void
     orderbook_model::clear_orderbook()
     {
+        SPDLOG_INFO("clear orderbook");
         this->beginResetModel();
         m_model_data = t_orders_contents{};
         m_orders_id_registry.clear();
@@ -434,5 +438,10 @@ namespace atomic_dex
     orderbook_model::get_orderbook_proxy() const
     {
         return m_model_proxy;
+    }
+    orderbook_model::kind
+    orderbook_model::get_orderbook_kind() const
+    {
+        return m_current_orderbook_kind;
     }
 } // namespace atomic_dex

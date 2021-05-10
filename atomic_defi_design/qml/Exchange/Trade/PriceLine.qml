@@ -7,6 +7,7 @@ import "../../Constants"
 
 // Price
 RowLayout {
+    
     readonly property string price: non_null_price
     readonly property string price_reversed: API.app.trading_pg.price_reversed
     readonly property string cex_price: API.app.trading_pg.cex_price
@@ -34,7 +35,6 @@ RowLayout {
         font.pixelSize: fontSizeBigger
     }
 
-
     ColumnLayout {
         visible: price_entered
         Layout.alignment: Qt.AlignHCenter
@@ -60,7 +60,6 @@ RowLayout {
             font.pixelSize: fontSize
         }
     }
-
 
     // Price Comparison
     ColumnLayout {
@@ -106,10 +105,6 @@ RowLayout {
             }
         }
     }
-
-
-
-
 
     // CEXchange
     ColumnLayout {

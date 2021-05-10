@@ -248,6 +248,7 @@ namespace atomic_dex
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
 
+        auto&       mm2_system        = m_system_manager.get_system<mm2_service>();
         const auto* market_selector   = get_market_pairs_mdl();
         const auto& base              = market_selector->get_left_selected_coin();
         const auto& rel               = market_selector->get_right_selected_coin();
@@ -258,10 +259,15 @@ namespace atomic_dex
                                : false;
         t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50 cur_min_trade  = safe_float(get_min_trade_vol().toStdString());
-        t_float_50 delta          = (cur_min_trade * 100) / safe_float(m_max_volume.toStdString());
-        t_float_50 delta_cur      = (cur_min_trade * 100) / safe_float(m_volume.toStdString());
-        SPDLOG_INFO("delta min_vol compare to max volume is: {}", utils::format_float(delta));
-        SPDLOG_INFO("delta min_vol compare to current volume is: {}", utils::format_float(delta_cur));
+        //t_float_50 delta          = (cur_min_trade * 100) / safe_float(m_max_volume.toStdString());
+        //t_float_50 delta_cur      = (cur_min_trade * 100) / safe_float(m_volume.toStdString());
+        // SPDLOG_INFO("delta min_vol compare to max volume is: {}", utils::format_float(delta));
+        // SPDLOG_INFO("delta min_vol compare to current volume is: {}", utils::format_float(delta_cur));
+        // SPDLOG_INFO("base: {} base_min_vol: {}", base_resp.coin, base_resp.min_trading_vol);
+        //SPDLOG_INFO("rel: {} rel_min_vol: {}", rel_resp.coin, rel_resp.min_trading_vol);
+        //SPDLOG_INFO("cur_min_trade {}", cur_min_trade.str());
+        //SPDLOG_INFO("base_min_trade {}", base_min_trade.str());
+        SPDLOG_INFO("min_trade_amount_field {}", m_minimal_trading_amount.toStdString());
 
         t_sell_request req{
             .base             = base.toStdString(),
@@ -316,7 +322,6 @@ namespace atomic_dex
         nlohmann::json sell_request = ::mm2::api::template_request("sell");
         ::mm2::api::to_json(sell_request, req);
         batch.push_back(sell_request);
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
         // SPDLOG_INFO("batch sell request: {}", batch.dump(4));
         //! Answer
@@ -921,9 +926,11 @@ namespace atomic_dex
     void
     trading_page::set_preffered_order(QVariantMap price_object)
     {
+        SPDLOG_INFO("order pick from orderbook");
         if (auto preffered_order = nlohmann::json::parse(QString(QJsonDocument(QJsonObject::fromVariantMap(price_object)).toJson()).toStdString());
             preffered_order != m_preffered_order)
         {
+            SPDLOG_INFO("preffered_order: {}", preffered_order.dump(4));
             m_preffered_order = std::move(preffered_order);
             emit prefferedOrderChanged();
             if (not m_preffered_order->empty() && m_preffered_order->contains("price"))
@@ -1298,12 +1305,19 @@ namespace atomic_dex
         //! base_min_vol -> 0.0001 KMD
         //! rel_min_vol -> 10 DOGE
         const auto& min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        t_float_50  min_vol_f     = safe_float(min_taker_vol);
+        // SPDLOG_INFO("min_taker_vol: {}", min_taker_vol);
+        t_float_50 min_vol_f = safe_float(min_taker_vol);
         // const bool  is_valid      = safe_float(min_trade_vol.toStdString()) <= safe_float(get_volume().toStdString());
 
         if (safe_float(min_trade_vol.toStdString()) <= min_vol_f)
         {
             min_trade_vol = QString::fromStdString(min_taker_vol);
+        }
+
+        if (safe_float(get_orderbook_wrapper()->get_current_min_taker_vol().toStdString()) > safe_float(min_trade_vol.toStdString()))
+        {
+            SPDLOG_WARN("Spurious min_diff detected - overriding immediately");
+            min_trade_vol = get_orderbook_wrapper()->get_current_min_taker_vol();
         }
 
         if (min_trade_vol != m_minimal_trading_amount)

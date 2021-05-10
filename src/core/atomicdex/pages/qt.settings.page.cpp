@@ -76,7 +76,7 @@ namespace atomic_dex
     QString
     settings_page::get_current_lang() const
     {
-        QSettings&    settings          = entity_registry_.ctx<QSettings>();
+        QSettings& settings = entity_registry_.ctx<QSettings>();
         return settings.value("CurrentLang").toString();
     }
 
@@ -84,7 +84,7 @@ namespace atomic_dex
     atomic_dex::settings_page::set_current_lang(QString new_lang)
     {
         const std::string new_lang_std = new_lang.toStdString();
-        QSettings&    settings          = entity_registry_.ctx<QSettings>();
+        QSettings&        settings     = entity_registry_.ctx<QSettings>();
         settings.setValue("CurrentLang", new_lang);
         settings.sync();
 
@@ -217,7 +217,7 @@ namespace atomic_dex
     QStringList
     settings_page::get_available_langs() const
     {
-        QSettings&    settings          = entity_registry_.ctx<QSettings>();
+        QSettings& settings = entity_registry_.ctx<QSettings>();
         return settings.value("AvailableLang").toStringList();
     }
 
@@ -506,13 +506,35 @@ namespace atomic_dex
     settings_page::reset_coin_cfg()
     {
         using namespace std::string_literals;
-        const std::string wallet_name     = qt_wallet_manager::get_default_wallet_name().toStdString();
-        const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name + ".json"s;
+        const std::string wallet_name                = qt_wallet_manager::get_default_wallet_name().toStdString();
+        const std::string wallet_cfg_file            = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name + ".json"s;
+        std::string       wallet_custom_cfg_filename = "custom-tokens."s + wallet_name + ".json"s;
+        const fs::path    wallet_custom_cfg_path{utils::get_atomic_dex_config_folder() / wallet_custom_cfg_filename};
         const fs::path    wallet_cfg_path{utils::get_atomic_dex_config_folder() / wallet_cfg_file};
         const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
-        const fs::path    ini_file_path  = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
-        const fs::path    logo_path      = atomic_dex::utils::get_logo_path();
-        const auto        functor_remove = [](auto&& path_to_remove)
+        const fs::path    ini_file_path = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
+        const fs::path    logo_path     = atomic_dex::utils::get_logo_path();
+
+
+        if (fs::exists(wallet_custom_cfg_path))
+        {
+            nlohmann::json custom_config_json_data;
+            std::ifstream  ifs(wallet_custom_cfg_path.c_str());
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> custom_config_json_data;
+            ifs.close();
+
+            //! Modify
+            for (auto&& [key, value]: custom_config_json_data.items()) { value["active"] = false; }
+
+            //! Write
+            std::ofstream ofs_custom(wallet_custom_cfg_path.c_str(), std::ios::trunc);
+            ofs_custom << custom_config_json_data;
+        }
+
+        const auto functor_remove = [](auto&& path_to_remove)
         {
             if (fs::exists(path_to_remove))
             {
