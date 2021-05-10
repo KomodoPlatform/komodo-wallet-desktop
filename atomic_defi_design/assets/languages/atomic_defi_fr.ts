@@ -107,17 +107,17 @@
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="255"/>
         <source>Coingecko ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Coingecko ID</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="256"/>
         <source>Enter the Coingecko ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrer l&apos;identifiant coingecko</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="262"/>
         <source>Get the Coingecko ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupérer l&apos;identifiant coingecko</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="279"/>
@@ -224,12 +224,12 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="33"/>
         <source>Edit address entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Edition de l&apos;entrée pour l&apos;addresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
         <source>Choose a wallet type, current: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un type de wallet, actuellement : %1</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="51"/>
@@ -277,37 +277,37 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="82"/>
         <source>Address List</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste d&apos;addresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="88"/>
         <source>Search for an address entry.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher une addresse.</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="142"/>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="165"/>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clef</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="188"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Addresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="210"/>
         <source>Actions</source>
-        <translation type="unfinished">Actions</translation>
+        <translation>Actions</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="288"/>
         <source>New Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle addresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="333"/>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../../qml/Portfolio/AssetPieChart.qml" line="126"/>
         <source>Assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Actifs</translation>
     </message>
 </context>
 <context>
@@ -451,7 +451,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/BuyBox.qml" line="33"/>
         <source>Buy</source>
-        <translation type="unfinished"></translation>
+        <translation>Acheter</translation>
     </message>
 </context>
 <context>
@@ -676,12 +676,12 @@
     <message>
         <location filename="../../qml/Settings/Combo_fiat.qml" line="19"/>
         <source>Fiat</source>
-        <translation type="unfinished">Monnaie fiduciaire</translation>
+        <translation>Monnaie fiduciaire</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Combo_fiat.qml" line="45"/>
         <source>Recommended: </source>
-        <translation type="unfinished">Conseillé :</translation>
+        <translation>Conseillé :</translation>
     </message>
 </context>
 <context>
@@ -742,7 +742,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="126"/>
         <source>Total %1 fees: %2 (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Total %1 frais: %2 (%3)</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="170"/>
@@ -999,17 +999,17 @@
     <message>
         <location filename="../../qml/Components/DefaultRangeSlider.qml" line="98"/>
         <source>Min</source>
-        <translation type="unfinished">Min</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../../qml/Components/DefaultRangeSlider.qml" line="105"/>
         <source>Half</source>
-        <translation type="unfinished">Moitié</translation>
+        <translation>Moitié</translation>
     </message>
     <message>
         <location filename="../../qml/Components/DefaultRangeSlider.qml" line="112"/>
         <source>Max</source>
-        <translation type="unfinished">Max</translation>
+        <translation>Max</translation>
     </message>
 </context>
 <context>
@@ -1017,7 +1017,7 @@
     <message>
         <location filename="../../qml/Components/DefaultSweetComboBox.qml" line="61"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -1064,17 +1064,17 @@
     <message>
         <location filename="../../qml/Components/DexRangeSlider.qml" line="98"/>
         <source>Min</source>
-        <translation type="unfinished">Min</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../../qml/Components/DexRangeSlider.qml" line="105"/>
         <source>Half</source>
-        <translation type="unfinished">Moitié</translation>
+        <translation>Moitié</translation>
     </message>
     <message>
         <location filename="../../qml/Components/DexRangeSlider.qml" line="112"/>
         <source>Max</source>
-        <translation type="unfinished">Max</translation>
+        <translation>Max</translation>
     </message>
 </context>
 <context>
@@ -1082,7 +1082,7 @@
     <message>
         <location filename="../../qml/Components/DexSweetComboBox.qml" line="61"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -1217,12 +1217,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/Items/FeeInfo.qml" line="51"/>
         <source>Minimum fee</source>
-        <translation type="unfinished">Frais minimum</translation>
+        <translation>Frais minimum</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/Items/FeeInfo.qml" line="52"/>
         <source>Fees will be calculated</source>
-        <translation type="unfinished">Les frais seront calculés</translation>
+        <translation>Les frais seront calculés</translation>
     </message>
 </context>
 <context>
@@ -1253,9 +1253,9 @@
     <message numerus="yes">
         <location filename="../../qml/Constants/General.qml" line="114"/>
         <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jour(s)</numerusform>
+            <numerusform>%n jour(s)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -1316,7 +1316,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="421"/>
         <source>Minimum Trading Amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Frais d&apos;échange minimum</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="431"/>
@@ -1327,7 +1327,7 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="440"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>La %1 balance est inférieur aux frais: %2 %3</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="442"/>
@@ -1354,13 +1354,13 @@
         <location filename="../../qml/Constants/General.qml" line="452"/>
         <location filename="../../qml/Constants/General.qml" line="456"/>
         <source>%1 parent chain is not enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>La chaine parent de %1 n&apos;est pas activé</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="454"/>
         <location filename="../../qml/Constants/General.qml" line="458"/>
         <source>%1 parent chain balance is 0, a non-zero balance is required to pay the gas</source>
-        <translation type="unfinished"></translation>
+        <translation>La chaine parent de : %1 est 0, une balance au dessus de zéro est requise pour payer le gas</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="460"/>
@@ -1373,37 +1373,37 @@
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="27"/>
         <source>You get</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous recevez</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="27"/>
         <source>You send</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous envoyez</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="37"/>
         <source>Fiat Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Prix fiduciaire</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/Header.qml" line="52"/>
         <source>CEX rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Taux CEX</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderBook/Header.qml" line="28"/>
         <source>Price</source>
-        <translation type="unfinished">Prix</translation>
+        <translation>Prix</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderBook/Header.qml" line="39"/>
         <source>Quantity</source>
-        <translation type="unfinished">Quantité</translation>
+        <translation>Quantité</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderBook/Header.qml" line="54"/>
         <source>Total</source>
-        <translation type="unfinished">Total</translation>
+        <translation>Total</translation>
     </message>
 </context>
 <context>
@@ -1450,17 +1450,17 @@
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="18"/>
         <source>Join our Discord server</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejoignez notre serveur Discord</translation>
     </message>
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="27"/>
         <source>Follow us on Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Suivez-nous sur Twitter</translation>
     </message>
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="36"/>
         <source>Go to Support Guides</source>
-        <translation type="unfinished"></translation>
+        <translation>M&apos;envoyer sur les guides du support</translation>
     </message>
 </context>
 <context>
@@ -1468,12 +1468,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/BestOrder/ListDelegate.qml" line="71"/>
         <source> %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; -&lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 n&apos;est pas activé - voulez-vous l&apos;activer pour pouvoir sélectionner les meilleures ordres de %2 ? &lt;br&gt; &lt;a href=&apos;#&apos;&gt; Oui &lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt; Non &lt; / a&gt;</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderBook/ListDelegate.qml" line="50"/>
         <source>This order require a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; Your max balance after fees is: (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette commande nécessite un montant minimum de%1 %2 &lt;br&gt; Vous n&apos;avez pas assez de fonds. &lt;br&gt; Votre solde maximum après frais est: (%3)</translation>
     </message>
 </context>
 <context>
@@ -1557,12 +1557,12 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="405"/>
         <source>Loading market data</source>
-        <translation type="unfinished">Chargement des données de marché</translation>
+        <translation>Chargement des données de marché</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="411"/>
         <source>There is no chart data for this ticker yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a pas encore de données graphiques pour ce ticker</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="436"/>
@@ -1600,12 +1600,12 @@
     <message>
         <location filename="../../qml/Components/MinTradeModal.qml" line="13"/>
         <source>Minimum Trading Amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Montant de trading minimum</translation>
     </message>
     <message>
         <location filename="../../qml/Components/MinTradeModal.qml" line="19"/>
         <source>the minimum amount of %1 coin available for the order; the min_volume must be greater than or equal to %2; it must be also less or equal than volume param; default is %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Le montant minimum de%1 disponible pour la commande; le min_volume doit être supérieur ou égal à%2; il doit également être inférieur ou égal au paramètre de volume; la valeur par défaut est%3</translation>
     </message>
 </context>
 <context>
@@ -2233,12 +2233,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="273"/>
         <source>Exchange Rates</source>
-        <translation type="unfinished"></translation>
+        <translation>Taux d&apos;échanges</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="279"/>
         <source>Orders</source>
-        <translation type="unfinished">Ordres</translation>
+        <translation>Ordres</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="285"/>
@@ -2248,7 +2248,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="547"/>
         <source>Order Selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordre séléctionné</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="596"/>
@@ -2657,72 +2657,72 @@
         <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <location filename="../../qml/Settings/SettingModal.qml" line="208"/>
         <source>Language</source>
-        <translation type="unfinished">Langue</translation>
+        <translation>Langue</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>User Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface utilsateur</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>Security</source>
-        <translation type="unfinished"></translation>
+        <translation>Sécurité</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="105"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="150"/>
         <source>Enable Desktop Notifications</source>
-        <translation type="unfinished">Activer les notifications</translation>
+        <translation>Activer les notifications</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="165"/>
         <source>Logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Journaux</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="168"/>
         <source>Open Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le dossier</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="182"/>
         <source>Reset assets configuration</source>
-        <translation type="unfinished">Réinitialiser la configuration d&apos;assets</translation>
+        <translation>Réinitialiser la configuration d&apos;assets</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="185"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="234"/>
         <source>Use QtTextRendering Or NativeTextRendering</source>
-        <translation type="unfinished">Utilisez QtTextRendering ou NativeTextRendering</translation>
+        <translation>Utilisez QtTextRendering ou NativeTextRendering</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="252"/>
         <source>Current Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Police actuelle</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="273"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thème</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="296"/>
