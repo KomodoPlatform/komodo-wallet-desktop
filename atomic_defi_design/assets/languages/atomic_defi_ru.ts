@@ -1516,87 +1516,102 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="89"/>
+        <location filename="../../qml/Wallet/Main.qml" line="91"/>
         <source>Wallet Balance</source>
         <translation>Баланс кошелька</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="116"/>
+        <location filename="../../qml/Wallet/Main.qml" line="118"/>
         <source>Price</source>
         <translation>Цена</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="134"/>
+        <location filename="../../qml/Wallet/Main.qml" line="136"/>
         <source>Change 24h</source>
         <translation>Изменение за 24ч</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="156"/>
+        <location filename="../../qml/Wallet/Main.qml" line="158"/>
         <source>Portfolio %</source>
         <translation>% портфолио</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="189"/>
+        <location filename="../../qml/Wallet/Main.qml" line="194"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="210"/>
+        <location filename="../../qml/Wallet/Main.qml" line="245"/>
+        <source>Enable %1 ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/Main.qml" line="251"/>
+        <source>Yes</source>
+        <translation type="unfinished">Да</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/Main.qml" line="259"/>
+        <source>No</source>
+        <translation type="unfinished">Нет</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/Main.qml" line="268"/>
         <source>Receive</source>
         <translation>Получить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="231"/>
+        <location filename="../../qml/Wallet/Main.qml" line="289"/>
         <source>Swap</source>
         <translation>Обменять</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="254"/>
+        <location filename="../../qml/Wallet/Main.qml" line="312"/>
         <source>Claim Rewards</source>
         <translation>Получить вознаграждение</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="274"/>
+        <location filename="../../qml/Wallet/Main.qml" line="332"/>
         <source>Faucet</source>
         <translation>Фаусет</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="405"/>
+        <location filename="../../qml/Wallet/Main.qml" line="463"/>
         <source>Loading market data</source>
         <translation>Загрузка рыночных данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="411"/>
+        <location filename="../../qml/Wallet/Main.qml" line="469"/>
         <source>There is no chart data for this ticker yet</source>
         <translation>Для данного актива пока еще нет графиков данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="436"/>
+        <location filename="../../qml/Wallet/Main.qml" line="494"/>
         <source>Loading</source>
         <translation>Загрузка</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="447"/>
+        <location filename="../../qml/Wallet/Main.qml" line="505"/>
         <source>Scanning blocks for TX History...</source>
         <translation>Сканирование блокчейна для получения данных о транзакциях...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="448"/>
+        <location filename="../../qml/Wallet/Main.qml" line="506"/>
         <source>Syncing TX History...</source>
         <translation>Синхронизация истории транзакций...</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="479"/>
+        <location filename="../../qml/Wallet/Main.qml" line="537"/>
         <source>No transactions</source>
         <translation>Нет транзакций</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="479"/>
+        <location filename="../../qml/Wallet/Main.qml" line="537"/>
         <source>Refreshing</source>
         <translation>Обновление данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="511"/>
+        <location filename="../../qml/Wallet/Main.qml" line="569"/>
         <source>Fetching transactions</source>
         <translation>Получение данных о транзакциях</translation>
     </message>
@@ -1826,80 +1841,80 @@
 <context>
     <name>NotificationsModal</name>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="99"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="113"/>
         <source>Swap status updated</source>
         <translation>Обновление статуса Свопа</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="110"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="124"/>
         <source>You sent %1</source>
         <translation>Вы отправили %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="110"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="124"/>
         <source>You received %1</source>
         <translation>Вы получили %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="111"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="125"/>
         <source>Your wallet balance changed</source>
         <translation>Баланс вашего кошелька изменился</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="116"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="130"/>
         <source>Please check your internet connection (e.g. VPN service or firewall might block it).</source>
         <translation>Пожалуйста, проверьте ваше интернет-соединение (например, служба VPN или брандмауэр могут блокировать подключение).</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="127"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="141"/>
         <source>Failed to enable %1</source>
         <comment>TICKER</comment>
         <translation>Не получается включить %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="144"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="158"/>
         <source>Endpoint not reachable</source>
         <translation>Эндпоинт не доступен</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="146"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="160"/>
         <source>Could not reach to endpoint</source>
         <translation>Не удалось подключиться</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="161"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="175"/>
         <source>Mismatch at %1 custom asset configuration</source>
         <comment>TICKER</comment>
         <translation>Несоответствие в конфигурации актива %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="167"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="181"/>
         <source>Application needs to be restarted for %1 custom asset.</source>
         <comment>TICKER</comment>
         <translation>Необходимо перезапустить приложение для %1.</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="174"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="188"/>
         <source>Batch %1 failed. Reason: %2</source>
         <translation>Группа %1 .не удалась. Причина: %2</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="221"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="235"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="226"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="240"/>
         <source>Restart</source>
         <translation>Перезапустить</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="231"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="245"/>
         <source>Quit</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="285"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="289"/>
         <source>There isn&apos;t any notification</source>
         <translation>Нет новых уведомлений</translation>
     </message>
@@ -2067,32 +2082,32 @@
 <context>
     <name>OrdersPage</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="202"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="195"/>
         <source>From</source>
         <translation>От</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="213"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="206"/>
         <source>To</source>
         <translation>Кому</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="120"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="114"/>
         <source>Export CSV</source>
         <translation>Скачать CSV</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="137"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="130"/>
         <source>Apply Filter</source>
         <translation>Применить фильтр</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="250"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="240"/>
         <source>Please choose the CSV export name and location</source>
         <translation>Выберите название и расположение загружаемого файла</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="276"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="264"/>
         <source>Recover Funds Result</source>
         <translation>Результат восстановления средств</translation>
     </message>
@@ -2191,7 +2206,7 @@
 <context>
     <name>PriceLine</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="33"/>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="34"/>
         <source>Set swap price for evaluation</source>
         <translation>Установите цену для оценки</translation>
     </message>
@@ -2206,23 +2221,23 @@
         <translation>Выбрано</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="76"/>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="75"/>
         <source>Expensive</source>
         <translation>Невыгодный курс</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="76"/>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="75"/>
         <source>Expedient</source>
         <translation>Выгодный курс</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="76"/>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="75"/>
         <source>%1 compared to CEX</source>
         <comment>PRICE_DIFF%</comment>
         <translation>%1 по сравнению с CEX</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="121"/>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="116"/>
         <source>CEXchange rate</source>
         <translation>CEXchange Цена</translation>
     </message>
@@ -2240,27 +2255,27 @@
         <translation>Ордер размещен</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="273"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="257"/>
         <source>Exchange Rates</source>
         <translation>Курс обмена</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="279"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="263"/>
         <source>Orders</source>
         <translation>Ордеры</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="285"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="269"/>
         <source>history</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="547"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="528"/>
         <source>Order Selected</source>
         <translation>Ордер выбран</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="596"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="577"/>
         <source>Start Swap</source>
         <translation>Начать Своп</translation>
     </message>
@@ -2744,27 +2759,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="450"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="448"/>
         <source>Application version</source>
         <translation>Версия приложения</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="464"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="462"/>
         <source>MM2 version</source>
         <translation>Версия MM2</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="478"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="476"/>
         <source>Qt version</source>
         <translation>Версия Qt</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="517"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="516"/>
         <source>Search Update</source>
         <translation>Проверить на обновления</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="544"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="543"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
@@ -2780,7 +2795,7 @@
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="371"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="431"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="429"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
@@ -2795,12 +2810,12 @@
         <translation>Установить</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="405"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="403"/>
         <source>Delete Wallet</source>
         <translation>Удалить кошелек</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="428"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="426"/>
         <source>Disclaimer and ToS</source>
         <translation>Дисклеймер и Условия Использования</translation>
     </message>
@@ -3000,52 +3015,56 @@
         <translation>Несколько факторов определяют время завершения каждого Атомарного Свопа. Время блока на каждой из торгуемых сетей (Bitcoin обычно самый медленный) В добавок каждый юзер может кастомизировать опции защиты. Например в пред-настройках Свопа,  (вы можете установить %1 так чтобы протокол считал транзакцию KMD финальной как только она получит всего 3 подтверждения что уменьшает время Атомарного Свопа в сравнении с ожиданием &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;нотаризации&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="148"/>
+        <location filename="../../qml/Support/Support.qml" line="133"/>
+        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker.
+The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.
+If you go offline, so will your orders, and any that are in progress will fail, leading to potential loss of trade / transaction fees, and a wait for the swap to timeout and issue a refund. It may also negatively affect your wallet&apos;s reputation score for future trade matching.
+When you come back online, your orders will begin to broadcast again at the price you set before you went offline. If there has been significant price movement in the meantime, you might unintentionally offer someone a bargain!
+For this reason, we recommend cancelling orders before closing %1, or reviewing and revising your prices when restarting %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="152"/>
         <source>Yes! %1 offers support through the &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord server&lt;/a&gt;. The team and the community are always happy to help!</source>
         <translation>Да! %1 поддерживает пользователей с помощью &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord сервера&lt;/a&gt;.Команда и комьюнити всегда готовы помочь!</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="152"/>
+        <location filename="../../qml/Support/Support.qml" line="156"/>
         <source>Who is behind %1?</source>
         <translation>Кто создал %1?</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="153"/>
+        <location filename="../../qml/Support/Support.qml" line="157"/>
         <source>%1 is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.</source>
         <translation>%1 разрабатывается командой Komodo. Komodo один из наиболее известных блокчейн проектов который работает над такими инновационными решениями как Атомарные Свопы, &quot;Отложенный&quot; PoW, а также над совместимой мульти-чейн архитектурой.</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="157"/>
+        <location filename="../../qml/Support/Support.qml" line="161"/>
         <source>Is it possible to develop my own white-label exchange on %1?</source>
         <translation>Возможно ли разработать децентрализованную биржу с моим брендом на %1?</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="158"/>
+        <location filename="../../qml/Support/Support.qml" line="162"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The %1 developer community is always ready to help!</source>
         <translation>Обязательно! Вы можете прочитать нашу документацию для разработчиков для более детального ревью или же связаться с нашей командой по поводу партнерства. Есть очень специфичный технический вопрос? %1 наше комьюнити разработчиков всегда готово помочь!</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="162"/>
+        <location filename="../../qml/Support/Support.qml" line="166"/>
         <source>Which devices can I use %1 on?</source>
         <translation>На каких устройствах я могу использовать %1 ?</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="163"/>
+        <location filename="../../qml/Support/Support.qml" line="167"/>
         <source>%1 is available for mobile on both &lt;a href=&quot;https://%1.io/&quot;&gt;Android and iPhone, and for desktop on Windows, Mac, and Linux&lt;/a&gt; operating systems.</source>
         <translation>%1 доступен для мобильных устройств на &lt;a href=&quot;https://%1.io/&quot;&gt;Android и iPhone, а также для десктопных операционных систем Windows, Mac, and Linux&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="133"/>
-        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
-        <translation>Да. Приложение AtomicDEX должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным.</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="167"/>
+        <location filename="../../qml/Support/Support.qml" line="171"/>
         <source>Compliance Info</source>
         <translation>Комплаенс информация</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="168"/>
+        <location filename="../../qml/Support/Support.qml" line="172"/>
         <source>Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.</source>
         <translation>В связи с нормативными и правовыми обстоятельствами граждане определенных юрисдикций, включая, помимо прочего, Соединенные Штаты Америки, Канаду, Гонконг, Израиль, Сингапур, Судан, Австрию, Иран и любые другие государства, страны или другие юрисдикции, на которые введено эмбарго. Соединенных Штатов Америки или Европейского Союза не могут использовать это приложение.</translation>
     </message>
@@ -3060,12 +3079,12 @@
         <translation>Необходимо ли мне быть в сети во время свопа?</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="137"/>
+        <location filename="../../qml/Support/Support.qml" line="141"/>
         <source>How are the fees on %1 calculated?</source>
         <translation>Как подсчитывается %1 комиссия?</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="138"/>
+        <location filename="../../qml/Support/Support.qml" line="142"/>
         <source>There are two fee categories to consider when trading on %1.
 
 1. %1 charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
@@ -3080,7 +3099,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 Комиссии сети могут очень сильно варьироваться в зависимости от выбранной торговой пары.</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="147"/>
+        <location filename="../../qml/Support/Support.qml" line="151"/>
         <source>Do you provide user support?</source>
         <translation>Предоставляете ли вы поддержку пользователей?</translation>
     </message>
