@@ -1644,67 +1644,67 @@
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="72"/>
         <source>Searching new updates...</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche de nouvelles mises à jour ...</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="76"/>
         <source>Please wait while the application is finding a new update... You can close this modal if you want.</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez patienter pendant que l&apos;application recherche une nouvelle mise à jour ... Vous pouvez fermer ce modal si vous le souhaitez.</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="83"/>
         <source>Already updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Déjà mis à jour</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="87"/>
         <source>%1 is already up-to-date !</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 est déjà à jour !</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="94"/>
         <source>New update detected !</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle mise à jour détectée !</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="100"/>
         <source>Do you want to update %1 from %2 to %3 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous mettre à jour %1 de %2 vers %3 ?</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="108"/>
         <source>Download</source>
-        <translation type="unfinished">Téléchargement</translation>
+        <translation>Téléchargement</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="114"/>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>Rappelle-moi plus tard</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="124"/>
         <source>Download in progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement en cours...</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="147"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour téléchargée</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="151"/>
         <source>Update has been successfully downloaded. Do you want to restart the application now ?</source>
-        <translation type="unfinished"></translation>
+        <translation>La mise à jour a été téléchargée avec succès. Voulez-vous redémarrer l&apos;application maintenant ?</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="158"/>
         <source>Restart now</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrer maintenant</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NewUpdateModal.qml" line="168"/>
         <source>Restart later</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrer plus tard</translation>
     </message>
 </context>
 <context>
@@ -1873,7 +1873,7 @@
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="174"/>
         <source>Batch %1 failed. Reason: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Le lot %1 a échoué. Raison :%2</translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="221"/>
@@ -1924,7 +1924,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="81"/>
         <source>Cancel selected order to change price</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler la commande sélectionnée pour modifier le prix</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="127"/>
@@ -2071,7 +2071,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="137"/>
         <source>Apply Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer les changements</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="120"/>
@@ -2171,12 +2171,12 @@
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="218"/>
         <source>Portfolio</source>
-        <translation type="unfinished"></translation>
+        <translation>Portfolio</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="239"/>
         <source>Add asset</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un actif</translation>
     </message>
 </context>
 <context>
@@ -2223,12 +2223,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="64"/>
         <source>Failed to place the order</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec lors du placement de l&apos;ordre</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="73"/>
         <source>Placed the order</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;ordre a été placé avec succès</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="273"/>
@@ -2243,7 +2243,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="285"/>
         <source>history</source>
-        <translation type="unfinished"></translation>
+        <translation>historique</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="547"/>
@@ -2253,7 +2253,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ProView.qml" line="596"/>
         <source>Start Swap</source>
-        <translation type="unfinished"></translation>
+        <translation>Commencez le swap</translation>
     </message>
 </context>
 <context>
@@ -2346,7 +2346,7 @@
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="201"/>
         <source>RPC Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe RPC</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="217"/>
@@ -2410,7 +2410,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/SellBox.qml" line="45"/>
         <source>Sell</source>
-        <translation type="unfinished"></translation>
+        <translation>Vendre</translation>
     </message>
 </context>
 <context>
@@ -2569,43 +2569,43 @@
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="20"/>
         <source>Select a contact with an %1 address</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez un contact avec une adresse %1</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="24"/>
         <source>Search for contacts...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher des contacts...</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="98"/>
         <source>%1 addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 adresses</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="99"/>
         <source>1 address</source>
-        <translation type="unfinished"></translation>
+        <translation>1 adresse</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="113"/>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="216"/>
         <source>Back</source>
-        <translation type="unfinished">Retour</translation>
+        <translation>Retour</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="131"/>
         <source>Choose an %1 address of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez une adresse %1 de %2</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="141"/>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModalContactList.qml" line="146"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse</translation>
     </message>
 </context>
 <context>
@@ -2727,37 +2727,37 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="296"/>
         <source>Apply Changement</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer les changements</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="346"/>
         <source>Ask system&apos;s password before sending coins ? (2FA)</source>
-        <translation type="unfinished"></translation>
+        <translation>Demander le mot de passe du système avant d&apos;envoyer des actifs ? (2FA)</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="450"/>
         <source>Application version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version de l&apos;application</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="464"/>
         <source>MM2 version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version de MM2</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="478"/>
         <source>Qt version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version de Qt</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="517"/>
         <source>Search Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher une mise à jour</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="544"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Se déconnecter</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="291"/>
@@ -2767,33 +2767,33 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="368"/>
         <source>View seed and private keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la phrase de récupération et les clefs privées</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="371"/>
         <location filename="../../qml/Settings/SettingModal.qml" line="431"/>
         <source>Show</source>
-        <translation type="unfinished">Montrer</translation>
+        <translation>Montrer</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="384"/>
         <source>Setup Camouflage Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurer le mot de passe de camouflage</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="387"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="405"/>
         <source>Delete Wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="428"/>
         <source>Disclaimer and ToS</source>
-        <translation type="unfinished">Clause de non-responsabilité et conditions d&apos;utilisation</translation>
+        <translation>Clause de non-responsabilité et conditions d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -2913,12 +2913,12 @@
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="74"/>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="78"/>
         <source>Fiat</source>
-        <translation type="unfinished">Monnaie fiduciaire</translation>
+        <translation>Monnaie fiduciaire</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="84"/>
         <source>Coming soon !</source>
-        <translation type="unfinished"></translation>
+        <translation>Bientôt disponible !</translation>
     </message>
 </context>
 <context>
@@ -2926,12 +2926,12 @@
     <message>
         <location filename="../../qml/Portfolio/SmartChartView.qml" line="125"/>
         <source>Loading market data</source>
-        <translation type="unfinished">Chargement des données de marché</translation>
+        <translation>Chargement des données de marché</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/SmartChartView.qml" line="131"/>
         <source>There is no chart data for this ticker yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a pas encore de données graphiques pour cet actif</translation>
     </message>
 </context>
 <context>
@@ -2992,7 +2992,7 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="137"/>
         <source>How are the fees on %1 calculated?</source>
-        <translation type="unfinished"></translation>
+        <translation>Comment les frais sur %1 sont-ils calculés ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="148"/>
@@ -3002,7 +3002,7 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="152"/>
         <source>Who is behind %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Qui est derrière %1 ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="153"/>
@@ -3012,22 +3012,22 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="157"/>
         <source>Is it possible to develop my own white-label exchange on %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Est-il possible de développer mon propre échange en white label sur %1 ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="158"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The %1 developer community is always ready to help!</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolument! Vous pouvez lire notre documentation développeur pour plus de détails ou nous contacter avec vos demandes de partenariat. Vous avez une question technique spécifique? La communauté de développeurs %1 est toujours prête à vous aider !</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="162"/>
         <source>Which devices can I use %1 on?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sur quels appareils puis-je utiliser %1 ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="163"/>
         <source>%1 is available for mobile on both &lt;a href=&quot;https://%1.io/&quot;&gt;Android and iPhone, and for desktop on Windows, Mac, and Linux&lt;/a&gt; operating systems.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 est disponible pour mobile sur &lt;a href=&quot;https://%1.io/&quot;&gt; Android et iPhone, et pour ordinateur de bureau sur les systèmes d&apos;exploitation Windows, Mac et Linux &lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="133"/>
@@ -3042,7 +3042,12 @@
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
 Network fees can vary greatly depending on your selected trading pair.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il existe deux catégories de frais à prendre en compte lors de la négociation sur %1.
+
+1. %1 facture environ 0,13% (1/777 du volume de négociation mais pas moins de 0,0001) comme frais de négociation pour les ordres preneurs, et les ordres maker n&apos;ont aucun frais.
+2. Les fabricants et les preneurs devront payer des frais de réseau normaux aux chaînes de blocs impliquées lors de transactions d&apos;échange atomique.
+
+Les frais de réseau peuvent varier considérablement en fonction de votre paire de trading sélectionnée.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="167"/>
@@ -3095,7 +3100,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/SweetDexComboBox.qml" line="110"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -3103,27 +3108,27 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Portfolio/TableDex.qml" line="42"/>
         <source>Asset</source>
-        <translation type="unfinished">Asset</translation>
+        <translation>Actif</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/TableDex.qml" line="64"/>
         <source>Balance</source>
-        <translation type="unfinished">Balance</translation>
+        <translation>Balance</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/TableDex.qml" line="83"/>
         <source>Change 24h</source>
-        <translation type="unfinished">Changement 24H</translation>
+        <translation>Changement 24H</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/TableDex.qml" line="108"/>
         <source>Trend 7d</source>
-        <translation type="unfinished">Tendance 7j</translation>
+        <translation>Tendance 7j</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/TableDex.qml" line="123"/>
         <source>Price</source>
-        <translation type="unfinished">Prix</translation>
+        <translation>Prix</translation>
     </message>
 </context>
 <context>
@@ -3160,22 +3165,22 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="44"/>
         <source>Trading Mode - Multi Ordering</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode de trading - Commande multiple</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="44"/>
         <source>Trading Mode - Single Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode de trading - Ordre unique</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="53"/>
         <source>Pro-Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode pro</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="64"/>
         <source>Starter</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode Simple</translation>
     </message>
 </context>
 <context>
@@ -3279,7 +3284,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Dashboard/UpdateInvalidChecksum.qml" line="7"/>
         <source>The downloaded update archive is corrupted !</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;archive de mise à jour téléchargée est corrompue !</translation>
     </message>
 </context>
 <context>
