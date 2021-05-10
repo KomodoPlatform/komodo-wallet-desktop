@@ -15,6 +15,7 @@ DexWindow {
     property int previousX: 0
     property int previousY: 0
     property int real_visibility
+    property bool isOsx: Qt.platform.os == "osx"
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
     

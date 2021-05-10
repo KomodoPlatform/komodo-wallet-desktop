@@ -722,7 +722,7 @@ namespace atomic_dex
     }
 
     nlohmann::json
-    mm2_service::prepare_batch_orderbook()
+    mm2_service::prepare_batch_orderbook(bool is_a_reset)
     {
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
         if (rel.empty())
@@ -737,17 +737,20 @@ namespace atomic_dex
         };
 
         generate_req("orderbook", t_orderbook_request{.base = base, .rel = rel});
-        generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = base});
-        generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = rel});
-        generate_req("min_trading_vol", t_min_volume_request{.coin = base});
-        generate_req("min_trading_vol", t_min_volume_request{.coin = rel});
+        if (is_a_reset)
+        {
+            generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = base});
+            generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = rel});
+            generate_req("min_trading_vol", t_min_volume_request{.coin = base});
+            generate_req("min_trading_vol", t_min_volume_request{.coin = rel});
+        }
         return batch;
     }
 
     void
     mm2_service::process_orderbook(bool is_a_reset)
     {
-        auto batch = prepare_batch_orderbook();
+        auto batch = prepare_batch_orderbook(is_a_reset);
         if (batch.empty())
             return;
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
@@ -759,32 +762,35 @@ namespace atomic_dex
             {
                 auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
 
-                auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
-                if (base_max_taker_vol_answer.rpc_result_code == 200)
+                if (is_a_reset)
                 {
-                    this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
-                    t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                    this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-                }
+                    auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
+                    if (base_max_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
+                        t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                        this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
+                    }
 
-                auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
-                if (rel_max_taker_vol_answer.rpc_result_code == 200)
-                {
-                    this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
-                    t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
-                    this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
-                }
+                    auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
+                    if (rel_max_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
+                        t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                        this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
+                    }
 
-                auto base_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
-                if (base_min_taker_vol_answer.rpc_result_code == 200)
-                {
-                    m_synchronized_min_taker_vol->first = base_min_taker_vol_answer.result.value();
-                }
+                    auto base_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
+                    if (base_min_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        m_synchronized_min_taker_vol->first = base_min_taker_vol_answer.result.value();
+                    }
 
-                auto rel_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
-                if (rel_min_taker_vol_answer.rpc_result_code == 200)
-                {
-                    m_synchronized_min_taker_vol->second = rel_min_taker_vol_answer.result.value();
+                    auto rel_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
+                    if (rel_min_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        m_synchronized_min_taker_vol->second = rel_min_taker_vol_answer.result.value();
+                    }
                 }
 
                 if (orderbook_answer.rpc_result_code == 200)

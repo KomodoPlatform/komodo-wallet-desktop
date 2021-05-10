@@ -46,6 +46,8 @@ namespace mm2::api
         bool                       is_mine;
         std::string                min_volume{"0"};
         std::optional<std::string> rel_coin{std::nullopt};
+
+        std::string to_string() const noexcept;
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);

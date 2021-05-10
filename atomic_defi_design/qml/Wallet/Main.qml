@@ -6,6 +6,8 @@ import QtCharts 2.3
 import QtWebEngine 1.8
 import QtGraphicalEffects 1.0
 
+import Qaterial 1.0 as Qaterial
+
 // Project Imports
 import "../Components"
 import "../Constants"
@@ -64,14 +66,14 @@ Item {
                         id: balance_layout
                         spacing: 3
 
-                        DefaultText {
+                        DexLabel {
                             id: name
                             text_value: current_ticker_infos.name
                             Layout.alignment: Qt.AlignHCenter
                             font.pixelSize: Style.textSizeMid
                         }
 
-                        DefaultText {
+                        DexLabel {
                             id: name_value
                             text_value: General.formatCrypto("", current_ticker_infos.balance, api_wallet_page.ticker)
                             Layout.alignment: Qt.AlignHCenter
@@ -85,14 +87,14 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Wallet Balance")
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: General.formatFiat("", current_ticker_infos.fiat_amount, API.app.settings_pg.current_currency)
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
@@ -111,7 +113,7 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         id: price
                         text_value: qsTr("Price")
                         Layout.alignment: Qt.AlignHCenter
@@ -119,7 +121,7 @@ Item {
                         color: Style.colorText2
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: General.formatFiat('', current_ticker_infos.current_currency_ticker_price, API.app.settings_pg.current_currency)
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
@@ -130,14 +132,14 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Change 24h")
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: {
                             const v = parseFloat(current_ticker_infos.change_24h)
                             return v === 0 ? '-' : General.formatPercent(v)
@@ -152,14 +154,14 @@ Item {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Portfolio %")
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: {
                             const fiat_amount = parseFloat(current_ticker_infos.fiat_amount)
                             const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
@@ -182,22 +184,49 @@ Item {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
-
-            DefaultButton {
-                id: send_button
-                enabled: parseFloat(current_ticker_infos.balance) > 0
-                text: qsTr("Send")
-                onClicked: send_modal.open()
+            Item {
                 Layout.fillWidth: true
-                font.pixelSize: Style.textSize
+                Layout.preferredWidth: 100
+                Layout.preferredHeight: send_button.height
+                DexButton {
+                    id: send_button
+                    enabled: API.app.wallet_pg.send_available
+                    text: qsTr("Send")
+                    onClicked: {
+                        if (API.app.wallet_pg.current_ticker_fees_coin_enabled) send_modal.open()
+                        else enable_fees_coin_modal.open()
+                    }
+                    width: parent.width
+                    anchors.top: parent.top
+                    font.pixelSize: Style.textSize
+                    Arrow {
+                        id: arrow_send
+                        up: true
+                        color: Style.colorRed
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 12
+                    }
+                }
 
-                Arrow {
-                    id: arrow_send
-                    up: true
-                    color: Style.colorRed
+                Image {
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 12
+                    anchors.horizontalCenterOffset: -36
+                    visible: API.app.wallet_pg.send_availability_state !== ""
+                    source: Qaterial.Icons.alert
+                    ToolTip.visible: send_alert_mouse_area.containsMouse
+                    ToolTip.text: API.app.wallet_pg.send_availability_state
+                    DefaultColorOverlay {
+                        anchors.fill: parent
+                        source: parent
+                        color: "yellow"
+                    }
+                    MouseArea {
+                        id: send_alert_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
                 }
             }
 
@@ -205,8 +234,37 @@ Item {
                 id: send_modal
                 sourceComponent: SendModal {}
             }
+            ModalLoader {
+                id: enable_fees_coin_modal
+                sourceComponent: BasicModal {
+                    width: 300
+                    id: root
+                    property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
+                    ModalContent {
+                        Layout.fillWidth: true
+                        title: qsTr("Enable %1 ?").arg(root.coin_to_enable_ticker)
 
-            DefaultButton {
+                        RowLayout {
+                            Layout.fillWidth: true
+                            DefaultButton {
+                                Layout.fillWidth: true
+                                text: qsTr("Yes")
+                                onClicked: {
+                                    API.app.enable_coin(root.coin_to_enable_ticker)
+                                    close()
+                                }
+                            }
+                            DefaultButton {
+                                Layout.fillWidth: true
+                                text: qsTr("No")
+                                onClicked: close()
+                            }
+                        }
+                    }
+                }
+            }
+
+            DexButton {
                 text: qsTr("Receive")
                 onClicked: receive_modal.open()
                 Layout.fillWidth: true
@@ -226,7 +284,7 @@ Item {
                 sourceComponent: ReceiveModal {}
             }
 
-            DefaultButton {
+            DexButton {
                 visible: !is_dex_banned
                 text: qsTr("Swap")
                 onClicked: onClickedSwap()
@@ -249,7 +307,7 @@ Item {
                 }
             }
 
-            PrimaryButton {
+            DexButton {
                 id: button_claim_rewards
                 text: qsTr("Claim Rewards")
                 Layout.fillWidth: true
@@ -269,7 +327,7 @@ Item {
             }
 
             // Faucet for RICK/MORTY coins
-            PrimaryButton {
+            DexButton {
                 id: button_claim_faucet
                 text: qsTr("Faucet")
                 Layout.fillWidth: true
@@ -400,12 +458,12 @@ Item {
                         scale: 0.5
                     }
 
-                    DefaultText {
+                    DexLabel {
                         text_value: qsTr("Loading market data") + "..."
                     }
                 }
 
-                DefaultText {
+                DexLabel {
                     visible: !ticker_supported
                     text_value: qsTr("There is no chart data for this ticker yet")
                     anchors.centerIn: parent
@@ -431,7 +489,7 @@ Item {
             ColumnLayout {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                DefaultText {
+                DexLabel {
                     text_value: qsTr("Loading")
                     Layout.alignment: Qt.AlignHCenter
                     font.pixelSize: Style.textSize2
@@ -441,7 +499,7 @@ Item {
                     Layout.alignment: Qt.AlignHCenter
                 }
 
-                DefaultText {
+                DexLabel {
                     text_value: General.isTokenType(current_ticker_infos.type) ?
                                 (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
                                 (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))

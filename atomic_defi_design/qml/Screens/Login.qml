@@ -52,7 +52,7 @@ SetupPage {
 
         width: 400
 
-        DefaultText {
+        DexLabel {
             text_value: qsTr("Wallet Name") + ": " + selected_wallet_name
         }
 

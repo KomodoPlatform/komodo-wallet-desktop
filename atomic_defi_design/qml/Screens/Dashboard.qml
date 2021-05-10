@@ -82,8 +82,8 @@ Item {
     AnimatedRectangle {
         color: theme.backgroundColorDeep
         width: parent.width - sidebar.width
-        height: parent.height-40
-        y: 40
+        height: window.isOsx? parent.height : parent.height-40
+        y: !window.isOsx? 40 : 0
         x: sidebar.width
 
         // Modals
@@ -204,8 +204,8 @@ Item {
 
     // Sidebar, left side
     Sidebar {
-
         id: sidebar
+
     }
 
     // Unread notifications count
