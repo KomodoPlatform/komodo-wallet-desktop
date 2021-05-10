@@ -130,8 +130,30 @@ BasicModal {
             text_value: qsTr("All assets are already enabled!")
         }
 
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
+        DefaultRectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 20
+            border.width: 0
+
+            DefaultText {
+                anchors.centerIn: parent
+                text: qsTr("You can still enable %1 assets. Selected: %2.")
+                        .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length)
+                        .arg(coin_cfg_model.checked_nb)
+            }
+        }
+
         // Buttons
         footer: [
+            DefaultButton {
+                text: qsTr("Increase assets limit")
+                onClicked: setting_modal.open()
+            },
+
             DefaultButton {
                 text: qsTr("Close")
                 Layout.fillWidth: true

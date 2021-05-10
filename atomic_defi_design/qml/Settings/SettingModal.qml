@@ -23,6 +23,7 @@ Qaterial.Dialog {
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
+    property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
 
 
 
@@ -165,6 +166,7 @@ Qaterial.Dialog {
                                     text: qsTr("Maximum number of enabled coins")
                                 }
                                 DexComboBox {
+                                    id: enableable_coins_count_combo_box
                                     model: [10, 20, 50, 75, 100, 150, 200]
                                     currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
                                     onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
