@@ -60,4 +60,16 @@ namespace mm2::api
         t_float_50 total_f = safe_float(contents.price) * safe_float(contents.maxvolume);
         contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
     }
+
+    std::string
+    order_contents::to_string() const noexcept
+    {
+        std::stringstream ss;
+        ss << "coin: " << coin << " ";
+        ss << "address: " << address << " ";
+        //ss << "price: " << price << " ";
+        ss << "max_volume: " << maxvolume << " ";
+        ss << "depth_percent: " << depth_percent << " ";
+        return ss.str();
+    }
 } // namespace mm2::api
