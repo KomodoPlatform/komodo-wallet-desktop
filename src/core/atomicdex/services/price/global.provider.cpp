@@ -15,10 +15,10 @@
  ******************************************************************************/
 
 //! Project Headers
+#include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
-#include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 
 namespace
@@ -95,34 +95,36 @@ namespace atomic_dex
         using namespace std::chrono_literals;
         coinpaprika::api::price_converter_request request{.base_currency_id = "usd-us-dollars", .quote_currency_id = quote_id};
         coinpaprika::api::async_price_converter(request)
-            .then([this, quote_id, ticker, with_update_providers](web::http::http_response resp) {
-                auto answer = coinpaprika::api::process_generic_resp<t_price_converter_answer>(resp);
-                if (answer.rpc_result_code == static_cast<web::http::status_code>(antara::app::http_code::too_many_requests))
+            .then(
+                [this, quote_id, ticker, with_update_providers](web::http::http_response resp)
                 {
-                    std::this_thread::sleep_for(1s);
-                    this->refresh_other_coins_rates(quote_id, ticker);
-                }
-                else
-                {
-                    if (answer.raw_result.find("error") == std::string::npos)
+                    auto answer = coinpaprika::api::process_generic_resp<t_price_converter_answer>(resp);
+                    if (answer.rpc_result_code == static_cast<web::http::status_code>(antara::app::http_code::too_many_requests))
                     {
-                        if (not answer.price.empty())
-                        {
-                            std::unique_lock lock(m_coin_rate_mutex);
-                            this->m_coin_rate_providers[ticker] = answer.price;
-                        }
+                        std::this_thread::sleep_for(1s);
+                        this->refresh_other_coins_rates(quote_id, ticker);
                     }
                     else
                     {
-                        std::unique_lock lock(m_coin_rate_mutex);
-                        this->m_coin_rate_providers[ticker] = "0.00";
+                        if (answer.raw_result.find("error") == std::string::npos)
+                        {
+                            if (not answer.price.empty())
+                            {
+                                std::unique_lock lock(m_coin_rate_mutex);
+                                this->m_coin_rate_providers[ticker] = answer.price;
+                            }
+                        }
+                        else
+                        {
+                            std::unique_lock lock(m_coin_rate_mutex);
+                            this->m_coin_rate_providers[ticker] = "0.00";
+                        }
                     }
-                }
-                if (with_update_providers)
-                {
-                    this->m_system_manager.get_system<coingecko_provider>().update_ticker_and_provider();
-                }
-            })
+                    if (with_update_providers)
+                    {
+                        this->m_system_manager.get_system<coingecko_provider>().update_ticker_and_provider();
+                    }
+                })
             .then(&handle_exception_pplx_task);
     }
 
@@ -184,13 +186,13 @@ namespace atomic_dex
         else
         {
             //! We use oracle
-            if (fiat != g_primary_dex_coin && fiat != g_second_primary_dex_coin && fiat != "USD")
+            if (is_this_currency_a_fiat(m_cfg, fiat) && fiat != "USD")
             {
                 t_float_50 tmp_current_price = t_float_50(current_price) * m_other_fiats_rates->at("rates").at(fiat).get<double>();
                 current_price                = tmp_current_price.str();
             }
 
-            else if ((fiat == g_second_primary_dex_coin || fiat == g_primary_dex_coin) && is_oracle_ready)
+            else if (!is_this_currency_a_fiat(m_cfg, fiat) && is_oracle_ready)
             {
                 t_float_50 tmp_current_price = (t_float_50(current_price)) * band_service.retrieve_rates(fiat);
                 current_price                = tmp_current_price.str();
@@ -389,21 +391,28 @@ namespace atomic_dex
     {
         SPDLOG_INFO("Forcing update providers");
         async_fetch_fiat_rates()
-            .then([this](web::http::http_response resp) {
-                this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
-                const auto& mm2           = this->m_system_manager.get_system<mm2_service>();
-                const bool  with_update   = mm2.is_mm2_running();
-                const auto  first_id      = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
-                const auto  second_id     = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
-                if (!first_id.empty())
+            .then(
+                [this](web::http::http_response resp)
                 {
-                    refresh_other_coins_rates(first_id, g_primary_dex_coin);
-                }
-                if (!second_id.empty())
-                {
-                    refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update);
-                }
-            })
+                    this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
+                    const auto& mm2           = this->m_system_manager.get_system<mm2_service>();
+                    const bool  with_update   = mm2.is_mm2_running();
+                    const auto  first_id      = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
+                    const auto  second_id     = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
+                    if (!first_id.empty())
+                    {
+                        refresh_other_coins_rates(first_id, g_primary_dex_coin);
+                    }
+                    if (!second_id.empty())
+                    {
+                        refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update);
+                    }
+                    if (g_primary_dex_coin != "BTC" && g_second_primary_dex_coin != "BTC")
+                    {
+                        const auto third_id = mm2.get_coin_info("BTC").coinpaprika_id;
+                        refresh_other_coins_rates(third_id, "BTC", with_update);
+                    }
+                })
             .then(&handle_exception_pplx_task);
     }
 
