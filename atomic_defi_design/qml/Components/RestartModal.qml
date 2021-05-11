@@ -13,7 +13,7 @@ BasicModal {
     property double time_left: total_time
     property bool restart_requested: false
     property var task_before_restart: () => {}
-    Timer {
+    property string reason: ""
         id: restart_timer
         interval: 100
         repeat: true
@@ -34,11 +34,13 @@ BasicModal {
 
     ModalContent {
         title: qsTr("Applying the changes") + "..."
-
+        title: qsTr("Applying the changes...")
         DefaultText {
             text_value: qsTr("Restarting the application...")
 
+            text_value: reason !== "" ? qsTr("Restarting the applications. %1").arg(reason) : qsTr("Restarting the application...")
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
         }
 
         DefaultBusyIndicator {
