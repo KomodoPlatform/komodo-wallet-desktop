@@ -313,6 +313,14 @@ check_settings_reconfiguration(const fs::path& path)
         {
             SPDLOG_ERROR("error occured when copying previous cfg.ini : {}", ec.message());
         }
+
+        SPDLOG_INFO("Deleting previous cfg after reconfiguring it");
+        ec.clear();
+        fs::remove_all( get_atomic_dex_data_folder() / get_precedent_raw_version(), ec);
+        if (ec)
+        {
+            SPDLOG_ERROR("error occured when deleting previous path");
+        }
     }
 }
 
