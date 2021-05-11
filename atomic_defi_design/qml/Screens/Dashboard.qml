@@ -78,6 +78,19 @@ Item {
         }
     }
 
+
+    // Force restart modal: opened when the user has more coins enabled than specified in its configuration
+    ForceRestartModal {
+        reason: qsTr("The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.")
+        Component.onCompleted: {
+            if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled"))
+            {
+                open()
+                task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
+            }
+        }
+    }
+
     // Right side
     AnimatedRectangle {
         color: theme.backgroundColorDeep
@@ -241,9 +254,6 @@ Item {
 
         onClicked: notifications_modal.open()
     }
-    
-
-   
 
     DropShadow {
         anchors.fill: sidebar
@@ -286,7 +296,7 @@ Item {
         sourceComponent: RestartModal {}
     }
 
-     NotificationsModal {
+    NotificationsModal {
         id: notifications_modal
     }
 
