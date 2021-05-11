@@ -68,17 +68,59 @@ Item {
 
             width: 250
             contentItem: DexLabelUnlinked {
-                text_value: qsTr(" %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> -<a href='#no'>No</a>").arg(coin).arg(coin)
+                text_value: qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin)
                 wrapMode: DefaultText.Wrap
                 width: 250
                 onLinkActivated: {
                     if(link==="#no") {
                         _tooltip.close()
                     }else {
-                        API.app.enable_coins([coin])
-                        _control.coinEnable = true
-                        _tooltip.close()
+                        if (API.app.enable_coins([coin]) === true) {
+                            _control.coinEnable = true
+                            _tooltip.close()
+                        }
+                        else {
+                            cannot_enable_coin_modal.open()
+                        }
                     }
+                }
+
+                Component {
+                    id: cannot_enable_coin_modal_comp
+                    BasicModal {
+                        id: root
+                        width: 600
+                        ModalContent {
+                            title: qsTr("Failed to enable %1").arg(coin_to_enable_ticker)
+                            DefaultText {
+                                Layout.fillWidth: true
+                                text: qsTr("Enabling %1 did not succeed. Limit of enabled coins might have been reached.")
+                                        .arg(coin_to_enable_ticker)
+                            }
+                            RowLayout {
+                                Layout.fillWidth: true
+                                DefaultButton {
+                                    Layout.fillWidth: true
+                                    text: qsTr("Increase limit in settings")
+                                    onClicked: {
+                                        settings_modal.open()
+                                        close()
+                                    }
+                                }
+                                DefaultButton {
+                                    Layout.fillWidth: true
+                                    text: qsTr("Cancel")
+                                    onClicked: close()
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ModalLoader {
+                    property string coin_to_enable_ticker: coin
+                    id: cannot_enable_coin_modal
+                    sourceComponent: cannot_enable_coin_modal_comp
                 }
             }
             delay: 200
