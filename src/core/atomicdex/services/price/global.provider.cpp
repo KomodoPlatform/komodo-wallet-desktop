@@ -321,10 +321,6 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const
     {
-        if (fiat == "LTC")
-        {
-
-        }
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
         if (mm2_instance.get_coin_info(ticker).coingecko_id == "test-coin")
