@@ -43,9 +43,6 @@ Item {
     function openLogsFolder() {
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
-    SettingModal {
-        id: settings_modal
-    }
 
     readonly property var api_wallet_page: API.app.wallet_pg
     readonly property var current_ticker_infos: api_wallet_page.ticker_infos

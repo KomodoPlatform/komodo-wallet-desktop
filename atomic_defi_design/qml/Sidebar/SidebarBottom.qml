@@ -14,7 +14,7 @@ ColumnLayout {
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true
         separator: false
-        onCheckedChanged: settings_modal.open()
+        onCheckedChanged: setting_modal.open()
     }
 
     SidebarLine {
