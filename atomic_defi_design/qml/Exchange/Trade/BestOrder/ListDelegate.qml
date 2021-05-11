@@ -85,42 +85,10 @@ Item {
                     }
                 }
 
-                Component {
-                    id: cannot_enable_coin_modal_comp
-                    BasicModal {
-                        id: root
-                        width: 600
-                        ModalContent {
-                            title: qsTr("Failed to enable %1").arg(coin_to_enable_ticker)
-                            DefaultText {
-                                Layout.fillWidth: true
-                                text: qsTr("Enabling %1 did not succeed. Limit of enabled coins might have been reached.")
-                                        .arg(coin_to_enable_ticker)
-                            }
-                            RowLayout {
-                                Layout.fillWidth: true
-                                DefaultButton {
-                                    Layout.fillWidth: true
-                                    text: qsTr("Increase limit in settings")
-                                    onClicked: {
-                                        settings_modal.open()
-                                        close()
-                                    }
-                                }
-                                DefaultButton {
-                                    Layout.fillWidth: true
-                                    text: qsTr("Cancel")
-                                    onClicked: close()
-                                }
-                            }
-                        }
-                    }
-                }
-
                 ModalLoader {
                     property string coin_to_enable_ticker: coin
                     id: cannot_enable_coin_modal
-                    sourceComponent: cannot_enable_coin_modal_comp
+                    sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: cannot_enable_coin_modal.coin_to_enable_ticker }
                 }
             }
             delay: 200

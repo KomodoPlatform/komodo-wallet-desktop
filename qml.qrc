@@ -274,6 +274,7 @@
         <file>atomic_defi_design/qml/Components/Arrow.qml</file>
         <file>atomic_defi_design/qml/Components/BasicModal.qml</file>
         <file>atomic_defi_design/qml/Components/Blank.qml</file>
+        <file>atomic_defi_design/qml/Components/CannotEnableCoinModal.qml</file>
         <file>atomic_defi_design/qml/Components/CexInfoModal.qml</file>
         <file>atomic_defi_design/qml/Components/CexInfoTrigger.qml</file>
         <file>atomic_defi_design/qml/Components/Circle.qml</file>
