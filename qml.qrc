@@ -348,6 +348,7 @@
         <file>atomic_defi_design/qml/Components/DexMacosHeaderControl.qml</file>
         <file>atomic_defi_design/qml/Components/EulaModal.qml</file>
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
+        <file>atomic_defi_design/qml/Components/ForceRestartModal.qml</file>
         <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/HideFieldButton.qml</file>
         <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>
