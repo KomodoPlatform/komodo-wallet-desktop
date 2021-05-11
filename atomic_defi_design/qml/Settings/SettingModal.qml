@@ -1,3 +1,4 @@
+//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
@@ -5,6 +6,7 @@ import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 import QtQml 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls.Universal 2.12
 
 import Qaterial 1.0 as Qaterial
 
@@ -170,6 +172,16 @@ Qaterial.Dialog {
                                     model: [10, 20, 50, 75, 100, 150, 200]
                                     currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
                                     onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
+                                    delegate: ItemDelegate {
+                                        width: enableable_coins_count_combo_box.width
+                                        font.weight: enableable_coins_count_combo_box.currentIndex === index ? Font.DemiBold : Font.Normal
+                                        highlighted: ListView.isCurrentItem
+                                        enabled: parseInt(modelData) >= API.app.portfolio_pg.portfolio_mdl.length
+                                        contentItem: DefaultText {
+                                            color: enabled ? Style.colorWhite1 : Style.colorWhite8
+                                            text: modelData
+                                        }
+                                     }
                                 }
                             }
                             RowLayout {
