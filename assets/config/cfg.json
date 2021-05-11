@@ -40,7 +40,8 @@
     "SEK": "kr",
     "KMD": "KMD",
     "BTC": "₿",
-    "BTC_ALT": "฿"
+    "BTC_ALT": "฿",
+    "LTC": "Ł"
   },
   "available_fiat": [
     "USD",
@@ -80,6 +81,7 @@
   "possible_currencies": [
     "USD",
     "BTC",
-    "KMD"
+    "KMD",
+    "LTC"
   ]
 }
