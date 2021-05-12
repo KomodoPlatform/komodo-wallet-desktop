@@ -150,8 +150,10 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
+                property var enableable_coins_count: setting_modal.enableable_coins_count;
                 text: qsTr("Increase assets limit")
                 onClicked: setting_modal.open()
+                onEnableable_coins_countChanged: setCheckState(false)
             },
 
             DefaultButton {
