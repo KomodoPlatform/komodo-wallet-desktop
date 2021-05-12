@@ -81,7 +81,7 @@ namespace atomic_dex
             this->m_current_balance_all = std::move(current_fiat_all_balance);
             emit       onFiatBalanceAllChanged();
             const auto currency = m_system_manager.get_system<settings_page>().get_current_currency().toStdString();
-            if (currency != g_primary_dex_coin && currency != g_second_primary_dex_coin)
+            if (currency != g_primary_dex_coin && currency != g_second_primary_dex_coin && currency != "BTC")
             {
                 m_main_current_balance_all = m_current_balance_all;
                 emit onMainFiatBalanceAllChanged();
