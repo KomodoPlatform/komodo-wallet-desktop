@@ -1566,7 +1566,7 @@
     "currently_enabled": false
   },
   "LTC": {
-    "active": false,
+    "active": true,
     "coin": "LTC",
     "coingecko_id": "litecoin",
     "coinpaprika_id": "ltc-litecoin",
