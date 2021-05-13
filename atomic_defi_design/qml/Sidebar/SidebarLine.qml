@@ -110,7 +110,7 @@ Item {
         height: parent.height
         onClicked: function() {
             if (dashboard_index===-1) {
-                settings_modal.open()
+                setting_modal.open()
                 return
             }
 

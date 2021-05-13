@@ -1,3 +1,4 @@
+//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
@@ -5,6 +6,7 @@ import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 import QtQml 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls.Universal 2.12
 
 import Qaterial 1.0 as Qaterial
 
@@ -23,6 +25,7 @@ Qaterial.Dialog {
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
+    property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
 
 
 
@@ -153,6 +156,32 @@ Qaterial.Dialog {
                                     Layout.alignment: Qt.AlignVCenter
                                     Component.onCompleted: checked = API.app.settings_pg.notification_enabled
                                     onCheckedChanged: API.app.settings_pg.notification_enabled = checked
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Maximum number of enabled coins")
+                                }
+                                DexComboBox {
+                                    id: enableable_coins_count_combo_box
+                                    model: [10, 20, 50, 75, 100, 150, 200]
+                                    currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
+                                    onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
+                                    delegate: ItemDelegate {
+                                        width: enableable_coins_count_combo_box.width
+                                        font.weight: enableable_coins_count_combo_box.currentIndex === index ? Font.DemiBold : Font.Normal
+                                        highlighted: ListView.isCurrentItem
+                                        enabled: parseInt(modelData) >= API.app.portfolio_pg.portfolio_mdl.length
+                                        contentItem: DefaultText {
+                                            color: enabled ? Style.colorWhite1 : Style.colorWhite8
+                                            text: modelData
+                                        }
+                                     }
                                 }
                             }
                             RowLayout {

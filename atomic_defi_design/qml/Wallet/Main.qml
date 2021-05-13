@@ -234,23 +234,24 @@ Item {
                 id: send_modal
                 sourceComponent: SendModal {}
             }
-            ModalLoader {
-                id: enable_fees_coin_modal
-                sourceComponent: BasicModal {
-                    width: 300
-                    id: root
-                    property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
-                    ModalContent {
-                        Layout.fillWidth: true
-                        title: qsTr("Enable %1 ?").arg(root.coin_to_enable_ticker)
 
+            Component {
+                id: enable_fees_coin_comp
+                BasicModal {
+                    id: root
+                    width: 300
+                    ModalContent {
+                        title: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
                         RowLayout {
                             Layout.fillWidth: true
                             DefaultButton {
                                 Layout.fillWidth: true
                                 text: qsTr("Yes")
                                 onClicked: {
-                                    API.app.enable_coin(root.coin_to_enable_ticker)
+                                    if (API.app.enable_coin(coin_to_enable_ticker) === false)
+                                    {
+                                        enable_fees_coin_failed_modal.open()
+                                    }
                                     close()
                                 }
                             }
@@ -262,6 +263,17 @@ Item {
                         }
                     }
                 }
+            }
+
+            ModalLoader {
+                property string coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker
+                id: enable_fees_coin_modal
+                sourceComponent: enable_fees_coin_comp
+            }
+
+            ModalLoader {
+                id: enable_fees_coin_failed_modal
+                sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker }
             }
 
             DexButton {
