@@ -102,7 +102,7 @@ BasicModal {
         ListElement {
             text: "BEP-20"
             prefix: ""
-            url: "https://bscscan.com/"
+            url: "https://bscscan.com/tokens"
             name: 'BscScan'
             image: "bep"
             coinType: CoinType.BEP20
