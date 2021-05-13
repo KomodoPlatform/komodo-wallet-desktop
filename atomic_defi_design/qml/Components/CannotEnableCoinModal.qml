@@ -25,7 +25,7 @@ BasicModal
             DefaultButton
             {
                 Layout.fillWidth: true
-                text: qsTr("Increase limit in settings")
+                text: qsTr("Change limit in settings")
                 onClicked:
                 {
                     settings_modal.open()
