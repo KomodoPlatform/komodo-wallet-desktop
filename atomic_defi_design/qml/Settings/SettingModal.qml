@@ -433,7 +433,9 @@ Qaterial.Dialog {
                                 DexButton {
                                     text: qsTr("Delete Wallet")
                                     implicitHeight: 37
-                                    onClicked: delete_wallet_modal.open()
+                                    onClicked:  {
+                                        delete_wallet_modal.open()
+                                    }
                                 }
                             }
                         }
@@ -578,7 +580,10 @@ Qaterial.Dialog {
                 }
                 opacity: .6
             }
-            onClicked: disconnect()
+            onClicked: {
+                disconnect()
+                setting_modal.close()
+            }
 
         }
 
