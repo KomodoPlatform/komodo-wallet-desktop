@@ -1120,12 +1120,12 @@
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="144"/>
         <source>You can still enable %1 assets. Selected: %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous pouvez toujours activer %1 actifs. Sélectionnés: %2.</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="153"/>
         <source>Increase assets limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer la limite du nombre d&apos;actifs</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="158"/>
@@ -1577,17 +1577,17 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="249"/>
         <source>Yes</source>
-        <translation type="unfinished">Oui</translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="260"/>
         <source>No</source>
-        <translation type="unfinished">Non</translation>
+        <translation>Non</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="280"/>
         <source>Failed to enable %1</source>
-        <translation type="unfinished">Échec de l&apos;activation de %1</translation>
+        <translation>Échec de l&apos;activation de %1</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="283"/>
@@ -1602,7 +1602,7 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="298"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="314"/>
@@ -2449,7 +2449,7 @@
     <message>
         <location filename="../../qml/Components/RestartModal.qml" line="44"/>
         <source>Applying the changes...</source>
-        <translation type="unfinished"></translation>
+        <translation>Application des modifications...</translation>
     </message>
     <message>
         <location filename="../../qml/Components/RestartModal.qml" line="48"/>
@@ -2459,7 +2459,7 @@
     <message>
         <location filename="../../qml/Components/RestartModal.qml" line="48"/>
         <source>Restarting the applications. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Rédemarrage de l&apos;application. %1</translation>
     </message>
 </context>
 <context>
@@ -2767,7 +2767,7 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="166"/>
         <source>Maximum number of enabled coins</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nombre maximum d&apos;actifs activés</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="182"/>
@@ -2886,7 +2886,7 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="67"/>
         <source>Recommended: </source>
-        <translation>Conseillé :</translation>
+        <translation>Conseillé : </translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="129"/>
