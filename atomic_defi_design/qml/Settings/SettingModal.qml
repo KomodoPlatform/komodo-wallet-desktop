@@ -322,7 +322,7 @@ Qaterial.Dialog {
                                     text: qsTr("")
                                 }
                                 DexButton {
-                                    text: qsTr("Apply Changement")
+                                    text: qsTr("Apply Changes")
                                     implicitHeight: 37
                                      onClicked: {
                                         atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
@@ -534,8 +534,9 @@ Qaterial.Dialog {
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             height: 40
-            width: 300
+            width: _update_row.width+20
             Row {
+                id: _update_row
                 anchors.centerIn: parent
                 Qaterial.ColorIcon {
                     anchors.verticalCenter: parent.verticalCenter
@@ -561,8 +562,9 @@ Qaterial.Dialog {
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             height: 40
-            width: 130
+            width: _logout_row.width+20
             Row {
+                id: _logout_row
                 anchors.centerIn: parent
                 Qaterial.ColorIcon {
                     anchors.verticalCenter: parent.verticalCenter
@@ -588,9 +590,5 @@ Qaterial.Dialog {
             height: 1.5
         }
 
-    }
-
-    Component.onCompleted: {
-        //open()
     }
 }
