@@ -23,7 +23,7 @@ FloatingBackground {
 
     id: button_bg
 
-    width: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
+    implicitWidth: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
     implicitHeight: text_obj.height * 2.5
 
     color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
