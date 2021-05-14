@@ -16,13 +16,14 @@ FloatingBackground {
     property string colorTextDisabled: theme.buttonColorTextDisabled
     property string colorTextHovered: theme.buttonColorTextHovered
     property string colorTextEnabled: theme.buttonColorTextEnabled
+    property real textScale: 1
     property int minWidth: 90
 
     signal clicked()
 
     id: button_bg
 
-    implicitWidth: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
+    width: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
     implicitHeight: text_obj.height * 2.5
 
     color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
@@ -34,7 +35,13 @@ FloatingBackground {
         anchors.left: text_left_align ? parent.left : undefined
         anchors.leftMargin: text_left_align ? -text_offset : 0
         anchors.verticalCenter: parent.verticalCenter
-        font: theme.textType.button
+        font: Qt.font({
+            pixelSize: 14*textScale,
+            letterSpacing: 1.25,
+            capitalization: Font.AllUppercase,
+            family: _font.fontFamily,
+            weight: Font.Medium
+        })
         color: !parent.enabled ? colorTextDisabled : mouse_area.containsMouse ? colorTextHovered : colorTextEnabled
     }
 
