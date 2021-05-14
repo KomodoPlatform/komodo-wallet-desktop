@@ -192,6 +192,7 @@ Item {
                     id: send_button
                     enabled: API.app.wallet_pg.send_available
                     text: qsTr("Send")
+                    text_obj.leftPadding: 10
                     onClicked: {
                         if (API.app.wallet_pg.current_ticker_fees_coin_enabled) send_modal.open()
                         else enable_fees_coin_modal.open()
