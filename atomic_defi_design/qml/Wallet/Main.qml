@@ -192,7 +192,7 @@ Item {
                     id: send_button
                     enabled: API.app.wallet_pg.send_available
                     text: qsTr("Send")
-                    text_obj.leftPadding: 10
+                    text_obj.leftPadding:  API.app.wallet_pg.send_availability_state !== ""? 25 : 0
                     onClicked: {
                         if (API.app.wallet_pg.current_ticker_fees_coin_enabled) send_modal.open()
                         else enable_fees_coin_modal.open()
@@ -213,7 +213,7 @@ Item {
                 Image {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenterOffset: -36
+                    anchors.horizontalCenterOffset: -45
                     visible: API.app.wallet_pg.send_availability_state !== ""
                     source: Qaterial.Icons.alert
                     ToolTip.visible: send_alert_mouse_area.containsMouse
