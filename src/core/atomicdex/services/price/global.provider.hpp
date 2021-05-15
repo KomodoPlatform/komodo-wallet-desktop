@@ -59,6 +59,9 @@ namespace atomic_dex
         std::string get_cex_rates(const std::string& base, const std::string& rel) const;
         std::string get_fiat_rates(const std::string& fiat) const;
 
+        bool is_fiat_available(const std::string& fiat) const;
+        bool is_currency_available(const std::string& currency) const;
+
         //! Events
         void on_force_update_providers([[maybe_unused]] const force_update_providers& evt);
     };
