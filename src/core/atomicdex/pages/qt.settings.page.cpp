@@ -156,7 +156,27 @@ namespace atomic_dex
     void
     settings_page::set_current_currency(const QString& current_currency)
     {
-        if (current_currency.toStdString() != m_config.current_currency)
+        bool        can_proceed = true;
+        std::string reason      = "";
+        if (atomic_dex::is_this_currency_a_fiat(m_config, current_currency.toStdString()))
+        {
+            if (!m_system_manager.get_system<global_price_service>().is_fiat_available(current_currency.toStdString()))
+            {
+                can_proceed = false;
+                reason      = "rate for fiat: " + current_currency.toStdString() + " not available";
+            }
+        }
+        else
+        {
+            if (!m_system_manager.get_system<global_price_service>().is_currency_available(current_currency.toStdString()))
+            {
+                can_proceed = false;
+                reason      = "rate for currency " + current_currency.toStdString() + " not available";
+            }
+        }
+
+
+        if (current_currency.toStdString() != m_config.current_currency && can_proceed)
         {
             SPDLOG_INFO("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
@@ -167,6 +187,13 @@ namespace atomic_dex
             emit onCurrencyChanged();
             emit onCurrencySignChanged();
             emit onFiatSignChanged();
+        }
+        else
+        {
+            if (!reason.empty())
+            {
+                SPDLOG_ERROR("cannot change currency for reason: {}", reason);
+            }
         }
     }
 
@@ -179,12 +206,19 @@ namespace atomic_dex
     void
     settings_page::set_current_fiat(const QString& current_fiat)
     {
-        if (current_fiat.toStdString() != m_config.current_fiat)
+        if (m_system_manager.get_system<global_price_service>().is_fiat_available(current_fiat.toStdString()))
         {
-            SPDLOG_INFO("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
-            atomic_dex::change_fiat(m_config, current_fiat.toStdString());
-            m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_current_fiat");
-            emit onFiatChanged();
+            if (current_fiat.toStdString() != m_config.current_fiat)
+            {
+                SPDLOG_INFO("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
+                atomic_dex::change_fiat(m_config, current_fiat.toStdString());
+                m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_current_fiat");
+                emit onFiatChanged();
+            }
+        }
+        else
+        {
+            SPDLOG_ERROR("Cannot change fiat, because other rates are not available");
         }
     }
 } // namespace atomic_dex

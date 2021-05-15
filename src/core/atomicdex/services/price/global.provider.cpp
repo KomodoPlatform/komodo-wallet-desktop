@@ -425,4 +425,23 @@ namespace atomic_dex
         }
         return std::to_string(m_other_fiats_rates->at("rates").at(fiat).get<double>());
     }
+
+    bool
+    global_price_service::is_fiat_available(const std::string& fiat) const
+    {
+        if (fiat == "USD")
+            return true;
+        auto rates = m_other_fiats_rates.get();
+        //SPDLOG_INFO("rates: {}", rates.dump(4));
+        return !rates.empty() && rates.contains("rates") && rates.at("rates").contains(fiat);
+    }
+
+    bool
+    global_price_service::is_currency_available(const std::string& currency) const
+    {
+        bool available = true;
+        //SPDLOG_INFO("coin_rate_providers size: {}", m_coin_rate_providers.size());
+        available = m_coin_rate_providers.find(currency) != m_coin_rate_providers.end();
+        return available;
+    }
 } // namespace atomic_dex
