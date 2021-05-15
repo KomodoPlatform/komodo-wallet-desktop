@@ -14,6 +14,8 @@ import "../Settings"
 import "../Support"
 import "../Sidebar"
 import "../Fiat"
+import "../Settings" as SettingsPage
+
 
 Item {
     id: dashboard
@@ -74,7 +76,10 @@ Item {
             dashboard.current_component.openTradeView(api_wallet_page.ticker)
         }
     }
-
+    // Al settings depends this modal
+    SettingsPage.SettingModal {
+        id: setting_modal
+    }
 
     // Force restart modal: opened when the user has more coins enabled than specified in its configuration
     ForceRestartModal {

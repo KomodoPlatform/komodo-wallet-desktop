@@ -28,7 +28,6 @@ Qaterial.Dialog {
     property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
 
 
-
     id: setting_modal
     width: 850
     height: 650
