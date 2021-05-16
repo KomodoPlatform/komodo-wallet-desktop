@@ -129,7 +129,7 @@ namespace atomic_dex
                     }
                     else
                     {
-                        SPDLOG_INFO("Successfully get the coinpaprika::api::async_price_converter answer after {}", nb_try_cap);
+                        SPDLOG_INFO("Successfully get the coinpaprika::api::async_price_converter answer after {} try", nb_try_cap);
                         if (answer.raw_result.find("error") == std::string::npos)
                         {
                             if (not answer.price.empty())
