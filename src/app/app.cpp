@@ -24,6 +24,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QTimer>
+#include <QSettings>
 
 #ifdef __APPLE__
 
@@ -66,8 +67,13 @@ namespace atomic_dex
     bool
     atomic_dex::application::enable_coins(const QStringList& coins)
     {
+        auto enableable_coins_count = entity_registry_.template ctx<QSettings>().value("MaximumNbCoinsEnabled").toULongLong();
+        if (enableable_coins_count < coins.size() + get_portfolio_page()->get_global_cfg()->get_enabled_coins().size())
+        {
+            return false;
+        }
+        
         std::vector<std::string> coins_std{};
-
         coins_std.reserve(coins.size());
         atomic_dex::mm2_service& mm2 = get_mm2();
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }

@@ -26,6 +26,7 @@
 
 //! Deps
 #include <entt/core/attribute.h>
+#include <entt/entity/registry.hpp>
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
@@ -59,7 +60,7 @@ namespace atomic_dex
         Q_ENUMS(CoinsRoles)
 
         // Constructor/Destructor
-        explicit global_coins_cfg_model(QObject* parent = nullptr) ;
+        explicit global_coins_cfg_model(entt::registry& entity_registry, QObject* parent = nullptr) ;
         ~global_coins_cfg_model()  final = default;
 
         void initialize_model(std::vector<coin_config> cfg) ;
@@ -124,5 +125,7 @@ namespace atomic_dex
         int m_checked_nb{0}; // Number of coins that are currently checked
     
         QStringList m_all_coin_types; // Contains every supported coin type (e.g. UTXO, SmartChain)
+        
+        entt::registry& m_entity_registry;
     };
 } // namespace atomic_dex

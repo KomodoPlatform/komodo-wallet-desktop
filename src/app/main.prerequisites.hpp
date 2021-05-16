@@ -347,6 +347,7 @@ handle_settings(QSettings& settings)
     create_settings_functor("AvailableLang", QStringList{"en", "fr", "tr", "ru"});
     create_settings_functor("CurrentLang", QString("en"));
     create_settings_functor("2FA", 0);
+    create_settings_functor("MaximumNbCoinsEnabled", 50);
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));

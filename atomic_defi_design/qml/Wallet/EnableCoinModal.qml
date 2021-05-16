@@ -92,11 +92,16 @@ BasicModal {
                 leftPadding: indicator.width
 
                 readonly property bool backend_checked: model.checked
-                onBackend_checkedChanged: {
-                    if(checked !== backend_checked) checked = backend_checked
-                }
+                onBackend_checkedChanged: if(checked !== backend_checked) checked = backend_checked
                 onCheckStateChanged: {
-                    if(checked !== backend_checked) model.checked = checked
+                    if(checked !== backend_checked)
+                    {
+                        var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
+                        if ((coin_cfg_model.all_disabled_proxy.setData(data_index, checked, Qt.UserRole + 11)) === false)
+                        {
+                            checked = false
+                        }
+                    }
                 }
 
                 // Icon
@@ -125,8 +130,32 @@ BasicModal {
             text_value: qsTr("All assets are already enabled!")
         }
 
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
+        DefaultRectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 20
+            border.width: 0
+
+            DefaultText {
+                anchors.centerIn: parent
+                text: qsTr("You can still enable %1 assets. Selected: %2.")
+                        .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length)
+                        .arg(coin_cfg_model.checked_nb)
+            }
+        }
+
         // Buttons
         footer: [
+            DefaultButton {
+                property var enableable_coins_count: setting_modal.enableable_coins_count;
+                text: qsTr("Change assets limit")
+                onClicked: setting_modal.open()
+                onEnableable_coins_countChanged: setCheckState(false)
+            },
+
             DefaultButton {
                 text: qsTr("Close")
                 Layout.fillWidth: true

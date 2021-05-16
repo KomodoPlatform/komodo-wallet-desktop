@@ -14,7 +14,6 @@ import "Screens"
 import "Constants"
 import "Components"
 import "Dashboard"
-import "Settings" as SettingsPage
 
 Rectangle {
     id: app
@@ -185,9 +184,6 @@ Rectangle {
     FatalErrorModal {
         id: fatal_error_modal
         visible: false
-    }
-    SettingsPage.SettingModal {
-        id: setting_modal
     }
 
     Item {

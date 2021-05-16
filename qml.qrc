@@ -236,6 +236,7 @@
         <file>atomic_defi_design/assets/images/guide_coingecko_id.gif</file>
         <file>atomic_defi_design/assets/images/guide_contract_address_erc.gif</file>
         <file>atomic_defi_design/assets/images/guide_contract_address_qrc.gif</file>
+        <file>atomic_defi_design/assets/images/guide_contract_address_bep.gif</file>
         <file>atomic_defi_design/assets/images/icon-discord.png</file>
         <file>atomic_defi_design/assets/images/icon-email.png</file>
         <file>atomic_defi_design/assets/images/icon-support.png</file>
@@ -274,6 +275,7 @@
         <file>atomic_defi_design/qml/Components/Arrow.qml</file>
         <file>atomic_defi_design/qml/Components/BasicModal.qml</file>
         <file>atomic_defi_design/qml/Components/Blank.qml</file>
+        <file>atomic_defi_design/qml/Components/CannotEnableCoinModal.qml</file>
         <file>atomic_defi_design/qml/Components/CexInfoModal.qml</file>
         <file>atomic_defi_design/qml/Components/CexInfoTrigger.qml</file>
         <file>atomic_defi_design/qml/Components/Circle.qml</file>
@@ -348,6 +350,7 @@
         <file>atomic_defi_design/qml/Components/DexMacosHeaderControl.qml</file>
         <file>atomic_defi_design/qml/Components/EulaModal.qml</file>
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
+        <file>atomic_defi_design/qml/Components/ForceRestartModal.qml</file>
         <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/HideFieldButton.qml</file>
         <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>

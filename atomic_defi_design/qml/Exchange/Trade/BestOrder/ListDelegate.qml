@@ -68,17 +68,27 @@ Item {
 
             width: 250
             contentItem: DexLabelUnlinked {
-                text_value: qsTr(" %1 is not Enabled - do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> -<a href='#no'>No</a>").arg(coin).arg(coin)
+                text_value: qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin)
                 wrapMode: DefaultText.Wrap
                 width: 250
                 onLinkActivated: {
                     if(link==="#no") {
                         _tooltip.close()
                     }else {
-                        API.app.enable_coins([coin])
-                        _control.coinEnable = true
-                        _tooltip.close()
+                        if (API.app.enable_coins([coin]) === true) {
+                            _control.coinEnable = true
+                            _tooltip.close()
+                        }
+                        else {
+                            cannot_enable_coin_modal.open()
+                        }
                     }
+                }
+
+                ModalLoader {
+                    property string coin_to_enable_ticker: coin
+                    id: cannot_enable_coin_modal
+                    sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: cannot_enable_coin_modal.coin_to_enable_ticker }
                 }
             }
             delay: 200

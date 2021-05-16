@@ -25,12 +25,13 @@ BasicModal {
 
     function fetchAssetData() {
         const fields = General.clone(config_fields)
-        console.log("Fetching asset data:", JSON.stringify(fields))
-        if(fields.type === "ERC-20") {
-            API.app.settings_pg.process_token_add(fields.contract_address, fields.coingecko_id, fields.image_path, CoinType.ERC20)
-        }
-        else if(fields.type === "QRC-20") {
-            API.app.settings_pg.process_qrc_20_token_add(fields.contract_address, fields.coingecko_id, fields.image_path)
+        switch(fields.type){
+            case "QRC-20":
+                API.app.settings_pg.process_qrc_20_token_add(fields.contract_address, fields.coingecko_id, fields.image_path)
+                break
+            default:
+                API.app.settings_pg.process_token_add(fields.contract_address, fields.coingecko_id, fields.image_path, fields.coinType)
+                break 
         }
     }
 
@@ -63,12 +64,12 @@ BasicModal {
         addToConfig(input_contract_address, "contract_address", input_contract_address.field.text)
         addToConfig(input_active,           "active",           input_active.checked)
         addToConfig(input_coingecko_id,   "coingecko_id",   input_coingecko_id.field.text)
+        fields['coinType'] = currentType.coinType
 
         root.config_fields = General.clone(fields)
     }
 
     function reset() {
-        //input_type.currentIndex = 0 // Keep same type, user might wanna add multiple of same type
         input_ticker.field.text = ""
         input_logo.path = ""
         input_name.field.text = ""
@@ -76,10 +77,40 @@ BasicModal {
         input_active.checked = false
         input_coingecko_id.field.text = "test-coin"
     }
+    property var typeList: ["ERC-20", "QRC-20","BEP-20"]
+    readonly property string general_message: qsTr('Get the contract address from')
 
-    readonly property bool is_erc20: input_type.currentText === "ERC-20"
-    readonly property bool is_qrc20: input_type.currentText === "QRC-20"
-    readonly property bool has_contract_address: is_erc20 || is_qrc20
+    ListModel {
+        id: type_model
+        dynamicRoles: true
+        ListElement {
+            text: "ERC-20"
+            prefix: ""
+            image: "erc"
+            url: "https://etherscan.io/tokens"
+            name: 'Etherscan'
+            coinType: CoinType.ERC20
+        }
+        ListElement {
+            text: "QRC-20"
+            prefix: "0x"
+            image: "qrc"
+            url: "https://explorer.qtum.org/tokens/search"
+            name: 'QTUM Insight'
+            coinType: CoinType.QRC20
+        }
+        ListElement {
+            text: "BEP-20"
+            prefix: ""
+            url: "https://bscscan.com/tokens"
+            name: 'BscScan'
+            image: "bep"
+            coinType: CoinType.BEP20
+        }
+    }
+
+    readonly property bool has_contract_address: typeList.indexOf(input_type.currentText)!==-1
+    property var currentType: type_model.get(input_type.currentIndex)
 
     // Type page
     ModalContent {
@@ -89,7 +120,8 @@ BasicModal {
             id: input_type
             Layout.fillWidth: true
             title: qsTr("Type")
-            model: ["ERC-20", "QRC-20"]//, "UTXO", "Smart Chain"]
+            textRole: "text"
+            model: type_model//, "UTXO", "Smart Chain"]
             currentIndex: 0
         }
 
@@ -132,16 +164,13 @@ BasicModal {
             Layout.fillWidth: true
             title: qsTr("Contract Address")
             field.placeholderText: qsTr("Enter the contract address")
-            field.left_text: is_qrc20 ? "0x" : ""
+            field.left_text: currentType.prefix
         }
 
         DefaultText {
             visible: input_contract_address.visible
             Layout.fillWidth: true
-            text_value: General.cex_icon + (
-                            is_erc20 ? ' <a href="https://etherscan.io/tokens">' + qsTr('Get the contract address from Etherscan') + '</a>'
-                                     : ' <a href="https://explorer.qtum.org/tokens/search">' + qsTr('Get the contract address from QTUM Insight') + '</a>'
-                            )
+            text_value: General.cex_icon + (' <a href="'+currentType.url+'">' + qsTr('Get the contract address from ') +currentType.name+ '</a>')
         }
 
 
@@ -150,7 +179,7 @@ BasicModal {
             content: DefaultAnimatedImage {
                 visible: input_contract_address.visible
                 playing: root.visible && visible
-                source: General.image_path + "guide_contract_address_" + (is_erc20 ? "erc" : "qrc") + ".gif"
+                source: General.image_path + "guide_contract_address_" + currentType.image + ".gif"
             }
         }
 

@@ -14,6 +14,8 @@ import "../Settings"
 import "../Support"
 import "../Sidebar"
 import "../Fiat"
+import "../Settings" as SettingsPage
+
 
 Item {
     id: dashboard
@@ -42,9 +44,6 @@ Item {
 
     function openLogsFolder() {
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
-    }
-    SettingModal {
-        id: settings_modal
     }
 
     readonly property var api_wallet_page: API.app.wallet_pg
@@ -75,6 +74,22 @@ Item {
     function openTradeViewWithTicker() {
         dashboard.loader.onLoadComplete = () => {
             dashboard.current_component.openTradeView(api_wallet_page.ticker)
+        }
+    }
+    // Al settings depends this modal
+    SettingsPage.SettingModal {
+        id: setting_modal
+    }
+
+    // Force restart modal: opened when the user has more coins enabled than specified in its configuration
+    ForceRestartModal {
+        reason: qsTr("The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.")
+        Component.onCompleted: {
+            if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled"))
+            {
+                open()
+                task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
+            }
         }
     }
 
@@ -241,9 +256,6 @@ Item {
 
         onClicked: notifications_modal.open()
     }
-    
-
-   
 
     DropShadow {
         anchors.fill: sidebar
@@ -286,7 +298,7 @@ Item {
         sourceComponent: RestartModal {}
     }
 
-     NotificationsModal {
+    NotificationsModal {
         id: notifications_modal
     }
 

@@ -17,6 +17,7 @@
 //! Qt Headers
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QSettings>
 
 //! Project Headers
 #include "atomicdex/models/qt.global.coins.cfg.model.hpp"
@@ -46,7 +47,8 @@ namespace
 //! Constructor
 namespace atomic_dex
 {
-    global_coins_cfg_model::global_coins_cfg_model(QObject* parent)  : QAbstractListModel(parent)
+    global_coins_cfg_model::global_coins_cfg_model(entt::registry& entity_registry, QObject* parent) :
+        QAbstractListModel(parent), m_entity_registry(entity_registry)
     {
         for (int i = 0; i < CoinType::Size; ++i)
         {
@@ -127,19 +129,27 @@ namespace atomic_dex
             break;
         case Checked:
         {
-            if (item.checked != value.toBool())
+            auto real_value = value.toBool();
+            if (item.checked == real_value)
             {
-                item.checked = value.toBool();
-                if (item.checked)
-                {
-                    m_checked_nb++;
-                }
-                else
-                {
-                    m_checked_nb--;
-                }
-                emit checked_nbChanged();
+                return false;
             }
+            if (real_value)
+            {
+                auto enableable_coins_count = m_entity_registry.ctx<QSettings>().value("MaximumNbCoinsEnabled").toULongLong();
+                if (enableable_coins_count <= get_enabled_coins().size() + m_checked_nb)
+                {
+                    return false;
+                }
+                item.checked = real_value;
+                m_checked_nb++;
+            }
+            else
+            {
+                item.checked = real_value;
+                m_checked_nb--;
+            }
+            emit checked_nbChanged();
             break;
         }
         default:
