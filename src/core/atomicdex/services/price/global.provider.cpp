@@ -23,12 +23,13 @@
 
 namespace
 {
-    web::http::client::http_client_config g_openrates_cfg{[]() {
-      web::http::client::http_client_config cfg;
-      cfg.set_validate_certificates(false);
-      cfg.set_timeout(std::chrono::seconds(2));
-      return cfg;
-    }()};
+    web::http::client::http_client_config g_openrates_cfg{[]()
+                                                          {
+                                                              web::http::client::http_client_config cfg;
+                                                              cfg.set_validate_certificates(false);
+                                                              cfg.set_timeout(std::chrono::seconds(5));
+                                                              return cfg;
+                                                          }()};
     t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"), g_openrates_cfg);
     pplx::cancellation_token_source g_token_source;
 
@@ -154,6 +155,7 @@ namespace atomic_dex
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
         if (s >= 2min)
         {
+            SPDLOG_INFO("2min spend - refreshing provider");
             this->on_force_update_providers({});
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
@@ -401,15 +403,15 @@ namespace atomic_dex
         SPDLOG_INFO("Forcing update providers");
         auto error_functor = [this, evt](pplx::task<void> previous_task)
         {
-          try
-          {
-              previous_task.wait();
-          }
-          catch (const std::exception& e)
-          {
-              SPDLOG_ERROR("pplx task error from async_fetch_fiat_rates: {} - nb_try {}", e.what(), nb_try);
-              this->on_force_update_providers(evt);
-          };
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("pplx task error from async_fetch_fiat_rates: {} - nb_try {}", e.what(), nb_try);
+                this->on_force_update_providers(evt);
+            };
         };
         async_fetch_fiat_rates()
             .then(
@@ -418,6 +420,7 @@ namespace atomic_dex
                     this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
                     const auto& mm2           = this->m_system_manager.get_system<mm2_service>();
                     const bool  with_update   = mm2.is_mm2_running();
+                    bool        already_send  = false;
                     const auto  first_id      = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
                     const auto  second_id     = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
                     if (!first_id.empty())
@@ -427,11 +430,12 @@ namespace atomic_dex
                     if (!second_id.empty())
                     {
                         refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update);
+                        already_send = true;
                     }
                     if (g_primary_dex_coin != "BTC" && g_second_primary_dex_coin != "BTC")
                     {
                         const auto third_id = mm2.get_coin_info("BTC").coinpaprika_id;
-                        refresh_other_coins_rates(third_id, "BTC", with_update);
+                        refresh_other_coins_rates(third_id, "BTC", !already_send);
                     }
                     SPDLOG_INFO("Successfully retrieving rate after {} try", nb_try);
                     nb_try = 0;
@@ -455,7 +459,7 @@ namespace atomic_dex
         if (fiat == "USD")
             return true;
         auto rates = m_other_fiats_rates.get();
-        //SPDLOG_INFO("rates: {}", rates.dump(4));
+        // SPDLOG_INFO("rates: {}", rates.dump(4));
         return !rates.empty() && rates.contains("rates") && rates.at("rates").contains(fiat);
     }
 
@@ -463,7 +467,7 @@ namespace atomic_dex
     global_price_service::is_currency_available(const std::string& currency) const
     {
         bool available = true;
-        //SPDLOG_INFO("coin_rate_providers size: {}", m_coin_rate_providers.size());
+        // SPDLOG_INFO("coin_rate_providers size: {}", m_coin_rate_providers.size());
         available = m_coin_rate_providers.find(currency) != m_coin_rate_providers.end();
         return available;
     }
