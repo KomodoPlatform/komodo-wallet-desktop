@@ -548,6 +548,7 @@ namespace atomic_dex
         const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
         const fs::path    ini_file_path = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
         const fs::path    logo_path     = atomic_dex::utils::get_logo_path();
+        const fs::path    theme_path    = atomic_dex::utils::get_themes_path();
 
 
         if (fs::exists(wallet_custom_cfg_path))
@@ -596,6 +597,7 @@ namespace atomic_dex
         functor_remove(std::move(mm2_coins_file_path));
         functor_remove(std::move(ini_file_path));
         functor_remove(std::move(logo_path));
+        functor_remove(std::move(theme_path));
     }
 
     QStringList
