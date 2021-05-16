@@ -23,7 +23,14 @@
 
 namespace
 {
-    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"));
+    web::http::client::http_client_config g_openrates_cfg{[]() {
+      web::http::client::http_client_config cfg;
+      cfg.set_validate_certificates(false);
+      cfg.set_timeout(std::chrono::seconds(2));
+      return cfg;
+    }()};
+    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"), g_openrates_cfg);
+    pplx::cancellation_token_source g_token_source;
 
     pplx::task<web::http::http_response>
     async_fetch_fiat_rates()
@@ -31,7 +38,7 @@ namespace
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
         req.set_request_uri(FROM_STD_STR("/latest?base=USD"));
-        return g_openrates_client->request(req);
+        return g_openrates_client->request(req, g_token_source.get_token());
     }
 
     nlohmann::json
@@ -389,7 +396,21 @@ namespace atomic_dex
     void
     global_price_service::on_force_update_providers([[maybe_unused]] const force_update_providers& evt)
     {
+        static std::atomic_size_t nb_try = 0;
+        nb_try += 1;
         SPDLOG_INFO("Forcing update providers");
+        auto error_functor = [this, evt](pplx::task<void> previous_task)
+        {
+          try
+          {
+              previous_task.wait();
+          }
+          catch (const std::exception& e)
+          {
+              SPDLOG_ERROR("pplx task error from async_fetch_fiat_rates: {} - nb_try {}", e.what(), nb_try);
+              this->on_force_update_providers(evt);
+          };
+        };
         async_fetch_fiat_rates()
             .then(
                 [this](web::http::http_response resp)
@@ -412,8 +433,10 @@ namespace atomic_dex
                         const auto third_id = mm2.get_coin_info("BTC").coinpaprika_id;
                         refresh_other_coins_rates(third_id, "BTC", with_update);
                     }
+                    SPDLOG_INFO("Successfully retrieving rate after {} try", nb_try);
+                    nb_try = 0;
                 })
-            .then(&handle_exception_pplx_task);
+            .then(error_functor);
     }
 
     std::string
