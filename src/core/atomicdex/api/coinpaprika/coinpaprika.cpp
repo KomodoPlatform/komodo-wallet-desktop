@@ -29,7 +29,13 @@ namespace
 {
     //! Constants
     constexpr const char* g_coinpaprika_endpoint = "https://api.coinpaprika.com/v1/";
-    t_http_client_ptr     g_coinpaprika_client   = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coinpaprika_endpoint));
+    web::http::client::http_client_config g_paprika_cfg{[]() {
+      web::http::client::http_client_config cfg;
+      cfg.set_validate_certificates(false);
+      cfg.set_timeout(std::chrono::seconds(5));
+      return cfg;
+    }()};
+    t_http_client_ptr     g_coinpaprika_client   = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coinpaprika_endpoint), g_paprika_cfg);
 } // namespace
 
 namespace atomic_dex
