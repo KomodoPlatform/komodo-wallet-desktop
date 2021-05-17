@@ -1133,7 +1133,7 @@
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="154"/>
         <source>Change assets limit</source>
-        <translation>Changer la limitation du nombre d&apos;actifs</translation>
+        <translation>Limiter le nombre d&apos;actifs</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="54"/>
@@ -1151,12 +1151,12 @@
         <translation>Vous pouvez toujours activer %1 actifs. Sélectionnés: %2.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="160"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="161"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="168"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="171"/>
         <source>Enable</source>
         <translation>Activer</translation>
     </message>
@@ -1278,7 +1278,7 @@
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="51"/>
         <source>Recover Wallet</source>
-        <translation>Récupérer le portefeuille</translation>
+        <translation type="unfinished">Récupérer portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="65"/>

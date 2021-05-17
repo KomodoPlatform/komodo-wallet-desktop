@@ -1151,12 +1151,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="160"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="161"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="168"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="171"/>
         <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
