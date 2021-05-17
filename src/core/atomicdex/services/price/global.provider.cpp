@@ -30,7 +30,7 @@ namespace
                                                               cfg.set_timeout(std::chrono::seconds(5));
                                                               return cfg;
                                                           }()};
-    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"), g_openrates_cfg);
+    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.ratesapi.io"), g_openrates_cfg);
     pplx::cancellation_token_source g_token_source;
 
     pplx::task<web::http::http_response>
