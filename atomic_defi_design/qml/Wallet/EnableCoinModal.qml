@@ -149,22 +149,25 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexButton {
                 property var enableable_coins_count: setting_modal.enableable_coins_count;
                 text: qsTr("Change assets limit")
                 onClicked: setting_modal.open()
+                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
                 onEnableable_coins_countChanged: setCheckState(false)
             },
 
-            DefaultButton {
+            DexButton {
                 text: qsTr("Close")
+                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
-            PrimaryButton {
+            DexButton {
                 visible: coin_cfg_model.length > 0
                 enabled: coin_cfg_model.checked_nb > 0
+                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
                 text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: {
