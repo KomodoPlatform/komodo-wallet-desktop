@@ -1011,6 +1011,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "DOGE-BEP20": {
+      "coin": "DOGE-BEP20",
+      "name": "Dogecoin",
+      "coinpaprika_id": "doge-dogecoin",
+      "coingecko_id": "dogecoin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "DOT-BEP20": {
       "coin": "DOT-BEP20",
       "name": "Polkadot",
