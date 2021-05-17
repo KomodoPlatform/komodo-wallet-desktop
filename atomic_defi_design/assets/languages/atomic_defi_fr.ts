@@ -510,22 +510,22 @@
     <message>
         <location filename="../../qml/Components/CannotEnableCoinModal.qml" line="15"/>
         <source>Failed to enable %1</source>
-        <translation type="unfinished">Échec de l&apos;activation de %1</translation>
+        <translation>Échec de l&apos;activation de %1</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CannotEnableCoinModal.qml" line="19"/>
         <source>Enabling %1 did not succeed. Limit of enabled coins might have been reached.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;activation de %1 n&apos;a pas réussi. La limite de pièces activées a peut-être été atteinte.</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CannotEnableCoinModal.qml" line="28"/>
         <source>Change limit in settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer la limite dans les paramètres</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CannotEnableCoinModal.qml" line="38"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -704,7 +704,7 @@
     <message>
         <location filename="../../qml/Settings/Combo_fiat.qml" line="45"/>
         <source>Recommended: </source>
-        <translation>Conseillé :</translation>
+        <translation>Conseillé: </translation>
     </message>
 </context>
 <context>
@@ -838,7 +838,7 @@
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="86"/>
         <source>The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nombre actuel d&apos;actifs activées ne correspond pas à vos spécifications de configuration. La configuration de vos actifs sera réinitialisée.</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="144"/>
@@ -1278,7 +1278,7 @@
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="51"/>
         <source>Recover Wallet</source>
-        <translation type="unfinished">Récupérer portefeuille</translation>
+        <translation>Récupérer portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="65"/>
@@ -2836,7 +2836,7 @@
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="324"/>
         <source>Apply Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer les changements</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="374"/>

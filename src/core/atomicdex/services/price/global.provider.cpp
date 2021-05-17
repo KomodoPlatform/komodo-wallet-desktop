@@ -113,6 +113,8 @@ namespace atomic_dex
             catch (const std::exception& e)
             {
                 SPDLOG_ERROR("pplx task error from refresh_other_coins_rates: {} - nb_try {}", e.what(), nb_try_load);
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(1s);
                 this->refresh_other_coins_rates(quote_id, ticker, with_update_providers, nb_try_load);
             };
         };
@@ -449,6 +451,8 @@ namespace atomic_dex
             catch (const std::exception& e)
             {
                 SPDLOG_ERROR("pplx task error from async_fetch_fiat_rates: {} - nb_try {}", e.what(), nb_try);
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(1s);
                 this->on_force_update_providers(evt);
             };
         };
