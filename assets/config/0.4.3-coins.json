@@ -1903,6 +1903,24 @@
       "active": false,
       "currently_enabled": false
   },
+  "USDT-ERC20": {
+      "coin": "USDT-ERC20",
+      "name": "Tether",
+      "coinpaprika_id": "usdt-tether",
+      "coingecko_id": "tether",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/" 
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "AWC": {
     "active": false,
     "coin": "AWC",
