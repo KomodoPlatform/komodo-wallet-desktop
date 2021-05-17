@@ -1011,6 +1011,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "DOGE-BEP20": {
+      "coin": "DOGE-BEP20",
+      "name": "Dogecoin",
+      "coinpaprika_id": "doge-dogecoin",
+      "coingecko_id": "dogecoin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "DOT-BEP20": {
       "coin": "DOT-BEP20",
       "name": "Polkadot",
@@ -1903,6 +1920,24 @@
       "active": false,
       "currently_enabled": false
   },
+  "USDT-ERC20": {
+      "coin": "USDT-ERC20",
+      "name": "Tether",
+      "coinpaprika_id": "usdt-tether",
+      "coingecko_id": "tether",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/" 
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "AWC": {
     "active": false,
     "coin": "AWC",
@@ -2764,7 +2799,7 @@
     "coingecko_id": "terracoin",
     "electrum": [
       {
-        "url": "failover.trc-uis.ewmcx.biz:50002",
+        "url": "failover.trc-uis.ewmcx.biz:50006",
         "protocol": "SSL",
         "disable_cert_verification": true
       },
