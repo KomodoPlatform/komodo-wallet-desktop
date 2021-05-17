@@ -287,14 +287,27 @@ Rectangle {
     	property alias fontDensity: _font.fontDensity
     	property alias fontFamily: _font.fontFamily
     }
-
-    Component.onCompleted: {
-        openFirstLaunch()
+    function loadTheme() {
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
         atomic_settings2.sync()
         let current =  atomic_settings2.value("CurrentTheme")
         console.log(current)
         load_theme(current.replace(".json",""))
+    }
+
+    Component.onCompleted: {
+        openFirstLaunch()
+        loadTheme()
+    }
+    Timer {
+        interval: 5000
+        repeat: true
+        running: false
+        onTriggered: loadTheme()
+    }
+    Shortcut {
+        sequence: "Ctrl+R"
+        onActivated: loadTheme()
     }
 
 
