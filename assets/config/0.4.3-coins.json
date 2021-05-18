@@ -1100,6 +1100,31 @@
         "url": "lenoir.ecoincore.com:11017",
         "protocol": "SSL",
         "disable_cert_verification": true
+      },
+      {
+        "url": "electrum1.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum2.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum3.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum4.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum5.egulden.org:11017",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -1931,7 +1956,7 @@
         "http://eth3.cipig.net:8555"
       ],
       "explorer_url": [
-        "https://etherscan.io/" 
+        "https://etherscan.io/"
       ],
       "type": "ERC-20",
       "active": false,
