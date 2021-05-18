@@ -707,9 +707,9 @@
         "disable_cert_verification": true
       },
       {
-        "url": "chicago.ecoincore.com:34333",
+        "url": "woolloomooloo.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       },
       {
         "url": "lenoir.ecoincore.com:34333",
