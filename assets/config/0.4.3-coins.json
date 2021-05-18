@@ -2507,7 +2507,7 @@
     "coinpaprika_id": "vrsc-verus-coin",
     "electrum": [
       {
-        "url": "el0.verus.io:17485"
+        "url": "el3.verus.io:17485"
       },
       {
         "url": "el1.verus.io:17485"
