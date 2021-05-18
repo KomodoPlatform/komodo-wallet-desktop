@@ -17,7 +17,7 @@ import "../Constants"
 // Portfolio
 InnerBackground {
     id: portfolio_asset_chart
-    property bool isProgress: true
+    property bool isProgress: false
     function drawChart() {
         areaLine.clear()
         areaLine3.clear()
@@ -55,7 +55,7 @@ InnerBackground {
                 if(API.app.portfolio_pg.charts.length===0){
                     restart()
                 }else {
-                    portfolio_asset_chart.isProgress = true
+                    portfolio_asset_chart.isProgress = false
                     drawTimer.restart()
                 }
             }  
@@ -71,17 +71,15 @@ InnerBackground {
         target: API.app.portfolio_pg
         function onChart_busy_fetchingChanged() {
             if(!API.app.portfolio_pg.chart_busy_fetching){
-                portfolio_asset_chart.isProgress = true
+                portfolio_asset_chart.isProgress = false
                 chart2Timer.restart()
             }
         }
     }
 
     Component.onCompleted: {
-        portfolio_asset_chart.isProgress = true
-        chart2Timer.restart()
-
-
+        portfolio_asset_chart.isProgress = false
+        //  chart2Timer.restart()
     }
     property real mX: 0
     property real mY: 0

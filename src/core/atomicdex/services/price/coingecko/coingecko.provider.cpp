@@ -102,10 +102,26 @@ namespace atomic_dex
     coingecko_provider::internal_update(
         const std::vector<std::string>& ids, const std::unordered_map<std::string, std::string>& registry, bool should_move, std::vector<std::string> tickers)
     {
+        static std::atomic_uint16_t nb_try = 0;
+        nb_try += 1;
         if (!ids.empty())
         {
             SPDLOG_INFO("Processing internal_update");
 
+            auto error_functor = [this, ids, registry, should_move, tickers](pplx::task<void> previous_task)
+            {
+              try
+              {
+                  previous_task.wait();
+              }
+              catch (const std::exception& e)
+              {
+                  SPDLOG_ERROR("pplx task error from coingecko::api::async_market_infos: {} - nb_try {}", e.what(), nb_try.load());
+                  using namespace std::chrono_literals;
+                  std::this_thread::sleep_for(1s);
+                  this->internal_update(ids, registry, should_move, tickers);
+              };
+            };
             t_coingecko_market_infos_request request{.ids = std::move(ids)};
             const auto                       answer_functor = [this, registry, should_move, tickers](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -137,19 +153,21 @@ namespace atomic_dex
                     {
                         dispatcher_.trigger<fiat_rate_updated>("");
                     }
-                    SPDLOG_INFO("Coingecko rates successfully updated");
+                    SPDLOG_INFO("Coingecko rates successfully updated after nb_try: {}", nb_try.load());
+                    nb_try = 0;
                 }
                 else
                 {
                     SPDLOG_ERROR("Error during the rpc call to coingecko: {}", body);
                 }
             };
-            coingecko::api::async_market_infos(std::move(request)).then(answer_functor).then(&handle_exception_pplx_task);
+            coingecko::api::async_market_infos(std::move(request)).then(answer_functor).then(error_functor);
         }
         else
         {
             //! If it's only test coin
             dispatcher_.trigger<coin_fully_initialized>(tickers);
+            nb_try = 0;
         }
     }
 
