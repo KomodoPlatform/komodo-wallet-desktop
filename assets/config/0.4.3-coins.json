@@ -707,9 +707,9 @@
         "disable_cert_verification": true
       },
       {
-        "url": "chicago.ecoincore.com:34333",
+        "url": "woolloomooloo.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       },
       {
         "url": "lenoir.ecoincore.com:34333",
@@ -2507,7 +2507,7 @@
     "coinpaprika_id": "vrsc-verus-coin",
     "electrum": [
       {
-        "url": "el0.verus.io:17485"
+        "url": "el3.verus.io:17485"
       },
       {
         "url": "el1.verus.io:17485"
