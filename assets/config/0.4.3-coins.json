@@ -2507,13 +2507,19 @@
     "coinpaprika_id": "vrsc-verus-coin",
     "electrum": [
       {
-        "url": "el3.verus.io:17485"
+        "url": "el0.verus.io:17486",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       },
       {
-        "url": "el1.verus.io:17485"
+        "url": "el1.verus.io:17486",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       },
       {
-        "url": "el2.verus.io:17485"
+        "url": "el2.verus.io:17486",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       }
     ],
     "explorer_url": [
