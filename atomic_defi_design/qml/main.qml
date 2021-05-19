@@ -42,29 +42,16 @@ DexWindow {
         border.width: 0
     }
 
-    Loader {
-        id: app_loader
-        anchors.fill: parent
-        source: "App.qml"
-        function reload() {
-            source = ""
-            source = "App.qml?"+Math.random()
-        }
-    }
     DexBusyIndicator {
         anchors.centerIn: parent
         running: app_loader.status === Loader.Loading
         visible: running
     }
-    Shortcut {
-        sequence: "Ctrl+L"
-        onActivated: app_loader.reload()
-    }
-    /*App {
+    App {
         id: app
         anchors.fill: parent
         anchors.margins: 2
-    }*/
+    }
 
     DexWindowControl { }
 }
