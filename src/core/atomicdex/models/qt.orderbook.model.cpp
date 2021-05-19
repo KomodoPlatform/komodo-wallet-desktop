@@ -43,6 +43,7 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(PriceRole);
+
         switch (m_current_orderbook_kind)
         {
         case kind::asks:
@@ -104,6 +105,8 @@ namespace atomic_dex
             return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_denom);
         case QuantityNumerRole:
             return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_numer);
+        case BaseMinVolumeRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_min_volume);
         case MinVolumeRole:
         {
             const bool is_asks = m_current_orderbook_kind == kind::asks;
@@ -259,6 +262,9 @@ namespace atomic_dex
             break;
         case HaveCEXIDRole:
             break;
+        case BaseMinVolumeRole:
+            order.base_min_volume = value.toString().toStdString();
+            break;
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -283,11 +289,12 @@ namespace atomic_dex
             {EnoughFundsToPayMinVolume, "enough_funds_to_pay_min_volume"},
             {CEXRatesRole, "cex_rates"},
             {SendRole, "send"},
-            {PriceFiatRole, "price_fiat"}};
+            {PriceFiatRole, "price_fiat"},
+            {BaseMinVolumeRole, "base_min_volume"}};
     }
 
     void
-    orderbook_model::reset_orderbook(const t_orders_contents& orderbook) 
+    orderbook_model::reset_orderbook(const t_orders_contents& orderbook)
     {
         if (!orderbook.empty())
         {
@@ -309,14 +316,14 @@ namespace atomic_dex
     }
 
     int
-    orderbook_model::get_length() const 
+    orderbook_model::get_length() const
     {
         return rowCount();
     }
 
 
     void
-    orderbook_model::initialize_order(const ::mm2::api::order_contents& order) 
+    orderbook_model::initialize_order(const ::mm2::api::order_contents& order)
     {
         assert(m_model_data.size() == m_orders_id_registry.size());
         beginInsertRows(QModelIndex(), m_model_data.size(), m_model_data.size());
@@ -328,7 +335,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::update_order(const ::mm2::api::order_contents& order) 
+    orderbook_model::update_order(const ::mm2::api::order_contents& order)
     {
         if (const auto res = this->match(index(0, 0), UUIDRole, QString::fromStdString(order.uuid)); not res.isEmpty())
         {
@@ -341,6 +348,8 @@ namespace atomic_dex
             update_value(OrderbookRoles::QuantityRole, QString::fromStdString(order.maxvolume), idx, *this);
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
+            update_value(OrderbookRoles::BaseMinVolumeRole, QString::fromStdString(order.base_min_volume), idx, *this);
+            update_value(OrderbookRoles::MinVolumeRole, QString::fromStdString(order.min_volume), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
             update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
@@ -349,9 +358,10 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook) 
+    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook)
     {
-        auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents) {
+        auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents)
+        {
             // SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
             for (auto&& current_order: contents)
             {
@@ -380,7 +390,7 @@ namespace atomic_dex
                     {
                         if (this->m_current_orderbook_kind == kind::best_orders)
                         {
-                            SPDLOG_INFO("Removing order with UUID: {}", id);
+                            //SPDLOG_INFO("Removing order with UUID: {}", id);
                         }
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
@@ -394,7 +404,7 @@ namespace atomic_dex
     }
 
     t_order_contents
-    orderbook_model::get_order_content(const QModelIndex& index) const 
+    orderbook_model::get_order_content(const QModelIndex& index) const
     {
         return m_model_data.at(index.row());
     }
@@ -414,8 +424,9 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::clear_orderbook() 
+    orderbook_model::clear_orderbook()
     {
+        SPDLOG_INFO("clear orderbook");
         this->beginResetModel();
         m_model_data = t_orders_contents{};
         m_orders_id_registry.clear();
@@ -424,8 +435,13 @@ namespace atomic_dex
     }
 
     orderbook_proxy_model*
-    orderbook_model::get_orderbook_proxy() const 
+    orderbook_model::get_orderbook_proxy() const
     {
         return m_model_proxy;
+    }
+    orderbook_model::kind
+    orderbook_model::get_orderbook_kind() const
+    {
+        return m_current_orderbook_kind;
     }
 } // namespace atomic_dex

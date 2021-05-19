@@ -17,6 +17,7 @@
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.settings.page.hpp"
 #include "qt.wallet.page.hpp"
+#include "qt.portfolio.page.hpp"
 
 namespace atomic_dex
 {
@@ -29,8 +30,67 @@ namespace atomic_dex
     void
     wallet_page::update()
     {
+        if (!m_page_open)
+        {
+            return;
+        }
+        using namespace std::chrono_literals;
+    
+        const auto now = std::chrono::high_resolution_clock::now();
+        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
+        if (s >= 1s)
+        {
+            check_send_availability();
+            m_update_clock = std::chrono::high_resolution_clock::now();
+        }
     }
 } // namespace atomic_dex
+
+//! Private API
+namespace atomic_dex
+{
+    void wallet_page::check_send_availability()
+    {
+        auto& mm2 = m_system_manager.get_system<mm2_service>();
+        auto  global_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
+        auto  ticker_info = global_coins_cfg->get_coin_info(mm2.get_current_ticker());
+
+        m_send_available = true;
+        m_send_availability_state = "";
+        m_current_ticker_fees_coin_enabled = true;
+        if (not mm2.get_balance(ticker_info.ticker) > 0)
+        {
+            m_send_available = false;
+            m_send_availability_state = tr("You do not have enough funds.");
+            m_current_ticker_fees_coin_enabled = true;
+        }
+        else if (ticker_info.has_parent_fees_ticker)
+        {
+            auto parent_ticker_info = global_coins_cfg->get_coin_info(ticker_info.fees_ticker);
+            
+            if (!parent_ticker_info.currently_enabled)
+            {
+                m_send_available                   = true;
+                m_send_availability_state =
+                    tr("%1 is not activated: click on the button to enable it or enable it manually")
+                        .arg(QString::fromStdString(parent_ticker_info.ticker));
+                m_current_ticker_fees_coin_enabled = false;
+            }
+            else if (not mm2.get_balance(parent_ticker_info.ticker) > 0)
+            {
+                m_send_available                   = false;
+                m_send_availability_state =
+                    tr("You need to have %1 to pay the gas for %2 transactions.")
+                        .arg(QString::fromStdString(parent_ticker_info.ticker))
+                        .arg(QString::fromStdString(parent_ticker_info.type));
+                m_current_ticker_fees_coin_enabled = true;
+            }
+        }
+        emit sendAvailableChanged();
+        emit sendAvailabilityStateChanged();
+        emit currentTickerFeesCoinEnabledChanged();
+    }
+}
 
 //! Getters/Setters
 namespace atomic_dex
@@ -53,6 +113,7 @@ namespace atomic_dex
             emit currentTickerChanged();
             mm2_system.fetch_infos_thread(true, true);
             refresh_ticker_infos();
+            check_send_availability();
         }
     }
 
@@ -182,6 +243,7 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
+            //SPDLOG_INFO("fee_ticker of ticker :{} is {}", ticker, coin_info.fees_ticker);
             obj["fee_ticker"]                         = QString::fromStdString(coin_info.fees_ticker);
             obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
             obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
@@ -253,6 +315,33 @@ namespace atomic_dex
     {
         return m_auth_succeeded;
     }
+    
+    bool
+    wallet_page::is_send_available()
+    {
+        return m_send_available;
+    }
+    
+    QString wallet_page::get_send_availability_state()
+    {
+        return m_send_availability_state;
+    }
+    
+    bool wallet_page::is_current_ticker_fees_coin_enabled()
+    {
+        return m_current_ticker_fees_coin_enabled;
+    }
+    
+    bool wallet_page::is_page_open() const
+    {
+        return m_page_open;
+    }
+    
+    void wallet_page::set_page_open(bool value)
+    {
+        m_page_open = value;
+        emit isPageOpenChanged();
+    }
 } // namespace atomic_dex
 
 //! Public api
@@ -261,7 +350,6 @@ namespace atomic_dex
     void
     wallet_page::refresh_ticker_infos()
     {
-        // SPDLOG_DEBUG("refresh ticker infos");
         emit tickerInfosChanged();
     }
 
@@ -305,7 +393,8 @@ namespace atomic_dex
         }
 
         //! Answer
-        auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp) {
+        auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
+        {
             const auto& settings_system     = m_system_manager.get_system<settings_page>();
             const auto& global_price_system = m_system_manager.get_system<global_price_service>();
             const auto& current_fiat        = settings_system.get_current_fiat().toStdString();
@@ -347,7 +436,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, fee);
+                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
                 }
 
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
@@ -369,7 +458,7 @@ namespace atomic_dex
     {
 #if defined(__APPLE__) || defined(WIN32)
         QSettings& settings = this->entity_registry_.ctx<QSettings>();
-        if (settings.value("SecondSecuritySending").toBool())
+        if (settings.value("2FA").toBool())
         {
             antara::gaming::core::evaluate_authentication(
                 "Password to send funds is required", [=](bool is_auth) { broadcast_on_auth_finished(is_auth, tx_hex, is_claiming, is_max, amount); });
@@ -405,7 +494,8 @@ namespace atomic_dex
         batch.push_back(json_data);
 
         //! Answer
-        auto answer_functor = [this, is_claiming, is_max, amount](web::http::http_response resp) {
+        auto answer_functor = [this, is_claiming, is_max, amount](web::http::http_response resp)
+        {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
@@ -456,27 +546,29 @@ namespace atomic_dex
         batch.push_back(json_data);
         mm2_system.get_mm2_client()
             .async_rpc_batch_standalone(batch)
-            .then([this](web::http::http_response resp) {
-                std::string body = TO_STD_STR(resp.extract_string(true).get());
-                // SPDLOG_DEBUG("resp claiming: {}", body);
-                if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+            .then(
+                [this](web::http::http_response resp)
                 {
-                    auto           answers              = nlohmann::json::parse(body);
-                    auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
-                    nlohmann::json j_out                = nlohmann::json::object();
-                    j_out["withdraw_answer"]            = answers[0];
-                    j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
-                    auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
-                    j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
-                    this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
-                }
-                else
-                {
-                    auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
-                    this->set_rpc_claiming_data(error_json);
-                }
-                this->set_claiming_is_busy(false);
-            })
+                    std::string body = TO_STD_STR(resp.extract_string(true).get());
+                    // SPDLOG_DEBUG("resp claiming: {}", body);
+                    if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+                    {
+                        auto           answers              = nlohmann::json::parse(body);
+                        auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                        nlohmann::json j_out                = nlohmann::json::object();
+                        j_out["withdraw_answer"]            = answers[0];
+                        j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
+                        auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
+                        j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
+                        this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
+                    }
+                    else
+                    {
+                        auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                        this->set_rpc_claiming_data(error_json);
+                    }
+                    this->set_claiming_is_busy(false);
+                })
             .then(&handle_exception_pplx_task);
     }
 
@@ -491,12 +583,14 @@ namespace atomic_dex
 
         this->set_claiming_faucet_is_busy(true);
         faucet::api::claim(claim_request)
-            .then([this](web::http::http_response resp) {
-                auto claim_result = faucet::api::get_claim_result(resp);
-                this->set_rpc_claiming_faucet_data(
-                    QJsonObject({{"message", QString::fromStdString(claim_result.message)}, {"status", QString::fromStdString(claim_result.status)}}));
-                this->set_claiming_faucet_is_busy(false);
-            })
+            .then(
+                [this](web::http::http_response resp)
+                {
+                    auto claim_result = faucet::api::get_claim_result(resp);
+                    this->set_rpc_claiming_faucet_data(
+                        QJsonObject({{"message", QString::fromStdString(claim_result.message)}, {"status", QString::fromStdString(claim_result.status)}}));
+                    this->set_claiming_faucet_is_busy(false);
+                })
             .then(&handle_exception_pplx_task);
     }
 
@@ -507,21 +601,28 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::on_tx_fetch_finished(const tx_fetch_finished&)
+    wallet_page::on_tx_fetch_finished(const tx_fetch_finished& evt)
     {
-        std::error_code ec;
-        t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
-        SPDLOG_INFO("transaction size: {}", transactions.size());
-        if (m_transactions_mdl->rowCount() == 0)
+        if (!evt.with_error)
         {
-            //! insert all transactions
-            m_transactions_mdl->init_transactions(transactions);
+            std::error_code ec;
+            t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
+            SPDLOG_INFO("transaction size: {}", transactions.size());
+            if (m_transactions_mdl->rowCount() == 0)
+            {
+                //! insert all transactions
+                m_transactions_mdl->init_transactions(transactions);
+            }
+            else
+            {
+                //! Update tx (only unconfirmed) or insert (new tx)
+                SPDLOG_DEBUG("updating / insert tx");
+                m_transactions_mdl->update_or_insert_transactions(transactions);
+            }
         }
         else
         {
-            //! Update tx (only unconfirmed) or insert (new tx)
-            SPDLOG_DEBUG("updating / insert tx");
-            m_transactions_mdl->update_or_insert_transactions(transactions);
+            this->m_transactions_mdl->reset();
         }
         this->set_tx_fetching_busy(false);
     }

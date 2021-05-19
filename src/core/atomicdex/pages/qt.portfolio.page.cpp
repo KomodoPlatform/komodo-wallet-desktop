@@ -29,7 +29,7 @@ namespace atomic_dex
 {
     portfolio_page::portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
         QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher_, this)),
-        m_global_cfg_mdl(new global_coins_cfg_model(this))
+        m_global_cfg_mdl(new global_coins_cfg_model(entity_registry_, this))
     {
         emit portfolioChanged();
         this->dispatcher_.sink<update_portfolio_values>().connect<&portfolio_page::on_update_portfolio_values_event>(*this);
@@ -81,7 +81,7 @@ namespace atomic_dex
             this->m_current_balance_all = std::move(current_fiat_all_balance);
             emit       onFiatBalanceAllChanged();
             const auto currency = m_system_manager.get_system<settings_page>().get_current_currency().toStdString();
-            if (currency != g_primary_dex_coin && currency != g_second_primary_dex_coin)
+            if (currency != g_primary_dex_coin && currency != g_second_primary_dex_coin && currency != "BTC")
             {
                 m_main_current_balance_all = m_current_balance_all;
                 emit onMainFiatBalanceAllChanged();

@@ -39,15 +39,17 @@ SetupPage {
             Layout.fillWidth: true
             spacing: Style.buttonSpacing
 
-            DefaultButton {
+            DexButton {
                 Layout.fillWidth: true
                 text: qsTr("New Wallet")
+                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
                 onClicked: onClickedNewUser()
             }
 
-            DefaultButton {
+            DexButton {
                 Layout.fillWidth: true
                 text: qsTr("Recover Wallet")
+                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
                 onClicked: onClickedRecoverSeed()
             }
         }

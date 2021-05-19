@@ -11,9 +11,6 @@ Item {
     property var items
     property bool is_history: false
 
-    Layout.fillWidth: true
-    Layout.fillHeight: true
-
     ColumnLayout {
         width: parent.width-10
         height: parent.height
@@ -71,14 +68,12 @@ Item {
 
         // Pagination
         Pagination {
-            visible: is_history && API.app.orders_mdl.rowCount()>0
+            visible: is_history && list.count>0
             enabled: list.enabled
+            Layout.maximumHeight: 70
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.topMargin: 10
-            Layout.rightMargin: 10
-            Layout.leftMargin: 10
-            Layout.bottomMargin: Layout.topMargin
+            Layout.bottomMargin: 10
         }
     }
 }

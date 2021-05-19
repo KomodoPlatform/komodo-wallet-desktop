@@ -282,4 +282,17 @@ namespace atomic_dex::utils
         }
         return ticker;
     }
+
+    std::vector<std::string>
+    coin_cfg_to_ticker_cfg(std::vector<coin_config> in)
+    {
+        std::vector<std::string> out;
+        out.reserve(in.size());
+
+        for (auto&& coin : in)
+        {
+            out.push_back(coin.ticker);
+        }
+        return out;
+    }
 } // namespace atomic_dex::utils

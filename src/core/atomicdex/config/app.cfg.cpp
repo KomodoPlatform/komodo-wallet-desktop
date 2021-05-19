@@ -37,7 +37,6 @@ namespace
 
         assert(ifs.is_open());
         ifs >> config_json_data;
-        config_json_data["lang"]                  = config.current_lang;
         config_json_data["current_currency"]      = config.current_currency;
         config_json_data["current_fiat"]          = config.current_fiat;
         config_json_data["possible_currencies"]   = config.possible_currencies;
@@ -60,8 +59,6 @@ namespace atomic_dex
     void
     from_json(const nlohmann::json& j, atomic_dex::cfg& config)
     {
-        j.at("lang").get_to(config.current_lang);
-        j.at("available_lang").get_to(config.available_lang);
         j.at("current_currency").get_to(config.current_currency);
         j.at("current_fiat").get_to(config.current_fiat);
         j.at("available_fiat").get_to(config.available_fiat);
@@ -78,16 +75,6 @@ namespace atomic_dex
         if (config.notification_enabled != is_enabled)
         {
             config.notification_enabled = is_enabled;
-            upgrade_cfg(config);
-        }
-    }
-
-    void
-    change_lang(cfg& config, const std::string& new_lang)
-    {
-        if (config.current_lang != new_lang)
-        {
-            config.current_lang = new_lang;
             upgrade_cfg(config);
         }
     }

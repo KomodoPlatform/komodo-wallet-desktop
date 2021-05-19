@@ -44,6 +44,7 @@ Item {
         height: txt.font.pixelSize * 1.4
         anchors.left: parent.left
         anchors.leftMargin: 30
+        scale: 1.2
         anchors.verticalCenter: parent.verticalCenter
         visible: false
     }
@@ -55,7 +56,9 @@ Item {
         horizontalOffset: 0
         verticalOffset: 3
         radius: 3
-        samples: 4
+        //scale: 
+        samples: 6
+        antialiasing: true
         spread: 0
         color: "#40000000"
         smooth: true
@@ -73,7 +76,13 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 70
         anchors.verticalCenter: parent.verticalCenter
-        font: theme.textType.body1
+        scale: Qt.platform.os==="windows"? 1.2 : API.app.settings_pg.lang=="fr"? 0.85 : 1
+        font: Qt.font({
+            pixelSize: 16*_font.fontDensity*_font.languageDensity,
+            letterSpacing: 0.5,
+            family: _font.fontFamily,
+            weight: Font.Normal
+        })
         color: !section_enabled ? Style.colorTextDisabled :
                 selected ? Style.colorSidebarSelectedText :
                 mouse_area.containsMouse ? Style.colorThemePassiveLight :
@@ -89,6 +98,7 @@ Item {
         radius: 3
         samples: 4
         spread: 0
+        scale: Qt.platform.os==="windows"? 1.2 : API.app.settings_pg.lang=="fr"? 0.85 : 1
         color: "#40000000"
         smooth: true
     }
@@ -100,7 +110,7 @@ Item {
         height: parent.height
         onClicked: function() {
             if (dashboard_index===-1) {
-                settings_modal.open()
+                setting_modal.open()
                 return
             }
 

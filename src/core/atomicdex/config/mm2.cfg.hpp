@@ -30,8 +30,9 @@ namespace atomic_dex
 
     struct mm2_config
     {
-        std::string              gui{"AtomicDex Desktop "s + atomic_dex::get_version()};
+        std::string              gui{std::string(DEX_NAME) + " "s + atomic_dex::get_version()};
         int64_t                  netid{7777};
+        std::vector<std::string> seednodes{};
         //std::vector<std::string> seednodes{"195.201.91.96", "195.201.91.53", "168.119.174.126", "46.4.78.11", "46.4.87.18"};
         //std::vector<std::string> seednodes{"46.4.78.11", "46.4.87.18"};
 #ifdef _WIN32
@@ -69,9 +70,9 @@ namespace atomic_dex
         j["passphrase"]   = cfg.passphrase;
         j["rpc_password"] = cfg.rpc_password;
         j["dbdir"]        = cfg.dbdir;
-        /*if (not cfg.seednodes.empty())
+        if (not cfg.seednodes.empty())
         {
             j["seednodes"] = cfg.seednodes;
-        }*/
+        }
     }
 } // namespace atomic_dex

@@ -41,7 +41,6 @@ namespace atomic_dex
 
         //! Properties
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY onLangChanged)
-        Q_PROPERTY(QString empty_string READ get_empty_string NOTIFY langChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY onCurrencyChanged)
         Q_PROPERTY(QString current_currency_sign READ get_current_currency_sign NOTIFY onCurrencySignChanged)
         Q_PROPERTY(QString current_fiat_sign READ get_current_fiat_sign NOTIFY onFiatSignChanged)
@@ -60,7 +59,6 @@ namespace atomic_dex
         QQmlApplicationEngine*        m_qml_engine{nullptr};
         atomic_dex::cfg               m_config{load_cfg()};
         QTranslator                   m_translator;
-        QString                       m_empty_string{""};
         std::atomic_bool              m_fetching_erc_data_busy{false};
         std::atomic_bool              m_fetching_priv_keys_busy{false};
         t_synchronized_json           m_custom_token_data;
@@ -75,7 +73,6 @@ namespace atomic_dex
         //! Properties
         [[nodiscard]] QString  get_current_lang() const;
         void                   set_current_lang(QString new_lang);
-        [[nodiscard]] QString  get_empty_string() const;
         [[nodiscard]] QString  get_current_currency() const;
         [[nodiscard]] QString  get_current_currency_sign() const;
         [[nodiscard]] QString  get_current_fiat_sign() const;
