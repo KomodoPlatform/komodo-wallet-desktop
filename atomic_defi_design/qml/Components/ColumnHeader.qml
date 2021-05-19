@@ -11,22 +11,7 @@ Item {
     height: title.height
 
     // Click area
-    DefaultMouseArea {
-        id: click_area
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
-            if(current_sort === sort_type) {
-                ascending = !ascending
-            }
-            else {
-                current_sort = sort_type
-                ascending = false
-            }
-
-            applyCurrentSort()
-        }
-    }
+    
 
     DefaultText {
         id: title
@@ -59,5 +44,22 @@ Item {
         anchors.fill: arrow_icon
         source: arrow_icon
         color: title.color
+    }
+    DefaultMouseArea {
+        id: click_area
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape:  Qt.PointingHandCursor
+        onClicked: {
+            if(current_sort === sort_type) {
+                ascending = !ascending
+            }
+            else {
+                current_sort = sort_type
+                ascending = false
+            }
+
+            applyCurrentSort()
+        }
     }
 }
