@@ -38,6 +38,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("coingecko_wallet_charts_service created");
         m_update_clock = std::chrono::high_resolution_clock::now();
+        this->disable();
     }
 
     coingecko_wallet_charts_service::~coingecko_wallet_charts_service() { SPDLOG_INFO("coingecko_wallet_charts_service destroyed"); }
@@ -305,47 +306,50 @@ namespace atomic_dex
     void
     coingecko_wallet_charts_service::manual_refresh(const std::string& from)
     {
-        SPDLOG_INFO("manual refresh from: {}", from);
-        const auto wallet_obj       = m_wallet_performance.get();
-        const bool is_valid         = wallet_obj.contains("wallet_evolution");
-        const auto balance_fiat_all = m_system_manager.get_system<portfolio_page>().get_main_balance_fiat_all();
-        if (is_valid && from.find("set_chart_category") == std::string::npos)
+        if (this->is_enabled())
         {
-            const auto previous = wallet_obj["wallet_evolution"].toObject().value("last_total_balance_fiat_all").toString();
-            if (previous == balance_fiat_all)
+            SPDLOG_INFO("manual refresh from: {}", from);
+            const auto wallet_obj       = m_wallet_performance.get();
+            const bool is_valid         = wallet_obj.contains("wallet_evolution");
+            const auto balance_fiat_all = m_system_manager.get_system<portfolio_page>().get_main_balance_fiat_all();
+            if (is_valid && from.find("set_chart_category") == std::string::npos)
             {
-                SPDLOG_INFO("Skipping refresh, balance doesn't change between last calls");
+                const auto previous = wallet_obj["wallet_evolution"].toObject().value("last_total_balance_fiat_all").toString();
+                if (previous == balance_fiat_all)
+                {
+                    SPDLOG_INFO("Skipping refresh, balance doesn't change between last calls");
+                    return;
+                }
+            }
+            if (m_is_busy)
+            {
+                SPDLOG_WARN("Service is busy, try later");
                 return;
             }
-        }
-        if (m_is_busy)
-        {
-            SPDLOG_WARN("Service is busy, try later");
-            return;
-        }
-        auto functor = [this]()
-        {
-            try
+            auto functor = [this]()
             {
+                try
                 {
-                    SPDLOG_INFO("Waiting for previous call to be finished");
-                    m_executor.wait_for_all();
-                    m_taskflow.clear();
-                    m_chart_data_registry->clear();
-                    m_min_value          = "0";
-                    m_max_value          = "0";
-                    m_wallet_performance = QJsonObject();
+                    {
+                        SPDLOG_INFO("Waiting for previous call to be finished");
+                        m_executor.wait_for_all();
+                        m_taskflow.clear();
+                        m_chart_data_registry->clear();
+                        m_min_value          = "0";
+                        m_max_value          = "0";
+                        m_wallet_performance = QJsonObject();
+                    }
+                    fetch_all_charts_data();
+                    m_update_clock = std::chrono::high_resolution_clock::now();
                 }
-                fetch_all_charts_data();
-                m_update_clock = std::chrono::high_resolution_clock::now();
-            }
-            catch (const std::exception& error)
-            {
-                SPDLOG_ERROR("Exception caught: {}", error.what());
-            }
-        };
-        //[[maybe_unused]] auto res = std::async(functor);
-        functor();
+                catch (const std::exception& error)
+                {
+                    SPDLOG_ERROR("Exception caught: {}", error.what());
+                }
+            };
+            //[[maybe_unused]] auto res = std::async(functor);
+            functor();
+        }
     }
 
     bool

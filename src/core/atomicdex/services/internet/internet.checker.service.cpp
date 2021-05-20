@@ -165,7 +165,7 @@ namespace atomic_dex
     void
     internet_service_checker::fetch_internet_connection()
     {
-        query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_paprika_provider_alive);
+        //query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_paprika_provider_alive);
         if (this->m_system_manager.has_system<mm2_service>() && g_mm2_default_coins_ready)
         {
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();

@@ -43,7 +43,6 @@ ColumnLayout {
                         anchors.centerIn: parent
                         source: General.image_path + "lang/" + model.modelData + ".png"
                         width: Style.textSize2
-
                         // Click area
                         DefaultMouseArea {
                             id: mouse_area

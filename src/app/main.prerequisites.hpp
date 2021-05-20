@@ -313,6 +313,14 @@ check_settings_reconfiguration(const fs::path& path)
         {
             SPDLOG_ERROR("error occured when copying previous cfg.ini : {}", ec.message());
         }
+
+        SPDLOG_INFO("Deleting previous cfg after reconfiguring it");
+        ec.clear();
+        fs::remove_all( get_atomic_dex_data_folder() / get_precedent_raw_version(), ec);
+        if (ec)
+        {
+            SPDLOG_ERROR("error occured when deleting previous path");
+        }
     }
 }
 
@@ -339,6 +347,7 @@ handle_settings(QSettings& settings)
     create_settings_functor("AvailableLang", QStringList{"en", "fr", "tr", "ru"});
     create_settings_functor("CurrentLang", QString("en"));
     create_settings_functor("2FA", 0);
+    create_settings_functor("MaximumNbCoinsEnabled", 50);
 #ifdef __APPLE__
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
     QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));

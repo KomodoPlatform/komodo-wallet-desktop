@@ -35,13 +35,13 @@ namespace atomic_dex
         atomic_dex::cfg&          m_cfg;
         t_supported_fiat_registry m_supported_fiat_registry{"USD", "EUR", "BTC", "KMD", "GBP", "HKD", "IDR", "ILS", "DKK", "INR", "CHF", "MXN",
                                                             "CZK", "SGD", "THB", "HRK", "MYR", "NOK", "CNY", "BGN", "PHP", "PLN", "ZAR", "CAD",
-                                                            "ISK", "BRL", "RON", "NZD", "TRY", "JPY", "RUB", "KRW", "AUD", "HUF", "SEK"};
+                                                            "ISK", "BRL", "RON", "NZD", "TRY", "JPY", "RUB", "KRW", "AUD", "HUF", "SEK", "LTC", "DOGE"};
         t_providers_registry      m_coin_rate_providers{};
         t_json_synchronized       m_other_fiats_rates;
         t_update_time_point       m_update_clock;
         mutable std::shared_mutex m_coin_rate_mutex;
 
-        void refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker, bool with_update_providers = false);
+        void refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker, bool with_update_providers = false, std::atomic_uint16_t idx = 0);
 
       public:
         explicit global_price_service(entt::registry& registry, ag::ecs::system_manager& system_manager, atomic_dex::cfg& cfg);
@@ -58,6 +58,9 @@ namespace atomic_dex
         std::string get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount) const ;
         std::string get_cex_rates(const std::string& base, const std::string& rel) const;
         std::string get_fiat_rates(const std::string& fiat) const;
+
+        bool is_fiat_available(const std::string& fiat) const;
+        bool is_currency_available(const std::string& currency) const;
 
         //! Events
         void on_force_update_providers([[maybe_unused]] const force_update_providers& evt);

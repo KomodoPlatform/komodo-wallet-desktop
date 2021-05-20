@@ -1,3 +1,4 @@
+//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
@@ -5,6 +6,7 @@ import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 import QtQml 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls.Universal 2.12
 
 import Qaterial 1.0 as Qaterial
 
@@ -23,7 +25,7 @@ Qaterial.Dialog {
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
-
+    property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
 
 
     id: setting_modal
@@ -151,9 +153,34 @@ Qaterial.Dialog {
                                 }
                                 DefaultSwitch {
                                     Layout.alignment: Qt.AlignVCenter
-                                    //text: qsTr("Enable Desktop Notifications")
                                     Component.onCompleted: checked = API.app.settings_pg.notification_enabled
                                     onCheckedChanged: API.app.settings_pg.notification_enabled = checked
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Maximum number of enabled coins")
+                                }
+                                DexComboBox {
+                                    id: enableable_coins_count_combo_box
+                                    model: [10, 20, 50, 75, 100, 150, 200]
+                                    currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
+                                    onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
+                                    delegate: ItemDelegate {
+                                        width: enableable_coins_count_combo_box.width
+                                        font.weight: enableable_coins_count_combo_box.currentIndex === index ? Font.DemiBold : Font.Normal
+                                        highlighted: ListView.isCurrentItem
+                                        enabled: parseInt(modelData) >= API.app.portfolio_pg.portfolio_mdl.length
+                                        contentItem: DefaultText {
+                                            color: enabled ? Style.colorWhite1 : Style.colorWhite8
+                                            text: modelData
+                                        }
+                                     }
                                 }
                             }
                             RowLayout {
@@ -235,24 +262,32 @@ Qaterial.Dialog {
                                     text: qsTr("Use QtTextRendering Or NativeTextRendering")
                                 }
                                 DefaultSwitch {
+                                    id: render_switch
                                     property bool firstTime: true
                                     Layout.alignment: Qt.AlignHCenter
                                     Layout.leftMargin: combo_fiat.Layout.leftMargin
                                     Layout.rightMargin: Layout.leftMargin
                                     checked: parseInt(atomic_settings2.value("FontMode")) === 1
-                                    //text: qsTr("Use QtTextRendering Or NativeTextRendering")
-                                    onCheckedChanged: {
-                                        if(checked){
-                                            atomic_settings2.setValue("FontMode", 1)
-                                        }else {
-                                            atomic_settings2.setValue("FontMode", 0)
-                                        }
-                                        if(firstTime) {
-                                            firstTime = false
-                                        }else {
-                                            restart_modal.open()
-                                        }
-
+                                }
+                            }
+                            RowLayout {
+                                width: parent.width-30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 30
+                                DexLabel {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Current Font")
+                                }
+                                DexComboBox {
+                                    id: dexFont
+                                    editable: true
+                                    Layout.alignment: Qt.AlignVCenter
+                                    displayText: _font.fontFamily
+                                    model: Qt.fontFamilies()
+                                    Component.onCompleted: {
+                                        let current = _font.fontFamily
+                                        currentIndex = Qt.fontFamilies().indexOf(current)
                                     }
                                 }
                             }
@@ -274,11 +309,6 @@ Qaterial.Dialog {
                                         let current = atomic_settings2.value("CurrentTheme")
                                         currentIndex = model.indexOf(current)
                                     }
-                                    onCurrentTextChanged: {
-//                                        atomic_settings2.setValue("CurrentTheme", currentText)
-//                                        atomic_settings2.sync()
-//                                        app.load_theme(currentText.replace(".json",""))
-                                    }
                                 }
                             }
                             RowLayout {
@@ -291,12 +321,20 @@ Qaterial.Dialog {
                                     text: qsTr("")
                                 }
                                 DexButton {
-                                    text: qsTr("Apply Theme")
+                                    text: qsTr("Apply Changes")
                                     implicitHeight: 37
                                      onClicked: {
                                         atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                         atomic_settings2.sync()
                                         app.load_theme(dexTheme.currentText.replace(".json",""))
+                                        _font.fontFamily = dexFont.currentText
+                                        let render_value = render_switch.checked? 1 : 0
+                                        if(render_value == parseInt(atomic_settings2.value("FontMode"))){}
+                                        else {
+                                            atomic_settings2.setValue("FontMode", render_value)
+                                            restart_modal.open()
+                                        }
+                                        
                                     }
                                 }
                             }
@@ -394,7 +432,9 @@ Qaterial.Dialog {
                                 DexButton {
                                     text: qsTr("Delete Wallet")
                                     implicitHeight: 37
-                                    onClicked: delete_wallet_modal.open()
+                                    onClicked:  {
+                                        delete_wallet_modal.open()
+                                    }
                                 }
                             }
                         }
@@ -495,8 +535,9 @@ Qaterial.Dialog {
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             height: 40
-            width: 175
+            width: _update_row.width+20
             Row {
+                id: _update_row
                 anchors.centerIn: parent
                 Qaterial.ColorIcon {
                     anchors.verticalCenter: parent.verticalCenter
@@ -522,8 +563,9 @@ Qaterial.Dialog {
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             height: 40
-            width: 130
+            width: _logout_row.width+20
             Row {
+                id: _logout_row
                 anchors.centerIn: parent
                 Qaterial.ColorIcon {
                     anchors.verticalCenter: parent.verticalCenter
@@ -537,7 +579,10 @@ Qaterial.Dialog {
                 }
                 opacity: .6
             }
-            onClicked: disconnect()
+            onClicked: {
+                disconnect()
+                setting_modal.close()
+            }
 
         }
 
@@ -549,9 +594,5 @@ Qaterial.Dialog {
             height: 1.5
         }
 
-    }
-
-    Component.onCompleted: {
-        //open()
     }
 }

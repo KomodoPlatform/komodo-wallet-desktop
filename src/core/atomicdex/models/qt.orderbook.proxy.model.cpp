@@ -64,6 +64,8 @@ namespace atomic_dex
             break;
         case orderbook_model::MinVolumeRole:
             break;
+        case orderbook_model::BaseMinVolumeRole:
+            break;
         case orderbook_model::EnoughFundsToPayMinVolume:
             break;
         case orderbook_model::CEXRatesRole:
@@ -85,7 +87,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order) 
+    orderbook_proxy_model::qml_sort(int column, Qt::SortOrder order)
     {
         this->sort(column, order);
     }
@@ -95,6 +97,23 @@ namespace atomic_dex
     {
         [[maybe_unused]] QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
+        auto* orderbook = qobject_cast<orderbook_model*>(this->sourceModel());
+        if (orderbook != nullptr)
+        {
+            switch (orderbook->get_orderbook_kind())
+            {
+            case orderbook_model::kind::asks:
+            case orderbook_model::kind::bids:
+                break;
+            case orderbook_model::kind::best_orders:
+                t_float_50 rates = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
+                if (rates > 100)
+                {
+                    return false;
+                }
+                break;
+            }
+        }
         if (this->filterRole() == orderbook_model::HaveCEXIDRole)
         {
             bool is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();

@@ -60,12 +60,14 @@ namespace mm2::api
         {
             t_float_50 percent_f   = safe_float(cur_asks.maxvolume) / result_asks_f;
             cur_asks.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
+            //SPDLOG_INFO("cur_asks: {}", cur_asks.to_string());
         }
 
         for (auto&& cur_bids: answer.bids)
         {
             t_float_50 percent_f   = safe_float(cur_bids.maxvolume) / result_bids_f;
             cur_bids.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
+            //SPDLOG_INFO("cur_bids: {}", cur_bids.to_string());
         }
     }
 

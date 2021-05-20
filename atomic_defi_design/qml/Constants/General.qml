@@ -48,13 +48,13 @@ QtObject {
 
     property bool privacy_mode: false
 
-    readonly property var reg_pass_input: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/
+    readonly property var reg_pass_input: /[A-Za-z0-9@#$€%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/
     readonly property var reg_pass_valid_low_security: /^(?=.{1,}).*$/
-    readonly property var reg_pass_valid: /^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/
+    readonly property var reg_pass_valid: /^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%€${}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/
     readonly property var reg_pass_uppercase: /(?=.*[A-Z])/
     readonly property var reg_pass_lowercase: /(?=.*[a-z])/
     readonly property var reg_pass_numeric: /(?=.*[0-9])/
-    readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
+    readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,€$;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count_low_security: /(?=.{1,})/
     readonly property var reg_pass_count: /(?=.{16,})/
 
@@ -432,7 +432,7 @@ QtObject {
         return ""
     }
 
-    function getTradingError(error, fee_info, base_ticker, rel_ticker) {
+    function getTradingError(error, fee_info, base_ticker, rel_ticker, left_ticker, right_ticker) {
         switch(error) {
         case TradingError.None:
             return ""
@@ -449,13 +449,13 @@ QtObject {
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getReversedMinTradeAmount()
         case TradingError.LeftParentChainNotEnabled:
-            return qsTr("%1 parent chain is not enabled").arg(base_ticker)
+            return qsTr("%1 parent chain is not enabled").arg(left_ticker)
         case TradingError.LeftParentChainNotEnoughBalance:
-            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(base_ticker)
+            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(left_ticker)
         case TradingError.RightParentChainNotEnabled:
-            return qsTr("%1 parent chain is not enabled").arg(rel_ticker)
+            return qsTr("%1 parent chain is not enabled").arg(right_ticker)
         case TradingError.RightParentChainNotEnoughBalance:
-            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(rel_ticker)
+            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(right_ticker)
         default:
             return qsTr("Unknown Error") + ": " + error
         }
@@ -686,7 +686,13 @@ QtObject {
                                                 "CEL/PAX": "HITBTC:CELUSD",
                                                 "CENNZ/BTC": "HITBTC:CENNZBTC",
                                                 "CENNZ/ETH": "HITBTC:CENNZETH",
-                                                "CENNZ/USDT": "HITBTC:CENNZUSDT",
+                                                "CENNZ/USDT": "HITBTC:CENNZUSD",
+                                                "CENNZ/BUSD": "HITBTC:CENNZUSD",
+                                                "CENNZ/USDC": "HITBTC:CENNZUSD",
+                                                "CENNZ/TUSD": "HITBTC:CENNZUSD",
+                                                "CENNZ/HUSD": "HITBTC:CENNZUSD",
+                                                "CENNZ/DAI": "HITBTC:CENNZUSD",
+                                                "CENNZ/PAX": "HITBTC:CENNZUSD",
                                                 "CHSB/BTC": "KUCOIN:CHSBBTC",
                                                 "CHSB/ETH": "KUCOIN:CHSBETH",
                                                 "CHSB/USDT": "HITBTC:CHSBUSD",
@@ -793,9 +799,14 @@ QtObject {
                                                 "DGB/EURS": "BITTREX:DGBEUR",
                                                 "DIA/BTC": "BINANCE:DIABTC",
                                                 "DIA/ETH": "OKEX:DIAETH",
-                                                "DIA/USDT": "BINANCE:DIAUSDT",
-                                                "DIA/BUSD": "BINANCE:DIABUSD",
-                                                "DIA/USDC": "UNISWAP:DIAUSDC",
+                                                "DIA/USDT": "BINANCE:DIAUSD",
+                                                "DIA/BUSD": "BINANCE:DIAUSD",
+                                                "DIA/USDC": "BINANCE:DIAUSD",
+                                                "DIA/TUSD": "BINANCE:DIAUSD",
+                                                "DIA/HUSD": "BINANCE:DIAUSD",
+                                                "DIA/DAI": "BINANCE:DIAUSD",
+                                                "DIA/PAX": "BINANCE:DIAUSD",
+                                                "DIA/BNB": "BINANCE:DIABNB",
                                                 "DODO/BTC": "BINANCE:DODOBTC",
                                                 "DODO/USDT": "BINANCE:DODOUSD",
                                                 "DODO/BUSD": "BINANCE:DODOUSD",
@@ -879,20 +890,28 @@ QtObject {
                                                 "ETC/EURS": "KRAKEN:ETCEUR",
                                                 "ETC/BCH": "HITBTC:ETCBCH",
                                                 "ETH/BTC": "BINANCE:ETHBTC",
-                                                "ETH/USDT": "BINANCE:ETHUSDT",
-                                                "ETH/BUSD": "BINANCE:ETHBUSD",
-                                                "ETH/DAI": "BINANCE:ETHDAI",
-                                                "ETH/EURS": "HITBTC:ETHEURS",
-                                                "ETH/HUSD": "HUOBI:ETHHUSD",
-                                                "ETH/PAX": "BINANCE:ETHPAX",
-                                                "ETH/TUSD": "BINANCE:ETHTUSD",
-                                                "ETH/USDC": "BINANCE:ETHUSDC",
+                                                "ETH/USDT": "BITSTAMP:ETHUSD",
+                                                "ETH/BUSD": "BITSTAMP:ETHUSD",
+                                                "ETH/USDC": "BITSTAMP:ETHUSD",
+                                                "ETH/TUSD": "BITSTAMP:ETHUSD",
+                                                "ETH/HUSD": "BITSTAMP:ETHUSD",
+                                                "ETH/DAI": "BITSTAMP:ETHUSD",
+                                                "ETH/PAX": "BITSTAMP:ETHUSD",
+                                                "ETH/EURS": "KRAKEN:ETHEUR",
                                                 "EURS/USDT": "HITBTC:EURSUSDT",
                                                 "EURS/DAI": "HITBTC:EURSDAI",
                                                 "EURS/TUSD": "HITBTC:EURSTUSD",
                                                 "FET/BTC": "BINANCE:FETBTC",
                                                 "FET/ETH": "KUCOIN:FETETH",
-                                                "FET/USDT": "BINANCE:FETUSDT",
+                                                "FET/USDT": "BINANCE:FETUSD",
+                                                "FET/BUSD": "BINANCE:FETUSD",
+                                                "FET/USDC": "BINANCE:FETUSD",
+                                                "FET/TUSD": "BINANCE:FETUSD",
+                                                "FET/HUSD": "BINANCE:FETUSD",
+                                                "FET/DAI": "BINANCE:FETUSD",
+                                                "FET/PAX": "BINANCE:FETUSD",
+                                                "FET/PAX": "BINANCE:FETUSD",
+                                                "FET/BNB": "BINANCE:FETBNB",
                                                 "FIL/BTC": "BINANCE:FILBTC",
                                                 "FIL/ETH": "HUOBI:FILETH",
                                                 "FIL/USDT": "BINANCE:FILUSD",
@@ -921,9 +940,25 @@ QtObject {
                                                 "FTC/HUSD": "BITTREX:FTCUSD",
                                                 "FTC/DAI": "BITTREX:FTCUSD",
                                                 "FTC/PAX": "BITTREX:FTCUSD",
+                                                "FTM/BTC": "BINANCE:FTMBTC",
+                                                "FTM/ETH": "KUCOIN:FTMETH",
+                                                "FTM/USDT": "BINANCE:FTMUSD",
+                                                "FTM/BUSD": "BINANCE:FTMUSD",
+                                                "FTM/USDC": "BINANCE:FTMUSD",
+                                                "FTM/FTM": "BINANCE:FTMUSD",
+                                                "FTM/HUSD": "BINANCE:FTMUSD",
+                                                "FTM/DAI": "BINANCE:FTMUSD",
+                                                "FTM/PAX": "BINANCE:FTMUSD",
+                                                "FTM/BNB": "BINANCE:FTMBNB",
                                                 "FUN/BTC": "BINANCE:FUNBTC",
                                                 "FUN/ETH": "BINANCE:FUNETH",
-                                                "FUN/USDT": "BINANCE:FUNUSDT",
+                                                "FUN/USDT": "BINANCE:FUNUSD",
+                                                "FUN/BUSD": "BINANCE:FUNUSD",
+                                                "FUN/USDC": "BINANCE:FUNUSD",
+                                                "FUN/FUN": "BINANCE:FUNUSD",
+                                                "FUN/HUSD": "BINANCE:FUNUSD",
+                                                "FUN/DAI": "BINANCE:FUNUSD",
+                                                "FUN/PAX": "BINANCE:FUNUSD",
                                                 "GLEEC/BTC": "BITTREX:GLEECBTC",
                                                 "GLEEC/USDT": "BITTREX:GLEECUSD",
                                                 "GLEEC/BUSD": "BITTREX:GLEECUSD",
@@ -1081,7 +1116,6 @@ QtObject {
                                                 "MATIC/PAX": "BINANCE:MATICUSD",
                                                 "MATIC/BNB": "BINANCE:MATICBNB",
                                                 "MATIC/EURS": "COINBASE:MATICEUR",
-                                                "MED/BTC": "BITTREX:MEDBTC",
                                                 "MKR/BTC": "BINANCE:MKRBTC",
                                                 "MKR/ETH": "BITFINEX:MKRETH",
                                                 "MKR/BNB": "BINANCE:MKRBNB",
@@ -1171,7 +1205,13 @@ QtObject {
                                                 "QKC/DAI": "BINANCE:QKCUSD",
                                                 "QKC/PAX": "BINANCE:QKCUSD",
                                                 "QNT/BTC": "BITTREX:QNTBTC",
-                                                "QNT/USDT": "KUCOIN:QNTUSDT",
+                                                "QNT/USDT": "BITTREX:QNTUSD",
+                                                "QNT/BUSD": "BITTREX:QNTUSD",
+                                                "QNT/USDC": "BITTREX:QNTUSD",
+                                                "QNT/TUSD": "BITTREX:QNTUSD",
+                                                "QNT/HUSD": "BITTREX:QNTUSD",
+                                                "QNT/DAI": "BITTREX:QNTUSD",
+                                                "QNT/PAX": "BITTREX:QNTUSD",
                                                 "QTUM/BTC": "BINANCE:QTUMBTC",
                                                 "QTUM/ETH": "BINANCE:QTUMETH",
                                                 "QTUM/USDT": "BINANCE:QTUMUSD",
@@ -1194,12 +1234,31 @@ QtObject {
                                                 "REN/EURS": "BITTREX:RENEUR",
                                                 "REP/BTC": "BINANCE:REPBTC",
                                                 "REP/ETH": "BINANCE:REPETH",
-                                                "REP/USDT": "BINANCE:REPUSDT",
+                                                "REP/USDT": "COINBASE:REPUSD",
+                                                "REP/BUSD": "COINBASE:REPUSD",
+                                                "REP/USDC": "COINBASE:REPUSD",
+                                                "REP/REP": "COINBASE:REPUSD",
+                                                "REP/HUSD": "COINBASE:REPUSD",
+                                                "REP/DAI": "COINBASE:REPUSD",
+                                                "REP/PAX": "COINBASE:REPUSD",
+                                                "REP/EURS": "KRAKEN:REPEUR",
                                                 "REV/BTC": "BITTREX:REVBTC",
-                                                "REV/USDT": "KUCOIN:REVUSDT",
+                                                "REV/USDT": "BITTREX:REVUSD",
+                                                "REV/BUSD": "BITTREX:REVUSD",
+                                                "REV/USDC": "BITTREX:REVUSD",
+                                                "REV/TUSD": "BITTREX:REVUSD",
+                                                "REV/HUSD": "BITTREX:REVUSD",
+                                                "REV/DAI": "BITTREX:REVUSD",
+                                                "REV/PAX": "BITTREX:REVUSD",
                                                 "RLC/BTC": "BINANCE:RLCBTC",
                                                 "RLC/ETH": "BINANCE:RLCETH",
-                                                "RLC/USDT": "BINANCE:RLCUSDT",
+                                                "RLC/USDT": "BINANCE:RLCUSD",
+                                                "RLC/BUSD": "BINANCE:RLCUSD",
+                                                "RLC/USDC": "BINANCE:RLCUSD",
+                                                "RLC/TUSD": "BINANCE:RLCUSD",
+                                                "RLC/HUSD": "BINANCE:RLCUSD",
+                                                "RLC/DAI": "BINANCE:RLCUSD",
+                                                "RLC/PAX": "BINANCE:RLCUSD",
                                                 "RSR/BTC": "BINANCE:RSRBTC",
                                                 "RSR/ETH": "OKEX:RSRETH",
                                                 "RSR/USDT": "BINANCE:RSRUSD",

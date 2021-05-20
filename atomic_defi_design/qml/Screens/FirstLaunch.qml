@@ -21,7 +21,7 @@ SetupPage {
 
     property var wallets: ([])
 
-    image_path: General.image_path + Style.sidebar_atomicdex_logo
+    image_path: "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo
     image_margin: 30
     content: ColumnLayout {
         id: content_column
@@ -39,15 +39,17 @@ SetupPage {
             Layout.fillWidth: true
             spacing: Style.buttonSpacing
 
-            DefaultButton {
+            DexButton {
                 Layout.fillWidth: true
                 text: qsTr("New Wallet")
+                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
                 onClicked: onClickedNewUser()
             }
 
-            DefaultButton {
+            DexButton {
                 Layout.fillWidth: true
                 text: qsTr("Recover Wallet")
+                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
                 onClicked: onClickedRecoverSeed()
             }
         }

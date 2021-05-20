@@ -20,7 +20,7 @@ namespace
     web::http::client::http_client_config g_cfg{[]() {
       web::http::client::http_client_config cfg;
       cfg.set_validate_certificates(false);
-      cfg.set_timeout(std::chrono::seconds(5));
+      cfg.set_timeout(std::chrono::seconds(30));
       return cfg;
     }()};
     t_http_client_ptr     g_coingecko_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coingecko_endpoint), g_cfg);

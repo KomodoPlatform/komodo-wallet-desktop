@@ -10,11 +10,12 @@ AnimatedRectangle {
 
     color: Style.getCoinTypeColor(model.type)
 
-    DefaultText {
+    DexLabel {
         id: type_tag
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
         text: type
+        color: theme.foregroundColor
         font: theme.textType.overLine
     }
 }

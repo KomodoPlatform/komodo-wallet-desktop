@@ -27,6 +27,7 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, order_contents& contents)
     {
+        //SPDLOG_INFO("contents: {}", j.dump(4));
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);
@@ -58,5 +59,17 @@ namespace mm2::api
         contents.maxvolume = atomic_dex::utils::adjust_precision(contents.maxvolume);
         t_float_50 total_f = safe_float(contents.price) * safe_float(contents.maxvolume);
         contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
+    }
+
+    std::string
+    order_contents::to_string() const noexcept
+    {
+        std::stringstream ss;
+        ss << "coin: " << coin << " ";
+        ss << "address: " << address << " ";
+        //ss << "price: " << price << " ";
+        ss << "max_volume: " << maxvolume << " ";
+        ss << "depth_percent: " << depth_percent << " ";
+        return ss.str();
     }
 } // namespace mm2::api

@@ -105,10 +105,20 @@ namespace
         std::shared_mutex& registry_mtx)
     {
         SPDLOG_INFO("Update coins status to: {}", status);
-        fs::path       cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
-        std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
+        fs::path       cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
+        std::string    filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
+        std::string    custom_tokens_filename = "custom-tokens." + wallet_name + ".json";
+        fs::path       custom_tokens_filepath = cfg_path / custom_tokens_filename;
+
         std::ifstream  ifs((cfg_path / filename).c_str());
         nlohmann::json config_json_data;
+        nlohmann::json custom_cfg_data;
+
+        if (fs::exists(custom_tokens_filepath.c_str()))
+        {
+            std::ifstream ifs_custom(custom_tokens_filepath.c_str());
+            ifs_custom >> custom_cfg_data;
+        }
 
         assert(ifs.is_open());
         ifs >> config_json_data;
@@ -117,8 +127,15 @@ namespace
             std::shared_lock lock(registry_mtx);
             for (auto&& ticker: tickers)
             {
-                config_json_data.at(ticker)["active"] = status;
-                registry[ticker].active               = status;
+                if (registry[ticker].is_custom_coin)
+                {
+                    custom_cfg_data.at(ticker)["active"] = status;
+                }
+                else
+                {
+                    config_json_data.at(ticker)["active"] = status;
+                }
+                registry[ticker].active = status;
             }
         }
 
@@ -128,6 +145,13 @@ namespace
         std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
         assert(ofs.is_open());
         ofs << config_json_data;
+
+        //! Write contents
+        if (!custom_cfg_data.empty())
+        {
+            std::ofstream ofs_custom(custom_tokens_filepath.c_str(), std::ios::trunc);
+            ofs_custom << custom_cfg_data;
+        }
     }
 } // namespace
 
@@ -137,28 +161,50 @@ namespace atomic_dex
     mm2_service::retrieve_coins_informations()
     {
         std::vector<atomic_dex::coin_config> cfg;
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("retrieve_coins_informations");
 
         check_for_reconfiguration(m_current_wallet_name);
-        const auto  cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
-        std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
+        const auto  cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
+        std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
+        std::string custom_tokens_filename = "custom-tokens." + m_current_wallet_name + ".json";
         SPDLOG_INFO("Retrieving Wallet information of {}", (cfg_path / filename).string());
-        if (exists(cfg_path / filename))
+
+        auto retrieve_cfg_functor = [](fs::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
         {
-            std::ifstream ifs((cfg_path / filename).c_str());
-            assert(ifs.is_open());
-            nlohmann::json config_json_data;
-            ifs >> config_json_data;
-            auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
-            cfg.reserve(res.size());
-            for (auto&& [key, value]: res) { cfg.emplace_back(value); }
+            if (exists(path))
+            {
+                std::ifstream ifs(path.c_str());
+                assert(ifs.is_open());
+                nlohmann::json config_json_data;
+                ifs >> config_json_data;
+                auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
+                return res;
+            }
+            return {};
+        };
+
+        auto official_cfg = retrieve_cfg_functor(cfg_path / filename);
+        if (!official_cfg.empty())
+        {
+            cfg.reserve(official_cfg.size());
+            for (auto&& [key, value]: official_cfg) { cfg.emplace_back(value); }
             {
                 std::unique_lock lock(m_coin_cfg_mutex);
-                m_coins_informations = std::move(res);
+                m_coins_informations = std::move(official_cfg);
             }
-
-            return cfg;
         }
+
+        auto custom_cfg = retrieve_cfg_functor(cfg_path / custom_tokens_filename);
+        if (!custom_cfg.empty())
+        {
+            SPDLOG_INFO("Custom coins detected, adding them to the runtime configuration");
+            for (auto&& [key, value]: custom_cfg) { cfg.emplace_back(value); }
+            {
+                std::unique_lock lock(m_coin_cfg_mutex);
+                m_coins_informations.insert(custom_cfg.begin(), custom_cfg.end());
+            }
+        }
+
         return cfg;
     }
 
@@ -349,7 +395,10 @@ namespace atomic_dex
 
         std::vector<std::string> tickers;
         tickers.reserve(coins.size());
-        for (auto&& current_coin: coins) { tickers.push_back(current_coin.ticker); }
+        for (auto&& current_coin: coins) {
+            SPDLOG_INFO("current_coin: {} is a default coin", current_coin.ticker);
+            tickers.push_back(current_coin.ticker);
+        }
 
         batch_enable_coins(tickers, true);
 
@@ -673,7 +722,7 @@ namespace atomic_dex
     }
 
     nlohmann::json
-    mm2_service::prepare_batch_orderbook()
+    mm2_service::prepare_batch_orderbook(bool is_a_reset)
     {
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
         if (rel.empty())
@@ -688,17 +737,20 @@ namespace atomic_dex
         };
 
         generate_req("orderbook", t_orderbook_request{.base = base, .rel = rel});
-        generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = base});
-        generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = rel});
-        generate_req("min_trading_vol", t_min_volume_request{.coin = base});
-        generate_req("min_trading_vol", t_min_volume_request{.coin = rel});
+        if (is_a_reset)
+        {
+            generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = base});
+            generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = rel});
+            generate_req("min_trading_vol", t_min_volume_request{.coin = base});
+            generate_req("min_trading_vol", t_min_volume_request{.coin = rel});
+        }
         return batch;
     }
 
     void
     mm2_service::process_orderbook(bool is_a_reset)
     {
-        auto batch = prepare_batch_orderbook();
+        auto batch = prepare_batch_orderbook(is_a_reset);
         if (batch.empty())
             return;
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
@@ -710,32 +762,35 @@ namespace atomic_dex
             {
                 auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
 
-                auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
-                if (base_max_taker_vol_answer.rpc_result_code == 200)
+                if (is_a_reset)
                 {
-                    this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
-                    t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                    this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-                }
+                    auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
+                    if (base_max_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
+                        t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                        this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
+                    }
 
-                auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
-                if (rel_max_taker_vol_answer.rpc_result_code == 200)
-                {
-                    this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
-                    t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
-                    this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
-                }
+                    auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
+                    if (rel_max_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
+                        t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                        this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
+                    }
 
-                auto base_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
-                if (base_min_taker_vol_answer.rpc_result_code == 200)
-                {
-                    m_synchronized_min_taker_vol->first = base_min_taker_vol_answer.result.value();
-                }
+                    auto base_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
+                    if (base_min_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        m_synchronized_min_taker_vol->first = base_min_taker_vol_answer.result.value();
+                    }
 
-                auto rel_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
-                if (rel_min_taker_vol_answer.rpc_result_code == 200)
-                {
-                    m_synchronized_min_taker_vol->second = rel_min_taker_vol_answer.result.value();
+                    auto rel_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
+                    if (rel_min_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        m_synchronized_min_taker_vol->second = rel_min_taker_vol_answer.result.value();
+                    }
                 }
 
                 if (orderbook_answer.rpc_result_code == 200)
@@ -754,7 +809,7 @@ namespace atomic_dex
     void
     mm2_service::fetch_current_orderbook_thread(bool is_a_reset)
     {
-        //!m_orderbook_thread_active ? SPDLOG_WARN("Nothing to achieve, sleeping") : SPDLOG_INFO("Fetch current orderbook");
+        //! m_orderbook_thread_active ? SPDLOG_WARN("Nothing to achieve, sleeping") : SPDLOG_INFO("Fetch current orderbook");
 
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
         if (!m_orderbook_thread_active)
@@ -1131,7 +1186,7 @@ namespace atomic_dex
     {
         SPDLOG_DEBUG("on_refresh_orderbook");
 
-        //SPDLOG_INFO("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
+        // SPDLOG_INFO("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
         this->m_synchronized_ticker_pair = std::make_pair(evt.base, evt.rel);
 
         if (this->m_mm2_running && this->m_orderbook_thread_active)
@@ -1379,23 +1434,28 @@ namespace atomic_dex
         if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
         {
             SPDLOG_DEBUG("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
-            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
-            std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
-            std::ifstream  ifs((cfg_path / filename).c_str());
+            fs::path       cfg_path  = utils::get_atomic_dex_config_folder();
+            std::string    filename  = "custom-tokens." + m_current_wallet_name + ".json";
+            fs::path       file_path = cfg_path / filename;
             nlohmann::json config_json_data;
-            assert(ifs.is_open());
 
-            //! Read Contents
-            ifs >> config_json_data;
+            if (fs::exists(file_path))
+            {
+                SPDLOG_DEBUG("reading contents of custom tokens cfg");
+                std::ifstream ifs(file_path.c_str());
+                assert(ifs.is_open());
+
+                //! Read Contents
+                ifs >> config_json_data;
+                ifs.close();
+            }
 
             //! Modify contents
             config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
 
-            //! Close
-            ifs.close();
-
             //! Write contents
-            std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
+            SPDLOG_DEBUG("writing contents of custom tokens cfg");
+            std::ofstream ofs(file_path.c_str(), std::ios::trunc);
             assert(ofs.is_open());
             ofs << config_json_data;
         }
@@ -1446,9 +1506,9 @@ namespace atomic_dex
         //! Remove from our cfg
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
-            SPDLOG_DEBUG("remove it from normal cfg: {}", ticker);
+            SPDLOG_DEBUG("remove it from custom cfg: {}", ticker);
             fs::path       cfg_path = utils::get_atomic_dex_config_folder();
-            std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
+            std::string    filename = "custom-tokens." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
             nlohmann::json config_json_data;
             assert(ifs.is_open());

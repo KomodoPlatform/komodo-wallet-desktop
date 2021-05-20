@@ -33,7 +33,7 @@ import "./" as Here
 
 ColumnLayout {
     id: form
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
+    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = {
@@ -43,7 +43,9 @@ ColumnLayout {
             "price_denom": price_denom,
             "price_numer": price_numer,
             "quantity_denom": quantity_denom,
-            "quantity_numer": quantity_numer
+            "quantity_numer": quantity_numer,
+            "min_volume": min_volume,
+            "base_min_volume": base_min_volume
         }
 
         form_base.focusVolumeField()
@@ -81,7 +83,7 @@ ColumnLayout {
     }
 
     spacing: 10
-    anchors.topMargin: 5
+    anchors.topMargin: window.isOsx? 60 : 5
     anchors.leftMargin: 10
     anchors.fill: parent
 
@@ -128,7 +130,7 @@ ColumnLayout {
                     }
                 }
                 ItemBox {
-                    title: "Chart View"
+                    title: qsTr("Chart View")
                     expandedVert: true
                     Item {
                         id: chart_view
@@ -185,17 +187,13 @@ ColumnLayout {
                     }
                 }
                 ItemBox {
-                    title: "Multi-Order"
+                    title: qsTr("Multi-Order")
                     defaultHeight: 250
                     visible: false
-                    //                        MultiOrder {
-                    //                            anchors.topMargin: 40
-                    //                            anchors.fill: parent
-                    //                        }
                 }
 
                 ItemBox {
-                    title: "OrderBook"
+                    title: qsTr("OrderBook")
                     defaultHeight: 300
                     Behavior on defaultHeight {
                         NumberAnimation {
@@ -214,19 +212,19 @@ ColumnLayout {
                 }
                 ItemBox {
                     id: optionBox
-                    defaultHeight: tabView.currentIndex === 0 ? 200 : 400
+                    defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270
                     Connections {
                         target: tabView
                         function onCurrentIndexChanged() {
                             if (tabView.currentIndex !== 0) {
-                                optionBox.setHeight(400)
+                                optionBox.setHeight(isUltraLarge? 400 : 270)
                             } else {
                                 optionBox.setHeight(200)
                             }
                         }
                     }
 
-                    title: "Options"
+                    title: qsTr("Options")
                     Column {
                         topPadding: 40
                         width: parent.width
@@ -246,22 +244,6 @@ ColumnLayout {
                             background: Rectangle {
                                 radius: 0
                                 color: theme.dexBoxBackgroundColor
-                            }
-                            onCurrentIndexChanged: {
-                                swipeView.pop()
-                                switch (currentIndex) {
-                                case 0:
-                                    swipeView.push(priceLine)
-                                    break
-                                case 1:
-                                    swipeView.push(order_component)
-                                    break
-                                case 2:
-                                    swipeView.push(history_component)
-                                    break
-                                default:
-                                    priceLine
-                                }
                             }
 
                             y: 5
@@ -287,37 +269,34 @@ ColumnLayout {
                         }
                         Item {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            //radius: 4
                             width: parent.width
-                            height: parent.height - (tabView.height + 40)
-                            //verticalShadow: false
-                            StackView {
+                            height: optionBox.height - (tabView.height + 40)
+                            SwipeView {
                                 id: swipeView
-
-                                initialItem: priceLine
+                                clip: true
+                                interactive: false
+                                currentIndex: tabView.currentIndex
                                 anchors.fill: parent
+                                onCurrentIndexChanged: {
+                                    if(currentIndex===2) {
+                                        history_component.list_model_proxy.is_history = true
+                                    } else {
+                                        history_component.list_model_proxy.is_history = false
+                                    }
+                                }
 
-                                LoaderBusyIndicator {
-                                    visible: swipeView.busy
+                                PriceLine {
+                                    id: price_line_obj
                                 }
-                                Component {
-                                    id: priceLine
-                                    PriceLine {
-                                        id: price_line_obj
-                                    }
-                                }
-                                Component {
+
+                                OrdersView.OrdersPage {
                                     id: order_component
-                                    OrdersView.OrdersPage {
-                                        clip: true
-                                    }
+                                    clip: true
                                 }
-                                Component {
+                                OrdersView.OrdersPage {
                                     id: history_component
-                                    OrdersView.OrdersPage {
-                                        is_history: true
-                                        clip: true
-                                    }
+                                    is_history: true
+                                    clip: true
                                 }
                             }
                         }
@@ -330,7 +309,7 @@ ColumnLayout {
             minimumWidth: 350
             maximumWidth: 380
             defaultWidth: 350
-            title: "OrderBook & Best Orders"
+            title: qsTr("OrderBook & Best Orders")
             color: 'transparent'
             closable: false
             visible: isUltraLarge
@@ -380,7 +359,7 @@ ColumnLayout {
                     minimumHeight: 130
                     //clip: true
                     //smooth: true
-                    title: "Best Orders"
+                    title: qsTr("Best Orders")
                     reloadable: true
                     onReload: {
                         API.app.trading_pg.orderbook.refresh_best_orders()
@@ -408,7 +387,7 @@ ColumnLayout {
             maximumWidth: 380
             minimumWidth: 350
             SplitView.fillHeight: true
-            title: "Buy & Sell"
+            title: qsTr("Buy & Sell")
             color: 'transparent'
             border.color: 'transparent'
             //clip: true
@@ -469,7 +448,7 @@ ColumnLayout {
                             DefaultText {
                                 anchors.centerIn: parent
                                 opacity: !sell_mode ? 1 : .5
-                                text: "Buy "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+                                text: qsTr("Buy")+" "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                                 color: !sell_mode? Qaterial.Colors.white : theme.foregroundColor
                             }
                             DefaultMouseArea {
@@ -504,7 +483,7 @@ ColumnLayout {
                                 anchors.centerIn: parent
 
                                 opacity: sell_mode ? 1 : .5
-                                text: "Sell "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+                                text: qsTr("Sell")+" "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                                 color: sell_mode? Qaterial.Colors.white : theme.foregroundColor
 
                             }
@@ -620,7 +599,7 @@ ColumnLayout {
                                                         last_trading_error,
                                                         curr_fee_info,
                                                         base_ticker,
-                                                        rel_ticker)
+                                                        rel_ticker, left_ticker, right_ticker)
                                     }
                                 }
                             }
@@ -633,9 +612,9 @@ ColumnLayout {
                     visible: !isUltraLarge
                     SplitView.fillWidth: true
                     SplitView.fillHeight: true
-                    defaultHeight: 140
+                    defaultHeight: 130
                     minimumHeight: 80
-                    title: "Best Orders"
+                    title: qsTr("Best Orders")
                     reloadable: true
                     onReload: {
                         API.app.trading_pg.orderbook.refresh_best_orders()
