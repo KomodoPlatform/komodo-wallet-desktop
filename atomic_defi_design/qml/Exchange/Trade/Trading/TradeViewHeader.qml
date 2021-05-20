@@ -19,15 +19,7 @@ import "../../../Constants"
 
 Item {
     height: 25
-    visible: true
-
     width: parent.width+10
-    Connections {
-        target: API.app.trading_pg
-        function onTradingModeChanged(){
-            console.log(API.app.trading_pg.current_trading_mode)
-        }
-    }
 
     RowLayout {
         width: parent.width-20
@@ -53,24 +45,15 @@ Item {
                     text: qsTr("Pro-Mode")
                     textColor: theme.foregroundColor
                     textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
-                    onCheckedChanged: {
-                        if(checked) {
-                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                        }
-                    }
-                    
+                    onToggled: API.app.trading_pg.current_trading_mode = TradingMode.Pro
+                    checked: API.app.trading_pg.current_trading_mode == TradingMode.Pro
                 }
                 Qaterial.LatoTabButton {
-                    text: qsTr("Starter")
+                    text: qsTr("Simple-Mode")
                     textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
                     textColor: theme.foregroundColor
-                    ToolTip.text: "(Under Work)"
-                    onCheckedChanged: {
-                        if(checked) {
-                            API.app.trading_pg.current_trading_mode = TradingMode.Simple
-                        }
-                    }
-
+                    onToggled: API.app.trading_pg.current_trading_mode = TradingMode.Simple
+                    checked: API.app.trading_pg.current_trading_mode == TradingMode.Simple
                 }
             }
         }

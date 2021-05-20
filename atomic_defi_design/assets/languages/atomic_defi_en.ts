@@ -3031,6 +3031,39 @@
     </message>
 </context>
 <context>
+    <name>SimpleView</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="36"/>
+        <source>Swap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="58"/>
+        <source>Instant trading with best orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="88"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="204"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="228"/>
+        <source>Pick from best orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="239"/>
+        <source>Swap Now !</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SmartChartView</name>
     <message>
         <location filename="../../qml/Portfolio/SmartChartView.qml" line="125"/>
@@ -3285,8 +3318,8 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="64"/>
-        <source>Starter</source>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="65"/>
+        <source>Simple-Mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

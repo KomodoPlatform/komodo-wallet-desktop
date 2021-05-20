@@ -2,14 +2,14 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-
+import Qt.labs.settings 1.0
 import QtGraphicalEffects 1.0
 
 import Qaterial 1.0 as Qaterial
-import Qt.labs.settings 1.0
 
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
+import AtomicDEX.TradingMode 1.0
 
 import "../../Components"
 import "../../Constants"
@@ -164,10 +164,14 @@ Item {
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
 
-
-    // Form
     ProView {
-        id: form
+        enabled: API.app.trading_pg.current_trading_mode == TradingMode.Pro
+        visible: enabled
+    }
+
+    SimpleView {
+        enabled: API.app.trading_pg.current_trading_mode == TradingMode.Simple
+        visible: enabled
     }
 
     TradeViewHeader {
