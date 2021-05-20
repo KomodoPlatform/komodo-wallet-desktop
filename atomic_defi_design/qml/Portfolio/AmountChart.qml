@@ -332,7 +332,7 @@ InnerBackground {
             }
             DexLabel {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Work in progress"
+                text: qsTr("Work in progress")
             }
         }
     }
