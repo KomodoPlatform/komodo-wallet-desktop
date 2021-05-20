@@ -1642,6 +1642,21 @@
           "disable_cert_verification": false
         },
         {
+          "url": "electrum.dirtdivas.net:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.getlynx.club:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.atechhelp.com:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
           "url": "electrum.getlynx.io:50001",
           "protocol": "TCP"
         }
