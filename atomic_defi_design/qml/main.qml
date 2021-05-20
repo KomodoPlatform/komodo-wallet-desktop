@@ -41,12 +41,6 @@ DexWindow {
         border.color: app.globalTheme.dexBoxBackgroundColor
         border.width: 0
     }
-
-    DexBusyIndicator {
-        anchors.centerIn: parent
-        running: app_loader.status === Loader.Loading
-        visible: running
-    }
     App {
         id: app
         anchors.fill: parent
