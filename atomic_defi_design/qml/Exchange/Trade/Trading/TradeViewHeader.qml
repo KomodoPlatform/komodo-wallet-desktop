@@ -42,18 +42,18 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 Qaterial.LatoTabButton {
-                    text: qsTr("Pro-Mode")
-                    textColor: theme.foregroundColor
-                    textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
-                    onToggled: API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                    checked: API.app.trading_pg.current_trading_mode == TradingMode.Pro
-                }
-                Qaterial.LatoTabButton {
                     text: qsTr("Simple-Mode")
                     textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
                     textColor: theme.foregroundColor
                     onToggled: API.app.trading_pg.current_trading_mode = TradingMode.Simple
                     checked: API.app.trading_pg.current_trading_mode == TradingMode.Simple
+                }
+                Qaterial.LatoTabButton {
+                    text: qsTr("Pro-Mode")
+                    textColor: theme.foregroundColor
+                    textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
+                    onToggled: API.app.trading_pg.current_trading_mode = TradingMode.Pro
+                    checked: API.app.trading_pg.current_trading_mode == TradingMode.Pro
                 }
             }
         }
