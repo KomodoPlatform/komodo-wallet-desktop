@@ -379,7 +379,6 @@ QtObject {
                                           "LRC": "#32C2F8",
                                           "MANA": "#FF3C6C",
                                           "MATIC": "#1E61ED",
-                                          "MED": "#00B5FF",
                                           "MKR": "#1BAF9F",
                                           "NEAR": "#595959",
                                           "ONT": "#2692AF",

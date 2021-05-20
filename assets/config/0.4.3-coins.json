@@ -3389,18 +3389,6 @@
     ],
     "type": "QRC-20"
   },
-  "MED": {
-    "coin": "MED",
-    "name": "Medibloc",
-    "coingecko_id": "medibloc",
-    "coinpaprika_id": "med-medibloc-qrc20",
-    "active": false,
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://explorer.qtum.org/"
-    ],
-    "type": "QRC-20"
-  },
   "LSTR": {
     "coin": "LSTR",
     "name": "Luna Stars",
