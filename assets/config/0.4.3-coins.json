@@ -4469,5 +4469,25 @@
   "type": "ERC-20",
   "active": false,
   "currently_enabled": false
- }
+ },
+ "CIPHS": {
+  "coin": "CIPHS",
+  "name": "Ciphscoin",
+  "coingecko_id": "test-coin",
+  "coinpaprika_id": "test-coin",
+  "electrum": [
+    {
+      "url": "152.89.247.97:10001"
+    },
+    {
+      "url": "212.114.52.2:10001"
+    }
+  ],
+  "explorer_url": [
+    "http://explorer.ciphs.org/"
+  ],
+  "type": "Smart Chain",
+  "active": false,
+  "currently_enabled": false
+}
 }
