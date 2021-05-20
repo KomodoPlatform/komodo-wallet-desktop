@@ -4484,7 +4484,7 @@
     }
   ],
   "explorer_url": [
-    "http://explorer.ciphs.org/"
+    "http://152.89.247.97:50604/"
   ],
   "type": "Smart Chain",
   "active": false,
