@@ -493,6 +493,7 @@ namespace atomic_dex
     void
     portfolio_model::adjust_percent_current_currency(QString balance_all)
     {
+        SPDLOG_INFO("adjust_percent_current_currency");
         const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         for (auto&& [coin, cfg]: coins)
         {
