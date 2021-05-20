@@ -19,7 +19,7 @@ SetupPage {
             onLoaded()
     }
 
-    image_path: General.image_path + Style.sidebar_atomicdex_logo
+    image_path: "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo
     image_margin: 30
     content: ColumnLayout {
         DefaultText {
