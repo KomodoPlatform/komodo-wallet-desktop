@@ -9,6 +9,8 @@ import "../../Constants"
 
 ColumnLayout
 {
+    property string selectedTicker: "KMD"
+
     anchors.centerIn: parent
 
     DefaultRectangle
@@ -116,74 +118,54 @@ ColumnLayout
                     color: from_value.color
                 }
 
-                ComboBox
+                Rectangle
                 {
-                    id: from_coins_list
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: 15
-                    model: API.app.portfolio_pg.portfolio_mdl
-                    currentIndex: 0
-                    valueRole: "ticker"
+                    anchors.rightMargin: 20
+                    width: 100
+                    height: 40
+                    radius: 20
+                    border.width: 0
+                    color: _mouseArea.containsMouse ? Style.colorSidebarHighlightGradient4 : theme.backgroundColor
 
-                    delegate: ItemDelegate
+                    DefaultMouseArea 
                     {
-                        width: from_coins_list.popup.width
-                        contentItem: RowLayout
-                        {
-                            Layout.fillWidth: true
-                            DefaultImage
-                            {
-                                Layout.preferredWidth: 20
-                                Layout.preferredHeight: 20
-                                source: General.coinIcon(model.ticker)
-                            }
-                            DefaultText
-                            {
-                                font.pixelSize: Style.textSizeSmall5
-                                text: model.ticker
-                            }
-                        }
-                        highlighted: parent.highlightedIndex === index
+                        id: _mouseArea
+                        anchors.fill: parent
+                        onClicked: coinsListModalLoader.open()
+                        hoverEnabled: true
                     }
 
-                    contentItem: RowLayout
+                    DefaultImage
                     {
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignCenter
-                        DefaultImage
-                        {
-                            Layout.preferredWidth: 20
-                            Layout.preferredHeight: 20
-                            source: General.coinIcon(parent.parent.currentValue)
-                        }
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        width: 20
+                        height: 20
+                        source: General.coinIcon(selectedTicker)
                         DefaultText
                         {
-                            text: parent.parent.currentValue
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.right
+                            anchors.leftMargin: 10
+                            text: selectedTicker
+
+                            Arrow 
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.right
+                                anchors.leftMargin: 5
+                                up: false
+                            }
                         }
                     }
 
-                    background: DefaultRectangle
+                    ModalLoader
                     {
-                        border.width: 0
-                        width: from_coins_list.width
-                    }
-
-                    popup: Popup
-                    {
-                        y: parent.height - 1
-                        width: 180
-                        height: 300
-
-                        contentItem: ListView
-                        {
-                            clip: true
-                            implicitHeight: contentHeight
-                            model: from_coins_list.popup.visible ? from_coins_list.delegateModel : null
-                            currentIndex: from_coins_list.highlightedIndex
-                            ScrollIndicator.vertical: ScrollIndicator { }
-                        }
-                        background: DefaultRectangle { radius: 2 }
+                        id: coinsListModalLoader
+                        sourceComponent: coinsListModal
                     }
                 }
             }
@@ -237,5 +219,101 @@ ColumnLayout
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: swap_card.width
         text: qsTr("Swap Now !")
+    }
+
+    // Coins list
+    Component
+    {
+        id: coinsListModal
+        BasicModal
+        {
+            property string searchNamePattern: ""
+
+            id: root
+            width: 450
+            ModalContent
+            {
+                title: qsTr("Select a ticker")
+                RowLayout
+                {
+                    Layout.fillWidth: true
+                    TextField
+                    {
+                        id: searchName
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 60
+                        Layout.alignment: Qt.AlignHCenter
+                        placeholderText: "Search a name"
+                        font.pixelSize: Style.textSize1
+                        background: Rectangle
+                        {
+                            color: theme.backgroundColor
+                            border.width: 1
+                            border.color: theme.colorRectangleBorderGradient1
+                            radius: 10
+                        }
+                        onTextChanged:
+                        {
+                            if (text.length > 30)
+                                text = text.substring(0, 30)
+                            root.searchNamePattern = text
+                        }
+                    }
+                }
+
+                RowLayout
+                {
+                    Layout.topMargin: 10
+                    Layout.fillWidth: true
+                    DefaultText { text: qsTr("Token name") }
+                }
+
+                ColumnLayout
+                {
+                    Layout.topMargin: 10
+                    Layout.fillWidth: true
+                    DefaultListView
+                    {
+                        Layout.fillWidth: true
+                        model: API.app.trading_pg.market_pairs_mdl.left_selection_box
+                        spacing: 20
+                        delegate: ItemDelegate
+                        {
+                            width: root.width
+                            anchors.horizontalCenter: root.horizontalCenter
+                            height: 40
+
+                            DefaultImage
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.leftMargin: 5
+                                anchors.left: parent.left
+                                width: 30
+                                height: 30
+                                source: General.coinIcon(model.ticker)
+                                DefaultText
+                                {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.left: parent.right
+                                    anchors.leftMargin: 20
+                                    text: model.ticker
+                                }
+                            }
+
+                            DefaultText // Balance
+                            {
+
+                            }
+
+                            MouseArea 
+                            {
+                                anchors.fill: parent
+                                onClicked: close()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
