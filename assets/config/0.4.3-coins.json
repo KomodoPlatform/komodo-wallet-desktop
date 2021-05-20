@@ -1642,6 +1642,21 @@
           "disable_cert_verification": false
         },
         {
+          "url": "electrum.dirtdivas.net:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.getlynx.club:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.atechhelp.com:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
           "url": "electrum.getlynx.io:50001",
           "protocol": "TCP"
         }
@@ -3367,18 +3382,6 @@
     "name": "HalalChain",
     "coingecko_id": "halalchain",
     "coinpaprika_id": "hlc-halalchain",
-    "active": false,
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://explorer.qtum.org/"
-    ],
-    "type": "QRC-20"
-  },
-  "MED": {
-    "coin": "MED",
-    "name": "Medibloc",
-    "coingecko_id": "medibloc",
-    "coinpaprika_id": "med-medibloc-qrc20",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
