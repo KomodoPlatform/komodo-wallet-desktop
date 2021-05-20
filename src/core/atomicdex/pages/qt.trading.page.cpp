@@ -41,7 +41,7 @@ namespace atomic_dex
                                                    new market_pairs(m_system_manager, portfolio, this), new qt_orders_widget(m_system_manager, this)}}
     {
         //! Sets default trading mode to the last saved one.
-        m_current_trading_mode = (TradingMode)entity_registry_.template ctx<QSettings>().value("DefaultTradingMode").toInt();
+        set_current_trading_mode((TradingMode)entity_registry_.template ctx<QSettings>().value("DefaultTradingMode").toInt());
     }
 } // namespace atomic_dex
 
@@ -846,6 +846,8 @@ namespace atomic_dex
             this->set_market_mode(MarketMode::Sell);
             m_current_trading_mode = trading_mode;
             entity_registry_.template ctx<QSettings>().setValue("DefaultTradingMode", m_current_trading_mode);
+            get_market_pairs_mdl()->get_left_selection_box()->set_with_fiat_balance(m_current_trading_mode == TradingMode::Simple);
+            get_market_pairs_mdl()->get_left_selection_box()->set_with_balance(m_current_trading_mode == TradingMode::Simple);
             SPDLOG_DEBUG("Set trading mode to: {}", QMetaEnum::fromType<TradingMode>().valueToKey(trading_mode));
             emit tradingModeChanged();
         }
