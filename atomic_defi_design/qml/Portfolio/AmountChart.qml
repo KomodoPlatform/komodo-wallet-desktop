@@ -191,7 +191,8 @@ InnerBackground {
                 width: parent.width+200
                 height: parent.height
                 x: -40
-                hoverEnabled: true
+                enabled: false 
+                hoverEnabled: false
                 onPositionChanged:  {
                     let mx = mouseX
                     //console.log(mx)
@@ -313,6 +314,25 @@ InnerBackground {
                     text: Qt.formatDate(new Date(boxi.timestamp), "dd MMM yyyy");
                     font: theme.textType.body2
                 }
+            }
+        }
+    }
+    Rectangle {
+        anchors.fill: parent
+        radius: parent.radius
+        opacity: 0.7
+        color: "black"
+        Column {
+            anchors.centerIn: parent
+            spacing: 20
+            Qaterial.ColorIcon {
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: Qaterial.Icons.rocketLaunchOutline
+                color: theme.accentColor
+            }
+            DexLabel {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Work in progress")
             }
         }
     }
