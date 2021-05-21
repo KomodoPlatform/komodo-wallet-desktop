@@ -164,7 +164,7 @@ ColumnLayout {
                         outlined: false
                         text: modelData
                         icon.source: Qaterial.Icons.tag
-                        elide: Text.ElideRight
+                        //elide: Text.ElideRight
 
                         onClicked: searchbar.text = modelData
                     }
