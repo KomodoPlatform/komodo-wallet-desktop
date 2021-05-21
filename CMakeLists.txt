@@ -54,8 +54,8 @@ endif ()
 
 if (UNIX AND NOT APPLE)
     message("Forcing stdlib C++")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+    #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif ()
 
 ##! We fetch our dependencies
@@ -70,7 +70,13 @@ else ()
             URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.3445/mm2-419f36ef5-Windows_NT-Release.zip)
 endif ()
 
-FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
+#FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
+
+FetchContent_Declare(
+        qmaterial
+        GIT_REPOSITORY https://github.com/KomodoPlatform/Qaterial.git
+        GIT_TAG a5ae919a1e33e4a3c63dab4650c825586b7041c9
+)
 
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)
@@ -109,66 +115,13 @@ add_subdirectory(src)
 
 # Adds Qaterial hot reload to main executable
 if (WITH_HOTRELOAD)
-    message(STATUS "Hot reload enabled")
-    include(hot_reload/cmake/Configuration.cmake)
-    include(hot_reload/cmake/FetchDependencies.cmake)
-    set(QATERIALHOTRELOAD_LIB QaterialHotReload)
-    set(QATERIALHOTRELOAD_SRC_DIR ${CMAKE_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload)
-    add_subdirectory(hot_reload/qml/Qaterial/HotReload)
-
-    add_library(${QATERIALHOTRELOAD_LIB} STATIC
-            ${QATERIALHOTRELOAD_SRC_DIR}/HotReload.hpp
-            ${QATERIALHOTRELOAD_SRC_DIR}/HotReload.cpp
-            ${QATERIALHOTRELOAD_QML_RES})
-    add_library(Qaterial::HotReload ALIAS ${QATERIALHOTRELOAD_LIB})
-
-    target_link_libraries(${QATERIALHOTRELOAD_LIB} PUBLIC
-            Qaterial
-            SortFilterProxyModel
-            )
-    target_link_libraries(${QATERIALHOTRELOAD_LIB} PRIVATE
-            Qaterial::HotReload::Ui
-            spdlog::spdlog
-            )
-
-    function(target_link_quiet_libraries TARGET)
-        foreach (LIB ${ARGN})
-            if (TARGET ${LIB})
-                target_link_libraries(${TARGET} PUBLIC ${LIB})
-            endif ()
-        endforeach (LIB)
-    endfunction()
-
-    # Optionnal Qt libs that might be interessant to have packaged with hotreloader
-    find_package(Qt5 QUIET COMPONENTS
-            Charts)
-
-    target_link_quiet_libraries(${QATERIALHOTRELOAD_LIB}
-            Qt::Charts)
-
-    set_target_properties(${QATERIALHOTRELOAD_LIB} PROPERTIES
-            FOLDER ${QATERIALHOTRELOAD_FOLDER_PREFIX}
-            AUTORCC TRUE
-            AUTOMOC TRUE)
-    target_include_directories(${QATERIALHOTRELOAD_LIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hot_reload/src)
-    target_compile_definitions(${QATERIALHOTRELOAD_LIB}
-            PRIVATE -DQATERIALHOTRELOAD_VERSION_MAJOR=${QATERIALHOTRELOAD_VERSION_MAJOR}
-            PRIVATE -DQATERIALHOTRELOAD_VERSION_MINOR=${QATERIALHOTRELOAD_VERSION_MINOR}
-            PRIVATE -DQATERIALHOTRELOAD_VERSION_PATCH=${QATERIALHOTRELOAD_VERSION_PATCH}
-            PRIVATE -DQATERIALHOTRELOAD_VERSION_TAG=${QATERIALHOTRELOAD_VERSION_TAG}
-            PRIVATE -DQATERIALHOTRELOAD_VERSION_TAG_HEX=${QATERIALHOTRELOAD_VERSION_TAG_HEX}
-            )
-
-    if (QATERIALHOTRELOAD_ENABLE_PCH AND COMMAND target_precompile_headers)
-        target_precompile_headers(${QATERIALHOTRELOAD_LIB} PRIVATE ${PROJECT_SOURCE_DIR}/hot_reload/src/Qaterial/HotReload/Pch/Pch.hpp)
-    endif ()
-
-    get_target_property(QT_TARGET_TYPE Qt::Core TYPE)
-    if (${QT_TARGET_TYPE} STREQUAL "STATIC_LIBRARY")
-        qt_generate_qml_plugin_import(${QATERIALHOTRELOAD_LIB} QML_SRC ${CMAKE_CURRENT_SOURCE_DIR})
-        qt_generate_plugin_import(${QATERIALHOTRELOAD_LIB})
-    endif ()
-
+    FetchContent_Declare(
+            qaterial_hotreload
+            GIT_REPOSITORY https://github.com/KomodoPlatform/QaterialHotReload
+            GIT_TAG 7826fa36d66162ac0ef5c69ed370e0a28ede6a46
+    )
+    set(QATERIALHOTRELOAD_ENABLE_HOTRELOAD_APP OFF CACHE BOOL "")
+    FetchContent_MakeAvailable(qaterial_hotreload)
     target_link_libraries(${PROJECT_NAME} PUBLIC Qaterial::HotReload)
     target_compile_definitions(${PROJECT_NAME} PUBLIC ATOMICDEX_HOT_RELOAD)
 endif ()

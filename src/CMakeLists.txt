@@ -41,9 +41,7 @@ if (DISABLE_GEOBLOCKING)
     message(STATUS "Disabling Geoblocking for dev purpose")
     target_compile_definitions(${PROJECT_NAME}_core INTERFACE -DDISABLE_GEOBLOCKING)
 endif ()
-if (NOT WITH_HOTRELOAD)
-    target_link_libraries(${PROJECT_NAME}_core INTERFACE SortFilterProxyModel)
-endif()
+target_link_libraries(${PROJECT_NAME}_core INTERFACE SortFilterProxyModel)
 
 
 # Translation files

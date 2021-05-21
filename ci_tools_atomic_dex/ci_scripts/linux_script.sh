@@ -31,19 +31,19 @@ sudo apt-get install build-essential \
 # get llvm
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
-sudo ./llvm.sh 11
+sudo ./llvm.sh 12
 # set clang version
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-11 777
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 777
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 777
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 777
 # set gnu compilers version
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
 sudo apt-get update
 sudo apt-get install libc++abi-11-dev libc++-11-dev -y
-export CXXFLAGS=-stdlib=libc++
-export LDFLAGS=-stdlib=libc++
-export CXX=clang++-11
-export CC=clang-11
+#export CXXFLAGS=-stdlib=libc++
+#export LDFLAGS=-stdlib=libc++
+export CXX=clang++-12
+export CC=clang-12
 
 # get right cmake version
 wget https://github.com/Kitware/CMake/releases/download/v3.19.0-rc3/cmake-3.19.0-rc3-Linux-x86_64.tar.gz
