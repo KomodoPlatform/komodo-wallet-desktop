@@ -47,24 +47,22 @@ namespace atomic_dex
         void reset();
         void set_with_fiat_balance(bool value) ;
 
-        // QML API
+        //! QML API
         Q_INVOKABLE void sort_by_name(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
         Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
         Q_INVOKABLE QVariantMap get(int row);
 
-        // QML API Properties
-      private:
+        //! QML API Properties
         Q_PROPERTY(bool with_balance WRITE set_with_balance READ get_with_balance NOTIFY with_balanceChanged)
-        [[nodiscard]] bool get_with_balance() const ;
-        void               set_with_balance(bool value) ;
-
+        [[nodiscard]] bool get_with_balance() const;
+        void               set_with_balance(bool value);
       signals:
         void with_balanceChanged();
 
       protected:
-        // QSortFilterProxyModel functions
+        //! QSortFilterProxyModel functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
         [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
     };
