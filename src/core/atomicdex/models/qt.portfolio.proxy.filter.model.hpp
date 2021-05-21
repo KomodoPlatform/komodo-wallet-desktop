@@ -28,12 +28,14 @@ namespace atomic_dex
     {
         Q_OBJECT
 
+        ag::ecs::system_manager& m_system_mgr;
+
         QString m_excluded_coin{""};
         bool    am_i_a_market_selector{false};
 
         bool                     m_with_balance{false};      // Tells if the proxy should filter only coins with a balance over than 0.
         bool                     m_with_fiat_balance{false}; // Tells if the proxy should filter only coins with a fiat equivalent over than 0.
-        ag::ecs::system_manager& m_system_mgr;
+        QString                  m_search_exp;               // The field referenced by `[set/get]_search_exp()` accessors.
 
       public:
         //! Constructor
@@ -42,24 +44,33 @@ namespace atomic_dex
         //! Destructor
         ~portfolio_proxy_model()  final = default;
 
-        void set_excluded_coin(const QString& ticker);
-        void is_a_market_selector(bool is_market_selector) ;
-        void reset();
-        void set_with_fiat_balance(bool value) ;
+        //! Qt Properties
+        Q_PROPERTY(bool    with_balance WRITE set_with_balance READ get_with_balance NOTIFY with_balanceChanged) // Look at `m_with_balance` documentation.
+        Q_PROPERTY(QString search_exp   WRITE set_search_exp   READ get_search_exp   NOTIFY searchExpChanged)    // Look at `[set/get]_search_exp()` documentation.
 
-        //! QML API
+        //! API
+        void is_a_market_selector(bool is_market_selector);
+        void reset();
+
+        //! Getters/setters
+        void                  set_excluded_coin(const QString& ticker);
+        [[nodiscard]] bool    get_with_balance() const;
+        void                  set_with_balance(bool value);
+        void                  set_with_fiat_balance(bool value);
+        void                  set_search_exp(QString search_exp); // Changes the current search expression used to find a specific token by name.
+        [[nodiscard]] QString get_search_exp() const;             // Gets the current search expression used o find a specific token by name.
+
+        //! Qt Invokables.
         Q_INVOKABLE void sort_by_name(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
         Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
         Q_INVOKABLE QVariantMap get(int row);
 
-        //! QML API Properties
-        Q_PROPERTY(bool with_balance WRITE set_with_balance READ get_with_balance NOTIFY with_balanceChanged)
-        [[nodiscard]] bool get_with_balance() const;
-        void               set_with_balance(bool value);
+        //! Qt Properties Signals.
       signals:
         void with_balanceChanged();
+        void searchExpChanged();
 
       protected:
         //! QSortFilterProxyModel functions

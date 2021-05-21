@@ -227,8 +227,6 @@ ColumnLayout
         id: coinsListModal
         BasicModal
         {
-            property string searchNamePattern: ""
-
             id: root
             width: 450
             ModalContent
@@ -256,7 +254,7 @@ ColumnLayout
                         {
                             if (text.length > 30)
                                 text = text.substring(0, 30)
-                            root.searchNamePattern = text
+                            API.app.trading_pg.market_pairs_mdl.left_selection_box.search_exp = text
                         }
                     }
                 }
