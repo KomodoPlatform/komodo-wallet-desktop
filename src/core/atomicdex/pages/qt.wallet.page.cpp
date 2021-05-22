@@ -712,7 +712,7 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::validate_address()
+    wallet_page::validate_address(QString address)
     {
         SPDLOG_INFO("validate_address");
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
@@ -720,8 +720,7 @@ namespace atomic_dex
         {
             std::error_code            ec;
             const auto&                ticker  = mm2_system.get_current_ticker();
-            auto                       address = mm2_system.address(ticker, ec);
-            t_validate_address_request req{.coin = ticker, .address = std::move(address)};
+            t_validate_address_request req{.coin = ticker, .address = address.toStdString()};
             this->set_validate_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
             nlohmann::json json_data = ::mm2::api::template_request("validateaddress");

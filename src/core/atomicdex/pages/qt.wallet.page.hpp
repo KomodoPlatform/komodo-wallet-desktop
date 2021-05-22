@@ -70,7 +70,7 @@ namespace atomic_dex
                                         // why it's not possible.
 
         // QML API
-        Q_INVOKABLE void validate_address();
+        Q_INVOKABLE void validate_address(QString address);
         Q_INVOKABLE void
         convert_address(QString from, QVariant to_address_format); //<https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
         Q_INVOKABLE void claim_rewards();
