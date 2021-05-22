@@ -67,6 +67,7 @@ namespace atomic_dex
 
         // QML API
         Q_INVOKABLE void validate_address();
+        Q_INVOKABLE void convert_address(QString from, QVariant to_address_format); //<https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
         Q_INVOKABLE void claim_rewards();
         Q_INVOKABLE void claim_faucet();
         Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount);

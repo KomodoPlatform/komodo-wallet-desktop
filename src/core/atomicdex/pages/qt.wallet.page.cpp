@@ -11,6 +11,7 @@
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
+#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
@@ -294,12 +295,14 @@ namespace atomic_dex
             else if (reason.contains("Invalid address checksum"))
             {
                 reason = tr("Invalid checksum for %1. Click on the convert button to turn it into a mixed case address").arg(get_current_ticker());
-                json_result["convertible"] = true;
+                json_result["convertible"]       = true;
+                json_result["to_address_format"] = QJsonObject{{"format", "mixedcase"}};
             }
             else if (reason.contains("Cashaddress address format activated for BCH, but legacy format used instead. Try to call 'convertaddress'"))
             {
                 reason = tr("Legacy address used for %1, click on the convert button to convert it to a Cashaddress.").arg(get_current_ticker());
-                json_result["convertible"] = true;
+                json_result["to_address_format"] = QJsonObject{{"format", "cashaddress"}, {"network", "bitcoincash"}};
+                json_result["convertible"]       = true;
             }
             else if (reason.contains("Address must be prefixed with 0x"))
             {
@@ -738,5 +741,12 @@ namespace atomic_dex
             };
             mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
         }
+    }
+
+    void
+    wallet_page::convert_address(QString from, QVariant to_address_format)
+    {
+        auto                      address_fmt = nlohmann::json::parse(QJsonDocument(to_address_format.toJsonObject()).toJson().toStdString());
+        t_convert_address_request req{.coin = get_current_ticker().toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
     }
 } // namespace atomic_dex
