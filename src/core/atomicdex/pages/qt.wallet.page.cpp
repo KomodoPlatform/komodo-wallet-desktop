@@ -11,6 +11,7 @@
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
+#include "atomicdex/api/mm2/rpc.validate.address.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -270,6 +271,50 @@ namespace atomic_dex
             obj["qrcode_address"] = QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
         }
         return obj;
+    }
+
+    QVariant
+    wallet_page::get_validate_address_data() const
+    {
+        return m_validate_address_result.get();
+    }
+
+    void
+    wallet_page::set_validate_address_data(QVariant rpc_data)
+    {
+        auto json_result = rpc_data.toJsonObject();
+        if (json_result.contains("reason"))
+        {
+            auto reason = json_result["reason"].toString();
+            if (reason.contains("Checksum verification failed"))
+            {
+                reason                     = tr("Checksum verification failed for %1.").arg(get_current_ticker());
+                json_result["convertible"] = false;
+            }
+            else if (reason.contains("Invalid address checksum"))
+            {
+                reason = tr("Invalid checksum for %1. Click on the convert button to turn it into a mixed case address").arg(get_current_ticker());
+                json_result["convertible"] = true;
+            }
+            else if (reason.contains("Cashaddress address format activated for BCH, but legacy format used instead. Try to call 'convertaddress'"))
+            {
+                reason = tr("Legacy address used for %1, click on the convert button to convert it to a Cashaddress.").arg(get_current_ticker());
+                json_result["convertible"] = true;
+            }
+            else if (reason.contains("Address must be prefixed with 0x"))
+            {
+                reason                     = tr("%1 address must be prefixed with 0x").arg(get_current_ticker());
+                json_result["convertible"] = false;
+            }
+            else if (reason.contains("Invalid input length"))
+            {
+                reason                     = tr("%1 address length is invalid, please use a valid address.").arg(get_current_ticker());
+                json_result["convertible"] = false;
+            }
+            json_result["reason"] = reason;
+        }
+        m_validate_address_result = json_result;
+        emit validateAddressDataChanged();
     }
 
     QVariant
@@ -645,5 +690,53 @@ namespace atomic_dex
             this->m_transactions_mdl->reset();
         }
         this->set_tx_fetching_busy(false);
+    }
+
+    void
+    wallet_page::validate_address()
+    {
+        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        if (mm2_system.is_mm2_running())
+        {
+            std::error_code            ec;
+            const auto&                ticker  = mm2_system.get_current_ticker();
+            const auto                 address = mm2_system.address(ticker, ec);
+            t_validate_address_request req{.coin = ticker, .address = std::move(address)};
+            this->set_validate_address_busy(true);
+            nlohmann::json batch     = nlohmann::json::array();
+            nlohmann::json json_data = ::mm2::api::template_request("validateaddress");
+            ::mm2::api::to_json(json_data, req);
+            batch.push_back(json_data);
+            auto answer_functor = [this](web::http::http_response resp)
+            {
+                std::string body = TO_STD_STR(resp.extract_string(true).get());
+                SPDLOG_DEBUG("resp validateaddress: {}", body);
+                nlohmann::json j_out = nlohmann::json::object();
+                if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+                {
+                    auto answers         = nlohmann::json::parse(body);
+                    auto validate_answer = ::mm2::api::rpc_process_answer_batch<t_validate_address_answer>(answers[0], "validateaddress");
+                    if (validate_answer.result.has_value())
+                    {
+                        auto res          = validate_answer.result.value();
+                        j_out["is_valid"] = res.is_valid;
+                        j_out["reason"]   = res.reason.value_or("");
+                    }
+                    else
+                    {
+                        j_out["is_valid"] = false;
+                        j_out["reason"]   = "valideaddress unknown error";
+                    }
+                }
+                else
+                {
+                    j_out["is_valid"] = false;
+                    j_out["reason"]   = "valideaddress unknown error";
+                }
+                this->set_validate_address_data(nlohmann_json_object_to_qt_json_object(j_out));
+                this->set_validate_address_busy(false);
+            };
+            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+        }
     }
 } // namespace atomic_dex

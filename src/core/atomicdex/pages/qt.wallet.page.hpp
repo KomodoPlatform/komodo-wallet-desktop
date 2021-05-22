@@ -51,6 +51,8 @@ namespace atomic_dex
         void                              set_tx_fetching_busy(bool status);
         [[nodiscard]] bool                is_validate_address_busy() const;
         void                              set_validate_address_busy(bool status);
+        [[nodiscard]] QVariant            get_validate_address_data() const;
+        void                              set_validate_address_data(QVariant rpc_data);
         [[nodiscard]] bool                has_auth_succeeded() const;
         void                              set_auth_succeeded();
         [[nodiscard]] bool                is_send_available();
@@ -64,6 +66,7 @@ namespace atomic_dex
                                         // why it's not possible.
 
         // QML API
+        Q_INVOKABLE void validate_address();
         Q_INVOKABLE void claim_rewards();
         Q_INVOKABLE void claim_faucet();
         Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount);
@@ -92,6 +95,7 @@ namespace atomic_dex
         Q_PROPERTY(bool current_ticker_fees_coin_enabled READ is_current_ticker_fees_coin_enabled NOTIFY currentTickerFeesCoinEnabledChanged)
         Q_PROPERTY(bool page_open READ is_page_open WRITE set_page_open NOTIFY isPageOpenChanged)
         Q_PROPERTY(bool validate_address_busy READ is_validate_address_busy WRITE set_validate_address_busy NOTIFY validateAddressBusyChanged)
+        Q_PROPERTY(QVariant validate_address_data READ get_validate_address_data WRITE set_validate_address_data NOTIFY validateAddressDataChanged)
 
         // QML API Properties Signals
       signals:
@@ -113,6 +117,7 @@ namespace atomic_dex
         void currentTickerFeesCoinEnabledChanged();
         void isPageOpenChanged();
         void validateAddressBusyChanged();
+        void validateAddressDataChanged();
 
       private:
         ag::ecs::system_manager&                       m_system_manager;
@@ -127,6 +132,7 @@ namespace atomic_dex
         t_qt_synchronized_json                         m_claiming_rpc_faucet_result;
         t_qt_synchronized_json                         m_send_rpc_result;
         t_qt_synchronized_string                       m_broadcast_rpc_result;
+        t_qt_synchronized_json                         m_validate_address_result;
         bool                                           m_auth_succeeded;
         bool                                           m_send_available{true};
         QString                                        m_send_availability_state;
