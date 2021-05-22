@@ -15,9 +15,9 @@
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "qt.portfolio.page.hpp"
 #include "qt.settings.page.hpp"
 #include "qt.wallet.page.hpp"
-#include "qt.portfolio.page.hpp"
 
 namespace atomic_dex
 {
@@ -35,7 +35,7 @@ namespace atomic_dex
             return;
         }
         using namespace std::chrono_literals;
-    
+
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
         if (s >= 1s)
@@ -49,40 +49,39 @@ namespace atomic_dex
 //! Private API
 namespace atomic_dex
 {
-    void wallet_page::check_send_availability()
+    void
+    wallet_page::check_send_availability()
     {
-        auto& mm2 = m_system_manager.get_system<mm2_service>();
+        auto& mm2              = m_system_manager.get_system<mm2_service>();
         auto  global_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
-        auto  ticker_info = global_coins_cfg->get_coin_info(mm2.get_current_ticker());
+        auto  ticker_info      = global_coins_cfg->get_coin_info(mm2.get_current_ticker());
 
-        m_send_available = true;
-        m_send_availability_state = "";
+        m_send_available                   = true;
+        m_send_availability_state          = "";
         m_current_ticker_fees_coin_enabled = true;
         if (not mm2.get_balance(ticker_info.ticker) > 0)
         {
-            m_send_available = false;
-            m_send_availability_state = tr("You do not have enough funds.");
+            m_send_available                   = false;
+            m_send_availability_state          = tr("You do not have enough funds.");
             m_current_ticker_fees_coin_enabled = true;
         }
         else if (ticker_info.has_parent_fees_ticker)
         {
             auto parent_ticker_info = global_coins_cfg->get_coin_info(ticker_info.fees_ticker);
-            
+
             if (!parent_ticker_info.currently_enabled)
             {
-                m_send_available                   = true;
+                m_send_available = true;
                 m_send_availability_state =
-                    tr("%1 is not activated: click on the button to enable it or enable it manually")
-                        .arg(QString::fromStdString(parent_ticker_info.ticker));
+                    tr("%1 is not activated: click on the button to enable it or enable it manually").arg(QString::fromStdString(parent_ticker_info.ticker));
                 m_current_ticker_fees_coin_enabled = false;
             }
             else if (not mm2.get_balance(parent_ticker_info.ticker) > 0)
             {
-                m_send_available                   = false;
-                m_send_availability_state =
-                    tr("You need to have %1 to pay the gas for %2 transactions.")
-                        .arg(QString::fromStdString(parent_ticker_info.ticker))
-                        .arg(QString::fromStdString(parent_ticker_info.type));
+                m_send_available          = false;
+                m_send_availability_state = tr("You need to have %1 to pay the gas for %2 transactions.")
+                                                .arg(QString::fromStdString(parent_ticker_info.ticker))
+                                                .arg(QString::fromStdString(parent_ticker_info.type));
                 m_current_ticker_fees_coin_enabled = true;
             }
         }
@@ -90,7 +89,7 @@ namespace atomic_dex
         emit sendAvailabilityStateChanged();
         emit currentTickerFeesCoinEnabledChanged();
     }
-}
+} // namespace atomic_dex
 
 //! Getters/Setters
 namespace atomic_dex
@@ -182,6 +181,22 @@ namespace atomic_dex
     }
 
     bool
+    wallet_page::is_validate_address_busy() const
+    {
+        return m_validate_address_busy.load();
+    }
+
+    void
+    wallet_page::set_validate_address_busy(bool status)
+    {
+        if (m_validate_address_busy != status)
+        {
+            m_validate_address_busy = status;
+            emit validateAddressBusyChanged();
+        }
+    }
+
+    bool
     atomic_dex::wallet_page::is_tx_fetching_busy() const
     {
         return m_tx_fetching_busy;
@@ -243,12 +258,12 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
-            //SPDLOG_INFO("fee_ticker of ticker :{} is {}", ticker, coin_info.fees_ticker);
-            obj["fee_ticker"]                         = QString::fromStdString(coin_info.fees_ticker);
-            obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
-            obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
-            obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
-            obj["is_smartchain_test_coin"]            = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
+            // SPDLOG_INFO("fee_ticker of ticker :{} is {}", ticker, coin_info.fees_ticker);
+            obj["fee_ticker"]              = QString::fromStdString(coin_info.fees_ticker);
+            obj["blocks_left"]             = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
+            obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
             std::error_code   ec;
             qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
             std::string       svg = qr0.toSvgString(2);
@@ -315,29 +330,33 @@ namespace atomic_dex
     {
         return m_auth_succeeded;
     }
-    
+
     bool
     wallet_page::is_send_available()
     {
         return m_send_available;
     }
-    
-    QString wallet_page::get_send_availability_state()
+
+    QString
+    wallet_page::get_send_availability_state()
     {
         return m_send_availability_state;
     }
-    
-    bool wallet_page::is_current_ticker_fees_coin_enabled()
+
+    bool
+    wallet_page::is_current_ticker_fees_coin_enabled()
     {
         return m_current_ticker_fees_coin_enabled;
     }
-    
-    bool wallet_page::is_page_open() const
+
+    bool
+    wallet_page::is_page_open() const
     {
         return m_page_open;
     }
-    
-    void wallet_page::set_page_open(bool value)
+
+    void
+    wallet_page::set_page_open(bool value)
     {
         m_page_open = value;
         emit isPageOpenChanged();
@@ -436,7 +455,8 @@ namespace atomic_dex
                 }
                 else
                 {
-                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
+                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] =
+                        global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
                 }
 
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
