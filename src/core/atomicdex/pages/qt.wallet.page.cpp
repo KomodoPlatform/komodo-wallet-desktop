@@ -778,9 +778,32 @@ namespace atomic_dex
             {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 SPDLOG_DEBUG("resp convertaddress: {}", body);
+                if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+                {
+                    auto answers        = nlohmann::json::parse(body);
+                    auto convert_answer = ::mm2::api::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
+                    if (convert_answer.result.has_value())
+                    {
+                        auto res = QString::fromStdString(convert_answer.result.value().address);
+                        this->set_converted_address(res);
+                    }
+                }
                 this->set_convert_address_busy(false);
             };
             mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
         }
+    }
+
+    QString
+    wallet_page::get_converted_address() const
+    {
+        return m_converted_address.get();
+    }
+
+    void
+    wallet_page::set_converted_address(QString converted_address)
+    {
+        m_converted_address = converted_address;
+        emit convertedAddressChanged();
     }
 } // namespace atomic_dex
