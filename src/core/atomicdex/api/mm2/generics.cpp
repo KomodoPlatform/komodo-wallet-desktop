@@ -28,7 +28,6 @@
 #include "atomicdex/api/mm2/rpc.sell.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
-#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 
 namespace mm2::api
 {
