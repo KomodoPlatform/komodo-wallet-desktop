@@ -439,6 +439,14 @@
     </message>
 </context>
 <context>
+    <name>AmountChart</name>
+    <message>
+        <location filename="../../qml/Portfolio/AmountChart.qml" line="335"/>
+        <source>Work in progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AssetPieChart</name>
     <message>
         <location filename="../../qml/Portfolio/AssetPieChart.qml" line="126"/>

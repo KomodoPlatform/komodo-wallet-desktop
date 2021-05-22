@@ -49,6 +49,8 @@ namespace atomic_dex
         void                              set_rpc_send_data(QVariant rpc_data);
         [[nodiscard]] bool                is_tx_fetching_busy() const;
         void                              set_tx_fetching_busy(bool status);
+        [[nodiscard]] bool                is_convert_address_busy() const;
+        void                              set_convert_address_busy(bool status);
         [[nodiscard]] bool                is_validate_address_busy() const;
         void                              set_validate_address_busy(bool status);
         [[nodiscard]] QVariant            get_validate_address_data() const;
@@ -67,7 +69,8 @@ namespace atomic_dex
 
         // QML API
         Q_INVOKABLE void validate_address();
-        Q_INVOKABLE void convert_address(QString from, QVariant to_address_format); //<https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
+        Q_INVOKABLE void
+        convert_address(QString from, QVariant to_address_format); //<https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
         Q_INVOKABLE void claim_rewards();
         Q_INVOKABLE void claim_faucet();
         Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount);
@@ -97,6 +100,7 @@ namespace atomic_dex
         Q_PROPERTY(bool page_open READ is_page_open WRITE set_page_open NOTIFY isPageOpenChanged)
         Q_PROPERTY(bool validate_address_busy READ is_validate_address_busy WRITE set_validate_address_busy NOTIFY validateAddressBusyChanged)
         Q_PROPERTY(QVariant validate_address_data READ get_validate_address_data WRITE set_validate_address_data NOTIFY validateAddressDataChanged)
+        Q_PROPERTY(bool convert_address_busy READ is_convert_address_busy WRITE set_convert_address_busy NOTIFY convertAddressBusyChanged)
 
         // QML API Properties Signals
       signals:
@@ -119,6 +123,7 @@ namespace atomic_dex
         void isPageOpenChanged();
         void validateAddressBusyChanged();
         void validateAddressDataChanged();
+        void convertAddressBusyChanged();
 
       private:
         ag::ecs::system_manager&                       m_system_manager;
@@ -129,6 +134,7 @@ namespace atomic_dex
         std::atomic_bool                               m_is_send_busy{false};
         std::atomic_bool                               m_tx_fetching_busy{false};
         std::atomic_bool                               m_validate_address_busy{false};
+        std::atomic_bool                               m_convert_address_busy{false};
         t_qt_synchronized_json                         m_claiming_rpc_result;
         t_qt_synchronized_json                         m_claiming_rpc_faucet_result;
         t_qt_synchronized_json                         m_send_rpc_result;

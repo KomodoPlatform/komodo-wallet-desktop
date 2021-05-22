@@ -183,6 +183,22 @@ namespace atomic_dex
     }
 
     bool
+    wallet_page::is_convert_address_busy() const
+    {
+        return m_convert_address_busy.load();
+    }
+
+    void
+    wallet_page::set_convert_address_busy(bool status)
+    {
+        if (m_convert_address_busy != status)
+        {
+            m_convert_address_busy = status;
+            emit convertAddressBusyChanged();
+        }
+    }
+
+    bool
     wallet_page::is_validate_address_busy() const
     {
         return m_validate_address_busy.load();
@@ -698,12 +714,13 @@ namespace atomic_dex
     void
     wallet_page::validate_address()
     {
+        SPDLOG_INFO("validate_address");
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
             std::error_code            ec;
             const auto&                ticker  = mm2_system.get_current_ticker();
-            const auto                 address = mm2_system.address(ticker, ec);
+            auto                       address = mm2_system.address(ticker, ec);
             t_validate_address_request req{.coin = ticker, .address = std::move(address)};
             this->set_validate_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
@@ -746,7 +763,24 @@ namespace atomic_dex
     void
     wallet_page::convert_address(QString from, QVariant to_address_format)
     {
-        auto                      address_fmt = nlohmann::json::parse(QJsonDocument(to_address_format.toJsonObject()).toJson().toStdString());
-        t_convert_address_request req{.coin = get_current_ticker().toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
+        SPDLOG_INFO("convert_address");
+        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        if (mm2_system.is_mm2_running())
+        {
+            auto                      address_fmt = nlohmann::json::parse(QJsonDocument(to_address_format.toJsonObject()).toJson().toStdString());
+            t_convert_address_request req{.coin = get_current_ticker().toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
+            this->set_convert_address_busy(true);
+            nlohmann::json batch     = nlohmann::json::array();
+            nlohmann::json json_data = ::mm2::api::template_request("convertaddress");
+            ::mm2::api::to_json(json_data, req);
+            batch.push_back(json_data);
+            auto answer_functor = [this](web::http::http_response resp)
+            {
+                std::string body = TO_STD_STR(resp.extract_string(true).get());
+                SPDLOG_DEBUG("resp convertaddress: {}", body);
+                this->set_convert_address_busy(false);
+            };
+            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+        }
     }
 } // namespace atomic_dex
