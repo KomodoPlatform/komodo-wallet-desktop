@@ -2,6 +2,8 @@
 // Created by Sztergbaum Roman on 22/05/2021.
 //
 
+#include <nlohmann/json.hpp>
+
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
 
 namespace mm2::api

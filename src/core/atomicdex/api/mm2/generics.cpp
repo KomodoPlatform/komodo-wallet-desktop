@@ -21,12 +21,14 @@
 #include "atomicdex/api/mm2/generics.hpp"
 #include "atomicdex/api/mm2/rpc.best.orders.hpp"
 #include "atomicdex/api/mm2/rpc.buy.hpp"
+#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/rpc.disable.hpp"
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.sell.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
+#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 
 namespace mm2::api
 {
@@ -52,4 +54,5 @@ namespace mm2::api
     template void extract_rpc_json_answer<best_orders_answer_success>(const nlohmann::json& j, best_orders_answer& answer);
     template void extract_rpc_json_answer<disable_coin_answer_success>(const nlohmann::json& j, disable_coin_answer& answer);
     template void extract_rpc_json_answer<validate_address_answer_success>(const nlohmann::json& j, validate_address_answer& answer);
+    template void extract_rpc_json_answer<convert_address_answer_success>(const nlohmann::json& j, convert_address_answer& answer);
 } // namespace mm2::api
