@@ -73,7 +73,7 @@ endif ()
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
 
 FetchContent_Declare(jl777-coins
-        URL https://github.com/ciphscoin/coins/archive/master.zip)
+        URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
 #FetchContent_Declare(adex-generics-coins
 #        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
