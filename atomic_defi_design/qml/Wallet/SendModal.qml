@@ -266,7 +266,7 @@ BasicModal {
         // ERC-20 Lowercase issue
         RowLayout {
             Layout.fillWidth: true
-            visible: needFix//isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
+            visible: needFix && input_address.field.text!=="" //isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
             DefaultText {
                 id: reason
                 Layout.fillWidth: true
