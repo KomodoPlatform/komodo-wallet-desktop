@@ -28,11 +28,10 @@ namespace atomic_dex
     {
         Q_OBJECT
 
+        //! Properties
         ag::ecs::system_manager& m_system_mgr;
-
-        QString m_excluded_coin{""};
-        bool    am_i_a_market_selector{false};
-
+        QString                  m_excluded_coin{""};
+        bool                     am_i_a_market_selector{false};
         bool                     m_with_balance{false};      // Tells if the proxy should filter only coins with a balance over than 0.
         bool                     m_with_fiat_balance{false}; // Tells if the proxy should filter only coins with a fiat equivalent over than 0.
         QString                  m_search_exp;               // The field referenced by `[set/get]_search_exp()` accessors.
@@ -48,7 +47,7 @@ namespace atomic_dex
         Q_PROPERTY(bool    with_balance WRITE set_with_balance READ get_with_balance NOTIFY with_balanceChanged) // Look at `m_with_balance` documentation.
         Q_PROPERTY(QString search_exp   WRITE set_search_exp   READ get_search_exp   NOTIFY searchExpChanged)    // Look at `[set/get]_search_exp()` documentation.
 
-        //! API
+        //! Public API
         void is_a_market_selector(bool is_market_selector);
         void reset();
 
