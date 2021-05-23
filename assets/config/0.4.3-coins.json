@@ -729,7 +729,7 @@
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "clc-collider-coin",
     "coingecko_id": "test-coin",
     "electrum": [
       {
@@ -1303,20 +1303,12 @@
       "active": false,
       "currently_enabled": false
   },
-    "FJC": {
+  "FJC": {
     "coin": "FJC",
     "name": "Fujicoin",
     "coinpaprika_id": "fjc-fujicoin",
     "coingecko_id": "fujicoin",
     "electrum": [
-      {
-        "url": "electrumx1.fujicoin.org:50001",
-        "protocol": "TCP"
-      },
-      {
-        "url": "electrumx2.fujicoin.org:50001",
-        "protocol": "TCP"
-      },
       {
         "url": "electrumx1.fujicoin.org:50003",
         "protocol": "SSL"
@@ -2463,7 +2455,7 @@
     "name": "Scalaris",
     "type": "UTXO",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "sca-scalaris",
     "electrum": [
       {
         "url": "electrum1.scalaris.info:10001"
@@ -2567,6 +2559,32 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "IL8P": {
+      "coin": "IL8P",
+      "name": "InfiniLooP",
+      "coinpaprika_id": "il8p-infiniloop",
+      "coingecko_id": "test-coin",
+      "electrum": [
+        {
+          "url": "il8p.electrumx.transcenders.name:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "il9p.electrumx.transcenders.name:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/il8p/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
   },
   "ILN": {
     "coin": "ILN",
