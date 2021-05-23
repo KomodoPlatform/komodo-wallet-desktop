@@ -719,7 +719,7 @@ namespace atomic_dex
         if (mm2_system.is_mm2_running())
         {
             std::error_code            ec;
-            const auto&                ticker  = mm2_system.get_current_ticker();
+            const auto&                ticker = mm2_system.get_current_ticker();
             t_validate_address_request req{.coin = ticker, .address = address.toStdString()};
             this->set_validate_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
@@ -762,11 +762,12 @@ namespace atomic_dex
     void
     wallet_page::convert_address(QString from, QVariant to_address_format)
     {
-        SPDLOG_INFO("convert_address");
+        SPDLOG_INFO("convert_address: {}", from.toStdString());
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
-            auto                      address_fmt = nlohmann::json::parse(QJsonDocument(to_address_format.toJsonObject()).toJson().toStdString());
+            QVariantMap               out         = to_address_format.value<QVariantMap>();
+            auto                      address_fmt = nlohmann::json::parse(QJsonDocument::fromVariant(out).toJson().toStdString());
             t_convert_address_request req{.coin = get_current_ticker().toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
             this->set_convert_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
