@@ -230,7 +230,6 @@ BasicModal {
     function fieldAreFilled() {
         return input_address.field.text != "" &&
              (input_max_amount.checked || (input_amount.field.text != "" && input_amount.field.acceptableInput && parseFloat(input_amount.field.text) > 0)) &&
-             input_address.field.acceptableInput &&
              feesAreFilled()
     }
 
@@ -285,7 +284,7 @@ BasicModal {
             }
 
             DefaultButton {
-                visible: address_data.convertible
+                visible: needFix
                 Layout.preferredWidth: 70
                 Layout.alignment: Qt.AlignRight
                 text: qsTr("Fix")
@@ -406,7 +405,7 @@ BasicModal {
                 text: qsTr("Prepare")
                 Layout.fillWidth: true
 
-                enabled: fieldAreFilled() && hasFunds() && !needFix && input_address.field.text!==""  && !root.is_send_busy
+                enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
                 onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                            isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
