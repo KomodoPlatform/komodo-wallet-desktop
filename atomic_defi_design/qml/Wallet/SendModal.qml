@@ -13,7 +13,9 @@ BasicModal {
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
     property bool needFix: false
+    property bool errorView: false
     property var address_data
+
 
     onClosed: reset()
     closePolicy: Popup.NoAutoClose
@@ -36,6 +38,12 @@ BasicModal {
         console.log("Address busy changed to === %1".arg(is_validate_address_busy))
         if(!is_validate_address_busy) {
             address_data = api_wallet_page.validate_address_data
+            if (address_data.reason!=="") {
+                errorView = true
+                reason.text = address_data.reason
+            }else {
+                errorView = false
+            }
             if(address_data.convertible) {
                 reason.text =  address_data.reason
                 if(needFix!==true)
@@ -266,7 +274,7 @@ BasicModal {
         // ERC-20 Lowercase issue
         RowLayout {
             Layout.fillWidth: true
-            visible: needFix && input_address.field.text!=="" //isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
+            visible: errorView && input_address.field.text!=="" //isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
             DefaultText {
                 id: reason
                 Layout.fillWidth: true
@@ -277,6 +285,7 @@ BasicModal {
             }
 
             DefaultButton {
+                visible: address_data.convertible
                 Layout.preferredWidth: 70
                 Layout.alignment: Qt.AlignRight
                 text: qsTr("Fix")
@@ -397,7 +406,7 @@ BasicModal {
                 text: qsTr("Prepare")
                 Layout.fillWidth: true
 
-                enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(input_address.field.text) && !root.is_send_busy
+                enabled: fieldAreFilled() && hasFunds() && !needFix && input_address.field.text!==""  && !root.is_send_busy
 
                 onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                            isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
