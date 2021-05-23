@@ -6,10 +6,12 @@ import Qaterial 1.0 as Qaterial
 
 import "../../Components"
 import "../../Constants"
+import "./BestOrder" as BestOrder
 
 ColumnLayout
 {
     property string selectedTicker: "KMD"
+    property var    selectedOrder
 
     id: root
     anchors.centerIn: parent
@@ -20,7 +22,7 @@ ColumnLayout
         height: 360
         radius: 10
 
-        ColumnLayout
+        ColumnLayout // Header
         {
             id: swap_card_desc
 
@@ -37,19 +39,6 @@ ColumnLayout
                     id: title
                     text: qsTr("Swap")
                     font.pixelSize: Style.textSize1
-                }
-
-                // Settings wheel
-                Image
-                {
-                    source: Qaterial.Icons.cog
-
-                    DefaultColorOverlay
-                    {
-                        anchors.fill: parent
-                        source: parent
-                        color: "#ffffff"
-                    }
                 }
             }
 
@@ -101,11 +90,7 @@ ColumnLayout
                     height: 30
                     placeholderText: "0.0"
                     font.pixelSize: Style.textSize1
-                    background: Rectangle
-                    {
-                        color: theme.backgroundColor
-                        //border.width: 1
-                    }
+                    background: Rectangle { color: theme.backgroundColor }
                     onTextChanged: // Check that entered amount is lower or equal to your wallet
                     {
 
@@ -210,16 +195,58 @@ ColumnLayout
                     text: "0.0"
                     font.pixelSize: Style.textSize1
                 }
-            }
 
+                DefaultRectangle // Shows best order coin
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 20
+                    width: 100
+                    height: 40
+                    radius: 20
+                    border.width: 0
+                    color: theme.backgroundColor
+
+                    DefaultImage
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        width: 20
+                        height: 20
+                        source: General.coinIcon(selectedOrder.coin)
+                        DefaultText
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.right
+                            anchors.leftMargin: 10
+                            text: selectedOrder.coin
+                        }
+                    }
+                }
+            }
             DefaultButton
             {
                 Layout.topMargin: 10
                 Layout.preferredWidth: 200
                 Layout.alignment: Qt.AlignHCenter
-                enabled: !General.isZero(from_value.text)
                 text: qsTr("Pick from best orders")
-                //font.pixelSize: Style.textSizeSmall4
+                onClicked: _bestOrdersModalLoader.open()
+
+                ModalLoader
+                {
+                    id: _bestOrdersModalLoader
+                    sourceComponent: bestOrdersModal
+                }
+                
+                Connections
+                {
+                    target: _bestOrdersModalLoader
+                    function onLoaded()
+                    {
+                        _bestOrdersModalLoader.item.selectedOrderChanged.connect(function() {root.selectedOrder = _bestOrdersModalLoader.item.selectedOrder})
+                    }
+                }
             }
         }
     }
@@ -326,6 +353,151 @@ ColumnLayout
                                     root.selectedTicker = model.ticker
                                     close()
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Best orders list
+    Component 
+    {
+        id: bestOrdersModal
+        BasicModal 
+        {
+            property var selectedOrder
+            
+            onOpened: 
+            {
+                API.app.trading_pg.set_pair(true, "KMD")
+                API.app.trading_pg.orderbook.refresh_best_orders()
+            }
+            id: root
+            width: 500
+            ModalContent 
+            {
+                title: qsTr("Best Orders")
+                DefaultListView
+                {
+                    model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+                    header: RowLayout // Best orders list header
+                    {
+                        DefaultText
+                        {
+                            Layout.alignment: Qt.AlignVCenter
+                            Layout.preferredWidth: 220
+                            text: qsTr("You get")
+                            font.family: Style.font_family
+                            font.bold: true
+                            font.weight: Font.Black
+                        }
+                        DefaultText
+                        {
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                            Layout.preferredWidth: 160
+                            text: qsTr("Fiat price")
+                            font.family: Style.font_family
+                            font.bold: true
+                            font.weight: Font.Black
+                        }
+
+                        DefaultText 
+                        {
+                            Layout.alignment: Qt.AlignVCenter
+                            Layout.preferredWidth: 50
+                            text: qsTr("CEX rate")
+                            font.family: Style.font_family
+                            font.bold: true
+                            font.weight: Font.Black
+                        }
+                    }
+                    delegate: ItemDelegate
+                    {
+                        id: root
+                        width: 480
+                        height: 50
+                        HorizontalLine
+                        {
+                            width: parent.width
+                        }
+                        RowLayout   // Order info
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            DefaultImage
+                            {
+                                Layout.preferredWidth: 24
+                                Layout.preferredHeight: 24
+                                source: General.coinIcon(coin)
+                            }
+                            DefaultText
+                            {
+                                Layout.preferredWidth: 180
+                                Layout.leftMargin: 5
+                                text: "%1 %2".arg(quantity).arg(coin)
+                                font.pixelSize: 14
+                            }
+                            VerticalLine
+                            {
+                                Layout.preferredHeight: parent.parent.height
+                            }
+                            DefaultText
+                            {
+                                Layout.preferredWidth: 150
+                                text: price_fiat+API.app.settings_pg.current_fiat_sign
+                            }
+                            VerticalLine
+                            {
+                                Layout.preferredHeight: parent.parent.height
+                            }
+                            DefaultText
+                            {
+                                Layout.preferredWidth: 150
+                                text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
+                            }
+                            DefaultTooltip 
+                            {
+                                id: _tooltip
+                                dim: true
+                                modal: true
+                                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+                                width: 250
+                                contentItem: DexLabelUnlinked 
+                                {
+                                    text_value: qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin)
+                                    wrapMode: DefaultText.Wrap
+                                    width: 250
+                                    onLinkActivated: 
+                                    {
+                                        if (link==="#no") _tooltip.close()
+                                        else 
+                                        {
+                                            if (API.app.enable_coins([coin]) === true) _tooltip.close()
+                                            else cannot_enable_coin_modal.open()
+                                        }
+                                    }
+                                    ModalLoader 
+                                    {
+                                        property string coin_to_enable_ticker: coin
+                                        id: cannot_enable_coin_modal
+                                        sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: cannot_enable_coin_modal.coin_to_enable_ticker }
+                                    }
+                                }
+                                delay: 200
+                            }
+                        }
+                        onClicked: 
+                        {
+                            if(!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
+                            {
+                                _tooltip.open()
+                            }
+                            else 
+                            {
+                                selectedOrder = model
+                                app.pairChanged(base_ticker, coin)
+                                API.app.trading_pg.orderbook.select_best_order(uuid)
                             }
                         }
                     }

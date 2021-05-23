@@ -439,6 +439,14 @@
     </message>
 </context>
 <context>
+    <name>AmountChart</name>
+    <message>
+        <location filename="../../qml/Portfolio/AmountChart.qml" line="335"/>
+        <source>Work in progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AssetPieChart</name>
     <message>
         <location filename="../../qml/Portfolio/AssetPieChart.qml" line="126"/>
@@ -3033,33 +3041,43 @@
 <context>
     <name>SimpleView</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="36"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="38"/>
         <source>Swap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="58"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="60"/>
         <source>Instant trading with best orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="88"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="90"/>
         <source>From</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="204"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="188"/>
         <source>To</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="228"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="212"/>
         <source>Pick from best orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="239"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="223"/>
         <source>Swap Now !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="238"/>
+        <source>Select a ticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="272"/>
+        <source>Token name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3303,22 +3321,22 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>TradeViewHeader</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="44"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="36"/>
         <source>Trading Mode - Multi Ordering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="44"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="36"/>
         <source>Trading Mode - Single Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="53"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="52"/>
         <source>Pro-Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="65"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="45"/>
         <source>Simple-Mode</source>
         <translation type="unfinished"></translation>
     </message>
