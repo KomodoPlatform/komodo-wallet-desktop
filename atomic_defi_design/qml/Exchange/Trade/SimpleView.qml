@@ -11,8 +11,8 @@ ColumnLayout
 {
     property string selectedTicker: "KMD"
 
+    id: root
     anchors.centerIn: parent
-
     DefaultRectangle
     {
         id: swap_card
@@ -164,8 +164,19 @@ ColumnLayout
 
                     ModalLoader
                     {
+                        property string selectedTicker
+                        onSelectedTickerChanged: root.selectedTicker = selectedTicker
                         id: coinsListModalLoader
                         sourceComponent: coinsListModal
+                    }
+
+                    Connections
+                    {
+                        target: coinsListModalLoader
+                        function onLoaded()
+                        {
+                            coinsListModalLoader.item.selectedTickerChanged.connect(function() {root.selectedTicker = coinsListModalLoader.item.selectedTicker})
+                        }
                     }
                 }
             }
@@ -227,6 +238,8 @@ ColumnLayout
         id: coinsListModal
         BasicModal
         {
+            property string selectedTicker
+
             id: root
             width: 450
             ModalContent
@@ -256,6 +269,8 @@ ColumnLayout
                                 text = text.substring(0, 30)
                             API.app.trading_pg.market_pairs_mdl.left_selection_box.search_exp = text
                         }
+
+                        Component.onDestruction: API.app.trading_pg.market_pairs_mdl.left_selection_box.search_exp = ""
                     }
                 }
 
@@ -306,7 +321,11 @@ ColumnLayout
                             MouseArea 
                             {
                                 anchors.fill: parent
-                                onClicked: close()
+                                onClicked: 
+                                {
+                                    root.selectedTicker = model.ticker
+                                    close()
+                                }
                             }
                         }
                     }
