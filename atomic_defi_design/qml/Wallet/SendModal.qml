@@ -30,17 +30,24 @@ BasicModal {
     readonly property bool is_send_busy: api_wallet_page.is_send_busy
     property var send_rpc_result: api_wallet_page.send_rpc_data
     readonly property bool is_validate_address_busy: api_wallet_page.validate_address_busy 
+    readonly property bool is_convert_address_busy: api_wallet_page.convert_address_busy
+    readonly property string address: api_wallet_page.converted_address
     onIs_validate_address_busyChanged: {
         console.log("Address busy changed to === %1".arg(is_validate_address_busy))
         if(!is_validate_address_busy) {
             address_data = api_wallet_page.validate_address_data
             if(address_data.convertible) {
-                needFix = true
-            }else {
-                if(needFix==true) {
-                    needFix = false
-                    input_address.field.text = api_wallet_page.validate_address
-                }
+                reason.text =  address_data.reason
+                if(needFix!==true)
+                    needFix = true
+            }
+        }
+    }
+    onIs_convert_address_busyChanged: {
+        if(!is_convert_address_busy){
+            if(needFix===true) {
+                needFix = false
+                input_address.field.text = api_wallet_page.converted_address
             }
         }
     }
@@ -261,12 +268,16 @@ BasicModal {
             Layout.fillWidth: true
             visible: needFix//isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
             DefaultText {
+                id: reason
+                Layout.fillWidth: true
+                wrapMode: Label.Wrap
                 Layout.alignment: Qt.AlignLeft
                 color: Style.colorRed
                 text_value: qsTr("The address has to be mixed case.")
             }
 
             DefaultButton {
+                Layout.preferredWidth: 70
                 Layout.alignment: Qt.AlignRight
                 text: qsTr("Fix")
                 onClicked: {
