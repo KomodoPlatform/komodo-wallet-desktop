@@ -3,10 +3,9 @@ import QtQuick 2.15
 TextFieldWithTitle {
     readonly property int max_length: 60
 
-    field.validator: RegExpValidator {
-        regExp: /[a-zA-Z0-9 \t]{25,50}/
-    }
+
     field.onTextChanged: {
+        field.text = field.text.trim()
         if(field.text.indexOf(' ') !== -1 || field.text.indexOf('\t') !== -1) {
             field.text = field.text.replace(/[ \t]/, '')
         }
