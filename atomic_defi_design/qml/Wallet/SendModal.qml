@@ -12,6 +12,10 @@ BasicModal {
 
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
+    property bool needFix: false
+    property bool errorView: false
+    property var address_data
+
 
     onClosed: reset()
     closePolicy: Popup.NoAutoClose
@@ -27,6 +31,34 @@ BasicModal {
 
     readonly property bool is_send_busy: api_wallet_page.is_send_busy
     property var send_rpc_result: api_wallet_page.send_rpc_data
+    readonly property bool is_validate_address_busy: api_wallet_page.validate_address_busy 
+    readonly property bool is_convert_address_busy: api_wallet_page.convert_address_busy
+    readonly property string address: api_wallet_page.converted_address
+    onIs_validate_address_busyChanged: {
+        console.log("Address busy changed to === %1".arg(is_validate_address_busy))
+        if(!is_validate_address_busy) {
+            address_data = api_wallet_page.validate_address_data
+            if (address_data.reason!=="") {
+                errorView = true
+                reason.text = address_data.reason
+            }else {
+                errorView = false
+            }
+            if(address_data.convertible) {
+                reason.text =  address_data.reason
+                if(needFix!==true)
+                    needFix = true
+            }
+        }
+    }
+    onIs_convert_address_busyChanged: {
+        if(!is_convert_address_busy){
+            if(needFix===true) {
+                needFix = false
+                input_address.field.text = api_wallet_page.converted_address
+            }
+        }
+    }
 
     readonly property bool auth_succeeded: api_wallet_page.auth_succeeded
 
@@ -198,7 +230,6 @@ BasicModal {
     function fieldAreFilled() {
         return input_address.field.text != "" &&
              (input_max_amount.checked || (input_amount.field.text != "" && input_amount.field.acceptableInput && parseFloat(input_amount.field.text) > 0)) &&
-             input_address.field.acceptableInput &&
              feesAreFilled()
     }
 
@@ -226,6 +257,9 @@ BasicModal {
                 title: qsTr("Recipient's address")
                 field.placeholderText: qsTr("Enter address of the recipient")
                 field.enabled: !root.is_send_busy
+                field.onTextChanged: {
+                    api_wallet_page.validate_address(field.text)
+                }
             }
 
             DefaultButton {
@@ -239,17 +273,24 @@ BasicModal {
         // ERC-20 Lowercase issue
         RowLayout {
             Layout.fillWidth: true
-            visible: isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
+            visible: errorView && input_address.field.text!=="" //isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
             DefaultText {
+                id: reason
+                Layout.fillWidth: true
+                wrapMode: Label.Wrap
                 Layout.alignment: Qt.AlignLeft
                 color: Style.colorRed
                 text_value: qsTr("The address has to be mixed case.")
             }
 
             DefaultButton {
+                visible: needFix
+                Layout.preferredWidth: 70
                 Layout.alignment: Qt.AlignRight
                 text: qsTr("Fix")
-                onClicked: input_address.field.text = API.app.to_eth_checksum_qt(input_address.field.text.toLowerCase())
+                onClicked: {
+                    api_wallet_page.convert_address(input_address.field.text, address_data.to_address_format)
+                }
                 enabled: !root.is_send_busy
             }
         }
@@ -364,7 +405,7 @@ BasicModal {
                 text: qsTr("Prepare")
                 Layout.fillWidth: true
 
-                enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(input_address.field.text) && !root.is_send_busy
+                enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
                 onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                            isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
