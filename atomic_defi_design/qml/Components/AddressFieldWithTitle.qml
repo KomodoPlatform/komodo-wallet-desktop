@@ -6,9 +6,6 @@ TextFieldWithTitle {
 
     field.onTextChanged: {
         field.text = field.text.trim()
-        if(field.text.indexOf(' ') !== -1 || field.text.indexOf('\t') !== -1) {
-            field.text = field.text.replace(/[ \t]/, '')
-        }
         if(field.text.length > max_length) {
             console.log("too long! ", field.text.length)
             field.text = field.text.substring(0, max_length)
