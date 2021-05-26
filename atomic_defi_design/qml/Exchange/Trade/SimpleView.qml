@@ -406,7 +406,7 @@ ColumnLayout
                         DefaultText 
                         {
                             Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 50
+                            Layout.preferredWidth: 80
                             text: qsTr("CEX rate")
                             font.family: Style.font_family
                             font.bold: true
