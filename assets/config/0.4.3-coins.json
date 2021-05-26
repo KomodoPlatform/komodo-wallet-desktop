@@ -2733,6 +2733,31 @@
     "active": false,
     "currently_enabled": false
   },
+  "NVC": {
+      "coin": "NVC",
+      "name": "Novacoin",
+      "coinpaprika_id": "nvc-novacoin",
+      "coingecko_id": "novacoin",
+      "electrum": [
+        {
+           "url": "electrumx.nvc.ewmcx.org:50002",
+           "protocol": "SSL",
+           "disable_cert_verification": true,
+        },
+        {
+           "url": "failover.nvc.ewmcx.biz:50002",
+           "protocol": "SSL",
+           "disable_cert_verification": true,
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.novaco.in/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "OOT": {
     "coin": "OOT",
     "name": "Utrum",
