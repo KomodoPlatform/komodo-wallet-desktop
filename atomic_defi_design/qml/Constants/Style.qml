@@ -403,6 +403,7 @@ QtObject {
                                           "TRX": "#F30031",
                                           "TSL": "#64B082",
                                           "UIS": "#008DCD",
+                                          "UNO": "##2F87BB",
                                           "VAL": "#1EEC84",
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",

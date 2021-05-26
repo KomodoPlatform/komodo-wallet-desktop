@@ -1901,6 +1901,27 @@
     "active": false,
     "currently_enabled": false
   },
+  "UNO": {
+      "coin": "UNO",
+      "name": "Unobtanium",
+      "coinpaprika_id": "uno-unobtanium",
+      "coingecko_id": "unobtanium",
+      "electrum": [
+        {
+          "url": "unobtanium.info.gf:50001",
+          "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/uno/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "USDC-BEP20": {
       "coin": "USDC-BEP20",
       "name": "USD Coin",
