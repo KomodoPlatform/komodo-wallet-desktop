@@ -113,7 +113,7 @@ ColumnLayout
                     height: 40
                     radius: 20
                     border.width: 0
-                    color: _mouseArea.containsMouse ? Style.colorSidebarHighlightGradient4 : theme.backgroundColor
+                    color: _mouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
 
                     DefaultMouseArea 
                     {
