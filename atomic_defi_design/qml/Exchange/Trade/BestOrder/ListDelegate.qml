@@ -94,7 +94,7 @@ Item {
             delay: 200
         }
 
-        DefaultText {
+        DexLabel {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
             text: price_fiat+API.app.settings_pg.current_fiat_sign
@@ -138,6 +138,7 @@ Item {
             if(!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled){
                 _tooltip.open()
             }else {
+                app.pairChanged(base_ticker, coin)
                 API.app.trading_pg.orderbook.select_best_order(uuid)
             }
             

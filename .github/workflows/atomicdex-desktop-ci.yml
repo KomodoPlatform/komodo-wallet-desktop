@@ -142,10 +142,10 @@ jobs:
       - name: Upload env variable for vpkg (Linux)
         if: runner.os == 'Linux'
         run: |
-          echo "CXXFLAGS=-stdlib=libc++" >> $GITHUB_ENV
-          echo "LDFLAGS=-stdlib=libc++" >> $GITHUB_ENV
-          echo "CXX=clang++-11" >> $GITHUB_ENV
-          echo "CC=clang-11" >> $GITHUB_ENV
+          #echo "CXXFLAGS=-stdlib=libc++" >> $GITHUB_ENV
+          #echo "LDFLAGS=-stdlib=libc++" >> $GITHUB_ENV
+          echo "CXX=clang++-12" >> $GITHUB_ENV
+          echo "CC=clang-12" >> $GITHUB_ENV
 
       - name: vcpkg deps (All)
         uses: KomodoPlatform/run-vcpkg@v7
@@ -172,10 +172,10 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
-          export CXXFLAGS=-stdlib=libc++
-          export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-11
-          export CC=clang-11
+          #export CXXFLAGS=-stdlib=libc++
+          #export LDFLAGS=-stdlib=libc++
+          export CXX=clang++-12
+          export CC=clang-12
           cd ci_tools_atomic_dex
           nimble build -y
 

@@ -30,7 +30,7 @@ namespace
                                                               cfg.set_timeout(std::chrono::seconds(5));
                                                               return cfg;
                                                           }()};
-    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"), g_openrates_cfg);
+    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://rates.komodo.live"), g_openrates_cfg);
     pplx::cancellation_token_source g_token_source;
 
     pplx::task<web::http::http_response>
@@ -38,7 +38,7 @@ namespace
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
-        req.set_request_uri(FROM_STD_STR("/latest?base=USD"));
+        req.set_request_uri(FROM_STD_STR("api/v1/usd_rates"));
         return g_openrates_client->request(req, g_token_source.get_token());
     }
 
@@ -113,6 +113,8 @@ namespace atomic_dex
             catch (const std::exception& e)
             {
                 SPDLOG_ERROR("pplx task error from refresh_other_coins_rates: {} - nb_try {}", e.what(), nb_try_load);
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(1s);
                 this->refresh_other_coins_rates(quote_id, ticker, with_update_providers, nb_try_load);
             };
         };
@@ -449,6 +451,8 @@ namespace atomic_dex
             catch (const std::exception& e)
             {
                 SPDLOG_ERROR("pplx task error from async_fetch_fiat_rates: {} - nb_try {}", e.what(), nb_try);
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(1s);
                 this->on_force_update_providers(evt);
             };
         };

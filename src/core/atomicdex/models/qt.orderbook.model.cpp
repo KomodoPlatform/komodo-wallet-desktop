@@ -390,7 +390,7 @@ namespace atomic_dex
                     {
                         if (this->m_current_orderbook_kind == kind::best_orders)
                         {
-                            SPDLOG_INFO("Removing order with UUID: {}", id);
+                            //SPDLOG_INFO("Removing order with UUID: {}", id);
                         }
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);

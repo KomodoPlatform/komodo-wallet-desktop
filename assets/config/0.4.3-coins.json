@@ -707,9 +707,9 @@
         "disable_cert_verification": true
       },
       {
-        "url": "chicago.ecoincore.com:34333",
+        "url": "woolloomooloo.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       },
       {
         "url": "lenoir.ecoincore.com:34333",
@@ -729,7 +729,7 @@
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "clc-collider-coin",
     "coingecko_id": "test-coin",
     "electrum": [
       {
@@ -1011,6 +1011,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "DOGE-BEP20": {
+      "coin": "DOGE-BEP20",
+      "name": "Dogecoin",
+      "coinpaprika_id": "doge-dogecoin",
+      "coingecko_id": "dogecoin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "DOT-BEP20": {
       "coin": "DOT-BEP20",
       "name": "Polkadot",
@@ -1081,6 +1098,31 @@
       },
       {
         "url": "lenoir.ecoincore.com:11017",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum1.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum2.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum3.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum4.egulden.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum5.egulden.org:11017",
         "protocol": "SSL",
         "disable_cert_verification": true
       }
@@ -1261,20 +1303,12 @@
       "active": false,
       "currently_enabled": false
   },
-    "FJC": {
+  "FJC": {
     "coin": "FJC",
     "name": "Fujicoin",
     "coinpaprika_id": "fjc-fujicoin",
     "coingecko_id": "fujicoin",
     "electrum": [
-      {
-        "url": "electrumx1.fujicoin.org:50001",
-        "protocol": "TCP"
-      },
-      {
-        "url": "electrumx2.fujicoin.org:50001",
-        "protocol": "TCP"
-      },
       {
         "url": "electrumx1.fujicoin.org:50003",
         "protocol": "SSL"
@@ -1600,6 +1634,21 @@
           "disable_cert_verification": false
         },
         {
+          "url": "electrum.dirtdivas.net:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.getlynx.club:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.atechhelp.com:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
           "url": "electrum.getlynx.io:50001",
           "protocol": "TCP"
         }
@@ -1902,6 +1951,24 @@
       "type": "BEP-20",
       "active": false,
       "currently_enabled": false
+  },
+  "USDT-ERC20": {
+      "coin": "USDT-ERC20",
+      "name": "Tether",
+      "coinpaprika_id": "usdt-tether",
+      "coingecko_id": "tether",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "AWC": {
     "active": false,
@@ -2388,7 +2455,7 @@
     "name": "Scalaris",
     "type": "UTXO",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "sca-scalaris",
     "electrum": [
       {
         "url": "electrum1.scalaris.info:10001"
@@ -2472,13 +2539,19 @@
     "coinpaprika_id": "vrsc-verus-coin",
     "electrum": [
       {
-        "url": "el0.verus.io:17485"
+        "url": "el0.verus.io:17486",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       },
       {
-        "url": "el1.verus.io:17485"
+        "url": "el1.verus.io:17486",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       },
       {
-        "url": "el2.verus.io:17485"
+        "url": "el2.verus.io:17486",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       }
     ],
     "explorer_url": [
@@ -2486,6 +2559,32 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "IL8P": {
+      "coin": "IL8P",
+      "name": "InfiniLooP",
+      "coinpaprika_id": "il8p-infiniloop",
+      "coingecko_id": "test-coin",
+      "electrum": [
+        {
+          "url": "il8p.electrumx.transcenders.name:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "il9p.electrumx.transcenders.name:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/il8p/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
   },
   "ILN": {
     "coin": "ILN",
@@ -2764,7 +2863,7 @@
     "coingecko_id": "terracoin",
     "electrum": [
       {
-        "url": "failover.trc-uis.ewmcx.biz:50002",
+        "url": "failover.trc-uis.ewmcx.biz:50006",
         "protocol": "SSL",
         "disable_cert_verification": true
       },
@@ -3301,18 +3400,6 @@
     "name": "HalalChain",
     "coingecko_id": "halalchain",
     "coinpaprika_id": "hlc-halalchain",
-    "active": false,
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://explorer.qtum.org/"
-    ],
-    "type": "QRC-20"
-  },
-  "MED": {
-    "coin": "MED",
-    "name": "Medibloc",
-    "coingecko_id": "medibloc",
-    "coinpaprika_id": "med-medibloc-qrc20",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
