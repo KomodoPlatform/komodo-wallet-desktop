@@ -200,7 +200,6 @@ ColumnLayout
 
                 DefaultText
                 {
-                    color: from_value.color
                     enabled: false
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
@@ -209,6 +208,7 @@ ColumnLayout
                     height: 30
                     text: "0.0"
                     font.pixelSize: Style.textSizeSmall5
+                    color: from_value.placeholderTextColor
                 }
 
                 DefaultRectangle // Shows best order coin
