@@ -3146,6 +3146,29 @@
       "active": false,
       "currently_enabled": false
   },
+  "XVC": {
+      "coin": "XVC",
+      "name": "Vanillacash",
+      "coinpaprika_id": "xvc-vcash",
+      "coingecko_id": "test-coin",
+      "electrum": [
+        {
+           "url": "electrumx.xvc.ewmcx.org:50001",
+           "protocol": "TCP"
+        },
+        {
+           "url": "failover.xvc.ewmcx.biz:50001",
+           "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://xvc.freicoin.info/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "XVS": {
       "coin": "XVS",
       "name": "Venus",
