@@ -2742,12 +2742,12 @@
         {
            "url": "electrumx.nvc.ewmcx.org:50002",
            "protocol": "SSL",
-           "disable_cert_verification": true,
+           "disable_cert_verification": true
         },
         {
            "url": "failover.nvc.ewmcx.biz:50002",
            "protocol": "SSL",
-           "disable_cert_verification": true,
+           "disable_cert_verification": true
         }
       ],
       "explorer_url": [
