@@ -388,7 +388,7 @@ ColumnLayout
                         {
                             Layout.alignment: Qt.AlignVCenter
                             Layout.preferredWidth: 220
-                            text: qsTr("You get")
+                            text: qsTr("Available Quantity")
                             font.family: Style.font_family
                             font.bold: true
                             font.weight: Font.Black
