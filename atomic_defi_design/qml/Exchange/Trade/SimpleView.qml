@@ -16,12 +16,12 @@ ColumnLayout
     id: root
     anchors.centerIn: parent
     onSelectedTickerChanged: { setPair(true, selectedTicker); from_value.text = "" }
-    onSelectedOrderChanged:  { setPair(false, selectedOrder.coin) }
+    onSelectedOrderChanged:  { }
     DefaultRectangle
     {
         id: swap_card
         width: 370
-        height: 360
+        height: 335
         radius: 20
 
         ColumnLayout // Header
@@ -213,53 +213,80 @@ ColumnLayout
 
                 DefaultRectangle // Shows best order coin
                 {
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 12
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: 100
-                    height: 40
-                    radius: 20
+                    width: _bestOrderIcon.enabled ? 90 : 110
+                    height: 30
+                    radius: 10
                     border.width: 0
-                    color: theme.backgroundColor
+                    color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
 
-                    DefaultImage
+                    DefaultMouseArea 
                     {
+                        id: _bestOrdersMouseArea
+                        anchors.fill: parent
+                        onClicked: _bestOrdersModalLoader.open()
+                        hoverEnabled: true
+                    }
+
+                    DefaultImage // Button with icon (a best order is currently selected)
+                    {
+                        id: _bestOrderIcon
+                        enabled: typeof selectedOrder !== 'undefined'
+                        onEnabledChanged: if (enabled) source = General.coinIcon(selectedOrder.coin)
+                        visible: enabled
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
                         anchors.left: parent.left
                         width: 20
                         height: 20
-                        source: General.coinIcon(selectedOrder.coin)
                         DefaultText
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
                             anchors.leftMargin: 10
-                            text: selectedOrder.coin
+                            onEnabledChanged: if (enabled) text = selectedOrder.coin
+                            font.pixelSize: Style.textSizeSmall4
+                            Arrow 
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.right
+                                anchors.leftMargin: 5
+                                up: false
+                            }
                         }
                     }
-                }
-            }
-            DefaultButton
-            {
-                Layout.topMargin: 10
-                Layout.preferredWidth: 200
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("Pick from best orders")
-                onClicked: _bestOrdersModalLoader.open()
 
-                ModalLoader
-                {
-                    id: _bestOrdersModalLoader
-                    sourceComponent: bestOrdersModal
-                }
-                
-                Connections
-                {
-                    target: _bestOrdersModalLoader
-                    function onLoaded()
+                    DefaultText  // Button (no bester order is currently selected)
                     {
-                        _bestOrdersModalLoader.item.selectedOrderChanged.connect(function() {root.selectedOrder = _bestOrdersModalLoader.item.selectedOrder})
+                        enabled: !_bestOrderIcon.enabled
+                        visible: enabled
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        text: qsTr("Select a coin")
+                        font.pixelSize: Style.textSizeSmall4
+                        Arrow 
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.right
+                            anchors.leftMargin: 5
+                            up: false
+                        }
+                    }
+
+                    ModalLoader
+                    {
+                        id: _bestOrdersModalLoader
+                        sourceComponent: bestOrdersModal
+                    }
+                    
+                    Connections
+                    {
+                        target: _bestOrdersModalLoader
+                        function onLoaded() { _bestOrdersModalLoader.item.selectedOrderChanged.connect(function() {root.selectedOrder = _bestOrdersModalLoader.item.selectedOrder}) }
                     }
                 }
             }
