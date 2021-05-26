@@ -20,7 +20,7 @@ ColumnLayout
         id: swap_card
         width: 370
         height: 360
-        radius: 10
+        radius: 20
 
         ColumnLayout // Header
         {
@@ -175,6 +175,7 @@ ColumnLayout
                 Layout.preferredHeight: 80
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 15
+                radius: 20
 
                 DefaultText
                 {
