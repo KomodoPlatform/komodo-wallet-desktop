@@ -30,66 +30,63 @@ ColumnLayout
             anchors.topMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 20
+            width: parent.width
 
-            RowLayout
+            DefaultText // Title
             {
-                DefaultText
-                {
-                    Layout.preferredWidth: swap_card.width - 70
-                    id: title
                     text: qsTr("Swap")
                     font.pixelSize: Style.textSize1
                 }
-            }
 
             DefaultText // Description
             {
-                Layout.topMargin: 6
+                anchors.topMargin: 12
                 font.pixelSize: Style.textSizeSmall4
                 text: qsTr("Instant trading with best orders")
             }
+        }
 
             HorizontalLine
             {
-                Layout.topMargin: 12
-                Layout.fillWidth: true
+            anchors.top: swap_card_desc.bottom
+            anchors.topMargin: 20
+            width: swap_card.width
             }
-        }
 
         ColumnLayout // Content
         {
             anchors.top: swap_card_desc.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: 40
             anchors.left: parent.left
             anchors.horizontalCenter: parent.horizontalCenter
 
             DefaultRectangle // From
-            DefaultRectangle
             {
                 id: swap_from_card
                 Layout.preferredWidth: swap_card.width - 20
-                Layout.preferredHeight: 80
+                Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
+                radius: 20
 
                 DefaultText // From Text
                 {
                     anchors.fill: parent
-                    anchors.leftMargin: 25
-                    anchors.topMargin: 10
+                    anchors.leftMargin: 17
+                    anchors.topMargin: 14
                     text: qsTr("From")
-                    font.pixelSize: Style.textSizeSmall5
+                    font.pixelSize: Style.textSizeSmall4
                 }
 
                 TextField // Amount
                 {
                     id: from_value
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 15
+                    anchors.bottomMargin: 12
                     anchors.left: parent.left
-                    anchors.leftMargin: 18
+                    anchors.leftMargin: 6
                     height: 30
                     placeholderText: "0.0"
-                    font.pixelSize: Style.textSize1
+                    font.pixelSize: Style.textSizeSmall5
                     background: Rectangle { color: theme.backgroundColor }
                     validator: RegExpValidator { regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/ }
                     onTextChanged:
@@ -106,12 +103,13 @@ ColumnLayout
 
                 Rectangle // Select ticker button
                 {
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 12
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: 100
-                    height: 40
-                    radius: 20
+                    width: 90
+                    height: 30
+                    radius: 10
                     border.width: 0
                     color: _mouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
 
@@ -137,6 +135,7 @@ ColumnLayout
                             anchors.left: parent.right
                             anchors.leftMargin: 10
                             text: selectedTicker
+                            font.pixelSize: Style.textSizeSmall4
 
                             Arrow 
                             {
@@ -179,10 +178,10 @@ ColumnLayout
                 DefaultText
                 {
                     anchors.fill: parent
-                    anchors.leftMargin: 25
-                    anchors.topMargin: 10
+                    anchors.leftMargin: 17
+                    anchors.topMargin: 14
                     text: qsTr("To")
-                    font.pixelSize: Style.textSizeSmall5
+                    font.pixelSize: Style.textSizeSmall4
                 }
 
                 DefaultText
@@ -190,12 +189,12 @@ ColumnLayout
                     color: from_value.color
                     enabled: false
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 15
+                    anchors.bottomMargin: 4
                     anchors.left: parent.left
-                    anchors.leftMargin: 30
+                    anchors.leftMargin: 18
                     height: 30
                     text: "0.0"
-                    font.pixelSize: Style.textSize1
+                    font.pixelSize: Style.textSizeSmall5
                 }
 
                 DefaultRectangle // Shows best order coin
@@ -377,7 +376,7 @@ ColumnLayout
                 API.app.trading_pg.orderbook.refresh_best_orders()
             }
             id: root
-            width: 500
+            width: 540
             ModalContent 
             {
                 title: qsTr("Best Orders")
