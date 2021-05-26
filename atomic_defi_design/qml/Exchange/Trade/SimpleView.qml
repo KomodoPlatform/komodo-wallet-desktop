@@ -56,14 +56,14 @@ ColumnLayout
             }
         }
 
-        ColumnLayout
+        ColumnLayout // Content
         {
             anchors.top: swap_card_desc.bottom
             anchors.topMargin: 20
             anchors.left: parent.left
             anchors.horizontalCenter: parent.horizontalCenter
 
-            // From
+            DefaultRectangle // From
             DefaultRectangle
             {
                 id: swap_from_card
@@ -71,7 +71,7 @@ ColumnLayout
                 Layout.preferredHeight: 80
                 Layout.alignment: Qt.AlignHCenter
 
-                DefaultText
+                DefaultText // From Text
                 {
                     anchors.fill: parent
                     anchors.leftMargin: 25
@@ -80,7 +80,7 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall5
                 }
 
-                TextField
+                TextField // Amount
                 {
                     id: from_value
                     anchors.bottom: parent.bottom
@@ -104,7 +104,7 @@ ColumnLayout
                     color: from_value.color
                 }
 
-                Rectangle
+                Rectangle // Select ticker button
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
@@ -417,14 +417,10 @@ ColumnLayout
                     }
                     delegate: ItemDelegate
                     {
-                        id: root
                         width: 480
                         height: 50
-                        HorizontalLine
-                        {
-                            width: parent.width
-                        }
-                        RowLayout   // Order info
+                        HorizontalLine { width: parent.width }
+                        RowLayout                                // Order info
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             DefaultImage
