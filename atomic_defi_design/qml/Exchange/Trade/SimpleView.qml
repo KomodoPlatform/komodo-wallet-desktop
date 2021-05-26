@@ -91,9 +91,11 @@ ColumnLayout
                     placeholderText: "0.0"
                     font.pixelSize: Style.textSize1
                     background: Rectangle { color: theme.backgroundColor }
-                    onTextChanged: // Check that entered amount is lower or equal to your wallet
-                    {
-
+                    onTextChanged: {
+                        if (text === "")
+                            return
+                        API.app.trading_pg.volume = text
+                        text = API.app.trading_pg.volume
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                 }
