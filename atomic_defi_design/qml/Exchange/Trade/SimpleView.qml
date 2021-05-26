@@ -15,6 +15,8 @@ ColumnLayout
 
     id: root
     anchors.centerIn: parent
+    onSelectedTickerChanged: { setPair(true, selectedTicker); from_value.text = "" }
+    onSelectedOrderChanged:  { setPair(false, selectedOrder.coin) }
     DefaultRectangle
     {
         id: swap_card
@@ -34,9 +36,9 @@ ColumnLayout
 
             DefaultText // Title
             {
-                    text: qsTr("Swap")
-                    font.pixelSize: Style.textSize1
-                }
+                text: qsTr("Swap")
+                font.pixelSize: Style.textSize1
+            }
 
             DefaultText // Description
             {
@@ -46,12 +48,12 @@ ColumnLayout
             }
         }
 
-            HorizontalLine
-            {
+        HorizontalLine
+        {
             anchors.top: swap_card_desc.bottom
             anchors.topMargin: 20
             width: swap_card.width
-            }
+        }
 
         ColumnLayout // Content
         {
@@ -59,7 +61,7 @@ ColumnLayout
             anchors.topMargin: 40
             anchors.left: parent.left
             anchors.horizontalCenter: parent.horizontalCenter
-
+            
             DefaultRectangle // From
             {
                 id: swap_from_card
@@ -74,6 +76,18 @@ ColumnLayout
                     anchors.leftMargin: 17
                     anchors.topMargin: 14
                     text: qsTr("From")
+                    font.pixelSize: Style.textSizeSmall4
+                }
+
+                DefaultText // Balance
+                {
+                    anchors.right: parent.right
+                    anchors.rightMargin: 17
+                    anchors.top: parent.top
+                    anchors.topMargin: 14
+                    text: qsTr("Balance %1 : %2")
+                        .arg('<a href=""></a>')
+                        .arg(API.app.trading_pg.max_volume)
                     font.pixelSize: Style.textSizeSmall4
                 }
 
