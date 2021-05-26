@@ -184,7 +184,7 @@ ColumnLayout
             DefaultRectangle
             {
                 Layout.preferredWidth: swap_card.width - 20
-                Layout.preferredHeight: 80
+                Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 15
                 radius: 20
