@@ -38,6 +38,12 @@ namespace atomic_dex
     void
     orderbook_scanner_service::process_best_orders() 
     {
+        if (m_rpc_busy)
+        {
+            SPDLOG_INFO("process_best_orders is busy - skipping");
+            return;
+        }
+        SPDLOG_INFO("process_best_orders processing");
         if (m_system_manager.has_system<mm2_service>())
         {
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
