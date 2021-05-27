@@ -55,6 +55,7 @@ set(TS_FILES
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages)
 qt5_create_translation(QM_FILES
         ${PROJECT_SOURCE_DIR}/atomic_defi_design/qml
+        ${PROJECT_SOURCE_DIR}/src
         ${TS_FILES}
         OPTIONS -source-language en_US -no-obsolete)
 message(STATUS "QM FILES -> ${QM_FILES}")
