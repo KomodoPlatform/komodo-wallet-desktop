@@ -1901,6 +1901,27 @@
     "active": false,
     "currently_enabled": false
   },
+  "UNO": {
+      "coin": "UNO",
+      "name": "Unobtanium",
+      "coinpaprika_id": "uno-unobtanium",
+      "coingecko_id": "unobtanium",
+      "electrum": [
+        {
+          "url": "unobtanium.info.gf:50001",
+          "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/uno/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "USDC-BEP20": {
       "coin": "USDC-BEP20",
       "name": "USD Coin",
@@ -2712,6 +2733,31 @@
     "active": false,
     "currently_enabled": false
   },
+  "NVC": {
+      "coin": "NVC",
+      "name": "Novacoin",
+      "coinpaprika_id": "nvc-novacoin",
+      "coingecko_id": "novacoin",
+      "electrum": [
+        {
+           "url": "electrumx.nvc.ewmcx.org:50002",
+           "protocol": "SSL",
+           "disable_cert_verification": true
+        },
+        {
+           "url": "failover.nvc.ewmcx.biz:50002",
+           "protocol": "SSL",
+           "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.novaco.in/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "OOT": {
     "coin": "OOT",
     "name": "Utrum",
@@ -3066,6 +3112,29 @@
       "active": false,
       "currently_enabled": false
   },
+  "XPM": {
+      "coin": "XPM",
+      "name": "Primecoin",
+      "coinpaprika_id": "xpm-primecoin",
+      "coingecko_id": "primecoin",
+      "electrum": [
+        {
+           "url": "electrumx.primecoin.org:50001",
+           "protocol": "TCP"
+        },
+        {
+           "url": "electrumx.gemmer.primecoin.org:50011",
+           "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://www.blockseek.io/xpm/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "XRP-BEP20": {
       "coin": "XRP-BEP20",
       "name": "XRP",
@@ -3099,6 +3168,29 @@
       "type": "BEP-20",
       "active": false,
       "currently_enabled": false
+  },
+  "XVC": {
+      "coin": "XVC",
+      "name": "Vanillacash",
+      "coinpaprika_id": "xvc-vcash",
+      "coingecko_id": "test-coin",
+      "electrum": [
+        {
+           "url": "electrumx.xvc.ewmcx.org:50001",
+           "protocol": "TCP"
+        },
+        {
+           "url": "failover.xvc.ewmcx.biz:50001",
+           "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://xvc.freicoin.info/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "XVS": {
       "coin": "XVS",
