@@ -658,6 +658,7 @@ namespace atomic_dex
             }
             emit volumeChanged();
             this->cap_volume();
+            this->get_orderbook_wrapper()->refresh_best_orders();
         }
     }
 
