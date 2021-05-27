@@ -166,10 +166,6 @@ FloatingBackground {
                 second.onPressedChanged: {
                     if(second.pressed) {
                         oldSecondValue = second.value
-                    }else {
-                        if(oldSecondValue!==second.value) {
-                            API.app.trading_pg.orderbook.refresh_best_orders()
-                        }
                     }
                 }
 
