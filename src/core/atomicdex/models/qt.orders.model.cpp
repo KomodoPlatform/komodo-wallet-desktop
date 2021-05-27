@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 //! Project
-#include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/models/qt.orders.model.hpp"
+#include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -388,6 +388,8 @@ namespace atomic_dex
                 const QString& rel_coin  = data(idx, OrdersRoles::RelCoinRole).toString();
                 m_dispatcher.trigger<swap_status_notification>(
                     contents.order_id, prev_value.toString(), new_value.toString(), base_coin, rel_coin, new_value_d.toString());
+                auto& mm2 = m_system_manager.get_system<mm2_service>();
+                mm2.process_orderbook(true);
             }
             update_value(OrdersRoles::MakerPaymentIdRole, contents.maker_payment_id, idx, *this);
             update_value(OrdersRoles::TakerPaymentIdRole, contents.taker_payment_id, idx, *this);
@@ -445,21 +447,24 @@ namespace atomic_dex
     {
         const auto&                     data = contents.orders_and_swaps;
         std::vector<t_order_swaps_data> to_init;
-        std::for_each(begin(data) + contents.nb_orders, end(data), [this, &to_init](auto&& cur) {
-            if (cur.is_swap)
+        std::for_each(
+            begin(data) + contents.nb_orders, end(data),
+            [this, &to_init](auto&& cur)
             {
-                const auto& uuid = cur.order_id.toStdString();
-                if (this->m_swaps_id_registry.contains(uuid))
+                if (cur.is_swap)
                 {
-                    this->update_swap(cur);
+                    const auto& uuid = cur.order_id.toStdString();
+                    if (this->m_swaps_id_registry.contains(uuid))
+                    {
+                        this->update_swap(cur);
+                    }
+                    else
+                    {
+                        to_init.emplace_back(cur);
+                        m_swaps_id_registry.emplace(uuid);
+                    }
                 }
-                else
-                {
-                    to_init.emplace_back(cur);
-                    m_swaps_id_registry.emplace(uuid);
-                }
-            }
-        });
+            });
         if (not to_init.empty())
         {
             this->common_insert(to_init, "swaps");
@@ -474,17 +479,20 @@ namespace atomic_dex
         if (contents.nb_orders > 0)
         {
             std::vector<t_order_swaps_data> to_init;
-            std::for_each(begin(data), begin(data) + contents.nb_orders, [this, &to_init, &are_present](auto&& cur) {
-                if (this->m_orders_id_registry.contains(cur.order_id.toStdString()))
+            std::for_each(
+                begin(data), begin(data) + contents.nb_orders,
+                [this, &to_init, &are_present](auto&& cur)
                 {
-                    this->update_existing_order(cur);
-                }
-                else
-                {
-                    m_orders_id_registry.emplace(to_init.emplace_back(cur).order_id.toStdString());
-                }
-                are_present.emplace(cur.order_id.toStdString());
-            });
+                    if (this->m_orders_id_registry.contains(cur.order_id.toStdString()))
+                    {
+                        this->update_existing_order(cur);
+                    }
+                    else
+                    {
+                        m_orders_id_registry.emplace(to_init.emplace_back(cur).order_id.toStdString());
+                    }
+                    are_present.emplace(cur.order_id.toStdString());
+                });
 
             if (not to_init.empty())
             {
@@ -626,7 +634,7 @@ namespace atomic_dex
             //! Filtering changed
             this->set_fetching_busy(true);
             this->reset();
-            //this->reset_backend("set_filtering_infos"); ///< We change page, we need to clear, but do not notify the front-end
+            // this->reset_backend("set_filtering_infos"); ///< We change page, we need to clear, but do not notify the front-end
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
             mm2.set_orders_and_swaps_pagination_infos(
                 static_cast<std::size_t>(m_model_data.current_page), static_cast<std::size_t>(m_model_data.limit), m_model_data.filtering_infos);
