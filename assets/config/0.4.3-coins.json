@@ -3112,6 +3112,29 @@
       "active": false,
       "currently_enabled": false
   },
+  "XPM": {
+      "coin": "XPM",
+      "name": "Primecoin",
+      "coinpaprika_id": "xpm-primecoin",
+      "coingecko_id": "primecoin",
+      "electrum": [
+        {
+           "url": "electrumx.primecoin.org:50001",
+           "protocol": "TCP"
+        },
+        {
+           "url": "electrumx.gemmer.primecoin.org:50011",
+           "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://www.blockseek.io/xpm/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "XRP-BEP20": {
       "coin": "XRP-BEP20",
       "name": "XRP",

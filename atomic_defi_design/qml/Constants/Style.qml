@@ -302,6 +302,7 @@ QtObject {
                                           "FIRO": "#BB2100",
                                           "LTC": "#BFBBBB",
                                           "LYNX": "#0071BA",
+                                          "XPM": "#A67522",
                                           "XVC": "#B50126",
                                           "ZEC": "#ECB244",
                                           "ZER": "#FFFFFF",
