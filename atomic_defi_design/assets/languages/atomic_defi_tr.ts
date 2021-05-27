@@ -3032,42 +3032,72 @@
 <context>
     <name>SimpleView</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="38"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="39"/>
         <source>Swap</source>
         <translation type="unfinished">Takasla</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="60"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="47"/>
         <source>Instant trading with best orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="90"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="78"/>
         <source>From</source>
         <translation type="unfinished">Gönderen</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="188"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="88"/>
+        <source>Balance %1 : %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="197"/>
         <source>To</source>
         <translation type="unfinished">Alan</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="212"/>
-        <source>Pick from best orders</source>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="269"/>
+        <source>Pick an order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="223"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="423"/>
+        <source>Best Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="433"/>
+        <source>Available Quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="442"/>
+        <source>Fiat price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="452"/>
+        <source>CEX rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="506"/>
+        <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="301"/>
         <source>Swap Now !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="238"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="316"/>
         <source>Select a ticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="272"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="350"/>
         <source>Token name</source>
         <translation type="unfinished"></translation>
     </message>

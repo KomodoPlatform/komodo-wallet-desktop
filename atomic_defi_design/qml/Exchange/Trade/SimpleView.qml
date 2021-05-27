@@ -85,7 +85,7 @@ ColumnLayout
                     anchors.rightMargin: 17
                     anchors.top: parent.top
                     anchors.topMargin: 14
-                    text: qsTr("Balance %1 : %2")
+                    text: qsTr("Tradable %1 : %2")
                         .arg('<a href=""></a>')
                         .arg(API.app.trading_pg.max_volume)
                     font.pixelSize: Style.textSizeSmall4
@@ -266,7 +266,7 @@ ColumnLayout
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
                         anchors.left: parent.left
-                        text: qsTr("Select a coin")
+                        text: qsTr("Pick an order")
                         font.pixelSize: Style.textSizeSmall4
                         Arrow 
                         {
