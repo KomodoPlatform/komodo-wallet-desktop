@@ -286,7 +286,14 @@ ColumnLayout
                     Connections
                     {
                         target: _bestOrdersModalLoader
-                        function onLoaded() { _bestOrdersModalLoader.item.selectedOrderChanged.connect(function() {root.selectedOrder = _bestOrdersModalLoader.item.selectedOrder}) }
+                        function onLoaded() 
+                        { 
+                            _bestOrdersModalLoader.item.selectedOrderChanged.connect(function() 
+                            {
+                                root.selectedOrder = _bestOrdersModalLoader.item.selectedOrder
+                                _bestOrdersModalLoader.close()
+                            }) 
+                        }
                     }
                 }
             }
