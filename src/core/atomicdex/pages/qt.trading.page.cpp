@@ -608,6 +608,7 @@ namespace atomic_dex
             emit priceReversedChanged();
             emit get_orderbook_wrapper()->currentMinTakerVolChanged();
             get_orderbook_wrapper()->adjust_min_vol();
+            this->determine_fees();
         }
     }
 
@@ -658,6 +659,7 @@ namespace atomic_dex
             emit volumeChanged();
             this->cap_volume();
             this->get_orderbook_wrapper()->refresh_best_orders();
+            this->determine_fees();
         }
     }
 
@@ -1032,6 +1034,12 @@ namespace atomic_dex
     void
     trading_page::determine_fees()
     {
+        if (is_preimage_busy())
+        {
+            SPDLOG_INFO("determine_fees busy - skipping.");
+            return;
+        }
+        SPDLOG_INFO("determine_fees processing");
         using namespace std::string_literals;
         const auto* market_pair = get_market_pairs_mdl();
         auto&       mm2         = this->m_system_manager.get_system<mm2_service>();
