@@ -430,9 +430,12 @@ ColumnLayout
                 title: qsTr("Best Orders")
                 DefaultListView
                 {
+                    Layout.preferredHeight: 450
+                    Layout.fillWidth: true
                     model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
                     header: RowLayout // Best orders list header
                     {
+                        Layout.fillWidth: true
                         DefaultText
                         {
                             Layout.alignment: Qt.AlignVCenter
@@ -470,6 +473,7 @@ ColumnLayout
                         RowLayout                                // Order info
                         {
                             anchors.verticalCenter: parent.verticalCenter
+                            width: parent.width
                             DefaultImage
                             {
                                 Layout.preferredWidth: 24
