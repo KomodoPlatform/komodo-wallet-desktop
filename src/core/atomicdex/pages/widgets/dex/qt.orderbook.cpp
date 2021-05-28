@@ -165,10 +165,12 @@ namespace atomic_dex
     {
         if (safe_float(m_system_manager.get_system<trading_page>().get_volume().toStdString()) > 0)
         {
+            //SPDLOG_INFO("refresh best orders");
             this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
         }
         else
         {
+            SPDLOG_INFO("clear best orders");
             get_best_orders()->clear_orderbook();
         }
     }
@@ -192,6 +194,7 @@ namespace atomic_dex
             out["quantity_numer"]    = QString::fromStdString(order.max_volume_fraction_numer);
             out["min_volume"]        = QString::fromStdString(order.min_volume);
             out["base_min_volume"]   = QString::fromStdString(order.base_min_volume);
+            out["base_max_volume"]   = QString::fromStdString(order.base_max_volume);
             m_selected_best_order    = out;
             auto& trading_pg         = m_system_manager.get_system<trading_page>();
             if (!trading_pg.set_pair(false, QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin)))

@@ -66,6 +66,8 @@ namespace atomic_dex
             break;
         case orderbook_model::BaseMinVolumeRole:
             break;
+        case orderbook_model::BaseMaxVolumeRole:
+            break;
         case orderbook_model::EnoughFundsToPayMinVolume:
             break;
         case orderbook_model::CEXRatesRole:

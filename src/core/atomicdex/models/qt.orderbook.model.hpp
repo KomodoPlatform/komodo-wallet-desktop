@@ -64,7 +64,8 @@ namespace atomic_dex
             SendRole,
             PriceFiatRole,
             HaveCEXIDRole,
-            BaseMinVolumeRole
+            BaseMinVolumeRole,
+            BaseMaxVolumeRole
         };
 
         orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent = nullptr);

@@ -699,13 +699,13 @@ namespace atomic_dex
                 else
                 {
                     auto max_vol_str = utils::format_float(safe_float(max_taker_vol));
-                    if (m_preffered_order.has_value() && !m_preffered_order->empty() && m_preffered_order->contains("price"))
+                    if (m_preffered_order.has_value() && !m_preffered_order->empty() && m_preffered_order->contains("base_max_volume"))
                     {
-                        auto       available_quantity       = m_preffered_order->at("quantity").get<std::string>();
+                        auto       available_quantity       = m_preffered_order->at("base_max_volume").get<std::string>();
                         t_float_50 available_quantity_order = safe_float(available_quantity);
                         if (available_quantity_order < safe_float(max_taker_vol))
                         {
-                            SPDLOG_INFO("Available quantity in selected order is less than my max tradeable amount, capping it to the order");
+                            SPDLOG_INFO("Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}", m_preffered_order->dump(4));
                             max_vol_str = available_quantity;
                         }
                     }
