@@ -105,8 +105,16 @@ ColumnLayout
                     validator: RegExpValidator { regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/ }
                     onTextChanged:
                     {
-                        API.app.trading_pg.volume = text;
-                        text = API.app.trading_pg.volume;
+                        if (text === "")
+                        {
+                            API.app.trading_pg.volume = 0
+                            text = ""
+                        }
+                        else
+                        {
+                            API.app.trading_pg.volume = text;
+                            text = API.app.trading_pg.volume;
+                        }
                     }
                 }
 
