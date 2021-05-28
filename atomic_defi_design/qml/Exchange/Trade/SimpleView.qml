@@ -217,7 +217,7 @@ ColumnLayout
                     anchors.bottomMargin: 12
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: _bestOrderIcon.enabled ? 90 : 110
+                    width: _bestOrderIcon.enabled ? _bestOrderIcon.width + _bestOrderTickerText.width + _bestOrderArrow.width + 27 : 110
                     height: 30
                     radius: 10
                     border.width: 0
@@ -244,6 +244,7 @@ ColumnLayout
                         height: 20
                         DefaultText
                         {
+                            id: _bestOrderTickerText
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
                             anchors.leftMargin: 10
@@ -251,6 +252,7 @@ ColumnLayout
                             font.pixelSize: Style.textSizeSmall4
                             Arrow 
                             {
+                                id: _bestOrderArrow
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.right
                                 anchors.leftMargin: 5
