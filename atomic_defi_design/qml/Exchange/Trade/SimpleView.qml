@@ -16,7 +16,7 @@ ColumnLayout
     id: root
     anchors.centerIn: parent
     onSelectedTickerChanged: { setPair(true, selectedTicker); from_value.text = "" }
-    onSelectedOrderChanged:  { }
+    onSelectedOrderChanged:  { API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) }
     DefaultRectangle
     {
         id: swap_card
@@ -172,13 +172,10 @@ ColumnLayout
                     Connections
                     {
                         target: coinsListModalLoader
-                        function onLoaded()
-                        {
-                            coinsListModalLoader.item.selectedTickerChanged.connect(function() {root.selectedTicker = coinsListModalLoader.item.selectedTicker})
+                        function onLoaded() { coinsListModalLoader.item.selectedTickerChanged.connect(function() { root.selectedTicker = coinsListModalLoader.item.selectedTicker }) }
                         }
                     }
                 }
-            }
 
             // To
             DefaultRectangle
@@ -235,7 +232,7 @@ ColumnLayout
                     {
                         id: _bestOrderIcon
                         enabled: typeof selectedOrder !== 'undefined'
-                        onEnabledChanged: if (enabled) source = General.coinIcon(selectedOrder.coin)
+                        source: General.coinIcon(selectedOrder.coin)
                         visible: enabled
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
@@ -248,7 +245,7 @@ ColumnLayout
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
                             anchors.leftMargin: 10
-                            onEnabledChanged: if (enabled) text = selectedOrder.coin
+                            text: selectedOrder.coin
                             font.pixelSize: Style.textSizeSmall4
                             Arrow 
                             {
@@ -536,15 +533,8 @@ ColumnLayout
                         }
                         onClicked: 
                         {
-                            if(!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
-                            {
-                                _tooltip.open()
-                            }
-                            else 
-                            {
-                                selectedOrder = model
-                                app.pairChanged(base_ticker, coin)
-                                API.app.trading_pg.orderbook.select_best_order(uuid)
+                            if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled) _tooltip.open()
+                            else selectedOrder = { "coin": coin, "uuid": uuid }
                             }
                         }
                     }
@@ -552,4 +542,3 @@ ColumnLayout
             }
         }
     }
-}
