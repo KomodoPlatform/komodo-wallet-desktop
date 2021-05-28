@@ -173,9 +173,9 @@ ColumnLayout
                     {
                         target: coinsListModalLoader
                         function onLoaded() { coinsListModalLoader.item.selectedTickerChanged.connect(function() { root.selectedTicker = coinsListModalLoader.item.selectedTicker }) }
-                        }
                     }
                 }
+            }
 
             // To
             DefaultRectangle
@@ -214,7 +214,7 @@ ColumnLayout
                     anchors.bottomMargin: 12
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: _bestOrderIcon.enabled ? _bestOrderIcon.width + _bestOrderTickerText.width + _bestOrderArrow.width + 27 : 110
+                    width: _bestOrderIcon.enabled ? _bestOrderIcon.width + _bestOrderTickerText.width + _bestOrderArrow.width + 29.5 : 110
                     height: 30
                     radius: 10
                     border.width: 0
@@ -535,10 +535,10 @@ ColumnLayout
                         {
                             if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled) _tooltip.open()
                             else selectedOrder = { "coin": coin, "uuid": uuid }
-                            }
                         }
                     }
                 }
             }
         }
     }
+}
