@@ -15,7 +15,7 @@ ColumnLayout
 
     id: root
     anchors.centerIn: parent
-    onSelectedTickerChanged: { setPair(true, selectedTicker); from_value.text = "" }
+    onSelectedTickerChanged: { setPair(true, selectedTicker); _fromValue.text = "" }
     onSelectedOrderChanged:  { API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) }
     DefaultRectangle
     {
@@ -93,7 +93,7 @@ ColumnLayout
 
                 TextField // Amount
                 {
-                    id: from_value
+                    id: _fromValue
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 12
                     anchors.left: parent.left
@@ -112,7 +112,7 @@ ColumnLayout
 
                 DefaultText
                 {
-                    color: from_value.color
+                    color: _fromValue.color
                 }
 
                 Rectangle // Select ticker button
@@ -197,6 +197,7 @@ ColumnLayout
 
                 DefaultText
                 {
+                    id: _toValue
                     enabled: false
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
@@ -205,7 +206,7 @@ ColumnLayout
                     height: 30
                     text: "0.0"
                     font.pixelSize: Style.textSizeSmall5
-                    color: from_value.placeholderTextColor
+                    color: _fromValue.placeholderTextColor
                 }
 
                 DefaultRectangle // Shows best order coin
@@ -301,6 +302,7 @@ ColumnLayout
 
     DefaultButton
     {
+        enabled: parseFloat(_fromValue) > 0 && parseFloat(_toValue) > 0
         Layout.topMargin: 10
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: swap_card.width
