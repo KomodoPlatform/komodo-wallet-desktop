@@ -420,11 +420,7 @@ ColumnLayout
         {
             property var selectedOrder
             
-            onOpened: 
-            {
-                API.app.trading_pg.set_pair(true, "KMD")
-                API.app.trading_pg.orderbook.refresh_best_orders()
-            }
+            onOpened: API.app.trading_pg.orderbook.refresh_best_orders()
             id: root
             width: 540
             ModalContent 
