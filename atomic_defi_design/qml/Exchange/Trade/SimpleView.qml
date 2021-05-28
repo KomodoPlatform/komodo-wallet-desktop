@@ -318,6 +318,12 @@ ColumnLayout
         }
     }
 
+    PriceLine // Price
+    {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.topMargin: 20
+    }
+
     // Coins list
     Component
     {
