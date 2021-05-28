@@ -10,7 +10,7 @@ import "./BestOrder" as BestOrder
 
 ColumnLayout
 {
-    property string selectedTicker: "KMD"
+    property string selectedTicker: left_ticker
     property var    selectedOrder
 
     id: root
