@@ -242,7 +242,7 @@ ColumnLayout
                     {
                         id: _bestOrderIcon
                         enabled: typeof selectedOrder !== 'undefined'
-                        source: General.coinIcon(selectedOrder.coin)
+                        source: enabled ? General.coinIcon(selectedOrder.coin) : ""
                         visible: enabled
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
@@ -255,7 +255,7 @@ ColumnLayout
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
                             anchors.leftMargin: 10
-                            text: selectedOrder.coin
+                            text: enabled ? selectedOrder.coin : ""
                             font.pixelSize: Style.textSizeSmall4
                             Arrow 
                             {
