@@ -260,14 +260,14 @@ namespace atomic_dex
                                : false;
         t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50 cur_min_trade  = safe_float(get_min_trade_vol().toStdString());
-        //t_float_50 delta          = (cur_min_trade * 100) / safe_float(m_max_volume.toStdString());
-        //t_float_50 delta_cur      = (cur_min_trade * 100) / safe_float(m_volume.toStdString());
-        // SPDLOG_INFO("delta min_vol compare to max volume is: {}", utils::format_float(delta));
-        // SPDLOG_INFO("delta min_vol compare to current volume is: {}", utils::format_float(delta_cur));
-        // SPDLOG_INFO("base: {} base_min_vol: {}", base_resp.coin, base_resp.min_trading_vol);
-        //SPDLOG_INFO("rel: {} rel_min_vol: {}", rel_resp.coin, rel_resp.min_trading_vol);
-        //SPDLOG_INFO("cur_min_trade {}", cur_min_trade.str());
-        //SPDLOG_INFO("base_min_trade {}", base_min_trade.str());
+        // t_float_50 delta          = (cur_min_trade * 100) / safe_float(m_max_volume.toStdString());
+        // t_float_50 delta_cur      = (cur_min_trade * 100) / safe_float(m_volume.toStdString());
+        //  SPDLOG_INFO("delta min_vol compare to max volume is: {}", utils::format_float(delta));
+        //  SPDLOG_INFO("delta min_vol compare to current volume is: {}", utils::format_float(delta_cur));
+        //  SPDLOG_INFO("base: {} base_min_vol: {}", base_resp.coin, base_resp.min_trading_vol);
+        // SPDLOG_INFO("rel: {} rel_min_vol: {}", rel_resp.coin, rel_resp.min_trading_vol);
+        // SPDLOG_INFO("cur_min_trade {}", cur_min_trade.str());
+        // SPDLOG_INFO("base_min_trade {}", base_min_trade.str());
         SPDLOG_INFO("min_trade_amount_field {}", m_minimal_trading_amount.toStdString());
 
         t_sell_request req{
@@ -698,8 +698,17 @@ namespace atomic_dex
                 }
                 else
                 {
-                    const auto max_vol_str = utils::format_float(safe_float(max_taker_vol));
-
+                    auto max_vol_str = utils::format_float(safe_float(max_taker_vol));
+                    if (m_preffered_order.has_value() && !m_preffered_order->empty() && m_preffered_order->contains("price"))
+                    {
+                        auto       available_quantity       = m_preffered_order->at("quantity").get<std::string>();
+                        t_float_50 available_quantity_order = safe_float(available_quantity);
+                        if (available_quantity_order < safe_float(max_taker_vol))
+                        {
+                            SPDLOG_INFO("Available quantity in selected order is less than my max tradeable amount, capping it to the order");
+                            max_vol_str = available_quantity;
+                        }
+                    }
                     //! max_volume is max_taker_vol
                     this->set_max_volume(QString::fromStdString(max_vol_str));
                 }
