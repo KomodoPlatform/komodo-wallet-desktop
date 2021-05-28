@@ -20,8 +20,9 @@ ColumnLayout
     DefaultRectangle
     {
         id: swap_card
-        width: 370
-        height: 335
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: 370
+        Layout.preferredHeight: 375
         radius: 20
 
         ColumnLayout // Header
@@ -305,16 +306,16 @@ ColumnLayout
                     }
                 }
             }
-        }
-    }
 
     DefaultButton
     {
         enabled: parseFloat(_fromValue) > 0 && parseFloat(_toValue) > 0
         Layout.topMargin: 10
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: swap_card.width
+                Layout.preferredWidth: swap_card.width - 30
         text: qsTr("Swap Now !")
+    }
+        }
     }
 
     // Coins list
