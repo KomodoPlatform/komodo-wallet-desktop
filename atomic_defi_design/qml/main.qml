@@ -3,9 +3,9 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
+import App 1.0
 
 import "Screens"
-import "Constants"
 import "Components"
 
 DexWindow {
@@ -41,6 +41,9 @@ DexWindow {
         border.color: app.globalTheme.dexBoxBackgroundColor
         border.width: 0
     }
+
+   
+
     App {
         id: app
         anchors.fill: parent
@@ -48,4 +51,5 @@ DexWindow {
     }
 
     DexWindowControl { }
+
 }

@@ -10,12 +10,13 @@ import "../../Constants"
 
 // List
 
-InnerBackground {
+DexBox {
     id: graph_bg
 
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
+
 
     content: Item {
         id: root
