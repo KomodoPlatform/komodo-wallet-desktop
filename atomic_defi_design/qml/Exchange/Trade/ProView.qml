@@ -106,8 +106,8 @@ ColumnLayout {
 
         ItemBox {
             id: left_section
-            minimumWidth: 650
-            defaultWidth: 650
+            minimumWidth: 580
+            defaultWidth: 550
             expandedHort: true
             SplitView.fillHeight: true
             title: "Chart View"
@@ -186,12 +186,6 @@ ColumnLayout {
                         Layout.fillWidth: true
                     }
                 }
-                ItemBox {
-                    title: qsTr("Multi-Order")
-                    defaultHeight: 250
-                    visible: false
-                }
-
                 ItemBox {
                     title: qsTr("OrderBook")
                     defaultHeight: 300
@@ -306,9 +300,9 @@ ColumnLayout {
         }
 
         ItemBox {
-            minimumWidth: 350
-            maximumWidth: 380
-            defaultWidth: 350
+            minimumWidth: 280
+            maximumWidth: 300
+            defaultWidth: 280
             title: qsTr("OrderBook & Best Orders")
             color: 'transparent'
             closable: false

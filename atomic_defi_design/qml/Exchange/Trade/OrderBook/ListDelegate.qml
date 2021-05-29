@@ -29,12 +29,27 @@ Item {
         visible: is_mine
         color: isAsk? Style.colorRed : Style.colorGreen
     }
-
+    Rectangle {
+        id: progress
+        height: 10
+        radius: 101
+        color: isAsk? Style.colorRed : Style.colorGreen
+        width: 0
+        Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
+        opacity: 0.2//!isVertical? 1.1-(index * 0.1) :  1-(1.1-(index * 0.1))
+        Behavior on width {
+            NumberAnimation {
+                duration: 1000
+            }
+        }
+        anchors.verticalCenter: parent.verticalCenter
+    }
     RowLayout {
         id: row
         width:  parent.width - 30
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
+        onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
         spacing: 10
         Qaterial.ColorIcon {
             visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume //(min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
@@ -71,30 +86,9 @@ Item {
             opacity: 1
 
         }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
-            Rectangle {
-                id: progress
-                height: 10
-                radius: 101
-                color: isAsk? Style.colorRed : Style.colorGreen
-                width: 0
-                Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
-                opacity: !isVertical? 1.1-(index * 0.1) :  1-(1.1-(index * 0.1))
-                Behavior on width {
-                    NumberAnimation {
-                        duration: 1000
-                    }
-                }
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-        }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 120
+            Layout.fillWidth: true
             text: parseFloat(total).toFixed(8)
             Behavior on rightPadding {
                 NumberAnimation {

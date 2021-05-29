@@ -48,7 +48,7 @@ Item {
     Component.onDestruction: {
         API.app.trading_pg.on_gui_leave_dex()
     }
-    property bool isUltraLarge: width > 1400
+    property bool isUltraLarge: true // width > 1400
     onIsUltraLargeChanged: {
         if (isUltraLarge) {
             API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(

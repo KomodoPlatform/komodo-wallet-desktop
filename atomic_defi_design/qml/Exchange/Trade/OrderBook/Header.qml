@@ -44,13 +44,9 @@ Item {
             horizontalAlignment: Label.AlignRight
 
         }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 120
+            Layout.fillWidth: true
             text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"
             horizontalAlignment: Label.AlignRight
             font.family: Style.font_family

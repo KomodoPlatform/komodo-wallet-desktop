@@ -40,7 +40,7 @@ Item {
         spacing: 10
         Row {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 140
+            Layout.preferredWidth: 130
             leftPadding: -10
             spacing: 5
             Image {
@@ -101,12 +101,6 @@ Item {
             font: theme.textType.caption
             horizontalAlignment: Label.AlignRight
             opacity: 1
-
-        }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
 
         }
         DefaultText {
