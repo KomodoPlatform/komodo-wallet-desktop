@@ -32,7 +32,8 @@ Item {
     Rectangle {
         id: progress
         height: 10
-        radius: 101
+        radius: 3
+        x: 10
         color: isAsk? Style.colorRed : Style.colorGreen
         width: 0
         Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
@@ -46,7 +47,7 @@ Item {
     }
     RowLayout {
         id: row
-        width:  parent.width - 30
+        width:  mouse_are.containsMouse?  parent.width - 15 : parent.width - 30
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
@@ -70,18 +71,20 @@ Item {
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 90
+            Layout.preferredWidth: 60
             text: parseFloat(General.formatDouble(
                                  price, General.amountPrecision, true)).toFixed(8)
-            font.pixelSize: Style.textSizeSmall1
+            font.family: _font.fontFamily
+            font.pixelSize: 10
             color: isAsk? Style.colorRed : Style.colorGreen
 
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 75
+            Layout.preferredWidth: 100
             text: parseFloat(quantity).toFixed(6)
-            font.pixelSize: Style.textSizeSmall1
+            font.family: _font.fontFamily
+            font.pixelSize: 10
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
@@ -97,7 +100,8 @@ Item {
             }
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
             horizontalAlignment: Label.AlignRight
-            font.pixelSize: Style.textSizeSmall1
+            font.family: _font.fontFamily
+            font.pixelSize: 10
             opacity: 1
 
         }
