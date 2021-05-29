@@ -13,6 +13,7 @@ Rectangle {
     property bool hideHeader: false
     property bool visibility: isVertical? height>=40 ? true : false : width>=40? true : false
     property bool hidden: false
+    property bool closed: false
     property bool expandedVert: false
     property bool expandedHort: false
     property bool showed: true
@@ -235,6 +236,10 @@ Rectangle {
                         foregroundColor: theme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
+                        onClicked: {
+                            _control.closed = true
+                            _control.visible = false
+                        }
                     }
                 }
             }
@@ -311,6 +316,7 @@ Rectangle {
                         foregroundColor: theme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
+
                     }
                 }
                 Item {

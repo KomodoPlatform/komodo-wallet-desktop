@@ -302,10 +302,10 @@ ColumnLayout {
             SplitView.minimumWidth: 300
             SplitView.maximumWidth: 310
             SplitView.preferredWidth: 280
-            DefaultSplitView {
+            visible: !_best_order_box.closed || !_orderbook_box.closed
+            SplitView {
                 anchors.fill: parent
                 orientation: Qt.Vertical
-                visible: parent.contentVisible
                 handle: Item {
                     implicitWidth: 10
                     implicitHeight: 10
@@ -317,8 +317,9 @@ ColumnLayout {
                     }
                 }
                 DexTradeBox {
+                    id: _orderbook_box
                     SplitView.fillWidth: true
-                    //clip: true
+                    closable: true
                     title: "OrderBook"
                     expandedVert: true
 
@@ -340,8 +341,7 @@ ColumnLayout {
                     SplitView.fillHeight: true
                     defaultHeight: 250
                     minimumHeight: 130
-                    //clip: true
-                    //smooth: true
+                    closable: true
                     title: qsTr("Best Orders")
                     reloadable: true
                     onReload: {
@@ -365,38 +365,19 @@ ColumnLayout {
             }
         }
 
-        Item {
-            SplitView.preferredWidth: 270
-            SplitView.maximumWidth: 280
-            SplitView.minimumWidth: 250
+        DexTradeBox {
+            defaultWidth: 280
+            maximumWidth: 280
+            minimumWidth: 280
             SplitView.fillHeight: true
-            SplitView {
+            ColumnLayout {
                 visible: parent.contentVisible
-                orientation: Qt.Vertical
+                anchors.topMargin: 40
                 anchors.fill: parent
-                handle: Item {
-                    implicitWidth: 10
-                    implicitHeight: 10
-                    InnerBackground {
-                        implicitWidth: 16
-                        implicitHeight: 6
-                        anchors.centerIn: parent
-                        opacity: .4
-                    }
-                }
-                DexItemBox {
-                    title: "Total"
-                    defaultHeight: 90
-                    hideHeader: true
-                    //clip: true
-                    visible: true
-                    bottomBorderColor: sell_mode? theme.greenColor : theme.redColor
-                    TotalView {}
-                }
                 Item {
-                    SplitView.fillWidth: true
-                    SplitView.preferredHeight: 30
-                    SplitView.maximumHeight: 35
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 30
+                    Layout.maximumHeight: 35
                     Row {
                         width: parent.width - 100
                         anchors.centerIn: parent
@@ -473,11 +454,9 @@ ColumnLayout {
                         }
                     }
                 }
-                DexTradeBox {
-                    expandedVert: true
-                    hideHeader: true
-                    title: "Form"
-                    minimumHeight: 350
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                     ColumnLayout {
                         property int space: 10
                         anchors.fill: parent
@@ -524,7 +503,11 @@ ColumnLayout {
                             color: 'transparent'
                             Layout.alignment: Qt.AlignHCenter
                         }
-
+                        Item {
+                            Layout.preferredHeight: 90
+                            Layout.fillWidth: true
+                            TotalView {}
+                        }
                         Item {
 
                             Layout.fillHeight: true

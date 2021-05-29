@@ -21,7 +21,7 @@ Item {
         width: parent.width
         height: 80
         Column {
-            width: parent.width-60
+            width: parent.width-10
             anchors.centerIn: parent
             spacing: 0
             RowLayout {
