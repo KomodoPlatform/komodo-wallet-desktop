@@ -635,6 +635,29 @@
       "active": false,
       "currently_enabled": false
   },
+  "BTE": {
+    "coin": "BTE",
+    "name": "Bitweb",
+    "type": "UTXO",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrumx.bitwebcore.org:20001"
+      },
+      {
+        "url": "electrumx6.scalaris.info:20001"
+      },
+      {
+        "url": "electrumx7.scalaris.info:20001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.bitwebcore.org/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "CAKE": {
       "coin": "CAKE",
       "name": "PancakeSwap",
