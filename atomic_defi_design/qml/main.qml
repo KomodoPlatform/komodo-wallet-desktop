@@ -42,14 +42,15 @@ DexWindow {
         border.width: 0
     }
 
-   
+    
+    DexWindowControl { 
 
+    }
     App {
         id: app
         anchors.fill: parent
+        anchors.topMargin: 30
         anchors.margins: 2
     }
-
-    DexWindowControl { }
 
 }

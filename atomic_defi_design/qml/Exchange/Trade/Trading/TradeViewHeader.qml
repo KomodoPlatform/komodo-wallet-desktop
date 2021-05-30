@@ -18,10 +18,12 @@ import "../../../Constants"
 
 
 Item {
-    height: 25
+    height: 40
     visible: true
-
-    width: parent.width+10
+    width: parent.width-10
+    anchors.horizontalCenterOffset: 5
+    anchors.horizontalCenter: parent.horizontalCenter
+    y: -20
     Connections {
         target: API.app.trading_pg
         function onTradingModeChanged(){
@@ -32,12 +34,59 @@ Item {
     RowLayout {
         width: parent.width-20
         anchors.fill: parent
-        anchors.rightMargin: 190
         Item {
-            Layout.preferredWidth: 250
+            Layout.preferredWidth: 140
             Layout.fillHeight: true
+            Rectangle {
+                id: background_rect
+                width: 70
+                height: 20
+                radius: 20
+                anchors.verticalCenter: parent.verticalCenter
+                color: theme.accentColor
+                Behavior on x {
+                    NumberAnimation {
+                        duration: 200
+                    }
+                }
+            }
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
+                DexLabel {
+                    text: "Pro"
+                    Layout.preferredWidth: 70
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.bold: true
+                    DexMouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            background_rect.x = 0
+                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
+                        }
+                    }
+                }
+                DexLabel {
+                    text: "Simple"
+                    Layout.preferredWidth: 70
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.bold: true
+                    DexMouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            background_rect.x = 70
+                            API.app.trading_pg.current_trading_mode = TradingMode.Simple
+                        }
+                    }
+                }
+            }
+            
         }
-        DefaultText {
+        /*DefaultText {
             leftPadding: 20
             topPadding: 5
             visible: false
@@ -47,39 +96,10 @@ Item {
             font.weight: Font.Light
             color: theme.foregroundColor
             text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
-        }
+        }*/
         Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
-            Qaterial.LatoTabBar {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                Qaterial.LatoTabButton {
-                    text: qsTr("Pro-Mode")
-                    textColor: theme.foregroundColor
-                    textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
-                    onCheckedChanged: {
-                        if(checked) {
-                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                        }
-                    }
-                    
-                }
-                Qaterial.LatoTabButton {
-                    text: qsTr("Starter")
-                    textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
-                    textColor: theme.foregroundColor
-                    ToolTip.text: "(Under Work)"
-                    onCheckedChanged: {
-                        if(checked) {
-                            API.app.trading_pg.current_trading_mode = TradingMode.Simple
-                        }
-                    }
-
-                }
-            }
-        }
-
-        
+        }   
     }
 }

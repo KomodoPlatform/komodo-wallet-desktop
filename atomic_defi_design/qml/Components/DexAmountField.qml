@@ -17,11 +17,15 @@ Item {
 		id: _background
 	    anchors.fill: parent
 	    radius: 4
-	    color: theme.accentColor
+	    color: theme.surfaceColor
+	    border.color: theme.accentColor
+	    border.width: input_field.focus? 1 : 0
 	}
 
 	RowLayout {
 		anchors.fill: parent
+		anchors.leftMargin: 5
+		anchors.rightMargin: 5
 		Item {
 			visible: leftText!==""
 			Layout.preferredWidth: leftWidth!==-1? leftWidth : _title_label.implicitWidth+10
@@ -32,7 +36,8 @@ Item {
 				leftPadding: 5
 				horizontalAlignment: DexLabel.AlignHCenter
 				text: leftText
-				color: 'black'
+				color: theme.foregroundColor
+				opacity: .4
 				font.pixelSize: 14
 				font.weight: Font.Medium
 			}
@@ -69,7 +74,8 @@ Item {
 				anchors.centerIn: parent
 				horizontalAlignment: DexLabel.AlignHCenter
 				text: rightText
-				color: 'black'
+				color: theme.foregroundColor
+				opacity: .4
 				font.pixelSize: 14
 				font.weight: Font.Medium
 			}

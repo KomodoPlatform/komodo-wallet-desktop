@@ -9,11 +9,11 @@ Item {
     Item {
         width: parent.width
         y: 1
-        height: 40
+        height: 30
         Rectangle {
-            anchors.fill: parent
-            visible: false
-            color: app.globalTheme.surfaceColor
+            width: parent.width
+            height: 30
+            color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9)
         }
         MouseArea {
             onPressed: window.startSystemMove();

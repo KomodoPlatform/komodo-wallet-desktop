@@ -172,6 +172,5 @@ Item {
     }
 
     TradeViewHeader {
-        y: window.isOsx? -5 : -45
     }
 }

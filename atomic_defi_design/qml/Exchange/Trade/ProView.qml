@@ -83,7 +83,7 @@ ColumnLayout {
     }
 
     spacing: 10
-    anchors.topMargin: window.isOsx? 60 : 5
+    anchors.topMargin: 20
     anchors.leftMargin: 10
     anchors.fill: parent
 
@@ -372,22 +372,22 @@ ColumnLayout {
             SplitView.fillHeight: true
             ColumnLayout {
                 visible: parent.contentVisible
-                anchors.topMargin: 40
+                anchors.topMargin: 60
                 anchors.fill: parent
                 Item {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 30
                     Layout.maximumHeight: 35
                     Row {
-                        width: parent.width - 100
+                        width: parent.width - 80
                         anchors.centerIn: parent
                         Rectangle {
                             width: (parent.width / 2)
-                            height: 30
+                            height: 35
                             radius: 8
                             color: !sell_mode ? Qt.darker(
-                                                    theme.greenColor) : theme.backgroundColor
-                            border.color: !sell_mode ? theme.greenColor : theme.dexBoxBackgroundColor
+                                                    theme.greenColor) : Qt.lighter(theme.dexBoxBackgroundColor)
+                            border.color: !sell_mode ? theme.greenColor : color
                             Rectangle {
                                 anchors.right: parent.right
                                 color: parent.color
@@ -418,11 +418,11 @@ ColumnLayout {
                         }
                         Rectangle {
                             width: (parent.width / 2)
-                            height: 30
+                            height: 35
                             radius: 8
                             color: sell_mode ? Qt.darker(
-                                                   theme.redColor) : theme.backgroundColor
-                            border.color: sell_mode ? theme.redColor : theme.dexBoxBackgroundColor
+                                                   theme.redColor) : Qt.lighter(theme.dexBoxBackgroundColor)
+                            border.color: sell_mode ? theme.redColor : color
                             Rectangle {
                                 anchors.left: parent.left
                                 color: parent.color
