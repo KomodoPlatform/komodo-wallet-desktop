@@ -21,15 +21,26 @@ Item {
             color: 'transparent'
             ColumnLayout {
                 anchors.fill: parent
-                spacing: 5
+                spacing: 2
                 List {
                     isAsk: true
                     isVertical: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
+                Item {
+                    Layout.preferredHeight: 4
+                    Layout.fillWidth: true
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        color: theme.surfaceColor
+                    }
+                }
                 List {
                     isAsk: false
+                    hide_header: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }

@@ -29,21 +29,26 @@ Item {
         visible: is_mine
         color: isAsk? Style.colorRed : Style.colorGreen
     }
+    HorizontalLine {
+        width: parent.width
+        opacity: .4
+    }
     Rectangle {
         id: progress
-        height: 10
+        height: 2
+        anchors.bottom: parent.bottom
         radius: 3
         x: 10
         color: isAsk? Style.colorRed : Style.colorGreen
         width: 0
         Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
-        opacity: 0.2//!isVertical? 1.1-(index * 0.1) :  1-(1.1-(index * 0.1))
+        opacity: 0.8//!isVertical? 1.1-(index * 0.1) :  1-(1.1-(index * 0.1))
         Behavior on width {
             NumberAnimation {
                 duration: 1000
             }
         }
-        anchors.verticalCenter: parent.verticalCenter
+        //anchors.verticalCenter: parent.verticalCenter
     }
     RowLayout {
         id: row
@@ -167,7 +172,5 @@ Item {
         opacity: .3
     }
 
-    HorizontalLine {
-        width: parent.width
-    }
+    
 }

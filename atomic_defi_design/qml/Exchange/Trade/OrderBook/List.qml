@@ -8,15 +8,17 @@ import "../../../Constants/"
 
 Item {
     id: _control
+    property bool hide_header: false
     property bool isAsk
     property bool isVertical: false
     Header {
+        visible: !hide_header
         is_ask: isAsk
     }
 
     ListView {
         id: orderList
-        anchors.topMargin: 40
+        anchors.topMargin: hide_header? 0 : 40
         anchors.fill: parent
         model: isAsk? API.app.trading_pg.orderbook.asks.proxy_mdl : API.app.trading_pg.orderbook.bids.proxy_mdl
         clip: true
