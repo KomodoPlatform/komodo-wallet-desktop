@@ -13,7 +13,12 @@ Item {
         Rectangle {
             width: parent.width
             height: 30
-            color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9)
+            gradient: Gradient {
+                orientation: Qt.Horizontal
+                GradientStop { position: 0.0; color: "transparent" }
+                GradientStop { position: 0.6; color: "transparent" }
+                GradientStop { position: 1.0; color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9) }
+            }
         }
         MouseArea {
             onPressed: window.startSystemMove();
