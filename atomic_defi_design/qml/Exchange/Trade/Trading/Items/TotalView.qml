@@ -21,7 +21,7 @@ Item {
         width: parent.width
         height: 80
         Column {
-            width: parent.width-10
+            width: parent.width-15
             anchors.centerIn: parent
             spacing: 0
             RowLayout {
@@ -29,9 +29,9 @@ Item {
                 DefaultText {
                     color: theme.foregroundColor
                     text:"Total "+API.app.settings_pg.current_fiat+" "+General.cex_icon
-                    font.pixelSize:  Style.textSizeSmall5
+                    font.pixelSize:  13
                     Layout.preferredWidth: 120
-                    font.weight: Font.DemiBold
+                    font.weight: Font.Regular
                     CexInfoTrigger {}
                 }
                 Item {
@@ -41,26 +41,25 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 10
-                        font.weight: Font.Light
-                        font.pixelSize: Style.textSizeSmall4
+                        font.weight: Font.DemiBold
+                        font.pixelSize: 12
+                        font.family: 'lato'
+                        color: theme.accentColor
                         text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon,"")
 
                     }
                 }
             }
-            HorizontalLine {
-                width: parent.width-50
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
+
 
             RowLayout {
                 width: parent.width
                 DefaultText {
                     color: theme.foregroundColor
                     text:  "Total "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
-                    font.pixelSize:  Style.textSizeSmall5
+                    font.pixelSize:  13
                     Layout.preferredWidth: 120
-                    font.weight: Font.DemiBold
+                    font.weight: Font.Regular
 
                 }
                 Item {
@@ -71,8 +70,10 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 10
-                        font.weight: Font.Light
-                        font.pixelSize: Style.textSizeSmall4
+                        font.weight: Font.DemiBold
+                        font.pixelSize: 12
+                        font.family: 'lato'
+                        color: theme.accentColor
                     }
                 }
             }

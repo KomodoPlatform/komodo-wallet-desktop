@@ -49,6 +49,7 @@ Item {
         API.app.trading_pg.on_gui_leave_dex()
     }
     property bool isUltraLarge: true // width > 1400
+    property bool isBigScreen: width > 1400
     onIsUltraLargeChanged: {
         if (isUltraLarge) {
             API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(

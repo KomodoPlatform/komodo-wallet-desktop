@@ -33,9 +33,14 @@ Item {
         width: parent.width-20
         anchors.fill: parent
         anchors.rightMargin: 190
+        Item {
+            Layout.preferredWidth: 250
+            Layout.fillHeight: true
+        }
         DefaultText {
             leftPadding: 20
             topPadding: 5
+            visible: false
             Layout.alignment: Qt.AlignVCenter
             font.family: 'Ubuntu'
             font.pixelSize: 20

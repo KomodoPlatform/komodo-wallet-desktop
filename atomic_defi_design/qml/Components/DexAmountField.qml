@@ -45,7 +45,7 @@ Item {
 				anchors.topMargin: 1
 				anchors.bottomMargin: 1
 				radius: 0
-				color: Qaterial.Colors.gray900
+				color: theme.surfaceColor
 				DexTextField {
 			        id: input_field
 			        validator: RegExpValidator {

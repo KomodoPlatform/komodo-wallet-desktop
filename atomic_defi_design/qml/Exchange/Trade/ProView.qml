@@ -366,9 +366,9 @@ ColumnLayout {
         }
 
         DexTradeBox {
-            defaultWidth: 280
-            maximumWidth: 280
-            minimumWidth: 280
+            defaultWidth: isBigScreen? 300 : 280
+            maximumWidth: isBigScreen? 310 : 280
+            minimumWidth: isBigScreen? 290 : 280
             SplitView.fillHeight: true
             ColumnLayout {
                 visible: parent.contentVisible
