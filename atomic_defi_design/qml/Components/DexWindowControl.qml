@@ -15,8 +15,8 @@ Item {
             height: 30
             gradient: Gradient {
                 orientation: Qt.Horizontal
-                GradientStop { position: 0.0; color: "transparent" }
-                GradientStop { position: 0.6; color: "transparent" }
+                GradientStop { position: 0.0; color: app.globalTheme.surfaceColor }
+                GradientStop { position: 0.6; color: app.globalTheme.surfaceColor }
                 GradientStop { position: 1.0; color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9) }
             }
         }
