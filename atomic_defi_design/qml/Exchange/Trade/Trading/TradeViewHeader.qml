@@ -20,7 +20,7 @@ import "../../../Constants"
 Item {
     height: 40
     visible: true
-    width: parent.width-10
+    width: parent.width-5
     anchors.horizontalCenterOffset: 5
     anchors.horizontalCenter: parent.horizontalCenter
     y: -20
@@ -32,7 +32,6 @@ Item {
     }
 
     RowLayout {
-        width: parent.width-20
         anchors.fill: parent
         Item {
             Layout.preferredWidth: 140
@@ -101,5 +100,14 @@ Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
         }   
+        Qaterial.PopupMenuItem
+        {
+            implicitHeight: 25
+            Qaterial.ColorIcon {
+                anchors.centerIn: parent
+                source: Qaterial.Icons.cogs
+                color: theme.accentColor
+            } 
+        }
     }
 }
