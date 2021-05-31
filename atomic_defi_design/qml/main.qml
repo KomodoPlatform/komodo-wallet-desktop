@@ -43,7 +43,12 @@ DexWindow {
     }
 
     DexWindowControl { visible: !isOsx }
-    
+    Rectangle {
+        width: parent.width
+        height: 30
+        color: theme.surfaceColor
+        visible: isOsx 
+    }
     App {
         id: app
         anchors.fill: parent
