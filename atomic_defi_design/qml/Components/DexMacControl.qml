@@ -10,6 +10,11 @@ Item {
         width: parent.width
         y: 1
         height: 30
+        Rectangle {
+            width: parent.width
+            height: 30
+            color: app.globalTheme.surfaceColor
+        }
         MouseArea {
             onPressed: window.startSystemMove();
             anchors.fill: parent
