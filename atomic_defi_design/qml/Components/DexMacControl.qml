@@ -27,7 +27,9 @@ Item {
                 }
             }
         }
-        DexMacosHeaderControl { }
+        DexMacosHeaderControl {
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
     Item {
         id: _left_resize
