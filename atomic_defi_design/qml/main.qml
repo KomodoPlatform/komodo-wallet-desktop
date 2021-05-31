@@ -46,7 +46,7 @@ DexWindow {
     Rectangle {
         width: parent.width
         height: 30
-        color: theme.surfaceColor
+        color: app.globalTheme.surfaceColor
         visible: isOsx 
     }
     App {
