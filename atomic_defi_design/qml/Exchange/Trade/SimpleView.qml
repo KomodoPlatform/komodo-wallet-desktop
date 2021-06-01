@@ -16,7 +16,8 @@ ColumnLayout
     id: root
     anchors.centerIn: parent
     onSelectedTickerChanged: { setPair(true, selectedTicker); _fromValue.text = "" }
-    onSelectedOrderChanged:  { API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) }
+    onSelectedOrderChanged:  { API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid); _fromValue.text = API.app.trading_pg.volume }
+
     DefaultRectangle
     {
         id: swap_card
