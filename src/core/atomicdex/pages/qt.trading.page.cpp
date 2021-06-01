@@ -287,6 +287,10 @@ namespace atomic_dex
             .is_max     = is_max,
             .min_volume = cur_min_trade <= base_min_trade ? std::optional<std::string>{std::nullopt} : m_minimal_trading_amount.toStdString()};
 
+        if (m_current_trading_mode == TradingModeGadget::Simple)
+        {
+            req.order_type = {{"type", "FillOrKill"}};
+        }
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
         if (m_preffered_order.has_value())
         {
@@ -324,7 +328,8 @@ namespace atomic_dex
         ::mm2::api::to_json(sell_request, req);
         batch.push_back(sell_request);
 
-        // SPDLOG_INFO("batch sell request: {}", batch.dump(4));
+        sell_request["userpass"] = "******";
+        SPDLOG_INFO("sell request: {}", sell_request.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp)
         {

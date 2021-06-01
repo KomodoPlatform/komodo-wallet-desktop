@@ -74,6 +74,10 @@ namespace mm2::api
         {
             SPDLOG_INFO("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
         }
+        if (request.order_type.has_value())
+        {
+            j["order_type"] = request.order_type.value();
+        }
     }
 
     void
