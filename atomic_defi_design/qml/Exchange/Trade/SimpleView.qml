@@ -26,6 +26,12 @@ ColumnLayout
         Layout.preferredHeight: 375
         radius: 20
 
+        MouseArea
+        {
+            anchors.fill: parent
+            onPressed: _fromValue.focus = false
+        }
+
         ColumnLayout // Header
         {
             id: swap_card_desc
@@ -105,13 +111,10 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall5
                     background: Rectangle { color: theme.backgroundColor }
                     validator: RegExpValidator { regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/ }
-                    onTextChanged:
+                    onEditingFinished:
                     {
                         if (text === "")
-                        {
                             API.app.trading_pg.volume = 0
-                            text = ""
-                        }
                         else
                         {
                             API.app.trading_pg.volume = text;
@@ -217,9 +220,9 @@ ColumnLayout
                     anchors.left: parent.left
                     anchors.leftMargin: 18
                     height: 30
-                    text: "0.0"
+                    text: API.app.trading_pg.total_amount
                     font.pixelSize: Style.textSizeSmall5
-                    color: _fromValue.placeholderTextColor
+                    Component.onCompleted: color = _fromValue.placeholderTextColor
                 }
 
                 DefaultRectangle // Shows best order coin
@@ -314,7 +317,7 @@ ColumnLayout
 
             DefaultButton
             {
-                enabled: parseFloat(_fromValue) > 0 && parseFloat(_toValue) > 0
+                enabled: parseFloat(_fromValue) > 0 && parseFloat(_toValue) > 0 && !_fromValue.focus
                 Layout.topMargin: 10
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: swap_card.width - 30
