@@ -791,6 +791,10 @@ namespace atomic_dex
             {
                 this->set_volume(this->get_max_volume());
             }
+            else if (safe_float(std_volume) < safe_float(get_min_trade_vol().toStdString()))
+            {
+                this->set_volume(this->get_min_trade_vol());
+            }
         }
     }
 
