@@ -130,15 +130,15 @@ ColumnLayout
                     anchors.bottomMargin: 12
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: 90
+                    width: _selectedTickerIcon.width + _selectedTickerText.width + _selectedTickerArrow.width + 29.5
                     height: 30
                     radius: 10
                     border.width: 0
-                    color: _mouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
+                    color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
 
                     DefaultMouseArea 
                     {
-                        id: _mouseArea
+                        id: _selectedTickerMouseArea
                         anchors.fill: parent
                         onClicked: coinsListModalLoader.open()
                         hoverEnabled: true
@@ -146,6 +146,7 @@ ColumnLayout
 
                     DefaultImage
                     {
+                        id: _selectedTickerIcon
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
                         anchors.left: parent.left
@@ -154,6 +155,7 @@ ColumnLayout
                         source: General.coinIcon(selectedTicker)
                         DefaultText
                         {
+                            id: _selectedTickerText
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
                             anchors.leftMargin: 10
@@ -162,6 +164,7 @@ ColumnLayout
 
                             Arrow 
                             {
+                                id: _selectedTickerArrow
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.right
                                 anchors.leftMargin: 5
