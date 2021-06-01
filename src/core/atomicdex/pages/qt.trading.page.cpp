@@ -595,10 +595,8 @@ namespace atomic_dex
             {
                 this->determine_max_volume();
             }
-            if (this->m_current_trading_mode != TradingMode::Simple)
-            {
-                this->determine_total_amount();
-            }
+
+            this->determine_total_amount();
 
             if (this->m_preffered_order.has_value())
             {
@@ -653,10 +651,8 @@ namespace atomic_dex
             }
             m_volume = std::move(volume);
             SPDLOG_INFO("volume is : [{}]", m_volume.toStdString());
-            if (m_current_trading_mode != TradingMode::Simple)
-            {
-                this->determine_total_amount();
-            }
+
+            this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
             this->get_orderbook_wrapper()->refresh_best_orders();
@@ -705,7 +701,9 @@ namespace atomic_dex
                         t_float_50 available_quantity_order = safe_float(available_quantity);
                         if (available_quantity_order < safe_float(max_taker_vol))
                         {
-                            SPDLOG_INFO("Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}", m_preffered_order->dump(4));
+                            SPDLOG_INFO(
+                                "Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}",
+                                m_preffered_order->dump(4));
                             max_vol_str = available_quantity;
                         }
                     }
@@ -968,31 +966,13 @@ namespace atomic_dex
     void
     trading_page::set_total_amount(QString total_amount)
     {
-        if (this->m_current_trading_mode != TradingMode::Simple)
+        if (m_total_amount != total_amount)
         {
-            if (m_total_amount != total_amount)
-            {
-                m_total_amount = std::move(total_amount);
-                // SPDLOG_DEBUG("total_amount is [{}]", m_total_amount.toStdString());
-                emit totalAmountChanged();
-                emit baseAmountChanged();
-                emit relAmountChanged();
-            }
-        }
-        else
-        {
-            m_total_amount = total_amount;
-            emit       totalAmountChanged();
-            emit       baseAmountChanged();
-            emit       relAmountChanged();
-            t_float_50 price_f(0);
-            t_float_50 total_amount_f(safe_float(total_amount.toStdString()));
-            t_float_50 volume_f(safe_float(m_volume.toStdString()));
-            if (volume_f > 0)
-            {
-                price_f = total_amount_f / volume_f;
-            }
-            this->set_price(QString::fromStdString(utils::format_float(price_f)));
+            m_total_amount = std::move(total_amount);
+            // SPDLOG_DEBUG("total_amount is [{}]", m_total_amount.toStdString());
+            emit totalAmountChanged();
+            emit baseAmountChanged();
+            emit relAmountChanged();
         }
     }
 
@@ -1177,7 +1157,8 @@ namespace atomic_dex
             }
             else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
             {
-                // SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
+                // SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol,
+                // get_price().toStdString());
                 current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
             }
             /*else if (safe_float(get_rel_amount().toStdString()) < safe_float(m_market_mode == Sell ? rel_min_taker_vol : base_min_taker_vol))
