@@ -41,8 +41,6 @@ DexWindow {
         border.color: app.globalTheme.dexBoxBackgroundColor
         border.width: 0
     }
-
-
     App {
         id: app
         anchors.fill: parent

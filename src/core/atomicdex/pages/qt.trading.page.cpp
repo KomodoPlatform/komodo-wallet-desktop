@@ -608,6 +608,7 @@ namespace atomic_dex
             emit priceReversedChanged();
             emit get_orderbook_wrapper()->currentMinTakerVolChanged();
             get_orderbook_wrapper()->adjust_min_vol();
+            this->determine_fees();
         }
     }
 
@@ -657,6 +658,8 @@ namespace atomic_dex
             }
             emit volumeChanged();
             this->cap_volume();
+            this->get_orderbook_wrapper()->refresh_best_orders();
+            this->determine_fees();
         }
     }
 
@@ -1031,6 +1034,12 @@ namespace atomic_dex
     void
     trading_page::determine_fees()
     {
+        if (is_preimage_busy())
+        {
+            SPDLOG_INFO("determine_fees busy - skipping.");
+            return;
+        }
+        SPDLOG_INFO("determine_fees processing");
         using namespace std::string_literals;
         const auto* market_pair = get_market_pairs_mdl();
         auto&       mm2         = this->m_system_manager.get_system<mm2_service>();
@@ -1139,33 +1148,36 @@ namespace atomic_dex
                 current_trading_error = TradingError::RightParentChainNotEnoughBalance;
             }
         }
-        else if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
+        if (current_trading_error == TradingError::None)
         {
-            current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
-        }
-        else if (m_volume.isEmpty()) ///< Volume is not set correctly
-        {
-            current_trading_error = TradingError::VolumeFieldNotFilled;
-        }
-        else if (m_price.isEmpty() || m_price == "0") ///< Price is not set correctly
-        {
-            current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
-        }
-        else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
-        {
-            // SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
-            current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
-        }
-        /*else if (safe_float(get_rel_amount().toStdString()) < safe_float(m_market_mode == Sell ? rel_min_taker_vol : base_min_taker_vol))
-        {
-            SPDLOG_INFO("rel_amount: {}, rel_min_taker_vol: {}, price: {}", get_rel_amount().toStdString(), rel_min_taker_vol, get_price().toStdString());
-            current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
-        }*/
-        else
-        {
-            if (!get_fees().empty())
+            if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
             {
-                current_trading_error = generate_fees_error(get_fees());
+                current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
+            }
+            else if (m_volume.isEmpty() || m_volume == "0") ///< Volume is not set correctly
+            {
+                current_trading_error = TradingError::VolumeFieldNotFilled;
+            }
+            else if (m_price.isEmpty() || m_price == "0") ///< Price is not set correctly
+            {
+                current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
+            }
+            else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
+            {
+                // SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol, get_price().toStdString());
+                current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
+            }
+            /*else if (safe_float(get_rel_amount().toStdString()) < safe_float(m_market_mode == Sell ? rel_min_taker_vol : base_min_taker_vol))
+            {
+                SPDLOG_INFO("rel_amount: {}, rel_min_taker_vol: {}, price: {}", get_rel_amount().toStdString(), rel_min_taker_vol, get_price().toStdString());
+                current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum; ///< need to have for multi ticker check
+            }*/
+            else
+            {
+                if (!get_fees().empty())
+                {
+                    current_trading_error = generate_fees_error(get_fees());
+                }
             }
         }
 

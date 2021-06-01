@@ -439,6 +439,14 @@
     </message>
 </context>
 <context>
+    <name>AmountChart</name>
+    <message>
+        <location filename="../../qml/Portfolio/AmountChart.qml" line="335"/>
+        <source>Work in progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AssetPieChart</name>
     <message>
         <location filename="../../qml/Portfolio/AssetPieChart.qml" line="126"/>
@@ -2529,150 +2537,150 @@
 <context>
     <name>SendModal</name>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="48"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="80"/>
         <source>Failed to send</source>
         <translation>Ошибка отправки</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="85"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="117"/>
         <source>Failed to Send</source>
         <translation>Отправка не прошла</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="217"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="248"/>
         <source>Prepare to send </source>
         <translation>Подготовить к отправке </translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="226"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="395"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="257"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="436"/>
         <source>Recipient&apos;s address</source>
         <translation>Адрес получателя</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="227"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="258"/>
         <source>Enter address of the recipient</source>
         <translation>Введите адрес получателя</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="233"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="267"/>
         <source>Address Book</source>
         <translation>Адресная книга</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="246"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="283"/>
         <source>The address has to be mixed case.</source>
         <translation>Адрес должен быть написан в смешанном регистре.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="251"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="290"/>
         <source>Fix</source>
         <translation>Фикс</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="265"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="306"/>
         <source>Amount to send</source>
         <translation>Отправляемая сумма</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="266"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="307"/>
         <source>Enter the amount to send</source>
         <translation>Введите сумму для отправки</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="273"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="314"/>
         <source>MAX</source>
         <translation>МАКС</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="282"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="323"/>
         <source>Enable Custom Fees</source>
         <translation>Включить настройку комиссий</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="294"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="335"/>
         <source>Only use custom fees if you know what you are doing!</source>
         <translation>Используйте настраиваемые комиссии только если знаете, что делаете!</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="302"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="343"/>
         <source>Custom Fee</source>
         <translation>Комиссия</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="303"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="344"/>
         <source>Enter the custom fee</source>
         <translation>Введите комиссию сети</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="314"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="355"/>
         <source>Gas Limit</source>
         <translation>Gas лимит</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="315"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="356"/>
         <source>Enter the gas limit</source>
         <translation>Введите gas лимит</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="322"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="363"/>
         <source>Gas Price</source>
         <translation>Цена за Gas</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="323"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="364"/>
         <source>Enter the gas price</source>
         <translation>Введите цену за gas</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="338"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="379"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation>Комиссия не может больше общей суммы транзакции</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="348"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="389"/>
         <source>Not enough funds.</source>
         <translation>Недостаточно средств.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="348"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="389"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation>У вас %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="358"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="399"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="364"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="405"/>
         <source>Prepare</source>
         <translation>Подготовка</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="391"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="434"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="432"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="475"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="401"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="442"/>
         <source>Amount</source>
         <translation>Сумма</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="408"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="449"/>
         <source>Fees</source>
         <translation>Комиссия</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="415"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="456"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="427"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="468"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
@@ -3422,6 +3430,49 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <source>Enter the name of your wallet here</source>
         <translatorcomment>Введите название для вашего кошелька</translatorcomment>
         <translation>Название кошелька</translation>
+    </message>
+</context>
+<context>
+    <name>atomic_dex::wallet_page</name>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="67"/>
+        <source>You do not have enough funds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="78"/>
+        <source>%1 is not activated: click on the button to enable it or enable it manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="84"/>
+        <source>You need to have %1 to pay the gas for %2 transactions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="308"/>
+        <source>Checksum verification failed for %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="313"/>
+        <source>Invalid checksum for %1. Click on the convert button to turn it into a mixed case address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="319"/>
+        <source>Legacy address used for %1, click on the convert button to convert it to a Cashaddress.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="325"/>
+        <source>%1 address must be prefixed with 0x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="330"/>
+        <source>%1 address length is invalid, please use a valid address.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

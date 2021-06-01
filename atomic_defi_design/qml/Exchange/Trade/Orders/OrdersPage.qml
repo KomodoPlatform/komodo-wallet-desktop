@@ -238,14 +238,14 @@ Item {
         id: export_csv_dialog
 
         title: qsTr("Please choose the CSV export name and location")
-        fileMode: FileDialog.OpenFile
+        fileMode: FileDialog.SaveFile
 
         defaultSuffix: "csv"
         nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
 
         onAccepted: {
-            const path = fileUrl.toString()
-
+            const path = currentFile.toString()
+            
             // Export
             console.log("Exporting to CSV: " + path)
             API.app.exporter_service.export_swaps_history_to_csv(path.replace(General.os_file_prefix, ""))

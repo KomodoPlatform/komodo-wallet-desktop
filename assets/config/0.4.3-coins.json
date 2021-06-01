@@ -729,7 +729,7 @@
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "clc-collider-coin",
     "coingecko_id": "test-coin",
     "electrum": [
       {
@@ -1303,20 +1303,12 @@
       "active": false,
       "currently_enabled": false
   },
-    "FJC": {
+  "FJC": {
     "coin": "FJC",
     "name": "Fujicoin",
     "coinpaprika_id": "fjc-fujicoin",
     "coingecko_id": "fujicoin",
     "electrum": [
-      {
-        "url": "electrumx1.fujicoin.org:50001",
-        "protocol": "TCP"
-      },
-      {
-        "url": "electrumx2.fujicoin.org:50001",
-        "protocol": "TCP"
-      },
       {
         "url": "electrumx1.fujicoin.org:50003",
         "protocol": "SSL"
@@ -1642,6 +1634,21 @@
           "disable_cert_verification": false
         },
         {
+          "url": "electrum.dirtdivas.net:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.getlynx.club:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
+          "url": "electrum.atechhelp.com:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": false
+        },
+        {
           "url": "electrum.getlynx.io:50001",
           "protocol": "TCP"
         }
@@ -1893,6 +1900,27 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "UNO": {
+      "coin": "UNO",
+      "name": "Unobtanium",
+      "coinpaprika_id": "uno-unobtanium",
+      "coingecko_id": "unobtanium",
+      "electrum": [
+        {
+          "url": "unobtanium.info.gf:50001",
+          "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/uno/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "USDC-BEP20": {
       "coin": "USDC-BEP20",
@@ -2448,7 +2476,7 @@
     "name": "Scalaris",
     "type": "UTXO",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "sca-scalaris",
     "electrum": [
       {
         "url": "electrum1.scalaris.info:10001"
@@ -2552,6 +2580,32 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "IL8P": {
+      "coin": "IL8P",
+      "name": "InfiniLooP",
+      "coinpaprika_id": "il8p-infiniloop",
+      "coingecko_id": "test-coin",
+      "electrum": [
+        {
+          "url": "il8p.electrumx.transcenders.name:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "il9p.electrumx.transcenders.name:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/il8p/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
   },
   "ILN": {
     "coin": "ILN",
@@ -2678,6 +2732,31 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "NVC": {
+      "coin": "NVC",
+      "name": "Novacoin",
+      "coinpaprika_id": "nvc-novacoin",
+      "coingecko_id": "novacoin",
+      "electrum": [
+        {
+           "url": "electrumx.nvc.ewmcx.org:50002",
+           "protocol": "SSL",
+           "disable_cert_verification": true
+        },
+        {
+           "url": "failover.nvc.ewmcx.biz:50002",
+           "protocol": "SSL",
+           "disable_cert_verification": true
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.novaco.in/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "OOT": {
     "coin": "OOT",
@@ -3033,6 +3112,33 @@
       "active": false,
       "currently_enabled": false
   },
+  "XPM": {
+      "coin": "XPM",
+      "name": "Primecoin",
+      "coinpaprika_id": "xpm-primecoin",
+      "coingecko_id": "primecoin",
+      "electrum": [
+        {
+           "url": "electrumx.primecoin.org:50001",
+           "protocol": "TCP"
+        },
+        {
+           "url": "electrumx.mainnet.primecoin.org:50011",
+           "protocol": "TCP"
+        },
+        {
+           "url": "electrumx.gemmer.primecoin.org:50011",
+           "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://www.blockseek.io/xpm/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "XRP-BEP20": {
       "coin": "XRP-BEP20",
       "name": "XRP",
@@ -3066,6 +3172,29 @@
       "type": "BEP-20",
       "active": false,
       "currently_enabled": false
+  },
+  "XVC": {
+      "coin": "XVC",
+      "name": "Vanillacash",
+      "coinpaprika_id": "xvc-vcash",
+      "coingecko_id": "test-coin",
+      "electrum": [
+        {
+           "url": "electrumx.xvc.ewmcx.org:50001",
+           "protocol": "TCP"
+        },
+        {
+           "url": "failover.xvc.ewmcx.biz:50001",
+           "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://xvc.freicoin.info/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "XVS": {
       "coin": "XVS",
@@ -3367,18 +3496,6 @@
     "name": "HalalChain",
     "coingecko_id": "halalchain",
     "coinpaprika_id": "hlc-halalchain",
-    "active": false,
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://explorer.qtum.org/"
-    ],
-    "type": "QRC-20"
-  },
-  "MED": {
-    "coin": "MED",
-    "name": "Medibloc",
-    "coingecko_id": "medibloc",
-    "coinpaprika_id": "med-medibloc-qrc20",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
