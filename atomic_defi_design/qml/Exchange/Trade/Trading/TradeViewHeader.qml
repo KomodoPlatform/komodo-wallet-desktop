@@ -59,6 +59,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
+                    color: background_rect.x===0? theme.surfaceColor :  theme.foregroundColor
                     DexMouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -74,6 +75,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
+                    color: background_rect.x!==0? theme.surfaceColor :  theme.foregroundColor
                     DexMouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -89,41 +91,59 @@ Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
         } 
-        Qaterial.PopupMenuItem
-        {
-            implicitHeight: 25
-            Qaterial.ColorIcon {
+        Rectangle {
+            width: 140
+            height: 25
+            radius: height/2
+            color: theme.accentColor
+            Row {
                 anchors.centerIn: parent
-                source: Qaterial.Icons.cog
-                iconSize: 16
-                color: theme.accentColor
-            } 
+                spacing: 10
+                Qaterial.ColorIcon {
+                    source: Qaterial.Icons.televisionPlay
+                    anchors.verticalCenter: parent.verticalCenter
+                    iconSize: 15
+                    color: theme.surfaceColor
+                }
+                DexLabel {
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.weight: Font.Medium
+                    color: theme.surfaceColor
+                    text: qsTr("How to trade")
+                }
+            }
         }
-        Qaterial.PopupMenuItem
-        {
-            implicitHeight: 25
-            implicitWidth: 25
-            leftInset:0
-            rightInset:0
-            Qaterial.ColorIcon {
+        Rectangle {
+            width: 50
+            height: 25
+            radius: height/2
+            color: theme.accentColor
+            Row {
                 anchors.centerIn: parent
-                source: Qaterial.Icons.refresh
-                iconSize: 16
-                color: theme.accentColor
-            } 
+                spacing: 10
+                DexLabel {
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.weight: Font.Medium
+                    color: theme.surfaceColor
+                    text: qsTr("FAQ")
+                }
+            }
         }  
-        Qaterial.PopupMenuItem
-        {
-            implicitHeight: 25
-            implicitWidth: 25
-            leftInset:0
-            rightInset:0
-            Qaterial.ColorIcon {
+        Rectangle {
+            width: 40
+            height: 25
+            radius: height/2
+            color: theme.accentColor
+            Row {
                 anchors.centerIn: parent
-                source: Qaterial.Icons.cog
-                iconSize: 16
-                color: theme.accentColor
-            } 
+                spacing: 10
+                Qaterial.ColorIcon {
+                    source: Qaterial.Icons.cog
+                    anchors.verticalCenter: parent.verticalCenter
+                    iconSize: 15
+                    color: theme.surfaceColor
+                }
+            }
         }
     }
 }
