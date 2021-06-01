@@ -19,23 +19,26 @@ Item {
     anchors.topMargin: 0
     Item {
         width: parent.width
-        height: 80
+        height: 70
         Column {
             width: parent.width-15
             anchors.centerIn: parent
             spacing: 0
+            leftPadding: 10
+            rightPadding: 10
             RowLayout {
                 width: parent.width
                 DefaultText {
                     color: theme.foregroundColor
-                    text:"Total "+API.app.settings_pg.current_fiat+" "+General.cex_icon
-                    font.pixelSize:  13
+                    text: "TOTAL "+API.app.settings_pg.current_fiat+" "+General.cex_icon
+                    font.pixelSize:  11
                     Layout.preferredWidth: 120
                     font.weight: Font.Regular
+                    opacity: .7
                     CexInfoTrigger {}
                 }
                 Item {
-                    height: 40
+                    height: 30
                     Layout.fillWidth: true
                     DefaultText {
                         anchors.verticalCenter: parent.verticalCenter
@@ -56,14 +59,15 @@ Item {
                 width: parent.width
                 DefaultText {
                     color: theme.foregroundColor
-                    text:  "Total "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
-                    font.pixelSize:  13
+                    text:  "TOTAL "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+                    font.pixelSize:  11
                     Layout.preferredWidth: 120
+                    opacity: .7
                     font.weight: Font.Regular
 
                 }
                 Item {
-                    height: 40
+                    height: 30
                     Layout.fillWidth: true
                     DefaultText {
                         text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker,"")

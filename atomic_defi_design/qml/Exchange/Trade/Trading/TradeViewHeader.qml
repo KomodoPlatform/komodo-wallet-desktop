@@ -85,27 +85,43 @@ Item {
             }
             
         }
-        /*DefaultText {
-            leftPadding: 20
-            topPadding: 5
-            visible: false
-            Layout.alignment: Qt.AlignVCenter
-            font.family: 'Ubuntu'
-            font.pixelSize: 20
-            font.weight: Font.Light
-            color: theme.foregroundColor
-            text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
-        }*/
         Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
-        }   
+        } 
         Qaterial.PopupMenuItem
         {
             implicitHeight: 25
             Qaterial.ColorIcon {
                 anchors.centerIn: parent
-                source: Qaterial.Icons.cogs
+                source: Qaterial.Icons.cog
+                iconSize: 16
+                color: theme.accentColor
+            } 
+        }
+        Qaterial.PopupMenuItem
+        {
+            implicitHeight: 25
+            implicitWidth: 25
+            leftInset:0
+            rightInset:0
+            Qaterial.ColorIcon {
+                anchors.centerIn: parent
+                source: Qaterial.Icons.refresh
+                iconSize: 16
+                color: theme.accentColor
+            } 
+        }  
+        Qaterial.PopupMenuItem
+        {
+            implicitHeight: 25
+            implicitWidth: 25
+            leftInset:0
+            rightInset:0
+            Qaterial.ColorIcon {
+                anchors.centerIn: parent
+                source: Qaterial.Icons.cog
+                iconSize: 16
                 color: theme.accentColor
             } 
         }
