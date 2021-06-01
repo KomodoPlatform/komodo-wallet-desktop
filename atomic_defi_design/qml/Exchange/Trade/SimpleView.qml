@@ -297,6 +297,7 @@ ColumnLayout
                         target: _bestOrdersModalLoader
                         function onLoaded() 
                         { 
+                            _bestOrdersModalLoader.item.currentLeftToken = selectedTicker
                             _bestOrdersModalLoader.item.selectedOrderChanged.connect(function() 
                             {
                                 root.selectedOrder = _bestOrdersModalLoader.item.selectedOrder
@@ -307,14 +308,14 @@ ColumnLayout
                 }
             }
 
-    DefaultButton
-    {
-        enabled: parseFloat(_fromValue) > 0 && parseFloat(_toValue) > 0
-        Layout.topMargin: 10
-        Layout.alignment: Qt.AlignHCenter
+            DefaultButton
+            {
+                enabled: parseFloat(_fromValue) > 0 && parseFloat(_toValue) > 0
+                Layout.topMargin: 10
+                Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: swap_card.width - 30
-        text: qsTr("Swap Now !")
-    }
+                text: qsTr("Swap Now !")
+            }
         }
     }
 
@@ -432,11 +433,20 @@ ColumnLayout
         id: bestOrdersModal
         BasicModal 
         {
-            property var selectedOrder
+            property var    selectedOrder
+            property string currentLeftToken // The token we wanna sell
+
+            property int    _rowWidth: width - 20
+            property int    _rowHeight: 50
+            property int    _tokenColumnSize: 60
+            property int    _quantityColumnSize: 100
+            property int    _quantityInBaseColumnSize: 100
+            property int    _fiatVolumeColumnSize: 50
+            property int    _cexRateColumnSize: 50
             
             onOpened: API.app.trading_pg.orderbook.refresh_best_orders()
             id: root
-            width: 540
+            width: 800
             ModalContent 
             {
                 title: qsTr("Best Orders")
@@ -445,76 +455,108 @@ ColumnLayout
                     Layout.preferredHeight: 450
                     Layout.fillWidth: true
                     model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
-                    header: RowLayout // Best orders list header
+                    header: Item // Best orders list header
                     {
-                        Layout.fillWidth: true
-                        DefaultText
-                        {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 220
-                            text: qsTr("Available Quantity")
-                            font.family: Style.font_family
-                            font.bold: true
-                            font.weight: Font.Black
-                        }
-                        DefaultText
-                        {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                            Layout.preferredWidth: 160
-                            text: qsTr("Fiat price")
-                            font.family: Style.font_family
-                            font.bold: true
-                            font.weight: Font.Black
-                        }
-
-                        DefaultText 
-                        {
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 80
-                            text: qsTr("CEX rate")
-                            font.family: Style.font_family
-                            font.bold: true
-                            font.weight: Font.Black
-                        }
-                    }
-                    delegate: ItemDelegate
-                    {
-                        width: 480
-                        height: 50
-                        HorizontalLine { width: parent.width }
-                        RowLayout                                // Order info
+                        width: _rowWidth
+                        height: _rowHeight
+                        RowLayout                   // Order Columns Name
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            width: parent.width
-                            DefaultImage
+                            anchors.fill: parent
+                            DefaultText             // "Token" Header
                             {
-                                Layout.preferredWidth: 24
-                                Layout.preferredHeight: 24
-                                source: General.coinIcon(coin)
+                                Layout.preferredWidth: _tokenColumnSize
+                                text: qsTr("Token")
+                                font.family: Style.font_family
+                                font.bold: true
+                                font.weight: Font.Black
                             }
-                            DefaultText
+                            DefaultText             // "Available Quantity" Header
                             {
-                                Layout.preferredWidth: 180
-                                Layout.leftMargin: 5
-                                text: "%1 %2".arg(quantity).arg(coin)
+                                Layout.preferredWidth: _quantityColumnSize
+                                text: qsTr("Available Quantity")
+                                font.family: Style.font_family
+                                font.bold: true
+                                font.weight: Font.Black
+                            }
+                            DefaultText             // "Available Quantity (in BASE)" header
+                            {
+                                Layout.preferredWidth: _quantityInBaseColumnSize
+                                text: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
+                                font.family: Style.font_family
+                                font.bold: true
+                                font.weight: Font.Black
+                            }
+                            DefaultText             // "Fiat Volume" column header
+                            {
+                                Layout.preferredWidth: _fiatVolumeColumnSize
+                                text: qsTr("Fiat Volume")
+                                font.family: Style.font_family
+                                font.bold: true
+                                font.weight: Font.Black
+                            }
+                            DefaultText             // "CEX Rate" column header
+                            {
+                                Layout.preferredWidth: _cexRateColumnSize
+                                text: qsTr("CEX Rate")
+                                font.family: Style.font_family
+                                font.bold: true
+                                font.weight: Font.Black
+                            }
+                        }
+                    }
+                    delegate: ItemDelegate // Order Line
+                    {
+                        width: _rowWidth
+                        height: _rowHeight
+                        HorizontalLine { width: parent.width }
+                        RowLayout                   // Order Info
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.fill: parent
+                            RowLayout                           // Order Token
+                            {
+                                property int _iconWidth: 24
+
+                                Layout.preferredWidth: _tokenColumnSize
+                                DefaultImage                         // Order Token Icon
+                                {
+                                    Layout.preferredWidth: parent._iconWidth
+                                    Layout.preferredHeight: 24
+                                    source: General.coinIcon(coin)
+                                }
+                                DefaultText                          // Order Token Name
+                                {
+                                    id: _tokenName
+                                    Layout.preferredWidth: _tokenColumnSize - parent._iconWidth
+                                    text: coin
+                                    font.pixelSize: 14
+                                }
+                            }
+                            VerticalLine { Layout.preferredHeight: parent.parent.height }
+                            DefaultText                         // Order Available Quantity
+                            {
+                                Layout.preferredWidth: _quantityColumnSize
+                                text: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
                                 font.pixelSize: 14
                             }
-                            VerticalLine
+                            VerticalLine { Layout.preferredHeight: parent.parent.height }
+                            DefaultText                         // Order Available Quantity In BASE
                             {
-                                Layout.preferredHeight: parent.parent.height
+                                Layout.preferredWidth: _quantityInBaseColumnSize
+                                text: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
+                                font.pixelSize: 14
                             }
-                            DefaultText
+                            VerticalLine { Layout.preferredHeight: parent.parent.height }
+                            DefaultText                         // Order Fiat Volume
                             {
-                                Layout.preferredWidth: 150
+                                Layout.preferredWidth: _fiatVolumeColumnSize
                                 text: price_fiat+API.app.settings_pg.current_fiat_sign
                             }
-                            VerticalLine
-                            {
-                                Layout.preferredHeight: parent.parent.height
-                            }
+                            VerticalLine { Layout.preferredHeight: parent.parent.height }
                             DefaultText
                             {
-                                Layout.preferredWidth: 150
+                                Layout.preferredWidth: _cexRateColumnSize
                                 text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
                             }
                             DefaultTooltip 
@@ -551,7 +593,7 @@ ColumnLayout
                         onClicked: 
                         {
                             if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled) _tooltip.open()
-                            else selectedOrder = { "coin": coin, "uuid": uuid }
+                            else selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume }
                         }
                     }
                 }
