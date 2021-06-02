@@ -248,7 +248,7 @@ ColumnLayout
                     anchors.left: parent.left
                     anchors.leftMargin: 18
                     height: 30
-                    text: API.app.trading_pg.total_amount
+                    text: parseFloat(_fromValue.text) >= API.app.trading_pg.min_trade_vol ? API.app.trading_pg.total_amount : "0"
                     font.pixelSize: Style.textSizeSmall5
                     Component.onCompleted: color = _fromValue.placeholderTextColor
                 }
