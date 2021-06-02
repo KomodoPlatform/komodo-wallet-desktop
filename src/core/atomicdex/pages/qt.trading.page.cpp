@@ -679,6 +679,7 @@ namespace atomic_dex
     {
         if (m_max_volume != max_volume)
         {
+            max_volume   = QString::fromStdString(utils::extract_large_float(max_volume.toStdString()));
             m_max_volume = std::move(max_volume);
             SPDLOG_DEBUG("max_volume is [{}]", m_max_volume.toStdString());
             emit maxVolumeChanged();
@@ -707,16 +708,20 @@ namespace atomic_dex
                     {
                         auto       available_quantity       = m_preffered_order->at("base_max_volume").get<std::string>();
                         t_float_50 available_quantity_order = safe_float(available_quantity);
-                        if (available_quantity_order < safe_float(max_taker_vol))
+                        if (available_quantity_order < safe_float(max_taker_vol) && !QString::fromStdString(available_quantity).contains(get_max_volume()))
                         {
                             SPDLOG_INFO(
-                                "Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}",
-                                m_preffered_order->dump(4));
+                                "Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}\nmax_vol_str: {}",
+                                m_preffered_order->dump(0), max_vol_str);
                             max_vol_str = available_quantity;
+                            this->set_max_volume(QString::fromStdString(max_vol_str));
                         }
                     }
-                    //! max_volume is max_taker_vol
-                    this->set_max_volume(QString::fromStdString(max_vol_str));
+                    else
+                    {
+                        //! max_volume is max_taker_vol
+                        this->set_max_volume(QString::fromStdString(max_vol_str));
+                    }
                 }
 
                 //! Capping it

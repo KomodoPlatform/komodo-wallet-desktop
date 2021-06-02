@@ -35,6 +35,7 @@ namespace atomic_dex::utils
     std::string get_formated_float(t_float_50 value);
     std::string adjust_precision(const std::string& current);
     std::string format_float(t_float_50 value);
+    std::string extract_large_float(const std::string& current);
 
     //! Fs helpers
     bool        create_if_doesnt_exist(const fs::path& path);

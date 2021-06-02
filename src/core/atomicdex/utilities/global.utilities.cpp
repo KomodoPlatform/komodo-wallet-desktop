@@ -257,6 +257,16 @@ namespace atomic_dex::utils
         return logger;
     }
 
+    std::string
+    extract_large_float(const std::string& current)
+    {
+        if (auto pos = current.find('.'); pos != std::string::npos)
+        {
+            return current.substr(0, pos + 9);
+        }
+        return current;
+    }
+
     fs::path
     get_themes_path()
     {
