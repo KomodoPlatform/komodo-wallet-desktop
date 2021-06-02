@@ -16,7 +16,7 @@ ColumnLayout
     id: root
     anchors.centerIn: parent
     onSelectedTickerChanged: { setPair(true, selectedTicker); _fromValue.text = "" }
-    onSelectedOrderChanged:  { API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid); _fromValue.text = API.app.trading_pg.volume }
+    onSelectedOrderChanged:  { API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) }
 
     DefaultRectangle
     {
@@ -121,24 +121,28 @@ ColumnLayout
                     anchors.left: parent.left
                     anchors.leftMargin: 6
                     height: 30
-                    placeholderText: "0.0"
+                    placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Minimum: %1").arg(API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
                     font.pixelSize: Style.textSizeSmall5
                     background: Rectangle { color: theme.backgroundColor }
                     validator: RegExpValidator { regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/ }
-                    onEditingFinished:
-                    {
-                        API.app.trading_pg.orderbook.refresh_best_orders()
-                        API.app.trading_pg.determine_fees()
-                    }
                     onTextChanged:
                     {
                         if (text === "")
                             API.app.trading_pg.volume = 0
+                        else if (parseFloat(text) < parseFloat(API.app.trading_pg.min_trade_vol))
+                            return
                         else
                         {
-                            API.app.trading_pg.volume = text;
-                            text = API.app.trading_pg.volume;
+                            API.app.trading_pg.volume = text
+                            text = API.app.trading_pg.volume
                         }
+                    }
+                    onFocusChanged:
+                    {
+                        if (!focus && parseFloat(text) < parseFloat(API.app.trading_pg.min_trade_vol))
+                        {
+                            text = API.app.trading_pg.min_trade_vol
+                }
                     }
                 }
 
