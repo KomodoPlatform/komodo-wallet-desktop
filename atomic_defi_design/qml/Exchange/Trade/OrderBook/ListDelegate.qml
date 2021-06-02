@@ -74,27 +74,27 @@ Item {
             }
             delay: 200
         }
-        DefaultText {
+        DexLabel {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 60
             text: parseFloat(General.formatDouble(
                                  price, General.amountPrecision, true)).toFixed(8)
             font.family: _font.fontFamily
-            font.pixelSize: 10
+            font.pixelSize: 11
             color: isAsk? Style.colorRed : Style.colorGreen
 
         }
-        DefaultText {
+        DexLabel {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 100
             text: parseFloat(quantity).toFixed(6)
             font.family: _font.fontFamily
-            font.pixelSize: 10
+            font.pixelSize: 11
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
         }
-        DefaultText {
+        DexLabel {
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
             text: parseFloat(total).toFixed(8)
@@ -106,7 +106,7 @@ Item {
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
             horizontalAlignment: Label.AlignRight
             font.family: _font.fontFamily
-            font.pixelSize: 10
+            font.pixelSize: 11
             opacity: 1
 
         }
