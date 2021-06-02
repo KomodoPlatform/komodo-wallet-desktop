@@ -38,6 +38,47 @@ Item {
         DexMacosHeaderControl {
             visible: window.isOsx//Qt.platform.os == "osx"
         }
+        Item {
+            width: 300
+            height: 30
+            x: 95
+            Row {
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 6
+                Qaterial.ColorIcon {
+                    source: Qaterial.Icons.accountCircle
+                    iconSize: 18
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                DexLabel {
+                    text: "EnokasWallet"
+                    font.family: 'Montserrat'
+                    font.weight: Font.Medium
+                    opacity: .7
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Qaterial.ColorIcon {
+                    source: Qaterial.Icons.menuDown
+                    iconSize: 14
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                DexLabel {
+                    leftPadding: 2
+                    text: "|    Balance:"
+                    font.family: 'Montserrat'
+                    font.weight: Font.Medium
+                    opacity: .7
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                DexLabel {
+                    text: "$20.000"
+                    font.family: 'lato'
+                    font.weight: Font.Medium
+                    color: window.application.globalTheme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
     }
     Item {
         id: _left_resize

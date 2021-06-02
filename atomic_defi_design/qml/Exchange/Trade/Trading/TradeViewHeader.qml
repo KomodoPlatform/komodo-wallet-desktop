@@ -31,6 +31,8 @@ Item {
         }
     }
 
+
+
     RowLayout {
         anchors.fill: parent
         Item {
@@ -142,6 +144,12 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     iconSize: 15
                     color: theme.surfaceColor
+                }
+            }
+            DexMouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    form.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
                 }
             }
         }

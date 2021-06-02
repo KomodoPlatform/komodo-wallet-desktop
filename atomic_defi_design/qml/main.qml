@@ -12,6 +12,7 @@ DexWindow {
     id: window
     title: API.app_name
     visible: true
+    property alias application: app
     property int previousX: 0
     property int previousY: 0
     property int real_visibility

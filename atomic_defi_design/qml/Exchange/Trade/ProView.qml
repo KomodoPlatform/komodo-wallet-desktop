@@ -33,6 +33,7 @@ import "./" as Here
 
 ColumnLayout {
     id: form
+    property alias dexConfig: dex_config_popup
     function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
@@ -366,6 +367,7 @@ ColumnLayout {
         }
 
         DexTradeBox {
+            id: order_form
             defaultWidth: isBigScreen? 300 : 280
             maximumWidth: isBigScreen? 310 : 280
             minimumWidth: isBigScreen? 290 : 280
@@ -568,33 +570,6 @@ ColumnLayout {
                         Item {}
                     }
                 }
-                DexTradeBox {
-                    id: _best_order_box2
-                    visible: !isUltraLarge
-                    SplitView.fillWidth: true
-                    SplitView.fillHeight: true
-                    defaultHeight: 130
-                    minimumHeight: 80
-                    title: qsTr("Best Orders")
-                    reloadable: true
-                    onReload: {
-                        API.app.trading_pg.orderbook.refresh_best_orders()
-                    }
-
-                    Behavior on SplitView.preferredWidth {
-                        NumberAnimation {
-                            duration: 100
-                        }
-                    }
-                    BestOrder.List {
-                        clip: !parent.contentVisible
-                        id: best_order_list2
-                        visible: parent.contentVisible
-                        y: 40
-                        width: parent.width
-                        height: parent.height-40
-                    }
-                }
             }
         }
     }
@@ -602,6 +577,59 @@ ColumnLayout {
     ModalLoader {
         id: confirm_trade_modal
         sourceComponent: ConfirmTradeModal {}
+    }
+    DexPopup {
+        id: dex_config_popup
+        spacing: 8
+        padding: 4
+        arrowXDecalage: 75
+        backgroundColor: theme.dexBoxBackgroundColor
+        contentItem: Item {
+            implicitWidth: 350
+            implicitHeight: 300
+            Column {
+                anchors.fill: parent
+                padding: 10
+                DexLabel {
+                    text: "Display"
+                    font: _font.body1
+                }
+                Item {width: 1; height: 5}
+                Qaterial.CheckButton {
+                    text: "Orders & History"
+                    leftInset: 0
+                    checked: !optionBox.closed
+                    onClicked: {
+                        optionBox.closed = !checked
+                    }
+                }
+                Qaterial.CheckButton {
+                    text: "Order Book"
+                    leftInset: 0
+                    checked: !_orderbook_box.closed
+                    onClicked: {
+                        _orderbook_box.closed = !checked
+                    }
+                }
+                Qaterial.CheckButton {
+                    text: "Best Order"
+                    leftInset: 0
+                    checked: !_best_order_box.closed
+                    onClicked: {
+                        _best_order_box.closed = !checked
+                        console.log( _best_order_box.closed, checked)
+                    }
+                }
+                Qaterial.CheckButton {
+                    text: "Order Form"
+                    leftInset: 0
+                    checked: !order_form.closed
+                    onClicked: {
+                        order_form.closed = !checked
+                    }
+                }
+            }
+        }
     }
 
 
