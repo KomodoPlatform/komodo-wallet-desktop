@@ -132,6 +132,20 @@ ColumnLayout {
                 DexTradeBox {
                     title: qsTr("Chart View")
                     expandedVert: true
+                    canBeFull: true
+                    onFullScreenChanged: {
+                        if(fullScreen){
+                            _best_order_box.visible = false 
+                            _orderbook_box.visible = false
+                            optionBox.visible = false
+                            order_form.visible = false
+                        } else {
+                            _best_order_box.visible = true 
+                            _orderbook_box.visible = true
+                            optionBox.visible = true
+                            order_form.visible = true
+                        }
+                    }
                     Item {
                         id: chart_view
                         anchors.fill: parent

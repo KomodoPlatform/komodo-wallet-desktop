@@ -17,9 +17,11 @@ Rectangle {
     property bool expandedVert: false
     property bool expandedHort: false
     property bool showed: true
+    property bool canBeFull: false
     property bool duplicable: false
     property bool closable: false
     property bool expandable: true
+    property bool fullScreen: false
     property string title: "Default Title"
     property int minimumHeight: isVertical? 40 : 250
     property int minimumWidth: isVertical? 40 : 250
@@ -154,14 +156,25 @@ Rectangle {
                     leftPadding: 10
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
+                    font.weight: Font.Medium
                     text: _control.title
-                    color: theme.foregroundColor
+                    color: theme.accentColor
                     bottomPadding: 5
                 }
                 Row {
                     Layout.alignment: Qt.AlignVCenter
                     opacity: .8
                     spacing: -8
+                    Qaterial.AppBarButton {
+                        implicitHeight: 40
+                        implicitWidth: 40
+                        icon.height: 17
+                        icon.width: 17
+                        visible: _control.canBeFull
+                        foregroundColor: theme.accentColor
+                        icon.source: _control.fullScreen? Qaterial.Icons.fullscreenExit : Qaterial.Icons.fullscreen
+                        onClicked: _control.fullScreen =!_control.fullScreen
+                    }
                     Qaterial.AppBarButton {
                         Timer {
                             id: _tm
@@ -176,7 +189,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.reloadable
                         icon.source: Qaterial.Icons.refresh
                         onClicked: {
@@ -191,7 +204,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: _control.hidden =!_control.hidden
                     }
@@ -200,7 +213,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
@@ -210,7 +223,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
                         icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
                         onClicked: _control.expandedHort =!_control.expandedHort
@@ -220,7 +233,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -229,7 +242,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                         onClicked: {
@@ -251,7 +264,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 text: _control.title
-                color: theme.foregroundColor
+                color: theme.accentColor
                 bottomPadding: 5
                 rotation: 90
                 anchors.centerIn: parent
@@ -269,7 +282,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: {
                             _control.hidden = !_control.hidden
@@ -280,7 +293,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
@@ -290,7 +303,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
                         icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
                         onClicked: _control.expandedHort =!_control.expandedHort
@@ -300,7 +313,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -309,7 +322,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: theme.accentColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
 
