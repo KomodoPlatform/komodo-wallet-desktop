@@ -714,6 +714,7 @@ namespace atomic_dex
                                 "Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}\nmax_vol_str: {}",
                                 m_preffered_order->dump(0), max_vol_str);
                             max_vol_str = available_quantity;
+                            //! max volume is available quantity from the order
                             this->set_max_volume(QString::fromStdString(max_vol_str));
                         }
                     }
@@ -1345,7 +1346,9 @@ namespace atomic_dex
 
         if (min_trade_vol != m_minimal_trading_amount)
         {
-            SPDLOG_INFO("min_trade_vol: [{}]", min_trade_vol.toStdString());
+            SPDLOG_INFO("min_trade_vol before adjustment: [{}]", min_trade_vol.toStdString());
+            min_trade_vol = QString::fromStdString(utils::adjust_precision(min_trade_vol.toStdString()));
+            SPDLOG_INFO("min_trade_vol after adjustment: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
             this->determine_error_cases();
