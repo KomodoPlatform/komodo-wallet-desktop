@@ -338,6 +338,7 @@
         <file>atomic_defi_design/qml/Components/DexMacControl.qml</file>
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
         <file>atomic_defi_design/qml/Components/DexMouseArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DexPopup.qml</file>
         <file>atomic_defi_design/qml/Components/DexRangeSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DexRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexScrollBar.qml</file>
