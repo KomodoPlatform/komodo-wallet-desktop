@@ -199,7 +199,7 @@ ColumnLayout {
                             }
                         }
                     }
-
+                    closable: true
                     title: qsTr("Options")
                     Column {
                         topPadding: 40
@@ -350,6 +350,7 @@ ColumnLayout {
 
         DexTradeBox {
             id: order_form
+            closable: true
             defaultWidth: isBigScreen? 300 : 280
             maximumWidth: isBigScreen? 310 : 280
             minimumWidth: isBigScreen? 290 : 280
