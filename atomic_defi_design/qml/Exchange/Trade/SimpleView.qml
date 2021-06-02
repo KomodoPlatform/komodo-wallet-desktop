@@ -266,6 +266,7 @@ ColumnLayout
                         anchors.fill: parent
                         onClicked: _bestOrdersModalLoader.open()
                         hoverEnabled: true
+                        enabled: parseFloat(_fromValue.text) > 0
                     }
 
                     DefaultImage // Button with icon (a best order is currently selected)
