@@ -80,23 +80,37 @@ ColumnLayout
 
                 DefaultText // From Text
                 {
-                    anchors.fill: parent
-                    anchors.leftMargin: 17
+                    anchors.top: parent.top
                     anchors.topMargin: 14
+                    anchors.left: parent.left
+                    anchors.leftMargin: 17
                     text: qsTr("From")
                     font.pixelSize: Style.textSizeSmall4
                 }
 
-                DefaultText // Balance
+                Text // Balance
                 {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 17
+                    readonly property int _maxWidth: 140
+
+                    id: _fromBalance
+                    width: Math.min(_maxWidth, _textMetrics.boundingRect.width)
                     anchors.top: parent.top
                     anchors.topMargin: 14
-                    text: qsTr("Tradable %1 : %2")
-                        .arg('<a href=""></a>')
+                    anchors.right: parent.right
+                    anchors.rightMargin: 17
+                    text: qsTr("Tradable: %2")
                         .arg(API.app.trading_pg.max_volume)
-                    font.pixelSize: Style.textSizeSmall4
+                    font.pixelSize: Style.textSizeSmall2
+                    elide: Text.ElideRight
+                    color: Style.colorWhite1
+
+                    TextMetrics 
+                    {
+                        id: _textMetrics
+                        font: _fromBalance.font
+                        text: _fromBalance.text
+                        elide: _fromBalance.elide
+                }
                 }
 
                 TextField // Amount
