@@ -95,13 +95,14 @@ ColumnLayout {
 
         spacing: 15
         handle: Item {
-            implicitWidth: 10
-            implicitHeight: 10
-            InnerBackground {
-                implicitWidth: 6
-                implicitHeight: 16
+            implicitWidth: 2
+            implicitHeight: 4
+            Rectangle {
+                implicitWidth: 2
+                implicitHeight: 4
                 anchors.centerIn: parent
-                opacity: .2
+                opacity: 0
+                color: 'transparent'
             }
         }
 
@@ -119,13 +120,13 @@ ColumnLayout {
                 anchors.rightMargin: 0
                 orientation: Qt.Vertical
                 handle: Item {
-                    implicitWidth: 10
-                    implicitHeight: 10
+                    implicitWidth: 40
+                    implicitHeight: 6
                     InnerBackground {
-                        implicitWidth: 16
+                        implicitWidth: 40
                         implicitHeight: 6
                         anchors.centerIn: parent
-                        opacity: .4
+                        opacity: 0.4
                     }
                 }
                 DexTradeBox {
@@ -176,7 +177,6 @@ ColumnLayout {
                             }
                         }
                     }
-
                     TickerSelector {
                         id: selector_right
                         left_side: false
@@ -184,24 +184,6 @@ ColumnLayout {
                         ticker: right_ticker
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                         Layout.fillWidth: true
-                    }
-                }
-                DexTradeBox {
-                    title: qsTr("OrderBook")
-                    defaultHeight: 300
-                    Behavior on defaultHeight {
-                        NumberAnimation {
-                            duration: 150
-                        }
-                    }
-
-                    visible: !isUltraLarge
-
-                    OrderBook.Horizontal {
-                        anchors.topMargin: 40
-                        anchors.fill: parent
-                        clip: !parent.contentVisible
-                        visible: parent.visible
                     }
                 }
                 DexTradeBox {
@@ -298,23 +280,24 @@ ColumnLayout {
                 }
             }
         }
-
         Item {
-            SplitView.minimumWidth: 300
-            SplitView.maximumWidth: 310
-            SplitView.preferredWidth: 280
-            visible: !_best_order_box.closed || !_orderbook_box.closed
+            id: _book_and_best
+            property bool showing: (_best_order_box.visible || _orderbook_box.visible)
+            SplitView.minimumWidth: showing? 300 : 0
+            SplitView.maximumWidth: showing? 310 : 0
+            SplitView.preferredWidth: showing? 280 : 0
+            clip: true
             SplitView {
                 anchors.fill: parent
                 orientation: Qt.Vertical
                 handle: Item {
-                    implicitWidth: 10
-                    implicitHeight: 10
+                    implicitWidth: 40
+                    implicitHeight: 6
                     InnerBackground {
-                        implicitWidth: 16
+                        implicitWidth: 40
                         implicitHeight: 6
                         anchors.centerIn: parent
-                        opacity: .4
+                        opacity: 0.4
                     }
                 }
                 DexTradeBox {
@@ -323,7 +306,6 @@ ColumnLayout {
                     closable: true
                     title: "OrderBook"
                     expandedVert: true
-
                     Behavior on SplitView.preferredWidth {
                         NumberAnimation {
                             duration: 100
@@ -586,47 +568,40 @@ ColumnLayout {
         backgroundColor: theme.dexBoxBackgroundColor
         contentItem: Item {
             implicitWidth: 350
-            implicitHeight: 300
+            implicitHeight: 200
             Column {
                 anchors.fill: parent
+                rightPadding: 20
                 padding: 10
+                spacing: 8
                 DexLabel {
-                    text: "Display"
+                    text: "Display Settings."
                     font: _font.body1
                 }
                 Item {width: 1; height: 5}
-                Qaterial.CheckButton {
-                    text: "Orders & History"
-                    leftInset: 0
-                    checked: !optionBox.closed
-                    onClicked: {
-                        optionBox.closed = !checked
-                    }
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
+                    text: "Trading Information"
+                    targetProperty: "visible"
+                    target: optionBox
                 }
-                Qaterial.CheckButton {
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
                     text: "Order Book"
-                    leftInset: 0
-                    checked: !_orderbook_box.closed
-                    onClicked: {
-                        _orderbook_box.closed = !checked
-                    }
+                    targetProperty: "visible"
+                    target: _orderbook_box
                 }
-                Qaterial.CheckButton {
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
                     text: "Best Order"
-                    leftInset: 0
-                    checked: !_best_order_box.closed
-                    onClicked: {
-                        _best_order_box.closed = !checked
-                        console.log( _best_order_box.closed, checked)
-                    }
+                    targetProperty: "visible"
+                    target: _best_order_box
                 }
-                Qaterial.CheckButton {
-                    text: "Order Form"
-                    leftInset: 0
-                    checked: !order_form.closed
-                    onClicked: {
-                        order_form.closed = !checked
-                    }
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
+                    text: "Place Order"
+                    targetProperty: "visible"
+                    target: order_form
                 }
             }
         }

@@ -30,7 +30,6 @@ Rectangle {
     property bool reloadable: false
     property bool contentVisible: !hidden
     radius: 3
-
     property bool isVertical: _control.parent.parent.orientation === Qt.Vertical
     function setHeight(height) {
         SplitView.preferredHeight = height
@@ -136,9 +135,6 @@ Rectangle {
         SplitView.fillHeight = expandedVert? true: false
         SplitView.fillWidth = expandedHort? true: false
     }
-
-
-    //SplitView.maximumWidth: maximumWidth
     property Component contentItem
 
     
