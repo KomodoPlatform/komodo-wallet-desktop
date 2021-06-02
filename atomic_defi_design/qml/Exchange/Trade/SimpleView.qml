@@ -98,7 +98,7 @@ ColumnLayout
                     anchors.topMargin: 14
                     anchors.right: parent.right
                     anchors.rightMargin: 17
-                    text: qsTr("Tradable: %2")
+                    text: qsTr("Tradable: %2").arg(API.app.trading_pg.max_volume)
                         .arg(typeof selectedOrder !== 'undefined' ? API.app.trading_pg.max_volume : 0)
                     font.pixelSize: Style.textSizeSmall2
                     elide: Text.ElideRight
@@ -144,11 +144,15 @@ ColumnLayout
                             text = API.app.trading_pg.min_trade_vol
                         }
                     }
-                    Component.onCompleted: API.app.trading_pg.maxVolumeChanged.connect(function() 
+                    Component.onCompleted: 
                     {
+                        text = API.app.trading_pg.max_volume
+                        API.app.trading_pg.maxVolumeChanged.connect(function() 
+                        {
                         if (parseFloat(text) > API.app.trading_pg.max_volume)
                             text = API.app.trading_pg.max_volume
                     })
+                }
                 }
 
                 DefaultText
