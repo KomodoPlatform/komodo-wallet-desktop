@@ -1533,6 +1533,22 @@
       "active": false,
       "currently_enabled": false
   },
+  "JSTR-ERC20": {
+    "coin": "JSTR-ERC20",
+    "name": "Ropsten test ERC20",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "is_testnet": true,
+    "nodes": [
+      "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
+    ],
+    "explorer_url": [
+      "https://ropsten.etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "JUMBLR": {
     "coin": "JUMBLR",
     "name": "JUMBLR",
@@ -1862,6 +1878,22 @@
     "type": "ERC-20",
     "name": "Ethereum"
   },
+  "ETHR": {
+    "active": false,
+    "coin": "ETHR",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "is_testnet": true,
+    "nodes": [
+      "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
+    ],
+    "explorer_url": [
+      "https://ropsten.etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "name": "Ethereum Ropsten (Testnet)"
+  },  
   "ETH-BEP20": {
       "coin": "ETH-BEP20",
       "name": "Ethereum",
