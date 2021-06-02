@@ -110,7 +110,7 @@ ColumnLayout
                         font: _fromBalance.font
                         text: _fromBalance.text
                         elide: _fromBalance.elide
-                }
+                    }
                 }
 
                 TextField // Amount
@@ -142,7 +142,7 @@ ColumnLayout
                         if (!focus && parseFloat(text) < parseFloat(API.app.trading_pg.min_trade_vol))
                         {
                             text = API.app.trading_pg.min_trade_vol
-                }
+                        }
                     }
                 }
 
@@ -341,7 +341,7 @@ ColumnLayout
 
             DefaultButton
             {
-                enabled: parseFloat(_fromValue) > 0 && parseFloat(_toValue) > 0 && !_fromValue.focus
+                enabled: typeof selectedOrder !== 'undefined' && parseFloat(_fromValue.text) >= API.app.trading_pg.min_trade_vol && parseFloat(_toValue.text) > 0
                 Layout.topMargin: 10
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: swap_card.width - 30
