@@ -148,10 +148,10 @@ ColumnLayout
                         text = API.app.trading_pg.max_volume
                         API.app.trading_pg.maxVolumeChanged.connect(function() 
                         {
-                        if (parseFloat(text) > API.app.trading_pg.max_volume)
-                            text = API.app.trading_pg.max_volume
-                    })
-                }
+                            if (parseFloat(text) > API.app.trading_pg.max_volume)
+                                text = API.app.trading_pg.max_volume
+                        })
+                    }
                 }
 
                 DefaultText
@@ -267,6 +267,7 @@ ColumnLayout
                     radius: 10
                     border.width: 0
                     color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
+                    opacity: _bestOrdersMouseArea.enabled ? 1 : 0.3
 
                     DefaultMouseArea 
                     {
