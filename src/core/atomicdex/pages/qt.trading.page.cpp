@@ -793,7 +793,7 @@ namespace atomic_dex
             }
             else if (safe_float(std_volume) < safe_float(get_min_trade_vol().toStdString()))
             {
-                this->set_volume(this->get_min_trade_vol());
+                this->set_volume(QString::fromStdString(utils::adjust_precision(this->get_min_trade_vol().toStdString())));
             }
         }
     }

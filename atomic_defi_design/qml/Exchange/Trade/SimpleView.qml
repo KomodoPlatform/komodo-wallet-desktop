@@ -111,7 +111,8 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall5
                     background: Rectangle { color: theme.backgroundColor }
                     validator: RegExpValidator { regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/ }
-                    onEditingFinished:
+                    onEditingFinished: console.log("editing finished")
+                    onTextChanged:
                     {
                         if (text === "")
                             API.app.trading_pg.volume = 0
