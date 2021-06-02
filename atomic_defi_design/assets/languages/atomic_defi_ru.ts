@@ -503,12 +503,12 @@
 <context>
     <name>CandleStickChart</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="42"/>
+        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="41"/>
         <source>Loading market data</source>
         <translation>Загрузка данных</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="48"/>
+        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="50"/>
         <source>There is no chart data for this pair yet</source>
         <translation>Нет данных для построения графика для этой торговой пары</translation>
     </message>
@@ -2291,68 +2291,72 @@
 <context>
     <name>ProView</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="64"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="65"/>
         <source>Failed to place the order</source>
         <translation>Не удалось разместить ордер</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="73"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="74"/>
         <source>Placed the order</source>
         <translation>Ордер размещен</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="131"/>
-        <source>Chart View</source>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="139"/>
+        <source>Chart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="189"/>
-        <source>OrderBook</source>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="224"/>
+        <source>Trading Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="220"/>
-        <source>Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="246"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="250"/>
         <source>Exchange Rates</source>
         <translation>Курс обмена</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="252"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="256"/>
         <source>Orders</source>
         <translation>Ордеры</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="258"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="262"/>
         <source>history</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="345"/>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="578"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="328"/>
+        <source>Order Book</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="349"/>
         <source>Best Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="410"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="375"/>
+        <source>Place Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="417"/>
         <source>Buy</source>
         <translation type="unfinished">Купить</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="445"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="452"/>
         <source>Sell</source>
         <translation type="unfinished">Продать</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="481"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="488"/>
         <source>Order Selected</source>
         <translation>Ордер выбран</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="534"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="541"/>
         <source>Start Swap</source>
         <translation>Начать Своп</translation>
     </message>
@@ -3274,6 +3278,19 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Components/Toast.qml" line="51"/>
         <source>Click here to see the details</source>
         <translation>Нажмите, чтобы узнать подробности</translation>
+    </message>
+</context>
+<context>
+    <name>TradeViewHeader</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="114"/>
+        <source>How to trade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="130"/>
+        <source>FAQ</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

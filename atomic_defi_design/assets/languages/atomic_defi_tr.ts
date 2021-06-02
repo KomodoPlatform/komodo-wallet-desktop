@@ -503,12 +503,12 @@
 <context>
     <name>CandleStickChart</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="42"/>
+        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="41"/>
         <source>Loading market data</source>
         <translation>Borsa bilgisi yükleniyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="48"/>
+        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="50"/>
         <source>There is no chart data for this pair yet</source>
         <translation>Bu parite için henüz grafik verisi yok</translation>
     </message>
@@ -2273,68 +2273,72 @@
 <context>
     <name>ProView</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="64"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="65"/>
         <source>Failed to place the order</source>
         <translation>Emir başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="73"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="74"/>
         <source>Placed the order</source>
         <translation>Emir başarılı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="131"/>
-        <source>Chart View</source>
-        <translation>Grafik görünümü</translation>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="139"/>
+        <source>Chart</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="189"/>
-        <source>OrderBook</source>
-        <translation>Emir Defteri</translation>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="224"/>
+        <source>Trading Information</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="220"/>
-        <source>Options</source>
-        <translation>Seçenekler</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="246"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="250"/>
         <source>Exchange Rates</source>
         <translation>Döviz kurları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="252"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="256"/>
         <source>Orders</source>
         <translation>Emirler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="258"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="262"/>
         <source>history</source>
         <translation>geçmiş</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="345"/>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="578"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="328"/>
+        <source>Order Book</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="349"/>
         <source>Best Orders</source>
         <translation>En İyi Emirler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="410"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="375"/>
+        <source>Place Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="417"/>
         <source>Buy</source>
         <translation>Al</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="445"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="452"/>
         <source>Sell</source>
         <translation>Sat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="481"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="488"/>
         <source>Order Selected</source>
         <translation>Emir Seçildi</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="534"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="541"/>
         <source>Start Swap</source>
         <translation>Takas Başlat</translation>
     </message>
@@ -3249,6 +3253,19 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Components/Toast.qml" line="51"/>
         <source>Click here to see the details</source>
         <translation>Detayları görmek için buraya tıklayın</translation>
+    </message>
+</context>
+<context>
+    <name>TradeViewHeader</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="114"/>
+        <source>How to trade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="130"/>
+        <source>FAQ</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
