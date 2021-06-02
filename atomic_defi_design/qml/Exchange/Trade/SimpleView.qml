@@ -98,8 +98,7 @@ ColumnLayout
                     anchors.topMargin: 14
                     anchors.right: parent.right
                     anchors.rightMargin: 17
-                    text: qsTr("Tradable: %2").arg(API.app.trading_pg.max_volume)
-                        .arg(typeof selectedOrder !== 'undefined' ? API.app.trading_pg.max_volume : 0)
+                    text: qsTr("Tradable: %1").arg(API.app.trading_pg.max_volume)
                     font.pixelSize: Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: Style.colorWhite1
