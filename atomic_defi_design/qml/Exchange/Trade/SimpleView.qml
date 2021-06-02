@@ -111,7 +111,11 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall5
                     background: Rectangle { color: theme.backgroundColor }
                     validator: RegExpValidator { regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/ }
-                    onEditingFinished: console.log("editing finished")
+                    onEditingFinished:
+                    {
+                        API.app.trading_pg.orderbook.refresh_best_orders()
+                        API.app.trading_pg.determine_fees()
+                    }
                     onTextChanged:
                     {
                         if (text === "")

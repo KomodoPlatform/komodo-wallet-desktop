@@ -660,8 +660,11 @@ namespace atomic_dex
             this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
-            this->get_orderbook_wrapper()->refresh_best_orders();
-            this->determine_fees();
+            if (m_current_trading_mode != TradingModeGadget::Simple)
+            {
+                this->get_orderbook_wrapper()->refresh_best_orders();
+                this->determine_fees();
+            }
         }
     }
 
