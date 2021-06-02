@@ -130,7 +130,7 @@ ColumnLayout {
                     }
                 }
                 DexTradeBox {
-                    title: qsTr("Chart View")
+                    title: qsTr("Chart")
                     expandedVert: true
                     canBeFull: true
                     onFullScreenChanged: {
@@ -214,7 +214,7 @@ ColumnLayout {
                         }
                     }
                     closable: true
-                    title: qsTr("Options")
+                    title: qsTr("Trading Information")
                     Column {
                         topPadding: 40
                         width: parent.width
@@ -318,7 +318,7 @@ ColumnLayout {
                     id: _orderbook_box
                     SplitView.fillWidth: true
                     closable: true
-                    title: "OrderBook"
+                    title: qsTr("Order Book")
                     expandedVert: true
                     Behavior on SplitView.preferredWidth {
                         NumberAnimation {
@@ -365,6 +365,7 @@ ColumnLayout {
         DexTradeBox {
             id: order_form
             closable: true
+            title: qsTr("Place Order")
             defaultWidth: isBigScreen? 300 : 280
             maximumWidth: isBigScreen? 310 : 280
             minimumWidth: isBigScreen? 290 : 280
