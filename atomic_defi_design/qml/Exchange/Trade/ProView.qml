@@ -87,7 +87,12 @@ ColumnLayout {
     anchors.topMargin: 20
     anchors.leftMargin: 10
     anchors.fill: parent
-
+    Connections {
+        target: app
+        function onPairChanged(base, rel) {
+            dex_chart.visible = true
+        }
+    }
     SplitView {
         id: splitView
         Layout.fillWidth: true
@@ -130,6 +135,7 @@ ColumnLayout {
                     }
                 }
                 DexTradeBox {
+                    id: dex_chart
                     title: qsTr("Chart")
                     expandedVert: true
                     canBeFull: true
@@ -151,6 +157,7 @@ ColumnLayout {
                         anchors.fill: parent
                         anchors.topMargin: 40
                         CandleStickChart {
+                            id: candleChart
                             color: 'transparent'
                             anchors.fill: parent
                         }

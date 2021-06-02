@@ -57,7 +57,7 @@ Item {
 					    regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/
 					}
 					horizontalAlignment: Qt.AlignRight
-			        echoMode: hidable && hiding ? TextInput.Password : TextInput.Normal
+			        echoMode: TextInput.Normal
 			        background: Item{}
 			        font.weight: Font.Medium
 			        font.family: 'Lato'
