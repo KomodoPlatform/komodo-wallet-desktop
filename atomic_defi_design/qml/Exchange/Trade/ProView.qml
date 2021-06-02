@@ -568,17 +568,16 @@ ColumnLayout {
         backgroundColor: theme.dexBoxBackgroundColor
         contentItem: Item {
             implicitWidth: 350
-            implicitHeight: 200
+            implicitHeight: 190
             Column {
                 anchors.fill: parent
                 rightPadding: 20
                 padding: 10
                 spacing: 8
                 DexLabel {
-                    text: "Display Settings."
-                    font: _font.body1
+                    text: "Display Settings"
+                    font: _font.body2
                 }
-                Item {width: 1; height: 5}
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
                 DexCheckEye {
                     text: "Trading Information"
