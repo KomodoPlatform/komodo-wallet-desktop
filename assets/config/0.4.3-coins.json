@@ -1533,8 +1533,8 @@
       "active": false,
       "currently_enabled": false
   },
-  "JSTR-ERC20": {
-    "coin": "JSTR-ERC20",
+  "JSTR": {
+    "coin": "JSTR",
     "name": "Ropsten test ERC20",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
