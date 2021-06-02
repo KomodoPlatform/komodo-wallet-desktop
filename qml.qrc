@@ -323,6 +323,7 @@
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
         <file>atomic_defi_design/qml/Components/DexButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexCheckBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexCheckEye.qml</file>
         <file>atomic_defi_design/qml/Components/DexColorOverlay.qml</file>
         <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
