@@ -6,7 +6,6 @@ import Qaterial 1.0 as Qaterial
 
 import "../../Components"
 import "../../Constants"
-import "./BestOrder" as BestOrder
 
 ColumnLayout
 {
