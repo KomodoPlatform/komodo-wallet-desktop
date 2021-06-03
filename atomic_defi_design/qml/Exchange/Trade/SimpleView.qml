@@ -15,7 +15,12 @@ ColumnLayout
     id: root
     anchors.centerIn: parent
     onSelectedTickerChanged: { setPair(true, selectedTicker); _fromValue.text = "" }
-    onSelectedOrderChanged:  { API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) }
+    onSelectedOrderChanged:  { if (typeof selectedOrder !== 'undefined') API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) }
+    Component.onDestruction: 
+    {
+        API.app.trading_pg.reset_order()
+        selectedOrder = undefined
+    }
 
     DefaultRectangle
     {
