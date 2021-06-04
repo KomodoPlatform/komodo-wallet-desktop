@@ -151,7 +151,7 @@ Rectangle {
                 anchors.fill: parent
                 Layout.rightMargin: 10
                 Layout.leftMargin: 10
-                DefaultText {
+                DexLabel {
                     id: _texto
                     leftPadding: 10
                     Layout.alignment: Qt.AlignVCenter
@@ -159,6 +159,7 @@ Rectangle {
                     font.weight: Font.Medium
                     text: _control.title
                     color: theme.accentColor
+                    visible: !hidden
                     bottomPadding: 5
                 }
                 Row {
