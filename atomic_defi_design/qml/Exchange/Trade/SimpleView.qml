@@ -27,7 +27,7 @@ ColumnLayout
     {
         id: swap_card
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: 370
+        Layout.preferredWidth: 380
         Layout.preferredHeight: _unitPrice.visible ? 400 : 380
         radius: 20
 
