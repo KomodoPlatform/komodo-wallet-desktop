@@ -28,7 +28,7 @@ ColumnLayout
         id: swap_card
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: 370
-        Layout.preferredHeight: 375
+        Layout.preferredHeight: _unitPrice.visible ? 400 : 380
         radius: 20
 
         MouseArea
@@ -350,6 +350,32 @@ ColumnLayout
                             }) 
                         }
                     }
+                }
+            }
+
+            RowLayout // Unit Price
+            {
+                id: _unitPrice
+
+                // LAYOUT
+                Layout.topMargin: 10
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+
+                enabled: typeof selectedOrder !== 'undefined'
+                visible: enabled                                
+
+                DefaultText 
+                {
+                    Layout.rightMargin: 120
+                    font.pixelSize: Style.textSizeSmall3
+                    text: qsTr("Price") 
+            }
+                DefaultText
+                {
+                    Layout.alignment: Qt.AlignRight
+                    font.pixelSize: Style.textSizeSmall3
+                    text: parent.enabled ? "1 %1 = %2 %3".arg(selectedTicker).arg(parseFloat(selectedOrder.price).toFixed(8)).arg(selectedOrder.coin) : ""
                 }
             }
 
