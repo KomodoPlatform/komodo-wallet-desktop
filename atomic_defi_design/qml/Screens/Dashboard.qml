@@ -53,6 +53,10 @@ Item {
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
+    onCurrent_pageChanged: {
+        app.deepPage = current_page*10
+        console.log(app.deepPage)
+    }
 
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized

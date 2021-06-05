@@ -18,7 +18,9 @@ Rectangle {
     id: app
 
     color: theme.surfaceColor
-
+    property string currentWalletName: ""
+    property int page: current_page===5? deepPage : current_page
+    property int deepPage: 0
     property alias globalTheme: theme
     Shortcut {
         sequence: "F11"

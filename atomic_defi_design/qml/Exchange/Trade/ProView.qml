@@ -163,50 +163,59 @@ ColumnLayout {
                         }
                     }
                 }
+                DexTradeBox {
+                    expandedVert: true
+                    canBeFull: true
+                    hideHeader: true
+                    maximumHeight: 80
+                    minimumHeight: 75
+                    RowLayout {
+                        id: selectors
+                        spacing: 20
+                        anchors.fill: parent
+                        anchors.rightMargin: 10
+                        anchors.leftMargin: 10
+                        TickerSelector {
+                            id: selector_left
+                            left_side: true
+                            Layout.fillHeight: true
+                            ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
+                            ticker: left_ticker
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                            Layout.fillWidth: true
+                        }
 
-                RowLayout {
-                    id: selectors
-                    spacing: 20
-                    SplitView.maximumHeight: 80
-                    SplitView.minimumHeight: 75
+                        SwapIcon {
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                            Layout.preferredHeight: selector_left.height * 0.65
 
-                    TickerSelector {
-                        id: selector_left
-                        left_side: true
-                        Layout.fillHeight: true
-                        ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
-                        ticker: left_ticker
-                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-                        Layout.fillWidth: true
-                    }
+                            top_arrow_ticker: selector_left.ticker
+                            bottom_arrow_ticker: selector_right.ticker
+                            hovered: swap_button.containsMouse
 
-                    SwapIcon {
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        Layout.preferredHeight: selector_left.height * 0.65
-
-                        top_arrow_ticker: selector_left.ticker
-                        bottom_arrow_ticker: selector_right.ticker
-                        hovered: swap_button.containsMouse
-
-                        DefaultMouseArea {
-                            id: swap_button
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked: {
-                                if (!block_everything)
-                                    setPair(true, right_ticker)
+                            DefaultMouseArea {
+                                id: swap_button
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                onClicked: {
+                                    if (!block_everything)
+                                        setPair(true, right_ticker)
+                                }
                             }
                         }
+                        TickerSelector {
+                            id: selector_right
+                            left_side: false
+                            ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
+                            ticker: right_ticker
+                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                            Layout.fillWidth: true
+                        }
                     }
-                    TickerSelector {
-                        id: selector_right
-                        left_side: false
-                        ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
-                        ticker: right_ticker
-                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                        Layout.fillWidth: true
-                    }
+
                 }
+
+                
                 DexTradeBox {
                     id: optionBox
                     defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270

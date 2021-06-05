@@ -20,6 +20,7 @@ SetupPage {
     function onClickedLogin(password) {
         if(API.app.wallet_mgr.login(password, selected_wallet_name)) {
             console.log("Success: Login")
+            app.currentWalletName = selected_wallet_name
             postLoginSuccess()
             return true
         }
