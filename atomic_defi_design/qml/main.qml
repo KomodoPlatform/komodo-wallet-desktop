@@ -112,27 +112,46 @@ DexWindow {
                 visible: _label.text === ""
                 anchors.verticalCenter: parent.verticalCenter
             }
-            Qaterial.ColorIcon {
-                source: Qaterial.Icons.accountCircle
-                iconSize: 18
-                visible: _label.text !== ""
+            Rectangle {
+                width: __row.width+10
+                height: __row.height+5
                 anchors.verticalCenter: parent.verticalCenter
-            }
-            DexLabel {
-                id: _label
-                text: app.currentWalletName?? ""
-                font.family: 'Montserrat'
-                font.weight: Font.Medium
-                opacity: .7
                 visible: _label.text !== ""
-                anchors.verticalCenter: parent.verticalCenter
+                radius: 3
+                color: _area.containsMouse? app.globalTheme.dexBoxBackgroundColor : "transparent"
+                Row {
+                    id: __row
+                    anchors.centerIn: parent
+                    layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
+                    spacing: 6
+                    Qaterial.ColorIcon {
+                        source: Qaterial.Icons.accountCircle
+                        iconSize: 18
+                        visible: _label.text !== ""
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    DexLabel {
+                        id: _label
+                        text: app.currentWalletName?? ""
+                        font.family: 'Montserrat'
+                        font.weight: Font.Medium
+                        opacity: .7
+                        visible: _label.text !== ""
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Qaterial.ColorIcon {
+                        source: Qaterial.Icons.menuDown
+                        iconSize: 14
+                        visible: _label.text !== ""
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+                DexMouseArea {
+                    id: _area
+                    anchors.fill: parent
+                }
             }
-            Qaterial.ColorIcon {
-                source: Qaterial.Icons.menuDown
-                iconSize: 14
-                visible: _label.text !== ""
-                anchors.verticalCenter: parent.verticalCenter
-            }
+            
             DexLabel {
                 leftPadding: 2
                 text: "|    Balance:"
