@@ -175,7 +175,13 @@ DexWindow {
                 DexMouseArea {
                     id: _area
                     anchors.fill: parent
-                    onClicked: userMenu.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
+                    onClicked: {
+                        if(userMenu.visible){
+                            userMenu.close()
+                        }else {
+                            userMenu.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
+                        }
+                    }
                 }
             }
             DexLabel {

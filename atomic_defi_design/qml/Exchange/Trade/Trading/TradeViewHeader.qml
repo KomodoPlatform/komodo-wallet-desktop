@@ -149,7 +149,12 @@ Item {
             DexMouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    form.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
+                    if(form.dexConfig.visible){
+                        form.dexConfig.close()
+                    }else {
+                        form.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
+                    }
+                    
                 }
             }
         }
