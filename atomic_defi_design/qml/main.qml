@@ -16,7 +16,7 @@ DexWindow {
     property int previousX: 0
     property int previousY: 0
     property int real_visibility
-    property bool isOsx: Qt.platform.os == "osx"
+    property bool isOsx: true// Qt.platform.os == "osx"
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
     
@@ -57,6 +57,32 @@ DexWindow {
         anchors.topMargin: 30
         anchors.margins: 2
     }
+    DexPopup
+  {
+    id: userMenu
+
+    spacing: 0
+    padding: 0
+    backgroundColor: app.globalTheme.dexBoxBackgroundColor
+
+    contentItem: Item
+    {
+      implicitWidth: 200
+      implicitHeight: 50
+
+      Qaterial.FlatButton {
+        text: qsTr("Logout")
+        width: parent.width-20
+        anchors.horizontalCenter: parent.horizontalCenter
+        onClicked:  {
+            app.currentWalletName = ""
+            API.app.disconnect()
+            app.onDisconnect()
+            userMenu.close()
+        }
+      }
+    }
+  }
 
     DexMacControl { visible: isOsx }
     Item {
@@ -149,25 +175,48 @@ DexWindow {
                 DexMouseArea {
                     id: _area
                     anchors.fill: parent
+                    onClicked: userMenu.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
                 }
             }
-            
             DexLabel {
-                leftPadding: 2
-                text: "|    Balance:"
+                text: " | "
+                opacity: .7
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
-                opacity: .7
                 visible: _label.text !== ""
                 anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
             }
-            DexLabel {
-                text: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all,API.app.settings_pg.current_currency)
-                font.family: 'lato'
-                font.weight: Font.Medium
-                visible: _label.text !== ""
-                color: window.application.globalTheme.accentColor
+            Row {
                 anchors.verticalCenter: parent.verticalCenter
+                //layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
+                spacing: 6
+                
+                DexLabel {
+                    leftPadding: 2
+                    text: qsTr("Balance")
+                    font.family: 'Montserrat'
+                    font.weight: Font.Medium
+                    opacity: .7
+                    visible: _label.text !== ""
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                DexLabel {
+                    text: ":"
+                    opacity: .7
+                    font.family: 'Montserrat'
+                    font.weight: Font.Medium
+                    visible: _label.text !== ""
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                DexLabel {
+                    text: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all,API.app.settings_pg.current_currency)
+                    font.family: 'lato'
+                    font.weight: Font.Medium
+                    visible: _label.text !== ""
+                    color: window.application.globalTheme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                }
             }
         }
     }
