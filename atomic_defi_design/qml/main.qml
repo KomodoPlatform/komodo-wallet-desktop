@@ -61,26 +61,36 @@ DexWindow {
   {
     id: userMenu
 
-    spacing: 0
-    padding: 0
+    spacing: 8 
+    padding: 2
     backgroundColor: app.globalTheme.dexBoxBackgroundColor
 
     contentItem: Item
     {
-      implicitWidth: 200
-      implicitHeight: 50
-
-      Qaterial.FlatButton {
-        text: qsTr("Logout")
-        width: parent.width-20
-        anchors.horizontalCenter: parent.horizontalCenter
-        onClicked:  {
-            app.currentWalletName = ""
-            API.app.disconnect()
-            app.onDisconnect()
-            userMenu.close()
+      implicitWidth: 130
+      implicitHeight: 30
+      Rectangle {
+        width: parent.width-10
+        height: parent.height-5
+        anchors.centerIn: parent
+        color: logout_area.containsMouse? app.globalTheme.surfaceColor : app.globalTheme.dexBoxBackgroundColor
+        DexLabel {
+            anchors.centerIn: parent
+            text: qsTr('Logout')
+        }
+        DexMouseArea {
+            id: logout_area
+            hoverEnabled: true
+            anchors.fill: parent
+            onClicked:  {
+                app.currentWalletName = ""
+                API.app.disconnect()
+                app.onDisconnect()
+                userMenu.close()
+            }
         }
       }
+      
     }
   }
 

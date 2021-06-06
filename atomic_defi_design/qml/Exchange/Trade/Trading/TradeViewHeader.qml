@@ -97,7 +97,12 @@ Item {
             width: 140
             height: 25
             radius: height/2
-            color: theme.accentColor
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
+            color: tuto_area.containsMouse? 'transparent' : theme.accentColor
             Row {
                 anchors.centerIn: parent
                 spacing: 10
@@ -105,37 +110,57 @@ Item {
                     source: Qaterial.Icons.televisionPlay
                     anchors.verticalCenter: parent.verticalCenter
                     iconSize: 15
-                    color: theme.surfaceColor
+                    color: tuto_area.containsMouse? theme.accentColor : theme.surfaceColor
                 }
                 DexLabel {
                     anchors.verticalCenter: parent.verticalCenter
                     font.weight: Font.Medium
-                    color: theme.surfaceColor
+                    color: tuto_area.containsMouse? theme.accentColor : theme.surfaceColor
                     text: qsTr("How to trade")
                 }
+            }
+            DexMouseArea {
+                id: tuto_area
+                hoverEnabled: true
+                anchors.fill: parent
             }
         }
         Rectangle {
             width: 50
             height: 25
             radius: height/2
-            color: theme.accentColor
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
+            color: faq_area.containsMouse? 'transparent' : theme.accentColor
             Row {
                 anchors.centerIn: parent
                 spacing: 10
                 DexLabel {
                     anchors.verticalCenter: parent.verticalCenter
                     font.weight: Font.Medium
-                    color: theme.surfaceColor
+                    color: faq_area.containsMouse? theme.accentColor : theme.surfaceColor
                     text: qsTr("FAQ")
                 }
+            }
+            DexMouseArea {
+                id: faq_area
+                hoverEnabled: true
+                anchors.fill: parent
             }
         }  
         Rectangle {
             width: 40
             height: 25
             radius: height/2
-            color: theme.accentColor
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
+            color: cog_area.containsMouse? 'transparent' :  form.dexConfig.visible? 'transparent' : theme.accentColor
             Row {
                 anchors.centerIn: parent
                 spacing: 10
@@ -143,10 +168,12 @@ Item {
                     source: Qaterial.Icons.cog
                     anchors.verticalCenter: parent.verticalCenter
                     iconSize: 15
-                    color: theme.surfaceColor
+                    color: cog_area.containsMouse? theme.accentColor : form.dexConfig.visible? theme.accentColor : theme.surfaceColor 
                 }
             }
             DexMouseArea {
+                id: cog_area
+                hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
                     if(form.dexConfig.visible){
