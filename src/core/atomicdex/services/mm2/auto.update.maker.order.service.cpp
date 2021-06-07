@@ -18,7 +18,7 @@
 #include <QSettings>
 
 // Project Headers
-#include "atomicdex/api/mm2/rpc.setprice.hpp"
+#include "atomicdex/api/mm2/rpc.update.maker.order.hpp"
 #include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -78,20 +78,17 @@ namespace atomic_dex
         if (base_coin_info.coingecko_id != "test-coin" && rel_coin_info.coingecko_id != "test-coin" && !is_disabled)
         {
             SPDLOG_INFO("Updating maker order: {}", data.order_id.toStdString());
-            nlohmann::json     batch         = nlohmann::json::array();
-            std::string        new_price     = get_new_price_from_order(data, spread);
-            nlohmann::json     conf_settings = data.conf_settings.value_or(nlohmann::json());
-            nlohmann::json     setprice_json = ::mm2::api::template_request("setprice");
-            t_float_50         volume        = safe_float(data.base_amount.toStdString());
-            t_float_50         min_volume    = volume * min_volume_percent;
-            t_setprice_request request{
-                .base            = base_coin,
-                .rel             = rel_coin,
-                .price           = new_price,
-                .volume          = data.base_amount.toStdString(),
-                .max             = max,
-                .cancel_previous = true,
-                .min_volume      = utils::format_float(min_volume)};
+            nlohmann::json               batch                   = nlohmann::json::array();
+            std::string                  new_price               = get_new_price_from_order(data, spread);
+            nlohmann::json               conf_settings           = data.conf_settings.value_or(nlohmann::json());
+            nlohmann::json               update_maker_order_json = ::mm2::api::template_request("update_maker_order");
+            t_float_50                   volume                  = safe_float(data.base_amount.toStdString());
+            t_float_50                   min_volume              = volume * min_volume_percent;
+            t_update_maker_order_request request{
+                .uuid         = data.order_id.toStdString(),
+                .new_price    = new_price,
+                .max          = max,
+                .min_volume   = utils::format_float(min_volume)};
             if (!conf_settings.empty())
             {
                 request.base_nota  = conf_settings.at("base_nota").get<bool>();
@@ -99,25 +96,27 @@ namespace atomic_dex
                 request.base_confs = conf_settings.at("base_confs").get<std::size_t>();
                 request.rel_confs  = conf_settings.at("rel_confs").get<std::size_t>();
             }
-            ::mm2::api::to_json(setprice_json, request);
-            batch.push_back(setprice_json);
-            setprice_json["userpass"] = "";
-            SPDLOG_INFO("request: {}", setprice_json.dump(1));
+            ::mm2::api::to_json(update_maker_order_json, request);
+            batch.push_back(update_maker_order_json);
+            update_maker_order_json["userpass"] = "";
+            SPDLOG_INFO("request: {}", update_maker_order_json.dump(1));
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
             mm2.get_mm2_client()
                 .async_rpc_batch_standalone(batch)
-                .then([]([[maybe_unused]] web::http::http_response resp) {
-                    std::string body = TO_STD_STR(resp.extract_string(true).get());
-                    SPDLOG_INFO("status_code: {}", resp.status_code());
-                    if (resp.status_code() == 200)
+                .then(
+                    []([[maybe_unused]] web::http::http_response resp)
                     {
-                        SPDLOG_INFO("order resp: {}", body);
-                    }
-                    else
-                    {
-                        SPDLOG_WARN("An error occured during setprice: {}", body);
-                    }
-                })
+                        std::string body = TO_STD_STR(resp.extract_string(true).get());
+                        SPDLOG_INFO("status_code: {}", resp.status_code());
+                        if (resp.status_code() == 200)
+                        {
+                            SPDLOG_INFO("order resp: {}", body);
+                        }
+                        else
+                        {
+                            SPDLOG_WARN("An error occured during update_maker_order: {}", body);
+                        }
+                    })
                 .then(&handle_exception_pplx_task);
         }
     }
