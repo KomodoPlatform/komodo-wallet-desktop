@@ -4,6 +4,7 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts  1.5
 
 Item {
+	id: control
 	width:  200
     height: 35
     property alias value: input_field.text
@@ -12,6 +13,8 @@ Item {
 	property string rightText: ""
 	property alias background: _background
 	property int leftWidth: -1
+	readonly property int max_length: 18 
+
     anchors.centerIn: parent
 	Rectangle {
 		id: _background
@@ -26,9 +29,10 @@ Item {
 		anchors.fill: parent
 		anchors.leftMargin: 5
 		anchors.rightMargin: 5
+		spacing: 2
 		Item {
 			visible: leftText!==""
-			Layout.preferredWidth: leftWidth!==-1? leftWidth : _title_label.implicitWidth+10
+			Layout.preferredWidth: leftWidth!==-1? leftWidth : _title_label.implicitWidth+2
 			Layout.fillHeight: true
 			DexLabel {
 				id: _title_label
@@ -56,18 +60,26 @@ Item {
 			        validator: RegExpValidator {
 					    regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/
 					}
+					onTextChanged: {
+				        text = text.trim()
+				        if(text.length > control.max_length) {
+				            console.log("too long! ", text.length)
+				            text = text.substring(0, control.max_length)
+				        }
+			        }
 					horizontalAlignment: Qt.AlignRight
 			        echoMode: TextInput.Normal
 			        background: Item{}
 			        font.weight: Font.Medium
 			        font.family: 'Lato'
+			        font.pixelSize: 13
 			        anchors.fill: parent
 			    }
 			}
 		}
 		Item {
 			visible: rightText!==""
-			Layout.preferredWidth: _suffix_label.implicitWidth+10
+			Layout.preferredWidth: _suffix_label.implicitWidth+2
 			Layout.fillHeight: true
 			DexLabel {
 				id: _suffix_label

@@ -27,10 +27,14 @@ Item {
         Timer {
             id: _tm
             interval: 2000
-            onTriggered: orderList.positionViewAtEnd()
+            onTriggered: {
+                console.log("changing")
+                orderList.positionViewAtEnd()
+            }
         }
 
-        onCountChanged : {
+        onContentHeightChanged : {
+            console.log("size Changed")
             if(isVertical) {
                 _tm.start()
             }
