@@ -412,6 +412,53 @@ ColumnLayout
         }
     }
 
+    DefaultRectangle // Swap Info - Details
+    {
+        Layout.topMargin: 10
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: 300
+        Layout.preferredHeight: 100
+
+        enabled: typeof selectedOrder !== 'undefined'
+        visible: enabled
+
+        radius: 25
+
+        Column
+        {
+            anchors.centerIn: parent
+            spacing: 10
+            Row // "To" Coin Fees
+            {
+                spacing: 80
+                DefaultText
+                {
+                    text: enabled ? qsTr("Total %1 fees: ").arg(selectedOrder.coin) : ""
+                    font.pixelSize: Style.textSizeSmall3
+                }
+                DefaultText
+                {
+                    text: API.app.trading_pg.fees.base_transaction_fees ? API.app.trading_pg.fees.base_transaction_fees : "0.0"
+                    font.pixelSize: Style.textSizeSmall3
+                }
+            }
+            Row // "From" Coin Fees
+            {
+                spacing: 80
+                DefaultText
+                {
+                    text: qsTr("Total %1 fees: ").arg(selectedTicker)
+                    font.pixelSize: Style.textSizeSmall3
+                }
+                DefaultText
+                {
+                    text: API.app.trading_pg.fees.rel_transaction_fees ? API.app.trading_pg.fees.rel_transaction_fees : "0.0"
+                    font.pixelSize: Style.textSizeSmall3
+                }
+            }
+        }
+    }
+
     // Coins list
     Component
     {
