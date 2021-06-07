@@ -14,7 +14,7 @@ ColumnLayout
 
     id: root
     anchors.centerIn: parent
-    onSelectedTickerChanged: { setPair(true, selectedTicker); _fromValue.text = "" }
+    onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.text = "" }
     onSelectedOrderChanged:  
     {
         if (typeof selectedOrder !== 'undefined') API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) 
