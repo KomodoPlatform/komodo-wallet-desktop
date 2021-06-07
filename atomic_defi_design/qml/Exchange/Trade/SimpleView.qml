@@ -148,16 +148,7 @@ ColumnLayout
                             text = API.app.trading_pg.min_trade_vol
                         }
                     }
-                    Component.onCompleted: 
-                    {
-                        text = API.app.trading_pg.max_volume
-                        API.app.trading_pg.maxVolumeChanged.connect(function() 
-                        {
-                            if (parseFloat(text) > API.app.trading_pg.max_volume)
-                                text = API.app.trading_pg.max_volume
-                        })
                     }
-                }
 
                 DefaultText
                 {
