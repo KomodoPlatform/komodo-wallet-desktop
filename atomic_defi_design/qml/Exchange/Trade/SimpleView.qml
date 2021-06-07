@@ -18,7 +18,10 @@ ColumnLayout
     onSelectedOrderChanged:  
     {
         if (typeof selectedOrder !== 'undefined') API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid) 
-        else API.app.trading_pg.reset_order() 
+        else API.app.trading_pg.reset_order()
+
+        if (parseFloat(_fromValue.text) > parseFloat(API.app.trading_pg.max_volume))
+            _fromValue.text = API.app.trading_pg.max_volume
     }
     onEnabledChanged: selectedOrder = undefined
     Component.onDestruction: selectedOrder = undefined
@@ -123,7 +126,7 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: Style.colorWhite1
-
+                
                     MouseArea
                     {
                         anchors.fill: parent
@@ -171,11 +174,11 @@ ColumnLayout
                     onFocusChanged:
                     {
                         if (!focus && parseFloat(text) < parseFloat(API.app.trading_pg.min_trade_vol))
-                        {
+                        {   
                             text = API.app.trading_pg.min_trade_vol
                         }
                     }
-                    }
+                }
 
                 DefaultText
                 {
@@ -388,7 +391,7 @@ ColumnLayout
                     Layout.rightMargin: 120
                     font.pixelSize: Style.textSizeSmall3
                     text: qsTr("Price") 
-            }
+                }
                 DefaultText
                 {
                     Layout.alignment: Qt.AlignRight
@@ -731,6 +734,21 @@ ColumnLayout
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // Confirm Swap Modal
+    Component
+    {
+        id: confirmSwapModal
+        BasicModal
+        {
+            width: 800
+
+            ModalContent
+            {
+                
             }
         }
     }
