@@ -109,7 +109,7 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall4
                 }
 
-                Text // Balance
+                Text // Tradable Balance
                 {
                     readonly property int _maxWidth: 140
 
@@ -123,6 +123,17 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: Style.colorWhite1
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        ToolTip
+                        {
+                            visible: parent.containsMouse
+                            text: parent.parent.text
+                        }
+                    }
 
                     TextMetrics 
                     {
