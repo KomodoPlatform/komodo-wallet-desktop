@@ -1077,7 +1077,7 @@ namespace atomic_dex
             {
                 auto           answers = nlohmann::json::parse(body);
                 nlohmann::json answer  = answers[0];
-                SPDLOG_INFO("preimage answer: {}", answer.dump(0));
+                //SPDLOG_INFO("preimage answer: {}", answer.dump(0));
                 auto trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
@@ -1111,6 +1111,7 @@ namespace atomic_dex
                     }
                     fees["total_fees"] = atomic_dex::nlohmann_json_array_to_qt_json_array(success_answer.total_fees);
 
+                    qDebug() << "fees post answer: " << fees;
                     this->set_fees(fees);
                     //qDebug() << this->get_fees();
                 }
