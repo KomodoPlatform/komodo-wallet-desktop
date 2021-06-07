@@ -1065,8 +1065,9 @@ namespace atomic_dex
         nlohmann::json batch;
         nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
         ::mm2::api::to_json(preimage_request, req);
-        SPDLOG_INFO("request: {}", preimage_request.dump(4));
         batch.push_back(preimage_request);
+        preimage_request["userpass"] = "******";
+        SPDLOG_INFO("request: {}", preimage_request.dump(4));
 
         this->set_preimage_busy(true);
         auto answer_functor = [this, &mm2](web::http::http_response resp)
