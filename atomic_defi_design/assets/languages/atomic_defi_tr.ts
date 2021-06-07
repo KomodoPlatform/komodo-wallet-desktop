@@ -844,188 +844,188 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="86"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="90"/>
         <source>The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.</source>
         <translation>Etkinleştirilmiş koinlerin mevcut sayısı yapılandırma ayarlarınızla eşleşmiyor. Varlık yapılandırmanız sıfırlanacak.</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="143"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="156"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="147"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="160"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation>Bu kısmın içeriği daha sonra eklenecektir. Takipte kalın!</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="323"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="327"/>
         <source>Matching</source>
         <translation>Eşleşiyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="323"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="327"/>
         <source>Order Matching</source>
         <translation>Emir Eşleşiyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="325"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
         <source>Matched</source>
         <translation>Eşleşti</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="325"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
         <source>Order Matched</source>
         <translation>Emir Eşleşti</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="327"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="331"/>
         <source>Ongoing</source>
         <translation>Devam ediyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="327"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="331"/>
         <source>Swap Ongoing</source>
         <translation>Takas Devam Ediyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
         <source>Successful</source>
         <translation>Başarılı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
         <source>Swap Successful</source>
         <translation>Takas Başarılı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="331"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="335"/>
         <source>Refunding</source>
         <translation>Geri ödeniyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="337"/>
         <source>Failed</source>
         <translation>Başarısız</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="337"/>
         <source>Swap Failed</source>
         <translation>Takas Başarısız</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="335"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
         <source>Unknown</source>
         <translation>Bilinmiyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="335"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
         <source>Unknown State</source>
         <translation>Bilinmeyen durum</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="379"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="383"/>
         <source>Started</source>
         <translation>Başlatıldı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="381"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="385"/>
         <source>Negotiated</source>
         <translation>Pazarlık yapıldı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="383"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="387"/>
         <source>Taker fee sent</source>
         <translation>Alıcı ücreti gönderildi</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="385"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="389"/>
         <source>Maker payment received</source>
         <translation>Yapıcı ödemesi alındı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="387"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="391"/>
         <source>Maker payment wait confirm started</source>
         <translation>Yapıcı ödemesi bekleme onayı başladı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="389"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="393"/>
         <source>Maker payment validated and confirmed</source>
         <translation>Yapıcı ödemesi doğrulandı ve onaylandı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="391"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="395"/>
         <source>Taker payment sent</source>
         <translation>Alıcı ödemesi gönderildi</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="393"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="397"/>
         <source>Taker payment spent</source>
         <translation>Alıcı ödemesi harcandı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="395"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="399"/>
         <source>Maker payment spent</source>
         <translation>Yapıcı ödemesi harcandı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="397"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="401"/>
         <source>Finished</source>
         <translation>Tamamlandı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="399"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="403"/>
         <source>Start failed</source>
         <translation>Başlatılamadı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="401"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="405"/>
         <source>Negotiate failed</source>
         <translation>Pazarlık başarısız</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="403"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="407"/>
         <source>Taker fee validate failed</source>
         <translation>Alıcı ücreti doğrulanamadı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="405"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="409"/>
         <source>Maker payment transaction failed</source>
         <translation>Yapıcı ödeme işlemi başarısız</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="407"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="411"/>
         <source>Maker payment Data send failed</source>
         <translation>Yapıcı ödeme verileri gönderilemedi</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="409"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="413"/>
         <source>Maker payment wait confirm failed</source>
         <translation>Yapıcı ödemesi bekleme onayı başarısız</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="411"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="415"/>
         <source>Taker payment validate failed</source>
         <translation>Alıcı ödemesi doğrulanamadı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="413"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="417"/>
         <source>Taker payment wait confirm failed</source>
         <translation>Alıcı ödemesi bekleme onayı başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="415"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="419"/>
         <source>Taker payment spend failed</source>
         <translation>Alıcı ödeme harcaması başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="417"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="421"/>
         <source>Maker payment wait refund started</source>
         <translation>Yapıcı ödemesi bekleme iadesi başladı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="419"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="423"/>
         <source>Maker payment refunded</source>
         <translation>Yapıcı ödemesi iade edildi</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="421"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="425"/>
         <source>Maker payment refund failed</source>
         <translation>Yapıcı ödeme iadesi başarısız</translation>
     </message>
@@ -1527,22 +1527,22 @@
 <context>
     <name>Login</name>
     <message>
-        <location filename="../../qml/Screens/Login.qml" line="28"/>
+        <location filename="../../qml/Screens/Login.qml" line="29"/>
         <source>Incorrect Password</source>
         <translation>Yanlış Parola</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Login.qml" line="56"/>
+        <location filename="../../qml/Screens/Login.qml" line="57"/>
         <source>Wallet Name</source>
         <translation>Cüzdan Adı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Login.qml" line="86"/>
+        <location filename="../../qml/Screens/Login.qml" line="87"/>
         <source>Login</source>
         <translation>Giriş</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Login.qml" line="74"/>
+        <location filename="../../qml/Screens/Login.qml" line="75"/>
         <source>Back</source>
         <translation>Geri</translation>
     </message>
@@ -1975,27 +1975,27 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="81"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="86"/>
         <source>Cancel selected order to change price</source>
         <translation>Fiyatı değiştirmek için seçili emri iptal edin</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="126"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="132"/>
         <source>Amount to sell</source>
         <translation>Satılacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="126"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="132"/>
         <source>Amount to receive</source>
         <translation>Alınacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="71"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="76"/>
         <source>Price</source>
         <translation>Fiyat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="124"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="130"/>
         <source>Volume</source>
         <translation>Hacim</translation>
     </message>
@@ -2288,57 +2288,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="224"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="233"/>
         <source>Trading Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="250"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="259"/>
         <source>Exchange Rates</source>
         <translation>Döviz kurları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="256"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="265"/>
         <source>Orders</source>
         <translation>Emirler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="262"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="271"/>
         <source>history</source>
         <translation>geçmiş</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="328"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="337"/>
         <source>Order Book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="349"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="358"/>
         <source>Best Orders</source>
         <translation>En İyi Emirler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="375"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="384"/>
         <source>Place Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="417"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="426"/>
         <source>Buy</source>
         <translation>Al</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="452"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="461"/>
         <source>Sell</source>
         <translation>Sat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="488"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="497"/>
         <source>Order Selected</source>
         <translation>Emir Seçildi</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="541"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="550"/>
         <source>Start Swap</source>
         <translation>Takas Başlat</translation>
     </message>
@@ -2746,113 +2746,113 @@
 <context>
     <name>SettingModal</name>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="107"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="236"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="237"/>
         <source>Language</source>
         <translation>Dil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="107"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
         <source>User Interface</source>
         <translation>Kullanıcı Arayüzü</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="107"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
         <source>Security</source>
         <translation>Güvenlik</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="107"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
         <source>About</source>
         <translation>Hakkında</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="107"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
         <source>General</source>
         <translation>Genel</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="107"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
         <source>Version</source>
         <translation>Versiyon</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="152"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="153"/>
         <source>Enable Desktop Notifications</source>
         <translation>Masaüstü Bildirimlerini Aktif Et</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="167"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="168"/>
         <source>Maximum number of enabled coins</source>
         <translation>Maksimum etkin koin sayısı</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="193"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="194"/>
         <source>Logs</source>
         <translation>Günlük Kaydı</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="196"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="197"/>
         <source>Open Folder</source>
         <translation>Klasörü Aç</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="210"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="211"/>
         <source>Reset assets configuration</source>
         <translation>Varlık yapılandırmasını sıfırla</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="213"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="214"/>
         <source>Reset</source>
         <translation>Sıfırla</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="262"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="263"/>
         <source>Use QtTextRendering Or NativeTextRendering</source>
         <translation>QtTextRendering veya NativeTextRendering Kullan</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="280"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="281"/>
         <source>Current Font</source>
         <translation>Geçerli Yazı Tipi</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="301"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="302"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="324"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="325"/>
         <source>Apply Changes</source>
         <translation>Değişiklikleri Uygula</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="374"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="375"/>
         <source>Ask system&apos;s password before sending coins ? (2FA)</source>
         <translation>Para göndermeden önce sistem parolası sorulsun mu ? (2FA)</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="480"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="481"/>
         <source>Application version</source>
         <translation>Uygulama sürümü</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="494"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="495"/>
         <source>MM2 version</source>
         <translation>MM2 sürümü</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="508"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="509"/>
         <source>Qt version</source>
         <translation>Qt sürümü</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="548"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="549"/>
         <source>Search Update</source>
         <translation>Güncelleme Ara</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="576"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="577"/>
         <source>Logout</source>
         <translation>Çıkış</translation>
     </message>
@@ -2862,33 +2862,33 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="396"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="397"/>
         <source>View seed and private keys</source>
         <translation>Seed ve özel anahtarları görüntüle</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="399"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="461"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="400"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="462"/>
         <source>Show</source>
         <translation>Göster</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="412"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="413"/>
         <source>Setup Camouflage Password</source>
         <translation>Kamuflaj Parolasını Ayarla</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="415"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="416"/>
         <source>Open</source>
         <translation>Aç</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="433"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="434"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="458"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="459"/>
         <source>Disclaimer and ToS</source>
         <translation>Sorumluluk Reddi ve K.Ş.</translation>
     </message>
@@ -3258,12 +3258,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>TradeViewHeader</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="114"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="119"/>
         <source>How to trade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="130"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="145"/>
         <source>FAQ</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3426,6 +3426,19 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="330"/>
         <source>%1 address length is invalid, please use a valid address.</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="../../qml/main.qml" line="79"/>
+        <source>Logout</source>
+        <translation type="unfinished">Çıkış</translation>
+    </message>
+    <message>
+        <location filename="../../qml/main.qml" line="213"/>
+        <source>Balance</source>
+        <translation type="unfinished">Bakiye</translation>
     </message>
 </context>
 </TS>

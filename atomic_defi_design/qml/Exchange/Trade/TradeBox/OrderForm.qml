@@ -48,7 +48,15 @@ FloatingBackground {
     }
 
     //implicitHeight: form_layout.height
-
+    Connections {
+        target: exchange_trade
+        onBackend_priceChanged: {
+             input_price.field.text = exchange_trade.backend_price
+        }
+        onBackend_volumeChanged: {
+             input_volume.field.text = exchange_trade.backend_volume
+        }
+    }
     ColumnLayout {
         id: form_layout
         width: parent.width
@@ -71,7 +79,7 @@ FloatingBackground {
                     leftText: qsTr("Price")
                     rightText: atomic_qt_utilities.retrieve_main_ticker(right_ticker)
                     field.enabled: !(API.app.trading_pg.preffered_order.price!==undefined)
-                    value: backend_price
+                    field.text: backend_price
                     field.onTextChanged: setPrice(value)
 
                     DefaultTooltip {
@@ -97,6 +105,7 @@ FloatingBackground {
                             hoverEnabled: true
                         }
                     }
+
                 }
 
                 DefaultText {
@@ -125,7 +134,7 @@ FloatingBackground {
                     rightText: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                     field.placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
 
-                    value: backend_volume
+                    field.text: API.app.trading_pg.volume
                     field.onTextChanged: setVolume(value)
                 }
 
