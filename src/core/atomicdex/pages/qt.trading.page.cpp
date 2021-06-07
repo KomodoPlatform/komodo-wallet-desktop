@@ -662,7 +662,10 @@ namespace atomic_dex
             if (m_current_trading_mode != TradingModeGadget::Simple)
             {
                 this->get_orderbook_wrapper()->refresh_best_orders();
-                this->determine_fees();
+                if (!m_price.isEmpty() || m_price != "0")
+                {
+                    this->determine_fees();
+                }
             }
         }
     }
