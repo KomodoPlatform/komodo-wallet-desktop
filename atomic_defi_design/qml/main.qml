@@ -232,6 +232,19 @@ DexWindow {
                     visible: _label.text !== ""
                     color: window.application.globalTheme.accentColor
                     anchors.verticalCenter: parent.verticalCenter
+                    DexMouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            const current_fiat = API.app.settings_pg.current_currency
+                            const available_fiats = API.app.settings_pg.get_available_currencies()
+                            const current_index = available_fiats.indexOf(
+                                                    current_fiat)
+                            const next_index = (current_index + 1)
+                                             % available_fiats.length
+                            const next_fiat = available_fiats[next_index]
+                            API.app.settings_pg.current_currency = next_fiat
+                        }
+                    }
                 }
             }
         }
