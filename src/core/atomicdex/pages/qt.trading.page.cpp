@@ -612,7 +612,6 @@ namespace atomic_dex
             emit priceReversedChanged();
             emit get_orderbook_wrapper()->currentMinTakerVolChanged();
             get_orderbook_wrapper()->adjust_min_vol();
-            this->determine_fees();
         }
     }
 
@@ -971,6 +970,7 @@ namespace atomic_dex
                 this->determine_max_volume();
                 this->set_volume(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))));
                 this->get_orderbook_wrapper()->refresh_best_orders();
+                this->determine_fees();
             }
         }
     }
@@ -1065,7 +1065,7 @@ namespace atomic_dex
         nlohmann::json batch;
         nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
         ::mm2::api::to_json(preimage_request, req);
-        // SPDLOG_INFO("request: {}", preimage_request.dump(4));
+        SPDLOG_INFO("request: {}", preimage_request.dump(4));
         batch.push_back(preimage_request);
 
         this->set_preimage_busy(true);
@@ -1076,7 +1076,7 @@ namespace atomic_dex
             {
                 auto           answers = nlohmann::json::parse(body);
                 nlohmann::json answer  = answers[0];
-                // SPDLOG_INFO("preimage answer: {}", answer.dump(4));
+                SPDLOG_INFO("preimage answer: {}", answer.dump(0));
                 auto trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
@@ -1111,6 +1111,7 @@ namespace atomic_dex
                     fees["total_fees"] = atomic_dex::nlohmann_json_array_to_qt_json_array(success_answer.total_fees);
 
                     this->set_fees(fees);
+                    //qDebug() << this->get_fees();
                 }
             }
             this->set_preimage_busy(false);
