@@ -20,9 +20,6 @@
 #include <QLocale>
 #include <QSettings>
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! Deps
 #include <boost/algorithm/string/case_conv.hpp>
 
