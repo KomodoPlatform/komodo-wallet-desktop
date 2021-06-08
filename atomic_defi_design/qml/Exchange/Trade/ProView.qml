@@ -220,6 +220,7 @@ ColumnLayout {
                 DexTradeBox {
                     id: optionBox
                     expandedVert: true
+                    expandable: dex_chart.visible
                     defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270
                     Connections {
                         target: tabView

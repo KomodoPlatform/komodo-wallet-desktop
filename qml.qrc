@@ -323,6 +323,7 @@
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
         <file>atomic_defi_design/qml/Components/DexBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexBoxManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
         <file>atomic_defi_design/qml/Components/DexButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexCheckBox.qml</file>
