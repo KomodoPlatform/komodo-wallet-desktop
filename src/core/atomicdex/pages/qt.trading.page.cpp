@@ -621,11 +621,12 @@ namespace atomic_dex
     {
         SPDLOG_INFO("clearing forms");
         // this->set_min_trade_vol("0");
+        this->set_max_volume("0");
         m_minimal_trading_amount = "0";
         emit minTradeVolChanged();
+
         this->set_price("0");
         this->set_volume("0");
-        this->set_max_volume("0");
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
         this->m_preffered_order  = std::nullopt;
@@ -802,8 +803,9 @@ namespace atomic_dex
             if (safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
             {
                 auto max_volume = this->get_max_volume();
-                if (!max_volume.isEmpty() || max_volume != "0")
+                if (!max_volume.isEmpty() && max_volume != "0")
                 {
+                    SPDLOG_INFO("checking if {} > {}", std_volume, max_volume.toStdString());
                     this->set_volume(max_volume);
                 }
             }
@@ -812,6 +814,7 @@ namespace atomic_dex
                 auto min_volume = QString::fromStdString(utils::adjust_precision(this->get_min_trade_vol().toStdString()));
                 if (!min_volume.isEmpty() && min_volume != "0")
                 {
+                    SPDLOG_INFO("checking if {} < {}", std_volume, min_volume.toStdString());
                     this->set_volume(min_volume);
                 }
             }
