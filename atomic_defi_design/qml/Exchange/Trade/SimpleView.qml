@@ -22,6 +22,7 @@ ColumnLayout
 
         if (parseFloat(_fromValue.text) > parseFloat(API.app.trading_pg.max_volume))
             _fromValue.text = API.app.trading_pg.max_volume
+        API.app.trading_pg.determine_fees()
     }
     onEnabledChanged: selectedOrder = undefined
     Component.onDestruction: selectedOrder = undefined
@@ -170,6 +171,7 @@ ColumnLayout
                             API.app.trading_pg.volume = text
                             text = API.app.trading_pg.volume
                         }
+                        API.app.trading_pg.determine_fees()
                     }
                     onFocusChanged:
                     {
