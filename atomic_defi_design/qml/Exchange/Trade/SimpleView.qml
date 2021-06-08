@@ -411,6 +411,13 @@ ColumnLayout
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: swap_card.width - 30
                 text: qsTr("Swap Now !")
+                onClicked: _confirmSwapModal.open()
+
+                ModalLoader
+                {
+                    id: _confirmSwapModal
+                    sourceComponent: ConfirmTradeModal {}
+                }
             }
         }
     }
@@ -734,21 +741,6 @@ ColumnLayout
                         }
                     }
                 }
-            }
-        }
-    }
-
-    // Confirm Swap Modal
-    Component
-    {
-        id: confirmSwapModal
-        BasicModal
-        {
-            width: 800
-
-            ModalContent
-            {
-                
             }
         }
     }
