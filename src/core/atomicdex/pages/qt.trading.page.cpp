@@ -801,11 +801,19 @@ namespace atomic_dex
         {
             if (safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
             {
-                this->set_volume(this->get_max_volume());
+                auto max_volume = this->get_max_volume();
+                if (!max_volume.isEmpty() || max_volume != "0")
+                {
+                    this->set_volume(max_volume);
+                }
             }
             else if (safe_float(std_volume) < safe_float(get_min_trade_vol().toStdString()))
             {
-                this->set_volume(QString::fromStdString(utils::adjust_precision(this->get_min_trade_vol().toStdString())));
+                auto min_volume = QString::fromStdString(utils::adjust_precision(this->get_min_trade_vol().toStdString()));
+                if (!min_volume.isEmpty() && min_volume != "0")
+                {
+                    this->set_volume(min_volume);
+                }
             }
         }
     }
