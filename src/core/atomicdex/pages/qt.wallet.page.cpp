@@ -467,7 +467,7 @@ namespace atomic_dex
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
         ::mm2::api::to_json(json_data, withdraw_req);
-        SPDLOG_DEBUG("final json: {}", json_data.dump(4));
+        //SPDLOG_DEBUG("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
         std::string amount_std = amount.toStdString();
         if (max)
