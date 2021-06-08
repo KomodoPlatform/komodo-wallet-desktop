@@ -7,7 +7,8 @@
 #include <nlohmann/json_fwd.hpp>
 
 //! Our Headers
-#include "transaction.data.hpp"
+#include "atomicdex/api/mm2/generic.error.hpp"
+#include "atomicdex/api/mm2/transaction.data.hpp"
 
 namespace mm2::api
 {
@@ -34,18 +35,18 @@ namespace mm2::api
 
     struct withdraw_answer
     {
-        std::optional<transaction_data> result;
-        std::optional<std::string>      error;
-        std::string                     raw_result;      ///< internal
-        int                             rpc_result_code; ///< internal
+        std::optional<transaction_data>     result;
+        std::optional<generic_answer_error> error;
+        std::string                         raw_result;      ///< internal
+        int                                 rpc_result_code; ///< internal
     };
 
     void from_json(const nlohmann::json& j, withdraw_answer& answer);
-}
+} // namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_withdraw_request        = ::mm2::api::withdraw_request;
-    using t_withdraw_fees           = ::mm2::api::withdraw_fees;
-    using t_withdraw_answer         = ::mm2::api::withdraw_answer;
-}
+    using t_withdraw_request = ::mm2::api::withdraw_request;
+    using t_withdraw_fees    = ::mm2::api::withdraw_fees;
+    using t_withdraw_answer  = ::mm2::api::withdraw_answer;
+} // namespace atomic_dex

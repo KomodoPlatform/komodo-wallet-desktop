@@ -4,7 +4,7 @@
 #include <string>
 
 //! Deps
-#include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json.hpp>
 
 namespace mm2::api
 {

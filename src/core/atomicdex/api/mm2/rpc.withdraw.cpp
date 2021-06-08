@@ -33,13 +33,23 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const withdraw_request& cfg)
     {
-        j["coin"]   = cfg.coin;
-        j["amount"] = cfg.amount;
-        j["to"]     = cfg.to;
-        j["max"]    = cfg.max;
+        nlohmann::json obj = nlohmann::json::object();
+
+        obj["coin"]   = cfg.coin;
+        obj["amount"] = cfg.amount;
+        obj["to"]     = cfg.to;
+        obj["max"]    = cfg.max;
         if (cfg.fees.has_value())
         {
-            j["fee"] = cfg.fees.value();
+            obj["fee"] = cfg.fees.value();
+        }
+        if (j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
+        {
+            j["params"] = obj;
+        }
+        else
+        {
+            j.update(obj);
         }
     }
 
@@ -48,11 +58,18 @@ namespace mm2::api
     {
         if (j.count("error") >= 1)
         {
-            answer.error = j.at("error").get<std::string>();
+            answer.error = j;
         }
         else
         {
-            answer.result = j.get<transaction_data>();
+            if (j.contains("result") && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
+            {
+                answer.result = j.at("result").get<transaction_data>();
+            }
+            else
+            {
+                answer.result = j.get<transaction_data>();
+            }
         }
     }
-}
+} // namespace mm2::api
