@@ -289,7 +289,8 @@ namespace atomic_dex
 
         if (m_current_trading_mode == TradingModeGadget::Simple)
         {
-            req.order_type = {{"type", "FillOrKill"}};
+            req.order_type = nlohmann::json::object();
+            req.order_type.value()["type"] = "FillOrKill";
         }
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
         if (m_preffered_order.has_value())
