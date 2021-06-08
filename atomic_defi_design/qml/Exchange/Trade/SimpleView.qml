@@ -426,45 +426,45 @@ ColumnLayout
 
     DefaultRectangle // Swap Info - Details
     {
+        id: _feesCard
         Layout.topMargin: 10
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: 300
-        Layout.preferredHeight: 100
+        Layout.preferredWidth: 350
+        Layout.preferredHeight: 60
 
         enabled: typeof selectedOrder !== 'undefined'
         visible: enabled
 
         radius: 25
 
-        Column
+        DefaultListView 
         {
-            anchors.centerIn: parent
-            spacing: 10
-            Row // "To" Coin Fees
+            id: _feesList
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            enabled: parent.enabled
+            model: API.app.trading_pg.fees.total_fees
+            delegate: RowLayout
             {
-                spacing: 80
+                width: _feesCard.width
+                Component.onCompleted: _feesCard.height += 20
+                Component.onDestruction: _feesCard.height -= 20
+
                 DefaultText
                 {
-                    text: enabled ? qsTr("Total %1 fees: ").arg(selectedOrder.coin) : ""
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.leftMargin: 10
+                    text: qsTr("Total %1 fees: ").arg(modelData.coin)
                     font.pixelSize: Style.textSizeSmall3
                 }
-                DefaultText
+                DefaultText 
                 {
-                    text: API.app.trading_pg.fees.base_transaction_fees ? API.app.trading_pg.fees.base_transaction_fees : "0.0"
-                    font.pixelSize: Style.textSizeSmall3
-                }
-            }
-            Row // "From" Coin Fees
-            {
-                spacing: 80
-                DefaultText
-                {
-                    text: qsTr("Total %1 fees: ").arg(selectedTicker)
-                    font.pixelSize: Style.textSizeSmall3
-                }
-                DefaultText
-                {
-                    text: API.app.trading_pg.fees.rel_transaction_fees ? API.app.trading_pg.fees.rel_transaction_fees : "0.0"
+                    Layout.alignment: Qt.AlignRight
+                    Layout.rightMargin: 10
+                    text: qsTr("%2 (%3)")
+                            .arg(parseFloat(modelData.required_balance).toFixed(8) / 1)
+                            .arg(General.getFiatText(modelData.required_balance, modelData.coin, false))
                     font.pixelSize: Style.textSizeSmall3
                 }
             }
