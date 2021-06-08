@@ -385,6 +385,7 @@ ColumnLayout {
             defaultWidth: isBigScreen? 300 : 280
             maximumWidth: isBigScreen? 310 : 280
             minimumWidth: isBigScreen? 290 : 280
+            expandable: false
             SplitView.fillHeight: true
             ColumnLayout {
                 visible: parent.contentVisible

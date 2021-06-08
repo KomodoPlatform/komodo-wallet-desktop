@@ -159,7 +159,7 @@ Rectangle {
                     font.weight: Font.Medium
                     text: _control.title
                     color: theme.accentColor
-                    visible: !hidden
+                    visible: isVertical || !hidden
                     bottomPadding: 5
                 }
                 Row {
