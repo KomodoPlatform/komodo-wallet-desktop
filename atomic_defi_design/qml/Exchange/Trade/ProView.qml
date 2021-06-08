@@ -93,11 +93,11 @@ ColumnLayout {
             dex_chart.visible = true
         }
     }
-    SplitView {
+    DexBoxManager {
         id: splitView
         Layout.fillWidth: true
         Layout.fillHeight: true
-
+        itemLists: [left_section, order_form]
         spacing: 15
         handle: Item {
             implicitWidth: 2
@@ -119,7 +119,7 @@ ColumnLayout {
             hideHeader: true
             SplitView.fillHeight: true
             color: 'transparent'
-            SplitView {
+            DexBoxManager {
                 anchors.fill: parent
                 anchors.margins: 0
                 anchors.rightMargin: 0
@@ -134,6 +134,7 @@ ColumnLayout {
                         opacity: 0.4
                     }
                 }
+                itemLists: [dex_chart, optionBox]
                 DexTradeBox {
                     id: dex_chart
                     title: qsTr("Chart")
@@ -218,6 +219,7 @@ ColumnLayout {
                 
                 DexTradeBox {
                     id: optionBox
+                    expandedVert: true
                     defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270
                     Connections {
                         target: tabView
@@ -237,7 +239,7 @@ ColumnLayout {
                         height: parent.height
                         clip: !parent.contentVisible
                         anchors.horizontalCenter: parent.horizontalCenter
-                        Qaterial.TabBar {
+                        Qaterial.LatoTabBar {
                             z: 4
                             id: tabView
                             property int taux_exchange: 0
@@ -254,22 +256,25 @@ ColumnLayout {
 
                             y: 5
                             leftPadding: 15
-                            Qaterial.TabButton {
+                            Qaterial.LatoTabButton {
                                 width: 150
                                 text: qsTr("Exchange Rates")
-                                foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
+                                font.pixelSize: 14
+                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                 opacity: checked ? 1 : .6
                             }
-                            Qaterial.TabButton {
+                            Qaterial.LatoTabButton {
                                 width: 120
                                 text: qsTr("Orders")
-                                foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
+                                font.pixelSize: 14
+                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                 opacity: checked ? 1 : .6
                             }
-                            Qaterial.TabButton {
+                            Qaterial.LatoTabButton {
                                 width: 120
                                 text: qsTr("history")
-                                foregroundColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
+                                font.pixelSize: 14
+                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                 opacity: checked ? 1 : .6
                             }
                         }
@@ -317,7 +322,7 @@ ColumnLayout {
             SplitView.maximumWidth: showing? 310 : 0
             SplitView.preferredWidth: showing? 280 : 0
             clip: true
-            SplitView {
+            DexBoxManager {
                 anchors.fill: parent
                 orientation: Qt.Vertical
                 handle: Item {
@@ -330,6 +335,7 @@ ColumnLayout {
                         opacity: 0.4
                     }
                 }
+                itemLists: [_orderbook_box, _best_order_box]
                 DexTradeBox {
                     id: _orderbook_box
                     SplitView.fillWidth: true
@@ -350,17 +356,15 @@ ColumnLayout {
                 }
                 DexTradeBox {
                     id: _best_order_box
-                    SplitView.fillWidth: true
-                    SplitView.fillHeight: true
                     defaultHeight: 250
                     minimumHeight: 130
                     closable: true
                     title: qsTr("Best Orders")
                     reloadable: true
                     onReload: {
+
                         API.app.trading_pg.orderbook.refresh_best_orders()
                     }
-
                     Behavior on SplitView.preferredWidth {
                         NumberAnimation {
                             duration: 100

@@ -78,38 +78,44 @@ Rectangle {
             console.log(_control.parent.parent.currentIndex)
         }
     }
+    function setFalseHeight() {
+        SplitView.fillHeight = false
+    }
 
     onExpandedVertChanged: {
+        let splitManager = SplitView.view
         if(expandedVert) {
-            if(DefaultSplitView.view!=null){
-                for(var i=0; i< DefaultSplitView.view.children.length;i++){
-                    if (DefaultSplitView.view.children[i]!==_control){
+            if(splitManager!==null){
+                for(var i=0; i< splitManager.itemLists.length;i++){
+                     let item =splitManager.itemLists[i]
+                    if (item!==_control){
                         try{
-                            DefaultSplitView.view.children[i].expandedVert = false
+                            item.expandedVert = false
+                            item.setFalseHeight()
                         }catch(e){}
-
                     }
                 }
                 SplitView.fillHeight = true
             }
-        } else {
-            SplitView.fillHeight = false
         }
     }
+     function setFalseWidth() {
+        SplitView.fillWidth= false
+    }
+
     onExpandedHortChanged: {
+        let splitManager = SplitView.view
         if(expandedHort) {
-            if(DefaultSplitView.view!=null){
-                for(var i=0; i<SplitView.view.children.length;i++) {
-                    if (SplitView.view.children[i]!==_control){
-                        try{
-                            SplitView.view.children[i].expandedHort = false
-                        }catch(e){}
+            if(splitManager==null){
+                for(var i=0; i<splitManager.itemLists.length;i++) {
+                    let item =splitManager.itemLists[i]
+                    if (item!==_control){
+                        item.expandedHort = false
+                        item.setFalseWidth()
                     }
                 }
-                SplitView.fillHeight = true
+                SplitView.fillWidth = true
             }
-        }else {
-            SplitView.fillHeight = false
         }
     }
 

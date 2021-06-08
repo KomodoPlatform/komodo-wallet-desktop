@@ -1975,27 +1975,27 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="86"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="89"/>
         <source>Cancel selected order to change price</source>
         <translation>Fiyatı değiştirmek için seçili emri iptal edin</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="132"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="135"/>
         <source>Amount to sell</source>
         <translation>Satılacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="132"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="135"/>
         <source>Amount to receive</source>
         <translation>Alınacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="76"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="79"/>
         <source>Price</source>
         <translation>Fiyat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="130"/>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="133"/>
         <source>Volume</source>
         <translation>Hacim</translation>
     </message>
@@ -2323,22 +2323,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="426"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="427"/>
         <source>Buy</source>
         <translation>Al</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="461"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="462"/>
         <source>Sell</source>
         <translation>Sat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="497"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="498"/>
         <source>Order Selected</source>
         <translation>Emir Seçildi</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="550"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="551"/>
         <source>Start Swap</source>
         <translation>Takas Başlat</translation>
     </message>
