@@ -289,25 +289,20 @@ namespace atomic_dex
 
         if (m_current_trading_mode == TradingModeGadget::Simple)
         {
+            SPDLOG_INFO("Simple trading mode, using FillOrKill order");
             req.order_type                 = nlohmann::json::object();
             req.order_type.value()["type"] = "FillOrKill";
         }
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
-        if (m_preffered_order.has_value())
+        if (is_selected_order)
         {
-            if (req.is_exact_selected_order_volume)
+            SPDLOG_INFO("The order is a selected order, treating it");
+            if (req.is_exact_selected_order_volume || is_max)
             {
                 //! Selected order and we keep the exact volume (Basically swallow the order)
                 SPDLOG_INFO("swallowing the order from the orderbook");
                 req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
                 req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
-            }
-            else if (is_max && !req.is_exact_selected_order_volume)
-            {
-                SPDLOG_INFO("cannot swallow the selected order from the orderbook, use max_taker_volume for it");
-                //! Selected order but we cannot swallow (not enough funds) set our max_volume_numer and max_volume_denom
-                req.volume_denom = max_taker_vol_json_obj["denom"].toString().toStdString();
-                req.volume_numer = max_taker_vol_json_obj["numer"].toString().toStdString();
             }
             else
             {
@@ -824,6 +819,7 @@ namespace atomic_dex
             if (hit)
             {
                 emit volumeChanged();
+                SPDLOG_INFO("volume is: [{}]", m_volume.toStdString());
                 this->determine_total_amount();
             }
         }
@@ -1098,7 +1094,7 @@ namespace atomic_dex
         ::mm2::api::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
-        SPDLOG_INFO("request: {}", preimage_request.dump(4));
+        //SPDLOG_INFO("request: {}", preimage_request.dump(4));
 
         this->set_preimage_busy(true);
         auto answer_functor = [this, &mm2](web::http::http_response resp)
@@ -1142,7 +1138,7 @@ namespace atomic_dex
                     }
                     fees["total_fees"] = atomic_dex::nlohmann_json_array_to_qt_json_array(success_answer.total_fees);
 
-                    qDebug() << "fees post answer: " << fees;
+                    //qDebug() << "fees post answer: " << fees;
                     this->set_fees(fees);
                     // qDebug() << this->get_fees();
                 }

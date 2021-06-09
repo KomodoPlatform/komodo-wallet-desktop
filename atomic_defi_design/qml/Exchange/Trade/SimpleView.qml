@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
+import AtomicDEX.TradingError 1.0
 
 import "../../Components"
 import "../../Constants"
@@ -463,7 +464,7 @@ ColumnLayout
                         let fromValue = parseFloat(_fromValue.text)
                         if (fromValue === 0)
                             return qsTr("Entered amount must be superior than 0.")
-                        if (fromValue < parseFloat(selectedOrder.base_min_volume))
+                        if (API.app.trading_pg.last_trading_error === TradingError.VolumeIsLowerThanTheMinimum)
                             return qsTr("Entered amount is below the minimum required by this order: %1").arg(parseFloat(selectedOrder.base_min_volume))
                         
                         return ""
