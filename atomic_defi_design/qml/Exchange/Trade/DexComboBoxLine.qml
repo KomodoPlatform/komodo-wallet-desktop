@@ -43,6 +43,9 @@ RowLayout {
                             details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_fiat_sign) + ")"
                 color: theme.foregroundColor
                 font: theme.textType.body2
+                Component.onCompleted: {
+                    font.pixelSize = 11.5
+                }
             }
         }
     }

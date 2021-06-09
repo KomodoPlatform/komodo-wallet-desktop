@@ -79,10 +79,6 @@ ColumnLayout {
             }
         }
     }
-    Connections {
-        target:exchange_trade
-    }
-
     spacing: 10
     anchors.topMargin: 20
     anchors.leftMargin: 10
