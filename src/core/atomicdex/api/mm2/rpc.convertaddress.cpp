@@ -2,10 +2,12 @@
 // Created by Sztergbaum Roman on 22/05/2021.
 //
 
+//! Deps
 #include <nlohmann/json.hpp>
 
+//! Project Headers
 #include "atomicdex/api/mm2/rpc.convertaddress.hpp"
-#include "generics.hpp"
+#include "atomicdex/api/mm2/generics.hpp"
 
 namespace mm2::api
 {

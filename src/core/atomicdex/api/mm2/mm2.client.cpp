@@ -8,6 +8,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.client.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/mm2/rpc.tx.history.hpp"
 
 namespace
 {

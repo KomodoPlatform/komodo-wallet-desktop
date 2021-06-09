@@ -22,6 +22,7 @@
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
+#include "atomicdex/api/mm2/rpc.tx.history.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
@@ -105,10 +106,10 @@ namespace
         std::shared_mutex& registry_mtx)
     {
         SPDLOG_INFO("Update coins status to: {}", status);
-        fs::path       cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
-        std::string    filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
-        std::string    custom_tokens_filename = "custom-tokens." + wallet_name + ".json";
-        fs::path       custom_tokens_filepath = cfg_path / custom_tokens_filename;
+        fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
+        std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
+        std::string custom_tokens_filename = "custom-tokens." + wallet_name + ".json";
+        fs::path    custom_tokens_filepath = cfg_path / custom_tokens_filename;
 
         std::ifstream  ifs((cfg_path / filename).c_str());
         nlohmann::json config_json_data;
@@ -395,7 +396,8 @@ namespace atomic_dex
 
         std::vector<std::string> tickers;
         tickers.reserve(coins.size());
-        for (auto&& current_coin: coins) {
+        for (auto&& current_coin: coins)
+        {
             SPDLOG_INFO("current_coin: {} is a default coin", current_coin.ticker);
             tickers.push_back(current_coin.ticker);
         }
