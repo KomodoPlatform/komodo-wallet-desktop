@@ -32,7 +32,7 @@ ColumnLayout
         id: swap_card
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: 380
-        Layout.preferredHeight: _unitPrice.visible ? 400 : 380
+        Layout.preferredHeight: _unitPrice.visible ? 410 : 380
         radius: 20
 
         MouseArea
@@ -756,6 +756,15 @@ ColumnLayout
                     }
                 }
             }
+        }
+    }
+
+    // Current Orders Modal
+    Component
+    {
+        BasicModal
+        {
+            id: ordersModal
         }
     }
 }
