@@ -13,6 +13,7 @@
 #include "atomicdex/api/faucet/faucet.hpp"
 #include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
+#include "atomicdex/api/mm2/rpc.withdraw.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -464,9 +465,9 @@ namespace atomic_dex
                 withdraw_req.fees->type = "Qrc20Gas";
             }
         }
-        nlohmann::json json_data = ::mm2::api::template_request("withdraw");
+        nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
         ::mm2::api::to_json(json_data, withdraw_req);
-        // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
+        //SPDLOG_DEBUG("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
         std::string amount_std = amount.toStdString();
         if (max)
@@ -488,7 +489,7 @@ namespace atomic_dex
                 auto           answers              = nlohmann::json::parse(body);
                 auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                 nlohmann::json j_out                = nlohmann::json::object();
-                j_out["withdraw_answer"]            = answers[0];
+                j_out["withdraw_answer"]            = answers[0]["result"];
                 j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
 
                 // Add total amount in fiat currency.
@@ -623,7 +624,7 @@ namespace atomic_dex
         auto&              mm2_system = m_system_manager.get_system<mm2_service>();
         std::error_code    ec;
         t_withdraw_request withdraw_req{.coin = "KMD", .to = mm2_system.address("KMD", ec), .amount = "0", .max = true};
-        nlohmann::json     json_data = ::mm2::api::template_request("withdraw");
+        nlohmann::json     json_data = ::mm2::api::template_request("withdraw", true);
         ::mm2::api::to_json(json_data, withdraw_req);
         batch.push_back(json_data);
         json_data = ::mm2::api::template_request("kmd_rewards_info");
@@ -635,12 +636,12 @@ namespace atomic_dex
                 {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
                     // SPDLOG_DEBUG("resp claiming: {}", body);
-                    if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+                    if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok) && body.find("error") == std::string::npos)
                     {
                         auto           answers              = nlohmann::json::parse(body);
                         auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                         nlohmann::json j_out                = nlohmann::json::object();
-                        j_out["withdraw_answer"]            = answers[0];
+                        j_out["withdraw_answer"]            = answers[0]["result"];
                         j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
                         auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
                         j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;

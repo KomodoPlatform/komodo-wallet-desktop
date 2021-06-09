@@ -40,7 +40,7 @@ Item {
         spacing: 10
         Row {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 140
+            Layout.preferredWidth: 130
             leftPadding: -10
             spacing: 5
             Image {
@@ -56,7 +56,8 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
                 text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
-                font.pixelSize: Style.textSizeSmall1
+                font.family: _font.fontFamily
+                font.pixelSize: 10
 
             }
         }
@@ -98,22 +99,18 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
             text: price_fiat+API.app.settings_pg.current_fiat_sign
-            font: theme.textType.caption
+            font.family: _font.fontFamily
+            font.pixelSize: 10
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
         }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-
-        }
-        DefaultText {
+        DexLabel {
             Layout.alignment: Qt.AlignVCenter
             
             text: cex_rates==="0"? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
-
+            font.family: _font.fontFamily
+            font.pixelSize: 10
 
             Behavior on rightPadding {
                 NumberAnimation {
@@ -123,7 +120,6 @@ Item {
 
             color:cex_rates==="0"? Qt.darker(theme.foregroundColor) : parseFloat(cex_rates)<0? Style.colorGreen : Style.colorRed
             horizontalAlignment: Label.AlignRight
-            font.pixelSize: Style.textSizeSmall1
             opacity: 1
 
         }
@@ -148,6 +144,7 @@ Item {
     }
     HorizontalLine {
         width: parent.width
+        opacity: .4
     }
 
 }

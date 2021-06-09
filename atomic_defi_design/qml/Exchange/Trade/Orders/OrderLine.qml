@@ -34,7 +34,7 @@ Rectangle {
         RowLayout {
             id: status_text
             Layout.fillHeight: true
-            Layout.preferredWidth: 45
+            Layout.preferredWidth: 25
 
             spacing: 5
             visible: clickable? !details ? false :
@@ -58,7 +58,7 @@ Rectangle {
         }
         Item {
             Layout.fillHeight: true
-            Layout.preferredWidth: 45
+            Layout.preferredWidth: 20
 
             visible: !status_text.visible? clickable? true : false : false
 
@@ -77,7 +77,7 @@ Rectangle {
                         details.date?? ""
             Layout.fillHeight: true
             verticalAlignment: Label.AlignVCenter
-            Layout.preferredWidth: 140
+            Layout.preferredWidth: 120
         }
 
         DefaultImage {
@@ -92,11 +92,11 @@ Rectangle {
             id: base_amount
             text_value: !details ? "" :
                         General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: Style.textSizeSmall2
+            font.pixelSize: 11
 
 
             Layout.fillHeight: true
-            Layout.preferredWidth: 180
+            Layout.preferredWidth: 160
             verticalAlignment: Label.AlignVCenter
             privacy: is_placed_order
         }
@@ -123,7 +123,7 @@ Rectangle {
             font.pixelSize: base_amount.font.pixelSize
 
             Layout.fillHeight: true
-            Layout.preferredWidth: 180
+            Layout.preferredWidth: 160
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Label.AlignRight
             privacy: is_placed_order
@@ -202,6 +202,7 @@ Rectangle {
     HorizontalLine {
         width: parent.width
         color: Style.colorWhite9
+        opacity: .4
         anchors.bottom: parent.bottom
     }
 }

@@ -15,7 +15,8 @@ Item {
             height: 30
             gradient: Gradient {
                 orientation: Qt.Horizontal
-                GradientStop { position: 0.0; color: app.globalTheme.surfaceColor }
+                GradientStop { position: 0.0; color: "transparent" }
+                GradientStop { position: 0.4; color: "transparent" }
                 GradientStop { position: 0.6; color: app.globalTheme.surfaceColor }
                 GradientStop { position: 1.0; color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9) }
             }
@@ -23,7 +24,7 @@ Item {
         MouseArea {
             onPressed: window.startSystemMove();
             anchors.fill: parent
-            anchors.rightMargin: window.isOsx? 280 : 0
+            anchors.rightMargin:  280 
             onDoubleClicked: {
                 if(window.visibility===ApplicationWindow.Maximized){
                     window.showNormal()
@@ -32,13 +33,9 @@ Item {
                 }
             }
         }
-        DexWindowHeaderControl {
-            visible: !window.isOsx //Qt.platform.os == "windows" || "linux"
-        }
         DexMacosHeaderControl {
-            visible: window.isOsx//Qt.platform.os == "osx"
+            anchors.verticalCenter: parent.verticalCenter
         }
-        
     }
     Item {
         id: _left_resize

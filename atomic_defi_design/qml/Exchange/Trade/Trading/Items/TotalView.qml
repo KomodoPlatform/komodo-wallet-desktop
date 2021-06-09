@@ -19,60 +19,70 @@ Item {
     anchors.topMargin: 0
     Item {
         width: parent.width
-        height: 80
+        height: 140
         Column {
-            width: parent.width-60
-            anchors.centerIn: parent
-            spacing: 0
+            width: parent.width-15
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 5
+            leftPadding: 10
+            rightPadding: 10
             RowLayout {
                 width: parent.width
+                height: 30
                 DefaultText {
                     color: theme.foregroundColor
-                    text:"Total "+API.app.settings_pg.current_fiat+" "+General.cex_icon
-                    font.pixelSize:  Style.textSizeSmall5
-                    Layout.preferredWidth: 120
-                    font.weight: Font.DemiBold
+                    text: "TOTAL "+API.app.settings_pg.current_fiat+" "+General.cex_icon
+                    font.pixelSize:  14
+                    font.weight: Font.Normal
+                    opacity: .6
                     CexInfoTrigger {}
                 }
                 Item {
-                    height: 40
+                    height: 30
                     Layout.fillWidth: true
                     DefaultText {
                         anchors.verticalCenter: parent.verticalCenter
+                        anchors.rightMargin: 20
                         anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        font.weight: Font.Light
-                        font.pixelSize: Style.textSizeSmall4
+                        font.weight: Font.DemiBold
+                        font.pixelSize: 16
+                        font.family: 'lato'
+                        color: theme.accentColor
                         text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon,"")
-
                     }
                 }
             }
-            HorizontalLine {
-                width: parent.width-50
+            
+            Rectangle {
+                color: theme.foregroundColor
+                opacity: .2
+                height: 1.5
+                width:parent.width-20
                 anchors.horizontalCenter: parent.horizontalCenter
             }
-
+            
             RowLayout {
                 width: parent.width
-                DefaultText {
+                height: 30
+                DexLabel {
                     color: theme.foregroundColor
-                    text:  "Total "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
-                    font.pixelSize:  Style.textSizeSmall5
-                    Layout.preferredWidth: 120
-                    font.weight: Font.DemiBold
-
+                    text:  "TOTAL "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+                    font.pixelSize:  14
+                    opacity: .6
+                    font.weight: Font.Normal
                 }
                 Item {
-                    height: 40
+                    height: 30
                     Layout.fillWidth: true
                     DefaultText {
-                        text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker,"")
                         anchors.verticalCenter: parent.verticalCenter
+                        anchors.rightMargin: 20
                         anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        font.weight: Font.Light
-                        font.pixelSize: Style.textSizeSmall4
+                        font.weight: Font.DemiBold
+                        font.pixelSize: 16
+                        font.family: 'lato'
+                        color: theme.accentColor
+                        text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker,"")
                     }
                 }
             }
