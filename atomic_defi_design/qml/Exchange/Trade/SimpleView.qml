@@ -484,7 +484,7 @@ ColumnLayout
         Layout.preferredWidth: 350
         Layout.preferredHeight: 60
 
-        enabled: typeof selectedOrder !== 'undefined'
+        enabled: !_swapAlert.visible
         visible: enabled
 
         radius: 25
