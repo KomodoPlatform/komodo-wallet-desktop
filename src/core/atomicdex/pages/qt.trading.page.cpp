@@ -249,25 +249,17 @@ namespace atomic_dex
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
 
-        auto&       mm2_system        = m_system_manager.get_system<mm2_service>();
-        const auto* market_selector   = get_market_pairs_mdl();
-        const auto& base              = market_selector->get_left_selected_coin();
-        const auto& rel               = market_selector->get_right_selected_coin();
-        const bool  is_selected_order = m_preffered_order.has_value();
-        const bool  is_max            = m_max_volume == m_volume;
-        const bool  is_selected_max =
-            is_selected_order ? QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
-                               : false;
-        t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
-        t_float_50 cur_min_trade  = safe_float(get_min_trade_vol().toStdString());
-        // t_float_50 delta          = (cur_min_trade * 100) / safe_float(m_max_volume.toStdString());
-        // t_float_50 delta_cur      = (cur_min_trade * 100) / safe_float(m_volume.toStdString());
-        //  SPDLOG_INFO("delta min_vol compare to max volume is: {}", utils::format_float(delta));
-        //  SPDLOG_INFO("delta min_vol compare to current volume is: {}", utils::format_float(delta_cur));
-        //  SPDLOG_INFO("base: {} base_min_vol: {}", base_resp.coin, base_resp.min_trading_vol);
-        // SPDLOG_INFO("rel: {} rel_min_vol: {}", rel_resp.coin, rel_resp.min_trading_vol);
-        // SPDLOG_INFO("cur_min_trade {}", cur_min_trade.str());
-        // SPDLOG_INFO("base_min_trade {}", base_min_trade.str());
+        auto&       mm2_system                   = m_system_manager.get_system<mm2_service>();
+        const auto* market_selector              = get_market_pairs_mdl();
+        const auto& base                         = market_selector->get_left_selected_coin();
+        const auto& rel                          = market_selector->get_right_selected_coin();
+        const bool  is_selected_order            = m_preffered_order.has_value();
+        const bool  is_max                       = m_max_volume == m_volume;
+        QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preffered_order->at("quantity").get<std::string>()) : "";
+        const bool  is_selected_max              = is_selected_order && orderbook_available_quantity.startsWith(m_volume);
+        t_float_50  base_min_trade               = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
+        t_float_50  cur_min_trade                = safe_float(get_min_trade_vol().toStdString());
+
         SPDLOG_INFO("min_trade_amount_field {}", m_minimal_trading_amount.toStdString());
 
         t_sell_request req{
@@ -296,7 +288,7 @@ namespace atomic_dex
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
         if (is_selected_order)
         {
-            SPDLOG_INFO("The order is a selected order, treating it");
+            SPDLOG_INFO("The order is a selected order, treating it, input_vol: {} orderbook_max_vol {}", m_volume.toStdString(), orderbook_available_quantity.toStdString());
             if (req.is_exact_selected_order_volume || is_max)
             {
                 //! Selected order and we keep the exact volume (Basically swallow the order)
@@ -1094,7 +1086,7 @@ namespace atomic_dex
         ::mm2::api::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
-        //SPDLOG_INFO("request: {}", preimage_request.dump(4));
+        // SPDLOG_INFO("request: {}", preimage_request.dump(4));
 
         this->set_preimage_busy(true);
         auto answer_functor = [this, &mm2](web::http::http_response resp)
@@ -1138,7 +1130,7 @@ namespace atomic_dex
                     }
                     fees["total_fees"] = atomic_dex::nlohmann_json_array_to_qt_json_array(success_answer.total_fees);
 
-                    //qDebug() << "fees post answer: " << fees;
+                    // qDebug() << "fees post answer: " << fees;
                     this->set_fees(fees);
                     // qDebug() << this->get_fees();
                 }
