@@ -167,6 +167,7 @@ Item {
 
 
     ProView {
+        id: form
         enabled: API.app.trading_pg.current_trading_mode == TradingMode.Pro
         visible: enabled
     }
