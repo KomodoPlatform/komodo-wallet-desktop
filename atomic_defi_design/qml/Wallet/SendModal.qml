@@ -440,15 +440,15 @@ BasicModal {
         // Amount
         TextEditWithTitle {
             title: qsTr("Amount")
-            text: empty_data ? "" :
-                  General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
+            text: empty_data ? "" : "%1 %2 (%3 %4)".arg(api_wallet_page.ticker).arg(input_amount.field.text).arg(API.app.settings_pg.current_fiat_sign).arg(send_result.withdraw_answer.total_amount_fiat)
+                  //General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
         }
 
         // Fees
         TextEditWithTitle {
             title: qsTr("Fees")
-            text: empty_data ? "" :
-                  General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker, send_result.withdraw_answer.fee_details.amount_fiat, API.app.settings_pg.current_currency)
+            text: empty_data ? "" : "%1 %2 (%3 %4)".arg(current_ticker_infos.fee_ticker).arg(send_result.withdraw_answer.fee_details.amount).arg(API.app.settings_pg.current_fiat_sign).arg(send_result.withdraw_answer.fee_details.amount_fiat)
+                  //General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker, send_result.withdraw_answer.fee_details.amount_fiat, API.app.settings_pg.current_fiat_sign)
         }
 
         // Date

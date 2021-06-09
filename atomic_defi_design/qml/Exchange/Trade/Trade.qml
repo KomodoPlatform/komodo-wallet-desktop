@@ -34,6 +34,7 @@ import "./" as Here
 Item {
     id: exchange_trade
     readonly property string total_amount: API.app.trading_pg.total_amount
+    property bool orderSelected: false
     //property var form_base: sell_mode? form_base.formBase : buyBox.formBase
     Component.onCompleted: {
         API.app.trading_pg.on_gui_enter_dex()
@@ -48,7 +49,8 @@ Item {
     Component.onDestruction: {
         API.app.trading_pg.on_gui_leave_dex()
     }
-    property bool isUltraLarge: width > 1400
+    property bool isUltraLarge: true // width > 1400
+    property bool isBigScreen: width > 1400
     onIsUltraLargeChanged: {
         if (isUltraLarge) {
             API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
@@ -171,6 +173,5 @@ Item {
     }
 
     TradeViewHeader {
-        y: window.isOsx? -5 : -45
     }
 }

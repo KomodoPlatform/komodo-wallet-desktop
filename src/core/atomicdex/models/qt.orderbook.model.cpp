@@ -47,7 +47,7 @@ namespace atomic_dex
         switch (m_current_orderbook_kind)
         {
         case kind::asks:
-            this->m_model_proxy->sort(0, Qt::AscendingOrder);
+            this->m_model_proxy->sort(0, Qt::DescendingOrder);
             break;
         case kind::bids:
             this->m_model_proxy->sort(0, Qt::DescendingOrder);

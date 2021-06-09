@@ -5,7 +5,6 @@ import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 import Qt.labs.platform 1.0
 
-
 import QtQuick.Window 2.15
 
 import Qaterial 1.0 as Qaterial
@@ -19,7 +18,9 @@ Rectangle {
     id: app
 
     color: theme.surfaceColor
-
+    property string currentWalletName: ""
+    property int page: current_page===5? deepPage : current_page
+    property int deepPage: 0
     property alias globalTheme: theme
     Shortcut {
         sequence: "F11"

@@ -18,10 +18,12 @@ import "../../../Constants"
 
 
 Item {
-    height: 25
+    height: 40
     visible: true
-
-    width: parent.width+10
+    width: parent.width-5
+    anchors.horizontalCenterOffset: 5
+    anchors.horizontalCenter: parent.horizontalCenter
+    y: -20
     Connections {
         target: API.app.trading_pg
         function onTradingModeChanged(){
@@ -29,52 +31,159 @@ Item {
         }
     }
 
+
+
     RowLayout {
-        width: parent.width-20
         anchors.fill: parent
-        anchors.rightMargin: 190
-        DefaultText {
-            leftPadding: 20
-            topPadding: 5
-            Layout.alignment: Qt.AlignVCenter
-            font.family: 'Ubuntu'
-            font.pixelSize: 20
-            font.weight: Font.Light
-            color: theme.foregroundColor
-            text: API.app.trading_pg.multi_order_enabled? qsTr("Trading Mode - Multi Ordering") : qsTr("Trading Mode - Single Order")
+        Item {
+            Layout.preferredWidth: 140
+            Layout.fillHeight: true
+            Rectangle {
+                id: background_rect
+                width: 70
+                height: 20
+                radius: 20
+                anchors.verticalCenter: parent.verticalCenter
+                color: theme.accentColor
+                Behavior on x {
+                    NumberAnimation {
+                        duration: 200
+                    }
+                }
+            }
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
+                DexLabel {
+                    text: "Pro"
+                    Layout.preferredWidth: 70
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.bold: true
+                    color: background_rect.x===0? theme.surfaceColor :  theme.foregroundColor
+                    DexMouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            background_rect.x = 0
+                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
+                        }
+                    }
+                }
+                DexLabel {
+                    text: "Simple"
+                    Layout.preferredWidth: 70
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.bold: true
+                    color: background_rect.x!==0? theme.surfaceColor :  theme.foregroundColor
+                    DexMouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            background_rect.x = 70
+                            API.app.trading_pg.current_trading_mode = TradingMode.Simple
+                        }
+                    }
+                }
+            }
+            
         }
         Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
-            Qaterial.LatoTabBar {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                Qaterial.LatoTabButton {
-                    text: qsTr("Pro-Mode")
-                    textColor: theme.foregroundColor
-                    textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
-                    onCheckedChanged: {
-                        if(checked) {
-                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                        }
+        } 
+        Rectangle {
+            width: 140
+            height: 25
+            radius: height/2
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
+            color: tuto_area.containsMouse? 'transparent' : theme.accentColor
+            Row {
+                anchors.centerIn: parent
+                spacing: 10
+                Qaterial.ColorIcon {
+                    source: Qaterial.Icons.televisionPlay
+                    anchors.verticalCenter: parent.verticalCenter
+                    iconSize: 15
+                    color: tuto_area.containsMouse? theme.accentColor : theme.surfaceColor
+                }
+                DexLabel {
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.weight: Font.Medium
+                    color: tuto_area.containsMouse? theme.accentColor : theme.surfaceColor
+                    text: qsTr("How to trade")
+                }
+            }
+            DexMouseArea {
+                id: tuto_area
+                hoverEnabled: true
+                anchors.fill: parent
+            }
+        }
+        Rectangle {
+            width: 50
+            height: 25
+            radius: height/2
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
+            color: faq_area.containsMouse? 'transparent' : theme.accentColor
+            Row {
+                anchors.centerIn: parent
+                spacing: 10
+                DexLabel {
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.weight: Font.Medium
+                    color: faq_area.containsMouse? theme.accentColor : theme.surfaceColor
+                    text: qsTr("FAQ")
+                }
+            }
+            DexMouseArea {
+                id: faq_area
+                hoverEnabled: true
+                anchors.fill: parent
+            }
+        }  
+        Rectangle {
+            width: 40
+            height: 25
+            radius: height/2
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
+            color: cog_area.containsMouse? 'transparent' :  form.dexConfig.visible? 'transparent' : theme.accentColor
+            Row {
+                anchors.centerIn: parent
+                spacing: 10
+                Qaterial.ColorIcon {
+                    source: Qaterial.Icons.cog
+                    anchors.verticalCenter: parent.verticalCenter
+                    iconSize: 15
+                    color: cog_area.containsMouse? theme.accentColor : form.dexConfig.visible? theme.accentColor : theme.surfaceColor 
+                }
+            }
+            DexMouseArea {
+                id: cog_area
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: {
+                    if(form.dexConfig.visible){
+                        form.dexConfig.close()
+                    }else {
+                        form.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
                     }
                     
                 }
-                Qaterial.LatoTabButton {
-                    text: qsTr("Starter")
-                    textSecondaryColor: Qt.darker(theme.foregroundColor,0.8)
-                    textColor: theme.foregroundColor
-                    ToolTip.text: "(Under Work)"
-                    onCheckedChanged: {
-                        if(checked) {
-                            API.app.trading_pg.current_trading_mode = TradingMode.Simple
-                        }
-                    }
-
-                }
             }
         }
-
-        
     }
 }

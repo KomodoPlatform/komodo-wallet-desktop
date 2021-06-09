@@ -7,15 +7,11 @@ Text {
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
-    font: try {
-              theme.textType.body1
-          }catch(e) {
-              Qt.font({
-                  pixelSize: 14,
+    font: Qt.font({
+                  pixelSize: 13,
                   letterSpacing: 0.25,
                   weight: Font.Normal
               })
-          }
 
     color: try {
             theme.foregroundColor?? "white"

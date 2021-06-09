@@ -322,9 +322,13 @@
         <file>atomic_defi_design/qml/Components/DefaultTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
+        <file>atomic_defi_design/qml/Components/DexBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexBoxManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
         <file>atomic_defi_design/qml/Components/DexButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexCheckBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexCheckEye.qml</file>
         <file>atomic_defi_design/qml/Components/DexColorOverlay.qml</file>
         <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
@@ -336,8 +340,10 @@
         <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
         <file>atomic_defi_design/qml/Components/DexListView.qml</file>
         <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
+        <file>atomic_defi_design/qml/Components/DexMacControl.qml</file>
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
         <file>atomic_defi_design/qml/Components/DexMouseArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DexPopup.qml</file>
         <file>atomic_defi_design/qml/Components/DexRangeSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DexRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexScrollBar.qml</file>
@@ -352,6 +358,7 @@
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexTooltip.qml</file>
+        <file>atomic_defi_design/qml/Components/DexTradeBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexWindow.qml</file>
         <file>atomic_defi_design/qml/Components/DexWindowControl.qml</file>
         <file>atomic_defi_design/qml/Components/DexWindowHeaderControl.qml</file>

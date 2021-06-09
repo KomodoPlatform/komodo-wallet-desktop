@@ -48,7 +48,15 @@ FloatingBackground {
     }
 
     //implicitHeight: form_layout.height
-
+    Connections {
+        target: exchange_trade
+        onBackend_priceChanged: {
+             input_price.field.text = exchange_trade.backend_price
+        }
+        onBackend_volumeChanged: {
+             input_volume.field.text = exchange_trade.backend_volume
+        }
+    }
     ColumnLayout {
         id: form_layout
         width: parent.width
@@ -58,21 +66,21 @@ FloatingBackground {
 
             Layout.fillWidth: true
             spacing: 15
+            Layout.topMargin: 20
             Item {
                 Layout.fillWidth: true
                 Layout.bottomMargin: input_volume.field.font.pixelSize
                 height: input_volume.height
 
-                AmountFieldWithInfo {
+                DexAmountField {
                     id: input_price
 
                     width: parent.width
-
-                    field.left_text: qsTr("Price")
-                    field.right_text: atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+                    leftText: qsTr("Price")
+                    rightText: atomic_qt_utilities.retrieve_main_ticker(right_ticker)
                     field.enabled: !(API.app.trading_pg.preffered_order.price!==undefined)
                     field.text: backend_price
-                    field.onTextChanged: setPrice(field.text)
+                    field.onTextChanged: setPrice(value)
 
                     DefaultTooltip {
                         visible: handler.containsMouse
@@ -87,7 +95,7 @@ FloatingBackground {
                     Rectangle {
                         width: parent.width
                         height: parent.height
-                        radius: 30
+                        radius: 4
                         color: Style.colorTheme9
                         opacity: .8
                         visible: !parent.field.enabled
@@ -97,6 +105,7 @@ FloatingBackground {
                             hoverEnabled: true
                         }
                     }
+
                 }
 
                 DefaultText {
@@ -118,16 +127,15 @@ FloatingBackground {
                 Layout.bottomMargin: input_volume.field.font.pixelSize
                 height: input_volume.height
 
-                AmountFieldWithInfo {
+                DexAmountField {
                     id: input_volume
                     width: parent.width
-
-                    field.left_text: qsTr("Volume")
-                    field.right_text: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+                    leftText: qsTr("Volume")
+                    rightText: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                     field.placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
 
-                    field.text: backend_volume
-                    field.onTextChanged: setVolume(field.text)
+                    field.text: API.app.trading_pg.volume
+                    field.onTextChanged: setVolume(value)
                 }
 
                 DefaultText {
