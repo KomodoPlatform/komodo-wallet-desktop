@@ -269,7 +269,7 @@ ColumnLayout {
                             }
                             Qaterial.LatoTabButton {
                                 width: 120
-                                text: qsTr("history")
+                                text: qsTr("History")
                                 font.pixelSize: 14
                                 textColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
                                 opacity: checked ? 1 : .6
