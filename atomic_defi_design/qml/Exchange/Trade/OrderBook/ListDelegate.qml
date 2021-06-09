@@ -125,6 +125,7 @@ Item {
             }
             else {
                 exchange_trade.orderSelected = true
+                orderList.currentIndex = index
                 if(isAsk) {
                     selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume)
                 }else {
