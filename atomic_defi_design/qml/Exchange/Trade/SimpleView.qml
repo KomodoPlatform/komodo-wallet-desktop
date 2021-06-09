@@ -408,7 +408,11 @@ ColumnLayout
 
             DefaultButton
             {
-                enabled: typeof selectedOrder !== 'undefined' && parseFloat(_fromValue.text) >= API.app.trading_pg.min_trade_vol && parseFloat(_toValue.text) > 0
+                enabled: typeof selectedOrder !== 'undefined' && 
+                         parseFloat(_fromValue.text) >= API.app.trading_pg.min_trade_vol && 
+                         parseFloat(_toValue.text) > 0 && 
+                         !API.app.trading_pg.preimage_rpc_busy
+
                 Layout.topMargin: 10
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: swap_card.width - 30
