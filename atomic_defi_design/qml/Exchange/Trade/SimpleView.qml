@@ -406,23 +406,71 @@ ColumnLayout
                 }
             }
 
-            DefaultButton
+            Item
             {
-                enabled: typeof selectedOrder !== 'undefined' && 
-                         parseFloat(_fromValue.text) >= API.app.trading_pg.min_trade_vol && 
-                         parseFloat(_toValue.text) > 0 && 
-                         !API.app.trading_pg.preimage_rpc_busy
-
                 Layout.topMargin: 10
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: swap_card.width - 30
-                text: qsTr("Swap Now !")
-                onClicked: _confirmSwapModal.open()
+                Layout.preferredHeight: 40
 
-                ModalLoader
+                DefaultButton
                 {
-                    id: _confirmSwapModal
-                    sourceComponent: ConfirmTradeModal {}
+                    enabled: !API.app.trading_pg.preimage_rpc_busy && !_swapAlert.visible
+
+                    anchors.fill: parent
+                    text: qsTr("Swap Now !")
+                    onClicked: _confirmSwapModal.open()
+
+                    ModalLoader
+                    {
+                        id: _confirmSwapModal
+                        sourceComponent: ConfirmTradeModal {}
+                    }
+                }
+
+                Image // Alert
+                {
+                    id: _swapAlert
+
+                    function getAlert()
+                    {
+                        if (typeof selectedOrder === 'undefined')
+                            return qsTr("You must select an order.")
+                        
+                        if (_fromValue.text === "")
+                            return qsTr("You must enter an amount")
+                        let fromValue = parseFloat(_fromValue.text)
+                        if (fromValue === 0)
+                            return qsTr("Entered amount must be superior than 0.")
+                        if (fromValue < parseFloat(selectedOrder.base_min_volume))
+                            return qsTr("Entered amount is below the minimum required by this order: %1").arg(parseFloat(selectedOrder.base_min_volume))
+                        
+                        return ""
+                    }
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    
+                    visible: ToolTip.text !== ""
+
+                    source: Qaterial.Icons.alert
+                    
+                    ToolTip.visible: _alertMouseArea.containsMouse
+                    ToolTip.text: getAlert()
+
+                    DefaultColorOverlay 
+                    {
+                        anchors.fill: parent
+                        source: parent
+                        color: "yellow"
+                    }
+                    MouseArea 
+                    {
+                        id: _alertMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
                 }
             }
         }
