@@ -285,15 +285,23 @@ ColumnLayout
                     id: _toValue
                     enabled: false
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 4
+                    anchors.bottomMargin: 23
                     anchors.left: parent.left
                     anchors.leftMargin: 18
-                    height: 30
                     text: parseFloat(_fromValue.text) >= API.app.trading_pg.min_trade_vol ? API.app.trading_pg.total_amount : "0"
                     font.pixelSize: Style.textSizeSmall5
                     Component.onCompleted: color = _fromValue.placeholderTextColor
                 }
 
+                Text    // Amount In Fiat
+                {
+                    enabled: _toValue.text
+                    anchors.top: _toValue.bottom
+                    anchors.topMargin: 4
+                    anchors.left: _toValue.left
+                    anchors.leftMargin: 3
+                    font.pixelSize: Style.textSizeSmall1
+                    Component.onCompleted: color = _fromValue.placeholderTextColor
                     text: enabled ? General.getFiatText(_toValue.text, selectedOrder.coin) : ""
                 }
 
