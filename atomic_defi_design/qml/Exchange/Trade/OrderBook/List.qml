@@ -36,7 +36,7 @@ Item {
         onContentHeightChanged : {
             console.log("size Changed")
             if(isVertical) {
-                _tm.start()
+                //_tm.start()
             }
         }
 
