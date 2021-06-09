@@ -441,12 +441,20 @@ ColumnLayout
 
         radius: 25
 
+        DefaultBusyIndicator 
+        {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: API.app.trading_pg.preimage_rpc_busy
+        }
+
         DefaultListView 
         {
             id: _feesList
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
 
+            visible: !API.app.trading_pg.preimage_rpc_busy 
             enabled: parent.enabled
             model: API.app.trading_pg.fees.total_fees
             delegate: RowLayout
