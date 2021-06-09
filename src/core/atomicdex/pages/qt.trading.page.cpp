@@ -800,6 +800,7 @@ namespace atomic_dex
          */
         if (auto std_volume = this->get_volume().toStdString(); not std_volume.empty())
         {
+            bool hit = false;
             if (safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
             {
                 auto max_volume = this->get_max_volume();
@@ -807,7 +808,7 @@ namespace atomic_dex
                 {
                     SPDLOG_INFO("checking if {} > {}", std_volume, max_volume.toStdString());
                     m_volume = max_volume;
-                    emit volumeChanged();
+                    hit      = true;
                 }
             }
             else if (safe_float(std_volume) < safe_float(get_min_trade_vol().toStdString()))
@@ -817,8 +818,13 @@ namespace atomic_dex
                 {
                     SPDLOG_INFO("checking if {} < {}", std_volume, min_volume.toStdString());
                     m_volume = min_volume;
-                    emit volumeChanged();
+                    hit      = true;
                 }
+            }
+            if (hit)
+            {
+                emit volumeChanged();
+                this->determine_total_amount();
             }
         }
     }
