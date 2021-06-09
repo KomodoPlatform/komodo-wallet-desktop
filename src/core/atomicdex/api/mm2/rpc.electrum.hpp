@@ -33,7 +33,9 @@ namespace mm2::api
         bool                                     is_testnet{false};
         bool                                     with_tx_history{true};
         const std::string                        testnet_qrc_swap_contract_address{"0xba8b71f3544b93e2f681f996da519a98ace0107a"};
+        const std::string                        testnet_fallback_qrc_swap_contract_address{testnet_qrc_swap_contract_address};
         const std::string                        mainnet_qrc_swap_contract_address{"0x2f754733acd6d753731c00fee32cb484551cc15d"};
+        const std::string                        mainnet_fallback_qrc_swap_contract_address{mainnet_qrc_swap_contract_address};
     };
 
     struct electrum_answer

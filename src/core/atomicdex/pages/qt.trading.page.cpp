@@ -1143,6 +1143,8 @@ namespace atomic_dex
     void
     trading_page::determine_error_cases()
     {
+        if (!m_system_manager.has_system<mm2_service>())
+            return;
         TradingError current_trading_error = TradingError::None;
 
         //! Check minimal trading amount
@@ -1154,7 +1156,6 @@ namespace atomic_dex
         // const auto&       base_min_taker_vol        = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
         const auto& cur_min_taker_vol = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
         const auto& mm2               = m_system_manager.get_system<mm2_service>();
-
         const auto left_cfg  = mm2.get_coin_info(left);
         const auto right_cfg = mm2.get_coin_info(right);
         if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
