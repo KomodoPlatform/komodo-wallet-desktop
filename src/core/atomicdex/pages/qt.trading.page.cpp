@@ -289,7 +289,7 @@ namespace atomic_dex
 
         if (m_current_trading_mode == TradingModeGadget::Simple)
         {
-            req.order_type = nlohmann::json::object();
+            req.order_type                 = nlohmann::json::object();
             req.order_type.value()["type"] = "FillOrKill";
         }
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
@@ -806,7 +806,8 @@ namespace atomic_dex
                 if (!max_volume.isEmpty() && max_volume != "0")
                 {
                     SPDLOG_INFO("checking if {} > {}", std_volume, max_volume.toStdString());
-                    this->set_volume(max_volume);
+                    m_volume = max_volume;
+                    emit volumeChanged();
                 }
             }
             else if (safe_float(std_volume) < safe_float(get_min_trade_vol().toStdString()))
@@ -815,7 +816,8 @@ namespace atomic_dex
                 if (!min_volume.isEmpty() && min_volume != "0")
                 {
                     SPDLOG_INFO("checking if {} < {}", std_volume, min_volume.toStdString());
-                    this->set_volume(min_volume);
+                    m_volume = min_volume;
+                    emit volumeChanged();
                 }
             }
         }
@@ -983,6 +985,14 @@ namespace atomic_dex
             {
                 this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("price").get<std::string>()))));
                 this->determine_max_volume();
+                const bool is_buy = m_market_mode == MarketMode::Buy;
+                if (!is_buy)
+                {
+                    QString min_vol = QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("base_min_volume").get<std::string>())));
+                    this->set_min_trade_vol(min_vol);
+                }
+                // m_preffered_order->at("quantity").get<std::string>();
+                // this->set_min_trade_vol()
                 this->set_volume(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))));
                 this->get_orderbook_wrapper()->refresh_best_orders();
                 this->determine_fees();
@@ -1092,7 +1102,7 @@ namespace atomic_dex
             {
                 auto           answers = nlohmann::json::parse(body);
                 nlohmann::json answer  = answers[0];
-                //SPDLOG_INFO("preimage answer: {}", answer.dump(0));
+                // SPDLOG_INFO("preimage answer: {}", answer.dump(0));
                 auto trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
@@ -1128,7 +1138,7 @@ namespace atomic_dex
 
                     qDebug() << "fees post answer: " << fees;
                     this->set_fees(fees);
-                    //qDebug() << this->get_fees();
+                    // qDebug() << this->get_fees();
                 }
             }
             this->set_preimage_busy(false);

@@ -109,6 +109,10 @@ namespace atomic_dex
             return QString::fromStdString(m_model_data.at(index.row()).base_min_volume);
         case BaseMaxVolumeRole:
             return QString::fromStdString(m_model_data.at(index.row()).base_max_volume);
+        case RelMinVolumeRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_min_volume);
+        case RelMaxVolumeRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_max_volume);
         case MinVolumeRole:
         {
             const bool is_asks = m_current_orderbook_kind == kind::asks;
@@ -270,6 +274,12 @@ namespace atomic_dex
         case BaseMaxVolumeRole:
             order.base_max_volume = value.toString().toStdString();
             break;
+        case RelMinVolumeRole:
+            order.rel_min_volume = value.toString().toStdString();
+            break;
+        case RelMaxVolumeRole:
+            order.rel_max_volume = value.toString().toStdString();
+            break;
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -296,7 +306,9 @@ namespace atomic_dex
             {SendRole, "send"},
             {PriceFiatRole, "price_fiat"},
             {BaseMinVolumeRole, "base_min_volume"},
-            {BaseMaxVolumeRole, "base_max_volume"}};
+            {BaseMaxVolumeRole, "base_max_volume"},
+            {RelMinVolumeRole, "rel_min_volume"},
+            {RelMaxVolumeRole, "rel_max_volume"}};
     }
 
     void
@@ -356,6 +368,8 @@ namespace atomic_dex
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::BaseMinVolumeRole, QString::fromStdString(order.base_min_volume), idx, *this);
             update_value(OrderbookRoles::BaseMaxVolumeRole, QString::fromStdString(order.base_max_volume), idx, *this);
+            update_value(OrderbookRoles::RelMinVolumeRole, QString::fromStdString(order.rel_min_volume), idx, *this);
+            update_value(OrderbookRoles::RelMaxVolumeRole, QString::fromStdString(order.rel_max_volume), idx, *this);
             update_value(OrderbookRoles::MinVolumeRole, QString::fromStdString(order.min_volume), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);

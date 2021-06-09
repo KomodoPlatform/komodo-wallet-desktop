@@ -196,6 +196,8 @@ namespace atomic_dex
             out["min_volume"]        = QString::fromStdString(order.min_volume);
             out["base_min_volume"]   = QString::fromStdString(order.base_min_volume);
             out["base_max_volume"]   = QString::fromStdString(order.base_max_volume);
+            out["rel_min_volume"]    = QString::fromStdString(order.rel_min_volume);
+            out["rel_max_volume"]    = QString::fromStdString(order.rel_max_volume);
             m_selected_best_order    = out;
             auto& trading_pg         = m_system_manager.get_system<trading_page>();
 
