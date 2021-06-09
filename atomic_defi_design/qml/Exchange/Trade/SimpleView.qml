@@ -152,10 +152,9 @@ ColumnLayout
                 {
                     id: _fromValue
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 12
+                    anchors.bottomMargin: 19
                     anchors.left: parent.left
                     anchors.leftMargin: 6
-                    height: 30
                     placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Minimum: %1").arg(API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
                     font.pixelSize: Style.textSizeSmall5
                     background: Rectangle { color: theme.backgroundColor }
@@ -180,6 +179,17 @@ ColumnLayout
                             text = API.app.trading_pg.min_trade_vol
                         }
                     }
+                }
+
+                Text    // Amount In Fiat
+                {
+                    enabled: _fromValue.text
+                    anchors.top: _fromValue.bottom
+                    anchors.left: _fromValue.left
+                    anchors.leftMargin: 15
+                    font.pixelSize: Style.textSizeSmall1
+                    Component.onCompleted: color = _fromValue.placeholderTextColor
+                    text: enabled ? General.getFiatText(_fromValue.text, selectedTicker) : ""
                 }
 
                 DefaultText
@@ -282,6 +292,9 @@ ColumnLayout
                     text: parseFloat(_fromValue.text) >= API.app.trading_pg.min_trade_vol ? API.app.trading_pg.total_amount : "0"
                     font.pixelSize: Style.textSizeSmall5
                     Component.onCompleted: color = _fromValue.placeholderTextColor
+                }
+
+                    text: enabled ? General.getFiatText(_toValue.text, selectedOrder.coin) : ""
                 }
 
                 DefaultRectangle // Shows best order coin
