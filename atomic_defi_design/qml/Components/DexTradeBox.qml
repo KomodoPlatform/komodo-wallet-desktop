@@ -212,7 +212,7 @@ Rectangle {
                         icon.height: 17
                         icon.width: 17
                         foregroundColor: theme.accentColor
-                        icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        icon.source: !_control.hidden? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: _control.hidden =!_control.hidden
                     }
                     Qaterial.AppBarButton {
