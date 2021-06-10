@@ -623,6 +623,11 @@ namespace atomic_dex
     void
     trading_page::clear_forms()
     {
+        if (!this->m_system_manager.has_system<mm2_service>())
+        {
+            SPDLOG_WARN("MM2 service not available, required to clear forms - skipping");
+            return;
+        }
         SPDLOG_INFO("clearing forms");
         // this->set_min_trade_vol("0");
         this->set_max_volume("0");
@@ -1089,6 +1094,11 @@ namespace atomic_dex
         if (is_preimage_busy())
         {
             SPDLOG_INFO("determine_fees busy - skipping.");
+            return;
+        }
+        if (!this->m_system_manager.has_system<mm2_service>())
+        {
+            SPDLOG_WARN("MM2 Service not available, cannot determine fees - skipping");
             return;
         }
         SPDLOG_INFO("determine_fees processing");
