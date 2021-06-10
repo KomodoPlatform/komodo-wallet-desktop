@@ -164,8 +164,6 @@ ColumnLayout
                     {
                         if (text === "")
                             API.app.trading_pg.volume = 0
-                        else if (parseFloat(text) < parseFloat(API.app.trading_pg.min_trade_vol))
-                            return
                         else
                         {
                             API.app.trading_pg.volume = text
@@ -497,8 +495,8 @@ ColumnLayout
                         let fromValue = parseFloat(_fromValue.text)
                         if (fromValue === 0)
                             return qsTr("Entered amount must be superior than 0.")
-                        if (API.app.trading_pg.last_trading_error === TradingError.VolumeIsLowerThanTheMinimum)
-                            return qsTr("Entered amount is below the minimum required by this order: %1").arg(parseFloat(selectedOrder.base_min_volume))
+                        if (API.app.trading_pg.last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
+                            return qsTr("Entered amount is below the minimum required by this order: %1").arg(selectedOrder.base_min_volume)
                         
                         return ""
                     }
