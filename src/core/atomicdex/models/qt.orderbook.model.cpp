@@ -418,8 +418,8 @@ namespace atomic_dex
             update_value(OrderbookRoles::BaseMinVolumeDenomRole, QString::fromStdString(order.base_min_volume_denom), idx, *this);
             update_value(OrderbookRoles::BaseMinVolumeNumerRole, QString::fromStdString(order.base_min_volume_numer), idx, *this);
             update_value(OrderbookRoles::BaseMaxVolumeRole, QString::fromStdString(order.base_max_volume), idx, *this);
-            update_value(OrderbookRoles::BaseMaxVolumeDenomRole, QString::fromStdString(order.base_max_volume_numer), idx, *this);
-            update_value(OrderbookRoles::BaseMaxVolumeNumerRole, QString::fromStdString(order.base_max_volume_denom), idx, *this);
+            update_value(OrderbookRoles::BaseMaxVolumeDenomRole, QString::fromStdString(order.base_max_volume_denom), idx, *this);
+            update_value(OrderbookRoles::BaseMaxVolumeNumerRole, QString::fromStdString(order.base_max_volume_numer), idx, *this);
             update_value(OrderbookRoles::RelMinVolumeRole, QString::fromStdString(order.rel_min_volume), idx, *this);
             update_value(OrderbookRoles::RelMinVolumeDenomRole, QString::fromStdString(order.rel_min_volume_denom), idx, *this);
             update_value(OrderbookRoles::RelMinVolumeNumerRole, QString::fromStdString(order.rel_min_volume_numer), idx, *this);
