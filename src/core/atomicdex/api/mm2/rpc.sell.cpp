@@ -64,7 +64,7 @@ namespace mm2::api
             price_fraction_repr["numer"]       = request.price_numer;
             price_fraction_repr["denom"]       = request.price_denom;
             j["price"]                         = price_fraction_repr;
-            if (request.is_exact_selected_order_volume)
+            if (request.is_exact_selected_order_volume && !request.selected_order_use_input_volume)
             {
                 j["volume"] = volume_fraction_functor();
             }

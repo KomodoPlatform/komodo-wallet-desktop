@@ -260,23 +260,21 @@ namespace atomic_dex
         t_float_50  base_min_trade               = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50  cur_min_trade                = safe_float(get_min_trade_vol().toStdString());
 
-        SPDLOG_INFO("min_trade_amount_field {}", m_minimal_trading_amount.toStdString());
-
+        SPDLOG_INFO("base_min_trade: {}, cur_min_trade: {}", base_min_trade.str(), cur_min_trade.str());
         t_sell_request req{
-            .base             = base.toStdString(),
-            .rel              = rel.toStdString(),
-            .price            = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
-            .volume           = m_volume.toStdString(),
-            .is_created_order = not is_selected_order,
-            .price_denom      = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
-            .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
-            .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
-            .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume =
-                (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false,
-            .rel_nota   = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
-            .rel_confs  = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
-            .is_max     = is_max,
+            .base                           = base.toStdString(),
+            .rel                            = rel.toStdString(),
+            .price                          = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
+            .volume                         = m_volume.toStdString(),
+            .is_created_order               = not is_selected_order,
+            .price_denom                    = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
+            .price_numer                    = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
+            .volume_denom                   = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
+            .volume_numer                   = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
+            .is_exact_selected_order_volume = (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) && is_selected_max,
+            .rel_nota                       = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs                      = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
+            .is_max                         = is_max,
             .min_volume = cur_min_trade <= base_min_trade ? std::optional<std::string>{std::nullopt} : m_minimal_trading_amount.toStdString()};
 
         if (m_current_trading_mode == TradingModeGadget::Simple)
@@ -293,12 +291,27 @@ namespace atomic_dex
             SPDLOG_INFO(
                 "The order is a selected order, treating it, input_vol: {} orderbook_max_vol {}", m_volume.toStdString(),
                 orderbook_available_quantity.toStdString());
+
+            const auto base_min_vol_orderbook = m_preffered_order->at("base_min_volume").get<std::string>();
+            t_float_50 base_min_vol_orderbook_f = safe_float(base_min_vol_orderbook);
+            if (cur_min_trade <= base_min_vol_orderbook_f)
+            {
+                SPDLOG_INFO("The selected order min_vol input is too low, using null field instead");
+                req.min_volume = std::optional<std::string>{std::nullopt};
+            }
+
             if (req.is_exact_selected_order_volume)
             {
                 //! Selected order and we keep the exact volume (Basically swallow the order)
                 SPDLOG_INFO("swallowing the order from the orderbook");
                 req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
                 req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
+            }
+            else if (is_max && !req.is_exact_selected_order_volume)
+            {
+                SPDLOG_INFO("cannot swallow the selected order from the orderbook, use max_taker_volume for it");
+                req.volume_denom = max_taker_vol_json_obj["denom"].toString().toStdString();
+                req.volume_numer = max_taker_vol_json_obj["numer"].toString().toStdString();
             }
             else
             {
@@ -703,7 +716,7 @@ namespace atomic_dex
                     {
                         auto       available_quantity       = m_preffered_order->at("base_max_volume").get<std::string>();
                         t_float_50 available_quantity_order = safe_float(available_quantity);
-                        //SPDLOG_INFO("available_quantity_order: {}, max_taker_vol: {}", available_quantity, max_taker_vol);
+                        // SPDLOG_INFO("available_quantity_order: {}, max_taker_vol: {}", available_quantity, max_taker_vol);
                         if (available_quantity_order < safe_float(max_taker_vol))
                         {
                             SPDLOG_INFO(
