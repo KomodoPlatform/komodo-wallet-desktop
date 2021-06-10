@@ -72,12 +72,6 @@ Rectangle {
     color: theme.dexBoxBackgroundColor
     property alias titleLabel: _texto
 
-    Connections {
-        target: _control.parent.parent
-        function onCurrentIndexChanged(){
-            console.log(_control.parent.parent.currentIndex)
-        }
-    }
     function setFalseHeight() {
         SplitView.fillHeight = false
     }
@@ -221,19 +215,9 @@ Rectangle {
                         icon.height: 17
                         icon.width: 17
                         foregroundColor: theme.accentColor
-                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
+                        visible: (_control.expandable && _control.expandedVert === false) && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
-                    }
-                    Qaterial.AppBarButton {
-                        implicitHeight: 40
-                        implicitWidth: 40
-                        icon.height: 17
-                        icon.width: 17
-                        foregroundColor: theme.accentColor
-                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
-                        icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
-                        onClicked: _control.expandedHort =!_control.expandedHort
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
@@ -301,17 +285,7 @@ Rectangle {
                         icon.height: 17
                         icon.width: 17
                         foregroundColor: theme.accentColor
-                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
-                        icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
-                        onClicked: _control.expandedVert =!_control.expandedVert
-                    }
-                    Qaterial.AppBarButton {
-                        implicitHeight: 40
-                        implicitWidth: 40
-                        icon.height: 17
-                        icon.width: 17
-                        foregroundColor: theme.accentColor
-                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
+                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal 
                         icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
                         onClicked: _control.expandedHort =!_control.expandedHort
                     }

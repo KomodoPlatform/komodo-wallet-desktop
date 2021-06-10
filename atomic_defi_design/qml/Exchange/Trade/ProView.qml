@@ -134,7 +134,12 @@ ColumnLayout {
                 DexTradeBox {
                     id: dex_chart
                     title: qsTr("Chart")
-                    expandedVert: true
+                    expandedVert: dex_chart.visible? true : false
+                    onVisibleChanged: {
+                        if(visible) {
+                            expandedVert = true
+                        }
+                    }
                     canBeFull: true
                     onFullScreenChanged: {
                         if(fullScreen){
@@ -161,7 +166,6 @@ ColumnLayout {
                     }
                 }
                 DexTradeBox {
-                    expandedVert: true
                     canBeFull: true
                     hideHeader: true
                     maximumHeight: 80
@@ -215,8 +219,8 @@ ColumnLayout {
                 
                 DexTradeBox {
                     id: optionBox
-                    expandedVert: true
-                    expandable: false
+                    expandedVert: dex_chart.visible? false : true
+                    expandable: true
                     defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270
                     Connections {
                         target: tabView
