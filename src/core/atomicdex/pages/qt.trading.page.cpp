@@ -1391,9 +1391,9 @@ namespace atomic_dex
 
         if (min_trade_vol != m_minimal_trading_amount)
         {
-            SPDLOG_INFO("min_trade_vol before adjustment: [{}]", min_trade_vol.toStdString());
+            //SPDLOG_INFO("min_trade_vol before adjustment: [{}]", min_trade_vol.toStdString());
             min_trade_vol = QString::fromStdString(utils::adjust_precision(min_trade_vol.toStdString()));
-            SPDLOG_INFO("min_trade_vol after adjustment: [{}]", min_trade_vol.toStdString());
+            //SPDLOG_INFO("min_trade_vol after adjustment: [{}]", min_trade_vol.toStdString());
             m_minimal_trading_amount = std::move(min_trade_vol);
             emit minTradeVolChanged();
             this->determine_error_cases();

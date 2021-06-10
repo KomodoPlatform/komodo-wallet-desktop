@@ -64,7 +64,7 @@ namespace atomic_dex
                 batch.push_back(best_orders_req_json);
 
                 best_orders_req_json["userpass"] = "*****";
-                SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
+                //SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
 
                 this->m_rpc_busy = true;
                 //! Treat answer

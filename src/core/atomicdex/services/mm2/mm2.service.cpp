@@ -429,7 +429,7 @@ namespace atomic_dex
     auto
     mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
-        SPDLOG_INFO("batch_balance_and_tx");
+        //SPDLOG_INFO("batch_balance_and_tx");
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
         return m_mm2_client.async_rpc_batch_standalone(batch_array)
             .then(
@@ -825,7 +825,7 @@ namespace atomic_dex
     void
     mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
     {
-        SPDLOG_INFO("fetch_infos_thread");
+        //SPDLOG_INFO("fetch_infos_thread");
 
         batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
     }
