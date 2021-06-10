@@ -255,7 +255,7 @@ namespace atomic_dex
         const auto& rel                          = market_selector->get_right_selected_coin();
         const bool  is_selected_order            = m_preffered_order.has_value();
         const bool  is_max                       = m_max_volume == m_volume;
-        QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preffered_order->at("quantity").get<std::string>()) : "";
+        QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preffered_order->at("base_max_volume").get<std::string>()) : "";
         const bool  is_selected_max              = is_selected_order && m_volume == orderbook_available_quantity;
         t_float_50  base_min_trade               = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50  cur_min_trade                = safe_float(get_min_trade_vol().toStdString());
@@ -269,9 +269,9 @@ namespace atomic_dex
             .is_created_order               = not is_selected_order,
             .price_denom                    = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
             .price_numer                    = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
-            .volume_denom                   = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
-            .volume_numer                   = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume = (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) && is_selected_max,
+            .volume_denom                   = is_selected_order ? m_preffered_order->at("base_max_volume_denom").get<std::string>() : "",
+            .volume_numer                   = is_selected_order ? m_preffered_order->at("base_max_volume_numer").get<std::string>() : "",
+            .is_exact_selected_order_volume = is_selected_order && is_selected_max,
             .rel_nota                       = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
             .rel_confs                      = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt(),
             .is_max                         = is_max,
@@ -292,7 +292,7 @@ namespace atomic_dex
                 "The order is a selected order, treating it, input_vol: {} orderbook_max_vol {}", m_volume.toStdString(),
                 orderbook_available_quantity.toStdString());
 
-            const auto base_min_vol_orderbook = m_preffered_order->at("base_min_volume").get<std::string>();
+            const auto base_min_vol_orderbook   = m_preffered_order->at("base_min_volume").get<std::string>();
             t_float_50 base_min_vol_orderbook_f = safe_float(base_min_vol_orderbook);
             if (cur_min_trade <= base_min_vol_orderbook_f)
             {
@@ -304,8 +304,8 @@ namespace atomic_dex
             {
                 //! Selected order and we keep the exact volume (Basically swallow the order)
                 SPDLOG_INFO("swallowing the order from the orderbook");
-                req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
-                req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
+                req.volume_numer = m_preffered_order->at("base_max_volume_numer").get<std::string>();
+                req.volume_denom = m_preffered_order->at("base_max_volume_denom").get<std::string>();
             }
             else if (is_max && !req.is_exact_selected_order_volume)
             {
@@ -1002,9 +1002,14 @@ namespace atomic_dex
                     QString min_vol = QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("base_min_volume").get<std::string>())));
                     this->set_min_trade_vol(min_vol);
                 }
-                // m_preffered_order->at("quantity").get<std::string>();
-                // this->set_min_trade_vol()
-                this->set_volume(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))));
+
+                auto available_quantity = m_preffered_order->at("quantity").get<std::string>();
+                if (!is_buy)
+                {
+                    available_quantity = m_preffered_order->at("base_max_volume").get<std::string>();
+                }
+
+                this->set_volume(QString::fromStdString(utils::format_float(safe_float(available_quantity))));
                 this->get_orderbook_wrapper()->refresh_best_orders();
                 this->determine_fees();
             }

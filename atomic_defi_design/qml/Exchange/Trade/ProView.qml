@@ -34,7 +34,7 @@ import "./" as Here
 ColumnLayout {
     id: form
     property alias dexConfig: dex_config_popup
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume) {
+    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = {
@@ -49,7 +49,9 @@ ColumnLayout {
             "base_min_volume": base_min_volume,
             "base_max_volume": base_max_volume,
             "rel_min_volume": rel_min_volume,
-            "rel_max_volume": rel_max_volume
+            "rel_max_volume": rel_max_volume,
+            "base_max_volume_denom": base_max_volume_denom,
+            "base_max_volume_numer": base_max_volume_numer
         }
 
         form_base.focusVolumeField()

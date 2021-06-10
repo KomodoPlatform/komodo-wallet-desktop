@@ -107,12 +107,28 @@ namespace atomic_dex
             return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_numer);
         case BaseMinVolumeRole:
             return QString::fromStdString(m_model_data.at(index.row()).base_min_volume);
+        case BaseMinVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_min_volume_denom);
+        case BaseMinVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_min_volume_numer);
         case BaseMaxVolumeRole:
             return QString::fromStdString(m_model_data.at(index.row()).base_max_volume);
+        case BaseMaxVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_max_volume_denom);
+        case BaseMaxVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_max_volume_numer);
         case RelMinVolumeRole:
             return QString::fromStdString(m_model_data.at(index.row()).rel_min_volume);
+        case RelMinVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_min_volume_denom);
+        case RelMinVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_min_volume_numer);
         case RelMaxVolumeRole:
             return QString::fromStdString(m_model_data.at(index.row()).rel_max_volume);
+        case RelMaxVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_max_volume_denom);
+        case RelMaxVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_max_volume_numer);
         case MinVolumeRole:
         {
             const bool is_asks = m_current_orderbook_kind == kind::asks;
@@ -271,14 +287,38 @@ namespace atomic_dex
         case BaseMinVolumeRole:
             order.base_min_volume = value.toString().toStdString();
             break;
+        case BaseMinVolumeDenomRole:
+            order.base_min_volume_denom = value.toString().toStdString();
+            break;
+        case BaseMinVolumeNumerRole:
+            order.base_min_volume_numer = value.toString().toStdString();
+            break;
         case BaseMaxVolumeRole:
             order.base_max_volume = value.toString().toStdString();
+            break;
+        case BaseMaxVolumeDenomRole:
+            order.base_max_volume_denom = value.toString().toStdString();
+            break;
+        case BaseMaxVolumeNumerRole:
+            order.base_max_volume_numer = value.toString().toStdString();
             break;
         case RelMinVolumeRole:
             order.rel_min_volume = value.toString().toStdString();
             break;
+        case RelMinVolumeDenomRole:
+            order.rel_min_volume_denom = value.toString().toStdString();
+            break;
+        case RelMinVolumeNumerRole:
+            order.rel_min_volume_numer = value.toString().toStdString();
+            break;
         case RelMaxVolumeRole:
             order.rel_max_volume = value.toString().toStdString();
+            break;
+        case RelMaxVolumeDenomRole:
+            order.rel_max_volume_denom = value.toString().toStdString();
+            break;
+        case RelMaxVolumeNumerRole:
+            order.rel_max_volume_numer = value.toString().toStdString();
             break;
         }
         emit dataChanged(index, index, {role});
@@ -306,9 +346,17 @@ namespace atomic_dex
             {SendRole, "send"},
             {PriceFiatRole, "price_fiat"},
             {BaseMinVolumeRole, "base_min_volume"},
+            {BaseMinVolumeDenomRole, "base_min_volume_denom"},
+            {BaseMinVolumeNumerRole, "base_min_volume_numer"},
             {BaseMaxVolumeRole, "base_max_volume"},
+            {BaseMaxVolumeDenomRole, "base_max_volume_denom"},
+            {BaseMaxVolumeNumerRole, "base_max_volume_numer"},
             {RelMinVolumeRole, "rel_min_volume"},
-            {RelMaxVolumeRole, "rel_max_volume"}};
+            {RelMinVolumeDenomRole, "rel_min_volume_denom"},
+            {RelMinVolumeNumerRole, "rel_min_volume_numer"},
+            {RelMaxVolumeRole, "rel_max_volume"},
+            {RelMaxVolumeDenomRole, "rel_max_volume_denom"},
+            {RelMaxVolumeNumerRole, "rel_max_volume_numer"}};
     }
 
     void
@@ -367,9 +415,17 @@ namespace atomic_dex
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::BaseMinVolumeRole, QString::fromStdString(order.base_min_volume), idx, *this);
+            update_value(OrderbookRoles::BaseMinVolumeDenomRole, QString::fromStdString(order.base_min_volume_denom), idx, *this);
+            update_value(OrderbookRoles::BaseMinVolumeNumerRole, QString::fromStdString(order.base_min_volume_numer), idx, *this);
             update_value(OrderbookRoles::BaseMaxVolumeRole, QString::fromStdString(order.base_max_volume), idx, *this);
+            update_value(OrderbookRoles::BaseMaxVolumeDenomRole, QString::fromStdString(order.base_max_volume_numer), idx, *this);
+            update_value(OrderbookRoles::BaseMaxVolumeNumerRole, QString::fromStdString(order.base_max_volume_denom), idx, *this);
             update_value(OrderbookRoles::RelMinVolumeRole, QString::fromStdString(order.rel_min_volume), idx, *this);
+            update_value(OrderbookRoles::RelMinVolumeDenomRole, QString::fromStdString(order.rel_min_volume_denom), idx, *this);
+            update_value(OrderbookRoles::RelMinVolumeNumerRole, QString::fromStdString(order.rel_min_volume_numer), idx, *this);
             update_value(OrderbookRoles::RelMaxVolumeRole, QString::fromStdString(order.rel_max_volume), idx, *this);
+            update_value(OrderbookRoles::RelMaxVolumeDenomRole, QString::fromStdString(order.rel_max_volume_denom), idx, *this);
+            update_value(OrderbookRoles::RelMaxVolumeNumerRole, QString::fromStdString(order.rel_max_volume_numer), idx, *this);
             update_value(OrderbookRoles::MinVolumeRole, QString::fromStdString(order.min_volume), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
