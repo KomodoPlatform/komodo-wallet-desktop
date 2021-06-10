@@ -448,6 +448,39 @@ ColumnLayout
                         id: _confirmSwapModal
                         sourceComponent: ConfirmTradeModal {}
                     }
+
+                    Connections 
+                    {
+                        target: exchange_trade
+                        function onBuy_sell_rpc_busyChanged() 
+                        {
+                            if (buy_sell_rpc_busy)
+                                return
+
+                            const response = General.clone(buy_sell_last_rpc_data)
+
+                            if (response.error_code) 
+                            {
+                                _confirmSwapModal.close()
+
+                                toast.show(qsTr("Failed to place the order"),
+                                        General.time_toast_important_error,
+                                        response.error_message)
+
+                                return
+                }
+                            else if (response.result && response.result.uuid) 
+                            {
+                                // Make sure there is information
+                                _confirmSwapModal.close()
+
+                                toast.show(qsTr("Placed the order"), General.time_toast_basic_info,
+                                        General.prettifyJSON(response.result), false)
+
+                                General.prevent_coin_disabling.restart()
+                            }
+                        }
+                    }
                 }
 
                 Image // Alert
