@@ -256,11 +256,12 @@ namespace atomic_dex
         const bool  is_selected_order            = m_preffered_order.has_value();
         const bool  is_max                       = m_max_volume == m_volume;
         QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preffered_order->at("base_max_volume").get<std::string>()) : "";
-        const bool  is_selected_max              = is_selected_order && m_volume == orderbook_available_quantity;
+        const bool  is_selected_max              = is_selected_order && utils::format_float(safe_float(m_volume.toStdString())) == utils::format_float(safe_float(orderbook_available_quantity.toStdString()));
         t_float_50  base_min_trade               = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50  cur_min_trade                = safe_float(get_min_trade_vol().toStdString());
 
         SPDLOG_INFO("base_min_trade: {}, cur_min_trade: {}", base_min_trade.str(), cur_min_trade.str());
+        SPDLOG_INFO("volume: {}, orderbook_available_quantity: {}, is_selected_max: {}", m_volume.toStdString(), orderbook_available_quantity.toStdString(), is_selected_max);
         t_sell_request req{
             .base                           = base.toStdString(),
             .rel                            = rel.toStdString(),
