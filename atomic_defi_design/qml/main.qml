@@ -83,10 +83,11 @@ DexWindow {
             hoverEnabled: true
             anchors.fill: parent
             onClicked:  {
-                app.currentWalletName = ""
-                API.app.disconnect()
-                app.onDisconnect()
-                userMenu.close()
+                Qaterial.DialogManager.showDialog({title: qsTr("Logout request"),text: qsTr("Confirm logout request to disconnect!!"),iconSource: Qaterial.Icons.logout,standardButtons: Dialog.Yes | Dialog.Cancel, onAccepted: function() {
+                    app.currentWalletName = ""
+                    API.app.disconnect()
+                    app.onDisconnect()
+                }})
             }
         }
       }
