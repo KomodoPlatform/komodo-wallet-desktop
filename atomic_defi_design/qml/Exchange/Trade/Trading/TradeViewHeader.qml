@@ -50,6 +50,7 @@ Item {
                         duration: 200
                     }
                 }
+                x: API.app.trading_pg.current_trading_mode != TradingMode.Pro ? 70 : 0
             }
             RowLayout {
                 anchors.fill: parent
@@ -61,7 +62,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x===0? theme.surfaceColor :  theme.foregroundColor
+                    color: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? theme.surfaceColor : theme.foregroundColor
                     DexMouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -77,7 +78,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x!==0? theme.surfaceColor :  theme.foregroundColor
+                    color: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? theme.surfaceColor : theme.foregroundColor
                     DexMouseArea {
                         anchors.fill: parent
                         onClicked: {
