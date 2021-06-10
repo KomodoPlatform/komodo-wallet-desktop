@@ -296,7 +296,7 @@ ColumnLayout
 
                 Text    // Amount In Fiat
                 {
-                    enabled: _toValue.text
+                    enabled: parseFloat(_toValue.text) > 0
                     anchors.top: _toValue.bottom
                     anchors.topMargin: 4
                     anchors.left: _toValue.left
