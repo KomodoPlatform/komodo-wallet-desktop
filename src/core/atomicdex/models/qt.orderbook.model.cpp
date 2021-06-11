@@ -492,7 +492,23 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            m_model_data.erase(m_model_data.begin() + position);
+            auto it = m_model_data.begin() + position;
+            const auto uuid_to_be_removed = it->uuid;
+            if (m_system_mgr.has_system<trading_page>())
+            {
+                auto& trading_pg = m_system_mgr.get_system<trading_page>();
+                const auto preffered_order = trading_pg.get_preffered_order();
+                if (!preffered_order.empty())
+                {
+                    const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
+                    if (selected_order_uuid == uuid_to_be_removed)
+                    {
+                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, this means the order has been matched or cancelled, changing the status of the selected order, a clear forms is required");
+                        trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
+                    }
+                }
+            }
+            m_model_data.erase(it);
             emit lengthChanged();
         }
         endRemoveRows();

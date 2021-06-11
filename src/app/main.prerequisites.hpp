@@ -316,7 +316,7 @@ check_settings_reconfiguration(const fs::path& path)
 
         SPDLOG_INFO("Deleting previous cfg after reconfiguring it");
         ec.clear();
-        fs::remove_all( get_atomic_dex_data_folder() / get_precedent_raw_version(), ec);
+        fs::remove_all(get_atomic_dex_data_folder() / get_precedent_raw_version(), ec);
         if (ec)
         {
             SPDLOG_ERROR("error occured when deleting previous path");
@@ -427,6 +427,9 @@ run_app(int argc, char** argv)
     qmlRegisterUncreatableType<atomic_dex::WalletChartsCategoriesGadget>(
         "AtomicDEX.WalletChartsCategories", 1, 0, "WalletChartsCategories", "Not creatable as it is an enum type");
     qRegisterMetaType<TradingError>("TradingError");
+    qRegisterMetaType<SelectedOrderStatus>("SelectedOrderStatus");
+    qmlRegisterUncreatableType<atomic_dex::SelectedOrderGadget>(
+        "AtomicDEX.SelectedOrderStatus", 1, 0, "SelectedOrderStatus", "Not creatable as it is an enum type");
     qmlRegisterUncreatableType<atomic_dex::TradingErrorGadget>("AtomicDEX.TradingError", 1, 0, "TradingError", "Not creatable as it is an enum type");
     qRegisterMetaType<CoinType>("CoinType");
     qmlRegisterUncreatableType<atomic_dex::CoinTypeGadget>("AtomicDEX.CoinType", 1, 0, "CoinType", "Not creatable as it is an enum type");

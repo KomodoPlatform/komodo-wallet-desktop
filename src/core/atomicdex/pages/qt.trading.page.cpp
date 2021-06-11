@@ -646,6 +646,7 @@ namespace atomic_dex
         this->m_fees             = QVariantMap();
         this->m_cex_price        = "0";
         this->m_post_clear_forms = true;
+        this->set_selected_order_status(SelectedOrderStatus::None);
         emit cexPriceChanged();
         emit invalidCexPriceChanged();
         emit cexPriceReversedChanged();
@@ -728,8 +729,7 @@ namespace atomic_dex
                         /*SPDLOG_INFO(
                             "available_quantity_order: {}, max_volume: {}", utils::format_float(safe_float(available_quantity)),
                             get_max_volume().toStdString());*/
-                        if (available_quantity_order < safe_float(max_taker_vol) &&
-                            !m_preffered_order->at("capped").get<bool>())
+                        if (available_quantity_order < safe_float(max_taker_vol) && !m_preffered_order->at("capped").get<bool>())
                         {
                             SPDLOG_INFO(
                                 "Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}\nmax_vol_str: {}",
@@ -1510,5 +1510,22 @@ namespace atomic_dex
     trading_page::get_raw_preffered_order() const
     {
         return m_preffered_order;
+    }
+
+    SelectedOrderStatus
+    trading_page::get_selected_order_status() const
+    {
+        return m_selected_order_status;
+    }
+
+    void
+    trading_page::set_selected_order_status(SelectedOrderStatus order_status)
+    {
+        if (m_selected_order_status != order_status)
+        {
+            m_selected_order_status = order_status;
+            SPDLOG_DEBUG("Set selected order status to: {}", QMetaEnum::fromType<SelectedOrderStatus>().valueToKey(order_status));
+            emit selectedOrderStatusChanged();
+        }
     }
 } // namespace atomic_dex

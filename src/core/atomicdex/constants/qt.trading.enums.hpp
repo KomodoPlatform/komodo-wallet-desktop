@@ -76,9 +76,9 @@ namespace atomic_dex
       public:
         enum SelectedOrderStatus
         {
-            None = 0, /// The selected order is at the initial state
-            DataChanged = 1, ///< One of the data has changed (volume,price,min_volume...)
-            OrderCancelled = 2 ///< The order has been cancelled
+            None                    = 0, /// The selected order is at the initial state
+            DataChanged             = 1, ///< One of the data has changed (volume,price,min_volume...)
+            OrderNotExistingAnymore = 2  ///< The order has been cancelled or matched
         };
 
         Q_ENUM(SelectedOrderStatus)
@@ -88,7 +88,7 @@ namespace atomic_dex
     };
 } // namespace atomic_dex
 
-using MarketMode   = atomic_dex::MarketModeGadget::MarketModeEnum;
-using TradingError = atomic_dex::TradingErrorGadget::TradingErrorEnum;
-using TradingMode  = atomic_dex::TradingModeGadget::TradingModeEnum;
+using MarketMode          = atomic_dex::MarketModeGadget::MarketModeEnum;
+using TradingError        = atomic_dex::TradingErrorGadget::TradingErrorEnum;
+using TradingMode         = atomic_dex::TradingModeGadget::TradingModeEnum;
 using SelectedOrderStatus = atomic_dex::SelectedOrderGadget::SelectedOrderStatus;
