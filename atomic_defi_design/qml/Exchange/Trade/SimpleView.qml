@@ -469,7 +469,10 @@ ColumnLayout
                     ModalLoader
                     {
                         id: _confirmSwapModal
-                        sourceComponent: ConfirmTradeModal {}
+                        sourceComponent: ConfirmTradeModal 
+                        {
+                            onClosed: selectedOrder = undefined
+                    }
                     }
 
                     Connections 
