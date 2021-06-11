@@ -3,7 +3,9 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
+
 import AtomicDEX.TradingError 1.0
+import AtomicDEX.SelectedOrderStatus 1.0
 
 import "../../Components"
 import "../../Constants"
@@ -27,6 +29,29 @@ ColumnLayout
     }
     onEnabledChanged: selectedOrder = undefined
     Component.onDestruction: selectedOrder = undefined
+
+    Connections
+    {
+        target: API.app.trading_pg
+        function onSelectedOrderStatusChanged()
+        {
+            if (API.app.trading_pg.selected_order_status == SelectedOrderStatus.OrderNotExistingAnymore)
+            {
+                _orderDisappearModalLoader.open()
+                _confirmSwapModal.close()
+            }
+        }
+    }
+
+    ModalLoader
+    {
+        id: _orderDisappearModalLoader
+        sourceComponent: _orderDisappearModal
+        onLoaded:
+        {
+            selectedOrder = undefined
+        }
+    }
 
     DefaultRectangle
     {
@@ -866,6 +891,36 @@ ColumnLayout
         BasicModal
         {
             id: ordersModal
+        }
+    }
+
+    // Order Doest Not Exist Anymore Modal
+    Component
+    {
+        id: _orderDisappearModal
+        BasicModal
+        {
+            id: root
+            width: 800
+            ModalContent
+            {
+                title: qsTr("Selected Order Changed")
+
+                DefaultText
+                {
+                    text: qsTr("The selected order does not exist anymore. It might have been matched or canceled. Please select a new order.")
+}
+
+                footer:
+                [
+                    DefaultButton
+                    {
+                        text: qsTr("OK")
+                        onClicked: close()
+                    }
+                ]
+            }
+            onClosed: API.app.trading_pg.clear_forms()
         }
     }
 }
