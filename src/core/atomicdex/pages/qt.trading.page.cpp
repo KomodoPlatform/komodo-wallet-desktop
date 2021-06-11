@@ -647,6 +647,7 @@ namespace atomic_dex
         this->m_cex_price        = "0";
         this->m_post_clear_forms = true;
         this->set_selected_order_status(SelectedOrderStatus::None);
+        this->reset_fees();
         emit cexPriceChanged();
         emit invalidCexPriceChanged();
         emit cexPriceReversedChanged();

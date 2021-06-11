@@ -503,7 +503,7 @@ namespace atomic_dex
                     const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
                     if (selected_order_uuid == uuid_to_be_removed)
                     {
-                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, this means the order has been matched or cancelled, changing the status of the selected order, a clear forms is required");
+                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, this means the order has been matched or cancelled, changing the status of the selected order, a clear forms is required", selected_order_uuid);
                         trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
                     }
                 }
