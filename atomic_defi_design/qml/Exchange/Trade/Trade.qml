@@ -165,16 +165,11 @@ Item {
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
-
-    ProView {
-        id: form
-        enabled: API.app.trading_pg.current_trading_mode == TradingMode.Pro
-        visible: enabled
-    }
-
-    SimpleView {
-        enabled: API.app.trading_pg.current_trading_mode == TradingMode.Simple
-        visible: enabled
+    Loader
+    {
+        id: _viewLoader
+        anchors.fill: parent
+        source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView.qml"
     }
 
     TradeViewHeader {
