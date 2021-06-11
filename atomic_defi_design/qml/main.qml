@@ -182,7 +182,7 @@ DexWindow {
                         font.family: 'Montserrat'
                         font.weight: Font.Medium
                         opacity: .7
-                        visible: _label.text !== ""
+                        visible: API.app.wallet_mgr.log_status()
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Qaterial.ColorIcon {
