@@ -24,7 +24,7 @@
 
 namespace
 {
-    template <typename TValue, typename TModel>
+    /*template <typename TValue, typename TModel>
     void
     update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
     {
@@ -32,7 +32,7 @@ namespace
         {
             model.setData(idx, value, role);
         }
-    }
+    }*/
 } // namespace
 
 namespace atomic_dex
@@ -406,11 +406,13 @@ namespace atomic_dex
         if (const auto res = this->match(index(0, 0), UUIDRole, QString::fromStdString(order.uuid)); not res.isEmpty())
         {
             //! ID Found, update !
-            const QModelIndex& idx = res.at(0);
-            update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
+            const QModelIndex& idx                = res.at(0);
+            const auto         uuid_to_be_updated = this->data(idx, OrderbookRoles::UUIDRole).toString().toStdString();
+            auto&& [_, _1, is_price_changed]      = update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
             update_value(OrderbookRoles::PriceNumerRole, QString::fromStdString(order.price_fraction_numer), idx, *this);
             update_value(OrderbookRoles::PriceDenomRole, QString::fromStdString(order.price_fraction_denom), idx, *this);
             update_value(OrderbookRoles::IsMineRole, order.is_mine, idx, *this);
+            auto&& [_2, _3, is_quantity_changed] = update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
             update_value(OrderbookRoles::QuantityRole, QString::fromStdString(order.maxvolume), idx, *this);
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
@@ -431,6 +433,23 @@ namespace atomic_dex
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
             update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
             update_value(OrderbookRoles::PriceFiatRole, "0.00", idx, *this);
+            if (m_system_mgr.has_system<trading_page>())
+            {
+                auto&      trading_pg      = m_system_mgr.get_system<trading_page>();
+                const auto preffered_order = trading_pg.get_preffered_order();
+                if (!preffered_order.empty())
+                {
+                    const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
+                    if (selected_order_uuid == uuid_to_be_updated && (is_quantity_changed || is_price_changed))
+                    {
+                        SPDLOG_WARN(
+                            "The selected order uuid: {} the orderbook model got some data updated, this means the order has been modified, changing the "
+                            "status of the selected order, a set_preffered_order with new values are required",
+                            selected_order_uuid);
+                        trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
+                    }
+                }
+            }
         }
     }
 
@@ -492,18 +511,21 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            auto it = m_model_data.begin() + position;
+            auto       it                 = m_model_data.begin() + position;
             const auto uuid_to_be_removed = it->uuid;
             if (m_system_mgr.has_system<trading_page>())
             {
-                auto& trading_pg = m_system_mgr.get_system<trading_page>();
+                auto&      trading_pg      = m_system_mgr.get_system<trading_page>();
                 const auto preffered_order = trading_pg.get_preffered_order();
                 if (!preffered_order.empty())
                 {
                     const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
                     if (selected_order_uuid == uuid_to_be_removed)
                     {
-                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, this means the order has been matched or cancelled, changing the status of the selected order, a clear forms is required", selected_order_uuid);
+                        SPDLOG_WARN(
+                            "The selected order uuid: {} is removed from the orderbook model, this means the order has been matched or cancelled, changing the "
+                            "status of the selected order, a clear forms is required",
+                            selected_order_uuid);
                         trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
                     }
                 }
