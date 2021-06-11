@@ -314,6 +314,9 @@ ColumnLayout {
                         }
                     }
                 }
+                Item {
+                    SplitView.maximumHeight: 1
+                }
             }
         }
         Item {

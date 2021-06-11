@@ -91,6 +91,20 @@ Rectangle {
                 }
                 SplitView.fillHeight = true
             }
+        }else {
+            var setted = false
+            if(splitManager!==null){
+                for(var i=0; i< splitManager.itemLists.length;i++){
+                    let item =splitManager.itemLists[i]
+                    if (item!==_control && setted===false){
+                        try{
+                            item.expandedVert = true
+                            setted = true 
+                        }catch(e){}
+                    }
+                }
+                setFalseHeight()
+            }
         }
     }
      function setFalseWidth() {
@@ -215,7 +229,7 @@ Rectangle {
                         icon.height: 17
                         icon.width: 17
                         foregroundColor: theme.accentColor
-                        visible: (_control.expandable && _control.expandedVert === false) && _control.parent.parent.orientation === Qt.Vertical
+                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
                     }
