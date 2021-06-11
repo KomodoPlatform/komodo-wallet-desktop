@@ -62,7 +62,6 @@ Rectangle {
             SplitView.preferredWidth = defaultWidth
             SplitView.minimumWidth = minimumWidth
             SplitView.maximumWidth = maximumWidth
-            console.log(_control.maximumWidth)
             SplitView.fillWidth = true
 
         }

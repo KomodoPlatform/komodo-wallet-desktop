@@ -89,6 +89,7 @@ ColumnLayout {
             dex_chart.visible = true
         }
     }
+
     DexBoxManager {
         id: splitView
         Layout.fillWidth: true
@@ -607,6 +608,15 @@ ColumnLayout {
         padding: 4
         arrowXDecalage: 75
         backgroundColor: theme.dexBoxBackgroundColor
+        Settings {
+            id: proview_settings
+            property bool chart_visibility: true
+            property bool option_visibility: true
+            property bool orderbook_visibility: true
+            property bool best_order_visibility: true
+            property bool form_visibility: true
+        }
+
         contentItem: Item {
             implicitWidth: 350
             implicitHeight: 190
@@ -639,10 +649,25 @@ ColumnLayout {
                 }
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
                 DexCheckEye {
+                    id: place_visibility
                     text: "Place Order"
                     targetProperty: "visible"
                     target: order_form
                 }
+            }
+            Component.onCompleted: {
+                dex_chart.visible = proview_settings.chart_visibility
+                optionBox.visible = proview_settings.option_visibility
+                _orderbook_box.visible = proview_settings.orderbook_visibility
+                _best_order_box.visible = proview_settings.best_order_visibility
+                order_form.visible = proview_settings.form_visibility
+            }
+            Component.onDestruction: {
+                proview_settings.form_visibility = order_form.visible
+                proview_settings.chart_visibility = dex_chart.visible
+                proview_settings.option_visibility = optionBox.visible
+                proview_settings.orderbook_visibility = _orderbook_box.visible 
+                proview_settings.best_order_visibility = _best_order_box.visible
             }
         }
     }
