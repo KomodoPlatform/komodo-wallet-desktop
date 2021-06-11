@@ -439,6 +439,11 @@ namespace atomic_dex
         }
         endInsertRows();
         emit lengthChanged();
+        if (m_system_manager.has_system<mm2_service>())
+        {
+            SPDLOG_DEBUG("Swaps inserted, refreshing orderbook to get new max taker vol");
+            this->m_system_manager.get_system<mm2_service>().process_orderbook(true);
+        }
         SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
     }
 

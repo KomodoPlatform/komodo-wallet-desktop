@@ -755,6 +755,7 @@ namespace atomic_dex
         auto batch = prepare_batch_orderbook(is_a_reset);
         if (batch.empty())
             return;
+        //SPDLOG_DEBUG("batch request: {}", batch.dump(4));
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
 
         auto answer_functor = [this, is_a_reset, base = base, rel = rel](web::http::http_response resp)

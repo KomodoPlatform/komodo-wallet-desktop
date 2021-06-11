@@ -54,7 +54,7 @@ namespace mm2::api
         if (answer.error.has_value()) ///< we need a default fallback in this case fixed on upstream already, need to update
         {
             SPDLOG_WARN("Max taker volume need a default value, fallback with 0 as value, this is probably because you have an empty balance or not enough "
-                        "funds (< 0.00777).");
+                        "funds (< 0.00777)., error: {}", answer.error.value());
             answer.result = max_taker_vol_answer_success{.denom = "1", .numer = "0", .decimal = "0"};
         }
     }
