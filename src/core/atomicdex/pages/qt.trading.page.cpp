@@ -1033,8 +1033,10 @@ namespace atomic_dex
                 {
                     available_quantity = m_preffered_order->at("base_max_volume").get<std::string>();
                 }
-
-                this->set_volume(QString::fromStdString(utils::format_float(safe_float(available_quantity))));
+                if (this->m_current_trading_mode == TradingModeGadget::Pro)
+                {
+                    this->set_volume(QString::fromStdString(utils::format_float(safe_float(available_quantity))));
+                }
                 this->get_orderbook_wrapper()->refresh_best_orders();
                 this->determine_fees();
             }
@@ -1111,11 +1113,11 @@ namespace atomic_dex
     void
     trading_page::determine_fees()
     {
-        if (is_preimage_busy())
+        /*if (is_preimage_busy())
         {
             SPDLOG_INFO("determine_fees busy - skipping.");
             return;
-        }
+        }*/
         if (!this->m_system_manager.has_system<mm2_service>())
         {
             SPDLOG_WARN("MM2 Service not available, cannot determine fees - skipping");
@@ -1148,10 +1150,10 @@ namespace atomic_dex
             {
                 auto           answers = nlohmann::json::parse(body);
                 nlohmann::json answer  = answers[0];
-                // SPDLOG_INFO("preimage answer: {}", answer.dump(0));
                 auto trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
+                    SPDLOG_INFO("preimage answer received");
                     auto        success_answer = trade_preimage_answer.result.value();
                     QVariantMap fees;
 

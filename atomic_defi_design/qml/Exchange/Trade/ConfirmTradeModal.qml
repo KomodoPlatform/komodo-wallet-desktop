@@ -19,6 +19,7 @@ BasicModal {
     function reset() {
         API.app.trading_pg.determine_fees()
     }
+
     function isEmpty(data){
         //console.log(JSON.stringify(data))
         if(data.length<0) {
@@ -40,9 +41,9 @@ BasicModal {
         }
     }
 
-    onClosed:  {
+    /*onClosed:  {
         API.app.trading_pg.reset_fees()
-    }
+    }*/
 
     ModalContent {
         title: qsTr("Confirm Exchange Details")
