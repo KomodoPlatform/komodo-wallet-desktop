@@ -124,7 +124,6 @@ namespace atomic_dex
         bool                                   m_skip_taker{false};
 
         //! Private function
-        void                       clear_forms();
         void                       determine_max_volume();
         void                       determine_total_amount();
         void                       determine_cex_rates();
@@ -155,6 +154,7 @@ namespace atomic_dex
         Q_INVOKABLE void     on_gui_enter_dex();
         Q_INVOKABLE void     on_gui_leave_dex();
         Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const;
+        Q_INVOKABLE void     clear_forms();
 
         //! Trading business
         Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)
