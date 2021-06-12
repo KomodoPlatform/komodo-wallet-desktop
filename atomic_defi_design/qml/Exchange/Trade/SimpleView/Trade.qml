@@ -143,7 +143,7 @@ DefaultRectangle // Trade Card
                 readonly property int _maxWidth: 140
 
                 id: _fromBalance
-                width: Math.min(_maxWidth, _textMetrics.boundingRect.width)
+                width: Math.min(_maxWidth, _textMetrics.boundingRect.width + 10)
                 anchors.top: parent.top
                 anchors.topMargin: 14
                 anchors.right: parent.right
