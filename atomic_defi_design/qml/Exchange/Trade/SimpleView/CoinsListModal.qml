@@ -69,6 +69,7 @@ BasicModal
 
                     DefaultImage
                     {
+                        id: _coinIcon
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
                         anchors.left: parent.left
@@ -80,13 +81,15 @@ BasicModal
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
                             anchors.leftMargin: 20
-                            text: model.ticker
+                            text: General.formatCrypto("", model.balance, model.ticker)
+
+                            DefaultText
+                            {
+                                anchors.left: parent.right
+                                anchors.leftMargin: 5
+                                text: "(%1)".arg(General.getFiatText(model.balance, model.ticker, false))
+                            }
                         }
-                    }
-
-                    DefaultText // Balance
-                    {
-
                     }
 
                     MouseArea
