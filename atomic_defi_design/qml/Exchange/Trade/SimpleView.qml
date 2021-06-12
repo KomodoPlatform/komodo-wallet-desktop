@@ -61,15 +61,15 @@ ColumnLayout
         Layout.preferredHeight: _unitPrice.visible ? 410 : 380
         radius: 20
 
-        MouseArea
+        MouseArea // Swap Card Mouse Area
         {
             anchors.fill: parent
-            onPressed: _fromValue.focus = false
+            onPressed: _fromValue.focus = false // When clicking outside `_fromValue` TextField, `fromValue` losts its focus.
         }
 
         ColumnLayout // Header
         {
-            id: swap_card_desc
+            id: _swapCardHeader
 
             anchors.top: parent.top
             anchors.topMargin: 20
@@ -109,14 +109,14 @@ ColumnLayout
 
         HorizontalLine
         {
-            anchors.top: swap_card_desc.bottom
+            anchors.top: _swapCardHeader.bottom
             anchors.topMargin: 20
             width: swap_card.width
         }
 
         ColumnLayout // Content
         {
-            anchors.top: swap_card_desc.bottom
+            anchors.top: _swapCardHeader.bottom
             anchors.topMargin: 40
             anchors.left: parent.left
             anchors.horizontalCenter: parent.horizontalCenter
