@@ -28,6 +28,7 @@ BasicModal
         title: qsTr("Best Orders")
         DefaultListView
         {
+            enabled: !API.app.trading_pg.orderbook.best_orders_busy
             Layout.preferredHeight: 450
             Layout.fillWidth: true
             model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
@@ -172,6 +173,32 @@ BasicModal
                     else selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume }
                 }
             }
+
+            BusyIndicator
+            {
+                width: 200
+                height: 200
+                visible: !parent.enabled
+                running: visible
+                anchors.centerIn: parent
+            }
         }
+
+        footer:
+        [
+            DefaultButton
+            {
+                Layout.fillWidth: true
+                text: qsTr("Cancel")
+                onClicked: close()
+            },
+            PrimaryButton
+            {
+                enabled: !API.app.trading_pg.orderbook.best_orders_busy
+                Layout.fillWidth: true
+                text: qsTr("Refresh")
+                onClicked: API.app.trading_pg.orderbook.refresh_best_orders()
+            }
+        ]
     }
 }
