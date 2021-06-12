@@ -67,8 +67,9 @@ namespace atomic_dex
                 //SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
 
                 this->m_rpc_busy = true;
+                emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                 //! Treat answer
-                auto answer_functor = [this](web::http::http_response resp) {
+                auto answer_functor = [this, &trading_pg](web::http::http_response resp) {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
                     if (resp.status_code() == 200)
                     {
@@ -81,6 +82,7 @@ namespace atomic_dex
                     }
                     this->m_rpc_busy = false;
                     this->dispatcher_.trigger<process_orderbook_finished>(false);
+                    emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                 };
 
                 mm2_system.get_mm2_client().async_rpc_batch_standalone(batch)
