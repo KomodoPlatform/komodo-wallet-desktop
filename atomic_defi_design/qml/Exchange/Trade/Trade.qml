@@ -171,7 +171,7 @@ Item {
     {
         id: _viewLoader
         anchors.fill: parent
-        source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView.qml"
+        source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView/Main.qml"
     }
 
     TradeViewHeader {
