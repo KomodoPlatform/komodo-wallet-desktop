@@ -9,6 +9,7 @@ import AtomicDEX.SelectedOrderStatus 1.0
 
 import "../../Components"
 import "../../Constants"
+import "SimpleView" as SimpleView
 
 ColumnLayout
 {
@@ -46,7 +47,7 @@ ColumnLayout
     ModalLoader
     {
         id: _orderDisappearModalLoader
-        sourceComponent: _orderDisappearModal
+        sourceComponent: SimpleView.OrderRemovedModal
         onLoaded:
         {
             selectedOrder = undefined
@@ -887,43 +888,9 @@ ColumnLayout
             }
         }
     }
-
-    // Current Orders Modal
-    Component
-    {
         BasicModal
         {
             id: ordersModal
-        }
-    }
-
-    // Order Doest Not Exist Anymore Modal
-    Component
-    {
-        id: _orderDisappearModal
-        BasicModal
-        {
-            id: root
-            width: 800
-            ModalContent
-            {
-                title: qsTr("Selected Order Changed")
-
-                DefaultText
-                {
-                    text: qsTr("The selected order does not exist anymore. It might have been matched or canceled. Please select a new order.")
-}
-
-                footer:
-                [
-                    DefaultButton
-                    {
-                        text: qsTr("OK")
-                        onClicked: close()
-                    }
-                ]
-            }
-            onClosed: API.app.trading_pg.clear_forms()
         }
     }
 }
