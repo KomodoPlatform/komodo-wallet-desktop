@@ -24,7 +24,7 @@
 
 namespace
 {
-    template <typename TValue, typename TModel>
+    /*template <typename TValue, typename TModel>
     void
     update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
     {
@@ -32,7 +32,7 @@ namespace
         {
             model.setData(idx, value, role);
         }
-    }
+    }*/
 } // namespace
 
 namespace atomic_dex
@@ -398,6 +398,27 @@ namespace atomic_dex
         endInsertRows();
         emit lengthChanged();
         assert(m_model_data.size() == m_orders_id_registry.size());
+        if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids)
+        {
+            auto& trading_pg = m_system_mgr.get_system<trading_page>();
+            if (trading_pg.get_market_mode() == MarketMode::Sell)
+            {
+                const auto preferred_order = trading_pg.get_preffered_order();
+                if (!preferred_order.empty())
+                {
+                    const t_float_50 price_std       = safe_float(order.price);
+                    t_float_50       preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+                    if (price_std > preferred_price)
+                    {
+                        SPDLOG_INFO(
+                            "An order with a better price is inserted, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
+                            utils::format_float(preferred_price));
+                        trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
+                        emit selectedOrderPriceChanged(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                    }
+                }
+            }
+        }
     }
 
     void
@@ -406,8 +427,9 @@ namespace atomic_dex
         if (const auto res = this->match(index(0, 0), UUIDRole, QString::fromStdString(order.uuid)); not res.isEmpty())
         {
             //! ID Found, update !
-            const QModelIndex& idx = res.at(0);
-            update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
+            const QModelIndex& idx                  = res.at(0);
+            const auto         uuid_to_be_updated   = this->data(idx, OrderbookRoles::UUIDRole).toString().toStdString();
+            auto&& [_, new_price, is_price_changed] = update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
             update_value(OrderbookRoles::PriceNumerRole, QString::fromStdString(order.price_fraction_numer), idx, *this);
             update_value(OrderbookRoles::PriceDenomRole, QString::fromStdString(order.price_fraction_denom), idx, *this);
             update_value(OrderbookRoles::IsMineRole, order.is_mine, idx, *this);
@@ -431,6 +453,28 @@ namespace atomic_dex
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
             update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
             update_value(OrderbookRoles::PriceFiatRole, "0.00", idx, *this);
+
+            if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids && is_price_changed)
+            {
+                auto& trading_pg = m_system_mgr.get_system<trading_page>();
+                if (trading_pg.get_market_mode() == MarketMode::Sell)
+                {
+                    const auto preferred_order = trading_pg.get_preffered_order();
+                    if (!preferred_order.empty())
+                    {
+                        const t_float_50 price_std       = safe_float(new_price.toString().toStdString());
+                        t_float_50       preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+                        if (price_std > preferred_price)
+                        {
+                            SPDLOG_INFO(
+                                "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid,
+                                utils::format_float(price_std), utils::format_float(preferred_price));
+                            trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
+                            emit selectedOrderPriceChanged(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -492,22 +536,8 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            auto it = m_model_data.begin() + position;
+            auto       it                 = m_model_data.begin() + position;
             const auto uuid_to_be_removed = it->uuid;
-            if (m_system_mgr.has_system<trading_page>())
-            {
-                auto& trading_pg = m_system_mgr.get_system<trading_page>();
-                const auto preffered_order = trading_pg.get_preffered_order();
-                if (!preffered_order.empty())
-                {
-                    const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
-                    if (selected_order_uuid == uuid_to_be_removed)
-                    {
-                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, this means the order has been matched or cancelled, changing the status of the selected order, a clear forms is required", selected_order_uuid);
-                        trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
-                    }
-                }
-            }
             m_model_data.erase(it);
             emit lengthChanged();
         }
@@ -536,5 +566,35 @@ namespace atomic_dex
     orderbook_model::get_orderbook_kind() const
     {
         return m_current_orderbook_kind;
+    }
+
+    QVariantMap
+    orderbook_model::get_order_from_uuid([[maybe_unused]] QString uuid)
+    {
+        QVariantMap out;
+
+        if (const auto res = this->match(index(0, 0), UUIDRole, uuid); not res.isEmpty())
+        {
+            const QModelIndex& idx       = res.at(0);
+            const auto&        order     = m_model_data.at(idx.row());
+            const bool         is_buy    = m_system_mgr.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
+            out["coin"]                  = QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin);
+            out["price"]                 = QString::fromStdString(order.price);
+            out["quantity"]              = QString::fromStdString(order.maxvolume);
+            out["price_denom"]           = QString::fromStdString(order.price_fraction_denom);
+            out["price_numer"]           = QString::fromStdString(order.price_fraction_numer);
+            out["quantity_denom"]        = QString::fromStdString(order.max_volume_fraction_denom);
+            out["quantity_numer"]        = QString::fromStdString(order.max_volume_fraction_numer);
+            out["min_volume"]            = QString::fromStdString(order.min_volume);
+            out["base_min_volume"]       = QString::fromStdString(order.base_min_volume);
+            out["base_max_volume"]       = QString::fromStdString(order.base_max_volume);
+            out["base_max_volume_denom"] = QString::fromStdString(order.base_max_volume_denom);
+            out["base_max_volume_numer"] = QString::fromStdString(order.base_max_volume_numer);
+            out["rel_min_volume"]        = QString::fromStdString(order.rel_min_volume);
+            out["rel_max_volume"]        = QString::fromStdString(order.rel_max_volume);
+            out["uuid"]                  = QString::fromStdString(order.uuid);
+        }
+
+        return out;
     }
 } // namespace atomic_dex

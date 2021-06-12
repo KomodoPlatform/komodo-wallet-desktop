@@ -435,7 +435,11 @@
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ProView.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Trade.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/CoinsListModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/BestOrdersModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/OrderRemovedModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SweetDexComboBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
