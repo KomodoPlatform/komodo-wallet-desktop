@@ -514,14 +514,10 @@ DefaultRectangle // Trade Card
 
                 function getAlert()
                 {
+                    if (_fromValue.text === "" || parseFloat(_fromValue.text) === 0)
+                        return qsTr("Entered amount must be superior than 0.")
                     if (typeof selectedOrder === 'undefined')
                         return qsTr("You must select an order.")
-
-                    if (_fromValue.text === "")
-                        return qsTr("You must enter an amount")
-                    let fromValue = parseFloat(_fromValue.text)
-                    if (fromValue === 0)
-                        return qsTr("Entered amount must be superior than 0.")
                     if (API.app.trading_pg.last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
                         return qsTr("Entered amount is below the minimum required by this order: %1").arg(selectedOrder.base_min_volume)
 
