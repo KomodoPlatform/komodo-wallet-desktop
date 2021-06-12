@@ -50,27 +50,11 @@ Item {
                         duration: 200
                     }
                 }
-                x: API.app.trading_pg.current_trading_mode != TradingMode.Pro ? 70 : 0
+                x: API.app.trading_pg.current_trading_mode != TradingMode.Pro ? 0 : 70
             }
             RowLayout {
                 anchors.fill: parent
                 spacing: 0
-                DexLabel {
-                    text: "Pro"
-                    Layout.preferredWidth: 70
-                    Layout.fillHeight: true
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.bold: true
-                    color: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? theme.surfaceColor : theme.foregroundColor
-                    DexMouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            background_rect.x = 0
-                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                        }
-                    }
-                }
                 DexLabel {
                     text: "Simple"
                     Layout.preferredWidth: 70
@@ -82,13 +66,28 @@ Item {
                     DexMouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            background_rect.x = 70
+                            background_rect.x = 0
                             API.app.trading_pg.current_trading_mode = TradingMode.Simple
                         }
                     }
                 }
+                DexLabel {
+                    text: "Pro"
+                    Layout.preferredWidth: 70
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.bold: true
+                    color: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? theme.surfaceColor : theme.foregroundColor
+                    DexMouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            background_rect.x = 70
+                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
+                        }
+                    }
+                }
             }
-            
         }
         Item {
             Layout.fillHeight: true
