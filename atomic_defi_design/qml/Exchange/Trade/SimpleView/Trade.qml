@@ -90,22 +90,6 @@ DefaultRectangle // Trade Card
         }
     }
 
-    Qaterial.FlatButton // History Button
-    {
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 15
-
-        icon.source: Qaterial.Icons.bookOpenPageVariant
-        height: 50
-        width: 50
-
-        ToolTip.delay: 800
-        ToolTip.visible: hovered
-        ToolTip.text: qsTr("History.")
-    }
-
     HorizontalLine
     {
         anchors.top: _swapCardHeader.bottom
