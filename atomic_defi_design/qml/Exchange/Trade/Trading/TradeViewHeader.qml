@@ -161,7 +161,7 @@ Item {
                     duration: 150
                 }
             }
-            color: cog_area.containsMouse? 'transparent' :  form.dexConfig.visible? 'transparent' : theme.accentColor
+            color: cog_area.containsMouse? 'transparent' :  API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? 'transparent' : theme.accentColor : theme.accentColor
             Row {
                 anchors.centerIn: parent
                 spacing: 10
@@ -169,7 +169,7 @@ Item {
                     source: Qaterial.Icons.cog
                     anchors.verticalCenter: parent.verticalCenter
                     iconSize: 15
-                    color: cog_area.containsMouse? theme.accentColor : form.dexConfig.visible? theme.accentColor : theme.surfaceColor 
+                    color: cog_area.containsMouse? theme.accentColor : API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? theme.accentColor : theme.surfaceColor  : theme.surfaceColor
                 }
             }
             DexMouseArea {
@@ -177,12 +177,13 @@ Item {
                 hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
-                    if(form.dexConfig.visible){
-                        form.dexConfig.close()
-                    }else {
-                        form.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
-                    }
-                    
+                    if(API.app.trading_pg.current_trading_mode == TradingMode.Pro) {
+                        if(_viewLoader.item.dexConfig.visible){
+                            _viewLoader.item.dexConfig.close()
+                        }else {
+                            _viewLoader.item.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
+                        }    
+                    } 
                 }
             }
         }
