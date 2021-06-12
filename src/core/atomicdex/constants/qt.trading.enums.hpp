@@ -78,7 +78,8 @@ namespace atomic_dex
         {
             None                    = 0, /// The selected order is at the initial state
             DataChanged             = 1, ///< One of the data has changed (volume,price,min_volume...)
-            OrderNotExistingAnymore = 2  ///< The order has been cancelled or matched
+            BetterPriceAvailable    = 2, ///< if a asks order have a better price than the selected one
+            OrderNotExistingAnymore = 3  ///< The order has been cancelled or matched
         };
 
         Q_ENUM(SelectedOrderStatus)
