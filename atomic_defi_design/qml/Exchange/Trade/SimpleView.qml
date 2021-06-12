@@ -276,7 +276,7 @@ ColumnLayout
                         property string selectedTicker
                         onSelectedTickerChanged: root.selectedTicker = selectedTicker
                         id: coinsListModalLoader
-                        sourceComponent: coinsListModal
+                        sourceComponent: SimpleView.CoinsListModal {}
                     }
 
                     Connections
@@ -608,108 +608,6 @@ ColumnLayout
                             .arg(parseFloat(modelData.required_balance).toFixed(8) / 1)
                             .arg(General.getFiatText(modelData.required_balance, modelData.coin, false))
                     font.pixelSize: Style.textSizeSmall3
-                }
-            }
-        }
-    }
-
-    // Coins list
-    Component
-    {
-        id: coinsListModal
-        BasicModal
-        {
-            property string selectedTicker
-
-            id: root
-            width: 450
-            ModalContent
-            {
-                title: qsTr("Select a ticker")
-                RowLayout
-                {
-                    Layout.fillWidth: true
-                    TextField
-                    {
-                        id: searchName
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 60
-                        Layout.alignment: Qt.AlignHCenter
-                        placeholderText: "Search a name"
-                        font.pixelSize: Style.textSize1
-                        background: Rectangle
-                        {
-                            color: theme.backgroundColor
-                            border.width: 1
-                            border.color: theme.colorRectangleBorderGradient1
-                            radius: 10
-                        }
-                        onTextChanged:
-                        {
-                            if (text.length > 30)
-                                text = text.substring(0, 30)
-                            API.app.trading_pg.market_pairs_mdl.left_selection_box.search_exp = text
-                        }
-
-                        Component.onDestruction: API.app.trading_pg.market_pairs_mdl.left_selection_box.search_exp = ""
-                    }
-                }
-
-                RowLayout
-                {
-                    Layout.topMargin: 10
-                    Layout.fillWidth: true
-                    DefaultText { text: qsTr("Token name") }
-                }
-
-                ColumnLayout
-                {
-                    Layout.topMargin: 10
-                    Layout.fillWidth: true
-                    DefaultListView
-                    {
-                        Layout.fillWidth: true
-                        model: API.app.trading_pg.market_pairs_mdl.left_selection_box
-                        spacing: 20
-                        delegate: ItemDelegate
-                        {
-                            width: root.width
-                            anchors.horizontalCenter: root.horizontalCenter
-                            height: 40
-
-                            DefaultImage
-                            {
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.leftMargin: 5
-                                anchors.left: parent.left
-                                width: 30
-                                height: 30
-                                source: General.coinIcon(model.ticker)
-                                DefaultText
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.left: parent.right
-                                    anchors.leftMargin: 20
-                                    text: model.ticker
-                                }
-                            }
-
-                            DefaultText // Balance
-                            {
-
-                            }
-
-                            MouseArea 
-                            {
-                                anchors.fill: parent
-                                onClicked: 
-                                {
-                                    root.selectedTicker = model.ticker
-                                    close()
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
