@@ -31,6 +31,8 @@ import "Orders/" as OrdersView
 
 import "./" as Here
 
+import "SimpleView" as SimpleView
+
 Item {
     id: exchange_trade
     readonly property string total_amount: API.app.trading_pg.total_amount
@@ -172,7 +174,7 @@ Item {
         visible: enabled
     }
 
-    SimpleView {
+    SimpleView.Main {
         enabled: API.app.trading_pg.current_trading_mode == TradingMode.Simple
         visible: enabled
     }
