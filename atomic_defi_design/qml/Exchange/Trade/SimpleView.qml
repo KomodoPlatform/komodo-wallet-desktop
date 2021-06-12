@@ -47,7 +47,7 @@ ColumnLayout
     ModalLoader
     {
         id: _orderDisappearModalLoader
-        sourceComponent: SimpleView.OrderRemovedModal
+        sourceComponent: SimpleView.OrderRemovedModal {}
         onLoaded:
         {
             selectedOrder = undefined
