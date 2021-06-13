@@ -33,7 +33,7 @@ ClipRRect // Trade Card
 
     id: _tradeCard
     width: 380
-    height: _unitPrice.visible ? 410 : 380
+    height: col.height+15
     radius: 20
 
     Connections // Catches C++ `trading_page` class signals.
@@ -65,16 +65,17 @@ ClipRRect // Trade Card
         anchors.fill: parent
         onPressed: _fromValue.focus = false // When clicking outside `_fromValue` TextField, `fromValue` losts its focus.
     }
-
-    ColumnLayout // Header
+    Column {
+        id: col
+        width: parent.width
+        spacing: 10
+        Column // Header
     {
         id: _swapCardHeader
 
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        width: parent.width
+        width: parent.width-20
+        padding: 10
+        anchors.horizontalCenter: parent.horizontalCenter
 
         DefaultText // Title
         {
@@ -92,16 +93,12 @@ ClipRRect // Trade Card
 
     HorizontalLine
     {
-        anchors.top: _swapCardHeader.bottom
-        anchors.topMargin: 20
         width: _tradeCard.width
     }
 
     ColumnLayout // Content
     {
-        anchors.top: _swapCardHeader.bottom
-        anchors.topMargin: 40
-        anchors.left: parent.left
+        width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
 
         DefaultRectangle // From
@@ -539,8 +536,6 @@ ClipRRect // Trade Card
     DefaultRectangle // Swap Info - Details
     {
         id: _feesCard
-        anchors.top: parent.bottom
-        anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
         width: 350
         height: 60
@@ -591,4 +586,6 @@ ClipRRect // Trade Card
             }
         }
     }
+    }
+    
 }
