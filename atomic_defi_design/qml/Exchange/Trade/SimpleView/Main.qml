@@ -20,6 +20,12 @@ Item {
     onCurrentSubPageChanged: _selectedTabMarker.update()
 
     id: root
+    function onRecoverFunds(order_id) {
+        const result = API.app.recover_fund(order_id)
+        console.log("Refund result: ", result)
+        recover_funds_result = result
+        recover_funds_modal.open()
+    }
     Column
     {
         width: 380
@@ -51,9 +57,11 @@ Item {
                         break;
                     case subPages.Orders:
                         x = (parent.width / 3) 
+                        orders_view.update()
                         break;
                     case subPages.History:
                         x = (parent.width / 3) *2
+                        history_view.update()
                         break;
                     }
                 }
@@ -153,196 +161,8 @@ Item {
             visible: root.currentSubPage===subPages.Orders
             sizeAnimationDuration: 100
             sizeAnimation: true
-            /*Orders.OrdersPage
-            {
-                anchors.fill: parent
-                visible: parent.height>200
-            }*/
-            Item {
-                anchors.fill: parent
-                ColumnLayout // Header
-                {
-                    id: _swapCardHeader
-
-                    height: parent.height
-                    width: parent.width
-                    spacing: 20
-                    Item {
-                        width: parent.width
-                        Layout.preferredHeight: 60
-                        Column {
-                            padding: 20
-                            spacing: 5
-                            DefaultText // Title
-                            {
-                                text: qsTr("Orders")
-                                font.pixelSize: Style.textSize1
-                            }
-
-                            DefaultText // Description
-                            {
-                                anchors.topMargin: 12
-                                font.pixelSize: Style.textSizeSmall4
-                                text: qsTr("Display all orders created")
-                            }
-                        }
-                    }
-                    HorizontalLine
-                    {
-                        height: 2
-                        Layout.fillWidth: true
-                    }
-                    Item {
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
-                        Component.onCompleted: {
-                            list_model_proxy.is_history = true
-                        }
-                        DexListView {
-                            id: order_list_view
-                            anchors.fill: parent
-                            model: API.app.orders_mdl
-                            delegate: ClipRRect {
-                                property var details: model
-                                readonly property bool is_placed_order: !details ? false :
-                                                       details.order_id !== ''
-
-                                property bool expanded: false
-                                width: order_list_view.width
-                                height: expanded? colum_order.height+10 : 35
-                                radius: 1
-                                Rectangle {
-                                    anchors.fill: parent
-                                    color: order_mouse_area.containsMouse? theme.surfaceColor : 'transparent'
-                                    border.color: theme.surfaceColor
-                                    border.width: expanded? 1 : 0
-                                }
-                                Column {
-                                    id: colum_order
-                                    width: parent.width
-                                    spacing: 5
-                                    RowLayout {
-                                        width: parent.width
-                                        height: 30
-                                        spacing: 5
-                                        Item {
-                                            Layout.preferredWidth: 25 
-                                            height: 30
-                                            BusyIndicator {
-                                                width: 20
-                                                height: width
-                                                anchors.centerIn: parent
-                                                running: true
-                                            }
-                                        }
-                                        DefaultImage {
-                                            id: base_icon
-                                            source: General.coinIcon(!details ? atomic_app_primary_coin :
-                                                                                details.base_coin?? atomic_app_primary_coin)
-                                            Layout.preferredWidth: Style.textSize1
-                                            Layout.preferredHeight: Style.textSize1
-                                            Layout.alignment: Qt.AlignVCenter
-                                        }
-                                        DefaultText {
-                                            id: base_amount
-                                            text_value: !details ? "" :
-                                                        General.formatCrypto("", details.base_amount, details.base_coin)
-                                            //details.base_amount_current_currency, API.app.settings_pg.current_currency
-                                            font.pixelSize: 11
-
-
-                                            Layout.fillHeight: true
-                                            Layout.preferredWidth: 110
-                                            verticalAlignment: Label.AlignVCenter
-                                            privacy: is_placed_order
-                                        }
-                                        Item {
-                                            Layout.fillHeight: true
-                                            Layout.fillWidth: true
-                                            SwapIcon {
-                                                //visible: !status_text.visible
-                                                width: 30
-                                                height: 30
-                                                opacity: .6
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                anchors.horizontalCenter: parent.horizontalCenter
-                                                top_arrow_ticker: !details ? atomic_app_primary_coin :
-                                                                             details.base_coin?? ""
-                                                bottom_arrow_ticker: !details ? atomic_app_primary_coin :
-                                                                                details.rel_coin?? ""
-                                            }
-                                        }
-
-                                        DefaultText {
-                                            id: rel_amount
-                                            text_value: !details ? "" :
-                                                        General.formatCrypto("", details.rel_amount, details.rel_coin)
-                                            font.pixelSize: base_amount.font.pixelSize
-
-                                            Layout.fillHeight: true
-                                            Layout.preferredWidth: 110
-                                            verticalAlignment: Label.AlignVCenter
-                                            horizontalAlignment: Label.AlignRight
-                                            privacy: is_placed_order
-                                        }
-                                        DefaultImage {
-                                            id: rel_icon
-                                            source: General.coinIcon(!details ? atomic_app_primary_coin :
-                                                                                details.rel_coin?? atomic_app_secondary_coin)
-
-                                            width: base_icon.width
-                                            Layout.preferredWidth: Style.textSize1
-                                            Layout.preferredHeight: Style.textSize1
-                                            Layout.alignment: Qt.AlignVCenter
-                                        }
-                                        Item {
-                                            Layout.fillWidth: true 
-                                            Layout.fillHeight: true
-                                            opacity: .6
-                                            Qaterial.ColorIcon {
-                                                anchors.centerIn: parent
-                                                source:  expanded? Qaterial.Icons.chevronUp : Qaterial.Icons.chevronDown
-                                                iconSize: 14
-                                            }
-                                        }
-
-                                    }
-                                    RowLayout {
-                                        width: parent.width-40
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                        height: 20
-                                        opacity: .6
-                                        DexLabel {
-                                            Layout.fillWidth: true 
-                                            Layout.fillHeight: true 
-                                            verticalAlignment: Label.AlignVCenter
-                                            text: "KMD 2445555.55555"
-                                        }
-                                        DexLabel {
-                                            Layout.fillWidth: true 
-                                            Layout.fillHeight: true 
-                                            verticalAlignment: Label.AlignVCenter
-                                            horizontalAlignment: Text.AlignRight
-                                            text: "RICK 2445555.02345"
-                                        }
-                                    }
-                                }
-                                DexMouseArea {
-                                    id: order_mouse_area
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    onClicked: {
-                                        expanded = !expanded
-                                        if(expanded){
-                                            order_list_view.currentIndex = index
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            SubOrders {
+                id: orders_view
             }
         }
         DexRectangle {
@@ -353,16 +173,23 @@ Item {
             visible: root.currentSubPage===subPages.History
             sizeAnimationDuration: 100
             sizeAnimation: true
-            Orders.OrdersPage
-            {
-                anchors.fill: parent
-                is_history: true
-                visible: parent.height>200
+            SubHistory {
+                id: history_view
             }
         }
+    }
+    ModalLoader {
+        id: order_modal
+        sourceComponent: Orders.OrderModal {}
+    }
+    ModalLoader {
+        id: recover_funds_modal
+        sourceComponent: LogModal {
+            header: qsTr("Recover Funds Result")
+            field.text: General.prettifyJSON(recover_funds_result)
 
-        
-        
+            onClosed: recover_funds_result = "{}"
+        }
     }
 
 }
