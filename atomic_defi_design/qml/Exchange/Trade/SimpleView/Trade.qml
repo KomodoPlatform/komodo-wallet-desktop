@@ -13,7 +13,7 @@ import "../../../Components"
 import "../../../Constants"
 import "../"
 
-DefaultRectangle // Trade Card
+ClipRRect // Trade Card
 {
     property string selectedTicker: left_ticker
     property var    selectedOrder:  undefined
