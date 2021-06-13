@@ -26,6 +26,13 @@ Item {
         recover_funds_result = result
         recover_funds_modal.open()
     }
+
+    Connections {
+        target: exchange_trade
+        function onOrderPlaced() {
+            currentSubPage = subPages.Orders
+        }
+    }
     Column
     {
         width: 380

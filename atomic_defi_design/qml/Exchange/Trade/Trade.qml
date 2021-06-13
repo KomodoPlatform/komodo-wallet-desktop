@@ -162,7 +162,11 @@ Item {
             API.app.trading_pg.place_sell_order(nota, confs)
         else
             API.app.trading_pg.place_buy_order(nota, confs)
+
+        orderPlaced()
     }
+
+    signal orderPlaced()
 
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
