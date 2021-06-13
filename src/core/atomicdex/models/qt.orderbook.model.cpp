@@ -533,11 +533,95 @@ namespace atomic_dex
     bool
     orderbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
+        /*auto functor = [this](auto&& it)
+        {
+            if (!it->is_mine && m_current_orderbook_kind == kind::bids && m_system_mgr.has_system<trading_page>())
+            {
+                auto& trading_pg = m_system_mgr.get_system<trading_page>();
+                if (trading_pg.get_market_mode() == MarketMode::Sell)
+                {
+                    bool       hit             = false;
+                    bool       visited         = false;
+                    const auto preferred_order = trading_pg.get_preffered_order();
+                    if (!preferred_order.empty())
+                    {
+                        t_float_50 preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+                        for (auto&& order: m_model_data)
+                        {
+                            if (order.uuid == preferred_order.value("uuid", "").toString().toStdString())
+                            {
+                                visited = true;
+                            }
+                            const t_float_50 price_std = safe_float(order.price);
+                            if (price_std > preferred_price)
+                            {
+                                SPDLOG_INFO(
+                                    "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid,
+                                    utils::format_float(price_std), utils::format_float(preferred_price));
+                                trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
+                                emit selectedOrderPriceChanged(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                                hit = true;
+                                break;
+                            }
+                        }
+                        if (!hit && visited)
+                        {
+                            SPDLOG_INFO("Order with uuid: {} has been cancelled and no new order with better price is available");
+                            trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
+                        }
+                    }
+                }
+            }
+        };*/
+        auto functor = [this](auto&& trading_pg, const QVariantMap& preferred_order, std::string uuid)
+        {
+            if (trading_pg.get_market_mode() == MarketMode::Sell)
+            {
+                t_float_50 preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+                bool       hit             = false;
+                for (auto&& order: m_model_data)
+                {
+                    const t_float_50 price_std = safe_float(order.price);
+
+                    if (price_std > preferred_price)
+                    {
+                        SPDLOG_INFO(
+                            "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
+                            utils::format_float(preferred_price));
+                        trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
+                        emit selectedOrderPriceChanged(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                        hit = true;
+                        break;
+                    }
+                }
+                if (!hit)
+                {
+                    SPDLOG_INFO("Order with uuid: {} has been cancelled and no new order with better price is available", uuid);
+                    trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
+                }
+            }
+        };
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
             auto       it                 = m_model_data.begin() + position;
             const auto uuid_to_be_removed = it->uuid;
+            if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids)
+            {
+                auto&      trading_pg      = m_system_mgr.get_system<trading_page>();
+                const auto preffered_order = trading_pg.get_preffered_order();
+                if (!preffered_order.empty())
+                {
+                    const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
+                    if (selected_order_uuid == uuid_to_be_removed)
+                    {
+                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, checking if a better order is available", uuid_to_be_removed);
+                        functor(trading_pg, preffered_order, selected_order_uuid);
+                    }
+                }
+            }
+
+            // functor(it);
             m_model_data.erase(it);
             emit lengthChanged();
         }
