@@ -12,8 +12,7 @@ import "../../../Constants"   //> Style
 import "../Orders" as Orders
 import "Main.js" as Main
 
-ColumnLayout
-{
+Item {
     readonly property var subPages: Main.getSubPages()
 
     // Variable which holds the current sub-page of the SimpleView.
@@ -21,125 +20,183 @@ ColumnLayout
     onCurrentSubPageChanged: _selectedTabMarker.update()
 
     id: root
-    anchors.centerIn: parent
+    function onRecoverFunds(order_id) {
+        const result = API.app.recover_fund(order_id)
+        console.log("Refund result: ", result)
+        recover_funds_result = result
+        recover_funds_modal.open()
+    }
 
-    DefaultRectangle // Sub-pages Tabs Selector
+    Connections {
+        target: exchange_trade
+        function onOrderPlaced() {
+            currentSubPage = subPages.Orders
+        }
+    }
+    Column
     {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: 200
-        Layout.preferredHeight: 40
-        Layout.bottomMargin: 25
-        border.width: 4
-        border.color: Style.colorWhite9
-        color: Style.colorWhite6
-        radius: 40
+        width: 380
+        y: 100
+        spacing: 40
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        DefaultRectangle // Selected Tab Rectangle
+        InnerBackground // Sub-pages Tabs Selector
         {
-            id: _selectedTabMarker
-
-            function update() // Updates transform according to selected sub-page.
-            {
-                switch (currentSubPage)
-                {
-                case subPages.Trade:
-                    anchors.right = undefined
-                    anchors.horizontalCenter = undefined
-                    anchors.left = parent.left
-                    anchors.leftMargin = parent.border.width
-                    break;
-                case subPages.Orders:
-                    anchors.left = undefined
-                    anchors.right = undefined
-                    anchors.horizontalCenter = parent.horizontalCenter
-                    break;
-                case subPages.History:
-                    anchors.left = undefined
-                    anchors.horizontalCenter = undefined
-                    anchors.right = parent.right
-                    anchors.rightMargin = parent.border.width
-                    break;
-                }
-            }
-
-            anchors.top: parent.top
-            anchors.topMargin: parent.border.width
-
-            height: parent.height - (parent.border.width * 2)
-            width: (parent.width / 3) - (parent.border.width)
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: 250
+            height: 40
+            border.width: 1
+            border.color: theme.dexBoxBackgroundColor
+            color: theme.surfaceColor
             radius: 40
 
-            border.width: 0
-            color: "#8b95ed"
+            FloatingBackground // Selected Tab Rectangle
+            {
+                id: _selectedTabMarker
+
+                function update() // Updates transform according to selected sub-page.
+                {
+                    switch (currentSubPage)
+                    {
+                    case subPages.Trade:
+                        x = 0
+                        break;
+                    case subPages.Orders:
+                        x = (parent.width / 3) 
+                        orders_view.update()
+                        break;
+                    case subPages.History:
+                        x = (parent.width / 3) *2
+                        history_view.update()
+                        break;
+                    }
+                }
+
+                Behavior on x {
+                    NumberAnimation {
+                        duration: 150
+                    }
+                }
+
+                border.width: 2
+                border.color: 'transparent'
+                height: parent.height-6
+                anchors.verticalCenter: parent.verticalCenter
+                width: (parent.width / 3) 
+                radius: 40
+                color: theme.accentColor
+            }
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
+                DexLabel // Trade Tab
+                {
+                    id: _tradeText
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    Layout.preferredWidth: parent.width/3
+                    Layout.fillHeight: true
+                    text: qsTr("Trade")
+                    font.pixelSize: Style.textSize
+                    DexMouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: if (currentSubPage !== subPages.Trade) currentSubPage = subPages.Trade
+                        hoverEnabled: true
+                    }
+                }
+
+                DexLabel // Orders Tab
+                {
+                    id: _ordersText
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    Layout.preferredWidth: parent.width/3
+                    Layout.fillHeight: true
+                    text: qsTr("Orders")
+                    font.pixelSize: Style.textSize
+                    DexMouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: if (currentSubPage !== subPages.Orders) currentSubPage = subPages.Orders
+                        hoverEnabled: true
+                    }
+                }
+
+                DexLabel // History Tab
+                {
+                    id: _historyText
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    Layout.preferredWidth: parent.width/3
+                    Layout.fillHeight: true
+                    text: qsTr("History")
+                    font.pixelSize: Style.textSize
+                    DexMouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: if (currentSubPage !== subPages.History) currentSubPage = subPages.History
+                        hoverEnabled: true
+                    }
+                }
+            }
+            
         }
 
-        DefaultText // Trade Tab
-        {
-            id: _tradeText
-            anchors.left: parent.left
-            anchors.leftMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
-            text: qsTr("Trade")
-            font.pixelSize: Style.textSize
-            MouseArea
+        DexRectangle {
+            height: simple_trade.height
+            width: parent.width
+            radius: 20
+            color: theme.dexBoxBackgroundColor
+            visible: root.currentSubPage===subPages.Trade
+            sizeAnimationDuration: 250
+            sizeAnimation: true
+            Trade
             {
-                anchors.fill: parent
-                onClicked: if (currentSubPage !== subPages.Trade) currentSubPage = subPages.Trade
-                hoverEnabled: true
+                id: simple_trade
+                width: parent.width
+                visible: parent.height>200
             }
         }
-
-        DefaultText // Orders Tab
-        {
-            id: _ordersText
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            text: qsTr("Orders")
-            font.pixelSize: Style.textSize
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: if (currentSubPage !== subPages.Orders) currentSubPage = subPages.Orders
-                hoverEnabled: true
+        
+        DexRectangle {
+            width: parent.width
+            height: visible? 500 : 0
+            radius: 20
+            color: theme.dexBoxBackgroundColor
+            visible: root.currentSubPage===subPages.Orders
+            sizeAnimationDuration: 100
+            sizeAnimation: true
+            SubOrders {
+                id: orders_view
             }
         }
-
-        DefaultText // History Tab
-        {
-            id: _historyText
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
-            text: qsTr("History")
-            font.pixelSize: Style.textSize
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: if (currentSubPage !== subPages.History) currentSubPage = subPages.History
-                hoverEnabled: true
+        DexRectangle {
+            width: parent.width
+            height: visible? 500 : 0
+            radius: 20
+            color: theme.dexBoxBackgroundColor
+            visible: root.currentSubPage===subPages.History
+            sizeAnimationDuration: 100
+            sizeAnimation: true
+            SubHistory {
+                id: history_view
             }
         }
     }
+    ModalLoader {
+        id: order_modal
+        sourceComponent: Orders.OrderModal {}
+    }
+    ModalLoader {
+        id: recover_funds_modal
+        sourceComponent: LogModal {
+            header: qsTr("Recover Funds Result")
+            field.text: General.prettifyJSON(recover_funds_result)
 
-    Trade
-    {
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        Layout.alignment: Qt.AlignHCenter
-        visible: currentSubPage === subPages.Trade
+            onClosed: recover_funds_result = "{}"
+        }
     }
-    Orders.OrdersPage
-    {
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        Layout.alignment: Qt.AlignHCenter
-        visible: false//currentSubPage === subPages.Orders
-    }
-    Orders.OrdersPage
-    {
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        is_history: true
-        visible: false//currentSubPage === subPages.History
-    }
+
 }

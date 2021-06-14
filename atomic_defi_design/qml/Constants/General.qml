@@ -242,6 +242,7 @@ QtObject {
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
         return diffPrefix(received) +  atomic_qt_utilities.retrieve_main_ticker(ticker) + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
+    
 
     function fullCoinName(name, ticker) {
         return name + " (" + ticker + ")"
