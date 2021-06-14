@@ -101,12 +101,14 @@ namespace atomic_dex
             this->m_is_history = is_history;
             emit isHistoryChanged();
             this->invalidate();
-            if (m_is_history == true)
+            if (m_is_history)
             {
+                SPDLOG_INFO("history mode enabled");
                 qobject_cast<orders_model*>(this->sourceModel())->set_current_page(1);
             }
             else
             {
+                SPDLOG_INFO("order mode enabled");
                 emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
             }
         }
@@ -296,11 +298,17 @@ namespace atomic_dex
         auto* model        = qobject_cast<orders_model*>(this->sourceModel());
         auto  filter_infos = model->get_filtering_infos();
 
-        std::size_t from_timestamp  = m_min_date.startOfDay().toSecsSinceEpoch();
-        filter_infos.from_timestamp = from_timestamp;
+        if (m_min_date.isValid() && !m_min_date.isNull())
+        {
+            std::size_t from_timestamp  = m_min_date.startOfDay().toSecsSinceEpoch();
+            filter_infos.from_timestamp = from_timestamp;
+        }
 
-        std::size_t to_timestamp  = m_max_date.startOfDay().toSecsSinceEpoch();
-        filter_infos.to_timestamp = to_timestamp;
+        if (m_max_date.isValid() && !m_max_date.isNull())
+        {
+            std::size_t to_timestamp  = m_max_date.startOfDay().toSecsSinceEpoch();
+            filter_infos.to_timestamp = to_timestamp;
+        }
 
         const auto pattern = this->filterRegExp().pattern().toStdString();
         if (pattern.find("/") != std::string::npos)
