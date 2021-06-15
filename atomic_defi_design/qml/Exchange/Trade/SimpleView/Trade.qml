@@ -184,6 +184,7 @@ ClipRRect // Trade Card
                             text = API.app.trading_pg.volume
                         }
                         API.app.trading_pg.determine_fees()
+                        API.app.trading_pg.orderbook.refresh_best_orders()
                     }
                     onFocusChanged:
                     {
@@ -337,7 +338,7 @@ ClipRRect // Trade Card
                         anchors.fill: parent
                         onClicked: {
                             _tradeCard.best = true//_bestOrdersModalLoader.open()
-                            API.app.trading_pg.orderbook.refresh_best_orders()
+                            //API.app.trading_pg.orderbook.refresh_best_orders()
                         }
 
                         hoverEnabled: true
