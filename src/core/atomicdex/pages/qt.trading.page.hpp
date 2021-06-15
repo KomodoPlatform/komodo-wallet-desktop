@@ -154,7 +154,7 @@ namespace atomic_dex
         Q_INVOKABLE void     on_gui_enter_dex();
         Q_INVOKABLE void     on_gui_leave_dex();
         Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const;
-        Q_INVOKABLE void     clear_forms();
+        Q_INVOKABLE void     clear_forms(QString from);
 
         //! Trading business
         Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)

@@ -23,5 +23,5 @@ BasicModal
             }
         ]
     }
-    onClosed: API.app.trading_pg.clear_forms()
+
 }
