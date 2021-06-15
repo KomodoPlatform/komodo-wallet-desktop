@@ -14,32 +14,10 @@ import "Main.js" as Main
 
 Item {
     readonly property var subPages: Main.getSubPages()
-    readonly property date default_min_date: new Date("2019-01-01")
-    readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
 
     // Variable which holds the current sub-page of the SimpleView.
     property var currentSubPage: subPages.Trade
     onCurrentSubPageChanged: _selectedTabMarker.update()
-    function applyDateFilter() {
-        var min_date = default_min_date
-        var max_date = default_max_date
-        API.app.orders_mdl.orders_proxy_mdl.filter_minimum_date = default_min_date
-
-        if(max_date.date < min_date.date)
-            max_date.date = min_date.date
-
-        API.app.orders_mdl.orders_proxy_mdl.filter_maximum_date = default_max_date
-    }
-    Component.onCompleted: {
-     
-        API.app.orders_mdl.orders_proxy_mdl.is_history = false
-        applyDateFilter()
-        API.app.orders_mdl.orders_proxy_mdl.apply_all_filtering()
-
-        //list_model_proxy.set_coin_filter("ALL/ALL")
-
-    }
-    
 
     id: root
     function onRecoverFunds(order_id) {
