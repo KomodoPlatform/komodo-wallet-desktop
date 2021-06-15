@@ -70,7 +70,7 @@ ClipRRect // Trade Card
     Column    // Swap Card Content
     {
         id: col
-        width: parent.width
+        width: bestOrderSimplified.visible? 600 : 380
         spacing: 10
         Column // Header
         {
@@ -102,6 +102,7 @@ ClipRRect // Trade Card
         ColumnLayout // Content
         {
             width: parent.width
+            
             anchors.horizontalCenter: parent.horizontalCenter
 
             DefaultRectangle // From
@@ -277,6 +278,7 @@ ClipRRect // Trade Card
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 15
                 radius: 20
+                visible: !bestOrderSimplified.visible
 
                 DefaultText
                 {
@@ -414,7 +416,7 @@ ClipRRect // Trade Card
                 Layout.fillWidth: true
 
                 enabled: typeof selectedOrder !== 'undefined'
-                visible: enabled
+                visible: enabled & !bestOrderSimplified.visible
 
                 DefaultText
                 {
@@ -440,6 +442,7 @@ ClipRRect // Trade Card
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: _tradeCard.width - 30
                 Layout.preferredHeight: 40
+                visible: !bestOrderSimplified.visible
 
                 DefaultButton
                 {
@@ -534,6 +537,13 @@ ClipRRect // Trade Card
                 }
             }
         }
+        Item {
+            id: bestOrderSimplified
+            width: parent.width
+            height: 600
+            visible: false 
+
+        }
 
 
         DefaultRectangle // Swap Info - Details
@@ -544,7 +554,7 @@ ClipRRect // Trade Card
             height: 60
 
             enabled: !_swapAlert.visible
-            visible: enabled
+            visible: enabled & !bestOrderSimplified.visible
 
             radius: 25
 

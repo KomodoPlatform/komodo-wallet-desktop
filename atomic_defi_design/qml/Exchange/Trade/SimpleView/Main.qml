@@ -166,7 +166,7 @@ Item {
             radius: 20
             color: theme.dexBoxBackgroundColor
             visible: root.currentSubPage===subPages.Orders
-            sizeAnimationDuration: 100
+            sizeAnimationDuration: 250
             sizeAnimation: true
             SubOrders {
                 id: orders_view
@@ -178,7 +178,7 @@ Item {
             radius: 20
             color: theme.dexBoxBackgroundColor
             visible: root.currentSubPage===subPages.History
-            sizeAnimationDuration: 100
+            sizeAnimationDuration: 250
             sizeAnimation: true
             SubHistory {
                 id: history_view
