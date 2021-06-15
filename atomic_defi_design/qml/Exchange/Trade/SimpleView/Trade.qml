@@ -485,6 +485,7 @@ ClipRRect // Trade Card
                             else if (response.result && response.result.uuid)
                             {
                                 selectedOrder = undefined
+                                _fromValue.text = "0"
 
                                 // Make sure there is information
                                 _confirmSwapModal.close()
