@@ -249,6 +249,7 @@ namespace atomic_dex
         void mm2MinTradeVolChanged();
         void minTradeVolChanged();
         void selectedOrderStatusChanged();
+        void preferredOrderChangeFinished();
     };
 } // namespace atomic_dex
 

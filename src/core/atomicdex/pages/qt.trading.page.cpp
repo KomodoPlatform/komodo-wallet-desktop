@@ -1020,13 +1020,14 @@ namespace atomic_dex
                 {
                     this->set_volume(QString::fromStdString(utils::format_float(safe_float(available_quantity))));
                 }
-                else if (this->m_current_trading_mode == TradingModeGadget::Simple)
+                else if (this->m_current_trading_mode == TradingModeGadget::Simple && m_preffered_order->contains("initial_input_volume"))
                 {
-                    SPDLOG_INFO("From simple view");
-                    this->set_volume(get_max_volume());
+                    SPDLOG_INFO("From simple view, using initial_input_volume from selection to use.");
+                    this->set_volume(QString::fromStdString(m_preffered_order->at("initial_input_volume").get<std::string>()));
                 }
                 this->get_orderbook_wrapper()->refresh_best_orders();
                 this->determine_fees();
+                emit preferredOrderChangeFinished();
             }
         }
     }
