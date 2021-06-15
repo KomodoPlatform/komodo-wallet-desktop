@@ -48,24 +48,21 @@ ClipRRect // Trade Card
             }
         }
 
-        function onMaxVolumeChanged()   // When max volume available for the selected coin has changed
+        function onPreferredOrderChangeFinished()   // When selected order has changed
         {
-            let maxVol = parseFloat(API.app.trading_pg.max_volume)
-            if (typeof selectedOrder !== 'undefined' && maxVol === 0)
+            if (typeof selectedOrder === 'undefined')
                 return
-            if (parseFloat(_fromValue.text) > maxVol)
+            if (parseFloat(_fromValue.text) > API.app.trading_pg.max_volume)
                 _fromValue.text = API.app.trading_pg.max_volume
         }
+
     }
 
     ModalLoader
     {
         id: _orderDisappearModalLoader
         sourceComponent: OrderRemovedModal {}
-        onLoaded:
-        {
-            selectedOrder = undefined
-        }
+        onLoaded: selectedOrder = undefined
     }
 
     MouseArea // Swap Card Mouse Area
