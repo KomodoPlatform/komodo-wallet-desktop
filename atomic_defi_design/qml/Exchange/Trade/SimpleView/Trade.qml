@@ -269,8 +269,7 @@ ClipRRect // Trade Card
                 }
             }
 
-            // To
-            DefaultRectangle
+            DefaultRectangle // To
             {
                 Layout.preferredWidth: _tradeCard.width - 20
                 Layout.preferredHeight: 90
