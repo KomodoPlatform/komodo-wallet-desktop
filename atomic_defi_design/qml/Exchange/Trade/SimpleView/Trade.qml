@@ -508,6 +508,14 @@ ClipRRect // Trade Card
                             return qsTr("You must select an order.")
                         if (API.app.trading_pg.last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
                             return qsTr("Entered amount is below the minimum required by this order: %1").arg(selectedOrder.base_min_volume)
+                        if (API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnabled)
+                            return qsTr("Parent chain of left ticker is not enabled.")
+                        if (API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnoughBalance)
+                            return qsTr("Left ticker parent chain balance needs to be funded")
+                        if (API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnabled)
+                            return qsTr("Parent chain of right ticker is not enabled.")
+                        if (API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnoughBalance)
+                            return qsTr("Right ticker parent chain balance needs to be funded")
 
                         return ""
                     }
