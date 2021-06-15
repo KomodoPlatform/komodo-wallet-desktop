@@ -24,8 +24,6 @@ ClipRRect // Trade Card
         if (typeof selectedOrder !== 'undefined') API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
         else API.app.trading_pg.reset_order()
 
-        if (parseFloat(_fromValue.text) > parseFloat(API.app.trading_pg.max_volume))
-            _fromValue.text = API.app.trading_pg.max_volume
         API.app.trading_pg.determine_fees()
     }
     onEnabledChanged: selectedOrder = undefined
@@ -48,6 +46,15 @@ ClipRRect // Trade Card
                 _orderDisappearModalLoader.open()
                 _confirmSwapModal.close()
             }
+        }
+
+        function onMaxVolumeChanged()   // When max volume available for the selected coin has changed
+        {
+            let maxVol = parseFloat(API.app.trading_pg.max_volume)
+            if (typeof selectedOrder !== 'undefined' && maxVol === 0)
+                return
+            if (parseFloat(_fromValue.text) > maxVol)
+                _fromValue.text = API.app.trading_pg.max_volume
         }
     }
 
@@ -270,8 +277,7 @@ ClipRRect // Trade Card
                 }
             }
 
-            // To
-            DefaultRectangle
+            DefaultRectangle // To
             {
                 Layout.preferredWidth: _tradeCard.width - 20
                 Layout.preferredHeight: 90
