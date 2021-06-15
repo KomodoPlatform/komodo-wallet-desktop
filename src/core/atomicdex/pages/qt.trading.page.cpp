@@ -835,6 +835,7 @@ namespace atomic_dex
                 if (!max_volume.isEmpty() && max_volume != "0")
                 {
                     SPDLOG_INFO("checking if {} > {}", std_volume, max_volume.toStdString());
+                    this->set_volume(get_max_volume());
                 }
             }
         }
