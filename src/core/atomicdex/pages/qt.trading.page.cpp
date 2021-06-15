@@ -835,27 +835,8 @@ namespace atomic_dex
                 if (!max_volume.isEmpty() && max_volume != "0")
                 {
                     SPDLOG_INFO("checking if {} > {}", std_volume, max_volume.toStdString());
-                    this->set_volume(get_max_volume());
-                    // m_volume = max_volume;
-                    // hit      = true;
                 }
             }
-            /*else if (safe_float(std_volume) < safe_float(get_min_trade_vol().toStdString()))
-            {
-                auto min_volume = QString::fromStdString(utils::adjust_precision(this->get_min_trade_vol().toStdString()));
-                if (!min_volume.isEmpty() && min_volume != "0")
-                {
-                    SPDLOG_INFO("checking if {} < {}", std_volume, min_volume.toStdString());
-                    m_volume = min_volume;
-                    hit      = true;
-                }
-            }*/
-            /*if (hit)
-            {
-                emit volumeChanged();
-                SPDLOG_INFO("volume is: [{}]", m_volume.toStdString());
-                this->determine_total_amount();
-            }*/
         }
     }
 
@@ -1037,6 +1018,11 @@ namespace atomic_dex
                 if (this->m_current_trading_mode == TradingModeGadget::Pro)
                 {
                     this->set_volume(QString::fromStdString(utils::format_float(safe_float(available_quantity))));
+                }
+                else if (this->m_current_trading_mode == TradingModeGadget::Simple)
+                {
+                    SPDLOG_INFO("From simple view");
+                    this->set_volume(get_max_volume());
                 }
                 this->get_orderbook_wrapper()->refresh_best_orders();
                 this->determine_fees();
