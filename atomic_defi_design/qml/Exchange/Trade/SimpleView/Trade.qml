@@ -17,6 +17,7 @@ ClipRRect // Trade Card
 {
     property string selectedTicker: left_ticker
     property var    selectedOrder:  undefined
+    property bool best: false
 
     onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.text = "" }
     onSelectedOrderChanged:
@@ -30,7 +31,7 @@ ClipRRect // Trade Card
     Component.onDestruction: selectedOrder = undefined
 
     id: _tradeCard
-    width: 380
+    width: bestOrderSimplified.visible? 600 : 380
     height: col.height+15
     radius: 20
 
@@ -77,7 +78,7 @@ ClipRRect // Trade Card
     Column    // Swap Card Content
     {
         id: col
-        width: bestOrderSimplified.visible? 600 : 380
+        width: parent.width
         spacing: 10
         Column // Header
         {
@@ -89,7 +90,7 @@ ClipRRect // Trade Card
 
             DefaultText // Title
             {
-                text: qsTr("Swap")
+                text: qsTr("Swap")+" "+API.app.trading_pg.orderbook.best_orders_busy
                 font.pixelSize: Style.textSize1
             }
 
@@ -317,7 +318,7 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 3
                     font.pixelSize: Style.textSizeSmall1
                     Component.onCompleted: color = _fromValue.placeholderTextColor
-                    text: enabled ? General.getFiatText(_toValue.text, selectedOrder.coin) : ""
+                    text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin) : ""
                 }
 
                 DefaultRectangle // Shows best order coin
@@ -337,7 +338,11 @@ ClipRRect // Trade Card
                     {
                         id: _bestOrdersMouseArea
                         anchors.fill: parent
-                        onClicked: _bestOrdersModalLoader.open()
+                        onClicked: {
+                            _tradeCard.best = true//_bestOrdersModalLoader.open()
+                            API.app.trading_pg.orderbook.refresh_best_orders()
+                        }
+
                         hoverEnabled: true
                         enabled: parseFloat(_fromValue.text) > 0
                     }
@@ -396,7 +401,7 @@ ClipRRect // Trade Card
                         sourceComponent: BestOrdersModal {}
                     }
 
-                    Connections
+                    /*Connections
                     {
                         target: _bestOrdersModalLoader
                         function onLoaded()
@@ -408,7 +413,7 @@ ClipRRect // Trade Card
                                 _bestOrdersModalLoader.close()
                             })
                         }
-                    }
+                    }*/
                 }
             }
 
@@ -546,8 +551,31 @@ ClipRRect // Trade Card
         Item {
             id: bestOrderSimplified
             width: parent.width
-            height: 600
-            visible: false 
+            height: 450
+            visible: _tradeCard.best 
+            SubBestOrder {
+                onSelectedOrderChanged: {
+                    _tradeCard.selectedOrder = selectedOrder
+                }
+                onBestChanged: {
+                    if(!best) {
+                        _tradeCard.best = false
+                    }
+                }
+                anchors.fill: parent
+                anchors.rightMargin: 10
+                anchors.leftMargin: 20
+                anchors.bottomMargin: 10
+                visible: _tradeCard.width == 600
+            } 
+            BusyIndicator
+            {
+                width: 200
+                height: 200
+                visible: API.app.trading_pg.orderbook.best_orders_busy
+                running: visible
+                anchors.centerIn: parent
+            }
 
         }
 
@@ -604,6 +632,16 @@ ClipRRect // Trade Card
                     }
                 }
             }
+        }
+    }
+    Qaterial.AppBarButton {
+        anchors.rightMargin: 15
+        anchors.right: parent.right
+        y: 12
+        icon.source: Qaterial.Icons.close
+        visible: _tradeCard.best
+        onClicked: {
+            _tradeCard.best = false
         }
     }
 }

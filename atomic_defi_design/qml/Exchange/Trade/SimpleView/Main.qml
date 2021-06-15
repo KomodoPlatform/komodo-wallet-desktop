@@ -35,7 +35,7 @@ Item {
     }
     Column
     {
-        width: 380
+        width: root.currentSubPage===subPages.Trade? simple_trade.best? 600 : 380 : 380
         y: 100
         spacing: 40
         anchors.verticalCenter: parent.verticalCenter
@@ -145,6 +145,7 @@ Item {
         }
 
         DexRectangle {
+            id: subTradePage
             height: simple_trade.height
             width: parent.width
             radius: 20
