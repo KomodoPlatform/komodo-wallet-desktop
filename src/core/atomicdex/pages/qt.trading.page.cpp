@@ -639,7 +639,15 @@ namespace atomic_dex
         emit minTradeVolChanged();
 
         this->set_price("0");
-        this->set_volume("0");
+        if (m_preffered_order.has_value() && m_current_trading_mode == TradingModeGadget::Simple &&
+            m_selected_order_status == SelectedOrderGadget::OrderNotExistingAnymore)
+        {
+            this->set_volume(QString::fromStdString(m_preffered_order->at("initial_input_volume").get<std::string>()));
+        }
+        else
+        {
+            this->set_volume("0");
+        }
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
         this->m_preffered_order  = std::nullopt;
@@ -728,8 +736,7 @@ namespace atomic_dex
                         auto       available_quantity       = m_preffered_order->at("base_max_volume").get<std::string>();
                         t_float_50 available_quantity_order = safe_float(available_quantity);
                         SPDLOG_INFO(
-                            "available_quantity_order: {}, max_volume: {}, max_taker_vol: {}",
-                            utils::format_float(safe_float(available_quantity)),
+                            "available_quantity_order: {}, max_volume: {}, max_taker_vol: {}", utils::format_float(safe_float(available_quantity)),
                             get_max_volume().toStdString(), max_taker_vol);
                         if (available_quantity_order < safe_float(max_taker_vol) && !m_preffered_order->at("capped").get<bool>())
                         {
@@ -1020,13 +1027,14 @@ namespace atomic_dex
                 {
                     this->set_volume(QString::fromStdString(utils::format_float(safe_float(available_quantity))));
                 }
-                else if (this->m_current_trading_mode == TradingModeGadget::Simple)
+                else if (this->m_current_trading_mode == TradingModeGadget::Simple && m_preffered_order->contains("initial_input_volume"))
                 {
-                    SPDLOG_INFO("From simple view");
-                    this->set_volume(get_max_volume());
+                    SPDLOG_INFO("From simple view, using initial_input_volume from selection to use.");
+                    this->set_volume(QString::fromStdString(m_preffered_order->at("initial_input_volume").get<std::string>()));
                 }
                 this->get_orderbook_wrapper()->refresh_best_orders();
                 this->determine_fees();
+                emit preferredOrderChangeFinished();
             }
         }
     }
@@ -1136,9 +1144,9 @@ namespace atomic_dex
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
-                auto           answers = nlohmann::json::parse(body);
-                nlohmann::json answer  = answers[0];
-                auto trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
+                auto           answers               = nlohmann::json::parse(body);
+                nlohmann::json answer                = answers[0];
+                auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
                     SPDLOG_INFO("preimage answer received");

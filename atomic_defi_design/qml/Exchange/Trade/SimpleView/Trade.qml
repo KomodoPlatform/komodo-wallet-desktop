@@ -49,24 +49,21 @@ ClipRRect // Trade Card
             }
         }
 
-        function onMaxVolumeChanged()   // When max volume available for the selected coin has changed
+        function onPreferredOrderChangeFinished()   // When selected order has changed
         {
-            let maxVol = parseFloat(API.app.trading_pg.max_volume)
-            if (typeof selectedOrder !== 'undefined' && maxVol === 0)
+            if (typeof selectedOrder === 'undefined')
                 return
-            if (parseFloat(_fromValue.text) > maxVol)
+            if (parseFloat(_fromValue.text) > API.app.trading_pg.max_volume)
                 _fromValue.text = API.app.trading_pg.max_volume
         }
+
     }
 
     ModalLoader
     {
         id: _orderDisappearModalLoader
         sourceComponent: OrderRemovedModal {}
-        onLoaded:
-        {
-            selectedOrder = undefined
-        }
+        onLoaded: selectedOrder = undefined
     }
 
     MouseArea // Swap Card Mouse Area
@@ -493,6 +490,7 @@ ClipRRect // Trade Card
                             else if (response.result && response.result.uuid)
                             {
                                 selectedOrder = undefined
+                                _fromValue.text = "0"
 
                                 // Make sure there is information
                                 _confirmSwapModal.close()
@@ -518,6 +516,14 @@ ClipRRect // Trade Card
                             return qsTr("You must select an order.")
                         if (API.app.trading_pg.last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
                             return qsTr("Entered amount is below the minimum required by this order: %1").arg(selectedOrder.base_min_volume)
+                        if (API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnabled)
+                            return qsTr("Parent chain of left ticker is not enabled.")
+                        if (API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnoughBalance)
+                            return qsTr("Left ticker parent chain balance needs to be funded")
+                        if (API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnabled)
+                            return qsTr("Parent chain of right ticker is not enabled.")
+                        if (API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnoughBalance)
+                            return qsTr("Right ticker parent chain balance needs to be funded")
 
                         return ""
                     }

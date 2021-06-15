@@ -76,8 +76,24 @@ namespace atomic_dex
         std::vector<std::string> coins_std{};
         coins_std.reserve(coins.size());
         atomic_dex::mm2_service& mm2 = get_mm2();
-        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
+        std::unordered_set<std::string> extra_coins;
+        for (auto&& coin: coins) {
+            auto coin_info = mm2.get_coin_info(coin.toStdString());
+            if (coin_info.has_parent_fees_ticker)
+            {
+                auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
+                if (extra_coins.insert(coin_parent_info.ticker).second)
+                {
+                    SPDLOG_INFO("Adding extra coin: {} to enable", coin_parent_info.ticker);
+                }
+            }
+            coins_std.push_back(coin.toStdString());
+        }
 
+        for (auto&& extra_coin : extra_coins)
+        {
+            coins_std.push_back(extra_coin);
+        }
         mm2.enable_multiple_coins(coins_std);
 
         return true;
