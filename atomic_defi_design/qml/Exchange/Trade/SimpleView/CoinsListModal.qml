@@ -10,12 +10,21 @@ import "../../../Constants"  //> API
 BasicModal
 {
     property string selectedTicker
-
     id: root
     width: 450
-    ModalContent
-    {
-        title: qsTr("Select a ticker")
+    height: 560
+    ColumnLayout {
+        spacing: 10
+        Layout.fillWidth: true
+        height: 540
+        DexLabel {
+            text: qsTr("Select a ticker")
+            font: _font.head5
+            opacity: .7
+        }
+        HorizontalLine {
+
+        }
         RowLayout
         {
             Layout.fillWidth: true
@@ -52,54 +61,52 @@ BasicModal
             DefaultText { text: qsTr("Token name") }
         }
 
-        ColumnLayout
+        DefaultListView
         {
-            Layout.topMargin: 10
+            id: view
             Layout.fillWidth: true
-            DefaultListView
+            Layout.fillHeight: true
+            model: API.app.trading_pg.market_pairs_mdl.left_selection_box
+            spacing: 20
+            clip: true
+            delegate: ItemDelegate
             {
-                Layout.fillWidth: true
-                model: API.app.trading_pg.market_pairs_mdl.left_selection_box
-                spacing: 20
-                delegate: ItemDelegate
-                {
-                    width: root.width
-                    anchors.horizontalCenter: root.horizontalCenter
-                    height: 40
+                width: root.width
+                anchors.horizontalCenter: root.horizontalCenter
+                height: 40
 
-                    DefaultImage
+                DefaultImage
+                {
+                    id: _coinIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.leftMargin: 5
+                    anchors.left: parent.left
+                    width: 30
+                    height: 30
+                    source: General.coinIcon(model.ticker)
+                    DefaultText
                     {
-                        id: _coinIcon
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.leftMargin: 5
-                        anchors.left: parent.left
-                        width: 30
-                        height: 30
-                        source: General.coinIcon(model.ticker)
+                        anchors.left: parent.right
+                        anchors.leftMargin: 20
+                        text: General.formatCrypto("", model.balance, model.ticker)
+
                         DefaultText
                         {
-                            anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
-                            anchors.leftMargin: 20
-                            text: General.formatCrypto("", model.balance, model.ticker)
-
-                            DefaultText
-                            {
-                                anchors.left: parent.right
-                                anchors.leftMargin: 5
-                                text: "(%1)".arg(General.getFiatText(model.balance, model.ticker, false))
-                            }
+                            anchors.leftMargin: 5
+                            text: "(%1)".arg(General.getFiatText(model.balance, model.ticker, false))
                         }
                     }
+                }
 
-                    MouseArea
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked:
                     {
-                        anchors.fill: parent
-                        onClicked:
-                        {
-                            root.selectedTicker = model.ticker
-                            close()
-                        }
+                        root.selectedTicker = model.ticker
+                        close()
                     }
                 }
             }

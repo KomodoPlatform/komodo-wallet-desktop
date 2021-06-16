@@ -78,7 +78,8 @@ Item {
                         duration: 150
                     }
                 }
-                verticalShadow: false
+                show_shadow: false
+                light_gradient.visible: false
 
                 border.width: 2
                 border.color: 'transparent'
