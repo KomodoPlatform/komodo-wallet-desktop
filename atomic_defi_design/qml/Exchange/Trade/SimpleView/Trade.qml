@@ -343,7 +343,7 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 3
                     font.pixelSize: Style.textSizeSmall1
                     Component.onCompleted: color = _fromValue.placeholderTextColor
-                    text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin) : ""
+                    text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
                 DefaultRectangle // Shows best order coin
@@ -588,6 +588,7 @@ ClipRRect // Trade Card
             height: 450
             visible: _tradeCard.best 
             SubBestOrder {
+                tradeCard: _tradeCard
                 onSelectedOrderChanged: {
                     _tradeCard.selectedOrder = selectedOrder
                 }

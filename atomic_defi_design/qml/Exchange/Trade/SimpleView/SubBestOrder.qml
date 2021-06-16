@@ -12,6 +12,7 @@ import "../../../Constants"  //> API
 DefaultListView
 {
     id: _listBestOrdersView
+    property var tradeCard
     property var    selectedOrder
     property bool best: true
     property string currentLeftToken // The token we wanna sell
@@ -174,8 +175,9 @@ DefaultListView
                 _tooltip.open()
             }
             else {
-                _listBestOrdersView.best = false
+                _listBestOrdersView.tradeCard.best = false
                 _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume }
+                
                 
             }
         }
