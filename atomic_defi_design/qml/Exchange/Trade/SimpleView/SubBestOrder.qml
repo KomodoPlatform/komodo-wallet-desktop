@@ -183,6 +183,9 @@ DefaultListView
             }
         }
     }
-
-    
+    DexLabel {
+        anchors.centerIn: parent
+        text: qsTr('No best order.')
+        visible: parent.count==0
+    }
 }
