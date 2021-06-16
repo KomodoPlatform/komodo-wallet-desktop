@@ -364,7 +364,7 @@ namespace atomic_dex
     {
         if (!orderbook.empty())
         {
-            SPDLOG_INFO("full orderbook initialization initial size: {} target size: {}", rowCount(), orderbook.size());
+            SPDLOG_INFO("full orderbook initialization initial size: {} target size: {}, orderbook_kind: {}", rowCount(), orderbook.size(), m_current_orderbook_kind);
         }
         this->beginResetModel();
         m_model_data = orderbook;
