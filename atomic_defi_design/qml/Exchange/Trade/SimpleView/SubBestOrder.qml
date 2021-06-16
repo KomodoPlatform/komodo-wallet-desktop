@@ -12,6 +12,7 @@ import "../../../Constants"  //> API
 DefaultListView
 {
     id: _listBestOrdersView
+    property var tradeCard
     property var    selectedOrder
     property bool best: true
     property string currentLeftToken // The token we wanna sell
@@ -135,6 +136,7 @@ DefaultListView
             DefaultText
             {
                 Layout.preferredWidth: _cexRateColumnSize
+                color: cex_rates=== "0" ? Qt.darker(theme.foregroundColor) : parseFloat(cex_rates)>0? theme.redColor : theme.greenColor
                 text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
             DefaultTooltip
@@ -174,12 +176,16 @@ DefaultListView
                 _tooltip.open()
             }
             else {
-                _listBestOrdersView.best = false
+                _listBestOrdersView.tradeCard.best = false
                 _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume }
+                
                 
             }
         }
     }
-
-    
+    DexLabel {
+        anchors.centerIn: parent
+        text: qsTr('No best order.')
+        visible: parent.count==0
+    }
 }
