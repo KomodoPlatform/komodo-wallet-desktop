@@ -206,11 +206,6 @@ ClipRRect // Trade Card
                     text: enabled ? General.getFiatText(_fromValue.text, selectedTicker) : ""
                 }
 
-                DefaultText
-                {
-                    color: _fromValue.color
-                }
-
                 Rectangle // Select ticker button
                 {
                     id: _selectTickerBut
