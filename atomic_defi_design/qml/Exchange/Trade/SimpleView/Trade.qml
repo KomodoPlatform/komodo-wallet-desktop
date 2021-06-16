@@ -425,20 +425,6 @@ ClipRRect // Trade Card
                         id: _bestOrdersModalLoader
                         sourceComponent: BestOrdersModal {}
                     }
-
-                    /*Connections
-                    {
-                        target: _bestOrdersModalLoader
-                        function onLoaded()
-                        {
-                            _bestOrdersModalLoader.item.currentLeftToken = selectedTicker
-                            _bestOrdersModalLoader.item.selectedOrderChanged.connect(function()
-                            {
-                                _tradeCard.selectedOrder = _bestOrdersModalLoader.item.selectedOrder
-                                _bestOrdersModalLoader.close()
-                            })
-                        }
-                    }*/
                 }
             }
 
@@ -669,14 +655,24 @@ ClipRRect // Trade Card
             }
         }
     }
-    Qaterial.AppBarButton {
+    Row {
         anchors.rightMargin: 15
         anchors.right: parent.right
         y: 12
-        icon.source: Qaterial.Icons.close
-        visible: _tradeCard.best
-        onClicked: {
-            _tradeCard.best = false
+        Qaterial.AppBarButton {
+            icon.source: Qaterial.Icons.refresh
+            visible: _tradeCard.best
+            enabled: !API.app.trading_pg.orderbook.best_orders_busy
+            onClicked: {
+                API.app.trading_pg.orderbook.refresh_best_orders()
+            }
+        }
+        Qaterial.AppBarButton {
+            icon.source: Qaterial.Icons.close
+            visible: _tradeCard.best
+            onClicked: {
+                _tradeCard.best = false
+            }
         }
     }
 }
