@@ -211,7 +211,7 @@ ClipRRect // Trade Card
                 Rectangle // Select ticker button
                 {
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 12
+                    anchors.bottomMargin: 19
                     anchors.right: parent.right
                     anchors.rightMargin: 20
                     width: _selectedTickerIcon.width + _selectedTickerText.width + _selectedTickerArrow.width + 29.5
