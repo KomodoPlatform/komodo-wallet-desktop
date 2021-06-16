@@ -296,9 +296,10 @@ ClipRRect // Trade Card
 
                     DexLabel
                     {
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: _maxButMouseArea.containsMouse ? "#2b4680" : theme.accentColor
                         anchors.fill: parent
                         text: qsTr("MAX")
-                        color: theme.accentColor
                     }
                 }
             }
