@@ -213,6 +213,7 @@ ClipRRect // Trade Card
 
                 Rectangle // Select ticker button
                 {
+                    id: _selectTickerBut
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.right: parent.right
@@ -272,6 +273,32 @@ ClipRRect // Trade Card
                     {
                         target: coinsListModalLoader
                         function onLoaded() { coinsListModalLoader.item.selectedTickerChanged.connect(function() { _tradeCard.selectedTicker = coinsListModalLoader.item.selectedTicker }) }
+                    }
+                }
+
+                DexRectangle // MAX Button
+                {
+                    anchors.right: _selectTickerBut.left
+                    anchors.rightMargin: 5
+                    anchors.verticalCenter: _selectTickerBut.verticalCenter
+                    border.width: 0
+
+                    width: 40
+                    height: 20
+
+                    DefaultMouseArea
+                    {
+                        id: _maxButMouseArea
+                        anchors.fill: parent
+                        onClicked: _fromValue.text = API.app.trading_pg.max_volume
+                        hoverEnabled: true
+                    }
+
+                    DexLabel
+                    {
+                        anchors.fill: parent
+                        text: qsTr("MAX")
+                        color: theme.accentColor
                     }
                 }
             }
