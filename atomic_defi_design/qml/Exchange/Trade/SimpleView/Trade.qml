@@ -87,7 +87,7 @@ ClipRRect // Trade Card
 
             DefaultText // Title
             {
-                text: qsTr("Swap")+" "+API.app.trading_pg.orderbook.best_orders_busy
+                text: qsTr("Swap")
                 font.pixelSize: Style.textSize1
             }
 
