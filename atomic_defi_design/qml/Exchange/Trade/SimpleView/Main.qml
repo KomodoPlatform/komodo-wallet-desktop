@@ -149,46 +149,58 @@ Item {
             
         }
 
-        DexRectangle {
-            id: subTradePage
-            height: simple_trade.height
-            width: parent.width
-            radius: 20
-            color: theme.dexBoxBackgroundColor
-            visible: root.currentSubPage===subPages.Trade
-            sizeAnimationDuration: 250
-            sizeAnimation: true
-            Trade
-            {
-                id: simple_trade
-                width: parent.width
-                visible: parent.height>200
+        SwipeView {
+            id: _swipeSimplifiedView
+            currentIndex: root.currentSubPage
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: 600
+            height: 650
+            clip: true
+            Item {
+                DexRectangle {
+                    id: subTradePage
+                    height: simple_trade.height
+                    width: simple_trade.best? 600 : 380
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    radius: 20
+                    color: theme.dexBoxBackgroundColor
+                    sizeAnimationDuration: 250
+                    sizeAnimation: true
+                    Trade
+                    {
+                        id: simple_trade
+                        width: parent.width
+                        visible: parent.height>200
+                    }
+                }
             }
-        }
-        
-        DexRectangle {
-            width: parent.width
-            height: visible? 500 : 0
-            radius: 20
-            color: theme.dexBoxBackgroundColor
-            visible: root.currentSubPage===subPages.Orders
-            sizeAnimationDuration: 250
-            sizeAnimation: true
-            SubOrders {
-                id: orders_view
+            Item {
+                DexRectangle {
+                    width: 380
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: 500 
+                    radius: 20
+                    color: theme.dexBoxBackgroundColor
+                    SubOrders {
+                        id: orders_view
+                    }
+                }
             }
-        }
-        DexRectangle {
-            width: parent.width
-            height: visible? 500 : 0
-            radius: 20
-            color: theme.dexBoxBackgroundColor
-            visible: root.currentSubPage===subPages.History
-            sizeAnimationDuration: 250
-            sizeAnimation: true
-            SubHistory {
-                id: history_view
+            Item {
+                DexRectangle {
+                    width: 380
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: 500 
+                    radius: 20
+                    color: theme.dexBoxBackgroundColor
+                    SubHistory {
+                        id: history_view
+                    }
+                }
             }
+            
+            
+            
         }
     }
     ModalLoader {
