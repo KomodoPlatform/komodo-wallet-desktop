@@ -78,6 +78,7 @@ Item {
                         duration: 150
                     }
                 }
+                verticalShadow: false
 
                 border.width: 2
                 border.color: 'transparent'
@@ -99,6 +100,7 @@ Item {
                     Layout.fillHeight: true
                     text: qsTr("Trade")
                     font.pixelSize: Style.textSize
+                    color: children[1].containsMouse? currentSubPage === subPages.Trade? theme.foregroundColor : theme.accentColor : theme.foregroundColor
                     DexMouseArea
                     {
                         anchors.fill: parent
@@ -116,6 +118,7 @@ Item {
                     Layout.fillHeight: true
                     text: qsTr("Orders")
                     font.pixelSize: Style.textSize
+                    color: children[1].containsMouse? currentSubPage === subPages.Orders? theme.foregroundColor : theme.accentColor : theme.foregroundColor
                     DexMouseArea
                     {
                         anchors.fill: parent
@@ -133,6 +136,7 @@ Item {
                     Layout.fillHeight: true
                     text: qsTr("History")
                     font.pixelSize: Style.textSize
+                    color: children[1].containsMouse? currentSubPage === subPages.History? theme.foregroundColor : theme.accentColor : theme.foregroundColor
                     DexMouseArea
                     {
                         anchors.fill: parent
