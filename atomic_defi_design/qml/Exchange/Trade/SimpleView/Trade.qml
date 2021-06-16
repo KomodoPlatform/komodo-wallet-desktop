@@ -22,7 +22,8 @@ ClipRRect // Trade Card
     onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.text = "" }
     onSelectedOrderChanged:
     {
-        if (typeof selectedOrder !== 'undefined') API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
+        if (typeof selectedOrder !== 'undefined' && selectedOrder.from_best_order) API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
+        else if (typeof selectedOrder !== 'undefined') API.app.trading_pg.preffered_order = selectedOrder
         else API.app.trading_pg.reset_order()
 
         API.app.trading_pg.determine_fees()
@@ -57,6 +58,30 @@ ClipRRect // Trade Card
                 _fromValue.text = API.app.trading_pg.max_volume
         }
 
+    }
+
+    Connections
+    {
+        target: API.app.trading_pg.orderbook.bids
+
+        function onBetterOrderDetected(newOrder)
+        {
+            console.log("Enter Better Order")
+            if (API.app.trading_pg.selected_order_status == SelectedOrderStatus.DataChanged)
+                console.log("Data changed")
+            else if (API.app.trading_pg.selected_order_status == SelectedOrderStatus.BetterPriceAvailable)
+            {
+                console.log(JSON.stringify(newOrder))
+                if (newOrder.base_max_volume <= selectedOrder.base_max_volume)
+                {
+                    selectedOrder = newOrder
+                }
+                else
+                {
+                    console.log("Better order has a better price but lower quant available. %1".arg(newOrder.base_max_volume))
+                }
+            }
+        }
     }
 
     ModalLoader

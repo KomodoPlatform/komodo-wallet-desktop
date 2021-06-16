@@ -177,7 +177,7 @@ DefaultListView
             }
             else {
                 _listBestOrdersView.tradeCard.best = false
-                _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume }
+                _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
                 
                 
             }

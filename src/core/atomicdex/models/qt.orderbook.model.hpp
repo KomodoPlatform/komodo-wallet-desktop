@@ -32,6 +32,8 @@
 
 namespace atomic_dex
 {
+    class trading_page;
+
     class orderbook_model final : public QAbstractListModel
     {
         Q_OBJECT
@@ -99,12 +101,13 @@ namespace atomic_dex
       signals:
         void lengthChanged();
         void proxyMdlChanged();
-        void selectedOrderPriceChanged(QVariantMap order_object);
+        void betterOrderDetected(QVariantMap order_object);
 
       private:
         void        initialize_order(const ::mm2::api::order_contents& order);
         void        update_order(const ::mm2::api::order_contents& order);
-        QVariantMap get_order_from_uuid(QString uuid);;
+        QVariantMap get_order_from_uuid(QString uuid);
+        void        check_for_better_order(trading_page& trading_pg, const QVariantMap& preferred_order, std::string uuid);
 
       private:
         kind                            m_current_orderbook_kind{kind::asks};
