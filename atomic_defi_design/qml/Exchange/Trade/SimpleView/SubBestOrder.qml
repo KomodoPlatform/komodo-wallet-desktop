@@ -136,6 +136,7 @@ DefaultListView
             DefaultText
             {
                 Layout.preferredWidth: _cexRateColumnSize
+                color: cex_rates=== "0" ? Qt.darker(theme.foregroundColor) : parseFloat(cex_rates)>0? theme.redColor : theme.greenColor
                 text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
             DefaultTooltip
