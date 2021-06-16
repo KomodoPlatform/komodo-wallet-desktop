@@ -342,10 +342,11 @@ ClipRRect // Trade Card
                     text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
-                DefaultRectangle // Shows best order coin
+                DexRectangle // Shows best order coin
                 {
+                    id: _selectBestOrderButton
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 12
+                    anchors.bottomMargin: 23
                     anchors.right: parent.right
                     anchors.rightMargin: 20
                     width: _bestOrderIcon.enabled ? _bestOrderIcon.width + _bestOrderTickerText.width + _bestOrderArrow.width + 29.5 : 110
