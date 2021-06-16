@@ -156,6 +156,7 @@ Item {
             width: 600
             height: 650
             clip: true
+            interactive: false
             Item {
                 DexRectangle {
                     id: subTradePage
