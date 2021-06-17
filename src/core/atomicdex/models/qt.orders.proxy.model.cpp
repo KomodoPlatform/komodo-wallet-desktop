@@ -27,7 +27,10 @@
 
 namespace atomic_dex
 {
-    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
+    orders_proxy_model::orders_proxy_model(QObject* parent, ag::ecs::system_manager& system_manager) :
+        QSortFilterProxyModel(parent), m_system_manager(system_manager)
+    {
+    }
 
     bool
     orders_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -88,13 +91,13 @@ namespace atomic_dex
     }
 
     bool
-    orders_proxy_model::am_i_in_history() const 
+    orders_proxy_model::am_i_in_history() const
     {
         return m_is_history;
     }
 
     void
-    orders_proxy_model::set_is_history(bool is_history) 
+    orders_proxy_model::set_is_history(bool is_history)
     {
         if (this->m_is_history != is_history)
         {
@@ -122,9 +125,12 @@ namespace atomic_dex
         {
             return false;
         }
-        auto data      = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
-        auto timestamp = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
-        auto date      = QDateTime::fromMSecsSinceEpoch(timestamp).date();
+        auto       data           = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        const bool is_swap        = this->sourceModel()->data(idx, orders_model::OrdersRoles::IsSwapRole).toBool();
+        const bool is_maker       = this->sourceModel()->data(idx, orders_model::OrdersRoles::IsMakerRole).toBool();
+        auto       timestamp      = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
+        auto       date           = QDateTime::fromMSecsSinceEpoch(timestamp).date();
+        const bool is_simple_view = m_system_manager.get_system<trading_page>().get_current_trading_mode() == TradingModeGadget::Simple;
 
         if (not this->m_is_history && not date_in_range(date))
         {
@@ -146,6 +152,11 @@ namespace atomic_dex
             {
                 return false;
             }
+        }
+
+        if (!this->m_is_history && is_maker && !is_swap && is_simple_view)
+        {
+            return false;
         }
 
         if (not this->m_is_history && this->filterRole() == orders_model::OrdersRoles::TickerPairRole)
@@ -232,7 +243,7 @@ namespace atomic_dex
     }
 
     QStringList
-    orders_proxy_model::get_filtered_ids() const 
+    orders_proxy_model::get_filtered_ids() const
     {
         QStringList out;
         int         nb_items = this->rowCount();
@@ -255,9 +266,9 @@ namespace atomic_dex
         {
             this->set_apply_filtering(true);
         }
-        //else
+        // else
         //{
-            //emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        // emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
         //}
     }
 
@@ -344,12 +355,12 @@ namespace atomic_dex
     }
 
     bool
-    orders_proxy_model::get_apply_filtering() const 
+    orders_proxy_model::get_apply_filtering() const
     {
         return m_is_filtering_applicable;
     }
     void
-    orders_proxy_model::set_apply_filtering(bool status) 
+    orders_proxy_model::set_apply_filtering(bool status)
     {
         if (m_is_filtering_applicable != status)
         {
