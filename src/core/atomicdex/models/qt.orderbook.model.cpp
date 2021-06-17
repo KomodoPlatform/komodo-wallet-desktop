@@ -364,7 +364,7 @@ namespace atomic_dex
     {
         if (!orderbook.empty())
         {
-            SPDLOG_INFO("full orderbook initialization initial size: {} target size: {}", rowCount(), orderbook.size());
+            SPDLOG_INFO("full orderbook initialization initial size: {} target size: {}, orderbook_kind: {}", rowCount(), orderbook.size(), m_current_orderbook_kind);
         }
         this->beginResetModel();
         m_model_data = orderbook;
@@ -391,6 +391,12 @@ namespace atomic_dex
     void
     orderbook_model::initialize_order(const ::mm2::api::order_contents& order)
     {
+        if (m_orders_id_registry.contains(order.uuid))
+        {
+            SPDLOG_WARN("Order with uuid: {} already present...skipping.", order.uuid);
+            return;
+        }
+
         assert(m_model_data.size() == m_orders_id_registry.size());
         beginInsertRows(QModelIndex(), m_model_data.size(), m_model_data.size());
         m_model_data.push_back(order);
@@ -413,8 +419,8 @@ namespace atomic_dex
                         SPDLOG_INFO(
                             "An order with a better price is inserted, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
                             utils::format_float(preferred_price));
-                        trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
-                        emit selectedOrderPriceChanged(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                        trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
+                        emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));
                     }
                 }
             }
@@ -469,8 +475,13 @@ namespace atomic_dex
                             SPDLOG_INFO(
                                 "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid,
                                 utils::format_float(price_std), utils::format_float(preferred_price));
-                            trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
-                            emit selectedOrderPriceChanged(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                            trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
+                            emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                        }
+                        else if (auto selected_uuid = preferred_order.value("uuid", "").toString().toStdString(); selected_uuid == order.uuid)
+                        {
+                            SPDLOG_INFO("The price went down with the selected order: {}", order.uuid);
+                            check_for_better_order(trading_pg, preferred_order, selected_uuid);
                         }
                     }
                 }
@@ -533,34 +544,6 @@ namespace atomic_dex
     bool
     orderbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
-        auto functor = [this](auto&& trading_pg, const QVariantMap& preferred_order, std::string uuid)
-        {
-            if (trading_pg.get_market_mode() == MarketMode::Sell)
-            {
-                t_float_50 preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
-                bool       hit             = false;
-                for (auto&& order: m_model_data)
-                {
-                    const t_float_50 price_std = safe_float(order.price);
-
-                    if (price_std > preferred_price)
-                    {
-                        SPDLOG_INFO(
-                            "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
-                            utils::format_float(preferred_price));
-                        trading_pg.set_selected_order_status(SelectedOrderStatus::DataChanged);
-                        emit selectedOrderPriceChanged(get_order_from_uuid(QString::fromStdString(order.uuid)));
-                        hit = true;
-                        break;
-                    }
-                }
-                if (!hit)
-                {
-                    SPDLOG_INFO("Order with uuid: {} has been cancelled and no new order with better price is available", uuid);
-                    trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
-                }
-            }
-        };
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
@@ -575,9 +558,8 @@ namespace atomic_dex
                     const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
                     if (selected_order_uuid == uuid_to_be_removed)
                     {
-                        SPDLOG_WARN(
-                            "The selected order uuid: {} is removed from the orderbook model, checking if a better order is available", uuid_to_be_removed);
-                        functor(trading_pg, preffered_order, selected_order_uuid);
+                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, checking if a better order is available", uuid_to_be_removed);
+                        check_for_better_order(trading_pg, preffered_order, selected_order_uuid);
                     }
                 }
             }
@@ -646,5 +628,34 @@ namespace atomic_dex
         }
 
         return out;
+    }
+
+    void 
+    orderbook_model::check_for_better_order(trading_page& trading_pg, const QVariantMap& preferred_order, std::string uuid)
+    {
+        if (trading_pg.get_market_mode() == MarketMode::Sell)
+        {
+            t_float_50 preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+            bool       hit             = false;
+            for (auto&& order: m_model_data)
+            {
+                const t_float_50 price_std = safe_float(order.price);
+
+                if (price_std > preferred_price)
+                {
+                    SPDLOG_INFO("An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
+                        utils::format_float(preferred_price));
+                    trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
+                    emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                    hit = true;
+                    break;
+                }
+            }
+            if (!hit)
+            {
+                SPDLOG_INFO("Order with uuid: {} has been cancelled and no new order with better price is available", uuid);
+                trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
+            }
+        }
     }
 } // namespace atomic_dex
