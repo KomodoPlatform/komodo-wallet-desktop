@@ -74,9 +74,19 @@ DexWindow {
         height: parent.height-5
         anchors.centerIn: parent
         color: logout_area.containsMouse? app.globalTheme.surfaceColor : app.globalTheme.dexBoxBackgroundColor
-        DexLabel {
+        Row {
             anchors.centerIn: parent
-            text: qsTr('Logout')
+            Qaterial.ColorIcon {
+                anchors.verticalCenter: parent.verticalCenter
+                source: Qaterial.Icons.logout
+                iconSize: 11
+            }
+            spacing: 5
+            DexLabel {
+                anchors.verticalCenter: parent.verticalCenter
+                text: qsTr('Logout')
+            }
+
         }
         DexMouseArea {
             id: logout_area
@@ -168,11 +178,11 @@ DexWindow {
                     }
                     DexLabel {
                         id: _label
-                        text: app.currentWalletName?? ""
+                        text: API.app.wallet_mgr.wallet_default_name?? ""
                         font.family: 'Montserrat'
                         font.weight: Font.Medium
                         opacity: .7
-                        visible: _label.text !== ""
+                        visible: API.app.wallet_mgr.log_status()
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Qaterial.ColorIcon {
