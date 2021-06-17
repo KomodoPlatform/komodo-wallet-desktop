@@ -66,19 +66,38 @@ ClipRRect // Trade Card
 
         function onBetterOrderDetected(newOrder)
         {
-            console.log("Enter Better Order")
-            if (API.app.trading_pg.selected_order_status == SelectedOrderStatus.DataChanged)
-                console.log("Data changed")
-            else if (API.app.trading_pg.selected_order_status == SelectedOrderStatus.BetterPriceAvailable)
+            // We shoould rename SelectedOrderStatus enum to OrderbookNotification.
+            if (API.app.trading_pg.selected_order_status == SelectedOrderStatus.BetterPriceAvailable)
             {
-                console.log(JSON.stringify(newOrder))
-                if (newOrder.base_max_volume <= selectedOrder.base_max_volume)
+                // Price changed and we can still afford the volume.
+                if (parseFloat(newOrder.base_max_volume) <= selectedOrder.base_max_volume && parseFloat(newOrder.rel_max_volume) >= API.app.trading_pg.total_amount)
                 {
+                    console.log("Updating forms with better price");
+                    Qaterial.SnackbarManager.show(
+                    {
+                        expandable: true,
+                        text: qsTr("Better price found: %1. Updating forms.")
+                                    .arg(parseFloat(newOrder.price).toFixed(8)),
+                        timeout: Qaterial.Style.snackbar.longDisplayTime
+                    })
                     selectedOrder = newOrder
                 }
                 else
                 {
-                    console.log("Better order has a better price but lower quant available. %1".arg(newOrder.base_max_volume))
+                    console.log("Asking user if he want a better price but lower volume");
+                    Qaterial.SnackbarManager.show(
+                    {
+                        expandable: true,
+                        action: "Update",
+                        text: qsTr("Better price (%1) found but received quantity (%2) is lower than your current one (%3). Click here to update the selected order.")
+                                    .arg(parseFloat(newOrder.price).toFixed(8))
+                                    .arg(parseFloat(newOrder.rel_max_volume).toFixed(8))
+                                    .arg(API.app.trading_pg.total_amount),
+                        onAccept: function() { selectedOrder = newOrder },
+                        onClose:  function() { selectedOrder = undefined },
+                        maximumLineCount: 2,
+                        timeout: 10000
+                    })
                 }
             }
         }

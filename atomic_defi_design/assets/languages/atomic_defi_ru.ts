@@ -3475,67 +3475,77 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="115"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="72"/>
+        <source>Better price found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="75"/>
+        <source>Higher tradable quantity available: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="111"/>
         <source>Swap</source>
         <translation type="unfinished">Обменять</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="123"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="119"/>
         <source>Instant trading with best orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="152"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="148"/>
         <source>From</source>
         <translation type="unfinished">От</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="166"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="162"/>
         <source>Tradable: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="198"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="194"/>
         <source>Minimum: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="198"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="194"/>
         <source>Enter an amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="323"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="320"/>
         <source>MAX</source>
         <translation type="unfinished">МАКС</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="342"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="340"/>
         <source>To</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="435"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="434"/>
         <source>Pick an order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="470"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="469"/>
         <source>Price</source>
         <translation type="unfinished">Цена</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="497"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="496"/>
         <source>Swap Now !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="520"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="519"/>
         <source>Failed to place the order</source>
         <translation type="unfinished">Не удалось разместить ордер</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="535"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="534"/>
         <source>Placed the order</source>
         <translation type="unfinished">Ордер размещен</translation>
     </message>
