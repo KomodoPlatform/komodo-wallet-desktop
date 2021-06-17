@@ -54,8 +54,9 @@ namespace atomic_dex
             break;
         case kind::best_orders:
             this->m_model_proxy->setSortRole(PriceFiatRole);
-            this->m_model_proxy->setFilterRole(HaveCEXIDRole);
+            this->m_model_proxy->setFilterRole(CoinRole);
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
+            this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
             break;
         }
     }
@@ -364,7 +365,8 @@ namespace atomic_dex
     {
         if (!orderbook.empty())
         {
-            SPDLOG_INFO("full orderbook initialization initial size: {} target size: {}, orderbook_kind: {}", rowCount(), orderbook.size(), m_current_orderbook_kind);
+            SPDLOG_INFO(
+                "full orderbook initialization initial size: {} target size: {}, orderbook_kind: {}", rowCount(), orderbook.size(), m_current_orderbook_kind);
         }
         this->beginResetModel();
         m_model_data = orderbook;
@@ -558,7 +560,8 @@ namespace atomic_dex
                     const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
                     if (selected_order_uuid == uuid_to_be_removed)
                     {
-                        SPDLOG_WARN("The selected order uuid: {} is removed from the orderbook model, checking if a better order is available", uuid_to_be_removed);
+                        SPDLOG_WARN(
+                            "The selected order uuid: {} is removed from the orderbook model, checking if a better order is available", uuid_to_be_removed);
                         check_for_better_order(trading_pg, preffered_order, selected_order_uuid);
                     }
                 }
@@ -630,7 +633,7 @@ namespace atomic_dex
         return out;
     }
 
-    void 
+    void
     orderbook_model::check_for_better_order(trading_page& trading_pg, const QVariantMap& preferred_order, std::string uuid)
     {
         if (trading_pg.get_market_mode() == MarketMode::Sell)
@@ -643,7 +646,8 @@ namespace atomic_dex
 
                 if (price_std > preferred_price)
                 {
-                    SPDLOG_INFO("An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
+                    SPDLOG_INFO(
+                        "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
                         utils::format_float(preferred_price));
                     trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
                     emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));

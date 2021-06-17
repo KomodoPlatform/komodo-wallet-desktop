@@ -48,6 +48,7 @@ namespace mm2::api
             for (auto&& [key, value]: j.items())
             {
                 // SPDLOG_INFO("{} best orders size: {}", key, value.size());
+                //bool hit = false;
                 std::unordered_set<std::string> uuid_visited;
                 for (auto&& cur_order: value)
                 {
@@ -60,9 +61,15 @@ namespace mm2::api
                     }
                     else
                     {
+                        //hit = true;
                         SPDLOG_WARN("Order with uuid: {} already added - skipping", contents.uuid);
                     }
                 }
+                /*if (hit)
+                {
+                    SPDLOG_WARN("mm2 answer duplicated: {}", value.dump());
+                    hit = false;
+                }*/
             }
         }
     }

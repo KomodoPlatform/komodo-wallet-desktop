@@ -120,6 +120,7 @@ namespace atomic_dex
         [[maybe_unused]] QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
         auto* orderbook = qobject_cast<orderbook_model*>(this->sourceModel());
+
         if (orderbook != nullptr)
         {
             switch (orderbook->get_orderbook_kind())
@@ -136,7 +137,8 @@ namespace atomic_dex
                 break;
             }
         }
-        if (this->filterRole() == orderbook_model::HaveCEXIDRole)
+
+        if (orderbook != nullptr && orderbook->get_orderbook_kind() == orderbook_model::kind::best_orders)
         {
             bool is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
             return is_cex_id_available;
