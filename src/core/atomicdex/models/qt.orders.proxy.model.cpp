@@ -23,6 +23,7 @@
 //! Project
 #include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/models/qt.orders.proxy.model.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
