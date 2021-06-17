@@ -20,6 +20,7 @@ Qaterial.Dialog {
     function disconnect() {
         
         Qaterial.DialogManager.showDialog({title: qsTr("Logout request"),text: qsTr("Confirm logout request to disconnect!!"),iconSource: Qaterial.Icons.logout,standardButtons: Dialog.Yes | Dialog.Cancel, onAccepted: function(){
+            Qaterial.DialogManager.close()
             app.currentWalletName = ""
             API.app.disconnect()
             onDisconnect()

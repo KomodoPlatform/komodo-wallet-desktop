@@ -84,6 +84,8 @@ DexWindow {
             anchors.fill: parent
             onClicked:  {
                 Qaterial.DialogManager.showDialog({title: qsTr("Logout request"),text: qsTr("Confirm logout request to disconnect!!"),iconSource: Qaterial.Icons.logout,standardButtons: Dialog.Yes | Dialog.Cancel, onAccepted: function() {
+                    Qaterial.DialogManager.close()
+                    userMenu.close()
                     app.currentWalletName = ""
                     API.app.disconnect()
                     app.onDisconnect()
@@ -91,7 +93,6 @@ DexWindow {
             }
         }
       }
-      
     }
   }
 
