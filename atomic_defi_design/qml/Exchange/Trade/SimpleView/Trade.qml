@@ -221,7 +221,6 @@ ClipRRect // Trade Card
 
                 Text    // Amount In Fiat
                 {
-                    enabled: _fromValue.text
                     enabled: _fromValue.field.text
                     anchors.top: _fromValue.bottom
                     anchors.left: _fromValue.left
@@ -354,7 +353,7 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 18
                     text: enabled ? API.app.trading_pg.total_amount : "0"
                     font.pixelSize: Style.textSizeSmall5
-                    Component.onCompleted: color = _fromValue.placeholderTextColor
+                    color: theme.buttonColorTextDisabled
                 }
 
                 Text    // Amount In Fiat
@@ -365,7 +364,7 @@ ClipRRect // Trade Card
                     anchors.left: _toValue.left
                     anchors.leftMargin: 3
                     font.pixelSize: Style.textSizeSmall1
-                    Component.onCompleted: color = _fromValue.placeholderTextColor
+                    color: theme.buttonColorTextDisabled
                     text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
