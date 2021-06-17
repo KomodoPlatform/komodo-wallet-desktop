@@ -13,128 +13,42 @@ import "../Orders" as Orders
 import "Main.js" as Main
 
 Item {
+    id: _subHistoryRoot
     anchors.fill: parent
     readonly property date default_min_date: new Date("2019-01-01")
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
+    property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
+    property bool displayFilter: false
     function update() {
-        console.log('history updated')
-        main_order.list_model_proxy.is_history = true
-        main_order.list_model_proxy.apply_all_filtering()
+        list_model_proxy.is_history = true
+        applyTickerFilter()
+        applyDateFilter()
+        applyAllFiltering()
+    }
+    
+    function applyTickerFilter() {  
+        applyTickerFilter2(combo_base.currentTicker, combo_rel.currentTicker)
+    }
+
+    function applyTickerFilter2(ticker1, ticker2) {
+        list_model_proxy.set_coin_filter(ticker1 + "/" + ticker2)
+    }
+
+    function applyDateFilter() {
+        list_model_proxy.filter_minimum_date = min_date.date
+
+        if(max_date.date < min_date.date)
+            max_date.date = min_date.date
+
+        list_model_proxy.filter_maximum_date = max_date.date
     }
     function applyFilter() {
+        applyTickerFilter()
+        applyDateFilter()
 
     }
-    function applyDateFilter() {
-
-    }
-    DexModal {
-        id: history_option
-        height: 250
-        width: 450
-        x: ((dashboard.width/2)-(width/2))+30
-        y: 100
-        header: DexModalHeader {
-            text: qsTr("History Options")
-            color: 'transparent'
-            
-        }
-        footer: Item {
-            height: 60
-            Row {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 10
-                spacing: 10
-                DexAppButton {
-                    height: 40
-                    width: 120 
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Cancel")
-                }
-                DexAppButton {
-                    height: 40
-                    width: 130 
-                    anchors.verticalCenter: parent.verticalCenter
-                    backgroundColor: Qaterial.Colors.lightGreen700
-                    text: qsTr("Apply filter")
-                }
-            }
-        }
-        Column {
-            anchors.horizontalCenter: parent.horizontalCenter
-            leftPadding: 15 
-            rightPadding: 15
-            RowLayout {
-                width: parent.width - 20
-                height: 60
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: 10
-                DefaultSweetComboBox {
-                    id: combo_base
-                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
-                    onCurrentTickerChanged: applyFilter()
-                    Layout.fillWidth: true
-                    height: 100
-                    valueRole: "ticker"
-                    textRole: 'ticker'
-                }
-                Qaterial.ColorIcon {
-                    Layout.alignment: Qt.AlignVCenter
-                    source: Qaterial.Icons.swapHorizontal
-                    DefaultMouseArea {
-                        id: swap_button
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: {
-                            const base_idx = combo_base.currentIndex
-                            combo_base.currentIndex = combo_rel.currentIndex
-                            combo_rel.currentIndex = base_idx
-                        }
-                    }
-                }
-
-                DefaultSweetComboBox {
-                    id: combo_rel
-                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
-                    onCurrentTickerChanged: applyFilter()
-                    Layout.fillWidth: true
-                    height: 100
-                    valueRole: "ticker"
-                    textRole: 'ticker'
-
-                }
-                
-            }
-            spacing: 10
-            RowLayout {
-                width: parent.width - 20
-                height: 60
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: 10
-                Qaterial.TextFieldDatePicker {
-                    id: min_date
-                    title: qsTr("From")
-                    from: default_min_date
-                    to: default_max_date
-                    date: default_min_date
-                    onAccepted: applyDateFilter()
-                    Layout.fillWidth: true
-                }
-
-                Qaterial.TextFieldDatePicker {
-                    id: max_date
-                    enabled: min_date.enabled
-                    title: qsTr("To")
-                    from: min_date.date
-                    to: default_max_date
-                    date: default_max_date
-                    onAccepted: applyDateFilter()
-                    Layout.fillWidth: true
-                }
-            }
-        }
-
-        
+    function applyAllFiltering() {
+        list_model_proxy.apply_all_filtering()
     }
     ColumnLayout // Header
     {
@@ -150,8 +64,11 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.verticalCenterOffset: 10
                 x: 320
-                icon.source: Qaterial.Icons.filter
-                onClicked: history_option.open()
+                icon.source: _subHistoryRoot.displayFilter? Qaterial.Icons.close : Qaterial.Icons.filter
+                onClicked: {
+                   console.log("clicked")
+                    _subHistoryRoot.displayFilter = !_subHistoryRoot.displayFilter
+                }
             }
             Column {
                 padding: 20
@@ -181,12 +98,147 @@ Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
             property bool is_history: true
-            property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
+            
             Component.onCompleted: {
-                list_model_proxy.is_history = is_history
+                _subHistoryRoot.list_model_proxy.is_history = is_history
             }
             List {
                 id: order_list_view
+            }
+            DexRectangle {
+                anchors.fill: parent 
+                color: theme.dexBoxBackgroundColor
+                opacity: .8
+                visible: _subHistoryRoot.displayFilter
+                border.width: 0
+            }
+            DexRectangle {
+                width: parent.width
+                height: _subHistoryRoot.displayFilter? 330 : 60
+                visible: height>100
+                sizeAnimation: true
+                color: theme.dexBoxBackgroundColor
+                radius: 0
+                y: -20
+                Column {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    leftPadding: 15 
+                    rightPadding: 15
+                    visible: parent.height>250
+                    DexLabel {
+                        text: qsTr("Filter settings")
+                        topPadding: 10
+                        leftPadding: 10
+                        font: _font.body1
+                    }
+                    RowLayout {
+                        width: main_order.width - 30
+                        height: 35
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: 0
+                        DexLabel {
+                            text: qsTr("Base Ticker")
+                            leftPadding: 10
+                            font: _font.body2
+                            Layout.fillWidth: true
+                            Layout.alignment: Qt.AlignVCenter
+                            opacity: .6
+                        }
+                        DefaultSweetComboBox {
+                            id: combo_base
+                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+                            onCurrentTickerChanged: applyTickerFilter()
+                            height: 60
+                            valueRole: "ticker"
+                            textRole: 'ticker'
+                        }
+                        
+                    }
+                    RowLayout {
+                        width: main_order.width - 30
+                        height: 35
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: 5
+                        DexLabel {
+                            text: qsTr("Rel Ticker")
+                            leftPadding: 10
+                            font: _font.body2
+                            Layout.fillWidth: true
+                            Layout.alignment: Qt.AlignVCenter
+                            opacity: .6
+                        }
+                        DefaultSweetComboBox {
+                            id: combo_rel
+                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
+                            onCurrentTickerChanged: applyTickerFilter()
+                            height: 60
+                            valueRole: "ticker"
+                            textRole: 'ticker'
+
+                        }
+                        
+                    }
+                    spacing: 10
+                    Qaterial.TextFieldDatePicker {
+                        id: min_date
+                        title: qsTr("From")
+                        from: default_min_date
+                        to: default_max_date
+                        date: default_min_date
+                        onAccepted: applyDateFilter()
+                        width: parent.width - 50
+                        height: 60
+                        opacity: .8
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    Qaterial.TextFieldDatePicker {
+                        id: max_date
+                        enabled: min_date.enabled
+                        title: qsTr("To")
+                        from: min_date.date
+                        to: default_max_date
+                        date: default_max_date
+                        onAccepted: applyDateFilter()
+                        width: parent.width - 50
+                        rightInset: 0
+                        height: 60
+                        opacity: .8
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+                Item {
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+                    height: 60
+                    Row {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        spacing: 10
+                        DexAppButton {
+                            height: 35
+                            width: 120 
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: qsTr("Cancel")
+                            onClicked: {
+                                _subHistoryRoot.displayFilter = false
+                            }
+                        }
+                        DexAppButton {
+                            height: 35
+                            width: 130 
+                            anchors.verticalCenter: parent.verticalCenter
+                            backgroundColor: Qaterial.Colors.lightGreen700
+                            text: qsTr("Apply filter")
+                            onClicked: {
+                                _subHistoryRoot.displayFilter = false
+                                _subHistoryRoot.applyFilter()
+                                _subHistoryRoot.applyAllFiltering()
+                            }
+                        }
+                    }
+                }
             }
             
         }

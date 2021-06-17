@@ -38,7 +38,7 @@ ComboBox {
         elide: Text.ElideRight
     }
 
-    background: Rectangle {
+    background: DexRectangle {
         implicitWidth: 120
         implicitHeight: 40
         color: !control.enabled ? theme.hightlightColor : control.hovered ? theme.backgroundColor : theme.dexBoxBackgroundColor
