@@ -61,8 +61,10 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x===0? theme.surfaceColor :  theme.foregroundColor
+                    color: background_rect.x===0? theme.surfaceColor :  pro_area.containsMouse? theme.accentColor : theme.foregroundColor
                     DexMouseArea {
+                        id: pro_area
+                        hoverEnabled: true 
                         anchors.fill: parent
                         onClicked: {
                             background_rect.x = 0
@@ -77,9 +79,11 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x!==0? theme.surfaceColor :  theme.foregroundColor
+                    color: background_rect.x!==0? theme.surfaceColor :  simple_area.containsMouse? theme.accentColor : theme.foregroundColor
                     DexMouseArea {
+                        id: simple_area
                         anchors.fill: parent
+                        hoverEnabled: true 
                         onClicked: {
                             background_rect.x = 70
                             API.app.trading_pg.current_trading_mode = TradingMode.Simple
