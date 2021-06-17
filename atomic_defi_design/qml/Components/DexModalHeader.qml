@@ -3,8 +3,8 @@ import QtQuick 2.15
 DexRectangle {
 	id: _headerBackground
 	property alias text: _title.text
-	width: parent.width
-	height: _header.height
+	/*width: parent.width
+	height: parent.height*/
 	color: theme.accentColor
 	border.width: 0
 	radius: 0

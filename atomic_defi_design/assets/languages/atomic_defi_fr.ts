@@ -1740,22 +1740,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="137"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="136"/>
         <source>Trade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="155"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="154"/>
         <source>Orders</source>
         <translation type="unfinished">Ordres</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="173"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="172"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="249"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="248"/>
         <source>Recover Funds Result</source>
         <translation type="unfinished">Le résultat de la récupération des fonds</translation>
     </message>
