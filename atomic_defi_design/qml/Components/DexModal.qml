@@ -4,22 +4,24 @@ import QtQuick.Layouts 1.15
 
 Popup {
 	id: control
-	anchors.centerIn: Overlay.overlay
+	parent: Overlay.overlay
 	property alias title: _headerBackground.text
 	property alias headerBackground: _headerBackground
 	property alias backgroundColor: _backgroundColor.color
 	property alias currentIndex: _layoutPopup.currentIndex
 	property alias header: _header.contentItem
 	property alias footer: _footer.contentItem
-	width: 450
-	height: 400
+	modal: true
 	padding: 0
+	Overlay.modeless: DexRectangle {
+        color: theme.dexBoxBackgroundColor
+        opacity: .3
+    }
 	background: ClipRRect {
 		radius: 8
-		FloatingBackground { 
+		DexRectangle { 
 			id: _backgroundColor
 			anchors.fill: parent
-			verticalShadow: false
 			border.width: 2
 			radius: parent.radius
 			color: theme.dexBoxBackgroundColor

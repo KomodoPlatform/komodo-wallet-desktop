@@ -33,41 +33,6 @@ Item {
             currentSubPage = subPages.Orders
         }
     }
-    DexModal {
-        header: DexModalHeader {
-            text: qsTr("History Options")
-            color: 'transparent'
-            Qaterial.AppBarButton {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 10
-                icon.source: Qaterial.Icons.cogs
-            }
-        }
-        footer: Item {
-            height: 60
-            Row {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 10
-                spacing: 10
-                DexAppButton {
-                    height: 40
-                    width: 120 
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Cancel")
-                }
-                DexAppButton {
-                    height: 40
-                    width: 130 
-                    anchors.verticalCenter: parent.verticalCenter
-                    backgroundColor: Qaterial.Colors.lightGreen700
-                    text: qsTr("Apply filter")
-                }
-            }
-        }
-        //Component.onCompleted: open()
-    }
     Column
     {
         width: root.currentSubPage===subPages.Trade? simple_trade.best? 600 : 380 : 380
@@ -205,7 +170,6 @@ Item {
                     {
                         id: simple_trade
                         width: parent.width
-                        visible: parent.height>200
                     }
                 }
             }

@@ -21,6 +21,7 @@ Item {
     property bool show_shadow: true
     property alias light_gradient: _linear_gradient
     property alias black_shadow: _black_shadow
+    property bool topShadowVisible: show_shadow 
 
     readonly property var visible_rect: opacity_mask_enabled ? mask_loader : rect
 
@@ -73,7 +74,7 @@ Item {
         anchors.fill: visible_rect
         source: visible_rect
         cached: false
-        visible: show_shadow
+        visible: topShadowVisible
         horizontalOffset: verticalShadow ? 0 : -6
         verticalOffset: verticalShadow ? -10 : -6
         radius: verticalShadow ? 25 : 15
