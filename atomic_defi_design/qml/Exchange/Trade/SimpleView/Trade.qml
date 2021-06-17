@@ -72,9 +72,9 @@ ClipRRect // Trade Card
                 // Price changed and we can still afford the volume.
                 if (parseFloat(newOrder.base_max_volume) <= selectedOrder.base_max_volume && parseFloat(newOrder.rel_max_volume) >= API.app.trading_pg.total_amount)
                 {
+                    console.log("Updating forms with better price");
                     Qaterial.SnackbarManager.show(
                     {
-                        width: 800,
                         expandable: true,
                         text: qsTr("Better price found: %1. Updating forms.")
                                     .arg(parseFloat(newOrder.price).toFixed(8)),
@@ -84,6 +84,7 @@ ClipRRect // Trade Card
                 }
                 else
                 {
+                    console.log("Asking user if he want a better price but lower volume");
                     Qaterial.SnackbarManager.show(
                     {
                         expandable: true,
