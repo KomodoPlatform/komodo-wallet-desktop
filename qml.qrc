@@ -323,6 +323,7 @@
         <file>atomic_defi_design/qml/Components/DefaultTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAppButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexBoxManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
@@ -342,6 +343,7 @@
         <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
         <file>atomic_defi_design/qml/Components/DexMacControl.qml</file>
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
+        <file>atomic_defi_design/qml/Components/DexModalHeader.qml</file>
         <file>atomic_defi_design/qml/Components/DexMouseArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexPopup.qml</file>
         <file>atomic_defi_design/qml/Components/DexRangeSlider.qml</file>
