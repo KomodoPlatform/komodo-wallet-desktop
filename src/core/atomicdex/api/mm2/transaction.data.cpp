@@ -67,6 +67,10 @@ namespace mm2::api
         }
         j.at("fee_details").get_to(cfg.fee_details);
         j.at("from").get_to(cfg.from);
+        if (cfg.from.empty() && cfg.coin == "FIRO")
+        {
+            cfg.from.emplace_back("Lelantusjsplit (Hidden)");
+        }
         j.at("internal_id").get_to(cfg.internal_id);
         j.at("my_balance_change").get_to(cfg.my_balance_change);
         j.at("received_by_me").get_to(cfg.received_by_me);
