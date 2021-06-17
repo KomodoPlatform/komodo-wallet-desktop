@@ -202,10 +202,6 @@ Rectangle {
         opacity: .4
         anchors.bottom: parent.bottom
     }
-    ProgressBar {
-        width: parent.width
-        visible: !isSwapDone(details.order_status) && Qt.platform.os != "osx"
-        indeterminate: true
-        anchors.bottom: parent.bottom
-    }
+
+    //  !isSwapDone(details.order_status) && Qt.platform.os != "osx"  needeed for new progress later
 }
