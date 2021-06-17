@@ -455,6 +455,54 @@
     </message>
 </context>
 <context>
+    <name>BestOrdersModal</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="28"/>
+        <source>Best Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="46"/>
+        <source>Token</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="54"/>
+        <source>Available Quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="62"/>
+        <source>Available Quantity (in %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="70"/>
+        <source>Fiat Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="78"/>
+        <source>CEX Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="148"/>
+        <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="192"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="199"/>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>BuyBox</name>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/BuyBox.qml" line="33"/>
@@ -703,6 +751,19 @@
     </message>
 </context>
 <context>
+    <name>CoinsListModal</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/CoinsListModal.qml" line="21"/>
+        <source>Select a ticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/CoinsListModal.qml" line="61"/>
+        <source>Token name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Combo_fiat</name>
     <message>
         <location filename="../../qml/Settings/Combo_fiat.qml" line="19"/>
@@ -761,74 +822,74 @@
 <context>
     <name>ConfirmTradeModal</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="48"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="49"/>
         <source>Confirm Exchange Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="96"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="97"/>
         <source>This swap request can not be undone and is a final event!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="102"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="103"/>
         <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="126"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="127"/>
         <source>Total %1 fees: %2 (%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="170"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="171"/>
         <source>Security configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="177"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="178"/>
         <source>dPoW protected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="178"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="179"/>
         <source>%1 confirmations for incoming %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="184"/>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="217"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="185"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="218"/>
         <source>Read more about dPoW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="194"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="195"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="211"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="212"/>
         <source>Enable Komodo dPoW security</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="235"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="236"/>
         <source>Required Confirmations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="271"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="272"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="284"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="285"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="293"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="294"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1355,61 +1416,61 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="411"/>
+        <location filename="../../qml/Constants/General.qml" line="412"/>
         <source>Trading Fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="421"/>
+        <location filename="../../qml/Constants/General.qml" line="422"/>
         <source>Minimum Trading Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="431"/>
+        <location filename="../../qml/Constants/General.qml" line="432"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="440"/>
+        <location filename="../../qml/Constants/General.qml" line="441"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="442"/>
+        <location filename="../../qml/Constants/General.qml" line="443"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="444"/>
+        <location filename="../../qml/Constants/General.qml" line="445"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="446"/>
+        <location filename="../../qml/Constants/General.qml" line="447"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="448"/>
-        <location filename="../../qml/Constants/General.qml" line="450"/>
+        <location filename="../../qml/Constants/General.qml" line="449"/>
+        <location filename="../../qml/Constants/General.qml" line="451"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="452"/>
-        <location filename="../../qml/Constants/General.qml" line="456"/>
+        <location filename="../../qml/Constants/General.qml" line="453"/>
+        <location filename="../../qml/Constants/General.qml" line="457"/>
         <source>%1 parent chain is not enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="454"/>
-        <location filename="../../qml/Constants/General.qml" line="458"/>
+        <location filename="../../qml/Constants/General.qml" line="455"/>
+        <location filename="../../qml/Constants/General.qml" line="459"/>
         <source>%1 parent chain balance is 0, a non-zero balance is required to pay the gas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="460"/>
+        <location filename="../../qml/Constants/General.qml" line="461"/>
         <source>Unknown Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1506,6 +1567,14 @@
     <message>
         <location filename="../../qml/Components/LinksRow.qml" line="36"/>
         <source>Go to Support Guides</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>List</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/List.qml" line="227"/>
+        <source>Funds are recoverable</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1653,6 +1722,41 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="582"/>
         <source>Fetching transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="38"/>
+        <source>History Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="58"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="65"/>
+        <source>Apply filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="137"/>
+        <source>Trade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="155"/>
+        <source>Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="173"/>
+        <source>History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Main.qml" line="249"/>
+        <source>Recover Funds Result</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2110,6 +2214,24 @@
     </message>
 </context>
 <context>
+    <name>OrderRemovedModal</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="10"/>
+        <source>Selected Order Removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="14"/>
+        <source>The selected order does not exist anymore, it might have been matched or canceled, and no order with a better price is available. Please select a new order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="21"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Orders</name>
     <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="12"/>
@@ -2282,72 +2404,72 @@
 <context>
     <name>ProView</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="68"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="71"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="77"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="80"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="139"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="143"/>
         <source>Chart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="235"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="243"/>
         <source>Trading Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="261"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="269"/>
         <source>Exchange Rates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="268"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="276"/>
         <source>Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="275"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="283"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="343"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="354"/>
         <source>Order Book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="362"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="373"/>
         <source>Best Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="388"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="399"/>
         <source>Place Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="431"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="442"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="466"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="477"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="502"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="513"/>
         <source>Order Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ProView.qml" line="555"/>
+        <location filename="../../qml/Exchange/Trade/ProView.qml" line="566"/>
         <source>Start Swap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3028,139 +3150,6 @@
     </message>
 </context>
 <context>
-    <name>SimpleView</name>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="56"/>
-        <source>Swap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="64"/>
-        <source>Instant trading with best orders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="81"/>
-        <source>History.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="112"/>
-        <source>From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="279"/>
-        <source>To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="367"/>
-        <source>Pick an order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="679"/>
-        <source>Best Orders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="696"/>
-        <source>Token</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="704"/>
-        <source>Available Quantity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="798"/>
-        <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="442"/>
-        <source>Swap Now !</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="126"/>
-        <source>Tradable: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="158"/>
-        <source>Minimum: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="158"/>
-        <source>Enter an amount</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="416"/>
-        <source>Price</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="459"/>
-        <source>You must select an order.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="462"/>
-        <source>You must enter an amount</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="465"/>
-        <source>Entered amount must be superior than 0.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="467"/>
-        <source>Entered amount is below the minimum required by this order: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="539"/>
-        <source>Total %1 fees: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="546"/>
-        <source>%2 (%3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="567"/>
-        <source>Select a ticker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="601"/>
-        <source>Token name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="712"/>
-        <source>Available Quantity (in %1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="720"/>
-        <source>Fiat Volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView.qml" line="728"/>
-        <source>CEX Rate</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SmartChartView</name>
     <message>
         <location filename="../../qml/Portfolio/SmartChartView.qml" line="125"/>
@@ -3170,6 +3159,76 @@
     <message>
         <location filename="../../qml/Portfolio/SmartChartView.qml" line="131"/>
         <source>There is no chart data for this ticker yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubBestOrder</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="43"/>
+        <source>Token</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="52"/>
+        <source>Available Quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="61"/>
+        <source>Available Quantity (in %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="70"/>
+        <source>Fiat Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="79"/>
+        <source>CEX Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="151"/>
+        <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="188"/>
+        <source>No best order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubHistory</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="37"/>
+        <source>History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="45"/>
+        <source>Display all history created</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="78"/>
+        <source>Orders in history</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubOrders</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="37"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="78"/>
+        <source>Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="45"/>
+        <source>Display all orders created</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3398,14 +3457,127 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     </message>
 </context>
 <context>
+    <name>Trade</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="115"/>
+        <source>Swap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="123"/>
+        <source>Instant trading with best orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="152"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="166"/>
+        <source>Tradable: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="198"/>
+        <source>Minimum: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="198"/>
+        <source>Enter an amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="324"/>
+        <source>MAX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="343"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="436"/>
+        <source>Pick an order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="471"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="498"/>
+        <source>Swap Now !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="521"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="536"/>
+        <source>Placed the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="552"/>
+        <source>Entered amount must be superior than 0.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="554"/>
+        <source>You must select an order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="556"/>
+        <source>Entered amount is below the minimum required by this order: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="558"/>
+        <source>Parent chain of left ticker is not enabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="560"/>
+        <source>Left ticker parent chain balance needs to be funded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="562"/>
+        <source>Parent chain of right ticker is not enabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="564"/>
+        <source>Right ticker parent chain balance needs to be funded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="666"/>
+        <source>Total %1 fees: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="673"/>
+        <source>%2 (%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TradeViewHeader</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="119"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="124"/>
         <source>How to trade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="145"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="150"/>
         <source>FAQ</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3573,12 +3745,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../../qml/main.qml" line="79"/>
+        <location filename="../../qml/main.qml" line="87"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/main.qml" line="213"/>
+        <location filename="../../qml/main.qml" line="223"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
