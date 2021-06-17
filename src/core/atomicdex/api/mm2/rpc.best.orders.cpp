@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! STD
+#include <unordered_set>
+
 //! Deps
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
