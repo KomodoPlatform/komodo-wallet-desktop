@@ -3475,112 +3475,122 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="115"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="72"/>
+        <source>Better price found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="75"/>
+        <source>Higher tradable quantity available: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="111"/>
         <source>Swap</source>
         <translation type="unfinished">Обменять</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="123"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="119"/>
         <source>Instant trading with best orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="152"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="148"/>
         <source>From</source>
         <translation type="unfinished">От</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="166"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="162"/>
         <source>Tradable: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="198"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="194"/>
         <source>Minimum: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="198"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="194"/>
         <source>Enter an amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="324"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="320"/>
         <source>MAX</source>
         <translation type="unfinished">МАКС</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="343"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="340"/>
         <source>To</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="436"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="434"/>
         <source>Pick an order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="471"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="469"/>
         <source>Price</source>
         <translation type="unfinished">Цена</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="498"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="496"/>
         <source>Swap Now !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="521"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="519"/>
         <source>Failed to place the order</source>
         <translation type="unfinished">Не удалось разместить ордер</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="536"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="534"/>
         <source>Placed the order</source>
         <translation type="unfinished">Ордер размещен</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="552"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="551"/>
         <source>Entered amount must be superior than 0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="554"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="553"/>
         <source>You must select an order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="556"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="555"/>
         <source>Entered amount is below the minimum required by this order: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="558"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="557"/>
         <source>Parent chain of left ticker is not enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="560"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="559"/>
         <source>Left ticker parent chain balance needs to be funded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="562"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="561"/>
         <source>Parent chain of right ticker is not enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="564"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="563"/>
         <source>Right ticker parent chain balance needs to be funded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="666"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="665"/>
         <source>Total %1 fees: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="673"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="672"/>
         <source>%2 (%3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3588,12 +3598,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>TradeViewHeader</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="124"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="123"/>
         <source>How to trade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="150"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="149"/>
         <source>FAQ</source>
         <translation type="unfinished"></translation>
     </message>
