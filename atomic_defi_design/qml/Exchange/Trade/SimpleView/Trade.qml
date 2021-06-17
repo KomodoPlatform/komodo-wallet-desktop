@@ -19,7 +19,7 @@ ClipRRect // Trade Card
     property var    selectedOrder:  undefined
     property bool best: false
 
-    onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.text = "" }
+    onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.field.text = "" }
     onSelectedOrderChanged:
     {
         if (typeof selectedOrder !== 'undefined' && selectedOrder.from_best_order) API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
@@ -54,8 +54,8 @@ ClipRRect // Trade Card
         {
             if (typeof selectedOrder === 'undefined')
                 return
-            if (parseFloat(_fromValue.text) > API.app.trading_pg.max_volume)
-                _fromValue.text = API.app.trading_pg.max_volume
+            if (parseFloat(_fromValue.field.text) > API.app.trading_pg.max_volume)
+                _fromValue.field.text = API.app.trading_pg.max_volume
         }
 
     }
@@ -188,34 +188,33 @@ ClipRRect // Trade Card
                     }
                 }
 
-                TextField // Amount
+                AmountField // Amount
                 {
                     id: _fromValue
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
-                    anchors.leftMargin: 6
-                    placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Minimum: %1").arg(API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
-                    font.pixelSize: Style.textSizeSmall5
-                    background: Rectangle { color: theme.backgroundColor }
-                    validator: RegExpValidator { regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/ }
-                    onTextChanged:
+                    anchors.leftMargin: 2
+                    field.placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Minimum: %1").arg(API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
+                    field.font.pixelSize: Style.textSizeSmall5
+                    field.background: Rectangle { color: theme.backgroundColor }
+                    field.onTextChanged:
                     {
-                        if (text === "")
+                        if (field.text === "")
                             API.app.trading_pg.volume = 0
                         else
                         {
-                            API.app.trading_pg.volume = text
-                            text = API.app.trading_pg.volume
+                            API.app.trading_pg.volume = field.text
+                            field.text = API.app.trading_pg.volume
                         }
                         API.app.trading_pg.determine_fees()
                         API.app.trading_pg.orderbook.refresh_best_orders()
                     }
-                    onFocusChanged:
+                    field.onFocusChanged:
                     {
-                        if (!focus && parseFloat(text) < parseFloat(API.app.trading_pg.min_trade_vol))
+                        if (!focus && parseFloat(field.text) < parseFloat(API.app.trading_pg.min_trade_vol))
                         {
-                            text = API.app.trading_pg.min_trade_vol
+                            field.text = API.app.trading_pg.min_trade_vol
                         }
                     }
                 }
@@ -223,12 +222,13 @@ ClipRRect // Trade Card
                 Text    // Amount In Fiat
                 {
                     enabled: _fromValue.text
+                    enabled: _fromValue.field.text
                     anchors.top: _fromValue.bottom
                     anchors.left: _fromValue.left
-                    anchors.leftMargin: 15
+                    anchors.leftMargin: 23
                     font.pixelSize: Style.textSizeSmall1
-                    Component.onCompleted: color = _fromValue.placeholderTextColor
-                    text: enabled ? General.getFiatText(_fromValue.text, selectedTicker) : ""
+                    color: theme.buttonColorTextDisabled
+                    text: enabled ? General.getFiatText(_fromValue.field.text, selectedTicker) : ""
                 }
 
                 Rectangle // Select ticker button
@@ -310,7 +310,7 @@ ClipRRect // Trade Card
                     {
                         id: _maxButMouseArea
                         anchors.fill: parent
-                        onClicked: _fromValue.text = API.app.trading_pg.max_volume
+                        onClicked: _fromValue.field.text = API.app.trading_pg.max_volume
                         hoverEnabled: true
                     }
 
@@ -393,7 +393,7 @@ ClipRRect // Trade Card
                         }
 
                         hoverEnabled: true
-                        enabled: parseFloat(_fromValue.text) > 0
+                        enabled: parseFloat(_fromValue.field.text) > 0
                     }
 
                     DefaultImage // Button with icon (a best order is currently selected)
@@ -528,7 +528,7 @@ ClipRRect // Trade Card
                             else if (response.result && response.result.uuid)
                             {
                                 selectedOrder = undefined
-                                _fromValue.text = "0"
+                                _fromValue.field.text = "0"
 
                                 // Make sure there is information
                                 _confirmSwapModal.close()
@@ -548,7 +548,7 @@ ClipRRect // Trade Card
 
                     function getAlert()
                     {
-                        if (_fromValue.text === "" || parseFloat(_fromValue.text) === 0)
+                        if (_fromValue.field.text === "" || parseFloat(_fromValue.field.text) === 0)
                             return qsTr("Entered amount must be superior than 0.")
                         if (typeof selectedOrder === 'undefined')
                             return qsTr("You must select an order.")
