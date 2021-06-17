@@ -595,7 +595,7 @@ ClipRRect // Trade Card
         Item {
             id: bestOrderSimplified
             width: parent.width
-            height: 450
+            height: 300
             visible: _tradeCard.best 
             SubBestOrder {
                 tradeCard: _tradeCard

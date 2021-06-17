@@ -71,9 +71,8 @@ Item {
     Column
     {
         width: root.currentSubPage===subPages.Trade? simple_trade.best? 600 : 380 : 380
-        y: 100
-        spacing: 40
-        anchors.verticalCenter: parent.verticalCenter
+        y: 140
+        spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
 
         InnerBackground // Sub-pages Tabs Selector
