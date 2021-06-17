@@ -2,6 +2,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import Qt.labs.platform 1.1
 
 //! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
@@ -25,7 +26,7 @@ Item {
         applyDateFilter()
         applyAllFiltering()
     }
-    
+
     function applyTickerFilter() {  
         applyTickerFilter2(combo_base.currentTicker, combo_rel.currentTicker)
     }
@@ -249,13 +250,58 @@ Item {
         }
         Item {
             Layout.fillWidth: true
-            Layout.preferredHeight: 15
-            DexLabel // Title
-            {
-                text: order_list_view.count+" "+qsTr("Orders in history")
-                anchors.horizontalCenter: parent.horizontalCenter
-                y: -10
-                //anchors.verticalCenterOffset: -4
+            Layout.preferredHeight: 30
+            Item{
+                width: parent.width
+                height: 50
+                y: -20
+                DefaultComboBox {
+                    readonly property int item_count: API.app.orders_mdl.limit_nb_elements
+                    readonly property var options: [5, 10, 25, 50, 100, 200]
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: 35
+                    width: 80
+                    x: 15
+                    model: options
+                    currentIndex: options.indexOf(item_count)
+                    onCurrentValueChanged: API.app.orders_mdl.limit_nb_elements = currentValue
+                }
+                DexAppButton {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    text: qsTr("Export")
+                    height: 35
+                    anchors.rightMargin: 15
+                    onClicked: {
+                         export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
+                         export_csv_dialog.open()
+                    }
+                }
+            }
+            
+        }
+        FileDialog {
+            id: export_csv_dialog
+
+            title: qsTr("Please choose the CSV export name and location")
+            fileMode: FileDialog.SaveFile
+
+            defaultSuffix: "csv"
+            nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
+
+            onAccepted: {
+                const path = currentFile.toString()
+                
+                // Export
+                console.log("Exporting to CSV: " + path)
+                API.app.exporter_service.export_swaps_history_to_csv(path.replace(General.os_file_prefix, ""))
+
+                // Open the save folder
+                const folder_path = path.substring(0, path.lastIndexOf("/"))
+                Qt.openUrlExternally(folder_path)
+            }
+            onRejected: {
+                console.log("CSV export cancelled")
             }
         }
         
