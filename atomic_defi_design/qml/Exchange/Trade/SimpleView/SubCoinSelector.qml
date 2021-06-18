@@ -50,29 +50,59 @@ DefaultListView
             spacing: 2
             DexLabel             // "Token" Header
             {
+            	property bool asc: true
                 Layout.preferredWidth: _tokenColumnSize+20
                 text: qsTr("Token")
                 font.family: Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
+                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                DexMouseArea {
+                	anchors.fill: parent
+                	hoverEnabled: true 
+                	onClicked: {
+                		parent.asc = !parent.asc 
+                		_listCoinView.model.sort_by_name(parent.asc)
+                	}
+                }
             }
             DexLabel             // "Available Quantity" Header
             {
+            	property bool asc: true
                 Layout.preferredWidth: _balanceSize
                 text: qsTr("Balance")
                 font.family: Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
+                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                DexMouseArea {
+                	anchors.fill: parent
+                	hoverEnabled: true 
+                	onClicked: {
+                		parent.asc = !parent.asc 
+                		_listCoinView.model.sort_by_currency_balance(parent.asc)
+                	}
+                }
             }
             DexLabel             // "Available Quantity (in BASE)" header
             {
+            	property bool asc: true
                 text: qsTr("Balance Fiat").arg(currentLeftToken)
                 font.family: Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
+                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                DexMouseArea {
+                	anchors.fill: parent
+                	hoverEnabled: true 
+                	onClicked: {
+                		parent.asc = !parent.asc 
+                		_listCoinView.model.sort_by_currency_balance(parent.asc)
+                	}
+                }
             }
         }
     }
