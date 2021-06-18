@@ -17,8 +17,8 @@ ClipRRect // Trade Card
 {
     property string selectedTicker: left_ticker
     property var    selectedOrder:  undefined
-    property bool best: false
-    property bool coinSelection: false
+    property bool   best: false
+    property bool   coinSelection: false
 
     onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.field.text = "" }
     onSelectedOrderChanged:
@@ -31,6 +31,7 @@ ClipRRect // Trade Card
     }
     onEnabledChanged: selectedOrder = undefined
     Component.onDestruction: selectedOrder = undefined
+    onBestChanged: if (best) API.app.trading_pg.orderbook.refresh_best_orders()
 
     id: _tradeCard
     width: bestOrderSimplified.visible ? 600 : coinSelection? 450 : 380
@@ -59,6 +60,10 @@ ClipRRect // Trade Card
                 _fromValue.field.text = API.app.trading_pg.max_volume
         }
 
+        function onVolumeChanged()
+        {
+            _fromValue.field.text = API.app.trading_pg.volume
+        }
     }
 
     Connections
@@ -144,7 +149,7 @@ ClipRRect // Trade Card
 
                 Qaterial.OutlineButton // Reset Form Button
                 {
-                    enabled: !best
+                    enabled: !best && typeof selectedOrder !== 'undefined'
                     visible: enabled
                     width: 50
                     height: 50
@@ -158,7 +163,7 @@ ClipRRect // Trade Card
                     Qaterial.ColorIcon
                     {
                         anchors.centerIn: parent
-                        source:  Qaterial.Icons.cardRemove
+                        source:  Qaterial.Icons.broom
                         color: theme.buttonColorTextEnabled
                         opacity: .8
                     }
@@ -215,19 +220,34 @@ ClipRRect // Trade Card
                     anchors.topMargin: 14
                     anchors.right: parent.right
                     anchors.rightMargin: 17
-                    text: qsTr("Tradable: %1").arg(API.app.trading_pg.max_volume)
+                    text: qsTr("%1").arg(API.app.trading_pg.max_volume)
                     font.pixelSize: Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: Style.colorWhite1
 
+                    DexImage
+                    {
+                        id: _fromBalanceIcon
+                        width: 16
+                        height: 16
+                        anchors.right: parent.left
+                        anchors.rightMargin: 8
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: General.image_path + "menu-assets-white.svg"
+                        opacity: .6
+                    }
+
                     MouseArea
                     {
-                        anchors.fill: parent
+                        anchors.left: _fromBalanceIcon.left
+                        anchors.right: _fromBalance.right
+                        anchors.top: _fromBalance.top
+                        anchors.bottom: _fromBalance.bottom
                         hoverEnabled: true
                         ToolTip
                         {
                             visible: parent.containsMouse
-                            text: parent.parent.text
+                            text: qsTr("Tradable: ") + parent.parent.text
                         }
                     }
 
@@ -253,12 +273,12 @@ ClipRRect // Trade Card
                     field.onTextChanged:
                     {
                         if (field.text === "")
-                            API.app.trading_pg.volume = 0
-                        else
                         {
-                            API.app.trading_pg.volume = field.text
-                            field.text = API.app.trading_pg.volume
+                            API.app.trading_pg.volume = 0
+                            field.text = ""
                         }
+                        else
+                            API.app.trading_pg.volume = field.text
                         API.app.trading_pg.determine_fees()
                         API.app.trading_pg.orderbook.refresh_best_orders()
                     }
@@ -269,6 +289,7 @@ ClipRRect // Trade Card
                             field.text = API.app.trading_pg.min_trade_vol
                         }
                     }
+                    Component.onCompleted: field.text = ""
                 }
 
                 Text    // Amount In Fiat
@@ -515,7 +536,7 @@ ClipRRect // Trade Card
                 Layout.fillWidth: true
 
                 enabled: typeof selectedOrder !== 'undefined'
-                visible: enabled & !bestOrderSimplified.visible && !coinSelectorSimplified.visible
+                visible: enabled && !bestOrderSimplified.visible && !coinSelectorSimplified.visible
 
                 DefaultText
                 {
@@ -527,7 +548,7 @@ ClipRRect // Trade Card
                 {
                     Layout.alignment: Qt.AlignRight
                     font.pixelSize: Style.textSizeSmall3
-                    text: parent.enabled ? "1 %1 = %2 %3"
+                    text: selectedOrder ? "1 %1 = %2 %3"
                                             .arg(atomic_qt_utilities.retrieve_main_ticker(selectedTicker))
                                             .arg(parseFloat(API.app.trading_pg.price).toFixed(8))
                                             .arg(atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin))
@@ -548,7 +569,7 @@ ClipRRect // Trade Card
                     enabled: !API.app.trading_pg.preimage_rpc_busy && !_swapAlert.visible
 
                     anchors.fill: parent
-                    text: qsTr("Swap Now !")
+                    text: qsTr("Swap Now")
                     onClicked: _confirmSwapModal.open()
 
                     ModalLoader

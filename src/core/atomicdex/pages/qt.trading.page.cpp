@@ -472,7 +472,7 @@ namespace atomic_dex
                         t_float_50 min_vol            = safe_float(m_minimal_trading_amount.toStdString());
                         auto       adjust_functor     = [this, wrapper]()
                         {
-                            if (m_post_clear_forms)
+                            if (m_post_clear_forms && this->m_current_trading_mode == TradingModeGadget::Pro)
                             {
                                 this->determine_max_volume();
                                 this->set_volume(get_max_volume());
