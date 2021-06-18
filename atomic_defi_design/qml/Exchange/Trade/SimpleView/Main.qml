@@ -82,7 +82,7 @@ Item {
 
                 border.width: 2
                 border.color: 'transparent'
-                height: parent.height-6
+                height: parent.height
                 anchors.verticalCenter: parent.verticalCenter
                 width: (parent.width / 3) 
                 radius: 40
