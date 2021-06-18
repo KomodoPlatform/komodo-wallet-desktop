@@ -17,8 +17,8 @@ ClipRRect // Trade Card
 {
     property string selectedTicker: left_ticker
     property var    selectedOrder:  undefined
-    property bool best: false
-    property bool coinSelection: false
+    property bool   best: false
+    property bool   coinSelection: false
 
     onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.field.text = "" }
     onSelectedOrderChanged:
@@ -31,6 +31,7 @@ ClipRRect // Trade Card
     }
     onEnabledChanged: selectedOrder = undefined
     Component.onDestruction: selectedOrder = undefined
+    onBestChanged: if (best) API.app.trading_pg.orderbook.refresh_best_orders()
 
     id: _tradeCard
     width: bestOrderSimplified.visible ? 600 : coinSelection? 450 : 380
