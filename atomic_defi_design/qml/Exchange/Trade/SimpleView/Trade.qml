@@ -149,7 +149,7 @@ ClipRRect // Trade Card
 
                 Qaterial.OutlineButton // Reset Form Button
                 {
-                    enabled: !best
+                    enabled: !best && typeof selectedOrder !== 'undefined'
                     visible: enabled
                     width: 50
                     height: 50
@@ -163,7 +163,7 @@ ClipRRect // Trade Card
                     Qaterial.ColorIcon
                     {
                         anchors.centerIn: parent
-                        source:  Qaterial.Icons.cardRemove
+                        source:  Qaterial.Icons.broom
                         color: theme.buttonColorTextEnabled
                         opacity: .8
                     }
