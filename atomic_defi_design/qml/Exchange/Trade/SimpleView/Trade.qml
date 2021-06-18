@@ -569,7 +569,7 @@ ClipRRect // Trade Card
                     enabled: !API.app.trading_pg.preimage_rpc_busy && !_swapAlert.visible
 
                     anchors.fill: parent
-                    text: qsTr("Swap Now !")
+                    text: qsTr("Swap Now")
                     onClicked: _confirmSwapModal.open()
 
                     ModalLoader
