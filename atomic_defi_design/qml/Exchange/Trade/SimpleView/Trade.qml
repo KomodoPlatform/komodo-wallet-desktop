@@ -140,6 +140,37 @@ ClipRRect // Trade Card
                 anchors.topMargin: 12
                 font.pixelSize: Style.textSizeSmall4
                 text: qsTr("Instant trading with best orders")
+
+                Qaterial.OutlineButton // Reset Form Button
+                {
+                    enabled: !best
+                    visible: enabled
+                    width: 50
+                    height: 50
+                    anchors.left: parent.right
+                    anchors.leftMargin: 100
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: -8
+
+                    outlined: false
+
+                    Qaterial.ColorIcon
+                    {
+                        anchors.centerIn: parent
+                        source:  Qaterial.Icons.cardRemove
+                        color: theme.buttonColorTextEnabled
+                        opacity: .8
+                    }
+
+                    onClicked: selectedOrder = undefined
+
+                    hoverEnabled: true
+
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 5000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Reset form.")
+                }
             }
         }
 
