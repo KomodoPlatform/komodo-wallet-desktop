@@ -59,6 +59,10 @@ ClipRRect // Trade Card
                 _fromValue.field.text = API.app.trading_pg.max_volume
         }
 
+        function onVolumeChanged()
+        {
+            _fromValue.field.text = API.app.trading_pg.volume
+        }
     }
 
     Connections
@@ -253,12 +257,12 @@ ClipRRect // Trade Card
                     field.onTextChanged:
                     {
                         if (field.text === "")
-                            API.app.trading_pg.volume = 0
-                        else
                         {
-                            API.app.trading_pg.volume = field.text
-                            field.text = API.app.trading_pg.volume
+                            API.app.trading_pg.volume = 0
+                            field.text = ""
                         }
+                        else
+                            API.app.trading_pg.volume = field.text
                         API.app.trading_pg.determine_fees()
                         API.app.trading_pg.orderbook.refresh_best_orders()
                     }
@@ -269,6 +273,7 @@ ClipRRect // Trade Card
                             field.text = API.app.trading_pg.min_trade_vol
                         }
                     }
+                    Component.onCompleted: field.text = ""
                 }
 
                 Text    // Amount In Fiat
