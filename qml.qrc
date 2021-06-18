@@ -445,6 +445,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/BestOrdersModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/OrderRemovedModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubBestOrder.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubCoinSelector.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubOrders.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubHistory.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SweetDexComboBox.qml</file>

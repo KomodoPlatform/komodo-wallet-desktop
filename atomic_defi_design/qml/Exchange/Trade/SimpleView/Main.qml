@@ -160,7 +160,7 @@ Item {
                 DexRectangle {
                     id: subTradePage
                     height: simple_trade.height
-                    width: simple_trade.best? 600 : 380
+                    width: simple_trade.best? 600 : simple_trade.coinSelection? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
                     color: theme.dexBoxBackgroundColor

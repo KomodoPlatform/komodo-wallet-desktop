@@ -18,6 +18,7 @@ ClipRRect // Trade Card
     property string selectedTicker: left_ticker
     property var    selectedOrder:  undefined
     property bool best: false
+    property bool coinSelection: false
 
     onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.field.text = "" }
     onSelectedOrderChanged:
@@ -32,7 +33,7 @@ ClipRRect // Trade Card
     Component.onDestruction: selectedOrder = undefined
 
     id: _tradeCard
-    width: bestOrderSimplified.visible? 600 : 380
+    width: bestOrderSimplified.visible ? 600 : coinSelection? 450 : 380
     height: col.height+15
     radius: 20
 
@@ -161,6 +162,7 @@ ClipRRect // Trade Card
                 Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
                 radius: 20
+                visible: !coinSelectorSimplified.visible
 
                 DefaultText // From Text
                 {
@@ -266,7 +268,11 @@ ClipRRect // Trade Card
                     {
                         id: _selectedTickerMouseArea
                         anchors.fill: parent
-                        onClicked: coinsListModalLoader.open()
+                        onClicked: {
+                            _tradeCard.coinSelection = true
+                            _tradeCard.best = false
+                            //coinsListModalLoader.open()
+                        }
                         hoverEnabled: true
                     }
 
@@ -351,7 +357,7 @@ ClipRRect // Trade Card
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 15
                 radius: 20
-                visible: !bestOrderSimplified.visible
+                visible: !bestOrderSimplified.visible && !coinSelectorSimplified.visible
 
                 DefaultText
                 {
@@ -480,7 +486,7 @@ ClipRRect // Trade Card
                 Layout.fillWidth: true
 
                 enabled: typeof selectedOrder !== 'undefined'
-                visible: enabled & !bestOrderSimplified.visible
+                visible: enabled & !bestOrderSimplified.visible && !coinSelectorSimplified.visible
 
                 DefaultText
                 {
@@ -506,7 +512,7 @@ ClipRRect // Trade Card
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: _tradeCard.width - 30
                 Layout.preferredHeight: 40
-                visible: !bestOrderSimplified.visible
+                visible: !bestOrderSimplified.visible && !coinSelectorSimplified.visible
 
                 DefaultButton
                 {
@@ -610,45 +616,108 @@ ClipRRect // Trade Card
                 }
             }
         }
-        Item {
-            id: bestOrderSimplified
+        Item 
+        {
+            id: coinSelectorSimplified
             width: parent.width
             height: 300
-            visible: _tradeCard.best 
-            Item {
+            visible: _tradeCard.coinSelection 
+            Item 
+            {
                 width: parent.width
                 height: 50
-                Qaterial.ColorIcon {
+                Qaterial.ColorIcon 
+                {
                     anchors.verticalCenter: parent.verticalCenter
                     source: Qaterial.Icons.magnify
                     x: 25 
                     opacity: .7
                 }
-                DexTextField {
+                DexTextField 
+                {
+                    id: _coinSearchField
+                    width: parent.width-70
+                    height: parent.height
+                    font.pixelSize: 16
+                    x: 45
+                    placeholderText: qsTr("Search")
+                    background: DexRectangle 
+                    {
+                        border.width: 0
+                        color: 'transparent'
+                    }
+                    onTextChanged: 
+                    {
+                      API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
+                    }
+                }
+            }
+            SubCoinSelector 
+            {
+                id: _coinList
+                tradeCard: _tradeCard
+                onSelectedTickerChanged: {
+                    _tradeCard.selectedTicker = selectedTicker
+                    _tradeCard.coinSelection = false
+                }
+                anchors.fill: parent
+                anchors.rightMargin: 10
+                anchors.leftMargin: 20
+                anchors.bottomMargin: 10
+                anchors.topMargin: 50
+                //visible: _tradeCard.width == 600
+            } 
+
+        }
+        Item 
+        {
+            id: bestOrderSimplified
+            width: parent.width
+            height: 300
+            visible: _tradeCard.best 
+            Item 
+            {
+                width: parent.width
+                height: 50
+                Qaterial.ColorIcon 
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: Qaterial.Icons.magnify
+                    x: 25 
+                    opacity: .7
+                }
+                DexTextField 
+                {
                     id: _bestOrderSearchField
                     width: parent.width-70
                     height: parent.height
                     font.pixelSize: 16
                     x: 45
                     placeholderText: qsTr("Search")
-                    background: DexRectangle {
+                    background: DexRectangle 
+                    {
                         border.width: 0
                         color: 'transparent'
                     }
-                    onTextChanged: {
+                    onTextChanged: 
+                    {
                       API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
                     }
                 }
             }
-            SubBestOrder {
+            SubBestOrder 
+            {
                 id: _bestOrderList
                 tradeCard: _tradeCard
-                onSelectedOrderChanged: {
+                onSelectedOrderChanged: 
+                {
                     _tradeCard.selectedOrder = selectedOrder
                     _bestOrderSearchField.text = ""
                 }
-                onBestChanged: {
-                    if(!best) {
+                onBestChanged: 
+                {
+                    if(!best) 
+                    {
                         _tradeCard.best = false
                     }
                 }
@@ -679,7 +748,7 @@ ClipRRect // Trade Card
             height: 60
 
             enabled: !_swapAlert.visible
-            visible: enabled & !bestOrderSimplified.visible
+            visible: enabled & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
 
             radius: 25
 
@@ -725,23 +794,29 @@ ClipRRect // Trade Card
             }
         }
     }
-    Row {
+    Row 
+    {
         anchors.rightMargin: 15
         anchors.right: parent.right
         y: 12
-        Qaterial.AppBarButton {
+        Qaterial.AppBarButton 
+        {
             icon.source: Qaterial.Icons.refresh
             visible: _tradeCard.best
             enabled: !API.app.trading_pg.orderbook.best_orders_busy
-            onClicked: {
+            onClicked: 
+            {
                 API.app.trading_pg.orderbook.refresh_best_orders()
             }
         }
-        Qaterial.AppBarButton {
+        Qaterial.AppBarButton 
+        {
             icon.source: Qaterial.Icons.close
-            visible: _tradeCard.best
-            onClicked: {
+            visible: _tradeCard.best || _tradeCard.coinSelection
+            onClicked: 
+            {
                 _tradeCard.best = false
+                _tradeCard.coinSelection = false
             }
         }
     }
