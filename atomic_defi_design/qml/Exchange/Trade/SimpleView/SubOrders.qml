@@ -78,13 +78,6 @@ Item {
                     text: qsTr("Orders")
                     font.pixelSize: Style.textSize1
                 }
-
-                DefaultText // Description
-                {
-                    anchors.topMargin: 12
-                    font.pixelSize: Style.textSizeSmall4
-                    text: qsTr("Display all orders created")
-                }
             }
 
         }
