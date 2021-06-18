@@ -536,7 +536,7 @@ ClipRRect // Trade Card
                 Layout.fillWidth: true
 
                 enabled: typeof selectedOrder !== 'undefined'
-                visible: enabled & !bestOrderSimplified.visible && !coinSelectorSimplified.visible
+                visible: enabled && !bestOrderSimplified.visible && !coinSelectorSimplified.visible
 
                 DefaultText
                 {
