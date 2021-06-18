@@ -311,7 +311,7 @@ namespace atomic_dex
                 req.volume_numer = m_preffered_order->at("base_max_volume_numer").get<std::string>();
                 req.volume_denom = m_preffered_order->at("base_max_volume_denom").get<std::string>();
             }
-            else if (is_max && !req.is_exact_selected_order_volume)
+            else if (is_max && !req.is_exact_selected_order_volume && get_current_trading_mode() != TradingModeGadget::Simple) ///< this one is a bit dangerous, let's forbid it in simple view
             {
                 SPDLOG_INFO("cannot swallow the selected order from the orderbook, use max_taker_volume for it");
                 req.volume_denom = max_taker_vol_json_obj["denom"].toString().toStdString();
