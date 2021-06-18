@@ -677,7 +677,7 @@ ClipRRect // Trade Card
                     }
                     onTextChanged: 
                     {
-                      API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
+                      _coinList.model.setFilterFixedString(text)
                     }
                 }
             }
