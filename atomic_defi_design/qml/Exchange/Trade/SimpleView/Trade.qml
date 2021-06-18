@@ -615,7 +615,33 @@ ClipRRect // Trade Card
             width: parent.width
             height: 300
             visible: _tradeCard.best 
+            Item {
+                width: parent.width
+                height: 50
+                Qaterial.ColorIcon {
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: Qaterial.Icons.magnify
+                    x: 25 
+                    opacity: .7
+                }
+                DexTextField {
+                    width: parent.width-70
+                    height: parent.height
+                    font.pixelSize: 16
+                    x: 45
+                    placeholderText: qsTr("Search")
+                    background: DexRectangle {
+                        border.width: 0
+                        color: 'transparent'
+                    }
+                    onTextChanged: {
+                      console.log(text)
+                      API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
+                    }
+                }
+            }
             SubBestOrder {
+                id: _bestOrderList
                 tradeCard: _tradeCard
                 onSelectedOrderChanged: {
                     _tradeCard.selectedOrder = selectedOrder
@@ -629,6 +655,7 @@ ClipRRect // Trade Card
                 anchors.rightMargin: 10
                 anchors.leftMargin: 20
                 anchors.bottomMargin: 10
+                anchors.topMargin: 50
                 visible: _tradeCard.width == 600
             } 
             BusyIndicator
