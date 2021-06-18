@@ -548,7 +548,7 @@ ClipRRect // Trade Card
                 {
                     Layout.alignment: Qt.AlignRight
                     font.pixelSize: Style.textSizeSmall3
-                    text: parent.enabled ? "1 %1 = %2 %3"
+                    text: selectedOrder ? "1 %1 = %2 %3"
                                             .arg(atomic_qt_utilities.retrieve_main_ticker(selectedTicker))
                                             .arg(parseFloat(API.app.trading_pg.price).toFixed(8))
                                             .arg(atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin))
