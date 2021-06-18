@@ -141,6 +141,37 @@ ClipRRect // Trade Card
                 anchors.topMargin: 12
                 font.pixelSize: Style.textSizeSmall4
                 text: qsTr("Instant trading with best orders")
+
+                Qaterial.OutlineButton // Reset Form Button
+                {
+                    enabled: !best
+                    visible: enabled
+                    width: 50
+                    height: 50
+                    anchors.left: parent.right
+                    anchors.leftMargin: 100
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: -8
+
+                    outlined: false
+
+                    Qaterial.ColorIcon
+                    {
+                        anchors.centerIn: parent
+                        source:  Qaterial.Icons.cardRemove
+                        color: theme.buttonColorTextEnabled
+                        opacity: .8
+                    }
+
+                    onClicked: selectedOrder = undefined
+
+                    hoverEnabled: true
+
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 5000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Reset form.")
+                }
             }
         }
 
@@ -244,8 +275,9 @@ ClipRRect // Trade Card
                 {
                     enabled: _fromValue.field.text
                     anchors.top: _fromValue.bottom
+                    anchors.topMargin: -3
                     anchors.left: _fromValue.left
-                    anchors.leftMargin: 23
+                    anchors.leftMargin: 24
                     font.pixelSize: Style.textSizeSmall1
                     color: theme.buttonColorTextDisabled
                     text: enabled ? General.getFiatText(_fromValue.field.text, selectedTicker) : ""
@@ -368,36 +400,37 @@ ClipRRect // Trade Card
                     font.pixelSize: Style.textSizeSmall4
                 }
 
-                DefaultText
+                AmountField // Amount
                 {
                     id: _toValue
-                    enabled: !_swapAlert.visible
+                    enabled: false
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 23
+                    anchors.bottomMargin: 19
                     anchors.left: parent.left
-                    anchors.leftMargin: 18
-                    text: enabled ? API.app.trading_pg.total_amount : "0"
-                    font.pixelSize: Style.textSizeSmall5
-                    color: theme.buttonColorTextDisabled
+                    anchors.leftMargin: 2
+                    field.text: API.app.trading_pg.total_amount
+                    field.font.pixelSize: Style.textSizeSmall5
+                    field.color: theme.buttonColorTextDisabled
+                    field.background: Rectangle { color: theme.backgroundColor }
                 }
 
                 Text    // Amount In Fiat
                 {
-                    enabled: parseFloat(_toValue.text) > 0
+                    enabled: parseFloat(_toValue.field.text) > 0
                     anchors.top: _toValue.bottom
-                    anchors.topMargin: 4
+                    anchors.topMargin: -3
                     anchors.left: _toValue.left
-                    anchors.leftMargin: 3
+                    anchors.leftMargin: 24
                     font.pixelSize: Style.textSizeSmall1
                     color: theme.buttonColorTextDisabled
-                    text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin?? "") : ""
+                    text: enabled ? General.getFiatText(_toValue.field.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
-                DexRectangle // Shows best order coin
+                Rectangle // Shows best order coin
                 {
                     id: _selectBestOrderButton
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 23
+                    anchors.bottomMargin: 19
                     anchors.right: parent.right
                     anchors.rightMargin: 20
                     width: _bestOrderIcon.enabled ? _bestOrderIcon.width + _bestOrderTickerText.width + _bestOrderArrow.width + 29.5 : 110
@@ -411,11 +444,7 @@ ClipRRect // Trade Card
                     {
                         id: _bestOrdersMouseArea
                         anchors.fill: parent
-                        onClicked: {
-                            _tradeCard.best = true//_bestOrdersModalLoader.open()
-                            //API.app.trading_pg.orderbook.refresh_best_orders()
-                        }
-
+                        onClicked: _tradeCard.best = true
                         hoverEnabled: true
                         enabled: parseFloat(_fromValue.field.text) > 0
                     }
@@ -450,7 +479,7 @@ ClipRRect // Trade Card
                         }
                     }
 
-                    DefaultText  // Button (no bester order is currently selected)
+                    DefaultText  // Button (no order is currently selected)
                     {
                         enabled: !_bestOrderIcon.enabled
                         visible: enabled
