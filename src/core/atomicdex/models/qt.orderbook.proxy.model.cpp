@@ -141,7 +141,10 @@ namespace atomic_dex
         if (orderbook != nullptr && orderbook->get_orderbook_kind() == orderbook_model::kind::best_orders)
         {
             bool is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
-            return is_cex_id_available;
+            if (!is_cex_id_available)
+            {
+                return false;
+            }
         }
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
