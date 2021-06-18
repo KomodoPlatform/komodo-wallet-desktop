@@ -625,6 +625,7 @@ ClipRRect // Trade Card
                     opacity: .7
                 }
                 DexTextField {
+                    id: _bestOrderSearchField
                     width: parent.width-70
                     height: parent.height
                     font.pixelSize: 16
@@ -635,7 +636,6 @@ ClipRRect // Trade Card
                         color: 'transparent'
                     }
                     onTextChanged: {
-                      console.log(text)
                       API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
                     }
                 }
@@ -645,6 +645,7 @@ ClipRRect // Trade Card
                 tradeCard: _tradeCard
                 onSelectedOrderChanged: {
                     _tradeCard.selectedOrder = selectedOrder
+                    _bestOrderSearchField.text = ""
                 }
                 onBestChanged: {
                     if(!best) {
