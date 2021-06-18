@@ -34,7 +34,7 @@ Rectangle {
         RowLayout {
             id: status_text
             Layout.fillHeight: true
-            Layout.preferredWidth: 25
+            Layout.preferredWidth: 15
 
             spacing: 5
             visible: clickable? !details ? false :
@@ -46,14 +46,6 @@ Rectangle {
                 color: !details ? "white" : getStatusColor(details.order_status)
                 text_value: !details ? "" :
                             visible ? getStatusStep(details.order_status) : ''
-            }
-
-            DefaultBusyIndicator {
-                Layout.alignment: Qt.AlignVCenter
-                //visible: true //!isSwapDone(details.order_status)
-                running: !isSwapDone(details.order_status) && Qt.platform.os != "osx"
-                Layout.preferredWidth: 20
-                Layout.preferredHeight: Layout.preferredWidth
             }
         }
         Item {
@@ -164,17 +156,22 @@ Rectangle {
             id: cancel_button_text
             visible: (!is_history? details.cancellable?? false : false)===true? (mouse_area.containsMouse || hovered)? true : false : false
 
-            icon.source: Qaterial.Icons.close
             Layout.fillHeight: true
             Layout.preferredWidth: 30
-            foregroundColor: Qaterial.Colors.pink300
             Layout.alignment: Qt.AlignVCenter
             outlinedColor: Style.colorTheme5
             Behavior on scale {
                 NumberAnimation { duration: 200 }
             }
+            Qaterial.ColorIcon {
+                iconSize: 13 
+                color: Qaterial.Colors.pink300
+                source: Qaterial.Icons.close
+                anchors.centerIn: parent
+                scale: parent.visible? 1 : 0
+            }
 
-            scale: visible? 1 : 0
+            
             onClicked: { if(details) cancelOrder(details.order_id) }
             hoverEnabled: true
 
@@ -205,4 +202,6 @@ Rectangle {
         opacity: .4
         anchors.bottom: parent.bottom
     }
+
+    //  !isSwapDone(details.order_status) && Qt.platform.os != "osx"  needeed for new progress later
 }
