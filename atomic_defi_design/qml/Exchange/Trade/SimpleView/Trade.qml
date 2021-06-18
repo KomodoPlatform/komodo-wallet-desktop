@@ -220,19 +220,34 @@ ClipRRect // Trade Card
                     anchors.topMargin: 14
                     anchors.right: parent.right
                     anchors.rightMargin: 17
-                    text: qsTr("Tradable: %1").arg(API.app.trading_pg.max_volume)
+                    text: qsTr("%1").arg(API.app.trading_pg.max_volume)
                     font.pixelSize: Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: Style.colorWhite1
 
+                    DexImage
+                    {
+                        id: _fromBalanceIcon
+                        width: 16
+                        height: 16
+                        anchors.right: parent.left
+                        anchors.rightMargin: 8
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: General.image_path + "menu-assets-white.svg"
+                        opacity: .6
+                    }
+
                     MouseArea
                     {
-                        anchors.fill: parent
+                        anchors.left: _fromBalanceIcon.left
+                        anchors.right: _fromBalance.right
+                        anchors.top: _fromBalance.top
+                        anchors.bottom: _fromBalance.bottom
                         hoverEnabled: true
                         ToolTip
                         {
                             visible: parent.containsMouse
-                            text: parent.parent.text
+                            text: qsTr("Tradable: ") + parent.parent.text
                         }
                     }
 
