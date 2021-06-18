@@ -242,8 +242,9 @@ ClipRRect // Trade Card
                 {
                     enabled: _fromValue.field.text
                     anchors.top: _fromValue.bottom
+                    anchors.topMargin: -3
                     anchors.left: _fromValue.left
-                    anchors.leftMargin: 23
+                    anchors.leftMargin: 24
                     font.pixelSize: Style.textSizeSmall1
                     color: theme.buttonColorTextDisabled
                     text: enabled ? General.getFiatText(_fromValue.field.text, selectedTicker) : ""
@@ -362,26 +363,27 @@ ClipRRect // Trade Card
                     font.pixelSize: Style.textSizeSmall4
                 }
 
-                DefaultText
+                AmountField // Amount
                 {
                     id: _toValue
-                    enabled: !_swapAlert.visible
+                    enabled: false
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 23
+                    anchors.bottomMargin: 19
                     anchors.left: parent.left
-                    anchors.leftMargin: 18
-                    text: enabled ? API.app.trading_pg.total_amount : "0"
-                    font.pixelSize: Style.textSizeSmall5
-                    color: theme.buttonColorTextDisabled
+                    anchors.leftMargin: 2
+                    field.text: API.app.trading_pg.total_amount
+                    field.font.pixelSize: Style.textSizeSmall5
+                    field.color: theme.buttonColorTextDisabled
+                    field.background: Rectangle { color: theme.backgroundColor }
                 }
 
                 Text    // Amount In Fiat
                 {
-                    enabled: parseFloat(_toValue.text) > 0
+                    enabled: parseFloat(_toValue.field.text) > 0
                     anchors.top: _toValue.bottom
-                    anchors.topMargin: 4
+                    anchors.topMargin: -3
                     anchors.left: _toValue.left
-                    anchors.leftMargin: 3
+                    anchors.leftMargin: 24
                     font.pixelSize: Style.textSizeSmall1
                     color: theme.buttonColorTextDisabled
                     text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin?? "") : ""
