@@ -89,7 +89,7 @@ DefaultListView
             DexLabel             // "Available Quantity (in BASE)" header
             {
             	property bool asc: true
-                text: qsTr("Balance Fiat").arg(currentLeftToken)
+                text: qsTr("Balance Fiat")
                 font.family: Style.font_family
                 font.bold: true
                 font.pixelSize: 12
