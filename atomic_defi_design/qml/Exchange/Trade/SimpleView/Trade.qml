@@ -386,7 +386,7 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 24
                     font.pixelSize: Style.textSizeSmall1
                     color: theme.buttonColorTextDisabled
-                    text: enabled ? General.getFiatText(_toValue.text, _tradeCard.selectedOrder.coin?? "") : ""
+                    text: enabled ? General.getFiatText(_toValue.field.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
                 DexRectangle // Shows best order coin
