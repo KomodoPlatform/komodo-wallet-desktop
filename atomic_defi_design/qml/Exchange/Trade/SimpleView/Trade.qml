@@ -389,11 +389,11 @@ ClipRRect // Trade Card
                     text: enabled ? General.getFiatText(_toValue.field.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
-                DexRectangle // Shows best order coin
+                Rectangle // Shows best order coin
                 {
                     id: _selectBestOrderButton
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 23
+                    anchors.bottomMargin: 19
                     anchors.right: parent.right
                     anchors.rightMargin: 20
                     width: _bestOrderIcon.enabled ? _bestOrderIcon.width + _bestOrderTickerText.width + _bestOrderArrow.width + 29.5 : 110
@@ -407,11 +407,7 @@ ClipRRect // Trade Card
                     {
                         id: _bestOrdersMouseArea
                         anchors.fill: parent
-                        onClicked: {
-                            _tradeCard.best = true//_bestOrdersModalLoader.open()
-                            //API.app.trading_pg.orderbook.refresh_best_orders()
-                        }
-
+                        onClicked: _tradeCard.best = true
                         hoverEnabled: true
                         enabled: parseFloat(_fromValue.field.text) > 0
                     }
@@ -446,7 +442,7 @@ ClipRRect // Trade Card
                         }
                     }
 
-                    DefaultText  // Button (no bester order is currently selected)
+                    DefaultText  // Button (no order is currently selected)
                     {
                         enabled: !_bestOrderIcon.enabled
                         visible: enabled
