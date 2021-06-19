@@ -1105,7 +1105,7 @@ namespace atomic_dex
         if (fees != m_fees)
         {
             m_fees = std::move(fees);
-            // qDebug() << "fees are: [" << m_fees << "]";
+            //qDebug() << "fees are: [" << m_fees << "]";
             emit feesChanged();
         }
     }

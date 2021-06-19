@@ -14,10 +14,12 @@ BasicModal {
 
     width: 1100
 
-    onOpened: reset()
+    readonly property var fees: API.app.trading_pg.fees
+    //onOpened: fees =
+    /*onOpened: reset()
 
     function reset() {
-        API.app.trading_pg.determine_fees()
+        //API.app.trading_pg.determine_fees()
     }
 
     function isEmpty(data){
@@ -30,16 +32,16 @@ BasicModal {
     }
     function isVisible(n){
 
-        return isEmpty(fees_data)? false : parseFloat(n)===0? false: true
-    }
+        return isEmpty(fees)? false : parseFloat(n)===0? false: true
+    }*/
 
-    Connections {
+    /*Connections {
         target: API.app.trading_pg
         function onFeesChanged() {
-            fees_data = API.app.trading_pg.fees
+            fees = API.app.trading_pg.fees
             API.app.trading_pg.determine_error_cases()
         }
-    }
+    }*/
 
     /*onClosed:  {
         API.app.trading_pg.reset_fees()
@@ -121,7 +123,7 @@ BasicModal {
 
                 DefaultListView {
                   enabled: true
-                  model: fees_data.total_fees
+                  model: fees.total_fees
                   delegate: DefaultText {
                     visible: true
                     text: qsTr("Total %1 fees: %2 (%3)").arg(modelData.coin).arg(parseFloat(modelData.required_balance).toFixed(8) / 1).arg(General.getFiatText(modelData.required_balance, modelData.coin, false))
@@ -285,7 +287,7 @@ BasicModal {
                 text: qsTr("Cancel")
                 Layout.fillWidth: true
                 onClicked: {
-                    fees_data = []
+                    //fees = []
                     root.close()
                 }
             },
