@@ -4,7 +4,7 @@
 #include <string>
 
 #if defined(_WIN32)
-    #include <stringapiset.h>
+#    include <stringapiset.h>
 #endif
 
 //! Qt Headers
@@ -110,11 +110,7 @@ namespace atomic_dex::utils
     std::string
     u8string(const std::wstring& p)
     {
-#if defined(PREFER_BOOST_FILESYSTEM)
-        return p.string();
-#else
         return wstring_to_utf8(p);
-#endif
     }
 
     std::string
@@ -333,9 +329,10 @@ namespace atomic_dex::utils
     to_utf8(const wchar_t* w)
     {
 #if defined(_WIN32)
-        std::string output;
+        std::string  output;
         const size_t size = WideCharToMultiByte(CP_UTF8, 0, w, -1, nullptr, 0, nullptr, nullptr);
-        if (size == 0) return output;
+        if (size == 0)
+            return output;
         output.resize(size - 1);
         WideCharToMultiByte(CP_UTF8, 0, w, -1, output.data(), static_cast<int>(size) - 1, nullptr, nullptr);
         return output;
