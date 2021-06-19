@@ -454,7 +454,7 @@ ClipRRect // Trade Card
                     anchors.bottomMargin: 19
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: _bestOrderIcon.enabled ? _bestOrderIcon.width + _bestOrderTickerText.width + _bestOrderArrow.width + 29.5 : 110
+                    width: _feesCard.visible ? _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 : _piclOrderLabel.implicitWidth+20
                     height: 30
                     radius: 10
                     border.width: 0
@@ -502,6 +502,7 @@ ClipRRect // Trade Card
 
                     DefaultText  // Button (no order is currently selected)
                     {
+                        id:_piclOrderLabel
                         enabled: !_bestOrderIcon.enabled
                         visible: enabled
                         anchors.verticalCenter: parent.verticalCenter

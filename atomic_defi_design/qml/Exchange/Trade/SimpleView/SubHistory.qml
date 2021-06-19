@@ -212,7 +212,6 @@ Item {
                         spacing: 10
                         DexAppButton {
                             height: 35
-                            width: 120 
                             anchors.verticalCenter: parent.verticalCenter
                             text: qsTr("Cancel")
                             onClicked: {
@@ -221,7 +220,6 @@ Item {
                         }
                         DexAppButton {
                             height: 35
-                            width: 130 
                             anchors.verticalCenter: parent.verticalCenter
                             backgroundColor: Qaterial.Colors.lightGreen700
                             text: qsTr("Apply filter")

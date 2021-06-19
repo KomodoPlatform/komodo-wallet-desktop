@@ -98,7 +98,7 @@ Item {
             Layout.fillWidth: true
         } 
         Rectangle {
-            width: 140
+            width: _learnRow.implicitWidth+15
             height: 25
             radius: height/2
             Behavior on color {
@@ -108,6 +108,7 @@ Item {
             }
             color: tuto_area.containsMouse? 'transparent' : theme.accentColor
             Row {
+                id: _learnRow 
                 anchors.centerIn: parent
                 spacing: 10
                 Qaterial.ColorIcon {
@@ -130,7 +131,7 @@ Item {
             }
         }
         Rectangle {
-            width: 50
+            width: _faqRow.implicitWidth+15
             height: 25
             radius: height/2
             Behavior on color {
@@ -140,6 +141,7 @@ Item {
             }
             color: faq_area.containsMouse? 'transparent' : theme.accentColor
             Row {
+                id: _faqRow
                 anchors.centerIn: parent
                 spacing: 10
                 DexLabel {
