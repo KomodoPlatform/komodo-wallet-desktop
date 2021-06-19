@@ -94,7 +94,8 @@ namespace atomic_dex::utils
         fs::path appdata_path;
 
 #if defined(_WIN32) || defined(WIN32)
-        appdata_path = fs::path(utils::u8string(fs::path(_wgetenv(L"APPDATA")))) / DEX_APPDATA_FOLDER;
+        std::wstring out = _wgetenv(L"APPDATA");
+        appdata_path = fs::path(utils::u8string(out)) / DEX_APPDATA_FOLDER;
 #elif defined(__APPLE__)
         appdata_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / DEX_APPDATA_FOLDER;
 #else
@@ -134,6 +135,9 @@ namespace atomic_dex::utils
     std::string
     u8string(const std::wstring& p)
     {
+#if defined(_WIN32)
+        return to_utf8(p.c_str());
+#else
         return wstring_to_utf8(p);
     }
 
