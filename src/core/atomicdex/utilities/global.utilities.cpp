@@ -4,7 +4,8 @@
 #include <string>
 
 #if defined(_WIN32)
-#    include <stringapiset.h>
+#    define NOMINMAX
+#    include <Windows.h>
 #endif
 
 //! Qt Headers
