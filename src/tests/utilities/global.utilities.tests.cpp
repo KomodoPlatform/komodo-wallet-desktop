@@ -112,6 +112,7 @@ TEST_CASE("u8string")
     fs::path cur_path = other_path;
     CHECK_EQ(u8string(other_path), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
     CHECK_EQ(u8string(cur_path), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
+    CHECK_EQ(to_utf8(cur_path.wstring().c_str()), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
 }
 
 #endif
