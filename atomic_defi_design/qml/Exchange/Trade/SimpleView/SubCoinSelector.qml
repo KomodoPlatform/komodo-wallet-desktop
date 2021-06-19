@@ -22,7 +22,7 @@ DefaultListView
 
     property int    _rowWidth: width - 20
     property int    _rowHeight: 50
-    property int    _tokenColumnSize: 110
+    property int    _tokenColumnSize: 160
     property int    _balanceSize: 120
     property int    _fiatBalanceSize: 100
     property int    _fiatVolumeColumnSize: 50
@@ -51,7 +51,7 @@ DefaultListView
             DexLabel             // "Token" Header
             {
             	property bool asc: true
-                Layout.preferredWidth: _tokenColumnSize+20
+                Layout.preferredWidth: _tokenColumnSize
                 text: qsTr("Token")
                 font.family: Style.font_family
                 font.bold: true
@@ -70,7 +70,7 @@ DefaultListView
             DexLabel             // "Available Quantity" Header
             {
             	property bool asc: true
-                Layout.preferredWidth: _balanceSize
+                Layout.fillWidth: true
                 text: qsTr("Balance")
                 font.family: Style.font_family
                 font.bold: true
@@ -140,7 +140,7 @@ DefaultListView
                 }
         	}
         	Item {
-        		Layout.preferredWidth: _balanceSize
+        		Layout.fillWidth: true
         		height: 40
         		DexLabel
 	            {
