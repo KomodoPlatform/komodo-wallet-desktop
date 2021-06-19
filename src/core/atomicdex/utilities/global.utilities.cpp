@@ -149,7 +149,7 @@ namespace atomic_dex::utils
         {
             SPDLOG_DEBUG("value type is wchar_t");
 #if defined(_WIN32)
-            return to_utf8(p.native());
+            return to_utf8(p.c_str());
 #else
             return wstring_to_utf8(p.wstring());
 #endif
