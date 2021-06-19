@@ -6,6 +6,7 @@
 #if defined(_WIN32)
 #    define NOMINMAX
 #    include <Windows.h>
+#    include <stdlib.h>
 #endif
 
 //! Qt Headers
@@ -91,8 +92,9 @@ namespace atomic_dex::utils
     get_atomic_dex_data_folder()
     {
         fs::path appdata_path;
+
 #if defined(_WIN32) || defined(WIN32)
-        appdata_path = fs::path(std::getenv("APPDATA")) / DEX_APPDATA_FOLDER;
+        appdata_path = fs::path(utils::u8string(fs::path(_wgetenv(L"APPDATA")))) / DEX_APPDATA_FOLDER;
 #elif defined(__APPLE__)
         appdata_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / DEX_APPDATA_FOLDER;
 #else
