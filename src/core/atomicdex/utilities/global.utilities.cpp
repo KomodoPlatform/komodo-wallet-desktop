@@ -109,6 +109,25 @@ namespace atomic_dex::utils
     }
 
     std::string
+    to_utf8(const wchar_t* w)
+    {
+#if defined(_WIN32)
+        std::string  output;
+        const size_t size = WideCharToMultiByte(CP_UTF8, 0, w, -1, nullptr, 0, nullptr, nullptr);
+        if (size == 0)
+            return output;
+        output.resize(size - 1);
+        WideCharToMultiByte(CP_UTF8, 0, w, -1, output.data(), static_cast<int>(size) - 1, nullptr, nullptr);
+        return output;
+#else
+        std::wstring out = w;
+        return wstring_to_utf8(out);
+#endif
+    }
+
+
+
+    std::string
     u8string(const std::wstring& p)
     {
         return wstring_to_utf8(p);
@@ -129,7 +148,11 @@ namespace atomic_dex::utils
         else if constexpr (std::is_same_v<fs::path::value_type, char16_t>)
         {
             SPDLOG_DEBUG("value type is wchar_t");
+#if defined(_WIN32)
+            return to_utf8(p.native());
+#else
             return wstring_to_utf8(p.wstring());
+#endif
         }
         else
         {
@@ -324,22 +347,5 @@ namespace atomic_dex::utils
 
         for (auto&& coin: in) { out.push_back(coin.ticker); }
         return out;
-    }
-
-    std::string
-    to_utf8(const wchar_t* w)
-    {
-#if defined(_WIN32)
-        std::string  output;
-        const size_t size = WideCharToMultiByte(CP_UTF8, 0, w, -1, nullptr, 0, nullptr, nullptr);
-        if (size == 0)
-            return output;
-        output.resize(size - 1);
-        WideCharToMultiByte(CP_UTF8, 0, w, -1, output.data(), static_cast<int>(size) - 1, nullptr, nullptr);
-        return output;
-#else
-        std::wstring out = w;
-        return wstring_to_utf8(out);
-#endif
     }
 } // namespace atomic_dex::utils
