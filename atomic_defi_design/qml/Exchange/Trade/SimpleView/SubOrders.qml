@@ -66,7 +66,6 @@ Item {
                 x: 320
                 icon.source: _subOrdersRoot.displayFilter? Qaterial.Icons.close : Qaterial.Icons.filter
                 onClicked: {
-                   console.log("clicked")
                     _subOrdersRoot.displayFilter = !_subOrdersRoot.displayFilter
                 }
             }
