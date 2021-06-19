@@ -139,6 +139,7 @@ namespace atomic_dex::utils
         return to_utf8(p.c_str());
 #else
         return wstring_to_utf8(p);
+#endif
     }
 
     std::string
