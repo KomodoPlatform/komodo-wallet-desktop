@@ -109,21 +109,21 @@ BasicModal {
         HorizontalLine {
             Layout.bottomMargin: 10
             Layout.fillWidth: true
-            visible: !isEmpty(fees_data)
+            visible: true
         }
 
         Item  {
             Layout.fillWidth: true
             Layout.preferredHeight: 120
-            visible: !isEmpty(fees_data)
+            visible: true
             Column {
                 anchors.centerIn: parent
 
                 DefaultListView {
-                  enabled: isVisible(fees_data.total_fees)
+                  enabled: true
                   model: fees_data.total_fees
                   delegate: DefaultText {
-                    visible: isVisible(modelData.amount)
+                    visible: true
                     text: qsTr("Total %1 fees: %2 (%3)").arg(modelData.coin).arg(parseFloat(modelData.required_balance).toFixed(8) / 1).arg(General.getFiatText(modelData.required_balance, modelData.coin, false))
                   }
                   anchors.horizontalCenter: parent.horizontalCenter

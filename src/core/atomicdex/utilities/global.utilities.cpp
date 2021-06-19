@@ -1,5 +1,7 @@
 //! STD Headers
+#include <codecvt>
 #include <random>
+#include <string>
 
 //! Qt Headers
 #include <QCryptographicHash>
@@ -95,24 +97,44 @@ namespace atomic_dex::utils
     }
 
     std::string
+    wstring_to_utf8(const std::wstring& str)
+    {
+        std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+        return myconv.to_bytes(str);
+    }
+
+    std::string
+    u8string(const std::wstring& p)
+    {
+#if defined(PREFER_BOOST_FILESYSTEM)
+        return p.string();
+#else
+        return wstring_to_utf8(p);
+#endif
+    }
+
+    std::string
     u8string(const fs::path& p)
     {
 #if defined(PREFER_BOOST_FILESYSTEM)
         return p.string();
 #else
-        auto res = p.u8string();
 
-        auto functor = [](auto&& r) {
-            if constexpr (std::is_same_v<std::remove_cvref_t<decltype(r)>, std::string>)
-            {
-                return r;
-            }
-            else
-            {
-                return std::string(r.begin(), r.end());
-            }
-        };
-        return functor(res);
+        if constexpr (std::is_same_v<fs::path::value_type, char>)
+        {
+            SPDLOG_DEBUG("value type is char");
+            return p.string();
+        }
+        else if constexpr (std::is_same_v<fs::path::value_type, char16_t>)
+        {
+            SPDLOG_DEBUG("value type is wchar_t");
+            return wstring_to_utf8(p.wstring());
+        }
+        else
+        {
+            SPDLOG_DEBUG("value type is unknown");
+            return p.string();
+        }
 #endif
     }
 
@@ -299,10 +321,7 @@ namespace atomic_dex::utils
         std::vector<std::string> out;
         out.reserve(in.size());
 
-        for (auto&& coin : in)
-        {
-            out.push_back(coin.ticker);
-        }
+        for (auto&& coin: in) { out.push_back(coin.ticker); }
         return out;
     }
 } // namespace atomic_dex::utils
