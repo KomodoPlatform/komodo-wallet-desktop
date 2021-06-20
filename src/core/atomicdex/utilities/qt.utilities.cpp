@@ -19,6 +19,7 @@
 #include <QGuiApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QFile>
 
 //! Deps
 #include <QrCode.hpp>
@@ -143,9 +144,11 @@ namespace atomic_dex
         fs::path file_path = atomic_dex::utils::get_themes_path() / (theme_name.toStdString() + ".json"s);
         if (fs::exists(file_path))
         {
-            std::ifstream ifs(file_path.string());
-            std::string   str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-            return QJsonDocument::fromJson(str.data()).object().toVariantMap();
+            QFile file;
+            file.setFileName(std_path_to_qstring(file_path));
+            QString val = file.readAll();
+            file.close();
+            return QJsonDocument::fromJson(val.toUtf8()).object().toVariantMap();
         }
         return out;
     }
