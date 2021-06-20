@@ -79,7 +79,7 @@ namespace atomic_dex
         std::unordered_set<std::string> extra_coins;
         for (auto&& coin: coins) {
             auto coin_info = mm2.get_coin_info(coin.toStdString());
-            if (coin_info.has_parent_fees_ticker)
+            if (coin_info.has_parent_fees_ticker && coin_info.ticker != coin_info.fees_ticker)
             {
                 auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
                 if (extra_coins.insert(coin_parent_info.ticker).second)
