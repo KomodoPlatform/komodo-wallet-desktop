@@ -13,13 +13,14 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
- 
-//! STD
-#include <fstream> //> std::fstream, std::ifstream, std::ofstream.
+
+//! Qt
+#include <QFile>
 
 //! Project Headers
 #include "addressbook.cfg.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -27,24 +28,18 @@ namespace atomic_dex
     {
         const fs::path       source_folder{utils::get_atomic_dex_addressbook_folder()};
         const fs::path       in_path      {source_folder / wallet_name};
-        std::fstream   input;
+        QFile                input;
+        input.setFileName(std_path_to_qstring(in_path));
+        //std::fstream   input;
         nlohmann::json out;
         
         utils::create_if_doesnt_exist(source_folder);
         {
-            //! Creates file if it does not exist.
-            if (!std::ifstream(in_path.string()))
-            {
-                input.open(in_path.string(), std::ios::out);
-                assert(input.is_open());
-                input.close();
-                assert(!input.is_open());
-            }
-            input.open(in_path.string(), std::ios::in);
-            assert(input.is_open());
+            input.open(QIODevice::ReadOnly | QIODevice::Append | QIODevice::Text);
             try
             {
-                input >> out;
+                QString val = input.readAll();
+                out = nlohmann::json::parse(val.toStdString());
             }
             catch ([[maybe_unused]] nlohmann::json::parse_error& ex)
             {
@@ -59,13 +54,13 @@ namespace atomic_dex
     {
         const fs::path      out_folder{utils::get_atomic_dex_addressbook_folder()};
         const fs::path      out_path  {out_folder / wallet_name};
-        std::ofstream output;
-        
+        QFile output;
+        output.setFileName(std_path_to_qstring(out_path));
+
         utils::create_if_doesnt_exist(out_path);
         {
-            output.open(out_path.string(), std::ios::trunc);
-            assert(output.is_open());
-            output << in;
+            output.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+            output.write(QString::fromStdString(in.dump()).toUtf8());
         }
     }
 }
