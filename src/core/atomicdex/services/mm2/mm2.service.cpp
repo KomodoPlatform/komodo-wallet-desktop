@@ -19,6 +19,7 @@
 
 ///! Qt
 #include <QFile>
+#include <QProcess>
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.constants.hpp"
@@ -301,18 +302,18 @@ namespace atomic_dex
 #if defined(_WIN32) || defined(WIN32)
             atomic_dex::kill_executable("mm2");
 #else
-            const reproc::stop_actions stop_actions = {
+            /*const reproc::stop_actions stop_actions = {
                 {reproc::stop::terminate, reproc::milliseconds(2000)},
                 {reproc::stop::kill, reproc::milliseconds(5000)},
-                {reproc::stop::wait, reproc::milliseconds(2000)}};
+                {reproc::stop::wait, reproc::milliseconds(2000)}};*/
 
-            const auto ec = m_mm2_instance.stop(stop_actions).second;
+            /*const auto ec = m_mm2_instance.stop(stop_actions).second;
 
             if (ec)
             {
                 SPDLOG_ERROR("error when stopping mm2 by process: {}", ec.message());
                 // std::cerr << "error: " << ec.message() << std::endl;
-            }
+            }*/
 #endif
         }
 
@@ -873,24 +874,20 @@ namespace atomic_dex
         ofs.open(QIODevice::WriteOnly | QIODevice::Text);
         ofs.write(QString::fromStdString(json_cfg.dump()).toUtf8());
         ofs.close();
-        const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
-        reproc::options                  options;
-        options.redirect.parent = false;
 
-        options.env.behavior = reproc::env::extend;
-        options.env.extra    = std::unordered_map<std::string, std::string>{
-            {"MM_CONF_PATH", utils::u8string(mm2_cfg_path)},
-            {"MM_LOG", utils::u8string(utils::get_mm2_atomic_dex_current_log_file())},
-            {"MM_COINS_PATH", utils::u8string((utils::get_current_configs_path() / "coins.json"))}};
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();;
+        env.insert("MM_CONF_PATH", std_path_to_qstring(mm2_cfg_path));
+        env.insert("MM_LOG", std_path_to_qstring(utils::get_mm2_atomic_dex_current_log_file()));
+        env.insert("MM_COINS_PATH", std_path_to_qstring((utils::get_current_configs_path() / "coins.json")));
+        QProcess mm2_instance;
+        mm2_instance.setProgram(std_path_to_qstring((tools_path / "mm2")));
+        mm2_instance.setWorkingDirectory(std_path_to_qstring(tools_path));
+        mm2_instance.setProcessEnvironment(env);
+        bool started = mm2_instance.startDetached();
 
-        options.working_directory = strdup(tools_path.string().c_str());
-
-        SPDLOG_DEBUG("command line: {}, from directory: {}", args[0], options.working_directory);
-        const auto ec = m_mm2_instance.start(args, options);
-        std::free((void*)options.working_directory);
-        if (ec)
+        if (!started)
         {
-            SPDLOG_ERROR("{}\n", ec.message());
+            SPDLOG_ERROR("Couldn't start mm2");
             std::exit(EXIT_FAILURE);
         }
 
