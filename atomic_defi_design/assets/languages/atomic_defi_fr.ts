@@ -3847,17 +3847,4 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
         <translation>La longueur de l&apos;adresse %1 n&apos;est pas valide, veuillez utiliser une adresse valide.</translation>
     </message>
 </context>
-<context>
-    <name>main</name>
-    <message>
-        <location filename="../../qml/main.qml" line="87"/>
-        <source>Logout</source>
-        <translation>Déconnexion</translation>
-    </message>
-    <message>
-        <location filename="../../qml/main.qml" line="223"/>
-        <source>Balance</source>
-        <translation>Balance</translation>
-    </message>
-</context>
 </TS>

@@ -40,6 +40,7 @@ namespace
     void
     copy_icon(const QString icon_filepath, const QString icons_path_directory, const std::string& ticker)
     {
+        SPDLOG_INFO("copying icon");
         if (not icon_filepath.isEmpty())
         {
             const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
@@ -47,6 +48,7 @@ namespace
                 icon_filepath.toStdString(), fs::path(icons_path_directory.toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
                 get_override_options());
         }
+        SPDLOG_INFO("copying icon finished");
     }
 } // namespace
 

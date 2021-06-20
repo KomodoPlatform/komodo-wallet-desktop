@@ -113,7 +113,7 @@ namespace atomic_dex
     {
         QStringList    out;
         const fs::path theme_path = atomic_dex::utils::get_themes_path();
-        for (auto&& cur: fs::directory_iterator(theme_path)) { out << QString::fromStdString(cur.path().filename().string()); }
+        for (auto&& cur: fs::directory_iterator(theme_path)) { out << std_path_to_qstring(cur.path().filename()); }
         return out;
     }
 
