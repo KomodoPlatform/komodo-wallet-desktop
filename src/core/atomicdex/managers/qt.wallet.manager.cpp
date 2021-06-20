@@ -189,7 +189,7 @@ namespace atomic_dex
 
         if (not ifs.isOpen())
         {
-            SPDLOG_ERROR("Cannot open: {}", wallet_object_path.string());
+            LOG_PATH("Cannot open: {}", wallet_object_path);
             return false;
         }
         nlohmann::json j = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
