@@ -39,7 +39,6 @@ namespace
         file.open(QIODevice::ReadOnly | QIODevice::Text);
         nlohmann::json config_json_data;
 
-        assert(ifs.is_open());
         QString val                               = file.readAll();
         config_json_data                          = nlohmann::json::parse(val.toStdString());
         config_json_data["current_currency"]      = config.current_currency;

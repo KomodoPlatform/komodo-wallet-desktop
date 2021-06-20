@@ -305,7 +305,7 @@ namespace atomic_dex
     QString
     settings_page::get_custom_coins_icons_path() const
     {
-        return QString::fromStdString(utils::get_runtime_coins_path().string());
+        return std_path_to_qstring(utils::get_runtime_coins_path());
     }
 
     void

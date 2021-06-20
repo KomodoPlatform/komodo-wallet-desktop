@@ -1352,7 +1352,7 @@ namespace atomic_dex
                     .toJsonObject()["decimal"]
                     .toString()
                     .toStdString();
-            assert(not max_dust_str.empty());
+            //assert(not max_dust_str.empty());
             t_float_50 max_balance_without_dust = safe_float(max_dust_str);
             return max_balance_without_dust;
         }

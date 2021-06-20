@@ -186,8 +186,9 @@ namespace atomic_dex
         const auto  cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
         std::string custom_tokens_filename = "custom-tokens." + m_current_wallet_name + ".json";
-        SPDLOG_INFO("Retrieving Wallet information of {}", (cfg_path / filename).string());
+        //SPDLOG_INFO("Retrieving Wallet information of {}", (cfg_path / filename).string());
 
+        LOG_PATH("Retrieving Wallet information of {}", (cfg_path / filename));
         auto retrieve_cfg_functor = [](fs::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
         {
             if (exists(path))

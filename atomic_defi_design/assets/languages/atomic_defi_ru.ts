@@ -3858,4 +3858,17 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="../../qml/main.qml" line="87"/>
+        <source>Logout</source>
+        <translation type="unfinished">Выход</translation>
+    </message>
+    <message>
+        <location filename="../../qml/main.qml" line="223"/>
+        <source>Balance</source>
+        <translation type="unfinished">Баланс</translation>
+    </message>
+</context>
 </TS>
