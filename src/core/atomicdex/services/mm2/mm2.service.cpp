@@ -192,10 +192,10 @@ namespace atomic_dex
         {
             if (exists(path))
             {
-                std::ifstream ifs(path.c_str());
-                assert(ifs.is_open());
-                nlohmann::json config_json_data;
-                ifs >> config_json_data;
+                QFile ifs;
+                ifs.setFileName(atomic_dex::std_path_to_qstring(path));
+                ifs.open(QIODevice::ReadOnly | QIODevice::Text);
+                nlohmann::json config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
                 auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
                 return res;
             }
@@ -867,9 +867,10 @@ namespace atomic_dex
         nlohmann::to_json(json_cfg, cfg);
         fs::path mm2_cfg_path = (fs::temp_directory_path() / "MM2.json");
 
-        std::ofstream ofs(mm2_cfg_path.string());
-        ofs << json_cfg.dump();
-        // std::cout << json_cfg.dump() << std::endl;
+        QFile ofs;
+        ofs.setFileName(std_path_to_qstring(mm2_cfg_path));
+        ofs.open(QIODevice::WriteOnly | QIODevice::Text);
+        ofs.write(QString::fromStdString(json_cfg.dump()).toUtf8());
         ofs.close();
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
@@ -1463,11 +1464,12 @@ namespace atomic_dex
             if (fs::exists(file_path))
             {
                 SPDLOG_DEBUG("reading contents of custom tokens cfg");
-                std::ifstream ifs(file_path.c_str());
-                assert(ifs.is_open());
+                QFile ifs;
+                ifs.setFileName(std_path_to_qstring(file_path));
+                ifs.open(QIODevice::Text | QIODevice::ReadOnly);
 
                 //! Read Contents
-                ifs >> config_json_data;
+                config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
                 ifs.close();
             }
 
@@ -1476,20 +1478,22 @@ namespace atomic_dex
 
             //! Write contents
             SPDLOG_DEBUG("writing contents of custom tokens cfg");
-            std::ofstream ofs(file_path.c_str(), std::ios::trunc);
-            assert(ofs.is_open());
-            ofs << config_json_data;
+            QFile ofs;
+            ofs.setFileName(std_path_to_qstring(file_path));
+            ofs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            ofs.write(QString::fromStdString(config_json_data.dump()).toUtf8());
         }
         if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
         {
             const fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             SPDLOG_DEBUG("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
-            std::ifstream  ifs(mm2_cfg_path.c_str());
+            QFile ifs;
+            ifs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ifs.open(QIODevice::ReadOnly | QIODevice::Text);
             nlohmann::json config_json_data;
-            assert(ifs.is_open());
 
             //! Read Contents
-            ifs >> config_json_data;
+            config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
 
             //! Modify contents
             config_json_data.push_back(raw_coin_cfg_json);
@@ -1498,9 +1502,11 @@ namespace atomic_dex
             ifs.close();
 
             //! Write contents
-            std::ofstream ofs(mm2_cfg_path.c_str(), std::ios::trunc);
-            assert(ofs.is_open());
-            ofs << config_json_data;
+            QFile ofs;
+            ofs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ofs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            ofs.write(QString::fromStdString(config_json_data.dump()).toUtf8());
+            ofs.close();
         }
     }
 
@@ -1530,12 +1536,14 @@ namespace atomic_dex
             SPDLOG_DEBUG("remove it from custom cfg: {}", ticker);
             fs::path       cfg_path = utils::get_atomic_dex_config_folder();
             std::string    filename = "custom-tokens." + m_current_wallet_name + ".json";
-            std::ifstream  ifs((cfg_path / filename).c_str());
+            QFile ifs;
+            ifs.setFileName(std_path_to_qstring((cfg_path / filename)));
+            ifs.open(QIODevice::ReadOnly | QIODevice::Text);
             nlohmann::json config_json_data;
-            assert(ifs.is_open());
+
 
             //! Read Contents
-            ifs >> config_json_data;
+            config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
 
             {
                 std::unique_lock lock(m_coin_cfg_mutex);
@@ -1548,21 +1556,24 @@ namespace atomic_dex
             ifs.close();
 
             //! Write contents
-            std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
-            assert(ofs.is_open());
-            ofs << config_json_data;
+            QFile ofs;
+            ofs.setFileName(std_path_to_qstring((cfg_path / filename)));
+            ofs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            ofs.write(QString::fromStdString(config_json_data.dump()).toUtf8());
+            ofs.close();
         }
 
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
             SPDLOG_DEBUG("remove it from mm2 cfg: {}", ticker);
             fs::path       mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
-            std::ifstream  ifs(mm2_cfg_path.c_str());
+            QFile ifs;
+            ifs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ifs.open(QIODevice::ReadOnly | QIODevice::Text);
             nlohmann::json config_json_data;
-            assert(ifs.is_open());
 
             //! Read Contents
-            ifs >> config_json_data;
+            config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
 
             config_json_data.erase(std::find_if(
                 begin(config_json_data), end(config_json_data),
@@ -1572,9 +1583,11 @@ namespace atomic_dex
             ifs.close();
 
             //! Write contents
-            std::ofstream ofs(mm2_cfg_path.c_str(), std::ios::trunc);
-            assert(ofs.is_open());
-            ofs << config_json_data;
+            QFile ofs;
+            ofs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ofs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            ofs.write(QString::fromStdString(config_json_data.dump()).toUtf8());
+            ofs.close();
         }
     }
 
