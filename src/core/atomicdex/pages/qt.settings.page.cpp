@@ -19,6 +19,7 @@
 #include <QJsonDocument>
 #include <QLocale>
 #include <QSettings>
+#include <QFile>
 
 //! Deps
 #include <boost/algorithm/string/case_conv.hpp>
@@ -556,19 +557,21 @@ namespace atomic_dex
         if (fs::exists(wallet_custom_cfg_path))
         {
             nlohmann::json custom_config_json_data;
-            std::ifstream  ifs(wallet_custom_cfg_path.c_str());
-            assert(ifs.is_open());
+            QFile fs;
+            fs.setFileName(std_path_to_qstring(wallet_custom_cfg_path));
+            fs.open(QIODevice::ReadOnly | QIODevice::Text);
 
             //! Read Contents
-            ifs >> custom_config_json_data;
-            ifs.close();
+            custom_config_json_data = nlohmann::json::parse(QString(fs.readAll()).toStdString());
+            fs.close();
 
             //! Modify
             for (auto&& [key, value]: custom_config_json_data.items()) { value["active"] = false; }
 
             //! Write
-            std::ofstream ofs_custom(wallet_custom_cfg_path.c_str(), std::ios::trunc);
-            ofs_custom << custom_config_json_data;
+            fs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            fs.write(QString::fromStdString(custom_config_json_data.dump()).toUtf8());
+            fs.close();
         }
 
         const auto functor_remove = [](auto&& path_to_remove)
@@ -586,11 +589,12 @@ namespace atomic_dex
                 }
                 if (ec)
                 {
-                    SPDLOG_ERROR("error when removing {}: {}", path_to_remove.string(), ec.message());
+                    LOG_PATH("error when removing {}", path_to_remove);
+                    SPDLOG_ERROR("error: {}", ec.message());
                 }
                 else
                 {
-                    SPDLOG_INFO("Successfully removed {}", path_to_remove.string());
+                    LOG_PATH("Successfully removed {}", path_to_remove);
                 }
             }
         };
