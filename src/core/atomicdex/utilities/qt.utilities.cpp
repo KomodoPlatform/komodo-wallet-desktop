@@ -129,8 +129,8 @@ namespace atomic_dex
         else
         {
             LOG_PATH("saving new theme: {}", file_path);
-            SPDLOG_INFO("saving new theme: {}", file_path.string());
             QFile file;
+            file.setFileName(std_path_to_qstring(file_path));
             file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
             file.write(QJsonDocument(QJsonObject::fromVariantMap(theme_object)).toJson(QJsonDocument::Indented));
             file.close();
@@ -146,9 +146,10 @@ namespace atomic_dex
         fs::path file_path = atomic_dex::utils::get_themes_path() / (theme_name.toStdString() + ".json"s);
         if (fs::exists(file_path))
         {
+            LOG_PATH("load theme: {}", file_path);
             QFile file;
-            file.open(QIODevice::ReadOnly | QIODevice::Text);
             file.setFileName(std_path_to_qstring(file_path));
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
             QString val = file.readAll();
             file.close();
             return QJsonDocument::fromJson(val.toUtf8()).object().toVariantMap();
