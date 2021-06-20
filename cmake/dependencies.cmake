@@ -80,7 +80,7 @@ find_package(Qt5 5.15 COMPONENTS Core Quick LinguistTools Svg Charts WebEngine W
 #find_package(Qt5)
 
 set(BUILD_TESTING OFF CACHE BOOL "Override option" FORCE)
-set(REPROC++ ON CACHE BOOL "" FORCE)
+#set(REPROC++ ON CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
         doom_st
@@ -92,10 +92,10 @@ FetchContent_Declare(
         URL https://github.com/KomodoPlatform/meta/archive/master.zip
 )
 
-FetchContent_Declare(
-        reproc
-        URL https://github.com/KomodoPlatform/reproc/archive/v14.2.1.zip
-)
+#FetchContent_Declare(
+#        reproc
+#        URL https://github.com/KomodoPlatform/reproc/archive/v14.2.1.zip
+#)
 
 set(EXPECTED_ENABLE_TESTS OFF CACHE BOOL "Override option" FORCE)
 
@@ -122,11 +122,11 @@ add_library(refl-cpp INTERFACE)
 target_include_directories(refl-cpp INTERFACE ${refl-cpp_SOURCE_DIR})
 add_library(antara::refl-cpp ALIAS refl-cpp)
 
-FetchContent_GetProperties(reproc)
-if (NOT reproc_POPULATED)
-    FetchContent_Populate(reproc)
-    add_subdirectory(${reproc_SOURCE_DIR} ${reproc_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif ()
+#FetchContent_GetProperties(reproc)
+#if (NOT reproc_POPULATED)
+ #   FetchContent_Populate(reproc)
+ #   add_subdirectory(${reproc_SOURCE_DIR} ${reproc_BINARY_DIR} EXCLUDE_FROM_ALL)
+#endif ()
 
 FetchContent_GetProperties(expected)
 if (NOT expected_POPULATED)
