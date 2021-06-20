@@ -56,6 +56,7 @@ namespace atomic_dex
     settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) :
         QObject(parent), system(registry), m_system_manager(system_manager), m_app(app)
     {
+        SPDLOG_INFO("settings_page created");
     }
 } // namespace atomic_dex
 
@@ -115,6 +116,7 @@ namespace atomic_dex
         this->m_app->installTranslator(&m_translator);
         this->m_qml_engine->retranslate();
         emit onLangChanged();
+        SPDLOG_INFO("Post lang changed");
     }
 
     bool

@@ -16,6 +16,14 @@
     "libsodium",
     "spdlog",
     {
+      "name": "spdlog",
+      "features": [
+        "wchar",
+        "wchar-filenames"
+      ],
+      "platform": "windows"
+    },
+    {
       "name": "date",
       "features": [
         "remote-api"

@@ -35,6 +35,7 @@ namespace atomic_dex
         this->dispatcher_.sink<update_portfolio_values>().connect<&portfolio_page::on_update_portfolio_values_event>(*this);
         this->dispatcher_.sink<band_oracle_refreshed>().connect<&portfolio_page::on_band_oracle_refreshed>(*this);
         this->dispatcher_.sink<coin_cfg_parsed>().connect<&portfolio_page::on_coin_cfg_parsed>(*this);
+        SPDLOG_INFO("portfolio_page created");
     }
 
     portfolio_model*

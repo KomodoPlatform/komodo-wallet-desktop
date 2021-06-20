@@ -159,6 +159,7 @@ namespace atomic_dex
     void
     application::launch()
     {
+        SPDLOG_INFO("Launch the application");
         this->system_manager_.start();
         auto* timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &application::tick);
@@ -305,7 +306,12 @@ namespace atomic_dex
     application::application(QObject* pParent) : QObject(pParent)
     {
         fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
-        this->entity_registry_.set<QSettings>(settings_path.string().c_str(), QSettings::IniFormat);
+        #if defined(_WIN32) || defined(WIN32)
+            this->entity_registry_.set<QSettings>(QString::fromStdWString(settings_path.wstring()), QSettings::IniFormat);
+        #else
+            this->entity_registry_.set<QSettings>(QString::fromStdString(settings_path.string()), QSettings::IniFormat);
+        #endif
+
         //! Creates managers
         {
             system_manager_.create_system<qt_wallet_manager>(system_manager_);
@@ -348,6 +354,7 @@ namespace atomic_dex
             wallet_mgr->set_wallet_default_name(wallet_mgr->get_default_wallet_name());
             // set_wallet_default_name(get_default_wallet_name());
         }
+        SPDLOG_INFO("application created");
     }
 
     void

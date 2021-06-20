@@ -14,6 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Qt
+#include <QFile>
+#include <QJsonDocument>
+
 //! STD
 #include <fstream>
 
@@ -25,6 +29,7 @@
 //! Project Header
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace
 {
@@ -88,15 +93,17 @@ namespace atomic_dex
         {
             fs::path original_cfg_path{ag::core::assets_real_path() / "config" / "cfg.json"};
             //! Copy our json to current version
-            SPDLOG_INFO("Copying app cfg: {} to {}", original_cfg_path.string(), cfg_path.string());
-
+            LOG_PATH_CMP("Copying app cfg: {} to {}", original_cfg_path, cfg_path);
             fs::copy_file(original_cfg_path, cfg_path, get_override_options());
         }
-        std::ifstream  ifs(cfg_path.string());
-        nlohmann::json config_json_data;
 
-        assert(ifs.is_open());
-        ifs >> config_json_data;
+        QFile file;
+        file.setFileName(std_path_to_qstring(cfg_path));
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QString val = file.readAll();
+        file.close();
+
+        nlohmann::json config_json_data = nlohmann::json::parse(val.toStdString());
 
         from_json(config_json_data, out);
         return out;

@@ -79,6 +79,17 @@ namespace atomic_dex
         return out;
     }
 
+    QString
+    std_path_to_qstring(const fs::path& path)
+    {
+        QString out;
+#if defined(_WIN32) || defined(WIN32)
+        return QString::fromStdWString(path.wstring());
+#else
+        return QString::fromStdString(path.string());
+#endif
+    }
+
     void
     qt_utilities::copy_text_to_clipboard(const QString& text)
     {
