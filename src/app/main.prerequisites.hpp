@@ -254,10 +254,17 @@ init_timezone_db()
 {
     SPDLOG_INFO("Init timezone db");
 #if defined(_WIN32) || defined(WIN32)
-    using namespace std::string_literals;
-    auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
-    std::cout << install_db_tz_path->string() << std::endl;
-    date::set_install(install_db_tz_path->string());
+    try
+    {
+        using namespace std::string_literals;
+        auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
+        date::set_install(install_db_tz_path->string());
+        SPDLOG_INFO("Timezone db successfully initialized");
+    }
+    catch (const std::exception& error)
+    {
+        SPDLOG_ERROR("Couldn't initialize timezone DB, you will get UTC time instead");
+    }
 #endif
 }
 
