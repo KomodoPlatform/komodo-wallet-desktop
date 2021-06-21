@@ -348,6 +348,23 @@
       "active": false,
       "currently_enabled": false
   },
+  "BIDR-BEP20": {
+      "coin": "BIDR-BEP20",
+      "name": "BIDR",
+      "coinpaprika_id": "bidr-binanceidr",
+      "coingecko_id": "binanceidr",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BLK": {
     "coin": "BLK",
     "name": "BlackCoin",

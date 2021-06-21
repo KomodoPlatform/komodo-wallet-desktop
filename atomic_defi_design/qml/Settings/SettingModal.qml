@@ -215,7 +215,7 @@ Qaterial.Dialog {
                                     implicitHeight: 37
                                     onClicked: {
                                         restart_modal.open()
-                                        restart_modal.item.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
+                                        restart_modal.item.onTimerEnded = () => { API.app.settings_pg.reset_coin_cfg() }
                                     }
                                 }
                             }
