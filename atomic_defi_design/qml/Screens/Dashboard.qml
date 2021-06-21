@@ -39,7 +39,6 @@ Item {
 
     property var current_ticker
 
-    property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
     function openLogsFolder() {
@@ -301,10 +300,6 @@ Item {
     ModalLoader {
         id: restart_modal
         sourceComponent: RestartModal {}
-    }
-
-    NotificationsModal {
-        id: notifications_modal
     }
 
     function getStatusColor(status) {

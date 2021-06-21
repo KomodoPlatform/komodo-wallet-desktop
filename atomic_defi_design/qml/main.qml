@@ -16,7 +16,7 @@ DexWindow {
     property int previousX: 0
     property int previousY: 0
     property int real_visibility
-    property bool isOsx: Qt.platform.os == "osx"
+    property bool isOsx: true//Qt.platform.os == "osx"
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
     
@@ -257,6 +257,45 @@ DexWindow {
                             API.app.settings_pg.current_currency = next_fiat
                         }
                     }
+                }
+            }
+            DexLabel {
+                text: " | "
+                opacity: .7
+                font.family: 'Montserrat'
+                font.weight: Font.Medium
+                visible: _label.text !== ""
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
+            }
+            DexIconButton {
+                opacity: containsMouse? 1 : .8
+                anchors.verticalCenter: parent.verticalCenter
+                color: containsMouse? app.globalTheme.accentColor : app.globalTheme.foregroundColor 
+                iconSize: 22
+                icon: Qaterial.Icons.bellOutline
+                AnimatedRectangle {
+                    z: 1
+                    anchors.right: parent.right
+                    anchors.rightMargin: -3
+                    y: -3
+                    radius: width/2
+                    width: count_text.height * 1.4
+                    height: width
+                    visible: app.notifications_list.length > 0
+                    color: app.globalTheme.redColor
+
+                    DefaultText {
+                        id: count_text
+                        anchors.centerIn: parent
+                        text_value: app.notifications_list.length
+                        font.pixelSize: 8
+                        font.family: 'Lato'
+                        color: app.globalTheme.foregroundColor 
+                    }
+                }
+                onClicked: {
+                    app.notification_modal.open()
                 }
             }
         }
