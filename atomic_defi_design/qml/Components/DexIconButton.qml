@@ -10,6 +10,7 @@ Item {
     property alias color:_label.color 
     property alias iconSize: _label.iconSize
     property alias containsMouse: _controlMouseArea.containsMouse
+    property bool active: false
 
     height: _label.implicitHeight+(padding*2)
     width: _label.implicitWidth+(padding*2)

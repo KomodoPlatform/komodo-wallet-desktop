@@ -43,6 +43,14 @@ Rectangle {
     readonly property int idx_dashboard: 5
     property int current_page
 
+    onCurrent_pageChanged: {
+        if(current_page === idx_dashboard) {
+            window.logged = true
+        } else {
+            window.logged = false
+        }
+    }
+
     function appendLog(text){
         log_area.append(text)
     }
