@@ -24,16 +24,19 @@ ColumnLayout
 
         flickableDirection: Flickable.VerticalFlick
 
-        Layout.preferredWidth: _innerLayout.width + padding
-        Layout.preferredHeight: _innerLayout.height + padding
+        Layout.preferredWidth: contentWidth
+        Layout.preferredHeight: contentHeight
         Layout.maximumHeight: window.height - 200
+
+        contentWidth: _innerLayout.width + padding // Padding is for preventing shadows effect being cut
+        contentHeight: _innerLayout.height + padding
 
         ColumnLayout
         {
             id: _innerLayout
             spacing: Style.rowSpacing
             anchors.centerIn: parent
-            width: root.width - (root.padding * 2) - 25
+            width: root.width - (root.padding * 2) - padding
         }
     }
 
