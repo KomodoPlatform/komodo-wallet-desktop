@@ -1,45 +1,45 @@
+//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+
+//! Project Imports
 import "../Constants"
 
-// Inside modal
-ColumnLayout {
-    id: modal_content
-
+// The content of a modal. Must be a child of a `BasicModal` component.
+ColumnLayout
+{
     Layout.fillWidth: true
 
-    property alias title: header.title
-    default property alias content: inner_layout.data
-    property alias footer: footer.data
+    property alias         title: _header.title
+    default property alias content: _innerLayout.data
+    property alias         footer: _footer.data
 
-    ModalHeader {
-        id: header
-    }
+    readonly property var  _parentModal: parent
 
-    DefaultFlickable {
-        id: flickable
+    ModalHeader { id: _header }
+
+    DefaultFlickable
+    {
+        readonly property int padding: 25
 
         flickableDirection: Flickable.VerticalFlick
 
-        Layout.preferredWidth: contentWidth
-        Layout.preferredHeight: contentHeight
+        Layout.preferredWidth: _innerLayout.width + padding
+        Layout.preferredHeight: _innerLayout.height + padding
         Layout.maximumHeight: window.height - 200
 
-        readonly property int padding: 25
-        contentWidth: inner_layout.width + flickable.padding // Padding is for preventing shadows effect being cut
-        contentHeight: inner_layout.height + flickable.padding
-
-        ColumnLayout {
-            id: inner_layout
+        ColumnLayout
+        {
+            id: _innerLayout
             spacing: Style.rowSpacing
             anchors.centerIn: parent
-            width: root.width - root.padding*2 - flickable.padding
+            width: root.width - (root.padding * 2) - 25
         }
     }
 
-    // Buttons
-    RowLayout {
-        id: footer
+    RowLayout // Footer
+    {
+        id: _footer
         anchors.topMargin: Style.rowSpacing
         spacing: Style.buttonSpacing
     }
