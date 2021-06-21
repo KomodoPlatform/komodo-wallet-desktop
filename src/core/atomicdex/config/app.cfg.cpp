@@ -14,8 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-//! STD
-#include <fstream>
+//! Qt
+#include <QFile>
+#include <QJsonDocument>
 
 //! Deps
 #include <antara/gaming/core/real.path.hpp>
@@ -25,18 +26,21 @@
 //! Project Header
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace
 {
     void
     upgrade_cfg(atomic_dex::cfg& config)
     {
-        fs::path       cfg_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
-        std::ifstream  ifs(cfg_path.string());
+        fs::path cfg_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
+        QFile    file;
+        file.setFileName(atomic_dex::std_path_to_qstring(cfg_path));
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
         nlohmann::json config_json_data;
 
-        assert(ifs.is_open());
-        ifs >> config_json_data;
+        QString val                               = file.readAll();
+        config_json_data                          = nlohmann::json::parse(val.toStdString());
         config_json_data["current_currency"]      = config.current_currency;
         config_json_data["current_fiat"]          = config.current_fiat;
         config_json_data["possible_currencies"]   = config.possible_currencies;
@@ -45,12 +49,12 @@ namespace
         config_json_data["available_signs"]       = config.available_currency_signs;
         config_json_data["notification_enabled"]  = config.notification_enabled;
 
-        ifs.close();
+        file.close();
 
         //! Write contents
-        std::ofstream ofs(cfg_path.string(), std::ios::trunc);
-        assert(ofs.is_open());
-        ofs << config_json_data;
+        file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+        file.write(QString::fromStdString(config_json_data.dump()).toUtf8());
+        file.close();
     }
 } // namespace
 
@@ -88,22 +92,24 @@ namespace atomic_dex
         {
             fs::path original_cfg_path{ag::core::assets_real_path() / "config" / "cfg.json"};
             //! Copy our json to current version
-            SPDLOG_INFO("Copying app cfg: {} to {}", original_cfg_path.string(), cfg_path.string());
-
+            LOG_PATH_CMP("Copying app cfg: {} to {}", original_cfg_path, cfg_path);
             fs::copy_file(original_cfg_path, cfg_path, get_override_options());
         }
-        std::ifstream  ifs(cfg_path.string());
-        nlohmann::json config_json_data;
 
-        assert(ifs.is_open());
-        ifs >> config_json_data;
+        QFile file;
+        file.setFileName(std_path_to_qstring(cfg_path));
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QString val = file.readAll();
+        file.close();
+
+        nlohmann::json config_json_data = nlohmann::json::parse(val.toStdString());
 
         from_json(config_json_data, out);
         return out;
     }
 
     bool
-    is_this_currency_a_fiat(const cfg& config, const std::string& currency) 
+    is_this_currency_a_fiat(const cfg& config, const std::string& currency)
     {
         return ranges::any_of(config.available_fiat, [currency](const std::string& current_fiat) { return current_fiat == currency; });
     }
@@ -134,7 +140,7 @@ namespace atomic_dex
     }
 
     std::string
-    retrieve_sign_from_ticker(const cfg& config, const std::string& currency) 
+    retrieve_sign_from_ticker(const cfg& config, const std::string& currency)
     {
 #if defined(__linux__)
         if (currency == "BTC")

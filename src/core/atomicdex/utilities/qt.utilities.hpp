@@ -45,6 +45,7 @@ namespace atomic_dex
         return std::make_tuple(value, value, false);
     }
 
+    QString              std_path_to_qstring(const fs::path& path);
     QStringList          vector_std_string_to_qt_string_list(const std::vector<std::string>& vec);
     ENTT_API QStringList qt_variant_list_to_qt_string_list(const QVariantList& variant_list);
     QJsonArray           nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);

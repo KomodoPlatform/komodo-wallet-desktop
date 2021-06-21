@@ -9,11 +9,16 @@ Item {
     Item {
         width: parent.width
         y: 1
-        height: 40
+        height: 30
         Rectangle {
-            anchors.fill: parent
-            visible: false
-            color: app.globalTheme.surfaceColor
+            width: parent.width
+            height: 30
+            gradient: Gradient {
+                orientation: Qt.Horizontal
+                GradientStop { position: 0.0; color: app.globalTheme.surfaceColor }
+                GradientStop { position: 0.6; color: app.globalTheme.surfaceColor }
+                GradientStop { position: 1.0; color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9) }
+            }
         }
         MouseArea {
             onPressed: window.startSystemMove();
@@ -33,6 +38,7 @@ Item {
         DexMacosHeaderControl {
             visible: window.isOsx//Qt.platform.os == "osx"
         }
+        
     }
     Item {
         id: _left_resize

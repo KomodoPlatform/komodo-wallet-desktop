@@ -10,12 +10,12 @@ import "../../Constants"
 
 // List
 
-InnerBackground {
+DexBox {
     id: graph_bg
-
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
+
 
     content: Item {
         id: root
@@ -44,6 +44,9 @@ InnerBackground {
 
         DefaultText {
             visible: !pair_supported
+            onVisibleChanged: if(visible) {
+                dex_chart.visible = false
+            }
             text_value: qsTr("There is no chart data for this pair yet")
             anchors.centerIn: parent
         }

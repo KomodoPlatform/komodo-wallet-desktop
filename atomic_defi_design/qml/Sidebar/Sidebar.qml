@@ -20,7 +20,7 @@ Item {
         }
     }
 
-    height: parent.height
+    height: parent.height+30
 
     // Cursor
     AnimatedRectangle {

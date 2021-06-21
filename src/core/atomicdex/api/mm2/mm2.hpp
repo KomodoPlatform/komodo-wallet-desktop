@@ -62,166 +62,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, trade_fee_answer& cfg);
 
-    struct fee_regular_coin
-    {
-        std::string amount;
-    };
-
-    void from_json(const nlohmann::json& j, fee_regular_coin& cfg);
-
-    struct fee_erc_coin
-    {
-        std::string coin;
-        std::size_t gas;
-        std::string gas_price;
-        std::string total_fee;
-    };
-
-    void from_json(const nlohmann::json& j, fee_erc_coin& cfg);
-
-    struct fee_qrc_coin
-    {
-        std::string coin;
-        std::string miner_fee;
-        std::size_t gas_limit;
-        std::size_t gas_price;
-        std::string total_gas_fee;
-    };
-
-    void from_json(const nlohmann::json& j, fee_qrc_coin& cfg);
-
-    struct fees_data
-    {
-        std::optional<fee_regular_coin> normal_fees; ///< btc, kmd based coins
-        std::optional<fee_erc_coin>     erc_fees;    ///< eth based coins
-        std::optional<fee_qrc_coin>     qrc_fees;    // Qtum based coin
-    };
-
-    void from_json(const nlohmann::json& j, fees_data& cfg);
-
-
-    struct tx_history_request
-    {
-        std::string coin;
-        std::size_t limit;
-    };
-
-    void to_json(nlohmann::json& j, const tx_history_request& cfg);
-
-    struct transaction_data
-    {
-        std::size_t                timestamp;
-        std::vector<std::string>   from;
-        std::vector<std::string>   to;
-        fees_data                  fee_details;
-        std::optional<std::size_t> confirmations;
-        std::string                coin;
-        std::size_t                block_height;
-        std::string                internal_id;
-        std::string                spent_by_me;
-        std::string                received_by_me;
-        std::string                my_balance_change;
-        std::string                total_amount;
-        std::string                tx_hash;
-        std::string                tx_hex;
-        std::string                timestamp_as_date; ///< human readeable timestamp
-    };
-
-    void from_json(const nlohmann::json& j, transaction_data& cfg);
-
-    struct sync_status_additional_error
-    {
-        std::string message;
-        int         code;
-    };
-
-    void from_json(const nlohmann::json& j, sync_status_additional_error& answer);
-
-    struct sync_status_eth_erc_20_coins
-    {
-        std::size_t blocks_left;
-    };
-
-    void from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer);
-
-    struct sync_status_regular_coins
-    {
-        std::size_t transactions_left;
-    };
-
-    void from_json(const nlohmann::json& j, sync_status_regular_coins& answer);
-
-    struct sync_status_additional_infos
-    {
-        std::optional<sync_status_additional_error> error;         ///< in case of error
-        std::optional<sync_status_eth_erc_20_coins> erc_infos;     ///< eth/erc20 related coins
-        std::optional<sync_status_regular_coins>    regular_infos; ///< kmd/btc/utxo related coins
-    };
-
-    void from_json(const nlohmann::json& j, sync_status_additional_infos& answer);
-
-    struct t_sync_status
-    {
-        std::string                                 state; ///< NotEnabled, NotStarted, InProgress, Error, Finished
-        std::optional<sync_status_additional_infos> additional_info;
-    };
-
-    void from_json(const nlohmann::json& j, t_sync_status& answer);
-
-    struct tx_history_answer_success
-    {
-        std::string                   from_id;
-        std::size_t                   skipped;
-        std::size_t                   limit;
-        std::size_t                   current_block;
-        std::size_t                   total;
-        std::vector<transaction_data> transactions;
-        t_sync_status                 sync_status;
-    };
-
-    void from_json(const nlohmann::json& j, tx_history_answer_success& answer);
-
-    struct tx_history_answer
-    {
-        std::optional<std::string>               error;
-        std::optional<tx_history_answer_success> result;
-        std::string                              raw_result;      ///< internal
-        int                                      rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json& j, tx_history_answer& answer);
-
-    struct withdraw_fees
-    {
-        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
-        std::optional<std::string> amount;    ///< Utxo only
-        std::optional<std::string> gas_price; ///< price EthGas or Qrc20Gas
-        std::optional<int>         gas_limit; ///< sets the gas limit for transaction
-    };
-
-    void to_json(nlohmann::json& j, const withdraw_fees& cfg);
-
-    struct withdraw_request
-    {
-        std::string                  coin;
-        std::string                  to;                 ///< coins will be withdraw to this address
-        std::string                  amount;             ///< ignored if max is true
-        std::optional<withdraw_fees> fees{std::nullopt}; ///< ignored if std::nullopt
-        bool                         max{false};
-    };
-
-    void to_json(nlohmann::json& j, const withdraw_request& cfg);
-
-    struct withdraw_answer
-    {
-        std::optional<transaction_data> result;
-        std::optional<std::string>      error;
-        std::string                     raw_result;      ///< internal
-        int                             rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json& j, withdraw_answer& answer);
-
     struct send_raw_transaction_request
     {
         std::string tx_hex;
@@ -394,7 +234,7 @@ namespace mm2::api
 
     pplx::task<web::http::http_response> async_process_rpc_get(t_http_client_ptr& client, const std::string rpc_command, const std::string& url);
 
-    nlohmann::json template_request(std::string method_name) ;
+    nlohmann::json template_request(std::string method_name, bool is_protocol_v2 = false);
 
     void               set_rpc_password(std::string rpc_password) ;
     const std::string& get_rpc_password() ;
@@ -404,11 +244,7 @@ namespace mm2::api
 namespace atomic_dex
 {
     using t_my_orders_answer        = ::mm2::api::my_orders_answer;
-    using t_withdraw_request        = ::mm2::api::withdraw_request;
-    using t_withdraw_fees           = ::mm2::api::withdraw_fees;
-    using t_withdraw_answer         = ::mm2::api::withdraw_answer;
     using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
-    using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;
     using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
     using t_active_swaps_request    = ::mm2::api::active_swaps_request;

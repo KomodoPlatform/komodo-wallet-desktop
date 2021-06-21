@@ -24,7 +24,7 @@
 
 namespace
 {
-    template <typename TValue, typename TModel>
+    /*template <typename TValue, typename TModel>
     void
     update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
     {
@@ -32,7 +32,7 @@ namespace
         {
             model.setData(idx, value, role);
         }
-    }
+    }*/
 } // namespace
 
 namespace atomic_dex
@@ -47,15 +47,16 @@ namespace atomic_dex
         switch (m_current_orderbook_kind)
         {
         case kind::asks:
-            this->m_model_proxy->sort(0, Qt::AscendingOrder);
+            this->m_model_proxy->sort(0, Qt::DescendingOrder);
             break;
         case kind::bids:
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
             break;
         case kind::best_orders:
             this->m_model_proxy->setSortRole(PriceFiatRole);
-            this->m_model_proxy->setFilterRole(HaveCEXIDRole);
+            this->m_model_proxy->setFilterRole(CoinRole);
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
+            this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
             break;
         }
     }
@@ -107,6 +108,28 @@ namespace atomic_dex
             return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_numer);
         case BaseMinVolumeRole:
             return QString::fromStdString(m_model_data.at(index.row()).base_min_volume);
+        case BaseMinVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_min_volume_denom);
+        case BaseMinVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_min_volume_numer);
+        case BaseMaxVolumeRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_max_volume);
+        case BaseMaxVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_max_volume_denom);
+        case BaseMaxVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).base_max_volume_numer);
+        case RelMinVolumeRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_min_volume);
+        case RelMinVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_min_volume_denom);
+        case RelMinVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_min_volume_numer);
+        case RelMaxVolumeRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_max_volume);
+        case RelMaxVolumeDenomRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_max_volume_denom);
+        case RelMaxVolumeNumerRole:
+            return QString::fromStdString(m_model_data.at(index.row()).rel_max_volume_numer);
         case MinVolumeRole:
         {
             const bool is_asks = m_current_orderbook_kind == kind::asks;
@@ -265,6 +288,39 @@ namespace atomic_dex
         case BaseMinVolumeRole:
             order.base_min_volume = value.toString().toStdString();
             break;
+        case BaseMinVolumeDenomRole:
+            order.base_min_volume_denom = value.toString().toStdString();
+            break;
+        case BaseMinVolumeNumerRole:
+            order.base_min_volume_numer = value.toString().toStdString();
+            break;
+        case BaseMaxVolumeRole:
+            order.base_max_volume = value.toString().toStdString();
+            break;
+        case BaseMaxVolumeDenomRole:
+            order.base_max_volume_denom = value.toString().toStdString();
+            break;
+        case BaseMaxVolumeNumerRole:
+            order.base_max_volume_numer = value.toString().toStdString();
+            break;
+        case RelMinVolumeRole:
+            order.rel_min_volume = value.toString().toStdString();
+            break;
+        case RelMinVolumeDenomRole:
+            order.rel_min_volume_denom = value.toString().toStdString();
+            break;
+        case RelMinVolumeNumerRole:
+            order.rel_min_volume_numer = value.toString().toStdString();
+            break;
+        case RelMaxVolumeRole:
+            order.rel_max_volume = value.toString().toStdString();
+            break;
+        case RelMaxVolumeDenomRole:
+            order.rel_max_volume_denom = value.toString().toStdString();
+            break;
+        case RelMaxVolumeNumerRole:
+            order.rel_max_volume_numer = value.toString().toStdString();
+            break;
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -290,7 +346,18 @@ namespace atomic_dex
             {CEXRatesRole, "cex_rates"},
             {SendRole, "send"},
             {PriceFiatRole, "price_fiat"},
-            {BaseMinVolumeRole, "base_min_volume"}};
+            {BaseMinVolumeRole, "base_min_volume"},
+            {BaseMinVolumeDenomRole, "base_min_volume_denom"},
+            {BaseMinVolumeNumerRole, "base_min_volume_numer"},
+            {BaseMaxVolumeRole, "base_max_volume"},
+            {BaseMaxVolumeDenomRole, "base_max_volume_denom"},
+            {BaseMaxVolumeNumerRole, "base_max_volume_numer"},
+            {RelMinVolumeRole, "rel_min_volume"},
+            {RelMinVolumeDenomRole, "rel_min_volume_denom"},
+            {RelMinVolumeNumerRole, "rel_min_volume_numer"},
+            {RelMaxVolumeRole, "rel_max_volume"},
+            {RelMaxVolumeDenomRole, "rel_max_volume_denom"},
+            {RelMaxVolumeNumerRole, "rel_max_volume_numer"}};
     }
 
     void
@@ -298,7 +365,8 @@ namespace atomic_dex
     {
         if (!orderbook.empty())
         {
-            SPDLOG_INFO("full orderbook initialization initial size: {} target size: {}", rowCount(), orderbook.size());
+            SPDLOG_INFO(
+                "full orderbook initialization initial size: {} target size: {}, orderbook_kind: {}", rowCount(), orderbook.size(), m_current_orderbook_kind);
         }
         this->beginResetModel();
         m_model_data = orderbook;
@@ -325,6 +393,12 @@ namespace atomic_dex
     void
     orderbook_model::initialize_order(const ::mm2::api::order_contents& order)
     {
+        if (m_orders_id_registry.contains(order.uuid))
+        {
+            SPDLOG_WARN("Order with uuid: {} already present...skipping.", order.uuid);
+            return;
+        }
+
         assert(m_model_data.size() == m_orders_id_registry.size());
         beginInsertRows(QModelIndex(), m_model_data.size(), m_model_data.size());
         m_model_data.push_back(order);
@@ -332,6 +406,27 @@ namespace atomic_dex
         endInsertRows();
         emit lengthChanged();
         assert(m_model_data.size() == m_orders_id_registry.size());
+        if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids)
+        {
+            auto& trading_pg = m_system_mgr.get_system<trading_page>();
+            if (trading_pg.get_market_mode() == MarketMode::Sell)
+            {
+                const auto preferred_order = trading_pg.get_preffered_order();
+                if (!preferred_order.empty())
+                {
+                    const t_float_50 price_std       = safe_float(order.price);
+                    t_float_50       preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+                    if (price_std > preferred_price)
+                    {
+                        SPDLOG_INFO(
+                            "An order with a better price is inserted, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
+                            utils::format_float(preferred_price));
+                        trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
+                        emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                    }
+                }
+            }
+        }
     }
 
     void
@@ -340,8 +435,9 @@ namespace atomic_dex
         if (const auto res = this->match(index(0, 0), UUIDRole, QString::fromStdString(order.uuid)); not res.isEmpty())
         {
             //! ID Found, update !
-            const QModelIndex& idx = res.at(0);
-            update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
+            const QModelIndex& idx                  = res.at(0);
+            const auto         uuid_to_be_updated   = this->data(idx, OrderbookRoles::UUIDRole).toString().toStdString();
+            auto&& [_, new_price, is_price_changed] = update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
             update_value(OrderbookRoles::PriceNumerRole, QString::fromStdString(order.price_fraction_numer), idx, *this);
             update_value(OrderbookRoles::PriceDenomRole, QString::fromStdString(order.price_fraction_denom), idx, *this);
             update_value(OrderbookRoles::IsMineRole, order.is_mine, idx, *this);
@@ -349,11 +445,49 @@ namespace atomic_dex
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::BaseMinVolumeRole, QString::fromStdString(order.base_min_volume), idx, *this);
+            update_value(OrderbookRoles::BaseMinVolumeDenomRole, QString::fromStdString(order.base_min_volume_denom), idx, *this);
+            update_value(OrderbookRoles::BaseMinVolumeNumerRole, QString::fromStdString(order.base_min_volume_numer), idx, *this);
+            update_value(OrderbookRoles::BaseMaxVolumeRole, QString::fromStdString(order.base_max_volume), idx, *this);
+            update_value(OrderbookRoles::BaseMaxVolumeDenomRole, QString::fromStdString(order.base_max_volume_denom), idx, *this);
+            update_value(OrderbookRoles::BaseMaxVolumeNumerRole, QString::fromStdString(order.base_max_volume_numer), idx, *this);
+            update_value(OrderbookRoles::RelMinVolumeRole, QString::fromStdString(order.rel_min_volume), idx, *this);
+            update_value(OrderbookRoles::RelMinVolumeDenomRole, QString::fromStdString(order.rel_min_volume_denom), idx, *this);
+            update_value(OrderbookRoles::RelMinVolumeNumerRole, QString::fromStdString(order.rel_min_volume_numer), idx, *this);
+            update_value(OrderbookRoles::RelMaxVolumeRole, QString::fromStdString(order.rel_max_volume), idx, *this);
+            update_value(OrderbookRoles::RelMaxVolumeDenomRole, QString::fromStdString(order.rel_max_volume_denom), idx, *this);
+            update_value(OrderbookRoles::RelMaxVolumeNumerRole, QString::fromStdString(order.rel_max_volume_numer), idx, *this);
             update_value(OrderbookRoles::MinVolumeRole, QString::fromStdString(order.min_volume), idx, *this);
             update_value(OrderbookRoles::EnoughFundsToPayMinVolume, true, idx, *this);
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
             update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
             update_value(OrderbookRoles::PriceFiatRole, "0.00", idx, *this);
+
+            if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids && is_price_changed)
+            {
+                auto& trading_pg = m_system_mgr.get_system<trading_page>();
+                if (trading_pg.get_market_mode() == MarketMode::Sell)
+                {
+                    const auto preferred_order = trading_pg.get_preffered_order();
+                    if (!preferred_order.empty())
+                    {
+                        const t_float_50 price_std       = safe_float(new_price.toString().toStdString());
+                        t_float_50       preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+                        if (price_std > preferred_price)
+                        {
+                            SPDLOG_INFO(
+                                "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid,
+                                utils::format_float(price_std), utils::format_float(preferred_price));
+                            trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
+                            emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                        }
+                        else if (auto selected_uuid = preferred_order.value("uuid", "").toString().toStdString(); selected_uuid == order.uuid)
+                        {
+                            SPDLOG_INFO("The price went down with the selected order: {}", order.uuid);
+                            check_for_better_order(trading_pg, preferred_order, selected_uuid);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -390,7 +524,7 @@ namespace atomic_dex
                     {
                         if (this->m_current_orderbook_kind == kind::best_orders)
                         {
-                            //SPDLOG_INFO("Removing order with UUID: {}", id);
+                            // SPDLOG_INFO("Removing order with UUID: {}", id);
                         }
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
@@ -415,7 +549,26 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            m_model_data.erase(m_model_data.begin() + position);
+            auto       it                 = m_model_data.begin() + position;
+            const auto uuid_to_be_removed = it->uuid;
+            if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids)
+            {
+                auto&      trading_pg      = m_system_mgr.get_system<trading_page>();
+                const auto preffered_order = trading_pg.get_preffered_order();
+                if (!preffered_order.empty())
+                {
+                    const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
+                    if (selected_order_uuid == uuid_to_be_removed)
+                    {
+                        SPDLOG_WARN(
+                            "The selected order uuid: {} is removed from the orderbook model, checking if a better order is available", uuid_to_be_removed);
+                        check_for_better_order(trading_pg, preffered_order, selected_order_uuid);
+                    }
+                }
+            }
+
+            // functor(it);
+            m_model_data.erase(it);
             emit lengthChanged();
         }
         endRemoveRows();
@@ -443,5 +596,70 @@ namespace atomic_dex
     orderbook_model::get_orderbook_kind() const
     {
         return m_current_orderbook_kind;
+    }
+
+    QVariantMap
+    orderbook_model::get_order_from_uuid([[maybe_unused]] QString uuid)
+    {
+        QVariantMap out;
+
+        if (const auto res = this->match(index(0, 0), UUIDRole, uuid); not res.isEmpty())
+        {
+            const QModelIndex& idx        = res.at(0);
+            const auto&        order      = m_model_data.at(idx.row());
+            auto&              trading_pg = m_system_mgr.get_system<trading_page>();
+            const bool         is_buy     = trading_pg.get_market_mode() == MarketMode::Buy;
+            out["coin"]                   = QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin);
+            out["price"]                  = QString::fromStdString(order.price);
+            out["quantity"]               = QString::fromStdString(order.maxvolume);
+            out["price_denom"]            = QString::fromStdString(order.price_fraction_denom);
+            out["price_numer"]            = QString::fromStdString(order.price_fraction_numer);
+            out["quantity_denom"]         = QString::fromStdString(order.max_volume_fraction_denom);
+            out["quantity_numer"]         = QString::fromStdString(order.max_volume_fraction_numer);
+            out["min_volume"]             = QString::fromStdString(order.min_volume);
+            out["base_min_volume"]        = QString::fromStdString(order.base_min_volume);
+            out["base_max_volume"]        = QString::fromStdString(order.base_max_volume);
+            out["base_max_volume_denom"]  = QString::fromStdString(order.base_max_volume_denom);
+            out["base_max_volume_numer"]  = QString::fromStdString(order.base_max_volume_numer);
+            out["rel_min_volume"]         = QString::fromStdString(order.rel_min_volume);
+            out["rel_max_volume"]         = QString::fromStdString(order.rel_max_volume);
+            out["uuid"]                   = QString::fromStdString(order.uuid);
+            if (trading_pg.get_current_trading_mode() == TradingModeGadget::Simple)
+            {
+                out["initial_input_volume"] = trading_pg.get_volume();
+            }
+        }
+
+        return out;
+    }
+
+    void
+    orderbook_model::check_for_better_order(trading_page& trading_pg, const QVariantMap& preferred_order, std::string uuid)
+    {
+        if (trading_pg.get_market_mode() == MarketMode::Sell)
+        {
+            t_float_50 preferred_price = safe_float(preferred_order.value("price", "0").toString().toStdString());
+            bool       hit             = false;
+            for (auto&& order: m_model_data)
+            {
+                const t_float_50 price_std = safe_float(order.price);
+
+                if (price_std > preferred_price)
+                {
+                    SPDLOG_INFO(
+                        "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid, utils::format_float(price_std),
+                        utils::format_float(preferred_price));
+                    trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
+                    emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));
+                    hit = true;
+                    break;
+                }
+            }
+            if (!hit)
+            {
+                SPDLOG_INFO("Order with uuid: {} has been cancelled and no new order with better price is available", uuid);
+                trading_pg.set_selected_order_status(SelectedOrderStatus::OrderNotExistingAnymore);
+            }
+        }
     }
 } // namespace atomic_dex

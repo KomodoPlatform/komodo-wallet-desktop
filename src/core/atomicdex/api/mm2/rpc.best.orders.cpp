@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! STD
+#include <unordered_set>
+
 //! Deps
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
@@ -45,13 +48,28 @@ namespace mm2::api
             for (auto&& [key, value]: j.items())
             {
                 // SPDLOG_INFO("{} best orders size: {}", key, value.size());
+                //bool hit = false;
+                std::unordered_set<std::string> uuid_visited;
                 for (auto&& cur_order: value)
                 {
                     order_contents contents;
                     contents.rel_coin = key;
                     from_json(cur_order, contents);
-                    answer.result.emplace_back(std::move(contents));
+                    if (uuid_visited.emplace(contents.uuid).second)
+                    {
+                        answer.result.emplace_back(std::move(contents));
+                    }
+                    else
+                    {
+                        //hit = true;
+                        SPDLOG_WARN("Order with uuid: {} already added - skipping", contents.uuid);
+                    }
                 }
+                /*if (hit)
+                {
+                    SPDLOG_WARN("mm2 answer duplicated: {}", value.dump());
+                    hit = false;
+                }*/
             }
         }
     }

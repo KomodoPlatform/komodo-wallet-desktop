@@ -18,6 +18,7 @@ import "../Constants"
 Qaterial.Dialog {
 
     function disconnect() {
+        app.currentWalletName = ""
         API.app.disconnect()
         onDisconnect()
     }

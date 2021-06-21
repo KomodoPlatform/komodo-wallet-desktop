@@ -30,21 +30,22 @@ namespace mm2::api
 {
     struct sell_request
     {
-        std::string                base;
-        std::string                rel;
-        std::string                price;
-        std::string                volume;
-        bool                       is_created_order;
-        std::string                price_denom;
-        std::string                price_numer;
-        std::string                volume_denom;
-        std::string                volume_numer;
-        bool                       is_exact_selected_order_volume;
-        bool                       selected_order_use_input_volume{false};
-        std::optional<bool>        rel_nota;
-        std::optional<std::size_t> rel_confs;
-        bool                       is_max;
-        std::optional<std::string> min_volume{std::nullopt};
+        std::string                   base;
+        std::string                   rel;
+        std::string                   price;
+        std::string                   volume;
+        bool                          is_created_order;
+        std::string                   price_denom;
+        std::string                   price_numer;
+        std::string                   volume_denom;
+        std::string                   volume_numer;
+        bool                          is_exact_selected_order_volume;
+        bool                          selected_order_use_input_volume{false};
+        std::optional<bool>           rel_nota;
+        std::optional<std::size_t>    rel_confs;
+        bool                          is_max;
+        std::optional<std::string>    min_volume{std::nullopt};
+        std::optional<nlohmann::json> order_type{std::nullopt};
     };
 
     void to_json(nlohmann::json& j, const sell_request& request);

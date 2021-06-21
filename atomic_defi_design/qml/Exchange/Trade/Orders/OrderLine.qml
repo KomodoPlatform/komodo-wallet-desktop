@@ -34,7 +34,7 @@ Rectangle {
         RowLayout {
             id: status_text
             Layout.fillHeight: true
-            Layout.preferredWidth: 45
+            Layout.preferredWidth: 15
 
             spacing: 5
             visible: clickable? !details ? false :
@@ -47,18 +47,10 @@ Rectangle {
                 text_value: !details ? "" :
                             visible ? getStatusStep(details.order_status) : ''
             }
-
-            DefaultBusyIndicator {
-                Layout.alignment: Qt.AlignVCenter
-                //visible: true //!isSwapDone(details.order_status)
-                running: !isSwapDone(details.order_status) && Qt.platform.os != "osx"
-                Layout.preferredWidth: 20
-                Layout.preferredHeight: Layout.preferredWidth
-            }
         }
         Item {
             Layout.fillHeight: true
-            Layout.preferredWidth: 45
+            Layout.preferredWidth: 20
 
             visible: !status_text.visible? clickable? true : false : false
 
@@ -77,7 +69,7 @@ Rectangle {
                         details.date?? ""
             Layout.fillHeight: true
             verticalAlignment: Label.AlignVCenter
-            Layout.preferredWidth: 140
+            Layout.preferredWidth: 120
         }
 
         DefaultImage {
@@ -92,11 +84,11 @@ Rectangle {
             id: base_amount
             text_value: !details ? "" :
                         General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: Style.textSizeSmall2
+            font.pixelSize: 11
 
 
             Layout.fillHeight: true
-            Layout.preferredWidth: 180
+            Layout.preferredWidth: 160
             verticalAlignment: Label.AlignVCenter
             privacy: is_placed_order
         }
@@ -123,7 +115,7 @@ Rectangle {
             font.pixelSize: base_amount.font.pixelSize
 
             Layout.fillHeight: true
-            Layout.preferredWidth: 180
+            Layout.preferredWidth: 160
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Label.AlignRight
             privacy: is_placed_order
@@ -164,17 +156,22 @@ Rectangle {
             id: cancel_button_text
             visible: (!is_history? details.cancellable?? false : false)===true? (mouse_area.containsMouse || hovered)? true : false : false
 
-            icon.source: Qaterial.Icons.close
             Layout.fillHeight: true
             Layout.preferredWidth: 30
-            foregroundColor: Qaterial.Colors.pink300
             Layout.alignment: Qt.AlignVCenter
             outlinedColor: Style.colorTheme5
             Behavior on scale {
                 NumberAnimation { duration: 200 }
             }
+            Qaterial.ColorIcon {
+                iconSize: 13 
+                color: Qaterial.Colors.pink300
+                source: Qaterial.Icons.close
+                anchors.centerIn: parent
+                scale: parent.visible? 1 : 0
+            }
 
-            scale: visible? 1 : 0
+            
             onClicked: { if(details) cancelOrder(details.order_id) }
             hoverEnabled: true
 
@@ -202,6 +199,9 @@ Rectangle {
     HorizontalLine {
         width: parent.width
         color: Style.colorWhite9
+        opacity: .4
         anchors.bottom: parent.bottom
     }
+
+    //  !isSwapDone(details.order_status) && Qt.platform.os != "osx"  needeed for new progress later
 }

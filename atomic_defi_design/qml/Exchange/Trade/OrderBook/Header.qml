@@ -24,37 +24,33 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 80
+            Layout.preferredWidth: 60
             text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
-            font.family: Style.font_family
-            font.pixelSize: 10
+            font.family: _font.fontFamily
+            font.pixelSize: 9
             font.bold: true
-            color: is_ask? theme.redColor : theme.greenColor
             font.weight: Font.Black
+            color: is_ask? theme.redColor : theme.greenColor
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 90
+            Layout.preferredWidth: 100
 
             text: qsTr("Quantity") + " ("+  atomic_qt_utilities.retrieve_main_ticker(left_ticker) +")"
-            font.family: Style.font_family
-            font.pixelSize: 10
+            font.family: _font.fontFamily
+            font.pixelSize: 9
             font.bold: true
             font.weight: Font.Black
             horizontalAlignment: Label.AlignRight
 
         }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 120
+            Layout.fillWidth: true
             text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"
             horizontalAlignment: Label.AlignRight
-            font.family: Style.font_family
-            font.pixelSize: 10
+            font.family: _font.fontFamily
+            font.pixelSize: 9
             font.bold: true
             font.weight: Font.Black
         }

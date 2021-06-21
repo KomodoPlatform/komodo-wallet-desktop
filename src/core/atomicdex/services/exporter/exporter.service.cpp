@@ -14,6 +14,12 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Std
+#include <sstream>
+
+//! Qt
+#include <QFile>
+
 //! Deps
 #include <nlohmann/json.hpp>
 
@@ -21,6 +27,7 @@
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 //! Constructor
 namespace atomic_dex
@@ -56,7 +63,7 @@ namespace atomic_dex
             SPDLOG_WARN("csv path doesn't contains file extensions adding it");
             str_path += ".csv";
             csv_path = str_path;
-            SPDLOG_INFO("new csv path is: {}", csv_path.string());
+            LOG_PATH("new csv path is: {}", csv_path);
         }
         nlohmann::json            batch           = nlohmann::json::array();
         nlohmann::json            my_recent_swaps = ::mm2::api::template_request("my_recent_swaps");
@@ -78,28 +85,32 @@ namespace atomic_dex
             if (swap_answer.result.has_value())
             {
                 const auto result = swap_answer.result.value();
-                SPDLOG_INFO("exporting csv with path: {}", csv_path.string());
-                std::ofstream ofs(csv_path.string(), std::ios::out | std::ios::trunc);
-                ofs << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID, ErrorState" << std::endl;
+                LOG_PATH("exporting csv with path: {}", csv_path);
+                QFile ofs;
+                ofs.setFileName(std_path_to_qstring(csv_path));
+                ofs.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate);
+                std::stringstream ss;
+                ss << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID, ErrorState" << std::endl;
                 for (auto&& cur_swap: result.swaps)
                 {
-                    ofs << cur_swap.human_date.toStdString() << ",";
-                    ofs << cur_swap.base_coin.toStdString() << ",";
-                    ofs << cur_swap.base_amount.toStdString() << ",";
+                    ss << cur_swap.human_date.toStdString() << ",";
+                    ss << cur_swap.base_coin.toStdString() << ",";
+                    ss << cur_swap.base_amount.toStdString() << ",";
                     const auto status = cur_swap.order_status.toStdString();
-                    ofs << status << ",";
-                    ofs << cur_swap.rel_coin.toStdString() << ",";
-                    ofs << cur_swap.rel_amount.toStdString() << ",";
-                    ofs << cur_swap.order_id.toStdString();
+                    ss << status << ",";
+                    ss << cur_swap.rel_coin.toStdString() << ",";
+                    ss << cur_swap.rel_amount.toStdString() << ",";
+                    ss << cur_swap.order_id.toStdString();
                     if (status == "failed")
                     {
-                        ofs << "," << cur_swap.order_error_state.toStdString() << std::endl;
+                        ss << "," << cur_swap.order_error_state.toStdString() << std::endl;
                     }
                     else
                     {
-                        ofs << ",Success" << std::endl;
+                        ss << ",Success" << std::endl;
                     }
                 }
+                ofs.write(QString::fromStdString(ss.str()).toUtf8());
                 ofs.close();
             }
             else

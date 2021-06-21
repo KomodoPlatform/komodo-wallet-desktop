@@ -82,7 +82,6 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 | cpprestsdk    | 2.10.15-1       | The C++ REST SDK is a Microsoft project for cloud-based client-server  communication in native code using a modern asynchronous C++ API design. | HTTP                |
 | taskflow      | 2.2.0         | Parallel and Heterogeneous Task Programming in Modern C++                                                                                       | Threading           |
 | qt            | 5.15.2        | Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                      | GUI                 |
-| reproc        | 13.0.1        | A cross-platform (C99/C++11) process library                                                                                                    | Process             |
 
 ## How do I build it ?
 

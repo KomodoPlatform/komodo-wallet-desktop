@@ -7,9 +7,9 @@ import QtQuick.Layouts 1.12
 import "../Constants"
 
 RowLayout {
-    width: 195
+    width: 120
     anchors.right: parent.right
-    height: 40
+    height: 30
     spacing: 0
     anchors.top: parent.top
     anchors.topMargin: 0
@@ -20,6 +20,8 @@ RowLayout {
         bottomInset: 0
         radius: 0
         opacity: .7
+        Layout.preferredWidth: 40
+        Layout.fillHeight: true
         foregroundColor: app.globalTheme.foregroundColor
         icon.source: Qaterial.Icons.windowMinimize
         onClicked: window.showMinimized()
@@ -32,6 +34,8 @@ RowLayout {
         bottomInset: 0
         radius: 0
         opacity: .7
+        Layout.preferredWidth: 40
+        Layout.fillHeight: true
         foregroundColor: app.globalTheme.foregroundColor
         onClicked: {
             if(window.visibility==ApplicationWindow.Maximized){
@@ -51,6 +55,8 @@ RowLayout {
         radius: 0
         opacity: .7
         accentRipple: Qaterial.Colors.red
+        Layout.preferredWidth: 40
+        Layout.fillHeight: true
         foregroundColor: app.globalTheme.foregroundColor
         icon.source: Qaterial.Icons.windowClose
         onClicked: Qt.quit()

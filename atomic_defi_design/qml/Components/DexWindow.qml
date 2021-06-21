@@ -6,7 +6,7 @@ import QtQuick.Controls.Universal 2.15
 import "../Screens"
 import "../Constants"
 
-ApplicationWindow {
+Qaterial.ApplicationWindow {
     id: window
     flags: Qt.FramelessWindowHint | Qt.Window
 }
