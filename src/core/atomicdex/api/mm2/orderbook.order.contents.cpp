@@ -36,6 +36,16 @@ namespace mm2::api
         j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
         j.at("max_volume_fraction").at("numer").get_to(contents.max_volume_fraction_numer);
         j.at("max_volume_fraction").at("denom").get_to(contents.max_volume_fraction_denom);
+
+        j.at("base_min_volume_fraction").at("numer").get_to(contents.base_min_volume_numer);
+        j.at("base_min_volume_fraction").at("denom").get_to(contents.base_min_volume_denom);
+        j.at("base_max_volume_fraction").at("numer").get_to(contents.base_max_volume_numer);
+        j.at("base_max_volume_fraction").at("denom").get_to(contents.base_max_volume_denom);
+        j.at("rel_min_volume_fraction").at("numer").get_to(contents.rel_min_volume_numer);
+        j.at("rel_min_volume_fraction").at("denom").get_to(contents.rel_min_volume_denom);
+        j.at("rel_max_volume_fraction").at("numer").get_to(contents.rel_max_volume_numer);
+        j.at("rel_max_volume_fraction").at("denom").get_to(contents.rel_max_volume_denom);
+
         j.at("maxvolume").get_to(contents.maxvolume);
         j.at("pubkey").get_to(contents.pubkey);
         j.at("age").get_to(contents.age);
@@ -67,9 +77,13 @@ namespace mm2::api
         std::stringstream ss;
         ss << "coin: " << coin << " ";
         ss << "address: " << address << " ";
-        //ss << "price: " << price << " ";
+        ss << "price: " << price << " ";
         ss << "max_volume: " << maxvolume << " ";
         ss << "depth_percent: " << depth_percent << " ";
+        ss << "base_max_volume: " << base_max_volume << " ";
+        ss << "rel_max_volume: " << rel_max_volume << " ";
+        ss << "base_min_volume: " << base_min_volume << " ";
+        ss << "rel_min_volume: " << rel_min_volume << " ";
         return ss.str();
     }
 } // namespace mm2::api

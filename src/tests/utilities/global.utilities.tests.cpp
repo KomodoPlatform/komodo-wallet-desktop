@@ -105,4 +105,14 @@ TEST_CASE("atomic_dex::utils::retrieve_main_ticker()")
     CHECK_EQ(atomic_dex::utils::retrieve_main_ticker("BUSD-ERC20"), "BUSD");
 }
 
+/*TEST_CASE("u8string")
+{
+    using namespace std::string_literals;
+    std::wstring other_path = L"C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s;
+    fs::path cur_path = other_path;
+    CHECK_EQ(u8string(other_path), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
+    CHECK_EQ(u8string(cur_path), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
+    CHECK_EQ(to_utf8(cur_path.wstring().c_str()), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
+}*/
+
 #endif

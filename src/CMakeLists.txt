@@ -4,7 +4,7 @@ include(DEX_NEW_LIB)
 DEX_NEW_LIB(core INTERFACE
         INTERFACE_DEPS
             cpprestsdk::cpprest Qt::Core Qt::Quick Qt::Svg Qt::Charts Qt::WebEngine Qt::WebEngineCore Qt::WebEngineWidgets
-            Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world reproc++
+            Qt::Widgets nlohmann_json::nlohmann_json antara_qrcode spdlog::spdlog antara::world
             unofficial-btc::bitcoin komodo-date::date komodo-taskflow::taskflow
             Boost::random Boost::filesystem komodo-sodium::sodium antara::app::net
         INTERFACE_DEFS

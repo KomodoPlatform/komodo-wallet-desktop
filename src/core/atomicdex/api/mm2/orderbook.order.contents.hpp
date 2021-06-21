@@ -34,9 +34,17 @@ namespace mm2::api
         std::string                max_volume_fraction_denom;
         std::string                maxvolume;
         std::string                base_min_volume;
+        std::string                base_min_volume_denom;
+        std::string                base_min_volume_numer;
         std::string                base_max_volume;
+        std::string                base_max_volume_denom;
+        std::string                base_max_volume_numer;
         std::string                rel_min_volume;
+        std::string                rel_min_volume_denom;
+        std::string                rel_min_volume_numer;
         std::string                rel_max_volume;
+        std::string                rel_max_volume_denom;
+        std::string                rel_max_volume_numer;
         std::string                pubkey;
         std::size_t                age;
         std::size_t                zcredits;

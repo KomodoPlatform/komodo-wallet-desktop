@@ -35,6 +35,7 @@ namespace atomic_dex
         this->dispatcher_.sink<update_portfolio_values>().connect<&portfolio_page::on_update_portfolio_values_event>(*this);
         this->dispatcher_.sink<band_oracle_refreshed>().connect<&portfolio_page::on_band_oracle_refreshed>(*this);
         this->dispatcher_.sink<coin_cfg_parsed>().connect<&portfolio_page::on_coin_cfg_parsed>(*this);
+        SPDLOG_INFO("portfolio_page created");
     }
 
     portfolio_model*
@@ -99,7 +100,7 @@ namespace atomic_dex
     void
     portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt)
     {
-        SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
+        //SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
 
         bool res = true;
         if (evt.with_update_model)

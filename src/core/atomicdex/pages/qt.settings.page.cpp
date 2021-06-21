@@ -19,6 +19,7 @@
 #include <QJsonDocument>
 #include <QLocale>
 #include <QSettings>
+#include <QFile>
 
 //! Deps
 #include <boost/algorithm/string/case_conv.hpp>
@@ -40,6 +41,7 @@ namespace
     void
     copy_icon(const QString icon_filepath, const QString icons_path_directory, const std::string& ticker)
     {
+        SPDLOG_INFO("copying icon");
         if (not icon_filepath.isEmpty())
         {
             const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
@@ -47,6 +49,7 @@ namespace
                 icon_filepath.toStdString(), fs::path(icons_path_directory.toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
                 get_override_options());
         }
+        SPDLOG_INFO("copying icon finished");
     }
 } // namespace
 
@@ -56,6 +59,7 @@ namespace atomic_dex
     settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) :
         QObject(parent), system(registry), m_system_manager(system_manager), m_app(app)
     {
+        SPDLOG_INFO("settings_page created");
     }
 } // namespace atomic_dex
 
@@ -115,6 +119,7 @@ namespace atomic_dex
         this->m_app->installTranslator(&m_translator);
         this->m_qml_engine->retranslate();
         emit onLangChanged();
+        SPDLOG_INFO("Post lang changed");
     }
 
     bool
@@ -300,7 +305,7 @@ namespace atomic_dex
     QString
     settings_page::get_custom_coins_icons_path() const
     {
-        return QString::fromStdString(utils::get_runtime_coins_path().string());
+        return std_path_to_qstring(utils::get_runtime_coins_path());
     }
 
     void
@@ -552,19 +557,21 @@ namespace atomic_dex
         if (fs::exists(wallet_custom_cfg_path))
         {
             nlohmann::json custom_config_json_data;
-            std::ifstream  ifs(wallet_custom_cfg_path.c_str());
-            assert(ifs.is_open());
+            QFile fs;
+            fs.setFileName(std_path_to_qstring(wallet_custom_cfg_path));
+            fs.open(QIODevice::ReadOnly | QIODevice::Text);
 
             //! Read Contents
-            ifs >> custom_config_json_data;
-            ifs.close();
+            custom_config_json_data = nlohmann::json::parse(QString(fs.readAll()).toStdString());
+            fs.close();
 
             //! Modify
             for (auto&& [key, value]: custom_config_json_data.items()) { value["active"] = false; }
 
             //! Write
-            std::ofstream ofs_custom(wallet_custom_cfg_path.c_str(), std::ios::trunc);
-            ofs_custom << custom_config_json_data;
+            fs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            fs.write(QString::fromStdString(custom_config_json_data.dump()).toUtf8());
+            fs.close();
         }
 
         const auto functor_remove = [](auto&& path_to_remove)
@@ -582,11 +589,12 @@ namespace atomic_dex
                 }
                 if (ec)
                 {
-                    SPDLOG_ERROR("error when removing {}: {}", path_to_remove.string(), ec.message());
+                    LOG_PATH("error when removing {}", path_to_remove);
+                    SPDLOG_ERROR("error: {}", ec.message());
                 }
                 else
                 {
-                    SPDLOG_INFO("Successfully removed {}", path_to_remove.string());
+                    LOG_PATH("Successfully removed {}", path_to_remove);
                 }
             }
         };

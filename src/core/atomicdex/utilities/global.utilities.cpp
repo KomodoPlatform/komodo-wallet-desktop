@@ -1,6 +1,12 @@
 //! STD Headers
 #include <random>
 
+#if defined(_WIN32) || defined(WIN32)
+# define _UNICODE
+# define UNICODE
+# include <Windows.h>
+#endif
+
 //! Qt Headers
 #include <QCryptographicHash>
 #include <QString>
@@ -59,7 +65,8 @@ namespace atomic_dex::utils
     {
         if (not fs::exists(path))
         {
-            SPDLOG_INFO("creating directory {}", path.string());
+            LOG_PATH("creating directory {}", path);
+            //SPDLOG_INFO("creating directory {}", path.string());
             fs::create_directories(path);
             return true;
         }
@@ -85,7 +92,8 @@ namespace atomic_dex::utils
     {
         fs::path appdata_path;
 #if defined(_WIN32) || defined(WIN32)
-        appdata_path = fs::path(std::getenv("APPDATA")) / DEX_APPDATA_FOLDER;
+        std::wstring out = _wgetenv(L"APPDATA");
+        appdata_path = fs::path(out) / DEX_APPDATA_FOLDER;
 #elif defined(__APPLE__)
         appdata_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / DEX_APPDATA_FOLDER;
 #else
@@ -103,14 +111,14 @@ namespace atomic_dex::utils
         auto res = p.u8string();
 
         auto functor = [](auto&& r) {
-            if constexpr (std::is_same_v<std::remove_cvref_t<decltype(r)>, std::string>)
-            {
-                return r;
-            }
-            else
-            {
-                return std::string(r.begin(), r.end());
-            }
+          if constexpr (std::is_same_v<std::remove_cvref_t<decltype(r)>, std::string>)
+          {
+              return r;
+          }
+          else
+          {
+              return std::string(r.begin(), r.end());
+          }
         };
         return functor(res);
 #endif
@@ -141,7 +149,7 @@ namespace atomic_dex::utils
     }
 
     ENTT_API fs::path
-             get_atomic_dex_current_log_file()
+    get_atomic_dex_current_log_file()
     {
         using namespace std::chrono;
         using namespace date;
@@ -171,18 +179,6 @@ namespace atomic_dex::utils
         create_if_doesnt_exist(fs_cfg_path);
         return fs_cfg_path;
     }
-
-    /*std::string
-    minimal_trade_amount_str()
-    {
-        return "0.00777";
-    }
-
-    const t_float_50
-    minimal_trade_amount()
-    {
-        return t_float_50(minimal_trade_amount_str());
-    }*/
 
     fs::path
     get_atomic_dex_export_folder()
@@ -240,11 +236,16 @@ namespace atomic_dex::utils
     register_logger()
     {
         //! Log Initialization
-        std::string path = atomic_dex::utils::get_atomic_dex_current_log_file().string();
+        fs::path path = atomic_dex::utils::get_atomic_dex_current_log_file();
         spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
         auto tp            = spdlog::thread_pool();
         auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-        auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.c_str(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
+
+#if defined(_WIN32) || defined(WIN32)
+        auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.wstring(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
+#else
+        auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
+#endif
 
         std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
         auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
@@ -255,6 +256,16 @@ namespace atomic_dex::utils
         SPDLOG_INFO("Logger successfully initialized");
 
         return logger;
+    }
+
+    std::string
+    extract_large_float(const std::string& current)
+    {
+        if (auto pos = current.find('.'); pos != std::string::npos)
+        {
+            return current.substr(0, pos + 9);
+        }
+        return current;
     }
 
     fs::path

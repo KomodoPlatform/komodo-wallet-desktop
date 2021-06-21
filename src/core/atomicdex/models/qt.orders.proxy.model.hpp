@@ -32,16 +32,16 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        orders_proxy_model(QObject* parent);
+        orders_proxy_model(QObject* parent, ag::ecs::system_manager& system_manager);
 
         //! Destructor
-        ~orders_proxy_model()  final = default;
+        ~orders_proxy_model() final = default;
 
-        [[nodiscard]] bool am_i_in_history() const ;
-        void               set_is_history(bool is_history) ;
+        [[nodiscard]] bool am_i_in_history() const;
+        void               set_is_history(bool is_history);
 
-        [[nodiscard]] bool get_apply_filtering() const ;
-        void               set_apply_filtering(bool status) ;
+        [[nodiscard]] bool get_apply_filtering() const;
+        void               set_apply_filtering(bool status);
 
         [[nodiscard]] QDate filter_minimum_date() const;
         void                set_filter_minimum_date(QDate date);
@@ -49,13 +49,13 @@ namespace atomic_dex
         [[nodiscard]] QDate filter_maximum_date() const;
         void                set_filter_maximum_date(QDate date);
 
-        Q_INVOKABLE QStringList get_filtered_ids() const ;
+        Q_INVOKABLE QStringList get_filtered_ids() const;
         Q_INVOKABLE void        set_coin_filter(const QString& to_filter);
         Q_INVOKABLE void        export_csv_visible_history(const QString& path);
         Q_INVOKABLE void        apply_all_filtering(); ///< call it only once
-       
 
-        void on_layout_changed() ;
+
+        void on_layout_changed();
 
 
       signals:
@@ -72,10 +72,10 @@ namespace atomic_dex
       private:
         [[nodiscard]] bool date_in_range(QDate date) const;
 
-        bool m_is_history{false};
-        bool m_is_filtering_applicable{false};
-
-        QDate m_min_date;
-        QDate m_max_date;
+        ag::ecs::system_manager& m_system_manager;
+        bool                     m_is_history{false};
+        bool                     m_is_filtering_applicable{false};
+        QDate                    m_min_date;
+        QDate                    m_max_date;
     };
 } // namespace atomic_dex

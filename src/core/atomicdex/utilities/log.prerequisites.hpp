@@ -16,6 +16,12 @@
 
 #pragma once
 
+#if defined(_WIN32) || defined(WIN32)
+    #ifndef SPDLOG_WCHAR_FILENAMES
+        #define SPDLOG_WCHAR_FILENAMES
+    #endif
+#endif
+
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #include <spdlog/async.h>
 #include <spdlog/sinks/rotating_file_sink.h>
@@ -25,4 +31,12 @@
 
 #if defined(_WIN32) || defined(WIN32)
 #include <spdlog/sinks/msvc_sink.h>
-#endif 
+#endif
+
+#if defined(_WIN32) || defined(WIN32)
+#define LOG_PATH(message, p) SPDLOG_INFO(L"" message, p.wstring());
+#define LOG_PATH_CMP(message, from, to) SPDLOG_INFO(L"" message, from.wstring(), to.wstring());
+#else
+#define LOG_PATH(message, p) SPDLOG_INFO(message, p.string());
+#define LOG_PATH_CMP(message, from, to) SPDLOG_INFO(message, from.string(), to.string());
+#endif

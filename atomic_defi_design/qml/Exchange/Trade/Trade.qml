@@ -2,14 +2,14 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-
+import Qt.labs.settings 1.0
 import QtGraphicalEffects 1.0
 
 import Qaterial 1.0 as Qaterial
-import Qt.labs.settings 1.0
 
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
+import AtomicDEX.TradingMode 1.0
 
 import "../../Components"
 import "../../Constants"
@@ -30,6 +30,8 @@ import "BestOrder/" as BestOrder
 import "Orders/" as OrdersView
 
 import "./" as Here
+
+import "SimpleView" as SimpleView
 
 Item {
     id: exchange_trade
@@ -160,16 +162,20 @@ Item {
             API.app.trading_pg.place_sell_order(nota, confs)
         else
             API.app.trading_pg.place_buy_order(nota, confs)
+
+        orderPlaced()
     }
+
+    signal orderPlaced()
 
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
-
-
-    // Form
-    ProView {
-        id: form
+    Loader
+    {
+        id: _viewLoader
+        anchors.fill: parent
+        source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView/Main.qml"
     }
 
     TradeViewHeader {

@@ -323,6 +323,7 @@
         <file>atomic_defi_design/qml/Components/DefaultTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAppButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexBoxManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
@@ -342,6 +343,7 @@
         <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
         <file>atomic_defi_design/qml/Components/DexMacControl.qml</file>
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
+        <file>atomic_defi_design/qml/Components/DexModalHeader.qml</file>
         <file>atomic_defi_design/qml/Components/DexMouseArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexPopup.qml</file>
         <file>atomic_defi_design/qml/Components/DexRangeSlider.qml</file>
@@ -435,6 +437,17 @@
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ProView.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/List.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.js</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Trade.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/CoinsListModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/BestOrdersModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/OrderRemovedModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubBestOrder.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubCoinSelector.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubOrders.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/SubHistory.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SweetDexComboBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>

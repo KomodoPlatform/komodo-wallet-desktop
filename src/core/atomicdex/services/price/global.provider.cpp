@@ -102,6 +102,11 @@ namespace atomic_dex
     {
         nb_try += 1;
         SPDLOG_INFO("refresh_other_coins_rates - try {}", nb_try.load());
+        if (nb_try == 10)
+        {
+            SPDLOG_WARN("refresh other coins rates max try reached, skipping");
+            return;
+        }
         using namespace std::chrono_literals;
         coinpaprika::api::price_converter_request request{.base_currency_id = "usd-us-dollars", .quote_currency_id = quote_id};
         auto error_functor = [this, quote_id, ticker, with_update_providers, nb_try_load = nb_try.load()](pplx::task<void> previous_task)

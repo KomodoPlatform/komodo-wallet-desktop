@@ -24,81 +24,13 @@ Item {
     anchors.horizontalCenterOffset: 5
     anchors.horizontalCenter: parent.horizontalCenter
     y: -20
-    Connections {
-        target: API.app.trading_pg
-        function onTradingModeChanged(){
-            console.log(API.app.trading_pg.current_trading_mode)
-        }
-    }
 
-
-
-    RowLayout {
-        anchors.fill: parent
-        Item {
-            Layout.preferredWidth: 140
-            Layout.fillHeight: true
-            Rectangle {
-                id: background_rect
-                width: 70
-                height: 20
-                radius: 20
-                anchors.verticalCenter: parent.verticalCenter
-                color: theme.accentColor
-                Behavior on x {
-                    NumberAnimation {
-                        duration: 200
-                    }
-                }
-            }
-            RowLayout {
-                anchors.fill: parent
-                spacing: 0
-                DexLabel {
-                    text: "Pro"
-                    Layout.preferredWidth: 70
-                    Layout.fillHeight: true
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.bold: true
-                    color: background_rect.x===0? theme.surfaceColor :  pro_area.containsMouse? theme.accentColor : theme.foregroundColor
-                    DexMouseArea {
-                        id: pro_area
-                        hoverEnabled: true 
-                        anchors.fill: parent
-                        onClicked: {
-                            background_rect.x = 0
-                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                        }
-                    }
-                }
-                DexLabel {
-                    text: "Simple"
-                    Layout.preferredWidth: 70
-                    Layout.fillHeight: true
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.bold: true
-                    color: background_rect.x!==0? theme.surfaceColor :  simple_area.containsMouse? theme.accentColor : theme.foregroundColor
-                    DexMouseArea {
-                        id: simple_area
-                        anchors.fill: parent
-                        hoverEnabled: true 
-                        onClicked: {
-                            background_rect.x = 70
-                            API.app.trading_pg.current_trading_mode = TradingMode.Simple
-                        }
-                    }
-                }
-            }
-            
-        }
-        Item {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        } 
+    Row {
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        spacing: 5
         Rectangle {
-            width: 140
+            width: _learnRow.implicitWidth+15
             height: 25
             radius: height/2
             Behavior on color {
@@ -108,6 +40,7 @@ Item {
             }
             color: tuto_area.containsMouse? 'transparent' : theme.accentColor
             Row {
+                id: _learnRow 
                 anchors.centerIn: parent
                 spacing: 10
                 Qaterial.ColorIcon {
@@ -130,7 +63,7 @@ Item {
             }
         }
         Rectangle {
-            width: 50
+            width: _faqRow.implicitWidth+15
             height: 25
             radius: height/2
             Behavior on color {
@@ -140,6 +73,7 @@ Item {
             }
             color: faq_area.containsMouse? 'transparent' : theme.accentColor
             Row {
+                id: _faqRow
                 anchors.centerIn: parent
                 spacing: 10
                 DexLabel {
@@ -164,7 +98,7 @@ Item {
                     duration: 150
                 }
             }
-            color: cog_area.containsMouse? 'transparent' :  form.dexConfig.visible? 'transparent' : theme.accentColor
+            color: cog_area.containsMouse? 'transparent' :  API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? 'transparent' : theme.accentColor : theme.accentColor
             Row {
                 anchors.centerIn: parent
                 spacing: 10
@@ -172,7 +106,7 @@ Item {
                     source: Qaterial.Icons.cog
                     anchors.verticalCenter: parent.verticalCenter
                     iconSize: 15
-                    color: cog_area.containsMouse? theme.accentColor : form.dexConfig.visible? theme.accentColor : theme.surfaceColor 
+                    color: cog_area.containsMouse? theme.accentColor : API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? theme.accentColor : theme.surfaceColor  : theme.surfaceColor
                 }
             }
             DexMouseArea {
@@ -180,14 +114,82 @@ Item {
                 hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
-                    if(form.dexConfig.visible){
-                        form.dexConfig.close()
-                    }else {
-                        form.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
-                    }
-                    
+                    if(API.app.trading_pg.current_trading_mode == TradingMode.Pro) {
+                        if(_viewLoader.item.dexConfig.visible){
+                            _viewLoader.item.dexConfig.close()
+                        }else {
+                            _viewLoader.item.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
+                        }    
+                    } 
                 }
             }
         }
+    }
+
+    RowLayout {
+        anchors.fill: parent
+        spacing: 5
+        Item {
+            Layout.preferredWidth: 140
+            Layout.fillHeight: true
+            Rectangle {
+                id: background_rect
+                width: 70
+                height: 20
+                radius: 20
+                anchors.verticalCenter: parent.verticalCenter
+                color: theme.accentColor
+                Behavior on x {
+                    NumberAnimation {
+                        duration: 200
+                    }
+                }
+                x: API.app.trading_pg.current_trading_mode != TradingMode.Pro ? 0 : 70
+            }
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
+                DexLabel {
+                    text: "Simple"
+                    Layout.preferredWidth: 70
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.bold: true
+                    color: background_rect.x === 0 ? theme.surfaceColor : simple_area.containsMouse ? theme.accentColor : theme.foregroundColor
+                    DexMouseArea {
+                        id: simple_area
+                        hoverEnabled: true
+                        anchors.fill: parent
+                        onClicked: {
+                            background_rect.x = 0
+                            API.app.trading_pg.current_trading_mode = TradingMode.Simple
+                        }
+                    }
+                }
+                DexLabel {
+                    text: "Pro"
+                    Layout.preferredWidth: 70
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.bold: true
+                    color: background_rect.x !== 0 ? theme.surfaceColor : pro_area.containsMouse ? theme.accentColor : theme.foregroundColor
+                    DexMouseArea {
+                        id: pro_area
+                        hoverEnabled: true
+                        anchors.fill: parent
+                        onClicked: {
+                            background_rect.x = 70
+                            API.app.trading_pg.current_trading_mode = TradingMode.Pro
+                        }
+                    }
+                }
+            }
+        }
+        Item {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+        } 
     }
 }

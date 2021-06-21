@@ -25,7 +25,7 @@
 namespace atomic_dex
 {
     orders_model::orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new orders_proxy_model(this))
+        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new orders_proxy_model(this, system_manager))
     {
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
@@ -439,6 +439,11 @@ namespace atomic_dex
         }
         endInsertRows();
         emit lengthChanged();
+        if (m_system_manager.has_system<mm2_service>())
+        {
+            SPDLOG_DEBUG("Swaps inserted, refreshing orderbook to get new max taker vol");
+            this->m_system_manager.get_system<mm2_service>().process_orderbook(true);
+        }
         SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
     }
 

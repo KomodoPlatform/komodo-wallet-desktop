@@ -90,6 +90,15 @@ namespace atomic_dex
             }
         }
 
+        // Filter by ticker name if `m_search_exp` is not empty.
+        if (!m_search_exp.isEmpty())
+        {
+            if (not ticker.contains(m_search_exp, Qt::CaseInsensitive))
+            {
+                return false;
+            }
+        }
+
         if (am_i_a_market_selector && m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker.toStdString()).wallet_only)
         {
             return false;
@@ -191,6 +200,22 @@ namespace atomic_dex
     portfolio_proxy_model::set_with_fiat_balance(bool value)
     {
         m_with_fiat_balance = value;
+    }
+
+    void
+    portfolio_proxy_model::set_search_exp(QString search_exp)
+    {
+        if (search_exp != m_search_exp)
+        {
+            m_search_exp = std::move(search_exp);
+            this->invalidateFilter();
+        }
+    }
+
+    QString
+    portfolio_proxy_model::get_search_exp() const
+    {
+        return m_search_exp;
     }
 
     QVariantMap

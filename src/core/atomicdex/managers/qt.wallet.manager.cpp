@@ -16,6 +16,7 @@
 
 //! Qt
 #include <QDebug>
+#include <QFile>
 
 //! Deps
 #include <sodium/utils.h>
@@ -27,13 +28,13 @@
 namespace atomic_dex
 {
     QString
-    qt_wallet_manager::get_wallet_default_name() const 
+    qt_wallet_manager::get_wallet_default_name() const
     {
         return m_current_default_wallet;
     }
 
     void
-    qt_wallet_manager::set_wallet_default_name(QString wallet_name) 
+    qt_wallet_manager::set_wallet_default_name(QString wallet_name)
     {
         using namespace std::string_literals;
         if (wallet_name == "")
@@ -41,18 +42,15 @@ namespace atomic_dex
             fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
             return;
         }
-        if (not fs::exists(utils::get_atomic_dex_config_folder() / "default.wallet"s))
-        {
-            std::ofstream ofs((utils::get_atomic_dex_config_folder() / "default.wallet"s).string());
-            ofs << wallet_name.toStdString();
-        }
-        else
-        {
-            std::ofstream ofs((utils::get_atomic_dex_config_folder() / "default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
-            ofs << wallet_name.toStdString();
-        }
 
+        fs::path path = (utils::get_atomic_dex_config_folder() / "default.wallet"s);
+        QFile out;
+        out.setFileName(std_path_to_qstring(path));
+        out.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+        out.write(wallet_name.toUtf8());
+        out.close();
         this->m_current_default_wallet = std::move(wallet_name);
+        SPDLOG_INFO("new wallet name: {}", wallet_name.toStdString());
         emit onWalletDefaultNameChanged();
     }
 
@@ -90,12 +88,17 @@ namespace atomic_dex
             // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
-            std::ofstream  wallet_object(wallet_object_path.string());
+            QFile wallet_object;
+            wallet_object.setFileName(std_path_to_qstring(wallet_object_path));
+            wallet_object.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate);
+
             nlohmann::json wallet_object_json;
 
             wallet_object_json["name"] = wallet_name.toStdString();
-            wallet_object << wallet_object_json.dump(4);
+            wallet_object.write(QString::fromStdString(wallet_object_json.dump(4)).toUtf8());
             wallet_object.close();
+            LOG_PATH("Successfully write file: {}", wallet_object_path);
+            SPDLOG_INFO("Successfully write the data: {}", wallet_object_json.dump());
 
             return true;
         }
@@ -103,7 +106,7 @@ namespace atomic_dex
     }
 
     QStringList
-    qt_wallet_manager::get_wallets() 
+    qt_wallet_manager::get_wallets()
     {
         QStringList out;
 
@@ -121,26 +124,30 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::is_there_a_default_wallet() 
+    qt_wallet_manager::is_there_a_default_wallet()
     {
         return fs::exists(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
 
     QString
-    qt_wallet_manager::get_default_wallet_name() 
+    qt_wallet_manager::get_default_wallet_name()
     {
         if (is_there_a_default_wallet())
         {
-            std::ifstream ifs((utils::get_atomic_dex_config_folder() / "default.wallet").c_str());
-            assert(ifs);
-            std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-            return QString::fromStdString(str);
+            QFile ifs;
+            fs::path path = (utils::get_atomic_dex_config_folder() / "default.wallet");
+            ifs.setFileName(std_path_to_qstring(path));
+            ifs.open(QIODevice::ReadOnly | QIODevice::Text);
+            QString out = ifs.readAll();
+            ifs.close();
+            SPDLOG_INFO("Retrieve wallet name: {}", out.toStdString());
+            return out;
         }
         return "nonexistent";
     }
 
     bool
-    qt_wallet_manager::delete_wallet(const QString& wallet_name) 
+    qt_wallet_manager::delete_wallet(const QString& wallet_name)
     {
         using namespace std::string_literals;
         return fs::remove(utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
@@ -176,16 +183,18 @@ namespace atomic_dex
         SPDLOG_INFO("Loading wallet configuration: {}", wallet_name);
         using namespace std::string_literals;
         const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
-        std::ifstream  ifs(wallet_object_path.string());
+        QFile          ifs;
+        ifs.setFileName(std_path_to_qstring(wallet_object_path));
+        ifs.open(QIODevice::ReadOnly | QIODevice::Text);
 
-        if (not ifs.is_open())
+        if (not ifs.isOpen())
         {
-            SPDLOG_ERROR("Cannot open: {}", wallet_object_path.string());
+            LOG_PATH("Cannot open: {}", wallet_object_path);
             return false;
         }
-        nlohmann::json j;
-        ifs >> j;
+        nlohmann::json j = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
         m_wallet_cfg = j;
+        SPDLOG_INFO("wallet_cfg: {}", j.dump(4));
         return true;
     }
 
@@ -197,19 +206,24 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::update_wallet_cfg() 
+    qt_wallet_manager::update_wallet_cfg()
     {
+        SPDLOG_INFO("update_wallet_cfg");
         using namespace std::string_literals;
         const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
-        std::ofstream  ofs(wallet_object_path.string(), std::ios::trunc);
-        if (not ofs.is_open())
+        QFile ofs;
+        ofs.setFileName(std_path_to_qstring(wallet_object_path));
+        ofs.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+
+        if (not ofs.isOpen())
         {
             return false;
         }
 
         nlohmann::json j;
         atomic_dex::to_json(j, m_wallet_cfg);
-        ofs << j.dump(4);
+        ofs.write(QString::fromStdString(j.dump(4)).toUtf8());
+        ofs.close();
         return true;
     }
 
@@ -228,7 +242,7 @@ namespace atomic_dex
     }
 
     void
-    qt_wallet_manager::update() 
+    qt_wallet_manager::update()
     {
         //! Disabled system
     }
@@ -314,13 +328,13 @@ namespace atomic_dex
     }
 
     QString
-    qt_wallet_manager::get_status() const 
+    qt_wallet_manager::get_status() const
     {
         return m_current_status;
     }
 
     void
-    qt_wallet_manager::set_status(QString status) 
+    qt_wallet_manager::set_status(QString status)
     {
         this->m_current_status = std::move(status);
         emit onStatusChanged();
@@ -333,13 +347,13 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::log_status() const 
+    qt_wallet_manager::log_status() const
     {
         return m_login_status;
     }
 
     void
-    qt_wallet_manager::set_log_status(bool status) 
+    qt_wallet_manager::set_log_status(bool status)
     {
         m_login_status = status;
     }

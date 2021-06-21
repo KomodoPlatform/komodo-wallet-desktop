@@ -110,7 +110,7 @@ Rectangle {
         SplitView.fillWidth= false
     }
 
-    onExpandedHortChanged: {
+    /*onExpandedHortChanged: {
         let splitManager = SplitView.view
         if(expandedHort) {
             if(splitManager==null){
@@ -124,7 +124,7 @@ Rectangle {
                 SplitView.fillWidth = true
             }
         }
-    }
+    }*/
 
 
 
