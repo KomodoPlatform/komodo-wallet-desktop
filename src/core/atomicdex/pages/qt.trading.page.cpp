@@ -256,8 +256,8 @@ namespace atomic_dex
         const bool  is_selected_order            = m_preffered_order.has_value();
         const bool  is_max                       = m_max_volume == m_volume;
         QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preffered_order->at("base_max_volume").get<std::string>()) : "";
-        const bool  is_selected_max              = is_selected_order && utils::format_float(safe_float(m_volume.toStdString())) ==
-                                                              utils::format_float(safe_float(orderbook_available_quantity.toStdString()));
+        const bool  is_selected_min_max = is_selected_order ? m_preffered_order->at("base_min_volume").get<std::string>() == m_preffered_order->at("base_max_volume").get<std::string>(): false;
+        const bool  is_selected_max              = is_selected_order && m_volume.toStdString() == utils::extract_large_float(orderbook_available_quantity.toStdString());
         t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50 cur_min_trade  = safe_float(get_min_trade_vol().toStdString());
 
@@ -287,6 +287,11 @@ namespace atomic_dex
             req.order_type                 = nlohmann::json::object();
             req.order_type.value()["type"] = "FillOrKill";
             req.min_volume                 = std::optional<std::string>{std::nullopt};
+        }
+
+        if (is_selected_min_max)
+        {
+            req.min_volume = std::optional<std::string>{std::nullopt};
         }
 
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
@@ -1212,6 +1217,8 @@ namespace atomic_dex
         const auto& mm2               = m_system_manager.get_system<mm2_service>();
         const auto  left_cfg          = mm2.get_coin_info(left);
         const auto  right_cfg         = mm2.get_coin_info(right);
+        const bool  has_preffered_order = m_preffered_order.has_value();
+        const bool  is_selected_min_max = has_preffered_order ? m_preffered_order->at("base_min_volume").get<std::string>() == m_preffered_order->at("base_max_volume").get<std::string>(): false;
         if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
         {
             const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
@@ -1250,7 +1257,7 @@ namespace atomic_dex
             {
                 current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
             }
-            else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol))
+            else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol) && !is_selected_min_max)
             {
                 // SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol,
                 // get_price().toStdString());

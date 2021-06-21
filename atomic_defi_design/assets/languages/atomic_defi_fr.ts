@@ -905,188 +905,188 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="90"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="91"/>
         <source>The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.</source>
         <translation>Le nombre actuel d&apos;actifs activées ne correspond pas à vos spécifications de configuration. La configuration de vos actifs sera réinitialisée.</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="147"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="160"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="149"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="162"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation>Le contenu de cette section sera ajouté ultérieurement. Restez à l&apos;écoute !</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="327"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
         <source>Matching</source>
         <translation>Recherche en cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="327"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
         <source>Order Matching</source>
         <translation>Recherche d&apos;un ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="331"/>
         <source>Matched</source>
         <translation>Trouvé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="329"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="331"/>
         <source>Order Matched</source>
         <translation>Ordre trouvé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="331"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
         <source>Ongoing</source>
         <translation>En cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="331"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
         <source>Swap Ongoing</source>
         <translation>Échange en cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="335"/>
         <source>Successful</source>
         <translation>Réussi</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="333"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="335"/>
         <source>Swap Successful</source>
         <translation>Échange terminé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="335"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="337"/>
         <source>Refunding</source>
         <translation>En cours de remboursement</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="337"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
         <source>Failed</source>
         <translation>Échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="337"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
         <source>Swap Failed</source>
         <translation>Erreur lors de l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="341"/>
         <source>Unknown</source>
         <translation>Inconnue</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="341"/>
         <source>Unknown State</source>
         <translation>État inconnu</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="383"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="385"/>
         <source>Started</source>
         <translation>Commencé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="385"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="387"/>
         <source>Negotiated</source>
         <translation>Négocié</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="387"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="389"/>
         <source>Taker fee sent</source>
         <translation>Frais de preneur envoyés</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="389"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="391"/>
         <source>Maker payment received</source>
         <translation>Paiement de l&apos;envoyeur reçu</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="391"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="393"/>
         <source>Maker payment wait confirm started</source>
         <translation>La confirmation d&apos;attente de paiement de l&apos;envoyeur a commencé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="393"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="395"/>
         <source>Maker payment validated and confirmed</source>
         <translation>Paiement de l&apos;envoyeur validé et confirmé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="395"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="397"/>
         <source>Taker payment sent</source>
         <translation>Paiement du preneur envoyé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="397"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="399"/>
         <source>Taker payment spent</source>
         <translation>Paiement du preneur dépensé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="399"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="401"/>
         <source>Maker payment spent</source>
         <translation>Paiement de l&apos;envoyeur dépensé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="401"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="403"/>
         <source>Finished</source>
         <translation>Fini</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="403"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="405"/>
         <source>Start failed</source>
         <translation>Le démarrage a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="405"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="407"/>
         <source>Negotiate failed</source>
         <translation>La négociation a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="407"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="409"/>
         <source>Taker fee validate failed</source>
         <translation>Échec de la validation des frais du preneur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="409"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="411"/>
         <source>Maker payment transaction failed</source>
         <translation>La transaction de paiement du créateur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="411"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="413"/>
         <source>Maker payment Data send failed</source>
         <translation>Échec de l&apos;envoi des données de paiement du créateur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="413"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="415"/>
         <source>Maker payment wait confirm failed</source>
         <translation>La confirmation de l&apos;attente de paiement du créateur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="415"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="417"/>
         <source>Taker payment validate failed</source>
         <translation>La validation du paiement du preneur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="417"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="419"/>
         <source>Taker payment wait confirm failed</source>
         <translation>La confirmation de l&apos;attente de paiement du preneur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="419"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="421"/>
         <source>Taker payment spend failed</source>
         <translation>Échec des dépenses de paiement du preneur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="421"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="423"/>
         <source>Maker payment wait refund started</source>
         <translation>attente de paiement du créateur, remboursement commencé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="423"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="425"/>
         <source>Maker payment refunded</source>
         <translation>Paiement du créateur remboursé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="425"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="427"/>
         <source>Maker payment refund failed</source>
         <translation>échec du remboursement du paiement du créateur</translation>
     </message>
@@ -2100,7 +2100,7 @@
 <context>
     <name>OrderLine</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderLine.qml" line="157"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderLine.qml" line="149"/>
         <source>Funds are recoverable</source>
         <translation>Les fonds sont récupérables</translation>
     </message>
@@ -2580,19 +2580,19 @@
 <context>
     <name>RestartModal</name>
     <message>
-        <location filename="../../qml/Components/RestartModal.qml" line="44"/>
+        <location filename="../../qml/Components/RestartModal.qml" line="38"/>
         <source>Applying the changes...</source>
         <translation>Application des modifications...</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/RestartModal.qml" line="48"/>
+        <location filename="../../qml/Components/RestartModal.qml" line="55"/>
         <source>Restarting the application...</source>
         <translation>Redémarrage de l&apos;application ...</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/RestartModal.qml" line="48"/>
-        <source>Restarting the applications. %1</source>
-        <translation>Rédemarrage de l&apos;application. %1</translation>
+        <location filename="../../qml/Components/RestartModal.qml" line="55"/>
+        <source>Restarting the application. %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2862,113 +2862,123 @@
 <context>
     <name>SettingModal</name>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="237"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="22"/>
+        <source>Confirm Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="22"/>
+        <source>Are you sure you want to log out?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/SettingModal.qml" line="113"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="242"/>
         <source>Language</source>
         <translation>Langue</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="113"/>
         <source>User Interface</source>
         <translation>Interface utilsateur</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="113"/>
         <source>Security</source>
         <translation>Sécurité</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="113"/>
         <source>About</source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="113"/>
         <source>General</source>
         <translation>Général</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="108"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="113"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="153"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="158"/>
         <source>Enable Desktop Notifications</source>
         <translation>Activer les notifications</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="168"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="173"/>
         <source>Maximum number of enabled coins</source>
         <translation>Nombre maximum d&apos;actifs activés</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="194"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="199"/>
         <source>Logs</source>
         <translation>Journaux</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="197"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="202"/>
         <source>Open Folder</source>
         <translation>Ouvrir le dossier</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="211"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="216"/>
         <source>Reset assets configuration</source>
         <translation>Réinitialiser la configuration d&apos;assets</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="214"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="219"/>
         <source>Reset</source>
         <translation>Réinitialiser</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="263"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="268"/>
         <source>Use QtTextRendering Or NativeTextRendering</source>
         <translation>Utilisez QtTextRendering ou NativeTextRendering</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="281"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="286"/>
         <source>Current Font</source>
         <translation>Police actuelle</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="302"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="307"/>
         <source>Theme</source>
         <translation>Thème</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="325"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="330"/>
         <source>Apply Changes</source>
         <translation>Appliquer les changements</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="375"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="380"/>
         <source>Ask system&apos;s password before sending coins ? (2FA)</source>
         <translation>Demander le mot de passe du système avant d&apos;envoyer des actifs ? (2FA)</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="481"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="486"/>
         <source>Application version</source>
         <translation>Version de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="495"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="500"/>
         <source>MM2 version</source>
         <translation>Version de MM2</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="509"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="514"/>
         <source>Qt version</source>
         <translation>Version de Qt</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="549"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="554"/>
         <source>Search Update</source>
         <translation>Rechercher une mise à jour</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="577"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="582"/>
         <source>Logout</source>
         <translation>Se déconnecter</translation>
     </message>
@@ -2978,33 +2988,33 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="397"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="402"/>
         <source>View seed and private keys</source>
         <translation>Afficher la phrase de récupération et les clefs privées</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="400"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="462"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="405"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="467"/>
         <source>Show</source>
         <translation>Montrer</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="413"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="418"/>
         <source>Setup Camouflage Password</source>
         <translation>Configurer le mot de passe de camouflage</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="416"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="421"/>
         <source>Open</source>
         <translation>Ouvrir</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="434"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="439"/>
         <source>Delete Wallet</source>
         <translation>Supprimer le portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="459"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="464"/>
         <source>Disclaimer and ToS</source>
         <translation>Clause de non-responsabilité et conditions d&apos;utilisation</translation>
     </message>
@@ -3677,12 +3687,12 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
 <context>
     <name>TradeViewHeader</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="124"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="56"/>
         <source>How to trade</source>
         <translation>Comment faire des echanges</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="151"/>
+        <location filename="../../qml/Exchange/Trade/Trading/TradeViewHeader.qml" line="83"/>
         <source>FAQ</source>
         <translation>FAQ</translation>
     </message>
@@ -3855,7 +3865,17 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
         <translation type="unfinished">Se déconnecter</translation>
     </message>
     <message>
-        <location filename="../../qml/main.qml" line="223"/>
+        <location filename="../../qml/main.qml" line="96"/>
+        <source>Confirm Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/main.qml" line="96"/>
+        <source>Are you sure you want to log out?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/main.qml" line="225"/>
         <source>Balance</source>
         <translation type="unfinished">Balance</translation>
     </message>
