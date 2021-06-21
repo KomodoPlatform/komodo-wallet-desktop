@@ -18,9 +18,14 @@ import "../Constants"
 Qaterial.Dialog {
 
     function disconnect() {
-        app.currentWalletName = ""
-        API.app.disconnect()
-        onDisconnect()
+        
+        Qaterial.DialogManager.showDialog({title: qsTr("Confirm Logout"),text: qsTr("Are you sure you want to log out?"),iconSource: Qaterial.Icons.logout,standardButtons: Dialog.Yes | Dialog.Cancel, onAccepted: function(){
+            Qaterial.DialogManager.close()
+            app.currentWalletName = ""
+            API.app.disconnect()
+            onDisconnect()
+        }})
+        
     }
 
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
