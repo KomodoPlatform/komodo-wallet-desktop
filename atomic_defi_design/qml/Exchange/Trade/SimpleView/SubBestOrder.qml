@@ -26,7 +26,6 @@ DefaultListView
     property int    _cexRateColumnSize: 50
     enabled: !API.app.trading_pg.orderbook.best_orders_busy
     model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
-    //snapMode: ListView.SnapToItem
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
@@ -41,6 +40,7 @@ DefaultListView
         color: theme.dexBoxBackgroundColor
         z: 2
         radius: 0
+        MouseArea { anchors.fill: parent }
         RowLayout                   // Order Columns Name
         {
             anchors.verticalCenter: parent.verticalCenter

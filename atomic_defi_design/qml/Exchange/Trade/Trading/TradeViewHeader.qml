@@ -24,12 +24,6 @@ Item {
     anchors.horizontalCenterOffset: 5
     anchors.horizontalCenter: parent.horizontalCenter
     y: -20
-    Connections {
-        target: API.app.trading_pg
-        function onTradingModeChanged(){
-            console.log(API.app.trading_pg.current_trading_mode)
-        }
-    }
 
     Row {
         anchors.right: parent.right
