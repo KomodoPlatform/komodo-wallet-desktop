@@ -36,7 +36,7 @@ ColumnLayout
             id: _innerLayout
             spacing: Style.rowSpacing
             anchors.centerIn: parent
-            width: root.width - (root.padding * 2) - padding
+            width: root.width - (root.padding * 2) - 25
         }
     }
 
