@@ -17,6 +17,7 @@ DexWindow {
     property int previousY: 0
     property int real_visibility
     property bool isOsx: Qt.platform.os == "osx"
+    property bool logged: false
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
     
@@ -32,6 +33,9 @@ DexWindow {
 
         API.app.change_state(visibility)
 
+    }
+    Component.onCompleted: {
+        console.log("LOGIN STATE: %1".arg( API.app.wallet_mgr.log_status()))
     }
 
     background: Item{}
@@ -84,6 +88,7 @@ DexWindow {
             spacing: 5
             DexLabel {
                 anchors.verticalCenter: parent.verticalCenter
+                color: app.globalTheme.foregroundColor
                 text: qsTr('Logout')
             }
 
@@ -148,7 +153,7 @@ DexWindow {
                 height: 15
                 smooth: true
                 antialiasing: true
-                visible: _label.text === ""
+                visible: !_label.visible
                 anchors.verticalCenter: parent.verticalCenter
             }
             DexLabel {
@@ -157,14 +162,15 @@ DexWindow {
                 font.weight: Font.Medium
                 opacity: .5
                 leftPadding: 5
-                visible: _label.text === ""
+                color: app.globalTheme.foregroundColor
+                visible: !_label.visible
                 anchors.verticalCenter: parent.verticalCenter
             }
             Rectangle {
                 width: __row.width+10
                 height: __row.height+5
                 anchors.verticalCenter: parent.verticalCenter
-                visible: _label.text !== ""
+                //visible: _label.visible
                 radius: 3
                 color: _area.containsMouse? app.globalTheme.dexBoxBackgroundColor : "transparent"
                 Row {
@@ -175,7 +181,8 @@ DexWindow {
                     Qaterial.ColorIcon {
                         source: Qaterial.Icons.accountCircle
                         iconSize: 18
-                        visible: _label.text !== ""
+                        visible: _label.visible
+                        color: app.globalTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     DexLabel {
@@ -184,13 +191,15 @@ DexWindow {
                         font.family: 'Montserrat'
                         font.weight: Font.Medium
                         opacity: .7
-                        visible: API.app.wallet_mgr.log_status()
+                        visible: window.logged
+                        color: app.globalTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Qaterial.ColorIcon {
                         source: Qaterial.Icons.menuDown
                         iconSize: 14
-                        visible: _label.text !== ""
+                        visible: _label.visible
+                        color: app.globalTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
@@ -211,7 +220,8 @@ DexWindow {
                 opacity: .7
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
-                visible: _label.text !== ""
+                visible: _label.visible
+                color: app.globalTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
             }
@@ -226,7 +236,8 @@ DexWindow {
                     font.family: 'Montserrat'
                     font.weight: Font.Medium
                     opacity: .7
-                    visible: _label.text !== ""
+                    visible: _label.visible
+                    color: app.globalTheme.foregroundColor
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 DexLabel {
@@ -234,14 +245,15 @@ DexWindow {
                     opacity: .7
                     font.family: 'Montserrat'
                     font.weight: Font.Medium
-                    visible: _label.text !== ""
+                    visible: _label.visible
+                    color: app.globalTheme.foregroundColor
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 DexLabel {
                     text: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all,API.app.settings_pg.current_currency)
                     font.family: 'lato'
                     font.weight: Font.Medium
-                    visible: _label.text !== ""
+                    visible: _label.visible
                     color: window.application.globalTheme.accentColor
                     anchors.verticalCenter: parent.verticalCenter
                     DexMouseArea {
@@ -256,6 +268,52 @@ DexWindow {
                             const next_fiat = available_fiats[next_index]
                             API.app.settings_pg.current_currency = next_fiat
                         }
+                    }
+                }
+            }
+            DexLabel {
+                text: " | "
+                opacity: .7
+                font.family: 'Montserrat'
+                font.weight: Font.Medium
+                visible: _label.visible
+                color: app.globalTheme.foregroundColor
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
+            }
+            DexIconButton {
+                opacity: containsMouse? 1 : .8
+                anchors.verticalCenter: parent.verticalCenter
+                color: active? app.globalTheme.accentColor : containsMouse? app.globalTheme.accentColor : app.globalTheme.foregroundColor 
+                iconSize: 22
+                icon: Qaterial.Icons.bellOutline
+                visible: _label.visible
+                active: app.notification_modal.opened
+                AnimatedRectangle {
+                    z: 1
+                    anchors.right: parent.right
+                    anchors.rightMargin: -3
+                    y: -3
+                    radius: width/2
+                    width: count_text.height * 1.4
+                    height: width
+                    visible: app.notifications_list.length > 0
+                    color: app.globalTheme.redColor
+
+                    DefaultText {
+                        id: count_text
+                        anchors.centerIn: parent
+                        text_value: app.notifications_list.length
+                        font.pixelSize: 8
+                        font.family: 'Lato'
+                        color: app.globalTheme.foregroundColor 
+                    }
+                }
+                onClicked: {
+                    if(app.notification_modal.visible) {
+                        app.notification_modal.close()
+                    }else {
+                        app.notification_modal.openAt(mapToItem(Overlay.overlay, -165, 18), Item.Top)
                     }
                 }
             }

@@ -22,13 +22,34 @@ Rectangle {
     property int page: current_page===5? deepPage : current_page
     property int deepPage: 0
     property alias globalTheme: theme
-    Shortcut {
-        sequence: "F11"
-        onActivated: window.showNormal()
-    }
     property string selected_wallet_name: ""
     property bool debug: debug_bar
     property bool debug_log: false
+    property var notification_modal: notifications_modal
+    property var notifications_list: current_page==idx_dashboard? loader.item.notifications_list : []
+
+    // Preload Chart
+    signal pairChanged(string base, string rel)
+    property var chart_component
+    property var chart_object
+
+
+
+    readonly property int idx_first_launch: 0
+    readonly property int idx_recover_seed: 1
+    readonly property int idx_new_user: 2
+    readonly property int idx_login: 3
+    readonly property int idx_initial_loading: 4
+    readonly property int idx_dashboard: 5
+    property int current_page
+
+    onCurrent_pageChanged: {
+        if(current_page === idx_dashboard) {
+            window.logged = true
+        } else {
+            window.logged = false
+        }
+    }
 
     function appendLog(text){
         log_area.append(text)
@@ -54,25 +75,17 @@ Rectangle {
         }
     }
 
-    // Preload Chart
-    signal pairChanged(string base, string rel)
-    property var chart_component
-    property var chart_object
-
-
-
-    readonly property int idx_first_launch: 0
-    readonly property int idx_recover_seed: 1
-    readonly property int idx_new_user: 2
-    readonly property int idx_login: 3
-    readonly property int idx_initial_loading: 4
-    readonly property int idx_dashboard: 5
-    property int current_page
-
+    Shortcut {
+        sequence: "F11"
+        onActivated: window.showNormal()
+    }
     Component {
         id: no_connection
 
         NoConnection {}
+    }
+    NotificationsModal {
+        id: notifications_modal
     }
 
     Component {
@@ -284,9 +297,9 @@ Rectangle {
     }
 
     Settings {
-    	id: ui_font_settings
-    	property alias fontDensity: _font.fontDensity
-    	property alias fontFamily: _font.fontFamily
+        id: ui_font_settings
+        property alias fontDensity: _font.fontDensity
+        property alias fontFamily: _font.fontFamily
     }
     function loadTheme() {
         console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
@@ -802,22 +815,22 @@ Rectangle {
         id: _font
         property real fontDensity: 1.0
         property real languageDensity: {
-        	switch(API.app.settings_pg.lang) {
-        		case "en":
-        			return 0.99999
-        			break
-        		case "fr":
-        			return Qt.platform.os === "windows"? 0.98999 : 0.90
-        			break
-        		case "tr":
-        			return 0.99999
-        			break
-        		case "ru":
-        			return 0.99999
-        			break
-        		default:
-        			return 0.99999
-        	}
+            switch(API.app.settings_pg.lang) {
+                case "en":
+                    return 0.99999
+                    break
+                case "fr":
+                    return Qt.platform.os === "windows"? 0.98999 : 0.90
+                    break
+                case "tr":
+                    return 0.99999
+                    break
+                case "ru":
+                    return 0.99999
+                    break
+                default:
+                    return 0.99999
+            }
         }
         property string fontFamily: "Ubuntu"
         property font head1: Qt.font({

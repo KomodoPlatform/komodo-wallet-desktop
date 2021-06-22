@@ -335,6 +335,7 @@
         <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
         <file>atomic_defi_design/qml/Components/DexFlickable.qml</file>
+        <file>atomic_defi_design/qml/Components/DexIconButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexInnerShadow.qml</file>
         <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
