@@ -33,10 +33,12 @@ BasicModal {
         title: isEdition ? qsTr("Edit address entry") : qsTr("Create a new address")
 
         // Wallet Type Selector
-        DefaultButton {
-            implicitWidth: parent.width
+        DexButton
+        {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
-            text: qsTr("Choose a wallet type, current: %1").arg(walletType === "" ? "NONE" : walletType)
+            text: qsTr("Selected wallet: %1").arg(walletType !== "" ? walletType : qsTr("NONE"))
 
             onClicked: wallet_type_list_modal.open()
         }
