@@ -14,13 +14,13 @@ ColumnLayout
     default property alias content: _innerLayout.data
     property alias         footer: _footer.data
 
-    readonly property var  _parentModal: parent
-
     ModalHeader { id: _header }
 
     DefaultFlickable
     {
-        readonly property int padding: 25
+        id: _flickable
+
+       readonly property int padding: 25
 
         flickableDirection: Flickable.VerticalFlick
 
@@ -28,7 +28,7 @@ ColumnLayout
         Layout.preferredHeight: contentHeight
         Layout.maximumHeight: window.height - 200
 
-        contentWidth: _innerLayout.width + padding // Padding is for preventing shadows effect being cut
+        contentWidth: _innerLayout.width + padding      // Padding is for preventing shadows effect being cut
         contentHeight: _innerLayout.height + padding
 
         ColumnLayout
@@ -36,7 +36,7 @@ ColumnLayout
             id: _innerLayout
             spacing: Style.rowSpacing
             anchors.centerIn: parent
-            width: root.width - (root.padding * 2) - padding
+            width: _modalWidth - (_modalPadding * 2) - _flickable.padding
         }
     }
 
