@@ -2100,92 +2100,92 @@
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="23"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="25"/>
         <source>Swap Details</source>
         <translation>Takas Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="23"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="25"/>
         <source>Order Details</source>
         <translation>Emir Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="77"/>
         <source>Maker Order</source>
         <translation>Yapıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="77"/>
         <source>Taker Order</source>
         <translation>Alıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="84"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="86"/>
         <source>Refund State</source>
         <translation>Geri Ödeme Durumu</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="86"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="88"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation>Takas işlemi başarısız oldu, ancak otomatik geri ödeme süreci başladı. Lütfen bekleyin ve ödemenizi geri alana kadar uygulamayı açık tutun</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="94"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="96"/>
         <source>Date</source>
         <translation>Tarih</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="102"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="104"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="185"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="187"/>
         <source>Recover Funds</source>
         <translation>Fon Kurtar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="190"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="192"/>
         <source>View on Explorer</source>
         <translation>Explorer&apos;da Göster</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="114"/>
         <source>Maker Payment Sent ID</source>
         <translation>Yapıcı Ödemesi Gönderilen Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="114"/>
         <source>Maker Payment Spent ID</source>
         <translation>Yapıcı Ödemesi Harcanan Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="124"/>
         <source>Taker Payment Spent ID</source>
         <translation>Alıcı Ödemesi Harcanan Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="124"/>
         <source>Taker Payment Sent ID</source>
         <translation>Alıcı Ödemesi Gönderilen Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="176"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="178"/>
         <source>Cancel Order</source>
         <translation>Emri İptal Et</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="131"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="133"/>
         <source>Error ID</source>
         <translation>Hata ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="139"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="141"/>
         <source>Error Log</source>
         <translation>Hata Kaydı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="166"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="168"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>

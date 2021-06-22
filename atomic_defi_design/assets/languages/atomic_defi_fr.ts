@@ -2108,92 +2108,92 @@
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="23"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="25"/>
         <source>Swap Details</source>
         <translation>Détails de l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="23"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="25"/>
         <source>Order Details</source>
         <translation>Détails de l&apos;ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="77"/>
         <source>Maker Order</source>
         <translation>Ordre de vente</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="77"/>
         <source>Taker Order</source>
         <translation>Ordre d&apos;achat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="84"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="86"/>
         <source>Refund State</source>
         <translation>État de remboursement</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="86"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="88"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation>Votre échange a échoué, mais le processus de remboursement automatique de votre paiement a déjà commencé. Veuillez patienter et garder l&apos;application ouverte jusqu&apos;à ce que vous receviez votre remboursement</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="94"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="96"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="102"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="104"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="185"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="187"/>
         <source>Recover Funds</source>
         <translation>Récupérer des fonds</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="190"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="192"/>
         <source>View on Explorer</source>
         <translation>Voir dans l&apos;explorateur</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="114"/>
         <source>Maker Payment Sent ID</source>
         <translation>Identifiant d&apos;envoi du paiement du créateur</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="114"/>
         <source>Maker Payment Spent ID</source>
         <translation>Identifiant de paiement du créateur</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="124"/>
         <source>Taker Payment Spent ID</source>
         <translation>Identifiant de paiement du preneur d&apos;achat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="124"/>
         <source>Taker Payment Sent ID</source>
         <translation>Identifiant d&apos;envoi du paiement du preneur</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="176"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="178"/>
         <source>Cancel Order</source>
         <translation>Annuler l&apos;ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="131"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="133"/>
         <source>Error ID</source>
         <translation>ID de l&apos;erreur</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="139"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="141"/>
         <source>Error Log</source>
         <translation>Journal des erreurs</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="166"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="168"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>

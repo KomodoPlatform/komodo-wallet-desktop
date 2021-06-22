@@ -2,38 +2,46 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import "../Constants"
 
-DefaultModal {
+DefaultModal
+{
     id: root
 
-    padding: 10
-
-    width: 900
-    height: column_layout.height + verticalPadding * 2
-
-    property alias currentIndex: stack_layout.currentIndex
-    property int targetPageIndex: currentIndex
-    property alias count: stack_layout.count
+    property alias         currentIndex: stack_layout.currentIndex
+    property int           targetPageIndex: currentIndex
+    property alias         count: stack_layout.count
     default property alias pages: stack_layout.data
 
-    function nextPage() {
-        if(currentIndex === count - 1) root.close()
-        else {
+    readonly property int _modalWidth: width
+    readonly property int _modalPadding: padding
+
+    function nextPage()
+    {
+        if (currentIndex === count - 1)
+            root.close()
+        else
+        {
             targetPageIndex = currentIndex + 1
             page_change_animation.start()
         }
     }
 
-    function previousPage() {
-        if(currentIndex === 0) root.close()
-        else {
+    function previousPage()
+    {
+        if (currentIndex === 0)
+            root.close()
+        else
+        {
             targetPageIndex = currentIndex - 1
             page_change_animation.start()
         }
     }
 
-    onOpened: {
-        stack_layout.opacity = 1
-    }
+    //! Appearance
+    padding: 10
+    width: 900
+    height: column_layout.height + verticalPadding * 2
+
+    onOpened: stack_layout.opacity = 1
 
     SequentialAnimation {
         id: page_change_animation

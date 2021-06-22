@@ -30,6 +30,7 @@
 #include <QWindow>
 #include <QtGlobal>
 #include <QtQml>
+#include <QFontDatabase>
 #include <QtWebEngine>
 
 //! Qaterial
@@ -452,6 +453,8 @@ run_app(int argc, char** argv)
     qmlRegisterUncreatableType<atomic_dex::CoinTypeGadget>("AtomicDEX.CoinType", 1, 0, "CoinType", "Not creatable as it is an enum type");
     SPDLOG_INFO("QML Enum created");
 
+    const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    engine.rootContext()->setContextProperty("atomic_fixed_font", fixedFont);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     engine.rootContext()->setContextProperty("atomic_app_name", QString{DEX_NAME});
     engine.rootContext()->setContextProperty("atomic_app_website_url", QString{DEX_WEBSITE_URL});
