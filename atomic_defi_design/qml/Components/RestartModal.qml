@@ -61,6 +61,7 @@ BasicModal
         {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatDouble(_timeLeft, 1, true)
+            font: atomic_fixed_font
         }
     }
 }
