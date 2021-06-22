@@ -131,16 +131,16 @@ namespace atomic_dex
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
 
-        const auto* market_selector   = get_market_pairs_mdl();
-        const auto& base              = market_selector->get_left_selected_coin();
-        const auto& rel               = market_selector->get_right_selected_coin();
-        const bool  is_selected_order = m_preffered_order.has_value();
-        const bool  is_selected_max =
-            is_selected_order ? QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
-                               : false;
-        const bool is_my_max = m_volume == m_max_volume;
-        const bool is_exact_selected_order_volume =
-            (is_selected_order && m_preffered_order->at("coin").get<std::string>() == base.toStdString()) ? is_selected_max : false;
+        auto&       mm2_system                   = m_system_manager.get_system<mm2_service>();
+        const auto* market_selector              = get_market_pairs_mdl();
+        const auto& base                         = market_selector->get_left_selected_coin();
+        const auto& rel                          = market_selector->get_right_selected_coin();
+        const bool  is_selected_order            = m_preffered_order.has_value();
+        const bool  is_max                       = m_max_volume == m_volume;
+        QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preffered_order->at("base_max_volume").get<std::string>()) : "";
+        const bool  is_selected_min_max =
+            is_selected_order && m_preffered_order->at("base_min_volume").get<std::string>() == m_preffered_order->at("base_max_volume").get<std::string>();
+        const bool is_selected_max  = is_selected_order && is_max;
         t_float_50 rel_min_trade    = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
         t_float_50 rel_min_volume_f = safe_float(get_min_trade_vol().toStdString());
         // SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
@@ -154,12 +154,17 @@ namespace atomic_dex
             .is_created_order               = not is_selected_order,
             .price_denom                    = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
             .price_numer                    = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
-            .volume_denom                   = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
-            .volume_numer                   = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume = is_exact_selected_order_volume,
+            .volume_denom                   = is_selected_order ? m_preffered_order->at("base_max_volume_denom").get<std::string>() : "",
+            .volume_numer                   = is_selected_order ? m_preffered_order->at("base_max_volume_numer").get<std::string>() : "",
+            .is_exact_selected_order_volume = is_selected_max,
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
             .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_min_trade_vol().toStdString()};
+
+        if (is_selected_min_max || is_selected_order)
+        {
+            req.min_volume = std::optional<std::string>{std::nullopt};
+        }
 
         if (m_preffered_order.has_value())
         {
@@ -167,10 +172,12 @@ namespace atomic_dex
             {
                 //! Selected order and we keep the exact volume (Basically swallow the order)
                 SPDLOG_INFO("swallowing the order from the orderbook");
-                req.volume_numer = m_preffered_order->at("quantity_numer").get<std::string>();
-                req.volume_denom = m_preffered_order->at("quantity_denom").get<std::string>();
+                req.volume_numer = m_preffered_order->at("base_max_volume_numer").get<std::string>();
+                req.volume_denom = m_preffered_order->at("base_max_volume_denom").get<std::string>();
             }
-            else if (is_my_max && !req.is_exact_selected_order_volume)
+            else if (
+                is_max && !req.is_exact_selected_order_volume && m_preffered_order->contains("max_volume_numer") &&
+                m_preffered_order->contains("max_volume_denom"))
             {
                 SPDLOG_INFO("cannot swallow the selected order from the orderbook, use our theorical max_volume for it");
                 //! Selected order but we cannot swallow (not enough funds) set our theorical max_volume_numer and max_volume_denom
@@ -187,10 +194,10 @@ namespace atomic_dex
         nlohmann::json buy_request = ::mm2::api::template_request("buy");
         ::mm2::api::to_json(buy_request, req);
         batch.push_back(buy_request);
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        buy_request["userpass"] = "*******";
 
         //! Answer
-        // SPDLOG_INFO("buy_request is : {}", batch.dump(4));
+        SPDLOG_INFO("buy_request is : {}", buy_request.dump(4));
         auto answer_functor = [this](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -256,10 +263,12 @@ namespace atomic_dex
         const bool  is_selected_order            = m_preffered_order.has_value();
         const bool  is_max                       = m_max_volume == m_volume;
         QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preffered_order->at("base_max_volume").get<std::string>()) : "";
-        const bool  is_selected_min_max = is_selected_order ? m_preffered_order->at("base_min_volume").get<std::string>() == m_preffered_order->at("base_max_volume").get<std::string>(): false;
-        const bool  is_selected_max              = is_selected_order && m_volume.toStdString() == utils::extract_large_float(orderbook_available_quantity.toStdString());
-        t_float_50 base_min_trade = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
-        t_float_50 cur_min_trade  = safe_float(get_min_trade_vol().toStdString());
+        const bool  is_selected_min_max =
+            is_selected_order ? m_preffered_order->at("base_min_volume").get<std::string>() == m_preffered_order->at("base_max_volume").get<std::string>()
+                               : false;
+        const bool is_selected_max = is_selected_order && m_volume.toStdString() == utils::extract_large_float(orderbook_available_quantity.toStdString());
+        t_float_50 base_min_trade  = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
+        t_float_50 cur_min_trade   = safe_float(get_min_trade_vol().toStdString());
 
         SPDLOG_INFO("base_min_trade: {}, cur_min_trade: {}", base_min_trade.str(), cur_min_trade.str());
         SPDLOG_INFO(
@@ -316,7 +325,9 @@ namespace atomic_dex
                 req.volume_numer = m_preffered_order->at("base_max_volume_numer").get<std::string>();
                 req.volume_denom = m_preffered_order->at("base_max_volume_denom").get<std::string>();
             }
-            else if (is_max && !req.is_exact_selected_order_volume && get_current_trading_mode() != TradingModeGadget::Simple) ///< this one is a bit dangerous, let's forbid it in simple view
+            else if (is_max && !req.is_exact_selected_order_volume && get_current_trading_mode() != TradingModeGadget::Simple) ///< this one is a bit dangerous,
+                                                                                                                               ///< let's forbid it in simple
+                                                                                                                               ///< view
             {
                 SPDLOG_INFO("cannot swallow the selected order from the orderbook, use max_taker_volume for it");
                 req.volume_denom = max_taker_vol_json_obj["denom"].toString().toStdString();
@@ -797,26 +808,38 @@ namespace atomic_dex
                     if (res_f <= 0)
                     {
                         res_f = 0;
+                        this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
                     }
                     else
                     {
-                        t_rational rel_max_taker_rat((boost::multiprecision::cpp_int(numer)), boost::multiprecision::cpp_int(denom));
-                        if (price_f > t_float_50(0))
+                        std::string rel_max_vol  = m_preffered_order->at("rel_max_volume").get<std::string>();
+                        std::string base_max_vol = m_preffered_order->at("base_max_volume").get<std::string>();
+                        if (res_f >= safe_float(rel_max_vol))
                         {
-                            const auto price_denom = m_preffered_order->at("price_denom").get<std::string>();
-                            const auto price_numer = m_preffered_order->at("price_numer").get<std::string>();
-                            t_rational price_orderbook_rat((boost::multiprecision::cpp_int(price_numer)), (boost::multiprecision::cpp_int(price_denom)));
+                            // SPDLOG_INFO("Our balance is more or equal than the rel_max_volume, this means we have enough to cover the offer capping to
+                            // base_max_vol");
+                            this->set_max_volume(QString::fromStdString(utils::extract_large_float(base_max_vol)));
+                        }
+                        else
+                        {
+                            t_rational rel_max_taker_rat((boost::multiprecision::cpp_int(numer)), boost::multiprecision::cpp_int(denom));
+                            if (price_f > t_float_50(0))
+                            {
+                                const auto price_denom = m_preffered_order->at("price_denom").get<std::string>();
+                                const auto price_numer = m_preffered_order->at("price_numer").get<std::string>();
+                                t_rational price_orderbook_rat((boost::multiprecision::cpp_int(price_numer)), (boost::multiprecision::cpp_int(price_denom)));
 
-                            t_rational res = rel_max_taker_rat / price_orderbook_rat;
-                            /*SPDLOG_INFO(
-                                "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
-                                boost::multiprecision::denominator(res).str());*/
-                            res_f                                               = res.convert_to<t_float_50>();
-                            this->m_preffered_order.value()["max_volume_denom"] = boost::multiprecision::denominator(res).str();
-                            this->m_preffered_order.value()["max_volume_numer"] = boost::multiprecision::numerator(res).str();
+                                t_rational res = rel_max_taker_rat / price_orderbook_rat;
+                                /*SPDLOG_INFO(
+                                    "rat should be: numerator {} denominator {}", boost::multiprecision::numerator(res).str(),
+                                    boost::multiprecision::denominator(res).str());*/
+                                res_f                                               = res.convert_to<t_float_50>();
+                                this->m_preffered_order.value()["max_volume_denom"] = boost::multiprecision::denominator(res).str();
+                                this->m_preffered_order.value()["max_volume_numer"] = boost::multiprecision::numerator(res).str();
+                            }
+                            this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
                         }
                     }
-                    this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
                     this->cap_volume();
                 }
                 else
@@ -1020,21 +1043,13 @@ namespace atomic_dex
                 m_preffered_order->operator[]("capped") = false;
                 this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("price").get<std::string>()))));
                 this->determine_max_volume();
-                const bool is_buy = m_market_mode == MarketMode::Buy;
-                if (!is_buy)
-                {
-                    QString min_vol = QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("base_min_volume").get<std::string>())));
-                    this->set_min_trade_vol(min_vol);
-                }
-
-                auto available_quantity = m_preffered_order->at("quantity").get<std::string>();
-                if (!is_buy)
-                {
-                    available_quantity = m_preffered_order->at("base_max_volume").get<std::string>();
-                }
+                //const bool is_buy  = m_market_mode == MarketMode::Buy;
+                QString    min_vol = QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("base_min_volume").get<std::string>())));
+                this->set_min_trade_vol(min_vol);
+                auto available_quantity = m_preffered_order->at("base_max_volume").get<std::string>();
                 if (this->m_current_trading_mode == TradingModeGadget::Pro)
                 {
-                    this->set_volume(QString::fromStdString(utils::format_float(safe_float(available_quantity))));
+                    this->set_volume(QString::fromStdString(utils::extract_large_float(available_quantity)));
                 }
                 else if (this->m_current_trading_mode == TradingModeGadget::Simple && m_preffered_order->contains("initial_input_volume"))
                 {
@@ -1110,7 +1125,7 @@ namespace atomic_dex
         if (fees != m_fees)
         {
             m_fees = std::move(fees);
-            //qDebug() << "fees are: [" << m_fees << "]";
+            // qDebug() << "fees are: [" << m_fees << "]";
             emit feesChanged();
         }
     }
@@ -1213,12 +1228,14 @@ namespace atomic_dex
         t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
         const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
         // const auto&       base_min_taker_vol        = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        const auto& cur_min_taker_vol = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
-        const auto& mm2               = m_system_manager.get_system<mm2_service>();
-        const auto  left_cfg          = mm2.get_coin_info(left);
-        const auto  right_cfg         = mm2.get_coin_info(right);
+        const auto& cur_min_taker_vol   = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
+        const auto& mm2                 = m_system_manager.get_system<mm2_service>();
+        const auto  left_cfg            = mm2.get_coin_info(left);
+        const auto  right_cfg           = mm2.get_coin_info(right);
         const bool  has_preffered_order = m_preffered_order.has_value();
-        const bool  is_selected_min_max = has_preffered_order ? m_preffered_order->at("base_min_volume").get<std::string>() == m_preffered_order->at("base_max_volume").get<std::string>(): false;
+        const bool  is_selected_min_max =
+            has_preffered_order ? m_preffered_order->at("base_min_volume").get<std::string>() == m_preffered_order->at("base_max_volume").get<std::string>()
+                                 : false;
         if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
         {
             const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
@@ -1359,7 +1376,7 @@ namespace atomic_dex
                     .toJsonObject()["decimal"]
                     .toString()
                     .toStdString();
-            //assert(not max_dust_str.empty());
+            // assert(not max_dust_str.empty());
             t_float_50 max_balance_without_dust = safe_float(max_dust_str);
             return max_balance_without_dust;
         }
