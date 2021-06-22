@@ -7,17 +7,14 @@ import Qaterial 1.0 as Qaterial
 import "../Constants"
 import "../Components"
 
-Popup {
+DexPopup {
     id: root
 
     width: 400
     height: 440
-    x: !sidebar.expanded? 100 : 230
-    y: 30
-    dim: false
-    modal: false
+
     property var notification_map: [{icon: Qaterial.Icons.arrowUpCircleOutline,color: theme.redColor}, {icon: Qaterial.Icons.arrowDownCircleOutline,color: theme.greenColor}, {icon: Qaterial.Icons.emailOutline,color: theme.foregroundColor}]
-    background: FloatingBackground {}
+    backgroundColor: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9)
 
     function reset() {
         notifications_list = []

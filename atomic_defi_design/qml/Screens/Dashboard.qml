@@ -39,7 +39,6 @@ Item {
 
     property var current_ticker
 
-    property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
     function openLogsFolder() {
@@ -55,7 +54,6 @@ Item {
     property int current_page: idx_dashboard_portfolio
     onCurrent_pageChanged: {
         app.deepPage = current_page*10
-        console.log(app.deepPage)
     }
 
 
@@ -228,40 +226,6 @@ Item {
         y: -30
     }
 
-    // Unread notifications count
-    AnimatedRectangle {
-        radius: 1337
-        width: count_text.height * 1.5
-        height: width
-        z: 1
-
-        x: sidebar.app_logo.x + sidebar.app_logo.width - 20
-        y: sidebar.app_logo.y
-        color: Qt.lighter(notifications_list.length > 0 ? Style.colorRed : theme.backgroundColor, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
-
-        DefaultText {
-            id: count_text
-            anchors.centerIn: parent
-            text_value: notifications_list.length
-            font.pixelSize: Style.textSizeSmall1
-            font.weight: Font.Medium
-            color: notifications_list.length > 0 ? theme.foregroundColor : Qt.darker(theme.foregroundColor)
-        }
-    }
-
-    // Notifications panel button
-    DefaultMouseArea {
-        id: notifications_modal_button
-        x: sidebar.app_logo.x
-        y: sidebar.app_logo.y
-        width: sidebar.app_logo.width
-        height: sidebar.app_logo.height
-
-        hoverEnabled: true
-
-        onClicked: notifications_modal.open()
-    }
-
     DropShadow {
         anchors.fill: sidebar
         source: sidebar
@@ -273,14 +237,6 @@ Item {
         spread: 0
         color: theme.colorSidebarDropShadow
         smooth: true
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        color: '#000'
-        visible: notifications_modal.visible
-        anchors.leftMargin: sidebar.width
-        opacity: .6
     }
 
     ModalLoader {
@@ -301,10 +257,6 @@ Item {
     ModalLoader {
         id: restart_modal
         sourceComponent: RestartModal {}
-    }
-
-    NotificationsModal {
-        id: notifications_modal
     }
 
     function getStatusColor(status) {
