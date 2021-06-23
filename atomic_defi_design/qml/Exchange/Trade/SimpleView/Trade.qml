@@ -15,6 +15,8 @@ import "../"
 
 ClipRRect // Trade Card
 {
+    id: _tradeCard
+
     property string selectedTicker: left_ticker
     property var    selectedOrder:  undefined
     property bool   best: false
@@ -33,7 +35,6 @@ ClipRRect // Trade Card
     Component.onDestruction: selectedOrder = undefined
     onBestChanged: if (best) API.app.trading_pg.orderbook.refresh_best_orders()
 
-    id: _tradeCard
     width: bestOrderSimplified.visible ? 600 : coinSelection? 450 : 380
     height: col.height+15
     radius: 20
@@ -125,15 +126,17 @@ ClipRRect // Trade Card
     Column    // Swap Card Content
     {
         id: col
+
         width: parent.width
-        spacing: 10
+        spacing: 20
+
         Column // Header
         {
             id: _swapCardHeader
 
-            width: parent.width-20
-            padding: 10
-            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - 20
+            leftPadding: 20
+            topPadding: 20
 
             DefaultText // Title
             {
