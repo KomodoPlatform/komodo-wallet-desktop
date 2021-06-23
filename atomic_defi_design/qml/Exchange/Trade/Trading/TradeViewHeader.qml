@@ -92,6 +92,7 @@ Item {
         Rectangle {
             width: 40
             height: 25
+            visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
             radius: height/2
             Behavior on color {
                 ColorAnimation {
