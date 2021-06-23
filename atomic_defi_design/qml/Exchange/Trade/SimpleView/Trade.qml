@@ -381,26 +381,26 @@ ClipRRect // Trade Card
                     anchors.right: _selectTickerBut.left
                     anchors.rightMargin: 5
                     anchors.verticalCenter: _selectTickerBut.verticalCenter
-                    border.width: 0
 
                     width: 40
                     height: 20
+
+                    border.width: 0
 
                     DefaultMouseArea
                     {
                         id: _maxButMouseArea
                         anchors.fill: parent
-                        onClicked: _fromValue.field.text = API.app.trading_pg.max_volume
                         hoverEnabled: true
+                        onClicked: _fromValue.field.text = API.app.trading_pg.max_volume
                     }
 
                     DexLabel
                     {
-                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.centerIn: parent
                         color: _maxButMouseArea.containsMouse ? 
                                     _maxButMouseArea.pressed ? "#173948" : "#204c61"
-                               : theme.accentColor
-                        anchors.fill: parent
+                                    : theme.accentColor
                         text: qsTr("MAX")
                     }
                 }
