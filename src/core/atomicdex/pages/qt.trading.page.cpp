@@ -1228,7 +1228,7 @@ namespace atomic_dex
         t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
         const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
         // const auto&       base_min_taker_vol        = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        const auto& cur_min_taker_vol   = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
+        const auto& cur_min_taker_vol   = get_min_trade_vol().toStdString();
         const auto& mm2                 = m_system_manager.get_system<mm2_service>();
         const auto  left_cfg            = mm2.get_coin_info(left);
         const auto  right_cfg           = mm2.get_coin_info(right);
@@ -1274,7 +1274,7 @@ namespace atomic_dex
             {
                 current_trading_error = TradingError::PriceFieldNotFilled; ///< need to have for multi ticker check
             }
-            else if (safe_float(get_base_amount().toStdString()) < safe_float(cur_min_taker_vol) && !is_selected_min_max)
+            else if (safe_float(m_volume.toStdString()) < safe_float(cur_min_taker_vol) && !is_selected_min_max)
             {
                 // SPDLOG_INFO("base_amount: {}, cur_min_taker_vol: {}, price: {}", get_base_amount().toStdString(), cur_min_taker_vol,
                 // get_price().toStdString());
