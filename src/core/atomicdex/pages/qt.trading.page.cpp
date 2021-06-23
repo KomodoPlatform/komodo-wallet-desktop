@@ -1043,8 +1043,8 @@ namespace atomic_dex
                 m_preffered_order->operator[]("capped") = false;
                 this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("price").get<std::string>()))));
                 this->determine_max_volume();
-                //const bool is_buy  = m_market_mode == MarketMode::Buy;
-                QString    min_vol = QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("base_min_volume").get<std::string>())));
+                // const bool is_buy  = m_market_mode == MarketMode::Buy;
+                QString min_vol = QString::fromStdString(utils::format_float(safe_float(m_preffered_order->at("base_min_volume").get<std::string>())));
                 this->set_min_trade_vol(min_vol);
                 auto available_quantity = m_preffered_order->at("base_max_volume").get<std::string>();
                 if (this->m_current_trading_mode == TradingModeGadget::Pro)
@@ -1227,6 +1227,7 @@ namespace atomic_dex
         const std::string right                    = this->get_market_pairs_mdl()->get_right_selected_coin().toStdString();
         t_float_50        max_balance_without_dust = this->get_max_balance_without_dust();
         const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
+        const auto        regular_min_taker_vol    = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
         // const auto&       base_min_taker_vol        = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
         const auto& cur_min_taker_vol   = get_min_trade_vol().toStdString();
         const auto& mm2                 = m_system_manager.get_system<mm2_service>();
@@ -1262,7 +1263,7 @@ namespace atomic_dex
         }
         if (current_trading_error == TradingError::None)
         {
-            if (max_balance_without_dust < safe_float(cur_min_taker_vol)) //<! Checking balance < minimal_trading_amount
+            if (max_balance_without_dust < safe_float(regular_min_taker_vol)) //<! Checking balance < minimal_trading_amount
             {
                 current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
             }
