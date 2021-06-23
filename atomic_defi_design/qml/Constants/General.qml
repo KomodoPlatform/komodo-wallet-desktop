@@ -450,13 +450,13 @@ QtObject {
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getReversedMinTradeAmount()
         case TradingError.LeftParentChainNotEnabled:
-            return qsTr("%1 need to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
+            return qsTr("%1 needs to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
         case TradingError.LeftParentChainNotEnoughBalance:
-            return qsTr("%1 balance need to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
+            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
         case TradingError.RightParentChainNotEnabled:
-             return qsTr("%1 need to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
+             return qsTr("%1 needs to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
         case TradingError.RightParentChainNotEnoughBalance:
-             return qsTr("%1 balance need to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
+             return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
         default:
             return qsTr("Unknown Error") + ": " + error
         }
