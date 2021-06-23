@@ -437,7 +437,18 @@
     "coingecko_id": "globalboost",
     "electrum": [
       {
-        "url": "66.172.33.175:50001"
+        "url": "66.172.33.175:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "bsty-main.coinmunity.gold:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "bsty-bkp.coinmunity.gold:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
