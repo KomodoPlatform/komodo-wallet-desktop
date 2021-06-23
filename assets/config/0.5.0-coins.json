@@ -1980,8 +1980,14 @@
       "coingecko_id": "unobtanium",
       "electrum": [
         {
-          "url": "unobtanium.info.gf:50001",
-          "protocol": "TCP"
+          "url": "uno-main.coinmunity.gold:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "uno-bkp.coinmunity.gold:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
         }
       ],
       "explorer_url": [
@@ -1991,8 +1997,7 @@
       "explorer_address_url": "address.dws?",
       "type": "UTXO",
       "active": false,
-      "currently_enabled": false,
-      "wallet_only": true
+      "currently_enabled": false
   },
   "USDC-BEP20": {
       "coin": "USDC-BEP20",
