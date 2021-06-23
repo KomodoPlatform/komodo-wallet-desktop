@@ -623,6 +623,8 @@ ClipRRect // Trade Card
 
                     function getAlert()
                     {
+                        var left_ticker = API.app.trading_pg.market_pairs_mdl.left_selected_coin
+                        var right_ticker = API.app.trading_pg.market_pairs_mdl.right_selected_coin
                         if (_fromValue.field.text === "" || parseFloat(_fromValue.field.text) === 0)
                             return qsTr("Entered amount must be superior than 0.")
                         if (typeof selectedOrder === 'undefined')
@@ -630,13 +632,13 @@ ClipRRect // Trade Card
                         if (API.app.trading_pg.last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
                             return qsTr("Entered amount is below the minimum required by this order: %1").arg(selectedOrder.base_min_volume)
                         if (API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnabled)
-                            return qsTr("Parent chain of left ticker is not enabled.")
+                            return qsTr("%1 needs to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
                         if (API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnoughBalance)
-                            return qsTr("Left ticker parent chain balance needs to be funded")
+                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
                         if (API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnabled)
-                            return qsTr("Parent chain of right ticker is not enabled.")
+                            return qsTr("%1 needs to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
                         if (API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnoughBalance)
-                            return qsTr("Right ticker parent chain balance needs to be funded")
+                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
 
                         return ""
                     }
