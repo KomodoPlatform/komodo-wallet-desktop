@@ -454,7 +454,7 @@ ClipRRect // Trade Card
                     anchors.bottomMargin: 19
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: _feesCard.visible ? _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 : _piclOrderLabel.implicitWidth+20
+                    width: _tradeCard.selectedOrder!==undefined ? _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 : _piclOrderLabel.implicitWidth+20
                     height: 30
                     radius: 10
                     border.width: 0
@@ -799,7 +799,7 @@ ClipRRect // Trade Card
             height: 60
 
             enabled: !_swapAlert.visible
-            visible: _feesList.count!==0 & _tradeCard.selectedOrder!==undefined &  parseFloat(_fromValue.field.text) > 0 //enabled & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
+            visible: _feesList.count!==0 & _tradeCard.selectedOrder!==undefined &  parseFloat(_fromValue.field.text) > 0 & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
 
             DexRectangle {
                 radius: 25 
