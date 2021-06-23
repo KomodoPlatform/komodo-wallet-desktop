@@ -363,4 +363,11 @@ namespace atomic_dex
     {
         return m_enabled_coins;
     }
+
+    QString
+    global_coins_cfg_model::get_parent_coin(const QString& ticker) const
+    {
+        auto cfg = get_coin_info(ticker.toStdString());
+        return QString::fromStdString(cfg.fees_ticker);
+    }
 } // namespace atomic_dex
