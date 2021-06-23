@@ -166,10 +166,14 @@ Item {
                     color: theme.dexBoxBackgroundColor
                     sizeAnimationDuration: 250
                     sizeAnimation: true
-                    Trade
-                    {
-                        id: simple_trade
-                        width: parent.width
+                    ClipRRect {
+                        anchors.fill: parent
+                        radius: 20 
+                        Trade
+                        {
+                            id: simple_trade
+                            width: parent.width
+                        }
                     }
                 }
             }
@@ -197,9 +201,6 @@ Item {
                     }
                 }
             }
-            
-            
-            
         }
     }
     ModalLoader {

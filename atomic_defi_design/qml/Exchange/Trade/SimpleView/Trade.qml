@@ -791,7 +791,7 @@ ClipRRect // Trade Card
         }
 
 
-        DefaultRectangle // Swap Info - Details
+        Item // Swap Info - Details
         {
             id: _feesCard
             anchors.horizontalCenter: parent.horizontalCenter
@@ -801,7 +801,10 @@ ClipRRect // Trade Card
             enabled: !_swapAlert.visible
             visible: enabled & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
 
-            radius: 25
+            DexRectangle {
+                radius: 25 
+                anchors.fill: parent
+            }
 
             DefaultBusyIndicator
             {
