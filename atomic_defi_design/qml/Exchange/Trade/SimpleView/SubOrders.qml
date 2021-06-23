@@ -97,7 +97,7 @@ Item
                     ToolTip.delay: 500
                     ToolTip.timeout: 5000
                     ToolTip.visible: hovered
-                    ToolTip.text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filering options.")
+                    ToolTip.text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
                 }
             }
         }
