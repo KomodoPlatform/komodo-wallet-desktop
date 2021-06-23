@@ -15,11 +15,12 @@ import "Main.js" as Main
 
 Item {
     id: _subHistoryRoot
-    anchors.fill: parent
+
     readonly property date default_min_date: new Date("2019-01-01")
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
     property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property bool displayFilter: false
+
     function update() {
         list_model_proxy.is_history = true
         applyTickerFilter()
@@ -51,41 +52,57 @@ Item {
     function applyAllFiltering() {
         list_model_proxy.apply_all_filtering()
     }
-    ColumnLayout // Header
-    {
-        id: _swapCardHeader
 
+    anchors.fill: parent
+
+    ColumnLayout // History Content
+    {
         height: parent.height
         width: parent.width
         spacing: 20
-        Item {
-            width: parent.width
-            Layout.preferredHeight: 60
-            Qaterial.AppBarButton {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.verticalCenterOffset: 10
-                x: 320
-                icon.source: _subHistoryRoot.displayFilter? Qaterial.Icons.close : Qaterial.Icons.filter
-                onClicked: {
-                    _subHistoryRoot.displayFilter = !_subHistoryRoot.displayFilter
-                }
-            }
-            Column {
-                padding: 20
-                spacing: 5
-                DefaultText // Title
-                {
-                    text: qsTr("History")
-                    font.pixelSize: Style.textSize1
-                }
-            }
-            
-        }
-        HorizontalLine
+
+        Column // Header
         {
-            height: 2
-            Layout.fillWidth: true
+            leftPadding: 20
+            topPadding: 20
+
+            DefaultText // Title
+            {
+                text: qsTr("History")
+                font.pixelSize: Style.textSize1
+            }
+
+            DefaultText // Description
+            {
+                anchors.topMargin: 12
+                font.pixelSize: Style.textSizeSmall4
+                text: qsTr("Finished orders")
+
+                Qaterial.AppBarButton // Reset Form Button
+                {
+                    width: 50
+                    height: 50
+                    anchors.left: parent.right
+                    anchors.leftMargin: 205
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: -8
+
+                    icon.source: _subHistoryRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.filter
+
+                    hoverEnabled: true
+
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 5000
+                    ToolTip.visible: hovered
+                    ToolTip.text: _subHistoryRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filering options.")
+
+                    onClicked: _subHistoryRoot.displayFilter = !_subHistoryRoot.displayFilter
+                }
+            }
         }
+
+        HorizontalLine { height: 2; Layout.fillWidth: true }
+
         Item {
             id: main_order
             Layout.fillHeight: true
