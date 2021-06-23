@@ -453,59 +453,88 @@ ClipRRect // Trade Card
                 Rectangle // Shows best order coin
                 {
                     id: _selectBestOrderButton
+
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
-                    anchors.right: parent.right
-                    anchors.rightMargin: 20
-                    width: _feesCard.visible ? _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 : _piclOrderLabel.implicitWidth+20
+                    x: _bestOrderIcon.enabled ? _selectTickerBut.x :
+                                                _selectTickerBut.x - (width - _selectTickerBut.width)
+
                     height: 30
+                    width: _bestOrderIcon.enabled ?
+                               _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 :
+                               _bestOrderNoTickerText.implicitWidth + 30
+
                     radius: 10
                     border.width: 0
+
                     color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
                     opacity: _bestOrdersMouseArea.enabled ? 1 : 0.3
 
                     DefaultMouseArea
                     {
                         id: _bestOrdersMouseArea
+
                         anchors.fill: parent
-                        onClicked: _tradeCard.best = true
-                        hoverEnabled: true
+
                         enabled: parseFloat(_fromValue.field.text) > 0
+
+                        hoverEnabled: true
+
+                        onClicked: _tradeCard.best = true
                     }
 
-                    DefaultImage // Button with icon (a best order is currently selected)
+                    // When a best order is currently selected.
+                    DefaultImage
                     {
                         id: _bestOrderIcon
+
                         enabled: typeof selectedOrder !== 'undefined'
-                        source: enabled ? General.coinIcon(selectedOrder.coin) : ""
                         visible: enabled
+
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
                         anchors.left: parent.left
+
                         width: 20
                         height: 20
+
+                        source: enabled ? General.coinIcon(selectedOrder.coin) : ""
+
                         DefaultText
                         {
                             id: _bestOrderTickerText
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.right
+
+                            enabled: _bestOrderIcon.enabled
+                            visible: _bestOrderIcon.visible
+
+                            anchors.verticalCenter: _bestOrderIcon.verticalCenter
+                            anchors.left: _bestOrderIcon.right
                             anchors.leftMargin: 10
+
                             text: enabled ? selectedOrder.coin : ""
                             font.pixelSize: Style.textSizeSmall4
+
                             Arrow
                             {
                                 id: _bestOrderArrow
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.left: parent.right
+
+
+                                enabled: _bestOrderTickerText.enabled
+                                visible: _bestOrderTickerText.visible
+
+                                anchors.verticalCenter: _bestOrderTickerText.verticalCenter
+                                anchors.left: _bestOrderTickerText.right
                                 anchors.leftMargin: 5
+
                                 up: false
                             }
                         }
                     }
 
-                    DefaultText  // Button (no order is currently selected)
+                    // When no order is currently selected.
+                    DefaultText
                     {
-                        id:_piclOrderLabel
+                        id: _bestOrderNoTickerText
                         enabled: !_bestOrderIcon.enabled
                         visible: enabled
                         anchors.verticalCenter: parent.verticalCenter
