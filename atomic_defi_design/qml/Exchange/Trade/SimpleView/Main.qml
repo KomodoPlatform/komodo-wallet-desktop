@@ -16,6 +16,7 @@ Item {
     readonly property var subPages: Main.getSubPages()
 
     // Variable which holds the current sub-page of the SimpleView.
+    property string recover_funds_result: '{}'
     property var currentSubPage: subPages.Trade
     onCurrentSubPageChanged: _selectedTabMarker.update()
 
