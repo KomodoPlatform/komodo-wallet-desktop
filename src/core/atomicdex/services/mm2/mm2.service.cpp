@@ -20,6 +20,7 @@
 ///! Qt
 #include <QFile>
 #include <QProcess>
+#include <QException>
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.constants.hpp"
@@ -32,8 +33,8 @@
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/kill.hpp" ///< no delete
-#include "atomicdex/utilities/stacktrace.prerequisites.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/stacktrace.prerequisites.hpp"
 
 //! Anonymous functions
 namespace
@@ -43,68 +44,81 @@ namespace
     void
     check_for_reconfiguration(const std::string& wallet_name)
     {
-        using namespace std::string_literals;
-        SPDLOG_DEBUG("checking for reconfiguration");
-
-        fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
-        std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
-        fs::path    precedent_version_cfg_path = cfg_path / filename;
-
-        if (fs::exists(precedent_version_cfg_path))
+        try
         {
-            //! There is a precedent configuration file
-            SPDLOG_INFO("There is a precedent configuration file, upgrading the new one with precedent settings");
+            using namespace std::string_literals;
+            SPDLOG_DEBUG("checking for reconfiguration");
 
-            //! Old cfg to ifs
-            QFile ifs;
-            ifs.setFileName(atomic_dex::std_path_to_qstring(precedent_version_cfg_path));
-            ifs.open(QIODevice::Text | QIODevice::ReadOnly);
-            nlohmann::json precedent_config_json_data;
-            precedent_config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
+            fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
+            std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
+            fs::path    precedent_version_cfg_path = cfg_path / filename;
 
-            //! New cfg to ifs
-            fs::path      actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
-            QFile actual_version_ifs;
-            ifs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
-            ifs.open(QIODevice::Text | QIODevice::ReadOnly);
-            nlohmann::json actual_config_data = nlohmann::json::parse(QString(actual_version_ifs.readAll()).toStdString());;
-
-            //! Iterate through new config
-            for (auto& [key, value]: actual_config_data.items())
+            if (fs::exists(precedent_version_cfg_path))
             {
-                //! If the coin in new config is present in the old one, copy the contents
-                if (precedent_config_json_data.contains(key))
+                //! There is a precedent configuration file
+                SPDLOG_INFO("There is a precedent configuration file, upgrading the new one with precedent settings");
+
+                //! Old cfg to ifs
+                LOG_PATH("opening file: {}", precedent_version_cfg_path);
+                QFile ifs;
+                ifs.setFileName(atomic_dex::std_path_to_qstring(precedent_version_cfg_path));
+                ifs.open(QIODevice::Text | QIODevice::ReadOnly);
+                nlohmann::json precedent_config_json_data;
+                precedent_config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
+
+                //! New cfg to ifs
+                fs::path actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
+                LOG_PATH("opening file: {}", actual_version_filepath);
+                QFile    actual_version_ifs;
+                actual_version_ifs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
+                actual_version_ifs.open(QIODevice::Text | QIODevice::ReadOnly);
+                nlohmann::json actual_config_data = nlohmann::json::parse(QString(actual_version_ifs.readAll()).toStdString());
+
+                //! Iterate through new config
+                for (auto& [key, value]: actual_config_data.items())
                 {
-                    actual_config_data.at(key)["active"] = precedent_config_json_data.at(key).at("active").get<bool>();
+                    //! If the coin in new config is present in the old one, copy the contents
+                    if (precedent_config_json_data.contains(key))
+                    {
+                        actual_config_data.at(key)["active"] = precedent_config_json_data.at(key).at("active").get<bool>();
+                    }
                 }
-            }
 
-            for (auto& [key, value]: precedent_config_json_data.items())
-            {
-                if (value.contains("is_custom_coin") && value.at("is_custom_coin").get<bool>())
+                for (auto& [key, value]: precedent_config_json_data.items())
                 {
-                    SPDLOG_INFO("{} is a custom coin, copying to new cfg", key);
-                    actual_config_data[key] = value;
+                    if (value.contains("is_custom_coin") && value.at("is_custom_coin").get<bool>())
+                    {
+                        SPDLOG_INFO("{} is a custom coin, copying to new cfg", key);
+                        actual_config_data[key] = value;
+                    }
                 }
+
+                LOG_PATH("closing file: {}", precedent_version_cfg_path);
+                ifs.close();
+                LOG_PATH("closing file: {}", actual_version_filepath);
+                actual_version_ifs.close();
+
+                //! Write contents
+                LOG_PATH("opening file: {}", actual_version_filepath);
+                QFile ofs;
+                ofs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
+                ofs.open(QIODevice::Text | QIODevice::WriteOnly);
+                ofs.write(QString::fromStdString(actual_config_data.dump()).toUtf8());
+
+                //! Delete old cfg
+                fs_error_code ec;
+                fs::remove(precedent_version_cfg_path, ec);
+                if (ec)
+                {
+                    SPDLOG_ERROR("error: {}", ec.message());
+                }
+                LOG_PATH("closing file: {}", actual_version_filepath);
+                ofs.close();
             }
-
-            ifs.close();
-            actual_version_ifs.close();
-
-            //! Write contents
-            QFile ofs;
-            ofs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
-            ofs.open(QIODevice::Text | QIODevice::WriteOnly);
-            ofs.write(QString::fromStdString(actual_config_data.dump()).toUtf8());
-
-            //! Delete old cfg
-            fs_error_code ec;
-            fs::remove(precedent_version_cfg_path, ec);
-            if (ec)
-            {
-                SPDLOG_ERROR("error: {}", ec.message());
-            }
-            ofs.close();
+        }
+        catch (const std::exception& error)
+        {
+            SPDLOG_ERROR("Exception caught: {}", error.what());
         }
     }
 
@@ -187,7 +201,7 @@ namespace atomic_dex
         const auto  cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
         std::string custom_tokens_filename = "custom-tokens." + m_current_wallet_name + ".json";
-        //SPDLOG_INFO("Retrieving Wallet information of {}", (cfg_path / filename).string());
+        // SPDLOG_INFO("Retrieving Wallet information of {}", (cfg_path / filename).string());
 
         LOG_PATH("Retrieving Wallet information of {}", (cfg_path / filename));
         auto retrieve_cfg_functor = [](fs::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
@@ -198,7 +212,7 @@ namespace atomic_dex
                 ifs.setFileName(atomic_dex::std_path_to_qstring(path));
                 ifs.open(QIODevice::ReadOnly | QIODevice::Text);
                 nlohmann::json config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
-                auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
+                auto           res              = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
                 return res;
             }
             return {};
@@ -449,7 +463,7 @@ namespace atomic_dex
     auto
     mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
-        //SPDLOG_INFO("batch_balance_and_tx");
+        // SPDLOG_INFO("batch_balance_and_tx");
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
         return m_mm2_client.async_rpc_batch_standalone(batch_array)
             .then(
@@ -775,7 +789,7 @@ namespace atomic_dex
         auto batch = prepare_batch_orderbook(is_a_reset);
         if (batch.empty())
             return;
-        //SPDLOG_DEBUG("batch request: {}", batch.dump(4));
+        // SPDLOG_DEBUG("batch request: {}", batch.dump(4));
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
 
         auto answer_functor = [this, is_a_reset, base = base, rel = rel](web::http::http_response resp)
@@ -846,7 +860,7 @@ namespace atomic_dex
     void
     mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
     {
-        //SPDLOG_INFO("fetch_infos_thread");
+        // SPDLOG_INFO("fetch_infos_thread");
 
         batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
     }
@@ -875,7 +889,8 @@ namespace atomic_dex
         ofs.write(QString::fromStdString(json_cfg.dump()).toUtf8());
         ofs.close();
 
-        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();;
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        ;
         env.insert("MM_CONF_PATH", std_path_to_qstring(mm2_cfg_path));
         env.insert("MM_LOG", std_path_to_qstring(utils::get_mm2_atomic_dex_current_log_file()));
         env.insert("MM_COINS_PATH", std_path_to_qstring((utils::get_current_configs_path() / "coins.json")));
@@ -1532,9 +1547,9 @@ namespace atomic_dex
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
             SPDLOG_DEBUG("remove it from custom cfg: {}", ticker);
-            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
-            std::string    filename = "custom-tokens." + m_current_wallet_name + ".json";
-            QFile ifs;
+            fs::path    cfg_path = utils::get_atomic_dex_config_folder();
+            std::string filename = "custom-tokens." + m_current_wallet_name + ".json";
+            QFile       ifs;
             ifs.setFileName(std_path_to_qstring((cfg_path / filename)));
             ifs.open(QIODevice::ReadOnly | QIODevice::Text);
             nlohmann::json config_json_data;
@@ -1564,8 +1579,8 @@ namespace atomic_dex
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
             SPDLOG_DEBUG("remove it from mm2 cfg: {}", ticker);
-            fs::path       mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
-            QFile ifs;
+            fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+            QFile    ifs;
             ifs.setFileName(std_path_to_qstring(mm2_cfg_path));
             ifs.open(QIODevice::ReadOnly | QIODevice::Text);
             nlohmann::json config_json_data;
