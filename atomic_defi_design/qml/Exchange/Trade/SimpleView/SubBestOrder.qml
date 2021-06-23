@@ -33,7 +33,7 @@ DefaultListView
     Connections {
         target: _tradeCard
         function onBestChanged() {
-            currentIndex = 0
+            API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
             positionViewAtBeginning()
         }
     }

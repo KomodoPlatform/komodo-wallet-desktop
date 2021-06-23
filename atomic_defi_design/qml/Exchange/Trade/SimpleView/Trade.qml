@@ -703,6 +703,12 @@ ClipRRect // Trade Card
                     }
                 }
             }
+            Connections {
+                target: _tradeCard
+                function onCoinSelectionChanged() {
+                    _coinSearchField.text = ""
+                }
+            }
             SubCoinSelector 
             {
                 id: _coinList
@@ -754,6 +760,12 @@ ClipRRect // Trade Card
                     {
                       API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
                     }
+                }
+            }
+            Connections {
+                target: _tradeCard
+                function onBestChanged() {
+                    _bestOrderSearchField.text = ""
                 }
             }
             SubBestOrder 

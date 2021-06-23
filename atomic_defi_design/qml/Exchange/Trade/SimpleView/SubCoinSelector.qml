@@ -32,6 +32,12 @@ DefaultListView
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
+    Connections {
+        target: _tradeCard
+        function onCoinSelectionChanged() {
+            API.app.trading_pg.market_pairs_mdl.left_selection_box.setFilterFixedString("")
+        }
+    }
     onVisibleChanged: {
         currentLeftToken = _tradeCard.selectedTicker
     }
