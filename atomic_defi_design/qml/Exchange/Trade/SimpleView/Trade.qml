@@ -150,18 +150,27 @@ ClipRRect // Trade Card
                 font.pixelSize: Style.textSizeSmall4
                 text: qsTr("Instant trading with best orders")
 
-                Qaterial.OutlineButton // Reset Form Button
+                Qaterial.AppBarButton // Reset Form Button
                 {
                     enabled: !coinSelection && !best && typeof selectedOrder !== 'undefined'
                     visible: enabled
-                    width: 50
-                    height: 50
+
                     anchors.left: parent.right
                     anchors.leftMargin: 100
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
 
-                    outlined: false
+                    width: 50
+                    height: 50
+
+                    hoverEnabled: true
+
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 5000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Reset form.")
+
+                    onClicked: selectedOrder = undefined
 
                     Qaterial.ColorIcon
                     {
@@ -170,15 +179,6 @@ ClipRRect // Trade Card
                         color: theme.buttonColorTextEnabled
                         opacity: .8
                     }
-
-                    onClicked: selectedOrder = undefined
-
-                    hoverEnabled: true
-
-                    ToolTip.delay: 500
-                    ToolTip.timeout: 5000
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Reset form.")
                 }
             }
         }
