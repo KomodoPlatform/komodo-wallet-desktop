@@ -2958,27 +2958,27 @@
         <translation>Demander le mot de passe du système avant d&apos;envoyer des actifs ? (2FA)</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="486"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="484"/>
         <source>Application version</source>
         <translation>Version de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="500"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="498"/>
         <source>MM2 version</source>
         <translation>Version de MM2</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="514"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="512"/>
         <source>Qt version</source>
         <translation>Version de Qt</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="554"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="553"/>
         <source>Search Update</source>
         <translation>Rechercher une mise à jour</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="582"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="581"/>
         <source>Logout</source>
         <translation>Se déconnecter</translation>
     </message>
@@ -2994,7 +2994,7 @@
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="405"/>
-        <location filename="../../qml/Settings/SettingModal.qml" line="467"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="465"/>
         <source>Show</source>
         <translation>Montrer</translation>
     </message>
@@ -3009,12 +3009,12 @@
         <translation>Ouvrir</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="439"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="437"/>
         <source>Delete Wallet</source>
         <translation>Supprimer le portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="464"/>
+        <location filename="../../qml/Settings/SettingModal.qml" line="462"/>
         <source>Disclaimer and ToS</source>
         <translation>Clause de non-responsabilité et conditions d&apos;utilisation</translation>
     </message>

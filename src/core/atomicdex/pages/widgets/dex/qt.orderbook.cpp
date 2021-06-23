@@ -271,11 +271,8 @@ namespace atomic_dex
 
         if (preffered_order.has_value())
         {
-            if (trading_pg.get_market_mode() == MarketMode::Sell)
-            {
-                cur_taker_vol = QString::fromStdString(preffered_order->at("base_min_volume").get<std::string>());
-                // SPDLOG_INFO("Overriding min_volume with the one from orderbook: {}", cur_taker_vol.toStdString());
-            }
+            cur_taker_vol = QString::fromStdString(preffered_order->at("base_min_volume").get<std::string>());
+            // SPDLOG_INFO("Overriding min_volume with the one from orderbook: {}", cur_taker_vol.toStdString());
         }
 
         // SPDLOG_INFO("final_taker_vol: {}", cur_taker_vol.toStdString());

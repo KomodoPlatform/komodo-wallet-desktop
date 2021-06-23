@@ -261,9 +261,9 @@ QtObject {
     }
 
     function getMinTradeAmount() {
-        if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+        /*if (API.app.trading_pg.market_mode == MarketMode.Buy) {
             return API.app.trading_pg.orderbook.rel_min_taker_vol
-        }
+        }*/
         return API.app.trading_pg.min_trade_vol
     }
 
@@ -446,7 +446,7 @@ QtObject {
         case TradingError.VolumeFieldNotFilled:
             return qsTr("Please fill the volume field")
         case TradingError.VolumeIsLowerThanTheMinimum:
-            return qsTr("%1 volume is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
+            return qsTr("%1 volume is lower than minimum trade amount").arg(API.app.trading_pg.market_pairs_mdl.left_selected_coin) + " : " + General.getMinTradeAmount()
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getReversedMinTradeAmount()
         case TradingError.LeftParentChainNotEnabled:
