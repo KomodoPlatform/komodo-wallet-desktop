@@ -35,8 +35,8 @@ ClipRRect // Trade Card
     Component.onDestruction: selectedOrder = undefined
     onBestChanged: if (best) API.app.trading_pg.orderbook.refresh_best_orders()
 
-    width: bestOrderSimplified.visible ? 600 : coinSelection? 450 : 380
-    height: col.height+15
+    width: bestOrderSimplified.visible ? 600 : coinSelection ? 450 : 380
+    height: col.height + 15
     radius: 20
 
     Connections // Catches C++ `trading_page` class signals.
@@ -152,7 +152,7 @@ ClipRRect // Trade Card
 
                 Qaterial.OutlineButton // Reset Form Button
                 {
-                    enabled: !best && typeof selectedOrder !== 'undefined'
+                    enabled: !coinSelection && !best && typeof selectedOrder !== 'undefined'
                     visible: enabled
                     width: 50
                     height: 50
