@@ -29,6 +29,14 @@ DefaultListView
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
+    clip: true
+    Connections {
+        target: _tradeCard
+        function onBestChanged() {
+            currentIndex = 0
+            positionViewAtBeginning()
+        }
+    }
     onVisibleChanged: {
         currentLeftToken = _tradeCard.selectedTicker
     }
