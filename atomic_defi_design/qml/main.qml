@@ -120,33 +120,24 @@ DexWindow {
                 duration: 200
             }
         }
-        x: {
-            if(!isOsx) {
-                if(app.current_page<5){
-                    10
-                }else {
-                    if(app.deepPage===20) {
-                        100
-                    }
-                    else if(app.deepPage===10) {
-                        420
-                    }
-                    else {
-                        250
-                    }   
-                }
-                  
-            } else {
-                0
-            }
-        }
-        anchors.right: isOsx? parent.right: undefined
-        anchors.rightMargin: isOsx? 10 : 0
+        anchors.right: parent.right
+        anchors.rightMargin: isOsx? 10 : 120
+
         Row {
             id: _row
             anchors.verticalCenter: parent.verticalCenter
-            layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
+            layoutDirection: Qt.RightToLeft 
             spacing: 6
+            DexLabel {
+                text: " | "
+                opacity: .1
+                font.family: 'Montserrat'
+                font.weight: Font.Medium
+                visible: _label.visible
+                color: app.globalTheme.foregroundColor
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
+            }
             Image {
                 source: "qrc:/atomic_defi_design/assets/images/dex-tray-icon.png"
                 width: 15
@@ -217,7 +208,7 @@ DexWindow {
             }
             DexLabel {
                 text: " | "
-                opacity: .7
+                opacity: .1
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible
@@ -227,7 +218,6 @@ DexWindow {
             }
             Row {
                 anchors.verticalCenter: parent.verticalCenter
-                //layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
                 spacing: 6
                 
                 DexLabel {
@@ -273,7 +263,7 @@ DexWindow {
             }
             DexLabel {
                 text: " | "
-                opacity: .7
+                opacity: .1
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible
