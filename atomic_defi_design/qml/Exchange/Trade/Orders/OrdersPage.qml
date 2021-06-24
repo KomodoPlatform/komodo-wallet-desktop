@@ -100,14 +100,14 @@ Item {
                 spacing: 0
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
-                    text: "Filter"
+                    text: qsTr("Filter")
                     foregroundColor:Style.colorWhite5
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
                 Qaterial.OutlineButton {
-                    visible: root.is_history && !orders_settings.displaySetting
+                    visible: root.is_history && orders_settings.displaySetting
                     foregroundColor:Style.colorWhite5
                     outlinedColor: Style.colorTheme5
                     anchors.verticalCenter: parent.verticalCenter
@@ -117,6 +117,18 @@ Item {
                         export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
                         export_csv_dialog.open()
                     }
+                }
+                DexLabel {
+                    opacity: .4
+                    visible: !orders_settings.displaySetting
+                    anchors.verticalCenter: parent.verticalCenter
+                    leftPadding: 5
+                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                                                    .arg(combo_base.currentTicker)
+                                                    .arg(combo_rel.currentTicker)
+                                                    .arg(qsTr("Date"))
+                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
                 }
 
             }
