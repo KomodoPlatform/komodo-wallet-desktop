@@ -233,12 +233,12 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
         <source>Selected wallet: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбранный кошелек: %1</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
         <source>NONE</source>
-        <translation type="unfinished"></translation>
+        <translation>НИ ОДИН</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="68"/>
@@ -1211,7 +1211,7 @@
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="154"/>
         <source>Change assets limit</source>
-        <translation>Изменить лимит включенных активов</translation>
+        <translation>Изменить лимит</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="54"/>
@@ -1476,13 +1476,13 @@
         <location filename="../../qml/Constants/General.qml" line="453"/>
         <location filename="../../qml/Constants/General.qml" line="457"/>
         <source>%1 needs to be enabled in order to use %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 должен быть активным для использования %2</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="455"/>
         <location filename="../../qml/Constants/General.qml" line="459"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>нужно пополнить баланс %1  для оплаты газа %2 транзакций</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="461"/>
@@ -3654,29 +3654,29 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="629"/>
         <source>Entered amount must be superior than 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введенная сумма должна быть больше 0.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="631"/>
         <source>You must select an order.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы должны выбрать ордер.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="633"/>
         <source>Entered amount is below the minimum required by this order: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Введнная сумма меньше минимальной для этого ордера: %1</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="635"/>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="639"/>
         <source>%1 needs to be enabled in order to use %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 должен быть активным для использования %2</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="637"/>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="641"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>нужно пополнить баланс %1  для оплаты газа %2 транзакций</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="696"/>
