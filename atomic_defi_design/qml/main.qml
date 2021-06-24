@@ -112,6 +112,30 @@ DexWindow {
   }
 
     DexMacControl { visible: isOsx }
+    Row {
+        height: 30
+        leftPadding: 8
+        Image {
+            source: "qrc:/atomic_defi_design/assets/images/dex-tray-icon.png"
+            width: 15
+            height: 15
+            smooth: true
+            antialiasing: true
+            visible: !_label.visible
+            anchors.verticalCenter: parent.verticalCenter
+        }
+        DexLabel {
+            text: atomic_app_name
+            font.family: 'Montserrat'
+            font.weight: Font.Medium
+            opacity: .5
+            leftPadding: 5
+            color: app.globalTheme.foregroundColor
+            visible: !_label.visible
+            anchors.verticalCenter: parent.verticalCenter
+        } 
+
+    }
     Item {
         width: _row.width
         height: 30
@@ -133,30 +157,10 @@ DexWindow {
                 opacity: .1
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
-                visible: _label.visible
+                visible: _label.visible & !isOsx
                 color: app.globalTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
-                visible: !isOsx
-            }
-            Image {
-                source: "qrc:/atomic_defi_design/assets/images/dex-tray-icon.png"
-                width: 15
-                height: 15
-                smooth: true
-                antialiasing: true
-                visible: !_label.visible
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            DexLabel {
-                text: atomic_app_name
-                font.family: 'Montserrat'
-                font.weight: Font.Medium
-                opacity: .5
-                leftPadding: 5
-                color: app.globalTheme.foregroundColor
-                visible: !_label.visible
-                anchors.verticalCenter: parent.verticalCenter
             }
             Rectangle {
                 width: __row.width + 10
