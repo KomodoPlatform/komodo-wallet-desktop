@@ -755,9 +755,9 @@ namespace atomic_dex
                     {
                         auto       available_quantity       = m_preffered_order->at("base_max_volume").get<std::string>();
                         t_float_50 available_quantity_order = safe_float(available_quantity);
-                        /*SPDLOG_INFO(
+                        SPDLOG_INFO(
                             "available_quantity_order: {}, max_volume: {}, max_taker_vol: {}", utils::format_float(safe_float(available_quantity)),
-                            get_max_volume().toStdString(), max_taker_vol);*/
+                            get_max_volume().toStdString(), max_taker_vol);
                         if (available_quantity_order < safe_float(max_taker_vol) && !m_preffered_order->at("capped").get<bool>())
                         {
                             /*SPDLOG_INFO(
