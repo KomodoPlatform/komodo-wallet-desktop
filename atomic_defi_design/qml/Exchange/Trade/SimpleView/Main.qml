@@ -15,8 +15,9 @@ import "Main.js" as Main
 Item {
     readonly property var subPages: Main.getSubPages()
 
-    // Variable which holds the current sub-page of the SimpleView.
     property string recover_funds_result: '{}'
+
+    // Variable which holds the current sub-page of the SimpleView.
     property var currentSubPage: subPages.Trade
     onCurrentSubPageChanged: _selectedTabMarker.update()
 
@@ -36,7 +37,7 @@ Item {
     }
     Column
     {
-        width: root.currentSubPage===subPages.Trade? simple_trade.best? 600 : 380 : 380
+        width: root.currentSubPage===subPages.Trade? _simpleTrade.best? 600 : 380 : 380
         y: 120
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
@@ -160,8 +161,8 @@ Item {
             Item {
                 DexRectangle {
                     id: subTradePage
-                    height: simple_trade.height
-                    width: simple_trade.best? 600 : simple_trade.coinSelection? 450 : 380
+                    height: _simpleTrade.height
+                    width: _simpleTrade.best? 600 : _simpleTrade.coinSelection? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
                     color: theme.dexBoxBackgroundColor
@@ -172,7 +173,7 @@ Item {
                         radius: 20 
                         Trade
                         {
-                            id: simple_trade
+                            id: _simpleTrade
                             width: parent.width
                         }
                     }

@@ -811,7 +811,7 @@ ClipRRect // Trade Card
             height: 60
 
             enabled: !_swapAlert.visible
-            visible: _feesList.count!==0 & _tradeCard.selectedOrder!==undefined &  parseFloat(_fromValue.field.text) > 0 & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
+            visible: _feesList.count !== 0 & _tradeCard.selectedOrder !== undefined &  parseFloat(_fromValue.field.text) > 0 & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
 
             DexRectangle {
                 radius: 25 
