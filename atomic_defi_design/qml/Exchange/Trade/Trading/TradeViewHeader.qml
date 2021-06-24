@@ -33,6 +33,7 @@ Item {
             width: _learnRow.implicitWidth+15
             height: 25
             radius: height/2
+            visible: false
             Behavior on color {
                 ColorAnimation {
                     duration: 150
@@ -66,6 +67,7 @@ Item {
             width: _faqRow.implicitWidth+15
             height: 25
             radius: height/2
+            visible: false
             Behavior on color {
                 ColorAnimation {
                     duration: 150
