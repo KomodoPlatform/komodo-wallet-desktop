@@ -3241,7 +3241,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="78"/>
         <source>History</source>
-        <translation></translation>
+        <translation>История</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="122"/>
