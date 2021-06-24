@@ -322,7 +322,7 @@ namespace atomic_dex
             order.rel_max_volume_numer = value.toString().toStdString();
             break;
         }
-        emit dataChanged(index, index, {role});
+        //emit dataChanged(index, index, {role});
         return true;
     }
 
@@ -461,6 +461,31 @@ namespace atomic_dex
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
             update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
             update_value(OrderbookRoles::PriceFiatRole, "0.00", idx, *this);
+            emit dataChanged(idx, idx, {OrderbookRoles::UUIDRole,
+                                        OrderbookRoles::PriceRole,
+                                        OrderbookRoles::PriceNumerRole,
+                                        OrderbookRoles::PriceDenomRole,
+                                        OrderbookRoles::IsMineRole,
+                                        OrderbookRoles::QuantityRole,
+                                        OrderbookRoles::TotalRole,
+                                        OrderbookRoles::PercentDepthRole,
+                                        OrderbookRoles::BaseMinVolumeRole,
+                                        OrderbookRoles::BaseMinVolumeDenomRole,
+                                        OrderbookRoles::BaseMinVolumeNumerRole,
+                                        OrderbookRoles::BaseMaxVolumeRole,
+                                        OrderbookRoles::BaseMaxVolumeDenomRole,
+                                        OrderbookRoles::BaseMaxVolumeNumerRole,
+                                        OrderbookRoles::RelMinVolumeRole,
+                                        OrderbookRoles::RelMinVolumeDenomRole,
+                                        OrderbookRoles::RelMinVolumeNumerRole,
+                                        OrderbookRoles::RelMaxVolumeRole,
+                                        OrderbookRoles::RelMaxVolumeDenomRole,
+                                        OrderbookRoles::RelMaxVolumeNumerRole,
+                                        OrderbookRoles::MinVolumeRole,
+                                        OrderbookRoles::EnoughFundsToPayMinVolume,
+                                        OrderbookRoles::CEXRatesRole,
+                                        OrderbookRoles::SendRole,
+                                        OrderbookRoles::PriceFiatRole});
 
             if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids && is_price_changed)
             {
