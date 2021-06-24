@@ -137,6 +137,7 @@ DexWindow {
                 color: app.globalTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
+                visible: !isOsx
             }
             Image {
                 source: "qrc:/atomic_defi_design/assets/images/dex-tray-icon.png"
@@ -158,8 +159,8 @@ DexWindow {
                 anchors.verticalCenter: parent.verticalCenter
             }
             Rectangle {
-                width: __row.width+10
-                height: __row.height+5
+                width: __row.width + 10
+                height: __row.height + 5
                 anchors.verticalCenter: parent.verticalCenter
                 //visible: _label.visible
                 radius: 3
