@@ -107,7 +107,7 @@ Item {
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
                 Qaterial.OutlineButton {
-                    visible: root.is_history && orders_settings.displaySetting
+                    visible: root.is_history && !orders_settings.displaySetting
                     foregroundColor:Style.colorWhite5
                     outlinedColor: Style.colorTheme5
                     anchors.verticalCenter: parent.verticalCenter
