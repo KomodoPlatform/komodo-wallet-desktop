@@ -75,7 +75,7 @@ Item
 
             DexLabel // Description
             {
-                width: _subOrdersRoot.width-40
+                width: _subOrdersRoot.width - 40
                 anchors.topMargin: 12
                 font.pixelSize: Style.textSizeSmall4
                 //text: _filterApplied? "" : qsTr("Finished orders")
