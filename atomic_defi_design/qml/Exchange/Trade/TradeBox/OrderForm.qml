@@ -50,10 +50,10 @@ FloatingBackground {
     //implicitHeight: form_layout.height
     Connections {
         target: exchange_trade
-        onBackend_priceChanged: {
+        function onBackend_priceChanged() {
              input_price.field.text = exchange_trade.backend_price
         }
-        onBackend_volumeChanged: {
+        function onBackend_volumeChanged() {
              input_volume.field.text = exchange_trade.backend_volume
         }
     }
