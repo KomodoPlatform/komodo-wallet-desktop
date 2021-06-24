@@ -20,12 +20,14 @@ BasicModal {
     function filterWallets(text) {
         glb_coins_cfg_mdl.all_qrc20_proxy.setFilterFixedString(text)
         glb_coins_cfg_mdl.all_erc20_proxy.setFilterFixedString(text)
+        _bep20Expandable.model.setFilterFixedString(text)
         glb_coins_cfg_mdl.all_smartchains_proxy.setFilterFixedString(text)
         glb_coins_cfg_mdl.all_utxo_proxy.setFilterFixedString(text)
 
         // Expands type lists if searchbar is not empty
         qrc20_expandable.expanded = text !== ""
         erc20_expandable.expanded = text !== ""
+        _bep20Expandable.expanded = text !== ""
         sc_expandable.expanded = text !== ""
         utxo_expandable.expanded = text !== ""
     }
@@ -76,6 +78,17 @@ BasicModal {
             type_title: "ERC-20"
             type: "ERC-20"
             model: glb_coins_cfg_mdl.all_erc20_proxy
+        }
+
+        AddressBookWalletTypeList
+        {
+            id: _bep20Expandable
+            Layout.rightMargin: 10
+            Layout.fillWidth: true
+            title: "BEP-20 coins"
+            type_title: "BEP-20"
+            type: "BEP-20"
+            model: glb_coins_cfg_mdl.all_bep20_proxy
         }
 
         AddressBookWalletTypeList {
