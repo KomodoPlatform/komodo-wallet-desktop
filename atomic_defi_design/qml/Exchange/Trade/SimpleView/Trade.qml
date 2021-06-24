@@ -205,6 +205,7 @@ ClipRRect // Trade Card
 
                 DefaultText // From Text
                 {
+                    id: _fromTitle
                     anchors.top: parent.top
                     anchors.topMargin: 14
                     anchors.left: parent.left
@@ -219,8 +220,7 @@ ClipRRect // Trade Card
 
                     id: _fromBalance
                     width: Math.min(_maxWidth, _textMetrics.boundingRect.width + 10)
-                    anchors.top: parent.top
-                    anchors.topMargin: 14
+                    anchors.verticalCenter: _fromTitle.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 17
                     text: qsTr("%1").arg(API.app.trading_pg.max_volume)
