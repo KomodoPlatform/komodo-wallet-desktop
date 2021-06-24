@@ -760,9 +760,9 @@ namespace atomic_dex
                             get_max_volume().toStdString(), max_taker_vol);
                         if (available_quantity_order < safe_float(max_taker_vol) && !m_preffered_order->at("capped").get<bool>())
                         {
-                            SPDLOG_INFO(
+                            /*SPDLOG_INFO(
                                 "Available quantity in selected order is less than my max tradeable amount, capping it to the order: {}\nmax_vol_str: {}",
-                                m_preffered_order->dump(0), max_vol_str);
+                                m_preffered_order->dump(0), max_vol_str);*/
                             max_vol_str                         = available_quantity;
                             m_preffered_order.value()["capped"] = true;
                             this->set_max_volume(QString::fromStdString(max_vol_str));
@@ -873,7 +873,7 @@ namespace atomic_dex
                 auto max_volume = this->get_max_volume();
                 if (!max_volume.isEmpty() && max_volume != "0")
                 {
-                    SPDLOG_INFO("checking if {} > {}", std_volume, max_volume.toStdString());
+                    SPDLOG_INFO("capping volume because {} (volume) > {} (max_volume)", std_volume, max_volume.toStdString());
                     this->set_volume(get_max_volume());
                 }
             }
@@ -1031,11 +1031,11 @@ namespace atomic_dex
     void
     trading_page::set_preffered_order(QVariantMap price_object)
     {
-        SPDLOG_INFO("order pick from orderbook");
+        //SPDLOG_INFO("order pick from orderbook");
         if (auto preffered_order = nlohmann::json::parse(QString(QJsonDocument(QJsonObject::fromVariantMap(price_object)).toJson()).toStdString());
             preffered_order != m_preffered_order)
         {
-            SPDLOG_INFO("preffered_order: {}", preffered_order.dump(4));
+            SPDLOG_INFO("preffered_order: {}", preffered_order.dump(-1));
             m_preffered_order = std::move(preffered_order);
             emit prefferedOrderChanged();
             if (not m_preffered_order->empty() && m_preffered_order->contains("price"))
@@ -1143,7 +1143,7 @@ namespace atomic_dex
             SPDLOG_WARN("MM2 Service not available, cannot determine fees - skipping");
             return;
         }
-        SPDLOG_INFO("determine_fees processing");
+        //SPDLOG_INFO("determine_fees processing");
         using namespace std::string_literals;
         const auto* market_pair = get_market_pairs_mdl();
         auto&       mm2         = this->m_system_manager.get_system<mm2_service>();
@@ -1173,7 +1173,7 @@ namespace atomic_dex
                 auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.result.has_value())
                 {
-                    SPDLOG_INFO("preimage answer received");
+                    //SPDLOG_INFO("preimage answer received");
                     auto        success_answer = trade_preimage_answer.result.value();
                     QVariantMap fees;
 

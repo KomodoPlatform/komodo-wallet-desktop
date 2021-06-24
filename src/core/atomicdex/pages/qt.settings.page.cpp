@@ -16,10 +16,10 @@
 
 //! QT
 #include <QDebug>
+#include <QFile>
 #include <QJsonDocument>
 #include <QLocale>
 #include <QSettings>
-#include <QFile>
 
 //! Deps
 #include <boost/algorithm/string/case_conv.hpp>
@@ -549,15 +549,16 @@ namespace atomic_dex
         const fs::path    wallet_custom_cfg_path{utils::get_atomic_dex_config_folder() / wallet_custom_cfg_filename};
         const fs::path    wallet_cfg_path{utils::get_atomic_dex_config_folder() / wallet_cfg_file};
         const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
-        const fs::path    ini_file_path = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
-        const fs::path    logo_path     = atomic_dex::utils::get_logo_path();
-        const fs::path    theme_path    = atomic_dex::utils::get_themes_path();
+        const fs::path    ini_file_path      = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
+        const fs::path    cfg_json_file_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
+        const fs::path    logo_path          = atomic_dex::utils::get_logo_path();
+        const fs::path    theme_path         = atomic_dex::utils::get_themes_path();
 
 
         if (fs::exists(wallet_custom_cfg_path))
         {
             nlohmann::json custom_config_json_data;
-            QFile fs;
+            QFile          fs;
             fs.setFileName(std_path_to_qstring(wallet_custom_cfg_path));
             fs.open(QIODevice::ReadOnly | QIODevice::Text);
 
@@ -602,6 +603,7 @@ namespace atomic_dex
         functor_remove(std::move(wallet_cfg_path));
         functor_remove(std::move(mm2_coins_file_path));
         functor_remove(std::move(ini_file_path));
+        functor_remove(std::move(cfg_json_file_path));
         functor_remove(std::move(logo_path));
         functor_remove(std::move(theme_path));
     }
