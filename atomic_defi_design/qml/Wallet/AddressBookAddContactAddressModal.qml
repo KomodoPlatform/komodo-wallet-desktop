@@ -1,6 +1,7 @@
 // Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15 //> ToolTip
 
 // Project Imports
 import "../Constants"
@@ -33,12 +34,28 @@ BasicModal {
         title: isEdition ? qsTr("Edit address entry") : qsTr("Create a new address")
 
         // Wallet Type Selector
-        DefaultButton {
-            implicitWidth: parent.width
-
-            text: qsTr("Choose a wallet type, current: %1").arg(walletType === "" ? "NONE" : walletType)
+        DexButton
+        {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
             onClicked: wallet_type_list_modal.open()
+
+            DexLabel
+            {
+                anchors.centerIn: parent
+
+                width: 320
+
+                elide: Text.ElideRight
+                wrapMode: Text.NoWrap
+
+                font: parent.font
+                text: qsTr("Selected wallet: %1").arg(walletType !== "" ? walletType : qsTr("NONE"))
+
+                ToolTip.text: text
+                ToolTip.visible: parent.containsMouse
+            }
         }
 
         // Address Key Field

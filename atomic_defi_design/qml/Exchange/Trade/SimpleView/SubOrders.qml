@@ -12,13 +12,17 @@ import "../../../Constants"   //> Style
 import "../Orders" as Orders
 import "Main.js" as Main
 
-Item {
+Item
+{
     id: _subOrdersRoot
-    anchors.fill: parent
+
     readonly property date default_min_date: new Date("2019-01-01")
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
     property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property bool displayFilter: false
+
+    anchors.fill: parent
+
     function update() {
         list_model_proxy.is_history = false
         applyTickerFilter()
@@ -42,44 +46,62 @@ Item {
 
         list_model_proxy.filter_maximum_date = max_date.date
     }
+
     function applyFilter() {
         applyTickerFilter()
         applyDateFilter()
-
     }
+
     function applyAllFiltering() {
         list_model_proxy.apply_all_filtering()
     }
-    ColumnLayout // Header
-    {
-        id: _swapCardHeader
 
+    ColumnLayout // Orders Content
+    {
         height: parent.height
         width: parent.width
         spacing: 20
-        Item {
-            width: parent.width
-            Layout.preferredHeight: 60
-            Qaterial.AppBarButton {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.verticalCenterOffset: 10
-                x: 320
-                icon.source: _subOrdersRoot.displayFilter? Qaterial.Icons.close : Qaterial.Icons.filter
-                onClicked: {
-                    _subOrdersRoot.displayFilter = !_subOrdersRoot.displayFilter
-                }
-            }
-            Column {
-                padding: 20
-                spacing: 5
-                DefaultText // Title
-                {
-                    text: qsTr("Orders")
-                    font.pixelSize: Style.textSize1
-                }
+
+        Column // Header
+        {
+            leftPadding: 20
+            topPadding: 20
+
+            DefaultText // Title
+            {
+                text: qsTr("Orders")
+                font.pixelSize: Style.textSize1
             }
 
+            DefaultText // Description
+            {
+                anchors.topMargin: 12
+                font.pixelSize: Style.textSizeSmall4
+                text: qsTr("Orders currently processed")
+
+                Qaterial.AppBarButton // Reset Form Button
+                {
+                    width: 50
+                    height: 50
+                    anchors.left: parent.right
+                    anchors.leftMargin: 128
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: -8
+
+                    icon.source: _subOrdersRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.filter
+
+                    onClicked: _subOrdersRoot.displayFilter = !_subOrdersRoot.displayFilter
+
+                    hoverEnabled: true
+
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 5000
+                    ToolTip.visible: hovered
+                    ToolTip.text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
+                }
+            }
         }
+
         HorizontalLine
         {
             height: 2
@@ -94,9 +116,7 @@ Item {
             Component.onCompleted: {
                 list_model_proxy.is_history = false
             }
-            List {
-                id: order_list_view
-            }
+            List { id: order_list_view }
             DexRectangle {
                 anchors.fill: parent 
                 color: theme.dexBoxBackgroundColor

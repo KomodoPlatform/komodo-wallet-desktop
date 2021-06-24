@@ -39,7 +39,7 @@ namespace mm2::api
         j["base"]   = request.base;
         j["rel"]    = request.rel;
         j["volume"] = request.volume; //< First take the user input
-        if (request.is_max)           //< It's a real max means user want to sell his base_max_taker_vol let's take the fraction repr
+        if (request.is_max && !request.selected_order_use_input_volume)           //< It's a real max means user want to sell his base_max_taker_vol let's take the fraction repr
         {
             j["volume"] = volume_fraction_functor();
         }

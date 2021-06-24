@@ -692,7 +692,7 @@ namespace atomic_dex
         {
             std::error_code ec;
             t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
-            SPDLOG_INFO("transaction size: {}", transactions.size());
+            //SPDLOG_INFO("transaction size: {}", transactions.size());
             if (m_transactions_mdl->rowCount() == 0)
             {
                 //! insert all transactions
@@ -701,7 +701,7 @@ namespace atomic_dex
             else
             {
                 //! Update tx (only unconfirmed) or insert (new tx)
-                SPDLOG_DEBUG("updating / insert tx");
+                //SPDLOG_DEBUG("updating / insert tx");
                 m_transactions_mdl->update_or_insert_transactions(transactions);
             }
         }

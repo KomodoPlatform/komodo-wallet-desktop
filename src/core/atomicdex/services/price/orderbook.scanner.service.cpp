@@ -40,7 +40,7 @@ namespace atomic_dex
     {
         if (m_rpc_busy)
         {
-            SPDLOG_INFO("process_best_orders is busy - skipping");
+            //SPDLOG_INFO("process_best_orders is busy - skipping");
             return;
         }
         //SPDLOG_INFO("process_best_orders processing");
