@@ -112,6 +112,30 @@ DexWindow {
   }
 
     DexMacControl { visible: isOsx }
+    Row {
+        height: 30
+        leftPadding: 8
+        Image {
+            source: "qrc:/atomic_defi_design/assets/images/dex-tray-icon.png"
+            width: 15
+            height: 15
+            smooth: true
+            antialiasing: true
+            visible: !_label.visible
+            anchors.verticalCenter: parent.verticalCenter
+        }
+        DexLabel {
+            text: atomic_app_name
+            font.family: 'Montserrat'
+            font.weight: Font.Medium
+            opacity: .5
+            leftPadding: 5
+            color: app.globalTheme.foregroundColor
+            visible: !_label.visible
+            anchors.verticalCenter: parent.verticalCenter
+        } 
+
+    }
     Item {
         width: _row.width
         height: 30
@@ -120,55 +144,27 @@ DexWindow {
                 duration: 200
             }
         }
-        x: {
-            if(!isOsx) {
-                if(app.current_page<5){
-                    10
-                }else {
-                    if(app.deepPage===20) {
-                        100
-                    }
-                    else if(app.deepPage===10) {
-                        420
-                    }
-                    else {
-                        250
-                    }   
-                }
-                  
-            } else {
-                0
-            }
-        }
-        anchors.right: isOsx? parent.right: undefined
-        anchors.rightMargin: isOsx? 10 : 0
+        anchors.right: parent.right
+        anchors.rightMargin: isOsx? 10 : 120
+
         Row {
             id: _row
             anchors.verticalCenter: parent.verticalCenter
-            layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
+            layoutDirection: Qt.RightToLeft 
             spacing: 6
-            Image {
-                source: "qrc:/atomic_defi_design/assets/images/dex-tray-icon.png"
-                width: 15
-                height: 15
-                smooth: true
-                antialiasing: true
-                visible: !_label.visible
-                anchors.verticalCenter: parent.verticalCenter
-            }
             DexLabel {
-                text: atomic_app_name
+                text: " | "
+                opacity: .1
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
-                opacity: .5
-                leftPadding: 5
+                visible: _label.visible & !isOsx
                 color: app.globalTheme.foregroundColor
-                visible: !_label.visible
                 anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
             }
             Rectangle {
-                width: __row.width+10
-                height: __row.height+5
+                width: __row.width + 10
+                height: __row.height + 5
                 anchors.verticalCenter: parent.verticalCenter
                 //visible: _label.visible
                 radius: 3
@@ -217,7 +213,7 @@ DexWindow {
             }
             DexLabel {
                 text: " | "
-                opacity: .7
+                opacity: .1
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible
@@ -227,7 +223,6 @@ DexWindow {
             }
             Row {
                 anchors.verticalCenter: parent.verticalCenter
-                //layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
                 spacing: 6
                 
                 DexLabel {
@@ -273,7 +268,7 @@ DexWindow {
             }
             DexLabel {
                 text: " | "
-                opacity: .7
+                opacity: .1
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible
