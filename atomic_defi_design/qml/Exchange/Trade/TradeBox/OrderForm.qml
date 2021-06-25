@@ -169,7 +169,7 @@ FloatingBackground {
 
                 first.value: parseFloat(API.app.trading_pg.min_trade_vol)
 
-                firstDisabled: true
+                firstDisabled: !_useCustomMinTradeAmountCheckbox.checked
                 defaultFirstValue: parseFloat(API.app.trading_pg.min_trade_vol)
                 
                 firstTooltip.text: qsTr("Minimum volume: %1").arg(General.formatDouble(first.value, General.getRecommendedPrecision(second.value)))
@@ -219,6 +219,17 @@ FloatingBackground {
                         }
                     }
                 }
+            }
+
+            DexCheckBox
+            {
+                id: _useCustomMinTradeAmountCheckbox
+
+                Layout.topMargin: 15
+                Layout.alignment: Qt.AlignHCenter
+
+                text: qsTr("Use custom minimum trade amount")
+                font.pixelSize: 13
             }
 
 

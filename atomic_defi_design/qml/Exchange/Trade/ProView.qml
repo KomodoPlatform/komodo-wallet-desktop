@@ -530,7 +530,7 @@ ColumnLayout {
                             Layout.fillWidth: true
                             Layout.leftMargin: 10
                             Layout.rightMargin: 10
-                            Layout.preferredHeight: 200
+                            Layout.preferredHeight: 270
                             border.color: 'transparent'
                             color: 'transparent'
                             Layout.alignment: Qt.AlignHCenter
