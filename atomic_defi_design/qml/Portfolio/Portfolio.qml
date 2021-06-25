@@ -137,11 +137,12 @@ Item {
                         id: willyBG
                         Layout.fillHeight: true
                         Layout.fillWidth: true
+                        visible: false
                     }
 
                     AssetPieChart {
                         id: pie
-                        Layout.preferredWidth: portfolio.isUltraLarge ? 350 : 250
+                        Layout.fillWidth: true
                         Layout.preferredHeight: portfolio.isUltraLarge ? 600 : 350
                         Layout.alignment: Qt.AlignTop
                     }
