@@ -150,7 +150,7 @@ FloatingBackground {
                 }
             }
 
-            DefaultRangeSlider
+            DexRangeSlider
             {
                 property real oldSecondValue: 0
 
@@ -168,6 +168,10 @@ FloatingBackground {
                 to: Math.max(0, parseFloat(max_volume))
 
                 first.value: parseFloat(API.app.trading_pg.min_trade_vol)
+
+                firstDisabled: true
+                defaultFirstValue: parseFloat(API.app.trading_pg.min_trade_vol)
+                
                 firstTooltip.text: qsTr("Minimum volume: %1").arg(General.formatDouble(first.value, General.getRecommendedPrecision(second.value)))
                 second.value: parseFloat(non_null_volume)
                 secondTooltip.text: qsTr("Volume: %1").arg(General.formatDouble(second.value, General.getRecommendedPrecision(to)))
