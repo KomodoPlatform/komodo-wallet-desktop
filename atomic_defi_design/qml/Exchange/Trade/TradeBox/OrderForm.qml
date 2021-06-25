@@ -150,36 +150,31 @@ FloatingBackground {
                 }
             }
 
-            DefaultRangeSlider {
-                function getRealValue() {
-                    return first.position * (first.to - first.from)
-                }
-                function getRealValue2() {
-                    return second.position * (second.to - second.from)
-                }
+            DefaultRangeSlider
+            {
                 property real oldSecondValue: 0
 
+                function getRealValue() { return first.position * (first.to - first.from) }
+                function getRealValue2() { return second.position * (second.to - second.from) }
+
                 enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
+
                 Layout.fillWidth: true
-                from: API.app.trading_pg.orderbook.current_min_taker_vol
-                to: Math.max(0, parseFloat(max_volume))
-                //live: false
 
                 rangeBackgroundColor: Style.colorTheme7
                 rangeDistanceColor: sell_mode? Style.colorRed : Style.colorGreen
 
-                second.value: parseFloat(non_null_volume)
-                second.onValueChanged: { if(second.pressed) setVolume(General.formatDouble(second.value)) }
-                secondTooltip.text: General.formatDouble(second.value, General.getRecommendedPrecision(to))
-                second.onPressedChanged: {
-                    if(second.pressed) {
-                        oldSecondValue = second.value
-                    }
-                }
+                from: API.app.trading_pg.orderbook.current_min_taker_vol
+                to: Math.max(0, parseFloat(max_volume))
 
                 first.value: parseFloat(API.app.trading_pg.min_trade_vol)
-                first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }
-                firstTooltip.text: General.formatDouble(first.value, General.getRecommendedPrecision(second.value))
+                firstTooltip.text: qsTr("Minimum volume: %1").arg(General.formatDouble(first.value, General.getRecommendedPrecision(second.value)))
+                second.value: parseFloat(non_null_volume)
+                secondTooltip.text: qsTr("Volume: %1").arg(General.formatDouble(second.value, General.getRecommendedPrecision(to)))
+
+                first.onValueChanged: if (first.pressed) setMinimumAmount(General.formatDouble(first.value))
+                second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
+                second.onPressedChanged: if (second.pressed) oldSecondValue = second.value
             }
 
 
