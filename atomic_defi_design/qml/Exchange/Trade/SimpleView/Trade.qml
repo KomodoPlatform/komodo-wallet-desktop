@@ -458,7 +458,6 @@ ClipRRect // Trade Card
                     anchors.bottomMargin: 19
                     x: _bestOrderIcon.enabled ? _selectTickerBut.x :
                                                 _selectTickerBut.x - (width - _selectTickerBut.width)
-
                     height: 30
                     width: _bestOrderIcon.enabled ?
                                _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 :
@@ -737,6 +736,12 @@ ClipRRect // Trade Card
                     }
                 }
             }
+            Connections {
+                target: _tradeCard
+                function onCoinSelectionChanged() {
+                    _coinSearchField.text = ""
+                }
+            }
             SubCoinSelector 
             {
                 id: _coinList
@@ -790,6 +795,12 @@ ClipRRect // Trade Card
                     }
                 }
             }
+            Connections {
+                target: _tradeCard
+                function onBestChanged() {
+                    _bestOrderSearchField.text = ""
+                }
+            }
             SubBestOrder 
             {
                 id: _bestOrderList
@@ -825,7 +836,7 @@ ClipRRect // Trade Card
         }
 
 
-        DefaultRectangle // Swap Info - Details
+        Item // Swap Info - Details
         {
             id: _feesCard
             anchors.horizontalCenter: parent.horizontalCenter
@@ -833,9 +844,12 @@ ClipRRect // Trade Card
             height: 60
 
             enabled: !_swapAlert.visible
-            visible: enabled & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
+            visible: _feesList.count !== 0 & _tradeCard.selectedOrder !== undefined &  parseFloat(_fromValue.field.text) > 0 & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
 
-            radius: 25
+            DexRectangle {
+                radius: 25 
+                anchors.fill: parent
+            }
 
             DefaultBusyIndicator
             {
