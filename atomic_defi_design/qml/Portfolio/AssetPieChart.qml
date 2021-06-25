@@ -35,7 +35,7 @@ Item {
         item.hovered.connect(function (state) {
             if (state) {
                 item.explodeDistanceFactor = 0.01
-                portfolio.currentTotal = API.app.settings_pg.current_fiat_sign+" "+ value.main_currency_balance
+                portfolio.currentTotal = API.app.settings_pg.current_fiat_sign + " " + value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
                 item.color = Qt.lighter(Qt.lighter(Style.getCoinColor(value.ticker)))
             } else {
@@ -62,7 +62,7 @@ Item {
             anchors.fill: parent
             spacing: 0 
             Item {
-                Layout.preferredWidth: (parent.width/2) - 150
+                Layout.preferredWidth: (parent.width / 2) - 150
                 Layout.fillHeight: true
                 ChartView {
                     id: _chartView
@@ -73,13 +73,13 @@ Item {
                     antialiasing: true
                     legend.visible: false
                     smooth: true
-                    scale: portfolio.isUltraLarge? 1: 0.7
+                    scale: portfolio.isUltraLarge? 1 : 0.7
                     Behavior on scale {
                         NumberAnimation {
                             duration: 200
                         }
                     }
-                    y: portfolio.isUltraLarge? -55:-150
+                    y: portfolio.isUltraLarge? -55 : -150
                     backgroundColor: 'transparent'
 
                     anchors.centerIn: parent
@@ -93,7 +93,7 @@ Item {
                         color: theme.backgroundColor
                         width: 370
                         height: width
-                        radius: width/2
+                        radius: width / 2
                         //border.color: theme.accentColor
                         //border.width: 2
                         Column {
@@ -173,7 +173,7 @@ Item {
                         height: width
                         color: 'transparent'
                         radius: width/2
-                        border.width: API.app.portfolio_pg.balance_fiat_all>0 ? 0 : 5
+                        border.width: API.app.portfolio_pg.balance_fiat_all > 0 ? 0 : 5
                         border.color: Qt.lighter(theme.backgroundColor)
                     }
                 }
@@ -191,7 +191,7 @@ Item {
                     }
                     width: parent.width-100
                     anchors.verticalCenter: parent.verticalCenter
-                    height: !portfolio.isUltraLarge? _pieColumn.height>300 ? 300 : _pieColumn.height : _pieColumn.height > 550 ? 550 :_pieColumn.height
+                    height: !portfolio.isUltraLarge? _pieColumn.height > 300 ? 300 : _pieColumn.height : _pieColumn.height > 550 ? 550 :_pieColumn.height
                     Qaterial.DebugRectangle {
                         anchors.fill: parent
                         visible: false
@@ -237,7 +237,7 @@ Item {
                                     }
 
                                     DexLabel {
-                                        text: percent_main_currency +" %"
+                                        text: percent_main_currency + " %"
                                         Component.onCompleted: font.family = 'lato'
                                         Layout.alignment: Qt.AlignVCenter
                                     }
@@ -246,15 +246,6 @@ Item {
                         }
                     }
 
-                }
-                Qaterial.DebugRectangle {
-                    anchors.fill: parent
-                    visible: true  
-                    DexLabel {
-                        color: parent.border.color
-                        padding: 5
-                        text: parent.width+"x"+parent.height
-                    }
                 }
             }
         }
