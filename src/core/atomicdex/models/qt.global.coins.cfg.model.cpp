@@ -300,6 +300,12 @@ namespace atomic_dex
     }
 
     global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_bep20_proxy() const
+    {
+        return m_proxies[CoinType::BEP20];
+    }
+
+    global_coins_cfg_proxy_model*
     global_coins_cfg_model::get_all_smartchains_proxy() const 
     {
         return m_proxies[CoinType::SmartChain];
