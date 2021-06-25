@@ -282,8 +282,8 @@ ClipRRect // Trade Card
                         }
                         else
                             API.app.trading_pg.volume = field.text
-                        API.app.trading_pg.determine_fees()
-                        API.app.trading_pg.orderbook.refresh_best_orders()
+                        //API.app.trading_pg.determine_fees()
+                        //API.app.trading_pg.orderbook.refresh_best_orders()
                     }
                     field.onFocusChanged:
                     {
