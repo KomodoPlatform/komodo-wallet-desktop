@@ -8,9 +8,7 @@ import "../Constants/" as Constants
 
 RangeSlider {
     id: control
-    opacity: enabled? 1 : .5
-    first.value: 0.25
-    second.value: .75
+
     property color rangeDistanceColor: Constants.Style.colorGreen
     property color rangeBackgroundColor: Constants.Style.colorTheme9
 
@@ -20,7 +18,13 @@ RangeSlider {
 
     property alias firstTooltip: firstTooltip
     property alias secondTooltip: secondTooltip
-    background: Rectangle {
+
+    opacity: enabled ? 1 : .5
+    first.value: 0.25
+    second.value: .75
+
+    background: Rectangle
+    {
         x: control.leftPadding
         y: control.topPadding + control.availableHeight / 2 - height / 2
         implicitWidth: 200
@@ -30,7 +34,8 @@ RangeSlider {
         radius: 2
         color: control.rangeBackgroundColor
 
-        Rectangle {
+        Rectangle
+        {
             x: control.first.visualPosition * parent.width
             width: control.second.visualPosition * parent.width - x
             height: parent.height
@@ -39,40 +44,44 @@ RangeSlider {
         }
     }
 
-    first.handle: FloatingBackground {
+    first.handle: FloatingBackground
+    {
         x: control.leftPadding + control.first.visualPosition * (control.availableWidth - width)
         y: control.topPadding + control.availableHeight / 2 - height / 2
         implicitWidth: 26
         implicitHeight: 26
         radius: 13
-        Rectangle {
+
+        Rectangle
+        {
             anchors.centerIn: parent
             width: 8
             height: 8
             radius: 10
             color: control.rangeDistanceColor
         }
-
-        //border.color: "#bdbebf"
     }
-    second.handle: FloatingBackground {
+
+    second.handle: FloatingBackground
+    {
         x: control.leftPadding + control.second.visualPosition * (control.availableWidth - width)
         y: control.topPadding + control.availableHeight / 2 - height / 2
         implicitWidth: 26
         implicitHeight: 26
         radius: 13
-        Rectangle {
+
+        Rectangle
+        {
             anchors.centerIn: parent
             width: 8
             height: 8
             radius: 10
             color: control.rangeDistanceColor
         }
-
-        //border.color: "#bdbebf"
     }
 
-    DefaultText {
+    DefaultText
+    {
         id: secondTooltip
         visible: parent.second.pressed
         anchors.horizontalCenter: parent.second.handle.horizontalCenter
@@ -81,7 +90,9 @@ RangeSlider {
         text_value: parent.second.value
         font.pixelSize: Constants.Style.textSizeSmall1
     }
-    DefaultText {
+
+    DefaultText
+    {
         id: firstTooltip
         visible: parent.first.pressed
         anchors.horizontalCenter: parent.first.handle.horizontalCenter
@@ -90,21 +101,27 @@ RangeSlider {
         text_value: parent.first.value
         font.pixelSize: Constants.Style.textSizeSmall1
     }
-    DefaultText {
+
+    DefaultText
+    {
         id: _left_item
         anchors.left: parent.left
         anchors.top: parent.bottom
 
         text_value: qsTr("Min")
     }
-    DefaultText {
+
+    DefaultText
+    {
         id: _half_item
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.bottom
 
         text_value: qsTr("Half")
     }
-    DefaultText {
+
+    DefaultText
+    {
         id: _right_item
         anchors.right: parent.right
         anchors.top: parent.bottom
