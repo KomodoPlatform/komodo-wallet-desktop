@@ -159,7 +159,7 @@ FloatingBackground {
 
                 enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
 
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width - 20
 
                 rangeBackgroundColor: Style.colorTheme7
                 rangeDistanceColor: sell_mode? Style.colorRed : Style.colorGreen
@@ -175,6 +175,46 @@ FloatingBackground {
                 first.onValueChanged: if (first.pressed) setMinimumAmount(General.formatDouble(first.value))
                 second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
                 second.onPressedChanged: if (second.pressed) oldSecondValue = second.value
+
+                DexLabel
+                {
+                    anchors.left: parent.right
+                    anchors.leftMargin: 8
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    text: General.cex_icon
+
+                    DefaultMouseArea
+                    {
+                        anchors.fill: parent
+                        hoverEnabled: true
+
+                        onClicked: _sliderHelpModal.open()
+
+                        DefaultTooltip
+                        {
+                            visible: parent.containsMouse
+                            delay: 500
+
+                            contentItem: DefaultText
+                            {
+                                text_value: qsTr("How it works ?")
+                                wrapMode: DefaultText.Wrap
+                                width: 300
+                            }
+                        }
+                    }
+
+                    ModalLoader
+                    {
+                        id: _sliderHelpModal
+                        sourceComponent: HelpModal
+                        {
+                            title: qsTr("How to use the pro-view slider ?")
+                            helpSentence: qsTr("This slider is used to setup the order requirements you need.\nLeft slider: Sets the minimum amount required to process a trade.\nRight slider: Sets the volume you want to trade.")
+                        }
+                    }
+                }
             }
 
 
