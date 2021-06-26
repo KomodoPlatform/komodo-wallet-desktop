@@ -742,20 +742,22 @@ ClipRRect // Trade Card
                     _coinSearchField.text = ""
                 }
             }
+
             SubCoinSelector 
             {
                 id: _coinList
-                tradeCard: _tradeCard
-                onSelectedTickerChanged: {
-                    _tradeCard.selectedTicker = selectedTicker
+
+                onTickerSelected:
+                {
+                    _tradeCard.selectedTicker = ticker
                     _tradeCard.coinSelection = false
                 }
+
                 anchors.fill: parent
                 anchors.rightMargin: 10
                 anchors.leftMargin: 20
                 anchors.bottomMargin: 10
                 anchors.topMargin: 50
-                //visible: _tradeCard.width == 600
             } 
 
         }
