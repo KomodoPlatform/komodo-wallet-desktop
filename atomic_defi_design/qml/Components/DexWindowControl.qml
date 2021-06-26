@@ -11,7 +11,7 @@ Item {
         y: 1
         height: 30
         Rectangle {
-            width: parent.width-4
+            width: parent.width-2
             height: 30
             border.color: 'transparent'
             border.width: 2

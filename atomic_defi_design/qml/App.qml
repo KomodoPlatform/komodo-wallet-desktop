@@ -14,10 +14,9 @@ import "Constants"
 import "Components"
 import "Dashboard"
 
-Rectangle {
+DexRectangle {
     id: app
 
-    color: theme.surfaceColor
     property string currentWalletName: ""
     property int page: current_page===5? deepPage : current_page
     property int deepPage: 0
@@ -32,8 +31,6 @@ Rectangle {
     signal pairChanged(string base, string rel)
     property var chart_component
     property var chart_object
-
-
 
     readonly property int idx_first_launch: 0
     readonly property int idx_recover_seed: 1
@@ -360,6 +357,11 @@ Rectangle {
         console.log("END APPLY "+name)
     }
 
+
+    color: theme.surfaceColor
+    radius: 0
+    border.width: 0
+    border.color: 'transparent'
 
     QtObject {
         id: theme

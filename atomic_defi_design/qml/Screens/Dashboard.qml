@@ -103,6 +103,7 @@ Item {
         width: parent.width - sidebar.width
         height: parent.height
         x: sidebar.width
+        border.color: 'transparent'
 
         // Modals
         ModalLoader {
