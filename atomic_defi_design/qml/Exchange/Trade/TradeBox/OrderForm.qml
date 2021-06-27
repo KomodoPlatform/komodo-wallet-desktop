@@ -176,19 +176,10 @@ FloatingBackground {
                         oldSecondValue = second.value
                     }
                 }
-
                 first.value: parseFloat(API.app.trading_pg.min_trade_vol)
                 first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }
                 firstTooltip.text: General.formatDouble(first.value, General.getRecommendedPrecision(second.value))
             }
-
-
-            // Fees
-
-
         }
-
-        // Total amount
-
     }
 }

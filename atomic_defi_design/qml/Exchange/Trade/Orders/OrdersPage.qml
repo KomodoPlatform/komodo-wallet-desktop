@@ -118,26 +118,28 @@ Item {
                         export_csv_dialog.open()
                     }
                 }
-                DexLabel {
-                    opacity: .4
-                    visible: !orders_settings.displaySetting
-                    anchors.verticalCenter: parent.verticalCenter
-                    leftPadding: 5
-                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
-                                                    .arg(combo_base.currentTicker)
-                                                    .arg(combo_rel.currentTicker)
-                                                    .arg(qsTr("Date"))
-                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
-                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
-                }
-
+            }
+            DexLabel {
+                anchors.right: parent.right
+                opacity: .4
+                visible: !orders_settings.displaySetting
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 10
+                rightPadding: 10
+                horizontalAlignment: Label.AlignRight
+                text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                                                .arg(combo_base.currentTicker)
+                                                .arg(combo_rel.currentTicker)
+                                                .arg(qsTr("Date"))
+                                                .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                                                .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
             }
             Row {
                 anchors.right: parent.right
                 y: 0
                 rightPadding: 5
                 Qaterial.OutlineButton {
-                    visible: root.is_history
+                    visible: root.is_history & orders_settings.displaySetting
                     Layout.leftMargin: 30
                     text: qsTr("Apply Filter")
                     foregroundColor: enabled? Style.colorGreen2 : Style.colorTheme5
@@ -167,7 +169,7 @@ Item {
                     id: combo_base
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     onCurrentTickerChanged: applyFilter()
-                    width: 150
+                    Layout.fillWidth: true
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
@@ -191,7 +193,7 @@ Item {
                     id: combo_rel
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
                     onCurrentTickerChanged: applyFilter()
-                    width: 150
+                    Layout.fillWidth: true
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
@@ -209,7 +211,7 @@ Item {
                     to: default_max_date
                     date: default_min_date
                     onAccepted: applyDateFilter()
-                    Layout.preferredWidth: 130
+                    Layout.fillWidth: true
                 }
 
                 Qaterial.TextFieldDatePicker {
@@ -220,7 +222,7 @@ Item {
                     to: default_max_date
                     date: default_max_date
                     onAccepted: applyDateFilter()
-                    Layout.preferredWidth: 130
+                    Layout.fillWidth: true
                 }
             }
         }
