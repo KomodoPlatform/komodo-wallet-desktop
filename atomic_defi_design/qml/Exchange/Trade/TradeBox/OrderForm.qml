@@ -152,7 +152,10 @@ FloatingBackground {
 
             DexRangeSlider
             {
+                id: _volumeRange
+
                 property real oldSecondValue: 0
+                property real oldFirstValue: 0
 
                 function getRealValue() { return first.position * (first.to - first.from) }
                 function getRealValue2() { return second.position * (second.to - second.from) }
@@ -230,6 +233,18 @@ FloatingBackground {
 
                 text: qsTr("Use custom minimum trade amount")
                 font.pixelSize: 13
+                onPressed: {
+                    if(!checked) { 
+                        _volumeRange.oldFirstValue =  _volumeRange.defaultFirstValue
+                    } 
+                    else { 
+                        _volumeRange.defaultFirstValue = API.app.trading_pg.orderbook.current_min_taker_vol
+                        _volumeRange.first.value = API.app.trading_pg.orderbook.current_min_taker_vol
+                    }
+                }
+                onCheckedChanged: {
+                    
+                }
             }
 
 
