@@ -14,12 +14,11 @@ import "Constants"
 import "Components"
 import "Dashboard"
 
-Rectangle {
+DexRectangle {
     id: app
 
-    color: theme.surfaceColor
     property string currentWalletName: ""
-    property int page: current_page===5? deepPage : current_page
+    property int page: current_page === 5? deepPage : current_page
     property int deepPage: 0
     property alias globalTheme: theme
     property string selected_wallet_name: ""
@@ -32,8 +31,6 @@ Rectangle {
     signal pairChanged(string base, string rel)
     property var chart_component
     property var chart_object
-
-
 
     readonly property int idx_first_launch: 0
     readonly property int idx_recover_seed: 1
@@ -335,31 +332,36 @@ Rectangle {
     function save_currentTheme(name) {
         let data = {}
         global_theme_property.forEach(function(e){
-            data[e] = eval("theme."+e).toString()
+            data[e] = eval("theme." + e).toString()
         })
         data["bigSidebarLogo"] = theme.bigSidebarLogo
         data["smallSidebarLogo"] = theme.smallSidebarLogo
         data["chartTheme"] = theme.chartTheme
-        let r = API.qt_utilities.save_theme(name+".json", data, true)
+        let r = API.qt_utilities.save_theme(name + ".json", data, true)
         console.log(r)
     }
     function load_theme(name) {
         let data = API.qt_utilities.load_theme(name)
         for(let i in data) {
-            if (i.toString().indexOf("[int]")!==-1){
+            if (i.toString().indexOf("[int]") !== -1){
                 let real_i = i;
                 i = i.replace("[int]","")
-                console.log("theme."+i.toString()+" = "+ data[real_i]+"")
-                eval("theme."+i.toString()+" = "+ data[real_i])
+                console.log("theme." + i.toString() + " = " + data[real_i] + "")
+                eval("theme." + i.toString() + " = "+ data[real_i])
             }else {
-                console.log("theme."+i.toString()+" = '"+ data[i]+"'")
-                eval("theme."+i.toString()+" = '"+ data[i]+"'")
+                console.log("theme."+i.toString() + " = '" + data[i] + "'")
+                eval("theme." + i.toString() + " = '" + data[i] + "'")
             }
         }
         Qaterial.Style.accentColor = theme.accentColor
-        console.log("END APPLY "+name)
+        console.log("END APPLY ".arg(name))
     }
 
+
+    color: theme.surfaceColor
+    radius: 0
+    border.width: 0
+    border.color: 'transparent'
 
     QtObject {
         id: theme
