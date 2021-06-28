@@ -150,45 +150,101 @@ FloatingBackground {
                 }
             }
 
-            DefaultRangeSlider {
-                function getRealValue() {
-                    return first.position * (first.to - first.from)
-                }
-                function getRealValue2() {
-                    return second.position * (second.to - second.from)
-                }
+            DexRangeSlider
+            {
+                id: _volumeRange
+
                 property real oldSecondValue: 0
+                property real oldFirstValue: 0
+
+                function getRealValue() { return first.position * (first.to - first.from) }
+                function getRealValue2() { return second.position * (second.to - second.from) }
 
                 enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
-                Layout.fillWidth: true
-                from: API.app.trading_pg.orderbook.current_min_taker_vol
-                to: Math.max(0, parseFloat(max_volume))
-                //live: false
+
+                Layout.preferredWidth: parent.width - 20
 
                 rangeBackgroundColor: Style.colorTheme7
                 rangeDistanceColor: sell_mode? Style.colorRed : Style.colorGreen
-
-                second.value: parseFloat(non_null_volume)
-                second.onValueChanged: { if(second.pressed) setVolume(General.formatDouble(second.value)) }
-                secondTooltip.text: General.formatDouble(second.value, General.getRecommendedPrecision(to))
-                second.onPressedChanged: {
-                    if(second.pressed) {
-                        oldSecondValue = second.value
-                    }
-                }
+                from: API.app.trading_pg.orderbook.current_min_taker_vol
+                to: Math.max(0, parseFloat(max_volume))
 
                 first.value: parseFloat(API.app.trading_pg.min_trade_vol)
-                first.onValueChanged: { if(first.pressed) setMinimumAmount(General.formatDouble(first.value)) }
-                firstTooltip.text: General.formatDouble(first.value, General.getRecommendedPrecision(second.value))
+
+                firstDisabled: !_useCustomMinTradeAmountCheckbox.checked
+                defaultFirstValue: parseFloat(API.app.trading_pg.min_trade_vol)
+                
+                firstTooltip.text: qsTr("Minimum volume: %1").arg(General.formatDouble(first.value, General.getRecommendedPrecision(second.value)))
+                second.value: parseFloat(non_null_volume)
+                secondTooltip.text: qsTr("Volume: %1").arg(General.formatDouble(second.value, General.getRecommendedPrecision(to)))
+
+                first.onValueChanged: if (first.pressed) setMinimumAmount(General.formatDouble(first.value))
+                second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
+                second.onPressedChanged: if (second.pressed) oldSecondValue = second.value
+
+                DexLabel
+                {
+                    anchors.left: parent.right
+                    anchors.leftMargin: 8
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    text: General.cex_icon
+
+                    DefaultMouseArea
+                    {
+                        anchors.fill: parent
+                        hoverEnabled: true
+
+                        onClicked: _sliderHelpModal.open()
+
+                        DefaultTooltip
+                        {
+                            visible: parent.containsMouse
+                            delay: 500
+
+                            contentItem: DefaultText
+                            {
+                                text_value: qsTr("How it works ?")
+                                wrapMode: DefaultText.Wrap
+                                width: 300
+                            }
+                        }
+                    }
+
+                    ModalLoader
+                    {
+                        id: _sliderHelpModal
+                        sourceComponent: HelpModal
+                        {
+                            title: qsTr("How to use the pro-view slider ?")
+                            helpSentence: qsTr("This slider is used to setup the order requirements you need.\nLeft slider: Sets the minimum amount required to process a trade.\nRight slider: Sets the volume you want to trade.")
+                        }
+                    }
+                }
             }
 
+            DexCheckBox
+            {
+                id: _useCustomMinTradeAmountCheckbox
 
-            // Fees
+                Layout.topMargin: 15
+                Layout.alignment: Qt.AlignHCenter
 
-
+                text: qsTr("Use custom minimum trade amount")
+                font.pixelSize: 13
+                onPressed:
+                {
+                    if (!checked)
+                    {
+                        _volumeRange.oldFirstValue =  _volumeRange.defaultFirstValue
+                    } 
+                    else
+                    {
+                        _volumeRange.defaultFirstValue = API.app.trading_pg.orderbook.current_min_taker_vol
+                        _volumeRange.first.value = API.app.trading_pg.orderbook.current_min_taker_vol
+                    }
+                }
+            }
         }
-
-        // Total amount
-
     }
 }
