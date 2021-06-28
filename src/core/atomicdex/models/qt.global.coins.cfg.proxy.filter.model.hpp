@@ -16,6 +16,7 @@
 
 #pragma once
 
+//! Qt
 #include <QSortFilterProxyModel>
 
 namespace atomic_dex
@@ -37,8 +38,7 @@ namespace atomic_dex
         //////// QML API
         ////////////////
         
-        // Checks/Unchecks all coins
-        Q_INVOKABLE void set_all_state(bool checked) ;
+        Q_INVOKABLE void set_all_state(bool checked); // Checks/Unchecks all coins
       
       private:
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)

@@ -11,8 +11,11 @@ Item {
         y: 1
         height: 30
         Rectangle {
-            width: parent.width
+            width: parent.width - 2
             height: 30
+            border.color: 'transparent'
+            border.width: 2
+            anchors.horizontalCenter: parent.horizontalCenter
             gradient: Gradient {
                 orientation: Qt.Horizontal
                 GradientStop { position: 0.0; color: app.globalTheme.surfaceColor }

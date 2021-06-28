@@ -74,6 +74,40 @@
       "active": false,
       "currently_enabled": false
   },
+  "ADX-BEP20": {
+      "coin": "ADX-BEP20",
+      "name": "AdEx",
+      "coinpaprika_id": "adx-adex",
+      "coingecko_id": "adex",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ADX-ERC20": {
+      "coin": "ADX-ERC20",
+      "name": "AdEx",
+      "coinpaprika_id": "adx-adex",
+      "coingecko_id": "adex",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ANKR-BEP20": {
       "coin": "ANKR-BEP20",
       "name": "Ankr",
@@ -437,7 +471,18 @@
     "coingecko_id": "globalboost",
     "electrum": [
       {
-        "url": "66.172.33.175:50001"
+        "url": "66.172.33.175:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "bsty-main.coinmunity.gold:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "bsty-bkp.coinmunity.gold:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -1980,8 +2025,14 @@
       "coingecko_id": "unobtanium",
       "electrum": [
         {
-          "url": "unobtanium.info.gf:50001",
-          "protocol": "TCP"
+          "url": "uno-main.coinmunity.gold:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
+        },
+        {
+          "url": "uno-bkp.coinmunity.gold:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
         }
       ],
       "explorer_url": [
@@ -1991,8 +2042,7 @@
       "explorer_address_url": "address.dws?",
       "type": "UTXO",
       "active": false,
-      "currently_enabled": false,
-      "wallet_only": true
+      "currently_enabled": false
   },
   "USDC-BEP20": {
       "coin": "USDC-BEP20",

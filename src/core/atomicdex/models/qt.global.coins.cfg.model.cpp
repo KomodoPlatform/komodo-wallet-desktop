@@ -300,6 +300,12 @@ namespace atomic_dex
     }
 
     global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_bep20_proxy() const
+    {
+        return m_proxies[CoinType::BEP20];
+    }
+
+    global_coins_cfg_proxy_model*
     global_coins_cfg_model::get_all_smartchains_proxy() const 
     {
         return m_proxies[CoinType::SmartChain];
@@ -362,5 +368,12 @@ namespace atomic_dex
     global_coins_cfg_model::get_enabled_coins() const 
     {
         return m_enabled_coins;
+    }
+
+    QString
+    global_coins_cfg_model::get_parent_coin(const QString& ticker) const
+    {
+        auto cfg = get_coin_info(ticker.toStdString());
+        return QString::fromStdString(cfg.fees_ticker);
     }
 } // namespace atomic_dex

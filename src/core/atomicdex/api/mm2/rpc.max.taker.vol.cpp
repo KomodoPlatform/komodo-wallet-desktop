@@ -44,7 +44,8 @@ namespace mm2::api
         j.at("numer").get_to(cfg.numer);
         t_rational rat(boost::multiprecision::cpp_int(cfg.numer), boost::multiprecision::cpp_int(cfg.denom));
         t_float_50 res = rat.convert_to<t_float_50>();
-        cfg.decimal    = res.str(8);
+        cfg.decimal    = atomic_dex::utils::extract_large_float(res.str(50));
+        //SPDLOG_INFO("decimal: {}", cfg.decimal);
     }
 
     void

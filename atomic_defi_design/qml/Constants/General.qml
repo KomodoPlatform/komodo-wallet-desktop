@@ -261,9 +261,9 @@ QtObject {
     }
 
     function getMinTradeAmount() {
-        if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+        /*if (API.app.trading_pg.market_mode == MarketMode.Buy) {
             return API.app.trading_pg.orderbook.rel_min_taker_vol
-        }
+        }*/
         return API.app.trading_pg.min_trade_vol
     }
 
@@ -446,17 +446,17 @@ QtObject {
         case TradingError.VolumeFieldNotFilled:
             return qsTr("Please fill the volume field")
         case TradingError.VolumeIsLowerThanTheMinimum:
-            return qsTr("%1 volume is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
+            return qsTr("%1 volume is lower than minimum trade amount").arg(API.app.trading_pg.market_pairs_mdl.left_selected_coin) + " : " + General.getMinTradeAmount()
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getReversedMinTradeAmount()
         case TradingError.LeftParentChainNotEnabled:
-            return qsTr("%1 parent chain is not enabled").arg(left_ticker)
+            return qsTr("%1 needs to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
         case TradingError.LeftParentChainNotEnoughBalance:
-            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(left_ticker)
+            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
         case TradingError.RightParentChainNotEnabled:
-            return qsTr("%1 parent chain is not enabled").arg(right_ticker)
+             return qsTr("%1 needs to be enabled in order to use %2").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
         case TradingError.RightParentChainNotEnoughBalance:
-            return qsTr("%1 parent chain balance is 0, a non-zero balance is required to pay the gas").arg(right_ticker)
+             return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
         default:
             return qsTr("Unknown Error") + ": " + error
         }
@@ -484,6 +484,15 @@ QtObject {
                                                 "ADA/BIDR": "BINANCE:ADABIDR",
                                                 "ADA/BNB": "BINANCE:ADABNB",
                                                 "ADA/BCH": "HITBTC:ADABCH",
+                                                "ADX/BTC": "BINANCE:ADXBTC",
+                                                "ADX/ETH": "BINANCE:ADXETH",
+                                                "ADX/USDT": "BINANCE:ADXUSD",
+                                                "ADX/BUSD": "BINANCE:ADXUSD",
+                                                "ADX/USDC": "BINANCE:ADXUSD",
+                                                "ADX/TUSD": "BINANCE:ADXUSD",
+                                                "ADX/HUSD": "BINANCE:ADXUSD",
+                                                "ADX/DAI": "BINANCE:ADXUSD",
+                                                "ADX/PAX": "BINANCE:ADXUSD",
                                                 "AAVE/BTC": "BINANCE:AAVEBTC",
                                                 "AAVE/ETH": "BINANCE:AAVEETH",
                                                 "AAVE/BNB": "BINANCE:AAVEBNB",

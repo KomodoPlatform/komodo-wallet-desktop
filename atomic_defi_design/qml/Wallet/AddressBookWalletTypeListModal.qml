@@ -7,40 +7,44 @@ import "../Components"
 import "../Constants"
 
 BasicModal {
-    id: root
+    readonly property var glbCoinsCfgModel: API.app.portfolio_pg.global_cfg_mdl
+    property alias        selected_wallet_type: wallet_list.selected_wallet_type
 
-    readonly property var glb_coins_cfg_mdl: API.app.portfolio_pg.global_cfg_mdl
-    property alias selected_wallet_type : wallet_list.selected_wallet_type
-
-    function resetModal() {
-        searchbar.text = ""
-        filterWallets(searchbar.text)
+    function resetModal()
+    {
+        _searchbar.text = ""
+        filterWallets(_searchbar.text)
     }
 
-    function filterWallets(text) {
-        glb_coins_cfg_mdl.all_qrc20_proxy.setFilterFixedString(text)
-        glb_coins_cfg_mdl.all_erc20_proxy.setFilterFixedString(text)
-        glb_coins_cfg_mdl.all_smartchains_proxy.setFilterFixedString(text)
-        glb_coins_cfg_mdl.all_utxo_proxy.setFilterFixedString(text)
+    function filterWallets(text)
+    {
+        _qrc20Expandable.model.setFilterFixedString(text)
+        _erc20Expandable.model.setFilterFixedString(text)
+        _bep20Expandable.model.setFilterFixedString(text)
+        _scExpandable.model.setFilterFixedString(text)
+        _utxoExpandable.model.setFilterFixedString(text)
 
         // Expands type lists if searchbar is not empty
-        qrc20_expandable.expanded = text !== ""
-        erc20_expandable.expanded = text !== ""
-        sc_expandable.expanded = text !== ""
-        utxo_expandable.expanded = text !== ""
+        _qrc20Expandable.expanded = text !== ""
+        _erc20Expandable.expanded = text !== ""
+        _bep20Expandable.expanded = text !== ""
+        _scExpandable.expanded = text !== ""
+        _utxoExpandable.expanded = text !== ""
     }
 
-    function onTypeSelect(type_or_ticker) {
+    function onTypeSelect(type_or_ticker)
+    {
         selected_wallet_type = type_or_ticker
         close()
     }
 
-    onOpened: searchbar.forceActiveFocus()
-    onClosed: resetModal()
-
     width: 400
 
-    ModalContent {
+    onOpened: _searchbar.forceActiveFocus()
+    onClosed: resetModal()
+
+    ModalContent
+    {
         id: wallet_list
 
         property string selected_wallet_type: ""
@@ -48,9 +52,10 @@ BasicModal {
         title: qsTr("Select wallet type")
 
         // Search input
-        DefaultTextField {
+        DefaultTextField
+        {
             Layout.rightMargin: 10
-            id: searchbar
+            id: _searchbar
 
             Layout.fillWidth: true
             placeholderText: qsTr("Search")
@@ -58,43 +63,71 @@ BasicModal {
             onTextChanged: filterWallets(text)
         }
 
-        AddressBookWalletTypeList {
-            id: qrc20_expandable
+        AddressBookWalletTypeList
+        {
+            id: _qrc20Expandable
+
             Layout.rightMargin: 10
             Layout.fillWidth: true
+
             title: "QRC-20 coins"
             type_title: "QRC-20"
             type: "QRC-20"
-            model: glb_coins_cfg_mdl.all_qrc20_proxy
+
+            model: glbCoinsCfgModel.all_qrc20_proxy
         }
 
-        AddressBookWalletTypeList {
-            id: erc20_expandable
+        AddressBookWalletTypeList
+        {
+            id: _erc20Expandable
             Layout.rightMargin: 10
             Layout.fillWidth: true
+
             title: "ERC-20 coins"
             type_title: "ERC-20"
             type: "ERC-20"
-            model: glb_coins_cfg_mdl.all_erc20_proxy
+
+            model: glbCoinsCfgModel.all_erc20_proxy
         }
 
-        AddressBookWalletTypeList {
-            id: sc_expandable
+        AddressBookWalletTypeList
+        {
+            id: _bep20Expandable
             Layout.rightMargin: 10
             Layout.fillWidth: true
+
+            title: "BEP-20 coins"
+            type_title: "BEP-20"
+            type: "BEP-20"
+            typeIcon: "BNB"
+
+            model: glbCoinsCfgModel.all_bep20_proxy
+        }
+
+        AddressBookWalletTypeList
+        {
+            id: _scExpandable
+            Layout.rightMargin: 10
+            Layout.fillWidth: true
+
             title: "Smart Chain coins"
             type_title: "Smart Chain"
             type: "Smart Chain"
-            model: glb_coins_cfg_mdl.all_smartchains_proxy
+
+            model: glbCoinsCfgModel.all_smartchains_proxy
         }
 
-        AddressBookWalletTypeList {
-            id: utxo_expandable
+        AddressBookWalletTypeList
+        {
+            id: _utxoExpandable
+
             Layout.rightMargin: 10
             Layout.fillWidth: true
+
             title: "UTXO coins"
             type_title: "UTXO"
-            model: glb_coins_cfg_mdl.all_utxo_proxy
+
+            model: glbCoinsCfgModel.all_utxo_proxy
         }
     }
 }

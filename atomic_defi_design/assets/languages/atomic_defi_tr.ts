@@ -217,42 +217,51 @@
 <context>
     <name>AddressBookAddContactAddressModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="33"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="34"/>
         <source>Create a new address</source>
         <translation>Yeni bir adres oluştur</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="33"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="34"/>
         <source>Edit address entry</source>
         <translation>Adres girdisini düzenleyin</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
         <source>Choose a wallet type, current: %1</source>
-        <translation>Cüzdan türünü seçin, mevcut: %1</translation>
+        <translation type="vanished">Cüzdan türünü seçin, mevcut: %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="51"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
+        <source>Selected wallet: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
+        <source>NONE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="68"/>
         <source>Enter a name</source>
         <translation>Bir ad girin</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="64"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="81"/>
         <source>This key already exists.</source>
         <translation>Bu anahtar zaten mevcut.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="76"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="93"/>
         <source>Enter the address</source>
         <translation>Adresi girin</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="91"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="108"/>
         <source>Validate</source>
         <translation>Doğrula</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="117"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="134"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -1454,14 +1463,22 @@
     <message>
         <location filename="../../qml/Constants/General.qml" line="453"/>
         <location filename="../../qml/Constants/General.qml" line="457"/>
-        <source>%1 parent chain is not enabled</source>
-        <translation>%1 üst zincir etkinleştirilmedi</translation>
+        <source>%1 needs to be enabled in order to use %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="455"/>
         <location filename="../../qml/Constants/General.qml" line="459"/>
+        <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 parent chain is not enabled</source>
+        <translation type="vanished">%1 üst zincir etkinleştirilmedi</translation>
+    </message>
+    <message>
         <source>%1 parent chain balance is 0, a non-zero balance is required to pay the gas</source>
-        <translation>%1 ana zincir bakiyesi 0, gas ücretini ödemek için sıfır olmayan bir bakiye gerekiyor</translation>
+        <translation type="vanished">%1 ana zincir bakiyesi 0, gas ücretini ödemek için sıfır olmayan bir bakiye gerekiyor</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="461"/>
@@ -2100,92 +2117,92 @@
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="25"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="23"/>
         <source>Swap Details</source>
         <translation>Takas Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="25"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="23"/>
         <source>Order Details</source>
         <translation>Emir Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="77"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
         <source>Maker Order</source>
         <translation>Yapıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="77"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="75"/>
         <source>Taker Order</source>
         <translation>Alıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="86"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="84"/>
         <source>Refund State</source>
         <translation>Geri Ödeme Durumu</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="88"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="86"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation>Takas işlemi başarısız oldu, ancak otomatik geri ödeme süreci başladı. Lütfen bekleyin ve ödemenizi geri alana kadar uygulamayı açık tutun</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="96"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="94"/>
         <source>Date</source>
         <translation>Tarih</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="104"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="102"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="187"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="185"/>
         <source>Recover Funds</source>
         <translation>Fon Kurtar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="192"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="190"/>
         <source>View on Explorer</source>
         <translation>Explorer&apos;da Göster</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="114"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
         <source>Maker Payment Sent ID</source>
         <translation>Yapıcı Ödemesi Gönderilen Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="114"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="112"/>
         <source>Maker Payment Spent ID</source>
         <translation>Yapıcı Ödemesi Harcanan Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="124"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
         <source>Taker Payment Spent ID</source>
         <translation>Alıcı Ödemesi Harcanan Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="124"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="122"/>
         <source>Taker Payment Sent ID</source>
         <translation>Alıcı Ödemesi Gönderilen Kimliği</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="178"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="176"/>
         <source>Cancel Order</source>
         <translation>Emri İptal Et</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="133"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="131"/>
         <source>Error ID</source>
         <translation>Hata ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="141"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="139"/>
         <source>Error Log</source>
         <translation>Hata Kaydı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="168"/>
+        <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="166"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -3151,37 +3168,37 @@
 <context>
     <name>SubBestOrder</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="51"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="59"/>
         <source>Token</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="60"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="68"/>
         <source>Available Quantity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="69"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="77"/>
         <source>Available Quantity (in %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="78"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="86"/>
         <source>Fiat Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="87"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="95"/>
         <source>CEX Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="159"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="167"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation type="unfinished"> %1 etkin değil - En iyi %2 siparişini seçebilmesi için etkinleştirmek istiyor musunuz ? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Evet&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Hayır&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="196"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="204"/>
         <source>No best order.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3618,53 +3635,45 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished">Emir başarılı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="627"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="629"/>
         <source>Entered amount must be superior than 0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="629"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="631"/>
         <source>You must select an order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="631"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="633"/>
         <source>Entered amount is below the minimum required by this order: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="633"/>
-        <source>Parent chain of left ticker is not enabled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="635"/>
-        <source>Left ticker parent chain balance needs to be funded</source>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="639"/>
+        <source>%1 needs to be enabled in order to use %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="637"/>
-        <source>Parent chain of right ticker is not enabled.</source>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="641"/>
+        <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="639"/>
-        <source>Right ticker parent chain balance needs to be funded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="694"/>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="747"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="696"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="749"/>
         <source>Search</source>
         <translation type="unfinished">Ara</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="832"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="834"/>
         <source>Total %1 fees: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="839"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="841"/>
         <source>%2 (%3)</source>
         <translation type="unfinished"></translation>
     </message>
