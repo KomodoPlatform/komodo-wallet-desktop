@@ -339,6 +339,7 @@ QtObject {
                                           "REVS": "#F69B57",
                                           "ILN": "#523170",
                                           "VRSC": "#3164D3",
+                                          "WCN": "#E49F00",
                                           "THC": "#819F6F",
                                           "1INCH": "#95A7C5",
                                           "BAT": "#FF5000",

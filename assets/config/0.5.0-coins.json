@@ -3194,6 +3194,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "WCN": {
+    "coin": "WCN",
+    "name": "Widecoin",
+    "coinpaprika_id": "wcn-widecoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrumx.widecoin.org:50001"
+      },
+      {
+        "url": "electrumx2.widecoin.org:50001"
+      },
+      {
+        "url": "electrumx3.widecoin.org:50001"
+      }
+    ],
+    "explorer_url": [
+      "http://explorer.widecoin.org:5000/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "WLC": {
     "coin": "WLC",
     "name": "Wireless Coin",
