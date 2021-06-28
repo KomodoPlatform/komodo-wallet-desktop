@@ -347,7 +347,7 @@ ClipRRect // Trade Card
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.right
                             anchors.leftMargin: 10
-                            text: selectedTicker
+                            text: atomic_qt_utilities.retrieve_main_ticker(selectedTicker)
                             font.pixelSize: Style.textSizeSmall4
 
                             Arrow
@@ -510,7 +510,7 @@ ClipRRect // Trade Card
                             anchors.left: _bestOrderIcon.right
                             anchors.leftMargin: 10
 
-                            text: enabled ? selectedOrder.coin : ""
+                            text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin) : ""
                             font.pixelSize: Style.textSizeSmall4
 
                             Arrow
