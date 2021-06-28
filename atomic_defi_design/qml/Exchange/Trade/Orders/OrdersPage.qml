@@ -100,7 +100,7 @@ Item {
                 spacing: 0
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
-                    text: "Filter"
+                    text: qsTr("Filter")
                     foregroundColor:Style.colorWhite5
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5
@@ -118,14 +118,28 @@ Item {
                         export_csv_dialog.open()
                     }
                 }
-
+            }
+            DexLabel {
+                anchors.right: parent.right
+                opacity: .4
+                visible: !orders_settings.displaySetting
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 10
+                rightPadding: 10
+                horizontalAlignment: Label.AlignRight
+                text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                                                .arg(combo_base.currentTicker)
+                                                .arg(combo_rel.currentTicker)
+                                                .arg(qsTr("Date"))
+                                                .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                                                .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
             }
             Row {
                 anchors.right: parent.right
                 y: 0
                 rightPadding: 5
                 Qaterial.OutlineButton {
-                    visible: root.is_history
+                    visible: root.is_history & orders_settings.displaySetting
                     Layout.leftMargin: 30
                     text: qsTr("Apply Filter")
                     foregroundColor: enabled? Style.colorGreen2 : Style.colorTheme5
@@ -155,7 +169,7 @@ Item {
                     id: combo_base
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     onCurrentTickerChanged: applyFilter()
-                    width: 150
+                    Layout.fillWidth: true
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
@@ -179,25 +193,20 @@ Item {
                     id: combo_rel
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
                     onCurrentTickerChanged: applyFilter()
-                    width: 150
+                    Layout.fillWidth: true
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
-
                 }
-                Item {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
-
                 Qaterial.TextFieldDatePicker {
                     id: min_date
                     title: qsTr("From")
                     from: default_min_date
                     to: default_max_date
                     date: default_min_date
+                    font.pixelSize: 13
                     onAccepted: applyDateFilter()
-                    Layout.preferredWidth: 130
+                    Layout.fillWidth: true
                 }
 
                 Qaterial.TextFieldDatePicker {
@@ -207,8 +216,9 @@ Item {
                     from: min_date.date
                     to: default_max_date
                     date: default_max_date
+                    font.pixelSize: 13
                     onAccepted: applyDateFilter()
-                    Layout.preferredWidth: 130
+                    Layout.fillWidth: true
                 }
             }
         }

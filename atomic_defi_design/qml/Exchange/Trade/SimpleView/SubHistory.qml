@@ -20,6 +20,7 @@ Item {
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
     property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property bool displayFilter: false
+    property bool _filterApplied:  false
 
     function update() {
         list_model_proxy.is_history = true
@@ -72,18 +73,27 @@ Item {
                 font.pixelSize: Style.textSize1
             }
 
-            DefaultText // Description
+            DexLabel // Description
             {
+                width: _subHistoryRoot.width - 40
                 anchors.topMargin: 12
                 font.pixelSize: Style.textSizeSmall4
-                text: qsTr("Finished orders")
-
+                //text: _filterApplied? "" : qsTr("Finished orders")
+                DexLabel {
+                    opacity: .4
+                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                                                    .arg(combo_base.currentTicker)
+                                                    .arg(combo_rel.currentTicker)
+                                                    .arg(qsTr("Date"))
+                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))   
+                }
                 Qaterial.AppBarButton // Reset Form Button
                 {
                     width: 50
                     height: 50
-                    anchors.left: parent.right
-                    anchors.leftMargin: 205
+                    anchors.right: parent.right
+                    anchors.rightMargin: -5
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
 
