@@ -197,19 +197,14 @@ Item {
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
-
                 }
-                Item {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
-
                 Qaterial.TextFieldDatePicker {
                     id: min_date
                     title: qsTr("From")
                     from: default_min_date
                     to: default_max_date
                     date: default_min_date
+                    font.pixelSize: 13
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
                 }
@@ -221,6 +216,7 @@ Item {
                     from: min_date.date
                     to: default_max_date
                     date: default_max_date
+                    font.pixelSize: 13
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
                 }
