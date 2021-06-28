@@ -30,6 +30,7 @@ RowLayout {
             anchors.left: parent.right
             anchors.leftMargin: 12
             anchors.verticalCenter: parent.verticalCenter
+            width: root.width-40
             DefaultText {
                 text_value: !details ? "" :
                             `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${theme.foregroundColor}">${details.name}</font>`
@@ -39,10 +40,15 @@ RowLayout {
 
             DexLabel {
                 id: bottom_line
-                text_value: !details ? "" :
+                property string real_value: !details ? "" :
                             details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_fiat_sign) + ")"
+                text: real_value
+                Layout.fillWidth: true
+                elide: Text.ElideRight
                 color: theme.foregroundColor
                 font: theme.textType.body2
+                wrapMode: Label.NoWrap
+                ToolTip.text: real_value
                 Component.onCompleted: {
                     font.pixelSize = 11.5
                 }

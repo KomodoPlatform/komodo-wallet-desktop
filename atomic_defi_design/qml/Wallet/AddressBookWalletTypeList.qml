@@ -9,34 +9,39 @@ import Qaterial 1.0 as Qaterial
 import "../Components"
 import "../Constants"
 
-Qaterial.Expandable {
-    id: root
+Qaterial.Expandable
+{
+    id: _root
 
     property string title
 
     property string type_title
     property string type: ""
+    property string typeIcon: type
 
     property var model
 
-    header: Qaterial.ItemDelegate {
+    header: Qaterial.ItemDelegate
+    {
         id: _header
-
-        onClicked: () => root.expanded = !root.expanded
 
         icon.source: General.image_path + "arrow_down.svg"
 
         text: title
+
+        onClicked: () => _root.expanded = !_root.expanded
     }
 
-    delegate: Column {
-        AddressBookWalletTypeListRow {
+    delegate: Column
+    {
+        AddressBookWalletTypeListRow
+        {
             enabled: type !== ""
             visible: type !== ""
 
-            icon_source: General.coinTypeIcon(type)
+            icon_source: General.coinTypeIcon(typeIcon)
 
-            width: root.width
+            width: _root.width
 
             name: type_title
             ticker: type_title
@@ -44,11 +49,13 @@ Qaterial.Expandable {
             onClicked: onTypeSelect(type)
         }
 
-        Repeater {
-            model: root.model
+        Repeater
+        {
+            model: _root.model
 
-            delegate: AddressBookWalletTypeListRow {
-                width: root.width
+            delegate: AddressBookWalletTypeListRow
+            {
+                width: _root.width
 
                 name: model.name
                 ticker: model.ticker

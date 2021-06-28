@@ -41,7 +41,7 @@ namespace atomic_dex
                                                    new market_pairs(m_system_manager, portfolio, this), new qt_orders_widget(m_system_manager, this)}}
     {
         //! Sets default trading mode to the last saved one.
-        set_current_trading_mode((TradingMode)entity_registry_.template ctx<QSettings>().value("DefaultTradingMode").toInt());
+        set_current_trading_mode((TradingMode)entity_registry_.template ctx<QSettings>().value("DefaultTradingMode", 1).toInt());
     }
 } // namespace atomic_dex
 
@@ -704,13 +704,11 @@ namespace atomic_dex
             this->determine_total_amount();
             emit volumeChanged();
             this->cap_volume();
-            if (m_current_trading_mode != TradingModeGadget::Simple)
+
+            this->get_orderbook_wrapper()->refresh_best_orders();
+            if (!m_price.isEmpty() || m_price != "0")
             {
-                this->get_orderbook_wrapper()->refresh_best_orders();
-                if (!m_price.isEmpty() || m_price != "0")
-                {
-                    this->determine_fees();
-                }
+                this->determine_fees();
             }
         }
     }
@@ -1031,7 +1029,7 @@ namespace atomic_dex
     void
     trading_page::set_preffered_order(QVariantMap price_object)
     {
-        //SPDLOG_INFO("order pick from orderbook");
+        // SPDLOG_INFO("order pick from orderbook");
         if (auto preffered_order = nlohmann::json::parse(QString(QJsonDocument(QJsonObject::fromVariantMap(price_object)).toJson()).toStdString());
             preffered_order != m_preffered_order)
         {
@@ -1160,12 +1158,13 @@ namespace atomic_dex
         ::mm2::api::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
-        // SPDLOG_INFO("request: {}", preimage_request.dump(4));
+        SPDLOG_INFO("request: {}", preimage_request.dump(-1));
 
         this->set_preimage_busy(true);
         auto answer_functor = [this, &mm2](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
+            SPDLOG_INFO("preimage answer received: {}", body);
             if (resp.status_code() == 200)
             {
                 auto           answers               = nlohmann::json::parse(body);

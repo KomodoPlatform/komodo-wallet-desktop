@@ -8,11 +8,15 @@ import "../Constants/" as Constants
 
 RangeSlider {
     id: control
+
+
     opacity: enabled? 1 : .5
     first.value: 0.25
     second.value: .75
     property color rangeDistanceColor: Constants.Style.colorGreen
     property color rangeBackgroundColor: Constants.Style.colorTheme9
+    property bool firstDisabled: false
+    property var defaultFirstValue: 0.0
 
     property alias leftText: _left_item.text
     property alias halfText: _half_item.text
@@ -38,13 +42,18 @@ RangeSlider {
             radius: 2
         }
     }
-
+    first.onValueChanged: {
+        if(firstDisabled) {
+            first.value = defaultFirstValue
+        }
+    }
     first.handle: FloatingBackground {
         x: control.leftPadding + control.first.visualPosition * (control.availableWidth - width)
         y: control.topPadding + control.availableHeight / 2 - height / 2
         implicitWidth: 26
         implicitHeight: 26
         radius: 13
+        visible: !control.firstDisabled
         Rectangle {
             anchors.centerIn: parent
             width: 8
