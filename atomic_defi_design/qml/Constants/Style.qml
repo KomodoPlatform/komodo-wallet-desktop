@@ -419,6 +419,7 @@ QtObject {
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",
                                           "XLM": "#737373",
+                                          "XMY": "#F01385",
                                           "XRP": "#2E353D",
                                           "XTZ": "#A8E000",
                                           "XVS": "#F4BC54",
