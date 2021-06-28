@@ -1801,7 +1801,7 @@
     "active": false,
     "coin": "MCL",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "mcl-marmara-credit-loops-mcl-coin",
     "currently_enabled": false,
     "electrum": [
       {
