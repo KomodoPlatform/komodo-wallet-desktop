@@ -233,27 +233,19 @@ FloatingBackground {
 
                 text: qsTr("Use custom minimum trade amount")
                 font.pixelSize: 13
-                onPressed: {
-                    if(!checked) { 
+                onPressed:
+                {
+                    if (!checked)
+                    {
                         _volumeRange.oldFirstValue =  _volumeRange.defaultFirstValue
                     } 
-                    else { 
+                    else
+                    {
                         _volumeRange.defaultFirstValue = API.app.trading_pg.orderbook.current_min_taker_vol
                         _volumeRange.first.value = API.app.trading_pg.orderbook.current_min_taker_vol
                     }
                 }
-                onCheckedChanged: {
-                    
-                }
             }
-
-
-            // Fees
-
-
         }
-
-        // Total amount
-
     }
 }
