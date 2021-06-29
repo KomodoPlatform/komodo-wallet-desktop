@@ -47,26 +47,13 @@ linux:build:
     - export QT_ROOT=/opt/Qt/$QT_VERSION
     - export Qt5_DIR=/opt/Qt/$QT_VERSION/gcc_64/lib/cmake/Qt5
     - export PATH=/opt/Qt/$QT_VERSION/gcc_64/bin:$PATH
-    - export PATH=${PATH}:/cmake-3.19.0-rc3-Linux-x86_64/bin;
+    - export PATH=${PATH}:/cmake-3.20.5-linux-x86_64/bin;
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
     # Bootstrap Vcpkg
     - cd $CI_PROJECT_DIR; ./ci_tools_atomic_dex/vcpkg-repo/bootstrap-vcpkg.sh
 
-    # STANDARD
-    #- cd $CI_PROJECT_DIR
-    #- rm -rf build || echo "no build folder to rm"
-    #- mkdir build
-    #- cd build
-    #- cmake -DCMAKE_BUILD_TYPE=Release ../
-    #- make -j atomicdex-desktop || echo "make atomicdex-desktop failed"
-    #- make install || echo "make install failed"
-    #- cd $CI_PROJECT_DIR
-    #- zip -r atomicdex-desktop-linux-built-${CI_COMMIT_SHORT_SHA}.zip build/bin   || echo "zip failed"
-    #- mv $CI_PROJECT_DIR/build/*.AppImage .
-    #- zip -r atomicdex-desktop-linux-built-${CI_COMMIT_SHORT_SHA}.AppImage.zip *.AppImage  || echo "zip failed"
-
-    # NINJA
+    # NINJA Build
     - cd $CI_PROJECT_DIR
     - rm -rf build_ninja || echo "no build_ninja folder to rm"
     - mkdir build_ninja
@@ -74,10 +61,6 @@ linux:build:
     - cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
     - ninja atomicdex-desktop || echo "ninja atomicdex-desktop failed"
     - ninja install || echo "ninja install failed"
-    - cd $CI_PROJECT_DIR
-    - find / | grep -i appimage
-    - find / | grep -i atomicdex-desktop-
-    - ls bundled/linux
 
 AtomicDex-linux.zip:
   stage: upload_zip
