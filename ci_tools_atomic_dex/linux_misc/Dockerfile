@@ -1,11 +1,6 @@
 FROM ubuntu:18.04
-MAINTAINER smk 
-
-# Used to create linux environment image for CI builds
-# to update after change:
-# docker build -t qt-ci .
-# docker tag qt-ci:latest smk762/qt-ci:latest
-# docker push smk762/qt-ci:latest
+MAINTAINER smk
+ENV QT_VERSION=5.15.2
 
 RUN apt-get -y update && \
     apt-get -y upgrade && \
@@ -16,33 +11,25 @@ RUN apt-get -y update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN wget https://apt.llvm.org/llvm.sh; chmod +x llvm.sh; ./llvm.sh 12; \
-    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 777; \
-    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 777; \
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777; \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777; \
-    apt-get update; \
     export CXX=clang++-12; \
     export CC=clang-12;
 
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.19.0-rc3/cmake-3.19.0-rc3-Linux-x86_64.tar.gz; \
-    tar xvf cmake-3.19.0-rc3-Linux-x86_64.tar.gz; curdir=$(pwd); \
-    export PATH=${PATH}:${curdir}/cmake-3.19.0-rc3-Linux-x86_64/bin;
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.5/cmake-3.20.5-linux-x86_64.tar.gz; \
+    tar xvf cmake-3.20.5-linux-x86_64.tar.gz; curdir=$(pwd); \
+    export PATH=${PATH}:${curdir}/cmake-3.20.5-linux-x86_64/bin;
 
-RUN pip install virtualenv; \
-    virtualenv venv; ls; \
-    # source venv/bin/activate; \
-    python3 -m pip install --upgrade pip; \
+RUN python3 -m pip install --upgrade pip; \
     python3 -m pip install setuptools wheel; \
     python3 -m pip install py7zr==0.16.1; \
     python3 -m pip install aqtinstall==1.2.1; \
-    python3 -m aqt install -O /opt/Qt 5.15.2 linux desktop -b https://qt-mirror.dannhauer.de/ -m qtcharts qtwidgets debug_info qtwebengine qtwebview;
+    python3 -m aqt install -O /opt/Qt $QT_VERSION linux desktop -b https://qt-mirror.dannhauer.de/ -m qtcharts qtwidgets debug_info qtwebengine qtwebview;
 
 RUN git clone https://github.com/KomodoPlatform/libwally-core.git; \ 
 	cd libwally-core; ./tools/autogen.sh; ./configure --disable-shared; sudo make -j2 install; cd ..;
 
-RUN export QT_INSTALL_CMAKE_PATH=/opt/Qt/5.15.2/gcc_64/lib/cmake; \
-    export QT_ROOT=/opt/Qt/5.15.2; \
-    export Qt5_DIR=/opt/Qt/5.15.2/gcc_64/lib/cmake/Qt5; \
-    export PATH=/opt/Qt/5.15.2/gcc_64/bin:$PATH 
+RUN export QT_INSTALL_CMAKE_PATH=/opt/Qt/$QT_VERSION/gcc_64/lib/cmake; \
+    export QT_ROOT=/opt/Qt/$QT_VERSION; \
+    export Qt5_DIR=/opt/Qt/$QT_VERSION/gcc_64/lib/cmake/Qt5; \
+    export PATH=/opt/Qt/$QT_VERSION/gcc_64/bin:$PATH 
 
 CMD ["entrypoint"]
