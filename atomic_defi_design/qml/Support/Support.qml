@@ -149,12 +149,12 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
 
             FAQLine {
                 title: qsTr("Do you provide user support?")
-                text: qsTr('Yes! %1 offers support through the <a href="https://komodoplatform.com/discord">Komodo Discord server</a>. The team and the community are always happy to help!').arg(API.app_name)
+                text: qsTr('Yes! %1 offers support through the <a href="%2">%1 Discord server</a>. The team and the community are always happy to help!').arg(API.app_name).arg(API.app_discord_url)
             }
 
             FAQLine {
                 title: qsTr("Who is behind %1?").arg(API.app_name)
-                text: qsTr("%1 is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.").arg(API.app_name)
+                text: qsTr("%1 is developed by the Komodo team. %1 is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.").arg(API.app_name)
             }
 
             FAQLine {
@@ -164,7 +164,7 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
 
             FAQLine {
                 title: qsTr("Which devices can I use %1 on?").arg(API.app_name)
-                text: qsTr('%1 is available for mobile on both <a href="https://%1.io/">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.').arg(API.app_name)
+                text: qsTr('%1 is available for mobile on both <a href="%2">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.').arg(API.app_name).arg(API.app_website_url)
             }
 
             FAQLine {
