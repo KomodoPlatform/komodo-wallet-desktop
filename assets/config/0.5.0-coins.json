@@ -1861,6 +1861,40 @@
       "active": false,
       "currently_enabled": false
   },
+  "OCEAN-BEP20": {
+      "coin": "OCEAN-BEP20",
+      "name": "Ocean Protocol",
+      "coinpaprika_id": "ocean-ocean-protocol",
+      "coingecko_id": "ocean-protocol",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "OCEAN-ERC20": {
+      "coin": "OCEAN-ERC20",
+      "name": "Ocean Protocol",
+      "coinpaprika_id": "ocean-ocean-protocol",
+      "coingecko_id": "ocean-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ONT-BEP20": {
       "coin": "ONT-BEP20",
       "name": "Ontology",
@@ -4244,23 +4278,6 @@
   "name": "Melon Token",
   "coinpaprika_id": "mln-melon",
   "coingecko_id": "melon",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "OCEAN": {
-  "coin": "OCEAN",
-  "name": "Ocean Protocol",
-  "coinpaprika_id": "ocean-ocean-protocol",
-  "coingecko_id": "ocean-protocol",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",

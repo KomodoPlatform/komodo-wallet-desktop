@@ -392,6 +392,7 @@ QtObject {
                                           "MKR": "#1BAF9F",
                                           "NEAR": "#595959",
                                           "NVC": "#FCF96D",
+                                          "OCEAN": "#595959",
                                           "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
                                           "QI": "#FFFFFF",
