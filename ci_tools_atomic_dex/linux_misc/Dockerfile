@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 MAINTAINER smk
 ENV QT_VERSION=5.15.2
+ENV CMAKE_VERSION=3.19.8
 
 RUN apt-get -y update && \
     apt-get -y upgrade && \
@@ -14,9 +15,9 @@ RUN wget https://apt.llvm.org/llvm.sh; chmod +x llvm.sh; ./llvm.sh 12; \
     export CXX=clang++-12; \
     export CC=clang-12;
 
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.5/cmake-3.20.5-linux-x86_64.tar.gz; \
-    tar xvf cmake-3.20.5-linux-x86_64.tar.gz; curdir=$(pwd); \
-    export PATH=${PATH}:${curdir}/cmake-3.20.5-linux-x86_64/bin;
+RUN wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-x86_64.tar.gz; \
+    tar xvf cmake-$CMAKE_VERSION-linux-x86_64.tar.gz; curdir=$(pwd); \
+    export PATH=${PATH}:${curdir}/cmake-$CMAKE_VERSION-linux-x86_64/bin;
 
 RUN python3 -m pip install --upgrade pip; \
     python3 -m pip install setuptools wheel; \
