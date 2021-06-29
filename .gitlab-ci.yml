@@ -48,6 +48,9 @@ linux:build:
     - export Qt5_DIR=/opt/Qt/$QT_VERSION/gcc_64/lib/cmake/Qt5
     - export PATH=/opt/Qt/$QT_VERSION/gcc_64/bin:$PATH
     - export PATH=${PATH}:/cmake-3.20.5-linux-x86_64/bin;
+    - find / | grep cmake
+    - echo $PATH
+    - cmake --version
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
     # Bootstrap Vcpkg
