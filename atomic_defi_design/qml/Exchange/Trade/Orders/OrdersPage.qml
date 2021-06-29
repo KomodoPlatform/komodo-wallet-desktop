@@ -97,7 +97,7 @@ Item {
             Row {
                 x: 5
                 y: 0
-                spacing: 0
+                spacing: 5
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
                     text: qsTr("Filter")
