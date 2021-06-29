@@ -12,6 +12,7 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
   VCPKG_DEFAULT_BINARY_CACHE: "$CI_PROJECT_DIR/.cache/vcpkg"
   QT_VERSION: "5.15.2"
+  CMAKE_VERSION: "3.19.8"
 
 cache:
   - key: $CI_COMMIT_REF_SLUG
@@ -47,7 +48,7 @@ linux:build:
     - export QT_ROOT=/opt/Qt/$QT_VERSION
     - export Qt5_DIR=/opt/Qt/$QT_VERSION/gcc_64/lib/cmake/Qt5
     - export PATH=/opt/Qt/$QT_VERSION/gcc_64/bin:$PATH
-    - export PATH=${PATH}:/cmake-3.20.5-linux-x86_64/bin;
+    - export PATH=${PATH}:/cmake-$CMAKE_VERSION-linux-x86_64/bin;
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
     # Bootstrap Vcpkg
