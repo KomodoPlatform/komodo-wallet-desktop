@@ -25,7 +25,7 @@ RUN python3 -m pip install --upgrade pip; \
     python3 -m aqt install -O /opt/Qt $QT_VERSION linux desktop -b https://qt-mirror.dannhauer.de/ -m qtcharts qtwidgets debug_info qtwebengine qtwebview;
 
 RUN git clone https://github.com/KomodoPlatform/libwally-core.git; \ 
-	cd libwally-core; ./tools/autogen.sh; ./configure --disable-shared; sudo make -j2 install; cd ..;
+	cd libwally-core; ./tools/autogen.sh; ./configure --disable-shared; make -j2 install; cd ..;
 
 RUN export QT_INSTALL_CMAKE_PATH=/opt/Qt/$QT_VERSION/gcc_64/lib/cmake; \
     export QT_ROOT=/opt/Qt/$QT_VERSION; \
