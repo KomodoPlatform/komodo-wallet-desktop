@@ -38,11 +38,11 @@ Item {
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            background: FloatingBackground {
-                color: theme.backgroundColor
+            background: DexRectangle {
+                color: theme.dexBoxBackgroundColor
             }
 
-            Loader {
+            contentItem: Loader {
                 id: inner_space
             }
         }
