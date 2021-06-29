@@ -51,16 +51,15 @@ linux:build:
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
     # Bootstrap Vcpkg
-    - cd $CI_PROJECT_DIR; ./ci_tools_atomic_dex/vcpkg-repo/bootstrap-vcpkg.sh
+    - ./ci_tools_atomic_dex/vcpkg-repo/bootstrap-vcpkg.sh
 
     # NINJA Build
     - cd $CI_PROJECT_DIR
     - rm -rf build_ninja || echo "no build_ninja folder to rm"
-    - mkdir build_ninja
-    - cd build_ninja
+    - mkdir build_ninja && cd $_
     - cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
-    - ninja atomicdex-desktop || echo "ninja atomicdex-desktop failed"
-    - ninja install || echo "ninja install failed"
+    - ninja atomicdex-desktop
+    - ninja install
 
 AtomicDex-linux.zip:
   stage: upload_zip
@@ -77,8 +76,6 @@ AtomicDex-linux.zip:
 AtomicDex-linux-AppImage:
   stage: upload_portable
   allow_failure: true
-  before_script:
-    - cd $CI_PROJECT_DIR
   script:
     - echo "Uploading AppImage..."
   artifacts:
