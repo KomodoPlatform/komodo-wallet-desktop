@@ -203,14 +203,16 @@ SetupPage {
                 
             }
 
-            DexButton {
+            DexAppButton {
                 id: submit_button
                 text: qsTr("Login")
                 enabled: input_password.isValid()
-                Layout.preferredWidth: _nextRow.implicitWidth+40
                 onClicked: trySubmit()
                 radius: 20
-                text_obj.color: 'transparent'
+                backgroundColor: theme.accentColor
+                Layout.preferredWidth: _nextRow.implicitWidth+40
+                Layout.preferredHeight: 45
+                label.color: 'transparent'
                 Row {
                     id: _nextRow
                     anchors.centerIn: parent

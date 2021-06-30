@@ -17,6 +17,7 @@ DexRectangle {
     property alias rightPadding: _contentRow.rightPadding
     property alias topPadding: _contentRow.topPadding
     property alias bottomPadding: _contentRow.bottomPadding
+    property alias label: _label
     radius: 4 
     color: _controlMouseArea.containsMouse? Qt.darker(backgroundColor, 0.8) : backgroundColor
     height: _label.implicitHeight+(padding*2)
