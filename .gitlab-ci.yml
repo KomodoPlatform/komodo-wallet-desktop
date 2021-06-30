@@ -12,7 +12,7 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
   VCPKG_DEFAULT_BINARY_CACHE: "$CI_PROJECT_DIR/.cache/vcpkg"
   QT_VERSION: "5.15.2"
-  CMAKE_VERSION: "3.19.0"
+  CMAKE_VERSION: "3.20.5"
 
 cache:
   - key: $CI_COMMIT_REF_SLUG
@@ -41,6 +41,7 @@ linux:build:
     - echo $CI_PROJECT_PATH
     - echo $CI_PROJECT_NAME
     - echo $QT_VERSION
+    - echo $CMAKE_VERSION
 
     # Job Path/Env variables
     - export DEBIAN_FRONTEND=noninteractive
@@ -52,15 +53,15 @@ linux:build:
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
     # Bootstrap Vcpkg
-    - ./ci_tools_atomic_dex/vcpkg-repo/bootstrap-vcpkg.sh
+    - cd $CI_PROJECT_DIR; ./ci_tools_atomic_dex/vcpkg-repo/bootstrap-vcpkg.sh
 
-    # NINJA Build
+    # NINJA
     - cd $CI_PROJECT_DIR
     - rm -rf build_ninja || echo "no build_ninja folder to rm"
     - mkdir build_ninja && cd $_
     - cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
-    - ninja atomicdex-desktop
-    - ninja install
+    - ninja atomicdex-desktop || echo "ninja atomicdex-desktop failed"
+    - ninja install || echo "ninja install failed"
 
 AtomicDex-linux.zip:
   stage: upload_zip
@@ -85,4 +86,3 @@ AtomicDex-linux-AppImage:
       - $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-${CI_COMMIT_SHORT_SHA}-x86_64.AppImage
     when: always
     expire_in: 1 week
-
