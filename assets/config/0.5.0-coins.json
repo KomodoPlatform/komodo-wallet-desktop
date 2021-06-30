@@ -1801,7 +1801,7 @@
     "active": false,
     "coin": "MCL",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "mcl-marmara-credit-loops-mcl-coin",
     "currently_enabled": false,
     "electrum": [
       {
@@ -1858,6 +1858,40 @@
         "https://bscscan.com/"
       ],
       "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "OCEAN-BEP20": {
+      "coin": "OCEAN-BEP20",
+      "name": "Ocean Protocol",
+      "coinpaprika_id": "ocean-ocean-protocol",
+      "coingecko_id": "ocean-protocol",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "OCEAN-ERC20": {
+      "coin": "OCEAN-ERC20",
+      "name": "Ocean Protocol",
+      "coinpaprika_id": "ocean-ocean-protocol",
+      "coingecko_id": "ocean-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -2903,6 +2937,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "QKC-BEP20": {
+      "coin": "QKC-BEP20",
+      "name": "QuarkChain",
+      "coinpaprika_id": "qkc-quarkchain",
+      "coingecko_id": "quark-chain",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "QKC-ERC20": {
+      "coin": "QKC-ERC20",
+      "name": "QuarkChain",
+      "coinpaprika_id": "qkc-quarkchain",
+      "coingecko_id": "quark-chain",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "QTUM": {
     "need_electrum": true,
     "coin": "QTUM",
@@ -3194,6 +3262,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "WCN": {
+    "coin": "WCN",
+    "name": "Widecoin",
+    "coinpaprika_id": "wcn-widecoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrumx.widecoin.org:50001"
+      },
+      {
+        "url": "electrumx2.widecoin.org:50001"
+      },
+      {
+        "url": "electrumx3.widecoin.org:50001"
+      }
+    ],
+    "explorer_url": [
+      "http://explorer.widecoin.org:5000/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "WLC": {
     "coin": "WLC",
     "name": "Wireless Coin",
@@ -3231,6 +3322,26 @@
         "https://bscscan.com/"
       ],
       "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "XMY": {
+      "coin": "XMY",
+      "name": "Myriad",
+      "coinpaprika_id": "xmy-myriad",
+      "coingecko_id": "myriadcoin",
+      "electrum": [
+        {
+          "url": "lenoir.ecoincore.com:10892",
+          "protocol": "SSL"
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/xmy/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
       "active": false,
       "currently_enabled": false
   },
@@ -4179,23 +4290,6 @@
   "active": false,
   "currently_enabled": false
  },
- "OCEAN": {
-  "coin": "OCEAN",
-  "name": "Ocean Protocol",
-  "coinpaprika_id": "ocean-ocean-protocol",
-  "coingecko_id": "ocean-protocol",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
  "OKB": {
   "coin": "OKB",
   "name": "OKB",
@@ -4235,23 +4329,6 @@
   "name": "PowerLedger",
   "coinpaprika_id": "powr-power-ledger",
   "coingecko_id": "power-ledger",
-  "nodes": [
-   "http://eth1.cipig.net:8555",
-   "http://eth2.cipig.net:8555",
-   "http://eth3.cipig.net:8555"
-  ],
-  "explorer_url": [
-   "https://etherscan.io/"
-  ],
-  "type": "ERC-20",
-  "active": false,
-  "currently_enabled": false
- },
- "QKC": {
-  "coin": "QKC",
-  "name": "QuarkChain Token",
-  "coinpaprika_id": "qkc-quarkchain",
-  "coingecko_id": "quark-chain",
   "nodes": [
    "http://eth1.cipig.net:8555",
    "http://eth2.cipig.net:8555",
