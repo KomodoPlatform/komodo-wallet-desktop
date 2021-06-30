@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
-MAINTAINER smk
+MAINTAINER smk 
 ENV QT_VERSION=5.15.2
-ENV CMAKE_VERSION=3.19.8
+ENV CMAKE_VERSION=3.20.5
 
 RUN apt-get -y update && \
     apt-get -y upgrade && \
@@ -12,6 +12,11 @@ RUN apt-get -y update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN wget https://apt.llvm.org/llvm.sh; chmod +x llvm.sh; ./llvm.sh 12; \
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 777; \
+    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 777; \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777; \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777; \
+    apt-get update; \
     export CXX=clang++-12; \
     export CC=clang-12;
 
