@@ -4,13 +4,15 @@ import QtQuick.Controls 2.15
 import "../Constants"
 
 Item {
+    id: _control
     property alias image: image
     property alias image_path: image.source
     property alias image_scale: image.scale
     property alias content: inner_space.sourceComponent
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
-
+    property string backgroundColor: theme.dexBoxBackgroundColor
+    property string borderColor: Style.borderColor
     ColumnLayout {
         id: window_layout
 
@@ -39,7 +41,10 @@ Item {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             background: DexRectangle {
-                color: theme.dexBoxBackgroundColor
+                color: _control.backgroundColor
+                border {
+                    color: _control.borderColor
+                }
             }
 
             contentItem: Loader {
