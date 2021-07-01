@@ -166,7 +166,6 @@ FloatingBackground {
 
                 rangeBackgroundColor: Style.colorTheme7
                 rangeDistanceColor: sell_mode? Style.colorRed : Style.colorGreen
-
                 from: API.app.trading_pg.orderbook.current_min_taker_vol
                 to: Math.max(0, parseFloat(max_volume))
 
