@@ -332,6 +332,15 @@ ClipRRect // Trade Card
                         hoverEnabled: true
                     }
 
+                    DexTooltip
+                    {
+                        visible: _selectedTickerMouseArea.containsMouse
+
+                        font.pixelSize: Style.textSizeSmall4
+
+                        text: selectedTicker
+                    }
+
                     DefaultImage
                     {
                         id: _selectedTickerIcon
@@ -348,7 +357,7 @@ ClipRRect // Trade Card
                             anchors.left: parent.right
                             anchors.leftMargin: 10
                             text: atomic_qt_utilities.retrieve_main_ticker(selectedTicker)
-                            font.pixelSize: Style.textSizeSmall4
+                            font.pixelSize: Style.textSizeSmall2
 
                             Arrow
                             {
@@ -482,6 +491,16 @@ ClipRRect // Trade Card
                         onClicked: _tradeCard.best = true
                     }
 
+                    DexTooltip
+                    {
+                        enabled: _bestOrderIcon.enabled
+                        visible: enabled && _bestOrdersMouseArea.containsMouse
+
+                        font.pixelSize: Style.textSizeSmall4
+
+                        text: enabled ? selectedOrder.coin : ""
+                    }
+
                     // When a best order is currently selected.
                     DefaultImage
                     {
@@ -511,12 +530,11 @@ ClipRRect // Trade Card
                             anchors.leftMargin: 10
 
                             text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin) : ""
-                            font.pixelSize: Style.textSizeSmall4
+                            font.pixelSize: Style.textSizeSmall2
 
                             Arrow
                             {
                                 id: _bestOrderArrow
-
 
                                 enabled: _bestOrderTickerText.enabled
                                 visible: _bestOrderTickerText.visible
@@ -540,7 +558,7 @@ ClipRRect // Trade Card
                         anchors.leftMargin: 5
                         anchors.left: parent.left
                         text: qsTr("Pick an order")
-                        font.pixelSize: Style.textSizeSmall4
+                        font.pixelSize: Style.textSizeSmall2
                         Arrow
                         {
                             anchors.verticalCenter: parent.verticalCenter
