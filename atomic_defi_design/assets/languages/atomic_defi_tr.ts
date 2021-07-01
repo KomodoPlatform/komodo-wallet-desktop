@@ -1099,17 +1099,17 @@
 <context>
     <name>DefaultRangeSlider</name>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="98"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="111"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="105"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="120"/>
         <source>Half</source>
         <translation>Yarısı</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="112"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="129"/>
         <source>Max</source>
         <translation>Maks</translation>
     </message>
@@ -1164,17 +1164,17 @@
 <context>
     <name>DexRangeSlider</name>
     <message>
-        <location filename="../../qml/Components/DexRangeSlider.qml" line="98"/>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="107"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DexRangeSlider.qml" line="105"/>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="114"/>
         <source>Half</source>
         <translation>Yarısı</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DexRangeSlider.qml" line="112"/>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="121"/>
         <source>Max</source>
         <translation>Maks</translation>
     </message>
@@ -2082,6 +2082,38 @@
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="135"/>
         <source>Amount to receive</source>
         <translation>Alınacak miktar</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="178"/>
+        <source>Minimum volume: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="180"/>
+        <source>Volume: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="208"/>
+        <source>How it works ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="220"/>
+        <source>How to use the pro-view slider ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="221"/>
+        <source>This slider is used to setup the order requirements you need.
+Left slider: Sets the minimum amount required to process a trade.
+Right slider: Sets the volume you want to trade.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="234"/>
+        <source>Use custom minimum trade amount</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="79"/>
@@ -3181,12 +3213,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="167"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="174"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation type="unfinished"> %1 etkin değil - En iyi %2 siparişini seçebilmesi için etkinleştirmek istiyor musunuz ? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Evet&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Hayır&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="204"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="211"/>
         <source>No best order.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3593,22 +3625,22 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="404"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="413"/>
         <source>MAX</source>
         <translation type="unfinished">MAKS</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="423"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="432"/>
         <source>To</source>
         <translation type="unfinished">Alan</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="542"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="563"/>
         <source>Pick an order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="577"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="598"/>
         <source>Price</source>
         <translation type="unfinished">Fiyat</translation>
     </message>
@@ -3638,60 +3670,60 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="604"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="625"/>
         <source>Swap Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="627"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="648"/>
         <source>Failed to place the order</source>
         <translation type="unfinished">Emir başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="642"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="663"/>
         <source>Placed the order</source>
         <translation type="unfinished">Emir başarılı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="660"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="681"/>
         <source>Entered amount must be superior than 0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="662"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="683"/>
         <source>You must select an order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="664"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="685"/>
         <source>Entered amount is below the minimum required by this order: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="666"/>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="670"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="687"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="691"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="668"/>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="672"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="689"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="693"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="727"/>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="788"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="748"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="809"/>
         <source>Search</source>
         <translation type="unfinished">Ara</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="882"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="903"/>
         <source>Total %1 fees: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="889"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="910"/>
         <source>%2 (%3)</source>
         <translation type="unfinished"></translation>
     </message>
