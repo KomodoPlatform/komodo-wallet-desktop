@@ -310,12 +310,16 @@ ClipRRect // Trade Card
                 Rectangle // Select ticker button
                 {
                     id: _selectTickerBut
+
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.right: parent.right
                     anchors.rightMargin: 20
-                    width: _selectedTickerIcon.width + _selectedTickerText.width + _selectedTickerArrow.width + 29.5
+
+                    width: _selectedTickerIcon.width + _selectedTickerText.implicitWidth + _selectedTickerArrow.width + 29.5
+
                     height: 30
+
                     radius: 10
                     border.width: 0
                     color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
@@ -324,10 +328,10 @@ ClipRRect // Trade Card
                     {
                         id: _selectedTickerMouseArea
                         anchors.fill: parent
-                        onClicked: {
+                        onClicked:
+                        {
                             _tradeCard.coinSelection = true
                             _tradeCard.best = false
-                            //coinsListModalLoader.open()
                         }
                         hoverEnabled: true
                     }
@@ -350,24 +354,33 @@ ClipRRect // Trade Card
                         width: 20
                         height: 20
                         source: General.coinIcon(selectedTicker)
-                        DefaultText
-                        {
-                            id: _selectedTickerText
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.right
-                            anchors.leftMargin: 10
-                            text: atomic_qt_utilities.retrieve_main_ticker(selectedTicker)
-                            font.pixelSize: Style.textSizeSmall2
+                    }
 
-                            Arrow
-                            {
-                                id: _selectedTickerArrow
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.left: parent.right
-                                anchors.leftMargin: 5
-                                up: false
-                            }
-                        }
+                    DefaultText
+                    {
+                        id: _selectedTickerText
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: _selectedTickerIcon.right
+                        anchors.leftMargin: 10
+
+                        width: 60
+
+                        text: selectedTicker
+                        font.pixelSize: Style.textSizeSmall2
+
+                        wrapMode: Text.NoWrap
+                    }
+
+                    Arrow
+                    {
+                        id: _selectedTickerArrow
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 5
+
+                        up: false
                     }
 
                     ModalLoader
@@ -465,7 +478,7 @@ ClipRRect // Trade Card
 
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
-                    x: _bestOrderIcon.enabled ? _selectTickerBut.x :
+                    x: _bestOrderIcon.enabled ? _selectTickerBut.x + Math.abs(width - _selectTickerBut.width) :
                                                 _selectTickerBut.x - (width - _selectTickerBut.width)
                     height: 30
                     width: _bestOrderIcon.enabled ?
@@ -496,12 +509,29 @@ ClipRRect // Trade Card
                         enabled: _bestOrderIcon.enabled
                         visible: enabled && _bestOrdersMouseArea.containsMouse
 
+
                         font.pixelSize: Style.textSizeSmall4
 
                         text: enabled ? selectedOrder.coin : ""
                     }
 
-                    // When a best order is currently selected.
+                    // When no order is currently selected.
+                    DefaultText
+                    {
+                        id: _bestOrderNoTickerText
+
+                        enabled: !_bestOrderIcon.enabled
+                        visible: enabled
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+
+                        text: qsTr("Pick an order")
+                        font.pixelSize: Style.textSizeSmall2
+                    }
+
+                    // Token Icon (When a best order is currently selected)
                     DefaultImage
                     {
                         id: _bestOrderIcon
@@ -517,55 +547,37 @@ ClipRRect // Trade Card
                         height: 20
 
                         source: enabled ? General.coinIcon(selectedOrder.coin) : ""
-
-                        DefaultText
-                        {
-                            id: _bestOrderTickerText
-
-                            enabled: _bestOrderIcon.enabled
-                            visible: _bestOrderIcon.visible
-
-                            anchors.verticalCenter: _bestOrderIcon.verticalCenter
-                            anchors.left: _bestOrderIcon.right
-                            anchors.leftMargin: 10
-
-                            text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin) : ""
-                            font.pixelSize: Style.textSizeSmall2
-
-                            Arrow
-                            {
-                                id: _bestOrderArrow
-
-                                enabled: _bestOrderTickerText.enabled
-                                visible: _bestOrderTickerText.visible
-
-                                anchors.verticalCenter: _bestOrderTickerText.verticalCenter
-                                anchors.left: _bestOrderTickerText.right
-                                anchors.leftMargin: 5
-
-                                up: false
-                            }
-                        }
                     }
 
-                    // When no order is currently selected.
+                    // Ticker (When a best order is currently selected)
                     DefaultText
                     {
-                        id: _bestOrderNoTickerText
-                        enabled: !_bestOrderIcon.enabled
-                        visible: enabled
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.leftMargin: 5
-                        anchors.left: parent.left
-                        text: qsTr("Pick an order")
+                        id: _bestOrderTickerText
+
+                        enabled: _bestOrderIcon.enabled
+                        visible: _bestOrderIcon.visible
+
+                        anchors.verticalCenter: _bestOrderIcon.verticalCenter
+                        anchors.left: _bestOrderIcon.right
+                        anchors.leftMargin: 10
+
+                        width: 60
+
+                        text: enabled ? selectedOrder.coin : ""
                         font.pixelSize: Style.textSizeSmall2
-                        Arrow
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.right
-                            anchors.leftMargin: 5
-                            up: false
-                        }
+
+                        wrapMode: Text.NoWrap
+                    }
+
+                    Arrow
+                    {
+                        id: _bestOrderArrow
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 5
+
+                        up: false
                     }
 
                     ModalLoader
