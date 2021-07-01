@@ -469,8 +469,9 @@ ClipRRect // Trade Card
 
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
-                    x: _bestOrderIcon.enabled ? _selectTickerBut.x + Math.abs(width - _selectTickerBut.width) :
-                                                _selectTickerBut.x - (width - _selectTickerBut.width)
+                    anchors.right: parent.right
+                    anchors.rightMargin: 20
+
                     height: 30
                     width: _bestOrderIcon.enabled ?
                                _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 :
