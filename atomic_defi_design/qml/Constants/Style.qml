@@ -351,6 +351,7 @@ QtObject {
                                           "PAXG": "#E5CB22",
                                           "SMTF": "#F75836",
                                           "SUSHI": "#E25DA8",
+                                          "TRYB": "#04134C",
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
                                           "VRA": "#D70A41",

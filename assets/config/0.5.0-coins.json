@@ -3136,6 +3136,40 @@
       "active": false,
       "currently_enabled": false
   },
+  "TRYB-BEP20": {
+      "coin": "TRYB-BEP20",
+      "name": "BiLira",
+      "coinpaprika_id": "tryb-bilira",
+      "coingecko_id": "bilira",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TRYB-ERC20": {
+      "coin": "TRYB-ERC20",
+      "name": "BiLira",
+      "coinpaprika_id": "tryb-bilira",
+      "coingecko_id": "bilira",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "TUSD-BEP20": {
       "coin": "TUSD-BEP20",
       "name": "TrueUSD",
