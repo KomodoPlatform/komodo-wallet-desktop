@@ -336,15 +336,6 @@ ClipRRect // Trade Card
                         hoverEnabled: true
                     }
 
-                    DexTooltip
-                    {
-                        visible: _selectedTickerMouseArea.containsMouse
-
-                        font.pixelSize: Style.textSizeSmall4
-
-                        text: selectedTicker
-                    }
-
                     DefaultImage
                     {
                         id: _selectedTickerIcon
@@ -502,17 +493,6 @@ ClipRRect // Trade Card
                         hoverEnabled: true
 
                         onClicked: _tradeCard.best = true
-                    }
-
-                    DexTooltip
-                    {
-                        enabled: _bestOrderIcon.enabled
-                        visible: enabled && _bestOrdersMouseArea.containsMouse
-
-
-                        font.pixelSize: Style.textSizeSmall4
-
-                        text: enabled ? selectedOrder.coin : ""
                     }
 
                     // When no order is currently selected.
