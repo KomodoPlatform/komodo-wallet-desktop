@@ -87,7 +87,7 @@ SetupPage {
             background.radius: 25
             enabled: false 
             opacity: enabled?  1 : .5
-            background.border.color: field.focus? theme.accentColor : Style.colorBorder 
+            background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
             field.font: theme.textType.head6
             field.horizontalAlignment: Qt.AlignLeft
             field.leftPadding: 75
@@ -114,20 +114,7 @@ SetupPage {
             Layout.fillWidth: true
             Layout.preferredHeight: 5
             opacity: .8
-            Rectangle {
-                width: 6
-                height: 6
-                rotation: 45
-                color: theme.accentColor
-                anchors.centerIn: parent
-                Rectangle {
-                    width: 5
-                    height: width
-                    color: theme.surfaceColor
-                    anchors.centerIn: parent
-                    
-                }
-            }
+            
         }
 
         DexAppTextField {
@@ -136,7 +123,7 @@ SetupPage {
             Layout.preferredHeight: 50
             background.border.width: 1
             background.radius: 25
-            background.border.color: field.focus? theme.accentColor : Style.colorBorder 
+            background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
             field.echoMode: TextField.Password
             field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
             field.horizontalAlignment: Qt.AlignLeft
@@ -210,14 +197,14 @@ SetupPage {
                 onClicked: trySubmit()
                 radius: 20
                 backgroundColor: theme.accentColor
-                Layout.preferredWidth: _nextRow.implicitWidth+40
+                Layout.preferredWidth: _nextRow.implicitWidth + 40
                 Layout.preferredHeight: 45
                 label.color: 'transparent'
                 Row {
                     id: _nextRow
                     anchors.centerIn: parent
                     spacing: 10
-                    opacity: submit_button.enabled? 1 : .6
+                    opacity: submit_button.enabled ? 1 : .6
                     DexLabel {
                         text: qsTr("Connect")
                         font: theme.textType.button

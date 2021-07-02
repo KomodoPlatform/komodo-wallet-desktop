@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Components"
 import "../Constants"
 
@@ -17,6 +19,7 @@ SetupPage {
     property string guess_text_error
 
     property bool form_is_filled: false
+    property int currentStep: 0
     property int current_word_idx: 0
     property int guess_count: 1
 
@@ -97,21 +100,46 @@ SetupPage {
     content: ColumnLayout {
         width: 600
         spacing: Style.rowSpacing
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+            Qaterial.AppBarButton {
+                icon.source: Qaterial.Icons.arrowLeft
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: {
+                    if(currentStep === 0) {
+                        reset()
+                        onClickedBack()
+                    } else {
+                        currentStep--
+                    }
+                }
+            }
 
-        DefaultText {
-            text_value: qsTr("New Wallet")
+            DexLabel {
+                font: theme.textType.head6
+                text_value: if(currentStep === 0) {
+                                 qsTr("New Wallet")
+                            } else if(currentStep === 1) {
+                                qsTr("Confirm Seed")
+                            } else if(currentStep === 2) {
+                                qsTr("Choose Password")
+                            }
+                Layout.alignment: Qt.AlignVCenter
+            }
+
         }
 
-        HorizontalLine {
+        Item {
             Layout.fillWidth: true
         }
 
         function reset() {
             new_user.reset()
             input_wallet_name.reset()
-            input_confirm_seed.reset()
-            input_password.reset()
+            _inputPassword.field.text = ""
             input_seed_word.field.text = ""
+            input_generated_seed.text = ""
         }
 
         function completeForm() {
@@ -130,15 +158,17 @@ SetupPage {
 
         function tryGuess() {
             // Open EULA if it's the final one
-            if(submitGuess(input_seed_word.field)) eula_modal.open()
+            if(submitGuess(input_seed_word.field)) {
+                currentStep++
+            }
         }
 
         ModalLoader {
             id: eula_modal
             sourceComponent: EulaModal {
                 onConfirm: () => {
-                   if(onClickedCreate(input_password.field.text,
-                                       input_generated_seed.field.text,
+                   if(onClickedCreate(_inputPassword.field.text,
+                                       input_seed_word.field.text,
                                        input_wallet_name.field.text)) reset()
                 }
             }
@@ -147,24 +177,41 @@ SetupPage {
 
         // First page, fill the form
         ColumnLayout {
-            visible: !form_is_filled
+            visible: currentStep === 0
+            Layout.preferredWidth: 450
             spacing: Style.rowSpacing
 
-            WalletNameField {
+            DexAppTextField {
                 id: input_wallet_name
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                opacity: enabled?  1 : .5
+                background.border.width: 1
+                background.radius: 25 
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
                 field.onAccepted: completeForm()
-            }
+                field.font: theme.textType.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
+                field.placeholderText: "Wallet Name"
 
-            TextAreaWithTitle {
-                id: input_generated_seed
-                title: qsTr("Generated Seed")
-                field.text: current_mnemonic
-                field.readOnly: true
-                copyable: true
-                onReturn: completeForm
-            }
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: theme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    Qaterial.ColorIcon {
+                        anchors.centerIn: parent
+                        iconSize: 19
+                        source: Qaterial.Icons.wallet
+                        color: theme.surfaceColor
+                    }
 
-            FloatingBackground {
+                }
+            }
+            DexRectangle {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
@@ -196,43 +243,96 @@ SetupPage {
                     }
                 }
             }
-
-            TextAreaWithTitle {
-                id: input_confirm_seed
-                title: qsTr("Confirm Seed")
-                field.placeholderText: qsTr("Enter the generated seed here")
-                onReturn: completeForm
+            TextField {
+                id: input_generated_seed
+                visible: false
+                text: current_mnemonic
+            }
+            Column {
+                Layout.fillWidth: true 
+                spacing: 5
+                RowLayout {
+                    width: parent.width
+                    DexLabel {
+                        text: qsTr("Generated Seed")
+                        font: theme.textType.body1
+                        Layout.fillWidth: true 
+                        Layout.alignment: Qt.AlignVCenter
+                    }
+                    Qaterial.AppBarButton {
+                        icon.source: Qaterial.Icons.contentCopy
+                        Layout.alignment: Qt.AlignVCenter
+                        onClicked: {
+                            input_generated_seed.selectAll()
+                            input_generated_seed.copy()
+                            toast.show(qsTr("Copied to Clipboard"), General.time_toast_basic_info, "", false)
+                        }
+                    }
+                }
+                Item {
+                    width: parent.width
+                    height: _insideFlow.height
+                    Grid {
+                        id: _insideFlow
+                        width: parent.width
+                        spacing: 10
+                        Repeater {
+                            model: current_mnemonic.split(" ")
+                            delegate: DexRectangle {
+                                width: 100
+                                height: _insideLabel.implicitHeight + 10
+                                color: theme.accentColor
+                                opacity: .5
+                                DexLabel {
+                                    id: _insideLabel
+                                    text: (index + 1) + ". " + modelData
+                                    font: theme.textType.body2
+                                    anchors.centerIn: parent
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            PasswordForm {
-                id: input_password
-
-                field.onAccepted: completeForm()
-                confirm_field.onAccepted: completeForm()
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 10
             }
 
             RowLayout {
+                Layout.preferredWidth: 400
                 spacing: Style.buttonSpacing
 
-                DefaultButton {
+                Item {
                     Layout.fillWidth: true
-                    text: qsTr("Back")
-                    onClicked: {
-                        reset()
-                        onClickedBack()
-                    }
+                    Layout.preferredHeight: 10
                 }
-
-                PrimaryButton {
-                    id: continue_button
-                    Layout.fillWidth: true
-                    text: qsTr("Continue")
-                    onClicked: completeForm()
-                    enabled:    // Fields are not empty
-                                input_wallet_name.field.acceptableInput === true &&
-                                input_password.isValid() &&
-                                // Correct confirm fields
-                                input_generated_seed.field.text === input_confirm_seed.field.text
+                DexAppButton {
+                    id: nextButton
+                    enabled: input_wallet_name.field.text !== "" 
+                    onClicked: currentStep++
+                    radius: 20
+                    opacity: enabled ? 1 : .4
+                    backgroundColor: theme.accentColor
+                    Layout.preferredWidth: _nextRow.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Next")
+                            font: theme.textType.button
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: Qaterial.Icons.arrowRight
+                            iconSize: 14
+                        }
+                    }
                 }
             }
 
@@ -246,7 +346,7 @@ SetupPage {
 
         // Second page, write the seed word
         ColumnLayout {
-            visible: form_is_filled
+            visible: currentStep === 1
 
             FloatingBackground {
                 Layout.topMargin: 10
@@ -278,33 +378,220 @@ SetupPage {
                 }
             }
 
-
-            TextFieldWithTitle {
+            DexAppTextField {
                 id: input_seed_word
-                title: qsTr("What's the %n. word in your seed phrase?", "", current_word_idx + 1)
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                opacity: enabled?  1 : .5
+                background.border.width: 1
+                background.radius: 25 
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                field.font: theme.textType.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
                 field.validator: RegExpValidator { regExp: /[a-z]+/ }
                 field.onAccepted: tryGuess()
+
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: theme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    DexLabel {
+                        anchors.centerIn: parent
+                        font: theme.textType.head6
+                        text: current_word_idx + 1
+                    }
+
+                }
+            }
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 10
             }
 
             RowLayout {
-                DefaultButton {
-                    Layout.fillWidth: true
-                    text: qsTr("Go back and check again")
-                    onClicked: form_is_filled = false
-                }
+                Layout.preferredWidth: 400
+                spacing: Style.buttonSpacing
 
-                PrimaryButton {
-                    id: submit_button
+                Item {
                     Layout.fillWidth: true
-                    text: qsTr("Continue")
-                    onClicked: tryGuess()
+                    Layout.preferredHeight: 10
+                }
+                DexAppButton {
                     enabled: validGuessField(input_seed_word.field)
+                    opacity: enabled ? 1 : .4
+                    onClicked: tryGuess()
+                    radius: 20
+                    backgroundColor: theme.accentColor
+                    Layout.preferredWidth: _nextRow3.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow3
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Check")
+                            font: theme.textType.button
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: Qaterial.Icons.check
+                            iconSize: 14
+                        }
+                    }
                 }
             }
 
             DefaultText {
                 text_value: guess_text_error
+                color: Style.colorRed
+                visible: text !== ''
+            }
+        }
+        ColumnLayout {
+            visible: currentStep === 2
+            Layout.preferredWidth: 450
+            spacing: Style.rowSpacing
+            DexAppTextField {
+                id: _inputPassword
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                background.border.width: 1
+                background.radius: 25
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                field.echoMode: TextField.Password
+                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
+                field.placeholderText: qsTr("Type password")
+                field.onAccepted: trySubmit()
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: theme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    Qaterial.ColorIcon {
+                        anchors.centerIn: parent
+                        iconSize: 19
+                        source: Qaterial.Icons.keyVariant
+                        color: theme.surfaceColor
+                    }
+
+                }
+                Qaterial.AppBarButton {
+                    opacity: .8
+                    icon {
+                        source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        color: theme.accentColor
+                    }
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        right: parent.right
+                        rightMargin: 10
+                    }
+                    onClicked: {
+                        if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
+                        else { _inputPassword.field.echoMode = TextField.Password }
+                    }
+                }
+            }
+
+            DexKeyChecker {
+                id: _keyChecker
+                field: _inputPassword.field
+                Layout.leftMargin: 20
+                match_password: _inputPasswordConfirm.field.text
+            }
+
+            DexAppTextField {
+                id: _inputPasswordConfirm
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                background.border.width: 1
+                background.radius: 25
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                field.echoMode: TextField.Password
+                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
+                field.placeholderText: qsTr("Cofirm password")
+                field.onAccepted: trySubmit()
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: theme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    Qaterial.ColorIcon {
+                        anchors.centerIn: parent
+                        iconSize: 19
+                        source: Qaterial.Icons.keyVariant
+                        color: theme.surfaceColor
+                    }
+
+                }
+                Qaterial.AppBarButton {
+                    opacity: .8
+                    icon {
+                        source: _inputPasswordConfirm.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        color: theme.accentColor
+                    }
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        right: parent.right
+                        rightMargin: 10
+                    }
+                    onClicked: {
+                        if( _inputPasswordConfirm.field.echoMode === TextField.Password ) { _inputPasswordConfirm.field.echoMode = TextField.Normal }
+                        else { _inputPasswordConfirm.field.echoMode = TextField.Password }
+                    }
+                }
+            }
+            RowLayout {
+                Layout.preferredWidth: 400
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 10
+                }
+
+                DexAppButton {
+                    enabled: _keyChecker.isValid()
+                    opacity: enabled ? 1 : .4
+                    onClicked: eula_modal.open()
+                    radius: 20
+                    backgroundColor: theme.accentColor
+                    Layout.preferredWidth: _nextRow2.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow2
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Cotinue")
+                            font: theme.textType.button
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: Qaterial.Icons.arrowRight
+                            iconSize: 14
+                        }
+                    }
+                }
+            }
+            DefaultText {
+                text_value: text_error
                 color: Style.colorRed
                 visible: text !== ''
             }

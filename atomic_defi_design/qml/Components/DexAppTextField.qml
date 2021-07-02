@@ -14,7 +14,9 @@ Item {
 	property alias background: _background
 	property int leftWidth: -1
 	readonly property int max_length: 40 
-
+	function reset() {
+		input_field.text = ""
+	}
 	Rectangle {
 		id: _background
 	    anchors.fill: parent

@@ -23,7 +23,7 @@ SetupPage {
 
     property var wallets: ([])
 
-    image_path: "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo
+    image_path: "file:///" + atomic_logo_path +  "/" + theme.bigSidebarLogo
     image_margin: 30
     content: ColumnLayout {
         id: content_column
@@ -115,7 +115,7 @@ SetupPage {
                             // Click area
                             Rectangle {
                                 height: parent.height
-                                width: mouse_area.containsMouse? parent.width : 0
+                                width: mouse_area.containsMouse ? parent.width : 0
                                 opacity: .4
                                 Behavior on width {
                                     NumberAnimation {
@@ -157,7 +157,7 @@ SetupPage {
 
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.bottom: parent.bottom
-                                anchors.bottomMargin: -height/2
+                                anchors.bottomMargin: -height / 2
                                 light: true
                             }
                         }

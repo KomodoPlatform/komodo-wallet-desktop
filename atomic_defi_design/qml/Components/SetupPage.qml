@@ -12,7 +12,7 @@ Item {
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
     property string backgroundColor: theme.dexBoxBackgroundColor
-    property string borderColor: Style.borderColor
+    property string borderColor: theme.rectangleBorderColor
     ColumnLayout {
         id: window_layout
 
