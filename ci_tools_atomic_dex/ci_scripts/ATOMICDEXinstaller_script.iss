@@ -6,7 +6,9 @@
 #define MyAppPublisher "Komodo Platform"
 #define MyAppURL "https://www.komodoplatform.com/"
 #define MyAppExeName "atomicdex-desktop.exe"
+#define MyUserName "smk"
 #define CommitHash "b2ce1cc"
+
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -24,9 +26,9 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 ;PrivilegesRequiredOverridesAllowed=dialog 
-OutputDir=C:\Users\smk\Documents\temp
+OutputDir=C:\Users\{#MyUserName}\Documents\temp
 OutputBaseFilename=atomicdex-desktop-{#MyAppVersion}-windows-installer
-SetupIconFile=C:\Users\smk\Downloads\atomicdex-desktop-windows-10-qt-5-15-2-{#CommitHash}.zip\bin\assets\logo\dex-logo.ico
+SetupIconFile=C:\Users\{#MyUserName}\Downloads\atomicdex-desktop-windows-10-qt-5-15-2-{#CommitHash}.zip\bin\assets\logo\dex-logo.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -41,8 +43,8 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\smk\Downloads\atomicdex-desktop-windows-10-qt-5-15-2-{#CommitHash}.zip\bin\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\smk\Downloads\atomicdex-desktop-windows-10-qt-5-15-2-{#CommitHash}.zip\bin\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\{#MyUserName}\Downloads\atomicdex-desktop-windows-10-qt-5-15-2-{#CommitHash}.zip\bin\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\{#MyUserName}\Downloads\atomicdex-desktop-windows-10-qt-5-15-2-{#CommitHash}.zip\bin\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
