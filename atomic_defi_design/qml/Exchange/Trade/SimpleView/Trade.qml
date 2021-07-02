@@ -33,6 +33,7 @@ ClipRRect // Trade Card
     }
     onEnabledChanged: selectedOrder = undefined
     Component.onDestruction: selectedOrder = undefined
+    Component.onCompleted: _fromValue.field.forceActiveFocus()
     onBestChanged: if (best) API.app.trading_pg.orderbook.refresh_best_orders()
 
     width: bestOrderSimplified.visible ? 600 : coinSelection ? 450 : 380
@@ -785,6 +786,7 @@ ClipRRect // Trade Card
                 {
                     _tradeCard.selectedTicker = ticker
                     _tradeCard.coinSelection = false
+                    _fromValue.field.forceActiveFocus()
                 }
 
                 anchors.fill: parent
@@ -845,6 +847,7 @@ ClipRRect // Trade Card
                 {
                     _tradeCard.selectedOrder = selectedOrder
                     _bestOrderSearchField.text = ""
+                    _fromValue.field.forceActiveFocus()
                 }
                 onBestChanged: 
                 {
