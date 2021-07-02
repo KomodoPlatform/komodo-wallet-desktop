@@ -316,7 +316,7 @@ ClipRRect // Trade Card
                     anchors.right: parent.right
                     anchors.rightMargin: 20
 
-                    width: _selectedTickerIcon.width + _selectedTickerText.implicitWidth + _selectedTickerArrow.width + 29.5
+                    width: _selectedTickerIcon.width + Math.max(_selectedTickerText.implicitWidth, _selectedTickerTypeText.implicitWidth) + _selectedTickerArrow.width + 29.5
 
                     height: 30
 
@@ -352,15 +352,26 @@ ClipRRect // Trade Card
                         id: _selectedTickerText
 
                         anchors.verticalCenter: parent.verticalCenter
+                        anchors.verticalCenterOffset: -5
                         anchors.left: _selectedTickerIcon.right
                         anchors.leftMargin: 10
 
                         width: 60
 
-                        text: selectedTicker
+                        text: atomic_qt_utilities.retrieve_main_ticker(selectedTicker)
                         font.pixelSize: Style.textSizeSmall2
 
                         wrapMode: Text.NoWrap
+
+                        DefaultText
+                        {
+                            id: _selectedTickerTypeText
+
+                            anchors.top: parent.bottom
+
+                            text: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(selectedTicker).type
+                            font.pixelSize: 9
+                        }
                     }
 
                     Arrow
@@ -474,7 +485,7 @@ ClipRRect // Trade Card
 
                     height: 30
                     width: _bestOrderIcon.enabled ?
-                               _bestOrderIcon.width + _bestOrderTickerText.implicitWidth + _bestOrderArrow.width + 29.5 :
+                               _bestOrderIcon.width + Math.max(_bestOrderTickerText.implicitWidth, _bestOrderTickerTypeText.implicitWidth) + _bestOrderArrow.width + 29.5 :
                                _bestOrderNoTickerText.implicitWidth + 30
 
                     radius: 10
@@ -539,15 +550,27 @@ ClipRRect // Trade Card
                         visible: _bestOrderIcon.visible
 
                         anchors.verticalCenter: _bestOrderIcon.verticalCenter
+                        anchors.verticalCenterOffset: -5
                         anchors.left: _bestOrderIcon.right
                         anchors.leftMargin: 10
 
                         width: 60
 
-                        text: enabled ? selectedOrder.coin : ""
+                        text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin) : ""
                         font.pixelSize: Style.textSizeSmall2
 
                         wrapMode: Text.NoWrap
+
+
+                        DefaultText
+                        {
+                            id: _bestOrderTickerTypeText
+
+                            anchors.top: parent.bottom
+
+                            text: enabled ? API.app.portfolio_pg.global_cfg_mdl.get_coin_info(selectedOrder.coin).type : ""
+                            font.pixelSize: 9
+                        }
                     }
 
                     Arrow
