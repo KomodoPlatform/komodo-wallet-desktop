@@ -107,6 +107,8 @@ DefaultListView
 
     delegate: ItemDelegate // Order Line
     {
+        property bool _isCoinEnabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
+
         width: _rowWidth
         height: _rowHeight
 
@@ -125,18 +127,9 @@ DefaultListView
                 {
                     Layout.preferredWidth: parent._iconWidth
                     Layout.preferredHeight: 24
+
                     source: General.coinIcon(coin)
-
-                    DexColorOverlay
-                    {
-                        visible: !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
-
-                        anchors.fill: parent
-
-                        source: parent
-                        color: theme.buttonColorTextDisabled
-                        opacity: 0.8
-                    }
+                    opacity: !_isCoinEnabled? .1 : 1
                 }
                 DefaultText                          // Order Token Name
                 {
@@ -200,7 +193,7 @@ DefaultListView
                                 color = theme.buttonColorTextDisabled
                                 opacity = 0.8
                                 _coinIsEnabling.visible = true
-                            }
+                             }
                         }
                     }
                 }
@@ -215,14 +208,14 @@ DefaultListView
 
                     Connections
                     {
-                        target: API.app.portfolio_pg.portfolio_mdl
+                        target: API.app.portfolio_pg.global_cfg_mdl.all_disabled_proxy
 
                         function onLengthChanged()
                         {
-                            _listBestOrdersView.forceLayout()
                             _tooltip.close()
+                            _isCoinEnabled = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
                         }
-                    }
+                     }
                 }
 
                 ModalLoader
