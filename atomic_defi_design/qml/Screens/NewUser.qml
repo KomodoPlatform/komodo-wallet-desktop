@@ -185,7 +185,7 @@ SetupPage {
                 id: input_wallet_name
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                opacity: enabled?  1 : .5
+                opacity: enabled ?  1 : .5
                 background.border.width: 1
                 background.radius: 25 
                 background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
@@ -382,7 +382,7 @@ SetupPage {
                 id: input_seed_word
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                opacity: enabled?  1 : .5
+                opacity: enabled ?  1 : .5
                 background.border.width: 1
                 background.radius: 25 
                 background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
