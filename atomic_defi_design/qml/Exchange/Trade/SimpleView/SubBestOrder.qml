@@ -107,19 +107,6 @@ DefaultListView
 
     delegate: ItemDelegate // Order Line
     {
-        function onClickedCallback()
-        {
-            if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
-            {
-                _tooltip.open()
-            }
-            else
-            {
-                _listBestOrdersView.tradeCard.best = false
-                _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
-            }
-        }
-
         width: _rowWidth
         height: _rowHeight
 
@@ -232,8 +219,8 @@ DefaultListView
 
                         function onLengthChanged()
                         {
+                            _listBestOrdersView.forceLayout()
                             _tooltip.close()
-                            onClickedCallback()
                         }
                     }
                 }
@@ -248,7 +235,18 @@ DefaultListView
                 delay: 200
             }
         }
-        onClicked: onClickedCallback()
+        onClicked:
+        {
+            if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
+            {
+                _tooltip.open()
+            }
+            else
+            {
+                _listBestOrdersView.tradeCard.best = false
+                _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
+            }
+        }
     }
     DexLabel {
         anchors.centerIn: parent
