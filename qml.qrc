@@ -344,6 +344,7 @@
         <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabel.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLanguage.qml</file>
         <file>atomic_defi_design/qml/Components/DexListView.qml</file>
         <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
         <file>atomic_defi_design/qml/Components/DexKeyChecker.qml</file>

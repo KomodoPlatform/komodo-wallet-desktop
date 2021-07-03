@@ -29,9 +29,18 @@ SetupPage {
         id: content_column
         width: 400
         spacing: Style.rowSpacing
-        DexLabel {
-            font: theme.textType.head6
-            text_value: qsTr("Welcome")
+        RowLayout {
+            Layout.fillWidth: true 
+             DexLabel {
+                font: theme.textType.head6
+                text_value: qsTr("Welcome")
+                Layout.fillWidth: true 
+                Layout.alignment: Qt.AlignVCenter
+            }
+            DexLanguage {
+                Layout.preferredWidth: 55
+                Layout.alignment: Qt.AlignVCenter
+            }
         }
 
         Item {
@@ -172,10 +181,6 @@ SetupPage {
             light: true
         }
 
-        Languages {
-            Layout.alignment: Qt.AlignHCenter
-            show_label: false
-        }
     }
 
 
