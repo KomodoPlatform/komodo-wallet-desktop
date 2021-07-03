@@ -160,6 +160,9 @@ SetupPage {
             // Open EULA if it's the final one
             if(submitGuess(input_seed_word.field)) {
                 currentStep++
+            } else {
+                input_seed_word.field.text = ""
+                input_seed_word.error = true
             }
         }
 
@@ -352,7 +355,7 @@ SetupPage {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
-                height: 160
+                height: 120
 
                 Column {
                     id: warning_texts_2
@@ -360,14 +363,13 @@ SetupPage {
                     anchors.centerIn: parent
                     width: parent.width
 
-                    spacing: 30
+                    spacing: 5
 
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: qsTr("Let's double check your seed phrase")
                     }
-
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -377,6 +379,48 @@ SetupPage {
                     }
                 }
             }
+            Column {
+                Layout.fillWidth: true 
+                spacing: 5
+                Item {
+                    width: parent.width-10
+                    height: _insideFlow2.height
+                    Grid {
+                        id: _insideFlow2
+                        width: parent.width
+                        spacing: 10
+                        Repeater {
+                            model: current_mnemonic.split(" ").sort(() => Math.random() - 0.5)
+                            delegate: DexRectangle {
+                                width: 90
+                                height: _insideLabel.implicitHeight + 10
+                                color: theme.accentColor
+                                opacity: _areaSelect.containsMouse?  1 : .6
+                                DexLabel {
+                                    id: _insideLabel
+                                    text: modelData
+                                    font: theme.textType.body2
+                                    anchors.centerIn: parent
+                                }
+                                DexMouseArea {
+                                    id: _areaSelect
+                                    hoverEnabled: true
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        input_seed_word.field.text = modelData
+                                        tryGuess()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true 
+                Layout.preferredHeight: 5
+            }
 
             DexAppTextField {
                 id: input_seed_word
@@ -385,7 +429,6 @@ SetupPage {
                 opacity: enabled ?  1 : .5
                 background.border.width: 1
                 background.radius: 25 
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
                 field.font: theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
@@ -451,7 +494,8 @@ SetupPage {
             DefaultText {
                 text_value: guess_text_error
                 color: Style.colorRed
-                visible: text !== ''
+                visible: input_seed_word.error
+                DexVisibleBehavior on visible {}  
             }
         }
         ColumnLayout {
@@ -470,7 +514,7 @@ SetupPage {
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Type password")
-                field.onAccepted: trySubmit()
+                field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
                 DexRectangle {
                     x: 5
                     height: 40
@@ -523,7 +567,7 @@ SetupPage {
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Cofirm password")
-                field.onAccepted: trySubmit()
+                field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
                 DexRectangle {
                     x: 5
                     height: 40

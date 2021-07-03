@@ -3,27 +3,62 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts  1.5
 
+import App 1.0
+
 Item {
 	id: control
 	width:  200
     height: 35
     property alias value: input_field.text
 	property alias field: input_field
+	property alias background: _background
 	property string leftText: ""
 	property string rightText: ""
-	property alias background: _background
 	property int leftWidth: -1
 	readonly property int max_length: 40 
+	property bool error: false
+	onErrorChanged: {
+		if(error) {
+			_animationTimer.start()
+			_animate.start()
+		}
+	}
+	Timer {
+		id: _animationTimer
+		interval: 350
+		onTriggered: {
+			_animate.stop()
+			_background.x = 0
+		}
+	}
+	Timer {
+		id: _animate
+		interval: 30
+		repeat: true
+		onTriggered: {
+			if(_background.x == -3) {
+				_background.x = 3
+			} else {
+				_background.x = -3
+			}
+		}
+	}
 	function reset() {
 		input_field.text = ""
 	}
 	Rectangle {
 		id: _background
-	    anchors.fill: parent
+	    width: parent.width
+	    height: parent.height
 	    radius: 4
 	    color: theme.surfaceColor
-	    border.color: theme.accentColor
+	    border.color: control.error? theme.redColor :  input_field.focus ? theme.accentColor : Style.colorBorder 
 	    border.width: input_field.focus? 1 : 0
+	    Behavior on x {
+	    	NumberAnimation {
+	    		duration: 40
+	    	}
+	    }
 	}
 
 	RowLayout {
@@ -59,11 +94,11 @@ Item {
 				DexTextField {
 			        id: input_field
 					onTextChanged: {
-				        text = text.trim()
 				        if(text.length > control.max_length) {
 				            console.log("too long! ", text.length)
 				            text = text.substring(0, control.max_length)
 				        }
+				        control.error = false
 			        }
 					horizontalAlignment: Qt.AlignRight
 			        echoMode: TextInput.Normal
