@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.12
 
 import Qaterial 1.0 as Qaterial
 
@@ -10,21 +11,139 @@ import "../Settings"
 
 SetupPage {
     // Override
+    id: _setup
     property var onClickedNewUser: () => {}
     property var onClickedRecoverSeed: () => {}
     property var onClickedWallet: () => {}
 
-    Component.onCompleted: updateWallets()
 
     // Local
     function updateWallets() {
         wallets = API.app.wallet_mgr.get_wallets()
     }
-
+    function onClickedLogin(password) {
+        if(API.app.wallet_mgr.login(password, selected_wallet_name)) {
+            console.log("Success: Login")
+            app.currentWalletName = selected_wallet_name
+            return true
+        }
+        else {
+            console.log("Failed: Login")
+            text_error = qsTr("Incorrect Password")
+            return false
+        }
+    }
     property var wallets: ([])
 
     image_path: "file:///" + atomic_logo_path +  "/" + theme.bigSidebarLogo
     image_margin: 30
+    Drawer {
+        id: bottomDrawer
+        width: parent.width
+        height: parent.height
+        edge: Qt.BottomEdge
+        dim: false //
+        modal: false
+        background: Item {
+            DexRectangle {
+                id: _drawerBG
+                anchors.fill: parent
+                radius: 0
+                border.width: 0
+                color: 'black'
+                opacity: .8
+            }
+            Column {
+                anchors.bottom: parent.bottom 
+                anchors.bottomMargin: 300
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 20
+                DexLabel {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Login"
+                    font: theme.textType.head2
+                }
+                DexLabel {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Password"
+                    topPadding: 10
+                }
+                DexAppTextField {
+                    id: _inputPassword
+                    height: 50 
+                    width: 300
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    background.border.width: 1
+                    background.radius: 25
+                    field.echoMode: TextField.Password
+                    field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+                    field.horizontalAlignment: Qt.AlignLeft
+                    field.leftPadding: 75
+                    field.rightPadding: 40
+                    field.placeholderText: qsTr("Type password")
+                    field.onAccepted: {
+                         if(_keyChecker.isValid()) { 
+                            if(onClickedLogin(field.text)) {
+                                console.log("Okay")
+                                bottomDrawer.close()
+                                app.current_page = idx_initial_loading
+                            }
+                        } else {
+                            error = true
+                        }
+                    }
+                    DexRectangle {
+                        x: 5
+                        height: 40
+                        width: 60
+                        radius: 20
+                        color: _inputPassword.field.focus? _inputPassword.background.border.color : theme.accentColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        Qaterial.ColorIcon {
+                            anchors.centerIn: parent
+                            iconSize: 19
+                            source: Qaterial.Icons.keyVariant
+                            color: theme.surfaceColor
+                        }
+
+                    }
+                    Qaterial.AppBarButton {
+                        opacity: .8
+                        icon {
+                            source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                            color: _inputPassword.field.focus? _inputPassword.background.border.color : theme.accentColor
+                        }
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                            rightMargin: 10
+                        }
+                        onClicked: {
+                            if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
+                            else { _inputPassword.field.echoMode = TextField.Password }
+                        }
+                    }
+                }
+
+                DexKeyChecker {
+                    id: _keyChecker
+                    field: _inputPassword.field
+                    visible: false
+                }
+            }
+            Qaterial.AppBarButton {
+                anchors.bottom: parent.bottom 
+                anchors.bottomMargin: 60
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: 80
+                icon.width: 40 
+                icon.height: 40
+                icon.source: Qaterial.Icons.close
+                onClicked: bottomDrawer.close()
+            }
+        }
+
+    }
     content: ColumnLayout {
         id: content_column
         width: 400
@@ -140,7 +259,8 @@ SetupPage {
                                 hoverEnabled: true
                                 onClicked: {
                                     selected_wallet_name = model.modelData
-                                    onClickedWallet()
+                                    bottomDrawer.open()
+                                    //onClickedWallet()
                                 }
                             }
 
@@ -181,6 +301,16 @@ SetupPage {
             light: true
         }
 
+    }
+    Component.onCompleted: {
+        updateWallets()
+    }
+    GaussianBlur {
+        anchors.fill: _setup
+        visible: bottomDrawer.visible
+        source: _setup
+        radius: 21
+        deviation: 3
     }
 
 
