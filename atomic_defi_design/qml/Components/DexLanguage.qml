@@ -11,6 +11,7 @@ import "../Constants"
 DexComboBox {
     id: control
     model: API.app.settings_pg.get_available_langs()
+    displayText: API.app.settings_pg.lang
     delegate: ItemDelegate {
         width: control.width
         height: 30
