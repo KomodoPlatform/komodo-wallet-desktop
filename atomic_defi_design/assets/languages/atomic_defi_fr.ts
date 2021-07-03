@@ -433,12 +433,12 @@
 <context>
     <name>AddressBookWalletTypeListModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="48"/>
+        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="52"/>
         <source>Select wallet type</source>
         <translation>Sélectionnez le type de portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="56"/>
+        <location filename="../../qml/Wallet/AddressBookWalletTypeListModal.qml" line="61"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
@@ -454,7 +454,7 @@
 <context>
     <name>AssetPieChart</name>
     <message>
-        <location filename="../../qml/Portfolio/AssetPieChart.qml" line="126"/>
+        <location filename="../../qml/Portfolio/AssetPieChart.qml" line="134"/>
         <source>Assets</source>
         <translation>Actifs</translation>
     </message>
@@ -915,183 +915,183 @@
         <translation>Le nombre actuel d&apos;actifs activées ne correspond pas à vos spécifications de configuration. La configuration de vos actifs sera réinitialisée.</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="147"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="160"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="148"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="161"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation>Le contenu de cette section sera ajouté ultérieurement. Restez à l&apos;écoute !</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="281"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="282"/>
         <source>Matching</source>
         <translation>Recherche en cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="281"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="282"/>
         <source>Order Matching</source>
         <translation>Recherche d&apos;un ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="283"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="284"/>
         <source>Matched</source>
         <translation>Trouvé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="283"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="284"/>
         <source>Order Matched</source>
         <translation>Ordre trouvé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="285"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="286"/>
         <source>Ongoing</source>
         <translation>En cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="285"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="286"/>
         <source>Swap Ongoing</source>
         <translation>Échange en cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="287"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="288"/>
         <source>Successful</source>
         <translation>Réussi</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="287"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="288"/>
         <source>Swap Successful</source>
         <translation>Échange terminé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="289"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="290"/>
         <source>Refunding</source>
         <translation>En cours de remboursement</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="291"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="292"/>
         <source>Failed</source>
         <translation>Échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="291"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="292"/>
         <source>Swap Failed</source>
         <translation>Erreur lors de l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="293"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="294"/>
         <source>Unknown</source>
         <translation>Inconnue</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="293"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="294"/>
         <source>Unknown State</source>
         <translation>État inconnu</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="337"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="338"/>
         <source>Started</source>
         <translation>Commencé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="339"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="340"/>
         <source>Negotiated</source>
         <translation>Négocié</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="341"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="342"/>
         <source>Taker fee sent</source>
         <translation>Frais de preneur envoyés</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="343"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="344"/>
         <source>Maker payment received</source>
         <translation>Paiement de l&apos;envoyeur reçu</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="345"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="346"/>
         <source>Maker payment wait confirm started</source>
         <translation>La confirmation d&apos;attente de paiement de l&apos;envoyeur a commencé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="347"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="348"/>
         <source>Maker payment validated and confirmed</source>
         <translation>Paiement de l&apos;envoyeur validé et confirmé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="349"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="350"/>
         <source>Taker payment sent</source>
         <translation>Paiement du preneur envoyé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="351"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="352"/>
         <source>Taker payment spent</source>
         <translation>Paiement du preneur dépensé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="353"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="354"/>
         <source>Maker payment spent</source>
         <translation>Paiement de l&apos;envoyeur dépensé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="355"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="356"/>
         <source>Finished</source>
         <translation>Fini</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="357"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="358"/>
         <source>Start failed</source>
         <translation>Le démarrage a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="359"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="360"/>
         <source>Negotiate failed</source>
         <translation>La négociation a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="361"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="362"/>
         <source>Taker fee validate failed</source>
         <translation>Échec de la validation des frais du preneur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="363"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="364"/>
         <source>Maker payment transaction failed</source>
         <translation>La transaction de paiement du créateur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="365"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="366"/>
         <source>Maker payment Data send failed</source>
         <translation>Échec de l&apos;envoi des données de paiement du créateur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="367"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="368"/>
         <source>Maker payment wait confirm failed</source>
         <translation>La confirmation de l&apos;attente de paiement du créateur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="369"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="370"/>
         <source>Taker payment validate failed</source>
         <translation>La validation du paiement du preneur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="371"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="372"/>
         <source>Taker payment wait confirm failed</source>
         <translation>La confirmation de l&apos;attente de paiement du preneur a échoué</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="373"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="374"/>
         <source>Taker payment spend failed</source>
         <translation>Échec des dépenses de paiement du preneur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="375"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="376"/>
         <source>Maker payment wait refund started</source>
         <translation>attente de paiement du créateur, remboursement commencé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="377"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="378"/>
         <source>Maker payment refunded</source>
         <translation>Paiement du créateur remboursé</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="379"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="380"/>
         <source>Maker payment refund failed</source>
         <translation>échec du remboursement du paiement du créateur</translation>
     </message>
@@ -1099,17 +1099,17 @@
 <context>
     <name>DefaultRangeSlider</name>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="98"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="111"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="105"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="120"/>
         <source>Half</source>
         <translation>Moitié</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="112"/>
+        <location filename="../../qml/Components/DefaultRangeSlider.qml" line="129"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
@@ -1164,17 +1164,17 @@
 <context>
     <name>DexRangeSlider</name>
     <message>
-        <location filename="../../qml/Components/DexRangeSlider.qml" line="98"/>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="107"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DexRangeSlider.qml" line="105"/>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="114"/>
         <source>Half</source>
         <translation>Moitié</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/DexRangeSlider.qml" line="112"/>
+        <location filename="../../qml/Components/DexRangeSlider.qml" line="121"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
@@ -2092,6 +2092,38 @@
         <translation>Montant à recevoir</translation>
     </message>
     <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="178"/>
+        <source>Minimum volume: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="180"/>
+        <source>Volume: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="208"/>
+        <source>How it works ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="220"/>
+        <source>How to use the pro-view slider ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="221"/>
+        <source>This slider is used to setup the order requirements you need.
+Left slider: Sets the minimum amount required to process a trade.
+Right slider: Sets the volume you want to trade.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="234"/>
+        <source>Use custom minimum trade amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="79"/>
         <source>Price</source>
         <translation>Prix</translation>
@@ -2332,22 +2364,22 @@
 <context>
     <name>Portfolio</name>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="185"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="186"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="166"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="167"/>
         <source>Show only coins with balance</source>
         <translation>Afficher uniquement les assets avec solde</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="218"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="219"/>
         <source>Portfolio</source>
         <translation>Portfolio</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="239"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="240"/>
         <source>Add asset</source>
         <translation>Ajouter un actif</translation>
     </message>
@@ -3190,12 +3222,12 @@
         <translation>Taux CEX</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="167"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="174"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation> %1 n&apos;est pas activé - Souhaitez vous l&apos;activer pour pouvoir selectionnez les meilleurs offres %2 ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Oui&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Non&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="204"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubBestOrder.qml" line="211"/>
         <source>No best order.</source>
         <translation>Pas de meilleurs offres.</translation>
     </message>
@@ -3203,22 +3235,22 @@
 <context>
     <name>SubCoinSelector</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="61"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="47"/>
         <source>Token</source>
         <translation>Asset</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="80"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="69"/>
         <source>Balance</source>
         <translation>Balance</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="98"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="91"/>
         <source>Balance Fiat</source>
         <translation>Balance Fiduciaire</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="187"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="188"/>
         <source>No Selectable coin.</source>
         <translation>Aucune asset sélectionnable.</translation>
     </message>
@@ -3608,22 +3640,22 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
         <translation>Entrez un montant</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="404"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="413"/>
         <source>MAX</source>
         <translation>MAX</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="423"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="432"/>
         <source>To</source>
         <translation>Vers</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="542"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="563"/>
         <source>Pick an order</source>
         <translation>Choisir une commande</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="577"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="598"/>
         <source>Price</source>
         <translation>Prix</translation>
     </message>
@@ -3653,60 +3685,60 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
         <translation>Disponible: </translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="604"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="625"/>
         <source>Swap Now</source>
         <translation>Échanger maintenant</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="627"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="648"/>
         <source>Failed to place the order</source>
         <translation>Échec lors du placement de l&apos;ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="642"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="663"/>
         <source>Placed the order</source>
         <translation>L&apos;ordre a été placé</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="660"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="681"/>
         <source>Entered amount must be superior than 0.</source>
         <translation>Le montant saisi doit être supérieur à 0.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="662"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="683"/>
         <source>You must select an order.</source>
         <translation>Vous devez sélectionner une commande.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="664"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="685"/>
         <source>Entered amount is below the minimum required by this order: %1</source>
         <translation>Le montant saisi est inférieur au minimum requis par cette commande : %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="666"/>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="670"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="687"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="691"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="668"/>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="672"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="689"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="693"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="727"/>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="786"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="748"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="809"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="880"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="903"/>
         <source>Total %1 fees: </source>
         <translation>Frais totaux %1 : </translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="887"/>
+        <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="910"/>
         <source>%2 (%3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3887,7 +3919,7 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
 <context>
     <name>main</name>
     <message>
-        <location filename="../../qml/main.qml" line="92"/>
+        <location filename="../../qml/main.qml" line="93"/>
         <source>Logout</source>
         <translation type="unfinished">Se déconnecter</translation>
     </message>
@@ -3902,7 +3934,7 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/main.qml" line="230"/>
+        <location filename="../../qml/main.qml" line="235"/>
         <source>Balance</source>
         <translation type="unfinished">Balance</translation>
     </message>
