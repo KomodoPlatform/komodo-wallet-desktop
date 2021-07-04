@@ -1373,7 +1373,10 @@
     ],
     "type": "UTXO",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "binance_available_pairs": [
+      "USDT"
+    ]
   },
   "FIRO-BEP20": {
     "coin": "FIRO-BEP20",
@@ -1390,7 +1393,10 @@
     ],
     "type": "BEP-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "binance_available_pairs": [
+      "USDT"
+    ]
   },
   "FJC": {
     "coin": "FJC",
