@@ -513,11 +513,7 @@
       "https://blockstream.info/"
     ],
     "active": true,
-    "currently_enabled": false,
-    "binance_available_pairs": [
-      "BUSD",
-      "USDT"
-    ]
+    "currently_enabled": false
   },
   "BTC-BEP20": {
     "coin": "BTC-BEP20",
@@ -1373,10 +1369,7 @@
     ],
     "type": "UTXO",
     "active": false,
-    "currently_enabled": false,
-    "binance_available_pairs": [
-      "USDT"
-    ]
+    "currently_enabled": false
   },
   "FIRO-BEP20": {
     "coin": "FIRO-BEP20",
@@ -1393,10 +1386,7 @@
     ],
     "type": "BEP-20",
     "active": false,
-    "currently_enabled": false,
-    "binance_available_pairs": [
-      "USDT"
-    ]
+    "currently_enabled": false
   },
   "FJC": {
     "coin": "FJC",
@@ -1731,10 +1721,7 @@
       "https://blockexplorer.one/litecoin/mainnet/"
     ],
     "type": "UTXO",
-    "name": "Litecoin",
-    "binance_available_pairs": [
-      "BUSD"
-    ]
+    "name": "Litecoin"
   },
   "LYNX": {
     "coin": "LYNX",
@@ -2251,10 +2238,7 @@
       "https://kmdexplorer.io/"
     ],
     "active": true,
-    "currently_enabled": false,
-    "binance_available_pairs": [
-      "USDT"
-    ]
+    "currently_enabled": false
   },
   "KMD-BEP20": {
     "coin": "KMD-BEP20",
