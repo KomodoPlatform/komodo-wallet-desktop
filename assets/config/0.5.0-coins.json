@@ -515,10 +515,8 @@
     "active": true,
     "currently_enabled": false,
     "binance_available_pairs": [
-      "USDT",
       "BUSD",
-      "USDC",
-      "ETH"
+      "USDT"
     ]
   },
   "BTC-BEP20": {
@@ -2246,9 +2244,7 @@
     "active": true,
     "currently_enabled": false,
     "binance_available_pairs": [
-      "USDT",
-      "BTC",
-      "ETH"
+      "USDT"
     ]
   },
   "KMD-BEP20": {
