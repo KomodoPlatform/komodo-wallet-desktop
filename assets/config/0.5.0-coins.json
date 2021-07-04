@@ -1731,7 +1731,10 @@
       "https://blockexplorer.one/litecoin/mainnet/"
     ],
     "type": "UTXO",
-    "name": "Litecoin"
+    "name": "Litecoin",
+    "binance_available_pairs": [
+      "BUSD"
+    ]
   },
   "LYNX": {
     "coin": "LYNX",
