@@ -48,7 +48,7 @@ SetupPage {
             // Check if it's correct
             if(field.text === getWords()[current_word_idx]) {
                 if(isFinalGuess()) {
-                    return true
+                    return [true, true]
                 }
                 else {
                     ++guess_count
@@ -56,13 +56,14 @@ SetupPage {
                 }
                 field.text = ""
                 guess_text_error = ""
+                return [true, false]
             }
             else {
                 guess_text_error = qsTr("Wrong word, please check again")
             }
         }
 
-        return false
+        return [false, false]
     }
 
     function isFinalGuess() {
@@ -78,6 +79,44 @@ SetupPage {
         guess_text_error = ""
         guess_count = 1
     }
+    function shuffle(array) {
+      var currentIndex = array.length,  randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex], array[currentIndex]];
+      }
+
+      return array;
+    }
+
+    function getRandom4x(list, keep) {
+
+        // remove keep
+        const index = list.indexOf(keep);
+        if (index > -1) {
+            list.splice(index, 1);
+        }
+
+        // randomlise
+        let randomList = shuffle(list)
+
+        // set keeped word
+        let newList = [randomList[0], randomList[1], randomList[2], keep]
+
+        // randomlise again
+        let finalList = shuffle(newList)
+
+        // return final word list
+        return finalList
+  }
 
     function onClickedCreate(password, generated_seed, wallet_name) {
         if(API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
@@ -111,7 +150,16 @@ SetupPage {
                         reset()
                         onClickedBack()
                     } else {
-                        currentStep--
+                        if(currentStep == 2) {
+                            currentStep = 0
+                            _inputPassword.field.text = ""
+                            _inputPasswordConfirm.field.text = ""
+                        } else {
+                            input_seed_word.field.text = ""
+                            currentStep--
+                        } 
+
+
                     }
                 }
             }
@@ -158,9 +206,13 @@ SetupPage {
 
         function tryGuess() {
             // Open EULA if it's the final one
-            if(submitGuess(input_seed_word.field)) {
+            let sub = submitGuess(input_seed_word.field)
+            if(sub[0] ==  true && sub[1] ==  true) {
                 currentStep++
-            } else {
+            } else if (sub[0] == true && sub[1] == false) {
+                 input_seed_word.field.text = ""
+            }
+             else {
                 input_seed_word.field.text = ""
                 input_seed_word.error = true
             }
@@ -283,7 +335,7 @@ SetupPage {
                             model: current_mnemonic.split(" ")
                             delegate: DexRectangle {
                                 width: 100
-                                height: _insideLabel.implicitHeight + 10
+                                height: _insideLabel.implicitHeight + 15
                                 color: theme.accentColor
                                 opacity: .5
                                 DexLabel {
@@ -314,7 +366,12 @@ SetupPage {
                 DexAppButton {
                     id: nextButton
                     enabled: input_wallet_name.field.text !== "" 
-                    onClicked: currentStep++
+                    onClicked: {
+                        currentStep++
+                        input_seed_word.field.text = ""
+                        guess_count = 1
+                        setRandomGuessWord()
+                    }
                     radius: 20
                     opacity: enabled ? 1 : .4
                     backgroundColor: theme.accentColor
@@ -390,16 +447,16 @@ SetupPage {
                         width: parent.width
                         spacing: 10
                         Repeater {
-                            model: current_mnemonic.split(" ").sort(() => Math.random() - 0.5)
+                            model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx]) 
                             delegate: DexRectangle {
                                 width: 90
-                                height: _insideLabel.implicitHeight + 10
+                                height: _insideLabel.implicitHeight + 15
                                 color: theme.accentColor
                                 opacity: _areaSelect.containsMouse?  1 : .6
                                 DexLabel {
                                     id: _insideLabel
-                                    text: modelData
-                                    font: theme.textType.body2
+                                    text: modelData?? ""
+                                    font: theme.textType.body1
                                     anchors.centerIn: parent
                                 }
                                 DexMouseArea {

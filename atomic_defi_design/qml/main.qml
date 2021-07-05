@@ -303,7 +303,7 @@ DexWindow {
 					DefaultText {
 						id: count_text
 						anchors.centerIn: parent
-						text_value: app.notifications_list.length
+						text_value: app.notifications_list.length ?? 0
 						font.pixelSize: 8
 						font.family: 'Lato'
 						color: app.globalTheme.foregroundColor 

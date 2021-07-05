@@ -55,13 +55,14 @@ SetupPage {
             }
             Column {
                 anchors.bottom: parent.bottom 
-                anchors.bottomMargin: 300
+                anchors.bottomMargin: 250
                 anchors.horizontalCenter: parent.horizontalCenter
                 spacing: 20
-                DexLabel {
+                Image {
+                    /*width: 200 
+                    height: 130*/
+                    source: "file:///" + atomic_logo_path +  "/" + theme.bigSidebarLogo
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Login"
-                    font: theme.textType.head2
                 }
                 DexLabel {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -122,6 +123,16 @@ SetupPage {
                             if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
                             else { _inputPassword.field.echoMode = TextField.Password }
                         }
+                    }
+                }
+                DexButton {
+                    radius: width
+                    width: 150 
+                    text: qsTr("connect")
+                    color: theme.accentColor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: {
+                        _inputPassword.field.accepted()
                     }
                 }
 
@@ -307,7 +318,7 @@ SetupPage {
     }
     GaussianBlur {
         anchors.fill: _setup
-        visible: bottomDrawer.visible
+        visible: bottomDrawer.y === 0 && bottomDrawer.visible
         source: _setup
         radius: 21
         deviation: 3

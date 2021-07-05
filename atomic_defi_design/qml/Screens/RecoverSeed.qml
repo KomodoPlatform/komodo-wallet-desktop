@@ -142,6 +142,11 @@ SetupPage {
                 id: _seedField
                 Layout.fillWidth: true
                 height: 200
+                field.onTextChanged: {
+                    field.text = field.text.replace("\n","") 
+                    field.cursorPosition = field.length
+                }
+                function isValid() { return _seedField.field.text.split(" ").length > 11 }
             }
 
             DefaultCheckBox {
@@ -164,7 +169,7 @@ SetupPage {
                 }
                 DexAppButton {
                     id: nextButton
-                    enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== ""
+                    enabled: input_wallet_name.field.text !== "" && _seedField.isValid()
                     onClicked: currentStep++
                     radius: 20
                     opacity: enabled ? 1 : .4
