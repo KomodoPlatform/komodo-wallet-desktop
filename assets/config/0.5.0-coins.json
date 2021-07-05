@@ -2314,6 +2314,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "MESH": {
+    "coin": "MESH",
+    "name": "SuperMESH",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10016"
+      },
+      {
+        "url": "electrum2.cipig.net:10016"
+      },
+      {
+        "url": "electrum3.cipig.net:10016"
+      }
+    ],
+    "explorer_url": [
+      "https://mesh.kmdexplorer.io/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
   "MGW": {
     "coin": "MGW",
     "name": "MGW",
