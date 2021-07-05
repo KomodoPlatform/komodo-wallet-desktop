@@ -73,31 +73,40 @@ Item
                 font.pixelSize: Style.textSize1
             }
 
-            DefaultText // Description
+            DexLabel // Description
             {
+                width: _subOrdersRoot.width - 40
                 anchors.topMargin: 12
                 font.pixelSize: Style.textSizeSmall4
-                text: qsTr("Orders currently processed")
-
+                //text: _filterApplied? "" : qsTr("Finished orders")
+                DexLabel {
+                    opacity: .4
+                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                                                    .arg(combo_base.currentTicker)
+                                                    .arg(combo_rel.currentTicker)
+                                                    .arg(qsTr("Date"))
+                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
+                }
                 Qaterial.AppBarButton // Reset Form Button
                 {
                     width: 50
                     height: 50
-                    anchors.left: parent.right
-                    anchors.leftMargin: 128
+                    anchors.right: parent.right
+                    anchors.rightMargin: -5
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
 
                     icon.source: _subOrdersRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.filter
-
-                    onClicked: _subOrdersRoot.displayFilter = !_subOrdersRoot.displayFilter
 
                     hoverEnabled: true
 
                     ToolTip.delay: 500
                     ToolTip.timeout: 5000
                     ToolTip.visible: hovered
-                    ToolTip.text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
+                    ToolTip.text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filering options.")
+
+                    onClicked: _subOrdersRoot.displayFilter = !_subOrdersRoot.displayFilter
                 }
             }
         }
