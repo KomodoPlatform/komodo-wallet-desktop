@@ -67,7 +67,7 @@ Item {
         }
 
         // Pagination
-        Pagination {
+        DexPaginator {
             visible: is_history && list.count>0
             enabled: list.enabled
             Layout.maximumHeight: 70
