@@ -52,8 +52,8 @@ Item {
 	    height: parent.height
 	    radius: 4
 	    color: theme.surfaceColor
-	    border.color: control.error? theme.redColor :  input_field.focus ? theme.accentColor : theme.rectangleBorderColor
-	    border.width: input_field.focus? 1 : 0
+	    border.color: control.error ? theme.redColor :  input_field.focus ? theme.accentColor : theme.rectangleBorderColor
+	    border.width: input_field.focus ? 1 : 0
 	    Behavior on x {
 	    	NumberAnimation {
 	    		duration: 40
@@ -67,8 +67,8 @@ Item {
 		anchors.rightMargin: 5
 		spacing: 2
 		Item {
-			visible: leftText!==""
-			Layout.preferredWidth: leftWidth!==-1? leftWidth : _title_label.implicitWidth+2
+			visible: leftText !== ""
+			Layout.preferredWidth: leftWidth !== -1 ? leftWidth : _title_label.implicitWidth + 2
 			Layout.fillHeight: true
 			DexLabel {
 				id: _title_label
@@ -111,7 +111,7 @@ Item {
 			}
 		}
 		Item {
-			visible: rightText!==""
+			visible: rightText !== ""
 			Layout.preferredWidth: _suffix_label.implicitWidth+2
 			Layout.fillHeight: true
 			DexLabel {

@@ -49,8 +49,8 @@ Item {
 	    height: parent.height
 	    radius: 4
 	    color: theme.surfaceColor
-	    border.color: control.error? theme.redColor :  input_field.focus ? theme.accentColor : theme.rectangleBorderColor 
-	    border.width: input_field.focus? 1 : 0
+	    border.color: control.error ? theme.redColor :  input_field.focus ? theme.accentColor : theme.rectangleBorderColor 
+	    border.width: input_field.focus ? 1 : 0
 	    Behavior on x {
 	    	NumberAnimation {
 	    		duration: 40
