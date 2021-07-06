@@ -1,8 +1,15 @@
 name: GitlabSync
 
 on:
-  - push
-  - delete
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - dev
+  delete:
+    branches:
+      - '*'
 
 jobs:
   sync:
