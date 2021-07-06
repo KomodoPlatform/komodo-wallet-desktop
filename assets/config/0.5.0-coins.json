@@ -314,6 +314,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "BABYDOGE": {
+      "coin": "BABYDOGE",
+      "name": "Baby Doge Coin",
+      "coinpaprika_id": "babydoge-baby-doge-coin",
+      "coingecko_id": "baby-doge-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BAL-BEP20": {
     "coin": "BAL-BEP20",
     "name": "Balancer",
@@ -2314,6 +2331,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "MESH": {
+    "coin": "MESH",
+    "name": "SuperMESH",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10016"
+      },
+      {
+        "url": "electrum2.cipig.net:10016"
+      },
+      {
+        "url": "electrum3.cipig.net:10016"
+      }
+    ],
+    "explorer_url": [
+      "https://mesh.kmdexplorer.io/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
   "MGW": {
     "coin": "MGW",
     "name": "MGW",
@@ -3136,6 +3176,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "TRYB-BEP20": {
+      "coin": "TRYB-BEP20",
+      "name": "BiLira",
+      "coinpaprika_id": "tryb-bilira",
+      "coingecko_id": "bilira",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TRYB-ERC20": {
+      "coin": "TRYB-ERC20",
+      "name": "BiLira",
+      "coinpaprika_id": "tryb-bilira",
+      "coingecko_id": "bilira",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "TUSD-BEP20": {
     "coin": "TUSD-BEP20",
     "name": "TrueUSD",
@@ -3279,7 +3353,7 @@
       }
     ],
     "explorer_url": [
-      "http://explorer.widecoin.org:5000/"
+      "https://explorer.widecoin.org/"
     ],
     "type": "UTXO",
     "active": false,
@@ -3428,6 +3502,23 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "XVC-BEP20": {
+      "coin": "XVC-BEP20",
+      "name": "Vanillacash",
+      "coinpaprika_id": "xvc-vcash",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "XVS": {
     "coin": "XVS",
