@@ -159,7 +159,7 @@ SetupPage {
         id: content_column
         width: 400
         spacing: Style.rowSpacing
-        opacity: (bottomDrawer.y === 0 && bottomDrawer.visible) ? .6 : 1 
+        opacity: (bottomDrawer.y === 0 && bottomDrawer.visible) ? .3 : 1 
         RowLayout {
             Layout.fillWidth: true 
              DexLabel {

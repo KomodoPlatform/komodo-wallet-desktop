@@ -166,7 +166,7 @@ SetupPage {
                     if (allow_custom_seed.checked) {
                         return _seedField.field.text !== ""
                     } else {
-                        if(!big39Checker.check(_seedField.field.text)) {
+                        if(!bip39Checker.check(_seedField.field.text)) {
                             return false
                         }
                         return _seedField.field.text.split(" ").length === 12 || _seedField.field.text.split(" ").length === 24
@@ -175,7 +175,7 @@ SetupPage {
             }
 
             DexBip39WordListChecker {
-                id: big39Checker
+                id: bip39Checker
             }
 
             DexLabel {

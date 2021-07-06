@@ -215,6 +215,8 @@ SetupPage {
              else {
                 input_seed_word.field.text = ""
                 input_seed_word.error = true
+                setRandomGuessWord()
+                mmo.model = getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx]) 
             }
         }
 
@@ -447,6 +449,7 @@ SetupPage {
                         width: parent.width
                         spacing: 10
                         Repeater {
+                            id: mmo
                             model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx]) 
                             delegate: DexRectangle {
                                 width: 90
