@@ -5,9 +5,51 @@ import Qaterial 1.0 as Qaterial
 import "../Constants"
 
 RowLayout {
+    id: control
     property int visible_page: API.app.orders_mdl.current_page
     property int page_count: API.app.orders_mdl.nb_pages
+    property int current_page: 0
+    ListModel {
+        id: vPage
 
+        function push(i) {
+            append({"element": i})
+        }
+    }
+    function paginator() {
+        let totalcount = control.page_count;
+        let currentPage = control.current_page;
+
+        vPage.clear()
+        
+        console.log(totalcount, current_page)
+        if (totalcount <= 5) {
+          for (let i = 1; i <= totalcount; i++) {
+              vPage.push(i);
+          }
+        }
+        else {
+            if(current_page>=3) {
+                for (let i = current_page-2; i <= totalcount; i++) {
+                    vPage.push(i);
+                }
+            } else {
+                for (let i = 1; i <= totalcount; i++) {
+                    vPage.push(i);
+                }
+            }
+            
+        }
+
+        function addButton(number) {
+            return number
+        }
+        return vPage;
+
+    }
+    Component.onCompleted: paginator()
+    onCurrent_pageChanged: paginator()
+    onPage_countChanged: paginator()
 
     DefaultComboBox {
         readonly property int item_count: API.app.orders_mdl.limit_nb_elements
@@ -32,8 +74,8 @@ RowLayout {
     }
 
     PaginationButton {
-        Layout.preferredWidth: 40
-        Layout.preferredHeight: 40
+        Layout.preferredWidth: 30
+        Layout.preferredHeight: 30
         radius: 20
         opacity: enabled? 1 : .5
         Qaterial.ColorIcon {
@@ -48,14 +90,15 @@ RowLayout {
     spacing: 10
 
     Repeater {
-        model: paginate(visible_page, page_count)
+        model: vPage//paginate(visible_page, page_count)
         delegate: PaginationButton {
-            text: model.modelData
+            text: element
             radius: 30
-            Layout.preferredWidth: 40
-            Layout.preferredHeight: 40
+            Layout.preferredWidth: 50
+            Layout.preferredHeight: 50
             Layout.alignment: Qt.AlignVCenter
-            button_type: model.modelData === visible_page ? "primary" : "default"
+            colorEnabled: element === visible_page ? 'transparent' : theme.buttonColorEnabled
+            colorTextEnabled: element === visible_page ? theme.accentColor : theme.buttonColorTextEnabled
             onClicked: {
                 if(visible_page !== model.modelData)
                     API.app.orders_mdl.current_page = model.modelData
@@ -63,8 +106,8 @@ RowLayout {
         }
     }
     PaginationButton {
-        Layout.preferredWidth: 40
-        Layout.preferredHeight: 40
+        Layout.preferredWidth: 30
+        Layout.preferredHeight: 30
         radius: 20
         opacity: enabled? 1 : .5
         Qaterial.ColorIcon {
