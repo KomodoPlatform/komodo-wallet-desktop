@@ -16,7 +16,7 @@ RowLayout {
         currentValue = API.app.orders_mdl.current_page
          var model = []
         if (pageSize < 10) { 
-            for (var i = 0; i < 0; i < pageSize; i++){
+            for (var i = 0; i < pageSize; i++){
                 model.push({number: i+1, selected: currentValue === i + 1}) 
             }
         } else {
