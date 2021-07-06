@@ -162,13 +162,13 @@ SetupPage {
                 function isValid() { 
                     _seedField.field.text = _seedField.field.text.trim().toLowerCase()
                     _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
-                    console.log(_seedField.field.text.split(" ").length)
-                    if(!big39Checker.check(_seedField.field.text)) {
-                        return false
-                    }
+
                     if (allow_custom_seed.checked) {
                         return _seedField.field.text !== ""
                     } else {
+                        if(!big39Checker.check(_seedField.field.text)) {
+                            return false
+                        }
                         return _seedField.field.text.split(" ").length === 12 || _seedField.field.text.split(" ").length === 24
                     }  
                 }
