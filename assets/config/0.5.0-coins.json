@@ -3336,7 +3336,7 @@
       }
     ],
     "explorer_url": [
-      "http://explorer.widecoin.org:5000/"
+      "https://explorer.widecoin.org/"
     ],
     "type": "UTXO",
     "active": false,
