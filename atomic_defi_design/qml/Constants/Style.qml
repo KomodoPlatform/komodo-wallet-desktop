@@ -343,6 +343,7 @@ QtObject {
                                           "WCN": "#E49F00",
                                           "THC": "#819F6F",
                                           "1INCH": "#95A7C5",
+                                          "BABYDOGE": "#F3AA47",
                                           "BAT": "#FF5000",
                                           "BUSD": "#EDB70B",
                                           "DAI": "#B68900",

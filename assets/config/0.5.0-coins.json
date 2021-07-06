@@ -314,6 +314,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "BABYDOGE": {
+      "coin": "BABYDOGE",
+      "name": "Baby Doge Coin",
+      "coinpaprika_id": "babydoge-baby-doge-coin",
+      "coingecko_id": "baby-doge-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BAL-BEP20": {
     "coin": "BAL-BEP20",
     "name": "Balancer",
