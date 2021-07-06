@@ -7,23 +7,56 @@ Item {
 	id: control
 	width:  200
     height: 35
+    signal accepted()
     property alias value: input_field.text
 	property alias field: input_field
 	property alias background: _background
 	readonly property int max_length: 1000
 	property color textColor: theme.foregroundColor
+	property bool error: false
+	onErrorChanged: {
+		if(error) {
+			_animationTimer.start()
+			_animate.start()
+		}
+	}
+	Timer {
+		id: _animationTimer
+		interval: 350
+		onTriggered: {
+			_animate.stop()
+			_background.x = 0
+		}
+	}
+	Timer {
+		id: _animate
+		interval: 30
+		repeat: true
+		onTriggered: {
+			if(_background.x == -3) {
+				_background.x = 3
+			} else {
+				_background.x = -3
+			}
+		}
+	}
 	function reset() {
 		input_field.text = ""
 	}
 	Rectangle {
 		id: _background
-	    anchors.fill: parent
+	    width: parent.width
+	    height: parent.height
 	    radius: 4
 	    color: theme.surfaceColor
-	    border.color: theme.accentColor
+	    border.color: control.error? theme.redColor :  input_field.focus ? theme.accentColor : theme.rectangleBorderColor 
 	    border.width: input_field.focus? 1 : 0
+	    Behavior on x {
+	    	NumberAnimation {
+	    		duration: 40
+	    	}
+	    }
 	}
-
 	RowLayout {
 		anchors.fill: parent
 		anchors.leftMargin: 5
@@ -45,6 +78,7 @@ Item {
 					interactive: false
 					
 					TextArea.flickable: TextArea {
+						
 				        id: input_field
 						horizontalAlignment: Qt.AlignLeft
 						color: control.textColor
@@ -54,11 +88,16 @@ Item {
 				        persistentSelection: true
 				        font.weight: Font.Medium
 				        font.family: theme.textType.body2
+				        Keys.onReturnPressed: control.accepted()
 						onTextChanged: {
+							control.error = false
 					        if(text.length > control.max_length) {
 					            console.log("too long! ", text.length)
 					            text = text.substring(0, control.max_length)
 					        }
+					        if(text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
+				                text = text.replace(/[\r\n]/, '')
+				            }
 				        }
 				    }
 				}

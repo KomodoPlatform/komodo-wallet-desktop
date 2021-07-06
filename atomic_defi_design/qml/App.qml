@@ -39,6 +39,7 @@ DexRectangle {
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
     property int current_page
+    property bool can_open_login: false
 
     onCurrent_pageChanged: {
         if(current_page === idx_dashboard) {
@@ -53,7 +54,12 @@ DexRectangle {
     }
 
     function firstPage() {
-        return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
+        if(!API.app.first_run() && selected_wallet_name !== "") {
+            console.log("not first run")
+            can_open_login = true
+        }
+        return idx_first_launch
+        
     }
 
     function onDisconnect() {

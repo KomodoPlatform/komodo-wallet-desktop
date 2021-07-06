@@ -86,6 +86,18 @@ SetupPage {
 
             eula_modal.open()
         }
+        function tryPassLevel1() {
+            if(input_wallet_name.field.text == "") {
+                input_wallet_name.error = true
+            }
+
+            if(_seedField.isValid() && input_wallet_name.field.text !== "") {
+                _seedField.error = false
+                currentStep++    
+            } else {
+                _seedField.error = true
+            }
+        }
 
 
         ModalLoader {
@@ -109,11 +121,11 @@ SetupPage {
                 opacity: enabled ?  1 : .5
                 background.border.width: 1
                 background.radius: 25 
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
                 field.font: theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Wallet Name")
+                field.onAccepted: tryPassLevel1()
 
                 DexRectangle {
                     x: 5
@@ -142,11 +154,36 @@ SetupPage {
                 id: _seedField
                 Layout.fillWidth: true
                 height: 200
+                onAccepted: tryPassLevel1()
                 field.onTextChanged: {
                     field.text = field.text.replace("\n","") 
                     field.cursorPosition = field.length
                 }
-                function isValid() { return _seedField.field.text.split(" ").length > 11 }
+                function isValid() { 
+                    _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
+                    console.log(_seedField.field.text.split(" ").length)
+                    if(!big39Checker.check(_seedField.field.text)) {
+                        return false
+                    }
+                    if (allow_custom_seed.checked) {
+                        return _seedField.field.text !== ""
+                    } else {
+                        return _seedField.field.text.split(" ").length === 12 || _seedField.field.text.split(" ").length === 24
+                    }  
+                }
+            }
+
+            DexBip39WordListChecker {
+                id: big39Checker
+            }
+
+            DexLabel {
+                id: _seedError
+                visible: _seedField.error
+                text: qsTr("Incorrect seed try again")
+                color: theme.redColor
+                font: theme.textType.body2
             }
 
             DefaultCheckBox {
@@ -169,8 +206,8 @@ SetupPage {
                 }
                 DexAppButton {
                     id: nextButton
-                    enabled: input_wallet_name.field.text !== "" && _seedField.isValid()
-                    onClicked: currentStep++
+                    enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== ""
+                    onClicked: tryPassLevel1()
                     radius: 20
                     opacity: enabled ? 1 : .4
                     backgroundColor: theme.accentColor
@@ -317,7 +354,9 @@ SetupPage {
                     id: submit_button
                     enabled: _keyChecker.isValid()
                     opacity: enabled ? 1 : .4
-                    onClicked: trySubmit()
+                    onClicked: {
+                         trySubmit()
+                    }
                     radius: 20
                     backgroundColor: theme.accentColor
                     Layout.preferredWidth: _nextRow2.implicitWidth + 40
@@ -328,7 +367,7 @@ SetupPage {
                         anchors.centerIn: parent
                         spacing: 10
                         DexLabel {
-                            text: qsTr("Cotinue")
+                            text: qsTr("Continue")
                             font: theme.textType.button
                             anchors.verticalCenter: parent.verticalCenter
                         }

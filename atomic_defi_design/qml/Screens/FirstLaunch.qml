@@ -66,7 +66,7 @@ SetupPage {
                 }
                 DexLabel {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Password"
+                    text: "%1 wallet".arg(selected_wallet_name)
                     topPadding: 10
                 }
                 DexAppTextField {
@@ -314,6 +314,10 @@ SetupPage {
 
     }
     Component.onCompleted: {
+        if(can_open_login) {
+            can_open_login = false
+            bottomDrawer.open()
+        }
         updateWallets()
     }
     GaussianBlur {
