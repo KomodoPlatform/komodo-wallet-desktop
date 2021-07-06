@@ -35,7 +35,7 @@ SetupPage {
     }
     property var wallets: ([])
 
-    image_path: "file:///" + atomic_logo_path +  "/" + theme.bigSidebarLogo
+    image_path: (bottomDrawer.y === 0 && bottomDrawer.visible) ? "" : "file:///" + atomic_logo_path +  "/" + theme.bigSidebarLogo
     image_margin: 30
     Drawer {
         id: bottomDrawer
@@ -159,6 +159,7 @@ SetupPage {
         id: content_column
         width: 400
         spacing: Style.rowSpacing
+        opacity: (bottomDrawer.y === 0 && bottomDrawer.visible) ? .6 : 1 
         RowLayout {
             Layout.fillWidth: true 
              DexLabel {
@@ -243,6 +244,7 @@ SetupPage {
                     model: wallets
 
                     delegate: ClipRRect {
+                        radius: 0
                         width: bg.width
                         height: bg.row_height
                         GradientRectangle {
@@ -322,10 +324,17 @@ SetupPage {
     }
     GaussianBlur {
         anchors.fill: _setup
-        visible: bottomDrawer.y === 0 && bottomDrawer.visible
+        visible: false// bottomDrawer.y === 0 && bottomDrawer.visible
         source: _setup
         radius: 21
-        deviation: 3
+        deviation: 2
+    }
+    RecursiveBlur {
+        visible: bottomDrawer.y === 0 && bottomDrawer.visible
+        anchors.fill: _setup
+        source: _setup
+        radius: 2
+        loops: 120
     }
 
 

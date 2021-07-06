@@ -327,6 +327,7 @@
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppTextField.qml</file>
+        <file>atomic_defi_design/qml/Components/DexBip39WordListChecker.qml</file>
         <file>atomic_defi_design/qml/Components/DexBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexBoxManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
