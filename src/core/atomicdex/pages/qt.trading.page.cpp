@@ -143,6 +143,15 @@ namespace atomic_dex
         const bool is_selected_max  = is_selected_order && is_max;
         t_float_50 rel_min_trade    = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
         t_float_50 rel_min_volume_f = safe_float(get_min_trade_vol().toStdString());
+        if (is_selected_order)
+        {
+            SPDLOG_INFO("max_volume: {} volume: {} order_volume: {}, order_volume_8_digit: {}, order_volume_8_digit_extracted: {}",
+                        m_max_volume.toStdString(),
+                        m_volume.toStdString(),
+                        m_preffered_order->at("base_max_volume").get<std::string>(),
+                        utils::adjust_precision(m_preffered_order->at("base_max_volume").get<std::string>()),
+                        utils::extract_large_float(m_preffered_order->at("base_max_volume").get<std::string>()));
+        }
         // SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
         // SPDLOG_INFO("rel_min_volume: {} (will be use for mm2)", rel_min_volume_f.str(50, std::ios::fixed));
 
@@ -156,7 +165,7 @@ namespace atomic_dex
             .price_numer                    = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
             .volume_denom                   = is_selected_order ? m_preffered_order->at("base_max_volume_denom").get<std::string>() : "",
             .volume_numer                   = is_selected_order ? m_preffered_order->at("base_max_volume_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume = is_selected_max,
+            .is_exact_selected_order_volume = is_selected_max && m_max_volume.toStdString() == m_preffered_order->at("base_max_volume").get<std::string>(),
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
             .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_min_trade_vol().toStdString()};
