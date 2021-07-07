@@ -81,6 +81,7 @@ namespace atomic_dex
                         const QString& amount); // Broadcast requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after
                                                 // entering credentials.
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
+        Q_INVOKABLE QString switch_address_mode(bool checked);
 
         // QML API Properties
         Q_PROPERTY(transactions_model* transactions_mdl READ get_transactions_mdl NOTIFY transactionsMdlChanged)
@@ -139,6 +140,7 @@ namespace atomic_dex
         std::atomic_bool                               m_tx_fetching_busy{false};
         std::atomic_bool                               m_validate_address_busy{false};
         std::atomic_bool                               m_convert_address_busy{false};
+
         t_qt_synchronized_json                         m_claiming_rpc_result;
         t_qt_synchronized_json                         m_claiming_rpc_faucet_result;
         t_qt_synchronized_json                         m_send_rpc_result;

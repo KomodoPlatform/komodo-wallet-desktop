@@ -96,7 +96,12 @@ Item {
                     DefaultSwitch {
                         Layout.alignment: Qt.AlignVCenter
                         Component.onCompleted: checked = current_ticker_infos.is_segwit_on
-                        //onCheckedChanged:
+                        onCheckedChanged: {
+                            var address = API.app.wallet_pg.switch_address_mode(checked);
+                            if (address != current_ticker_infos.address && address != "") {
+                                console.log("need to send funds to: " + address)
+                            }
+                        }
                     }
                 }
 

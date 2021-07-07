@@ -469,7 +469,7 @@ namespace atomic_dex
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
         ::mm2::api::to_json(json_data, withdraw_req);
-        //SPDLOG_DEBUG("final json: {}", json_data.dump(4));
+        // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
         std::string amount_std = amount.toStdString();
         if (max)
@@ -694,7 +694,7 @@ namespace atomic_dex
         {
             std::error_code ec;
             t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
-            //SPDLOG_INFO("transaction size: {}", transactions.size());
+            // SPDLOG_INFO("transaction size: {}", transactions.size());
             if (m_transactions_mdl->rowCount() == 0)
             {
                 //! insert all transactions
@@ -703,7 +703,7 @@ namespace atomic_dex
             else
             {
                 //! Update tx (only unconfirmed) or insert (new tx)
-                //SPDLOG_DEBUG("updating / insert tx");
+                // SPDLOG_DEBUG("updating / insert tx");
                 m_transactions_mdl->update_or_insert_transactions(transactions);
             }
         }
@@ -808,5 +808,56 @@ namespace atomic_dex
     {
         m_converted_address = converted_address;
         emit convertedAddressChanged();
+    }
+
+    QString
+    wallet_page::switch_address_mode(bool checked)
+    {
+        auto&       mm2_system = m_system_manager.get_system<mm2_service>();
+        std::string address    = "";
+        if (mm2_system.is_mm2_running())
+        {
+            const auto ticker   = get_current_ticker().toStdString();
+            const auto coin_cfg = mm2_system.get_coin_info(ticker);
+            if (coin_cfg.segwit)
+            {
+                nlohmann::json address_format = nlohmann::json::object();
+                address_format                = {{"format", "segwit"}};
+                if (!checked)
+                {
+                    //! We go from segwit to legacy
+                    if (coin_cfg.ticker != "BCH")
+                    {
+                        address_format = {{"format", "standard"}};
+                    }
+                    else
+                    {
+                        address_format = {{"format", "bch"}};
+                    }
+                }
+
+
+                std::error_code ec;
+                address = mm2_system.address(ticker, ec);
+                t_convert_address_request req{.coin = ticker, .from = address, .to_address_format = address_format};
+                nlohmann::json            batch     = nlohmann::json::array();
+                nlohmann::json            json_data = ::mm2::api::template_request("convertaddress");
+                ::mm2::api::to_json(json_data, req);
+                batch.push_back(json_data);
+                web::http::http_response resp = mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).get();
+                std::string              body = TO_STD_STR(resp.extract_string(true).get());
+                SPDLOG_DEBUG("resp convertaddress: {}", body);
+                if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+                {
+                    auto answers        = nlohmann::json::parse(body);
+                    auto convert_answer = ::mm2::api::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
+                    if (convert_answer.result.has_value())
+                    {
+                        return QString::fromStdString(convert_answer.result.value().address);
+                    }
+                }
+            }
+        }
+        return QString::fromStdString(address);
     }
 } // namespace atomic_dex
