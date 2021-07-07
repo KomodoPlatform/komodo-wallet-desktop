@@ -145,7 +145,12 @@ namespace atomic_dex
         t_float_50 rel_min_volume_f = safe_float(get_min_trade_vol().toStdString());
         if (is_selected_order)
         {
-            SPDLOG_INFO("max_volume: {} volume: {} order_volume: {}", m_max_volume.toStdString(), m_volume.toStdString(), m_preffered_order->at("base_max_volume").get<std::string>());
+            SPDLOG_INFO("max_volume: {} volume: {} order_volume: {}, order_volume_8_digit: {}, order_volume_8_digit_extracted: {}",
+                        m_max_volume.toStdString(),
+                        m_volume.toStdString(),
+                        m_preffered_order->at("base_max_volume").get<std::string>(),
+                        utils::adjust_precision(m_preffered_order->at("base_max_volume").get<std::string>()),
+                        utils::extract_large_float(m_preffered_order->at("base_max_volume").get<std::string>()));
         }
         // SPDLOG_INFO("base_min_trade: {}", rel_min_trade.str(50, std::ios::fixed));
         // SPDLOG_INFO("rel_min_volume: {} (will be use for mm2)", rel_min_volume_f.str(50, std::ios::fixed));
