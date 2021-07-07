@@ -83,6 +83,23 @@ Item {
                     }
                 }
 
+                ColumnLayout {
+                    visible: current_ticker_infos.segwit_supported
+                    Layout.alignment: Qt.AlignHCenter
+                    spacing: 3
+                    DexLabel {
+                       text_value: qsTr("Segwit")
+                       Layout.alignment: Qt.AlignLeft
+                       font.pixelSize: name.font.pixelSize
+                    }
+
+                    DefaultSwitch {
+                        Layout.alignment: Qt.AlignVCenter
+                        Component.onCompleted: checked = current_ticker_infos.is_segwit_on
+                        //onCheckedChanged:
+                    }
+                }
+
                 // Wallet Balance
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter

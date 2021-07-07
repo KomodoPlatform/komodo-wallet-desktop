@@ -267,6 +267,8 @@ namespace atomic_dex
             obj["balance"]                            = QString::fromStdString(mm2_system.my_balance(ticker, ec));
             obj["name"]                               = QString::fromStdString(coin_info.name);
             obj["type"]                               = QString::fromStdString(coin_info.type);
+            obj["segwit_supported"]                   = coin_info.segwit;
+            obj["is_segwit_on"]                       = coin_info.is_segwit_on;
             obj["is_claimable"]                       = coin_info.is_claimable;
             obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
