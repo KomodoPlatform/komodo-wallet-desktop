@@ -717,7 +717,7 @@ namespace atomic_dex
     void
     wallet_page::validate_address(QString address)
     {
-        SPDLOG_INFO("validate_address");
+        SPDLOG_INFO("validate_address: {}", address.toStdString());
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
