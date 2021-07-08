@@ -596,7 +596,8 @@ namespace atomic_dex
             coin_config        coin_info = get_coin_info(g_second_primary_dex_coin);
             t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
             if (coin_info.segwit && coin_info.is_segwit_on) {
-                request.address_format = {{"format", "segwit"}};
+                request.address_format = nlohmann::json::object();
+                request.address_format.value()["format"] = "segwit";
             }
             nlohmann::json     j = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(j, request);
@@ -633,7 +634,8 @@ namespace atomic_dex
                     .is_testnet      = coin_info.is_testnet.value_or(false),
                     .with_tx_history = true};
                 if (coin_info.segwit && coin_info.is_segwit_on) {
-                    request.address_format = {{"format", "segwit"}};
+                    request.address_format = nlohmann::json::object();
+                    request.address_format.value()["format"] = "segwit";
                 }
                 nlohmann::json j = ::mm2::api::template_request("electrum");
                 ::mm2::api::to_json(j, request);

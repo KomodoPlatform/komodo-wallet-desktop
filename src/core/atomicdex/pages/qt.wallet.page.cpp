@@ -852,6 +852,8 @@ namespace atomic_dex
                 nlohmann::json            json_data = ::mm2::api::template_request("convertaddress");
                 ::mm2::api::to_json(json_data, req);
                 batch.push_back(json_data);
+                json_data["userpass"] = "******";
+                SPDLOG_INFO("convertaddress request: {}", json_data.dump());
                 web::http::http_response resp = mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).get();
                 std::string              body = TO_STD_STR(resp.extract_string(true).get());
                 SPDLOG_DEBUG("resp convertaddress: {}", body);
@@ -889,9 +891,10 @@ namespace atomic_dex
             t_electrum_request electrum_req{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
             if (is_segwit)
             {
-                electrum_req.address_format = {{"format", "segwit"}};
+                electrum_req.address_format = nlohmann::json::object();
+                electrum_req.address_format.value()["format"] = "segwit";
             }
-            nlohmann::json electrum_data;
+            nlohmann::json electrum_data = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(electrum_data, electrum_req);
             batch.push_back(electrum_data);
 
