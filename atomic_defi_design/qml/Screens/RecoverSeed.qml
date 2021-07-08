@@ -163,19 +163,8 @@ SetupPage {
                     _seedField.field.text = _seedField.field.text.trim().toLowerCase()
                     _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
 
-                    if (allow_custom_seed.checked) {
-                        return _seedField.field.text !== ""
-                    } else {
-                        if(!bip39Checker.check(_seedField.field.text)) {
-                            return false
-                        }
-                        return _seedField.field.text.split(" ").length === 12 || _seedField.field.text.split(" ").length === 24
-                    }  
+                    return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text) 
                 }
-            }
-
-            DexBip39WordListChecker {
-                id: bip39Checker
             }
 
             DexLabel {
@@ -183,6 +172,8 @@ SetupPage {
                 visible: _seedField.error
                 text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
                 color: theme.redColor
+                Layout.preferredWidth: parent.width-40
+                wrapMode: DexLabel.Wrap
                 font: theme.textType.body2
             }
 
