@@ -107,7 +107,6 @@ Item {
                                     onAccepted: function() {
                                         var address = API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
                                         if (address != current_ticker_infos.address && address != "") {
-                                            console.log("need to send funds to: " + address)
                                             send_modal.open()
                                             send_modal.item.address_field.text = address
                                             send_modal.item.max_mount.checked = true
