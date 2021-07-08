@@ -92,21 +92,14 @@ Item {
                        Layout.alignment: Qt.AlignLeft
                        font.pixelSize: name.font.pixelSize
                     }
-                    Connections {
-                        target: current_ticker_infos 
-                        function onIs_segwit_onChanged () {
-
-                        }
-                    }
                     DefaultSwitch {
                         id: segwitSwitch
                         Layout.alignment: Qt.AlignVCenter
                         Component.onCompleted: {
                             checked = current_ticker_infos.is_segwit_on
                         }
-                        onPressed: {
-                            
-                            if(parseFloat(current_ticker_infos.fiat_amount.split(" ")[1]) > 0) {
+                        onToggled: {
+                            if(parseFloat(current_ticker_infos.balance) > 0) {
                                  Qaterial.DialogManager.showDialog({
                                     title: qsTr("Confirmation"),
                                     text:  qsTr("You have the possibility to sends the funds before switching, do you want to procede"),
