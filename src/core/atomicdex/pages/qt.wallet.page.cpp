@@ -874,6 +874,7 @@ namespace atomic_dex
     void
     wallet_page::post_switch_address_mode(bool is_segwit)
     {
+        SPDLOG_INFO("switching to : {}", is_segwit ? "segwit" : "legacy");
         auto&       mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
@@ -888,7 +889,7 @@ namespace atomic_dex
 
             //! electrum
             auto        coin_info = mm2_system.get_coin_info(ticker);
-            t_electrum_request electrum_req{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
+            t_electrum_request electrum_req{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .coin_type = coin_info.coin_type, .with_tx_history = true};
             if (is_segwit)
             {
                 electrum_req.address_format = nlohmann::json::object();
@@ -897,6 +898,8 @@ namespace atomic_dex
             nlohmann::json electrum_data = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(electrum_data, electrum_req);
             batch.push_back(electrum_data);
+            electrum_data["userpass"] = "*******";
+            SPDLOG_INFO("electrum_req: {}", electrum_data.dump(4));
 
             //! Answer functor
             auto answer_functor = [this, ticker, is_segwit](web::http::http_response resp)
