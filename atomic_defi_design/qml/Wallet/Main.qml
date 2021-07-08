@@ -92,7 +92,12 @@ Item {
                        Layout.alignment: Qt.AlignLeft
                        font.pixelSize: name.font.pixelSize
                     }
+                    Connections {
+                        target: current_ticker_infos 
+                        function onIs_segwit_onChanged () {
 
+                        }
+                    }
                     DefaultSwitch {
                         id: segwitSwitch
                         Layout.alignment: Qt.AlignVCenter
@@ -101,31 +106,41 @@ Item {
                         }
                         onPressed: {
                             
-                            Qaterial.DialogManager.showDialog({
-                                title: qsTr("Confirm"),
-                                text:  qsTr("In order to switch address mode you need to sends funds to your new address"),
-                                standardButtons: Dialog.Yes | Dialog.No,
-                                onAccepted: function() {
-                                    var address = API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
-                                    if (address != current_ticker_infos.address && address != "") {
-                                        console.log("need to send funds to: " + address)
-                                        send_modal.open()
-                                        send_modal.item.address_field.text = address
-                                        send_modal.item.max_mount.checked = true
-                                        send_modal.item.segwit = true
-                                        send_modal.item.segwit_callback = function() {
-                                            segwitSwitch.checked = !segwitSwitch.checked
+                            if(parseFloat(current_ticker_infos.fiat_amount.split(" ")[1]) > 0) {
+                                 Qaterial.DialogManager.showDialog({
+                                    title: qsTr("Confirmation"),
+                                    text:  qsTr("You have the possibility to sends the funds before switching, do you want to procede"),
+                                    standardButtons: Dialog.Yes | Dialog.No,
+                                    onAccepted: function() {
+                                        var address = API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
+                                        if (address != current_ticker_infos.address && address != "") {
+                                            console.log("need to send funds to: " + address)
+                                            send_modal.open()
+                                            send_modal.item.address_field.text = address
+                                            send_modal.item.max_mount.checked = true
+                                            send_modal.item.segwit = true
+                                            send_modal.item.segwit_callback = function() {
+                                                segwitSwitch.checked = !segwitSwitch.checked
+                                            }
+                                            send_modal.item.segwit_successClose = function() {
+                                                API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
+                                                API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
+                                                Qaterial.DialogManager.showDialog({
+                                                    title: qsTr("Success"),
+                                                    text: qsTr("Your transaction is send, may take some time to arrive")
+                                                })
+                                            }
                                         }
-                                        send_modal.item.segwit_successClose = function() {
-                                            API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
-                                            API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
-                                        }
+                                    },
+                                    onRejected: function () {
+                                        API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
                                     }
-                                },
-                                onRejected: function () {
-                                    segwitSwitch.checked = !segwitSwitch.checked
-                                }
-                            })
+                                })
+
+                            } else {
+                                API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
+                            }
+                           
                         }
                     }
                 }
