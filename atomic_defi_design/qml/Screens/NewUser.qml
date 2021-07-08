@@ -573,6 +573,7 @@ SetupPage {
                 field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
+                field.rightPadding: 60
                 field.placeholderText: qsTr("Type password")
                 field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
                 DexRectangle {
@@ -593,7 +594,7 @@ SetupPage {
                 Qaterial.AppBarButton {
                     opacity: .8
                     icon {
-                        source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
                         color: theme.accentColor
                     }
                     anchors {
@@ -626,6 +627,7 @@ SetupPage {
                 field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
+                field.rightPadding: 60
                 field.placeholderText: qsTr("Cofirm password")
                 field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
                 DexRectangle {
@@ -646,7 +648,7 @@ SetupPage {
                 Qaterial.AppBarButton {
                     opacity: .8
                     icon {
-                        source: _inputPasswordConfirm.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        source: _inputPasswordConfirm.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
                         color: theme.accentColor
                     }
                     anchors {

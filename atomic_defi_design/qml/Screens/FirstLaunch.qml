@@ -29,7 +29,6 @@ SetupPage {
         }
         else {
             console.log("Failed: Login")
-            text_error = qsTr("Incorrect Password")
             return false
         }
     }
@@ -80,7 +79,7 @@ SetupPage {
                     field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
                     field.horizontalAlignment: Qt.AlignLeft
                     field.leftPadding: 75
-                    field.rightPadding: 40
+                    field.rightPadding: 60
                     field.placeholderText: qsTr("Type password")
                     field.onAccepted: {
                          if(_keyChecker.isValid()) { 
@@ -111,7 +110,7 @@ SetupPage {
                     Qaterial.AppBarButton {
                         opacity: .8
                         icon {
-                            source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                            source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
                             color: _inputPassword.field.focus? _inputPassword.background.border.color : theme.accentColor
                         }
                         anchors {
