@@ -125,9 +125,9 @@ namespace
     void
     update_coin_status(
         const std::string& wallet_name, const std::vector<std::string>& tickers, bool status, atomic_dex::t_coins_registry& registry,
-        std::shared_mutex& registry_mtx)
+        std::shared_mutex& registry_mtx, std::string field_name = "active")
     {
-        SPDLOG_INFO("Update coins status to: {}", status);
+        SPDLOG_INFO("Update coins status to: {} - field_name: {}", status, field_name);
         fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::string custom_tokens_filename = "custom-tokens." + wallet_name + ".json";
@@ -156,13 +156,18 @@ namespace
             {
                 if (registry[ticker].is_custom_coin)
                 {
-                    custom_cfg_data.at(ticker)["active"] = status;
+                    custom_cfg_data.at(ticker)[field_name] = status;
                 }
                 else
                 {
-                    config_json_data.at(ticker)["active"] = status;
+                    config_json_data.at(ticker)[field_name] = status;
                 }
-                registry[ticker].active = status;
+                if (field_name == "active")
+                {
+                    registry[ticker].active = status;
+                } else if (field_name == "is_segwit_on") {
+                    registry[ticker].is_segwit_on = status;
+                }
             }
         }
 
@@ -590,6 +595,9 @@ namespace atomic_dex
         {
             coin_config        coin_info = get_coin_info(g_second_primary_dex_coin);
             t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
+            if (coin_info.segwit && coin_info.is_segwit_on) {
+                request.address_format = {{"format", "segwit"}};
+            }
             nlohmann::json     j = ::mm2::api::template_request("electrum");
             ::mm2::api::to_json(j, request);
             btc_kmd_batch.push_back(j);
@@ -624,6 +632,9 @@ namespace atomic_dex
                     .coin_type       = coin_info.coin_type,
                     .is_testnet      = coin_info.is_testnet.value_or(false),
                     .with_tx_history = true};
+                if (coin_info.segwit && coin_info.is_segwit_on) {
+                    request.address_format = {{"format", "segwit"}};
+                }
                 nlohmann::json j = ::mm2::api::template_request("electrum");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
@@ -1668,5 +1679,11 @@ namespace atomic_dex
                 }
             }
         }
+    }
+
+    void
+    mm2_service::change_segwit_status(std::string ticker, bool status)
+    {
+        update_coin_status(this->m_current_wallet_name, {ticker}, status, m_coins_informations, m_coin_cfg_mutex, "is_segwit_on");
     }
 } // namespace atomic_dex

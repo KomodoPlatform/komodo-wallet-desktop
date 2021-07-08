@@ -12,6 +12,7 @@
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
 #include "atomicdex/api/mm2/rpc.convertaddress.hpp"
+#include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
 #include "atomicdex/api/mm2/rpc.withdraw.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -28,6 +29,7 @@ namespace atomic_dex
         QObject(parent), system(registry), m_system_manager(system_manager), m_transactions_mdl(new transactions_model(system_manager, this))
     {
         this->dispatcher_.sink<tx_fetch_finished>().connect<&wallet_page::on_tx_fetch_finished>(*this);
+        this->dispatcher_.sink<ticker_balance_updated>().connect<&wallet_page::on_ticker_balance_updated>(*this);
     }
 
     void
@@ -688,6 +690,12 @@ namespace atomic_dex
     }
 
     void
+    wallet_page::on_ticker_balance_updated(const ticker_balance_updated&)
+    {
+        refresh_ticker_infos();
+    }
+
+    void
     wallet_page::on_tx_fetch_finished(const tx_fetch_finished& evt)
     {
         if (!evt.with_error)
@@ -859,5 +867,50 @@ namespace atomic_dex
             }
         }
         return QString::fromStdString(address);
+    }
+
+    void
+    wallet_page::post_switch_address_mode(bool is_segwit)
+    {
+        auto&       mm2_system = m_system_manager.get_system<mm2_service>();
+        if (mm2_system.is_mm2_running())
+        {
+            //! Need disable + enable + refresh balance + refresh current coin info (address) + change segwit in cfg
+            const auto             ticker    = get_current_ticker().toStdString();
+            nlohmann::json         batch     = nlohmann::json::array();
+            nlohmann::json         json_data = ::mm2::api::template_request("disable_coin");
+            t_disable_coin_request req{.coin = ticker};
+            ::mm2::api::to_json(json_data, req);
+            batch.push_back(json_data);
+            //! Disable is in the batch
+
+            //! electrum
+            auto        coin_info = mm2_system.get_coin_info(ticker);
+            t_electrum_request electrum_req{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
+            if (is_segwit)
+            {
+                electrum_req.address_format = {{"format", "segwit"}};
+            }
+            nlohmann::json electrum_data;
+            ::mm2::api::to_json(electrum_data, electrum_req);
+            batch.push_back(electrum_data);
+
+            //! Answer functor
+            auto answer_functor = [this, ticker, is_segwit](web::http::http_response resp)
+            {
+              std::string body = TO_STD_STR(resp.extract_string(true).get());
+              SPDLOG_DEBUG("resp disable/enable: {}", body);
+              if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
+              {
+                  auto&       mm2_system = m_system_manager.get_system<mm2_service>();
+                  mm2_system.fetch_infos_thread(true, false);
+                  SPDLOG_INFO("Switching address mode success");
+                  mm2_system.change_segwit_status(ticker, is_segwit);
+              }
+            };
+
+            //! Rpc processing
+            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+        }
     }
 } // namespace atomic_dex

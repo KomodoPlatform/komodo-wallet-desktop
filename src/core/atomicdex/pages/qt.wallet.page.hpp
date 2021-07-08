@@ -25,6 +25,7 @@ namespace atomic_dex
         void refresh_ticker_infos();
 
         void on_tx_fetch_finished(const tx_fetch_finished&);
+        void on_ticker_balance_updated(const ticker_balance_updated&);
 
         // Getters/Setters
         [[nodiscard]] transactions_model* get_transactions_mdl() const;
@@ -82,6 +83,7 @@ namespace atomic_dex
                                                 // entering credentials.
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
         Q_INVOKABLE QString switch_address_mode(bool checked);
+        Q_INVOKABLE void    post_switch_address_mode(bool is_segwit);
 
         // QML API Properties
         Q_PROPERTY(transactions_model* transactions_mdl READ get_transactions_mdl NOTIFY transactionsMdlChanged)
