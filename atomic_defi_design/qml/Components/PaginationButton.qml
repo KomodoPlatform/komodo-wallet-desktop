@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import "../Constants"
 
-DefaultButton {
-    font.pixelSize: Style.textSizeSmall4
+DexButton {
+    font.pixelSize: 12
     minWidth: 0
 }

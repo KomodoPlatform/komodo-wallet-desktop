@@ -30,6 +30,7 @@
         <file>atomic_defi_design/assets/images/coins/avax.png</file>
         <file>atomic_defi_design/assets/images/coins/awc.png</file>
         <file>atomic_defi_design/assets/images/coins/axe.png</file>
+        <file>atomic_defi_design/assets/images/coins/babydoge.png</file>
         <file>atomic_defi_design/assets/images/coins/bal.png</file>
         <file>atomic_defi_design/assets/images/coins/band.png</file>
         <file>atomic_defi_design/assets/images/coins/band.png</file>
@@ -130,6 +131,7 @@
         <file>atomic_defi_design/assets/images/coins/mana.png</file>
         <file>atomic_defi_design/assets/images/coins/matic.png</file>
         <file>atomic_defi_design/assets/images/coins/mcl.png</file>
+        <file>atomic_defi_design/assets/images/coins/mesh.png</file>
         <file>atomic_defi_design/assets/images/coins/mgw.png</file>
         <file>atomic_defi_design/assets/images/coins/mkr.png</file>
         <file>atomic_defi_design/assets/images/coins/mln.png</file>
@@ -196,6 +198,7 @@
         <file>atomic_defi_design/assets/images/coins/trac.png</file>
         <file>atomic_defi_design/assets/images/coins/trc.png</file>
         <file>atomic_defi_design/assets/images/coins/trx.png</file>
+        <file>atomic_defi_design/assets/images/coins/tryb.png</file>
         <file>atomic_defi_design/assets/images/coins/tsl.png</file>
         <file>atomic_defi_design/assets/images/coins/ttt.png</file>
         <file>atomic_defi_design/assets/images/coins/tusd.png</file>
@@ -216,9 +219,11 @@
         <file>atomic_defi_design/assets/images/coins/vrm.png</file>
         <file>atomic_defi_design/assets/images/coins/vrsc.png</file>
         <file>atomic_defi_design/assets/images/coins/wbtc.png</file>
+        <file>atomic_defi_design/assets/images/coins/wcn.png</file>
         <file>atomic_defi_design/assets/images/coins/wlc.png</file>
         <file>atomic_defi_design/assets/images/coins/wsb.png</file>
         <file>atomic_defi_design/assets/images/coins/xlm.png</file>
+        <file>atomic_defi_design/assets/images/coins/xmy.png</file>
         <file>atomic_defi_design/assets/images/coins/xor.png</file>
         <file>atomic_defi_design/assets/images/coins/xpm.png</file>
         <file>atomic_defi_design/assets/images/coins/xrp.png</file>
@@ -353,6 +358,7 @@
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
         <file>atomic_defi_design/qml/Components/DexModalHeader.qml</file>
         <file>atomic_defi_design/qml/Components/DexMouseArea.qml</file>
+        <file>atomic_defi_design/qml/Components/DexPaginator.qml</file>
         <file>atomic_defi_design/qml/Components/DexPopup.qml</file>
         <file>atomic_defi_design/qml/Components/DexRangeSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DexRectangle.qml</file>
@@ -378,6 +384,7 @@
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
         <file>atomic_defi_design/qml/Components/ForceRestartModal.qml</file>
         <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
+        <file>atomic_defi_design/qml/Components/HelpModal.qml</file>
         <file>atomic_defi_design/qml/Components/HideFieldButton.qml</file>
         <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>
         <file>atomic_defi_design/qml/Components/InnerBackground.qml</file>
