@@ -12,12 +12,22 @@ BasicModal {
 
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
+    property alias max_mount: input_max_amount
     property bool needFix: false
     property bool errorView: false
+    property bool segwit: false
+    property var segwit_callback
     property var address_data
+    property var segwit_successClose
 
 
-    onClosed: reset()
+    onClosed: {
+        if(segwit) {
+            segwit_callback()
+        }
+        segwit = false
+        reset()
+    }
     closePolicy: Popup.NoAutoClose
 
     // Local
@@ -116,7 +126,9 @@ BasicModal {
                 reset()
                 showError(qsTr("Failed to Send"), General.prettifyJSON(broadcast_result))
             }
-            else root.currentIndex = 2
+            else {
+                root.currentIndex = 2
+            }
         }
     }
 
@@ -492,6 +504,7 @@ BasicModal {
         custom_amount: input_amount.field.text
 
         function onClose() {
+            root.segwit_successClose()
             root.close()
         }
     }

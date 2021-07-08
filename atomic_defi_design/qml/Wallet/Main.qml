@@ -94,16 +94,38 @@ Item {
                     }
 
                     DefaultSwitch {
+                        id: segwitSwitch
                         Layout.alignment: Qt.AlignVCenter
-                        Component.onCompleted: checked = current_ticker_infos.is_segwit_on
-                        onCheckedChanged: {
-                            var address = API.app.wallet_pg.switch_address_mode(checked);
-                            if (address != current_ticker_infos.address && address != "") {
-                                console.log("need to send funds to: " + address)
-                                send_modal.open()
-                                send_modal.item.address_field.text = address
-                                //send_modal.input_max_amount.checked = true
-                            }
+                        Component.onCompleted: {
+                            checked = current_ticker_infos.is_segwit_on
+                        }
+                        onPressed: {
+                            
+                            Qaterial.DialogManager.showDialog({
+                                title: qsTr("Confirm"),
+                                text:  qsTr("In order to switch address mode you need to sends funds to your new address"),
+                                standardButtons: Dialog.Yes | Dialog.No,
+                                onAccepted: function() {
+                                    var address = API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
+                                    if (address != current_ticker_infos.address && address != "") {
+                                        console.log("need to send funds to: " + address)
+                                        send_modal.open()
+                                        send_modal.item.address_field.text = address
+                                        send_modal.item.max_mount.checked = true
+                                        send_modal.item.segwit = true
+                                        send_modal.item.segwit_callback = function() {
+                                            segwitSwitch.checked = !segwitSwitch.checked
+                                        }
+                                        send_modal.item.segwit_successClose = function() {
+                                            API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
+                                            API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
+                                        }
+                                    }
+                                },
+                                onRejected: function () {
+                                    segwitSwitch.checked = !segwitSwitch.checked
+                                }
+                            })
                         }
                     }
                 }
