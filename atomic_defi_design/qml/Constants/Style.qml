@@ -300,6 +300,7 @@ QtObject {
                                           "MORTY": "#A4764D",
                                           "RICK": "#A5CBDD",
                                           "EMC2": "#00CCFF",
+                                          "INJ": "#17EAE9",
                                           "DASH": "#008CE7",
                                           "RVN": "#384182",
                                           "DGB": "#006AD2",

@@ -1604,6 +1604,40 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "INJ-BEP20": {
+      "coin": "INJ-BEP20",
+      "name": "Injective Protocol",
+      "coinpaprika_id": "inj-injective-protocol",
+      "coingecko_id": "injective-protocol",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "INJ-ERC20": {
+      "coin": "INJ-ERC20",
+      "name": "Injective Protocol",
+      "coinpaprika_id": "inj-injective-protocol",
+      "coingecko_id": "injective-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "IOTA-BEP20": {
     "coin": "IOTA-BEP20",
     "name": "IOTA",
