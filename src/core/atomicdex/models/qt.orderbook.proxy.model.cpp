@@ -100,6 +100,8 @@ namespace atomic_dex
             break;
         case orderbook_model::HaveCEXIDRole:
             break;
+        case orderbook_model::NameAndTicker:
+            break;
         case orderbook_model::PriceFiatRole:
             t_float_50 left  = safe_float(left_data.toString().toStdString());
             t_float_50 right = safe_float(right_data.toString().toStdString());
