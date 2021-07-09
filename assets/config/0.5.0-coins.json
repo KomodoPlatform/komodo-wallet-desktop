@@ -274,6 +274,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "AVA-BEP20": {
+      "coin": "AVA-BEP20",
+      "name": "Travala.com",
+      "coinpaprika_id": "ava-travala",
+      "coingecko_id": "concierge-io",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "AVAX-BEP20": {
     "coin": "AVAX-BEP20",
     "name": "Avalanche",

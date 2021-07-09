@@ -271,6 +271,7 @@ QtObject {
                                           "ARPA": "#CCD9E2",
                                           "ATOM": "#474B6C",
                                           "AUR": "#0A6C5E",
+                                          "AVA": "#5B567F",
                                           "AVAX": "#E84142",
                                           "BAL": "#4D4D4D",
                                           "BNB": "#F3BA2F",
