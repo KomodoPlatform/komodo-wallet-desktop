@@ -127,7 +127,7 @@ DexRectangle {
                 can_open_login = false
                 openFirstLaunch(true)
             }
-            postConfirmSuccess: () => {
+            onPostConfirmSuccess: () => {
                 openFirstLaunch(false, false)
             }
         }
@@ -141,7 +141,7 @@ DexRectangle {
                 can_open_login = false
                 openFirstLaunch(true)
             }
-            postCreateSuccess: () => {
+            onPostCreateSuccess: () => {
                 openFirstLaunch(false, false)
             }
             Component.onCompleted: console.log("Initialized new user")
@@ -156,7 +156,7 @@ DexRectangle {
                 can_open_login = false
                 openFirstLaunch(true)
             }
-            postLoginSuccess: () => {
+            onPostLoginSuccess: () => {
                 current_page = idx_initial_loading
             }
             Component.onCompleted: console.log("Initialized login")

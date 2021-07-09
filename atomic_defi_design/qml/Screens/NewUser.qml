@@ -11,8 +11,8 @@ SetupPage {
     id: new_user
 
     // Override
-    property var onClickedBack: () => {}
-    property var postCreateSuccess: () => {}
+    signal clickedBack()
+    signal postCreateSuccess()
 
     property string current_mnemonic
     property string text_error
@@ -35,7 +35,7 @@ SetupPage {
 
     function setRandomGuessWord() {
         const prev_idx = current_word_idx
-        while(current_word_idx === prev_idx)
+        while (current_word_idx === prev_idx)
             current_word_idx = General.getRandomInt(0, getWords().length - 1)
     }
 
@@ -44,21 +44,19 @@ SetupPage {
     }
 
     function submitGuess(field) {
-        if(validGuessField(field)) {
+        if (validGuessField(field)) {
             // Check if it's correct
-            if(field.text === getWords()[current_word_idx]) {
-                if(isFinalGuess()) {
+            if (field.text === getWords()[current_word_idx]) {
+                if (isFinalGuess()) {
                     return [true, true]
-                }
-                else {
+                } else {
                     ++guess_count
                     setRandomGuessWord()
                 }
                 field.text = ""
                 guess_text_error = ""
                 return [true, false]
-            }
-            else {
+            } else {
                 guess_text_error = qsTr("Wrong word, please check again")
             }
         }
@@ -79,22 +77,25 @@ SetupPage {
         guess_text_error = ""
         guess_count = 1
     }
+
     function shuffle(array) {
-      var currentIndex = array.length,  randomIndex;
+        var currentIndex = array.length,
+            randomIndex;
 
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
 
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
 
-        // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-          array[randomIndex], array[currentIndex]];
-      }
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]
+            ];
+        }
 
-      return array;
+        return array;
     }
 
     function getRandom4x(list, keep) {
@@ -116,16 +117,15 @@ SetupPage {
 
         // return final word list
         return finalList
-  }
+    }
 
     function onClickedCreate(password, generated_seed, wallet_name) {
-        if(API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
+        if (API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
             console.log("Success: Create wallet")
             selected_wallet_name = wallet_name
             postCreateSuccess()
             return true
-        }
-        else {
+        } else {
             console.log("Failed: Create wallet")
             text_error = qsTr("Failed to create a wallet")
             return false
@@ -145,18 +145,18 @@ SetupPage {
                 icon.source: Qaterial.Icons.arrowLeft
                 Layout.alignment: Qt.AlignVCenter
                 onClicked: {
-                    if(currentStep === 0) {
+                    if (currentStep === 0) {
                         reset()
-                        onClickedBack()
+                        clickedBack()
                     } else {
-                        if(currentStep == 2) {
+                        if (currentStep == 2) {
                             currentStep = 0
                             _inputPassword.field.text = ""
                             _inputPasswordConfirm.field.text = ""
                         } else {
                             input_seed_word.field.text = ""
                             currentStep--
-                        } 
+                        }
 
 
                     }
@@ -165,13 +165,13 @@ SetupPage {
 
             DexLabel {
                 font: theme.textType.head6
-                text_value: if(currentStep === 0) {
-                                 qsTr("New Wallet")
-                            } else if(currentStep === 1) {
-                                qsTr("Confirm Seed")
-                            } else if(currentStep === 2) {
-                                qsTr("Choose Password")
-                            }
+                text_value: if (currentStep === 0) {
+                    qsTr("New Wallet")
+                } else if (currentStep === 1) {
+                    qsTr("Confirm Seed")
+                } else if (currentStep === 2) {
+                    qsTr("Choose Password")
+                }
                 Layout.alignment: Qt.AlignVCenter
             }
 
@@ -190,10 +190,10 @@ SetupPage {
         }
 
         function completeForm() {
-            if(!continue_button.enabled) return
+            if (!continue_button.enabled) return
 
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
-            if(text_error !== "") return
+            if (text_error !== "") return
 
             input_seed_word.field.text = ""
             guess_text_error = ""
@@ -206,16 +206,15 @@ SetupPage {
         function tryGuess() {
             // Open EULA if it's the final one
             let sub = submitGuess(input_seed_word.field)
-            if(sub[0] ==  true && sub[1] ==  true) {
+            if (sub[0] == true && sub[1] == true) {
                 currentStep++
             } else if (sub[0] == true && sub[1] == false) {
-                 input_seed_word.field.text = ""
-            }
-             else {
+                input_seed_word.field.text = ""
+            } else {
                 input_seed_word.field.text = ""
                 input_seed_word.error = true
                 setRandomGuessWord()
-                mmo.model = getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx]) 
+                mmo.model = getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
             }
         }
 
@@ -223,9 +222,9 @@ SetupPage {
             id: eula_modal
             sourceComponent: EulaModal {
                 onConfirm: () => {
-                   if(onClickedCreate(_inputPassword.field.text,
-                                       input_generated_seed.text,
-                                       input_wallet_name.field.text)) reset()
+                    if (onClickedCreate(_inputPassword.field.text,
+                            input_generated_seed.text,
+                            input_wallet_name.field.text)) reset()
                 }
             }
         }
@@ -241,10 +240,10 @@ SetupPage {
                 id: input_wallet_name
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                opacity: enabled ?  1 : .5
+                opacity: enabled ? 1 : .5
                 background.border.width: 1
-                background.radius: 25 
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                background.radius: 25
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
                 field.onAccepted: completeForm()
                 field.font: theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
@@ -305,14 +304,14 @@ SetupPage {
                 text: current_mnemonic
             }
             Column {
-                Layout.fillWidth: true 
+                Layout.fillWidth: true
                 spacing: 5
                 RowLayout {
                     width: parent.width
                     DexLabel {
                         text: qsTr("Generated Seed")
                         font: theme.textType.body1
-                        Layout.fillWidth: true 
+                        Layout.fillWidth: true
                         Layout.alignment: Qt.AlignVCenter
                     }
                     Qaterial.AppBarButton {
@@ -335,7 +334,7 @@ SetupPage {
                         Repeater {
                             model: current_mnemonic.split(" ")
                             delegate: DexRectangle {
-                                width: (_insideFlow.width-30) / 4
+                                width: (_insideFlow.width - 30) / 4
                                 height: _insideLabel.implicitHeight + 15
                                 color: theme.accentColor
                                 opacity: .5
@@ -366,7 +365,7 @@ SetupPage {
                 }
                 DexAppButton {
                     id: nextButton
-                    enabled: input_wallet_name.field.text !== "" 
+                    enabled: input_wallet_name.field.text !== ""
                     onClicked: {
                         currentStep++
                         input_seed_word.field.text = ""
@@ -438,10 +437,10 @@ SetupPage {
                 }
             }
             Column {
-                Layout.fillWidth: true 
+                Layout.fillWidth: true
                 spacing: 5
                 Item {
-                    width: parent.width-10
+                    width: parent.width - 10
                     height: _insideFlow2.height
                     Grid {
                         id: _insideFlow2
@@ -450,15 +449,15 @@ SetupPage {
                         horizontalItemAlignment: Grid.AlignHCenter
                         Repeater {
                             id: mmo
-                            model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx]) 
+                            model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
                             delegate: DexRectangle {
-                                width: (_insideFlow2.width-30) / 4
+                                width: (_insideFlow2.width - 30) / 4
                                 height: _insideLabel.implicitHeight + 15
                                 color: theme.accentColor
-                                opacity: _areaSelect.containsMouse?  1 : .6
+                                opacity: _areaSelect.containsMouse ? 1 : .6
                                 DexLabel {
                                     id: _insideLabel
-                                    text: modelData?? ""
+                                    text: modelData ?? ""
                                     font: theme.textType.body1
                                     anchors.centerIn: parent
                                 }
@@ -478,7 +477,7 @@ SetupPage {
             }
 
             Item {
-                Layout.fillWidth: true 
+                Layout.fillWidth: true
                 Layout.preferredHeight: 5
             }
 
@@ -486,14 +485,16 @@ SetupPage {
                 id: input_seed_word
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                opacity: enabled ?  1 : .5
+                opacity: enabled ? 1 : .5
                 background.border.width: 1
-                background.radius: 25 
+                background.radius: 25
                 field.font: theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
-                field.validator: RegExpValidator { regExp: /[a-z]+/ }
+                field.validator: RegExpValidator {
+                    regExp: /[a-z]+/
+                }
                 field.onAccepted: tryGuess()
 
                 DexRectangle {
@@ -555,7 +556,7 @@ SetupPage {
                 text_value: guess_text_error
                 color: Style.colorRed
                 visible: input_seed_word.error
-                DexVisibleBehavior on visible {}  
+                DexVisibleBehavior on visible {}
             }
         }
         ColumnLayout {
@@ -568,7 +569,7 @@ SetupPage {
                 Layout.preferredHeight: 50
                 background.border.width: 1
                 background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
                 field.echoMode: TextField.Password
                 field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
@@ -603,8 +604,11 @@ SetupPage {
                         rightMargin: 10
                     }
                     onClicked: {
-                        if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
-                        else { _inputPassword.field.echoMode = TextField.Password }
+                        if (_inputPassword.field.echoMode === TextField.Password) {
+                            _inputPassword.field.echoMode = TextField.Normal
+                        } else {
+                            _inputPassword.field.echoMode = TextField.Password
+                        }
                     }
                 }
             }
@@ -623,7 +627,7 @@ SetupPage {
                 Layout.preferredHeight: 50
                 background.border.width: 1
                 background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
                 field.echoMode: TextField.Password
                 field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
@@ -658,8 +662,11 @@ SetupPage {
                         rightMargin: 10
                     }
                     onClicked: {
-                        if( _inputPasswordConfirm.field.echoMode === TextField.Password ) { _inputPasswordConfirm.field.echoMode = TextField.Normal }
-                        else { _inputPasswordConfirm.field.echoMode = TextField.Password }
+                        if (_inputPasswordConfirm.field.echoMode === TextField.Password) {
+                            _inputPasswordConfirm.field.echoMode = TextField.Normal
+                        } else {
+                            _inputPasswordConfirm.field.echoMode = TextField.Password
+                        }
                     }
                 }
             }

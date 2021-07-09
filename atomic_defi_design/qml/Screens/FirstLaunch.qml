@@ -21,20 +21,21 @@ SetupPage {
     function updateWallets() {
         wallets = API.app.wallet_mgr.get_wallets()
     }
+
     function onClickedLogin(password) {
-        if(API.app.wallet_mgr.login(password, selected_wallet_name)) {
+        if (API.app.wallet_mgr.login(password, selected_wallet_name)) {
             console.log("Success: Login")
             app.currentWalletName = selected_wallet_name
             return true
-        }
-        else {
+        } else {
             console.log("Failed: Login")
             return false
         }
     }
-    property var wallets: ([])
+    property
+    var wallets: ([])
 
-    image_path: (bottomDrawer.y === 0 && bottomDrawer.visible) ? "" : "file:///" + atomic_logo_path +  "/" + theme.bigSidebarLogo
+    image_path: (bottomDrawer.y === 0 && bottomDrawer.visible) ? "" : "file:///" + atomic_logo_path + "/" + theme.bigSidebarLogo
     image_margin: 30
     Drawer {
         id: bottomDrawer
@@ -53,14 +54,14 @@ SetupPage {
                 opacity: .8
             }
             Column {
-                anchors.bottom: parent.bottom 
+                anchors.bottom: parent.bottom
                 anchors.bottomMargin: 250
                 anchors.horizontalCenter: parent.horizontalCenter
                 spacing: 20
                 Image {
                     /*width: 200 
                     height: 130*/
-                    source: "file:///" + atomic_logo_path +  "/" + theme.bigSidebarLogo
+                    source: "file:///" + atomic_logo_path + "/" + theme.bigSidebarLogo
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 DexLabel {
@@ -70,7 +71,7 @@ SetupPage {
                 }
                 DexAppTextField {
                     id: _inputPassword
-                    height: 50 
+                    height: 50
                     width: 300
                     anchors.horizontalCenter: parent.horizontalCenter
                     background.border.width: 1
@@ -82,8 +83,8 @@ SetupPage {
                     field.rightPadding: 60
                     field.placeholderText: qsTr("Type password")
                     field.onAccepted: {
-                         if(_keyChecker.isValid()) { 
-                            if(onClickedLogin(field.text)) {
+                        if (_keyChecker.isValid()) {
+                            if (onClickedLogin(field.text)) {
                                 console.log("Okay")
                                 bottomDrawer.close()
                                 app.current_page = idx_initial_loading
@@ -99,7 +100,7 @@ SetupPage {
                         height: 40
                         width: 60
                         radius: 20
-                        color: _inputPassword.field.focus? _inputPassword.background.border.color : theme.accentColor
+                        color: _inputPassword.field.focus ? _inputPassword.background.border.color : theme.accentColor
                         anchors.verticalCenter: parent.verticalCenter
                         Qaterial.ColorIcon {
                             anchors.centerIn: parent
@@ -113,7 +114,7 @@ SetupPage {
                         opacity: .8
                         icon {
                             source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                            color: _inputPassword.field.focus? _inputPassword.background.border.color : theme.accentColor
+                            color: _inputPassword.field.focus ? _inputPassword.background.border.color : theme.accentColor
                         }
                         anchors {
                             verticalCenter: parent.verticalCenter
@@ -121,14 +122,17 @@ SetupPage {
                             rightMargin: 10
                         }
                         onClicked: {
-                            if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
-                            else { _inputPassword.field.echoMode = TextField.Password }
+                            if (_inputPassword.field.echoMode === TextField.Password) {
+                                _inputPassword.field.echoMode = TextField.Normal
+                            } else {
+                                _inputPassword.field.echoMode = TextField.Password
+                            }
                         }
                     }
                 }
                 DexButton {
                     radius: width
-                    width: 150 
+                    width: 150
                     text: qsTr("connect")
                     color: theme.accentColor
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -144,11 +148,11 @@ SetupPage {
                 }
             }
             Qaterial.AppBarButton {
-                anchors.bottom: parent.bottom 
+                anchors.bottom: parent.bottom
                 anchors.bottomMargin: 60
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: 80
-                icon.width: 40 
+                icon.width: 40
                 icon.height: 40
                 icon.source: Qaterial.Icons.close
                 onClicked: bottomDrawer.close()
@@ -160,13 +164,13 @@ SetupPage {
         id: content_column
         width: 400
         spacing: Style.rowSpacing
-        opacity: (bottomDrawer.y === 0 && bottomDrawer.visible) ? .3 : 1 
+        opacity: (bottomDrawer.y === 0 && bottomDrawer.visible) ? .3 : 1
         RowLayout {
-            Layout.fillWidth: true 
-             DexLabel {
+            Layout.fillWidth: true
+            DexLabel {
                 font: theme.textType.head6
                 text_value: qsTr("Welcome")
-                Layout.fillWidth: true 
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
             }
             DexLanguage {
@@ -250,7 +254,7 @@ SetupPage {
                         height: bg.row_height
                         GradientRectangle {
                             start_color: Style.applyOpacity(Style.colorWalletsHighlightGradient, mouse_area.containsMouse ? "80" : "00")
-                            end_color:  Style.applyOpacity(Style.colorWalletsHighlightGradient)
+                            end_color: Style.applyOpacity(Style.colorWalletsHighlightGradient)
 
                             anchors.fill: parent
 
@@ -295,7 +299,7 @@ SetupPage {
                             }
 
                             HorizontalLine {
-                                visible: index !== wallets.length -1
+                                visible: index !== wallets.length - 1
                                 width: parent.width - 4
 
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -320,10 +324,10 @@ SetupPage {
         updateWallets()
     }
     Connections {
-        target: app 
+        target: app
         function onCan_open_loginChanged() {
             console.log("LOGIN STATE changed")
-            if(app.can_open_login) {
+            if (app.can_open_login) {
                 bottomDrawer.open()
                 app.can_open_login = false
             }
@@ -331,7 +335,7 @@ SetupPage {
     }
     GaussianBlur {
         anchors.fill: _setup
-        visible: false// bottomDrawer.y === 0 && bottomDrawer.visible
+        visible: false // bottomDrawer.y === 0 && bottomDrawer.visible
         source: _setup
         radius: 21
         deviation: 2

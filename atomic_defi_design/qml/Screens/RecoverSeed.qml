@@ -10,10 +10,8 @@ import "../Constants"
 SetupPage {
     id: recover_seed
     // Override
-    property
-    var onClickedBack: () => {}
-    property
-    var postConfirmSuccess: () => {}
+    signal clickedBack()
+    signal postConfirmSuccess()
     property int currentStep: 0
 
     // Local
@@ -52,8 +50,11 @@ SetupPage {
                 onClicked: {
                     if (currentStep === 0) {
                         reset()
-                        onClickedBack()
+                        clickedBack()
                     } else {
+                        if(text_error !== "") {
+                            text_error = ""
+                        }
                         currentStep--
                     }
                 }

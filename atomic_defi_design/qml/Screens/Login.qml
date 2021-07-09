@@ -11,8 +11,8 @@ SetupPage {
     id: login
 
     // Override
-    property var onClickedBack: () => {}
-    property var postLoginSuccess: () => {}
+    signal clickedBack()
+    signal postLoginSuccess()
 
     // Local
     function reset() {
