@@ -836,6 +836,9 @@
     "electrum": [
       {
         "url": "electrumx.cryptocollider.com:10001"
+      },
+      {
+        "url": "electrumx2.cryptocollider.com:10001"
       }
     ],
     "explorer_url": [
