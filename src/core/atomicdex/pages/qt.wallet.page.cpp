@@ -112,10 +112,11 @@ namespace atomic_dex
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.set_current_ticker(ticker.toStdString()))
         {
+            SPDLOG_INFO("new ticker: {}", ticker.toStdString());
             this->set_tx_fetching_busy(true);
             m_transactions_mdl->reset();
-            emit currentTickerChanged();
             mm2_system.fetch_infos_thread(true, true);
+            emit currentTickerChanged();
             refresh_ticker_infos();
             check_send_availability();
         }
@@ -236,7 +237,7 @@ namespace atomic_dex
     QVariant
     wallet_page::get_ticker_infos() const
     {
-        // SPDLOG_DEBUG("get_ticker_infos");
+        //SPDLOG_DEBUG("get_ticker_infos");
         QJsonObject obj{
             {"balance", "0"},
             {"name", "Komodo"},
@@ -255,7 +256,9 @@ namespace atomic_dex
             {"transactions_left", 0},
             {"current_block", 1},
             {"is_smartchain_test_coin", false},
-            {"qrcode_address", ""}};
+            {"qrcode_address", ""},
+            {"segwit_supported", false},
+            {"is_segwit_on", false}};
         std::error_code ec;
         auto&           mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
@@ -271,6 +274,7 @@ namespace atomic_dex
             obj["type"]                               = QString::fromStdString(coin_info.type);
             obj["segwit_supported"]                   = coin_info.segwit;
             obj["is_segwit_on"]                       = coin_info.is_segwit_on;
+            //SPDLOG_DEBUG("is_segwit_on {} segwit: {}", coin_info.is_segwit_on, coin_info.segwit);
             obj["is_claimable"]                       = coin_info.is_claimable;
             obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
