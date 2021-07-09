@@ -684,7 +684,7 @@ SetupPage {
                         anchors.centerIn: parent
                         spacing: 10
                         DexLabel {
-                            text: qsTr("Cotinue")
+                            text: qsTr("Continue")
                             font: theme.textType.button
                             anchors.verticalCenter: parent.verticalCenter
                         }
