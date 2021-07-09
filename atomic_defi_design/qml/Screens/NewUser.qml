@@ -137,7 +137,6 @@ SetupPage {
     //image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
 
     content: ColumnLayout {
-        width: 600
         spacing: Style.rowSpacing
         RowLayout {
             Layout.fillWidth: true
@@ -336,7 +335,7 @@ SetupPage {
                         Repeater {
                             model: current_mnemonic.split(" ")
                             delegate: DexRectangle {
-                                width: 100
+                                width: (_insideFlow.width-30) / 4
                                 height: _insideLabel.implicitHeight + 15
                                 color: theme.accentColor
                                 opacity: .5
@@ -448,11 +447,12 @@ SetupPage {
                         id: _insideFlow2
                         width: parent.width
                         spacing: 10
+                        horizontalItemAlignment: Grid.AlignHCenter
                         Repeater {
                             id: mmo
                             model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx]) 
                             delegate: DexRectangle {
-                                width: 90
+                                width: (_insideFlow2.width-30) / 4
                                 height: _insideLabel.implicitHeight + 15
                                 color: theme.accentColor
                                 opacity: _areaSelect.containsMouse?  1 : .6
@@ -612,6 +612,7 @@ SetupPage {
             DexKeyChecker {
                 id: _keyChecker
                 field: _inputPassword.field
+                double_validation: true
                 Layout.leftMargin: 20
                 match_password: _inputPasswordConfirm.field.text
             }
@@ -662,6 +663,11 @@ SetupPage {
                     }
                 }
             }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
             RowLayout {
                 Layout.preferredWidth: 400
 

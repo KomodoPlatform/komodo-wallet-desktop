@@ -87,6 +87,8 @@ SetupPage {
                                 console.log("Okay")
                                 bottomDrawer.close()
                                 app.current_page = idx_initial_loading
+                            } else {
+                                error = true
                             }
                         } else {
                             error = true
@@ -315,11 +317,17 @@ SetupPage {
 
     }
     Component.onCompleted: {
-        if(can_open_login) {
-            can_open_login = false
-            bottomDrawer.open()
-        }
         updateWallets()
+    }
+    Connections {
+        target: app 
+        function onCan_open_loginChanged() {
+            console.log("LOGIN STATE changed")
+            if(app.can_open_login) {
+                bottomDrawer.open()
+                app.can_open_login = false
+            }
+        }
     }
     GaussianBlur {
         anchors.fill: _setup

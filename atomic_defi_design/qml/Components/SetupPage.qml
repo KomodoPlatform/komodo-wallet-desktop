@@ -37,7 +37,6 @@ Item {
             rightPadding: leftPadding
             topPadding: leftPadding * 0.5
             bottomPadding: topPadding
-
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             background: DexRectangle {
@@ -47,7 +46,7 @@ Item {
                 }
             }
 
-            contentItem: Loader {
+            contentChildren: Loader {
                 id: inner_space
             }
         }

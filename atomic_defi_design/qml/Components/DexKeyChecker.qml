@@ -9,11 +9,12 @@ ColumnLayout {
     property var field
     property bool hide_hint: false
     property bool new_password: true
+    property bool double_validation: false
     property string match_password
     property bool high_security: true
 
     function isValid() {
-        if(match_password !== "") {
+        if(double_validation) {
             return control.field.acceptableInput && RegExp(high_security ? General.reg_pass_valid : General.reg_pass_valid_low_security).test(control.field.text) && passwordsDoMatch()
         } else {
             return control.field.acceptableInput && RegExp(high_security ? General.reg_pass_valid : General.reg_pass_valid_low_security).test(control.field.text) 

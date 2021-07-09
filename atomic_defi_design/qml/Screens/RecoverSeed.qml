@@ -10,8 +10,10 @@ import "../Constants"
 SetupPage {
     id: recover_seed
     // Override
-    property var onClickedBack: () => {}
-    property var postConfirmSuccess: () => {}
+    property
+    var onClickedBack: () => {}
+    property
+    var postConfirmSuccess: () => {}
     property int currentStep: 0
 
     // Local
@@ -20,13 +22,12 @@ SetupPage {
     }
 
     function onClickedConfirm(password, seed, wallet_name) {
-        if(API.app.wallet_mgr.create(password, seed, wallet_name)) {
+        if (API.app.wallet_mgr.create(password, seed, wallet_name)) {
             console.log("Success: Recover seed")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
             return true
-        }
-        else {
+        } else {
             console.log("Failed: Recover seed")
             text_error = qsTr("Failed to recover the seed")
             return false
@@ -41,7 +42,6 @@ SetupPage {
     // image_path: General.image_path + "setup-wallet-restore-2.svg"
 
     content: ColumnLayout {
-        width: 400
         spacing: Style.rowSpacing
         RowLayout {
             Layout.fillWidth: true
@@ -50,7 +50,7 @@ SetupPage {
                 icon.source: Qaterial.Icons.arrowLeft
                 Layout.alignment: Qt.AlignVCenter
                 onClicked: {
-                    if(currentStep === 0) {
+                    if (currentStep === 0) {
                         reset()
                         onClickedBack()
                     } else {
@@ -61,11 +61,14 @@ SetupPage {
 
             DexLabel {
                 font: theme.textType.head6
-                text_value: if(currentStep === 0) {
-                                 qsTr("Recover wallet - Setup")
-                            } else if(currentStep === 1) {
-                                qsTr("Recover wallet - Choose password")
-                            }
+                Layout.fillWidth: true
+                rightPadding: 20
+                wrapMode: Label.Wrap
+                text_value: if (currentStep === 0) {
+                    qsTr("Recover wallet - Setup")
+                } else if (currentStep === 1) {
+                    qsTr("Recover wallet - Choose password")
+                }
                 Layout.alignment: Qt.AlignVCenter
             }
 
@@ -79,21 +82,22 @@ SetupPage {
         }
 
         function trySubmit() {
-            if(!submit_button.enabled) return
+            if (!submit_button.enabled) return
 
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
-            if(text_error !== "") return
+            if (text_error !== "") return
 
             eula_modal.open()
         }
+
         function tryPassLevel1() {
-            if(input_wallet_name.field.text == "") {
+            if (input_wallet_name.field.text == "") {
                 input_wallet_name.error = true
             }
 
-            if(_seedField.isValid() && input_wallet_name.field.text !== "") {
+            if (_seedField.isValid() && input_wallet_name.field.text !== "") {
                 _seedField.error = false
-                currentStep++    
+                currentStep++
             } else {
                 _seedField.error = true
             }
@@ -104,8 +108,8 @@ SetupPage {
             id: eula_modal
             sourceComponent: EulaModal {
                 onConfirm: () => {
-                   if(onClickedConfirm(_inputPassword.field.text, _seedField.field.text, input_wallet_name.field.text))
-                       reset()
+                    if (onClickedConfirm(_inputPassword.field.text, _seedField.field.text, input_wallet_name.field.text))
+                        reset()
                 }
             }
         }
@@ -118,9 +122,9 @@ SetupPage {
                 id: input_wallet_name
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                opacity: enabled ?  1 : .5
+                opacity: enabled ? 1 : .5
                 background.border.width: 1
-                background.radius: 25 
+                background.radius: 25
                 field.font: theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
@@ -144,7 +148,7 @@ SetupPage {
                 }
             }
 
-            
+
             DexLabel {
                 text: qsTr("Enter seed")
                 font: theme.textType.body1
@@ -156,14 +160,15 @@ SetupPage {
                 height: 200
                 onAccepted: tryPassLevel1()
                 field.onTextChanged: {
-                    field.text = field.text.replace("\n","") 
+                    field.text = field.text.replace("\n", "")
                     field.cursorPosition = field.length
                 }
-                function isValid() { 
+
+                function isValid() {
                     _seedField.field.text = _seedField.field.text.trim().toLowerCase()
                     _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
 
-                    return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text) 
+                    return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text)
                 }
             }
 
@@ -172,7 +177,7 @@ SetupPage {
                 visible: _seedField.error
                 text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
                 color: theme.redColor
-                Layout.preferredWidth: parent.width-40
+                Layout.preferredWidth: parent.width - 40
                 wrapMode: DexLabel.Wrap
                 font: theme.textType.body2
             }
@@ -233,7 +238,8 @@ SetupPage {
 
         ColumnLayout {
             visible: currentStep === 1
-            Layout.preferredWidth: 450
+            Layout.preferredWidth: 460
+            Layout.rightMargin: 5
             spacing: Style.rowSpacing
             DexAppTextField {
                 id: _inputPassword
@@ -241,7 +247,7 @@ SetupPage {
                 Layout.preferredHeight: 50
                 background.border.width: 1
                 background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
                 field.echoMode: TextField.Password
                 field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
@@ -276,17 +282,21 @@ SetupPage {
                         rightMargin: 10
                     }
                     onClicked: {
-                        if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
-                        else { _inputPassword.field.echoMode = TextField.Password }
+                        if (_inputPassword.field.echoMode === TextField.Password) {
+                            _inputPassword.field.echoMode = TextField.Normal
+                        } else {
+                            _inputPassword.field.echoMode = TextField.Password
+                        }
                     }
                 }
             }
 
             DexKeyChecker {
                 id: _keyChecker
+                double_validation: true
                 field: _inputPassword.field
-                Layout.leftMargin: 20
                 match_password: _inputPasswordConfirm.field.text
+                Layout.leftMargin: 20
             }
 
             DexAppTextField {
@@ -295,7 +305,7 @@ SetupPage {
                 Layout.preferredHeight: 50
                 background.border.width: 1
                 background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
                 field.echoMode: TextField.Password
                 field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
                 field.horizontalAlignment: Qt.AlignLeft
@@ -330,14 +340,21 @@ SetupPage {
                         rightMargin: 10
                     }
                     onClicked: {
-                        if( _inputPasswordConfirm.field.echoMode === TextField.Password ) { _inputPasswordConfirm.field.echoMode = TextField.Normal }
-                        else { _inputPasswordConfirm.field.echoMode = TextField.Password }
+                        if (_inputPasswordConfirm.field.echoMode === TextField.Password) {
+                            _inputPasswordConfirm.field.echoMode = TextField.Normal
+                        } else {
+                            _inputPasswordConfirm.field.echoMode = TextField.Password
+                        }
                     }
                 }
             }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
             RowLayout {
                 Layout.preferredWidth: 400
-
                 Item {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 10
@@ -348,7 +365,7 @@ SetupPage {
                     enabled: _keyChecker.isValid()
                     opacity: enabled ? 1 : .4
                     onClicked: {
-                         trySubmit()
+                        trySubmit()
                     }
                     radius: 20
                     backgroundColor: theme.accentColor
@@ -378,9 +395,6 @@ SetupPage {
                 visible: text !== ''
             }
         }
-
-        
-
 
         DefaultText {
             text_value: text_error
