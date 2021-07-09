@@ -225,7 +225,7 @@ SetupPage {
             sourceComponent: EulaModal {
                 onConfirm: () => {
                    if(onClickedCreate(_inputPassword.field.text,
-                                       input_seed_word.field.text,
+                                       input_generated_seed.text,
                                        input_wallet_name.field.text)) reset()
                 }
             }
