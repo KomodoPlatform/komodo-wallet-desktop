@@ -96,41 +96,41 @@ Item {
                         id: segwitSwitch
                         Layout.alignment: Qt.AlignVCenter
                         checked: current_ticker_infos.is_segwit_on
-                        onToggled: {
-                            if(parseFloat(current_ticker_infos.balance) > 0) {
-                                 Qaterial.DialogManager.showDialog({
-                                    title: qsTr("Confirmation"),
-                                    text:  qsTr("Do you want to send your %1 funds to %2 wallet first?").arg(API.app.wallet_pg.switch_address_mode(!segwitSwitch.checked)).arg(API.app.wallet_pg.switch_address_mode(segwitSwitch.checked)),
-                                    standardButtons: Dialog.Yes | Dialog.No,
-                                    onAccepted: function() {
-                                        var address = API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
-                                        if (address != current_ticker_infos.address && address != "") {
-                                            send_modal.open()
-                                            send_modal.item.address_field.text = address
-                                            send_modal.item.max_mount.checked = true
-                                            send_modal.item.segwit = true
-                                            send_modal.item.segwit_callback = function () {
-                                                if(send_modal.item.segwit_success) {
-                                                    API.app.wallet_pg.post_switch_address_mode(!segwitSwitch.checked)
-                                                    Qaterial.DialogManager.showDialog({
-                                                        title: qsTr("Success"),
-                                                        text: qsTr("Your transaction is send, may take some time to arrive")
-                                                    })
-                                                } else {
-                                                    segwitSwitch.checked = !segwitSwitch.checked
-                                                }  
+                        DexMouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                if(parseFloat(current_ticker_infos.balance) > 0) {
+                                     Qaterial.DialogManager.showDialog({
+                                        title: qsTr("Confirmation"),
+                                        qsTr("Do you want to send your %1 funds to %2 wallet first?").arg(current_ticker_infos.is_segwit_on ? "segwit" : "legacy").arg(!current_ticker_infos.is_segwit_on ? "segwit" : "legacy"),
+                                        standardButtons: Dialog.Yes | Dialog.No,
+                                        onAccepted: function() {
+                                            var address = API.app.wallet_pg.switch_address_mode(!segwitSwitch.checked);
+                                            if (address != current_ticker_infos.address && address != "") {
+                                                send_modal.open()
+                                                send_modal.item.address_field.text = address
+                                                send_modal.item.max_mount.checked = true
+                                                send_modal.item.segwit = true
+                                                send_modal.item.segwit_callback = function () {
+                                                    if(send_modal.item.segwit_success) {
+                                                        API.app.wallet_pg.post_switch_address_mode(!segwitSwitch.checked)
+                                                        Qaterial.DialogManager.showDialog({
+                                                            title: qsTr("Success"),
+                                                            text: qsTr("Your transaction is send, may take some time to arrive")
+                                                        })
+                                                    }
+                                                }
                                             }
+                                        },
+                                        onRejected: function () {
+                                            API.app.wallet_pg.post_switch_address_mode(!segwitSwitch.checked)
                                         }
-                                    },
-                                    onRejected: function () {
-                                        API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
-                                    }
-                                })
+                                    })
 
-                            } else {
-                                API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
+                                } else {
+                                    API.app.wallet_pg.post_switch_address_mode(!segwitSwitch.checked)
+                                }
                             }
-                           
                         }
                     }
                 }
