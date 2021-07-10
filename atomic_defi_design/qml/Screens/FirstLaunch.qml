@@ -69,6 +69,12 @@ SetupPage {
                     text: "%1 wallet".arg(selected_wallet_name)
                     topPadding: 10
                 }
+                Connections {
+                    target: bottomDrawer
+                    onVisibleChanged: {
+                        _inputPassword.field.text = ""
+                    }
+                }
                 DexAppTextField {
                     id: _inputPassword
                     height: 50
