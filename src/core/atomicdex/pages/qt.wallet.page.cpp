@@ -903,7 +903,7 @@ namespace atomic_dex
             ::mm2::api::to_json(electrum_data, electrum_req);
             batch.push_back(electrum_data);
             electrum_data["userpass"] = "*******";
-            SPDLOG_INFO("electrum_req: {}", electrum_data.dump(4));
+            SPDLOG_INFO("electrum_req: {}", electrum_data.dump(-1));
 
             //! Answer functor
             auto answer_functor = [this, ticker, is_segwit](web::http::http_response resp)
