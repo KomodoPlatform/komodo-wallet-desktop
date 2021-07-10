@@ -274,6 +274,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "AVA-BEP20": {
+      "coin": "AVA-BEP20",
+      "name": "Travala.com",
+      "coinpaprika_id": "ava-travala",
+      "coingecko_id": "concierge-io",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "AVAX-BEP20": {
     "coin": "AVAX-BEP20",
     "name": "Avalanche",
@@ -836,6 +853,9 @@
     "electrum": [
       {
         "url": "electrumx.cryptocollider.com:10001"
+      },
+      {
+        "url": "electrumx2.cryptocollider.com:10001"
       }
     ],
     "explorer_url": [
@@ -1600,6 +1620,40 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "INJ-BEP20": {
+      "coin": "INJ-BEP20",
+      "name": "Injective Protocol",
+      "coinpaprika_id": "inj-injective-protocol",
+      "coingecko_id": "injective-protocol",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "INJ-ERC20": {
+      "coin": "INJ-ERC20",
+      "name": "Injective Protocol",
+      "coinpaprika_id": "inj-injective-protocol",
+      "coingecko_id": "injective-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "IOTA-BEP20": {
     "coin": "IOTA-BEP20",
@@ -3292,30 +3346,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "VOTE2021": {
-    "coin": "VOTE2021",
-    "name": "VOTE 2021",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10002"
-      },
-      {
-        "url": "electrum2.cipig.net:10002"
-      },
-      {
-        "url": "electrum3.cipig.net:10002"
-      }
-    ],
-    "explorer_url": [
-      "https://vote.kmdexplorer.io/"
-    ],
-    "type": "Smart Chain",
-    "active": false,
-    "currently_enabled": false,
-    "wallet_only": true
-  },
   "VRM": {
     "coin": "VRM",
     "name": "Verium Reserve",
@@ -4182,23 +4212,6 @@
     "name": "STASIS EURS Token",
     "coinpaprika_id": "eurs-stasis-eurs",
     "coingecko_id": "stasis-eurs",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "FET": {
-    "coin": "FET",
-    "name": "Fetch",
-    "coinpaprika_id": "fetch-ai",
-    "coingecko_id": "fetch-ai",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
