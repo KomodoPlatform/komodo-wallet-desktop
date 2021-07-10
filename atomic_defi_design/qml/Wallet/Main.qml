@@ -102,7 +102,7 @@ Item {
                                 if(parseFloat(current_ticker_infos.balance) > 0) {
                                      Qaterial.DialogManager.showDialog({
                                         title: qsTr("Confirmation"),
-                                        qsTr("Do you want to send your %1 funds to %2 wallet first?").arg(current_ticker_infos.is_segwit_on ? "segwit" : "legacy").arg(!current_ticker_infos.is_segwit_on ? "segwit" : "legacy"),
+                                        text: qsTr("Do you want to send your %1 funds to %2 wallet first?").arg(current_ticker_infos.is_segwit_on ? "segwit" : "legacy").arg(!current_ticker_infos.is_segwit_on ? "segwit" : "legacy"),
                                         standardButtons: Dialog.Yes | Dialog.No,
                                         onAccepted: function() {
                                             var address = API.app.wallet_pg.switch_address_mode(!segwitSwitch.checked);
