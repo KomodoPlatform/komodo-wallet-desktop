@@ -18,7 +18,7 @@ DexRectangle {
     id: app
 
     property string currentWalletName: ""
-    property int page: current_page === 5? deepPage : current_page
+    property int page: current_page === 5 ? deepPage : current_page
     property int deepPage: 0
     property alias globalTheme: theme
     property string selected_wallet_name: ""
@@ -39,6 +39,8 @@ DexRectangle {
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
     property int current_page
+
+    property bool segwit_on: false
 
     onCurrent_pageChanged: {
         if(current_page === idx_dashboard) {

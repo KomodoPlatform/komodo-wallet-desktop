@@ -95,7 +95,6 @@ Item {
                     DefaultSwitch {
                         id: segwitSwitch
                         Layout.alignment: Qt.AlignVCenter
-                        //checked: current_ticker_infos.is_segwit_on
                         onToggled: {
                             if(parseFloat(current_ticker_infos.balance) > 0) {
                                  Qaterial.DialogManager.showDialog({
@@ -123,11 +122,13 @@ Item {
                                         }
                                     },
                                     onRejected: function () {
+                                        app.segwit_on = true
                                         API.app.wallet_pg.post_switch_address_mode(!current_ticker_infos.is_segwit_on)
                                     }
                                 })
 
                             } else {
+                                app.segwit_on = true
                                 API.app.wallet_pg.post_switch_address_mode(!current_ticker_infos.is_segwit_on)
                             }
 

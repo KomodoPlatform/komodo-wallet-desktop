@@ -115,13 +115,16 @@ DexPopup {
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp) {
         const change = General.formatCrypto("", amount, ticker)
-        newNotification("onBalanceUpdateStatus",
+        if(!app.segwit_on) {
+            newNotification("onBalanceUpdateStatus",
                         { am_i_sender, amount, ticker, human_date, timestamp },
                         timestamp,
                         am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
                         qsTr("Your wallet balance changed"),
                         human_date,
                         "open_wallet_page")
+        } else { app.segwit_on = false } 
+
     }
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
