@@ -913,9 +913,9 @@ namespace atomic_dex
               if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
               {
                   auto&       mm2_system = m_system_manager.get_system<mm2_service>();
+                  mm2_system.change_segwit_status(ticker, is_segwit);
                   mm2_system.fetch_infos_thread(true, false);
                   SPDLOG_INFO("Switching address mode success");
-                  mm2_system.change_segwit_status(ticker, is_segwit);
               }
             };
 
