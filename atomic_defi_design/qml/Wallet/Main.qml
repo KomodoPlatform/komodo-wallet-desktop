@@ -100,7 +100,7 @@ Item {
                             if(parseFloat(current_ticker_infos.balance) > 0) {
                                  Qaterial.DialogManager.showDialog({
                                     title: qsTr("Confirmation"),
-                                    text:  qsTr("You have the possibility to sends the funds before switching, do you want to procede"),
+                                    text:  qsTr("Do you want to send your %1 funds to %2 wallet first?").arg(API.app.wallet_pg.switch_address_mode(!segwitSwitch.checked)).arg(API.app.wallet_pg.switch_address_mode(segwitSwitch.checked)),
                                     standardButtons: Dialog.Yes | Dialog.No,
                                     onAccepted: function() {
                                         var address = API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
@@ -109,16 +109,16 @@ Item {
                                             send_modal.item.address_field.text = address
                                             send_modal.item.max_mount.checked = true
                                             send_modal.item.segwit = true
-                                            send_modal.item.segwit_callback = function() {
-                                                segwitSwitch.checked = !segwitSwitch.checked
-                                            }
-                                            send_modal.item.segwit_successClose = function() {
-                                                API.app.wallet_pg.switch_address_mode(segwitSwitch.checked);
-                                                API.app.wallet_pg.post_switch_address_mode(segwitSwitch.checked)
-                                                Qaterial.DialogManager.showDialog({
-                                                    title: qsTr("Success"),
-                                                    text: qsTr("Your transaction is send, may take some time to arrive")
-                                                })
+                                            send_modal.item.segwit_callback = function () {
+                                                if(send_modal.item.segwit_success) {
+                                                    API.app.wallet_pg.post_switch_address_mode(!segwitSwitch.checked)
+                                                    Qaterial.DialogManager.showDialog({
+                                                        title: qsTr("Success"),
+                                                        text: qsTr("Your transaction is send, may take some time to arrive")
+                                                    })
+                                                } else {
+                                                    segwitSwitch.checked = !segwitSwitch.checked
+                                                }  
                                             }
                                         }
                                     },

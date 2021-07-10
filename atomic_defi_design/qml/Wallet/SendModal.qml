@@ -16,9 +16,9 @@ BasicModal {
     property bool needFix: false
     property bool errorView: false
     property bool segwit: false
+    property bool segwit_success: false
     property var segwit_callback
     property var address_data
-    property var segwit_successClose
 
 
     onClosed: {
@@ -28,6 +28,7 @@ BasicModal {
         segwit = false
         reset()
     }
+
     closePolicy: Popup.NoAutoClose
 
     // Local
@@ -504,7 +505,9 @@ BasicModal {
         custom_amount: input_amount.field.text
 
         function onClose() {
-            root.segwit_successClose()
+            if(root.segwit) {
+                root.segwit_success = true
+            }
             root.close()
         }
     }
