@@ -268,6 +268,7 @@ BasicModal {
                 id: input_address
                 Layout.alignment: Qt.AlignLeft
                 title: qsTr("Recipient's address")
+                enabled: !root.segwit
                 field.placeholderText: qsTr("Enter address of the recipient")
                 field.enabled: !root.is_send_busy
                 field.onTextChanged: {
