@@ -421,6 +421,7 @@ QtObject {
                                           "UIS": "#008DCD",
                                           "UNO": "#2F87BB",
                                           "VAL": "#1EEC84",
+                                          "VITE": "#007AFF",
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",

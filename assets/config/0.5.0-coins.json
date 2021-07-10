@@ -2802,6 +2802,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "VITE-BEP20": {
+      "coin": "VITE-BEP20",
+      "name": "Vite",
+      "coinpaprika_id": "vite-vite",
+      "coingecko_id": "vite",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "VRSC": {
     "coin": "VRSC",
     "type": "Smart Chain",
