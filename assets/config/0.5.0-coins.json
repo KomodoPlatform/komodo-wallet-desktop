@@ -1891,6 +1891,23 @@
     "type": "Smart Chain",
     "name": "MCL"
   },
+  "MM-ERC20": {
+      "coin": "MM-ERC20",
+      "name": "Million",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "million",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MSHARK": {
     "coin": "MSHARK",
     "name": "MiliShark",
