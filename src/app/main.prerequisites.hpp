@@ -427,6 +427,7 @@ run_app(int argc, char** argv)
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
+    app->setWindowIcon(QIcon("qrc:/atomic_defi_design/assets/images/logo/dex-logo.png"));
 
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
