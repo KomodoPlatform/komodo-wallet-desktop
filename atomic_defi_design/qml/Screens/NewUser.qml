@@ -633,7 +633,7 @@ SetupPage {
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.rightPadding: 60
-                field.placeholderText: qsTr("Cofirm password")
+                field.placeholderText: qsTr("Confirm password")
                 field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
                 DexRectangle {
                     x: 5
