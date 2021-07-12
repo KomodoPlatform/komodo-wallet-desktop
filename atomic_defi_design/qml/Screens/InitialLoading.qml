@@ -21,24 +21,28 @@ SetupPage {
 
     image_path: "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo
     image_margin: 30
+    backgroundColor: 'transparent'
+    borderColor: 'transparent'
     content: ColumnLayout {
+
+        DefaultBusyIndicator {
+            Layout.preferredHeight: 100
+            Layout.preferredWidth: 100 
+            Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: -15
+            Layout.rightMargin: Layout.leftMargin*0.75
+            scale: 0.8
+        }
+
         DefaultText {
             text_value: qsTr("Loading, please wait")
             Layout.bottomMargin: 10
         }
 
-        RowLayout {
-            DefaultBusyIndicator {
-                Layout.alignment: Qt.AlignHCenter
-                Layout.leftMargin: -15
-                Layout.rightMargin: Layout.leftMargin*0.75
-                scale: 0.5
-            }
-
-            DefaultText {
-                text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                             current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
-            }
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                         current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
         }
     }
 }

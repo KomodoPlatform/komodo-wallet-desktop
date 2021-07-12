@@ -333,6 +333,7 @@
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAppTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexBoxManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
@@ -342,6 +343,7 @@
         <file>atomic_defi_design/qml/Components/DexColorOverlay.qml</file>
         <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
+        <file>atomic_defi_design/qml/Components/DexVisibleBehavior.qml</file>
         <file>atomic_defi_design/qml/Components/DexFlickable.qml</file>
         <file>atomic_defi_design/qml/Components/DexIconButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexImage.qml</file>
@@ -349,8 +351,10 @@
         <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabel.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLanguage.qml</file>
         <file>atomic_defi_design/qml/Components/DexListView.qml</file>
         <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
+        <file>atomic_defi_design/qml/Components/DexKeyChecker.qml</file>
         <file>atomic_defi_design/qml/Components/DexMacControl.qml</file>
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
         <file>atomic_defi_design/qml/Components/DexModalHeader.qml</file>
@@ -367,6 +371,7 @@
         <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexSwitch.qml</file>
         <file>atomic_defi_design/qml/Components/DexText.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAppTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextField.qml</file>
