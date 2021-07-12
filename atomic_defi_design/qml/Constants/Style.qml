@@ -307,6 +307,7 @@ QtObject {
                                           "DGB": "#006AD2",
                                           "DOT": "#E80082",
                                           "FIRO": "#BB2100",
+                                          "LBC": "#00775C",
                                           "LTC": "#BFBBBB",
                                           "LYNX": "#0071BA",
                                           "XPM": "#A67522",
