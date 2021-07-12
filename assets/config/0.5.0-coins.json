@@ -1891,6 +1891,23 @@
     "type": "Smart Chain",
     "name": "MCL"
   },
+  "MM-ERC20": {
+      "coin": "MM-ERC20",
+      "name": "Million",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "million",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MSHARK": {
     "coin": "MSHARK",
     "name": "MiliShark",
@@ -2801,6 +2818,23 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "VITE-BEP20": {
+      "coin": "VITE-BEP20",
+      "name": "Vite",
+      "coinpaprika_id": "vite-vite",
+      "coingecko_id": "vite",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "VRSC": {
     "coin": "VRSC",
