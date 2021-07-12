@@ -71,7 +71,7 @@ SetupPage {
                 }
                 Connections {
                     target: bottomDrawer
-                    onVisibleChanged: {
+                    function onVisibleChanged () {
                         _inputPassword.field.text = ""
                     }
                 }
@@ -356,5 +356,7 @@ SetupPage {
 
 
 
-    bottom_content: LinksRow {}
+    bottom_content: LinksRow {
+        visible: !(bottomDrawer.y === 0 && bottomDrawer.visible)
+    }
 }
