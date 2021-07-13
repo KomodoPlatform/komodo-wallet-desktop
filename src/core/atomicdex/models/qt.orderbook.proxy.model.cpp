@@ -131,8 +131,13 @@ namespace atomic_dex
             case orderbook_model::kind::bids:
                 break;
             case orderbook_model::kind::best_orders:
-                t_float_50 rates = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
+                t_float_50 rates      = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
+                t_float_50 fiat_price = safe_float(this->sourceModel()->data(idx, orderbook_model::PriceFiatRole).toString().toStdString());
                 if (rates > 100)
+                {
+                    return false;
+                }
+                if (fiat_price <= 0)
                 {
                     return false;
                 }
