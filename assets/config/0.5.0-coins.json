@@ -3081,7 +3081,7 @@
     "coin": "OOT",
     "name": "Utrum",
     "coinpaprika_id": "oot-utrum",
-    "coingecko_id": "utrum",
+    "coingecko_id": "test-coin",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10021"
@@ -3418,7 +3418,7 @@
   "VRM": {
     "coin": "VRM",
     "name": "Verium Reserve",
-    "coingecko_id": "veriumreserve",
+    "coingecko_id": "test-coin",
     "coinpaprika_id": "vrm-veriumreserve",
     "electrum": [
       {
