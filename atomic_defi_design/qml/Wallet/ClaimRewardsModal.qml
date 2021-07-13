@@ -174,7 +174,7 @@ BasicModal {
                 horizontalAlignment: utxo_header.horizontalAlignment
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.075
+                anchors.leftMargin: parent.width * 0.060
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -190,7 +190,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.175
+                anchors.leftMargin: parent.width * 0.225
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -206,7 +206,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.300
+                anchors.leftMargin: parent.width * 0.400
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -222,7 +222,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.450
+                anchors.leftMargin: parent.width * 0.550
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -238,7 +238,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.600
+                anchors.leftMargin: parent.width * 0.700
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -254,7 +254,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.750
+                anchors.leftMargin: parent.width * 0.820
 
                 anchors.verticalCenter: parent.verticalCenter
             }
