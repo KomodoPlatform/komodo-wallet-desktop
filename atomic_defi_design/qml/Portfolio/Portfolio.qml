@@ -177,7 +177,7 @@ Item {
 
                                     font.pixelSize: 12
 
-                                    text: qsTr("(Active %1/%2)").arg(coinsList.innerList.count).arg(portfolio_mdl.length)
+                                    text: qsTr("(%1/%2)").arg(coinsList.innerList.count).arg(portfolio_mdl.length)
                                 }
                             }
                         }
