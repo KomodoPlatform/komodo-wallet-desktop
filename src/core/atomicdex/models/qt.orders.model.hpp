@@ -19,6 +19,9 @@
 //! STD
 #include <unordered_set>
 
+//! Boost
+#include <boost/thread/synchronized_value.hpp>
+
 //! QT
 #include <QAbstractListModel>
 #include <QJsonObject>
