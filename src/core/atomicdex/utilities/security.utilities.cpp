@@ -40,7 +40,7 @@ namespace
     constexpr std::size_t g_chunk_size            = 4096;
     constexpr std::size_t g_buff_len              = (g_chunk_size + crypto_secretstream_xchacha20poly1305_ABYTES);
     constexpr std::size_t g_header_size           = crypto_secretstream_xchacha20poly1305_HEADERBYTES;
-    constexpr const char* g_regex_password_policy = R"(^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$€$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$)";
+    constexpr const char* g_regex_password_policy = R"(^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$€£%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$)";
     using t_salt_array                            = std::array<unsigned char, g_salt_len>;
 } // namespace
 

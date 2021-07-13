@@ -135,7 +135,7 @@ BasicModal {
                 DefaultText {
                     Layout.leftMargin: 5
                     Layout.preferredWidth: 100
-                    text: "atomicDex"
+                    text: API.app_name
                     font.pixelSize: Style.textSizeSmall5
                 }
 

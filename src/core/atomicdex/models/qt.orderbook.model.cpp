@@ -54,7 +54,7 @@ namespace atomic_dex
             break;
         case kind::best_orders:
             this->m_model_proxy->setSortRole(PriceFiatRole);
-            this->m_model_proxy->setFilterRole(CoinRole);
+            this->m_model_proxy->setFilterRole(NameAndTicker);
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
             this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
             break;
@@ -85,6 +85,17 @@ namespace atomic_dex
             {
                 const auto coin = m_model_data.at(index.row()).rel_coin.value();
                 return QString::fromStdString(coin);
+            }
+            return QString::fromStdString(m_model_data.at(index.row()).coin);
+        }
+        case NameAndTicker:
+        {
+            if (m_current_orderbook_kind == kind::best_orders)
+            {
+                const auto  coin         = m_model_data.at(index.row()).rel_coin.value();
+                const auto& portfolio_pg = m_system_mgr.get_system<portfolio_page>();
+                const auto  cfg          = portfolio_pg.get_global_cfg()->get_coin_info(coin);
+                return QString::fromStdString(coin+cfg.name);
             }
             return QString::fromStdString(m_model_data.at(index.row()).coin);
         }
@@ -275,6 +286,8 @@ namespace atomic_dex
         case MinVolumeRole:
             order.min_volume = value.toString().toStdString();
             break;
+        case NameAndTicker:
+            break;
         case EnoughFundsToPayMinVolume:
             break;
         case CEXRatesRole:
@@ -322,7 +335,7 @@ namespace atomic_dex
             order.rel_max_volume_numer = value.toString().toStdString();
             break;
         }
-        //emit dataChanged(index, index, {role});
+        // emit dataChanged(index, index, {role});
         return true;
     }
 
@@ -461,31 +474,33 @@ namespace atomic_dex
             update_value(OrderbookRoles::CEXRatesRole, "0.00", idx, *this);
             update_value(OrderbookRoles::SendRole, "0.00", idx, *this);
             update_value(OrderbookRoles::PriceFiatRole, "0.00", idx, *this);
-            emit dataChanged(idx, idx, {OrderbookRoles::UUIDRole,
-                                        OrderbookRoles::PriceRole,
-                                        OrderbookRoles::PriceNumerRole,
-                                        OrderbookRoles::PriceDenomRole,
-                                        OrderbookRoles::IsMineRole,
-                                        OrderbookRoles::QuantityRole,
-                                        OrderbookRoles::TotalRole,
-                                        OrderbookRoles::PercentDepthRole,
-                                        OrderbookRoles::BaseMinVolumeRole,
-                                        OrderbookRoles::BaseMinVolumeDenomRole,
-                                        OrderbookRoles::BaseMinVolumeNumerRole,
-                                        OrderbookRoles::BaseMaxVolumeRole,
-                                        OrderbookRoles::BaseMaxVolumeDenomRole,
-                                        OrderbookRoles::BaseMaxVolumeNumerRole,
-                                        OrderbookRoles::RelMinVolumeRole,
-                                        OrderbookRoles::RelMinVolumeDenomRole,
-                                        OrderbookRoles::RelMinVolumeNumerRole,
-                                        OrderbookRoles::RelMaxVolumeRole,
-                                        OrderbookRoles::RelMaxVolumeDenomRole,
-                                        OrderbookRoles::RelMaxVolumeNumerRole,
-                                        OrderbookRoles::MinVolumeRole,
-                                        OrderbookRoles::EnoughFundsToPayMinVolume,
-                                        OrderbookRoles::CEXRatesRole,
-                                        OrderbookRoles::SendRole,
-                                        OrderbookRoles::PriceFiatRole});
+            emit dataChanged(
+                idx, idx,
+                {OrderbookRoles::UUIDRole,
+                 OrderbookRoles::PriceRole,
+                 OrderbookRoles::PriceNumerRole,
+                 OrderbookRoles::PriceDenomRole,
+                 OrderbookRoles::IsMineRole,
+                 OrderbookRoles::QuantityRole,
+                 OrderbookRoles::TotalRole,
+                 OrderbookRoles::PercentDepthRole,
+                 OrderbookRoles::BaseMinVolumeRole,
+                 OrderbookRoles::BaseMinVolumeDenomRole,
+                 OrderbookRoles::BaseMinVolumeNumerRole,
+                 OrderbookRoles::BaseMaxVolumeRole,
+                 OrderbookRoles::BaseMaxVolumeDenomRole,
+                 OrderbookRoles::BaseMaxVolumeNumerRole,
+                 OrderbookRoles::RelMinVolumeRole,
+                 OrderbookRoles::RelMinVolumeDenomRole,
+                 OrderbookRoles::RelMinVolumeNumerRole,
+                 OrderbookRoles::RelMaxVolumeRole,
+                 OrderbookRoles::RelMaxVolumeDenomRole,
+                 OrderbookRoles::RelMaxVolumeNumerRole,
+                 OrderbookRoles::MinVolumeRole,
+                 OrderbookRoles::EnoughFundsToPayMinVolume,
+                 OrderbookRoles::CEXRatesRole,
+                 OrderbookRoles::SendRole,
+                 OrderbookRoles::PriceFiatRole});
 
             if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids && is_price_changed)
             {

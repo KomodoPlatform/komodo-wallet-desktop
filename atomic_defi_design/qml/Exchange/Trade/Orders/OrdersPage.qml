@@ -97,7 +97,7 @@ Item {
             Row {
                 x: 5
                 y: 0
-                spacing: 0
+                spacing: 5
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
                     text: qsTr("Filter")
@@ -106,6 +106,19 @@ Item {
                     outlinedColor: Style.colorTheme5
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
+
+                DexLabel {
+                    opacity: .4
+                    visible: !orders_settings.displaySetting
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                                                    .arg(combo_base.currentTicker)
+                                                    .arg(combo_rel.currentTicker)
+                                                    .arg(qsTr("Date"))
+                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                }
+
                 Qaterial.OutlineButton {
                     visible: root.is_history && orders_settings.displaySetting
                     foregroundColor:Style.colorWhite5
@@ -119,21 +132,7 @@ Item {
                     }
                 }
             }
-            DexLabel {
-                anchors.right: parent.right
-                opacity: .4
-                visible: !orders_settings.displaySetting
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.verticalCenterOffset: 10
-                rightPadding: 10
-                horizontalAlignment: Label.AlignRight
-                text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
-                                                .arg(combo_base.currentTicker)
-                                                .arg(combo_rel.currentTicker)
-                                                .arg(qsTr("Date"))
-                                                .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
-                                                .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
-            }
+
             Row {
                 anchors.right: parent.right
                 y: 0

@@ -289,11 +289,11 @@ Qaterial.Dialog {
                                     id: dexFont
                                     editable: true
                                     Layout.alignment: Qt.AlignVCenter
-                                    displayText: _font.fontFamily
-                                    model: Qt.fontFamilies()
+                                    model: ["Ubuntu", "Montserrat", "Roboto"]
                                     Component.onCompleted: {
                                         let current = _font.fontFamily
-                                        currentIndex = Qt.fontFamilies().indexOf(current)
+                                        currentIndex = dexFont.model.indexOf(current)
+                                        //currentDisplay = currentText
                                     }
                                 }
                             }
