@@ -486,6 +486,7 @@ Item {
                     id: chart
                     anchors.fill: parent
                     anchors.margins: -1
+                    backgroundColor: price_graph_bg.color
                     visible: !is_fetching && ticker_supported
                 }
             }
