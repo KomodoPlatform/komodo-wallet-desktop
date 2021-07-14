@@ -12,9 +12,12 @@ import "../Settings"
 SetupPage {
     // Override
     id: _setup
-    property var onClickedNewUser: () => {}
-    property var onClickedRecoverSeed: () => {}
-    property var onClickedWallet: () => {}
+    property
+    var onClickedNewUser: () => {}
+    property
+    var onClickedRecoverSeed: () => {}
+    property
+    var onClickedWallet: () => {}
 
 
     // Local
@@ -71,7 +74,7 @@ SetupPage {
                 }
                 Connections {
                     target: bottomDrawer
-                    function onVisibleChanged () {
+                    function onVisibleChanged() {
                         _inputPassword.field.text = ""
                     }
                 }
@@ -312,6 +315,62 @@ SetupPage {
                                 anchors.bottom: parent.bottom
                                 anchors.bottomMargin: -height / 2
                                 light: true
+                            }
+                        }
+                        Item {
+                            anchors.right: parent.right
+                            anchors.margins: 10
+                            height: parent.height
+                            width: 30
+                            Qaterial.ColorIcon {
+                                source: Qaterial.Icons.delete_
+                                iconSize: 18
+                                anchors.centerIn: parent
+                                opacity: .8
+                                color: _deleteArea.containsMouse ? theme.redColor : theme.foregroundColor
+                            }
+                            DexMouseArea {
+                                id: _deleteArea
+                                hoverEnabled: true
+                                anchors.fill: parent
+                                onClicked: {
+                                    let wallet_name = model.modelData
+                                    let dialog = app.getText({
+                                        "title": qsTr("Delete Wallet"),
+                                        text: qsTr("Do you want to delete this wallet"),
+                                        standardButtons: Dialog.Yes | Dialog.Cancel,
+                                        warning: true,
+                                        width: 300,
+                                        iconColor: theme.redColor,
+                                        isPassword: true,
+                                        placeholderText: qsTr("Type password"),
+                                        yesButtonText: qsTr("Delete"),
+                                        cancelButtonText: qsTr("Cancel"),
+                                        onAccepted: function(text) {
+                                            if (API.app.wallet_mgr.confirm_password(wallet_name, text)) {
+                                                API.app.wallet_mgr.delete_wallet(wallet_name);
+                                                app.showText({
+                                                    title: qsTr("Wallet status"),
+                                                    text: "%1 ".arg(wallet_name) + qsTr("Wallet deleted successfully"),
+                                                    standardButtons: Dialog.Ok
+                                                })
+                                                _setup.wallets = API.app.wallet_mgr.get_wallets()
+                                            } else {
+                                                app.showText({
+                                                    title: qsTr("Wallet status"),
+                                                    text: "%1 ".arg(wallet_name) + qsTr("Wallet password entered is incorrect"),
+                                                    iconSource: Qaterial.Icons.alert,
+                                                    iconColor: theme.redColor,
+                                                    warning: true,
+                                                    standardButtons: Dialog.Ok
+                                                })
+                                            }
+                                            dialog.close()
+                                            dialog.destroy()
+                                        }
+
+                                    })
+                                }
                             }
                         }
                     }
