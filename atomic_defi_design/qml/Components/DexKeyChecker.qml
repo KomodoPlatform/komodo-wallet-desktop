@@ -61,34 +61,46 @@ ColumnLayout {
         DexLabel {
             visible: high_security
             font: theme.textType.body2
+            Layout.fillWidth: true
+            wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character")
             color: hintColor(hasEnoughLowercaseCharacters())
         }
         DexLabel {
             visible: high_security
             font: theme.textType.body2
+            Layout.fillWidth: true
+            wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character")
             color: hintColor(hasEnoughUppercaseCharacters())
         }
         DexLabel {
             visible: high_security
             font: theme.textType.body2
+            Layout.fillWidth: true
+            wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character")
             color: hintColor(hasEnoughNumericCharacters())
         }
         DexLabel {
             visible: high_security
             font: theme.textType.body2
+            Layout.fillWidth: true
+            wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)")
             color: hintColor(hasEnoughSpecialCharacters())
         }
         DexLabel {
             font: theme.textType.body2
+            Layout.fillWidth: true
+            wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1)
             color: hintColor(hasEnoughCharacters())
         }
         DexLabel {
             font: theme.textType.body2
+            Layout.fillWidth: true
+            wrapMode: DexLabel.Wrap
             text_value: hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same")
             color: hintColor(passwordsDoMatch())
         }

@@ -250,7 +250,7 @@ SetupPage {
                 background.radius: 25
                 background.border.color: field.focus ? theme.accentColor : Style.colorBorder
                 field.echoMode: TextField.Password
-                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+                field.font: theme.textType.body1 
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.rightPadding: 60
@@ -308,7 +308,7 @@ SetupPage {
                 background.radius: 25
                 background.border.color: field.focus ? theme.accentColor : Style.colorBorder
                 field.echoMode: TextField.Password
-                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+                field.font: theme.textType.body1 
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.rightPadding: 60
