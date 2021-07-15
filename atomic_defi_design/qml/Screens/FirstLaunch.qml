@@ -337,7 +337,7 @@ SetupPage {
                                     let wallet_name = model.modelData
                                     let dialog = app.getText({
                                         "title": qsTr("Delete") + " %1 ".arg(wallet_name) + ("wallet?"),
-                                        text: qsTr("Enter password to confirm wallet delete"),
+                                        text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet") ,
                                         standardButtons: Dialog.Yes | Dialog.Cancel,
                                         warning: true,
                                         width: 300,
