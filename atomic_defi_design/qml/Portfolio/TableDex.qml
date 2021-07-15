@@ -15,6 +15,8 @@ import "../Components"
 import "../Constants"
 
 Item {
+    property alias innerList: list
+
     width: parent.width
     height: 150+(list.count*65)
     visible: true
