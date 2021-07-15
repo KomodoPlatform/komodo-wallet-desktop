@@ -94,7 +94,7 @@ namespace atomic_dex
         {
             t_float_50 left  = safe_float(left_data.toString().toStdString());
             t_float_50 right = safe_float(right_data.toString().toStdString());
-            return left < right;
+            return left > right;
         }
         case orderbook_model::SendRole:
             break;
