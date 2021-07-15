@@ -5,6 +5,8 @@ import QtGraphicalEffects 1.12
 
 import Qaterial 1.0 as Qaterial
 
+import QtQuick.Window 2.15
+
 import "../Components"
 import "../Constants"
 import "../Settings"
@@ -75,7 +77,28 @@ SetupPage {
                         _inputPassword.field.text = ""
                     }
                 }
-                DexAppTextField {
+
+                DexAppPasswordField {
+                    id: _inputPassword
+                    height: 50
+                    width: 300
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    field.onAccepted: {
+                        if (_keyChecker.isValid()) {
+                            if (onClickedLogin(field.text)) {
+                                console.log("Okay")
+                                bottomDrawer.close()
+                                app.current_page = idx_initial_loading
+                            } else {
+                                error = true
+                            }
+                        } else {
+                            error = true
+                        }
+                    }
+                }
+
+                /*DexAppTextField {
                     id: _inputPassword
                     height: 50
                     width: 300
@@ -135,7 +158,7 @@ SetupPage {
                             }
                         }
                     }
-                }
+                }*/
                 DexButton {
                     radius: width
                     width: 150
@@ -218,7 +241,6 @@ SetupPage {
 
             visible: wallets.length > 0
 
-            // Name
             DexLabel {
                 text_value: qsTr("My Wallets")
                 font.pixelSize: Style.textSizeSmall2
@@ -259,12 +281,12 @@ SetupPage {
                         width: bg.width
                         height: bg.row_height
                         GradientRectangle {
+
                             start_color: Style.applyOpacity(Style.colorWalletsHighlightGradient, mouse_area.containsMouse ? "80" : "00")
                             end_color: Style.applyOpacity(Style.colorWalletsHighlightGradient)
 
                             anchors.fill: parent
 
-                            // Click area
                             Rectangle {
                                 height: parent.height
                                 width: mouse_area.containsMouse ? parent.width : 0
@@ -284,11 +306,9 @@ SetupPage {
                                 onClicked: {
                                     selected_wallet_name = model.modelData
                                     bottomDrawer.open()
-                                    //onClickedWallet()
                                 }
                             }
 
-                            // Name
                             Qaterial.ColorIcon {
                                 anchors.verticalCenter: parent.verticalCenter
                                 source: Qaterial.Icons.account
@@ -341,7 +361,7 @@ SetupPage {
     }
     GaussianBlur {
         anchors.fill: _setup
-        visible: false // bottomDrawer.y === 0 && bottomDrawer.visible
+        visible: false 
         source: _setup
         radius: 21
         deviation: 2

@@ -229,8 +229,6 @@ SetupPage {
             }
         }
 
-
-        // First page, fill the form
         ColumnLayout {
             visible: currentStep === 0
             Layout.preferredWidth: 450
@@ -563,7 +561,13 @@ SetupPage {
             visible: currentStep === 2
             Layout.preferredWidth: 450
             spacing: Style.rowSpacing
-            DexAppTextField {
+            DexAppPasswordField {
+                id: _inputPassword
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
+            }
+            /*DexAppTextField {
                 id: _inputPassword
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
@@ -611,7 +615,7 @@ SetupPage {
                         }
                     }
                 }
-            }
+            }*/
 
             DexKeyChecker {
                 id: _keyChecker
@@ -620,8 +624,15 @@ SetupPage {
                 Layout.leftMargin: 20
                 match_password: _inputPasswordConfirm.field.text
             }
-
-            DexAppTextField {
+            
+            DexAppPasswordField {
+                id: _inputPasswordConfirm
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
+            }
+            
+            /*DexAppTextField {
                 id: _inputPasswordConfirm
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
@@ -669,7 +680,7 @@ SetupPage {
                         }
                     }
                 }
-            }
+            }*/
 
             Item {
                 Layout.fillWidth: true

@@ -339,7 +339,6 @@ Item {
                 sourceComponent: ClaimRewardsModal {}
             }
 
-            // Faucet for RICK/MORTY coins
             DexButton {
                 id: button_claim_faucet
                 text: qsTr("Faucet")
