@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-
+import QtQuick.Window 2.15
 import Qaterial 1.0 as Qaterial
 
 
@@ -11,7 +11,13 @@ DexAppTextField {
     background.border.width: 1
     background.radius: 25
     field.echoMode: TextField.Password
-    field.font: Qt.platform.os === "windows" ? theme.textType.body1 : theme.textType.body2 
+    field.font: Qt.font({
+        pixelSize: (16 * theme.textType.fontDensity) / Screen.devicePixelRatio,
+        letterSpacing: 0.5,
+        family: theme.textType.fontFamily,
+        weight: Font.Normal
+    })
+    Component.onCompleted: console.log(Screen.devicePixelRatio)
     field.horizontalAlignment: Qt.AlignLeft
     field.leftPadding: 75
     field.rightPadding: 60
