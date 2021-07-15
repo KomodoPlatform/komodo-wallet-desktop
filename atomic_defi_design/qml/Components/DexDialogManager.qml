@@ -119,13 +119,30 @@ Popup {
                         error: false
                         visible: dialog.getText
                         defaultBorderColor: theme.dexBoxBackgroundColor
-                        background.border.width: 2
-                        field.font: theme.textType.head6
+                        background.border.width: 1
+                        field.font: theme.textType.body2
                         field.placeholderText: dialog.placeholderText
                         field.rightPadding: dialog.isPassword ? 55 : 20
+                        field.leftPadding: 70
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
                         field.onAccepted: {
                             dialog.accepted(field.text)
+                        }
+                        DexRectangle {
+                            x: 3
+                            visible: dialog.isPassword
+                            height: 40
+                            width: 60
+                            radius: 20
+                            color: theme.accentColor
+                            anchors.verticalCenter: parent.verticalCenter
+                            Qaterial.ColorIcon {
+                                anchors.centerIn: parent
+                                iconSize: 19
+                                source: Qaterial.Icons.keyVariant
+                                color: theme.surfaceColor
+                            }
+
                         }
                         Qaterial.AppBarButton {
                             visible: dialog.isPassword

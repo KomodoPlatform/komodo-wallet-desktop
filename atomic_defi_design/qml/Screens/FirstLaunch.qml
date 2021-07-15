@@ -336,8 +336,8 @@ SetupPage {
                                 onClicked: {
                                     let wallet_name = model.modelData
                                     let dialog = app.getText({
-                                        "title": qsTr("Delete Wallet"),
-                                        text: qsTr("Do you want to delete this wallet"),
+                                        "title": qsTr("Delete") + " %1 ".arg(wallet_name) + ("wallet?"),
+                                        text: qsTr("Enter password to confirm wallet delete"),
                                         standardButtons: Dialog.Yes | Dialog.Cancel,
                                         warning: true,
                                         width: 300,
@@ -351,14 +351,14 @@ SetupPage {
                                                 API.app.wallet_mgr.delete_wallet(wallet_name);
                                                 app.showText({
                                                     title: qsTr("Wallet status"),
-                                                    text: "%1 ".arg(wallet_name) + qsTr("Wallet deleted successfully"),
+                                                    text: "%1 ".arg(wallet_name) + qsTr("wallet deleted successfully"),
                                                     standardButtons: Dialog.Ok
                                                 })
                                                 _setup.wallets = API.app.wallet_mgr.get_wallets()
                                             } else {
                                                 app.showText({
                                                     title: qsTr("Wallet status"),
-                                                    text: "%1 ".arg(wallet_name) + qsTr("Wallet password entered is incorrect"),
+                                                    text: "%1 ".arg(wallet_name) + qsTr("wallet password entered is incorrect"),
                                                     iconSource: Qaterial.Icons.alert,
                                                     iconColor: theme.redColor,
                                                     warning: true,

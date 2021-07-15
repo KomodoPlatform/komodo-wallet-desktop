@@ -53,8 +53,8 @@ Item {
         id: _background
         width: parent.width
         height: parent.height
-        radius: 6
-        color: border.color
+        radius: 25
+        color: 'transparent'
         border.color: theme.accentColor
         border.width: input_field.focus ? 1 : 0
         Behavior on x {
