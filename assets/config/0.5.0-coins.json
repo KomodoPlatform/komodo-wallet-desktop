@@ -1752,6 +1752,35 @@
     "active": false,
     "currently_enabled": false
   },
+  "LBC": {
+    "coin": "LBC",
+    "name": "LBRY Credits",
+    "coinpaprika_id": "lbc-lbry-credits",
+    "coingecko_id": "lbry-credits",
+    "electrum": [
+      {
+        "url": "spv1.lbry.com:50001"
+      },
+      {
+        "url": "spv13.lbry.com:50001"
+      },
+      {
+        "url": "spv15.lbry.com:50001"
+      },
+      {
+        "url": "spv17.lbry.com:50001"
+      },
+      {
+        "url": "spv19.lbry.com:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.lbry.com/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "LCC": {
     "coin": "LCC",
     "name": "Litecoin Cash",
@@ -1872,7 +1901,7 @@
     "active": false,
     "coin": "MCL",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "mcl-marmara-credit-loops-mcl-coin",
+    "coinpaprika_id": "mcl-marmara-credit-loops",
     "currently_enabled": false,
     "electrum": [
       {
@@ -2998,6 +3027,12 @@
     "coingecko_id": "namecoin",
     "electrum": [
       {
+        "url": "82.119.233.36:50001"
+      },
+      {
+        "url": "nmc.bitcoins.sk:50001"
+      },
+      {
         "url": "electrumx1.nmc.bitclc.net:50001"
       },
       {
@@ -3046,7 +3081,7 @@
     "coin": "OOT",
     "name": "Utrum",
     "coinpaprika_id": "oot-utrum",
-    "coingecko_id": "utrum",
+    "coingecko_id": "test-coin",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10021"
@@ -3383,7 +3418,7 @@
   "VRM": {
     "coin": "VRM",
     "name": "Verium Reserve",
-    "coingecko_id": "veriumreserve",
+    "coingecko_id": "test-coin",
     "coinpaprika_id": "vrm-veriumreserve",
     "electrum": [
       {
