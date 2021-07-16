@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import App 1.0
 import "../Constants"
 
 Text {
@@ -13,11 +14,11 @@ Text {
                   weight: Font.Normal
               })
 
-    color: try {
+    color: DexTheme.foregroundColor/*try {
             theme.foregroundColor?? "white"
         } catch(e) {
             "white"
-        }
+        }*/
 
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap

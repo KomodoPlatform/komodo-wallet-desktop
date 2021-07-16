@@ -424,9 +424,11 @@ DexRectangle {
                 i = i.replace("[int]", "")
                 console.log("theme." + i.toString() + " = " + data[real_i] + "")
                 eval("theme." + i.toString() + " = " + data[real_i])
+                eval("DexTheme." + i.toString() + " = " + data[real_i])
             } else {
                 console.log("theme." + i.toString() + " = '" + data[i] + "'")
                 eval("theme." + i.toString() + " = '" + data[i] + "'")
+                eval("DexTheme." + i.toString() + " = '" + data[i] + "'")
             }
         }
         Qaterial.Style.accentColor = theme.accentColor

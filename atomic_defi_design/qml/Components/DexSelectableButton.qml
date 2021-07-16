@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 
+import App 1.0
 
 import QtQuick.Window 2.12
 
@@ -28,6 +29,7 @@ Item {
         id: _label
         anchors.centerIn: parent
         font: theme.textType.button
+        color: DexTheme.foregroundColor
         text: ""
         opacity: area.containsMouse? 1 : .7
     }
