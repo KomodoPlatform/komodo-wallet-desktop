@@ -6,6 +6,10 @@ import QtQuick.Layouts 1.12
 
 Item {
     anchors.fill: parent
+    Rectangle {
+        anchors.fill: parent
+        color: app.globalTheme.surfaceColor
+    }
     Item {
         width: parent.width
         y: 1
@@ -18,8 +22,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             gradient: Gradient {
                 orientation: Qt.Horizontal
-                GradientStop { position: 0.0; color: app.globalTheme.surfaceColor }
-                GradientStop { position: 0.6; color: app.globalTheme.surfaceColor }
+                GradientStop { position: 0.0; color: "transparent"}
+                GradientStop { position: 0.6; color: "transparent" }
                 GradientStop { position: 1.0; color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9) }
             }
         }

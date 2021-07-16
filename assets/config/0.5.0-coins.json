@@ -274,6 +274,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "AVA-BEP20": {
+      "coin": "AVA-BEP20",
+      "name": "Travala.com",
+      "coinpaprika_id": "ava-travala",
+      "coingecko_id": "concierge-io",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "AVAX-BEP20": {
     "coin": "AVAX-BEP20",
     "name": "Avalanche",
@@ -836,6 +853,9 @@
     "electrum": [
       {
         "url": "electrumx.cryptocollider.com:10001"
+      },
+      {
+        "url": "electrumx2.cryptocollider.com:10001"
       }
     ],
     "explorer_url": [
@@ -1601,6 +1621,40 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "INJ-BEP20": {
+      "coin": "INJ-BEP20",
+      "name": "Injective Protocol",
+      "coinpaprika_id": "inj-injective-protocol",
+      "coingecko_id": "injective-protocol",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "INJ-ERC20": {
+      "coin": "INJ-ERC20",
+      "name": "Injective Protocol",
+      "coinpaprika_id": "inj-injective-protocol",
+      "coingecko_id": "injective-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "IOTA-BEP20": {
     "coin": "IOTA-BEP20",
     "name": "IOTA",
@@ -1695,6 +1749,35 @@
       "https://koin.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
+  "LBC": {
+    "coin": "LBC",
+    "name": "LBRY Credits",
+    "coinpaprika_id": "lbc-lbry-credits",
+    "coingecko_id": "lbry-credits",
+    "electrum": [
+      {
+        "url": "spv1.lbry.com:50001"
+      },
+      {
+        "url": "spv13.lbry.com:50001"
+      },
+      {
+        "url": "spv15.lbry.com:50001"
+      },
+      {
+        "url": "spv17.lbry.com:50001"
+      },
+      {
+        "url": "spv19.lbry.com:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.lbry.com/"
+    ],
+    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   },
@@ -1818,7 +1901,7 @@
     "active": false,
     "coin": "MCL",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "mcl-marmara-credit-loops-mcl-coin",
+    "coinpaprika_id": "mcl-marmara-credit-loops",
     "currently_enabled": false,
     "electrum": [
       {
@@ -1836,6 +1919,23 @@
     ],
     "type": "Smart Chain",
     "name": "MCL"
+  },
+  "MM-ERC20": {
+      "coin": "MM-ERC20",
+      "name": "Million",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "million",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "MSHARK": {
     "coin": "MSHARK",
@@ -2748,6 +2848,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "VITE-BEP20": {
+      "coin": "VITE-BEP20",
+      "name": "Vite",
+      "coinpaprika_id": "vite-vite",
+      "coingecko_id": "vite",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "VRSC": {
     "coin": "VRSC",
     "type": "Smart Chain",
@@ -2910,6 +3027,12 @@
     "coingecko_id": "namecoin",
     "electrum": [
       {
+        "url": "82.119.233.36:50001"
+      },
+      {
+        "url": "nmc.bitcoins.sk:50001"
+      },
+      {
         "url": "electrumx1.nmc.bitclc.net:50001"
       },
       {
@@ -2958,7 +3081,7 @@
     "coin": "OOT",
     "name": "Utrum",
     "coinpaprika_id": "oot-utrum",
-    "coingecko_id": "utrum",
+    "coingecko_id": "test-coin",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10021"
@@ -3292,34 +3415,10 @@
     "active": false,
     "currently_enabled": false
   },
-  "VOTE2021": {
-    "coin": "VOTE2021",
-    "name": "VOTE 2021",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10002"
-      },
-      {
-        "url": "electrum2.cipig.net:10002"
-      },
-      {
-        "url": "electrum3.cipig.net:10002"
-      }
-    ],
-    "explorer_url": [
-      "https://vote.kmdexplorer.io/"
-    ],
-    "type": "Smart Chain",
-    "active": false,
-    "currently_enabled": false,
-    "wallet_only": true
-  },
   "VRM": {
     "coin": "VRM",
     "name": "Verium Reserve",
-    "coingecko_id": "veriumreserve",
+    "coingecko_id": "test-coin",
     "coinpaprika_id": "vrm-veriumreserve",
     "electrum": [
       {
@@ -4182,23 +4281,6 @@
     "name": "STASIS EURS Token",
     "coinpaprika_id": "eurs-stasis-eurs",
     "coingecko_id": "stasis-eurs",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "FET": {
-    "coin": "FET",
-    "name": "Fetch",
-    "coinpaprika_id": "fetch-ai",
-    "coingecko_id": "fetch-ai",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",

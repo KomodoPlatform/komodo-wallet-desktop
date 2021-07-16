@@ -78,7 +78,8 @@ namespace atomic_dex
             RelMinVolumeNumerRole,
             RelMaxVolumeRole,
             RelMaxVolumeDenomRole,
-            RelMaxVolumeNumerRole
+            RelMaxVolumeNumerRole,
+            NameAndTicker
         };
 
         orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent = nullptr);

@@ -2,14 +2,17 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Components"
 import "../Constants"
 
 SetupPage {
     id: recover_seed
     // Override
-    property var onClickedBack: () => {}
-    property var postConfirmSuccess: () => {}
+    signal clickedBack()
+    signal postConfirmSuccess()
+    property int currentStep: 0
 
     // Local
     function reset() {
@@ -17,13 +20,12 @@ SetupPage {
     }
 
     function onClickedConfirm(password, seed, wallet_name) {
-        if(API.app.wallet_mgr.create(password, seed, wallet_name)) {
+        if (API.app.wallet_mgr.create(password, seed, wallet_name)) {
             console.log("Success: Recover seed")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
             return true
-        }
-        else {
+        } else {
             console.log("Failed: Recover seed")
             text_error = qsTr("Failed to recover the seed")
             return false
@@ -38,33 +40,68 @@ SetupPage {
     // image_path: General.image_path + "setup-wallet-restore-2.svg"
 
     content: ColumnLayout {
-        width: 400
         spacing: Style.rowSpacing
-
-        DefaultText {
-            text_value: qsTr("Recover Wallet")
-        }
-
-        HorizontalLine {
+        RowLayout {
             Layout.fillWidth: true
+            spacing: 10
+            Qaterial.AppBarButton {
+                icon.source: Qaterial.Icons.arrowLeft
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: {
+                    if (currentStep === 0) {
+                        reset()
+                        clickedBack()
+                    } else {
+                        if(text_error !== "") {
+                            text_error = ""
+                        }
+                        currentStep--
+                    }
+                }
+            }
+
+            DexLabel {
+                font: theme.textType.head6
+                Layout.fillWidth: true
+                rightPadding: 20
+                wrapMode: Label.Wrap
+                text_value: if (currentStep === 0) {
+                    qsTr("Recover wallet - Setup")
+                } else if (currentStep === 1) {
+                    qsTr("Recover wallet - Choose password")
+                }
+                Layout.alignment: Qt.AlignVCenter
+            }
+
         }
 
         function reset() {
             recover_seed.reset()
             input_wallet_name.reset()
-            input_seed.reset()
-            input_seed_hidden.reset()
-            input_password.reset()
-            input_seed.visible = false
+            _seedField.field.text = ""
+            _inputPassword.field.text = ""
         }
 
         function trySubmit() {
-            if(!submit_button.enabled) return
+            if (!submit_button.enabled) return
 
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
-            if(text_error !== "") return
+            if (text_error !== "") return
 
             eula_modal.open()
+        }
+
+        function tryPassLevel1() {
+            if (input_wallet_name.field.text == "") {
+                input_wallet_name.error = true
+            }
+
+            if (_seedField.isValid() && input_wallet_name.field.text !== "") {
+                _seedField.error = false
+                currentStep++
+            } else {
+                _seedField.error = true
+            }
         }
 
 
@@ -72,89 +109,291 @@ SetupPage {
             id: eula_modal
             sourceComponent: EulaModal {
                 onConfirm: () => {
-                   if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
-                       reset()
+                    if (onClickedConfirm(_inputPassword.field.text, _seedField.field.text, input_wallet_name.field.text))
+                        reset()
                 }
             }
         }
+        ColumnLayout {
+            visible: currentStep === 0
+            Layout.preferredWidth: 450
+            spacing: Style.rowSpacing
 
-        WalletNameField {
-            id: input_wallet_name
-            field.onAccepted: trySubmit()
-        }
-
-        TextFieldWithTitle {
-            id: input_seed_hidden
-            visible: !input_seed.visible
-            title: qsTr("Seed")
-            field.placeholderText: qsTr("Enter the seed")
-            field.onTextChanged: {
-                input_seed.field.text = field.text
-            }
-            hidable: true
-            hiding: true
-            hide_button.use_default_behaviour: false
-            hide_button_area.onClicked: {
-                input_seed.visible = true
-                // input_seed.field.focus = true // This puts the cursor to left, not good
-            }
-
-            field.onAccepted: trySubmit()
-        }
-
-        TextAreaWithTitle {
-            id: input_seed
-            visible: false
-            title: qsTr("Seed")
-            field.placeholderText: qsTr("Enter the seed")
-            field.onTextChanged: {
-                input_seed_hidden.field.text = field.text
-            }
-
-            hidable: true
-            hiding: false
-            hide_button.use_default_behaviour: false
-            hide_button_area.onClicked: {
-                visible = false
-                // input_seed_hidden.field.focus = true // This puts the cursor to left, not good
-            }
-            onReturn: trySubmit
-        }
-
-        DefaultCheckBox {
-            id: allow_custom_seed
-            text: qsTr("Allow custom seed")
-        }
-
-        PasswordForm {
-            id: input_password
-
-            field.onAccepted: trySubmit()
-            confirm_field.onAccepted: trySubmit()
-        }
-
-        RowLayout {
-            spacing: Style.buttonSpacing
-
-            DefaultButton {
+            DexAppTextField {
+                id: input_wallet_name
                 Layout.fillWidth: true
-                text: qsTr("Back")
-                onClicked: {
-                    reset()
-                    onClickedBack()
+                Layout.preferredHeight: 50
+                opacity: enabled ? 1 : .5
+                background.border.width: 1
+                background.radius: 25
+                field.font: theme.textType.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
+                field.placeholderText: qsTr("Wallet Name")
+                field.onAccepted: tryPassLevel1()
+
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: theme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    Qaterial.ColorIcon {
+                        anchors.centerIn: parent
+                        iconSize: 19
+                        source: Qaterial.Icons.wallet
+                        color: theme.surfaceColor
+                    }
+
                 }
             }
 
-            PrimaryButton {
-                id: submit_button
+
+            DexLabel {
+                text: qsTr("Enter seed")
+                font: theme.textType.body1
+            }
+
+            DexAppTextArea {
+                id: _seedField
                 Layout.fillWidth: true
-                text: qsTr("Confirm")
-                onClicked: trySubmit()
-                enabled:     // Fields are not empty
-                             input_wallet_name.field.acceptableInput === true &&
-                             input_seed.field.text !== '' &&
-                             input_password.isValid() &&
-                             (allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(input_seed.field.text))
+                height: 200
+                onAccepted: tryPassLevel1()
+                field.onTextChanged: {
+                    field.text = field.text.replace("\n", "")
+                    field.cursorPosition = field.length
+                }
+
+                function isValid() {
+                    _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
+
+                    return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text)
+                }
+            }
+
+            DexLabel {
+                id: _seedError
+                visible: _seedField.error
+                text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
+                color: theme.redColor
+                Layout.preferredWidth: parent.width - 40
+                wrapMode: DexLabel.Wrap
+                font: theme.textType.body2
+            }
+
+            DefaultCheckBox {
+                id: allow_custom_seed
+                text: qsTr("Allow custom seed")
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 10
+            }
+
+            RowLayout {
+                Layout.preferredWidth: 400
+                spacing: Style.buttonSpacing
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 10
+                }
+                DexAppButton {
+                    id: nextButton
+                    enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== ""
+                    onClicked: tryPassLevel1()
+                    radius: 20
+                    opacity: enabled ? 1 : .4
+                    backgroundColor: theme.accentColor
+                    Layout.preferredWidth: _nextRow.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Next")
+                            font: theme.textType.button
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: Qaterial.Icons.arrowRight
+                            iconSize: 14
+                        }
+                    }
+                }
+            }
+
+            DefaultText {
+                text_value: text_error
+                color: Style.colorRed
+                visible: text !== ''
+            }
+        }
+
+
+        ColumnLayout {
+            visible: currentStep === 1
+            Layout.preferredWidth: 460
+            Layout.rightMargin: 5
+            spacing: Style.rowSpacing
+            DexAppTextField {
+                id: _inputPassword
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                background.border.width: 1
+                background.radius: 25
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
+                field.echoMode: TextField.Password
+                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
+                field.rightPadding: 60
+                field.placeholderText: qsTr("Type password")
+                field.onAccepted: trySubmit()
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: theme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    Qaterial.ColorIcon {
+                        anchors.centerIn: parent
+                        iconSize: 19
+                        source: Qaterial.Icons.keyVariant
+                        color: theme.surfaceColor
+                    }
+
+                }
+                Qaterial.AppBarButton {
+                    opacity: .8
+                    icon {
+                        source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
+                        color: theme.accentColor
+                    }
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        right: parent.right
+                        rightMargin: 10
+                    }
+                    onClicked: {
+                        if (_inputPassword.field.echoMode === TextField.Password) {
+                            _inputPassword.field.echoMode = TextField.Normal
+                        } else {
+                            _inputPassword.field.echoMode = TextField.Password
+                        }
+                    }
+                }
+            }
+
+            DexKeyChecker {
+                id: _keyChecker
+                double_validation: true
+                field: _inputPassword.field
+                match_password: _inputPasswordConfirm.field.text
+                Layout.leftMargin: 20
+            }
+
+            DexAppTextField {
+                id: _inputPasswordConfirm
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                background.border.width: 1
+                background.radius: 25
+                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
+                field.echoMode: TextField.Password
+                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
+                field.rightPadding: 60
+                field.placeholderText: qsTr("Cofirm password")
+                field.onAccepted: trySubmit()
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: theme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    Qaterial.ColorIcon {
+                        anchors.centerIn: parent
+                        iconSize: 19
+                        source: Qaterial.Icons.keyVariant
+                        color: theme.surfaceColor
+                    }
+
+                }
+                Qaterial.AppBarButton {
+                    opacity: .8
+                    icon {
+                        source: _inputPasswordConfirm.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
+                        color: theme.accentColor
+                    }
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        right: parent.right
+                        rightMargin: 10
+                    }
+                    onClicked: {
+                        if (_inputPasswordConfirm.field.echoMode === TextField.Password) {
+                            _inputPasswordConfirm.field.echoMode = TextField.Normal
+                        } else {
+                            _inputPasswordConfirm.field.echoMode = TextField.Password
+                        }
+                    }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            RowLayout {
+                Layout.preferredWidth: 400
+                Item {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 10
+                }
+
+                DexAppButton {
+                    id: submit_button
+                    enabled: _keyChecker.isValid()
+                    opacity: enabled ? 1 : .4
+                    onClicked: {
+                        trySubmit()
+                    }
+                    radius: 20
+                    backgroundColor: theme.accentColor
+                    Layout.preferredWidth: _nextRow2.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow2
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Continue")
+                            font: theme.textType.button
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: Qaterial.Icons.arrowRight
+                            iconSize: 14
+                        }
+                    }
+                }
+            }
+            DefaultText {
+                text_value: text_error
+                color: Style.colorRed
+                visible: text !== ''
             }
         }
 

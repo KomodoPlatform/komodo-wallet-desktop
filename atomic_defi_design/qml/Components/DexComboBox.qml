@@ -102,8 +102,9 @@ ComboBox {
     indicator: ColorImage {
         x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
-        color: control.contentItem.color
+        color: theme.rectangleBorderColor
         defaultColor: control.contentItem.color
+        scale: .8
         source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
     }
 

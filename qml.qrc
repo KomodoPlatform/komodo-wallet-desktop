@@ -27,6 +27,7 @@
         <file>atomic_defi_design/assets/images/coins/arpa.png</file>
         <file>atomic_defi_design/assets/images/coins/atom.png</file>
         <file>atomic_defi_design/assets/images/coins/aur.png</file>
+        <file>atomic_defi_design/assets/images/coins/ava.png</file>
         <file>atomic_defi_design/assets/images/coins/avax.png</file>
         <file>atomic_defi_design/assets/images/coins/awc.png</file>
         <file>atomic_defi_design/assets/images/coins/axe.png</file>
@@ -93,7 +94,6 @@
         <file>atomic_defi_design/assets/images/coins/eth.png</file>
         <file>atomic_defi_design/assets/images/coins/ethr.png</file>
         <file>atomic_defi_design/assets/images/coins/eurs.png</file>
-        <file>atomic_defi_design/assets/images/coins/fet.png</file>
         <file>atomic_defi_design/assets/images/coins/fil.png</file>
         <file>atomic_defi_design/assets/images/coins/firo.png</file>
         <file>atomic_defi_design/assets/images/coins/fjc.png</file>
@@ -111,6 +111,7 @@
         <file>atomic_defi_design/assets/images/coins/husd.png</file>
         <file>atomic_defi_design/assets/images/coins/il8p.png</file>
         <file>atomic_defi_design/assets/images/coins/iln.png</file>
+        <file>atomic_defi_design/assets/images/coins/inj.png</file>
         <file>atomic_defi_design/assets/images/coins/ink.png</file>
         <file>atomic_defi_design/assets/images/coins/iota.png</file>
         <file>atomic_defi_design/assets/images/coins/iotx.png</file>
@@ -121,6 +122,7 @@
         <file>atomic_defi_design/assets/images/coins/knc.png</file>
         <file>atomic_defi_design/assets/images/coins/koin.png</file>
         <file>atomic_defi_design/assets/images/coins/labs.png</file>
+        <file>atomic_defi_design/assets/images/coins/lbc.png</file>
         <file>atomic_defi_design/assets/images/coins/lcc.png</file>
         <file>atomic_defi_design/assets/images/coins/leo.png</file>
         <file>atomic_defi_design/assets/images/coins/link.png</file>
@@ -135,6 +137,7 @@
         <file>atomic_defi_design/assets/images/coins/mgw.png</file>
         <file>atomic_defi_design/assets/images/coins/mkr.png</file>
         <file>atomic_defi_design/assets/images/coins/mln.png</file>
+        <file>atomic_defi_design/assets/images/coins/mm.png</file>
         <file>atomic_defi_design/assets/images/coins/mona.png</file>
         <file>atomic_defi_design/assets/images/coins/morty.png</file>
         <file>atomic_defi_design/assets/images/coins/mshark.png</file>
@@ -214,7 +217,7 @@
         <file>atomic_defi_design/assets/images/coins/utk.png</file>
         <file>atomic_defi_design/assets/images/coins/val.png</file>
         <file>atomic_defi_design/assets/images/coins/vgx.png</file>
-        <file>atomic_defi_design/assets/images/coins/vote2021.png</file>
+        <file>atomic_defi_design/assets/images/coins/vite.png</file>
         <file>atomic_defi_design/assets/images/coins/vra.png</file>
         <file>atomic_defi_design/assets/images/coins/vrm.png</file>
         <file>atomic_defi_design/assets/images/coins/vrsc.png</file>
@@ -331,6 +334,7 @@
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAppTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexBoxManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexBusyIndicator.qml</file>
@@ -339,7 +343,10 @@
         <file>atomic_defi_design/qml/Components/DexCheckEye.qml</file>
         <file>atomic_defi_design/qml/Components/DexColorOverlay.qml</file>
         <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
+        <file>atomic_defi_design/qml/Components/DexDialogManager.qml</file>
+        <file>atomic_defi_design/qml/Components/DexDialogTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
+        <file>atomic_defi_design/qml/Components/DexVisibleBehavior.qml</file>
         <file>atomic_defi_design/qml/Components/DexFlickable.qml</file>
         <file>atomic_defi_design/qml/Components/DexIconButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexImage.qml</file>
@@ -347,8 +354,10 @@
         <file>atomic_defi_design/qml/Components/DexItemBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabel.qml</file>
         <file>atomic_defi_design/qml/Components/DexLabelUnlinked.qml</file>
+        <file>atomic_defi_design/qml/Components/DexLanguage.qml</file>
         <file>atomic_defi_design/qml/Components/DexListView.qml</file>
         <file>atomic_defi_design/qml/Components/DexLoader.qml</file>
+        <file>atomic_defi_design/qml/Components/DexKeyChecker.qml</file>
         <file>atomic_defi_design/qml/Components/DexMacControl.qml</file>
         <file>atomic_defi_design/qml/Components/DexModal.qml</file>
         <file>atomic_defi_design/qml/Components/DexModalHeader.qml</file>
@@ -365,6 +374,7 @@
         <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexSwitch.qml</file>
         <file>atomic_defi_design/qml/Components/DexText.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAppTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextEdit.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextField.qml</file>

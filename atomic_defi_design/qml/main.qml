@@ -250,11 +250,12 @@ DexWindow {
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				DexLabel {
-					text: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all,API.app.settings_pg.current_currency)
+					text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all,API.app.settings_pg.current_currency)
 					font.family: 'lato'
 					font.weight: Font.Medium
 					visible: _label.visible
 					color: window.application.globalTheme.accentColor
+					privacy: true
 					anchors.verticalCenter: parent.verticalCenter
 					DexMouseArea {
 						anchors.fill: parent
@@ -303,7 +304,7 @@ DexWindow {
 					DefaultText {
 						id: count_text
 						anchors.centerIn: parent
-						text_value: app.notifications_list.length
+						text_value: _label.visible ? app.notifications_list.length ?? 0 : 0
 						font.pixelSize: 8
 						font.family: 'Lato'
 						color: app.globalTheme.foregroundColor 

@@ -75,7 +75,7 @@ endif ()
 FetchContent_Declare(
         qmaterial
         GIT_REPOSITORY https://github.com/KomodoPlatform/Qaterial.git
-        GIT_TAG a5ae919a1e33e4a3c63dab4650c825586b7041c9
+        GIT_TAG 53669824261ae07bc0e8c2abb4b55431f65b2055
 )
 
 FetchContent_Declare(jl777-coins
@@ -118,7 +118,7 @@ if (WITH_HOTRELOAD)
     FetchContent_Declare(
             qaterial_hotreload
             GIT_REPOSITORY https://github.com/KomodoPlatform/QaterialHotReload
-            GIT_TAG 7826fa36d66162ac0ef5c69ed370e0a28ede6a46
+            GIT_TAG ecffec6bd01d9a13561689283bc2a6a927957f64
     )
     set(QATERIALHOTRELOAD_ENABLE_HOTRELOAD_APP OFF CACHE BOOL "")
     FetchContent_MakeAvailable(qaterial_hotreload)
