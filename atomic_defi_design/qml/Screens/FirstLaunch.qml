@@ -86,7 +86,6 @@ SetupPage {
                     field.onAccepted: {
                         if (_keyChecker.isValid()) {
                             if (onClickedLogin(field.text)) {
-                                console.log("Okay")
                                 bottomDrawer.close()
                                 app.current_page = idx_initial_loading
                             } else {
@@ -97,68 +96,6 @@ SetupPage {
                         }
                     }
                 }
-
-                /*DexAppTextField {
-                    id: _inputPassword
-                    height: 50
-                    width: 300
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    background.border.width: 1
-                    background.radius: 25
-                    field.echoMode: TextField.Password
-                    field.font: theme.textType.body1 
-                    field.horizontalAlignment: Qt.AlignLeft
-                    field.leftPadding: 75
-                    field.rightPadding: 60
-                    field.placeholderText: qsTr("Type password")
-                    field.onAccepted: {
-                        if (_keyChecker.isValid()) {
-                            if (onClickedLogin(field.text)) {
-                                console.log("Okay")
-                                bottomDrawer.close()
-                                app.current_page = idx_initial_loading
-                            } else {
-                                error = true
-                            }
-                        } else {
-                            error = true
-                        }
-                    }
-                    DexRectangle {
-                        x: 5
-                        height: 40
-                        width: 60
-                        radius: 20
-                        color: _inputPassword.field.focus ? _inputPassword.background.border.color : theme.accentColor
-                        anchors.verticalCenter: parent.verticalCenter
-                        Qaterial.ColorIcon {
-                            anchors.centerIn: parent
-                            iconSize: 19
-                            source: Qaterial.Icons.keyVariant
-                            color: theme.surfaceColor
-                        }
-
-                    }
-                    Qaterial.AppBarButton {
-                        opacity: .8
-                        icon {
-                            source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                            color: _inputPassword.field.focus ? _inputPassword.background.border.color : theme.accentColor
-                        }
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                            right: parent.right
-                            rightMargin: 10
-                        }
-                        onClicked: {
-                            if (_inputPassword.field.echoMode === TextField.Password) {
-                                _inputPassword.field.echoMode = TextField.Normal
-                            } else {
-                                _inputPassword.field.echoMode = TextField.Password
-                            }
-                        }
-                    }
-                }*/
                 DexButton {
                     radius: width
                     width: 150
