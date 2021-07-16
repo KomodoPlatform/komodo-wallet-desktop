@@ -179,6 +179,14 @@ DexRectangle {
 
         Dashboard {}
     }
+    Component {
+        id: dialogManager
+        DexDialogManager {
+
+        }  
+    }
+    
+
 
     Loader {
         id: loader
@@ -351,6 +359,25 @@ DexRectangle {
         load_theme(current.replace(".json", ""))
     }
 
+    function showDialog(data) {
+        let dialog = dialogManager.createObject(window, data)
+        for(var i in data) {
+            if(i.startsWith('on')) {
+                eval('dialog.%1.connect(data[i])'.arg(i))
+            }
+        }
+        dialog.open()
+        return dialog
+    }
+
+    function showText(data) {
+        return showDialog(data)
+    }
+    function getText(data) {
+        data['getText'] = true
+        return showText(data)
+    }
+
     Component.onCompleted: {
         selected_wallet_name !== ""
         openFirstLaunch()
@@ -405,7 +432,6 @@ DexRectangle {
         Qaterial.Style.accentColor = theme.accentColor
         console.log("END APPLY ".arg(name))
     }
-
 
     color: theme.surfaceColor
     radius: 0
@@ -515,11 +541,6 @@ DexRectangle {
             Qaterial.Style.accentColorLight = Style.colorTheme4
             Qaterial.Style.accentColorDark = Style.colorTheme4
         }
-
-        Component.onCompleted: {
-            //setQaterialStyle()
-        }
-
         onDark_themeChanged: setQaterialStyle()
 
 

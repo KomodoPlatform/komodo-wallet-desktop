@@ -100,7 +100,7 @@ Item {
 				        }
 				        control.error = false
 			        }
-					horizontalAlignment: Qt.AlignRight
+					horizontalAlignment: Qt.AlignLeft
 			        echoMode: TextInput.Normal
 			        background: Item{}
 			        font.weight: Font.Medium
