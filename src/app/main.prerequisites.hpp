@@ -366,12 +366,7 @@ handle_settings(QSettings& settings)
     create_settings_functor("2FA", 0);
     create_settings_functor("MaximumNbCoinsEnabled", 50);
     create_settings_functor("DefaultTradingMode", TradingMode::Simple);
-#ifdef __APPLE__
-    create_settings_functor("FontMode", QQuickWindow::TextRenderType::NativeTextRendering);
-    QQuickWindow::setTextRenderType(static_cast<QQuickWindow::TextRenderType>(settings.value("FontMode").toInt()));
-#else
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
-#endif
 }
 
 inline int
@@ -386,6 +381,10 @@ run_app(int argc, char** argv)
         QSslSocket::sslLibraryVersionString().toStdString());
 
 #if defined(Q_OS_MACOS)
+    // https://bugreports.qt.io/browse/QTBUG-89379
+    qputenv("QT_ENABLE_GLYPH_CACHE_WORKAROUND", "1");
+    qputenv("QML_USE_GLYPHCACHE_WORKAROUND", "1");
+
     fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
     fs::path target_path = atomic_dex::utils::get_atomic_dex_data_folder();
     SPDLOG_INFO("{} exists -> {}", old_path.string(), fs::exists(old_path));
