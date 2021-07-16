@@ -19,6 +19,9 @@
 //! STD
 #include <unordered_set>
 
+//! Boost
+#include <boost/thread/synchronized_value.hpp>
+
 //! QT
 #include <QAbstractListModel>
 #include <QJsonObject>
@@ -46,6 +49,8 @@ namespace atomic_dex
         Q_PROPERTY(int current_page READ get_current_page WRITE set_current_page NOTIFY currentPageChanged)
         Q_PROPERTY(int limit_nb_elements READ get_limit_nb_elements WRITE set_limit_nb_elements NOTIFY limitNbElementsChanged)
         Q_PROPERTY(int nb_pages READ get_nb_pages NOTIFY nbPageChanged)
+        Q_PROPERTY(bool recover_fund_busy READ is_recover_fund_busy WRITE set_recover_fund_busy NOTIFY recoverFundBusyChanged)
+        Q_PROPERTY(QVariant recover_fund_data READ get_recover_fund_data WRITE set_recover_fund_data NOTIFY recoverFundDataChanged)
         Q_ENUMS(OrdersRoles)
       public:
         enum OrdersRoles
@@ -101,19 +106,27 @@ namespace atomic_dex
         [[nodiscard]] int                 get_limit_nb_elements() const;
         void                              set_limit_nb_elements(int limit);
         [[nodiscard]] bool                is_fetching_busy() const;
+        [[nodiscard]] bool                is_recover_fund_busy() const;
+        void                              set_recover_fund_busy(bool recover_funds_status);
         void                              set_fetching_busy(bool fetching_status);
+        [[nodiscard]] QVariant            get_recover_fund_data() const;
+        void                              set_recover_fund_data(QVariant rpc_data);
         [[nodiscard]] int                 get_nb_pages() const;
 
         //! getter
         [[nodiscard]] t_filtering_infos get_filtering_infos() const;
         void                            set_filtering_infos(t_filtering_infos infos);
 
+        //! Q_INVOKABLE
+        Q_INVOKABLE void recover_fund(QString uuid);
 
       signals:
         void lengthChanged();
         void ordersProxyChanged();
         void onAverageEventsTimeRegistryChanged();
         void fetchingStatusChanged();
+        void recoverFundBusyChanged();
+        void recoverFundDataChanged();
         void currentPageChanged();
         void limitNbElementsChanged();
         void nbPageChanged();
@@ -125,15 +138,18 @@ namespace atomic_dex
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
 
-        using t_orders_datas       = orders_and_swaps;
-        using t_orders_id_registry = std::unordered_set<std::string>;
-        using t_swaps_id_registry  = std::unordered_set<std::string>;
+        using t_orders_datas         = orders_and_swaps;
+        using t_orders_id_registry   = std::unordered_set<std::string>;
+        using t_swaps_id_registry    = std::unordered_set<std::string>;
+        using t_qt_synchronized_json = boost::synchronized_value<QJsonObject>;
 
-        t_orders_id_registry m_orders_id_registry;
-        t_swaps_id_registry  m_swaps_id_registry;
-        t_orders_datas       m_model_data;
-        QVariant             m_json_time_registry;
-        std::atomic_bool     m_fetching_busy{false};
+        t_orders_id_registry   m_orders_id_registry;
+        t_swaps_id_registry    m_swaps_id_registry;
+        t_orders_datas         m_model_data;
+        QVariant               m_json_time_registry;
+        std::atomic_bool       m_fetching_busy{false};
+        std::atomic_bool       m_recover_funds_busy{false};
+        t_qt_synchronized_json m_recover_funds_data;
 
         orders_proxy_model* m_model_proxy;
 
