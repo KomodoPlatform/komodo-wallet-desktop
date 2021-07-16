@@ -734,6 +734,11 @@ namespace atomic_dex
                 j_out["is_valid"] = false;
                 j_out["error"] = "Request to mm2 timeout - skipping";
             }
+            else
+            {
+                j_out["is_valid"] = false;
+                j_out["error"] = "Unknown error";
+            }
             this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
             this->set_recover_fund_busy(false);
         };
