@@ -14,7 +14,8 @@ import "Constants"
 import "Components"
 import "Dashboard"
 
-DexRectangle {
+DexRectangle
+{
     id: app
 
     property string currentWalletName: ""
@@ -239,6 +240,33 @@ DexRectangle {
     FatalErrorModal {
         id: fatal_error_modal
         visible: false
+    }
+
+    // Recover funds result modal
+    LogModal
+    {
+        id: recoverFundsResultModal
+
+        visible: false
+
+        header: qsTr("Recover Funds Result")
+
+        onClosed: field.text = "{}"
+
+        Connections // Catches signals from orders_model.
+        {
+            target: API.app.orders_mdl
+
+            function onRecoverFundDataChanged()
+            {
+                if (!API.app.orders_mdl.recover_fund_busy)
+                {
+                    console.log(JSON.stringify(API.app.orders_mdl.recover_fund_data))
+                    recoverFundsResultModal.field.text = General.prettifyJSON(API.app.orders_mdl.recover_fund_data)
+                    recoverFundsResultModal.open()
+                }
+            }
+        }
     }
 
     Item {
