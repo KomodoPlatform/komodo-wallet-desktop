@@ -693,7 +693,7 @@ namespace atomic_dex
     void
     orders_model::recover_fund(QString uuid)
     {
-        this->set_fetching_busy(true);
+        this->set_recover_fund_busy(true);
         auto&                                   mm2_system = m_system_manager.get_system<mm2_service>();
         nlohmann::json                          batch      = nlohmann::json::array();
         nlohmann::json                          json_data  = ::mm2::api::template_request("recover_funds_of_swap");
@@ -735,7 +735,7 @@ namespace atomic_dex
                 j_out["error"] = "Request to mm2 timeout - skipping";
             }
             this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
-            this->set_fetching_busy(false);
+            this->set_recover_fund_busy(false);
         };
 
         auto error_functor = [this](pplx::task<void> previous_task)
@@ -751,7 +751,7 @@ namespace atomic_dex
                 j_out["is_valid"] = false;
                 j_out["error"] = e.what();
                 this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
-                this->set_fetching_busy(false);
+                this->set_recover_fund_busy(false);
             };
         };
 
