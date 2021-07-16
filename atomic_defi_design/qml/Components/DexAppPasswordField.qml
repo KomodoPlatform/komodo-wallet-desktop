@@ -12,7 +12,7 @@ DexAppTextField {
     background.radius: 25
     field.echoMode: TextField.Password
     field.font: Qt.font({
-        pixelSize: (16 * theme.textType.fontDensity) / Screen.devicePixelRatio,
+        pixelSize: (16 * theme.textType.fontDensity) * (Screen.pixelDensity / 160),
         letterSpacing: 0.5,
         family: theme.textType.fontFamily,
         weight: Font.Normal
