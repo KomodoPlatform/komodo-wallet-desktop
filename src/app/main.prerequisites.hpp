@@ -70,43 +70,9 @@
 
 #if defined(ATOMICDEX_HOT_RELOAD)
 void
-qtMsgOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-{
-    const auto localMsg = msg.toLocal8Bit();
-    switch (type)
-    {
-    case QtDebugMsg:
-        qaterial::Logger::QATERIAL->debug(localMsg.constData());
-        break;
-    case QtInfoMsg:
-        qaterial::Logger::QATERIAL->info(localMsg.constData());
-        break;
-    case QtWarningMsg:
-        qaterial::Logger::QATERIAL->warn(localMsg.constData());
-        break;
-    case QtCriticalMsg:
-        qaterial::Logger::QATERIAL->error(localMsg.constData());
-        break;
-    case QtFatalMsg:
-        qaterial::Logger::QATERIAL->error(localMsg.constData());
-        abort();
-    }
-}
-
-void
 installLoggers()
 {
-    qInstallMessageHandler(qtMsgOutput);
-#    ifdef WIN32
-    const auto msvcSink = std::make_shared<spdlog::sinks::msvc_sink_mt>();
-    qaterial::Logger::registerSink(msvcSink);
-#    endif
-    const auto stdoutSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    qaterial::Logger::registerSink(stdoutSink);
-    qaterial::Logger::registerSink(qaterial::HotReload::sink());
-    stdoutSink->set_level(spdlog::level::debug);
-    qaterial::HotReload::sink()->set_level(spdlog::level::debug);
-    qaterial::Logger::QATERIAL->set_level(spdlog::level::debug);
+    qInstallMessageHandler(&qaterial::HotReload::log);
 }
 #endif
 
