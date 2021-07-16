@@ -8,7 +8,8 @@ import "../Constants"
 import "../Components"
 
 // Contact address entry creation/edition modal
-BasicModal {
+BasicModal
+{
     id: root
 
     property var contactModel
@@ -27,7 +28,8 @@ BasicModal {
 
     width: 400
 
-    ModalContent {
+    ModalContent
+    {
         Layout.topMargin: 5
         Layout.fillWidth: true
 
@@ -59,7 +61,8 @@ BasicModal {
         }
 
         // Address Key Field
-        DefaultTextField {
+        DefaultTextField
+        {
             id: contact_new_address_key
 
             Layout.topMargin: 5
@@ -67,24 +70,25 @@ BasicModal {
 
             placeholderText: qsTr("Enter a name")
 
-            onTextChanged: {
+            onTextChanged:
+            {
                 const max_length = 30
                 if (text.length > max_length)
                     text = text.substring(0, max_length)
             }
 
             // Error tooltip when key already exists.
-            DefaultTooltip {
+            DefaultTooltip
+            {
                 id: key_already_exists_tooltip
                 visible: false
-                contentItem: DefaultText {
-                    text_value: qsTr("This key already exists.")
-                }
+                contentItem: DefaultText { text_value: qsTr("This key already exists.") }
             }
         }
 
         // Address Value Field
-        DefaultTextField {
+        DefaultTextField
+        {
             id: contact_new_address_value
 
             Layout.topMargin: 5
@@ -92,53 +96,71 @@ BasicModal {
 
             placeholderText: qsTr("Enter the address")
 
-            onTextChanged: {
+            onTextChanged:
+            {
                 const max_length = 50
                 if (text.length > max_length)
                     text = text.substring(0, max_length)
+                API.app.wallet_pg.validate_address(text)
+            }
+
+            DexLabel
+            {
+                id: badAddressLabel
+                anchors.top: parent.bottom
+                anchors.topMargin: 4
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: parent.length && API.app.wallet_pg.validate_address_data ? !API.app.wallet_pg.validate_address_data.is_valid : false
+                text: visible ? API.app.wallet_pg.validate_address_data.reason : ""
+                color: theme.redColor
             }
         }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-        }
+        HorizontalLine { Layout.fillWidth: true; Layout.topMargin: 14 }
 
-        RowLayout {
-            PrimaryButton {
+        RowLayout
+        {
+            PrimaryButton
+            {
+                enabled: key.length > 0 && value.length > 0 && walletType !== "" &&
+                         !API.app.wallet_pg.validate_address_busy && !badAddressLabel.visible
+
                 text: qsTr("Validate")
 
-                onClicked: {
-                    if (isEdition) { // Removes old address entry before if we are in edition mode.
+                onClicked:
+                {
+                    if (isEdition) // Removes old address entry before if we are in edition mode.
+                    {
                         console.debug("AddressBook: Replacing address %1:%2:%3 of contact %4"
                                         .arg(oldWalletType).arg(oldKey).arg(oldValue).arg(contactModel.name))
                         contactModel.remove_address_entry(oldWalletType, oldKey);
                     }
 
                     var create_address_result = contactModel.add_address_entry(walletType, key, value);
-                    if (create_address_result === true) {
+                    if (create_address_result === true)
+                    {
                         console.debug("AddressBook: Address %1:%2:%3 created for contact %4"
                                         .arg(walletType).arg(key).arg(value).arg(contactModel.name))
                         root.close()
                     }
-                    else {
+                    else
+                    {
                         console.debug("AddressBook: Failed to create address for contact %1: %2 key already exists"
                                         .arg(contactModel.name).arg(key))
                         key_already_exists_tooltip.visible = true
                     }
                 }
-
-                enabled: key.length > 0 && value.length > 0 && walletType !== ""
             }
 
-            DefaultButton {
+            DefaultButton
+            {
                 text: qsTr("Cancel")
-
                 onClicked: root.close()
             }
         }
 
-
-        ModalLoader {
+        ModalLoader
+        {
             id: wallet_type_list_modal
 
             property string selected_wallet_type: ""
