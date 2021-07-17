@@ -2,8 +2,9 @@ image: smk762/qt-ci:latest
 
 stages:
   - build
-  - upload_zip
-  - upload_appimage
+  - upload_linux_zip
+  - upload_linux_tar
+  - upload_linux_appimage
   - test
   
 variables:
@@ -18,6 +19,7 @@ cache:
   - key: $CI_COMMIT_REF_SLUG
     paths:
       - atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip
+      - atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.tar.zst
       - atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage
   - key: $CI_PROJECT_NAME
     paths:
@@ -70,28 +72,41 @@ linux:build:
     - ninja install  
     - cd $CI_PROJECT_DIR
     - cp $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip .
+    - cp $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.tar.zst .
     - cp $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage .
 
-atomicdex-desktop-linux-zip:
-  stage: upload_zip
-  allow_failure: true
-  script:
-    - echo "Uploading linux zip..."
-  artifacts:
-    name: "atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip"
-    paths:
-      - atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip
-    when: always
-    expire_in: 1 week
-
-atomicdex-desktop-appimage:
-  stage: upload_appimage
+AtomicDex-linux-zip:
+  stage: upload_linux_zip
   allow_failure: true
   script:
     - echo "Uploading AppImage..."
   artifacts:
-    name: "atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage"
+    name: "AtomicDex-linux-${CI_COMMIT_SHA::9}.zip"
     paths:
-      - atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage
+      - $CI_PROJECT_DIR/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip
+    when: always
+    expire_in: 1 week
+
+AtomicDex-linux-AppImage:
+  stage: upload_linux_appimage
+  allow_failure: true
+  script:
+    - echo "Uploading AppImage..."
+  artifacts:
+    name: "AtomicDex-linux-${CI_COMMIT_SHA::9}-AppImage"
+    paths:
+      - $CI_PROJECT_DIR/atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage
+    when: always
+    expire_in: 1 week
+
+AtomicDex-linux-tar:
+  stage: upload_linux_tar
+  allow_failure: true
+  script:
+    - echo "Uploading tar..."
+  artifacts:
+    name: "AtomicDex-linux-${CI_COMMIT_SHA::9}.tar.zst"
+    paths:
+      - $CI_PROJECT_DIR/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.tar.zst
     when: always
     expire_in: 1 week
