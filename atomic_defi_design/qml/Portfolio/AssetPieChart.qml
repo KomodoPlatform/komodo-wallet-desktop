@@ -217,8 +217,7 @@ Item {
                                     spacing: 20
                                     DexLabel {
                                         Layout.preferredWidth: 60
-                                        text: atomic_qt_utilities.retrieve_main_ticker(
-                                                  ticker)
+                                        text: ticker
                                         Layout.alignment: Qt.AlignVCenter
                                         Component.onCompleted: font.weight = Font.Medium
                                     }
