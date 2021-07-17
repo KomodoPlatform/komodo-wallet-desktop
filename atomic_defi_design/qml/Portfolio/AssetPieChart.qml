@@ -94,8 +94,6 @@ Item {
                         width: 370
                         height: width
                         radius: width / 2
-                        //border.color: theme.accentColor
-                        //border.width: 2
                         Column {
                             anchors.centerIn: parent
                             spacing: 5
