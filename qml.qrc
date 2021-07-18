@@ -427,6 +427,7 @@
         <file>atomic_defi_design/qml/Constants</file>
         <file>atomic_defi_design/qml/Constants/API.qml</file>
         <file>atomic_defi_design/qml/Constants/DexTheme.qml</file>
+        <file>atomic_defi_design/qml/Constants/DexTypo.qml</file>
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
