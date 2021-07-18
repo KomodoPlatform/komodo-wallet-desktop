@@ -5,7 +5,7 @@ DexRectangle {
 	property alias text: _title.text
 	/*width: parent.width
 	height: parent.height*/
-	color: theme.accentColor
+	color: DexTheme.accentColor
 	border.width: 0
 	radius: 0
 	DexLabel {
@@ -13,7 +13,7 @@ DexRectangle {
 		anchors.verticalCenter: parent.verticalCenter
 		text: ""
 		opacity: .8
-		font: _font.head6
+		font: DexTypo.head6
 		leftPadding: 10
 	}
 	HorizontalLine {

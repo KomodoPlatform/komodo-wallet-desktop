@@ -19,7 +19,7 @@ Item {
             id: _icon
             Layout.alignment: Qt.AlignVCenter
             source: control.checked? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline 
-            color: control.checked? theme.accentColor :  theme.foregroundColor
+            color: control.checked? DexTheme.accentColor :  DexTheme.foregroundColor
             iconSize: 17
             DexMouseArea {
                 anchors.fill: parent
@@ -36,7 +36,7 @@ Item {
             id: _label
             font.pixelSize: 15
             text: ""
-            color: control.checked? theme.accentColor :  theme.foregroundColor
+            color: control.checked? DexTheme.accentColor :  DexTheme.foregroundColor
             opacity: .5
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter 

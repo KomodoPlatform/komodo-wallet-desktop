@@ -5,6 +5,7 @@ import QtQuick.Controls.Universal 2.15
 
 import "../Screens"
 import "../Constants"
+import App 1.0
 
 Qaterial.ApplicationWindow {
     id: window

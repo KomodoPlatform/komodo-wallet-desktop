@@ -14,7 +14,7 @@ Popup {
 	modal: true
 	padding: 0
 	Overlay.modeless: DexRectangle {
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.dexBoxBackgroundColor
         opacity: .3
     }
 	background: ClipRRect {
@@ -24,7 +24,7 @@ Popup {
 			anchors.fill: parent
 			border.width: 2
 			radius: parent.radius
-			color: theme.dexBoxBackgroundColor
+			color: DexTheme.dexBoxBackgroundColor
 			Container {
 				id: _header 
 				width: parent.width

@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "../Constants"
+import App 1.0
 
 // Add button
 FloatingBackground {
@@ -10,12 +11,12 @@ FloatingBackground {
     property double text_offset: 0
     property alias font: text_obj.font
     property string button_type: "default"
-    property string colorDisabled: theme.buttonColorDisabled
-    property string colorHovered: theme.buttonColorHovered
-    property string colorEnabled: theme.buttonColorEnabled
-    property string colorTextDisabled: theme.buttonColorTextDisabled
-    property string colorTextHovered: theme.buttonColorTextHovered
-    property string colorTextEnabled: theme.buttonColorTextEnabled
+    property string colorDisabled: DexTheme.buttonColorDisabled
+    property string colorHovered: DexTheme.buttonColorHovered
+    property string colorEnabled: DexTheme.buttonColorEnabled
+    property string colorTextDisabled: DexTheme.buttonColorTextDisabled
+    property string colorTextHovered: DexTheme.buttonColorTextHovered
+    property string colorTextEnabled: DexTheme.buttonColorTextEnabled
     property real textScale: 1
     property int minWidth: 90
 
@@ -39,7 +40,7 @@ FloatingBackground {
             pixelSize: 14*textScale,
             letterSpacing: 1.25,
             capitalization: Font.AllUppercase,
-            family: _font.fontFamily,
+            family: DexTypo.fontFamily,
             weight: Font.Medium
         })
         color: !parent.enabled ? colorTextDisabled : mouse_area.containsMouse ? colorTextHovered : colorTextEnabled

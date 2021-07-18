@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "../Constants"
+import App 1.0
 
 Text {
     property string text_value
@@ -7,8 +8,8 @@ Text {
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
-    font: theme.textType.body1
-    color: theme.foregroundColor
+    font: DexTypo.body1
+    color: DexTheme.foregroundColor
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap
 

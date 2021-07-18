@@ -27,7 +27,7 @@ QtObject {
 
     property color chartTradingLineColor: Style.colorTrendingLine
     property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
-    property color  lineChartColor: theme.accentColor
+    property color  lineChartColor: DexTheme.accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
     property color foregroundColor: Style.colorText

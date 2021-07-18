@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 
 TextField {
     id: text_field
@@ -8,11 +9,11 @@ TextField {
     property alias left_text: left_text.text_value
     property alias right_text: right_text.text_value
 
-    font: theme.textType.body2
-    placeholderTextColor: theme.textPlaceHolderColor
-    selectedTextColor: theme.textSelectedColor
-    selectionColor: theme.textSelectionColor
-    color: theme.foregroundColor
+    font: DexTypo.body2
+    placeholderTextColor: DexTheme.textPlaceHolderColor
+    selectedTextColor: DexTheme.textSelectedColor
+    selectionColor: DexTheme.textSelectionColor
+    color: DexTheme.foregroundColor
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }

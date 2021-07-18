@@ -66,7 +66,7 @@ InnerBackground {
     }
 
     //shadowOff: true
-    color: theme.dexBoxBackgroundColor
+    color: DexTheme.dexBoxBackgroundColor
     property alias titleLabel: _texto
 
     Connections {
@@ -147,7 +147,7 @@ InnerBackground {
             width: parent.width
             height: 40
             radius: parent.parent.height<41? parent.parent.radius : 0
-            color: theme.dexBoxBackgroundColor
+            color: DexTheme.dexBoxBackgroundColor
             visible: visibility && !_control.hideHeader
             RowLayout {
                 anchors.fill: parent
@@ -159,7 +159,7 @@ InnerBackground {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                     text: _control.title
-                    color: theme.foregroundColor
+                    color: DexTheme.foregroundColor
                     bottomPadding: 5
                 }
                 Row {
@@ -180,7 +180,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.reloadable
                         icon.source: Qaterial.Icons.refresh
                         onClicked: {
@@ -195,7 +195,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: _control.hidden =!_control.hidden
                     }
@@ -204,7 +204,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
@@ -214,7 +214,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
                         icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
                         onClicked: _control.expandedHort =!_control.expandedHort
@@ -224,7 +224,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -233,7 +233,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                     }
@@ -245,7 +245,7 @@ InnerBackground {
             height: parent.height
             anchors.right: parent.right
             radius: parent.parent.height<41? parent.parent.radius : 0
-            color: theme.dexBoxBackgroundColor
+            color: DexTheme.dexBoxBackgroundColor
             visible: !isVertical && hidden
             DefaultText {
                 id: _texto2
@@ -253,7 +253,7 @@ InnerBackground {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 text: _control.title
-                color: theme.foregroundColor
+                color: DexTheme.foregroundColor
                 bottomPadding: 5
                 rotation: 90
                 anchors.centerIn: parent
@@ -271,7 +271,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: {
                             _control.hidden = !_control.hidden
@@ -282,7 +282,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
                         icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
                         onClicked: _control.expandedVert =!_control.expandedVert
@@ -292,7 +292,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
                         icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
                         onClicked: _control.expandedHort =!_control.expandedHort
@@ -302,7 +302,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -311,7 +311,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                     }

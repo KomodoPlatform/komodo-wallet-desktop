@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
+import App 1.0
 
 // Coins bar at left side
 Item {
@@ -43,7 +44,7 @@ Item {
                 anchors.bottomMargin: 1
                 opacity: .3
                 anchors.topMargin: anchors.bottomMargin
-                color: theme.backgroundColorDeep
+                color: DexTheme.backgroundColorDeep
             }
 
             InnerBackground {
@@ -51,7 +52,7 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: 30
                 width: list_bg.width
-                color: theme.backgroundColor
+                color: DexTheme.backgroundColor
                 anchors.horizontalCenter: list_bg.horizontalCenter
 
                 content: RowLayout {
@@ -80,7 +81,7 @@ Item {
 
                             anchors.fill: search_button
                             source: search_button
-                            color: theme.foregroundColor
+                            color: DexTheme.foregroundColor
                         }
                     }
 
@@ -138,7 +139,7 @@ Item {
                         radius: Style.rectangleCornerRadius
 
                         start_color: Style.applyOpacity(Style.colorCoinListHighlightGradient)
-                        end_color: api_wallet_page.ticker === ticker ? theme.hightlightColor : mouse_area.containsMouse ? Style.colorWhite8 : start_color
+                        end_color: api_wallet_page.ticker === ticker ? DexTheme.hightlightColor : mouse_area.containsMouse ? Style.colorWhite8 : start_color
 
                         // Click area
                         DefaultMouseArea {

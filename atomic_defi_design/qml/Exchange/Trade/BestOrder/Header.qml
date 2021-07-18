@@ -14,7 +14,7 @@ Item {
     z: 2
     Rectangle {
         anchors.fill: parent
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.dexBoxBackgroundColor
     }
 
     RowLayout {

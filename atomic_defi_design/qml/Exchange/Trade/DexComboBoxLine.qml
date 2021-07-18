@@ -45,8 +45,8 @@ RowLayout {
                 text: real_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
-                color: theme.foregroundColor
-                font: theme.textType.body2
+                color: DexTheme.foregroundColor
+                font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: real_value
                 Component.onCompleted: {

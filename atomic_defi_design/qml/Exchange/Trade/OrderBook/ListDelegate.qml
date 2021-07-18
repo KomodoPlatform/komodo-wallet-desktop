@@ -7,6 +7,8 @@ import Qaterial 1.0 as Qaterial
 import "../../../Components"
 import "../../../Constants"
 
+import App 1.0 as App
+
 Item {
     property bool isAsk
     width: visible? orderList.width : 0
@@ -16,7 +18,7 @@ Item {
         visible: mouse_are.containsMouse
         width: parent.width
         height: parent.height
-        color: theme.foregroundColor
+        color: DexTheme.foregroundColor
         opacity: 0.1
     }
 
@@ -79,7 +81,7 @@ Item {
             Layout.preferredWidth: 60
             text: parseFloat(General.formatDouble(
                                  price, General.amountPrecision, true)).toFixed(8)
-            font.family: _font.fontFamily
+            font.family: App.DexTypo.fontFamily
             font.pixelSize: 11
             color: isAsk? Style.colorRed : Style.colorGreen
 
@@ -88,7 +90,7 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 100
             text: parseFloat(quantity).toFixed(6)
-            font.family: _font.fontFamily
+            font.family: App.DexTypo.fontFamily
             font.pixelSize: 11
             horizontalAlignment: Label.AlignRight
             opacity: 1
@@ -105,7 +107,7 @@ Item {
             }
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
             horizontalAlignment: Label.AlignRight
-            font.family: _font.fontFamily
+            font.family: App.DexTypo.fontFamily
             font.pixelSize: 11
             opacity: 1
 

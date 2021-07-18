@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 SetupPage {
     id: recover_seed
@@ -61,7 +62,7 @@ SetupPage {
             }
 
             DexLabel {
-                font: theme.textType.head6
+                font: DexTypo.head6
                 Layout.fillWidth: true
                 rightPadding: 20
                 wrapMode: Label.Wrap
@@ -128,7 +129,7 @@ SetupPage {
                 opacity: enabled ? 1 : .5
                 background.border.width: 1
                 background.radius: 25
-                field.font: theme.textType.head6
+                field.font: DexTypo.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Wallet Name")
@@ -139,13 +140,13 @@ SetupPage {
                     height: 40
                     width: 60
                     radius: 20
-                    color: theme.accentColor
+                    color: DexTheme.accentColor
                     anchors.verticalCenter: parent.verticalCenter
                     Qaterial.ColorIcon {
                         anchors.centerIn: parent
                         iconSize: 19
                         source: Qaterial.Icons.wallet
-                        color: theme.surfaceColor
+                        color: DexTheme.surfaceColor
                     }
 
                 }
@@ -154,7 +155,7 @@ SetupPage {
 
             DexLabel {
                 text: qsTr("Enter seed")
-                font: theme.textType.body1
+                font: DexTypo.body1
             }
 
             DexAppTextArea {
@@ -179,10 +180,10 @@ SetupPage {
                 id: _seedError
                 visible: _seedField.error
                 text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
-                color: theme.redColor
+                color: DexTheme.redColor
                 Layout.preferredWidth: parent.width - 40
                 wrapMode: DexLabel.Wrap
-                font: theme.textType.body2
+                font: DexTypo.body2
             }
 
             DefaultCheckBox {
@@ -209,7 +210,7 @@ SetupPage {
                     onClicked: tryPassLevel1()
                     radius: 20
                     opacity: enabled ? 1 : .4
-                    backgroundColor: theme.accentColor
+                    backgroundColor: DexTheme.accentColor
                     Layout.preferredWidth: _nextRow.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -219,7 +220,7 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Next")
-                            font: theme.textType.button
+                            font: DexTypo.button
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
@@ -285,7 +286,7 @@ SetupPage {
                         trySubmit()
                     }
                     radius: 20
-                    backgroundColor: theme.accentColor
+                    backgroundColor: DexTheme.accentColor
                     Layout.preferredWidth: _nextRow2.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -295,7 +296,7 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Continue")
-                            font: theme.textType.button
+                            font: DexTypo.button
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {

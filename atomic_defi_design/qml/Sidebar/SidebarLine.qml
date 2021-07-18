@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
+import App 1.0
 
 Item {
     id: root
@@ -80,7 +81,7 @@ Item {
         font: Qt.font({
             pixelSize: 16*_font.fontDensity*_font.languageDensity,
             letterSpacing: 0.5,
-            family: _font.fontFamily,
+            family: DexTypo.fontFamily,
             weight: Font.Normal
         })
         color: !section_enabled ? Style.colorTextDisabled :

@@ -13,6 +13,8 @@ import "../../../Components"
 import "../../../Constants"
 import "../"
 
+import App 1.0
+
 ClipRRect // Trade Card
 {
     id: _tradeCard
@@ -177,7 +179,7 @@ ClipRRect // Trade Card
                     {
                         anchors.centerIn: parent
                         source:  Qaterial.Icons.broom
-                        color: theme.buttonColorTextEnabled
+                        color: DexTheme.buttonColorTextEnabled
                         opacity: .8
                     }
                 }
@@ -273,7 +275,7 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 2
                     field.placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Minimum: %1").arg(API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
                     field.font.pixelSize: Style.textSizeSmall5
-                    field.background: Rectangle { color: theme.backgroundColor }
+                    field.background: Rectangle { color: DexTheme.backgroundColor }
                     field.onTextChanged:
                     {
                         if (field.text === "")
@@ -304,7 +306,7 @@ ClipRRect // Trade Card
                     anchors.left: _fromValue.left
                     anchors.leftMargin: 24
                     font.pixelSize: Style.textSizeSmall1
-                    color: theme.buttonColorTextDisabled
+                    color: DexTheme.buttonColorTextDisabled
                     text: enabled ? General.getFiatText(_fromValue.field.text, selectedTicker) : ""
                 }
 
@@ -323,7 +325,7 @@ ClipRRect // Trade Card
 
                     radius: 10
                     border.width: 0
-                    color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
+                    color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : DexTheme.backgroundColor
 
                     DefaultMouseArea
                     {
@@ -425,7 +427,7 @@ ClipRRect // Trade Card
                         anchors.centerIn: parent
                         color: _maxButMouseArea.containsMouse ? 
                                     _maxButMouseArea.pressed ? "#173948" : "#204c61"
-                                    : theme.accentColor
+                                    : DexTheme.accentColor
                         text: qsTr("MAX")
                     }
                 }
@@ -459,8 +461,8 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 2
                     field.text: API.app.trading_pg.total_amount
                     field.font.pixelSize: Style.textSizeSmall5
-                    field.color: theme.buttonColorTextDisabled
-                    field.background: Rectangle { color: theme.backgroundColor }
+                    field.color: DexTheme.buttonColorTextDisabled
+                    field.background: Rectangle { color: DexTheme.backgroundColor }
                 }
 
                 Text    // Amount In Fiat
@@ -471,7 +473,7 @@ ClipRRect // Trade Card
                     anchors.left: _toValue.left
                     anchors.leftMargin: 24
                     font.pixelSize: Style.textSizeSmall1
-                    color: theme.buttonColorTextDisabled
+                    color: DexTheme.buttonColorTextDisabled
                     text: enabled ? General.getFiatText(_toValue.field.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
@@ -492,7 +494,7 @@ ClipRRect // Trade Card
                     radius: 10
                     border.width: 0
 
-                    color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : theme.backgroundColor
+                    color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : DexTheme.backgroundColor
                     opacity: _bestOrdersMouseArea.enabled ? 1 : 0.3
 
                     DefaultMouseArea

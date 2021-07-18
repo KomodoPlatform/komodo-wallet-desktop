@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
 import QtQuick.Controls.Universal 2.15
 import "../Constants"
+import App 1.0
 
 ComboBox {
     id: control
@@ -17,8 +18,8 @@ ComboBox {
 
     font.family: Style.font_family
 
-    property color lineHoverColor: theme.hightlightColor
-    property color mainBorderColor: control.pressed ? theme.surfaceColor : theme.hightlightColor
+    property color lineHoverColor: DexTheme.hightlightColor
+    property color mainBorderColor: control.pressed ? DexTheme.surfaceColor : DexTheme.hightlightColor
     Behavior on lineHoverColor { ColorAnimation { duration: Style.animationDuration } }
     Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
 
@@ -54,7 +55,7 @@ ComboBox {
         id: bg_rect
         implicitWidth: 120
         implicitHeight: 40
-        color: !control.enabled ? theme.hightlightColor : control.hovered ? theme.backgroundColor : theme.dexBoxBackgroundColor
+        color: !control.enabled ? DexTheme.hightlightColor : control.hovered ? DexTheme.backgroundColor : DexTheme.dexBoxBackgroundColor
         border.color: control.mainBorderColor
         border.width: control.visualFocus ? 2 : 1
         radius: Style.rectangleCornerRadius
@@ -81,7 +82,7 @@ ComboBox {
         }
 
         background: AnimatedRectangle {
-            color: theme.dexBoxBackgroundColor
+            color: DexTheme.dexBoxBackgroundColor
             border.color: control.mainBorderColor
             radius: Style.rectangleCornerRadius
         }

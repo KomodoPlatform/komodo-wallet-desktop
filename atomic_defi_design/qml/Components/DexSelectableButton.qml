@@ -23,12 +23,12 @@ Item {
         height: 45
         radius: 5
         opacity: parent.hovered? .4 : !parent.selected? 0 : .9
-        color: theme.hightlightColor
+        color: DexTheme.hightlightColor
     }
     DexLabel {
         id: _label
         anchors.centerIn: parent
-        font: theme.textType.button
+        font: DexTypo.button
         color: DexTheme.foregroundColor
         text: ""
         opacity: area.containsMouse? 1 : .7

@@ -44,8 +44,8 @@ Item {
             width: 250
             height: 40
             border.width: 1
-            border.color: theme.dexBoxBackgroundColor
-            color: theme.surfaceColor
+            border.color: DexTheme.dexBoxBackgroundColor
+            color: DexTheme.surfaceColor
             radius: 40
 
             FloatingBackground // Selected Tab Rectangle
@@ -84,7 +84,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 width: (parent.width / 3) 
                 radius: 40
-                color: theme.accentColor
+                color: DexTheme.accentColor
             }
             RowLayout {
                 anchors.fill: parent
@@ -98,7 +98,7 @@ Item {
                     Layout.fillHeight: true
                     text: qsTr("Trade")
                     font.pixelSize: Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.Trade? theme.foregroundColor : theme.accentColor : theme.foregroundColor
+                    color: children[1].containsMouse? currentSubPage === subPages.Trade? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea
                     {
                         anchors.fill: parent
@@ -116,7 +116,7 @@ Item {
                     Layout.fillHeight: true
                     text: qsTr("Orders")
                     font.pixelSize: Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.Orders? theme.foregroundColor : theme.accentColor : theme.foregroundColor
+                    color: children[1].containsMouse? currentSubPage === subPages.Orders? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea
                     {
                         anchors.fill: parent
@@ -134,7 +134,7 @@ Item {
                     Layout.fillHeight: true
                     text: qsTr("History")
                     font.pixelSize: Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.History? theme.foregroundColor : theme.accentColor : theme.foregroundColor
+                    color: children[1].containsMouse? currentSubPage === subPages.History? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea
                     {
                         anchors.fill: parent
@@ -161,7 +161,7 @@ Item {
                     width: _simpleTrade.best? 600 : _simpleTrade.coinSelection? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
-                    color: theme.dexBoxBackgroundColor
+                    color: DexTheme.dexBoxBackgroundColor
                     sizeAnimationDuration: 250
                     sizeAnimation: true
                     ClipRRect {
@@ -181,7 +181,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20
-                    color: theme.dexBoxBackgroundColor
+                    color: DexTheme.dexBoxBackgroundColor
                     SubOrders {
                         id: orders_view
                     }
@@ -193,7 +193,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20
-                    color: theme.dexBoxBackgroundColor
+                    color: DexTheme.dexBoxBackgroundColor
                     SubHistory {
                         id: history_view
                     }

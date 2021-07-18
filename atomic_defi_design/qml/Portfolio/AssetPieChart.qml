@@ -13,6 +13,7 @@ import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 // Portfolio
 Item {
@@ -28,10 +29,10 @@ Item {
         var item = pieSeries.append(value.ticker, value.main_currency_balance)
         item.labelColor = 'white'
         item.color = Qt.lighter(Style.getCoinColor(value.ticker))
-        item.borderColor = theme.backgroundColor
+        item.borderColor = DexTheme.backgroundColor
         item.borderWidth = 2
         item.holeSize = 1
-        item.labelFont = theme.textType.body2
+        item.labelFont = DexTypo.body2
         item.hovered.connect(function (state) {
             if (state) {
                 item.explodeDistanceFactor = 0.01
@@ -90,7 +91,7 @@ Item {
                     }
                     Rectangle {
                         anchors.centerIn: parent
-                        color: theme.backgroundColor
+                        color: DexTheme.backgroundColor
                         width: 370
                         height: width
                         radius: width / 2
@@ -100,7 +101,7 @@ Item {
                             DefaultText {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: currentTotal !== "" ? currentTotal : General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
-                                font: theme.textType.head4
+                                font: DexTypo.head4
                                 color: Qt.lighter(
                                            Style.colorWhite4,
                                            currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
@@ -115,12 +116,12 @@ Item {
                             DefaultText {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: portfolio.currentValue
-                                font: theme.textType.body2
+                                font: DexTypo.body2
                                 DexFadebehavior on text {
                                     fadeDuration: 100
                                 }
                                 color: Qt.lighter(
-                                           theme.foregroundColor, 0.6)
+                                           DexTheme.foregroundColor, 0.6)
                                 privacy: true
                                 Component.onCompleted: {
                                     font.family = 'Lato'
@@ -131,12 +132,12 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: portfolio_helper.count + " " + qsTr(
                                                 "Assets")
-                                font: theme.textType.body2
+                                font: DexTypo.body2
                                 DexFadebehavior on text {
                                     fadeDuration: 100
                                 }
                                 color: Qt.lighter(
-                                           theme.foregroundColor, 0.8)
+                                           DexTheme.foregroundColor, 0.8)
                                 privacy: true
                                 visible: portfolio.currentValue == ""
 
@@ -172,15 +173,15 @@ Item {
                         color: 'transparent'
                         radius: width/2
                         border.width: API.app.portfolio_pg.balance_fiat_all > 0 ? 0 : 5
-                        border.color: Qt.lighter(theme.backgroundColor)
+                        border.color: Qt.lighter(DexTheme.backgroundColor)
                     }
                 }
             }
             Item {
-                Layout.preferredWidth: (parent.width/2) + 150
+                Layout.preferredWidth: (parent.width / 2) + 150
                 Layout.fillHeight: true
                 Item {
-                    scale: portfolio.isUltraLarge? 1 : 0.95
+                    scale: portfolio.isUltraLarge ? 1 : 0.95
                     y: 10 
                     Behavior on scale {
                         NumberAnimation {
@@ -189,11 +190,7 @@ Item {
                     }
                     width: parent.width-100
                     anchors.verticalCenter: parent.verticalCenter
-                    height: !portfolio.isUltraLarge? _pieColumn.height > 300 ? 300 : _pieColumn.height : _pieColumn.height > 550 ? 550 :_pieColumn.height
-                    Qaterial.DebugRectangle {
-                        anchors.fill: parent
-                        visible: false
-                    }
+                    height: !portfolio.isUltraLarge ? _pieColumn.height > 300 ? 300 : _pieColumn.height : _pieColumn.height > 550 ? 550 :_pieColumn.height
 
                     anchors.horizontalCenter: parent.horizontalCenter
                     Flickable {
@@ -224,7 +221,7 @@ Item {
                                         Layout.fillWidth: true
                                         height: 8
                                         radius: 10
-                                        color: theme.dexBoxBackgroundColor
+                                        color: DexTheme.dexBoxBackgroundColor
                                         Rectangle {
                                             height: parent.height
                                             width: (parseFloat(percent_main_currency) * parent.width) / 100

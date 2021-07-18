@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
+import App 1.0
 
 import "../Dashboard"
 import "../Portfolio"
@@ -99,7 +100,7 @@ Item {
 
     // Right side
     AnimatedRectangle {
-        color: theme.backgroundColorDeep
+        color: DexTheme.backgroundColorDeep
         width: parent.width - sidebar.width
         height: parent.height
         x: sidebar.width
@@ -233,10 +234,10 @@ Item {
         cached: false
         horizontalOffset: 0
         verticalOffset: 0
-        radius: theme.sidebarShadowRadius
+        radius: DexTheme.sidebarShadowRadius
         samples: 32
         spread: 0
-        color: theme.colorSidebarDropShadow
+        color: DexTheme.colorSidebarDropShadow
         smooth: true
     }
 

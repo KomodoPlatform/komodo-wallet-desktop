@@ -5,6 +5,7 @@ import Qt.labs.platform 1.0
 import Qaterial 1.0 as Qaterial
 
 import "../Constants"
+import App 1.0
 import "../Components"
 
 DexPopup {
@@ -13,8 +14,8 @@ DexPopup {
     width: 400
     height: 440
 
-    property var notification_map: [{icon: Qaterial.Icons.arrowUpCircleOutline,color: theme.redColor}, {icon: Qaterial.Icons.arrowDownCircleOutline,color: theme.greenColor}, {icon: Qaterial.Icons.emailOutline,color: theme.foregroundColor}]
-    backgroundColor: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9)
+    property var notification_map: [{icon: Qaterial.Icons.arrowUpCircleOutline,color: DexTheme.redColor}, {icon: Qaterial.Icons.arrowDownCircleOutline,color: DexTheme.greenColor}, {icon: Qaterial.Icons.emailOutline,color: DexTheme.foregroundColor}]
+    backgroundColor: Qt.darker(DexTheme.dexBoxBackgroundColor, 0.9)
 
     function reset() {
         notifications_list = []
@@ -256,7 +257,7 @@ DexPopup {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                     leftPadding: 15
-                    font: theme.textType.head6
+                    font: DexTypo.head6
                     text: "Notifications"
                 }
                 Qaterial.AppBarButton {
@@ -268,7 +269,7 @@ DexPopup {
             }
             Rectangle {
                 height: 2
-                color: theme.foregroundColor
+                color: DexTheme.foregroundColor
                 opacity: .05
                 width: parent.width-20
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -293,7 +294,7 @@ DexPopup {
                 anchors.fill: parent
                 model: notifications_list
                 delegate: Rectangle {
-                	color: mouseArea.containsMouse? theme.dexBoxBackgroundColor : 'transparent'
+                	color: mouseArea.containsMouse? DexTheme.dexBoxBackgroundColor : 'transparent'
                     function removeNotification() {
                         notifications_list.splice(index, 1)
                         notifications_list = notifications_list
@@ -339,20 +340,20 @@ DexPopup {
                                 spacing: 5
                                 DexLabel {
                                     text: modelData.title
-                                    font: theme.textType.body1
+                                    font: DexTypo.body1
                                     width: parent.width
                                     wrapMode: Label.Wrap
                                 }
                                 DexLabel {
                                     text: modelData.message
-                                    font: theme.textType.subtitle2
+                                    font: DexTypo.subtitle2
                                     width: parent.width
                                     wrapMode: Label.Wrap
-                                    color: theme.accentColor
+                                    color: DexTheme.accentColor
                                 }
                                 DexLabel {
                                     text: modelData.human_date
-                                    font: theme.textType.caption
+                                    font: DexTypo.caption
                                 }
                             	
                             }
@@ -411,7 +412,7 @@ DexPopup {
                     
                     Rectangle {
                         height: 2
-                        color: theme.foregroundColor
+                        color: DexTheme.foregroundColor
                         opacity: .05
                         visible: !(list.count==index+1)
                         width: parent.width-20

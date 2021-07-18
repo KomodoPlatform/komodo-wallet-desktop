@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root

@@ -19,7 +19,7 @@ BasicModal
         height: 540
         DexLabel {
             text: qsTr("Select a ticker")
-            font: _font.head5
+            font: DexTypo.head5
             opacity: .7
         }
         HorizontalLine {
@@ -38,9 +38,9 @@ BasicModal
                 font.pixelSize: Style.textSize1
                 background: Rectangle
                 {
-                    color: theme.backgroundColor
+                    color: DexTheme.backgroundColor
                     border.width: 1
-                    border.color: theme.colorRectangleBorderGradient1
+                    border.color: DexTheme.colorRectangleBorderGradient1
                     radius: 10
                 }
                 onTextChanged:

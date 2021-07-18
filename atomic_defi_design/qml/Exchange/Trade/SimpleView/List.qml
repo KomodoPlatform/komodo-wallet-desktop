@@ -29,8 +29,8 @@ DexListView {
         radius: 1
         Rectangle {
             anchors.fill: parent
-            color: order_mouse_area.containsMouse? theme.surfaceColor : 'transparent'
-            border.color: theme.surfaceColor
+            color: order_mouse_area.containsMouse? DexTheme.surfaceColor : 'transparent'
+            border.color: DexTheme.surfaceColor
             border.width: expanded? 1 : 0
         }
         DexMouseArea {
@@ -241,7 +241,7 @@ DexListView {
                     Layout.fillHeight: true 
                     bottomInset: 0
                     topInset: 0
-                    outlinedColor: theme.redColor
+                    outlinedColor: DexTheme.redColor
                     visible: (!main_order.is_history? details.cancellable?? false : false)===true? (order_mouse_area.containsMouse || hovered)? true : false : false
                     onClicked: { if(details) cancelOrder(details.order_id) }
                     Row {
@@ -251,12 +251,12 @@ DexListView {
                             anchors.verticalCenter: parent.verticalCenter
                             source: Qaterial.Icons.close
                             iconSize: 17
-                            color: theme.redColor
+                            color: DexTheme.redColor
                         }
                         DexLabel {
                             anchors.verticalCenter: parent.verticalCenter
                             text: "Cancel "
-                            color: theme.redColor
+                            color: DexTheme.redColor
                         }
                     }
                 }

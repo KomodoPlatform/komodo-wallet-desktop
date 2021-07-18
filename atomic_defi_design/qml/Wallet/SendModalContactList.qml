@@ -6,6 +6,7 @@ import QtQuick.Controls 2.15
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root

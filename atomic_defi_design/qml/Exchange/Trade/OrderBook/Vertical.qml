@@ -35,7 +35,7 @@ Item {
                         width: parent.width
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: theme.surfaceColor
+                        color: DexTheme.surfaceColor
                     }
                 }
                 List {

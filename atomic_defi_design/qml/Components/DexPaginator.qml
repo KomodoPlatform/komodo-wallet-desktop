@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import "../Constants"
+import App 1.0
 
 RowLayout {
     id: root
@@ -73,7 +74,7 @@ RowLayout {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
             iconSize: 14
-            color: theme.foregroundColor
+            color: DexTheme.foregroundColor
             source: Qaterial.Icons.skipPreviousOutline
         }
         enabled: currentValue > 1
@@ -93,9 +94,9 @@ RowLayout {
             Layout.preferredWidth: 32
             Layout.preferredHeight: 32
             Layout.alignment: Qt.AlignVCenter
-            colorEnabled: modelData.number === currentValue ? 'transparent' : theme.buttonColorEnabled
-            colorHovered: modelData.number === currentValue ? 'transparent' : theme.buttonColorHovered
-            colorTextEnabled: modelData.number === currentValue ? theme.accentColor : theme.buttonColorTextEnabled
+            colorEnabled: modelData.number === currentValue ? 'transparent' : DexTheme.buttonColorEnabled
+            colorHovered: modelData.number === currentValue ? 'transparent' : DexTheme.buttonColorHovered
+            colorTextEnabled: modelData.number === currentValue ? DexTheme.accentColor : DexTheme.buttonColorTextEnabled
             onClicked: {
                 if(currentValue !== model.modelData) {
                     API.app.orders_mdl.current_page = btnGroup.model[index].number
@@ -112,7 +113,7 @@ RowLayout {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
             iconSize: 14
-            color: theme.foregroundColor
+            color: DexTheme.foregroundColor
             source: Qaterial.Icons.skipNextOutline
         }
         enabled: pageSize > 1 && currentValue < pageSize

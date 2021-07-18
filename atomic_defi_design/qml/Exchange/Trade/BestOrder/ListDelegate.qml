@@ -8,6 +8,8 @@ import Qaterial 1.0 as Qaterial
 import "../../../Components"
 import "../../../Constants"
 
+import App 1.0 as App
+
 Item {
     id: _control
     property bool coinEnable: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
@@ -28,7 +30,7 @@ Item {
         visible: mouse_are.containsMouse
         width: parent.width
         height: parent.height
-        color: theme.foregroundColor
+        color: DexTheme.foregroundColor
         opacity: 0.1
     }
 
@@ -56,7 +58,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
                 text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
-                font.family: _font.fontFamily
+                font.family: App.DexTypo.fontFamily
                 font.pixelSize: 10
 
             }
@@ -99,7 +101,7 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
             text: price_fiat+API.app.settings_pg.current_fiat_sign
-            font.family: _font.fontFamily
+            font.family: App.DexTypo.fontFamily
             font.pixelSize: 10
             horizontalAlignment: Label.AlignRight
             opacity: 1
@@ -109,7 +111,7 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             
             text: cex_rates==="0"? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
-            font.family: _font.fontFamily
+            font.family: App.DexTypo.fontFamily
             font.pixelSize: 10
 
             Behavior on rightPadding {
@@ -118,7 +120,7 @@ Item {
                 }
             }
 
-            color:cex_rates==="0"? Qt.darker(theme.foregroundColor) : parseFloat(cex_rates)<0? Style.colorGreen : Style.colorRed
+            color:cex_rates==="0"? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)<0? Style.colorGreen : Style.colorRed
             horizontalAlignment: Label.AlignRight
             opacity: 1
 

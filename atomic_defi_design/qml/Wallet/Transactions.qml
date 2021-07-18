@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 DefaultListView {
     id: list
@@ -21,7 +22,7 @@ DefaultListView {
         implicitWidth: list.width
         height: row_height
 
-        color: mouse_area.containsMouse? theme.hightlightColor : 'transparent'
+        color: mouse_area.containsMouse? DexTheme.hightlightColor : 'transparent'
 
         DefaultMouseArea {
             id: mouse_area

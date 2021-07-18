@@ -89,7 +89,7 @@ DefaultComboBox {
                         anchors.fill: parent
                         anchors.rightMargin: 2
                        border.color: "transparent"
-                       color: theme.backgroundColor
+                       color: DexTheme.backgroundColor
                    }
                 }
 
@@ -164,7 +164,7 @@ DefaultComboBox {
                 width: parent.width
                 y: -5
                 height: parent.height+10
-                color: theme.dexBoxBackgroundColor
+                color: DexTheme.dexBoxBackgroundColor
                 border.width: 1
                 border.color: control.mainBorderColor
                 //radius: Style.rectangleCornerRadius

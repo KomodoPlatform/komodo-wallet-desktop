@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
 
 import "../Constants"
+import App 1.0
 
 ComboBox {
     id: control
@@ -31,7 +32,7 @@ ComboBox {
     contentItem: DefaultText {
         leftPadding: 10
         rightPadding: control.indicator.width + control.spacing
-        color: theme.foregroundColor
+        color: DexTheme.foregroundColor
         text: control.currentTicker//control.displayText
 
         verticalAlignment: Text.AlignVCenter
@@ -41,7 +42,7 @@ ComboBox {
     background: DexRectangle {
         implicitWidth: 120
         implicitHeight: 40
-        color: !control.enabled ? theme.hightlightColor : control.hovered ? theme.backgroundColor : theme.dexBoxBackgroundColor
+        color: !control.enabled ? DexTheme.hightlightColor : control.hovered ? DexTheme.backgroundColor : DexTheme.dexBoxBackgroundColor
         radius: 4
     }
 
@@ -147,7 +148,7 @@ ComboBox {
                 width: parent.width
                 y: -5
                 height: parent.height+10
-                color: theme.dexBoxBackgroundColor
+                color: DexTheme.dexBoxBackgroundColor
             }
         }
     }

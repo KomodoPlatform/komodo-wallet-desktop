@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 SetupPage {
     id: new_user
@@ -164,7 +165,7 @@ SetupPage {
             }
 
             DexLabel {
-                font: theme.textType.head6
+                font: DexTypo.head6
                 text_value: if (currentStep === 0) {
                     qsTr("New Wallet")
                 } else if (currentStep === 1) {
@@ -241,9 +242,9 @@ SetupPage {
                 opacity: enabled ? 1 : .5
                 background.border.width: 1
                 background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
+                background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
                 field.onAccepted: completeForm()
-                field.font: theme.textType.head6
+                field.font: DexTypo.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: "Wallet Name"
@@ -253,13 +254,13 @@ SetupPage {
                     height: 40
                     width: 60
                     radius: 20
-                    color: theme.accentColor
+                    color: DexTheme.accentColor
                     anchors.verticalCenter: parent.verticalCenter
                     Qaterial.ColorIcon {
                         anchors.centerIn: parent
                         iconSize: 19
                         source: Qaterial.Icons.wallet
-                        color: theme.surfaceColor
+                        color: DexTheme.surfaceColor
                     }
 
                 }
@@ -308,7 +309,7 @@ SetupPage {
                     width: parent.width
                     DexLabel {
                         text: qsTr("Generated Seed")
-                        font: theme.textType.body1
+                        font: DexTypo.body1
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignVCenter
                     }
@@ -334,12 +335,12 @@ SetupPage {
                             delegate: DexRectangle {
                                 width: (_insideFlow.width - 30) / 4
                                 height: _insideLabel.implicitHeight + 15
-                                color: theme.accentColor
+                                color: DexTheme.accentColor
                                 opacity: .5
                                 DexLabel {
                                     id: _insideLabel
                                     text: (index + 1) + ". " + modelData
-                                    font: theme.textType.body2
+                                    font: DexTypo.body2
                                     anchors.centerIn: parent
                                 }
                             }
@@ -372,7 +373,7 @@ SetupPage {
                     }
                     radius: 20
                     opacity: enabled ? 1 : .4
-                    backgroundColor: theme.accentColor
+                    backgroundColor: DexTheme.accentColor
                     Layout.preferredWidth: _nextRow.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -382,7 +383,7 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Next")
-                            font: theme.textType.button
+                            font: DexTypo.button
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
@@ -452,12 +453,12 @@ SetupPage {
                             delegate: DexRectangle {
                                 width: (_insideFlow2.width - 30) / 4
                                 height: _insideLabel.implicitHeight + 15
-                                color: theme.accentColor
+                                color: DexTheme.accentColor
                                 opacity: _areaSelect.containsMouse ? 1 : .6
                                 DexLabel {
                                     id: _insideLabel
                                     text: modelData ?? ""
-                                    font: theme.textType.body1
+                                    font: DexTypo.body1
                                     anchors.centerIn: parent
                                 }
                                 DexMouseArea {
@@ -487,7 +488,7 @@ SetupPage {
                 opacity: enabled ? 1 : .5
                 background.border.width: 1
                 background.radius: 25
-                field.font: theme.textType.head6
+                field.font: DexTypo.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
@@ -499,11 +500,11 @@ SetupPage {
                     height: 40
                     width: 60
                     radius: 20
-                    color: theme.accentColor
+                    color: DexTheme.accentColor
                     anchors.verticalCenter: parent.verticalCenter
                     DexLabel {
                         anchors.centerIn: parent
-                        font: theme.textType.head6
+                        font: DexTypo.head6
                         text: current_word_idx + 1
                     }
 
@@ -528,7 +529,7 @@ SetupPage {
                     opacity: enabled ? 1 : .4
                     onClicked: tryGuess()
                     radius: 20
-                    backgroundColor: theme.accentColor
+                    backgroundColor: DexTheme.accentColor
                     Layout.preferredWidth: _nextRow3.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -538,7 +539,7 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Check")
-                            font: theme.textType.button
+                            font: DexTypo.button
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
@@ -602,7 +603,7 @@ SetupPage {
                     opacity: enabled ? 1 : .4
                     onClicked: eula_modal.open()
                     radius: 20
-                    backgroundColor: theme.accentColor
+                    backgroundColor: DexTheme.accentColor
                     Layout.preferredWidth: _nextRow2.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -612,7 +613,7 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Continue")
-                            font: theme.textType.button
+                            font: DexTypo.button
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {

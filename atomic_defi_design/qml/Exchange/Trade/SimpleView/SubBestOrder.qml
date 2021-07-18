@@ -48,7 +48,7 @@ DefaultListView
         width: _rowWidth
         height: _rowHeight
         border.color: 'transparent'
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.dexBoxBackgroundColor
         z: 2
         radius: 0
 
@@ -163,7 +163,7 @@ DefaultListView
             DefaultText
             {
                 Layout.preferredWidth: _cexRateColumnSize
-                color: cex_rates=== "0" ? Qt.darker(theme.foregroundColor) : parseFloat(cex_rates)>0? theme.redColor : theme.greenColor
+                color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.redColor : DexTheme.greenColor
                 text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
             DefaultTooltip
@@ -190,7 +190,7 @@ DefaultListView
                                 cannot_enable_coin_modal.open()
                             else
                             {
-                                color = theme.buttonColorTextDisabled
+                                color = DexTheme.buttonColorTextDisabled
                                 opacity = 0.8
                                 _coinIsEnabling.visible = true
                              }

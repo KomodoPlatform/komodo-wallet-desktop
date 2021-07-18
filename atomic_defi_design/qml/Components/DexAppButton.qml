@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import Qaterial 1.0 as Qaterial
+import App 1.0
 
 DexRectangle {
     id: control 
@@ -8,7 +9,7 @@ DexRectangle {
     property string text: ""
     property string iconSource: ""
     property int spacing: 4
-    property string backgroundColor: theme.buttonColorEnabled
+    property string backgroundColor: DexTheme.buttonColorEnabled
     property int verticalAlignment: Qt.AlignVCenter
     property int horizontalAlignment: Qt.AlignHCenter
     property alias leftPadding: _contentRow.leftPadding
@@ -37,7 +38,7 @@ DexRectangle {
         DexLabel {
             id: _label
             anchors.verticalCenter: parent.verticalCenter
-            font: _font.button
+            font: DexTypo.button
             text: control.text
         }
     }

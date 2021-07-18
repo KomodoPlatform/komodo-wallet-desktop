@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import "../Constants"
+import App 1.0
 
 ListView {
     id: root

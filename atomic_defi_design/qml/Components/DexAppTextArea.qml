@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts  1.5
+import App 1.0
 
 Item {
 	id: control
@@ -12,7 +13,7 @@ Item {
 	property alias field: input_field
 	property alias background: _background
 	readonly property int max_length: 1000
-	property color textColor: theme.foregroundColor
+	property color textColor: DexTheme.foregroundColor
 	property bool error: false
 	onErrorChanged: {
 		if(error) {
@@ -48,8 +49,8 @@ Item {
 	    width: parent.width
 	    height: parent.height
 	    radius: 4
-	    color: theme.surfaceColor
-	    border.color: control.error ? theme.redColor :  input_field.focus ? theme.accentColor : theme.rectangleBorderColor 
+	    color: DexTheme.surfaceColor
+	    border.color: control.error ? DexTheme.redColor :  input_field.focus ? DexTheme.accentColor : DexTheme.rectangleBorderColor 
 	    border.width: input_field.focus ? 1 : 0
 	    Behavior on x {
 	    	NumberAnimation {
@@ -70,7 +71,7 @@ Item {
 				anchors.topMargin: 1
 				anchors.bottomMargin: 1
 				radius: _background.radius
-				color: theme.surfaceColor
+				color: DexTheme.surfaceColor
 				DexFlickable {
 					anchors.fill: parent
 					contentHeight: input_field.height
@@ -87,7 +88,7 @@ Item {
 				        selectByMouse: true
 				        persistentSelection: true
 				        font.weight: Font.Medium
-				        font.family: theme.textType.body2
+				        font.family: DexTypo.body2
 				        Keys.onReturnPressed: control.accepted()
 						onTextChanged: {
 							control.error = false

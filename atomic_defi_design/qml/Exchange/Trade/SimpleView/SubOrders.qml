@@ -12,6 +12,8 @@ import "../../../Constants"   //> Style
 import "../Orders" as Orders
 import "Main.js" as Main
 
+import App 1.0 as App
+
 Item
 {
     id: _subOrdersRoot
@@ -128,7 +130,7 @@ Item
             List { id: order_list_view }
             DexRectangle {
                 anchors.fill: parent 
-                color: theme.dexBoxBackgroundColor
+                color: DexTheme.dexBoxBackgroundColor
                 opacity: .8
                 visible: _subOrdersRoot.displayFilter
                 border.width: 0
@@ -138,7 +140,7 @@ Item
                 height: _subOrdersRoot.displayFilter? 330 : 60
                 visible: height>100
                 sizeAnimation: true
-                color: theme.dexBoxBackgroundColor
+                color: DexTheme.dexBoxBackgroundColor
                 radius: 0
                 y: -20
                 Column {
@@ -150,7 +152,7 @@ Item
                         text: qsTr("Filter settings")
                         topPadding: 10
                         leftPadding: 10
-                        font: _font.body1
+                        font: App.DexTypo.body1
                     }
                     RowLayout {
                         width: main_order.width - 30
@@ -160,7 +162,7 @@ Item
                         DexLabel {
                             text: qsTr("Base Ticker")
                             leftPadding: 10
-                            font: _font.body2
+                            font: App.DexTypo.body2
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
                             opacity: .6
@@ -183,7 +185,7 @@ Item
                         DexLabel {
                             text: qsTr("Rel Ticker")
                             leftPadding: 10
-                            font: _font.body2
+                            font: App.DexTypo.body2
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
                             opacity: .6

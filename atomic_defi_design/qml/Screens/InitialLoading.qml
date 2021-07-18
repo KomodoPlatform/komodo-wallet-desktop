@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 import "../Wallet"
 import "../Exchange"
 import "../Sidebar"
@@ -19,7 +20,7 @@ SetupPage {
             onLoaded()
     }
 
-    image_path: "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo
+    image_path: "file:///"+ atomic_logo_path +  "/"+ DexTheme.bigSidebarLogo
     image_margin: 30
     backgroundColor: 'transparent'
     borderColor: 'transparent'

@@ -51,8 +51,8 @@ Item {
 	    width: parent.width
 	    height: parent.height
 	    radius: 4
-	    color: theme.surfaceColor
-	    border.color: control.error ? theme.redColor :  input_field.focus ? theme.accentColor : theme.rectangleBorderColor
+	    color: DexTheme.surfaceColor
+	    border.color: control.error ? DexTheme.redColor :  input_field.focus ? DexTheme.accentColor : DexTheme.rectangleBorderColor
 	    border.width: input_field.focus ? 1 : 0
 	    Behavior on x {
 	    	NumberAnimation {
@@ -76,7 +76,7 @@ Item {
 				leftPadding: 5
 				horizontalAlignment: DexLabel.AlignHCenter
 				text: leftText
-				color: theme.foregroundColor
+				color: DexTheme.foregroundColor
 				opacity: .4
 				font.pixelSize: 14
 				font.weight: Font.Medium
@@ -90,7 +90,7 @@ Item {
 				anchors.topMargin: 1
 				anchors.bottomMargin: 1
 				radius: _background.radius
-				color: theme.surfaceColor
+				color: DexTheme.surfaceColor
 				DexTextField {
 			        id: input_field
 					onTextChanged: {
@@ -119,7 +119,7 @@ Item {
 				anchors.centerIn: parent
 				horizontalAlignment: DexLabel.AlignHCenter
 				text: rightText
-				color: theme.foregroundColor
+				color: DexTheme.foregroundColor
 				opacity: .4
 				font.pixelSize: 14
 				font.weight: Font.Medium

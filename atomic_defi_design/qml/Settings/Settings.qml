@@ -9,6 +9,7 @@ import Qt.labs.settings 1.0
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 Item {
     id: root

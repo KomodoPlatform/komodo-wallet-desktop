@@ -16,7 +16,7 @@ Rectangle {
     width: list.model.count>6? list.width-15 : list.width-8
     height: 40
 
-    color: mouse_area.containsMouse? theme.hightlightColor : "transparent"
+    color: mouse_area.containsMouse? DexTheme.hightlightColor : "transparent"
 
     DefaultMouseArea {
         id: mouse_area

@@ -12,6 +12,7 @@ import Qaterial 1.0 as Qaterial
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -224,7 +225,7 @@ BasicModal {
                             Qaterial.ColorIcon {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.leadPencil
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
@@ -244,7 +245,7 @@ BasicModal {
                             Qaterial.ColorIcon {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.trashCan
-                                color: theme.redColor
+                                color: DexTheme.redColor
                                 opacity: .8
                             }
                             onClicked: contactModel.remove_address_entry(model.address_type, model.address_key)
@@ -258,7 +259,7 @@ BasicModal {
                             Qaterial.ColorIcon {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.contentCopy
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
@@ -273,7 +274,7 @@ BasicModal {
                             Qaterial.ColorIcon {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.send
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 

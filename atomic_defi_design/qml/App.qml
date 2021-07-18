@@ -12,6 +12,8 @@ import "Constants"
 import "Components"
 import "Dashboard"
 
+import App 1.0 as App
+
 DexRectangle
 {
     id: app
@@ -19,7 +21,6 @@ DexRectangle
     property string currentWalletName: ""
     property int page: current_page === 5 ? deepPage : current_page
     property int deepPage: 0
-    property alias globalTheme: theme
     property string selected_wallet_name: ""
     property bool debug: debug_bar
     property bool debug_log: false
@@ -371,6 +372,12 @@ DexRectangle
         fileName: atomic_cfg_file
     }
 
+    QtObject {
+        id: _font
+        property real fontDensity: App.DexTypo.fontDensity
+        property string fontFamily:  App.DexTypo.fontFamily
+    }
+
     Settings {
         id: ui_font_settings
         property alias fontDensity: _font.fontDensity
@@ -435,9 +442,9 @@ DexRectangle
         global_theme_property.forEach(function(e) {
             data[e] = eval("theme." + e).toString()
         })
-        data["bigSidebarLogo"] = theme.bigSidebarLogo
-        data["smallSidebarLogo"] = theme.smallSidebarLogo
-        data["chartTheme"] = theme.chartTheme
+        data["bigSidebarLogo"] = DexTheme.bigSidebarLogo
+        data["smallSidebarLogo"] = DexTheme.smallSidebarLogo
+        data["chartTheme"] = DexTheme.chartTheme
         let r = API.qt_utilities.save_theme(name + ".json", data, true)
         console.log(r)
     }
@@ -450,24 +457,24 @@ DexRectangle
                 i = i.replace("[int]", "")
                 console.log("theme." + i.toString() + " = " + data[real_i] + "")
                 eval("theme." + i.toString() + " = " + data[real_i])
-                eval("DexTheme." + i.toString() + " = " + data[real_i])
+                eval("App.DexTheme." + i.toString() + " = " + data[real_i])
             } else {
                 console.log("theme." + i.toString() + " = '" + data[i] + "'")
                 eval("theme." + i.toString() + " = '" + data[i] + "'")
-                eval("DexTheme." + i.toString() + " = '" + data[i] + "'")
+                eval("App.DexTheme." + i.toString() + " = '" + data[i] + "'")
             }
         }
-        Qaterial.Style.accentColor = theme.accentColor
+        Qaterial.Style.accentColor = DexTheme.accentColor
         console.log("END APPLY ".arg(name))
     }
 
-    color: theme.surfaceColor
+    color: DexTheme.surfaceColor
     radius: 0
     border.width: 0
     border.color: 'transparent'
 
     QtObject {
-        id: theme
+        id: tjheme
 
 
         // Font
@@ -493,7 +500,7 @@ DexRectangle
 
         property color chartTradingLineColor: Style.colorTrendingLine
         property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
-        property color lineChartColor: theme.accentColor
+        property color lineChartColor: DexTheme.accentColor
         property color chartGridLineColor: Qt.rgba(255, 255, 255, 0.4)
 
         property color foregroundColor: Style.colorText
@@ -918,107 +925,5 @@ DexRectangle
         })
     }
 
-    QtObject {
-        id: _font
-        property real fontDensity: 1.0
-        property real languageDensity: {
-            switch (API.app.settings_pg.lang) {
-                case "en":
-                    return 0.99999
-                    break
-                case "fr":
-                    return Qt.platform.os === "windows" ? 0.98999 : 0.90
-                    break
-                case "tr":
-                    return 0.99999
-                    break
-                case "ru":
-                    return 0.99999
-                    break
-                default:
-                    return 0.99999
-            }
-        }
-        property string fontFamily: "Ubuntu"
-        property font head1: Qt.font({
-            pixelSize: 96 * fontDensity,
-            letterSpacing: -1.5,
-            family: fontFamily,
-            weight: Font.Light
-        })
-        property font head2: Qt.font({
-            pixelSize: 60 * fontDensity,
-            letterSpacing: -0.5,
-            family: fontFamily,
-            weight: Font.Light
-        })
-        property font head3: Qt.font({
-            pixelSize: 48 * fontDensity,
-            letterSpacing: 0,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-        property font head4: Qt.font({
-            pixelSize: 34 * fontDensity,
-            letterSpacing: 0.25,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-        property font head5: Qt.font({
-            pixelSize: 24 * fontDensity,
-            letterSpacing: 0,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-        property font head6: Qt.font({
-            pixelSize: 20 * fontDensity,
-            letterSpacing: 0.15,
-            family: fontFamily,
-            weight: Font.Medium
-        })
-        property font subtitle1: Qt.font({
-            pixelSize: 16 * fontDensity,
-            letterSpacing: 0.15,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-        property font subtitle2: Qt.font({
-            pixelSize: 14 * fontDensity,
-            letterSpacing: 0.1,
-            family: fontFamily,
-            weight: Font.Medium
-        })
-        property font body1: Qt.font({
-            pixelSize: 16 * fontDensity,
-            letterSpacing: 0.5,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-        property font body2: Qt.font({
-            pixelSize: 14 * fontDensity,
-            letterSpacing: 0.25,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-        property font button: Qt.font({
-            pixelSize: 14 * fontDensity,
-            letterSpacing: 1.25,
-            capitalization: Font.AllUppercase,
-            family: fontFamily,
-            weight: Font.Medium
-        })
-        property font caption: Qt.font({
-            pixelSize: 12 * fontDensity,
-            letterSpacing: 0.4,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-        property font overLine: Qt.font({
-            pixelSize: 10 * fontDensity,
-            letterSpacing: 1.25,
-            capitalization: Font.AllUppercase,
-            family: fontFamily,
-            weight: Font.Normal
-        })
-    }
+    
 }

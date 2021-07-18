@@ -31,7 +31,7 @@ DefaultListView
         width: _rowWidth
         height: _rowHeight
         border.color: 'transparent'
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.dexBoxBackgroundColor
         radius: 0
 
         RowLayout                   // Coins Columns Name
@@ -49,7 +49,7 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
                 DexMouseArea
                 {
                 	anchors.fill: parent
@@ -71,7 +71,7 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {
@@ -93,7 +93,7 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {

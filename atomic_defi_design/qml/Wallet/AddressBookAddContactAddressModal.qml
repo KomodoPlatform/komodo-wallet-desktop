@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15 //> ToolTip
 
 // Project Imports
 import "../Constants"
+import App 1.0
 import "../Components"
 
 // Contact address entry creation/edition modal
