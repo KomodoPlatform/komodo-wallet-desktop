@@ -14,12 +14,16 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Deps
+#include <antara/app/net/http.code.hpp>
+
 //! Project
-#include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/events/qt.events.hpp"
+#include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 
 //! Constructor
 namespace atomic_dex
@@ -313,10 +317,30 @@ namespace atomic_dex
         }
     }
 
+    QVariant
+    orders_model::get_recover_fund_data() const
+    {
+        return m_recover_funds_data.get();
+    }
+
+    void
+    orders_model::set_recover_fund_data(QVariant rpc_data)
+    {
+        auto json_result = rpc_data.toJsonObject();
+        m_recover_funds_data = json_result;
+        emit recoverFundDataChanged();
+    }
+
     bool
     orders_model::is_fetching_busy() const
     {
         return m_fetching_busy.load();
+    }
+
+    bool
+    orders_model::is_recover_fund_busy() const
+    {
+        return m_recover_funds_busy.load();
     }
 
     void
@@ -326,6 +350,16 @@ namespace atomic_dex
         {
             m_fetching_busy = fetching_status;
             emit fetchingStatusChanged();
+        }
+    }
+
+    void
+    orders_model::set_recover_fund_busy(bool recover_funds_status)
+    {
+        if (recover_funds_status != m_recover_funds_busy)
+        {
+            m_recover_funds_busy = recover_funds_status;
+            emit recoverFundBusyChanged();
         }
     }
 
@@ -654,5 +688,78 @@ namespace atomic_dex
     orders_model::get_filtering_infos() const
     {
         return m_model_data.filtering_infos;
+    }
+
+    void
+    orders_model::recover_fund(QString uuid)
+    {
+        this->set_recover_fund_busy(true);
+        auto&                                   mm2_system = m_system_manager.get_system<mm2_service>();
+        nlohmann::json                          batch      = nlohmann::json::array();
+        nlohmann::json                          json_data  = ::mm2::api::template_request("recover_funds_of_swap");
+        mm2::api::recover_funds_of_swap_request req{.swap_uuid = uuid.toStdString()};
+        ::mm2::api::to_json(json_data, req);
+        batch.push_back(json_data);
+
+        auto answer_functor = [this](web::http::http_response resp)
+        {
+            nlohmann::json j_out = nlohmann::json::object();
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == web::http::status_codes::Accepted)
+            {
+                auto answers        = nlohmann::json::parse(body);
+                auto recover_answer = ::mm2::api::rpc_process_answer_batch<t_recover_funds_of_swap_answer>(answers[0], "recover_funds_of_swap");
+                if (recover_answer.result.has_value())
+                {
+                    auto answer = recover_answer.result.value();
+                    j_out["is_valid"] = true;
+                    j_out["coin"] = answer.coin;
+                    j_out["action"] = answer.action;
+                    j_out["tx_hash"] = answer.tx_hash;
+                    j_out["tx_hex"] = answer.tx_hex;
+                }
+                else if (recover_answer.error.has_value())
+                {
+                    j_out["is_valid"] = false;
+                    j_out["error"] = recover_answer.error.value();
+                }
+                else
+                {
+                    j_out["is_valid"] = false;
+                    j_out["error"] = "Unknown error";
+                }
+            }
+            else if (resp.status_code() == web::http::status_codes::RequestTimeout)
+            {
+                j_out["is_valid"] = false;
+                j_out["error"] = "Request to mm2 timeout - skipping";
+            }
+            else
+            {
+                j_out["is_valid"] = false;
+                j_out["error"] = "Unknown error";
+            }
+            this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
+            this->set_recover_fund_busy(false);
+        };
+
+        auto error_functor = [this](pplx::task<void> previous_task)
+        {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("pplx task error from orders_model::recover_fund(QString uuid): {}", e.what());
+                nlohmann::json j_out = nlohmann::json::object();
+                j_out["is_valid"] = false;
+                j_out["error"] = e.what();
+                this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
+                this->set_recover_fund_busy(false);
+            };
+        };
+
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 } // namespace atomic_dex

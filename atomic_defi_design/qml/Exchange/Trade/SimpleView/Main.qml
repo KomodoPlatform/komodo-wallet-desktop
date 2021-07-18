@@ -13,28 +13,24 @@ import "../Orders" as Orders
 import "Main.js" as Main
 
 Item {
-    readonly property var subPages: Main.getSubPages()
+    id: root
 
-    property string recover_funds_result: '{}'
+    readonly property var subPages: Main.getSubPages()
 
     // Variable which holds the current sub-page of the SimpleView.
     property var currentSubPage: subPages.Trade
+
     onCurrentSubPageChanged: _selectedTabMarker.update()
 
-    id: root
-    function onRecoverFunds(order_id) {
-        const result = API.app.recover_fund(order_id)
-        console.log("Refund result: ", result)
-        recover_funds_result = result
-        recover_funds_modal.open()
-    }
-
-    Connections {
+    Connections
+    {
         target: exchange_trade
-        function onOrderPlaced() {
+        function onOrderPlaced()
+        {
             currentSubPage = subPages.Orders
         }
     }
+
     Column
     {
         width: root.currentSubPage===subPages.Trade? _simpleTrade.best? 600 : 380 : 380
@@ -209,14 +205,4 @@ Item {
         id: order_modal
         sourceComponent: Orders.OrderModal {}
     }
-    ModalLoader {
-        id: recover_funds_modal
-        sourceComponent: LogModal {
-            header: qsTr("Recover Funds Result")
-            field.text: General.prettifyJSON(recover_funds_result)
-
-            onClosed: recover_funds_result = "{}"
-        }
-    }
-
 }
