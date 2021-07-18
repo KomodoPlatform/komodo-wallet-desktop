@@ -2592,10 +2592,12 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum3.cipig.net:10017"
+        "url": "electrum3.cipig.net:10017",
+        "ws_url": "electrum3.cipig.net:30017"
       },
       {
-        "url": "electrum2.cipig.net:10017"
+        "url": "electrum2.cipig.net:10017",
+        "ws_url": "electrum2.cipig.net:30017"
       },
       {
         "url": "electrum1.cipig.net:10017",
@@ -2617,10 +2619,12 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum3.cipig.net:10018"
+        "url": "electrum3.cipig.net:10018",
+        "ws_url": "electrum3.cipig.net:30018"
       },
       {
-        "url": "electrum2.cipig.net:10018"
+        "url": "electrum2.cipig.net:10018",
+        "ws_url": "electrum2.cipig.net:30018"
       },
       {
         "url": "electrum1.cipig.net:10018",
