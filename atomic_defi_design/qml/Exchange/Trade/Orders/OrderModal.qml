@@ -161,15 +161,18 @@ BasicModal {
         }
 
         // Buttons
-        footer: [
-            DefaultButton {
+        footer:
+        [
+            DefaultButton
+            {
                 text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             // Cancel button
-            DangerButton {
+            DangerButton
+            {
                 visible: !details ? false :
                                     details.cancellable
                 Layout.fillWidth: true
@@ -178,15 +181,18 @@ BasicModal {
             },
 
             // Recover Funds button
-            PrimaryButton {
+            PrimaryButton
+            {
+                Layout.fillWidth: true
+                enabled: !API.app.orders_mdl.recover_fund_busy
                 visible: !details ? false :
                                     details.recoverable && details.order_status !== "refunding"
-                Layout.fillWidth: true
-                text: qsTr("Recover Funds")
-                onClicked: onRecoverFunds(details.order_id)
+                text: enabled ? qsTr("Recover Funds") : qsTr("Refunding...")
+                onClicked: API.app.orders_mdl.recover_fund(details.order_id)
             },
 
-            PrimaryButton {
+            PrimaryButton
+            {
                 text: qsTr("View on Explorer")
                 Layout.fillWidth: true
                 visible: !details ? false :

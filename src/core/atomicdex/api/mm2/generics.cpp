@@ -28,6 +28,7 @@
 #include "atomicdex/api/mm2/rpc.sell.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
+#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 
 namespace mm2::api
 {
@@ -54,4 +55,5 @@ namespace mm2::api
     template void extract_rpc_json_answer<disable_coin_answer_success>(const nlohmann::json& j, disable_coin_answer& answer);
     template void extract_rpc_json_answer<validate_address_answer_success>(const nlohmann::json& j, validate_address_answer& answer);
     template void extract_rpc_json_answer<convert_address_answer_success>(const nlohmann::json& j, convert_address_answer& answer);
+    template void extract_rpc_json_answer<recover_funds_of_swap_answer_success>(const nlohmann::json& j, recover_funds_of_swap_answer& answer);
 } // namespace mm2::api
