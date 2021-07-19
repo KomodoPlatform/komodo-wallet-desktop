@@ -152,7 +152,6 @@ SetupPage {
                 }
             }
 
-
             DexLabel {
                 text: qsTr("Enter seed")
                 font: DexTypo.body1
@@ -169,9 +168,10 @@ SetupPage {
                 }
 
                 function isValid() {
-                    _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    if(!allow_custom_seed.checked) {
+                        _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    }
                     _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
-
                     return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text)
                 }
             }
