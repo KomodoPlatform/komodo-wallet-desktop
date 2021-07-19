@@ -28,6 +28,9 @@ BasicModal
 
     width: 600
 
+    Component.onCompleted:   API.app.wallet_pg.validate_address_data = {}
+    Component.onDestruction: API.app.wallet_pg.validate_address_data = {}
+
     ModalContent
     {
         Layout.topMargin: 5
@@ -119,17 +122,35 @@ BasicModal
 
             DexButton
             {
-                anchors.left: validateButton.right
-                anchors.leftMargin: 10
+                anchors.right: parent.right
                 text: qsTr("Cancel")
                 onClicked: root.close()
             }
 
+            DexButton
+            {
+                anchors.left: validateButton.right
+                anchors.leftMargin: 10
+                enabled: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
+                text: qsTr("Convert")
+                onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, API.app.wallet_pg.validate_address_data.to_address_format);
+            }
         }
 
         Connections
         {
             target: API.app.wallet_pg
+
+            function onConvertAddressBusyChanged()
+            {
+                if (API.app.wallet_pg.convert_address_busy) // Currently converting entered address
+                {
+                    return;
+                }
+
+                contact_new_address_value.text = API.app.wallet_pg.converted_address
+                API.app.wallet_pg.validate_address_data = {}
+            }
 
             function onValidateAddressBusyChanged()
             {
@@ -144,28 +165,28 @@ BasicModal
                     return;
                 }
 
-                    if (isEdition) // Removes old address entry before if we are in edition mode.
-                    {
-                        console.debug("AddressBook: Replacing address %1:%2:%3 of contact %4"
-                                        .arg(oldWalletType).arg(oldKey).arg(oldValue).arg(contactModel.name))
-                        contactModel.remove_address_entry(oldWalletType, oldKey);
-                    }
+                if (isEdition) // Removes old address entry before if we are in edition mode.
+                {
+                    console.debug("AddressBook: Replacing address %1:%2:%3 of contact %4"
+                                    .arg(oldWalletType).arg(oldKey).arg(oldValue).arg(contactModel.name))
+                    contactModel.remove_address_entry(oldWalletType, oldKey);
+                }
 
-                    var create_address_result = contactModel.add_address_entry(walletType, key, value);
-                    if (create_address_result === true)
-                    {
-                        console.debug("AddressBook: Address %1:%2:%3 created for contact %4"
-                                        .arg(walletType).arg(key).arg(value).arg(contactModel.name))
-                        root.close()
-                    }
-                    else
-                    {
-                        console.debug("AddressBook: Failed to create address for contact %1: %2 key already exists"
-                                        .arg(contactModel.name).arg(key))
-                        key_already_exists_tooltip.visible = true
-                    }
+                var create_address_result = contactModel.add_address_entry(walletType, key, value);
+                if (create_address_result === true)
+                {
+                    console.debug("AddressBook: Address %1:%2:%3 created for contact %4"
+                                    .arg(walletType).arg(key).arg(value).arg(contactModel.name))
+                    root.close()
+                }
+                else
+                {
+                    console.debug("AddressBook: Failed to create address for contact %1: %2 key already exists"
+                                    .arg(contactModel.name).arg(key))
+                    key_already_exists_tooltip.visible = true
                 }
             }
+        }
 
         ModalLoader
         {
