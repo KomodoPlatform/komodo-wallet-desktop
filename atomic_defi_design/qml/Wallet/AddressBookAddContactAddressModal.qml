@@ -87,7 +87,6 @@ BasicModal
                 const max_length = 50
                 if (text.length > max_length)
                     text = text.substring(0, max_length)
-                API.app.wallet_pg.validate_address(text)
             }
 
             DexLabel
@@ -107,15 +106,38 @@ BasicModal
 
         RowLayout
         {
-            PrimaryButton
+            DexButton
             {
-                enabled: key.length > 0 && value.length > 0 && walletType !== "" &&
-                         !API.app.wallet_pg.validate_address_busy && !badAddressLabel.visible
+                enabled: key.length > 0 && value.length > 0 && walletType !== "" && !API.app.wallet_pg.validate_address_busy
 
                 text: qsTr("Validate")
 
-                onClicked:
+                onClicked: API.app.wallet_pg.validate_address(text)
+            }
+
+            DexButton
+            {
+                text: qsTr("Cancel")
+                onClicked: root.close()
+            }
+        }
+
+        Connections
+        {
+            target: API.app.wallet_pg
+
+            function onValidateAddressBusyChanged()
+            {
+                if (API.app.wallet_pg.validate_address_busy) // Currently checking entered address
                 {
+                    return;
+                }
+
+                if (API.app.wallet_pg.validate_address_data && !API.app.wallet_pg.validate_address_data.is_valid) // Entered address is invalid.
+                {
+                    return;
+                }
+
                     if (isEdition) // Removes old address entry before if we are in edition mode.
                     {
                         console.debug("AddressBook: Replacing address %1:%2:%3 of contact %4"
@@ -138,13 +160,6 @@ BasicModal
                     }
                 }
             }
-
-            DefaultButton
-            {
-                text: qsTr("Cancel")
-                onClicked: root.close()
-            }
-        }
 
         ModalLoader
         {
