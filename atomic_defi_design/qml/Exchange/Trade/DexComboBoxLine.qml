@@ -33,7 +33,7 @@ RowLayout {
             width: root.width-40
             DefaultText {
                 text_value: !details ? "" :
-                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${theme.foregroundColor}">${details.name}</font>`
+                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${DexTheme.foregroundColor}">${details.name}</font>`
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }

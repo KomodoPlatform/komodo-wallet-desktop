@@ -262,7 +262,7 @@ DexWindow
 					font.family: 'lato'
 					font.weight: Font.Medium
 					visible: _label.visible
-					color: window.application.globalTheme.accentColor
+					color: DexTheme.accentColor
 					privacy: true
 					anchors.verticalCenter: parent.verticalCenter
 					DexMouseArea {
@@ -306,7 +306,7 @@ DexWindow
 					radius: width/2
 					width: count_text.height * 1.4
 					height: width
-					visible: app.notifications_list.length > 0
+					visible: app.notifications_list !== undefined? app.notifications_list.length > 0 : false
 					color:  DexTheme.redColor
 
 					DefaultText {
