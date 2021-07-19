@@ -26,7 +26,7 @@ BasicModal
     property string oldKey
     property string oldValue
 
-    width: 400
+    width: 600
 
     ModalContent
     {
@@ -41,23 +41,9 @@ BasicModal
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
 
+            text: qsTr("Selected wallet: %1").arg(walletType !== "" ? walletType : qsTr("NONE"))
+
             onClicked: wallet_type_list_modal.open()
-
-            DexLabel
-            {
-                anchors.centerIn: parent
-
-                width: 320
-
-                elide: Text.ElideRight
-                wrapMode: Text.NoWrap
-
-                font: parent.font
-                text: qsTr("Selected wallet: %1").arg(walletType !== "" ? walletType : qsTr("NONE"))
-
-                ToolTip.text: text
-                ToolTip.visible: parent.containsMouse
-            }
         }
 
         // Address Key Field
