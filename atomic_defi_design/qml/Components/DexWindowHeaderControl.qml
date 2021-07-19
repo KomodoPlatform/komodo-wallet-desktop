@@ -4,7 +4,6 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
 
-import "../Constants"
 import App 1.0
 
 RowLayout {
@@ -23,7 +22,7 @@ RowLayout {
         opacity: .7
         Layout.preferredWidth: 40
         Layout.fillHeight: true
-        foregroundColor: app.globalTheme.foregroundColor
+        foregroundColor: DexTheme.foregroundColor
         icon.source: Qaterial.Icons.windowMinimize
         onClicked: window.showMinimized()
 
@@ -37,7 +36,7 @@ RowLayout {
         opacity: .7
         Layout.preferredWidth: 40
         Layout.fillHeight: true
-        foregroundColor: app.globalTheme.foregroundColor
+        foregroundColor: DexTheme.foregroundColor
         onClicked: {
             if(window.visibility==ApplicationWindow.Maximized){
                 showNormal()
@@ -58,7 +57,7 @@ RowLayout {
         accentRipple: Qaterial.Colors.red
         Layout.preferredWidth: 40
         Layout.fillHeight: true
-        foregroundColor: app.globalTheme.foregroundColor
+        foregroundColor: DexTheme.foregroundColor
         icon.source: Qaterial.Icons.windowClose
         onClicked: Qt.quit()
     }
