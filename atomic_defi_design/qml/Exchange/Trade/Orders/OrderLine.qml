@@ -4,8 +4,10 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import QtGraphicalEffects 1.0
+
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 
 Rectangle {
     property var details

@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import "../Exchange/Trade/"
 import "../Constants/" as Constants
+import App 1.0
 
 Rectangle {
     id: _control

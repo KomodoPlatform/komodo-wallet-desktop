@@ -5,8 +5,9 @@ import Qt.labs.platform 1.1
 
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 import "../../.."
 
 Item {

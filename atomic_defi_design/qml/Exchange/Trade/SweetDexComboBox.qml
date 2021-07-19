@@ -7,7 +7,7 @@ import QtQuick.Controls.impl 2.15
 import QtQuick.Controls.Universal 2.15
 
 import "../../Components"
-import "../../Constants"
+import App 1.0
 
 DefaultComboBox {
     id: control

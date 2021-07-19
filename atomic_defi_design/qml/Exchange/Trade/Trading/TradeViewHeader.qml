@@ -14,7 +14,8 @@ import AtomicDEX.TradingMode 1.0
 import "../" as OtherPage
 
 import "../../../Components"
-import "../../../Constants"
+
+import App 1.0
 
 
 Item {

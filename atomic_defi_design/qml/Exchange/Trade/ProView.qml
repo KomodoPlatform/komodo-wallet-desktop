@@ -12,8 +12,9 @@ import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 
 import "../../Components"
-import "../../Constants"
 import "../../Wallet"
+
+import App 1.0
 
 // Trade Form / Component import
 import "TradeBox/"

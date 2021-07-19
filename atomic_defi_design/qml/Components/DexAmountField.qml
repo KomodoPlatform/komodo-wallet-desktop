@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts  1.5
 
+import App 1.0
+
 Item {
 	id: control
 	width:  200

@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import App 1.0
 
 Item {
     id: orderBook

@@ -6,9 +6,11 @@ import QtQuick.Controls 2.15
 //! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 //! Project Imports
 import "../../../Components"
-import "../../../Constants"   //> Style
+import "../../../Constants"  as Constants 
 import "../Orders" as Orders
 import "Main.js" as Main
 
@@ -97,7 +99,7 @@ Item {
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("Trade")
-                    font.pixelSize: Style.textSize
+                    font.pixelSize: Constants.Style.textSize
                     color: children[1].containsMouse? currentSubPage === subPages.Trade? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea
                     {
@@ -115,7 +117,7 @@ Item {
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("Orders")
-                    font.pixelSize: Style.textSize
+                    font.pixelSize: Constants.Style.textSize
                     color: children[1].containsMouse? currentSubPage === subPages.Orders? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea
                     {
@@ -133,7 +135,7 @@ Item {
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("History")
-                    font.pixelSize: Style.textSize
+                    font.pixelSize: Constants.Style.textSize
                     color: children[1].containsMouse? currentSubPage === subPages.History? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea
                     {

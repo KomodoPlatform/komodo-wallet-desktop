@@ -6,9 +6,11 @@ import QtQuick.Controls 2.15 //> ItemDelegate
 // 3rdParty
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 //! Project Imports
 import "../../../Components" //> BasicModal
-import "../../../Constants"  //> API
+import "../../../Constants" as Constants //> API
 
 DefaultListView
 {
@@ -20,7 +22,7 @@ DefaultListView
 
     signal          tickerSelected(var ticker)
 
-    model: API.app.trading_pg.market_pairs_mdl.left_selection_box
+    model: Constants.API.app.trading_pg.market_pairs_mdl.left_selection_box
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
