@@ -331,6 +331,11 @@ namespace atomic_dex
                 reason                     = tr("%1 address length is invalid, please use a valid address.").arg(get_current_ticker());
                 json_result["convertible"] = false;
             }
+            else if (reason.contains("Invalid Address"))
+            {
+                reason = tr("Address is invalid.");
+                json_result["convertible"] = false;
+            }
             json_result["reason"] = reason;
         }
         m_validate_address_result = json_result;
