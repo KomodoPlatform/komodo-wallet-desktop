@@ -92,17 +92,18 @@ BasicModal
 
             DexLabel
             {
-                id: badAddressLabel
+                visible: contact_new_address_value.length && API.app.wallet_pg.validate_address_data ? !API.app.wallet_pg.validate_address_data.is_valid : false
                 anchors.top: parent.bottom
-                anchors.topMargin: 4
+                anchors.topMargin: 3
                 anchors.horizontalCenter: parent.horizontalCenter
-                visible: parent.length && API.app.wallet_pg.validate_address_data ? !API.app.wallet_pg.validate_address_data.is_valid : false
                 text: visible ? API.app.wallet_pg.validate_address_data.reason : ""
                 color: theme.redColor
+                wrapMode: DexLabel.Wrap
+                width: 550
             }
         }
 
-        HorizontalLine { Layout.fillWidth: true; Layout.topMargin: 14 }
+        HorizontalLine { Layout.fillWidth: true; Layout.topMargin: 32 }
 
         RowLayout
         {
