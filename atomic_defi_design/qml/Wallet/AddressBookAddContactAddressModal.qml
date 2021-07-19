@@ -91,11 +91,10 @@ BasicModal
 
             DexLabel
             {
-                visible: contact_new_address_value.length && API.app.wallet_pg.validate_address_data ? !API.app.wallet_pg.validate_address_data.is_valid : false
+                id: invalidAddressMsgLabel
                 anchors.top: parent.bottom
                 anchors.topMargin: 3
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: visible ? API.app.wallet_pg.validate_address_data.reason : ""
                 color: theme.redColor
                 wrapMode: DexLabel.Wrap
                 width: 550
@@ -104,22 +103,28 @@ BasicModal
 
         HorizontalLine { Layout.fillWidth: true; Layout.topMargin: 32 }
 
-        RowLayout
+        Item
         {
+            width: root.width - 50
+            height: 40
+
             DexButton
             {
+                id: validateButton
+                anchors.left: parent.left
                 enabled: key.length > 0 && value.length > 0 && walletType !== "" && !API.app.wallet_pg.validate_address_busy
-
                 text: qsTr("Validate")
-
-                onClicked: API.app.wallet_pg.validate_address(text)
+                onClicked: API.app.wallet_pg.validate_address(contact_new_address_value.text)
             }
 
             DexButton
             {
+                anchors.left: validateButton.right
+                anchors.leftMargin: 10
                 text: qsTr("Cancel")
                 onClicked: root.close()
             }
+
         }
 
         Connections
@@ -133,8 +138,9 @@ BasicModal
                     return;
                 }
 
-                if (API.app.wallet_pg.validate_address_data && !API.app.wallet_pg.validate_address_data.is_valid) // Entered address is invalid.
+                if (!API.app.wallet_pg.validate_address_data.is_valid) // Entered address is invalid.
                 {
+                    invalidAddressMsgLabel.text = API.app.wallet_pg.validate_address_data.reason
                     return;
                 }
 
