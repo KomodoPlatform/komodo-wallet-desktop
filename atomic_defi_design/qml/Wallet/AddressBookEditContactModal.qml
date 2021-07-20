@@ -92,8 +92,14 @@ BasicModal {
             }
 
             // Addresses Table
-            TableView {
+            TableView
+            {
                 id: wallet_info_table
+
+                property int _typeColWidth: 90
+                property int _keyColWidth: 100
+                property int _addressColWidth: 320
+                property int _actionsColWidth: 60
 
                 model: contactModel.proxy_filter
 
@@ -103,25 +109,29 @@ BasicModal {
                 backgroundVisible: false
                 frameVisible: false
 
-                headerDelegate: RowLayout {
-                    Layout.preferredWidth: styleData.column === 0 ? 90 :
-                                           styleData.column === 1 ? 100 :
-                                           styleData.column === 2 ? 320 :
-                                                                    60
+                headerDelegate: RowLayout
+                {
+                    Layout.preferredWidth: styleData.column === 0 ? wallet_info_table._typeColWidth :
+                                           styleData.column === 1 ? wallet_info_table._keyColWidth :
+                                           styleData.column === 2 ? wallet_info_table._addressColWidth :
+                                                                    wallet_info_table._actionsColWidth
 
-                    AnimatedRectangle {
+                    AnimatedRectangle
+                    {
                         Layout.fillWidth: true
                         height: 20
 
                         color: Style.colorRectangleBorderGradient1
 
-                        DefaultText {
+                        DefaultText
+                        {
                             Layout.topMargin: 5
                             Layout.leftMargin: 1
                             text: styleData.value
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             visible: styleData.column !== 3
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
@@ -129,14 +139,15 @@ BasicModal {
                     }
                 }
 
-                rowDelegate: DefaultRectangle {
-                    height: 37
-                    radius: 0
+                rowDelegate: DefaultRectangle
+                {
+                    height: 37; radius: 0
                     color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
                 }
 
-                TableViewColumn { // Type Column
-                    width: 90
+                TableViewColumn // Type Column
+                {
+                    width: wallet_info_table._typeColWidth
 
                     role: "address_type"
                     title: qsTr("Type")
@@ -144,22 +155,28 @@ BasicModal {
                     resizable: false
                     movable: false
 
-                    delegate: RowLayout {
-                        DefaultText {
+                    delegate: RowLayout
+                    {
+                        DefaultText
+                        {
+                            Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
+                            elide: Text.ElideRight
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
 
-                TableViewColumn { // Key Column
-                    width: 100
+                TableViewColumn // Key Column
+                {
+                    width: wallet_info_table._keyColWidth
 
                     role: "address_key"
                     title: qsTr("Key")
@@ -167,22 +184,28 @@ BasicModal {
                     resizable: false
                     movable: false
 
-                    delegate: RowLayout {
-                        DefaultText {
+                    delegate: RowLayout
+                    {
+                        DefaultText
+                        {
+                            Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
+                            elide: Text.ElideRight
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
 
-                TableViewColumn { // Address Column
-                    width: 320
+                TableViewColumn
+                {
+                    width: wallet_info_table._addressColWidth
 
                     role: "address_value"
                     title: qsTr("Address")
@@ -190,58 +213,70 @@ BasicModal {
                     resizable: false
                     movable: false
 
-                    delegate: RowLayout {
-                        DefaultText {
+                    delegate: RowLayout
+                    {
+                        DefaultText
+                        {
+                            Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
                             color: Style.colorText
+                            elide: Text.ElideRight
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
 
-                TableViewColumn { // Actions Column
-                    width: 80
+                TableViewColumn // Actions Column
+                {
+                    width: wallet_info_table._actionsColWidth
                     title: qsTr("Actions")
 
                     resizable: false
                     movable: false
 
-                    delegate: Row {
+                    delegate: Row
+                    {
                         spacing: 0
 
-                        Qaterial.OutlineButton { // Edit Address Button
+                        Qaterial.OutlineButton // Edit Address Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35
 
                             outlined: false
 
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.leadPencil
                                 color: theme.foregroundColor
                                 opacity: .8
                             }
 
-                            onClicked: {
-                                address_edition_modal.walletType = model.address_type
-                                address_edition_modal.key = model.address_key
-                                address_edition_modal.value = model.address_value
-                                address_edition_modal.open()
+                            onClicked:
+                            {
+                                address_edition_modal.walletType = model.address_type;
+                                address_edition_modal.key = model.address_key;
+                                address_edition_modal.value = model.address_value;
+                                address_edition_modal.open();
                             }
                         }
 
-                        Qaterial.OutlineButton { // Delete Button
+                        Qaterial.OutlineButton // Delete Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35 
                             outlined: false
 
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.trashCan
                                 color: theme.redColor
@@ -250,12 +285,14 @@ BasicModal {
                             onClicked: contactModel.remove_address_entry(model.address_type, model.address_key)
                         }
 
-                        Qaterial.OutlineButton { // Copy Clipboard Button
+                        Qaterial.OutlineButton // Copy Clipboard Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35
 
                             outlined: false
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.contentCopy
                                 color: theme.foregroundColor
@@ -265,12 +302,14 @@ BasicModal {
                             onClicked: API.qt_utilities.copy_text_to_clipboard(model.address_value)
                         }
 
-                        Qaterial.OutlineButton { // Send Button
+                        Qaterial.OutlineButton // Send Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35
 
                             outlined: false
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.send
                                 color: theme.foregroundColor
