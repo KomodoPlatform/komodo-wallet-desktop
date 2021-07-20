@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>Oui</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>Non</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
+    </message>
+</context>
+<context>
     <name>AddCustomCoinModal</name>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="117"/>
@@ -4055,32 +4070,32 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
     <message>
         <location filename="../../qml/main.qml" line="101"/>
         <source>Logout</source>
-        <translation type="unfinished">Se déconnecter</translation>
+        <translation>Se déconnecter</translation>
     </message>
     <message>
         <location filename="../../qml/main.qml" line="110"/>
         <source>Confirm Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer la déconnexion</translation>
     </message>
     <message>
         <location filename="../../qml/main.qml" line="111"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Êtes-vous sûr de vouloir vous déconnecter ?</translation>
     </message>
     <message>
         <location filename="../../qml/main.qml" line="117"/>
         <source>Yes</source>
-        <translation type="unfinished">Oui</translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <location filename="../../qml/main.qml" line="118"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/main.qml" line="258"/>
         <source>Balance</source>
-        <translation type="unfinished">Balance</translation>
+        <translation>Balance</translation>
     </message>
 </context>
 </TS>
