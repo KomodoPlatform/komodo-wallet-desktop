@@ -1709,8 +1709,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "IOTA-BEP20": {
-    "coin": "IOTA-BEP20",
+  "MIOTA-BEP20": {
+    "coin": "MIOTA-BEP20",
     "name": "IOTA",
     "coinpaprika_id": "miota-iota",
     "coingecko_id": "iota",
