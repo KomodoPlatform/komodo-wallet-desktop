@@ -2662,38 +2662,38 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="69"/>
         <source>Recover wallet - Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupérer le portefeuille - Configuration</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="71"/>
         <source>Recover wallet - Choose password</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupérer le portefeuille - Choisir le mot de passe</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="134"/>
         <source>Wallet Name</source>
-        <translation type="unfinished">Nom du portefeuille</translation>
+        <translation>Nom du portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="155"/>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="164"/>
         <source>Enter seed</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez la phrase de récupération</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="183"/>
         <source>BIP39 seed validation failed, try again or select &apos;Allow custom seed&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la validation de la phrase de récupération BIP39, réessayez ou sélectionnez &apos; Autoriser les phrases de récupérations personnalisées&apos;</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="223"/>
         <source>Next</source>
-        <translation type="unfinished">Suivant</translation>
+        <translation>Suivant</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="299"/>
         <source>Continue</source>
-        <translation type="unfinished">Continuer</translation>
+        <translation>Continuer</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="192"/>
@@ -2775,7 +2775,7 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
     <message>
         <location filename="../../qml/Components/RestartModal.qml" line="55"/>
         <source>Restarting the application. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrage de l&apos;application. %1</translation>
     </message>
 </context>
 <context>
@@ -3047,22 +3047,22 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="22"/>
         <source>Confirm Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer la déconnexion</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="23"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Êtes-vous sûr de vouloir vous déconnecter ?</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="29"/>
         <source>Yes</source>
-        <translation type="unfinished">Oui</translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="30"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="127"/>
@@ -3411,22 +3411,22 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="84"/>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="87"/>
         <source>Date</source>
-        <translation type="unfinished">Date</translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="107"/>
         <source>Close filtering options.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermez les options de filtrage.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="107"/>
         <source>Open filering options.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrez les options de filtrage.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="149"/>
@@ -3485,22 +3485,22 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="107"/>
         <source>Close filtering options.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermez les options de filtrage.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="84"/>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="87"/>
         <source>Date</source>
-        <translation type="unfinished">Date</translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="107"/>
         <source>Open filering options.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrez les options de filtrage.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="150"/>
@@ -3874,13 +3874,13 @@ Les frais de réseau peuvent varier considérablement en fonction de votre paire
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="701"/>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="705"/>
         <source>%1 needs to be enabled in order to use %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 doit être activé pour utiliser %2</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="703"/>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="707"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Le solde %1 doit être financé, un solde différent de zéro est requis pour payer les frais de transactions de %2</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/Trade.qml" line="762"/>
