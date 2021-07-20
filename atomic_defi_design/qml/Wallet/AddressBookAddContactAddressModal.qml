@@ -117,7 +117,7 @@ BasicModal
                 anchors.left: parent.left
                 enabled: key.length > 0 && value.length > 0 && walletType !== "" && !API.app.wallet_pg.validate_address_busy
                 text: qsTr("Validate")
-                onClicked: API.app.wallet_pg.validate_address(contact_new_address_value.text)
+                onClicked: API.app.wallet_pg.validate_address(contact_new_address_value.text, walletType)
             }
 
             DexButton
@@ -133,7 +133,7 @@ BasicModal
                 anchors.leftMargin: 10
                 enabled: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
                 text: qsTr("Convert")
-                onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, API.app.wallet_pg.validate_address_data.to_address_format);
+                onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, walletType, API.app.wallet_pg.validate_address_data.to_address_format);
             }
         }
 
