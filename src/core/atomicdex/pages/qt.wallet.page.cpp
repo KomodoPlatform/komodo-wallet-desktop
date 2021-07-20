@@ -779,13 +779,23 @@ namespace atomic_dex
     void
     wallet_page::convert_address(QString from, QVariant to_address_format)
     {
-        SPDLOG_INFO("convert_address: {}", from.toStdString());
+        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        if (mm2_system.is_mm2_running())
+        {
+            const auto&                ticker = mm2_system.get_current_ticker();
+            convert_address(from, QString::fromStdString(ticker), to_address_format);
+        }
+    }
+
+    void 
+    wallet_page::convert_address(QString from, QString ticker, QVariant to_address_format)
+    {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
             QVariantMap               out         = to_address_format.value<QVariantMap>();
             auto                      address_fmt = nlohmann::json::parse(QJsonDocument::fromVariant(out).toJson().toStdString());
-            t_convert_address_request req{.coin = get_current_ticker().toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
+            t_convert_address_request req{.coin = ticker.toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
             this->set_convert_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
             nlohmann::json json_data = ::mm2::api::template_request("convertaddress");
