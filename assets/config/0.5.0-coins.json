@@ -1617,7 +1617,7 @@
       "https://gleechain.com/"
     ],
     "type": "UTXO",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "GRS": {
