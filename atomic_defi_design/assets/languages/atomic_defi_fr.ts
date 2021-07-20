@@ -69,12 +69,12 @@
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="81"/>
         <source>Get the contract address from</source>
-        <translation type="unfinished"></translation>
+        <translation>Obtenez l&apos;adresse du contrat de</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="173"/>
         <source>Get the contract address from </source>
-        <translation type="unfinished"></translation>
+        <translation>Obtenez l&apos;adresse du contrat de </translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="189"/>
@@ -244,12 +244,12 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
         <source>Selected wallet: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Portefeuille sélectionné : %1</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
         <source>NONE</source>
-        <translation type="unfinished"></translation>
+        <translation>RIEN</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="68"/>
@@ -471,7 +471,7 @@
     <message>
         <location filename="../../qml/App.qml" line="258"/>
         <source>Recover Funds Result</source>
-        <translation type="unfinished">Le résultat de la récupération des fonds</translation>
+        <translation>Le résultat de la récupération des fonds</translation>
     </message>
 </context>
 <context>
@@ -487,47 +487,47 @@
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="28"/>
         <source>Best Orders</source>
-        <translation type="unfinished">Meilleurs offres</translation>
+        <translation>Meilleurs offres</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="46"/>
         <source>Token</source>
-        <translation type="unfinished">Asset</translation>
+        <translation>Asset</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="54"/>
         <source>Available Quantity</source>
-        <translation type="unfinished">Quantité disponible</translation>
+        <translation>Quantité disponible</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="62"/>
         <source>Available Quantity (in %1)</source>
-        <translation type="unfinished">Quantité disponible (en %1)</translation>
+        <translation>Quantité disponible (en %1)</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="70"/>
         <source>Fiat Volume</source>
-        <translation type="unfinished">Montant Fiduciaire</translation>
+        <translation>Montant Fiduciaire</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="78"/>
         <source>CEX Rate</source>
-        <translation type="unfinished">Taux CEX</translation>
+        <translation>Taux CEX</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="148"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation type="unfinished"> %1 n&apos;est pas activé - Souhaitez vous l&apos;activer pour pouvoir selectionnez les meilleurs offres %2 ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Oui&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Non&lt;/a&gt;</translation>
+        <translation> %1 n&apos;est pas activé - Souhaitez vous l&apos;activer pour pouvoir selectionnez les meilleurs offres %2 ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Oui&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Non&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="192"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="199"/>
         <source>Refresh</source>
-        <translation type="unfinished">Actualiser</translation>
+        <translation>Actualiser</translation>
     </message>
 </context>
 <context>
@@ -1189,7 +1189,7 @@
     <message>
         <location filename="../../qml/Components/DexAppPasswordField.qml" line="28"/>
         <source>Type password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tapez votre mot de passe</translation>
     </message>
 </context>
 <context>
@@ -1197,27 +1197,27 @@
     <message>
         <location filename="../../qml/Components/DexKeyChecker.qml" line="66"/>
         <source>At least 1 lowercase alphabetical character</source>
-        <translation type="unfinished">Au moins 1 caractère alphabétique en minuscule</translation>
+        <translation>Au moins 1 caractère alphabétique en minuscule</translation>
     </message>
     <message>
         <location filename="../../qml/Components/DexKeyChecker.qml" line="74"/>
         <source>At least 1 uppercase alphabetical character</source>
-        <translation type="unfinished">Au moins 1 caractère alphabétique en majuscule</translation>
+        <translation>Au moins 1 caractère alphabétique en majuscule</translation>
     </message>
     <message>
         <location filename="../../qml/Components/DexKeyChecker.qml" line="82"/>
         <source>At least 1 numeric character</source>
-        <translation type="unfinished">Au moins 1 caractère numérique</translation>
+        <translation>Au moins 1 caractère numérique</translation>
     </message>
     <message>
         <location filename="../../qml/Components/DexKeyChecker.qml" line="90"/>
         <source>At least 1 special character (eg. !@#$%)</source>
-        <translation type="unfinished">Au moins 1 caractère spécial (ex:  ! @ # $%)</translation>
+        <translation>Au moins 1 caractère spécial (ex:  ! @ # $%)</translation>
     </message>
     <message numerus="yes">
         <location filename="../../qml/Components/DexKeyChecker.qml" line="97"/>
         <source>At least %n character(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Au moins %n caractère</numerusform>
             <numerusform>Au moins %n caractères</numerusform>
         </translation>
@@ -1225,7 +1225,7 @@
     <message>
         <location filename="../../qml/Components/DexKeyChecker.qml" line="104"/>
         <source>Password and Confirm Password have to be same</source>
-        <translation type="unfinished">Le mot de passe et la confirmation du mot de passe doivent être identiques</translation>
+        <translation>Le mot de passe et la confirmation du mot de passe doivent être identiques</translation>
     </message>
 </context>
 <context>
@@ -1233,7 +1233,7 @@
     <message>
         <location filename="../../qml/Components/DexPaginator.qml" line="61"/>
         <source>items per page</source>
-        <translation type="unfinished">Nombres d&apos;éléments par page</translation>
+        <translation>Nombres d&apos;éléments par page</translation>
     </message>
 </context>
 <context>
@@ -1417,12 +1417,12 @@
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="313"/>
         <source>Type password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tapez votre mot de passe</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="112"/>
         <source>connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Connection</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="151"/>
@@ -1448,38 +1448,38 @@
         <location filename="../../qml/Screens/FirstLaunch.qml" line="306"/>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="314"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimez</translation>
+        <translation>Supprimez</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="307"/>
         <source>Enter password to confirm deletion of</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez le mot de passe pour confirmer la suppression de</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="307"/>
         <source>wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="315"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="320"/>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="327"/>
         <source>Wallet status</source>
-        <translation type="unfinished"></translation>
+        <translation>État du portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="321"/>
         <source>wallet deleted successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>portefeuille supprimé avec succès</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="328"/>
         <source>wallet password entered is incorrect</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mot de passe du portefeuille est incorrect</translation>
     </message>
 </context>
 <context>
@@ -1588,13 +1588,13 @@
         <location filename="../../qml/Constants/General.qml" line="453"/>
         <location filename="../../qml/Constants/General.qml" line="457"/>
         <source>%1 needs to be enabled in order to use %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 doit être activé pour utiliser %2</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="455"/>
         <location filename="../../qml/Constants/General.qml" line="459"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Le solde %1 doit être financé, un solde différent de zéro est requis pour payer les frais de transactions de %2</translation>
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="461"/>
@@ -1742,7 +1742,7 @@
     <message>
         <location filename="../../qml/Screens/Login.qml" line="131"/>
         <source>Type password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tapez votre mot de passe</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/Login.qml" line="188"/>
@@ -1752,7 +1752,7 @@
     <message>
         <location filename="../../qml/Screens/Login.qml" line="209"/>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion</translation>
     </message>
 </context>
 <context>
@@ -2000,7 +2000,7 @@
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="173"/>
         <source>Choose Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez un mot de passe</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="286"/>
@@ -2020,7 +2020,7 @@
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="540"/>
         <source>Check</source>
-        <translation type="unfinished"></translation>
+        <translation>Vérifier</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="169"/>
@@ -2045,12 +2045,12 @@
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="321"/>
         <source>Copied to Clipboard</source>
-        <translation type="unfinished">Copier dans le presse-papier</translation>
+        <translation>Copier dans le presse-papier</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="384"/>
         <source>Next</source>
-        <translation type="unfinished">Suivant</translation>
+        <translation>Suivant</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="431"/>
@@ -2213,34 +2213,36 @@
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="177"/>
         <source>Minimum volume: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Volume minimal : %1</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="179"/>
         <source>Volume: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Volume: %1</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="207"/>
         <source>How it works ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Comment ça fonctionne ?</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="219"/>
         <source>How to use the pro-view slider ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Comment utiliser le slider pro-view ?</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="220"/>
         <source>This slider is used to setup the order requirements you need.
 Left slider: Sets the minimum amount required to process a trade.
 Right slider: Sets the volume you want to trade.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce curseur est utilisé pour configurer les exigences de commande dont vous avez besoin.
+Curseur de gauche : définit le montant minimum requis pour traiter une transaction.
+Curseur droit : définit le volume que vous souhaitez trader.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="233"/>
         <source>Use custom minimum trade amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser le montant d&apos;échange minimum personnalisé</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/TradeBox/OrderForm.qml" line="79"/>
@@ -2311,7 +2313,7 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="190"/>
         <source>Refunding...</source>
-        <translation type="unfinished"></translation>
+        <translation>Remboursement...</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrderModal.qml" line="196"/>
@@ -2406,12 +2408,12 @@ Right slider: Sets the volume you want to trade.</source>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="94"/>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="105"/>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="108"/>
         <source>Date</source>
-        <translation type="unfinished">Date</translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrdersPage.qml" line="118"/>
