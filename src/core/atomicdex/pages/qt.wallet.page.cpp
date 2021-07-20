@@ -311,29 +311,29 @@ namespace atomic_dex
             }
             else if (reason.contains("Invalid address checksum"))
             {
-                reason = tr("Invalid checksum for %1. Click on the convert button to turn it into a mixed case address").arg(get_current_ticker());
+                reason = tr("Invalid checksum for %1. Click on the convert button to turn it into a mixed case address").arg(json_result["ticker"].toString());
                 json_result["convertible"]       = true;
                 json_result["to_address_format"] = QJsonObject{{"format", "mixedcase"}};
             }
             else if (reason.contains("Cashaddress address format activated for BCH, but legacy format used instead. Try to call 'convertaddress'"))
             {
-                reason = tr("Legacy address used for %1, click on the convert button to convert it to a Cashaddress.").arg(get_current_ticker());
+                reason = tr("Legacy address used for %1, click on the convert button to convert it to a Cashaddress.").arg(json_result["ticker"].toString());
                 json_result["to_address_format"] = QJsonObject{{"format", "cashaddress"}, {"network", "bitcoincash"}};
                 json_result["convertible"]       = true;
             }
             else if (reason.contains("Address must be prefixed with 0x"))
             {
-                reason                     = tr("%1 address must be prefixed with 0x").arg(get_current_ticker());
+                reason                     = tr("%1 address must be prefixed with 0x").arg(json_result["ticker"].toString());
                 json_result["convertible"] = false;
             }
             else if (reason.contains("Invalid input length"))
             {
-                reason                     = tr("%1 address length is invalid, please use a valid address.").arg(get_current_ticker());
+                reason                     = tr("%1 address length is invalid, please use a valid address.").arg(json_result["ticker"].toString());
                 json_result["convertible"] = false;
             }
             else if (reason.contains("Invalid Address"))
             {
-                reason = tr("Address is invalid.");
+                reason = tr("%1 address is invalid.").arg(json_result["ticker"].toString());
                 json_result["convertible"] = false;
             }
             json_result["reason"] = reason;
@@ -720,23 +720,34 @@ namespace atomic_dex
     void
     wallet_page::validate_address(QString address)
     {
-        SPDLOG_INFO("validate_address");
+        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        if (mm2_system.is_mm2_running())
+        {
+            const auto&                ticker = mm2_system.get_current_ticker();
+            validate_address(address, QString::fromStdString(ticker));
+        }
+    }
+
+    void 
+    wallet_page::validate_address(QString address, QString ticker)
+    {        
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
             std::error_code            ec;
-            const auto&                ticker = mm2_system.get_current_ticker();
-            t_validate_address_request req{.coin = ticker, .address = address.toStdString()};
+            t_validate_address_request req{.coin = ticker.toStdString(), .address = address.toStdString()};
             this->set_validate_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
             nlohmann::json json_data = ::mm2::api::template_request("validateaddress");
             ::mm2::api::to_json(json_data, req);
             batch.push_back(json_data);
-            auto answer_functor = [this](web::http::http_response resp)
+            auto answer_functor = [this, ticker](web::http::http_response resp)
             {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 SPDLOG_DEBUG("resp validateaddress: {}", body);
                 nlohmann::json j_out = nlohmann::json::object();
+                
+                j_out["ticker"] = ticker.toStdString();
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
                 {
                     auto answers         = nlohmann::json::parse(body);
