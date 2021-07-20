@@ -52,6 +52,9 @@ namespace atomic_dex
         //! Get the ticker informations.
         [[nodiscard]] std::string get_change_24h(const std::string& ticker) const ;
 
+        //! Get the volume information
+        [[nodiscard]] std::string get_total_volume(const std::string& ticker) const;
+
         //! Get the ticker informations.
         [[nodiscard]] nlohmann::json get_ticker_historical(const std::string& ticker) const ;
     };

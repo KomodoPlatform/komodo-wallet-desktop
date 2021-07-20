@@ -21,10 +21,14 @@
 #include "atomicdex/models/qt.orderbook.model.hpp"
 #include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 
 namespace atomic_dex
 {
-    orderbook_proxy_model::orderbook_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
+    orderbook_proxy_model::orderbook_proxy_model(ag::ecs::system_manager& system_manager, QObject* parent) :
+        QSortFilterProxyModel(parent), m_system_mgr(system_manager)
+    {
+    }
 
     bool
     orderbook_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -94,7 +98,7 @@ namespace atomic_dex
         {
             t_float_50 left  = safe_float(left_data.toString().toStdString());
             t_float_50 right = safe_float(right_data.toString().toStdString());
-            return left < right;
+            return left > right;
         }
         case orderbook_model::SendRole:
             break;
@@ -131,8 +135,13 @@ namespace atomic_dex
             case orderbook_model::kind::bids:
                 break;
             case orderbook_model::kind::best_orders:
-                t_float_50 rates = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
-                if (rates > 100)
+                t_float_50  rates          = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
+                t_float_50  fiat_price     = safe_float(this->sourceModel()->data(idx, orderbook_model::PriceFiatRole).toString().toStdString());
+                std::string ticker         = this->sourceModel()->data(idx, orderbook_model::CoinRole).toString().toStdString();
+                const auto& gecko_provider = this->m_system_mgr.get_system<coingecko_provider>();
+                t_float_50  limit("10000");
+
+                if (rates > 100 || fiat_price <= 0 || safe_float(gecko_provider.get_total_volume(ticker)) < limit)
                 {
                     return false;
                 }

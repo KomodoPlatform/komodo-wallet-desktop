@@ -339,7 +339,6 @@ Item {
                 sourceComponent: ClaimRewardsModal {}
             }
 
-            // Faucet for RICK/MORTY coins
             DexButton {
                 id: button_claim_faucet
                 text: qsTr("Faucet")
@@ -486,6 +485,7 @@ Item {
                     id: chart
                     anchors.fill: parent
                     anchors.margins: -1
+                    backgroundColor: price_graph_bg.color
                     visible: !is_fetching && ticker_supported
                 }
             }

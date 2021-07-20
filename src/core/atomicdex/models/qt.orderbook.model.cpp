@@ -38,7 +38,7 @@ namespace
 namespace atomic_dex
 {
     orderbook_model::orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent) :
-        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_system_mgr(system_mgr), m_model_proxy(new orderbook_proxy_model(this))
+        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_system_mgr(system_mgr), m_model_proxy(new orderbook_proxy_model(system_mgr, this))
     {
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
@@ -53,7 +53,7 @@ namespace atomic_dex
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
             break;
         case kind::best_orders:
-            this->m_model_proxy->setSortRole(PriceFiatRole);
+            this->m_model_proxy->setSortRole(CEXRatesRole);
             this->m_model_proxy->setFilterRole(NameAndTicker);
             this->m_model_proxy->sort(0, Qt::DescendingOrder);
             this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -199,7 +199,10 @@ namespace atomic_dex
                 const auto& data       = m_model_data.at(index.row());
                 const auto& trading_pg = m_system_mgr.get_system<trading_page>();
                 t_float_50  volume_f   = safe_float(trading_pg.get_volume().toStdString());
-                // const bool  is_buy         = trading_pg.get_market_mode() == MarketMode::Buy;
+                const bool  is_buy     = trading_pg.get_market_mode() == MarketMode::Buy;
+                if (!is_buy) {
+                    volume_f = safe_float(data.base_max_volume);
+                }
                 t_float_50 total_amount_f = volume_f * safe_float(data.price);
                 const auto total_amount   = atomic_dex::utils::format_float(total_amount_f);
                 return QString::fromStdString(total_amount);

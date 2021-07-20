@@ -5,6 +5,8 @@ import QtGraphicalEffects 1.12
 
 import Qaterial 1.0 as Qaterial
 
+import QtQuick.Window 2.15
+
 import "../Components"
 import "../Constants"
 import "../Settings"
@@ -12,9 +14,12 @@ import "../Settings"
 SetupPage {
     // Override
     id: _setup
-    property var onClickedNewUser: () => {}
-    property var onClickedRecoverSeed: () => {}
-    property var onClickedWallet: () => {}
+    property
+    var onClickedNewUser: () => {}
+    property
+    var onClickedRecoverSeed: () => {}
+    property
+    var onClickedWallet: () => {}
 
 
     // Local
@@ -71,27 +76,19 @@ SetupPage {
                 }
                 Connections {
                     target: bottomDrawer
-                    function onVisibleChanged () {
+                    function onVisibleChanged() {
                         _inputPassword.field.text = ""
                     }
                 }
-                DexAppTextField {
+
+                DexAppPasswordField {
                     id: _inputPassword
                     height: 50
                     width: 300
                     anchors.horizontalCenter: parent.horizontalCenter
-                    background.border.width: 1
-                    background.radius: 25
-                    field.echoMode: TextField.Password
-                    field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
-                    field.horizontalAlignment: Qt.AlignLeft
-                    field.leftPadding: 75
-                    field.rightPadding: 60
-                    field.placeholderText: qsTr("Type password")
                     field.onAccepted: {
                         if (_keyChecker.isValid()) {
                             if (onClickedLogin(field.text)) {
-                                console.log("Okay")
                                 bottomDrawer.close()
                                 app.current_page = idx_initial_loading
                             } else {
@@ -99,40 +96,6 @@ SetupPage {
                             }
                         } else {
                             error = true
-                        }
-                    }
-                    DexRectangle {
-                        x: 5
-                        height: 40
-                        width: 60
-                        radius: 20
-                        color: _inputPassword.field.focus ? _inputPassword.background.border.color : theme.accentColor
-                        anchors.verticalCenter: parent.verticalCenter
-                        Qaterial.ColorIcon {
-                            anchors.centerIn: parent
-                            iconSize: 19
-                            source: Qaterial.Icons.keyVariant
-                            color: theme.surfaceColor
-                        }
-
-                    }
-                    Qaterial.AppBarButton {
-                        opacity: .8
-                        icon {
-                            source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                            color: _inputPassword.field.focus ? _inputPassword.background.border.color : theme.accentColor
-                        }
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                            right: parent.right
-                            rightMargin: 10
-                        }
-                        onClicked: {
-                            if (_inputPassword.field.echoMode === TextField.Password) {
-                                _inputPassword.field.echoMode = TextField.Normal
-                            } else {
-                                _inputPassword.field.echoMode = TextField.Password
-                            }
                         }
                     }
                 }
@@ -193,7 +156,7 @@ SetupPage {
             Layout.fillWidth: true
             horizontalAlignment: Qt.AlignLeft
             Layout.minimumWidth: 350
-            leftPadding: 10
+            leftPadding: 20
             text: qsTr("New Wallet")
             Layout.preferredHeight: 50
             radius: 8
@@ -205,7 +168,7 @@ SetupPage {
             text: qsTr("Recover Wallet")
             horizontalAlignment: Qt.AlignLeft
             backgroundColor: theme.accentColor
-            leftPadding: 10
+            leftPadding: 20
             radius: 8
             Layout.fillWidth: true
             Layout.preferredHeight: 50
@@ -218,7 +181,6 @@ SetupPage {
 
             visible: wallets.length > 0
 
-            // Name
             DexLabel {
                 text_value: qsTr("My Wallets")
                 font.pixelSize: Style.textSizeSmall2
@@ -259,12 +221,12 @@ SetupPage {
                         width: bg.width
                         height: bg.row_height
                         GradientRectangle {
+
                             start_color: Style.applyOpacity(Style.colorWalletsHighlightGradient, mouse_area.containsMouse ? "80" : "00")
                             end_color: Style.applyOpacity(Style.colorWalletsHighlightGradient)
 
                             anchors.fill: parent
 
-                            // Click area
                             Rectangle {
                                 height: parent.height
                                 width: mouse_area.containsMouse ? parent.width : 0
@@ -284,11 +246,9 @@ SetupPage {
                                 onClicked: {
                                     selected_wallet_name = model.modelData
                                     bottomDrawer.open()
-                                    //onClickedWallet()
                                 }
                             }
 
-                            // Name
                             Qaterial.ColorIcon {
                                 anchors.verticalCenter: parent.verticalCenter
                                 source: Qaterial.Icons.account
@@ -312,6 +272,62 @@ SetupPage {
                                 anchors.bottom: parent.bottom
                                 anchors.bottomMargin: -height / 2
                                 light: true
+                            }
+                        }
+                        Item {
+                            anchors.right: parent.right
+                            anchors.margins: 10
+                            height: parent.height
+                            width: 30
+                            Qaterial.ColorIcon {
+                                source: Qaterial.Icons.delete_
+                                iconSize: 18
+                                anchors.centerIn: parent
+                                opacity: .8
+                                color: _deleteArea.containsMouse ? theme.redColor : theme.foregroundColor
+                            }
+                            DexMouseArea {
+                                id: _deleteArea
+                                hoverEnabled: true
+                                anchors.fill: parent
+                                onClicked: {
+                                    let wallet_name = model.modelData
+                                    let dialog = app.getText({
+                                        "title": qsTr("Delete") + " %1 ".arg(wallet_name) + ("wallet?"),
+                                        text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet") ,
+                                        standardButtons: Dialog.Yes | Dialog.Cancel,
+                                        warning: true,
+                                        width: 300,
+                                        iconColor: theme.redColor,
+                                        isPassword: true,
+                                        placeholderText: qsTr("Type password"),
+                                        yesButtonText: qsTr("Delete"),
+                                        cancelButtonText: qsTr("Cancel"),
+                                        onAccepted: function(text) {
+                                            if (API.app.wallet_mgr.confirm_password(wallet_name, text)) {
+                                                API.app.wallet_mgr.delete_wallet(wallet_name);
+                                                app.showText({
+                                                    title: qsTr("Wallet status"),
+                                                    text: "%1 ".arg(wallet_name) + qsTr("wallet deleted successfully"),
+                                                    standardButtons: Dialog.Ok
+                                                })
+                                                _setup.wallets = API.app.wallet_mgr.get_wallets()
+                                            } else {
+                                                app.showText({
+                                                    title: qsTr("Wallet status"),
+                                                    text: "%1 ".arg(wallet_name) + qsTr("wallet password entered is incorrect"),
+                                                    iconSource: Qaterial.Icons.alert,
+                                                    iconColor: theme.redColor,
+                                                    warning: true,
+                                                    standardButtons: Dialog.Ok
+                                                })
+                                            }
+                                            dialog.close()
+                                            dialog.destroy()
+                                        }
+
+                                    })
+                                }
                             }
                         }
                     }
@@ -341,7 +357,7 @@ SetupPage {
     }
     GaussianBlur {
         anchors.fill: _setup
-        visible: false // bottomDrawer.y === 0 && bottomDrawer.visible
+        visible: false 
         source: _setup
         radius: 21
         deviation: 2

@@ -98,6 +98,8 @@ SetupPage {
 
             if (_seedField.isValid() && input_wallet_name.field.text !== "") {
                 _seedField.error = false
+                _inputPassword.field.text = ""
+                _inputPasswordConfirm.field.text = ""
                 currentStep++
             } else {
                 _seedField.error = true
@@ -149,26 +151,28 @@ SetupPage {
                 }
             }
 
-
             DexLabel {
                 text: qsTr("Enter seed")
                 font: theme.textType.body1
             }
 
-            DexAppTextArea {
+            DexAppPasswordField {
                 id: _seedField
                 Layout.fillWidth: true
-                height: 200
-                onAccepted: tryPassLevel1()
+                Layout.preferredHeight: 50
+                leftIcon: Qaterial.Icons.fileKey
+                field.placeholderText: qsTr('Enter seed')
+                field.onAccepted: tryPassLevel1()
                 field.onTextChanged: {
                     field.text = field.text.replace("\n", "")
                     field.cursorPosition = field.length
                 }
 
                 function isValid() {
-                    _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    if(!allow_custom_seed.checked) {
+                        _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    }
                     _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
-
                     return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text)
                 }
             }
@@ -242,54 +246,11 @@ SetupPage {
             Layout.preferredWidth: 460
             Layout.rightMargin: 5
             spacing: Style.rowSpacing
-            DexAppTextField {
+            DexAppPasswordField {
                 id: _inputPassword
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                background.border.width: 1
-                background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
-                field.echoMode: TextField.Password
-                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
-                field.horizontalAlignment: Qt.AlignLeft
-                field.leftPadding: 75
-                field.rightPadding: 60
-                field.placeholderText: qsTr("Type password")
                 field.onAccepted: trySubmit()
-                DexRectangle {
-                    x: 5
-                    height: 40
-                    width: 60
-                    radius: 20
-                    color: theme.accentColor
-                    anchors.verticalCenter: parent.verticalCenter
-                    Qaterial.ColorIcon {
-                        anchors.centerIn: parent
-                        iconSize: 19
-                        source: Qaterial.Icons.keyVariant
-                        color: theme.surfaceColor
-                    }
-
-                }
-                Qaterial.AppBarButton {
-                    opacity: .8
-                    icon {
-                        source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                        color: theme.accentColor
-                    }
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        right: parent.right
-                        rightMargin: 10
-                    }
-                    onClicked: {
-                        if (_inputPassword.field.echoMode === TextField.Password) {
-                            _inputPassword.field.echoMode = TextField.Normal
-                        } else {
-                            _inputPassword.field.echoMode = TextField.Password
-                        }
-                    }
-                }
             }
 
             DexKeyChecker {
@@ -300,54 +261,11 @@ SetupPage {
                 Layout.leftMargin: 20
             }
 
-            DexAppTextField {
+            DexAppPasswordField {
                 id: _inputPasswordConfirm
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                background.border.width: 1
-                background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
-                field.echoMode: TextField.Password
-                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
-                field.horizontalAlignment: Qt.AlignLeft
-                field.leftPadding: 75
-                field.rightPadding: 60
-                field.placeholderText: qsTr("Cofirm password")
                 field.onAccepted: trySubmit()
-                DexRectangle {
-                    x: 5
-                    height: 40
-                    width: 60
-                    radius: 20
-                    color: theme.accentColor
-                    anchors.verticalCenter: parent.verticalCenter
-                    Qaterial.ColorIcon {
-                        anchors.centerIn: parent
-                        iconSize: 19
-                        source: Qaterial.Icons.keyVariant
-                        color: theme.surfaceColor
-                    }
-
-                }
-                Qaterial.AppBarButton {
-                    opacity: .8
-                    icon {
-                        source: _inputPasswordConfirm.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                        color: theme.accentColor
-                    }
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        right: parent.right
-                        rightMargin: 10
-                    }
-                    onClicked: {
-                        if (_inputPasswordConfirm.field.echoMode === TextField.Password) {
-                            _inputPasswordConfirm.field.echoMode = TextField.Normal
-                        } else {
-                            _inputPasswordConfirm.field.echoMode = TextField.Password
-                        }
-                    }
-                }
             }
 
             Item {

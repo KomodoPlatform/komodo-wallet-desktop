@@ -28,7 +28,7 @@ Behavior {
             target: root.fadeTarget
             property: root.fadeProperty
             duration: root.fadeDuration
-            to: target[property]
+            to: 1
             easing.type:  root.easingType === "Linear" ? Easing.Linear : Easing["Out"+root.easingType]
         }
     }

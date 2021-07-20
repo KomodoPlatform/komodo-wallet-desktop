@@ -5,8 +5,6 @@ import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 import Qt.labs.platform 1.0
 
-import QtQuick.Window 2.15
-
 import Qaterial 1.0 as Qaterial
 
 import "Screens"
@@ -14,7 +12,8 @@ import "Constants"
 import "Components"
 import "Dashboard"
 
-DexRectangle {
+DexRectangle
+{
     id: app
 
     property string currentWalletName: ""
@@ -179,6 +178,14 @@ DexRectangle {
 
         Dashboard {}
     }
+    Component {
+        id: dialogManager
+        DexDialogManager {
+
+        }  
+    }
+    
+
 
     Loader {
         id: loader
@@ -239,6 +246,33 @@ DexRectangle {
     FatalErrorModal {
         id: fatal_error_modal
         visible: false
+    }
+
+    // Recover funds result modal
+    LogModal
+    {
+        id: recoverFundsResultModal
+
+        visible: false
+
+        header: qsTr("Recover Funds Result")
+
+        onClosed: field.text = "{}"
+
+        Connections // Catches signals from orders_model.
+        {
+            target: API.app.orders_mdl
+
+            function onRecoverFundDataChanged()
+            {
+                if (!API.app.orders_mdl.recover_fund_busy)
+                {
+                    console.log(JSON.stringify(API.app.orders_mdl.recover_fund_data))
+                    recoverFundsResultModal.field.text = General.prettifyJSON(API.app.orders_mdl.recover_fund_data)
+                    recoverFundsResultModal.open()
+                }
+            }
+        }
     }
 
     Item {
@@ -351,6 +385,25 @@ DexRectangle {
         load_theme(current.replace(".json", ""))
     }
 
+    function showDialog(data) {
+        let dialog = dialogManager.createObject(window, data)
+        for(var i in data) {
+            if(i.startsWith('on')) {
+                eval('dialog.%1.connect(data[i])'.arg(i))
+            }
+        }
+        dialog.open()
+        return dialog
+    }
+
+    function showText(data) {
+        return showDialog(data)
+    }
+    function getText(data) {
+        data['getText'] = true
+        return showText(data)
+    }
+
     Component.onCompleted: {
         selected_wallet_name !== ""
         openFirstLaunch()
@@ -405,7 +458,6 @@ DexRectangle {
         Qaterial.Style.accentColor = theme.accentColor
         console.log("END APPLY ".arg(name))
     }
-
 
     color: theme.surfaceColor
     radius: 0
@@ -515,11 +567,6 @@ DexRectangle {
             Qaterial.Style.accentColorLight = Style.colorTheme4
             Qaterial.Style.accentColorDark = Style.colorTheme4
         }
-
-        Component.onCompleted: {
-            //setQaterialStyle()
-        }
-
         onDark_themeChanged: setQaterialStyle()
 
 

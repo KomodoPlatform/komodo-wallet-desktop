@@ -25,15 +25,6 @@ Item {
 
     property bool is_history: false
 
-    property string recover_funds_result: '{}'
-
-    function onRecoverFunds(order_id) {
-        const result = API.app.recover_fund(order_id)
-        console.log("Refund result: ", result)
-        recover_funds_result = result
-        recover_funds_modal.open()
-    }
-
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = min_date.date
 
@@ -265,15 +256,6 @@ Item {
         }
         onRejected: {
             console.log("CSV export cancelled")
-        }
-    }
-    ModalLoader {
-        id: recover_funds_modal
-        sourceComponent: LogModal {
-            header: qsTr("Recover Funds Result")
-            field.text: General.prettifyJSON(recover_funds_result)
-
-            onClosed: recover_funds_result = "{}"
         }
     }
 }

@@ -265,24 +265,6 @@ Qaterial.Dialog {
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
-                                    text: qsTr("Use QtTextRendering Or NativeTextRendering")
-                                }
-                                DefaultSwitch {
-                                    id: render_switch
-                                    property bool firstTime: true
-                                    Layout.alignment: Qt.AlignHCenter
-                                    Layout.leftMargin: combo_fiat.Layout.leftMargin
-                                    Layout.rightMargin: Layout.leftMargin
-                                    checked: parseInt(atomic_settings2.value("FontMode")) === 1
-                                }
-                            }
-                            RowLayout {
-                                width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 30
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
                                     text: qsTr("Current Font")
                                 }
                                 DexComboBox {
@@ -293,7 +275,6 @@ Qaterial.Dialog {
                                     Component.onCompleted: {
                                         let current = _font.fontFamily
                                         currentIndex = dexFont.model.indexOf(current)
-                                        //currentDisplay = currentText
                                     }
                                 }
                             }
@@ -334,12 +315,6 @@ Qaterial.Dialog {
                                         atomic_settings2.sync()
                                         app.load_theme(dexTheme.currentText.replace(".json",""))
                                         _font.fontFamily = dexFont.currentText
-                                        let render_value = render_switch.checked? 1 : 0
-                                        if(render_value == parseInt(atomic_settings2.value("FontMode"))){}
-                                        else {
-                                            atomic_settings2.setValue("FontMode", render_value)
-                                            restart_modal.open()
-                                        }
                                         
                                     }
                                 }
@@ -421,24 +396,6 @@ Qaterial.Dialog {
                                     text: qsTr("Open")
                                     implicitHeight: 37
                                     onClicked: camouflage_password_modal.open()
-                                }
-                            }
-
-                            RowLayout {
-                                width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    //text:
-                                }
-                                DexButton {
-                                    text: qsTr("Delete Wallet")
-                                    implicitHeight: 37
-                                    onClicked:  {
-                                        delete_wallet_modal.open()
-                                    }
                                 }
                             }
                         }
@@ -532,7 +489,6 @@ Qaterial.Dialog {
         height: 50
         anchors.bottom: parent.bottom
         DexSelectableButton {
-            enabled: false
             selected: true
             anchors.right: logout_button.left
             anchors.rightMargin: 10

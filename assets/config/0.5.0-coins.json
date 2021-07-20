@@ -275,21 +275,21 @@
     "currently_enabled": false
   },
   "AVA-BEP20": {
-      "coin": "AVA-BEP20",
-      "name": "Travala.com",
-      "coinpaprika_id": "ava-travala",
-      "coingecko_id": "concierge-io",
-      "nodes": [
-        "http://bsc1.cipig.net:8655",
-        "http://bsc2.cipig.net:8655",
-        "http://bsc3.cipig.net:8655"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "AVA-BEP20",
+    "name": "Travala.com",
+    "coinpaprika_id": "ava-travala",
+    "coingecko_id": "concierge-io",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
   },
   "AVAX-BEP20": {
     "coin": "AVAX-BEP20",
@@ -315,13 +315,16 @@
     "coingecko_id": "axe",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10057"
+        "url": "electrum1.cipig.net:10057",
+        "ws_url": "electrum1.cipig.net:30057"
       },
       {
-        "url": "electrum2.cipig.net:10057"
+        "url": "electrum2.cipig.net:10057",
+        "ws_url": "electrum2.cipig.net:30057"
       },
       {
-        "url": "electrum3.cipig.net:10057"
+        "url": "electrum3.cipig.net:10057",
+        "ws_url": "electrum3.cipig.net:30057"
       }
     ],
     "explorer_url": [
@@ -332,21 +335,21 @@
     "currently_enabled": false
   },
   "BABYDOGE": {
-      "coin": "BABYDOGE",
-      "name": "Baby Doge Coin",
-      "coinpaprika_id": "babydoge-baby-doge-coin",
-      "coingecko_id": "baby-doge-coin",
-      "nodes": [
-        "http://bsc1.cipig.net:8655",
-        "http://bsc2.cipig.net:8655",
-        "http://bsc3.cipig.net:8655"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "BABYDOGE",
+    "name": "Baby Doge Coin",
+    "coinpaprika_id": "babydoge-baby-doge-coin",
+    "coingecko_id": "baby-doge-coin",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
   },
   "BAL-BEP20": {
     "coin": "BAL-BEP20",
@@ -534,13 +537,16 @@
     "coinpaprika_id": "btc-bitcoin",
     "electrum": [
       {
-        "url": "electrum3.cipig.net:10000"
+        "url": "electrum3.cipig.net:10000",
+        "ws_url": "electrum3.cipig.net:30000"
       },
       {
-        "url": "electrum2.cipig.net:10000"
+        "url": "electrum2.cipig.net:10000",
+        "ws_url": "electrum2.cipig.net:30000"
       },
       {
-        "url": "electrum1.cipig.net:10000"
+        "url": "electrum1.cipig.net:10000",
+        "ws_url": "electrum3.cipig.net:30000"
       }
     ],
     "explorer_url": [
@@ -573,13 +579,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10020"
+        "url": "electrum1.cipig.net:10020",
+        "ws_url": "electrum1.cipig.net:30020"
       },
       {
-        "url": "electrum2.cipig.net:10020"
+        "url": "electrum2.cipig.net:10020",
+        "ws_url": "electrum2.cipig.net:30020"
       },
       {
-        "url": "electrum3.cipig.net:10020"
+        "url": "electrum3.cipig.net:10020",
+        "ws_url": "electrum3.cipig.net:30020"
       }
     ],
     "explorer_url": [
@@ -617,13 +626,16 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10055"
+        "url": "electrum1.cipig.net:10055",
+        "ws_url": "electrum1.cipig.net:30055"
       },
       {
-        "url": "electrum2.cipig.net:10055"
+        "url": "electrum2.cipig.net:10055",
+        "ws_url": "electrum2.cipig.net:30055"
       },
       {
-        "url": "electrum3.cipig.net:10055"
+        "url": "electrum3.cipig.net:10055",
+        "ws_url": "electrum3.cipig.net:30055"
       }
     ],
     "explorer_url": [
@@ -640,13 +652,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10012"
+        "url": "electrum1.cipig.net:10012",
+        "ws_url": "electrum1.cipig.net:30012"
       },
       {
-        "url": "electrum2.cipig.net:10012"
+        "url": "electrum2.cipig.net:10012",
+        "ws_url": "electrum2.cipig.net:30012"
       },
       {
-        "url": "electrum3.cipig.net:10012"
+        "url": "electrum3.cipig.net:10012",
+        "ws_url": "electrum3.cipig.net:30012"
       }
     ],
     "explorer_url": [
@@ -664,13 +679,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10007"
+        "url": "electrum1.cipig.net:10007",
+        "ws_url": "electrum1.cipig.net:30007"
       },
       {
-        "url": "electrum2.cipig.net:10007"
+        "url": "electrum2.cipig.net:10007",
+        "ws_url": "electrum2.cipig.net:30007"
       },
       {
-        "url": "electrum3.cipig.net:10007"
+        "url": "electrum3.cipig.net:10007",
+        "ws_url": "electrum3.cipig.net:30007"
       }
     ],
     "explorer_url": [
@@ -778,13 +796,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10029"
+        "url": "electrum1.cipig.net:10029",
+        "ws_url": "electrum1.cipig.net:30029"
       },
       {
-        "url": "electrum2.cipig.net:10029"
+        "url": "electrum2.cipig.net:10029",
+        "ws_url": "electrum2.cipig.net:30029"
       },
       {
-        "url": "electrum3.cipig.net:10029"
+        "url": "electrum3.cipig.net:10029",
+        "ws_url": "electrum3.cipig.net:30029"
       }
     ],
     "explorer_url": [
@@ -906,13 +927,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10011"
+        "url": "electrum1.cipig.net:10011",
+        "ws_url": "electrum1.cipig.net:30011"
       },
       {
-        "url": "electrum2.cipig.net:10011"
+        "url": "electrum2.cipig.net:10011",
+        "ws_url": "electrum2.cipig.net:30011"
       },
       {
-        "url": "electrum3.cipig.net:10011"
+        "url": "electrum3.cipig.net:10011",
+        "ws_url": "electrum3.cipig.net:30011"
       }
     ],
     "explorer_url": [
@@ -930,13 +954,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10008"
+        "url": "electrum1.cipig.net:10008",
+        "ws_url": "electrum1.cipig.net:30008"
       },
       {
-        "url": "electrum2.cipig.net:10008"
+        "url": "electrum2.cipig.net:10008",
+        "ws_url": "electrum2.cipig.net:30008"
       },
       {
-        "url": "electrum3.cipig.net:10008"
+        "url": "electrum3.cipig.net:10008",
+        "ws_url": "electrum3.cipig.net:30008"
       }
     ],
     "explorer_url": [
@@ -989,13 +1016,16 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10061"
+        "url": "electrum1.cipig.net:10061",
+        "ws_url": "electrum1.cipig.net:30061"
       },
       {
-        "url": "electrum2.cipig.net:10061"
+        "url": "electrum2.cipig.net:10061",
+        "ws_url": "electrum2.cipig.net:30061"
       },
       {
-        "url": "electrum3.cipig.net:10061"
+        "url": "electrum3.cipig.net:10061",
+        "ws_url": "electrum3.cipig.net:30061"
       }
     ],
     "explorer_url": [
@@ -1013,13 +1043,16 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10059"
+        "url": "electrum1.cipig.net:10059",
+        "ws_url": "electrum1.cipig.net:30059"
       },
       {
-        "url": "electrum2.cipig.net:10059"
+        "url": "electrum2.cipig.net:10059",
+        "ws_url": "electrum2.cipig.net:30059"
       },
       {
-        "url": "electrum3.cipig.net:10059"
+        "url": "electrum3.cipig.net:10059",
+        "ws_url": "electrum3.cipig.net:30059"
       }
     ],
     "explorer_url": [
@@ -1117,13 +1150,16 @@
     "coingecko_id": "dogecoin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10060"
+        "url": "electrum1.cipig.net:10060",
+        "ws_url": "electrum1.cipig.net:30060"
       },
       {
-        "url": "electrum2.cipig.net:10060"
+        "url": "electrum2.cipig.net:10060",
+        "ws_url": "electrum2.cipig.net:30060"
       },
       {
-        "url": "electrum3.cipig.net:10060"
+        "url": "electrum3.cipig.net:10060",
+        "ws_url": "electrum3.cipig.net:30060"
       }
     ],
     "explorer_url": [
@@ -1191,13 +1227,16 @@
     "coingecko_id": "electra",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10052"
+        "url": "electrum1.cipig.net:10052",
+        "ws_url": "electrum1.cipig.net:30052"
       },
       {
-        "url": "electrum2.cipig.net:10052"
+        "url": "electrum2.cipig.net:10052",
+        "ws_url": "electrum2.cipig.net:30052"
       },
       {
-        "url": "electrum3.cipig.net:10052"
+        "url": "electrum3.cipig.net:10052",
+        "ws_url": "electrum3.cipig.net:30052"
       }
     ],
     "explorer_url": [
@@ -1316,13 +1355,16 @@
     "coingecko_id": "einsteinium",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10062"
+        "url": "electrum1.cipig.net:10062",
+        "ws_url": "electrum1.cipig.net:30062"
       },
       {
-        "url": "electrum2.cipig.net:10062"
+        "url": "electrum2.cipig.net:10062",
+        "ws_url": "electrum2.cipig.net:30062"
       },
       {
-        "url": "electrum3.cipig.net:10062"
+        "url": "electrum3.cipig.net:10062",
+        "ws_url": "electrum3.cipig.net:30062"
       }
     ],
     "explorer_url": [
@@ -1473,13 +1515,16 @@
     "coingecko_id": "feathercoin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10054"
+        "url": "electrum1.cipig.net:10054",
+        "ws_url": "electrum1.cipig.net:30054"
       },
       {
-        "url": "electrum2.cipig.net:10054"
+        "url": "electrum2.cipig.net:10054",
+        "ws_url": "electrum2.cipig.net:30054"
       },
       {
-        "url": "electrum3.cipig.net:10054"
+        "url": "electrum3.cipig.net:10054",
+        "ws_url": "electrum3.cipig.net:30054"
       }
     ],
     "explorer_url": [
@@ -1530,13 +1575,16 @@
     "coingecko_id": "gleec-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10022"
+        "url": "electrum1.cipig.net:10022",
+        "ws_url": "electrum1.cipig.net:30022"
       },
       {
-        "url": "electrum2.cipig.net:10022"
+        "url": "electrum2.cipig.net:10022",
+        "ws_url": "electrum2.cipig.net:30022"
       },
       {
-        "url": "electrum3.cipig.net:10022"
+        "url": "electrum3.cipig.net:10022",
+        "ws_url": "electrum3.cipig.net:30022"
       }
     ],
     "explorer_url": [
@@ -1553,13 +1601,16 @@
     "coingecko_id": "gleec-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10069"
+        "url": "electrum1.cipig.net:10069",
+        "ws_url": "electrum1.cipig.net:30069"
       },
       {
-        "url": "electrum2.cipig.net:10069"
+        "url": "electrum2.cipig.net:10069",
+        "ws_url": "electrum2.cipig.net:30069"
       },
       {
-        "url": "electrum3.cipig.net:10069"
+        "url": "electrum3.cipig.net:10069",
+        "ws_url": "electrum3.cipig.net:30069"
       }
     ],
     "explorer_url": [
@@ -1604,13 +1655,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10009"
+        "url": "electrum1.cipig.net:10009",
+        "ws_url": "electrum1.cipig.net:30009"
       },
       {
-        "url": "electrum2.cipig.net:10009"
+        "url": "electrum2.cipig.net:10009",
+        "ws_url": "electrum2.cipig.net:30009"
       },
       {
-        "url": "electrum3.cipig.net:10009"
+        "url": "electrum3.cipig.net:10009",
+        "ws_url": "electrum3.cipig.net:30009"
       }
     ],
     "explorer_url": [
@@ -1622,38 +1676,38 @@
     "wallet_only": true
   },
   "INJ-BEP20": {
-      "coin": "INJ-BEP20",
-      "name": "Injective Protocol",
-      "coinpaprika_id": "inj-injective-protocol",
-      "coingecko_id": "injective-protocol",
-      "nodes": [
-        "http://bsc1.cipig.net:8655",
-        "http://bsc2.cipig.net:8655",
-        "http://bsc3.cipig.net:8655"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "INJ-BEP20",
+    "name": "Injective Protocol",
+    "coinpaprika_id": "inj-injective-protocol",
+    "coingecko_id": "injective-protocol",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
   },
   "INJ-ERC20": {
-      "coin": "INJ-ERC20",
-      "name": "Injective Protocol",
-      "coinpaprika_id": "inj-injective-protocol",
-      "coingecko_id": "injective-protocol",
-      "nodes": [
-        "http://eth1.cipig.net:8555",
-        "http://eth2.cipig.net:8555",
-        "http://eth3.cipig.net:8555"
-      ],
-      "explorer_url": [
-        "https://etherscan.io/"
-      ],
-      "type": "ERC-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "INJ-ERC20",
+    "name": "Injective Protocol",
+    "coinpaprika_id": "inj-injective-protocol",
+    "coingecko_id": "injective-protocol",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
   },
   "IOTA-BEP20": {
     "coin": "IOTA-BEP20",
@@ -1713,13 +1767,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10004"
+        "url": "electrum1.cipig.net:10004",
+        "ws_url": "electrum1.cipig.net:30004"
       },
       {
-        "url": "electrum2.cipig.net:10004"
+        "url": "electrum2.cipig.net:10004",
+        "ws_url": "electrum2.cipig.net:30004"
       },
       {
-        "url": "electrum3.cipig.net:10004"
+        "url": "electrum3.cipig.net:10004",
+        "ws_url": "electrum3.cipig.net:30004"
       }
     ],
     "explorer_url": [
@@ -1736,13 +1793,16 @@
     "coingecko_id": "koinon",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10024"
+        "url": "electrum1.cipig.net:10024",
+        "ws_url": "electrum1.cipig.net:30024"
       },
       {
-        "url": "electrum2.cipig.net:10024"
+        "url": "electrum2.cipig.net:10024",
+        "ws_url": "electrum2.cipig.net:30024"
       },
       {
-        "url": "electrum3.cipig.net:10024"
+        "url": "electrum3.cipig.net:10024",
+        "ws_url": "electrum3.cipig.net:30024"
       }
     ],
     "explorer_url": [
@@ -1808,13 +1868,16 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10063"
+        "url": "electrum1.cipig.net:10063",
+        "ws_url": "electrum1.cipig.net:30063"
       },
       {
-        "url": "electrum2.cipig.net:10063"
+        "url": "electrum2.cipig.net:10063",
+        "ws_url": "electrum2.cipig.net:30063"
       },
       {
-        "url": "electrum3.cipig.net:10063"
+        "url": "electrum3.cipig.net:10063",
+        "ws_url": "electrum3.cipig.net:30063"
       }
     ],
     "explorer_url": [
@@ -1901,17 +1964,20 @@
     "active": false,
     "coin": "MCL",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "mcl-marmara-credit-loops-mcl-coin",
+    "coinpaprika_id": "mcl-marmara-credit-loops",
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10023"
+        "url": "electrum1.cipig.net:10023",
+        "ws_url": "electrum1.cipig.net:30023"
       },
       {
-        "url": "electrum2.cipig.net:10023"
+        "url": "electrum2.cipig.net:10023",
+        "ws_url": "electrum2.cipig.net:30023"
       },
       {
-        "url": "electrum3.cipig.net:10023"
+        "url": "electrum3.cipig.net:10023",
+        "ws_url": "electrum3.cipig.net:30023"
       }
     ],
     "explorer_url": [
@@ -1921,21 +1987,21 @@
     "name": "MCL"
   },
   "MM-ERC20": {
-      "coin": "MM-ERC20",
-      "name": "Million",
-      "coinpaprika_id": "test-coin",
-      "coingecko_id": "million",
-      "nodes": [
-        "http://eth1.cipig.net:8555",
-        "http://eth2.cipig.net:8555",
-        "http://eth3.cipig.net:8555"
-      ],
-      "explorer_url": [
-        "https://etherscan.io/"
-      ],
-      "type": "ERC-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "MM-ERC20",
+    "name": "Million",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "million",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
   },
   "MSHARK": {
     "coin": "MSHARK",
@@ -1944,13 +2010,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10013"
+        "url": "electrum1.cipig.net:10013",
+        "ws_url": "electrum1.cipig.net:30013"
       },
       {
-        "url": "electrum2.cipig.net:10013"
+        "url": "electrum2.cipig.net:10013",
+        "ws_url": "electrum2.cipig.net:30013"
       },
       {
-        "url": "electrum3.cipig.net:10013"
+        "url": "electrum3.cipig.net:10013",
+        "ws_url": "electrum3.cipig.net:30013"
       }
     ],
     "explorer_url": [
@@ -2342,13 +2411,16 @@
     "coinpaprika_id": "kmd-komodo",
     "electrum": [
       {
-        "url": "electrum3.cipig.net:10001"
+        "url": "electrum3.cipig.net:10001",
+        "ws_url": "electrum3.cipig.net:30001"
       },
       {
-        "url": "electrum2.cipig.net:10001"
+        "url": "electrum2.cipig.net:10001",
+        "ws_url": "electrum3.cipig.net:30001"
       },
       {
-        "url": "electrum1.cipig.net:10001"
+        "url": "electrum1.cipig.net:10001",
+        "ws_url": "electrum3.cipig.net:30001"
       }
     ],
     "explorer_url": [
@@ -2382,13 +2454,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10019"
+        "url": "electrum1.cipig.net:10019",
+        "ws_url": "electrum1.cipig.net:30019"
       },
       {
-        "url": "electrum2.cipig.net:10019"
+        "url": "electrum2.cipig.net:10019",
+        "ws_url": "electrum2.cipig.net:30019"
       },
       {
-        "url": "electrum3.cipig.net:10019"
+        "url": "electrum3.cipig.net:10019",
+        "ws_url": "electrum3.cipig.net:30019"
       }
     ],
     "explorer_url": [
@@ -2462,13 +2537,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10015"
+        "url": "electrum1.cipig.net:10015",
+        "ws_url": "electrum1.cipig.net:30015"
       },
       {
-        "url": "electrum2.cipig.net:10015"
+        "url": "electrum2.cipig.net:10015",
+        "ws_url": "electrum2.cipig.net:30015"
       },
       {
-        "url": "electrum3.cipig.net:10015"
+        "url": "electrum3.cipig.net:10015",
+        "ws_url": "electrum3.cipig.net:30015"
       }
     ],
     "explorer_url": [
@@ -2486,13 +2564,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10006"
+        "url": "electrum1.cipig.net:10006",
+        "ws_url": "electrum1.cipig.net:30006"
       },
       {
-        "url": "electrum2.cipig.net:10006"
+        "url": "electrum2.cipig.net:10006",
+        "ws_url": "electrum2.cipig.net:30006"
       },
       {
-        "url": "electrum3.cipig.net:10006"
+        "url": "electrum3.cipig.net:10006",
+        "ws_url": "electrum3.cipig.net:30006"
       }
     ],
     "explorer_url": [
@@ -2511,13 +2592,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum3.cipig.net:10017"
+        "url": "electrum3.cipig.net:10017",
+        "ws_url": "electrum3.cipig.net:30017"
       },
       {
-        "url": "electrum2.cipig.net:10017"
+        "url": "electrum2.cipig.net:10017",
+        "ws_url": "electrum2.cipig.net:30017"
       },
       {
-        "url": "electrum1.cipig.net:10017"
+        "url": "electrum1.cipig.net:10017",
+        "ws_url": "electrum1.cipig.net:30017"
       }
     ],
     "explorer_url": [
@@ -2535,13 +2619,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum3.cipig.net:10018"
+        "url": "electrum3.cipig.net:10018",
+        "ws_url": "electrum3.cipig.net:30018"
       },
       {
-        "url": "electrum2.cipig.net:10018"
+        "url": "electrum2.cipig.net:10018",
+        "ws_url": "electrum2.cipig.net:30018"
       },
       {
-        "url": "electrum1.cipig.net:10018"
+        "url": "electrum1.cipig.net:10018",
+        "ws_url": "electrum1.cipig.net:30018"
       }
     ],
     "explorer_url": [
@@ -2558,13 +2645,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10010"
+        "url": "electrum1.cipig.net:10010",
+        "ws_url": "electrum1.cipig.net:30010"
       },
       {
-        "url": "electrum2.cipig.net:10010"
+        "url": "electrum2.cipig.net:10010",
+        "ws_url": "electrum2.cipig.net:30010"
       },
       {
-        "url": "electrum3.cipig.net:10010"
+        "url": "electrum3.cipig.net:10010",
+        "ws_url": "electrum3.cipig.net:30010"
       }
     ],
     "explorer_url": [
@@ -2606,13 +2696,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10003"
+        "url": "electrum1.cipig.net:10003",
+        "ws_url": "electrum1.cipig.net:30003"
       },
       {
-        "url": "electrum2.cipig.net:10003"
+        "url": "electrum2.cipig.net:10003",
+        "ws_url": "electrum2.cipig.net:30003"
       },
       {
-        "url": "electrum3.cipig.net:10003"
+        "url": "electrum3.cipig.net:10003",
+        "ws_url": "electrum3.cipig.net:30003"
       }
     ],
     "explorer_url": [
@@ -2646,13 +2739,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10035"
+        "url": "electrum1.cipig.net:10035",
+        "ws_url": "electrum1.cipig.net:30035"
       },
       {
-        "url": "electrum2.cipig.net:10035"
+        "url": "electrum2.cipig.net:10035",
+        "ws_url": "electrum2.cipig.net:30035"
       },
       {
-        "url": "electrum3.cipig.net:10035"
+        "url": "electrum3.cipig.net:10035",
+        "ws_url": "electrum3.cipig.net:30035"
       }
     ],
     "explorer_url": [
@@ -2703,13 +2799,16 @@
     "coingecko_id": "syscoin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10064"
+        "url": "electrum1.cipig.net:10064",
+        "ws_url": "electrum1.cipig.net:30064"
       },
       {
-        "url": "electrum2.cipig.net:10064"
+        "url": "electrum2.cipig.net:10064",
+        "ws_url": "electrum2.cipig.net:30064"
       },
       {
-        "url": "electrum3.cipig.net:10064"
+        "url": "electrum3.cipig.net:10064",
+        "ws_url": "electrum3.cipig.net:30064"
       }
     ],
     "explorer_url": [
@@ -2728,13 +2827,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10033"
+        "url": "electrum1.cipig.net:10033",
+        "ws_url": "electrum1.cipig.net:30033"
       },
       {
-        "url": "electrum2.cipig.net:10033"
+        "url": "electrum2.cipig.net:10033",
+        "ws_url": "electrum2.cipig.net:30033"
       },
       {
-        "url": "electrum3.cipig.net:10033"
+        "url": "electrum3.cipig.net:10033",
+        "ws_url": "electrum3.cipig.net:30033"
       }
     ],
     "explorer_url": [
@@ -2752,13 +2854,16 @@
     "coinpaprika_id": "chips-chips",
     "electrum": [
       {
-        "url": "electrum3.cipig.net:10053"
+        "url": "electrum3.cipig.net:10053",
+        "ws_url": "electrum3.cipig.net:30053"
       },
       {
-        "url": "electrum2.cipig.net:10053"
+        "url": "electrum2.cipig.net:10053",
+        "ws_url": "electrum2.cipig.net:30053"
       },
       {
-        "url": "electrum1.cipig.net:10053"
+        "url": "electrum1.cipig.net:10053",
+        "ws_url": "electrum1.cipig.net:30053"
       }
     ],
     "explorer_url": [
@@ -2798,13 +2903,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10005"
+        "url": "electrum1.cipig.net:10005",
+        "ws_url": "electrum1.cipig.net:30005"
       },
       {
-        "url": "electrum2.cipig.net:10005"
+        "url": "electrum2.cipig.net:10005",
+        "ws_url": "electrum2.cipig.net:30005"
       },
       {
-        "url": "electrum3.cipig.net:10005"
+        "url": "electrum3.cipig.net:10005",
+        "ws_url": "electrum3.cipig.net:30005"
       }
     ],
     "explorer_url": [
@@ -2849,21 +2957,21 @@
     "currently_enabled": false
   },
   "VITE-BEP20": {
-      "coin": "VITE-BEP20",
-      "name": "Vite",
-      "coinpaprika_id": "vite-vite",
-      "coingecko_id": "vite",
-      "nodes": [
-        "http://bsc1.cipig.net:8655",
-        "http://bsc2.cipig.net:8655",
-        "http://bsc3.cipig.net:8655"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "VITE-BEP20",
+    "name": "Vite",
+    "coinpaprika_id": "vite-vite",
+    "coingecko_id": "vite",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
   },
   "VRSC": {
     "coin": "VRSC",
@@ -3081,7 +3189,7 @@
     "coin": "OOT",
     "name": "Utrum",
     "coinpaprika_id": "oot-utrum",
-    "coingecko_id": "utrum",
+    "coingecko_id": "test-coin",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10021"
@@ -3165,13 +3273,16 @@
     "coingecko_id": "ravencoin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10051"
+        "url": "electrum1.cipig.net:10051",
+        "ws_url": "electrum1.cipig.net:30051"
       },
       {
-        "url": "electrum2.cipig.net:10051"
+        "url": "electrum2.cipig.net:10051",
+        "ws_url": "electrum2.cipig.net:30051"
       },
       {
-        "url": "electrum3.cipig.net:10051"
+        "url": "electrum3.cipig.net:10051",
+        "ws_url": "electrum3.cipig.net:30051"
       }
     ],
     "explorer_url": [
@@ -3300,38 +3411,38 @@
     "currently_enabled": false
   },
   "TRYB-BEP20": {
-      "coin": "TRYB-BEP20",
-      "name": "BiLira",
-      "coinpaprika_id": "tryb-bilira",
-      "coingecko_id": "bilira",
-      "nodes": [
-        "http://bsc1.cipig.net:8655",
-        "http://bsc2.cipig.net:8655",
-        "http://bsc3.cipig.net:8655"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "TRYB-BEP20",
+    "name": "BiLira",
+    "coinpaprika_id": "tryb-bilira",
+    "coingecko_id": "bilira",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
   },
   "TRYB-ERC20": {
-      "coin": "TRYB-ERC20",
-      "name": "BiLira",
-      "coinpaprika_id": "tryb-bilira",
-      "coingecko_id": "bilira",
-      "nodes": [
-        "http://eth1.cipig.net:8555",
-        "http://eth2.cipig.net:8555",
-        "http://eth3.cipig.net:8555"
-      ],
-      "explorer_url": [
-        "https://etherscan.io/"
-      ],
-      "type": "ERC-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "TRYB-ERC20",
+    "name": "BiLira",
+    "coinpaprika_id": "tryb-bilira",
+    "coingecko_id": "bilira",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
   },
   "TUSD-BEP20": {
     "coin": "TUSD-BEP20",
@@ -3418,7 +3529,7 @@
   "VRM": {
     "coin": "VRM",
     "name": "Verium Reserve",
-    "coingecko_id": "veriumreserve",
+    "coingecko_id": "test-coin",
     "coinpaprika_id": "vrm-veriumreserve",
     "electrum": [
       {
@@ -3465,13 +3576,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10014"
+        "url": "electrum1.cipig.net:10014",
+        "ws_url": "electrum1.cipig.net:30014"
       },
       {
-        "url": "electrum2.cipig.net:10014"
+        "url": "electrum2.cipig.net:10014",
+        "ws_url": "electrum2.cipig.net:30014"
       },
       {
-        "url": "electrum3.cipig.net:10014"
+        "url": "electrum3.cipig.net:10014",
+        "ws_url": "electrum3.cipig.net:30014"
       }
     ],
     "explorer_url": [
@@ -3603,21 +3717,21 @@
     "wallet_only": true
   },
   "XVC-BEP20": {
-      "coin": "XVC-BEP20",
-      "name": "Vanillacash",
-      "coinpaprika_id": "xvc-vcash",
-      "coingecko_id": "test-coin",
-      "nodes": [
-        "http://bsc1.cipig.net:8655",
-        "http://bsc2.cipig.net:8655",
-        "http://bsc3.cipig.net:8655"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
+    "coin": "XVC-BEP20",
+    "name": "Vanillacash",
+    "coinpaprika_id": "xvc-vcash",
+    "coingecko_id": "test-coin",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
   },
   "XVS": {
     "coin": "XVS",
@@ -3713,13 +3827,16 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10058"
+        "url": "electrum1.cipig.net:10058",
+        "ws_url": "electrum1.cipig.net:30058"
       },
       {
-        "url": "electrum2.cipig.net:10058"
+        "url": "electrum2.cipig.net:10058",
+        "ws_url": "electrum2.cipig.net:30058"
       },
       {
-        "url": "electrum3.cipig.net:10058"
+        "url": "electrum3.cipig.net:10058",
+        "ws_url": "electrum3.cipig.net:30058"
       }
     ],
     "explorer_tx_url": "transaction/",
@@ -3796,13 +3913,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10028"
+        "url": "electrum1.cipig.net:10028",
+        "ws_url": "electrum1.cipig.net:30028"
       },
       {
-        "url": "electrum2.cipig.net:10028"
+        "url": "electrum2.cipig.net:10028",
+        "ws_url": "electrum2.cipig.net:30028"
       },
       {
-        "url": "electrum3.cipig.net:10028"
+        "url": "electrum3.cipig.net:10028",
+        "ws_url": "electrum3.cipig.net:30028"
       }
     ],
     "explorer_url": [
@@ -4005,13 +4125,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10070"
+        "url": "electrum1.cipig.net:10070",
+        "ws_url": "electrum1.cipig.net:30070"
       },
       {
-        "url": "electrum2.cipig.net:10070"
+        "url": "electrum2.cipig.net:10070",
+        "ws_url": "electrum2.cipig.net:30070"
       },
       {
-        "url": "electrum3.cipig.net:10070"
+        "url": "electrum3.cipig.net:10070",
+        "ws_url": "electrum3.cipig.net:30070"
       }
     ],
     "explorer_url": [
