@@ -34,7 +34,7 @@
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="131"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="137"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="249"/>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Yes</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="258"/>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="134"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>
@@ -346,7 +346,7 @@
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="385"/>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="430"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="413"/>
@@ -399,7 +399,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactCategoryModal.qml" line="59"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>
@@ -427,7 +427,7 @@
     <message>
         <location filename="../../qml/Wallet/AddressBookNewContactModal.qml" line="73"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="192"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/BestOrdersModal.qml" line="199"/>
@@ -566,7 +566,7 @@
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="71"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="77"/>
@@ -607,7 +607,7 @@
     <message>
         <location filename="../../qml/Components/CannotEnableCoinModal.qml" line="38"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>
@@ -743,7 +743,7 @@
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="422"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="428"/>
@@ -832,7 +832,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="105"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="111"/>
@@ -912,7 +912,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="287"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="296"/>
@@ -1174,7 +1174,7 @@
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="73"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="79"/>
@@ -1333,7 +1333,7 @@
     <message>
         <location filename="../../qml/Components/EulaModal.qml" line="60"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Components/EulaModal.qml" line="67"/>
@@ -1461,7 +1461,7 @@
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="315"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="320"/>
@@ -1788,7 +1788,7 @@
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="250"/>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Yes</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="261"/>
@@ -2188,7 +2188,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/Orders/OrderContent.qml" line="122"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>
@@ -2718,7 +2718,7 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="74"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/RecoverSeedModal.qml" line="81"/>
@@ -3053,12 +3053,12 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="29"/>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Yes</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="30"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/SettingModal.qml" line="127"/>
@@ -3452,7 +3452,7 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="242"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubHistory.qml" line="251"/>
@@ -3526,7 +3526,7 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="243"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancel</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/SimpleView/SubOrders.qml" line="252"/>
