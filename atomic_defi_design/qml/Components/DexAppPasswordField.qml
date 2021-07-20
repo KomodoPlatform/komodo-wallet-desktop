@@ -5,7 +5,11 @@ import Qaterial 1.0 as Qaterial
 
 
 DexAppTextField {
+    
     id: _inputPassword
+
+    property string leftIcon: Qaterial.Icons.keyVariant
+
     height: 50
     width: 300
     background.border.width: 1
@@ -32,7 +36,7 @@ DexAppTextField {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
             iconSize: 19
-            source: Qaterial.Icons.keyVariant
+            source: _inputPassword.leftIcon
             color: theme.surfaceColor
         }
 
