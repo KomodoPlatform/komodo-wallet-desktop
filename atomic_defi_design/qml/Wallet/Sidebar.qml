@@ -2,9 +2,11 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import QtGraphicalEffects 1.0
 import "../Components"
-import "../Constants"
+import "../Constants" as Constants
 import App 1.0
 
 // Coins bar at left side
@@ -70,7 +72,7 @@ Item {
                         DefaultImage {
                             id: search_button
 
-                            source: General.image_path + "exchange-search.svg"
+                            source: Constants.General.image_path + "exchange-search.svg"
 
                             width: input_coin_filter.font.pixelSize; height: width
 
@@ -101,7 +103,7 @@ Item {
                         }
 
                         onTextChanged: portfolio_coins.setFilterFixedString(text)
-                        font.pixelSize: Style.textSizeSmall3
+                        font.pixelSize: Constants.Style.textSizeSmall3
 
                         background: null
 
@@ -111,13 +113,17 @@ Item {
             }
 
             // Add button
-            DexButton {
+            DexAppButton {
                 id: add_coin_button
                 onClicked: enable_coin_modal.open()
-
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: parent.width * 0.5 - height * 0.5
                 anchors.horizontalCenter: parent.horizontalCenter
+                iconSource: Qaterial.Icons.plus
+                font.pixelSize: 20
+                leftPadding: 3
+                rightPadding: 3
+
             }
 
             // Coins list
@@ -136,10 +142,10 @@ Item {
                     delegate: GradientRectangle {
                         width: list_bg.width - list_bg.border.width*2 - 2
                         height: 44
-                        radius: Style.rectangleCornerRadius
+                        radius: Constants.Style.rectangleCornerRadius
 
-                        start_color: Style.applyOpacity(Style.colorCoinListHighlightGradient)
-                        end_color: api_wallet_page.ticker === ticker ? DexTheme.hightlightColor : mouse_area.containsMouse ? Style.colorWhite8 : start_color
+                        start_color: Constants.Style.applyOpacity(Constants.Style.colorCoinListHighlightGradient)
+                        end_color: api_wallet_page.ticker === ticker ? DexTheme.hightlightColor : mouse_area.containsMouse ? Constants.Style.colorWhite8 : start_color
 
                         // Click area
                         DefaultMouseArea {
@@ -174,8 +180,8 @@ Item {
                             anchors.left: parent.left
                             anchors.leftMargin: side_margin - scrollbar_margin
 
-                            source: General.coinIcon(ticker)
-                            width: Style.textSizeSmall4*2
+                            source: Constants.General.coinIcon(ticker)
+                            width: Constants.Style.textSizeSmall4*2
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
@@ -188,7 +194,7 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
                                 text_value: ticker
-                                font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
+                                font.pixelSize: text.length > 6 ? Constants.Style.textSizeSmall2 : Constants.Style.textSizeSmall4
                             }
 
                             DefaultTooltip {
@@ -197,7 +203,7 @@ Item {
                                 contentItem: ColumnLayout {
                                     DefaultText {
                                         text_value: name.replace(" (TESTCOIN)", "")
-                                        font.pixelSize: Style.textSizeSmall4
+                                        font.pixelSize: Constants.Style.textSizeSmall4
                                     }
                                 }
                             }
@@ -217,7 +223,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: Style.colorWalletsSidebarDropShadow
+        color: Constants.Style.colorWalletsSidebarDropShadow
         smooth: true
     }
 }

@@ -5,18 +5,23 @@ import App 1.0
 DexRectangle {
     id: control 
     signal clicked()
+
     property int padding: 10
-    property string text: ""
-    property string iconSource: ""
     property int spacing: 4
-    property string backgroundColor: DexTheme.buttonColorEnabled
     property int verticalAlignment: Qt.AlignVCenter
     property int horizontalAlignment: Qt.AlignHCenter
+
+    property alias label: _label
+    property alias font: _label.font
     property alias leftPadding: _contentRow.leftPadding
     property alias rightPadding: _contentRow.rightPadding
     property alias topPadding: _contentRow.topPadding
     property alias bottomPadding: _contentRow.bottomPadding
-    property alias label: _label
+
+    property string text: ""
+    property string iconSource: ""
+    property string backgroundColor: enabled? _controlMouseArea.containsMouse? DexTheme.buttonColorHovered : DexTheme.buttonColorEnabled : DexTheme.buttonColorDisabled
+
     radius: 4 
     color: _controlMouseArea.containsMouse ? Qt.darker(backgroundColor, 0.8) : backgroundColor
     height: _label.implicitHeight + (padding * 2)
@@ -33,6 +38,7 @@ DexRectangle {
             iconSize: _label.font.pixelSize + 2
             visible: control.iconSource === "" ? false : true 
             source: control.iconSource
+            color: _label.color
             anchors.verticalCenter: parent.verticalCenter
         }
         DexLabel {
@@ -40,6 +46,7 @@ DexRectangle {
             anchors.verticalCenter: parent.verticalCenter
             font: DexTypo.button
             text: control.text
+            color: control.enabled? _controlMouseArea.containsMouse? DexTheme.buttonColorTextHovered : DexTheme.buttonColorTextEnabled : DexTheme.buttonColorTextDisabled
         }
     }
     DexMouseArea {
