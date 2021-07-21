@@ -94,7 +94,7 @@ BasicModal {
             // Addresses Table
             TableView
             {
-                id: wallet_info_table
+                id: walletInfoTable
 
                 property int _typeColWidth: 90
                 property int _keyColWidth: 100
@@ -111,10 +111,10 @@ BasicModal {
 
                 headerDelegate: RowLayout
                 {
-                    Layout.preferredWidth: styleData.column === 0 ? wallet_info_table._typeColWidth :
-                                           styleData.column === 1 ? wallet_info_table._keyColWidth :
-                                           styleData.column === 2 ? wallet_info_table._addressColWidth :
-                                                                    wallet_info_table._actionsColWidth
+                    Layout.preferredWidth: styleData.column === 0 ? walletInfoTable._typeColWidth :
+                                           styleData.column === 1 ? walletInfoTable._keyColWidth :
+                                           styleData.column === 2 ? walletInfoTable._addressColWidth :
+                                                                    walletInfoTable._actionsColWidth
 
                     AnimatedRectangle
                     {
@@ -146,7 +146,7 @@ BasicModal {
 
                 TableViewColumn // Type Column
                 {
-                    width: wallet_info_table._typeColWidth
+                    width: walletInfoTable._typeColWidth
 
                     role: "address_type"
                     title: qsTr("Type")
@@ -175,7 +175,7 @@ BasicModal {
 
                 TableViewColumn // Key Column
                 {
-                    width: wallet_info_table._keyColWidth
+                    width: walletInfoTable._keyColWidth
 
                     role: "address_key"
                     title: qsTr("Key")
@@ -204,7 +204,7 @@ BasicModal {
 
                 TableViewColumn
                 {
-                    width: wallet_info_table._addressColWidth
+                    width: walletInfoTable._addressColWidth
 
                     role: "address_value"
                     title: qsTr("Address")
@@ -234,7 +234,7 @@ BasicModal {
 
                 TableViewColumn // Actions Column
                 {
-                    width: wallet_info_table._actionsColWidth
+                    width: walletInfoTable._actionsColWidth
                     title: qsTr("Actions")
 
                     resizable: false
