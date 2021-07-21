@@ -35,7 +35,6 @@ namespace atomic_dex
         utils::create_if_doesnt_exist(source_folder);
         {
             ifs.setFileName(std_path_to_qstring(in_path));
-            SPDLOG_INFO(in_path.string());
             try
             {
                 ifs.open(QIODevice::ReadOnly | QIODevice::Text);
