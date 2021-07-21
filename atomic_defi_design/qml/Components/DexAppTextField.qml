@@ -9,13 +9,18 @@ Item {
 	id: control
 	width:  200
     height: 35
+
+	property int leftWidth: -1
+	readonly property int max_length: 40
+
     property alias value: input_field.text
 	property alias field: input_field
 	property alias background: _background
+
 	property string leftText: ""
 	property string rightText: ""
-	property int leftWidth: -1
-	readonly property int max_length: 40 
+	property string placeholderText: ""
+
 	property bool error: false
 	onErrorChanged: {
 		if(error) {
@@ -107,6 +112,18 @@ Item {
 			        font.family: 'Lato'
 			        font.pixelSize: 13
 			        anchors.fill: parent
+			    }
+			    DexLabel {
+			    	text: control.placeholderText
+			    	anchors.verticalCenter: parent.verticalCenter
+			    	leftPadding: input_field.leftPadding
+			    	color: DexTheme.foregroundColor
+			    	font: DexTypo.body1
+			    	elide: DexLabel.ElideRight
+			    	width: parent.width - 10
+			    	wrapMode: DexLabel.NoWrap
+			    	visible: input_field.text === ""
+			    	opacity: .2
 			    }
 			}
 		}

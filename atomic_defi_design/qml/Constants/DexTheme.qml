@@ -5,10 +5,16 @@ import QtQuick 2.15
 QtObject {
     id: theme
 
-    // Old Theme Var
+    // Main Color 
+
+    property color accentColor: Style.colorTheme4
+    property color backgroundColor: Style.colorTheme7
+    property color foregroundColor: Style.colorText
+
+
+    // Old Theme
     property string chartTheme: Style.dark_theme ? "dark" : "light"
     property color primaryColor: "#171A2C"//Qaterial.Colors.indigo900
-    property color backgroundColor: Style.colorTheme7
     property color surfaceColor: Style.colorTheme8
     property color backgroundColorDeep: Style.colorTheme8
     property color dexBoxBackgroundColor: Style.colorTheme9
@@ -27,10 +33,8 @@ QtObject {
 
     property color chartTradingLineColor: Style.colorTrendingLine
     property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
-    property color  lineChartColor: DexTheme.accentColor
+    property color lineChartColor: DexTheme.accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
-
-    property color foregroundColor: Style.colorText
 
     // Button
     property color buttonColorDisabled: Style.colorButtonDisabled["default"]
@@ -44,8 +48,6 @@ QtObject {
     property color colorInnerShadowTop: Style.colorRectangleBorderGradient2
 
     property color colorSidebarDropShadow: Style.colorSidebarDropShadow
-
-    property color accentColor: Style.colorTheme4
 
     property color barColor: Style.colorTheme5
 
@@ -63,15 +65,27 @@ QtObject {
     property color textSelectedColor: Style.colorSelectedText
     property color innerShadowColor: Style.colorInnerShadow
 
-    property color greenColor: Style.colorGreen
-    property color redColor: Style.colorRed
+    
 
     property color whiteblack: Style.colorWhite1
     property color colorThemeDarkLight: Style.colorThemeDarkLight
 
 
     property color rectangleBorderColor: Style.colorBorder
+
+
+    // App Color List
+
+    property color greenColor: Style.colorGreen
+    property color redColor: Style.colorRed
+
+
+    // Widget settings 
+
     property int rectangleRadius: Style.rectangleCornerRadius
+
+    // Other Data
+
     property string bigSidebarLogo: "dex-logo-sidebar.png"
     property string smallSidebarLogo: "dex-logo.png"
 
@@ -95,9 +109,7 @@ QtObject {
 
 
 
-
-
-
+    // Old
 
     function setQaterialStyle() {
         Qaterial.Style.accentColorLight = Style.colorTheme4
