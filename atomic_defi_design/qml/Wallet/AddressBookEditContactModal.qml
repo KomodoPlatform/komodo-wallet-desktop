@@ -125,8 +125,7 @@ BasicModal {
 
                         DefaultText
                         {
-                            Layout.topMargin: 5
-                            Layout.leftMargin: 1
+                            anchors.verticalCenter: parent.verticalCenter
                             text: styleData.value
                         }
 
