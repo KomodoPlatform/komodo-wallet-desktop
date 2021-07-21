@@ -28,6 +28,7 @@
 #include <boost/random/uniform_int_distribution.hpp>
 #include <sodium/crypto_pwhash.h>
 #include <sodium/utils.h>
+#include <sodium/randombytes.h>
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.error.code.hpp"
@@ -53,7 +54,8 @@ namespace atomic_dex
         t_salt_array   salt{};
         t_password_key generated_crypto_key{};
 
-        sodium_memzero(salt.data(), salt.size());
+        //randombytes_buf(salt.data(), salt.size()); ///< this couldn't work
+        sodium_memzero(salt.data(), salt.size()); ///< this work but it's not optimal, need to find a solution later, i wonder how we could get the same salt each time without storing it
 
         if (crypto_pwhash(
                 generated_crypto_key.data(), generated_crypto_key.size(), password.c_str(), password.size(), salt.data(), crypto_pwhash_OPSLIMIT_INTERACTIVE,

@@ -111,7 +111,7 @@ Item {
             }
 
             // Add button
-            PlusButton {
+            DexButton {
                 id: add_coin_button
                 onClicked: enable_coin_modal.open()
 

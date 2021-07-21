@@ -399,26 +399,6 @@ Qaterial.Dialog {
                                     onClicked: camouflage_password_modal.open()
                                 }
                             }
-
-
-
-                            RowLayout {
-                                width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    //text:
-                                }
-                                DexButton {
-                                    text: qsTr("Delete Wallet")
-                                    implicitHeight: 37
-                                    onClicked:  {
-                                        delete_wallet_modal.open()
-                                    }
-                                }
-                            }
                         }
                     }
                     Item {

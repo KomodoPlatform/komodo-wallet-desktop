@@ -157,11 +157,13 @@ SetupPage {
                 font: DexTypo.body1
             }
 
-            DexAppTextArea {
+            DexAppPasswordField {
                 id: _seedField
                 Layout.fillWidth: true
-                height: 200
-                onAccepted: tryPassLevel1()
+                Layout.preferredHeight: 50
+                leftIcon: Qaterial.Icons.fileKey
+                field.placeholderText: qsTr('Enter seed')
+                field.onAccepted: tryPassLevel1()
                 field.onTextChanged: {
                     field.text = field.text.replace("\n", "")
                     field.cursorPosition = field.length
