@@ -165,7 +165,7 @@ SetupPage {
         }
 
         DexAppButton {
-            text: qsTr("Recover Wallet")
+            text: qsTr("Import wallet")
             horizontalAlignment: Qt.AlignLeft
             backgroundColor: theme.accentColor
             leftPadding: 20
