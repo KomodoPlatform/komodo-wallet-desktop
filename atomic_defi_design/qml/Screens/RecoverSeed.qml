@@ -21,13 +21,13 @@ SetupPage {
 
     function onClickedConfirm(password, seed, wallet_name) {
         if (API.app.wallet_mgr.create(password, seed, wallet_name)) {
-            console.log("Success: Recover seed")
+            console.log("Success: Import wallet")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
             return true
         } else {
-            console.log("Failed: Recover seed")
-            text_error = qsTr("Failed to recover the seed")
+            console.log("Failed: Import wallet")
+            text_error = qsTr("Failed to Import the wallet")
             return false
         }
     }
@@ -66,9 +66,9 @@ SetupPage {
                 rightPadding: 20
                 wrapMode: Label.Wrap
                 text_value: if (currentStep === 0) {
-                    qsTr("Recover wallet - Setup")
+                    qsTr("Import wallet - Setup")
                 } else if (currentStep === 1) {
-                    qsTr("Recover wallet - Choose password")
+                    qsTr("Import wallet - Choose password")
                 }
                 Layout.alignment: Qt.AlignVCenter
             }
