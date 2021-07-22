@@ -22,6 +22,7 @@
 #include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
 
 namespace atomic_dex
 {
