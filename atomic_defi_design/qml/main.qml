@@ -1,23 +1,31 @@
+//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
-import App 1.0
 
+//! 3rdParty Imports
+import Qaterial 1.0 as Qaterial
+
+//! Project Imports
+import App 1.0
 import "Screens"
 import "Components"
 
-DexWindow {
-	id: window
-	title: API.app_name
-	visible: true
-	property alias application: app
-	property int previousX: 0
-	property int previousY: 0
-	property int real_visibility
-	property bool isOsx: Qt.platform.os == "osx"
-	property bool logged: false
+DexWindow
+{
+    id: window
+
+    property alias  application: app
+    property int    previousX: 0
+    property int    previousY: 0
+    property int    real_visibility
+    property bool   isOsx: Qt.platform.os == "osx"
+    property bool   logged: false
+
+    title: API.app_name
+    visible: true
+
 	minimumWidth: General.minimumWidth
 	minimumHeight: General.minimumHeight
 	
@@ -26,25 +34,25 @@ DexWindow {
 	Universal.foreground: Style.colorQtThemeForeground
 	Universal.background: Style.colorQtThemeBackground
 
-	onVisibilityChanged: {
-		// 3 is minimized, ignore that
-		if(visibility !== 3)
-			real_visibility = visibility
-
-		API.app.change_state(visibility)
-
-	}
-
-	background: DexRectangle {
+    background: DexRectangle
+    {
 		anchors.fill: parent
 		color: "transparent"
 		border.color: app.globalTheme.dexBoxBackgroundColor
 		border.width: 1
 		radius: 0
 	}
-	
-	
 
+    onVisibilityChanged:
+    {
+        // 3 is minimized, ignore that
+        if (visibility !== 3)
+            real_visibility = visibility
+
+        API.app.change_state(visibility)
+
+    }
+	
 	DexWindowControl { visible: !isOsx }
 
 	DexRectangle {
@@ -98,13 +106,28 @@ DexWindow {
 					hoverEnabled: true
 					anchors.fill: parent
 					onClicked:  {
-						Qaterial.DialogManager.showDialog({title: qsTr("Confirm Logout"),text: qsTr("Are you sure you want to log out?"),iconSource: Qaterial.Icons.logout,standardButtons: Dialog.Yes | Dialog.Cancel, onAccepted: function() {
-							Qaterial.DialogManager.close()
-							userMenu.close()
-							app.currentWalletName = ""
-							API.app.disconnect()
-							app.onDisconnect()
-						}})
+						let dialog = app.showText({
+                            "title": qsTr("Confirm Logout"),
+                            text: qsTr("Are you sure you want to log out?") ,
+                            standardButtons: Dialog.Yes | Dialog.Cancel,
+                            warning: true,
+                            width: 300,
+                            iconSource: Qaterial.Icons.logout,
+                            iconColor: app.globalTheme.accentColor,
+                            yesButtonText: qsTr("Yes"),
+                            cancelButtonText: qsTr("Cancel"),
+                            onAccepted: function(text) {
+                                userMenu.close()
+								app.currentWalletName = ""
+								API.app.disconnect()
+								app.onDisconnect()
+                                dialog.close()
+                                dialog.destroy()
+                            },
+                            onRejected: function() {
+                            	userMenu.close()
+                            }
+                        })
 					}
 				}
 			}

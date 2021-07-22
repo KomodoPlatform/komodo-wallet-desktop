@@ -94,8 +94,6 @@ Item {
                         width: 370
                         height: width
                         radius: width / 2
-                        //border.color: theme.accentColor
-                        //border.width: 2
                         Column {
                             anchors.centerIn: parent
                             spacing: 5
@@ -217,8 +215,7 @@ Item {
                                     spacing: 20
                                     DexLabel {
                                         Layout.preferredWidth: 60
-                                        text: atomic_qt_utilities.retrieve_main_ticker(
-                                                  ticker)
+                                        text: ticker
                                         Layout.alignment: Qt.AlignVCenter
                                         Component.onCompleted: font.weight = Font.Medium
                                     }

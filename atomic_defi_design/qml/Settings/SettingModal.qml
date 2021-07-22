@@ -18,13 +18,27 @@ import "../Constants"
 Qaterial.Dialog {
 
     function disconnect() {
-        
-        Qaterial.DialogManager.showDialog({title: qsTr("Confirm Logout"),text: qsTr("Are you sure you want to log out?"),iconSource: Qaterial.Icons.logout,standardButtons: Dialog.Yes | Dialog.Cancel, onAccepted: function(){
-            Qaterial.DialogManager.close()
-            app.currentWalletName = ""
-            API.app.disconnect()
-            onDisconnect()
-        }})
+        let dialog = app.showText({
+            "title": qsTr("Confirm Logout"),
+            text: qsTr("Are you sure you want to log out?") ,
+            standardButtons: Dialog.Yes | Dialog.Cancel,
+            warning: true,
+            width: 300,
+            iconSource: Qaterial.Icons.logout,
+            iconColor: app.globalTheme.accentColor,
+            yesButtonText: qsTr("Yes"),
+            cancelButtonText: qsTr("Cancel"),
+            onAccepted: function(text) {
+                app.currentWalletName = ""
+                API.app.disconnect()
+                onDisconnect()
+                dialog.close()
+                dialog.destroy()
+            },
+            onRejected: function() {
+                userMenu.close()
+            }
+        })
         
     }
 
@@ -396,26 +410,6 @@ Qaterial.Dialog {
                                     text: qsTr("Open")
                                     implicitHeight: 37
                                     onClicked: camouflage_password_modal.open()
-                                }
-                            }
-
-
-
-                            RowLayout {
-                                width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    //text:
-                                }
-                                DexButton {
-                                    text: qsTr("Delete Wallet")
-                                    implicitHeight: 37
-                                    onClicked:  {
-                                        delete_wallet_modal.open()
-                                    }
                                 }
                             }
                         }

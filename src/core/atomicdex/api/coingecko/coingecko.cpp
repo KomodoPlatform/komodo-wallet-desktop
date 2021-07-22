@@ -126,6 +126,8 @@ namespace atomic_dex::coingecko::api
     {
         answer.current_price = std::to_string(j.at("current_price").get<double>());
         boost::algorithm::replace_all(answer.current_price, ",", ".");
+        answer.total_volume = std::to_string(j.at("total_volume").get<double>());
+        boost::algorithm::replace_all(answer.total_volume, ",", ".");
         std::ostringstream ss;
         ss << std::setprecision(2) << j.at("price_change_percentage_24h").get<double>();
         answer.price_change_24h = ss.str();

@@ -229,8 +229,6 @@ SetupPage {
             }
         }
 
-
-        // First page, fill the form
         ColumnLayout {
             visible: currentStep === 0
             Layout.preferredWidth: 450
@@ -436,6 +434,7 @@ SetupPage {
                     }
                 }
             }
+            
             Column {
                 Layout.fillWidth: true
                 spacing: 5
@@ -492,9 +491,7 @@ SetupPage {
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
-                field.validator: RegExpValidator {
-                    regExp: /[a-z]+/
-                }
+                field.validator: RegExpValidator { regExp: /[a-z]+/ }
                 field.onAccepted: tryGuess()
 
                 DexRectangle {
@@ -512,6 +509,7 @@ SetupPage {
 
                 }
             }
+
             Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 10
@@ -559,58 +557,17 @@ SetupPage {
                 DexVisibleBehavior on visible {}
             }
         }
+
         ColumnLayout {
             visible: currentStep === 2
             Layout.preferredWidth: 450
             spacing: Style.rowSpacing
-            DexAppTextField {
+
+            DexAppPasswordField {
                 id: _inputPassword
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                background.border.width: 1
-                background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
-                field.echoMode: TextField.Password
-                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
-                field.horizontalAlignment: Qt.AlignLeft
-                field.leftPadding: 75
-                field.rightPadding: 60
-                field.placeholderText: qsTr("Type password")
                 field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
-                DexRectangle {
-                    x: 5
-                    height: 40
-                    width: 60
-                    radius: 20
-                    color: theme.accentColor
-                    anchors.verticalCenter: parent.verticalCenter
-                    Qaterial.ColorIcon {
-                        anchors.centerIn: parent
-                        iconSize: 19
-                        source: Qaterial.Icons.keyVariant
-                        color: theme.surfaceColor
-                    }
-
-                }
-                Qaterial.AppBarButton {
-                    opacity: .8
-                    icon {
-                        source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                        color: theme.accentColor
-                    }
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        right: parent.right
-                        rightMargin: 10
-                    }
-                    onClicked: {
-                        if (_inputPassword.field.echoMode === TextField.Password) {
-                            _inputPassword.field.echoMode = TextField.Normal
-                        } else {
-                            _inputPassword.field.echoMode = TextField.Password
-                        }
-                    }
-                }
             }
 
             DexKeyChecker {
@@ -620,55 +577,12 @@ SetupPage {
                 Layout.leftMargin: 20
                 match_password: _inputPasswordConfirm.field.text
             }
-
-            DexAppTextField {
+            
+            DexAppPasswordField {
                 id: _inputPasswordConfirm
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                background.border.width: 1
-                background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
-                field.echoMode: TextField.Password
-                field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
-                field.horizontalAlignment: Qt.AlignLeft
-                field.leftPadding: 75
-                field.rightPadding: 60
-                field.placeholderText: qsTr("Confirm password")
                 field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
-                DexRectangle {
-                    x: 5
-                    height: 40
-                    width: 60
-                    radius: 20
-                    color: theme.accentColor
-                    anchors.verticalCenter: parent.verticalCenter
-                    Qaterial.ColorIcon {
-                        anchors.centerIn: parent
-                        iconSize: 19
-                        source: Qaterial.Icons.keyVariant
-                        color: theme.surfaceColor
-                    }
-
-                }
-                Qaterial.AppBarButton {
-                    opacity: .8
-                    icon {
-                        source: _inputPasswordConfirm.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                        color: theme.accentColor
-                    }
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        right: parent.right
-                        rightMargin: 10
-                    }
-                    onClicked: {
-                        if (_inputPasswordConfirm.field.echoMode === TextField.Password) {
-                            _inputPasswordConfirm.field.echoMode = TextField.Normal
-                        } else {
-                            _inputPasswordConfirm.field.echoMode = TextField.Password
-                        }
-                    }
-                }
             }
 
             Item {
@@ -709,6 +623,7 @@ SetupPage {
                     }
                 }
             }
+
             DefaultText {
                 text_value: text_error
                 color: Style.colorRed

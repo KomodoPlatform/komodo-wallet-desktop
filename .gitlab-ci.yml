@@ -2,8 +2,9 @@ image: smk762/qt-ci:latest
 
 stages:
   - build
-  - upload_zip
-  - upload_portable
+  - upload_linux_zip
+  - upload_linux_tar
+  - upload_linux_appimage
   - test
   
 variables:
@@ -17,8 +18,9 @@ variables:
 cache:
   - key: $CI_COMMIT_REF_SLUG
     paths:
-      - $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-linux-${CI_COMMIT_SHORT_SHA}.zip
-      - $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-${CI_COMMIT_SHORT_SHA}-x86_64.AppImage
+      - atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip
+      - atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.tar.zst
+      - atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage
   - key: $CI_PROJECT_NAME
     paths:
       - "$CI_PROJECT_DIR/.cache/vcpkg"
@@ -52,6 +54,12 @@ linux:build:
     - export PATH=${PATH}:/cmake-$CMAKE_VERSION-linux-x86_64/bin;
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
+    # Update tar
+    - export FORCE_UNSAFE_CONFIGURE=1
+    - wget https://ftp.wayne.edu/gnu/tar/tar-1.34.tar.gz && tar -xvf tar-1.34.tar.gz
+    - cd tar-1.34 && ./configure && make && make install
+    - cp src/tar $(which tar)
+    
     # Bootstrap Vcpkg
     - cd $CI_PROJECT_DIR; ./ci_tools_atomic_dex/vcpkg-repo/bootstrap-vcpkg.sh
 
@@ -60,29 +68,45 @@ linux:build:
     - rm -rf build_ninja || echo "no build_ninja folder to rm"
     - mkdir build_ninja && cd $_
     - cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
-    - ninja atomicdex-desktop || echo "ninja atomicdex-desktop failed"
-    - ninja install || echo "ninja install failed"
+    - ninja atomicdex-desktop 
+    - ninja install  
+    - cd $CI_PROJECT_DIR
+    - cp $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip .
+    - cp $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.tar.zst .
+    - cp $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage .
 
-AtomicDex-linux.zip:
-  stage: upload_zip
+AtomicDex-linux-zip:
+  stage: upload_linux_zip
   allow_failure: true
   script:
     - echo "Uploading AppImage..."
   artifacts:
-    name: "AtomicDex-linux-${CI_COMMIT_SHORT_SHA}.zip"
+    name: "AtomicDex-linux-${CI_COMMIT_SHA::9}.zip"
     paths:
-      - $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-linux-${CI_COMMIT_SHORT_SHA}.zip
+      - $CI_PROJECT_DIR/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.zip
     when: always
     expire_in: 1 week
 
 AtomicDex-linux-AppImage:
-  stage: upload_portable
+  stage: upload_linux_appimage
   allow_failure: true
   script:
     - echo "Uploading AppImage..."
   artifacts:
-    name: "AtomicDex-linux-${CI_COMMIT_SHORT_SHA}-AppImage"
+    name: "AtomicDex-linux-${CI_COMMIT_SHA::9}-AppImage"
     paths:
-      - $CI_PROJECT_DIR/bundled/linux/atomicdex-desktop-${CI_COMMIT_SHORT_SHA}-x86_64.AppImage
+      - $CI_PROJECT_DIR/atomicdex-desktop-${CI_COMMIT_SHA::9}-x86_64.AppImage
+    when: always
+    expire_in: 1 week
+
+AtomicDex-linux-tar:
+  stage: upload_linux_tar
+  allow_failure: true
+  script:
+    - echo "Uploading tar..."
+  artifacts:
+    name: "AtomicDex-linux-${CI_COMMIT_SHA::9}.tar.zst"
+    paths:
+      - $CI_PROJECT_DIR/atomicdex-desktop-linux-${CI_COMMIT_SHA::9}.tar.zst
     when: always
     expire_in: 1 week

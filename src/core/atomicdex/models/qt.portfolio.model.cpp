@@ -338,6 +338,7 @@ namespace atomic_dex
             break;
         case PrivKey:
             item.priv_key = value.toString();
+            emit dataChanged(index, index, {role});
             break;
         case PercentMainCurrency:
             item.percent_main_currency = value.toString();

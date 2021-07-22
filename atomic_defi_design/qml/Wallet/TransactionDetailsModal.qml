@@ -112,7 +112,7 @@ BasicModal {
                 onClicked: root.close()
             },
 
-            DangerButton {
+            /*DangerButton {
                 visible: !details ? false :
                          !details.am_i_sender
 
@@ -126,7 +126,7 @@ BasicModal {
                     send_modal.item.address_field.text = address
                     send_modal.item.amount_field.text = amount
                 }
-            },
+            },*/
 
             PrimaryButton {
                 text: qsTr("View on Explorer")
