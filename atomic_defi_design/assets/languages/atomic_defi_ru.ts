@@ -2682,17 +2682,17 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="30"/>
         <source>Failed to Import the wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось импортировать кошелек</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="69"/>
         <source>Import wallet - Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт кошелька - Введите данные</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="71"/>
         <source>Import wallet - Choose password</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт кошелька - Задайте пароль</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="134"/>
