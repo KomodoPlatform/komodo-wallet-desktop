@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
     <name>AddCustomCoinModal</name>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="117"/>
@@ -217,54 +230,49 @@
 <context>
     <name>AddressBookAddContactAddressModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="38"/>
         <source>Create a new address</source>
         <translation>Добавить новый адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="38"/>
         <source>Edit address entry</source>
         <translation>Внести изменения в адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="47"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="58"/>
         <source>Selected wallet: %1</source>
         <translation>Выбранный кошелек: %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="47"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="58"/>
         <source>NONE</source>
         <translation>НИ ОДИН</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="60"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="73"/>
         <source>Enter a name</source>
         <translation>Введите имя</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="74"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="87"/>
         <source>This key already exists.</source>
         <translation>Этот ключ уже существует.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="86"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="99"/>
         <source>Enter the address</source>
         <translation>Введите адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="119"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="129"/>
         <source>Validate</source>
         <translation>Валидировать</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="126"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="136"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="135"/>
-        <source>Convert</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -295,73 +303,73 @@
         <translation>Поиск адреса.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="152"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="142"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="181"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="165"/>
         <source>Key</source>
         <translation>Ключ</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="210"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="188"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="238"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="210"/>
         <source>Actions</source>
         <translation>Действия</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="326"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="288"/>
         <source>New Address</source>
         <translation>Новый Адрес</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="371"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="333"/>
         <source>Tags</source>
         <translation>Теги</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="397"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="359"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="414"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="376"/>
         <source>Confirm</source>
         <translation>Подтвердить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="423"/>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="468"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="385"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="430"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="451"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="413"/>
         <source>The selected address belongs to a disabled coin, you need to enabled it before sending.</source>
         <translation>Вы выбрали адрес отключенной монеты, ее необходимо включить перед отправкой.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="457"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="419"/>
         <source>Enable</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="511"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="473"/>
         <source>Cannot send to this address</source>
         <translation>Отправка на этот адрес невозможна</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="514"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="476"/>
         <source>Your balance is empty</source>
         <translation>Баланс отсутствует</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="518"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="480"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -1427,8 +1435,8 @@
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="178"/>
-        <source>Import wallet</source>
-        <translation type="unfinished"></translation>
+        <source>Recover Wallet</source>
+        <translation>Восстановить кошелек</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="195"/>
@@ -2653,17 +2661,17 @@ Right slider: Sets the volume you want to trade.</source>
     <name>RecoverSeed</name>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="30"/>
-        <source>Failed to Import the wallet</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to recover the seed</source>
+        <translation>Ошибка при восстановлении seed ключа</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="69"/>
-        <source>Import wallet - Setup</source>
+        <source>Recover wallet - Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="71"/>
-        <source>Import wallet - Choose password</source>
+        <source>Recover wallet - Choose password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4064,11 +4072,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="331"/>
         <source>%1 address length is invalid, please use a valid address.</source>
         <translation>%1 длина адреса не валидна, пожалуйста используйте валидный адрес.</translation>
-    </message>
-    <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="336"/>
-        <source>%1 address is invalid.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
