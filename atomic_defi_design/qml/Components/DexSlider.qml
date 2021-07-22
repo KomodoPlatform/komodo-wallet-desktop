@@ -20,7 +20,7 @@ Slider {
         Rectangle {
             width: control.visualPosition * parent.width
             height: parent.height
-            color: Style.colorGreen
+            color: DexTheme.accentColor
             radius: 2
         }
     }
@@ -35,8 +35,7 @@ Slider {
             width: 10
             height: 10
             radius: 10
-            color: Style.colorGreen
+            color: DexTheme.accentColor
         }
-        //border.color: "#bdbebf"
     }
 }
