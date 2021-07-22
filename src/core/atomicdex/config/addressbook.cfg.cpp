@@ -63,7 +63,7 @@ namespace atomic_dex
         const fs::path      out_path  {out_folder / wallet_name};
         QFile output;
 
-        utils::create_if_doesnt_exist(out_path);
+        utils::create_if_doesnt_exist(out_folder);
         {
             output.setFileName(std_path_to_qstring(out_path));
             try
