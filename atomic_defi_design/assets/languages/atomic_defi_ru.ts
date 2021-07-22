@@ -1442,7 +1442,7 @@
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="178"/>
         <source>Import wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать кошелек</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="195"/>
