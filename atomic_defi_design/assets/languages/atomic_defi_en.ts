@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>&amp;Yes</source>
-        <translation>Yes</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>No</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
     <name>AddCustomCoinModal</name>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="81"/>
@@ -230,49 +217,54 @@
 <context>
     <name>AddressBookAddContactAddressModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="38"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
         <source>Edit address entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="38"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="39"/>
         <source>Create a new address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="58"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="47"/>
         <source>Selected wallet: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="58"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="47"/>
         <source>NONE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="73"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="60"/>
         <source>Enter a name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="87"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="74"/>
         <source>This key already exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="99"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="86"/>
         <source>Enter the address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="129"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="119"/>
         <source>Validate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="136"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="126"/>
         <source>Cancel</source>
         <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="135"/>
+        <source>Convert</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -303,73 +295,73 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="142"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="152"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="165"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="181"/>
         <source>Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="188"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="210"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="210"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="238"/>
         <source>Actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="288"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="326"/>
         <source>New Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="333"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="371"/>
         <source>Tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="359"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="397"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="376"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="414"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="385"/>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="430"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="423"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="468"/>
         <source>Cancel</source>
         <translation type="unfinished">Cancel</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="413"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="451"/>
         <source>The selected address belongs to a disabled coin, you need to enabled it before sending.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="419"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="457"/>
         <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="473"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="511"/>
         <source>Cannot send to this address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="476"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="514"/>
         <source>Your balance is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="480"/>
+        <location filename="../../qml/Wallet/AddressBookEditContactModal.qml" line="518"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1434,7 +1426,7 @@
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="178"/>
-        <source>Recover Wallet</source>
+        <source>Import wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2652,17 +2644,17 @@ Right slider: Sets the volume you want to trade.</source>
     <name>RecoverSeed</name>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="30"/>
-        <source>Failed to recover the seed</source>
+        <source>Failed to Import the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="69"/>
-        <source>Recover wallet - Setup</source>
+        <source>Import wallet - Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="71"/>
-        <source>Recover wallet - Choose password</source>
+        <source>Import wallet - Choose password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4054,6 +4046,11 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="331"/>
         <source>%1 address length is invalid, please use a valid address.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="336"/>
+        <source>%1 address is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
