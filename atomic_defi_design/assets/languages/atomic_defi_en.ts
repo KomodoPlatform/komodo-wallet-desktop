@@ -1434,7 +1434,7 @@
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="178"/>
-        <source>Recover Wallet</source>
+        <source>Import wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2652,17 +2652,17 @@ Right slider: Sets the volume you want to trade.</source>
     <name>RecoverSeed</name>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="30"/>
-        <source>Failed to recover the seed</source>
+        <source>Failed to Import the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="69"/>
-        <source>Recover wallet - Setup</source>
+        <source>Import wallet - Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="71"/>
-        <source>Recover wallet - Choose password</source>
+        <source>Import wallet - Choose password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
