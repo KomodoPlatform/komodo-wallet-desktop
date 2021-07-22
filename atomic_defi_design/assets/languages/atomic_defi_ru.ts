@@ -1436,9 +1436,13 @@
         <translation>Новый кошелек</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="178"/>
         <source>Recover Wallet</source>
-        <translation>Восстановить кошелек</translation>
+        <translation type="vanished">Восстановить кошелек</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="178"/>
+        <source>Import wallet</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="195"/>
@@ -2643,6 +2647,21 @@ Right slider: Sets the volume you want to trade.</source>
     </message>
 </context>
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <source>&amp;Yes</source>
+        <translation type="vanished">&amp;Да</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation type="vanished">&amp;Нет</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отменить</translation>
+    </message>
+</context>
+<context>
     <name>ReceiveModal</name>
     <message>
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="18"/>
@@ -2664,19 +2683,31 @@ Right slider: Sets the volume you want to trade.</source>
 <context>
     <name>RecoverSeed</name>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="30"/>
         <source>Failed to recover the seed</source>
-        <translation>Ошибка при восстановлении seed ключа</translation>
+        <translation type="vanished">Ошибка при восстановлении seed ключа</translation>
+    </message>
+    <message>
+        <source>Recover wallet - Setup</source>
+        <translation type="vanished">Импорт кошелька - Настройка</translation>
+    </message>
+    <message>
+        <source>Recover wallet - Choose password</source>
+        <translation type="vanished">Импорт кошелька - Задайте пароль</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="30"/>
+        <source>Failed to Import the wallet</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="69"/>
-        <source>Recover wallet - Setup</source>
-        <translation>Импорт кошелька - Настройка</translation>
+        <source>Import wallet - Setup</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="71"/>
-        <source>Recover wallet - Choose password</source>
-        <translation>Импорт кошелька - Задайте пароль</translation>
+        <source>Import wallet - Choose password</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="134"/>
