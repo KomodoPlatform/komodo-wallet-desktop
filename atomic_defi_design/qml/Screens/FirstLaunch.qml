@@ -100,11 +100,19 @@ SetupPage {
                         }
                     }
                 }
+
+                DexKeyChecker {
+                    id: _passwordChecker
+                    visible: false
+                    field: _inputPassword.field
+                }
+
                 DexButton {
                     radius: width
                     width: 150
                     text: qsTr("connect")
-                    color: DexTheme.accentColor
+                    opacity: enabled? 1 : 0.6
+                    enabled: _passwordChecker.isValid() 
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
                         _inputPassword.field.accepted()
@@ -166,7 +174,7 @@ SetupPage {
         }
 
         DexAppButton {
-            text: qsTr("Recover Wallet")
+            text: qsTr("Import wallet")
             horizontalAlignment: Qt.AlignLeft
             backgroundColor: DexTheme.accentColor
             leftPadding: 20
