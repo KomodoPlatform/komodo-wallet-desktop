@@ -150,6 +150,7 @@ BasicModal
 
                 contact_new_address_value.text = API.app.wallet_pg.converted_address
                 API.app.wallet_pg.validate_address_data = {}
+                invalidAddressMsgLabel.text = ""
             }
 
             function onValidateAddressBusyChanged()
