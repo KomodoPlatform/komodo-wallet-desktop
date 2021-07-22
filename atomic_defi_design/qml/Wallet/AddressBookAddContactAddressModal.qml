@@ -26,6 +26,23 @@ BasicModal
     property string oldKey
     property string oldValue
 
+    function retrieveWalletTypeTicker()
+    {
+        switch (walletType)
+        {
+            case "QRC-20":      return "QTUM";
+            case "BEP-20":      return "BNB";
+            case "ERC-20":      return "ETH";
+            case "Smart Chain": return "KMD";
+            case "SLP":         return "BCH";
+        }
+
+        let coinInfo = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(walletType);
+        if (coinInfo.has_parent_fees_ticker)
+            return coinInfo.fees_ticker;
+        return walletType
+    }
+
     width: 600
 
     Component.onCompleted:   API.app.wallet_pg.validate_address_data = {}
@@ -117,7 +134,7 @@ BasicModal
                 anchors.left: parent.left
                 enabled: key.length > 0 && value.length > 0 && walletType !== "" && !API.app.wallet_pg.validate_address_busy
                 text: qsTr("Validate")
-                onClicked: API.app.wallet_pg.validate_address(contact_new_address_value.text, atomic_qt_utilities.retrieve_main_ticker(walletType))
+                onClicked: API.app.wallet_pg.validate_address(contact_new_address_value.text, retrieveWalletTypeTicker())
             }
 
             DexButton
@@ -133,7 +150,7 @@ BasicModal
                 anchors.leftMargin: 10
                 enabled: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
                 text: qsTr("Convert")
-                onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, atomic_qt_utilities.retrieve_main_ticker(walletType), API.app.wallet_pg.validate_address_data.to_address_format);
+                onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, retrieveWalletTypeTicker(), API.app.wallet_pg.validate_address_data.to_address_format);
             }
         }
 
