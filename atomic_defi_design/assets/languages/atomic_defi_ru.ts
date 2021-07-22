@@ -2692,7 +2692,7 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="183"/>
         <source>BIP39 seed validation failed, try again or select &apos;Allow custom seed&apos;</source>
-        <translation>BIP39 валидация сид-фразы неуспешна, пожалуйста попробуйте снова или выберите &apos;Разрешить пользовательский формат seed ключа&apos;</translation>
+        <translation>BIP39 валидация сид-фразы неуспешна, пожалуйста попробуйте снова или выберите &apos;Разрешить пользовательский формат сид-фразы&apos;</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="223"/>
@@ -2707,7 +2707,7 @@ Right slider: Sets the volume you want to trade.</source>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="192"/>
         <source>Allow custom seed</source>
-        <translation>Разрешить пользовательский формат seed ключа</translation>
+        <translation>Разрешить пользовательский формат сид-фразы</translation>
     </message>
 </context>
 <context>
