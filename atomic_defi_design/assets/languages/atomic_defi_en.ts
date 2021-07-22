@@ -2630,21 +2630,6 @@ Right slider: Sets the volume you want to trade.</source>
     </message>
 </context>
 <context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>&amp;Yes</source>
-        <translation type="vanished">Yes</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation type="vanished">No</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancel</translation>
-    </message>
-</context>
-<context>
     <name>ReceiveModal</name>
     <message>
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="18"/>

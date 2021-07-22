@@ -2638,21 +2638,6 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
     </message>
 </context>
 <context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>&amp;Yes</source>
-        <translation type="vanished">Oui</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation type="vanished">Non</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Annuler</translation>
-    </message>
-</context>
-<context>
     <name>ReceiveModal</name>
     <message>
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="18"/>
