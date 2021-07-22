@@ -287,11 +287,12 @@ namespace atomic_dex::utils
     std::string
     retrieve_main_ticker(const std::string& ticker)
     {
-        if (const auto pos = ticker.find('-'); pos != std::string::npos)
-        {
-            return ticker.substr(0, pos);
-        }
-        return ticker;
+        if (ticker == "QRC20" || ticker == "QRC-20")                     return "QTUM";
+        if (ticker == "BEP20" || ticker == "BEP-20")                     return "BNB";
+        if (ticker == "ERC20" || ticker == "ERC-20")                     return "ETH";
+        if (ticker == "SLP")                                             return "BCH";
+        if (const auto pos = ticker.find('-'); pos != std::string::npos) return ticker.substr(0, pos);
+                                                                         return ticker;
     }
 
     std::vector<std::string>
