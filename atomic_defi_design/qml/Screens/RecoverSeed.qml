@@ -200,9 +200,6 @@ SetupPage {
                                 placeholderText: qsTr("I understand"),
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                 validator: (text) => {
-                                    console.log("checking")
-                                    console.log(text === qsTr("I understand"))
-                                    console.log("TEST: ",text, qsTr("I understand"))
                                     return text === qsTr("I understand")
                                 },
                                 yesButtonText: qsTr("Enable"),
