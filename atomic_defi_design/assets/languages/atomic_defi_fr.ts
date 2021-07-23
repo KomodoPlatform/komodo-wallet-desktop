@@ -1435,6 +1435,9 @@
         <translation>Nouveau portefeuille</translation>
     </message>
     <message>
+        <source>Recover Wallet</source>
+        <translation type="vanished">Récupérer portefeuille</translation>
+    </message>
     <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="178"/>
         <source>Import wallet</source>
