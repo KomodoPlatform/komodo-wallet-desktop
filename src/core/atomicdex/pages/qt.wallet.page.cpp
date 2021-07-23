@@ -304,49 +304,54 @@ namespace atomic_dex
         if (json_result.contains("reason"))
         {
             auto reason = json_result["reason"].toString();
-            if (reason.contains("Checksum verification failed"))
+            if (!reason.isEmpty())
             {
-                reason                     = tr("Checksum verification failed for %1.").arg(get_current_ticker());
-                json_result["convertible"] = false;
+                if (reason.contains("Checksum verification failed"))
+                {
+                    reason                     = tr("Checksum verification failed for %1.").arg(get_current_ticker());
+                    json_result["convertible"] = false;
+                }
+                else if (reason.contains("Invalid address checksum"))
+                {
+                    reason =
+                        tr("Invalid checksum for %1. Click on the convert button to turn it into a mixed case address").arg(json_result["ticker"].toString());
+                    json_result["convertible"]       = true;
+                    json_result["to_address_format"] = QJsonObject{{"format", "mixedcase"}};
+                }
+                else if (reason.contains("Cashaddress address format activated for BCH, but legacy format used instead. Try to call 'convertaddress'"))
+                {
+                    reason =
+                        tr("Legacy address used for %1, click on the convert button to convert it to a Cashaddress.").arg(json_result["ticker"].toString());
+                    json_result["to_address_format"] = QJsonObject{{"format", "cashaddress"}, {"network", "bitcoincash"}};
+                    json_result["convertible"]       = true;
+                }
+                else if (reason.contains("Address must be prefixed with 0x"))
+                {
+                    reason                     = tr("%1 address must be prefixed with 0x").arg(json_result["ticker"].toString());
+                    json_result["convertible"] = false;
+                }
+                else if (reason.contains("Invalid input length"))
+                {
+                    reason                     = tr("%1 address length is invalid, please use a valid address.").arg(json_result["ticker"].toString());
+                    json_result["convertible"] = false;
+                }
+                else if (reason.contains("Invalid Address"))
+                {
+                    reason                     = tr("%1 address is invalid.").arg(json_result["ticker"].toString());
+                    json_result["convertible"] = false;
+                }
+                else if (reason.contains("Invalid Checksum"))
+                {
+                    reason                     = tr("Invalid checksum.");
+                    json_result["convertible"] = false;
+                }
+                else
+                {
+                    reason                     = tr("Unknown error.");
+                    json_result["convertible"] = false;
+                }
+                json_result["reason"] = reason;
             }
-            else if (reason.contains("Invalid address checksum"))
-            {
-                reason = tr("Invalid checksum for %1. Click on the convert button to turn it into a mixed case address").arg(json_result["ticker"].toString());
-                json_result["convertible"]       = true;
-                json_result["to_address_format"] = QJsonObject{{"format", "mixedcase"}};
-            }
-            else if (reason.contains("Cashaddress address format activated for BCH, but legacy format used instead. Try to call 'convertaddress'"))
-            {
-                reason = tr("Legacy address used for %1, click on the convert button to convert it to a Cashaddress.").arg(json_result["ticker"].toString());
-                json_result["to_address_format"] = QJsonObject{{"format", "cashaddress"}, {"network", "bitcoincash"}};
-                json_result["convertible"]       = true;
-            }
-            else if (reason.contains("Address must be prefixed with 0x"))
-            {
-                reason                     = tr("%1 address must be prefixed with 0x").arg(json_result["ticker"].toString());
-                json_result["convertible"] = false;
-            }
-            else if (reason.contains("Invalid input length"))
-            {
-                reason                     = tr("%1 address length is invalid, please use a valid address.").arg(json_result["ticker"].toString());
-                json_result["convertible"] = false;
-            }
-            else if (reason.contains("Invalid Address"))
-            {
-                reason = tr("%1 address is invalid.").arg(json_result["ticker"].toString());
-                json_result["convertible"] = false;
-            }
-            else if (reason.contains("Invalid Checksum"))
-            {
-                reason = tr("Invalid checksum.");
-                json_result["convertible"] = false;
-            }
-            else
-            {
-                reason = tr("Unknown error.");
-                json_result["convertible"] = false;
-            }   
-            json_result["reason"] = reason;
         }
         m_validate_address_result = json_result;
         emit validateAddressDataChanged();
