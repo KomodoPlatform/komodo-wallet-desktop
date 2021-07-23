@@ -336,6 +336,16 @@ namespace atomic_dex
                 reason = tr("%1 address is invalid.").arg(json_result["ticker"].toString());
                 json_result["convertible"] = false;
             }
+            else if (reason.contains("Invalid Checksum"))
+            {
+                reason = tr("Invalid checksum.");
+                json_result["convertible"] = false;
+            }
+            else
+            {
+                reason = tr("Unknown error.");
+                json_result["convertible"] = false;
+            }   
             json_result["reason"] = reason;
         }
         m_validate_address_result = json_result;
