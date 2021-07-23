@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "../Constants"
 import App 1.0
 
 ScrollBar {
@@ -18,8 +17,8 @@ ScrollBar {
             anchors.verticalCenter: parent.verticalCenter
 
             color: Style.colorScrollbar
-            border_color_start: Style.colorScrollbarGradient1
-            border_color_end: Style.colorScrollbarGradient2
+            border_color_start: DexTheme.colorScrollbarGradient1
+            border_color_end: DexTheme.colorScrollbarGradient2
         }
     }
 
@@ -32,7 +31,7 @@ ScrollBar {
             height: parent.height - 7
             anchors.verticalCenter: parent.verticalCenter
 
-            color: Style.colorScrollbarBackground
+            color: DexTheme.dexBoxBackgroundColor
         }
     }
 }

@@ -18,13 +18,15 @@ Item {
     width: parent.width-20
     anchors.horizontalCenter: parent.horizontalCenter
     height: 45
+    
     Rectangle {
         anchors.fill: parent
         height: 45
         radius: 5
-        opacity: parent.hovered? .4 : !parent.selected? 0 : .9
-        color: DexTheme.hightlightColor
+        opacity: parent.hovered? .6 : !parent.selected? 0 : .9
+        color: DexTheme.accentColor
     }
+
     DexLabel {
         id: _label
         anchors.centerIn: parent
@@ -33,9 +35,10 @@ Item {
         text: ""
         opacity: area.containsMouse? 1 : .7
     }
-    MouseArea {
+
+    DexMouseArea {
         id: area
-        cursorShape: "PointingHandCursor"
+        hoverEnabled: true
         onClicked: parent.clicked()
         anchors.fill: parent
     }

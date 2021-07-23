@@ -19,7 +19,9 @@ QtObject {
     property color backgroundColorDeep: Style.colorTheme8
     property color dexBoxBackgroundColor: Style.colorTheme9
 
-    property color hightlightColor: Style.colorTheme5
+    property color hightlightColor: Qt.darker(accentColor, 0.1)
+    property color hoverColor: Qt.darker(accentColor, 0.9)
+
     property int sidebarShadowRadius: 32
 
     property color sideBarGradient1: Style.colorGradient1
@@ -33,7 +35,7 @@ QtObject {
 
     property color chartTradingLineColor: Style.colorTrendingLine
     property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
-    property color lineChartColor: DexTheme.accentColor
+    property color lineChartColor: accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
     // Button
@@ -73,6 +75,9 @@ QtObject {
 
     property color rectangleBorderColor: Style.colorBorder
 
+
+    property color colorScrollbarGradient1: Style.colorScrollbarGradient1
+    property color colorScrollbarGradient2: Style.colorScrollbarGradient2
 
     // App Color List
 
@@ -256,8 +261,6 @@ QtObject {
 
     readonly property string colorScrollbar:  dark_theme ? "#202339" : "#C4CCDA"
     readonly property string colorScrollbarBackground:  dark_theme ? "#10121F" : "#EFF1F6"
-    readonly property string colorScrollbarGradient1:  dark_theme ? "#33395A" : "#C4CCDA"
-    readonly property string colorScrollbarGradient2:  dark_theme ? "#292D48" : "#C4CCDA"
 
     readonly property string colorSidebarIconHighlighted:  dark_theme ? "#2BBEF2" : "#FFFFFF"
     readonly property string colorSidebarHighlightGradient1:  dark_theme ? "#FF1B5E7D" : "#8b95ed"

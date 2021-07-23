@@ -12,7 +12,7 @@ import Qaterial 1.0 as Qaterial
 
 // Project Imports
 import "../Components"
-import "../Constants"
+import "../Constants" as Constants
 import App 1.0
 
 
@@ -133,8 +133,10 @@ Qaterial.Dialog {
                         Rectangle {
                             anchors.fill: parent
                             height: 45
-                            radius: 5
-                            color: DexTheme.hightlightColor
+                            radius: 8
+                            color: DexTheme.hoverColor
+                            border.width: 1
+                            border.color: DexTheme.hoverColor
                         }
                     }
 
@@ -198,7 +200,7 @@ Qaterial.Dialog {
                                         highlighted: ListView.isCurrentItem
                                         enabled: parseInt(modelData) >= API.app.portfolio_pg.portfolio_mdl.length
                                         contentItem: DefaultText {
-                                            color: enabled ? Style.colorWhite1 : Style.colorWhite8
+                                            color: enabled ? Constants.Style.colorWhite1 : Constants.Style.colorWhite8
                                             text: modelData
                                         }
                                      }
