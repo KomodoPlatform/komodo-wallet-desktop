@@ -22,6 +22,7 @@
 #include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
 
 namespace atomic_dex
 {
@@ -98,7 +99,8 @@ namespace atomic_dex
         {
             t_float_50 left  = safe_float(left_data.toString().toStdString());
             t_float_50 right = safe_float(right_data.toString().toStdString());
-            return left > right;
+            const bool is_buy = this->m_system_mgr.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
+            return !is_buy ? left > right : left < right;
         }
         case orderbook_model::SendRole:
             break;
