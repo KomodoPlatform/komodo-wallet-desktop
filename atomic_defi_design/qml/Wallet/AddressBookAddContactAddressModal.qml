@@ -148,7 +148,7 @@ BasicModal
             {
                 anchors.left: validateButton.right
                 anchors.leftMargin: 10
-                enabled: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
+                visible: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
                 text: qsTr("Convert")
                 onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, retrieveWalletTypeTicker(), API.app.wallet_pg.validate_address_data.to_address_format);
             }
