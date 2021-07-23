@@ -17,7 +17,7 @@ BasicModal {
     property bool close_only: false
 
     ModalContent {
-        title: qsTr("Disclaimer & Terms of Service")
+        title: "Disclaimer & Terms of Service"
 
         InnerBackground {
             id: eula_rect
@@ -45,13 +45,13 @@ BasicModal {
         DefaultCheckBox {
             id: accept_eula
             visible: !close_only
-            text: qsTr("Accept EULA")
+            text: "Accept EULA"
         }
 
         DefaultCheckBox {
             id: accept_tac
             visible: !close_only
-            text: qsTr("Accept Terms and Conditions")
+            text: "Accept Terms and Conditions"
         }
 
         // Buttons
@@ -76,8 +76,7 @@ BasicModal {
     }
 
     function getEula() {
-        return qsTr(
-"<h2>This End-User License Agreement ('EULA') is a legal agreement between you and Komodo Platform.</h2>
+        return "<h2>This End-User License Agreement ('EULA') is a legal agreement between you and Komodo Platform.</h2>
 
 <p>This EULA agreement governs your acquisition and use of our %1 software ('Software', 'Mobile Application', 'Application' or 'App') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a 'Distributor').</p>
 <p>Please read this EULA agreement carefully before completing the installation process and using the %1 software. It provides a license to use the %1 software and contains warranty information and liability disclaimers.</p>
@@ -111,6 +110,6 @@ BasicModal {
 <p>This EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.</p>
 
 <p><b>This document was last updated on January 31st, 2020</b></p>"
-                    ).arg(API.app_name)
+                    .arg(API.app_name)
     }
 }
