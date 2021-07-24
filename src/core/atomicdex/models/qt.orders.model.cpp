@@ -705,7 +705,7 @@ namespace atomic_dex
         {
             nlohmann::json j_out = nlohmann::json::object();
             std::string body = TO_STD_STR(resp.extract_string(true).get());
-            if (resp.status_code() == web::http::status_codes::Accepted)
+            if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto answers        = nlohmann::json::parse(body);
                 auto recover_answer = ::mm2::api::rpc_process_answer_batch<t_recover_funds_of_swap_answer>(answers[0], "recover_funds_of_swap");
@@ -726,7 +726,7 @@ namespace atomic_dex
                 else
                 {
                     j_out["is_valid"] = false;
-                    j_out["error"] = "Unknown error";
+                    j_out["error"] = recover_answer.raw_result;
                 }
             }
             else if (resp.status_code() == web::http::status_codes::RequestTimeout)
@@ -737,7 +737,7 @@ namespace atomic_dex
             else
             {
                 j_out["is_valid"] = false;
-                j_out["error"] = "Unknown error";
+                j_out["error"] = body;
             }
             this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
             this->set_recover_fund_busy(false);

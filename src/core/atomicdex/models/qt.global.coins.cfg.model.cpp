@@ -39,7 +39,9 @@ namespace
             {"tx_uri", QString::fromStdString(coin.tx_uri)},
             {"address_uri", QString::fromStdString(coin.address_url)},
             {"is_custom_coin", coin.is_custom_coin},
-            {"is_enabled", coin.currently_enabled}};
+            {"is_enabled", coin.currently_enabled},
+            {"has_parent_fees_ticker", coin.has_parent_fees_ticker},
+            {"fees_ticker", QString::fromStdString(coin.fees_ticker)}};
         return j;
     }
 } // namespace
