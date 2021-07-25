@@ -23,11 +23,15 @@ Item
 
     anchors.fill: parent
 
-    function update() {
-        list_model_proxy.is_history = false
-        applyTickerFilter()
-        applyDateFilter()
+    function update() {        
+        reset()   
+    }
+
+    function reset() {
+        list_model_proxy.is_history = true
+        applyFilter()
         applyAllFiltering()
+        list_model_proxy.is_history = false
     }
     
     function applyTickerFilter() {  
@@ -55,6 +59,8 @@ Item
     function applyAllFiltering() {
         list_model_proxy.apply_all_filtering()
     }
+
+
 
     ColumnLayout // Orders Content
     {
@@ -246,6 +252,7 @@ Item
                             }
                         }
                         DexAppButton {
+                            id: applyButton
                             height: 35
                             anchors.verticalCenter: parent.verticalCenter
                             backgroundColor: Qaterial.Colors.lightGreen700

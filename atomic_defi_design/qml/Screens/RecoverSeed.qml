@@ -21,13 +21,13 @@ SetupPage {
 
     function onClickedConfirm(password, seed, wallet_name) {
         if (API.app.wallet_mgr.create(password, seed, wallet_name)) {
-            console.log("Success: Recover seed")
+            console.log("Success: Import wallet")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
             return true
         } else {
-            console.log("Failed: Recover seed")
-            text_error = qsTr("Failed to recover the seed")
+            console.log("Failed: Import wallet")
+            text_error = qsTr("Failed to Import the wallet")
             return false
         }
     }
@@ -66,9 +66,9 @@ SetupPage {
                 rightPadding: 20
                 wrapMode: Label.Wrap
                 text_value: if (currentStep === 0) {
-                    qsTr("Recover wallet - Setup")
+                    qsTr("Import wallet - Setup")
                 } else if (currentStep === 1) {
-                    qsTr("Recover wallet - Choose password")
+                    qsTr("Import wallet - Choose password")
                 }
                 Layout.alignment: Qt.AlignVCenter
             }
@@ -151,26 +151,28 @@ SetupPage {
                 }
             }
 
-
             DexLabel {
                 text: qsTr("Enter seed")
                 font: theme.textType.body1
             }
 
-            DexAppTextArea {
+            DexAppPasswordField {
                 id: _seedField
                 Layout.fillWidth: true
-                height: 200
-                onAccepted: tryPassLevel1()
+                Layout.preferredHeight: 50
+                leftIcon: Qaterial.Icons.fileKey
+                field.placeholderText: qsTr('Enter seed')
+                field.onAccepted: tryPassLevel1()
                 field.onTextChanged: {
                     field.text = field.text.replace("\n", "")
                     field.cursorPosition = field.length
                 }
 
                 function isValid() {
-                    _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    if(!allow_custom_seed.checked) {
+                        _seedField.field.text = _seedField.field.text.trim().toLowerCase()
+                    }
                     _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
-
                     return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text)
                 }
             }
@@ -188,6 +190,29 @@ SetupPage {
             DefaultCheckBox {
                 id: allow_custom_seed
                 text: qsTr("Allow custom seed")
+                DexMouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (!allow_custom_seed.checked) {
+                            let dialog = app.getText({
+                                title: qsTr("<strong>Allow custom seed</strong>"),
+                                text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
+                                placeholderText: qsTr("I understand"),
+                                standardButtons: Dialog.Yes | Dialog.Cancel,
+                                validator: (text) => {
+                                    return text === qsTr("I understand")
+                                },
+                                yesButtonText: qsTr("Enable"),
+                                onAccepted: function () {
+                                    allow_custom_seed.checked = true
+                                    dialog.close()
+                                }
+                            })
+                        } else {
+                            allow_custom_seed.checked = false
+                        }
+                    }
+                }
             }
 
             Item {
