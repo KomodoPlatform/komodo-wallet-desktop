@@ -414,7 +414,7 @@ DexRectangle
     Component.onCompleted: {
         selected_wallet_name !== ""
         openFirstLaunch()
-        //loadTheme()
+        loadTheme()
     }
     Timer {
         interval: 5000
