@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
 
-import "../Constants"
+import "../Constants" as Constants
 import App 1.0
 
 ComboBox {
@@ -17,7 +17,7 @@ ComboBox {
         highlighted: control.highlightedIndex === index
         contentItem: DefaultText {
             text_value: control.currentTicker
-            color: Style.colorText
+            color: DexTheme.foregroundColor
         }
     }
 
@@ -25,15 +25,15 @@ ComboBox {
         x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
         color: control.contentItem.color
-        defaultColor: control.contentItem.color
+        defaultColor: DexTheme.foregroundColor
         source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
     }
 
-    contentItem: DefaultText {
+    contentItem: DexLabel {
         leftPadding: 10
         rightPadding: control.indicator.width + control.spacing
         color: DexTheme.foregroundColor
-        text: control.currentTicker//control.displayText
+        text: control.currentTicker
 
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -42,7 +42,7 @@ ComboBox {
     background: DexRectangle {
         implicitWidth: 120
         implicitHeight: 40
-        color: !control.enabled ? DexTheme.hightlightColor : control.hovered ? DexTheme.backgroundColor : DexTheme.dexBoxBackgroundColor
+        color: !control.enabled ? DexTheme.backgroundDarkColor : control.hovered ? DexTheme.backgroundDarkColor : DexTheme.surfaceColor
         radius: 4
     }
 
@@ -64,9 +64,10 @@ ComboBox {
                 background: Item {
                     Rectangle {
                         anchors.fill: parent
-                        anchors.rightMargin: 2
+                        anchors.topMargin: -5
+                        anchors.rightMargin: -1
                        border.color: "transparent"
-                       color: Style.colorInnerBackground
+                       color: DexTheme.backgroundDarkColor7
                    }
                 }
                 onTextChanged: {
@@ -116,25 +117,33 @@ ComboBox {
                 Layout.maximumHeight: popup.max_height - 100
                 Layout.fillWidth: true
                 implicitHeight: popup_list_view.contentHeight + 5
-                DefaultListView {
+                DexListView {
                     id: popup_list_view
                     model: control.popup.visible ? control.model : null
                     currentIndex: control.highlightedIndex
                     anchors.fill: parent
                     anchors.rightMargin: 2
+                    highlight: DexRectangle { }
                     delegate: ItemDelegate {
-                        width: control.width+50
+                        width: control.width + 50
                         highlighted: control.highlightedIndex === index
                         contentItem: DefaultText {
                             text_value: ticker
                         }
+
+                        background: DexRectangle {
+                            radius: 0
+                            color: popup_list_view.currentIndex === index ? DexTheme.backgroundDarkColor4 : DexTheme.backgroundDarkColor6
+                            border.color: 'transparent'
+                        }
+
                         onClicked: {
                             control.currentTicker = ticker
                             popup.close()
                         }
                     }
 
-                    DefaultMouseArea {
+                    DexMouseArea {
                         anchors.fill: parent
                         acceptedButtons: Qt.NoButton
                     }
@@ -144,11 +153,11 @@ ComboBox {
         }
 
         background: Item {
-            AnimatedRectangle {
+            DexRectangle {
                 width: parent.width
                 y: -5
-                height: parent.height+10
-                color: DexTheme.dexBoxBackgroundColor
+                height: parent.height
+                color: DexTheme.backgroundDarkColor6
             }
         }
     }

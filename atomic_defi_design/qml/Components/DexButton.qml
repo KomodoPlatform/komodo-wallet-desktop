@@ -3,7 +3,8 @@ import "../Constants"
 import App 1.0
 
 // Add button
-FloatingBackground {
+DexAppButton { }
+/*FloatingBackground {
     property alias containsMouse: mouse_area.containsMouse
     property alias text: text_obj.text_value
     property alias text_obj: text_obj
@@ -55,3 +56,4 @@ FloatingBackground {
         }
     }
 }
+*/

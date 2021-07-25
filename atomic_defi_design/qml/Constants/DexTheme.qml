@@ -12,25 +12,98 @@ QtObject {
     property color foregroundColor: Style.colorText
 
 
-    // Old Theme
-    property string chartTheme: Style.dark_theme ? "dark" : "light"
-    property color primaryColor: "#171A2C"//Qaterial.Colors.indigo900
-    property color surfaceColor: Style.colorTheme8
-    property color backgroundColorDeep: Style.colorTheme8
-    property color dexBoxBackgroundColor: Style.colorTheme9
+    property color backgroundLightColor0: backgroundColor
+    property color backgroundLightColor1: Qt.darker(backgroundColor, 0.9)
+    property color backgroundLightColor2: Qt.darker(backgroundColor, 0.8)
+    property color backgroundLightColor3: Qt.darker(backgroundColor, 0.7)
+    property color backgroundLightColor4: Qt.darker(backgroundColor, 0.6)
+    property color backgroundLightColor5: Qt.darker(backgroundColor, 0.5)
 
-    property color hightlightColor: Qt.darker(accentColor, 0.1)
-    property color hoverColor: Qt.darker(accentColor, 0.9)
+    property color backgroundDarkColor0: backgroundColor
+    property color backgroundDarkColor1: Qt.lighter(backgroundColor, 0.9)
+    property color backgroundDarkColor2: Qt.lighter(backgroundColor, 0.8)
+    property color backgroundDarkColor3: Qt.lighter(backgroundColor, 0.7)
+    property color backgroundDarkColor4: Qt.lighter(backgroundColor, 0.6)
+    property color backgroundDarkColor5: Qt.lighter(backgroundColor, 0.5)
+    property color backgroundDarkColor6: Qt.lighter(backgroundColor, 0.4)
+    property color backgroundDarkColor7: Qt.lighter(backgroundColor, 0.3)
+    property color backgroundDarkColor8: Qt.lighter(backgroundColor, 0.2)
+    property color backgroundDarkColor9: Qt.lighter(backgroundColor, 0.1)
+
+    property color accentLightColor0: accentColor
+    property color accentLightColor1: Qt.darker(accentColor, 0.9)
+    property color accentLightColor2: Qt.darker(accentColor, 0.8)
+    property color accentLightColor3: Qt.darker(accentColor, 0.7)
+    property color accentLightColor4: Qt.darker(accentColor, 0.6)
+    property color accentLightColor5: Qt.darker(accentColor, 0.5)
+
+    property color accentDarkColor0: accentColor
+    property color accentDarkColor1: Qt.lighter(accentColor, 0.9)
+    property color accentDarkColor2: Qt.lighter(accentColor, 0.8)
+    property color accentDarkColor3: Qt.lighter(accentColor, 0.7)
+    property color accentDarkColor4: Qt.lighter(accentColor, 0.6)
+    property color accentDarkColor5: Qt.lighter(accentColor, 0.5)
+    property color accentDarkColor6: Qt.lighter(accentColor, 0.4)
+    property color accentDarkColor7: Qt.lighter(accentColor, 0.3)
+    property color accentDarkColor8: Qt.lighter(accentColor, 0.2)
+    property color accentDarkColor9: Qt.lighter(accentColor, 0.1)
+
+    property color primaryColorLightColor0: primaryColor
+    property color primaryColorLightColor1: Qt.darker(primaryColor, 0.9)
+    property color primaryColorLightColor2: Qt.darker(primaryColor, 0.8)
+    property color primaryColorLightColor3: Qt.darker(primaryColor, 0.7)
+    property color primaryColorLightColor4: Qt.darker(primaryColor, 0.6)
+    property color primaryColorLightColor5: Qt.darker(primaryColor, 0.5)
+
+    property color primaryColorDarkColor0: primaryColor
+    property color primaryColorDarkColor1: Qt.lighter(primaryColor, 0.9)
+    property color primaryColorDarkColor2: Qt.lighter(primaryColor, 0.8)
+    property color primaryColorDarkColor3: Qt.lighter(primaryColor, 0.7)
+    property color primaryColorDarkColor4: Qt.lighter(primaryColor, 0.6)
+    property color primaryColorDarkColor5: Qt.lighter(primaryColor, 0.5)
+    property color primaryColorDarkColor6: Qt.lighter(primaryColor, 0.4)
+    property color primaryColorDarkColor7: Qt.lighter(primaryColor, 0.3)
+    property color primaryColorDarkColor8: Qt.lighter(primaryColor, 0.2)
+    property color primaryColorDarkColor9: Qt.lighter(primaryColor, 0.1)
+
+    property color foregroundColorLightColor0: foregroundColor
+    property color foregroundColorLightColor1: Qt.darker(foregroundColor, 0.9)
+    property color foregroundColorLightColor2: Qt.darker(foregroundColor, 0.8)
+    property color foregroundColorLightColor3: Qt.darker(foregroundColor, 0.7)
+    property color foregroundColorLightColor4: Qt.darker(foregroundColor, 0.6)
+    property color foregroundColorLightColor5: Qt.darker(foregroundColor, 0.5)
+
+    property color foregroundColorDarkColor0: foregroundColor
+    property color foregroundColorDarkColor1: Qt.lighter(foregroundColor, 0.9)
+    property color foregroundColorDarkColor2: Qt.lighter(foregroundColor, 0.8)
+    property color foregroundColorDarkColor3: Qt.lighter(foregroundColor, 0.7)
+    property color foregroundColorDarkColor4: Qt.lighter(foregroundColor, 0.6)
+    property color foregroundColorDarkColor5: Qt.lighter(foregroundColor, 0.5)
+    property color foregroundColorDarkColor6: Qt.lighter(foregroundColor, 0.4)
+    property color foregroundColorDarkColor7: Qt.lighter(foregroundColor, 0.3)
+    property color foregroundColorDarkColor8: Qt.lighter(foregroundColor, 0.2)
+    property color foregroundColorDarkColor9: Qt.lighter(foregroundColor, 0.1)
+
+
+ // Old Theme
+    property string chartTheme: Style.dark_theme ? "dark" : "light"
+    property color primaryColor: "#171A2C"
+    property color surfaceColor: backgroundDarkColor2
+    property color backgroundColorDeep: backgroundDarkColor2
+    property color dexBoxBackgroundColor: backgroundDarkColor6//Style.colorTheme9
+
+    property color hightlightColor: accentDarkColor3
+    property color hoverColor: accentDarkColor4
 
     property int sidebarShadowRadius: 32
 
-    property color sideBarGradient1: Style.colorGradient1
-    property color sideBarGradient2: Style.colorGradient2
+    property color sideBarGradient1: DexTheme.primaryColorDarkColor8
+    property color sideBarGradient2: DexTheme.primaryColorDarkColor4
     property real sideBarAnimationDuration: Style.animationDuration
 
-    property color navigationSideBarButtonGradient1: Style.colorSidebarHighlightGradient1
-    property color navigationSideBarButtonGradient2: Style.colorSidebarHighlightGradient2
-    property color navigationSideBarButtonGradient3: Style.colorSidebarHighlightGradient3
+    property color navigationSideBarButtonGradient1: DexTheme.accentLightColor2
+    property color navigationSideBarButtonGradient2: DexTheme.accentLightColor1
+    property color navigationSideBarButtonGradient3: DexTheme.accentDarkColor2
     property color navigationSideBarButtonGradient4: Style.colorSidebarHighlightGradient4
 
     property color chartTradingLineColor: Style.colorTrendingLine
@@ -38,13 +111,19 @@ QtObject {
     property color lineChartColor: accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
+    
+
     // Button
-    property color buttonColorDisabled: Style.colorButtonDisabled["default"]
-    property color buttonColorHovered: Style.colorButtonHovered["default"]
-    property color buttonColorEnabled: Style.colorButtonEnabled["default"]
-    property color buttonColorTextDisabled: Style.colorButtonTextDisabled["default"]
-    property color buttonColorTextHovered: Style.colorButtonTextHovered["default"]
-    property color buttonColorTextEnabled: Style.colorButtonTextEnabled["default"]
+    property color buttonColorDisabled: DexTheme.accentDarkColor5
+    property color buttonColorHovered: DexTheme.accentLightColor4
+    property color buttonColorPressed: DexTheme.accentDarkColor4
+    property color buttonColorEnabled: DexTheme.accentLightColor2
+    property color buttonColorTextDisabled: DexTheme.backgroundDarkColor7
+    property color buttonColorTextHovered: DexTheme.backgroundDarkColor8
+    property color buttonColorTextEnabled: DexTheme.backgroundDarkColor9
+
+
+
 
     property color colorInnerShadowBottom: Style.colorRectangleBorderGradient1
     property color colorInnerShadowTop: Style.colorRectangleBorderGradient2
@@ -79,7 +158,6 @@ QtObject {
     property color colorScrollbarGradient1: Style.colorScrollbarGradient1
     property color colorScrollbarGradient2: Style.colorScrollbarGradient2
 
-    // App Color List
 
     property color greenColor: Style.colorGreen
     property color redColor: Style.colorRed

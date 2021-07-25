@@ -18,8 +18,8 @@ ComboBox {
 
     font.family: Style.font_family
 
-    property color lineHoverColor: DexTheme.hightlightColor
-    property color mainBorderColor: control.pressed ? DexTheme.surfaceColor : DexTheme.hightlightColor
+    property color lineHoverColor: DexTheme.hoverColor
+    property color mainBorderColor: control.pressed ? DexTheme.surfaceColor : DexTheme.hoverColor
     Behavior on lineHoverColor { ColorAnimation { duration: Style.animationDuration } }
     Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
 
@@ -55,7 +55,7 @@ ComboBox {
         id: bg_rect
         implicitWidth: 120
         implicitHeight: 40
-        color: !control.enabled ? DexTheme.hightlightColor : control.hovered ? DexTheme.backgroundColor : DexTheme.dexBoxBackgroundColor
+        color: !control.enabled ? DexTheme.hoverColor : control.hovered ? DexTheme.backgroundColor : DexTheme.dexBoxBackgroundColor
         border.color: control.mainBorderColor
         border.width: control.visualFocus ? 2 : 1
         radius: Style.rectangleCornerRadius
