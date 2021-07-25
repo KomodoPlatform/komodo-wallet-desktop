@@ -33,7 +33,7 @@ Item {
 
     Column
     {
-        width: root.currentSubPage===subPages.Trade? _simpleTrade.best? 600 : 380 : 380
+        width: root.currentSubPage === subPages.Trade? _simpleTrade.best? 600 : 380 : 380
         y: 120
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter

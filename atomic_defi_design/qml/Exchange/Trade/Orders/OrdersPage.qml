@@ -25,6 +25,29 @@ Item {
 
     property bool is_history: false
 
+    function update() {
+        reset()
+        if(combo_base.currentTicker !== "All" | combo_rel.currentTicker !== "All") {
+            buttonDelay.start()
+        } 
+    }
+
+    function reset() {
+        list_model_proxy.is_history = !is_history
+        applyFilter()
+        list_model_proxy.apply_all_filtering()
+        list_model_proxy.is_history = is_history
+    }
+
+    Timer {
+        id: buttonDelay
+        interval: 200
+        onTriggered: {
+            applyFilter()
+            list_model_proxy.apply_all_filtering()
+        }
+    }
+
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = min_date.date
 
