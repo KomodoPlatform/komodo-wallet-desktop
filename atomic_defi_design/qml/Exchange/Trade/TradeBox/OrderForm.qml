@@ -229,6 +229,7 @@ FloatingBackground {
 
                 Layout.topMargin: 15
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
 
                 text: qsTr("Use custom minimum trade amount")
                 font.pixelSize: 13
