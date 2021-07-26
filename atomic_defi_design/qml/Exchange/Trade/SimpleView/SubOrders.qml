@@ -8,25 +8,28 @@ import Qaterial 1.0 as Qaterial
 
 //! Project Imports
 import "../../../Components"
-import "../../../Constants" as Constants  //> Style
-import "../Orders" as Orders
-import "Main.js" as Main
+import "../../../Constants"
+as Constants //> Style
+import "../Orders"
+as Orders
+import "Main.js"
+as Main
 
 import App 1.0
 
-Item
-{
+Item {
     id: _subOrdersRoot
 
     readonly property date default_min_date: new Date("2019-01-01")
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
-    property var list_model_proxy: Constants.API.app.orders_mdl.orders_proxy_mdl
+    property
+    var list_model_proxy: Constants.API.app.orders_mdl.orders_proxy_mdl
     property bool displayFilter: false
 
     anchors.fill: parent
 
-    function update() {        
-        reset()   
+    function update() {
+        reset()
     }
 
     function reset() {
@@ -35,8 +38,8 @@ Item
         applyAllFiltering()
         list_model_proxy.is_history = false
     }
-    
-    function applyTickerFilter() {  
+
+    function applyTickerFilter() {
         applyTickerFilter2(combo_base.currentTicker, combo_rel.currentTicker)
     }
 
@@ -47,7 +50,7 @@ Item
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = min_date.date
 
-        if(max_date.date < min_date.date)
+        if (max_date.date < min_date.date)
             max_date.date = min_date.date
 
         list_model_proxy.filter_maximum_date = max_date.date
@@ -90,11 +93,11 @@ Item
                 DexLabel {
                     opacity: .4
                     text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
-                                                    .arg(combo_base.currentTicker)
-                                                    .arg(combo_rel.currentTicker)
-                                                    .arg(qsTr("Date"))
-                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
-                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
+                        .arg(combo_base.currentTicker)
+                        .arg(combo_rel.currentTicker)
+                        .arg(qsTr("Date"))
+                        .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                        .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
                 }
                 Qaterial.AppBarButton // Reset Form Button
                 {
@@ -119,8 +122,7 @@ Item
             }
         }
 
-        HorizontalLine
-        {
+        HorizontalLine {
             height: 2
             Layout.fillWidth: true
         }
@@ -129,13 +131,16 @@ Item
             Layout.fillHeight: true
             Layout.fillWidth: true
             property bool is_history: false
-            property var list_model_proxy: Constants.API.app.orders_mdl.orders_proxy_mdl
+            property
+            var list_model_proxy: Constants.API.app.orders_mdl.orders_proxy_mdl
             Component.onCompleted: {
                 list_model_proxy.is_history = false
             }
-            List { id: order_list_view }
+            List {
+                id: order_list_view
+            }
             DexRectangle {
-                anchors.fill: parent 
+                anchors.fill: parent
                 color: DexTheme.dexBoxBackgroundColor
                 opacity: .8
                 visible: _subOrdersRoot.displayFilter
@@ -143,17 +148,17 @@ Item
             }
             DexRectangle {
                 width: parent.width
-                height: _subOrdersRoot.displayFilter? 330 : 60
-                visible: height>100
+                height: _subOrdersRoot.displayFilter ? 330 : 60
+                visible: height > 100
                 sizeAnimation: true
                 color: DexTheme.dexBoxBackgroundColor
                 radius: 0
                 y: -20
                 Column {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    leftPadding: 15 
+                    leftPadding: 15
                     rightPadding: 15
-                    visible: parent.height>250
+                    visible: parent.height > 250
                     DexLabel {
                         text: qsTr("Filter settings")
                         topPadding: 10
@@ -181,7 +186,7 @@ Item
                             valueRole: "ticker"
                             textRole: 'ticker'
                         }
-                        
+
                     }
                     RowLayout {
                         width: main_order.width - 30
@@ -198,14 +203,14 @@ Item
                         }
                         DefaultSweetComboBox {
                             id: combo_rel
-                            model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
+                            model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy //combo_base.model
                             onCurrentTickerChanged: applyTickerFilter()
                             height: 60
                             valueRole: "ticker"
                             textRole: 'ticker'
 
                         }
-                        
+
                     }
                     spacing: 10
                     Qaterial.TextFieldDatePicker {
@@ -268,10 +273,9 @@ Item
                     }
                 }
             }
-            
+
         }
-        HorizontalLine
-        {
+        HorizontalLine {
             height: 2
             Layout.fillWidth: true
         }
@@ -280,12 +284,12 @@ Item
             Layout.preferredHeight: 15
             DexLabel // Title
             {
-                text: order_list_view.count+" "+qsTr("Orders")
+                text: order_list_view.count + " " + qsTr("Orders")
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: -10
                 //anchors.verticalCenterOffset: -4
             }
         }
-        
+
     }
 }

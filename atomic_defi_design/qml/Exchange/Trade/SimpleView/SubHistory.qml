@@ -9,25 +9,29 @@ import Qaterial 1.0 as Qaterial
 
 //! Project Imports
 import "../../../Components"
-import "../../../Constants" as Constants  //> Style
-import "../Orders" as Orders
-import "Main.js" as Main
+import "../../../Constants"
+as Constants //> Style
+import "../Orders"
+as Orders
+import "Main.js"
+as Main
 
-import App 1.0 
+import App 1.0
 
 Item {
     id: _subHistoryRoot
 
     readonly property date default_min_date: new Date("2019-01-01")
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
-    property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
+    property
+    var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property bool displayFilter: false
 
     function update() {
         reset()
-        if(combo_base.currentTicker !== "All" | combo_rel.currentTicker !== "All") {
+        if (combo_base.currentTicker !== "All" | combo_rel.currentTicker !== "All") {
             buttonDelay.start()
-        } 
+        }
     }
 
     function reset() {
@@ -35,10 +39,10 @@ Item {
         applyFilter()
         applyAllFiltering()
         list_model_proxy.is_history = true
-        
+
     }
 
-    function applyTickerFilter() {  
+    function applyTickerFilter() {
         applyTickerFilter2(combo_base.currentTicker, combo_rel.currentTicker)
     }
 
@@ -49,7 +53,7 @@ Item {
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = min_date.date
 
-        if(max_date.date < min_date.date)
+        if (max_date.date < min_date.date)
             max_date.date = min_date.date
 
         list_model_proxy.filter_maximum_date = max_date.date
@@ -98,11 +102,11 @@ Item {
                 DexLabel {
                     opacity: .4
                     text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
-                                                    .arg(combo_base.currentTicker)
-                                                    .arg(combo_rel.currentTicker)
-                                                    .arg(qsTr("Date"))
-                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
-                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))   
+                        .arg(combo_base.currentTicker)
+                        .arg(combo_rel.currentTicker)
+                        .arg(qsTr("Date"))
+                        .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                        .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
                 }
                 Qaterial.AppBarButton // Reset Form Button
                 {
@@ -127,14 +131,16 @@ Item {
             }
         }
 
-        HorizontalLine { height: 2; Layout.fillWidth: true }
+        HorizontalLine {
+            height: 2;Layout.fillWidth: true
+        }
 
         Item {
             id: main_order
             Layout.fillHeight: true
             Layout.fillWidth: true
             property bool is_history: true
-            
+
             Component.onCompleted: {
                 _subHistoryRoot.list_model_proxy.is_history = is_history
             }
@@ -142,7 +148,7 @@ Item {
                 id: order_list_view
             }
             DexRectangle {
-                anchors.fill: parent 
+                anchors.fill: parent
                 color: DexTheme.dexBoxBackgroundColor
                 opacity: .8
                 visible: _subHistoryRoot.displayFilter
@@ -150,17 +156,17 @@ Item {
             }
             DexRectangle {
                 width: parent.width
-                height: _subHistoryRoot.displayFilter? 330 : 60
-                visible: height>100
+                height: _subHistoryRoot.displayFilter ? 330 : 60
+                visible: height > 100
                 sizeAnimation: true
                 color: DexTheme.dexBoxBackgroundColor
                 radius: 0
                 y: -20
                 Column {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    leftPadding: 15 
+                    leftPadding: 15
                     rightPadding: 15
-                    visible: parent.height>250
+                    visible: parent.height > 250
                     DexLabel {
                         text: qsTr("Filter settings")
                         topPadding: 10
@@ -188,7 +194,7 @@ Item {
                             valueRole: "ticker"
                             textRole: 'ticker'
                         }
-                        
+
                     }
                     RowLayout {
                         width: main_order.width - 30
@@ -205,14 +211,14 @@ Item {
                         }
                         DefaultSweetComboBox {
                             id: combo_rel
-                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
+                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy //combo_base.model
                             onCurrentTickerChanged: applyTickerFilter()
                             height: 60
                             valueRole: "ticker"
                             textRole: 'ticker'
 
                         }
-                        
+
                     }
                     spacing: 10
                     Qaterial.TextFieldDatePicker {
@@ -275,23 +281,23 @@ Item {
                     }
                 }
             }
-            
+
         }
-        HorizontalLine
-        {
+        HorizontalLine {
             height: 2
             Layout.fillWidth: true
         }
         Item {
             Layout.fillWidth: true
             Layout.preferredHeight: 30
-            Item{
+            Item {
                 width: parent.width
                 height: 50
                 y: -20
                 DefaultComboBox {
                     readonly property int item_count: API.app.orders_mdl.limit_nb_elements
-                    readonly property var options: [5, 10, 25, 50, 100, 200]
+                    readonly property
+                    var options: [5, 10, 25, 50, 100, 200]
                     anchors.verticalCenter: parent.verticalCenter
                     height: 35
                     width: 80
@@ -307,12 +313,12 @@ Item {
                     height: 35
                     anchors.rightMargin: 15
                     onClicked: {
-                         export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
-                         export_csv_dialog.open()
+                        export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
+                        export_csv_dialog.open()
                     }
                 }
             }
-            
+
         }
         FileDialog {
             id: export_csv_dialog
@@ -321,11 +327,11 @@ Item {
             fileMode: FileDialog.SaveFile
 
             defaultSuffix: "csv"
-            nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
+            nameFilters: ["CSV files (*.csv)", "All files (*)"]
 
             onAccepted: {
                 const path = currentFile.toString()
-                
+
                 // Export
                 console.log("Exporting to CSV: " + path)
                 API.app.exporter_service.export_swaps_history_to_csv(path.replace(General.os_file_prefix, ""))
@@ -338,6 +344,6 @@ Item {
                 console.log("CSV export cancelled")
             }
         }
-        
+
     }
 }

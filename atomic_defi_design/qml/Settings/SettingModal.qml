@@ -13,18 +13,18 @@ import Qaterial 1.0 as Qaterial
 
 //! Project Imports
 import "../Components"
-import "../Constants" as Constants
+import "../Constants"
+as Constants
 import App 1.0
 
 
-Qaterial.Dialog
-{
+Qaterial.Dialog {
     property alias selectedMenuIndex: menu_list.currentIndex
 
     function disconnect() {
         let dialog = app.showText({
             "title": qsTr("Confirm Logout"),
-            text: qsTr("Are you sure you want to log out?") ,
+            text: qsTr("Are you sure you want to log out?"),
             standardButtons: Dialog.Yes | Dialog.Cancel,
             warning: true,
             width: 300,
@@ -43,13 +43,16 @@ Qaterial.Dialog
                 userMenu.close()
             }
         })
-        
+
     }
 
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
-    property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
-    property var fiats: API.app.settings_pg.get_available_fiats()
-    property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
+    property
+    var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
+    property
+    var fiats: API.app.settings_pg.get_available_fiats()
+    property
+    var enableable_coins_count: enableable_coins_count_combo_box.currentValue
 
 
     id: setting_modal
@@ -59,7 +62,7 @@ Qaterial.Dialog
     dim: true
     modal: true
     title: "Settings"
-    header: Item{}
+    header: Item {}
     Overlay.modal: Item {
         Rectangle {
             anchors.fill: parent
@@ -95,7 +98,7 @@ Qaterial.Dialog
             }
             DexLabel {
                 anchors.verticalCenter: parent.verticalCenter
-                text: " - "+qsTr(menu_list.model[menu_list.currentIndex])
+                text: " - " + qsTr(menu_list.model[menu_list.currentIndex])
                 opacity: .5
                 font: DexTypo.head6
             }
@@ -115,8 +118,8 @@ Qaterial.Dialog
     }
     Item {
         width: parent.width
-        height: parent.height-110
-        y:60
+        height: parent.height - 110
+        y: 60
         RowLayout {
             anchors.fill: parent
             Item {
@@ -128,9 +131,9 @@ Qaterial.Dialog
                     anchors.topMargin: 10
                     spacing: 10
                     currentIndex: 0
-                    model: [qsTr("General"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About"),qsTr("Version")]
+                    model: [qsTr("General"), qsTr("Language"), qsTr("User Interface"), qsTr("Security"), qsTr("About"), qsTr("Version")]
                     highlight: Item {
-                        width: menu_list.width-20
+                        width: menu_list.width - 20
                         x: 10
                         height: 45
                         DexRectangle {
@@ -170,7 +173,7 @@ Qaterial.Dialog
                             topPadding: 10
                             spacing: 15
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 30
                                 DexLabel {
@@ -185,7 +188,7 @@ Qaterial.Dialog
                                 }
                             }
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 50
                                 DexLabel {
@@ -207,11 +210,11 @@ Qaterial.Dialog
                                             color: enabled ? Constants.Style.colorWhite1 : Constants.Style.colorWhite8
                                             text: modelData
                                         }
-                                     }
+                                    }
                                 }
                             }
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 50
                                 DexLabel {
@@ -222,13 +225,13 @@ Qaterial.Dialog
                                 DexButton {
                                     text: qsTr("Open Folder")
                                     implicitHeight: 37
-                                     onClicked: {
+                                    onClicked: {
                                         openLogsFolder()
                                     }
                                 }
                             }
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -241,7 +244,9 @@ Qaterial.Dialog
                                     implicitHeight: 37
                                     onClicked: {
                                         restart_modal.open()
-                                        restart_modal.item.onTimerEnded = () => { API.app.settings_pg.reset_coin_cfg() }
+                                        restart_modal.item.onTimerEnded = () => {
+                                            API.app.settings_pg.reset_coin_cfg()
+                                        }
                                     }
                                 }
                             }
@@ -254,7 +259,7 @@ Qaterial.Dialog
                             topPadding: 10
                             spacing: 15
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 30
                                 DexLabel {
@@ -280,7 +285,7 @@ Qaterial.Dialog
                             topPadding: 10
                             spacing: 15
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 30
                                 DexLabel {
@@ -300,7 +305,7 @@ Qaterial.Dialog
                                 }
                             }
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 30
                                 DexLabel {
@@ -311,7 +316,7 @@ Qaterial.Dialog
                                 DexComboBox {
                                     id: dexTheme
                                     Layout.alignment: Qt.AlignVCenter
-                                    displayText: currentText.replace(".json","")
+                                    displayText: currentText.replace(".json", "")
                                     model: API.qt_utilities.get_themes_list()
                                     Component.onCompleted: {
                                         let current = atomic_settings2.value("CurrentTheme")
@@ -320,7 +325,7 @@ Qaterial.Dialog
                                 }
                             }
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -331,12 +336,12 @@ Qaterial.Dialog
                                 DexButton {
                                     text: qsTr("Apply Changes")
                                     implicitHeight: 37
-                                     onClicked: {
+                                    onClicked: {
                                         atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                         atomic_settings2.sync()
-                                        app.load_theme(dexTheme.currentText.replace(".json",""))
+                                        app.load_theme(dexTheme.currentText.replace(".json", ""))
                                         DexTypo.fontFamily = dexFont.currentText
-                                        
+
                                     }
                                 }
                             }
@@ -367,7 +372,7 @@ Qaterial.Dialog
                                 enabled: Qt.platform.os !== "linux" // Disable for Linux.
                                 Component.onCompleted: console.log(Qt.platform.os)
                                 visible: enabled
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -389,7 +394,7 @@ Qaterial.Dialog
                             }
 
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -405,7 +410,7 @@ Qaterial.Dialog
                             }
 
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -431,7 +436,7 @@ Qaterial.Dialog
                             topPadding: 10
                             spacing: 15
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -453,7 +458,7 @@ Qaterial.Dialog
                             topPadding: 10
                             spacing: 15
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -467,7 +472,7 @@ Qaterial.Dialog
                                 }
                             }
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -481,7 +486,7 @@ Qaterial.Dialog
                                 }
                             }
                             RowLayout {
-                                width: parent.width-30
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
                                 DexLabel {
@@ -517,7 +522,7 @@ Qaterial.Dialog
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             height: 40
-            width: _update_row.width+20
+            width: _update_row.width + 20
             Row {
                 id: _update_row
                 anchors.centerIn: parent
@@ -545,7 +550,7 @@ Qaterial.Dialog
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             height: 40
-            width: _logout_row.width+20
+            width: _logout_row.width + 20
             Row {
                 id: _logout_row
                 anchors.centerIn: parent
