@@ -17,7 +17,11 @@ TextEdit {
     selectedTextColor: Style.colorSelectedText
     selectionColor: Style.colorSelection
 
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
     onLinkActivated: Qt.openUrlExternally(link)
 

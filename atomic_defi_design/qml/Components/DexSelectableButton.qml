@@ -15,15 +15,15 @@ Item {
     property alias text: _label.text
     property alias hovered: area.containsMouse
     signal clicked()
-    width: parent.width-20
+    width: parent.width - 20
     anchors.horizontalCenter: parent.horizontalCenter
     height: 45
-    
+
     Rectangle {
         anchors.fill: parent
         height: 45
         radius: 5
-        opacity: parent.hovered? .6 : !parent.selected? 0 : .9
+        opacity: parent.hovered ? .6 : !parent.selected ? 0 : .9
         color: DexTheme.accentColor
     }
 
@@ -33,7 +33,7 @@ Item {
         font: DexTypo.button
         color: DexTheme.foregroundColor
         text: ""
-        opacity: area.containsMouse? 1 : .7
+        opacity: area.containsMouse ? 1 : .7
     }
 
     DexMouseArea {

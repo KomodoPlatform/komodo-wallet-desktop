@@ -2,7 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
-import "../Constants" as Constants
+import "../Constants"
+as Constants
 import App 1.0
 
 RowLayout {
@@ -10,28 +11,48 @@ RowLayout {
 
     spacing: 6
 
-    property var pageSize: Constants.API.app.orders_mdl.nb_pages
-    property var currentValue: Constants.API.app.orders_mdl.current_page
+    property
+    var pageSize: Constants.API.app.orders_mdl.nb_pages
+    property
+    var currentValue: Constants.API.app.orders_mdl.current_page
 
     function refreshBtn() {
         currentValue = Constants.API.app.orders_mdl.current_page
-         var model = []
-        if (pageSize < 10) { 
-            for (var i = 0; i < pageSize; i++){
-                model.push({number: i+1, selected: currentValue === i + 1}) 
+        var model = []
+        if (pageSize < 10) {
+            for (var i = 0; i < pageSize; i++) {
+                model.push({
+                    number: i + 1,
+                    selected: currentValue === i + 1
+                })
             }
         } else {
-            
-            [1, 2].map(v => model.push({number: v, selected: currentValue === v}));
 
-            model.push({number: currentValue - 2 > 1 + 3 ? -1 : 1 + 2, selected: currentValue === 3});
-            
+            [1, 2].map(v => model.push({
+                number: v,
+                selected: currentValue === v
+            }));
+
+            model.push({
+                number: currentValue - 2 > 1 + 3 ? -1 : 1 + 2,
+                selected: currentValue === 3
+            });
+
             for (var k = Math.max(1 + 3, currentValue - 2); k <= Math.min(pageSize - 3, currentValue + 2); k++) {
-                model.push({number: k, selected: currentValue === k});
+                model.push({
+                    number: k,
+                    selected: currentValue === k
+                });
             }
-            
-            model.push({number: currentValue + 2 < pageSize - 3 ? -1 : pageSize - 2, selected: currentValue === pageSize - 2});
-            [pageSize - 1, pageSize].map(v => model.push({number: v, selected: currentValue === v}));
+
+            model.push({
+                number: currentValue + 2 < pageSize - 3 ? -1 : pageSize - 2,
+                selected: currentValue === pageSize - 2
+            });
+            [pageSize - 1, pageSize].map(v => model.push({
+                number: v,
+                selected: currentValue === v
+            }));
         }
         btnGroup.model = model
     }
@@ -45,7 +66,8 @@ RowLayout {
     }
     DefaultComboBox {
         readonly property int item_count: Constants.API.app.orders_mdl.limit_nb_elements
-        readonly property var options: [5, 10, 25, 50, 100, 200]
+        readonly property
+        var options: [5, 10, 25, 50, 100, 200]
 
         Layout.leftMargin: 0
         Layout.alignment: Qt.AlignCenter
@@ -70,7 +92,7 @@ RowLayout {
         Layout.preferredWidth: 32
         Layout.preferredHeight: 32
         radius: 20
-        opacity: enabled? 1 : .5
+        opacity: enabled ? 1 : .5
         Qaterial.ColorIcon {
             anchors.centerIn: parent
             iconSize: 14
@@ -87,7 +109,10 @@ RowLayout {
 
     Repeater {
         id: btnGroup
-        model: [{number: 1, selected: true}]
+        model: [{
+            number: 1,
+            selected: true
+        }]
         delegate: PaginationButton {
             text: modelData.number === -1 ? "..." : ("" + modelData.number)
             radius: 30
@@ -97,7 +122,7 @@ RowLayout {
             color: modelData.number === currentValue ? 'transparent' : backgroundColor
             foregroundColor: modelData.number === currentValue ? DexTheme.accentColor : DexTheme.buttonColorTextEnabled
             onClicked: {
-                if(currentValue !== model.modelData) {
+                if (currentValue !== model.modelData) {
                     Constants.API.app.orders_mdl.current_page = btnGroup.model[index].number
                     refreshBtn()
                 }
@@ -108,7 +133,7 @@ RowLayout {
         Layout.preferredWidth: 32
         Layout.preferredHeight: 32
         radius: 20
-        opacity: enabled? 1 : .5
+        opacity: enabled ? 1 : .5
         Qaterial.ColorIcon {
             anchors.centerIn: parent
             iconSize: 14
@@ -116,11 +141,11 @@ RowLayout {
             source: Qaterial.Icons.skipNextOutline
         }
         enabled: pageSize > 1 && currentValue < pageSize
-        onClicked:  {
+        onClicked: {
             ++Constants.API.app.orders_mdl.current_page
             refreshBtn()
         }
-    
+
     }
 
 }

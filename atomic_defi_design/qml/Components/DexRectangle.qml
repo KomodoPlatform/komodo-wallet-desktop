@@ -4,7 +4,7 @@ import App 1.0
 
 AnimatedRectangle {
     id: rect
-    property bool sizeAnimation: false 
+    property bool sizeAnimation: false
     property int sizeAnimationDuration: 150
     radius: Style.rectangleCornerRadius
     color: DexTheme.backgroundColor
@@ -24,4 +24,3 @@ AnimatedRectangle {
         }
     }
 }
-

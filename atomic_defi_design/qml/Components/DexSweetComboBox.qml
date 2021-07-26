@@ -3,17 +3,19 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
 
-import "../Constants" as Constants
+import "../Constants"
+as Constants
 import App 1.0
 
 ComboBox {
     id: control
-    property var dropdownLineText: m => textRole === "" ?
-                                       m.modelData :
-                                       !m.modelData ? m[textRole] : m.modelData[textRole]
+    property
+    var dropdownLineText: m => textRole === "" ?
+        m.modelData :
+        !m.modelData ? m[textRole] : m.modelData[textRole]
     property string currentTicker: "All"
     delegate: ItemDelegate {
-        width: control.width+50
+        width: control.width + 50
         highlighted: control.highlightedIndex === index
         contentItem: DefaultText {
             text_value: control.currentTicker
@@ -50,7 +52,7 @@ ComboBox {
         id: comboPopup
         readonly property double max_height: 350
         y: control.height - 1
-        width: control.width+50
+        width: control.width + 50
         height: Math.min(contentItem.implicitHeight, popup.max_height)
         padding: 1
 
@@ -66,9 +68,9 @@ ComboBox {
                         anchors.fill: parent
                         anchors.topMargin: -5
                         anchors.rightMargin: -1
-                       border.color: "transparent"
-                       color: DexTheme.backgroundDarkColor7
-                   }
+                        border.color: "transparent"
+                        color: DexTheme.backgroundDarkColor7
+                    }
                 }
                 onTextChanged: {
                     control.model.setFilterFixedString(text)
@@ -84,7 +86,10 @@ ComboBox {
                         input_coin_filter.reset()
                         input_coin_filter.forceActiveFocus()
                     }
-                    function onClosed() { input_coin_filter.reset() }
+
+                    function onClosed() {
+                        input_coin_filter.reset()
+                    }
                 }
 
 
@@ -93,9 +98,9 @@ ComboBox {
                 Layout.fillWidth: true
                 Layout.leftMargin: 0
                 Layout.preferredHeight: 40
-                Layout.rightMargin: 2//Layout.leftMargin
+                Layout.rightMargin: 2 //Layout.leftMargin
                 Layout.topMargin: Layout.leftMargin
-                Keys.onDownPressed:  {
+                Keys.onDownPressed: {
                     control.incrementCurrentIndex()
                 }
                 Keys.onUpPressed: {
@@ -103,9 +108,9 @@ ComboBox {
                 }
 
                 Keys.onPressed: {
-                    if(event.key === Qt.Key_Return) {
-                        if(control.count > 0) {
-                            control.currentIndex = 0//control.highlightedIndex
+                    if (event.key === Qt.Key_Return) {
+                        if (control.count > 0) {
+                            control.currentIndex = 0 //control.highlightedIndex
                             control.currentTicker = control.currentText
                         }
                         popup.close()
@@ -123,7 +128,7 @@ ComboBox {
                     currentIndex: control.highlightedIndex
                     anchors.fill: parent
                     anchors.rightMargin: 2
-                    highlight: DexRectangle { }
+                    highlight: DexRectangle {}
                     delegate: ItemDelegate {
                         width: control.width + 50
                         highlighted: control.highlightedIndex === index

@@ -31,9 +31,9 @@ DexComboBox {
             }
         }
         onClicked: {
-            if(modelData !== API.app.settings_pg.lang) {
-                API.app.settings_pg.lang =  modelData
-            } 
+            if (modelData !== API.app.settings_pg.lang) {
+                API.app.settings_pg.lang = modelData
+            }
         }
     }
     contentItem: Text {

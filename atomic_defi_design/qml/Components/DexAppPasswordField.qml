@@ -6,7 +6,7 @@ import App 1.0
 
 
 DexAppTextField {
-    
+
     id: _inputPassword
 
     property string leftIcon: Qaterial.Icons.keyVariant

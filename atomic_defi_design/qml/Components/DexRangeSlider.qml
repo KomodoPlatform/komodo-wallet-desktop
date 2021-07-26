@@ -4,19 +4,21 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import QtWebEngine 1.8
 import "../Exchange/Trade/"
-import "../Constants/" as Constants
+import "../Constants/"
+as Constants
 
 RangeSlider {
     id: control
 
 
-    opacity: enabled? 1 : .5
+    opacity: enabled ? 1 : .5
     first.value: 0.25
     second.value: .75
     property color rangeDistanceColor: Constants.Style.colorGreen
     property color rangeBackgroundColor: Constants.Style.colorTheme9
     property bool firstDisabled: false
-    property var defaultFirstValue: 0.0
+    property
+    var defaultFirstValue: 0.0
 
     property alias leftText: _left_item.text
     property alias halfText: _half_item.text
@@ -43,7 +45,7 @@ RangeSlider {
         }
     }
     first.onValueChanged: {
-        if(firstDisabled) {
+        if (firstDisabled) {
             first.value = defaultFirstValue
         }
     }

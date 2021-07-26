@@ -14,7 +14,7 @@ ScrollBar {
     contentItem: Item {
         DexRectangle {
             width: parent.width
-            height: parent.height 
+            height: parent.height
             anchors.verticalCenter: parent.verticalCenter
 
             color: DexTheme.backgroundDarkColor7
@@ -23,7 +23,7 @@ ScrollBar {
 
     background: Item {
         width: 10
-        x: -width/2 + 6/2
+        x: -width / 2 + 6 / 2
         DexRectangle {
             visible: control.visibleBackground
             width: parent.width

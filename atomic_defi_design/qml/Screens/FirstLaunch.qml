@@ -111,8 +111,8 @@ SetupPage {
                     radius: width
                     width: 150
                     text: qsTr("connect")
-                    opacity: enabled? 1 : 0.6
-                    enabled: _passwordChecker.isValid() 
+                    opacity: enabled ? 1 : 0.6
+                    enabled: _passwordChecker.isValid()
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
                         _inputPassword.field.accepted()
@@ -303,7 +303,7 @@ SetupPage {
                                     let wallet_name = model.modelData
                                     let dialog = app.getText({
                                         "title": qsTr("Delete") + " %1 ".arg(wallet_name) + ("wallet?"),
-                                        text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet") ,
+                                        text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet"),
                                         standardButtons: Dialog.Yes | Dialog.Cancel,
                                         warning: true,
                                         width: 300,
@@ -366,7 +366,7 @@ SetupPage {
     }
     GaussianBlur {
         anchors.fill: _setup
-        visible: false 
+        visible: false
         source: _setup
         radius: 21
         deviation: 2

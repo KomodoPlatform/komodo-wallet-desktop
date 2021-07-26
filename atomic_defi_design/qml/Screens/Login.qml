@@ -21,13 +21,12 @@ SetupPage {
     }
 
     function onClickedLogin(password) {
-        if(API.app.wallet_mgr.login(password, selected_wallet_name)) {
+        if (API.app.wallet_mgr.login(password, selected_wallet_name)) {
             console.log("Success: Login")
             app.currentWalletName = selected_wallet_name
             postLoginSuccess()
             return true
-        }
-        else {
+        } else {
             console.log("Failed: Login")
             text_error = qsTr("Incorrect Password")
             return false
@@ -48,9 +47,9 @@ SetupPage {
         }
 
         function trySubmit() {
-            if(!submit_button.enabled) return
+            if (!submit_button.enabled) return
 
-            if(onClickedLogin(input_password.field.text))
+            if (onClickedLogin(input_password.field.text))
                 reset()
         }
 
@@ -70,7 +69,7 @@ SetupPage {
 
             DexLabel {
                 font: DexTypo.head6
-                text_value: qsTr("Login") 
+                text_value: qsTr("Login")
                 Layout.alignment: Qt.AlignVCenter
             }
 
@@ -86,9 +85,9 @@ SetupPage {
             Layout.preferredHeight: 50
             background.border.width: 1
             background.radius: 25
-            enabled: false 
-            opacity: enabled?  1 : .5
-            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder 
+            enabled: false
+            opacity: enabled ? 1 : .5
+            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
             field.font: DexTypo.head6
             field.horizontalAlignment: Qt.AlignLeft
             field.leftPadding: 75
@@ -115,7 +114,7 @@ SetupPage {
             Layout.fillWidth: true
             Layout.preferredHeight: 5
             opacity: .8
-            
+
         }
 
         DexAppTextField {
@@ -124,7 +123,7 @@ SetupPage {
             Layout.preferredHeight: 50
             background.border.width: 1
             background.radius: 25
-            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder 
+            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
             field.echoMode: TextField.Password
             field.font: field.echoMode === TextField.Password ? field.text === "" ? DexTypo.body1 : DexTypo.head5 : DexTypo.head6
             field.horizontalAlignment: Qt.AlignLeft
@@ -158,8 +157,11 @@ SetupPage {
                     rightMargin: 10
                 }
                 onClicked: {
-                    if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
-                    else { _inputPassword.field.echoMode = TextField.Password }
+                    if (_inputPassword.field.echoMode === TextField.Password) {
+                        _inputPassword.field.echoMode = TextField.Normal
+                    } else {
+                        _inputPassword.field.echoMode = TextField.Password
+                    }
                 }
             }
         }
@@ -188,7 +190,7 @@ SetupPage {
                 id: _back
                 text: qsTr("Back")
                 visible: false
-                
+
             }
 
             DexAppButton {

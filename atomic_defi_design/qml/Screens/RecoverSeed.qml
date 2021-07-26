@@ -53,7 +53,7 @@ SetupPage {
                         reset()
                         clickedBack()
                     } else {
-                        if(text_error !== "") {
+                        if (text_error !== "") {
                             text_error = ""
                         }
                         currentStep--
@@ -170,7 +170,7 @@ SetupPage {
                 }
 
                 function isValid() {
-                    if(!allow_custom_seed.checked) {
+                    if (!allow_custom_seed.checked) {
                         _seedField.field.text = _seedField.field.text.trim().toLowerCase()
                     }
                     _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '')
@@ -204,7 +204,7 @@ SetupPage {
                                     return text === qsTr("I understand")
                                 },
                                 yesButtonText: qsTr("Enable"),
-                                onAccepted: function () {
+                                onAccepted: function() {
                                     allow_custom_seed.checked = true
                                     dialog.close()
                                 }

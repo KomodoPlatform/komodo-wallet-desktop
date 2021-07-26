@@ -38,14 +38,14 @@ RowLayout {
         Layout.fillHeight: true
         foregroundColor: DexTheme.foregroundColor
         onClicked: {
-            if(window.visibility==ApplicationWindow.Maximized){
+            if (window.visibility == ApplicationWindow.Maximized) {
                 showNormal()
-            }else {
+            } else {
                 showMaximized()
             }
         }
 
-        icon.source: window.visibility===ApplicationWindow.Maximized? Qaterial.Icons.dockWindow : Qaterial.Icons.windowMaximize
+        icon.source: window.visibility === ApplicationWindow.Maximized ? Qaterial.Icons.dockWindow : Qaterial.Icons.windowMaximize
     }
     Qaterial.FlatButton {
         topInset: 0

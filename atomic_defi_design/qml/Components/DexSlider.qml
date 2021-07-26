@@ -5,7 +5,7 @@ import App 1.0
 Slider {
     id: control
     value: 0.5
-    opacity: enabled? 1 : .5
+    opacity: enabled ? 1 : .5
 
     background: Rectangle {
         x: control.leftPadding

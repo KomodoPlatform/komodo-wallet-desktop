@@ -15,7 +15,8 @@ import "../Settings"
 import "../Support"
 import "../Sidebar"
 import "../Fiat"
-import "../Settings" as SettingsPage
+import "../Settings"
+as SettingsPage
 
 
 Item {
@@ -38,7 +39,8 @@ Item {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
-    property var current_ticker
+    property
+    var current_ticker
 
     Layout.fillWidth: true
 
@@ -46,15 +48,17 @@ Item {
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
 
-    readonly property var api_wallet_page: API.app.wallet_pg
-    readonly property var current_ticker_infos: api_wallet_page.ticker_infos
+    readonly property
+    var api_wallet_page: API.app.wallet_pg
+    readonly property
+    var current_ticker_infos: api_wallet_page.ticker_infos
     readonly property bool can_change_ticker: !api_wallet_page.tx_fetching_busy
 
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
     onCurrent_pageChanged: {
-        app.deepPage = current_page*10
+        app.deepPage = current_page * 10
     }
 
 
@@ -64,10 +68,13 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    property var notifications_list: ([])
+    property
+    var notifications_list: ([])
 
-    readonly property var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
-    property var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
+    readonly property
+    var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
+    property
+    var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
 
     function resetCoinFilter() {
         portfolio_coins.setFilterFixedString("")
@@ -85,15 +92,14 @@ Item {
     }
 
     // Force restart modal: opened when the user has more coins enabled than specified in its configuration
-    ForceRestartModal
-    {
+    ForceRestartModal {
         reasonMsg: qsTr("The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.")
-        Component.onCompleted:
-        {
-            if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled"))
-            {
+        Component.onCompleted: {
+            if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled")) {
                 open()
-                onTimerEnded = () => { API.app.settings_pg.reset_coin_cfg() }
+                onTimerEnded = () => {
+                    API.app.settings_pg.reset_coin_cfg()
+                }
             }
         }
     }
@@ -195,17 +201,27 @@ Item {
             transformOrigin: Item.Center
 
             sourceComponent: {
-                switch(current_page) {
-                case idx_dashboard_portfolio: return portfolio
-                case idx_dashboard_wallet: return wallet
-                case idx_dashboard_exchange: return exchange
-                case idx_dashboard_addressbook: return addressbook
-                case idx_dashboard_news: return news
-                case idx_dashboard_dapps: return dapps
-                case idx_dashboard_settings: return settings
-                case idx_dashboard_support: return support
-                case idx_dashboard_fiat_ramp: return fiat_ramp
-                default: return undefined
+                switch (current_page) {
+                    case idx_dashboard_portfolio:
+                        return portfolio
+                    case idx_dashboard_wallet:
+                        return wallet
+                    case idx_dashboard_exchange:
+                        return exchange
+                    case idx_dashboard_addressbook:
+                        return addressbook
+                    case idx_dashboard_news:
+                        return news
+                    case idx_dashboard_dapps:
+                        return dapps
+                    case idx_dashboard_settings:
+                        return settings
+                    case idx_dashboard_support:
+                        return support
+                    case idx_dashboard_fiat_ramp:
+                        return fiat_ramp
+                    default:
+                        return undefined
                 }
             }
         }
@@ -262,7 +278,7 @@ Item {
     }
 
     function getStatusColor(status) {
-        switch(status) {
+        switch (status) {
             case "matching":
                 return Style.colorYellow
             case "matched":
@@ -277,8 +293,8 @@ Item {
         }
     }
 
-    function getStatusText(status, short_text=false) {
-        switch(status) {
+    function getStatusText(status, short_text = false) {
+        switch (status) {
             case "matching":
                 return short_text ? qsTr("Matching") : qsTr("Order Matching")
             case "matched":
@@ -297,7 +313,7 @@ Item {
     }
 
     function isSwapDone(status) {
-        switch(status) {
+        switch (status) {
             case "matching":
             case "matched":
             case "ongoing":
@@ -311,7 +327,7 @@ Item {
     }
 
     function getStatusStep(status) {
-        switch(status) {
+        switch (status) {
             case "matching":
                 return "0/3"
             case "matched":
@@ -329,12 +345,12 @@ Item {
         }
     }
 
-    function getStatusTextWithPrefix(status, short_text=false) {
+    function getStatusTextWithPrefix(status, short_text = false) {
         return getStatusStep(status) + " " + getStatusText(status, short_text)
     }
 
     function getEventText(event_name) {
-        switch(event_name) {
+        switch (event_name) {
             case "Started":
                 return qsTr("Started")
             case "Negotiated":

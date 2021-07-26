@@ -20,13 +20,22 @@ ComboBox {
 
     property color lineHoverColor: DexTheme.hoverColor
     property color mainBorderColor: control.pressed ? DexTheme.surfaceColor : DexTheme.hoverColor
-    Behavior on lineHoverColor { ColorAnimation { duration: Style.animationDuration } }
-    Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on lineHoverColor {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
+    Behavior on mainBorderColor {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
     property string mainLineText: control.displayText
-    property var dropdownLineText: m => textRole === "" ?
-                                       m.modelData :
-                                       !m.modelData ? m[textRole] : m.modelData[textRole]
+    property
+    var dropdownLineText: m => textRole === "" ?
+        m.modelData :
+        !m.modelData ? m[textRole] : m.modelData[textRole]
 
     readonly property bool disabled: !enabled
 

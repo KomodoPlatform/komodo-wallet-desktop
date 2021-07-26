@@ -6,7 +6,11 @@ Text {
     property string text_value
     property bool privacy: false
 
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
     font: DexTypo.body1
     color: DexTheme.foregroundColor

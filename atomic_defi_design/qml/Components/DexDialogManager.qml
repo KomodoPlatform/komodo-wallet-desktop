@@ -33,7 +33,8 @@ Popup {
     signal reset()
     signal checkValidator()
 
-    property var validator: undefined
+    property
+    var validator: undefined
 
     property string title: ""
     property string text: ""
@@ -132,7 +133,7 @@ Popup {
                         field.rightPadding: dialog.isPassword ? 55 : 20
                         field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
-                        
+
                         field.onAccepted: {
                             dialog.accepted(field.text)
                         }
@@ -180,7 +181,7 @@ Popup {
                 id: _dialogButtonBox
                 visible: standardButtons !== Dialog.NoButton
                 standardButtons: dialog.standardButtons
-                width: parent.width-2
+                width: parent.width - 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 60
                 alignment: Qt.AlignRight
@@ -216,7 +217,7 @@ Popup {
                     flat: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole
                     bottomInset: 0
                     topInset: 0
-                    opacity: enabled ?  1 : .6
+                    opacity: enabled ? 1 : .6
                     enabled: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? true : dialog.enableAcceptButton
                     backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? theme.redColor : theme.accentColor
                     property alias cursorShape: mouseArea.cursorShape

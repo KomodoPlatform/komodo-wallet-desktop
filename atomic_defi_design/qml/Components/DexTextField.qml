@@ -15,21 +15,31 @@ TextField {
     selectionColor: DexTheme.textSelectionColor
     color: DexTheme.foregroundColor
 
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
-    Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
+    Behavior on placeholderTextColor {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
     // Right click Context Menu
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground { auto_set_size: false; radius: 10 }
+    background: InnerBackground {
+        auto_set_size: false;radius: 10
+    }
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)
     topPadding: 7
 
 
-    RightClickMenu { }
+    RightClickMenu {}
 
     DefaultText {
         id: left_text

@@ -49,7 +49,7 @@ Item {
     function reset() {
         input_field.text = ""
     }
-    
+
     Rectangle {
         id: _background
         width: parent.width
@@ -114,7 +114,7 @@ Item {
                 DexLabel {
                     anchors.verticalCenter: parent.verticalCenter
                     leftPadding: input_field.leftPadding
-                    font: input_field.font 
+                    font: input_field.font
                     color: theme.foregroundColor
                     opacity: .5
                     text: control.placeholderText

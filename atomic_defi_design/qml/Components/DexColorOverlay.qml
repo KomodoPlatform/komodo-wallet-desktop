@@ -4,5 +4,9 @@ import "../Constants"
 import App 1.0
 
 ColorOverlay {
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 }

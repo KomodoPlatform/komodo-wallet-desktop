@@ -11,7 +11,7 @@ Switch {
     Universal.foreground: DexTheme.foregroundColor
     Universal.background: Style.colorQtThemeBackground
 
-    font.family:DexTypo.fontFamily
+    font.family: DexTypo.fontFamily
     indicator: Rectangle {
         implicitWidth: 52
         implicitHeight: 22

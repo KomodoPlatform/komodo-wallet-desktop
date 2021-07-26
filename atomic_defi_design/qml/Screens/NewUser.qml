@@ -435,7 +435,7 @@ SetupPage {
                     }
                 }
             }
-            
+
             Column {
                 Layout.fillWidth: true
                 spacing: 5
@@ -492,7 +492,9 @@ SetupPage {
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
-                field.validator: RegExpValidator { regExp: /[a-z]+/ }
+                field.validator: RegExpValidator {
+                    regExp: /[a-z]+/
+                }
                 field.onAccepted: tryGuess()
 
                 DexRectangle {
@@ -578,7 +580,7 @@ SetupPage {
                 Layout.leftMargin: 20
                 match_password: _inputPasswordConfirm.field.text
             }
-            
+
             DexAppPasswordField {
                 id: _inputPasswordConfirm
                 Layout.fillWidth: true
