@@ -14,17 +14,19 @@ Item {
     property bool selected: false
     property alias text: _label.text
     property alias hovered: area.containsMouse
+    property bool outlined: false
     signal clicked()
     width: parent.width - 20
     anchors.horizontalCenter: parent.horizontalCenter
     height: 45
 
-    Rectangle {
+    DexRectangle {
         anchors.fill: parent
         height: 45
         radius: 5
         opacity: parent.hovered ? .6 : !parent.selected ? 0 : .9
-        color: DexTheme.accentColor
+        color: outlined ? 'transparent' : DexTheme.accentColor
+        border.color: outlined ? DexTheme.accentColor : 'transparent' 
     }
 
     DexLabel {

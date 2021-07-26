@@ -133,12 +133,12 @@ Qaterial.Dialog
                         width: menu_list.width-20
                         x: 10
                         height: 45
-                        Rectangle {
+                        DexRectangle {
                             anchors.fill: parent
                             height: 45
                             radius: 8
-                            color: DexTheme.hoverColor
-                            border.width: 1
+                            color: 'transparent'
+                            border.width: 2
                             border.color: DexTheme.hoverColor
                         }
                     }
@@ -146,6 +146,7 @@ Qaterial.Dialog
                     delegate: DexSelectableButton {
                         selected: false
                         text: modelData
+                        outlined: false
                         onClicked: menu_list.currentIndex = index
                     }
                 }
