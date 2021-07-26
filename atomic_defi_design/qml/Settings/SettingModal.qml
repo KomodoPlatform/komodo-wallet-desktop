@@ -8,9 +8,10 @@ import QtQml 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls.Universal 2.12
 
+//! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
 
-// Project Imports
+//! Project Imports
 import "../Components"
 import "../Constants"
 
