@@ -35,7 +35,6 @@ namespace atomic_dex
         utils::create_if_doesnt_exist(source_folder);
         {
             ifs.setFileName(std_path_to_qstring(in_path));
-            SPDLOG_INFO(in_path.string());
             try
             {
                 ifs.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -63,12 +62,20 @@ namespace atomic_dex
         const fs::path      out_folder{utils::get_atomic_dex_addressbook_folder()};
         const fs::path      out_path  {out_folder / wallet_name};
         QFile output;
-        output.setFileName(std_path_to_qstring(out_path));
 
-        utils::create_if_doesnt_exist(out_path);
+        utils::create_if_doesnt_exist(out_folder);
         {
-            output.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
-            output.write(QString::fromStdString(in.dump()).toUtf8());
+            output.setFileName(std_path_to_qstring(out_path));
+            try
+            {
+                output.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+                output.write(QString::fromStdString(in.dump()).toUtf8());
+                SPDLOG_INFO("Addressbook data successfully wrote in persistent data !");
+            }
+            catch (std::exception& ex)
+            {
+                SPDLOG_ERROR(ex.what());
+            }
         }
     }
 }

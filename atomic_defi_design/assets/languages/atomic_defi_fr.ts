@@ -232,47 +232,47 @@
 <context>
     <name>AddressBookAddContactAddressModal</name>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="34"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="38"/>
         <source>Create a new address</source>
         <translation>Créer une nouvelle adresse</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="34"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="38"/>
         <source>Edit address entry</source>
         <translation>Edition de l&apos;entrée pour l&apos;addresse</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="58"/>
         <source>Selected wallet: %1</source>
         <translation>Portefeuille sélectionné : %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="54"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="58"/>
         <source>NONE</source>
         <translation>RIEN</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="68"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="73"/>
         <source>Enter a name</source>
         <translation>Entrez un nom</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="81"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="87"/>
         <source>This key already exists.</source>
         <translation>Cette clé existe déjà.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="93"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="99"/>
         <source>Enter the address</source>
         <translation>Entrez l&apos;adresse</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="108"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="129"/>
         <source>Validate</source>
         <translation>Valider</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="134"/>
+        <location filename="../../qml/Wallet/AddressBookAddContactAddressModal.qml" line="136"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>

@@ -18,7 +18,7 @@ Popup {
         DexRectangle {
             anchors.fill: parent
             color: Qt.darker(theme.dexBoxBackgroundColor)
-            opacity: .6
+            opacity: .8
         }
     }
 
@@ -31,6 +31,9 @@ Popup {
     signal helpRequested()
     signal rejected()
     signal reset()
+    signal checkValidator()
+
+    property var validator: undefined
 
     property string title: ""
     property string text: ""
@@ -44,10 +47,11 @@ Popup {
     property string cancelButtonText: ""
     property bool getText: false
     property bool isPassword: false
+    property bool enableAcceptButton: validator === undefined ? true : validator(_insideField.field.text)
 
     background: Qaterial.ClipRRect {
         radius: 4
-        Rectangle {
+        DexRectangle {
             anchors.fill: parent
             radius: 4
             color: theme.surfaceColor
@@ -66,6 +70,7 @@ Popup {
             padding: 0
             topPadding: 10
             spacing: 0
+            bottomPadding: 3
             Item {
                 id: _header
                 height: _label.height + 10
@@ -83,6 +88,7 @@ Popup {
                     text: dialog.title
                 }
             }
+
             Container {
                 id: _col
                 width: parent.width - 20
@@ -119,15 +125,18 @@ Popup {
                         error: false
                         visible: dialog.getText
                         defaultBorderColor: theme.dexBoxBackgroundColor
+                        placeholderText: dialog.placeholderText
                         background.border.width: 1
                         field.font: theme.textType.body2
-                        field.placeholderText: dialog.placeholderText
+                        field.placeholderText: ""
                         field.rightPadding: dialog.isPassword ? 55 : 20
-                        field.leftPadding: 70
+                        field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
+                        
                         field.onAccepted: {
                             dialog.accepted(field.text)
                         }
+
                         DexRectangle {
                             x: 3
                             visible: dialog.isPassword
@@ -171,7 +180,8 @@ Popup {
                 id: _dialogButtonBox
                 visible: standardButtons !== Dialog.NoButton
                 standardButtons: dialog.standardButtons
-                width: parent.width
+                width: parent.width-2
+                anchors.horizontalCenter: parent.horizontalCenter
                 height: 60
                 alignment: Qt.AlignRight
                 buttonLayout: DialogButtonBox.AndroidLayout
@@ -202,13 +212,14 @@ Popup {
                     color: theme.dexBoxBackgroundColor
                 }
                 delegate: Qaterial.Button {
-                    id: _deleteButton
+                    id: _dialogManagerButton
                     flat: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole
                     bottomInset: 0
                     topInset: 0
+                    opacity: enabled ?  1 : .6
+                    enabled: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? true : dialog.enableAcceptButton
                     backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? theme.redColor : theme.accentColor
                     property alias cursorShape: mouseArea.cursorShape
-
                     Component.onCompleted: {
                         if (text === "Yes" && dialog.yesButtonText !== "") {
                             text = dialog.yesButtonText

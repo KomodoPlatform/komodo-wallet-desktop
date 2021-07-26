@@ -20,13 +20,20 @@ Item {
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
     property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property bool displayFilter: false
-    property bool _filterApplied:  false
 
     function update() {
-        list_model_proxy.is_history = true
-        applyTickerFilter()
-        applyDateFilter()
+        reset()
+        if(combo_base.currentTicker !== "All" | combo_rel.currentTicker !== "All") {
+            buttonDelay.start()
+        } 
+    }
+
+    function reset() {
+        list_model_proxy.is_history = false
+        applyFilter()
         applyAllFiltering()
+        list_model_proxy.is_history = true
+        
     }
 
     function applyTickerFilter() {  
@@ -45,18 +52,26 @@ Item {
 
         list_model_proxy.filter_maximum_date = max_date.date
     }
+
     function applyFilter() {
         applyTickerFilter()
         applyDateFilter()
-
     }
+
     function applyAllFiltering() {
         list_model_proxy.apply_all_filtering()
     }
 
+    Timer {
+        id: buttonDelay
+        interval: 200
+        running: true
+        onTriggered: applyButton.clicked()
+    }
+
     anchors.fill: parent
 
-    ColumnLayout // History Content
+    ColumnLayout // History 
     {
         height: parent.height
         width: parent.width
@@ -78,7 +93,6 @@ Item {
                 width: _subHistoryRoot.width - 40
                 anchors.topMargin: 12
                 font.pixelSize: Style.textSizeSmall4
-                //text: _filterApplied? "" : qsTr("Finished orders")
                 DexLabel {
                     opacity: .4
                     text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
@@ -245,6 +259,7 @@ Item {
                             }
                         }
                         DexAppButton {
+                            id: applyButton
                             height: 35
                             anchors.verticalCenter: parent.verticalCenter
                             backgroundColor: Qaterial.Colors.lightGreen700

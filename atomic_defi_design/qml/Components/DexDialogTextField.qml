@@ -15,6 +15,7 @@ Item {
     property string defaultBorderColor: theme.rectangleBorderColor
     property string leftText: ""
     property string rightText: ""
+    property string placeholderText: ""
     property int leftWidth: -1
     readonly property int max_length: 40
     property bool error: false
@@ -109,6 +110,15 @@ Item {
                     font.family: 'Lato'
                     font.pixelSize: 13
                     anchors.fill: parent
+                }
+                DexLabel {
+                    anchors.verticalCenter: parent.verticalCenter
+                    leftPadding: input_field.leftPadding
+                    font: input_field.font 
+                    color: theme.foregroundColor
+                    opacity: .5
+                    text: control.placeholderText
+                    visible: input_field.text === ""
                 }
             }
         }

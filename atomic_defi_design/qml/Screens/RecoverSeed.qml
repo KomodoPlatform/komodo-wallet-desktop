@@ -190,6 +190,29 @@ SetupPage {
             DefaultCheckBox {
                 id: allow_custom_seed
                 text: qsTr("Allow custom seed")
+                DexMouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (!allow_custom_seed.checked) {
+                            let dialog = app.getText({
+                                title: qsTr("<strong>Allow custom seed</strong>"),
+                                text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
+                                placeholderText: qsTr("I understand"),
+                                standardButtons: Dialog.Yes | Dialog.Cancel,
+                                validator: (text) => {
+                                    return text === qsTr("I understand")
+                                },
+                                yesButtonText: qsTr("Enable"),
+                                onAccepted: function () {
+                                    allow_custom_seed.checked = true
+                                    dialog.close()
+                                }
+                            })
+                        } else {
+                            allow_custom_seed.checked = false
+                        }
+                    }
+                }
             }
 
             Item {
