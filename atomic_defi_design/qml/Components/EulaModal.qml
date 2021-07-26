@@ -17,7 +17,7 @@ BasicModal {
     property bool close_only: false
 
     ModalContent {
-        title: "Disclaimer & Terms of Service"
+        title: qsTr("Disclaimer & Terms of Service")
 
         InnerBackground {
             id: eula_rect
@@ -45,13 +45,13 @@ BasicModal {
         DefaultCheckBox {
             id: accept_eula
             visible: !close_only
-            text: "Accept EULA"
+            text: qsTr("Accept EULA")
         }
 
         DefaultCheckBox {
             id: accept_tac
             visible: !close_only
-            text: "Accept Terms and Conditions"
+            text: qsTr("Accept Terms and Conditions")
         }
 
         // Buttons
