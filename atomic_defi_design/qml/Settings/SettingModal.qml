@@ -16,7 +16,9 @@ import "../Components"
 import "../Constants"
 
 
-Qaterial.Dialog {
+Qaterial.Dialog
+{
+    property alias selectedMenuIndex: menu_list.currentIndex
 
     function disconnect() {
         let dialog = app.showText({
