@@ -22,7 +22,6 @@ DexAppTextField {
         family: theme.textType.fontFamily,
         weight: Font.Normal
     })
-    Component.onCompleted: console.log(Screen.devicePixelRatio)
     field.horizontalAlignment: Qt.AlignLeft
     field.leftPadding: 75
     field.rightPadding: 60
