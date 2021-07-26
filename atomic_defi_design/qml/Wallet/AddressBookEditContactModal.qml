@@ -117,12 +117,12 @@ BasicModal {
                                            styleData.column === 2 ? walletInfoTable._addressColWidth :
                                                                     walletInfoTable._actionsColWidth
 
-                    AnimatedRectangle
+                    Item
                     {
                         Layout.fillWidth: true
                         height: 20
 
-                        color: Style.colorRectangleBorderGradient1
+                        
 
                         DefaultText
                         {
@@ -142,7 +142,7 @@ BasicModal {
                 rowDelegate: DefaultRectangle
                 {
                     height: 37; radius: 0
-                    color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
+                    color: styleData.selected ? DexTheme.accentColor: styleData.alternate ? DexTheme.accentColor4 : 'transparent'
                 }
 
                 TableViewColumn // Type Column

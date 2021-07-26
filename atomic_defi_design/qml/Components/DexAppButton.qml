@@ -6,7 +6,7 @@ DexRectangle {
     id: control 
     signal clicked()
 
-    property int padding: 10
+    property int padding: 12
     property int spacing: 4
     property int verticalAlignment: Qt.AlignVCenter
     property int horizontalAlignment: Qt.AlignHCenter
