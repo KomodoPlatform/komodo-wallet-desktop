@@ -298,6 +298,7 @@ ColumnLayout {
                                 currentIndex: tabView.currentIndex
                                 anchors.fill: parent
                                 onCurrentIndexChanged: {
+                                    swipeView.currentItem.update()
                                     if(currentIndex===2) {
                                         history_component.list_model_proxy.is_history = true
                                     } else {

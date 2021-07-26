@@ -10,16 +10,16 @@ import App 1.0
 import "../../../Components"
 
 Rectangle {
-    property var details
+    property
+    var details
     property alias clickable: mouse_area.enabled
     readonly property bool is_placed_order: !details ? false :
-                                                       details.order_id !== ''
+        details.order_id !== ''
 
-    width: list.model.count>6? list.width-15 : list.width-8
+    width: list.model.count > 6 ? list.width - 15 : list.width - 8
     height: 40
 
     color: mouse_area.containsMouse? DexTheme.hightlightColor : "transparent"
-
     DefaultMouseArea {
         id: mouse_area
         anchors.fill: parent
@@ -39,22 +39,22 @@ Rectangle {
             Layout.preferredWidth: 15
 
             spacing: 5
-            visible: clickable? !details ? false :
-                     (details.is_swap || !details.is_maker) : false
+            visible: clickable ? !details ? false :
+                (details.is_swap || !details.is_maker) : false
 
             DefaultText {
                 Layout.alignment: Qt.AlignVCenter
                 font.pixelSize: base_amount.font.pixelSize
                 color: !details ? "white" : getStatusColor(details.order_status)
                 text_value: !details ? "" :
-                            visible ? getStatusStep(details.order_status) : ''
+                    visible ? getStatusStep(details.order_status) : ''
             }
         }
         Item {
             Layout.fillHeight: true
             Layout.preferredWidth: 20
 
-            visible: !status_text.visible? clickable? true : false : false
+            visible: !status_text.visible ? clickable ? true : false : false
 
             Qaterial.ColorIcon {
                 anchors.centerIn: parent
@@ -67,8 +67,7 @@ Rectangle {
         DefaultText {
             visible: clickable
             font.pixelSize: base_amount.font.pixelSize
-            text_value: !details ? "" :
-                        details.date?? ""
+            text_value: !details ? "" : details.date ?? ""
             Layout.fillHeight: true
             verticalAlignment: Label.AlignVCenter
             Layout.preferredWidth: 120
@@ -77,15 +76,14 @@ Rectangle {
         DefaultImage {
             id: base_icon
             source: General.coinIcon(!details ? atomic_app_primary_coin :
-                                                details.base_coin?? atomic_app_primary_coin)
+                details.base_coin ?? atomic_app_primary_coin)
             Layout.preferredWidth: Style.textSize1
             Layout.preferredHeight: Style.textSize1
             Layout.alignment: Qt.AlignVCenter
         }
         DefaultText {
             id: base_amount
-            text_value: !details ? "" :
-                        General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
+            text_value: !details ? "" : General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
             font.pixelSize: 11
 
 
@@ -103,17 +101,14 @@ Rectangle {
                 height: 50
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                top_arrow_ticker: !details ? atomic_app_primary_coin :
-                                             details.base_coin?? ""
-                bottom_arrow_ticker: !details ? atomic_app_primary_coin :
-                                                details.rel_coin?? ""
+                top_arrow_ticker: !details ? atomic_app_primary_coin : details.base_coin ?? ""
+                bottom_arrow_ticker: !details ? atomic_app_primary_coin : details.rel_coin ?? ""
             }
         }
 
         DefaultText {
             id: rel_amount
-            text_value: !details ? "" :
-                        General.formatCrypto("", details.rel_amount, details.rel_coin, details.rel_amount_current_currency, API.app.settings_pg.current_currency)
+            text_value: !details ? "" : General.formatCrypto("", details.rel_amount, details.rel_coin, details.rel_amount_current_currency, API.app.settings_pg.current_currency)
             font.pixelSize: base_amount.font.pixelSize
 
             Layout.fillHeight: true
@@ -125,7 +120,7 @@ Rectangle {
         DefaultImage {
             id: rel_icon
             source: General.coinIcon(!details ? atomic_app_primary_coin :
-                                                details.rel_coin?? atomic_app_secondary_coin)
+                details.rel_coin ?? atomic_app_secondary_coin)
 
             width: base_icon.width
             Layout.preferredWidth: Style.textSize1
@@ -135,7 +130,7 @@ Rectangle {
         DefaultText {
             font.pixelSize: base_amount.font.pixelSize
             visible: !details || details.recoverable === undefined ? false :
-                     details.recoverable && details.order_status !== "refunding"
+                details.recoverable && details.order_status !== "refunding"
             Layout.fillHeight: true
             Layout.preferredWidth: 40
             verticalAlignment: Label.AlignVCenter
@@ -156,30 +151,34 @@ Rectangle {
         }
         Qaterial.FlatButton {
             id: cancel_button_text
-            visible: (!is_history? details.cancellable?? false : false)===true? (mouse_area.containsMouse || hovered)? true : false : false
+            visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || hovered) ? true : false : false
 
             Layout.fillHeight: true
             Layout.preferredWidth: 30
             Layout.alignment: Qt.AlignVCenter
             outlinedColor: Style.colorTheme5
             Behavior on scale {
-                NumberAnimation { duration: 200 }
+                NumberAnimation {
+                    duration: 200
+                }
             }
             Qaterial.ColorIcon {
-                iconSize: 13 
+                iconSize: 13
                 color: Qaterial.Colors.pink300
                 source: Qaterial.Icons.close
                 anchors.centerIn: parent
-                scale: parent.visible? 1 : 0
+                scale: parent.visible ? 1 : 0
             }
 
-            
-            onClicked: { if(details) cancelOrder(details.order_id) }
+
+            onClicked: {
+                if (details) cancelOrder(details.order_id)
+            }
             hoverEnabled: true
 
         }
         Rectangle {
-            visible: (!is_history? details.cancellable?? false : false) === true? (mouse_area.containsMouse || cancel_button_text.hovered )? false : true : false
+            visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || cancel_button_text.hovered) ? false : true : false
             width: 5
             height: 5
             color: Style.colorRed
