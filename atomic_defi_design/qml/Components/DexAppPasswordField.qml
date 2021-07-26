@@ -14,6 +14,7 @@ DexAppTextField {
     width: 300
     background.border.width: 1
     background.radius: 25
+    max_length: 1000
     field.echoMode: TextField.Password
     field.font: Qt.font({
         pixelSize: (16 * theme.textType.fontDensity) * (Screen.pixelDensity / 160),
