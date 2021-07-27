@@ -1,6 +1,5 @@
 import QtQuick 2.15
-import App 1.0
-import "../Constants"
+import "../Constants" as Constants
 import App 1.0
 
 Text {
@@ -25,7 +24,7 @@ Text {
         "white"
     }
 
-    text: privacy && General.privacy_mode ? General.privacy_text : text_value
+    text: privacy && Constants.General.privacy_mode ? Constants.General.privacy_text : text_value
     wrapMode: Text.WordWrap
 
     onLinkActivated: Qt.openUrlExternally(link)

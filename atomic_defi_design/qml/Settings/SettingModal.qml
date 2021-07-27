@@ -210,42 +210,35 @@ Qaterial.Dialog
                                      }
                                 }
                             }
-                            RowLayout {
+
+                            SettingsButton {
                                 width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
                                 height: 50
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("Logs")
-                                }
-                                DexButton {
-                                    text: qsTr("Open Folder")
-                                    implicitHeight: 37
-                                     onClicked: {
-                                        openLogsFolder()
-                                    }
-                                }
-                            }
-                            RowLayout {
-                                width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("Reset assets configuration")
-                                }
-                                DexButton {
-                                    text: qsTr("Reset")
-                                    implicitHeight: 37
-                                    onClicked: {
-                                        restart_modal.open()
-                                        restart_modal.item.onTimerEnded = () => { API.app.settings_pg.reset_coin_cfg() }
-                                    }
-                                }
+                                title: qsTr("Logs")
+                                buttonText: qsTr("Open Folder")
+                                onClicked: openLogsFolder()
                             }
 
+                            SettingsButton {
+                                width: parent.width-30
+                                height: 50
+                                title: qsTr("Reset assets configuration")
+                                buttonText: qsTr("Reset")
+                                onClicked: {
+                                    dialog = app.showText({
+                                            title: qsTr("Reset assets configuration"),
+                                            text: qsTr("This will reset your wallet config to default"),
+                                            standardButtons: Dialog.Yes | Dialog.Cancel,
+                                            yesButtonText: qsTr("Yes"),
+                                            cancelButtonText: qsTr("Cancel"),
+                                            onAccepted: function() {
+                                                restart_modal.open()
+                                                restart_modal.item.onTimerEnded = () => { API.app.settings_pg.reset_coin_cfg() }
+                                            }
+                                        })
+                                    dialog.close()
+                                }
+                            }
                         }
                     }
                     Item {
@@ -303,11 +296,13 @@ Qaterial.Dialog
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 30
+
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     text: qsTr("Theme")
                                 }
+
                                 DexComboBox {
                                     id: dexTheme
                                     Layout.alignment: Qt.AlignVCenter
@@ -319,25 +314,17 @@ Qaterial.Dialog
                                     }
                                 }
                             }
-                            RowLayout {
+
+                            SettingsButton {
                                 width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("")
-                                }
-                                DexButton {
-                                    text: qsTr("Apply Changes")
-                                    implicitHeight: 37
-                                     onClicked: {
-                                        atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
-                                        atomic_settings2.sync()
-                                        app.load_theme(dexTheme.currentText.replace(".json",""))
-                                        DexTypo.fontFamily = dexFont.currentText
-                                        
-                                    }
+                                height: 50
+                                buttonText: qsTr("Apply Changes")
+                                onClicked: {
+                                    atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
+                                    atomic_settings2.sync()
+                                    app.load_theme(dexTheme.currentText.replace(".json",""))
+                                    DexTypo.fontFamily = dexFont.currentText
+                                    
                                 }
                             }
                         }
@@ -347,16 +334,19 @@ Qaterial.Dialog
                             anchors.fill: parent
                             topPadding: 10
                             spacing: 15
+
                             ModalLoader {
                                 id: view_seed_modal
                                 sourceComponent: RecoverSeedModal {}
                             }
+
                             ModalLoader {
                                 id: eula_modal
                                 sourceComponent: EulaModal {
                                     close_only: true
                                 }
                             }
+
                             ModalLoader {
                                 id: camouflage_password_modal
                                 sourceComponent: CamouflagePasswordModal {}
@@ -376,7 +366,6 @@ Qaterial.Dialog
                                     text: qsTr("Ask system's password before sending coins ? (2FA)")
                                 }
                                 DexSwitch {
-                                    implicitHeight: 37
                                     checked: parseInt(atomic_settings2.value("2FA")) === 1
                                     onCheckedChanged: {
                                         if (checked)
@@ -388,63 +377,46 @@ Qaterial.Dialog
                                 }
                             }
 
-                            RowLayout {
+                            SettingsButton {
                                 width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("View seed and private keys")
-                                }
-                                DexButton {
-                                    text: qsTr("Show")
-                                    implicitHeight: 37
-                                    onClicked: view_seed_modal.open()
-                                }
+                                height: 50
+                                title: qsTr("View seed and private keys")
+                                buttonText: qsTr("Show")
+                                onClicked: view_seed_modal.open()
                             }
 
-                            RowLayout {
+                            SettingsButton {
                                 width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("Setup Camouflage Password")
-                                }
-                                DexButton {
-                                    text: qsTr("Open")
-                                    implicitHeight: 37
-                                    onClicked: camouflage_password_modal.open()
-                                }
+                                height: 50
+                                title: qsTr("Setup Camouflage Password")
+                                buttonText: qsTr("Open")
+                                onClicked: camouflage_password_modal.open()
                             }
+
                         }
                     }
+
                     Item {
+                        
                         Column {
+                            
                             ModalLoader {
                                 id: delete_wallet_modal
                                 sourceComponent: DeleteWalletModal {}
                             }
+                            
                             anchors.fill: parent
                             topPadding: 10
                             spacing: 15
-                            RowLayout {
+
+                            SettingsButton {
                                 width: parent.width-30
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                height: 60
-                                DexLabel {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
-                                    text: qsTr("Disclaimer and ToS")
-                                }
-                                DexButton {
-                                    text: qsTr("Show")
-                                    implicitHeight: 37
-                                    onClicked: eula_modal.open()
-                                }
+                                height: 50
+                                title: qsTr("Disclaimer and ToS")
+                                buttonText: qsTr("Show")
+                                onClicked: eula_modal.open()
                             }
+
                         }
                     }
                     Item {

@@ -136,7 +136,9 @@ Popup {
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
 
                         field.onAccepted: {
-                            dialog.accepted(field.text)
+                            if(dialog.enableAcceptButton) {
+                                dialog.accepted(field.text)
+                            }
                         }
 
                         DexRectangle {

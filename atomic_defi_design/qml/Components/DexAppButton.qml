@@ -47,7 +47,7 @@ DexRectangle {
     radius: 5
     color: backgroundColor
     height: _label.implicitHeight + (padding * verticalPadding)
-    width: _contentRow.width + (padding * horizontalPadding)
+    width: _contentRow.implicitWidth + (padding * horizontalPadding)
 
     Row {
         id: _contentRow

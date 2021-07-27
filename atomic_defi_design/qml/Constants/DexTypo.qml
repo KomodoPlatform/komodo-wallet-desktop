@@ -15,7 +15,7 @@ QtObject {
                 return 0.99999
                 break
             case "fr":
-                return Qt.platform.os === "windows" ? 0.98999 : 0.90
+                return 0.99999
                 break
             case "tr":
                 return 0.99999

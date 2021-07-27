@@ -495,6 +495,7 @@
         <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Settings/RecoverSeedModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/SettingsButton.qml</file>
         <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Settings.qml</file>
         <file>atomic_defi_design/qml/Sidebar/Sidebar.qml</file>
