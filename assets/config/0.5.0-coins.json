@@ -3250,13 +3250,16 @@
     "coingecko_id": "qtum",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10050"
+        "url": "electrum1.cipig.net:10050",
+        "ws_url": "electrum1.cipig.net:30050"
       },
       {
-        "url": "electrum2.cipig.net:10050"
+        "url": "electrum2.cipig.net:10050",
+        "ws_url": "electrum2.cipig.net:30050"
       },
       {
-        "url": "electrum3.cipig.net:10050"
+        "url": "electrum3.cipig.net:10050",
+        "ws_url": "electrum3.cipig.net:30050"
       }
     ],
     "explorer_url": [

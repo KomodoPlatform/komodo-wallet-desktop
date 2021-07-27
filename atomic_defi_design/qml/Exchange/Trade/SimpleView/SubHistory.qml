@@ -264,7 +264,7 @@ Item {
                             id: applyButton
                             height: 35
                             anchors.verticalCenter: parent.verticalCenter
-                            backgroundColor: Qaterial.Colors.lightGreen700
+                            backgroundColor: containsMouse ? Qaterial.Colors.lightGreen500 : Qaterial.Colors.lightGreen700
                             text: qsTr("Apply filter")
                             onClicked: {
                                 _subHistoryRoot.displayFilter = false

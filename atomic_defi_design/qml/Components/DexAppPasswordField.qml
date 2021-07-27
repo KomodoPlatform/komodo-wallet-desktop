@@ -15,6 +15,7 @@ DexAppTextField {
     width: 300
     background.border.width: 1
     background.radius: 25
+    max_length: 1000
     field.echoMode: TextField.Password
     field.font: Qt.font({
         pixelSize: (16 * DexTypo.fontDensity) * (Screen.pixelDensity / 160),
@@ -22,7 +23,6 @@ DexAppTextField {
         family: DexTypo.fontFamily,
         weight: Font.Normal
     })
-    Component.onCompleted: console.log(Screen.devicePixelRatio)
     field.horizontalAlignment: Qt.AlignLeft
     field.leftPadding: 75
     field.rightPadding: 60

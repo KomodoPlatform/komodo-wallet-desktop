@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts 1.12
+import App 1.0
 
 Popup {
     id: dialog
@@ -219,7 +220,7 @@ Popup {
                     topInset: 0
                     opacity: enabled ? 1 : .6
                     enabled: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? true : dialog.enableAcceptButton
-                    backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? theme.redColor : theme.accentColor
+                    backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? DexTheme.redColor : DexTheme.accentColor
                     property alias cursorShape: mouseArea.cursorShape
                     Component.onCompleted: {
                         if (text === "Yes" && dialog.yesButtonText !== "") {

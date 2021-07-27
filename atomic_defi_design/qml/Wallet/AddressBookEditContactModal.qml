@@ -142,7 +142,7 @@ BasicModal {
                 rowDelegate: DefaultRectangle
                 {
                     height: 37; radius: 0
-                    color: styleData.selected ? DexTheme.accentColor: styleData.alternate ? DexTheme.accentColor4 : 'transparent'
+                    color: styleData.selected ? DexTheme.accentColor: styleData.alternate ? DexTheme.accentDarkColor4 : 'transparent'
                 }
 
                 TableViewColumn // Type Column

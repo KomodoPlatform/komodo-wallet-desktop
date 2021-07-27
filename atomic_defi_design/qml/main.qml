@@ -113,7 +113,7 @@ DexWindow
                             warning: true,
                             width: 300,
                             iconSource: Qaterial.Icons.logout,
-                            iconColor: app.globalTheme.accentColor,
+                            iconColor: DexTheme.accentColor,
                             yesButtonText: qsTr("Yes"),
                             cancelButtonText: qsTr("Cancel"),
                             onAccepted: function(text) {

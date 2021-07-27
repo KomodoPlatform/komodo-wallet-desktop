@@ -11,9 +11,10 @@ Item {
     height: 35
 
     property int leftWidth: -1
-    readonly property int max_length: 40
+    property int max_length: 180
 
     property alias value: input_field.text
+
     property alias field: input_field
     property alias background: _background
 
