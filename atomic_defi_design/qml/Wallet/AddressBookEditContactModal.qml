@@ -281,7 +281,13 @@ BasicModal {
                                 color: theme.redColor
                                 opacity: .8
                             }
-                            onClicked: contactModel.remove_address_entry(model.address_type, model.address_key)
+                            onClicked:
+                            {
+                                removeAddressEntryModal.addressKey = model.address_key;
+                                removeAddressEntryModal.addressType = model.address_type;
+                                removeAddressEntryModal.contactModel = contactModel;
+                                removeAddressEntryModal.open();
+                            }
                         }
 
                         Qaterial.OutlineButton // Copy Clipboard Button
@@ -518,6 +524,31 @@ BasicModal {
                         text: qsTr("Ok")
 
                         onClicked: cannot_send_modal.close()
+                    }
+                }
+            }
+        }
+
+        // Remove address entry modal
+        ModalLoader
+        {
+            id: removeAddressEntryModal
+
+            property var    contactModel
+            property string addressKey
+            property string addressType
+
+            sourceComponent: BasicModal
+            {
+                width: 250
+                ModalContent
+                {
+                    title: qsTr("Remove address ?")
+
+                    RowLayout
+                    {
+                        DexButton { text: qsTr("Yes"); onClicked: { contactModel.remove_address_entry(addressType, addressKey); close(); } }
+                        DexButton { text: qsTr("No"); onClicked: close() }
                     }
                 }
             }
