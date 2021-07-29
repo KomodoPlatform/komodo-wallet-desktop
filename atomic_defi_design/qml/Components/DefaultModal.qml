@@ -30,5 +30,5 @@ Popup {
         to: 1
     }
 
-    background: FloatingBackground { }
+    background: DexRectangle { }
 }

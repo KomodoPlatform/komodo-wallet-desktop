@@ -43,7 +43,7 @@ DexRectangle {
         DexTheme.buttonColorPressed :
         DexTheme.buttonColorHovered :
         DexTheme.buttonColorEnabled : DexTheme.buttonColorDisabled
-    property string foregroundColor: control.enabled ? _controlMouseArea.containsMouse ? DexTheme.buttonColorTextHovered : DexTheme.buttonColorTextEnabled : DexTheme.buttonColorTextDisabled
+    property string foregroundColor: control.enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ? DexTheme.buttonColorTextPressed :  DexTheme.buttonColorTextHovered : DexTheme.buttonColorTextEnabled : DexTheme.buttonColorTextDisabled
     radius: 5
     color: backgroundColor
     height: _label.implicitHeight + (padding * verticalPadding)

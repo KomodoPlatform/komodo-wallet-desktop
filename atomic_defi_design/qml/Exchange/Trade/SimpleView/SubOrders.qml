@@ -105,6 +105,8 @@ Item
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
 
+                    foregroundColor: DexTheme.foregroundColor
+
                     icon.source: _subOrdersRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.filter
 
                     hoverEnabled: true
@@ -220,6 +222,7 @@ Item
                         width: parent.width - 50
                         height: 60
                         opacity: .8
+                        color: DexTheme.foregroundColor
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -235,6 +238,7 @@ Item
                         rightInset: 0
                         height: 60
                         opacity: .8
+                        color: DexTheme.foregroundColor
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }

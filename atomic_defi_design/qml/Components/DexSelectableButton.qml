@@ -15,10 +15,13 @@ Item {
     property alias text: _label.text
     property alias hovered: area.containsMouse
     property bool outlined: false
-    signal clicked()
-    width: parent.width - 20
+    
     anchors.horizontalCenter: parent.horizontalCenter
+    
+    width: parent.width - 20
     height: 45
+    
+    signal clicked()
 
     DexRectangle {
         anchors.fill: parent

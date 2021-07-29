@@ -21,7 +21,7 @@ BasicModal {
         coin_cfg_model.all_disabled_proxy.setFilterFixedString(text === undefined ? input_coin_filter.text : text)
     }
 
-    width: 500
+    width: 600
 
     onOpened: {
         filterCoins()
@@ -57,7 +57,7 @@ BasicModal {
             onTextChanged: filterCoins()
         }
 
-        DefaultCheckBox {
+        DexCheckBox {
             text: qsTr("Select all assets")
             visible: list.visible
 
@@ -87,7 +87,7 @@ BasicModal {
             Layout.preferredHeight: 375
             Layout.fillWidth: true
 
-            delegate: DefaultCheckBox {
+            delegate: DexCheckBox {
                 text: "         " + model.name + " (" + model.ticker + ")"
 
                 leftPadding: indicator.width

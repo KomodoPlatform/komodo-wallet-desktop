@@ -142,6 +142,7 @@ InnerBackground {
     ClipRRect {
         anchors.fill: parent
         radius: parent.radius
+
         Rectangle {
             width: parent.width
             height: 40

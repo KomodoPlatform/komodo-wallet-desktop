@@ -38,9 +38,6 @@ Qaterial.Dialog
                 onDisconnect()
                 dialog.close()
                 dialog.destroy()
-            },
-            onRejected: function() {
-                userMenu.close()
             }
         })
         
@@ -481,63 +478,29 @@ Qaterial.Dialog
         width: parent.width
         height: 50
         anchors.bottom: parent.bottom
-        DexSelectableButton {
-            selected: true
-            anchors.right: logout_button.left
-            anchors.rightMargin: 10
-            anchors.horizontalCenter: undefined
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            height: 40
-            width: _update_row.width+20
-            Row {
-                id: _update_row
-                anchors.centerIn: parent
-                Qaterial.ColorIcon {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.update
-                }
-                spacing: 10
-                DexLabel {
-                    text: qsTr("Search Update")
-                    anchors.verticalCenter: parent.verticalCenter
-                    font: DexTypo.button
-                }
-                opacity: .6
-            }
-            onClicked: new_update_modal.open()
-        }
 
-        DexSelectableButton {
-            id: logout_button
-            selected: true
+        Row {
+            spacing: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.horizontalCenter: undefined
             anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            height: 40
-            width: _logout_row.width+20
-            Row {
-                id: _logout_row
-                anchors.centerIn: parent
-                Qaterial.ColorIcon {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.logout
-                }
-                spacing: 10
-                DexLabel {
-                    text: qsTr("Logout")
-                    anchors.verticalCenter: parent.verticalCenter
-                    font: DexTypo.button
-                }
-                opacity: .6
-            }
-            onClicked: {
-                disconnect()
-                setting_modal.close()
-            }
 
+            DexAppButton {
+                text: qsTr("Search Update")
+                height: 40
+                iconSource: Qaterial.Icons.update
+                onClicked: new_update_modal.open()
+            }
+            
+            DexAppButton {
+                text: qsTr("Logout")
+                height: 40
+                iconSource: Qaterial.Icons.logout
+                onClicked: {
+                    disconnect()
+                    setting_modal.close()
+                }
+            }
         }
 
         Rectangle {

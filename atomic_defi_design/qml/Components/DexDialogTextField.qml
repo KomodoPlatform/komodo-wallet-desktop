@@ -115,7 +115,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     leftPadding: input_field.leftPadding
                     font: input_field.font
-                    color: theme.foregroundColor
+                    color: DexTheme.foregroundColor
                     opacity: .5
                     text: control.placeholderText
                     visible: input_field.text === ""

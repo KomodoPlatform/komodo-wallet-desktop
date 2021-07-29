@@ -269,21 +269,24 @@ ColumnLayout {
                                 width: 150
                                 text: qsTr("Exchange Rates")
                                 font.pixelSize: 14
-                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
                             Qaterial.LatoTabButton {
                                 width: 120
                                 text: qsTr("Orders")
                                 font.pixelSize: 14
-                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
                             Qaterial.LatoTabButton {
                                 width: 120
                                 text: qsTr("History")
                                 font.pixelSize: 14
-                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
                         }

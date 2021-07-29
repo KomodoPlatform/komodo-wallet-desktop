@@ -113,6 +113,8 @@ Item {
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
 
+                    foregroundColor: DexTheme.foregroundColor
+
                     icon.source: _subHistoryRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.filter
 
                     hoverEnabled: true
@@ -225,6 +227,7 @@ Item {
                         width: parent.width - 50
                         height: 60
                         opacity: .8
+                        color: DexTheme.foregroundColor
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -240,6 +243,7 @@ Item {
                         rightInset: 0
                         height: 60
                         opacity: .8
+                        color: DexTheme.foregroundColor
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
@@ -289,7 +293,7 @@ Item {
                 width: parent.width
                 height: 50
                 y: -20
-                DefaultComboBox {
+                DexComboBox {
                     readonly property int item_count: API.app.orders_mdl.limit_nb_elements
                     readonly property var options: [5, 10, 25, 50, 100, 200]
                     anchors.verticalCenter: parent.verticalCenter

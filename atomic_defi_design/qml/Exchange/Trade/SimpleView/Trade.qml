@@ -179,7 +179,7 @@ ClipRRect // Trade Card
                     {
                         anchors.centerIn: parent
                         source:  Qaterial.Icons.broom
-                        color: DexTheme.buttonColorTextEnabled
+                        color: DexTheme.foregroundColor
                         opacity: .8
                     }
                 }
@@ -229,7 +229,7 @@ ClipRRect // Trade Card
                     text: qsTr("%1").arg(Constants.API.app.trading_pg.max_volume)
                     font.pixelSize: Constants.Style.textSizeSmall2
                     elide: Text.ElideRight
-                    color: Constants.Style.colorWhite1
+                    color: DexTheme.foregroundColorLightColor1
 
                     DexImage
                     {
@@ -384,6 +384,7 @@ ClipRRect // Trade Card
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 5
+                        color: DexTheme.foregroundColor
 
                         up: false
                     }
@@ -583,6 +584,8 @@ ClipRRect // Trade Card
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 5
+
+                        color: DexTheme.foregroundColor
 
                         up: false
                     }
@@ -943,6 +946,7 @@ ClipRRect // Trade Card
         {
             icon.source: Qaterial.Icons.refresh
             visible: _tradeCard.best
+            foregroundColor: DexTheme.foregroundColor
             enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
             onClicked: 
             {
@@ -952,6 +956,7 @@ ClipRRect // Trade Card
         Qaterial.AppBarButton 
         {
             icon.source: Qaterial.Icons.close
+            foregroundColor: DexTheme.foregroundColor
             visible: _tradeCard.best || _tradeCard.coinSelection
             onClicked: 
             {

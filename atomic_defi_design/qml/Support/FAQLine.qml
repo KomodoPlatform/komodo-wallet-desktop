@@ -10,4 +10,5 @@ import App 1.0
 TextWithTitle {
     expandable: true
     Layout.fillWidth: true
+    Layout.rightMargin: 10
 }

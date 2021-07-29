@@ -228,37 +228,32 @@ Item {
             anchors.fill: parent
             anchors.leftMargin: 40
             anchors.rightMargin: 40
+            
             Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                
                 DexLabel {
                     font: DexTypo.head4
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Portfolio")
                 }
             }
+
             Item {
 
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    Qaterial.ExtendedFabButton {
+                    
+                    DexAppButton {
                         width: 250
-                        backgroundColor: DexTheme.accentColor
-                        foregroundColor: DexTheme.foregroundColor
-                        Row {
-                            anchors.centerIn: parent
-                            spacing: 6
-                            Qaterial.ColorIcon {
-                                source: Qaterial.Icons.plus
-                                color: DexTheme.foregroundColor
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            DexLabel {
-                                text: qsTr("Add asset")
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
+                        iconSource: Qaterial.Icons.plus
+                        radius: 40
+                        leftPadding: 45
+                        rightPadding: 45
+                        padding: 20
+                        text: qsTr("Add asset")
                         onClicked: enable_coin_modal.open()
                     }
                 }

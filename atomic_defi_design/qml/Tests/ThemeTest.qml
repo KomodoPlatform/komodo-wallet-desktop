@@ -15,6 +15,10 @@ Item {
 		color: DexTheme.surfaceColor
 	}
 
+	/*Component.onCompleted: {
+		DexTheme.rectangleBorderColor = DexTheme.backgroundDarkColor2
+	}
+*/
 
 	Flickable {
 
@@ -41,6 +45,11 @@ Item {
 			}
 			DexComboBox {
 				model: ["1233","DDSDD","DFDSS"]
+			}
+
+			DexRectangle {
+				width: 500
+				height: 250
 			}
 
 			DexLabel {
@@ -225,7 +234,7 @@ Item {
 			}
 
 			DexLabel {
-				text: "Foreground Lighter"
+				text: "Foreground Darker"
 			}
 
 			Row {

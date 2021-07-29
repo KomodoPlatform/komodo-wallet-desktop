@@ -364,7 +364,7 @@ DexPopup {
                         notifications_list = notifications_list
                     }
                     height: _column.height + 10
-                    width: list.width
+                    width: list.width - 10
                     MouseArea {
                         id: mouseArea
                         hoverEnabled: true

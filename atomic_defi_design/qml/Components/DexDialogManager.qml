@@ -107,6 +107,8 @@ Popup {
                         icon.color: dialog.iconColor
                         width: parent.width
 
+                        color: DexTheme.foregroundColor
+
                         text: dialog.text
                         wrapMode: Text.WordWrap
                         horizontalAlignment: Label.AlignLeft

@@ -91,59 +91,43 @@ Item {
             RowLayout {
                 anchors.fill: parent
                 spacing: 0
-                DexLabel // Trade Tab
+
+                NavigationLabel
                 {
                     id: _tradeText
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    currentPage: currentSubPage
+                    selectedPage: subPages.Trade
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("Trade")
                     font.pixelSize: Constants.Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.Trade? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
-                    DexMouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: if (currentSubPage !== subPages.Trade) currentSubPage = subPages.Trade
-                        hoverEnabled: true
-                    }
+                    onClicked: if (currentSubPage !== subPages.Trade) currentSubPage = subPages.Trade
                 }
 
-                DexLabel // Orders Tab
+                NavigationLabel
                 {
                     id: _ordersText
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    currentPage: currentSubPage
+                    selectedPage: subPages.Orders
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("Orders")
                     font.pixelSize: Constants.Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.Orders? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
-                    DexMouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: if (currentSubPage !== subPages.Orders) currentSubPage = subPages.Orders
-                        hoverEnabled: true
-                    }
+                    onClicked: if (currentSubPage !== subPages.Orders) currentSubPage = subPages.Orders
                 }
 
-                DexLabel // History Tab
+                NavigationLabel
                 {
                     id: _historyText
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    currentPage: currentSubPage
+                    selectedPage: subPages.History
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("History")
                     font.pixelSize: Constants.Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.History? DexTheme.foregroundColor : DexTheme.accentColor : DexTheme.foregroundColor
-                    DexMouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: if (currentSubPage !== subPages.History) currentSubPage = subPages.History
-                        hoverEnabled: true
-                    }
+                    onClicked: if (currentSubPage !== subPages.History) currentSubPage = subPages.History
                 }
+                
             }
             
         }

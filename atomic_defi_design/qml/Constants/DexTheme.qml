@@ -121,6 +121,7 @@ QtObject {
     property color buttonColorTextDisabled: DexTheme.backgroundDarkColor7
     property color buttonColorTextHovered: DexTheme.backgroundDarkColor8
     property color buttonColorTextEnabled: DexTheme.backgroundDarkColor9
+    property color buttonColorTextPressed: DexTheme.backgroundDarkColor0
 
 
 
@@ -146,22 +147,16 @@ QtObject {
     property color textSelectedColor: Style.colorSelectedText
     property color innerShadowColor: Style.colorInnerShadow
 
-    
-
     property color whiteblack: Style.colorWhite1
     property color colorThemeDarkLight: Style.colorThemeDarkLight
 
-
-    property color rectangleBorderColor: Style.colorBorder
-
+    property color rectangleBorderColor: DexTheme.backgroundDarkColor2
 
     property color colorScrollbarGradient1: Style.colorScrollbarGradient1
     property color colorScrollbarGradient2: Style.colorScrollbarGradient2
 
-
     property color greenColor: Style.colorGreen
     property color redColor: Style.colorRed
-
 
     // Widget settings 
 
