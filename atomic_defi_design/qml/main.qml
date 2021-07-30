@@ -363,17 +363,13 @@ DexWindow
 			DexIconButton {
 				opacity: containsMouse? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
-				color: active?  DexTheme.accentColor : containsMouse?  DexTheme.accentColor :  DexTheme.foregroundColor 
+				color: active?  DexTheme.accentColor : containsMouse ?  DexTheme.accentColor :  DexTheme.foregroundColor 
 				iconSize: 22
 				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
 				visible: _label.visible
 				active: app.notification_modal.opened
 				onClicked: {
-					 let themeList = API.qt_utilities.get_themes_list()
-			        /*atomic_settings2.sync()
-			        let current = atomic_settings2.value("CurrentTheme")
-			        console.log(current)
-			        load_theme(current.replace(".json", ""))*/
+					let themeList = API.qt_utilities.get_themes_list()
 			        console.log(JSON.stringify(themeList))
 			        if(DexTheme.theme === "light") {
 			        	app.load_theme("Dark")
