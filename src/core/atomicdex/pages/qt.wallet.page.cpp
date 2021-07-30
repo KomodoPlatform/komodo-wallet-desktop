@@ -345,6 +345,10 @@ namespace atomic_dex
                     reason                     = tr("Invalid checksum.");
                     json_result["convertible"] = false;
                 }
+                else if (reason.contains("has invalid prefixes"))
+                {
+                    reason                     = tr("%1 address has invalid prefixes.").arg(json_result["ticker"].toString());
+                }
                 else
                 {
                     reason                     = tr("Unknown error.");
