@@ -3,6 +3,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
+import Qt.labs.settings 1.0
 
 //! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
@@ -295,6 +296,7 @@ DexWindow
 					}
 				}
 			}
+
 			DexLabel {
 				text: " | "
 				opacity: .1
@@ -339,6 +341,45 @@ DexWindow
 					}else {
 						app.notification_modal.openAt(mapToItem(Overlay.overlay, -165, 18), Item.Top)
 					}
+				}
+			}
+
+			DexLabel {
+				text: " | "
+				opacity: .1
+				font.family: 'Montserrat'
+				font.weight: Font.Medium
+				visible: _label.visible
+				color:  DexTheme.foregroundColor
+				anchors.verticalCenter: parent.verticalCenter
+				leftPadding: 2
+			}
+
+			Settings {
+		        id: atomic_settings0
+		        fileName: atomic_cfg_file
+		    }
+
+			DexIconButton {
+				opacity: containsMouse? 1 : .8
+				anchors.verticalCenter: parent.verticalCenter
+				color: active?  DexTheme.accentColor : containsMouse?  DexTheme.accentColor :  DexTheme.foregroundColor 
+				iconSize: 22
+				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
+				visible: _label.visible
+				active: app.notification_modal.opened
+				onClicked: {
+					 let themeList = API.qt_utilities.get_themes_list()
+			        /*atomic_settings2.sync()
+			        let current = atomic_settings2.value("CurrentTheme")
+			        console.log(current)
+			        load_theme(current.replace(".json", ""))*/
+			        console.log(JSON.stringify(themeList))
+			        if(DexTheme.theme === "light") {
+			        	app.load_theme("Dark")
+			        } else {
+			        	app.load_theme("Light")
+			        }
 				}
 			}
 		}

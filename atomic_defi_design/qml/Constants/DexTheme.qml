@@ -3,9 +3,10 @@ pragma Singleton
 import QtQuick 2.15
 
 QtObject {
-    id: theme
 
     // Main Color 
+
+    property string theme: "dark"
 
     property color accentColor: Style.colorTheme4
     property color backgroundColor: Style.colorTheme7
