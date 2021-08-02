@@ -68,7 +68,14 @@ namespace antara::gaming::core::details
                     handler(true);
                     return;
                 }
-                std::cout << "Win32 LogonUserW error: " << GetLastError() << std::endl;
+
+                auto last_err = GetLastError(); // 1327 (ERROR_ACCOUNT_RESTRICTION) should mean that the user has no password set. https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--1300-1699-
+                std::cout << "Win32 LogonUserW error: " << last_err << std::endl;
+                if (last_err == 1327)
+                {
+                    handler(true);
+                    return;
+                }
             }
             else
             {
