@@ -349,7 +349,7 @@ DexWindow
 				opacity: .1
 				font.family: 'Montserrat'
 				font.weight: Font.Medium
-				visible: _label.visible
+				visible: _label.visible && DexTheme.theme !== "undefined"
 				color:  DexTheme.foregroundColor
 				anchors.verticalCenter: parent.verticalCenter
 				leftPadding: 2
@@ -366,11 +366,10 @@ DexWindow
 				color: active?  DexTheme.accentColor : containsMouse ?  DexTheme.accentColor :  DexTheme.foregroundColor 
 				iconSize: 22
 				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
-				visible: _label.visible
+				visible: _label.visible && DexTheme.theme !== "undefined"
 				active: app.notification_modal.opened
 				onClicked: {
 					let themeList = API.qt_utilities.get_themes_list()
-			        console.log(JSON.stringify(themeList))
 			        if(DexTheme.theme === "light") {
 			        	app.load_theme("Dark")
 			        } else {

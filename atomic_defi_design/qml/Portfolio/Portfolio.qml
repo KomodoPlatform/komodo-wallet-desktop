@@ -258,7 +258,7 @@ Item {
                         DexTheme.accentLightColor5 :
                         DexTheme.accentLightColor2 : DexTheme.buttonColorDisabled
 
-                        foregroundColor: control.enabled ?
+                        foregroundColor: enabled ?
                          containsMouse ? 
                            DexTheme.buttonColorTextHovered :
                             DexTheme.buttonColorTextEnabled : 

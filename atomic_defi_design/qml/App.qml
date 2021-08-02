@@ -451,6 +451,12 @@ DexRectangle
 
     function load_theme(name) {
         let data = API.qt_utilities.load_theme(name)
+        if(!("theme" in data)) {
+            console.log('UNDEFINED')
+            App.DexTheme.theme = "undefined"
+        }else {
+            console.log("DEFINED")
+        }
         for (let i in data) {
             if (i.toString().indexOf("[int]") !== -1) {
                 let real_i = i;
