@@ -565,7 +565,7 @@ namespace atomic_dex
     void
     wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
     {
-#if defined(__APPLE__) || defined(WIN32)
+#if defined(__APPLE__) || defined(WIN32) || defined(_WIN32)
         QSettings& settings = this->entity_registry_.ctx<QSettings>();
         if (settings.value("2FA").toBool())
         {
