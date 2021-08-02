@@ -199,6 +199,7 @@ Item {
                         anchors.fill: parent
                         clip: true
                         model: portfolio_mdl.pie_chart_proxy_mdl
+                        scrollbar_visible: false
                         delegate: RowLayout {
                             id: rootItem
                             property color itemColor: Style.getCoinColor(
