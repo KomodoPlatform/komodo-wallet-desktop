@@ -47,6 +47,16 @@ ColumnLayout {
             leftPadding: 45
             rightPadding: 45
             padding: 20
+            backgroundColor: enabled ?
+                        containsMouse ?
+                        DexTheme.accentLightColor5 :
+                        DexTheme.accentLightColor2 : DexTheme.buttonColorDisabled
+
+            foregroundColor: control.enabled ?
+             containsMouse ? 
+               DexTheme.buttonColorTextHovered :
+                DexTheme.buttonColorTextEnabled : 
+                DexTheme.buttonColorTextDisabled
             text: qsTr("New Contact")
             onClicked: new_contact_modal.open()
         }
