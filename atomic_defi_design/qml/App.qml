@@ -469,7 +469,7 @@ DexRectangle
             }
         }
         Qaterial.Style.accentColor = App.DexTheme.accentColor
-        console.log("END APPLY ".arg(name))
+        console.log("END APPLY %1".arg(name))
     }
 
     color: App.DexTheme.surfaceColor

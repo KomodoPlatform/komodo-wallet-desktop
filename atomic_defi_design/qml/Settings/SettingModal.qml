@@ -195,16 +195,6 @@ Qaterial.Dialog
                                     model: [10, 20, 50, 75, 100, 150, 200]
                                     currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
                                     onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
-                                    delegate: ItemDelegate {
-                                        width: enableable_coins_count_combo_box.width
-                                        font.weight: enableable_coins_count_combo_box.currentIndex === index ? Font.DemiBold : Font.Normal
-                                        highlighted: ListView.isCurrentItem
-                                        enabled: parseInt(modelData) >= API.app.portfolio_pg.portfolio_mdl.length
-                                        contentItem: DefaultText {
-                                            color: enabled ? Constants.Style.colorWhite1 : Constants.Style.colorWhite8
-                                            text: modelData
-                                        }
-                                     }
                                 }
                             }
 

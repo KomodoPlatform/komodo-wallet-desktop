@@ -24,7 +24,7 @@ DefaultListView {
 
         color: mouse_area.containsMouse? DexTheme.hightlightColor : 'transparent'
 
-        DefaultMouseArea {
+        DexMouseArea {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true
@@ -47,7 +47,7 @@ DefaultListView {
         Arrow {
             id: received_icon
             up: am_i_sender ? true : false
-            color: !am_i_sender ? Style.colorGreen : Style.colorRed
+            color: !am_i_sender ? DexTheme.greenColor : DexTheme.redColor
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: note_tag.right
             anchors.leftMargin: 10
@@ -71,7 +71,7 @@ DefaultListView {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.2
-            color: am_i_sender ? Style.colorRed : Style.colorGreen
+            color: am_i_sender ? DexTheme.redColor : DexTheme.greenColor
             privacy: true
         }
 

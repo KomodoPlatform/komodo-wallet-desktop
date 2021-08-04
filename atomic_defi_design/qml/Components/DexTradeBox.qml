@@ -3,13 +3,10 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import "../Exchange/Trade/"
-import "../Constants/"
-as Constants
 import App 1.0
 
 Rectangle {
     id: _control
-    //border.width: 1.1
     signal reload()
 
     property bool hideHeader: false
@@ -33,8 +30,9 @@ Rectangle {
     property int defaultWidth: 250
     property bool reloadable: false
     property bool contentVisible: !hidden
-    radius: 3
     property bool isVertical: _control.parent.parent.orientation === Qt.Vertical
+    radius: 3
+    
     function setHeight(height) {
         SplitView.preferredHeight = height
     }
@@ -67,8 +65,10 @@ Rectangle {
         }
     }
 
-    //shadowOff: true
-    color: DexTheme.dexBoxBackgroundColor
+    color: DexTheme.proviewItemBoxBackgroundColor
+    border.color: DexTheme.proviewItemBoxBorderColor
+    border.width: DexTheme.proviewItemBoxBorderWidth
+    
     property alias titleLabel: _texto
 
     function setFalseHeight() {
@@ -135,12 +135,14 @@ Rectangle {
 
         }
     }
+
     Behavior on SplitView.preferredWidth {
         SmoothedAnimation {
             duration: 200
 
         }
     }
+
     Component.onCompleted: {
         SplitView.minimumHeight = minimumHeight
         SplitView.minimumWidth = minimumWidth
@@ -151,6 +153,7 @@ Rectangle {
         SplitView.fillHeight = expandedVert ? true : false
         SplitView.fillWidth = expandedHort ? true : false
     }
+
     property Component contentItem
 
 
@@ -172,7 +175,7 @@ Rectangle {
                     Layout.fillWidth: true
                     font.weight: Font.Medium
                     text: _control.title
-                    color: DexTheme.accentColor
+                    color: DexTheme.headTextColor
                     visible: isVertical || !hidden
                     bottomPadding: 5
                 }

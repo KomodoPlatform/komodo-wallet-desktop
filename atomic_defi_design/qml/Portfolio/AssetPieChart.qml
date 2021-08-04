@@ -98,22 +98,21 @@ Item {
                         Column {
                             anchors.centerIn: parent
                             spacing: 5
-                            DefaultText {
+                            DexLabel {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: currentTotal !== "" ? currentTotal : General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                                 font: DexTypo.head4
-                                color: Qt.lighter(
-                                           Style.colorWhite4,
-                                           currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                                color: currency_change_button.containsMouse ? DexTheme.accentLightColor3 : DexTheme.accentLightColor1
                                 privacy: true
                                 DexFadebehavior on text {
                                     fadeDuration: 100
                                 }
                                 Component.onCompleted: {
                                     font.family = 'Lato'
+                                    font.bold = true
                                 }
                             }
-                            DefaultText {
+                            DexLabel {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: portfolio.currentValue
                                 font: DexTypo.body2
@@ -127,7 +126,7 @@ Item {
                                     font.family = 'Lato'
                                 }
                             }
-                            DefaultText {
+                            DexLabel {
                                 id: count_label
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: portfolio_helper.count + " " + qsTr(

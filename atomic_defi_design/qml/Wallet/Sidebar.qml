@@ -30,7 +30,7 @@ Item {
         anchors.right: parent.right
         width: sidebar.width + parent.width
 
-        height: parent.height+40
+        height: parent.height + 40
 
         // Panel contents
         Item {
@@ -46,7 +46,7 @@ Item {
                 anchors.bottomMargin: 1
                 opacity: .3
                 anchors.topMargin: anchors.bottomMargin
-                color: DexTheme.backgroundColorDeep
+                color: DexTheme.walletSidebarLeftBorderColor
             }
 
             InnerBackground {
@@ -223,6 +223,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
+        visible: DexTypo.walletSidebarShadowVisibility
         color: Constants.Style.colorWalletsSidebarDropShadow
         smooth: true
     }

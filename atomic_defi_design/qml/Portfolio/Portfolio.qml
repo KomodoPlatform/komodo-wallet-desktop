@@ -253,16 +253,6 @@ Item {
                         leftPadding: 45
                         rightPadding: 45
                         padding: 20
-                        backgroundColor: enabled ?
-                        containsMouse ?
-                        DexTheme.accentLightColor5 :
-                        DexTheme.accentLightColor2 : DexTheme.buttonColorDisabled
-
-                        foregroundColor: enabled ?
-                         containsMouse ? 
-                           DexTheme.buttonColorTextHovered :
-                            DexTheme.buttonColorTextEnabled : 
-                            DexTheme.buttonColorTextDisabled
                         text: qsTr("Add asset")
                         onClicked: enable_coin_modal.open()
                     }

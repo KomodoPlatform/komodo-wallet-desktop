@@ -86,6 +86,22 @@ QtObject {
     property color foregroundColorDarkColor9: Qt.lighter(foregroundColor, 0.1)
 
 
+    property color headTextColor: accentColor
+
+
+    property color proviewItemBoxBackgroundColor: dexBoxBackgroundColor
+    property color proviewItemBoxBorderColor: 'transparent'
+    property color proviewItemBoxTitleColor: headTextColor
+    property color proviewItemBoxIconColor: accentColor
+    property int proviewItemBoxBorderWidth: 0
+
+
+    property bool walletSidebarShadowVisibility: true
+    property color walletSidebarLeftBorderColor: backgroundColorDeep
+
+
+
+
  // Old Theme
     property string chartTheme: Style.dark_theme ? "dark" : "light"
     property color primaryColor: "#171A2C"
