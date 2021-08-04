@@ -117,6 +117,7 @@ DexWindow
                             yesButtonText: qsTr("Yes"),
                             cancelButtonText: qsTr("Cancel"),
                             onAccepted: function(text) {
+                            	app.notifications_list = []
                                 userMenu.close()
 								app.currentWalletName = ""
 								API.app.disconnect()
