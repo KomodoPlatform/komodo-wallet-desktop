@@ -29,17 +29,18 @@ Item {
         var item = pieSeries.append(value.ticker, value.main_currency_balance)
         item.labelColor = 'white'
         item.color = Qt.lighter(Style.getCoinColor(value.ticker))
-        item.borderColor = DexTheme.backgroundColor
+        item.borderColor = 'transparent'
         item.borderWidth = 2
         item.holeSize = 1
         item.labelFont = DexTypo.body2
         item.hovered.connect(function (state) {
             if (state) {
-                item.explodeDistanceFactor = 0.01
+                item.explodeDistanceFactor = 0.03
                 portfolio.currentTotal = API.app.settings_pg.current_fiat_sign + " " + value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
                 item.color = Qt.lighter(Qt.lighter(Style.getCoinColor(value.ticker)))
             } else {
+                item.borderWidth = 2
                 item.explodeDistanceFactor = 0.01
                 portfolio.currentValue = ""
                 portfolio.currentTotal = ""
@@ -211,12 +212,18 @@ Item {
                                 Layout.alignment: Qt.AlignVCenter
                                 Component.onCompleted: font.weight = Font.Medium
                             }
-                            Rectangle {
+
+                            Item {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.fillWidth: true
                                 height: 8
-                                radius: 10
-                                color: DexTheme.dexBoxBackgroundColor
+                                Rectangle {
+                                    anchors.fill: parent
+                                    radius: 10
+                                    opacity: 0.1
+                                    color: DexTheme.foregroundColorLightColor5
+                                    
+                                }
                                 Rectangle {
                                     height: parent.height
                                     width: (parseFloat(percent_main_currency) * parent.width) / 100
@@ -224,6 +231,8 @@ Item {
                                     color: rootItem.itemColor
                                 }
                             }
+
+                            
 
                             DexLabel {
                                 
