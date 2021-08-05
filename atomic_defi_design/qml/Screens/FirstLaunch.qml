@@ -73,6 +73,8 @@ SetupPage {
                 DexLabel {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "%1 wallet".arg(selected_wallet_name)
+                    color: DexTheme.foregroundColorLightColor4
+                    font: DexTypo.body1
                     topPadding: 10
                 }
                 Connections {
