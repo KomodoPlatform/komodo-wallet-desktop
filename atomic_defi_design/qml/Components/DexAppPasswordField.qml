@@ -37,7 +37,7 @@ DexAppTextField {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
             iconSize: 19
-            color: DexTheme.surfaceColor
+            color: DexTheme.backgroundColor
             source: _inputPassword.leftIcon
         }
 
