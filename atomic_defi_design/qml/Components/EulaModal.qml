@@ -29,8 +29,9 @@ BasicModal {
             DefaultFlickable {
                 anchors.fill: parent
                 anchors.margins: 20
+                anchors.rightMargin: 0
 
-                contentWidth: eula_text.width
+                contentWidth: eula_text.width - 10
                 contentHeight: eula_text.height
 
                 DefaultText {
@@ -43,13 +44,13 @@ BasicModal {
         }
 
         // Checkboxes
-        DefaultCheckBox {
+        DexCheckBox {
             id: accept_eula
             visible: !close_only
             text: qsTr("Accept EULA")
         }
 
-        DefaultCheckBox {
+        DexCheckBox {
             id: accept_tac
             visible: !close_only
             text: qsTr("Accept Terms and Conditions")
@@ -57,20 +58,29 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
-                text: close_only ? qsTr("Close") : qsTr("Cancel")
-                Layout.fillWidth: true
-                onClicked: root.close()
-            },
-
-            PrimaryButton {
-                visible: !close_only
-                text: qsTr("Confirm")
-                Layout.fillWidth: true
-                enabled: accept_eula.checked && accept_tac.checked
-                onClicked: {
-                    onConfirm()
-                    root.close()
+            Item {
+                height: 40
+                Row {
+                    height: 50
+                    width: root.width - 40
+                    spacing: 10
+                    layoutDirection: Qt.RightToLeft
+                    anchors.verticalCenter: parent.verticalCenter
+                    DefaultButton {
+                        text: close_only ? qsTr("Close") : qsTr("Cancel")
+                        Layout.fillWidth: true
+                        onClicked: root.close()
+                    }
+                    PrimaryButton {
+                        visible: !close_only
+                        text: qsTr("Confirm")
+                        Layout.fillWidth: true
+                        enabled: accept_eula.checked && accept_tac.checked
+                        onClicked: {
+                            onConfirm()
+                            root.close()
+                        }
+                    }
                 }
             }
         ]
