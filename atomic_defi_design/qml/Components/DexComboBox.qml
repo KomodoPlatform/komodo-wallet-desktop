@@ -19,7 +19,7 @@ ComboBox {
     font.family: Style.font_family
 
     property color lineHoverColor: DexTheme.hoverColor
-    property color mainBorderColor: control.pressed ? DexTheme.surfaceColor : DexTheme.hoverColor
+    property color mainBorderColor: control.pressed ? DexTheme.hoverColor  :  DexTheme.rectangleBorderColor
     Behavior on lineHoverColor {
         ColorAnimation {
             duration: Style.animationDuration
