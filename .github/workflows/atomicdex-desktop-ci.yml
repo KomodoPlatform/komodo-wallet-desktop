@@ -70,8 +70,8 @@ jobs:
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-          mirror: https://qt-mirror.dannhauer.de/
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+          #mirror: https://qt-mirror.dannhauer.de/
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org/
           #mirror: https://ftp.fau.de/qtproject/
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
@@ -85,8 +85,8 @@ jobs:
           version: ${{ matrix.qt }}
           host: 'mac'
           target: 'desktop'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-          mirror: https://qt-mirror.dannhauer.de/
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+          #mirror: https://qt-mirror.dannhauer.de/
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org/
           #mirror: https://ftp.fau.de/qtproject/
           dir: '${{ github.workspace }}'
@@ -106,8 +106,8 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-          mirror: https://qt-mirror.dannhauer.de/
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+          #mirror: https://qt-mirror.dannhauer.de/
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org/
           #mirror: https://ftp.fau.de/qtproject/
           dir: 'C:\'
