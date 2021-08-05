@@ -11,6 +11,7 @@ QtObject {
     property color accentColor: Style.colorTheme4
     property color backgroundColor: Style.colorTheme7
     property color foregroundColor: Style.colorText
+    property color primaryColor: accentColor
 
 
     property color backgroundLightColor0: backgroundColor
@@ -104,7 +105,7 @@ QtObject {
 
  // Old Theme
     property string chartTheme: Style.dark_theme ? "dark" : "light"
-    property color primaryColor: "#171A2C"
+    
     property color surfaceColor: backgroundDarkColor2
     property color backgroundColorDeep: backgroundDarkColor2
     property color dexBoxBackgroundColor: backgroundDarkColor6//Style.colorTheme9

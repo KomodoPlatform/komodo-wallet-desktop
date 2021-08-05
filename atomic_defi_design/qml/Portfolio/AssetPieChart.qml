@@ -102,14 +102,13 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: currentTotal !== "" ? currentTotal : General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                                 font: DexTypo.head4
-                                color: currency_change_button.containsMouse ? DexTheme.accentLightColor3 : DexTheme.accentLightColor1
+                                color: currency_change_button.containsMouse ? DexTheme.foregroundColor : DexTheme.foregroundColorDarkColor3
                                 privacy: true
                                 DexFadebehavior on text {
                                     fadeDuration: 100
                                 }
                                 Component.onCompleted: {
                                     font.family = 'Lato'
-                                    font.bold = true
                                 }
                             }
                             DexLabel {

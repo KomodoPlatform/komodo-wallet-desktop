@@ -169,14 +169,14 @@ SetupPage {
             text: qsTr("New Wallet")
             Layout.preferredHeight: 50
             radius: 8
-            backgroundColor: DexTheme.accentColor
+            //backgroundColor: DexTheme.accentColor
             onClicked: onClickedNewUser()
         }
 
         DexAppButton {
             text: qsTr("Import wallet")
             horizontalAlignment: Qt.AlignLeft
-            backgroundColor: DexTheme.accentColor
+            //backgroundColor: DexTheme.accentColor
             leftPadding: 20
             radius: 8
             Layout.fillWidth: true
@@ -260,6 +260,7 @@ SetupPage {
 
                             Qaterial.ColorIcon {
                                 anchors.verticalCenter: parent.verticalCenter
+                                color: DexTheme.foregroundColor
                                 source: Qaterial.Icons.account
                                 iconSize: 16
                                 x: 20

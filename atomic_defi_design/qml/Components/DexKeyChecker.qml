@@ -48,7 +48,7 @@ ColumnLayout {
     }
 
     function hintColor(valid) {
-        return valid ? Style.colorGreen : Style.colorRed
+        return valid ? DexTheme.greenColor : DexTheme.redColor
     }
 
     function hintPrefix(valid) {

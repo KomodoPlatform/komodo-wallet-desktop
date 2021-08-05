@@ -157,7 +157,7 @@ BasicModal {
 
                     delegate: RowLayout
                     {
-                        DefaultText
+                        DexLabel
                         {
                             Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3

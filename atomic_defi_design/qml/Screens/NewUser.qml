@@ -144,6 +144,7 @@ SetupPage {
             spacing: 10
             Qaterial.AppBarButton {
                 icon.source: Qaterial.Icons.arrowLeft
+                foregroundColor: DexTheme.foregroundColor
                 Layout.alignment: Qt.AlignVCenter
                 onClicked: {
                     if (currentStep === 0) {

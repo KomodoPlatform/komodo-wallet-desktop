@@ -47,6 +47,7 @@ SetupPage {
             spacing: 10
             Qaterial.AppBarButton {
                 icon.source: Qaterial.Icons.arrowLeft
+                foregroundColor: DexTheme.foregroundColor
                 Layout.alignment: Qt.AlignVCenter
                 onClicked: {
                     if (currentStep === 0) {
@@ -188,7 +189,7 @@ SetupPage {
                 font: DexTypo.body2
             }
 
-            DefaultCheckBox {
+            DexCheckBox {
                 id: allow_custom_seed
                 text: qsTr("Allow custom seed")
                 DexMouseArea {
@@ -235,7 +236,6 @@ SetupPage {
                     onClicked: tryPassLevel1()
                     radius: 20
                     opacity: enabled ? 1 : .4
-                    backgroundColor: DexTheme.accentColor
                     Layout.preferredWidth: _nextRow.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -246,10 +246,12 @@ SetupPage {
                         DexLabel {
                             text: qsTr("Next")
                             font: DexTypo.button
+                            color: nextButton.foregroundColor
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
                             anchors.verticalCenter: parent.verticalCenter
+                            color: nextButton.foregroundColor
                             source: Qaterial.Icons.arrowRight
                             iconSize: 14
                         }
@@ -311,7 +313,6 @@ SetupPage {
                         trySubmit()
                     }
                     radius: 20
-                    backgroundColor: DexTheme.accentColor
                     Layout.preferredWidth: _nextRow2.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -322,11 +323,13 @@ SetupPage {
                         DexLabel {
                             text: qsTr("Continue")
                             font: DexTypo.button
+                            color: submit_button.foregroundColor
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
                             anchors.verticalCenter: parent.verticalCenter
                             source: Qaterial.Icons.arrowRight
+                            color: submit_button.foregroundColor
                             iconSize: 14
                         }
                     }
