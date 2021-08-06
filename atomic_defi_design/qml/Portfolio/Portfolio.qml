@@ -198,9 +198,8 @@ Item {
 
                             placeholderText: qsTr("Search")
 
-                            onTextChanged: {
-                                portfolio_coins.setFilterFixedString(text)
-                            }
+                            onTextChanged: portfolio_coins.setFilterFixedString(text)
+                            Component.onDestruction: portfolio_coins.setFilterFixedString("")
 
                             width: 120
                         }
