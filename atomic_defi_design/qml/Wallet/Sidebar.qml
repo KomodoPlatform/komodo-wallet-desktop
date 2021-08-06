@@ -133,19 +133,20 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
 
-                content: DefaultListView {
+                content: DexListView {
                     id: list
                     implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
-
                     model: portfolio_coins
+                    topMargin: 5
+                    bottomMargin: 5
 
                     delegate: GradientRectangle {
-                        width: list_bg.width - list_bg.border.width*2 - 2
+                        width: list_bg.width - list_bg.border.width*2 - 6
                         height: 44
                         radius: Constants.Style.rectangleCornerRadius
 
-                        start_color: Constants.Style.applyOpacity(Constants.Style.colorCoinListHighlightGradient)
-                        end_color: api_wallet_page.ticker === ticker ? DexTheme.hightlightColor : mouse_area.containsMouse ? Constants.Style.colorWhite8 : start_color
+                        start_color: api_wallet_page.ticker === ticker ? DexTheme.accentColor : mouse_area.containsMouse ? DexTheme.accentLightColor4: DexTheme.backgroundColor
+                        end_color: api_wallet_page.ticker === ticker ? DexTheme.accentColor : mouse_area.containsMouse ? DexTheme.accentLightColor4: DexTheme.backgroundColor
 
                         // Click area
                         DefaultMouseArea {
@@ -191,9 +192,10 @@ Item {
                             anchors.rightMargin: side_margin + scrollbar_margin
 
                             // Ticker
-                            DefaultText {
+                            DexLabel {
                                 Layout.alignment: Qt.AlignRight
                                 text_value: ticker
+                                color: api_wallet_page.ticker === ticker ? DexTheme.buttonColorTextEnabled : mouse_area.containsMouse ? DexTheme.foregroundColorLightColor2 : DexTheme.foregroundColor
                                 font.pixelSize: text.length > 6 ? Constants.Style.textSizeSmall2 : Constants.Style.textSizeSmall4
                             }
 
