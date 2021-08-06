@@ -25,7 +25,7 @@ ItemDelegate {
             Layout.preferredHeight: 32
         }
 
-        DefaultText {
+        DexLabel {
             Layout.topMargin: 10
             text: "    " + name + " (" + ticker + ")"
         }

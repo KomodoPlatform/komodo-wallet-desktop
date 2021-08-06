@@ -142,7 +142,7 @@ BasicModal {
                 rowDelegate: DefaultRectangle
                 {
                     height: 37; radius: 0
-                    color: styleData.selected ? DexTheme.accentColor: styleData.alternate ? DexTheme.accentDarkColor4 : 'transparent'
+                    color: styleData.selected ? DexTheme.accentLightColor4: styleData.alternate ? DexTheme.accentDarkColor4 : 'transparent'
                 }
 
                 TableViewColumn // Type Column
@@ -215,13 +215,12 @@ BasicModal {
 
                     delegate: RowLayout
                     {
-                        DefaultText
+                        DexLabel
                         {
                             Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
-                            color: Style.colorText
                             elide: Text.ElideRight
                         }
 
@@ -381,26 +380,25 @@ BasicModal {
         // Categories (Tags) List
         Flow {
             Layout.fillWidth: true
-
+            spacing: 10
             Repeater {
                 id: category_repeater
                 model: contactModel.categories
 
-                Qaterial.OutlineButton {
+                DexAppButton {
                     Layout.alignment: Qt.AlignLeft
                     Layout.leftMargin: 4
-
+                    border.color: backgroundColor
+                    iconSource: Qaterial.Icons.closeOctagon
                     text: modelData
-                    icon.source: Qaterial.Icons.closeOctagon
-
                     onClicked: contactModel.remove_category(modelData);
                 }
             }
 
             // Category adding form opening button
-            Qaterial.OutlineButton {
+            DexAppButton {
                 Layout.leftMargin: 10
-
+                width: height
                 text: qsTr("+")
 
                 onClicked: add_category_modal.open()

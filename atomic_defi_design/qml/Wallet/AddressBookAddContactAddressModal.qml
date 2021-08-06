@@ -116,7 +116,7 @@ BasicModal
                 anchors.top: parent.bottom
                 anchors.topMargin: 3
                 anchors.horizontalCenter: parent.horizontalCenter
-                color: theme.redColor
+                color: DexTheme.redColor
                 wrapMode: DexLabel.Wrap
                 width: 550
             }
