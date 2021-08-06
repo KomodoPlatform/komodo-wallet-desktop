@@ -6,7 +6,7 @@ GradientRectangle {
     id: rect
     radius: DexTheme.rectangleRadius
     color: DexTheme.backgroundColor
-    border.color: DexTheme.rectangleBorderColor
+    border.color: DexTheme.leftSidebarBorderColor
     border.width: 1
 
 }

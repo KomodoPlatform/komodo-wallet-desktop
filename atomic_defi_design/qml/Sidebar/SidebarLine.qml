@@ -30,7 +30,7 @@ Item {
 
     height: Constants.Style.sidebarLineHeight
 
-    DefaultSwitch {
+    DexSwitch {
         id: switch_input
         visible: dashboard_index === idx_dashboard_light_ui ||
                  dashboard_index === idx_dashboard_privacy_mode

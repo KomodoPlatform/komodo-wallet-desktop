@@ -101,6 +101,9 @@ QtObject {
     property color walletSidebarLeftBorderColor: backgroundColorDeep
 
 
+    property color leftSidebarBorderColor: rectangleBorderColor
+
+
 
 
  // Old Theme
