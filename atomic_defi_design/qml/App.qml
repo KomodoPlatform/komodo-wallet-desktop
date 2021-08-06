@@ -458,7 +458,10 @@ DexRectangle
             console.log("DEFINED")
         }
         for (let i in data) {
-            if (i.toString().indexOf("[int]") !== -1) {
+            if (typeof(data[i]) === "boolean") {
+                eval("App.DexTheme." + i.toString() + " = " + data[i].toString())
+            }
+            else if (i.toString().indexOf("[int]") !== -1) {
                 let real_i = i;
                 i = i.replace("[int]", "")
                 console.log("theme." + i.toString() + " = " + data[real_i] + "")

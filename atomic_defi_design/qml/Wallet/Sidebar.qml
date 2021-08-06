@@ -225,7 +225,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        visible: DexTypo.walletSidebarShadowVisibility
+        visible: DexTheme.walletSidebarShadowVisibility
         color: Constants.Style.colorWalletsSidebarDropShadow
         smooth: true
     }
