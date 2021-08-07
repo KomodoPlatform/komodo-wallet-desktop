@@ -1709,8 +1709,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "MIOTA-BEP20": {
-    "coin": "MIOTA-BEP20",
+  "IOTA-BEP20": {
+    "coin": "IOTA-BEP20",
     "name": "IOTA",
     "coinpaprika_id": "miota-iota",
     "coingecko_id": "iota",
@@ -2665,6 +2665,26 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+    "PIC": {
+    "coin": "PIC",
+    "name": "Picacoin",
+    "coinpaprika_id": "pic-picacoin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "143.198.143.180:50001"
+      },
+      {
+        "url": "134.122.120.47:50001"
+      }
+    ],
+    "explorer_url": [
+      "http://explorer.picacoin.org/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "QIAIR": {
     "coin": "QIAIR",
     "name": "Qi Airdrop Token",
@@ -3251,13 +3271,16 @@
     "coingecko_id": "qtum",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10050"
+        "url": "electrum1.cipig.net:10050",
+        "ws_url": "electrum1.cipig.net:30050"
       },
       {
-        "url": "electrum2.cipig.net:10050"
+        "url": "electrum2.cipig.net:10050",
+        "ws_url": "electrum2.cipig.net:30050"
       },
       {
-        "url": "electrum3.cipig.net:10050"
+        "url": "electrum3.cipig.net:10050",
+        "ws_url": "electrum3.cipig.net:30050"
       }
     ],
     "explorer_url": [

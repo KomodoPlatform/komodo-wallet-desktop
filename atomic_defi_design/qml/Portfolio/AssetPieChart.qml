@@ -189,56 +189,53 @@ Item {
                     }
                     width: parent.width-100
                     anchors.verticalCenter: parent.verticalCenter
-                    height: !portfolio.isUltraLarge? _pieColumn.height > 300 ? 300 : _pieColumn.height : _pieColumn.height > 550 ? 550 :_pieColumn.height
+                    height: !portfolio.isUltraLarge? _pieColumn.contentHeight > 300 ? 300 : _pieColumn.contentHeight : _pieColumn.contentHeight > 550 ? 550 :_pieColumn.contentHeight
                     Qaterial.DebugRectangle {
                         anchors.fill: parent
                         visible: false
                     }
 
                     anchors.horizontalCenter: parent.horizontalCenter
-                    Flickable {
+
+                    DexListView {
+                        id: _pieColumn
                         anchors.fill: parent
-                        contentHeight: _pieColumn.height
                         clip: true
-                        Column {
-                            id: _pieColumn
-                            width: parent.width
-                            Repeater {
-                                model: portfolio_mdl.pie_chart_proxy_mdl
-
-                                RowLayout {
-                                    id: rootItem
-                                    property color itemColor: Style.getCoinColor(
-                                                                  ticker)
-                                    width: parent.width
-                                    height: 50
-                                    spacing: 20
-                                    DexLabel {
-                                        Layout.preferredWidth: 60
-                                        text: ticker
-                                        Layout.alignment: Qt.AlignVCenter
-                                        Component.onCompleted: font.weight = Font.Medium
-                                    }
-                                    Rectangle {
-                                        Layout.alignment: Qt.AlignVCenter
-                                        Layout.fillWidth: true
-                                        height: 8
-                                        radius: 10
-                                        color: theme.dexBoxBackgroundColor
-                                        Rectangle {
-                                            height: parent.height
-                                            width: (parseFloat(percent_main_currency) * parent.width) / 100
-                                            radius: 10
-                                            color: rootItem.itemColor
-                                        }
-                                    }
-
-                                    DexLabel {
-                                        text: percent_main_currency + " %"
-                                        Component.onCompleted: font.family = 'lato'
-                                        Layout.alignment: Qt.AlignVCenter
-                                    }
+                        model: portfolio_mdl.pie_chart_proxy_mdl
+                        delegate: RowLayout {
+                            id: rootItem
+                            property color itemColor: Style.getCoinColor(
+                                                          ticker)
+                            width: _pieColumn.width
+                            height: 50
+                            spacing: 20
+                            DexLabel {
+                                Layout.preferredWidth: 60
+                                text: ticker
+                                Layout.alignment: Qt.AlignVCenter
+                                Component.onCompleted: font.weight = Font.Medium
+                            }
+                            Rectangle {
+                                Layout.alignment: Qt.AlignVCenter
+                                Layout.fillWidth: true
+                                height: 8
+                                radius: 10
+                                color: theme.dexBoxBackgroundColor
+                                Rectangle {
+                                    height: parent.height
+                                    width: (parseFloat(percent_main_currency) * parent.width) / 100
+                                    radius: 10
+                                    color: rootItem.itemColor
                                 }
+                            }
+
+                            DexLabel {
+                                
+                                text: percent_main_currency + " %"
+
+                                Layout.alignment: Qt.AlignVCenter
+                                
+                                Component.onCompleted: font.family = 'lato'
                             }
                         }
                     }
