@@ -3,12 +3,13 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
+import App 1.0
 
 Item {
     anchors.fill: parent
     Rectangle {
         anchors.fill: parent
-        color: app.globalTheme.surfaceColor
+        color: DexTheme.surfaceColor
     }
     Item {
         width: parent.width
@@ -22,30 +23,36 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             gradient: Gradient {
                 orientation: Qt.Horizontal
-                GradientStop { position: 0.0; color: "transparent"}
-                GradientStop { position: 0.6; color: "transparent" }
-                GradientStop { position: 1.0; color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9) }
+                GradientStop {
+                    position: 0.0;color: "transparent"
+                }
+                GradientStop {
+                    position: 0.6;color: "transparent"
+                }
+                GradientStop {
+                    position: 1.0;color: Qt.darker(DexTheme.dexBoxBackgroundColor, 0.9)
+                }
             }
         }
         MouseArea {
             onPressed: window.startSystemMove();
             anchors.fill: parent
-            anchors.rightMargin: window.isOsx? 280 : 0
+            anchors.rightMargin: window.isOsx ? 280 : 0
             onDoubleClicked: {
-                if(window.visibility===ApplicationWindow.Maximized){
+                if (window.visibility === ApplicationWindow.Maximized) {
                     window.showNormal()
-                }else {
+                } else {
                     window.showMaximized()
                 }
             }
         }
         DexWindowHeaderControl {
-            visible: !window.isOsx //Qt.platform.os == "windows" || "linux"
+            visible: !window.isOsx
         }
         DexMacosHeaderControl {
-            visible: window.isOsx//Qt.platform.os == "osx"
+            visible: window.isOsx
         }
-        
+
     }
     Item {
         id: _left_resize
@@ -76,7 +83,6 @@ Item {
         anchors.bottom: parent.bottom
         MouseArea {
             onPressed: if (active) window.startSystemResize(Qt.BottomEdge)
-            //target: null
             anchors.fill: parent
             cursorShape: "SizeVerCursor"
         }
@@ -87,7 +93,6 @@ Item {
         width: parent.width
         MouseArea {
             onPressed: window.startSystemResize(Qt.TopEdge)
-            //target: null
             anchors.fill: parent
             cursorShape: "SizeVerCursor"
         }

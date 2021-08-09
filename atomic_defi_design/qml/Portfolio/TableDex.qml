@@ -13,6 +13,7 @@ import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 Item {
     property alias innerList: list
@@ -28,7 +29,7 @@ Item {
         Rectangle {
             width: parent.width
             height: 60
-            color:  Qt.darker(theme.backgroundColor, 0.8)
+            color:  Qt.darker(DexTheme.backgroundColor, 0.8)
             RowLayout {
                 anchors.fill: parent
                 Item {
@@ -141,7 +142,7 @@ Item {
 
             delegate: AnimatedRectangle {
                 color: Qt.lighter(
-                           mouse_area.containsMouse ? theme.hightlightColor : index % 2 !== 0 ? Qt.darker(theme.backgroundColor, 0.8) : "transparent",
+                           mouse_area.containsMouse ? DexTheme.hightlightColor : index % 2 !== 0 ? Qt.darker(DexTheme.backgroundColor, 0.8) : "transparent",
                            mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
                 width: list.width
                 height: 65
@@ -205,7 +206,7 @@ Item {
                             id: coin_name
                             text_value: name
                             bottomPadding: 20
-                            font: theme.textType.body2
+                            font: DexTypo.body2
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DefaultText {
@@ -213,7 +214,7 @@ Item {
                             anchors.bottom: coin_name.bottom
 
                             text: model.type
-                            font: theme.textType.overLine
+                            font: DexTypo.overLine
                             opacity: .7
                             color: Style.getCoinTypeColor(model.type)
                         }
@@ -227,13 +228,13 @@ Item {
                         }
                         DefaultText {
                             id: balance_value
-                            font: theme.textType.body2
+                            font: DexTypo.body2
 
                             text_value: General.formatCrypto(
                                             "", balance, ticker,
                                             main_currency_balance,
                                             API.app.settings_pg.current_currency)
-                            color: Qt.darker(theme.foregroundColor, 0.8)
+                            color: Qt.darker(DexTheme.foregroundColor, 0.8)
                             anchors.verticalCenter: parent.verticalCenter
                             privacy: true
                         }
@@ -248,7 +249,7 @@ Item {
                         }
                         DefaultText {
                             id: change_24h_value
-                            font: theme.textType.body2
+                            font: DexTypo.body2
                             text_value: {
                                 const v = parseFloat(change_24h)
                                 return v === 0 ? '-' : General.formatPercent(
@@ -298,13 +299,13 @@ Item {
                             id: price_value
                             anchors.right: parent.right
                             anchors.rightMargin: 10
-                            font: theme.textType.body2
+                            font: DexTypo.body2
 
                             text_value: General.formatFiat(
                                             '',
                                             main_currency_price_for_one_unit,
                                             API.app.settings_pg.current_currency)
-                            color: theme.colorThemeDarkLight
+                            color: DexTheme.colorThemeDarkLight
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DefaultImage {
@@ -329,7 +330,7 @@ Item {
                     width: parent.width-2
                     height: parent.height-2
                     color: 'transparent'
-                    border.color: theme.foregroundColor
+                    border.color: DexTheme.foregroundColor
                     opacity: .15
                     radius: 4
                 }

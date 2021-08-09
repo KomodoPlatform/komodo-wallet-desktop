@@ -4,7 +4,7 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
 
-import "../Constants"
+import App 1.0
 
 RowLayout {
     width: 120
@@ -22,7 +22,7 @@ RowLayout {
         opacity: .7
         Layout.preferredWidth: 40
         Layout.fillHeight: true
-        foregroundColor: app.globalTheme.foregroundColor
+        foregroundColor: DexTheme.foregroundColor
         icon.source: Qaterial.Icons.windowMinimize
         onClicked: window.showMinimized()
 
@@ -36,16 +36,16 @@ RowLayout {
         opacity: .7
         Layout.preferredWidth: 40
         Layout.fillHeight: true
-        foregroundColor: app.globalTheme.foregroundColor
+        foregroundColor: DexTheme.foregroundColor
         onClicked: {
-            if(window.visibility==ApplicationWindow.Maximized){
+            if (window.visibility == ApplicationWindow.Maximized) {
                 showNormal()
-            }else {
+            } else {
                 showMaximized()
             }
         }
 
-        icon.source: window.visibility===ApplicationWindow.Maximized? Qaterial.Icons.dockWindow : Qaterial.Icons.windowMaximize
+        icon.source: window.visibility === ApplicationWindow.Maximized ? Qaterial.Icons.dockWindow : Qaterial.Icons.windowMaximize
     }
     Qaterial.FlatButton {
         topInset: 0
@@ -57,7 +57,7 @@ RowLayout {
         accentRipple: Qaterial.Colors.red
         Layout.preferredWidth: 40
         Layout.fillHeight: true
-        foregroundColor: app.globalTheme.foregroundColor
+        foregroundColor: DexTheme.foregroundColor
         icon.source: Qaterial.Icons.windowClose
         onClicked: Qt.quit()
     }

@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "../Constants"
+import App 1.0
 
 TextEdit {
     property string text_value
@@ -12,9 +13,9 @@ TextEdit {
     selectByMouse: true
     readOnly: true
 
-    selectedTextColor: theme.textSelectedColor
-    selectionColor: theme.textSelectionColor
-    color: theme.foregroundColor
+    selectedTextColor: DexTheme.textSelectedColor
+    selectionColor: DexTheme.textSelectionColor
+    color: DexTheme.foregroundColor
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 

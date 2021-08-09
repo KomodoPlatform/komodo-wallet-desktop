@@ -2,8 +2,9 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 
 // Content
 ColumnLayout {
@@ -99,8 +100,8 @@ ColumnLayout {
 
     function getTimeText(duration, estimated) {
         return `<font color="${Style.colorGreen}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
-            `<font color="${Style.colorText}">` + General.durationTextShort(duration) + `</font>` +
-            `<font color="${Style.colorTextDisabled}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
+            `<font color="${DexTheme.foregroundColorLightColor0}">` + General.durationTextShort(duration) + `</font>` +
+            `<font color="${DexTheme.foregroundColorLightColor2}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
             General.durationTextShort(estimated) + `</font>`
     }
 
@@ -108,8 +109,8 @@ ColumnLayout {
 
     // Title
     DefaultText {
-        text_value: `<font color="${Style.colorText}">` + qsTr("Progress details") + `</font>` +
-            `<font color="${Style.colorTextDisabled}"> | </font>` +
+        text_value: `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr("Progress details") + `</font>` +
+            `<font color="${DexTheme.foregroundColorLightColor2}"> | </font>` +
             getTimeText(total_time_passed + simulated_time, total_time_passed_estimated)
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
@@ -161,7 +162,7 @@ ColumnLayout {
                         return Style.colorOrange
 
                     // Passive color for the rest
-                    return Style.colorTextDisabled
+                    return DexTheme.foregroundColorLightColor2
                 }
             }
 
@@ -179,7 +180,7 @@ ColumnLayout {
                     font.pixelSize: Style.textSizeSmall4
 
                     text_value: getEventText(modelData)
-                    color: event ? Style.colorText : is_current_event ? Style.colorText2 : Style.colorTextDisabled
+                    color: event ? DexTheme.foregroundColor : is_current_event ? DexTheme.foregroundColorLightColor0 : DexTheme.foregroundColorLightColor2 
                 }
 
                 AnimatedRectangle {
@@ -188,7 +189,7 @@ ColumnLayout {
                     width: 300
                     height: 2
 
-                    color: Style.colorWhite8
+                    color: DexTheme.foregroundColorDarkColor3 
 
                     AnimatedRectangle {
                         width: parent.width * (total_time_passed > 0 ? (time_passed / (total_time_passed + simulated_time)) : 0)

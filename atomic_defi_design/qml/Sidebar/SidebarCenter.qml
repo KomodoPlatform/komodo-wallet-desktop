@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../Constants"
+import App 1.0
 import "../Components"
 
 ColumnLayout {
@@ -85,18 +86,4 @@ ColumnLayout {
             visible: parent.mouse_area.containsMouse
         }
     }
-
-//    SidebarLine {
-//        dashboard_index: idx_dashboard_news
-//        text_value: qsTr("News")
-//        image: General.image_path + "menu-news-white.svg"
-//        Layout.fillWidth: true
-//    }
-
-//    SidebarLine {
-//        dashboard_index: idx_dashboard_dapps
-//        text_value: qsTr("Dapps")
-//        image: General.image_path + "menu-dapp-white.svg"
-//        Layout.fillWidth: true
-//    }
 }

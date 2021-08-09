@@ -427,6 +427,8 @@
         <file>atomic_defi_design/qml/Components/WalletNameField.qml</file>
         <file>atomic_defi_design/qml/Constants</file>
         <file>atomic_defi_design/qml/Constants/API.qml</file>
+        <file>atomic_defi_design/qml/Constants/DexTheme.qml</file>
+        <file>atomic_defi_design/qml/Constants/DexTypo.qml</file>
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
@@ -462,6 +464,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/List.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.js</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/NavigationLabel.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Trade.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/CoinsListModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/BestOrdersModal.qml</file>
@@ -494,6 +497,7 @@
         <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Settings/RecoverSeedModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/SettingsButton.qml</file>
         <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Settings.qml</file>
         <file>atomic_defi_design/qml/Sidebar/Sidebar.qml</file>

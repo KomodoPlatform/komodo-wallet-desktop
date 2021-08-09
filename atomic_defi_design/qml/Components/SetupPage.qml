@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 
 Item {
     id: _control
@@ -11,8 +12,8 @@ Item {
     property alias content: inner_space.sourceComponent
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
-    property string backgroundColor: theme.dexBoxBackgroundColor
-    property string borderColor: theme.rectangleBorderColor
+    property string backgroundColor: DexTheme.dexBoxBackgroundColor
+    property string borderColor: DexTheme.rectangleBorderColor
     ColumnLayout {
         id: window_layout
 

@@ -9,9 +9,11 @@ import Qaterial 1.0 as Qaterial
 
 //! Project Imports
 import "../../../Components"
-import "../../../Constants"   //> Style
+import "../../../Constants" as Constants  //> Style
 import "../Orders" as Orders
 import "Main.js" as Main
+
+import App 1.0 
 
 Item {
     id: _subHistoryRoot
@@ -85,14 +87,14 @@ Item {
             DefaultText // Title
             {
                 text: qsTr("History")
-                font.pixelSize: Style.textSize1
+                font.pixelSize: Constants.Style.textSize1
             }
 
             DexLabel // Description
             {
                 width: _subHistoryRoot.width - 40
                 anchors.topMargin: 12
-                font.pixelSize: Style.textSizeSmall4
+                font.pixelSize: Constants.Style.textSizeSmall4
                 DexLabel {
                     opacity: .4
                     text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
@@ -110,6 +112,8 @@ Item {
                     anchors.rightMargin: -5
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
+
+                    foregroundColor: DexTheme.foregroundColor
 
                     icon.source: _subHistoryRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.filter
 
@@ -141,29 +145,29 @@ Item {
             }
             DexRectangle {
                 anchors.fill: parent 
-                color: theme.dexBoxBackgroundColor
+                color: DexTheme.dexBoxBackgroundColor
                 opacity: .8
                 visible: _subHistoryRoot.displayFilter
                 border.width: 0
             }
             DexRectangle {
                 width: parent.width
-                height: _subHistoryRoot.displayFilter? 330 : 60
+                height: _subHistoryRoot.displayFilter ? 330 : 60
                 visible: height>100
                 sizeAnimation: true
-                color: theme.dexBoxBackgroundColor
+                color: DexTheme.dexBoxBackgroundColor
                 radius: 0
                 y: -20
                 Column {
                     anchors.horizontalCenter: parent.horizontalCenter
                     leftPadding: 15 
                     rightPadding: 15
-                    visible: parent.height>250
+                    visible: parent.height > 250
                     DexLabel {
                         text: qsTr("Filter settings")
                         topPadding: 10
                         leftPadding: 10
-                        font: _font.body1
+                        font: DexTypo.body1
                     }
                     RowLayout {
                         width: main_order.width - 30
@@ -173,7 +177,7 @@ Item {
                         DexLabel {
                             text: qsTr("Base Ticker")
                             leftPadding: 10
-                            font: _font.body2
+                            font: DexTypo.body2
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
                             opacity: .6
@@ -196,7 +200,7 @@ Item {
                         DexLabel {
                             text: qsTr("Rel Ticker")
                             leftPadding: 10
-                            font: _font.body2
+                            font: DexTypo.body2
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
                             opacity: .6
@@ -223,6 +227,7 @@ Item {
                         width: parent.width - 50
                         height: 60
                         opacity: .8
+                        color: DexTheme.foregroundColor
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -238,6 +243,7 @@ Item {
                         rightInset: 0
                         height: 60
                         opacity: .8
+                        color: DexTheme.foregroundColor
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
@@ -262,7 +268,7 @@ Item {
                             id: applyButton
                             height: 35
                             anchors.verticalCenter: parent.verticalCenter
-                            backgroundColor: Qaterial.Colors.lightGreen700
+                            backgroundColor: containsMouse ? Qaterial.Colors.lightGreen500 : Qaterial.Colors.lightGreen700
                             text: qsTr("Apply filter")
                             onClicked: {
                                 _subHistoryRoot.displayFilter = false
@@ -287,7 +293,7 @@ Item {
                 width: parent.width
                 height: 50
                 y: -20
-                DefaultComboBox {
+                DexComboBox {
                     readonly property int item_count: API.app.orders_mdl.limit_nb_elements
                     readonly property var options: [5, 10, 25, 50, 100, 200]
                     anchors.verticalCenter: parent.verticalCenter

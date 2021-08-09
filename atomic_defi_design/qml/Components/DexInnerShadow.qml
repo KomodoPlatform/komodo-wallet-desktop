@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtGraphicalEffects 1.0
 import "../Constants"
+import App 1.0
 
 InnerShadow {
     cached: false
@@ -8,6 +9,6 @@ InnerShadow {
     verticalOffset: 0.7
     radius: 13
     samples: 32
-    color: theme.innerShadowColor
+    color: DexTheme.innerShadowColor
     smooth: true
 }

@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15 //> ItemDelegate
 
 //! Project Imports
 import "../../../Components" //> BasicModal
-import "../../../Constants"  //> API
+import "../../../Constants"  as Constants // API
 
 BasicModal
 {
@@ -20,7 +20,7 @@ BasicModal
     property int    _fiatVolumeColumnSize: 50
     property int    _cexRateColumnSize: 50
 
-    onOpened: API.app.trading_pg.orderbook.refresh_best_orders()
+    onOpened: Constants.API.app.trading_pg.orderbook.refresh_best_orders()
     id: root
     width: 800
     ModalContent
@@ -28,10 +28,10 @@ BasicModal
         title: qsTr("Best Orders")
         DefaultListView
         {
-            enabled: !API.app.trading_pg.orderbook.best_orders_busy
+            enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
             Layout.preferredHeight: 450
             Layout.fillWidth: true
-            model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+            model: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl
             header: Item // Best orders list header
             {
                 width: _rowWidth
@@ -128,7 +128,7 @@ BasicModal
                     DefaultText                         // Order Fiat Volume
                     {
                         Layout.preferredWidth: _fiatVolumeColumnSize
-                        text: price_fiat+API.app.settings_pg.current_fiat_sign
+                        text: price_fiat + Constants.API.app.settings_pg.current_fiat_sign
                     }
                     VerticalLine { Layout.preferredHeight: parent.parent.height }
                     DefaultText
@@ -153,7 +153,7 @@ BasicModal
                                 if (link==="#no") _tooltip.close()
                                 else
                                 {
-                                    if (API.app.enable_coins([coin]) === true) _tooltip.close()
+                                    if (Constants.API.app.enable_coins([coin]) === true) _tooltip.close()
                                     else cannot_enable_coin_modal.open()
                                 }
                             }
@@ -169,7 +169,7 @@ BasicModal
                 }
                 onClicked:
                 {
-                    if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled) _tooltip.open()
+                    if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled) _tooltip.open()
                     else selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume }
                 }
             }
@@ -194,7 +194,7 @@ BasicModal
             },
             PrimaryButton
             {
-                enabled: !API.app.trading_pg.orderbook.best_orders_busy
+                enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
                 Layout.fillWidth: true
                 text: qsTr("Refresh")
                 onClicked: API.app.trading_pg.orderbook.refresh_best_orders()

@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     readonly property var claiming_faucet_rpc_result: api_wallet_page.claiming_faucet_rpc_data

@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts 1.12
+import App 1.0
 
 Popup {
     id: dialog
@@ -17,7 +18,7 @@ Popup {
     Overlay.modal: Item {
         DexRectangle {
             anchors.fill: parent
-            color: Qt.darker(theme.dexBoxBackgroundColor)
+            color: Qt.darker(DexTheme.dexBoxBackgroundColor)
             opacity: .8
         }
     }
@@ -33,7 +34,8 @@ Popup {
     signal reset()
     signal checkValidator()
 
-    property var validator: undefined
+    property
+    var validator: undefined
 
     property string title: ""
     property string text: ""
@@ -54,7 +56,7 @@ Popup {
         DexRectangle {
             anchors.fill: parent
             radius: 4
-            color: theme.surfaceColor
+            color: DexTheme.surfaceColor
         }
     }
 
@@ -82,8 +84,8 @@ Popup {
                     width: parent.width
                     wrapMode: Label.Wrap
                     leftPadding: 5
-                    font: theme.textType.body1
-                    color: theme.foregroundColor
+                    font: DexTypo.body1
+                    color: DexTheme.foregroundColor
                     anchors.verticalCenter: parent.verticalCenter
                     text: dialog.title
                 }
@@ -105,6 +107,8 @@ Popup {
                         icon.color: dialog.iconColor
                         width: parent.width
 
+                        color: DexTheme.foregroundColor
+
                         text: dialog.text
                         wrapMode: Text.WordWrap
                         horizontalAlignment: Label.AlignLeft
@@ -124,17 +128,19 @@ Popup {
                         height: 45
                         error: false
                         visible: dialog.getText
-                        defaultBorderColor: theme.dexBoxBackgroundColor
-                        placeholderText: dialog.placeholderText
+                        defaultBorderColor: DexTheme.dexBoxBackgroundColor
                         background.border.width: 1
-                        field.font: theme.textType.body2
+                        field.font: DexTypo.body2
+                        placeholderText: dialog.placeholderText
                         field.placeholderText: ""
                         field.rightPadding: dialog.isPassword ? 55 : 20
                         field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
-                        
+
                         field.onAccepted: {
-                            dialog.accepted(field.text)
+                            if(dialog.enableAcceptButton) {
+                                dialog.accepted(field.text)
+                            }
                         }
 
                         DexRectangle {
@@ -143,13 +149,13 @@ Popup {
                             height: 40
                             width: 60
                             radius: 20
-                            color: theme.accentColor
+                            color: DexTheme.accentColor
                             anchors.verticalCenter: parent.verticalCenter
                             Qaterial.ColorIcon {
                                 anchors.centerIn: parent
                                 iconSize: 19
                                 source: Qaterial.Icons.keyVariant
-                                color: theme.surfaceColor
+                                color: DexTheme.surfaceColor
                             }
 
                         }
@@ -158,7 +164,7 @@ Popup {
                             opacity: .8
                             icon {
                                 source: _insideField.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                                color: _insideField.field.focus ? _insideField.background.border.color : theme.accentColor
+                                color: _insideField.field.focus ? _insideField.background.border.color : DexTheme.accentColor
                             }
                             anchors {
                                 verticalCenter: parent.verticalCenter
@@ -180,7 +186,7 @@ Popup {
                 id: _dialogButtonBox
                 visible: standardButtons !== Dialog.NoButton
                 standardButtons: dialog.standardButtons
-                width: parent.width-2
+                width: parent.width - 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 60
                 alignment: Qt.AlignRight
@@ -209,16 +215,16 @@ Popup {
                 onReset: dialog.reset()
                 topPadding: 25
                 background: Rectangle {
-                    color: theme.dexBoxBackgroundColor
+                    color: DexTheme.dexBoxBackgroundColor
                 }
                 delegate: Qaterial.Button {
                     id: _dialogManagerButton
                     flat: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole
                     bottomInset: 0
                     topInset: 0
-                    opacity: enabled ?  1 : .6
+                    opacity: enabled ? 1 : .6
                     enabled: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? true : dialog.enableAcceptButton
-                    backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? theme.redColor : theme.accentColor
+                    backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? DexTheme.redColor : DexTheme.accentColor
                     property alias cursorShape: mouseArea.cursorShape
                     Component.onCompleted: {
                         if (text === "Yes" && dialog.yesButtonText !== "") {

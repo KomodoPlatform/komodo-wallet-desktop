@@ -7,8 +7,9 @@ import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 
 import "../../../Components"
-import "../../../Constants"
 import "../../../Wallet"
+
+import App 1.0
 
 Item {
     property alias can_submit_trade: form_base.can_submit_trade

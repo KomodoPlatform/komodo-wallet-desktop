@@ -5,7 +5,7 @@
  "barColor": "#23273c",
  "bigSidebarLogo": "dex-logo-sidebar.png",
  "buttonColorDisabled": "#0e1021",
- "buttonColorEnabled": "#15182a",
+ "buttonColorEnabled": "#2b6680",
  "buttonColorHovered": "#22263a",
  "buttonColorTextDisabled": "#555555",
  "buttonColorTextEnabled": "#ffffff",
@@ -42,5 +42,8 @@
  "textPlaceHolderColor": "#444444",
  "textSelectedColor": "#0e1021",
  "textSelectionColor": "#14bca6",
- "whiteblack": "#ffffff"
- }
+ "whiteblack": "#ffffff",
+ "rectangleBorderColor": "#23273c",
+ "leftSidebarBorderColor": "transparent",
+ "theme":"dark"
+}

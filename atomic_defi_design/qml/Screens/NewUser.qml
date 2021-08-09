@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 SetupPage {
     id: new_user
@@ -143,6 +144,7 @@ SetupPage {
             spacing: 10
             Qaterial.AppBarButton {
                 icon.source: Qaterial.Icons.arrowLeft
+                foregroundColor: DexTheme.foregroundColor
                 Layout.alignment: Qt.AlignVCenter
                 onClicked: {
                     if (currentStep === 0) {
@@ -164,7 +166,7 @@ SetupPage {
             }
 
             DexLabel {
-                font: theme.textType.head6
+                font: DexTypo.head6
                 text_value: if (currentStep === 0) {
                     qsTr("New Wallet")
                 } else if (currentStep === 1) {
@@ -241,9 +243,9 @@ SetupPage {
                 opacity: enabled ? 1 : .5
                 background.border.width: 1
                 background.radius: 25
-                background.border.color: field.focus ? theme.accentColor : Style.colorBorder
+                background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
                 field.onAccepted: completeForm()
-                field.font: theme.textType.head6
+                field.font: DexTypo.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: "Wallet Name"
@@ -253,13 +255,13 @@ SetupPage {
                     height: 40
                     width: 60
                     radius: 20
-                    color: theme.accentColor
+                    color: DexTheme.accentColor
                     anchors.verticalCenter: parent.verticalCenter
                     Qaterial.ColorIcon {
                         anchors.centerIn: parent
                         iconSize: 19
                         source: Qaterial.Icons.wallet
-                        color: theme.surfaceColor
+                        color: DexTheme.surfaceColor
                     }
 
                 }
@@ -268,7 +270,7 @@ SetupPage {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
-                color: Style.colorRed3
+                color: DexTheme.redColor
                 height: warning_texts.height + 20
 
                 Column {
@@ -279,14 +281,15 @@ SetupPage {
 
                     spacing: 10
 
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: qsTr("Important: Back up your seed phrase before proceeding!")
+                        color: Style.colorWhite4
                     }
 
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -308,7 +311,7 @@ SetupPage {
                     width: parent.width
                     DexLabel {
                         text: qsTr("Generated Seed")
-                        font: theme.textType.body1
+                        font: DexTypo.body1
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignVCenter
                     }
@@ -334,12 +337,13 @@ SetupPage {
                             delegate: DexRectangle {
                                 width: (_insideFlow.width - 30) / 4
                                 height: _insideLabel.implicitHeight + 15
-                                color: theme.accentColor
-                                opacity: .5
+                                color: DexTheme.accentColor
+                                opacity: .8
                                 DexLabel {
                                     id: _insideLabel
                                     text: (index + 1) + ". " + modelData
-                                    font: theme.textType.body2
+                                    font: DexTypo.body2
+                                    color: DexTheme.backgroundColor
                                     anchors.centerIn: parent
                                 }
                             }
@@ -372,7 +376,6 @@ SetupPage {
                     }
                     radius: 20
                     opacity: enabled ? 1 : .4
-                    backgroundColor: theme.accentColor
                     Layout.preferredWidth: _nextRow.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -382,11 +385,13 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Next")
-                            font: theme.textType.button
+                            font: DexTypo.button
+                            color: nextButton.foregroundColor
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
                             anchors.verticalCenter: parent.verticalCenter
+                            color: nextButton.foregroundColor
                             source: Qaterial.Icons.arrowRight
                             iconSize: 14
                         }
@@ -396,7 +401,7 @@ SetupPage {
 
             DefaultText {
                 text_value: text_error
-                color: Style.colorRed
+                color: DexTheme.redColor
                 visible: text !== ''
             }
         }
@@ -410,7 +415,7 @@ SetupPage {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
-                height: 120
+                height: 140
 
                 Column {
                     id: warning_texts_2
@@ -420,21 +425,24 @@ SetupPage {
 
                     spacing: 5
 
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
+                        font {
+                            bold: true
+                        }
                         text_value: qsTr("Let's double check your seed phrase")
                     }
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.")
                         font.pixelSize: Style.textSizeSmall4
-                        color: Style.colorWhite4
+                        color: DexTheme.foregroundColorLightColor2
                     }
                 }
             }
-            
+
             Column {
                 Layout.fillWidth: true
                 spacing: 5
@@ -449,25 +457,14 @@ SetupPage {
                         Repeater {
                             id: mmo
                             model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
-                            delegate: DexRectangle {
+                            delegate: DexAppButton {
                                 width: (_insideFlow2.width - 30) / 4
-                                height: _insideLabel.implicitHeight + 15
-                                color: theme.accentColor
+                                color: DexTheme.accentColor
                                 opacity: _areaSelect.containsMouse ? 1 : .6
-                                DexLabel {
-                                    id: _insideLabel
-                                    text: modelData ?? ""
-                                    font: theme.textType.body1
-                                    anchors.centerIn: parent
-                                }
-                                DexMouseArea {
-                                    id: _areaSelect
-                                    hoverEnabled: true
-                                    anchors.fill: parent
-                                    onClicked: {
-                                        input_seed_word.field.text = modelData
-                                        tryGuess()
-                                    }
+                                text: modelData ?? ""
+                                onClicked: {
+                                    input_seed_word.field.text = modelData
+                                    tryGuess()
                                 }
                             }
                         }
@@ -487,11 +484,13 @@ SetupPage {
                 opacity: enabled ? 1 : .5
                 background.border.width: 1
                 background.radius: 25
-                field.font: theme.textType.head6
+                field.font: DexTypo.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
-                field.validator: RegExpValidator { regExp: /[a-z]+/ }
+                field.validator: RegExpValidator {
+                    regExp: /[a-z]+/
+                }
                 field.onAccepted: tryGuess()
 
                 DexRectangle {
@@ -499,11 +498,12 @@ SetupPage {
                     height: 40
                     width: 60
                     radius: 20
-                    color: theme.accentColor
+                    color: DexTheme.accentColor
                     anchors.verticalCenter: parent.verticalCenter
                     DexLabel {
                         anchors.centerIn: parent
-                        font: theme.textType.head6
+                        font: DexTypo.head6
+                        color: DexTheme.backgroundColor
                         text: current_word_idx + 1
                     }
 
@@ -524,11 +524,11 @@ SetupPage {
                     Layout.preferredHeight: 10
                 }
                 DexAppButton {
+                    id: checkForNext
                     enabled: validGuessField(input_seed_word.field)
                     opacity: enabled ? 1 : .4
                     onClicked: tryGuess()
                     radius: 20
-                    backgroundColor: theme.accentColor
                     Layout.preferredWidth: _nextRow3.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -538,11 +538,13 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Check")
-                            font: theme.textType.button
+                            font: DexTypo.button
+                            color: checkForNext.foregroundColor
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
                             anchors.verticalCenter: parent.verticalCenter
+                            color: checkForNext.foregroundColor
                             source: Qaterial.Icons.check
                             iconSize: 14
                         }
@@ -552,7 +554,7 @@ SetupPage {
 
             DefaultText {
                 text_value: guess_text_error
-                color: Style.colorRed
+                color: DexTheme.redColor
                 visible: input_seed_word.error
                 DexVisibleBehavior on visible {}
             }
@@ -577,7 +579,7 @@ SetupPage {
                 Layout.leftMargin: 20
                 match_password: _inputPasswordConfirm.field.text
             }
-            
+
             DexAppPasswordField {
                 id: _inputPasswordConfirm
                 Layout.fillWidth: true
@@ -598,11 +600,11 @@ SetupPage {
                 }
 
                 DexAppButton {
+                    id: finalRegisterButton
                     enabled: _keyChecker.isValid()
                     opacity: enabled ? 1 : .4
                     onClicked: eula_modal.open()
                     radius: 20
-                    backgroundColor: theme.accentColor
                     Layout.preferredWidth: _nextRow2.implicitWidth + 40
                     Layout.preferredHeight: 45
                     label.color: 'transparent'
@@ -612,12 +614,14 @@ SetupPage {
                         spacing: 10
                         DexLabel {
                             text: qsTr("Continue")
-                            font: theme.textType.button
+                            font: DexTypo.button
+                            color: finalRegisterButton.foregroundColor
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Qaterial.ColorIcon {
                             anchors.verticalCenter: parent.verticalCenter
                             source: Qaterial.Icons.arrowRight
+                            color: finalRegisterButton.foregroundColor
                             iconSize: 14
                         }
                     }
@@ -626,7 +630,7 @@ SetupPage {
 
             DefaultText {
                 text_value: text_error
-                color: Style.colorRed
+                color: DexTheme.redColor
                 visible: text !== ''
             }
         }

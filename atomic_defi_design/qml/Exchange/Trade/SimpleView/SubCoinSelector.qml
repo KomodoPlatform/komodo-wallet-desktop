@@ -6,9 +6,11 @@ import QtQuick.Controls 2.15 //> ItemDelegate
 // 3rdParty
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 //! Project Imports
 import "../../../Components" //> BasicModal
-import "../../../Constants"  //> API
+import "../../../Constants" as Constants //> API
 
 DefaultListView
 {
@@ -20,7 +22,7 @@ DefaultListView
 
     signal          tickerSelected(var ticker)
 
-    model: API.app.trading_pg.market_pairs_mdl.left_selection_box
+    model: Constants.API.app.trading_pg.market_pairs_mdl.left_selection_box
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
@@ -31,7 +33,7 @@ DefaultListView
         width: _rowWidth
         height: _rowHeight
         border.color: 'transparent'
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.dexBoxBackgroundColor
         radius: 0
 
         RowLayout                   // Coins Columns Name
@@ -49,7 +51,7 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
                 DexMouseArea
                 {
                 	anchors.fill: parent
@@ -71,7 +73,7 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {
@@ -93,7 +95,7 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? theme.accentColor : theme.foregroundColor 
+                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {

@@ -1,10 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 Slider {
     id: control
     value: 0.5
-    opacity: enabled? 1 : .5
+    opacity: enabled ? 1 : .5
 
     background: Rectangle {
         x: control.leftPadding
@@ -19,7 +20,7 @@ Slider {
         Rectangle {
             width: control.visualPosition * parent.width
             height: parent.height
-            color: Style.colorGreen
+            color: DexTheme.accentColor
             radius: 2
         }
     }
@@ -34,8 +35,7 @@ Slider {
             width: 10
             height: 10
             radius: 10
-            color: Style.colorGreen
+            color: DexTheme.accentColor
         }
-        //border.color: "#bdbebf"
     }
 }
