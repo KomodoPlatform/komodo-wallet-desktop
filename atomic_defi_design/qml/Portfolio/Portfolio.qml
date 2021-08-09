@@ -13,6 +13,7 @@ import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 // Portfolio
 Item {
@@ -197,9 +198,8 @@ Item {
 
                             placeholderText: qsTr("Search")
 
-                            onTextChanged: {
-                                portfolio_coins.setFilterFixedString(text)
-                            }
+                            onTextChanged: portfolio_coins.setFilterFixedString(text)
+                            Component.onDestruction: portfolio_coins.setFilterFixedString("")
 
                             width: 120
                         }
@@ -227,37 +227,32 @@ Item {
             anchors.fill: parent
             anchors.leftMargin: 40
             anchors.rightMargin: 40
+            
             Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                
                 DexLabel {
-                    font: theme.textType.head4
+                    font: DexTypo.head4
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Portfolio")
                 }
             }
+
             Item {
 
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    Qaterial.ExtendedFabButton {
+                    
+                    DexAppButton {
                         width: 250
-                        backgroundColor: theme.accentColor
-                        foregroundColor: theme.foregroundColor
-                        Row {
-                            anchors.centerIn: parent
-                            spacing: 6
-                            Qaterial.ColorIcon {
-                                source: Qaterial.Icons.plus
-                                color: theme.foregroundColor
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            DexLabel {
-                                text: qsTr("Add asset")
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
+                        iconSource: Qaterial.Icons.plus
+                        radius: 40
+                        leftPadding: 45
+                        rightPadding: 45
+                        padding: 20
+                        text: qsTr("Add asset")
                         onClicked: enable_coin_modal.open()
                     }
                 }

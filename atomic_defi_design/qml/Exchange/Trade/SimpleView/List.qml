@@ -6,9 +6,11 @@ import QtQuick.Controls 2.15
 //! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 //! Project Imports
 import "../../../Components"
-import "../../../Constants"   //> Style
+import "../../../Constants" as Constants  //> Style
 import "../Orders" as Orders
 import "Main.js" as Main
 
@@ -29,8 +31,8 @@ DexListView {
         radius: 1
         Rectangle {
             anchors.fill: parent
-            color: order_mouse_area.containsMouse? theme.surfaceColor : 'transparent'
-            border.color: theme.surfaceColor
+            color: order_mouse_area.containsMouse? DexTheme.surfaceColor : 'transparent'
+            border.color: DexTheme.surfaceColor
             border.width: expanded? 1 : 0
         }
         DexMouseArea {
@@ -74,8 +76,8 @@ DexListView {
                     id: base_icon
                     source: General.coinIcon(!details ? atomic_app_primary_coin :
                                                         details.base_coin?? atomic_app_primary_coin)
-                    Layout.preferredWidth: Style.textSize1
-                    Layout.preferredHeight: Style.textSize1
+                    Layout.preferredWidth: Constants.Style.textSize1
+                    Layout.preferredHeight: Constants.Style.textSize1
                     Layout.alignment: Qt.AlignVCenter
                 }
                 DefaultText {
@@ -126,8 +128,8 @@ DexListView {
                                                         details.rel_coin?? atomic_app_secondary_coin)
 
                     width: base_icon.width
-                    Layout.preferredWidth: Style.textSize1
-                    Layout.preferredHeight: Style.textSize1
+                    Layout.preferredWidth: Constants.Style.textSize1
+                    Layout.preferredHeight: Constants.Style.textSize1
                     Layout.alignment: Qt.AlignVCenter
                 }
                 Item {
@@ -225,7 +227,7 @@ DexListView {
                         contentItem: ColumnLayout {
                             DexLabel {
                                 text_value: qsTr("Funds are recoverable")
-                                font.pixelSize: Style.textSizeSmall4
+                                font.pixelSize: Constants.Style.textSizeSmall4
                             }
                         }
                     }
@@ -241,7 +243,7 @@ DexListView {
                     Layout.fillHeight: true 
                     bottomInset: 0
                     topInset: 0
-                    outlinedColor: theme.redColor
+                    outlinedColor: DexTheme.redColor
                     visible: (!main_order.is_history? details.cancellable?? false : false)===true? (order_mouse_area.containsMouse || hovered)? true : false : false
                     onClicked: { if(details) cancelOrder(details.order_id) }
                     Row {
@@ -251,12 +253,12 @@ DexListView {
                             anchors.verticalCenter: parent.verticalCenter
                             source: Qaterial.Icons.close
                             iconSize: 17
-                            color: theme.redColor
+                            color: DexTheme.redColor
                         }
                         DexLabel {
                             anchors.verticalCenter: parent.verticalCenter
                             text: "Cancel "
-                            color: theme.redColor
+                            color: DexTheme.redColor
                         }
                     }
                 }

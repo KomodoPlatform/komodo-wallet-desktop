@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
 import "../Constants"
+import App 1.0
 import "../Components"
 
 Item {
@@ -36,23 +37,23 @@ Item {
 
             GradientStop {
                 position: 0.0
-                color: theme.navigationSideBarButtonGradient1
+                color: DexTheme.navigationSideBarButtonGradient1
             }
             GradientStop {
                 position: cursor_round_edge.radius / cursor.width
-                color: theme.navigationSideBarButtonGradient1
+                color: DexTheme.navigationSideBarButtonGradient1
             }
             GradientStop {
                 position: 0.375
-                color: theme.navigationSideBarButtonGradient2
+                color: DexTheme.navigationSideBarButtonGradient2
             }
             GradientStop {
                 position: 0.7292
-                color: theme.navigationSideBarButtonGradient3
+                color: DexTheme.navigationSideBarButtonGradient3
             }
             GradientStop {
                 position: 1.0
-                color: theme.navigationSideBarButtonGradient4 
+                color: DexTheme.navigationSideBarButtonGradient4 
             }
         }
     }
@@ -99,14 +100,14 @@ Item {
     // Cursor left edge
     AnimatedRectangle {
         id: cursor_round_edge
-        color: theme.navigationSideBarButtonGradient1
+        color: DexTheme.navigationSideBarButtonGradient1
         width: radius*2
 
         anchors.rightMargin: -width/2
         height: Style.sidebarLineHeight
         anchors.right: cursor.left
         visible: true
-        radius: theme.rectangleRadius
+        radius: DexTheme.rectangleRadius
 
         y: {
             switch(dashboard.current_page) {
@@ -134,7 +135,7 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: expanded? "file:///"+ atomic_logo_path +  "/"+ theme.bigSidebarLogo : "file:///"+atomic_logo_path +  "/"+ theme.smallSidebarLogo
+            source: expanded? "file:///"+ atomic_logo_path +  "/"+ DexTheme.bigSidebarLogo : "file:///"+atomic_logo_path +  "/"+ DexTheme.smallSidebarLogo
             anchors.horizontalCenter: parent.horizontalCenter
             y: expanded? parent.width * 0.25 : parent.width * 0.40
             transformOrigin: Item.Center
@@ -158,7 +159,7 @@ Item {
             horizontalAlignment: DefaultText.AlignHCenter
             wrapMode: DefaultText.Wrap
             text_value: General.version_string
-            font: theme.textType.caption
+            font: DexTypo.caption
             color: Style.colorThemeDarkLight
         }
 

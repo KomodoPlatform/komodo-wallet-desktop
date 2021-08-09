@@ -42,6 +42,6 @@ get_override_options()
 #if defined(ANTARA_STD_FILESYTEM)
     return fs::copy_options::overwrite_existing;
 #elif defined(ANTARA_BOOST_FILESYTEM)
-    return fs::copy_option::overwrite_if_exists;
+    return fs::copy_options::overwrite_existing;
 #endif
 }

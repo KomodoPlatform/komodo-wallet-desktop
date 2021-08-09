@@ -3,9 +3,11 @@ import QtQuick 2.15          //> Item
 import QtQuick.Layouts 1.15  //> RowLayout
 import QtQuick.Controls 2.15 //> ItemDelegate
 
+import App 1.0
+
 //! Project Imports
 import "../../../Components" //> BasicModal
-import "../../../Constants"  //> API
+import "../../../Constants" as Constants  //> API
 
 DefaultListView
 {
@@ -24,8 +26,8 @@ DefaultListView
     property int    _fiatVolumeColumnSize: 50
     property int    _cexRateColumnSize: 50
 
-    enabled: !API.app.trading_pg.orderbook.best_orders_busy
-    model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+    enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
+    model: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
@@ -36,7 +38,7 @@ DefaultListView
         target: _tradeCard
         function onBestChanged()
         {
-            API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
+            Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
             positionViewAtBeginning()
         }
     }
@@ -48,7 +50,7 @@ DefaultListView
         width: _rowWidth
         height: _rowHeight
         border.color: 'transparent'
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.dexBoxBackgroundColor
         z: 2
         radius: 0
 
@@ -61,7 +63,7 @@ DefaultListView
             {
                 Layout.preferredWidth: _tokenColumnSize
                 text: qsTr("Token")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -70,7 +72,7 @@ DefaultListView
             {
                 Layout.preferredWidth: _quantityColumnSize
                 text: qsTr("Available Quantity")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -79,7 +81,7 @@ DefaultListView
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
                 text: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -88,7 +90,7 @@ DefaultListView
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 text: qsTr("Fiat Volume")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -97,7 +99,7 @@ DefaultListView
             {
                 Layout.preferredWidth: _cexRateColumnSize
                 text: qsTr("CEX Rate")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -107,7 +109,7 @@ DefaultListView
 
     delegate: ItemDelegate // Order Line
     {
-        property bool _isCoinEnabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
+        property bool _isCoinEnabled: Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
 
         width: _rowWidth
         height: _rowHeight
@@ -157,13 +159,13 @@ DefaultListView
             DefaultText                         // Order Fiat Volume
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
-                text: price_fiat+API.app.settings_pg.current_fiat_sign
+                text: price_fiat+Constants.API.app.settings_pg.current_fiat_sign
             }
             
             DefaultText
             {
                 Layout.preferredWidth: _cexRateColumnSize
-                color: cex_rates=== "0" ? Qt.darker(theme.foregroundColor) : parseFloat(cex_rates)>0? theme.redColor : theme.greenColor
+                color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.redColor : DexTheme.greenColor
                 text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
             DefaultTooltip
@@ -186,11 +188,11 @@ DefaultListView
                         if (link === "#no") _tooltip.close()
                         else
                         {
-                            if (API.app.enable_coins([coin]) === false)
+                            if (Constants.API.app.enable_coins([coin]) === false)
                                 cannot_enable_coin_modal.open()
                             else
                             {
-                                color = theme.buttonColorTextDisabled
+                                color = DexTheme.buttonColorTextDisabled
                                 opacity = 0.8
                                 _coinIsEnabling.visible = true
                              }
@@ -208,12 +210,12 @@ DefaultListView
 
                     Connections
                     {
-                        target: API.app.portfolio_pg.global_cfg_mdl.all_disabled_proxy
+                        target: Constants.API.app.portfolio_pg.global_cfg_mdl.all_disabled_proxy
 
                         function onLengthChanged()
                         {
                             _tooltip.close()
-                            _isCoinEnabled = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
+                            _isCoinEnabled = Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
                         }
                      }
                 }
@@ -230,7 +232,7 @@ DefaultListView
         }
         onClicked:
         {
-            if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
+            if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
             {
                 _tooltip.open()
             }

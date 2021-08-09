@@ -6,6 +6,7 @@ import AtomicDEX.CoinType 1.0
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -20,7 +21,7 @@ BasicModal {
         coin_cfg_model.all_disabled_proxy.setFilterFixedString(text === undefined ? input_coin_filter.text : text)
     }
 
-    width: 500
+    width: 600
 
     onOpened: {
         filterCoins()
@@ -56,7 +57,7 @@ BasicModal {
             onTextChanged: filterCoins()
         }
 
-        DefaultCheckBox {
+        DexCheckBox {
             text: qsTr("Select all assets")
             visible: list.visible
 
@@ -86,7 +87,7 @@ BasicModal {
             Layout.preferredHeight: 375
             Layout.fillWidth: true
 
-            delegate: DefaultCheckBox {
+            delegate: DexCheckBox {
                 text: "         " + model.name + " (" + model.ticker + ")"
 
                 leftPadding: indicator.width
@@ -152,14 +153,14 @@ BasicModal {
             DexButton {
                 property var enableable_coins_count: setting_modal.enableable_coins_count;
                 text: qsTr("Change assets limit")
-                onClicked: setting_modal.open()
-                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
+                onClicked: { setting_modal.selectedMenuIndex = 0; setting_modal.open() }
+                textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
                 onEnableable_coins_countChanged: setCheckState(false)
             },
 
             DexButton {
                 text: qsTr("Close")
-                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
+                textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
@@ -167,7 +168,7 @@ BasicModal {
             DexButton {
                 visible: coin_cfg_model.length > 0
                 enabled: coin_cfg_model.checked_nb > 0
-                textScale: API.app.settings_pg.lang=="fr"? 0.82 : 0.99
+                textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
                 text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: {

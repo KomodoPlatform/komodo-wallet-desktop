@@ -7,6 +7,7 @@ import AtomicDEX.CoinType 1.0
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root

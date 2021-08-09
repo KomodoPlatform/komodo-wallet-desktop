@@ -5,7 +5,8 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
-import "../../../Constants"
+
+import App 1.0
 
 Item {
     property bool isAsk
@@ -16,7 +17,7 @@ Item {
         visible: mouse_are.containsMouse
         width: parent.width
         height: parent.height
-        color: theme.foregroundColor
+        color: DexTheme.foregroundColor
         opacity: 0.1
     }
 
@@ -27,7 +28,7 @@ Item {
         radius: width/2
         x: 3
         visible: is_mine
-        color: isAsk? Style.colorRed : Style.colorGreen
+        color: isAsk? DexTheme.redColor : DexTheme.greenColor
     }
     HorizontalLine {
         width: parent.width
@@ -39,10 +40,10 @@ Item {
         anchors.bottom: parent.bottom
         radius: 3
         x: 10
-        color: isAsk? Style.colorRed : Style.colorGreen
+        color: isAsk? DexTheme.redColor : DexTheme.greenColor
         width: 0
         Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
-        opacity: 0.8//!isVertical? 1.1-(index * 0.1) :  1-(1.1-(index * 0.1))
+        opacity: 0.8
         Behavior on width {
             NumberAnimation {
                 duration: 1000
@@ -79,16 +80,16 @@ Item {
             Layout.preferredWidth: 60
             text: parseFloat(General.formatDouble(
                                  price, General.amountPrecision, true)).toFixed(8)
-            font.family: _font.fontFamily
+            font.family: DexTypo.fontFamily
             font.pixelSize: 11
-            color: isAsk? Style.colorRed : Style.colorGreen
+            color: isAsk? DexTheme.redColor : DexTheme.greenColor
 
         }
         DexLabel {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 100
             text: parseFloat(quantity).toFixed(6)
-            font.family: _font.fontFamily
+            font.family: DexTypo.fontFamily
             font.pixelSize: 11
             horizontalAlignment: Label.AlignRight
             opacity: 1
@@ -105,7 +106,7 @@ Item {
             }
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
             horizontalAlignment: Label.AlignRight
-            font.family: _font.fontFamily
+            font.family: DexTypo.fontFamily
             font.pixelSize: 11
             opacity: 1
 
@@ -155,7 +156,7 @@ Item {
 
         iconSize: mouse_are.containsMouse || cancel_button.containsMouse? 16 : 0
 
-        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_are.containsMouse? Style.colorText2 : Qaterial.Colors.red
+        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_are.containsMouse? DexTheme.foregroundColor: Qaterial.Colors.red
 
         DefaultMouseArea {
             id: cancel_button
@@ -173,7 +174,7 @@ Item {
     }
     AnimatedRectangle {
         visible: !enough_funds_to_pay_min_volume && mouse_are.containsMouse
-        color: Style.colorTheme9
+        color: DexTheme.dexBoxBackgroundColor
         anchors.fill: parent
         opacity: .3
     }

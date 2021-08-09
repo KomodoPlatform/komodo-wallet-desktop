@@ -6,7 +6,8 @@ import QtCharts 2.3
 import QtWebEngine 1.8
 
 import "../../Components"
-import "../../Constants"
+
+import App 1.0
 
 // List
 
@@ -60,7 +61,7 @@ DexBox {
             }
         }
 
-        readonly property string theme: app.globalTheme.chartTheme
+        readonly property string theme: DexTheme.chartTheme
         onThemeChanged:  try{loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin, true)}catch(e){}
 
         property string chart_base

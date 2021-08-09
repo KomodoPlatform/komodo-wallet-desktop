@@ -11,7 +11,7 @@ import AtomicDEX.TradingError 1.0
 
 
 import "../../../../Components"
-import "../../../../Constants"
+import App 1.0
 
 
 Item {
@@ -30,7 +30,7 @@ Item {
                 width: parent.width
                 height: 30
                 DefaultText {
-                    color: theme.foregroundColor
+                    color: DexTheme.foregroundColor
                     text: "TOTAL "+API.app.settings_pg.current_fiat+" "+General.cex_icon
                     font.pixelSize:  14
                     font.weight: Font.Normal
@@ -47,14 +47,14 @@ Item {
                         font.weight: Font.DemiBold
                         font.pixelSize: 16
                         font.family: 'lato'
-                        color: theme.accentColor
+                        color: DexTheme.accentColor
                         text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon,"")
                     }
                 }
             }
             
             Rectangle {
-                color: theme.foregroundColor
+                color: DexTheme.foregroundColor
                 opacity: .2
                 height: 1.5
                 width:parent.width-20
@@ -65,7 +65,7 @@ Item {
                 width: parent.width
                 height: 30
                 DexLabel {
-                    color: theme.foregroundColor
+                    color: DexTheme.foregroundColor
                     text:  "TOTAL "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
                     font.pixelSize:  14
                     opacity: .6
@@ -81,7 +81,7 @@ Item {
                         font.weight: Font.DemiBold
                         font.pixelSize: 16
                         font.family: 'lato'
-                        color: theme.accentColor
+                        color: DexTheme.accentColor
                         text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker,"")
                     }
                 }

@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15 //> ToolTip
 
 // Project Imports
 import "../Constants"
+import App 1.0
 import "../Components"
 
 // Contact address entry creation/edition modal
@@ -115,7 +116,7 @@ BasicModal
                 anchors.top: parent.bottom
                 anchors.topMargin: 3
                 anchors.horizontalCenter: parent.horizontalCenter
-                color: theme.redColor
+                color: DexTheme.redColor
                 wrapMode: DexLabel.Wrap
                 width: 550
             }

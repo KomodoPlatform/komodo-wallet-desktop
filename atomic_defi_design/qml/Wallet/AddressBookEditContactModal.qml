@@ -12,6 +12,7 @@ import Qaterial 1.0 as Qaterial
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -116,12 +117,12 @@ BasicModal {
                                            styleData.column === 2 ? walletInfoTable._addressColWidth :
                                                                     walletInfoTable._actionsColWidth
 
-                    AnimatedRectangle
+                    Item
                     {
                         Layout.fillWidth: true
                         height: 20
 
-                        color: Style.colorRectangleBorderGradient1
+                        
 
                         DefaultText
                         {
@@ -141,7 +142,7 @@ BasicModal {
                 rowDelegate: DefaultRectangle
                 {
                     height: 37; radius: 0
-                    color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
+                    color: styleData.selected ? DexTheme.accentLightColor4: styleData.alternate ? DexTheme.accentDarkColor4 : 'transparent'
                 }
 
                 TableViewColumn // Type Column
@@ -156,7 +157,7 @@ BasicModal {
 
                     delegate: RowLayout
                     {
-                        DefaultText
+                        DexLabel
                         {
                             Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
@@ -214,13 +215,12 @@ BasicModal {
 
                     delegate: RowLayout
                     {
-                        DefaultText
+                        DexLabel
                         {
                             Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
-                            color: Style.colorText
                             elide: Text.ElideRight
                         }
 
@@ -255,7 +255,7 @@ BasicModal {
                             {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.leadPencil
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
@@ -278,10 +278,16 @@ BasicModal {
                             {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.trashCan
-                                color: theme.redColor
+                                color: DexTheme.redColor
                                 opacity: .8
                             }
-                            onClicked: contactModel.remove_address_entry(model.address_type, model.address_key)
+                            onClicked:
+                            {
+                                removeAddressEntryModal.addressKey = model.address_key;
+                                removeAddressEntryModal.addressType = model.address_type;
+                                removeAddressEntryModal.contactModel = contactModel;
+                                removeAddressEntryModal.open();
+                            }
                         }
 
                         Qaterial.OutlineButton // Copy Clipboard Button
@@ -294,7 +300,7 @@ BasicModal {
                             {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.contentCopy
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
@@ -311,7 +317,7 @@ BasicModal {
                             {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.send
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
@@ -374,26 +380,25 @@ BasicModal {
         // Categories (Tags) List
         Flow {
             Layout.fillWidth: true
-
+            spacing: 10
             Repeater {
                 id: category_repeater
                 model: contactModel.categories
 
-                Qaterial.OutlineButton {
+                DexAppButton {
                     Layout.alignment: Qt.AlignLeft
                     Layout.leftMargin: 4
-
+                    border.color: backgroundColor
+                    iconSource: Qaterial.Icons.closeOctagon
                     text: modelData
-                    icon.source: Qaterial.Icons.closeOctagon
-
                     onClicked: contactModel.remove_category(modelData);
                 }
             }
 
             // Category adding form opening button
-            Qaterial.OutlineButton {
+            DexAppButton {
                 Layout.leftMargin: 10
-
+                width: height
                 text: qsTr("+")
 
                 onClicked: add_category_modal.open()
@@ -518,6 +523,31 @@ BasicModal {
                         text: qsTr("Ok")
 
                         onClicked: cannot_send_modal.close()
+                    }
+                }
+            }
+        }
+
+        // Remove address entry modal
+        ModalLoader
+        {
+            id: removeAddressEntryModal
+
+            property var    contactModel
+            property string addressKey
+            property string addressType
+
+            sourceComponent: BasicModal
+            {
+                width: 250
+                ModalContent
+                {
+                    title: qsTr("Remove address ?")
+
+                    RowLayout
+                    {
+                        DexButton { text: qsTr("Yes"); onClicked: { contactModel.remove_address_entry(addressType, addressKey); close(); } }
+                        DexButton { text: qsTr("No"); onClicked: close() }
                     }
                 }
             }

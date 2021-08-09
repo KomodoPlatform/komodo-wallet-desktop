@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
+import App 1.0
 
 ColumnLayout {
     property alias show_label: label.visible

@@ -4,8 +4,10 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import QtGraphicalEffects 1.0
+
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 
 Rectangle {
     property
@@ -17,8 +19,7 @@ Rectangle {
     width: list.model.count > 6 ? list.width - 15 : list.width - 8
     height: 40
 
-    color: mouse_area.containsMouse ? theme.hightlightColor : "transparent"
-
+    color: mouse_area.containsMouse? DexTheme.hightlightColor : "transparent"
     DefaultMouseArea {
         id: mouse_area
         anchors.fill: parent

@@ -10,6 +10,7 @@ import Qaterial 1.0 as Qaterial
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 ColumnLayout {
     id: root
@@ -17,84 +18,117 @@ ColumnLayout {
     Layout.fillHeight: true
     //spacing: 20
 
+    Layout.rightMargin: 10
+    Layout.leftMargin: 10
     readonly property var addressbook_pg: API.app.addressbook_pg
 
     // Page header
     Item {
         Layout.fillWidth: true
-        Layout.preferredHeight: 100
+        Layout.preferredHeight: 80
 
-        DefaultText { // Title
-            anchors.left: parent.left
-            anchors.leftMargin: 15
-            anchors.top: parent.top
-            anchors.topMargin: 10
 
+        DexLabel { // Title
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left 
+            anchors.leftMargin: 10
             text_value: qsTr("Address Book")
             font.weight: Font.Medium
             font.pixelSize: Style.textSize3
         }
 
-        DefaultTextField { // Search input
-            id: searchbar
-            width: 400
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            anchors.bottom: parent.bottom
-            anchors.topMargin: 10
-
-            Layout.fillWidth: true
-            placeholderText: qsTr("Search a contact by name or tags")
-            onTextChanged: addressbook_pg.model.proxy.search_exp = text
-
-            Component.onDestruction: addressbook_pg.model.proxy.search_exp = ""
-        }
-
-        PrimaryButton { // New Contact Button
+        DexAppButton {
+            
             anchors.right: parent.right
-            anchors.rightMargin: 30
+            anchors.rightMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            iconSource: Qaterial.Icons.textBoxPlus
+            radius: 40
+            leftPadding: 45
+            rightPadding: 45
+            padding: 20
+            text: qsTr("New Contact")
+            onClicked: new_contact_modal.open()
+        }
+    }
+
+    Item {
+        Layout.fillWidth: true 
+        Layout.preferredHeight: 60
+
+
+        DexAppTextField {
+            id: searchbar
+            width: 320
+            height: 50
+            opacity: enabled ? 1 : .5
+
+            anchors.left: parent.left
+            anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("New Contact")
+            background.border.width: 1
+            background.radius: 25
+            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
+            placeholderText: qsTr("Search a contact by name or tags")
+            field.font: DexTypo.head6
+            field.horizontalAlignment: Qt.AlignLeft
+            field.leftPadding: 75
+            field.placeholderText: ""
+            field.onTextChanged: addressbook_pg.model.proxy.search_exp = field.text
 
-            onClicked: new_contact_modal.open()
+            Component.onDestruction: addressbook_pg.model.proxy.search_exp = ""
+
+            DexRectangle {
+                x: 5
+                height: 40
+                width: 60
+                radius: 20
+                border.color: DexTheme.accentColor
+                color: DexTheme.accentColor
+                anchors.verticalCenter: parent.verticalCenter
+                Qaterial.ColorIcon {
+                    anchors.centerIn: parent
+                    iconSize: 19
+                    source: Qaterial.Icons.magnify
+                    color: DexTheme.buttonColorTextEnabled
+                }
+
+            }
         }
     }
 
     // Contact List Header
     Item {
         Layout.fillWidth: true
-        Layout.preferredHeight: 30
+        Layout.preferredHeight: 40
+        Layout.rightMargin: 10
+        Layout.leftMargin: 10
 
-        HorizontalLine {
-            anchors.top: parent.top
-            width: parent.width
-            color: Style.colorWhite5
-        }
 
-        DefaultText {
+        DexLabel {
             id: header_name_column
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.verticalCenter: parent.verticalCenter
-            color: Style.colorWhite4
+            font.bold: true
             text: qsTr("Name")
         }
 
-        DefaultText {
+        DexLabel {
             id: header_tags_column
             anchors.left: header_name_column.right
             anchors.leftMargin: 180
             anchors.verticalCenter: parent.verticalCenter
-            color: Style.colorWhite4
+            font.bold: true
             text: qsTr("Tags (first 6)")
         }
 
-        DefaultText {
+        DexLabel {
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.138
             anchors.verticalCenter: parent.verticalCenter
-            color: Style.colorWhite4
+            font.bold: true
             text: qsTr("Actions")
         }
 
@@ -111,6 +145,9 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
+        Layout.rightMargin: 10
+        Layout.leftMargin: 10
+
         model: addressbook_pg.model.proxy
 
         // Contact Card
@@ -119,7 +156,7 @@ ColumnLayout {
 
             property var contact: modelData
 
-            color: Qt.lighter(index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7, 1.0)
+            color: Qt.lighter(index % 2 == 0 ?  DexTheme.backgroundColor : DexTheme.surfaceColor, 1.0)
             width: root.width
             height: 55
 

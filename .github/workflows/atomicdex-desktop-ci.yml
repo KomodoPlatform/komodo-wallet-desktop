@@ -70,10 +70,10 @@ jobs:
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-          mirror: https://qt-mirror.dannhauer.de/
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org/
-          #mirror: https://ftp.fau.de/qtproject/
+          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          #mirror: https://qt-mirror.dannhauer.de
+          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
+          mirror: https://ftp.fau.de/qtproject
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
@@ -85,17 +85,17 @@ jobs:
           version: ${{ matrix.qt }}
           host: 'mac'
           target: 'desktop'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-          mirror: https://qt-mirror.dannhauer.de/
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org/
-          #mirror: https://ftp.fau.de/qtproject/
+          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          #mirror: https://qt-mirror.dannhauer.de
+          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
+          mirror: https://ftp.fau.de/qtproject
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-          python3  -m aqt tool mac tools_ifw 4.1.1-202105261132 qt.tools.ifw.41 -b https://qt-mirror.dannhauer.de/ --outputdir ${{ github.workspace }}/Qt
+          python3  -m aqt tool mac tools_ifw 4.1.1-202105261132 qt.tools.ifw.41 -b http://mirrors.ocf.berkeley.edu/qt --outputdir ${{ github.workspace }}/Qt
           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
 
       - name: Install QT (Windows)
@@ -106,10 +106,10 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-          mirror: https://qt-mirror.dannhauer.de/
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org/
-          #mirror: https://ftp.fau.de/qtproject/
+          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          #mirror: https://qt-mirror.dannhauer.de
+          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
+          mirror: https://ftp.fau.de/qtproject
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
@@ -117,7 +117,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           python -m pip install --upgrade pip
-          python -m aqt tool windows tools_ifw 4.1.1-202105261131 qt.tools.ifw.41 -b https://qt-mirror.dannhauer.de/ --outputdir C:/Qt
+          python -m aqt tool windows tools_ifw 4.1.1-202105261131 qt.tools.ifw.41 -b http://mirrors.ocf.berkeley.edu/qt --outputdir C:/Qt
           echo "C:/Qt/Tools/QtInstallerFramework/4.0/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo $env:GITHUB_PATH
           echo $env:PATH

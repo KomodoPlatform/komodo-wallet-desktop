@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "../Constants"
+import App 1.0
 
 TextEdit {
     property string text_value
@@ -16,7 +17,11 @@ TextEdit {
     selectedTextColor: Style.colorSelectedText
     selectionColor: Style.colorSelection
 
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
     onLinkActivated: Qt.openUrlExternally(link)
 

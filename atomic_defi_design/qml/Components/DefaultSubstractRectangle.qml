@@ -7,6 +7,7 @@ import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 
 import "../Constants"
+import App 1.0
 
 Rectangle {
     id: _mask

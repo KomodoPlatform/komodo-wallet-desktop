@@ -243,11 +243,9 @@ setup_default_themes()
     fs_error_code  ec;
 
     LOG_PATH_CMP("Checking for setup default themes - theme_path: {} original_theme_path: {}", theme_path, original_theme_path);
-    if (fs::is_empty(theme_path, ec))
-    {
-        LOG_PATH("{} is empty, copying default themes into this directory", theme_path);
-        fs::copy(original_theme_path, theme_path, ec);
-    }
+    LOG_PATH("copying default themes into directory: {}", theme_path);
+    //fs::remove_all(theme_path);
+    fs::copy(original_theme_path, theme_path,  fs::copy_options::recursive | fs::copy_options::overwrite_existing, ec);
     if (ec)
     {
         SPDLOG_ERROR("fs::error: {}", ec.message());
@@ -261,12 +259,9 @@ setup_default_themes()
         fs::path       original_logo_path{ag::core::assets_real_path() / "logo"};
 
         LOG_PATH_CMP("Checking for setup default logo - logo_path: {} original_logo_path: {}", logo_path, original_logo_path);
-
-        if (fs::is_empty(logo_path, ec))
-        {
-            LOG_PATH("{} is empty, copying default logo into this directory", logo_path);
-            fs::copy(original_logo_path, logo_path, ec);
-        }
+        //fs::remove_all(logo_path);
+        fs::copy(original_logo_path, logo_path, fs::copy_options::recursive | fs::copy_options::overwrite_existing, ec);
+        LOG_PATH("copying default logo into directory: {}", logo_path);
         if (ec)
         {
             SPDLOG_ERROR("fs::error: {}", ec.message());
@@ -452,6 +447,8 @@ run_app(int argc, char** argv)
 
     engine.addImportPath("qrc:/atomic_defi_design/imports");
     engine.addImportPath("qrc:/atomic_defi_design/Constants");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/DexTheme.qml"), "App", 1, 0, "DexTheme");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/DexTypo.qml"), "App", 1, 0, "DexTypo");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");

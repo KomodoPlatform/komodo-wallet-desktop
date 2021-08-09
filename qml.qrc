@@ -113,7 +113,7 @@
         <file>atomic_defi_design/assets/images/coins/iln.png</file>
         <file>atomic_defi_design/assets/images/coins/inj.png</file>
         <file>atomic_defi_design/assets/images/coins/ink.png</file>
-        <file>atomic_defi_design/assets/images/coins/miota.png</file>
+        <file>atomic_defi_design/assets/images/coins/iota.png</file>
         <file>atomic_defi_design/assets/images/coins/iotx.png</file>
         <file>atomic_defi_design/assets/images/coins/jrt.png</file>
         <file>atomic_defi_design/assets/images/coins/jstr.png</file>
@@ -154,6 +154,7 @@
         <file>atomic_defi_design/assets/images/coins/pangea.png</file>
         <file>atomic_defi_design/assets/images/coins/pax.png</file>
         <file>atomic_defi_design/assets/images/coins/paxg.png</file>
+        <file>atomic_defi_design/assets/images/coins/pic.png</file>
         <file>atomic_defi_design/assets/images/coins/pnk.png</file>
         <file>atomic_defi_design/assets/images/coins/powr.png</file>
         <file>atomic_defi_design/assets/images/coins/put.png</file>
@@ -426,6 +427,8 @@
         <file>atomic_defi_design/qml/Components/WalletNameField.qml</file>
         <file>atomic_defi_design/qml/Constants</file>
         <file>atomic_defi_design/qml/Constants/API.qml</file>
+        <file>atomic_defi_design/qml/Constants/DexTheme.qml</file>
+        <file>atomic_defi_design/qml/Constants/DexTypo.qml</file>
         <file>atomic_defi_design/qml/Constants/General.qml</file>
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Dashboard/FatalErrorModal.qml</file>
@@ -461,6 +464,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/List.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.js</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/NavigationLabel.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Trade.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/CoinsListModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/BestOrdersModal.qml</file>
@@ -493,6 +497,7 @@
         <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Settings/RecoverSeedModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/SettingsButton.qml</file>
         <file>atomic_defi_design/qml/Settings/SettingModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Settings.qml</file>
         <file>atomic_defi_design/qml/Sidebar/Sidebar.qml</file>

@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 SetupPage {
     id: login
@@ -20,13 +21,12 @@ SetupPage {
     }
 
     function onClickedLogin(password) {
-        if(API.app.wallet_mgr.login(password, selected_wallet_name)) {
+        if (API.app.wallet_mgr.login(password, selected_wallet_name)) {
             console.log("Success: Login")
             app.currentWalletName = selected_wallet_name
             postLoginSuccess()
             return true
-        }
-        else {
+        } else {
             console.log("Failed: Login")
             text_error = qsTr("Incorrect Password")
             return false
@@ -47,9 +47,9 @@ SetupPage {
         }
 
         function trySubmit() {
-            if(!submit_button.enabled) return
+            if (!submit_button.enabled) return
 
-            if(onClickedLogin(input_password.field.text))
+            if (onClickedLogin(input_password.field.text))
                 reset()
         }
 
@@ -68,8 +68,8 @@ SetupPage {
             }
 
             DexLabel {
-                font: theme.textType.head6
-                text_value: qsTr("Login") 
+                font: DexTypo.head6
+                text_value: qsTr("Login")
                 Layout.alignment: Qt.AlignVCenter
             }
 
@@ -85,10 +85,10 @@ SetupPage {
             Layout.preferredHeight: 50
             background.border.width: 1
             background.radius: 25
-            enabled: false 
-            opacity: enabled?  1 : .5
-            background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
-            field.font: theme.textType.head6
+            enabled: false
+            opacity: enabled ? 1 : .5
+            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
+            field.font: DexTypo.head6
             field.horizontalAlignment: Qt.AlignLeft
             field.leftPadding: 75
             field.text: selected_wallet_name
@@ -98,13 +98,13 @@ SetupPage {
                 height: 40
                 width: 60
                 radius: 20
-                color: theme.accentColor
+                color: DexTheme.accentColor
                 anchors.verticalCenter: parent.verticalCenter
                 Qaterial.ColorIcon {
                     anchors.centerIn: parent
                     iconSize: 19
                     source: Qaterial.Icons.account
-                    color: theme.surfaceColor
+                    color: DexTheme.surfaceColor
                 }
 
             }
@@ -114,7 +114,7 @@ SetupPage {
             Layout.fillWidth: true
             Layout.preferredHeight: 5
             opacity: .8
-            
+
         }
 
         DexAppTextField {
@@ -123,9 +123,9 @@ SetupPage {
             Layout.preferredHeight: 50
             background.border.width: 1
             background.radius: 25
-            background.border.color: field.focus ? theme.accentColor : Style.colorBorder 
+            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
             field.echoMode: TextField.Password
-            field.font: field.echoMode === TextField.Password ? field.text === "" ? theme.textType.body1 : theme.textType.head5 : theme.textType.head6
+            field.font: field.echoMode === TextField.Password ? field.text === "" ? DexTypo.body1 : DexTypo.head5 : DexTypo.head6
             field.horizontalAlignment: Qt.AlignLeft
             field.leftPadding: 75
             field.placeholderText: qsTr("Type password")
@@ -135,13 +135,13 @@ SetupPage {
                 height: 40
                 width: 60
                 radius: 20
-                color: theme.accentColor
+                color: DexTheme.accentColor
                 anchors.verticalCenter: parent.verticalCenter
                 Qaterial.ColorIcon {
                     anchors.centerIn: parent
                     iconSize: 19
                     source: Qaterial.Icons.keyVariant
-                    color: theme.surfaceColor
+                    color: DexTheme.surfaceColor
                 }
 
             }
@@ -149,7 +149,7 @@ SetupPage {
                 opacity: .8
                 icon {
                     source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
-                    color: theme.accentColor
+                    color: DexTheme.accentColor
                 }
                 anchors {
                     verticalCenter: parent.verticalCenter
@@ -157,8 +157,11 @@ SetupPage {
                     rightMargin: 10
                 }
                 onClicked: {
-                    if( _inputPassword.field.echoMode === TextField.Password ) { _inputPassword.field.echoMode = TextField.Normal }
-                    else { _inputPassword.field.echoMode = TextField.Password }
+                    if (_inputPassword.field.echoMode === TextField.Password) {
+                        _inputPassword.field.echoMode = TextField.Normal
+                    } else {
+                        _inputPassword.field.echoMode = TextField.Password
+                    }
                 }
             }
         }
@@ -187,7 +190,7 @@ SetupPage {
                 id: _back
                 text: qsTr("Back")
                 visible: false
-                
+
             }
 
             DexAppButton {
@@ -196,7 +199,7 @@ SetupPage {
                 enabled: input_password.isValid()
                 onClicked: trySubmit()
                 radius: 20
-                backgroundColor: theme.accentColor
+                backgroundColor: DexTheme.accentColor
                 Layout.preferredWidth: _nextRow.implicitWidth + 40
                 Layout.preferredHeight: 45
                 label.color: 'transparent'
@@ -207,7 +210,7 @@ SetupPage {
                     opacity: submit_button.enabled ? 1 : .6
                     DexLabel {
                         text: qsTr("Connect")
-                        font: theme.textType.button
+                        font: DexTypo.button
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Qaterial.ColorIcon {

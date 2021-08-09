@@ -2,9 +2,12 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import QtGraphicalEffects 1.0
 import "../Components"
-import "../Constants"
+import "../Constants" as Constants
+import App 1.0
 
 // Coins bar at left side
 Item {
@@ -27,7 +30,7 @@ Item {
         anchors.right: parent.right
         width: sidebar.width + parent.width
 
-        height: parent.height+40
+        height: parent.height + 40
 
         // Panel contents
         Item {
@@ -43,7 +46,7 @@ Item {
                 anchors.bottomMargin: 1
                 opacity: .3
                 anchors.topMargin: anchors.bottomMargin
-                color: theme.backgroundColorDeep
+                color: DexTheme.walletSidebarLeftBorderColor
             }
 
             InnerBackground {
@@ -51,7 +54,7 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: 30
                 width: list_bg.width
-                color: theme.backgroundColor
+                color: DexTheme.backgroundColor
                 anchors.horizontalCenter: list_bg.horizontalCenter
 
                 content: RowLayout {
@@ -69,7 +72,7 @@ Item {
                         DefaultImage {
                             id: search_button
 
-                            source: General.image_path + "exchange-search.svg"
+                            source: Constants.General.image_path + "exchange-search.svg"
 
                             width: input_coin_filter.font.pixelSize; height: width
 
@@ -80,7 +83,7 @@ Item {
 
                             anchors.fill: search_button
                             source: search_button
-                            color: theme.foregroundColor
+                            color: DexTheme.foregroundColor
                         }
                     }
 
@@ -100,7 +103,7 @@ Item {
                         }
 
                         onTextChanged: portfolio_coins.setFilterFixedString(text)
-                        font.pixelSize: Style.textSizeSmall3
+                        font.pixelSize: Constants.Style.textSizeSmall3
 
                         background: null
 
@@ -110,13 +113,17 @@ Item {
             }
 
             // Add button
-            PlusButton {
+            DexAppButton {
                 id: add_coin_button
                 onClicked: enable_coin_modal.open()
-
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: parent.width * 0.5 - height * 0.5
                 anchors.horizontalCenter: parent.horizontalCenter
+                iconSource: Qaterial.Icons.plus
+                font.pixelSize: 20
+                leftPadding: 3
+                rightPadding: 3
+
             }
 
             // Coins list
@@ -126,19 +133,20 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
 
-                content: DefaultListView {
+                content: DexListView {
                     id: list
                     implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
-
                     model: portfolio_coins
+                    topMargin: 5
+                    bottomMargin: 5
 
                     delegate: GradientRectangle {
-                        width: list_bg.width - list_bg.border.width*2 - 2
+                        width: list_bg.width - list_bg.border.width*2 - 6
                         height: 44
-                        radius: Style.rectangleCornerRadius
+                        radius: Constants.Style.rectangleCornerRadius
 
-                        start_color: Style.applyOpacity(Style.colorCoinListHighlightGradient)
-                        end_color: api_wallet_page.ticker === ticker ? theme.hightlightColor : mouse_area.containsMouse ? Style.colorWhite8 : start_color
+                        start_color: api_wallet_page.ticker === ticker ? DexTheme.accentColor : mouse_area.containsMouse ? DexTheme.accentLightColor4: DexTheme.backgroundColor
+                        end_color: api_wallet_page.ticker === ticker ? DexTheme.accentColor : mouse_area.containsMouse ? DexTheme.accentLightColor4: DexTheme.backgroundColor
 
                         // Click area
                         DefaultMouseArea {
@@ -173,8 +181,8 @@ Item {
                             anchors.left: parent.left
                             anchors.leftMargin: side_margin - scrollbar_margin
 
-                            source: General.coinIcon(ticker)
-                            width: Style.textSizeSmall4*2
+                            source: Constants.General.coinIcon(ticker)
+                            width: Constants.Style.textSizeSmall4*2
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
@@ -184,10 +192,11 @@ Item {
                             anchors.rightMargin: side_margin + scrollbar_margin
 
                             // Ticker
-                            DefaultText {
+                            DexLabel {
                                 Layout.alignment: Qt.AlignRight
                                 text_value: ticker
-                                font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
+                                color: api_wallet_page.ticker === ticker ? DexTheme.buttonColorTextEnabled : mouse_area.containsMouse ? DexTheme.foregroundColorLightColor2 : DexTheme.foregroundColor
+                                font.pixelSize: text.length > 6 ? Constants.Style.textSizeSmall2 : Constants.Style.textSizeSmall4
                             }
 
                             DefaultTooltip {
@@ -196,7 +205,7 @@ Item {
                                 contentItem: ColumnLayout {
                                     DefaultText {
                                         text_value: name.replace(" (TESTCOIN)", "")
-                                        font.pixelSize: Style.textSizeSmall4
+                                        font.pixelSize: Constants.Style.textSizeSmall4
                                     }
                                 }
                             }
@@ -216,7 +225,8 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: Style.colorWalletsSidebarDropShadow
+        visible: DexTheme.walletSidebarShadowVisibility
+        color: Constants.Style.colorWalletsSidebarDropShadow
         smooth: true
     }
 }
