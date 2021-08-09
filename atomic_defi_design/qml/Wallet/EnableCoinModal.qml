@@ -1,9 +1,10 @@
+//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+//! Project Imports
 import AtomicDEX.CoinType 1.0
-
 import "../Components"
 import "../Constants"
 import App 1.0
@@ -13,23 +14,32 @@ BasicModal {
 
     property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
 
-    function setCheckState(checked) {
+    function setCheckState(checked) 
+    {
         coin_cfg_model.all_disabled_proxy.set_all_state(checked)
     }
 
-    function filterCoins(text) {
+    function filterCoins(text) 
+    {
         coin_cfg_model.all_disabled_proxy.setFilterFixedString(text === undefined ? input_coin_filter.text : text)
     }
 
     width: 600
 
-    onOpened: {
-        filterCoins()
-        setCheckState(false)
-        input_coin_filter.forceActiveFocus()
+    onOpened: 
+    {
+        filterCoins("");
+        setCheckState(false);
+        coin_cfg_model.checked_nb = 0;
+        input_coin_filter.forceActiveFocus();
     }
 
-    onClosed: filterCoins("")
+    onClosed: 
+    {
+        filterCoins("");
+        setCheckState(false);
+        coin_cfg_model.checked_nb = 0;
+    }
 
     ModalContent {
         title: qsTr("Enable assets")
