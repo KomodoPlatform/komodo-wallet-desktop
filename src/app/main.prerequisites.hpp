@@ -244,7 +244,8 @@ setup_default_themes()
 
     LOG_PATH_CMP("Checking for setup default themes - theme_path: {} original_theme_path: {}", theme_path, original_theme_path);
     LOG_PATH("copying default themes into directory: {}", theme_path);
-    fs::copy(original_theme_path, theme_path, get_override_options(), ec);
+    //fs::remove_all(theme_path);
+    fs::copy(original_theme_path, theme_path,  fs::copy_options::recursive | fs::copy_options::overwrite_existing, ec);
     if (ec)
     {
         SPDLOG_ERROR("fs::error: {}", ec.message());
@@ -258,7 +259,8 @@ setup_default_themes()
         fs::path       original_logo_path{ag::core::assets_real_path() / "logo"};
 
         LOG_PATH_CMP("Checking for setup default logo - logo_path: {} original_logo_path: {}", logo_path, original_logo_path);
-        fs::copy(original_logo_path, logo_path, get_override_options(), ec);
+        //fs::remove_all(logo_path);
+        fs::copy(original_logo_path, logo_path, fs::copy_options::recursive | fs::copy_options::overwrite_existing, ec);
         LOG_PATH("copying default logo into directory: {}", logo_path);
         if (ec)
         {
