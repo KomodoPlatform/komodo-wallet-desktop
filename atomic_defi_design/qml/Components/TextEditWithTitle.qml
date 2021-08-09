@@ -24,6 +24,12 @@ ComponentWithTitle {
         opacity: show_content ? 1 : 0
         Behavior on opacity { SmoothedAnimation { duration: expand_animation.duration; velocity: -1 } }
 
+        Qaterial.Icon {
+            anchors.right: parent.right
+            anchors.rightMargin: - 10
+            icon: Qaterial.Icons.contentCopy
+        }
+
         DexMouseArea {
             anchors.fill: parent
             enabled: control.copy
