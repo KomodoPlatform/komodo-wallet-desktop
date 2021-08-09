@@ -6,6 +6,8 @@ import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
+import App 1.0
+
 Item {
     id: root
 
@@ -13,11 +15,11 @@ Item {
         id: layout_background
 
         anchors.fill: parent
-        anchors.leftMargin: 20
+        anchors.leftMargin: 10
         anchors.rightMargin: anchors.leftMargin
         anchors.bottomMargin: anchors.leftMargin
 
-        contentWidth: width
+        contentWidth: width - 20
         contentHeight: content_layout.height
 
         ColumnLayout {

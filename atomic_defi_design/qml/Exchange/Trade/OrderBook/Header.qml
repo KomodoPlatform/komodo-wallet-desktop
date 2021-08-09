@@ -4,8 +4,9 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 
 Item {
     property bool is_ask: false
@@ -15,7 +16,7 @@ Item {
     z: 2
     Rectangle {
         anchors.fill: parent
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.dexBoxBackgroundColor
     }
 
     RowLayout {
@@ -26,18 +27,18 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 60
             text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
-            font.family: _font.fontFamily
+            font.family: DexTypo.fontFamily
             font.pixelSize: 9
             font.bold: true
             font.weight: Font.Black
-            color: is_ask? theme.redColor : theme.greenColor
+            color: is_ask? DexTheme.redColor : DexTheme.greenColor
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 100
 
             text: qsTr("Quantity") + " ("+  atomic_qt_utilities.retrieve_main_ticker(left_ticker) +")"
-            font.family: _font.fontFamily
+            font.family: DexTypo.fontFamily
             font.pixelSize: 9
             font.bold: true
             font.weight: Font.Black
@@ -49,7 +50,7 @@ Item {
             Layout.fillWidth: true
             text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"
             horizontalAlignment: Label.AlignRight
-            font.family: _font.fontFamily
+            font.family: DexTypo.fontFamily
             font.pixelSize: 9
             font.bold: true
             font.weight: Font.Black

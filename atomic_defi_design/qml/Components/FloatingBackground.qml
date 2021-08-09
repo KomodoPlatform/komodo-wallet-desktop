@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtGraphicalEffects 1.0
 import "../Constants"
+import App 1.0
 
 Item {
     id: root
@@ -8,8 +9,8 @@ Item {
     property alias color: rect.color
     property double border_gradient_start_pos: 0.35
     property double border_gradient_end_pos: 0.65
-    property color border_color_start: theme.colorInnerShadowTop
-    property color border_color_end: theme.colorInnerShadowBottom
+    property color border_color_start: DexTheme.colorInnerShadowTop
+    property color border_color_end: DexTheme.colorInnerShadowBottom
     property alias radius: rect.radius
     property alias border: rect.border
     property alias inner_space: inner_space
@@ -80,7 +81,7 @@ Item {
         radius: verticalShadow ? 25 : 15
         samples: 32
         spread: 0
-        color: verticalShadow ? theme.floatShadow2 : theme.floatShadow1
+        color: verticalShadow ? DexTheme.floatShadow2 : DexTheme.floatShadow1
         smooth: true
         z: -2
     }
@@ -96,7 +97,7 @@ Item {
         radius: verticalShadow ? 25 : 20
         samples: 32
         spread: 0
-        color: theme.floatBoxShadowDark
+        color: DexTheme.floatBoxShadowDark
         smooth: true
         z: -2
     }

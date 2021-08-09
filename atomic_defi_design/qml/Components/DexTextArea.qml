@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 
 TextArea {
     id: text_field
@@ -11,8 +12,16 @@ TextArea {
     selectedTextColor: Style.colorSelectedText
     selectionColor: Style.colorSelection
 
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
-    Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
+    Behavior on placeholderTextColor {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
     property bool remove_newline: true
     wrapMode: TextEdit.Wrap
@@ -21,19 +30,19 @@ TextArea {
     Keys.onTabPressed: nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
 
     Keys.onPressed: {
-        if(event.key === Qt.Key_Return) {
-            if(onReturn !== undefined) {
+        if (event.key === Qt.Key_Return) {
+            if (onReturn !== undefined) {
                 onReturn()
             }
 
             // Ignore \n \r stuff
-            if(remove_newline) event.accepted = true
+            if (remove_newline) event.accepted = true
         }
     }
 
     onTextChanged: {
-        if(remove_newline) {
-            if(text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
+        if (remove_newline) {
+            if (text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
                 text = text.replace(/[\r\n]/, '')
             }
         }
@@ -43,7 +52,9 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground { auto_set_size: false }
+    background: InnerBackground {
+        auto_set_size: false
+    }
 
-    RightClickMenu { }
+    RightClickMenu {}
 }

@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import "../Constants"
+import App 1.0
 
 RowLayout {
     id: control
@@ -81,7 +82,7 @@ RowLayout {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
 
-            color: theme.foregroundColor
+            color: DexTheme.foregroundColor
             source: Qaterial.Icons.skipPreviousOutline
         }
         enabled: visible_page > 1
@@ -97,8 +98,8 @@ RowLayout {
             Layout.preferredWidth: 50
             Layout.preferredHeight: 50
             Layout.alignment: Qt.AlignVCenter
-            colorEnabled: element === visible_page ? 'transparent' : theme.buttonColorEnabled
-            colorTextEnabled: element === visible_page ? theme.accentColor : theme.buttonColorTextEnabled
+            colorEnabled: element === visible_page ? 'transparent' : DexTheme.buttonColorEnabled
+            colorTextEnabled: element === visible_page ? DexTheme.accentColor : DexTheme.buttonColorTextEnabled
             onClicked: {
                 if(visible_page !== model.modelData)
                     API.app.orders_mdl.current_page = model.modelData
@@ -113,7 +114,7 @@ RowLayout {
         Qaterial.ColorIcon {
             anchors.centerIn: parent
 
-            color: theme.foregroundColor
+            color: DexTheme.foregroundColor
             source: Qaterial.Icons.skipNextOutline
         }
         enabled: page_count > 1 && visible_page < page_count

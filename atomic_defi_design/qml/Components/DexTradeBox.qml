@@ -3,15 +3,14 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import "../Exchange/Trade/"
-import "../Constants/" as Constants
+import App 1.0
 
 Rectangle {
     id: _control
-    //border.width: 1.1
     signal reload()
 
     property bool hideHeader: false
-    property bool visibility: isVertical? height>=40 ? true : false : width>=40? true : false
+    property bool visibility: isVertical ? height >= 40 ? true : false : width >= 40 ? true : false
     property bool hidden: false
     property bool closed: false
     property bool expandedVert: false
@@ -23,42 +22,41 @@ Rectangle {
     property bool expandable: true
     property bool fullScreen: false
     property string title: "Default Title"
-    property int minimumHeight: isVertical? 40 : 250
-    property int minimumWidth: isVertical? 40 : 250
+    property int minimumHeight: isVertical ? 40 : 250
+    property int minimumWidth: isVertical ? 40 : 250
     property int maximumHeight: 9999999
-    property int maximumWidth:  9999999
+    property int maximumWidth: 9999999
     property int defaultHeight: 250
     property int defaultWidth: 250
     property bool reloadable: false
     property bool contentVisible: !hidden
-    radius: 3
     property bool isVertical: _control.parent.parent.orientation === Qt.Vertical
+    radius: 3
+    
     function setHeight(height) {
         SplitView.preferredHeight = height
     }
+
     function setWidth(width) {
         SplitView.preferredWidth = width
     }
 
     onHiddenChanged: {
-        if(isVertical && hidden) {
+        if (isVertical && hidden) {
             SplitView.preferredHeight = 40
             SplitView.minimumHeight = 40
             SplitView.maximumHeight = 40
-        }
-        else if(isVertical && !hidden){
+        } else if (isVertical && !hidden) {
             SplitView.preferredHeight = defaultHeight
             SplitView.minimumHeight = minimumHeight
             SplitView.maximumHeight = maximumHeight
             SplitView.fillHeight = true
             SplitView.view.update()
-        }
-        else if(!isVertical && hidden) {
+        } else if (!isVertical && hidden) {
             SplitView.preferredWidth = 40
             SplitView.minimumWidth = 40
             SplitView.maximumWidth = 40
-        }
-        else if(!isVertical && !hidden){
+        } else if (!isVertical && !hidden) {
             SplitView.preferredWidth = defaultWidth
             SplitView.minimumWidth = minimumWidth
             SplitView.maximumWidth = maximumWidth
@@ -67,8 +65,10 @@ Rectangle {
         }
     }
 
-    //shadowOff: true
-    color: theme.dexBoxBackgroundColor
+    color: DexTheme.proviewItemBoxBackgroundColor
+    border.color: DexTheme.proviewItemBoxBorderColor
+    border.width: DexTheme.proviewItemBoxBorderWidth
+    
     property alias titleLabel: _texto
 
     function setFalseHeight() {
@@ -77,37 +77,38 @@ Rectangle {
 
     onExpandedVertChanged: {
         let splitManager = SplitView.view
-        if(expandedVert) {
-            if(splitManager!==null){
-                for(var i=0; i< splitManager.itemLists.length;i++){
-                     let item =splitManager.itemLists[i]
-                    if (item!==_control){
-                        try{
+        if (expandedVert) {
+            if (splitManager !== null) {
+                for (var i = 0; i < splitManager.itemLists.length; i++) {
+                    let item = splitManager.itemLists[i]
+                    if (item !== _control) {
+                        try {
                             item.expandedVert = false
                             item.setFalseHeight()
-                        }catch(e){}
+                        } catch (e) {}
                     }
                 }
                 SplitView.fillHeight = true
             }
-        }else {
+        } else {
             var setted = false
-            if(splitManager!==null){
-                for(var i=0; i< splitManager.itemLists.length;i++){
-                    let item =splitManager.itemLists[i]
-                    if (item!==_control && setted===false){
-                        try{
+            if (splitManager !== null) {
+                for (var i = 0; i < splitManager.itemLists.length; i++) {
+                    let item = splitManager.itemLists[i]
+                    if (item !== _control && setted === false) {
+                        try {
                             item.expandedVert = true
-                            setted = true 
-                        }catch(e){}
+                            setted = true
+                        } catch (e) {}
                     }
                 }
                 setFalseHeight()
             }
         }
     }
-     function setFalseWidth() {
-        SplitView.fillWidth= false
+
+    function setFalseWidth() {
+        SplitView.fillWidth = false
     }
 
     /*onExpandedHortChanged: {
@@ -134,12 +135,14 @@ Rectangle {
 
         }
     }
+
     Behavior on SplitView.preferredWidth {
         SmoothedAnimation {
             duration: 200
 
         }
     }
+
     Component.onCompleted: {
         SplitView.minimumHeight = minimumHeight
         SplitView.minimumWidth = minimumWidth
@@ -147,12 +150,13 @@ Rectangle {
         SplitView.maximumWidth = maximumWidth
         SplitView.preferredHeight = defaultHeight
         SplitView.preferredWidth = defaultWidth
-        SplitView.fillHeight = expandedVert? true: false
-        SplitView.fillWidth = expandedHort? true: false
+        SplitView.fillHeight = expandedVert ? true : false
+        SplitView.fillWidth = expandedHort ? true : false
     }
+
     property Component contentItem
 
-    
+
     ClipRRect {
         anchors.fill: parent
         radius: parent.radius
@@ -171,7 +175,7 @@ Rectangle {
                     Layout.fillWidth: true
                     font.weight: Font.Medium
                     text: _control.title
-                    color: theme.accentColor
+                    color: DexTheme.headTextColor
                     visible: isVertical || !hidden
                     bottomPadding: 5
                 }
@@ -185,9 +189,9 @@ Rectangle {
                         icon.height: 17
                         icon.width: 17
                         visible: _control.canBeFull
-                        foregroundColor: theme.accentColor
-                        icon.source: _control.fullScreen? Qaterial.Icons.fullscreenExit : Qaterial.Icons.fullscreen
-                        onClicked: _control.fullScreen =!_control.fullScreen
+                        foregroundColor: DexTheme.accentColor
+                        icon.source: _control.fullScreen ? Qaterial.Icons.fullscreenExit : Qaterial.Icons.fullscreen
+                        onClicked: _control.fullScreen = !_control.fullScreen
                     }
                     Qaterial.AppBarButton {
                         Timer {
@@ -203,7 +207,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
+                        foregroundColor: DexTheme.accentColor
                         visible: _control.reloadable
                         icon.source: Qaterial.Icons.refresh
                         onClicked: {
@@ -218,26 +222,26 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
-                        icon.source: !_control.hidden? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
-                        onClicked: _control.hidden =!_control.hidden
+                        foregroundColor: DexTheme.accentColor
+                        icon.source: !_control.hidden ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        onClicked: _control.hidden = !_control.hidden
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
+                        foregroundColor: DexTheme.accentColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
-                        icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
-                        onClicked: _control.expandedVert =!_control.expandedVert
+                        icon.source: _control.expandedVert ? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
+                        onClicked: _control.expandedVert = !_control.expandedVert
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
+                        foregroundColor: DexTheme.accentColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -246,7 +250,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
+                        foregroundColor: DexTheme.accentColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                         onClicked: {
@@ -268,7 +272,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 text: _control.title
-                color: theme.accentColor
+                color: DexTheme.accentColor
                 bottomPadding: 5
                 rotation: 90
                 anchors.centerIn: parent
@@ -286,8 +290,8 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
-                        icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        foregroundColor: DexTheme.accentColor
+                        icon.source: _control.expandable ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: {
                             _control.hidden = !_control.hidden
                         }
@@ -297,17 +301,17 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
-                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal 
-                        icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
-                        onClicked: _control.expandedHort =!_control.expandedHort
+                        foregroundColor: DexTheme.accentColor
+                        visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
+                        icon.source: _control.expandedHort ? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
+                        onClicked: _control.expandedHort = !_control.expandedHort
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
+                        foregroundColor: DexTheme.accentColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -316,7 +320,7 @@ Rectangle {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.accentColor
+                        foregroundColor: DexTheme.accentColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
 

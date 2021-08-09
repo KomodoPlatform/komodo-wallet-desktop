@@ -6,11 +6,13 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
-import "../../../Constants"
+import "../../../Constants" as Constants
+
+import App 1.0 as App
 
 Item {
     id: _control
-    property bool coinEnable: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
+    property bool coinEnable: Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
     property var isAsk: {
         if(parseInt(cex_rates)>0){
             false
@@ -28,7 +30,7 @@ Item {
         visible: mouse_are.containsMouse
         width: parent.width
         height: parent.height
-        color: theme.foregroundColor
+        color: App.DexTheme.foregroundColor
         opacity: 0.1
     }
 
@@ -44,7 +46,7 @@ Item {
             leftPadding: -10
             spacing: 5
             Image {
-                source: General.coinIcon(coin)
+                source: Constants.General.coinIcon(coin)
                 width: 20
                 height: 20
                 smooth: true
@@ -56,7 +58,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
                 text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
-                font.family: _font.fontFamily
+                font.family: App.DexTypo.fontFamily
                 font.pixelSize: 10
 
             }
@@ -76,7 +78,7 @@ Item {
                     if(link==="#no") {
                         _tooltip.close()
                     }else {
-                        if (API.app.enable_coins([coin]) === true) {
+                        if (Constants.API.app.enable_coins([coin]) === true) {
                             _control.coinEnable = true
                             _tooltip.close()
                         }
@@ -98,8 +100,8 @@ Item {
         DexLabel {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
-            text: price_fiat+API.app.settings_pg.current_fiat_sign
-            font.family: _font.fontFamily
+            text: price_fiat + Constants.API.app.settings_pg.current_fiat_sign
+            font.family: App.DexTypo.fontFamily
             font.pixelSize: 10
             horizontalAlignment: Label.AlignRight
             opacity: 1
@@ -109,7 +111,7 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             
             text: cex_rates==="0"? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
-            font.family: _font.fontFamily
+            font.family: App.DexTypo.fontFamily
             font.pixelSize: 10
 
             Behavior on rightPadding {
@@ -118,7 +120,7 @@ Item {
                 }
             }
 
-            color:cex_rates==="0"? Qt.darker(theme.foregroundColor) : parseFloat(cex_rates)<0? Style.colorGreen : Style.colorRed
+            color:cex_rates==="0"? Qt.darker(App.DexTheme.foregroundColor) : parseFloat(cex_rates)<0? App.DexTheme.greenColor : App.DexTheme.redColor
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
@@ -131,11 +133,11 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            if(!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled){
+            if(!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled){
                 _tooltip.open()
             }else {
                 app.pairChanged(base_ticker, coin)
-                API.app.trading_pg.orderbook.select_best_order(uuid)
+                Constants.API.app.trading_pg.orderbook.select_best_order(uuid)
             }
             
             //if(is_mine) return

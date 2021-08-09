@@ -4,6 +4,8 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
 
+import App 1.0
+
 Item {
     anchors.fill: parent
     Item {
@@ -18,20 +20,28 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             gradient: Gradient {
                 orientation: Qt.Horizontal
-                GradientStop { position: 0.0; color: "transparent" }
-                GradientStop { position: 0.4; color: "transparent" }
-                GradientStop { position: 0.6; color: app.globalTheme.surfaceColor }
-                GradientStop { position: 1.0; color: Qt.darker(app.globalTheme.dexBoxBackgroundColor, 0.9) }
+                GradientStop {
+                    position: 0.0;color: "transparent"
+                }
+                GradientStop {
+                    position: 0.4;color: "transparent"
+                }
+                GradientStop {
+                    position: 0.6;color: DexTheme.surfaceColor
+                }
+                GradientStop {
+                    position: 1.0;color: Qt.darker(DexTheme.dexBoxBackgroundColor, 0.9)
+                }
             }
         }
         MouseArea {
             onPressed: window.startSystemMove();
             anchors.fill: parent
-            anchors.rightMargin:  280 
+            anchors.rightMargin: 280
             onDoubleClicked: {
-                if(window.visibility===ApplicationWindow.Maximized){
+                if (window.visibility === ApplicationWindow.Maximized) {
                     window.showNormal()
-                }else {
+                } else {
                     window.showMaximized()
                 }
             }

@@ -10,6 +10,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 // Portfolio
 Item {
@@ -23,7 +24,7 @@ Item {
             property bool ticker_supported: false
             readonly property bool is_fetching: chart.loadProgress < 100
             readonly property string chartTheme: Style.dark_theme ? "dark" : "light"
-            property color backgroundColor: theme.chartTradingLineBackgroundColor
+            property color backgroundColor: DexTheme.chartTradingLineBackgroundColor
             property var ticker: api_wallet_page.ticker
 
             function loadChart() {
@@ -99,7 +100,7 @@ Item {
                                            }
                                            </script>
                                          </div>
-                                         <!-- TradingView Widget END -->`.arg(theme.backgroundColor).arg(theme.chartTradingLineColor).arg(theme.chartTradingLineBackgroundColor))
+                                         <!-- TradingView Widget END -->`.arg(DexTheme.backgroundColor).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
                                 }
 
                                  width: price_graph_bg.width

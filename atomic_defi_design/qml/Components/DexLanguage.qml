@@ -7,6 +7,7 @@ import QtQuick.Controls.Universal 2.15
 import QtGraphicalEffects 1.0
 
 import "../Constants"
+import App 1.0
 
 DexComboBox {
     id: control
@@ -30,9 +31,9 @@ DexComboBox {
             }
         }
         onClicked: {
-            if(modelData !== API.app.settings_pg.lang) {
-                API.app.settings_pg.lang =  modelData
-            } 
+            if (modelData !== API.app.settings_pg.lang) {
+                API.app.settings_pg.lang = modelData
+            }
         }
     }
     contentItem: Text {
@@ -55,7 +56,7 @@ DexComboBox {
     indicator: ColorImage {
         x: control.width - 34
         y: control.topPadding + (control.availableHeight - height) / 2
-        color: theme.rectangleBorderColor
+        color: DexTheme.rectangleBorderColor
         defaultColor: control.contentItem.color
         scale: .7
         source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"

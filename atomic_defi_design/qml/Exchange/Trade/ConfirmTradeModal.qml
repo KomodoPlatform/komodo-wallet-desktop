@@ -190,7 +190,7 @@ BasicModal {
             }
 
             // Enable custom config
-            DefaultCheckBox {
+            DexCheckBox {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_custom_config
 
@@ -239,7 +239,7 @@ BasicModal {
                         color: parent.enabled ? Style.colorText : Style.colorTextDisabled
                     }
 
-                    DefaultSlider {
+                    DexSlider {
                         id: required_confirmation_count
                         readonly property int default_confirmation_count: 3
                         Layout.alignment: Qt.AlignHCenter

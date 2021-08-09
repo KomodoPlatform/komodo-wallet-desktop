@@ -8,11 +8,12 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 PieSlice {
     label: "XRP"; value: 10; color: Qaterial.Colors.yellow500;
-    borderColor: theme.backgroundColor
-     labelColor: 'white'; labelFont: theme.textType.head5
+    borderColor: DexTheme.backgroundColor
+     labelColor: 'white'; labelFont: DexTypo.head5
      borderWidth: 3
      Behavior on explodeDistanceFactor {
          NumberAnimation  {
