@@ -43,5 +43,6 @@
   "textSelectedColor": "#f9f9fb",
   "textSelectionColor": "#14bca6",
   "sidebarShadowRadius[int]":"0",
-  "whiteblack": "#000000"
+  "whiteblack": "#000000",
+  "theme":"light"
 }
