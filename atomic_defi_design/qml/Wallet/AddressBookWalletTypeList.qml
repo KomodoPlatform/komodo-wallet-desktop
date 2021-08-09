@@ -8,6 +8,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 Qaterial.Expandable
 {
@@ -26,8 +27,12 @@ Qaterial.Expandable
         id: _header
 
         icon.source: General.image_path + "arrow_down.svg"
-
-        text: title
+        DexLabel {
+            anchors.verticalCenter: parent.verticalCenter
+            text: title
+            leftPadding: 60
+            font.bold: true
+        }
 
         onClicked: () => _root.expanded = !_root.expanded
     }

@@ -1,16 +1,17 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 
 TextArea {
     id: text_field
 
     font.family: Style.font_family
 
-    placeholderTextColor: theme.textPlaceHolderColor
-    selectedTextColor: theme.textSelectedColor
-    selectionColor: theme.textSelectionColor
-    color: theme.foregroundColor
+    placeholderTextColor: DexTheme.textPlaceHolderColor
+    selectedTextColor: DexTheme.textSelectedColor
+    selectionColor: DexTheme.textSelectionColor
+    color: DexTheme.foregroundColor
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }

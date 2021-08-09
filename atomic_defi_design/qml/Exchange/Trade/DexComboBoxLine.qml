@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls.Universal 2.15
 
 import "../../Components"
-import "../../Constants"
+import App 1.0
 
 RowLayout {
     id: root
@@ -33,7 +33,7 @@ RowLayout {
             width: root.width-40
             DefaultText {
                 text_value: !details ? "" :
-                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${theme.foregroundColor}">${details.name}</font>`
+                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${DexTheme.foregroundColor}">${details.name}</font>`
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }
@@ -45,8 +45,8 @@ RowLayout {
                 text: real_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
-                color: theme.foregroundColor
-                font: theme.textType.body2
+                color: DexTheme.foregroundColor
+                font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: real_value
                 Component.onCompleted: {

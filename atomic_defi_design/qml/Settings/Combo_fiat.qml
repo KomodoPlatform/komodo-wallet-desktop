@@ -12,6 +12,7 @@ import Qaterial 1.0 as Qaterial
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 
 ComboBoxWithTitle {

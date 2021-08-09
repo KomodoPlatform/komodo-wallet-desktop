@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 ModalContent {
     property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })

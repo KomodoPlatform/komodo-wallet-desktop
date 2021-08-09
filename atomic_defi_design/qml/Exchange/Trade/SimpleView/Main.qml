@@ -6,9 +6,11 @@ import QtQuick.Controls 2.15
 //! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 //! Project Imports
 import "../../../Components"
-import "../../../Constants"   //> Style
+import "../../../Constants"  as Constants 
 import "../Orders" as Orders
 import "Main.js" as Main
 
@@ -44,8 +46,8 @@ Item {
             width: 250
             height: 40
             border.width: 1
-            border.color: theme.dexBoxBackgroundColor
-            color: theme.surfaceColor
+            border.color: DexTheme.dexBoxBackgroundColor
+            color: DexTheme.surfaceColor
             radius: 40
 
             FloatingBackground // Selected Tab Rectangle
@@ -84,64 +86,48 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 width: (parent.width / 3) 
                 radius: 40
-                color: theme.accentColor
+                color: DexTheme.accentColor
             }
             RowLayout {
                 anchors.fill: parent
                 spacing: 0
-                DexLabel // Trade Tab
+
+                NavigationLabel
                 {
                     id: _tradeText
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    currentPage: currentSubPage
+                    selectedPage: subPages.Trade
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("Trade")
-                    font.pixelSize: Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.Trade? theme.foregroundColor : theme.accentColor : theme.foregroundColor
-                    DexMouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: if (currentSubPage !== subPages.Trade) currentSubPage = subPages.Trade
-                        hoverEnabled: true
-                    }
+                    font.pixelSize: Constants.Style.textSize
+                    onClicked: if (currentSubPage !== subPages.Trade) currentSubPage = subPages.Trade
                 }
 
-                DexLabel // Orders Tab
+                NavigationLabel
                 {
                     id: _ordersText
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    currentPage: currentSubPage
+                    selectedPage: subPages.Orders
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("Orders")
-                    font.pixelSize: Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.Orders? theme.foregroundColor : theme.accentColor : theme.foregroundColor
-                    DexMouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: if (currentSubPage !== subPages.Orders) currentSubPage = subPages.Orders
-                        hoverEnabled: true
-                    }
+                    font.pixelSize: Constants.Style.textSize
+                    onClicked: if (currentSubPage !== subPages.Orders) currentSubPage = subPages.Orders
                 }
 
-                DexLabel // History Tab
+                NavigationLabel
                 {
                     id: _historyText
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    currentPage: currentSubPage
+                    selectedPage: subPages.History
                     Layout.preferredWidth: parent.width/3
                     Layout.fillHeight: true
                     text: qsTr("History")
-                    font.pixelSize: Style.textSize
-                    color: children[1].containsMouse? currentSubPage === subPages.History? theme.foregroundColor : theme.accentColor : theme.foregroundColor
-                    DexMouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: if (currentSubPage !== subPages.History) currentSubPage = subPages.History
-                        hoverEnabled: true
-                    }
+                    font.pixelSize: Constants.Style.textSize
+                    onClicked: if (currentSubPage !== subPages.History) currentSubPage = subPages.History
                 }
+                
             }
             
         }
@@ -161,7 +147,7 @@ Item {
                     width: _simpleTrade.best? 600 : _simpleTrade.coinSelection? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
-                    color: theme.dexBoxBackgroundColor
+                    color: DexTheme.dexBoxBackgroundColor
                     sizeAnimationDuration: 250
                     sizeAnimation: true
                     ClipRRect {
@@ -181,7 +167,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20
-                    color: theme.dexBoxBackgroundColor
+                    color: DexTheme.dexBoxBackgroundColor
                     SubOrders {
                         id: orders_view
                     }
@@ -193,7 +179,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20
-                    color: theme.dexBoxBackgroundColor
+                    color: DexTheme.dexBoxBackgroundColor
                     SubHistory {
                         id: history_view
                     }

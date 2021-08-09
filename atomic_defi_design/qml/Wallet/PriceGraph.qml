@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtCharts 2.3
 import "../Components"
 import "../Constants"
+import App 1.0
 
 // List
 ChartView {

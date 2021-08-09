@@ -14,7 +14,8 @@ import AtomicDEX.TradingMode 1.0
 import "../" as OtherPage
 
 import "../../../Components"
-import "../../../Constants"
+
+import App 1.0
 
 
 Item {
@@ -39,7 +40,7 @@ Item {
                     duration: 150
                 }
             }
-            color: tuto_area.containsMouse? 'transparent' : theme.accentColor
+            color: tuto_area.containsMouse? 'transparent' : DexTheme.accentColor
             Row {
                 id: _learnRow 
                 anchors.centerIn: parent
@@ -48,12 +49,12 @@ Item {
                     source: Qaterial.Icons.televisionPlay
                     anchors.verticalCenter: parent.verticalCenter
                     iconSize: 15
-                    color: tuto_area.containsMouse? theme.accentColor : theme.surfaceColor
+                    color: tuto_area.containsMouse? DexTheme.accentColor : DexTheme.surfaceColor
                 }
                 DexLabel {
                     anchors.verticalCenter: parent.verticalCenter
                     font.weight: Font.Medium
-                    color: tuto_area.containsMouse? theme.accentColor : theme.surfaceColor
+                    color: tuto_area.containsMouse? DexTheme.accentColor : DexTheme.surfaceColor
                     text: qsTr("How to trade")
                 }
             }
@@ -73,7 +74,7 @@ Item {
                     duration: 150
                 }
             }
-            color: faq_area.containsMouse? 'transparent' : theme.accentColor
+            color: faq_area.containsMouse? 'transparent' : DexTheme.accentColor
             Row {
                 id: _faqRow
                 anchors.centerIn: parent
@@ -81,7 +82,7 @@ Item {
                 DexLabel {
                     anchors.verticalCenter: parent.verticalCenter
                     font.weight: Font.Medium
-                    color: faq_area.containsMouse? theme.accentColor : theme.surfaceColor
+                    color: faq_area.containsMouse? DexTheme.accentColor : DexTheme.surfaceColor
                     text: qsTr("FAQ")
                 }
             }
@@ -101,7 +102,7 @@ Item {
                     duration: 150
                 }
             }
-            color: cog_area.containsMouse? 'transparent' :  API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? 'transparent' : theme.accentColor : theme.accentColor
+            color: cog_area.containsMouse? 'transparent' :  API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? 'transparent' : DexTheme.accentColor : DexTheme.accentColor
             Row {
                 anchors.centerIn: parent
                 spacing: 10
@@ -109,7 +110,7 @@ Item {
                     source: Qaterial.Icons.cog
                     anchors.verticalCenter: parent.verticalCenter
                     iconSize: 15
-                    color: cog_area.containsMouse? theme.accentColor : API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? theme.accentColor : theme.surfaceColor  : theme.surfaceColor
+                    color: cog_area.containsMouse? DexTheme.accentColor : API.app.trading_pg.current_trading_mode == TradingMode.Pro ? _viewLoader.item.dexConfig.visible? DexTheme.accentColor : DexTheme.surfaceColor  : DexTheme.surfaceColor
                 }
             }
             DexMouseArea {
@@ -141,7 +142,7 @@ Item {
                 height: 20
                 radius: 20
                 anchors.verticalCenter: parent.verticalCenter
-                color: theme.accentColor
+                color: DexTheme.accentColor
                 Behavior on x {
                     NumberAnimation {
                         duration: 200
@@ -159,7 +160,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x === 0 ? theme.surfaceColor : simple_area.containsMouse ? theme.accentColor : theme.foregroundColor
+                    color: background_rect.x === 0 ? DexTheme.surfaceColor : simple_area.containsMouse ? DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea {
                         id: simple_area
                         hoverEnabled: true
@@ -177,7 +178,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x !== 0 ? theme.surfaceColor : pro_area.containsMouse ? theme.accentColor : theme.foregroundColor
+                    color: background_rect.x !== 0 ? DexTheme.surfaceColor : pro_area.containsMouse ? DexTheme.accentColor : DexTheme.foregroundColor
                     DexMouseArea {
                         id: pro_area
                         hoverEnabled: true

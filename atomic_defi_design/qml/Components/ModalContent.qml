@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 //! Project Imports
 import "../Constants"
+import App 1.0
 
 // The content of a modal. Must be a child of a `BasicModal` component.
 ColumnLayout

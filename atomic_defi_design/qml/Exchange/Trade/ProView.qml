@@ -12,8 +12,9 @@ import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 
 import "../../Components"
-import "../../Constants"
 import "../../Wallet"
+
+import App 1.0
 
 // Trade Form / Component import
 import "TradeBox/"
@@ -256,10 +257,10 @@ ColumnLayout {
                             width: parent.width
                             currentIndex: tabView.currentIndex
                             anchors.horizontalCenter: parent.horizontalCenter
-                            Material.foreground: theme.foregroundColor
+                            Material.foreground: DexTheme.foregroundColor
                             background: Rectangle {
                                 radius: 0
-                                color: theme.dexBoxBackgroundColor
+                                color: DexTheme.dexBoxBackgroundColor
                             }
 
                             y: 5
@@ -268,21 +269,24 @@ ColumnLayout {
                                 width: 150
                                 text: qsTr("Exchange Rates")
                                 font.pixelSize: 14
-                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
                             Qaterial.LatoTabButton {
                                 width: 120
                                 text: qsTr("Orders")
                                 font.pixelSize: 14
-                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
                             Qaterial.LatoTabButton {
                                 width: 120
                                 text: qsTr("History")
                                 font.pixelSize: 14
-                                textColor: CheckBox ? Qaterial.Style.buttonAccentColor : theme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
                         }
@@ -419,8 +423,8 @@ ColumnLayout {
                             height: 35
                             radius: 8
                             color: !sell_mode ? Qt.darker(
-                                                    theme.greenColor) : Qt.lighter(theme.dexBoxBackgroundColor)
-                            border.color: !sell_mode ? theme.greenColor : color
+                                                    DexTheme.greenColor) : Qt.lighter(DexTheme.dexBoxBackgroundColor)
+                            border.color: !sell_mode ? DexTheme.greenColor : color
                             Rectangle {
                                 anchors.right: parent.right
                                 color: parent.color
@@ -441,7 +445,7 @@ ColumnLayout {
                                 anchors.centerIn: parent
                                 opacity: !sell_mode ? 1 : .5
                                 text: qsTr("Buy")+" "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-                                color: !sell_mode? Qaterial.Colors.white : theme.foregroundColor
+                                color: !sell_mode? Qaterial.Colors.white : DexTheme.foregroundColor
                             }
                             DefaultMouseArea {
                                 anchors.fill: parent
@@ -454,8 +458,8 @@ ColumnLayout {
                             height: 35
                             radius: 8
                             color: sell_mode ? Qt.darker(
-                                                   theme.redColor) : Qt.lighter(theme.dexBoxBackgroundColor)
-                            border.color: sell_mode ? theme.redColor : color
+                                                   DexTheme.redColor) : Qt.lighter(DexTheme.dexBoxBackgroundColor)
+                            border.color: sell_mode ? DexTheme.redColor : color
                             Rectangle {
                                 anchors.left: parent.left
                                 color: parent.color
@@ -476,7 +480,7 @@ ColumnLayout {
 
                                 opacity: sell_mode ? 1 : .5
                                 text: qsTr("Sell")+" "+atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-                                color: sell_mode? Qaterial.Colors.white : theme.foregroundColor
+                                color: sell_mode? Qaterial.Colors.white : DexTheme.foregroundColor
 
                             }
                             DefaultMouseArea {
@@ -504,17 +508,17 @@ ColumnLayout {
                                 height: 40
                                 color: 'transparent'
                                 radius: 8
-                                border.color: theme.redColor
+                                border.color: DexTheme.redColor
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 y: 5
                                 DefaultText {
                                     anchors.verticalCenter: parent.verticalCenter
                                     leftPadding: 15
-                                    color: theme.redColor
+                                    color: DexTheme.redColor
                                     text: qsTr("Order Selected")
                                 }
                                 Qaterial.FlatButton {
-                                    foregroundColor: theme.redColor
+                                    foregroundColor: DexTheme.redColor
                                     icon.source: Qaterial.Icons.close
                                     anchors.right: parent.right
                                     anchors.verticalCenter: parent.verticalCenter
@@ -587,7 +591,7 @@ ColumnLayout {
                                         width: parent.width
                                         horizontalAlignment: DefaultText.AlignHCenter
                                         font.pixelSize: Style.textSizeSmall4
-                                        color: theme.redColor
+                                        color: DexTheme.redColor
 
                                         text_value: General.getTradingError(
                                                         last_trading_error,
@@ -614,7 +618,7 @@ ColumnLayout {
         spacing: 8
         padding: 4
         arrowXDecalage: 75
-        backgroundColor: theme.dexBoxBackgroundColor
+        backgroundColor: DexTheme.dexBoxBackgroundColor
         Settings {
             id: proview_settings
             property bool chart_visibility: true
@@ -634,7 +638,7 @@ ColumnLayout {
                 spacing: 8
                 DexLabel {
                     text: "Display Settings"
-                    font: _font.body2
+                    font: DexTypo.body2
                 }
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
                 DexCheckEye {

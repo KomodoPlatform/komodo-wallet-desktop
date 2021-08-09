@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import App 1.0
 
 Item {
     id: orderBook
@@ -35,7 +36,7 @@ Item {
                         width: parent.width
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: theme.surfaceColor
+                        color: DexTheme.surfaceColor
                     }
                 }
                 List {

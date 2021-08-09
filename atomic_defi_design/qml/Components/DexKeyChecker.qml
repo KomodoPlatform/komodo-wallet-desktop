@@ -1,12 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import "../Constants"
+import App 1.0
 
 
 ColumnLayout {
 
     id: control
-    property var field
+    property
+    var field
     property bool hide_hint: false
     property bool new_password: true
     property bool double_validation: false
@@ -14,11 +16,11 @@ ColumnLayout {
     property bool high_security: true
 
     function isValid() {
-        if(double_validation) {
+        if (double_validation) {
             return control.field.acceptableInput && RegExp(high_security ? General.reg_pass_valid : General.reg_pass_valid_low_security).test(control.field.text) && passwordsDoMatch()
         } else {
-            return control.field.acceptableInput && RegExp(high_security ? General.reg_pass_valid : General.reg_pass_valid_low_security).test(control.field.text) 
-        } 
+            return control.field.acceptableInput && RegExp(high_security ? General.reg_pass_valid : General.reg_pass_valid_low_security).test(control.field.text)
+        }
     }
 
     function hasEnoughUppercaseCharacters() {
@@ -46,7 +48,7 @@ ColumnLayout {
     }
 
     function hintColor(valid) {
-        return valid ? Style.colorGreen : Style.colorRed
+        return valid ? DexTheme.greenColor : DexTheme.redColor
     }
 
     function hintPrefix(valid) {
@@ -60,7 +62,7 @@ ColumnLayout {
 
         DexLabel {
             visible: high_security
-            font: theme.textType.body2
+            font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character")
@@ -68,7 +70,7 @@ ColumnLayout {
         }
         DexLabel {
             visible: high_security
-            font: theme.textType.body2
+            font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character")
@@ -76,7 +78,7 @@ ColumnLayout {
         }
         DexLabel {
             visible: high_security
-            font: theme.textType.body2
+            font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character")
@@ -84,21 +86,21 @@ ColumnLayout {
         }
         DexLabel {
             visible: high_security
-            font: theme.textType.body2
+            font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)")
             color: hintColor(hasEnoughSpecialCharacters())
         }
         DexLabel {
-            font: theme.textType.body2
+            font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
             text_value: hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1)
             color: hintColor(hasEnoughCharacters())
         }
         DexLabel {
-            font: theme.textType.body2
+            font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
             text_value: hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same")

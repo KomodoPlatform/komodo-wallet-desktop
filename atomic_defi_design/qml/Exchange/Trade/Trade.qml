@@ -12,26 +12,13 @@ import AtomicDEX.TradingError 1.0
 import AtomicDEX.TradingMode 1.0
 
 import "../../Components"
-import "../../Constants"
 import "../../Wallet"
 
-// Trade Form / Component import
-import "TradeBox/"
 import "Trading/"
-import "Trading/Items/"
-
-// OrderBook / Component import
-import "OrderBook/" as OrderBook
-
-// Best Order
-import "BestOrder/" as BestOrder
-
-// Orders (orders, history)
-import "Orders/" as OrdersView
-
-import "./" as Here
 
 import "SimpleView" as SimpleView
+
+import App 1.0
 
 Item {
     id: exchange_trade

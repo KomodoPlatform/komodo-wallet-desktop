@@ -3,7 +3,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
 // Project Imports
-import "../Constants" //> API
+import "../Constants"
+import App 1.0 //> API
 
 RowLayout {
     spacing: 10
