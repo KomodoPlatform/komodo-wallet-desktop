@@ -3205,6 +3205,23 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "NVC-BEP20": {
+      "coin": "NVC-BEP20",
+      "name": "Novacoin",
+      "coinpaprika_id": "nvc-novacoin",
+      "coingecko_id": "novacoin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "OOT": {
     "coin": "OOT",
     "name": "Utrum",
