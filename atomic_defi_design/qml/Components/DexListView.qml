@@ -9,11 +9,14 @@ ListView {
     id: root
 
     property bool scrollbar_visible: contentItem.childrenRect.height > height
+    property alias position: scrollVert.position
+    property alias scrollVert: scrollVert
     readonly property double scrollbar_margin: scrollbar_visible ? 8 : 0
     property bool visibleBackground: false
 
     boundsBehavior: Flickable.StopAtBounds
     ScrollBar.vertical: DexScrollBar {
+        id: scrollVert
         visibleBackground: root.visibleBackground
     }
 

@@ -44,11 +44,13 @@ ComponentWithTitle {
                 hoverEnabled: true
                 onClicked: {
                     Qaterial.Clipboard.text = control.text
-                    Qaterial.SnackbarManager.show(
-                    {
-                        expandable: false,
-                        text: "%1 ".arg(control.text) + qsTr("copied"),
-                        timeout: Qaterial.Style.snackbar.longDisplayTime
+                    app.notify({
+                        title: qsTr("Transactions ID"),
+                        subTitle: "%1 ".arg(control.text) + qsTr("copied"),
+                        backgroundColor: Qaterial.Colors.gray400,
+                        foregroundColor: Qaterial.Colors.gray900,
+                        icon: Qaterial.Icons.contentCopy,
+                        iconSize: 35
                     })
                 }
             }

@@ -135,10 +135,39 @@ Item {
 
                 content: DexListView {
                     id: list
-                    implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
+                    implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250) + 10
                     model: portfolio_coins
                     topMargin: 5
                     bottomMargin: 5
+                    scrollbar_visible: false
+                    onPositionChanged: console.log("Position : ",position)
+                    scrollVert.onSizeChanged: console.log("Scroll Size : ",scrollVert.size)
+                    DexRectangle {
+                        anchors.bottom: parent.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width + 4
+                        height: 30
+                        radius: 8
+                        opacity: .8
+                        visible: list.position < (.98 - list.scrollVert.visualSize) ? true : false
+                        Qaterial.Icon {
+                            anchors.centerIn: parent
+                            icon: Qaterial.Icons.arrowDownCircleOutline
+                        }
+                    }
+
+                    DexRectangle {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width + 4
+                        height: 30
+                        radius: 8
+                        opacity: .8
+                        visible: list.position > 0 ? true : false
+                        Qaterial.Icon {
+                            anchors.centerIn: parent
+                            icon: Qaterial.Icons.arrowUpCircleOutline
+                        }
+                    }
 
                     delegate: GradientRectangle {
                         width: list_bg.width - list_bg.border.width*2 - 6
