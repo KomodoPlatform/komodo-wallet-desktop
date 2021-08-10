@@ -182,7 +182,9 @@ Item {
                             Layout.alignment: Qt.AlignVCenter
                             opacity: .6
                         }
-                        DefaultSweetComboBox {
+
+                        DefaultSweetComboBox 
+                        {
                             id: combo_base
                             model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                             onCurrentTickerChanged: applyTickerFilter()
@@ -205,16 +207,16 @@ Item {
                             Layout.alignment: Qt.AlignVCenter
                             opacity: .6
                         }
-                        DefaultSweetComboBox {
+                        
+                        DefaultSweetComboBox 
+                        {
                             id: combo_rel
-                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
+                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                             onCurrentTickerChanged: applyTickerFilter()
                             height: 60
                             valueRole: "ticker"
                             textRole: 'ticker'
-
                         }
-                        
                     }
                     spacing: 10
                     Qaterial.TextFieldDatePicker {

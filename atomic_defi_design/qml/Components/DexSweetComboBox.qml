@@ -14,10 +14,12 @@ ComboBox {
         m.modelData :
         !m.modelData ? m[textRole] : m.modelData[textRole]
     property string currentTicker: "All"
-    delegate: ItemDelegate {
+    delegate: ItemDelegate 
+    {
         width: control.width + 50
         highlighted: control.highlightedIndex === index
-        contentItem: DefaultText {
+        contentItem: DefaultText 
+        {
             text_value: control.currentTicker
             color: DexTheme.foregroundColor
         }
@@ -31,17 +33,23 @@ ComboBox {
         source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
     }
 
-    contentItem: DexLabel {
+    contentItem: DexLabel 
+    {
         leftPadding: 10
-        rightPadding: control.indicator.width + control.spacing
+        verticalAlignment: Text.AlignVCenter
+
+        width: _background.width - leftPadding
+        height: _background.height
+
         color: DexTheme.foregroundColor
         text: control.currentTicker
-
-        verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
+        wrapMode: Text.NoWrap
     }
 
     background: DexRectangle {
+        id: _background
+
         implicitWidth: 120
         implicitHeight: 40
         color: !control.enabled ? DexTheme.backgroundDarkColor0 : control.hovered ? DexTheme.backgroundDarkColor0 : DexTheme.surfaceColor
