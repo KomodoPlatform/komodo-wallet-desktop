@@ -490,6 +490,17 @@ DexRectangle
         }
     }
 
+    function notifyCopy(title, subTitle) {
+        app.notify({
+            title: title,
+            subTitle: subTitle,
+            backgroundColor: Qaterial.Colors.gray400,
+            foregroundColor: Qaterial.Colors.gray900,
+            icon: Qaterial.Icons.contentCopy,
+            iconSize: 35
+        })
+    }
+
     function notify(data) {
         let c = alertComponent.createObject(window)
         c.show(data)

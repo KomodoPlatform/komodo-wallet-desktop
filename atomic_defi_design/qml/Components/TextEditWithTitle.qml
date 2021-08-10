@@ -44,14 +44,7 @@ ComponentWithTitle {
                 hoverEnabled: true
                 onClicked: {
                     Qaterial.Clipboard.text = control.text
-                    app.notify({
-                        title: qsTr("Swap ID"),
-                        subTitle: "%1 ".arg(control.text) + qsTr("copied to clipboard"),
-                        backgroundColor: Qaterial.Colors.gray400,
-                        foregroundColor: Qaterial.Colors.gray900,
-                        icon: Qaterial.Icons.contentCopy,
-                        iconSize: 35
-                    })
+                    app.notifyCopy(qsTr("Swap ID"), qsTr("copied to clipboard"))
                 }
             }
         }
