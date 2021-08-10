@@ -45,8 +45,8 @@ ComponentWithTitle {
                 onClicked: {
                     Qaterial.Clipboard.text = control.text
                     app.notify({
-                        title: qsTr("Transactions ID"),
-                        subTitle: "%1 ".arg(control.text) + qsTr("copied"),
+                        title: qsTr("Swap ID"),
+                        subTitle: "%1 ".arg(control.text) + qsTr("copied to clipboard"),
                         backgroundColor: Qaterial.Colors.gray400,
                         foregroundColor: Qaterial.Colors.gray900,
                         icon: Qaterial.Icons.contentCopy,
