@@ -3406,6 +3406,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "TKL": {
+    "coin": "TKL",
+    "name": "Tokel",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "1.eu.tokel.electrum.dexstats.info:10077"
+      },
+    ],
+    "explorer_url": [
+      "https://tokel.explorer.dexstats.info/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  }, 
   "TRC": {
     "coin": "TRC",
     "name": "Terracoin",
