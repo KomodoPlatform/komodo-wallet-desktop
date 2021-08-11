@@ -64,14 +64,16 @@ Item {
         list_model_proxy.apply_all_filtering()
     }
 
+    anchors.fill: parent
+
+    Component.onDestruction: reset()
+
     Timer {
         id: buttonDelay
         interval: 200
         running: true
         onTriggered: applyButton.clicked()
     }
-
-    anchors.fill: parent
 
     ColumnLayout // History 
     {

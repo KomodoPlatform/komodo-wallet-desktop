@@ -25,11 +25,15 @@ Item
 
     anchors.fill: parent
 
-    function update() {        
+    Component.onDestruction: reset()
+
+    function update()
+    {
         reset()   
     }
 
-    function reset() {
+    function reset()
+    {
         list_model_proxy.is_history = true
         applyFilter()
         applyAllFiltering()
