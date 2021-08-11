@@ -3414,7 +3414,7 @@
     "electrum": [
       {
         "url": "1.eu.tokel.electrum.dexstats.info:10077"
-      },
+      }
     ],
     "explorer_url": [
       "https://tokel.explorer.dexstats.info/"
