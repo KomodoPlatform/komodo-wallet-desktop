@@ -753,8 +753,8 @@
     "coin": "BTE",
     "name": "Bitweb",
     "type": "UTXO",
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coingecko_id": "bitweb",
+    "coinpaprika_id": "bte-bitweb",
     "electrum": [
       {
         "url": "electrumx.bitwebcore.org:20001"
@@ -3607,7 +3607,7 @@
     "coin": "WCN",
     "name": "Widecoin",
     "coinpaprika_id": "wcn-widecoin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "widecoin",
     "electrum": [
       {
         "url": "electrumx.widecoin.org:50001"
