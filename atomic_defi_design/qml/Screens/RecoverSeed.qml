@@ -99,10 +99,17 @@ SetupPage {
             }
 
             if (_seedField.isValid() && input_wallet_name.field.text !== "") {
-                _seedField.error = false
-                _inputPassword.field.text = ""
-                _inputPasswordConfirm.field.text = ""
-                currentStep++
+                let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
+                if( checkWalletName === "" ) {
+                    _seedField.error = false
+                    _inputPassword.field.text = ""
+                    _inputPasswordConfirm.field.text = ""
+                    currentStep++
+                }
+                else {
+                    input_wallet_name.error = true
+                    text_error = checkWalletName
+                }
             } else {
                 _seedField.error = true
             }
@@ -135,7 +142,7 @@ SetupPage {
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Wallet Name")
                 field.onAccepted: tryPassLevel1()
-
+                field.onTextChanged: text_error = ""
                 DexRectangle {
                     x: 5
                     height: 40
@@ -335,17 +342,12 @@ SetupPage {
                     }
                 }
             }
+            
             DefaultText {
                 text_value: text_error
                 color: Style.colorRed
                 visible: text !== ''
             }
-        }
-
-        DefaultText {
-            text_value: text_error
-            color: Style.colorRed
-            visible: text !== ''
         }
     }
 }
