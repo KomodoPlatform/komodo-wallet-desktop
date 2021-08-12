@@ -17,13 +17,15 @@ ColumnLayout
 
     ModalHeader { id: _header }
 
-    DefaultFlickable
+    DexFlickable
     {
         id: _flickable
 
        readonly property int padding: 25
 
         flickableDirection: Flickable.VerticalFlick
+
+        rightMargin: -1
 
         Layout.preferredWidth: contentWidth
         Layout.preferredHeight: contentHeight

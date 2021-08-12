@@ -74,6 +74,7 @@ DexRectangle
     }
 
     function onDisconnect() {
+        app.notifications_list = []
         API.app.wallet_mgr.set_log_status(false);
         app.disconnected = true
         openFirstLaunch()
@@ -365,6 +366,144 @@ DexRectangle
                 contextMenu.open()
             }
         }
+    }
+
+    Component {
+        id: alertComponent
+        Popup {
+            id: alertPopup
+            property color backgroundColor: Qaterial.Colors.orange200
+            property color foregroundColor: Qaterial.Colors.gray900
+            property string title: "Test Title"
+            property string subTitle: "Lorem ipsum dolor sit amet, consectetur adipis"
+            property string icon: Qaterial.Icons.checkCircleOutline
+            property real iconSize: 50
+            property real timeout: 3000
+            x:  parent.width - width - 40
+            y: 40
+            width: 300
+            height: col.height + 25
+            function show(data) {
+                if("backgroundColor" in data) {
+                    alertPopup.backgroundColor = data.backgroundColor
+                }
+
+                if("foregroundColor" in data) {
+                    alertPopup.foregroundColor = data.foregroundColor
+                }
+
+                if("title" in data) {
+                    alertPopup.title = data.title
+                }
+
+                if("subTitle" in data) {
+                    alertPopup.subTitle = data.subTitle
+                }
+
+                if("icon" in data) {
+                    alertPopup.icon = data.icon
+                }
+
+                if("timeout" in data) {
+                    alertPopup.timeout = data.timeout
+                }
+                alertPopup.open()
+                insideRect.width = 0
+                alertTimer.restart()
+            }
+
+            background: Qaterial.ClipRRect {
+                radius:4
+                DexRectangle {
+                    anchors.fill: parent
+                    color: alertPopup.backgroundColor
+                    DexRectangle {
+                        id: insideRect
+                        width: parent.width
+                        height: 8
+                        radius: 0
+                        opacity: .5
+                        color: Qt.lighter(alertPopup.backgroundColor)
+                        border.width: 0
+                        Behavior on width {
+                            NumberAnimation {
+                                duration: alertPopup.timeout
+                                onFinished: console.log('stoped')
+                            }
+                        }
+                    }
+                }
+            }
+            Timer {
+                id: alertTimer
+                interval: alertPopup.timeout
+                running: areaAlert.containsMouse ? false : true
+                onTriggered: {
+                    console.log('closing')
+                    alertPopup.close()
+                }
+            }
+
+            RowLayout {
+                anchors.fill: parent
+                Item {
+                    Layout.fillHeight: true 
+                    width: 60
+                    Qaterial.Icon {
+                        icon: alertPopup.icon
+                        size: alertPopup.iconSize
+                        anchors.centerIn: parent
+                        color: alertPopup.foregroundColor
+                    }
+                }
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Column {
+                        id: col
+                        width: parent.width 
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 6
+                        DexLabel {
+                            text: alertPopup.title
+                            color: alertPopup.foregroundColor
+                            font: App.DexTypo.head6
+                        }
+
+                        DexLabel {
+                            text: alertPopup.subTitle
+                            color: alertPopup.foregroundColor
+                            font: App.DexTypo.subtitle1
+                            wrapMode: DexLabel.Wrap
+                            width: parent.width - 10
+                            opacity: .6
+                        }
+                    }
+                }
+            }
+            DexMouseArea {
+                id: areaAlert
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: alertPopup.close()
+            }
+        }
+    }
+
+    function notifyCopy(title, subTitle) {
+        app.notify({
+            title: title,
+            subTitle: subTitle,
+            backgroundColor: Qaterial.Colors.gray400,
+            foregroundColor: Qaterial.Colors.gray900,
+            icon: Qaterial.Icons.contentCopy,
+            iconSize: 35
+        })
+    }
+
+    function notify(data) {
+        let c = alertComponent.createObject(window)
+        c.show(data)
     }
 
     Settings {

@@ -33,6 +33,7 @@ Qaterial.Dialog
             yesButtonText: qsTr("Yes"),
             cancelButtonText: qsTr("Cancel"),
             onAccepted: function(text) {
+                app.notifications_list = []
                 app.currentWalletName = ""
                 API.app.disconnect()
                 onDisconnect()
