@@ -100,6 +100,7 @@ BasicModal {
             title: qsTr("ID")
             text: !details ? "" : details.order_id
             visible: text !== ''
+            copy: true
             privacy: true
         }
 

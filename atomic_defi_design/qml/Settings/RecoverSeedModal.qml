@@ -221,16 +221,16 @@ BasicModal {
             Component.onDestruction: portfolio_model.portfolio_proxy_mdl.setFilterFixedString("")
         }
 
-        DefaultListView {
+        DexListView {
             id: coins_list
 
             visible: false
             enabled: false
 
             Layout.fillWidth: true
-            Layout.preferredHeight: 600
+            Layout.fillHeight: true
             model: portfolio_mdl.portfolio_proxy_mdl
-
+            
             delegate: DefaultRectangle {
                 height: seed_container.height
                 width: seed_container.width

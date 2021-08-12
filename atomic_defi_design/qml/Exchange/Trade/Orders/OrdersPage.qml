@@ -42,6 +42,8 @@ Item {
         list_model_proxy.is_history = is_history
     }
 
+    Component.onDestruction: reset()
+
     Timer {
         id: buttonDelay
         interval: 200
