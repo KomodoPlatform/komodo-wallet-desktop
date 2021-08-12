@@ -213,10 +213,10 @@ Item {
                             id: type_tag
                             anchors.bottom: coin_name.bottom
 
-                            text: name === "TKL" ? "IDO" : model.type
+                            text: model.type + name === "TKL" ? " IDO" : ""
                             font: DexTypo.overLine
                             opacity: .7
-                            color: name === "TKL" ? Style.getCoinTypeColor("IDO") : Style.getCoinTypeColor(model.type)
+                            color: Style.getCoinTypeColor(model.type)
                         }
                     }
                     Item {
