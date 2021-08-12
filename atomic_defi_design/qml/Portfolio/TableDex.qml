@@ -213,7 +213,7 @@ Item {
                             id: type_tag
                             anchors.bottom: coin_name.bottom
 
-                            text: model.type + name === "TKL" ? " IDO" : ""
+                            text: model.type + name === "Tokel" ? " IDO" : ""
                             font: DexTypo.overLine
                             opacity: .7
                             color: Style.getCoinTypeColor(model.type)
