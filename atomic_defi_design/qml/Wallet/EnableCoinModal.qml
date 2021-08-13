@@ -126,10 +126,21 @@ BasicModal {
                 }
 
                 CoinTypeTag {
+                    id: typeTag
                     anchors.left: parent.right
                     anchors.verticalCenter: parent.verticalCenter
 
                     type: model.type
+                }
+
+                CoinTypeTag
+                {
+                    anchors.left: typeTag.right
+                    anchors.leftMargin: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    enabled: model.ticker === "TKL"
+                    visible: enabled
+                    type: "IDO"
                 }
             }
         }
