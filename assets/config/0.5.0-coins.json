@@ -3412,8 +3412,12 @@
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "electrum": [
+      
       {
         "url": "1.eu.tokel.electrum.dexstats.info:10077"
+      },
+      {
+        "url": "2.eu.tokel.electrum.dexstats.info:10077"
       }
     ],
     "explorer_url": [
