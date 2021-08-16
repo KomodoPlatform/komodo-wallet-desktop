@@ -372,9 +372,9 @@ DexWindow
 				onClicked: {
 					let themeList = API.qt_utilities.get_themes_list()
 			        if(DexTheme.theme === "light") {
-			        	theme_manager.apply("Dark")
+			        	app.themeManager.apply("Dark")
 			        } else {
-			        	theme_manager.apply("Light")
+			        	app.themeManager.apply("Light")
 			        }
 				}
 			}

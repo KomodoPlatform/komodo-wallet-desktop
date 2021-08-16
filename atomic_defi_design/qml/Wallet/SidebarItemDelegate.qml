@@ -12,7 +12,7 @@ import App 1.0
 GradientRectangle {
     width: list_bg.width - list_bg.border.width*2 - 6
     height: 44
-    radius: Constants.Style.rectangleCornerRadius
+    radius: Constants.Style.rectangleCornerRadius + 4
 
     start_color: api_wallet_page.ticker === ticker ? DexTheme.buttonColorEnabled : mouse_area.containsMouse ? DexTheme.buttonColorHovered : 'transparent'
     end_color: 'transparent'

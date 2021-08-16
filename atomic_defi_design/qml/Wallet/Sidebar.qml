@@ -22,7 +22,7 @@ Item {
     Layout.alignment: Qt.AlignLeft
     width: 175
     Layout.fillHeight: true
-    Layout.topMargin: -40 
+    Layout.topMargin: - 40 
 
     // Background
     SidebarPanel {
@@ -30,7 +30,7 @@ Item {
         anchors.right: parent.right
         width: sidebar.width + parent.width
 
-        height: parent.height + 40
+        height: parent.height 
 
         // Panel contents
         Item {

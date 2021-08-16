@@ -28,6 +28,7 @@ DexRectangle
     property var notification_modal: notifications_modal
     property var notifications_list: current_page == idx_dashboard ? loader.item.notifications_list : []
 
+    property alias themeManager: theme_manager
     // Preload Chart
     signal pairChanged(string base, string rel)
     property var chart_component
