@@ -45,7 +45,7 @@ Item {
             Layout.fillWidth: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
-
+            color: DexTheme.contentColorTopBold
             content: RowLayout {
                 width: balance_box.width
 
@@ -186,8 +186,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
             Item {
-                Layout.fillWidth: true
-                Layout.preferredWidth: 100
+                Layout.preferredWidth: 150
                 Layout.preferredHeight: send_button.height
                 DexButton {
                     id: send_button
@@ -201,6 +200,7 @@ Item {
                     width: parent.width
                     anchors.top: parent.top
                     font.pixelSize: Style.textSize
+                    radius: 16
                     Arrow {
                         id: arrow_send
                         up: true
@@ -281,9 +281,9 @@ Item {
             DexButton {
                 text: qsTr("Receive")
                 onClicked: receive_modal.open()
-                Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
-
+                Layout.preferredWidth: 150
+                radius: 16
                 Arrow {
                     up: false
                     color: Style.colorGreen
@@ -302,8 +302,9 @@ Item {
                 visible: !is_dex_banned
                 text: qsTr("Swap")
                 onClicked: onClickedSwap()
-                Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
+                Layout.preferredWidth: 150
+                radius: 16
                 Arrow {
                     up: true
                     color: Style.colorRed
@@ -321,12 +322,16 @@ Item {
                 }
             }
 
+            Item {
+                Layout.fillWidth: true
+            }
+
             DexButton {
                 id: button_claim_rewards
                 text: qsTr("Claim Rewards")
-                Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
-
+                Layout.preferredWidth: 150
+                radius: 16
                 visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
                 enabled: parseFloat(current_ticker_infos.balance) > 0
                 onClicked: {
@@ -369,6 +374,8 @@ Item {
             Layout.rightMargin: layout_margin
             Layout.bottomMargin: -parent.spacing*0.5
             implicitHeight: wallet.height*0.6
+            shadowOff: true
+            color: DexTheme.contentColorTop
 
             content: Item {
                 property bool ticker_supported: false
@@ -450,7 +457,7 @@ Item {
                           }
                           </script>
                         </div>
-                        <!-- TradingView Widget END -->`.arg(DexTheme.backgroundColor).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
+                        <!-- TradingView Widget END -->`.arg(DexTheme.contentColorTopBold).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
                                     }
 
                 width: price_graph_bg.width
@@ -530,7 +537,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        InnerBackground {
+        DexRectangle {
             id: transactions_bg
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -539,8 +546,10 @@ Item {
             Layout.bottomMargin: !fetching_text_row.visible ? layout_margin : undefined
 
             implicitHeight: wallet.height*0.54
-
-            content: Item {
+            border.width: 0
+            gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
+            ClipRRect {
+                radius: parent.radius
                 width: transactions_bg.width
                 height: transactions_bg.height
 

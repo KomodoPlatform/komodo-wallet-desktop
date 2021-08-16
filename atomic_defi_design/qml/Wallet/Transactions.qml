@@ -17,12 +17,14 @@ DefaultListView {
     }
 
     // Row
-    delegate: AnimatedRectangle {
+    delegate: DexRectangle {
         id: rectangle
         implicitWidth: list.width
         height: row_height
-
-        color: mouse_area.containsMouse? DexTheme.hightlightColor : 'transparent'
+        radius: 0
+        border.width: 0
+        colorAnimation: false
+        color: mouse_area.containsMouse? DexTheme.buttonColorHovered : 'transparent'
 
         DexMouseArea {
             id: mouse_area
@@ -105,16 +107,6 @@ DefaultListView {
             anchors.right: parent.right
             anchors.rightMargin: 20
             privacy: true
-        }
-
-        HorizontalLine {
-            visible: index !== transactions_mdl.length -1
-            width: parent.width - 4
-
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: -height/2
-            light: true
         }
     }
 }

@@ -102,6 +102,15 @@ QtObject {
 
 
     property color leftSidebarBorderColor: rectangleBorderColor
+    property color sideBarRightBorderColor: rectangleBorderColor
+    property int sidebarHightLightHeight: 44
+
+
+    property color contentColorTop: backgroundColor
+    property color contentColorTopBold: backgroundColor
+
+
+    property bool portfolioPieGradient: false
 
 
 
@@ -143,6 +152,10 @@ QtObject {
     property color buttonColorTextHovered: DexTheme.backgroundDarkColor8
     property color buttonColorTextEnabled: DexTheme.backgroundDarkColor9
     property color buttonColorTextPressed: DexTheme.backgroundDarkColor0
+
+    property color buttonGradientEnabled1: DexTheme.buttonColorEnabled
+    property color buttonGradientEnabled2: DexTheme.buttonColorEnabled
+    property color buttonGradientTextEnabled: DexTheme.foregroundColor
 
 
 

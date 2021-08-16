@@ -26,10 +26,12 @@ Item {
         anchors.margins: 15
         anchors.leftMargin: 40
         anchors.rightMargin: 40
-        Rectangle {
+        DexRectangle {
             width: parent.width
             height: 60
-            color:  Qt.darker(DexTheme.backgroundColor, 0.8)
+            //color:  Qt.darker(DexTheme.backgroundColor, 0.8)
+            color: 'transparent'
+            border.width: 0
             RowLayout {
                 anchors.fill: parent
                 Item {
@@ -141,9 +143,7 @@ Item {
             scrollbar_visible: false
 
             delegate: AnimatedRectangle {
-                color: Qt.lighter(
-                           mouse_area.containsMouse ? DexTheme.hightlightColor : index % 2 !== 0 ? Qt.darker(DexTheme.backgroundColor, 0.8) : "transparent",
-                           mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                color: mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.hoverColor : 'transparent'
                 width: list.width
                 height: 65
                 AnimatedRectangle {

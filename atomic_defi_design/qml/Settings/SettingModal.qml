@@ -66,7 +66,7 @@ Qaterial.Dialog
         }
     }
     background: FloatingBackground {
-        color: DexTheme.dexBoxBackgroundColor
+        color: DexTheme.backgroundColor
         radius: 3
     }
     padding: 0
@@ -310,7 +310,7 @@ Qaterial.Dialog
                                 onClicked: {
                                     atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                     atomic_settings2.sync()
-                                    app.load_theme(dexTheme.currentText.replace(".json",""))
+                                    theme_manager.apply(dexTheme.currentText.replace(".json",""))
                                     DexTypo.fontFamily = dexFont.currentText
                                     
                                 }

@@ -24,6 +24,7 @@ DexRectangle
     property string selected_wallet_name: ""
     property bool debug: debug_bar
     property bool debug_log: false
+    property alias globalGradient: globalGradient
     property var notification_modal: notifications_modal
     property var notifications_list: current_page == idx_dashboard ? loader.item.notifications_list : []
 
@@ -523,12 +524,14 @@ DexRectangle
         property alias fontFamily: _font.fontFamily
     }
 
+    DexThemeManager {
+        id: theme_manager
+    }
+
     function loadTheme() {
-        console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
         atomic_settings2.sync()
         let current = atomic_settings2.value("CurrentTheme")
-        console.log(current)
-        load_theme(current.replace(".json", ""))
+        theme_manager.apply(current.replace(".json", ""))
     }
 
     function showDialog(data) {
@@ -561,57 +564,21 @@ DexRectangle
         running: false
         onTriggered: loadTheme()
     }
+    Gradient {
+        id: globalGradient
+        GradientStop {
+            position: .80
+            color: App.DexTheme.contentColorTop
+        }
+        GradientStop {
+            position: 1
+            color: 'transparent'
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+R"
         onActivated: loadTheme()
-    }
-
-
-    property
-    var global_theme_property: ["primaryColor", "accentColor", "backgroundColor", "backgroundColorDeep", "dexBoxBackgroundColor", "surfaceColor", "barColor", "hightlightColor", "sideBarGradient1", "sideBarGradient2",
-        "navigationSideBarButtonGradient1", "navigationSideBarButtonGradient2", "navigationSideBarButtonGradient3",
-        "navigationSideBarButtonGradient4", "chartTradingLineColor", "chartTradingLineBackgroundColor", "foregroundColor",
-        "colorSidebarDropShadow", "whiteblack", "colorThemeDarkLight", "greenColor", "redColor", "textSelectionColor", "textPlaceHolderColor", "textSelectedColor",
-        "buttonColorDisabled", "buttonColorHovered", "buttonColorEnabled", "buttonColorTextDisabled", "buttonColorTextHovered", "buttonColorTextEnabled",
-        "colorInnerShadowBottom", "colorInnerShadowTop", "innerShadowColor", "colorLineGradient1", "colorLineGradient2", "colorLineGradient3", "colorLineGradient4", "floatShadow1", "floatShadow2", "floatBoxShadowDark"
-    ]
-
-    function save_currentTheme(name) {
-        let data = {}
-        global_theme_property.forEach(function(e) {
-            data[e] = eval("theme." + e).toString()
-        })
-        data["bigSidebarLogo"] = DexTheme.bigSidebarLogo
-        data["smallSidebarLogo"] = DexTheme.smallSidebarLogo
-        data["chartTheme"] = DexTheme.chartTheme
-        let r = API.qt_utilities.save_theme(name + ".json", data, true)
-        console.log(r)
-    }
-
-    function load_theme(name) {
-        let data = API.qt_utilities.load_theme(name)
-        if(!("theme" in data)) {
-            console.log('UNDEFINED')
-            App.DexTheme.theme = "undefined"
-        }else {
-            console.log("DEFINED")
-        }
-        for (let i in data) {
-            if (typeof(data[i]) === "boolean") {
-                eval("App.DexTheme." + i.toString() + " = " + data[i].toString())
-            }
-            else if (i.toString().indexOf("[int]") !== -1) {
-                let real_i = i;
-                i = i.replace("[int]", "")
-                console.log("theme." + i.toString() + " = " + data[real_i] + "")
-                eval("App.DexTheme." + i.toString() + " = " + data[real_i])
-            } else {
-                console.log("theme." + i.toString() + " = '" + data[i] + "'")
-                eval("App.DexTheme." + i.toString() + " = '" + data[i] + "'")
-            }
-        }
-        Qaterial.Style.accentColor = App.DexTheme.accentColor
-        console.log("END APPLY %1".arg(name))
     }
 
     color: App.DexTheme.surfaceColor

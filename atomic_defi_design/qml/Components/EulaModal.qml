@@ -34,8 +34,9 @@ BasicModal {
                 contentWidth: eula_text.width - 10
                 contentHeight: eula_text.height
 
-                DefaultText {
+                DexLabel {
                     id: eula_text
+                    font: DexTypo.body1
                     text_value: getEula()
 
                     width: eula_rect.width - 40
