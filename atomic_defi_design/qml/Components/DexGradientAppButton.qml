@@ -40,7 +40,6 @@ DexRectangle {
     
     property string foregroundColor: DexTheme.buttonGradientTextEnabled
     radius: 5
-    color: backgroundColor
     gradient: Gradient {
         orientation: Qt.Horizontal
         GradientStop {
