@@ -239,22 +239,18 @@ QtObject {
         return Style.colorWhite4
     }
 
-    function getCoinTypeColor(type) {
-        switch (type) {
-          case 'ERC-20':
-            return getCoinColor("ETH")
-          case 'QRC-20':
-            return getCoinColor("QTUM")
-          case 'Smart Chain':
-            return getCoinColor("KMD")
-          case 'UTXO':
-            return getCoinColor("BTC")
-          case 'BEP-20':
-            return getCoinColor("BNB")
-          case 'SLP':
-            return getCoinColor("BCH")
-          default:
-            return getCoinColor("BTC")
+    function getCoinTypeColor(type)
+    {
+        switch (type)
+        {
+            case 'ERC-20':      return getCoinColor("ETH")
+            case 'QRC-20':      return getCoinColor("QTUM")
+            case 'Smart Chain': return getCoinColor("KMD")
+            case 'UTXO':        return getCoinColor("BTC")
+            case 'BEP-20':      return getCoinColor("BNB")
+            case 'SLP':         return getCoinColor("BCH")
+            case 'IDO':         return getCoinColor("TKL")
+            default:            return getCoinColor("BTC")
         }
     }
 
@@ -418,6 +414,7 @@ QtObject {
                                           "STORJ": "#2683FF",
                                           "SXP": "#FD5F3B",
                                           "SYS": "#0084C7",
+                                          "TKL": "#1E2835",
                                           "TRC": "#096432",
                                           "TRX": "#F30031",
                                           "TSL": "#64B082",

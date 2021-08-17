@@ -217,6 +217,19 @@ Item {
                             font: DexTypo.overLine
                             opacity: .7
                             color: Style.getCoinTypeColor(model.type)
+
+                            DefaultText
+                            {
+                                enabled: name === "Tokel"
+                                visible: enabled
+                                anchors.left: parent.right
+                                anchors.leftMargin: 5
+
+                                text: "IDO"
+                                font: DexTypo.overLine
+                                opacity: .7
+                                color: DexTheme.redColor
+                            }
                         }
                     }
                     Item {
