@@ -878,6 +878,7 @@ ClipRRect // Trade Card
             } 
             BusyIndicator
             {
+                id: bestOrdersLoading
                 width: 200
                 height: 200
                 visible: Constants.API.app.trading_pg.orderbook.best_orders_busy
@@ -885,8 +886,22 @@ ClipRRect // Trade Card
                 anchors.centerIn: parent
             }
 
-        }
+            DexLabel
+            {
+                visible: _bestOrderList.count === 0 && !bestOrdersLoading.visible
 
+                anchors.centerIn: parent
+                text: qsTr("No buy orders found for %1.").arg(selectedTicker)
+                font.pixelSize: Style.textSize2
+
+                DexLabel
+                {
+                    anchors.top: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("You can check later or try to sell a different coin.")
+                }
+            }
+        }
 
         Item // Swap Info - Details
         {
