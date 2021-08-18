@@ -311,7 +311,6 @@ DexWindow
 			DexIconButton {
 				opacity: containsMouse? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
-				color: active?  DexTheme.accentColor : containsMouse?  DexTheme.accentColor :  DexTheme.foregroundColor 
 				iconSize: 22
 				icon: Qaterial.Icons.bellOutline
 				visible: _label.visible
@@ -364,7 +363,6 @@ DexWindow
 			DexIconButton {
 				opacity: containsMouse? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
-				color: active?  DexTheme.accentColor : containsMouse ?  DexTheme.accentColor :  DexTheme.foregroundColor 
 				iconSize: 22
 				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
 				visible: _label.visible && DexTheme.theme !== "undefined"
