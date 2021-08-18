@@ -368,7 +368,7 @@ DexRectangle
                 contextMenu.open()
             }
         }
-    }
+    }         
 
     Component {
         id: alertComponent

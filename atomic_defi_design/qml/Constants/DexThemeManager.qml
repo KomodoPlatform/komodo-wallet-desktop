@@ -49,12 +49,6 @@ QtObject {
 
 	function checkExtraProperty(data) {
 
-		if(!("contentColorTop" in data)) {
-            console.log('[THEME] contentColorTop type not defined')
-            DexTheme.contentColorTop = DexTheme.backgroundColor
-            DexTheme.contentColorTopBold = DexTheme.backgroundColor
-        }
-
         if(!("portfolioPieGradient" in data)) {
             console.log('[THEME] portfolioPieGradient type not defined')
             DexTheme.portfolioPieGradient = false
@@ -65,20 +59,20 @@ QtObject {
             DexTheme.sideBarRightBorderColor = "transparent"
         }
 
-        if(!("hoverColor" in data)) {
-            console.log('[THEME] hoverColor type not defined')
-            DexTheme.hoverColor = DexTheme.accentLightColor1
-        }
+        propertyChecker("contentColorTop", "backgroundColor", data)
+        propertyChecker("contentColorTopBold", "backgroundColor", data)
+        propertyChecker("modalStepColor", "accentColor", data)
+        propertyChecker("modelStepBorderColor", "hightlightColor", data)
+        propertyChecker("hoverColor", "buttonColorHovered", data)
+        propertyChecker("buttonGradientEnabled1", "buttonColorEnabled", data)
+        propertyChecker("buttonGradientEnabled2", "buttonColorEnabled", data)
+	}
 
-        if(!("modalStepColor" in data)) {
-            console.log('[THEME] modalStepColor type not defined')
-            DexTheme.modalStepColor = DexTheme.accentColor
-        }
-        
-        if(!("modelStepBorderColor" in data)) {
-        	console.log('[THEME] modelStepBorderColor type not defined')
-        	DexTheme.modalStepBorderColor = DexTheme.hightlightColor
-        }
+	function propertyChecker(name, value, data) {
+		if(!(name in data)) {
+			console.log('[THEME] %1 type not defined'.arg(name))
+			eval('DexTheme.'+name+' = DexTheme.'+value)
+		}
 	}
 
 	function rgba255to1(n) {

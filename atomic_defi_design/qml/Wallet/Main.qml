@@ -380,8 +380,8 @@ Item {
             content: Item {
                 property bool ticker_supported: false
                 readonly property bool is_fetching: chart.loadProgress < 100
-                readonly property string chartTheme: Style.dark_theme ? "dark" : "light"
-                property color backgroundColor: DexTheme.chartTradingLineBackgroundColor
+                readonly property string chartTheme: DexTheme.theme ?? "dark"
+                property color backgroundColor: DexTheme.contentColorTop
                 property var ticker: api_wallet_page.ticker
 
                 function loadChart() {
@@ -448,7 +448,7 @@ Item {
                           "height": "100%",
                           "locale": "en",
                           "dateRange": "1D",
-                          "colorTheme": "${chartTheme}",
+                          "colorTheme": "${DexTheme.theme ?? "dark"}",
                           "trendLineColor": "%2",
                           "underLineColor": "%3",
                           "isTransparent": true,
@@ -466,6 +466,13 @@ Item {
                 onTickerChanged: loadChart()
                 onChartThemeChanged: loadChart()
                 onBackgroundColorChanged: loadChart()
+
+                Connections {
+                    target: DexTheme
+                    function onBackgroundColorChanged() {
+                        loadChart();
+                    }
+                }
 
                 RowLayout {
                     visible: ticker_supported && !chart.visible
@@ -493,7 +500,7 @@ Item {
                     id: chart
                     anchors.fill: parent
                     anchors.margins: -1
-                    backgroundColor: price_graph_bg.color
+                    backgroundColor: DexTheme.contentColorTop
                     visible: !is_fetching && ticker_supported
                 }
             }

@@ -128,8 +128,6 @@ Item {
                         topMargin: 5
                         bottomMargin: 5
                         scrollbar_visible: false
-                        onPositionChanged: console.log("Position : ",position)
-                        scrollVert.onSizeChanged: console.log("Scroll Size : ",scrollVert.size)
                         DexRectangle {
                             anchors.bottom: parent.bottom
                             anchors.horizontalCenter: parent.horizontalCenter

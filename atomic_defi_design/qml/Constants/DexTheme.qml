@@ -123,9 +123,9 @@ QtObject {
     property color dexBoxBackgroundColor: backgroundDarkColor6//Style.colorTheme9
 
     property color hightlightColor: accentDarkColor3
-    property color hoverColor: accentDarkColor4
+    property color hoverColor: buttonColorHovered
     property color modalStepColor: accentColor
-    property color modelStepBorderColor: hintlightColor
+    property color modelStepBorderColor: hightlightColor
 
     property int sidebarShadowRadius: 32
 

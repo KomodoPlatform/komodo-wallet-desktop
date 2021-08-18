@@ -146,6 +146,8 @@ Item {
                 color: mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.hoverColor : 'transparent'
                 width: list.width
                 height: 65
+                opacity: mouse_area.containsMouse ? .6 : 1
+                colorAnimation: false
                 AnimatedRectangle {
                     id: main_color
                     color: Style.getCoinColor(ticker)
