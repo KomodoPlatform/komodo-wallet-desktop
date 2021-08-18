@@ -125,6 +125,7 @@ QtObject {
     property color hightlightColor: accentDarkColor3
     property color hoverColor: accentDarkColor4
     property color modalStepColor: accentColor
+    property color modelStepBorderColor: hintlightColor
 
     property int sidebarShadowRadius: 32
 

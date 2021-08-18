@@ -30,8 +30,10 @@ TextField {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground {
-        auto_set_size: false;radius: 10
+    background: DexRectangle {
+        color: DexTheme.backgroundDarkColor1
+        opacity: .4
+        radius: height/2
     }
 
     leftPadding: Math.max(0, left_text.width + 20)

@@ -247,25 +247,30 @@ BasicModal {
         Layout.fillWidth: true
 
         title: qsTr("Prepare to send ") + current_ticker_infos.name
-
+        spacing: 20
         // Send address
         RowLayout {
-            spacing: Style.buttonSpacing
-
+            spacing: 20
+            Layout.preferredHeight: 60
             AddressFieldWithTitle {
                 id: input_address
                 Layout.alignment: Qt.AlignLeft
-                title: qsTr("Recipient's address")
+                Layout.fillHeight: true
                 field.placeholderText: qsTr("Enter address of the recipient")
                 field.enabled: !root.is_send_busy
                 field.onTextChanged: {
                     api_wallet_page.validate_address(field.text)
                 }
+
             }
 
-            DefaultButton {
-                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            DexAppButton {
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredWidth: 150
                 text: qsTr("Address Book")
+                backgroundColor: DexTheme.contentColorTopBold
+                foregroundColor: DexTheme.foregroundColor
+                opacity: containsMouse ? .6 : 1
                 onClicked: contact_list.open()
                 enabled: !root.is_send_busy
             }
@@ -287,7 +292,7 @@ BasicModal {
             DefaultButton {
                 visible: needFix
                 Layout.preferredWidth: 70
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 text: qsTr("Fix")
                 onClicked: {
                     api_wallet_page.convert_address(input_address.field.text, address_data.to_address_format)
@@ -297,21 +302,21 @@ BasicModal {
         }
 
         RowLayout {
-            spacing: Style.buttonSpacing
+            spacing: 30
 
             // Amount input
             AmountField {
                 id: input_amount
-
+                Layout.preferredHeight: 60
                 field.visible: !input_max_amount.checked
-                title: qsTr("Amount to send")
                 field.placeholderText: qsTr("Enter the amount to send")
                 field.enabled: !root.is_send_busy
             }
 
             DefaultSwitch {
                 id: input_max_amount
-                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredWidth: 135
                 text: qsTr("MAX")
                 onCheckedChanged: input_amount.field.text = ""
                 enabled: !root.is_send_busy
@@ -319,7 +324,9 @@ BasicModal {
         }
 
         // Custom fees switch
-        DefaultSwitch {
+        DexSwitch {
+            Layout.topMargin: 10
+            Layout.leftMargin: 5
             id: custom_fees_switch
             text: qsTr("Enable Custom Fees")
             onCheckedChanged: input_custom_fees.field.text = ""
@@ -342,7 +349,8 @@ BasicModal {
 
                 id: input_custom_fees
                 title: qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]"
-                field.placeholderText: qsTr("Enter the custom fee")
+                Layout.preferredHeight: 60
+                field.placeholderText: qsTr("Enter the custom fee") + " [" + api_wallet_page.ticker + "]"
                 field.enabled: !root.is_send_busy
             }
 
@@ -403,6 +411,7 @@ BasicModal {
                 text: qsTr("Close")
                 leftPadding: 40
                 rightPadding: 40
+                radius: 18
                 onClicked: root.close()
             },
             Item {
@@ -412,6 +421,8 @@ BasicModal {
                 text: qsTr("Prepare")
                 leftPadding: 40
                 rightPadding: 40
+                radius: 18
+                opacity: enabled ? 1 : .5
 
                 enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
@@ -475,18 +486,30 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
-                text: qsTr("Back")
+        Item {
                 Layout.fillWidth: true
+            },
+            DexAppButton {
+                text: qsTr("Back")
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 onClicked: root.currentIndex = 0
                 enabled: !root.is_broadcast_busy
             },
-
-            PrimaryButton {
-                text: qsTr("Send")
+            Item {
                 Layout.fillWidth: true
+            },
+            DexAppOutlineButton {
+                text: qsTr("Send")
                 onClicked: sendCoin()
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 enabled: !root.is_broadcast_busy
+            },
+            Item {
+                Layout.fillWidth: true
             }
         ]
     }

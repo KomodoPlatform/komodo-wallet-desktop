@@ -13,8 +13,12 @@ ColumnLayout
     property alias         title: _header.title
     default property alias content: _innerLayout.data
     property alias         footer: _footer.data
+    spacing: 10
 
-    ModalHeader { id: _header }
+    ModalHeader { 
+        id: _header
+        Layout.leftMargin: 30
+    }
 
     DexFlickable
     {
@@ -45,9 +49,9 @@ ColumnLayout
     RowLayout // Footer
     {
         id: _footer
-        anchors.topMargin: Style.rowSpacing
-        anchors.rightMargin: 40
-        anchors.leftMargin: 40
+        Layout.topMargin: Style.rowSpacing
+        Layout.rightMargin: 40
+        Layout.leftMargin: 40
         spacing: Style.buttonSpacing
     }
 }

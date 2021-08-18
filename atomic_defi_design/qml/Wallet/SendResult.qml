@@ -49,16 +49,29 @@ ModalContent {
 
     // Buttons
     footer: [
-        DefaultButton {
-            text: qsTr("Close")
+        Item {
             Layout.fillWidth: true
+        },
+        DexButton {
+            text: qsTr("Close")
+            leftPadding: 40
+            rightPadding: 40
+            radius: 18
             onClicked: onClose()
         },
-
-        PrimaryButton {
-            text: qsTr("View on Explorer")
+        Item {
             Layout.fillWidth: true
+        },
+        DexAppOutlineButton {
+            text: qsTr("View on Explorer")
+            leftPadding: 40
+            rightPadding: 40
+            radius: 18
             onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
+        },
+        Item {
+            Layout.fillWidth: true
         }
+
     ]
 }

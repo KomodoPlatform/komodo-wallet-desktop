@@ -65,7 +65,7 @@ DexRectangle {
         anchors.centerIn: parent
         width: parent.width - (control.borderWidth*2)
         height: parent.height - (control.borderWidth*2)
-        color: DexTheme.backgroundColor
+        color: DexTheme.contentColorTopBold
         border.width: 0
     }
     height: _label.implicitHeight + (padding * verticalPadding)

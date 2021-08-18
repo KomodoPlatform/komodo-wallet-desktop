@@ -81,7 +81,8 @@ DefaultModal
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: -circle.width*0.5
                         anchors.right: circle.horizontalCenter
-                        color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.sideBarRightBorderColor
+                        shadowOff: true
+                        color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
                     }
 
                     DexRectangle {
@@ -89,7 +90,7 @@ DefaultModal
                         width: 20
                         height: width
                         radius: width/2
-                        border.color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.sideBarRightBorderColor
+                        border.color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         color: bundle.color

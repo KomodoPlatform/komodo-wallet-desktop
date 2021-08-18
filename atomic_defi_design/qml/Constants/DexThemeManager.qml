@@ -74,6 +74,11 @@ QtObject {
             console.log('[THEME] modalStepColor type not defined')
             DexTheme.modalStepColor = DexTheme.accentColor
         }
+        
+        if(!("modelStepBorderColor" in data)) {
+        	console.log('[THEME] modelStepBorderColor type not defined')
+        	DexTheme.modalStepBorderColor = DexTheme.hightlightColor
+        }
 	}
 
 	function rgba255to1(n) {
