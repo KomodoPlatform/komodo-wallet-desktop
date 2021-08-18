@@ -11,11 +11,10 @@ Switch
 {
     id: control
 
-    property alias switchButtonWidth: indicator.implicitWidth
-    property alias switchButtonHeight: indicator.implicitHeight
+    property alias switchButtonWidth: indicator.width
+    property alias switchButtonHeight: indicator.height
     property alias switchButtonRadius: indicator.radius
 
-    Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light
     Universal.accent: DexTheme.accent
     Universal.foreground: DexTheme.foregroundColor
     Universal.background: DexTheme.backgroundColor
@@ -24,10 +23,9 @@ Switch
     indicator: DexRectangle
     {
         id: indicator
-
-        implicitWidth: 52
-        implicitHeight: 28
         anchors.verticalCenter: parent.verticalCenter
+        width: 52
+        height: 28
         radius: 13
 
         gradient: Gradient
@@ -41,8 +39,8 @@ Switch
         {
             visible: !control.checked
             anchors.centerIn: parent
-            implicitWidth: parent.implicitWidth - 6
-            implicitHeight: parent.implicitHeight - 6
+            width: parent.width - 6
+            height: parent.height - 6
             radius: parent.radius
             color: DexTheme.backgroundColor
         }

@@ -309,7 +309,8 @@ BasicModal {
                 field.enabled: !root.is_send_busy
             }
 
-            DefaultSwitch {
+            DexSwitch
+            {
                 id: input_max_amount
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                 text: qsTr("MAX")
