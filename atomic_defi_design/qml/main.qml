@@ -311,11 +311,12 @@ DexWindow
 			DexIconButton {
 				opacity: containsMouse? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
-				iconSize: 22
+                iconSize: 22
 				icon: Qaterial.Icons.bellOutline
 				visible: _label.visible
 				active: app.notification_modal.opened
-				AnimatedRectangle {
+                AnimatedRectangle
+                {
 					z: 1
 					anchors.right: parent.right
 					anchors.rightMargin: -3
@@ -326,7 +327,8 @@ DexWindow
 					visible: app.notifications_list !== undefined? app.notifications_list.length > 0 : false
 					color:  DexTheme.redColor
 
-					DefaultText {
+                    DefaultText
+                    {
 						id: count_text
 						anchors.centerIn: parent
 						text_value: _label.visible ? app.notifications_list.length ?? 0 : 0
@@ -335,12 +337,12 @@ DexWindow
 						color:  DexTheme.foregroundColor 
 					}
 				}
-				onClicked: {
-					if(app.notification_modal.visible) {
-						app.notification_modal.close()
-					}else {
-						app.notification_modal.openAt(mapToItem(Overlay.overlay, -165, 18), Item.Top)
-					}
+                onClicked:
+                {
+                    if (app.notification_modal.visible)
+                        app.notification_modal.close()
+                    else
+                        app.notification_modal.openAt(mapToItem(Overlay.overlay, -165, 18), Item.Top)
 				}
 			}
 
@@ -363,7 +365,7 @@ DexWindow
 			DexIconButton {
 				opacity: containsMouse? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
-				iconSize: 22
+                iconSize: 22
 				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
 				visible: _label.visible && DexTheme.theme !== "undefined"
 				active: app.notification_modal.opened
