@@ -131,7 +131,7 @@ BasicModal {
             Item {
                 Layout.fillWidth: true
             },
-            DexButton {
+            DexAppOutlineButton {
                 text: qsTr("View on Explorer")
                 leftPadding: 40
                 rightPadding: 40
