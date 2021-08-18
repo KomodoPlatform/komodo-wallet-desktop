@@ -98,6 +98,7 @@ Item {
                                     //portfolio_coins.sort_by_name(true)
                                 }
                             }
+                            placeholderText: qsTr("Search coin")
 
                             onTextChanged: portfolio_coins.setFilterFixedString(text)
                             font.pixelSize: Constants.Style.textSizeSmall3

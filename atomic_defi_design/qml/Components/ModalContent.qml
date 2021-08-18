@@ -10,7 +10,6 @@ import App 1.0
 ColumnLayout
 {
     Layout.fillWidth: true
-
     property alias         title: _header.title
     default property alias content: _innerLayout.data
     property alias         footer: _footer.data
@@ -47,6 +46,8 @@ ColumnLayout
     {
         id: _footer
         anchors.topMargin: Style.rowSpacing
+        anchors.rightMargin: 40
+        anchors.leftMargin: 40
         spacing: Style.buttonSpacing
     }
 }

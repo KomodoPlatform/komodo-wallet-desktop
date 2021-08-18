@@ -48,22 +48,31 @@ QtObject {
 	}
 
 	function checkExtraProperty(data) {
+
 		if(!("contentColorTop" in data)) {
             console.log('[THEME] contentColorTop type not defined')
             DexTheme.contentColorTop = DexTheme.backgroundColor
             DexTheme.contentColorTopBold = DexTheme.backgroundColor
         }
+
         if(!("portfolioPieGradient" in data)) {
             console.log('[THEME] portfolioPieGradient type not defined')
             DexTheme.portfolioPieGradient = false
         }
+
         if(!("sideBarRightBorderColor" in data)) {
             console.log('[THEME] portfolioPieGradient type not defined')
             DexTheme.sideBarRightBorderColor = "transparent"
         }
+
         if(!("hoverColor" in data)) {
             console.log('[THEME] hoverColor type not defined')
-            DexTheme.hoverColor = DexTheme.accentDarkColor4
+            DexTheme.hoverColor = DexTheme.accentLightColor1
+        }
+
+        if(!("modalStepColor" in data)) {
+            console.log('[THEME] modalStepColor type not defined')
+            DexTheme.modalStepColor = DexTheme.accentColor
         }
 	}
 

@@ -34,7 +34,13 @@ Item {
 			padding: 10
 			spacing: 20 
 			DexAppButton {
-				text: "enokas"
+				width: 200
+				text: "Prepare"
+			}
+
+			DexAppOutlineButton {
+				width: 200
+				text: "Prepare"
 			}
 
 			DexAppButton {

@@ -124,6 +124,7 @@ QtObject {
 
     property color hightlightColor: accentDarkColor3
     property color hoverColor: accentDarkColor4
+    property color modalStepColor: accentColor
 
     property int sidebarShadowRadius: 32
 
@@ -142,7 +143,6 @@ QtObject {
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
     
-
     // Button
     property color buttonColorDisabled: DexTheme.accentDarkColor5
     property color buttonColorHovered: DexTheme.accentLightColor4

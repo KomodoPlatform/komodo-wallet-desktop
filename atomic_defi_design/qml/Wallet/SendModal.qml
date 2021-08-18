@@ -396,20 +396,30 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
-                text: qsTr("Close")
+            Item {
                 Layout.fillWidth: true
+            },
+            DexAppButton {
+                text: qsTr("Close")
+                leftPadding: 40
+                rightPadding: 40
                 onClicked: root.close()
             },
-
-            PrimaryButton {
-                text: qsTr("Prepare")
+            Item {
                 Layout.fillWidth: true
+            },
+            DexAppOutlineButton {
+                text: qsTr("Prepare")
+                leftPadding: 40
+                rightPadding: 40
 
                 enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
                 onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                            isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
+            },
+            Item {
+                Layout.fillWidth: true
             }
         ]
 
