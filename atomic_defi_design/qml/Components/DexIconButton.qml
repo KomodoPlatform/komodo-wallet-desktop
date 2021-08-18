@@ -1,5 +1,11 @@
+//! Qt Imports.
 import QtQuick 2.15
+
+//! 3rdParty Imports.
 import Qaterial 1.0 as Qaterial
+
+//! Project Imports.
+import App 1.0
 
 Item {
     id: control
@@ -21,7 +27,7 @@ Item {
         id: _label
         anchors.centerIn: parent
         icon: parent.icon
-        color: parent.color
+        color: _controlMouseArea.containsMouse ? DexTheme.buttonColorHovered : DexTheme.buttonColorEnabled
     }
 
     DexMouseArea
