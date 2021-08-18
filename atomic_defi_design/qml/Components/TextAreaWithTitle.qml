@@ -50,11 +50,32 @@ ColumnLayout {
                 }
             }
         }
+    }
 
-        DefaultButton {
+    Item {
+        Layout.fillWidth: true
+        Layout.preferredHeight: input_field.height + 5
+        DefaultTextArea {
+            id: input_field
+            enabled: !saveable
+            width: parent.width - 6
+            rightPadding: 10
+            anchors.centerIn: parent
+            background: DexRectangle {
+                color: DexTheme.backgroundDarkColor1
+                opacity: .4
+                radius: 8
+            }
+            HideFieldButton {
+                id: hide_button
+            }
+        }
+        DexAppButton {
+            anchors.verticalCenter: parent.verticalCenter
             id: save_button
             button_type: input_field.enabled ? "danger" : "primary"
-            Layout.alignment: Qt.AlignVCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 8
             text: input_field.enabled ? qsTr("Save") : qsTr("Edit")
             visible: saveable
             onClicked: {
@@ -63,25 +84,11 @@ ColumnLayout {
             }
             font.pixelSize: Style.textSizeSmall
             minWidth: 0
-            implicitHeight: text_obj.height * 1.25
+            height: 20
         }
     }
 
-    DefaultTextArea {
-        id: input_field
-        enabled: !saveable
-        Layout.fillWidth: true
-        background: DexRectangle {
-            color: DexTheme.backgroundDarkColor1
-            opacity: .4
-            radius: 8
-        }
-        HideFieldButton {
-            id: hide_button
-        }
-
-        
-    }
+    
 }
 
 

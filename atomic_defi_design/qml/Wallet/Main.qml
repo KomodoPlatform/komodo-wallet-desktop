@@ -457,7 +457,7 @@ Item {
                           }
                           </script>
                         </div>
-                        <!-- TradingView Widget END -->`.arg(DexTheme.contentColorTopBold).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
+                        <!-- TradingView Widget END -->`.arg(DexTheme.theme === "dark" ? DexTheme.backgroundColor : DexTheme.contentColorTopBold).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
                                     }
 
                 width: price_graph_bg.width
