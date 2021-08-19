@@ -1474,12 +1474,12 @@
     "coingecko_id": "fujicoin",
     "electrum": [
       {
-        "url": "electrumx1.fujicoin.org:50003",
-        "protocol": "SSL"
+        "url": "electrumx1.fujicoin.org:50001",
+        "protocol": "TCP"
       },
       {
-        "url": "electrumx2.fujicoin.org:50003",
-        "protocol": "SSL"
+        "url": "electrumx2.fujicoin.org:50001",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
