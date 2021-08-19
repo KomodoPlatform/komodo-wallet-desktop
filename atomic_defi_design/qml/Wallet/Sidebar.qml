@@ -43,7 +43,7 @@ Item {
                 anchors.fill: parent
                 anchors.topMargin: 30
                 anchors.bottomMargin: 30
-                anchors.leftMargin: 20
+                anchors.leftMargin: 10
                 anchors.rightMargin: 20
                 spacing: 40
                 InnerBackground {
