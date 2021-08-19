@@ -416,14 +416,18 @@ Qaterial.Dialog
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
-                                DexLabel {
+                                DexLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     text: qsTr("Application version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_version()
+                                    onCopyNotificationTitle: qsTr("DEX Version")
+                                    onCopyNotificationMsg: qsTr("DEX Version copied to clipboard.")
                                 }
                             }
                             RowLayout {
