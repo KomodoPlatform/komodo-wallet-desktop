@@ -467,8 +467,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "tBLK-TEST": {
-    "coin": "tBLK-TEST",
+  "tBLK": {
+    "coin": "tBLK",
     "name": "BlackCoin (testnet)",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
