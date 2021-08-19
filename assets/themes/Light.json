@@ -31,7 +31,7 @@
     "floatShadow1": "#21ffffff",
     "floatShadow2": "#60ffffff",
     "foregroundColor": "#405366",
-    "greenColor": "#109f8d",
+    "greenColor": "#00A892",
     "hightlightColor": "#ececf2",
     "innerShadowColor": "#becde2",
     "navigationSideBarButtonGradient1": "#5A68E6",
@@ -41,7 +41,7 @@
     "sideBarGradient1": "#FCFCFC",
     "sideBarGradient2": "#FCFCFC",
     "primaryColor": "black",
-    "redColor": "#9a1165",
+    "redColor": "#E9568C",
     "smallSidebarLogo": "dex-logo.png",
     "surfaceColor": "#FCFCFC",
     "textPlaceHolderColor": "#8e9293",
@@ -56,6 +56,9 @@
     "contentColorTop": "rgba(0, 107, 255, 0.04)",
     "contentColorTopBold": "#F2F6FC",
     "hoverColor": "#EDF3FC",
+    "modalStepColor": "#9DD4F3",
+    "arrowDownColor": "#5330DF",
+    "arrowUpColor": "#FA5657",
     "portfolioPieGradient": true,
     "theme":"light"
 }
