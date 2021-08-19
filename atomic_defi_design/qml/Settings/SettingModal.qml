@@ -435,9 +435,12 @@ Qaterial.Dialog
                                     Layout.fillWidth: true
                                     text: qsTr("MM2 version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_mm2_version()
+                                    onCopyNotificationTitle: qsTr("MM2 Version")
+                                    onCopyNotificationMsg: qsTr("MM2 Version copied to clipboard.")
                                 }
                             }
                             RowLayout {
