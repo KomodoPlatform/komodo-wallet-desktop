@@ -451,14 +451,18 @@ Qaterial.Dialog
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
-                                DexLabel {
+                                DexLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     text: qsTr("Qt version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: qtversion
+                                    onCopyNotificationTitle: qsTr("Qt Version")
+                                    onCopyNotificationMsg: qsTr("Qt Version copied to clipboard.")
                                 }
                             }
                         }
