@@ -169,6 +169,14 @@ Item {
                     Layout.alignment:  Qt.AlignHCenter
                     Layout.preferredWidth: 140
                     radius: 18
+                    spacing: 2
+                    font: Qt.font({
+                        pixelSize: 9 * DexTypo.fontDensity,
+                        letterSpacing: 1.25,
+                        capitalization: Font.AllUppercase,
+                        family: DexTypo.fontFamily,
+                        weight: Font.Normal
+                    })
                     text: qsTr("Add crypto")
                     iconSource: Qaterial.Icons.plus
                     leftPadding: 3
