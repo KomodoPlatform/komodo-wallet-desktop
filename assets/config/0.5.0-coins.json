@@ -467,6 +467,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "tBLK": {
+    "coin": "tBLK",
+    "name": "BlackCoin (testnet)",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "is_testnet": true,
+    "electrum": [
+      {
+        "url": "electrum1.blackcoin.nl:10012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum2.blackcoin.nl:20012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum3.blackcoin.nl:30012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.blackcoin.nl/"
+    ],
+    "explorer_tx_url": "tx/",
+    "explorer_address_url": "address/",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "BNT-BEP20": {
     "coin": "BNT-BEP20",
     "name": "Bancor",
