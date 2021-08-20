@@ -49,7 +49,7 @@ DefaultListView {
         Arrow {
             id: received_icon
             up: am_i_sender ? true : false
-            color: !am_i_sender ? DexTheme.greenColor : DexTheme.redColor
+            color: !am_i_sender ? DexTheme.arrowUpColor : DexTheme.arrowDownColor
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: note_tag.right
             anchors.leftMargin: 10

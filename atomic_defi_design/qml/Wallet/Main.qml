@@ -147,7 +147,7 @@ Item {
                         }
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
-                        color: Style.getValueColor(current_ticker_infos.change_24h)
+                        color: DexTheme.getValueColor(current_ticker_infos.change_24h)
                     }
                 }
 
@@ -204,7 +204,7 @@ Item {
                     Arrow {
                         id: arrow_send
                         up: true
-                        color: Style.colorRed
+                        color: DexTheme.arrowUpColor
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 12
@@ -286,7 +286,7 @@ Item {
                 radius: 16
                 Arrow {
                     up: false
-                    color: Style.colorGreen
+                    color: DexTheme.arrowDownColor
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: arrow_send.anchors.rightMargin
@@ -305,21 +305,25 @@ Item {
                 font.pixelSize: send_button.font.pixelSize
                 Layout.preferredWidth: 150
                 radius: 16
-                Arrow {
-                    up: true
-                    color: Style.colorRed
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: arrow_send.anchors.rightMargin
-                }
-
-                Arrow {
-                    up: false
-                    color: Style.colorGreen
+                Row {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: arrow_send.anchors.rightMargin
+                    spacing: 3
+                    
+                    Arrow {
+                        up: true
+                        color: DexTheme.arrowDownColor
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Arrow {
+                        up: false
+                        color: DexTheme.arrowUpColor
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
+                
             }
 
             Item {

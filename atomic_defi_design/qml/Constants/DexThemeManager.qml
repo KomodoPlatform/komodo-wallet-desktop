@@ -66,6 +66,8 @@ QtObject {
         propertyChecker("hoverColor", "buttonColorHovered", data)
         propertyChecker("buttonGradientEnabled1", "buttonColorEnabled", data)
         propertyChecker("buttonGradientEnabled2", "buttonColorEnabled", data)
+        propertyChecker("arrowUpColor", "greenColor", data)
+        propertyChecker("arrowDownColor", "redColor", data)
 	}
 
 	function propertyChecker(name, value, data) {

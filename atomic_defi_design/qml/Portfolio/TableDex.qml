@@ -258,7 +258,7 @@ Item {
                                                      v)
                             }
                             anchors.horizontalCenter: parent.horizontalCenter
-                            color: Style.getValueColor(change_24h)
+                            color: DexTheme.getValueColor(change_24h)
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
@@ -283,7 +283,7 @@ Item {
 
                             function refresh() {
                                 updateChart(chart, historical,
-                                            Style.getValueColor(change_24h))
+                                            DexTheme.getValueColor(change_24h))
                             }
 
                             property bool dark_theme: Style.dark_theme

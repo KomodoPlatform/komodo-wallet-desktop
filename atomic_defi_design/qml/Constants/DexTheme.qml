@@ -113,6 +113,9 @@ QtObject {
     property bool portfolioPieGradient: false
 
 
+    property color arrowUpColor: redColor
+    property color arrowDownColor: greenColor
+
 
 
  // Old Theme
@@ -439,7 +442,7 @@ QtObject {
     function getValueColor(v) {
         v = parseFloat(v)
         if(v !== 0)
-            return v > 0 ? Style.colorGreen : Style.colorRed
+            return v > 0 ? greenColor : redColor
 
         return Style.colorWhite4
     }

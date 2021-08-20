@@ -57,15 +57,17 @@ GradientRectangle {
 
     ColumnLayout {
         anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        anchors.rightMargin: side_margin + scrollbar_margin
+        anchors.left: parent.left
+        anchors.leftMargin: icon.width + 28
 
         // Ticker
         DexLabel {
-            Layout.alignment: Qt.AlignRight
+            Layout.alignment: Qt.AlignLeft
+            Layout.preferredWidth: 80
+            font: DexTypo.caption
+            wrapMode: DexLabel.WordWrap
             text_value: ticker
             color: DexTheme.foregroundColor
-            font.pixelSize: text.length > 6 ? Constants.Style.textSizeSmall2 : Constants.Style.textSizeSmall4
         }
 
         DefaultTooltip {
