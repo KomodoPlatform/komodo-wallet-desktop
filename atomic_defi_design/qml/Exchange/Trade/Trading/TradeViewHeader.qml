@@ -139,10 +139,10 @@ Item {
             Rectangle {
                 id: background_rect
                 width: 70
-                height: 20
-                radius: 20
+                height: 30
+                radius: 10
                 anchors.verticalCenter: parent.verticalCenter
-                color: DexTheme.accentColor
+                color: DexTheme.tabBarBackgroudColor
                 Behavior on x {
                     NumberAnimation {
                         duration: 200
@@ -160,7 +160,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x === 0 ? DexTheme.surfaceColor : simple_area.containsMouse ? DexTheme.accentColor : DexTheme.foregroundColor
+                    color: DexTheme.foregroundColor
                     DexMouseArea {
                         id: simple_area
                         hoverEnabled: true
@@ -178,7 +178,7 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    color: background_rect.x !== 0 ? DexTheme.surfaceColor : pro_area.containsMouse ? DexTheme.accentColor : DexTheme.foregroundColor
+                    color: DexTheme.foregroundColor
                     DexMouseArea {
                         id: pro_area
                         hoverEnabled: true

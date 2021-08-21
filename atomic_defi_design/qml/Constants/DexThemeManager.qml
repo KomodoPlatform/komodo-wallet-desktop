@@ -59,6 +59,7 @@ QtObject {
             DexTheme.sideBarRightBorderColor = "transparent"
         }
 
+        propertyChecker("tabBarBackgroudColor","buttonColorEnabled", data)
         propertyChecker("contentColorTop", "backgroundColor", data)
         propertyChecker("contentColorTopBold", "backgroundColor", data)
         propertyChecker("modalStepColor", "accentColor", data)
@@ -68,6 +69,9 @@ QtObject {
         propertyChecker("buttonGradientEnabled2", "buttonColorEnabled", data)
         propertyChecker("arrowUpColor", "greenColor", data)
         propertyChecker("arrowDownColor", "redColor", data)
+        propertyChecker("tradeFieldBoxBackgroundColor", "backgroundColor", data)
+        propertyChecker("iconButtonColor","buttonColorEnabled", data)
+        propertyChecker("iconButtonForegroundColor","buttonColorTextEnabled", data)
 	}
 
 	function propertyChecker(name, value, data) {

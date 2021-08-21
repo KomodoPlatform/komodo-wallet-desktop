@@ -18,21 +18,7 @@ DexLabel // Trade Tab
     font.pixelSize: Constants.Style.textSize
     property bool checked: false
     signal clicked() 
-    color: {
-
-        if(control.currentPage === control.selectedPage) {
-            DexTheme.backgroundDarkColor0
-        } else {
-            if(mouseArea.containsMouse) {
-                DexTheme.accentColor
-            } else {
-                DexTheme.foregroundColor
-            }
-        }
-
-        
-        //? ? DexTheme.buttonColorEnabled : DexTheme.accentColor : currentSubPage === subPages.Trade ? DexTheme.buttonColorEnabled : DexTheme.foregroundColor  
-    }
+    color: DexTheme.foregroundColor
     DexMouseArea
     {
         id: mouseArea

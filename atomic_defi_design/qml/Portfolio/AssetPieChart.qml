@@ -28,7 +28,7 @@ Item {
     function addItem(value) {
         var item = pieSeries.append(value.ticker, value.main_currency_balance)
         item.labelColor = 'white'
-        item.color = Qt.lighter(Style.getCoinColor(value.ticker))
+        item.color = Style.getCoinColor(value.ticker)
         item.borderColor = 'transparent'
         item.borderWidth = 2
         item.holeSize = 1
@@ -38,7 +38,7 @@ Item {
                 item.explodeDistanceFactor = 0.03
                 portfolio.currentTotal = API.app.settings_pg.current_fiat_sign + " " + value.main_currency_balance
                 portfolio.currentValue = value.balance + " " + item.label
-                item.color = Qt.lighter(Qt.lighter(Style.getCoinColor(value.ticker)))
+                item.color = Qt.lighter(Style.getCoinColor(value.ticker))
             } else {
                 item.borderWidth = 2
                 item.explodeDistanceFactor = 0.01

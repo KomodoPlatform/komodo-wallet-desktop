@@ -327,6 +327,7 @@ DexPopup {
                 Qaterial.AppBarButton {
                     enabled: list.count > 0
                     Layout.alignment: Qt.AlignVCenter
+                    foregroundColor: DexTheme.foregroundColor
                     icon.source: Qaterial.Icons.checkAll
                     onClicked: notifications_list = []
                 }
@@ -427,6 +428,7 @@ DexPopup {
                                 anchors.bottom: parent.bottom
                                 anchors.right: parent.right
                                 anchors.bottomMargin: -4
+                                foregroundColor: DexTheme.foregroundColor
                                 icon.source: {
                                     let name
                                     switch (modelData.event_name) {

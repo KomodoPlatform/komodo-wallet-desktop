@@ -86,9 +86,7 @@ QtObject {
     property color foregroundColorDarkColor8: Qt.lighter(foregroundColor, 0.2)
     property color foregroundColorDarkColor9: Qt.lighter(foregroundColor, 0.1)
 
-
     property color headTextColor: accentColor
-
 
     property color proviewItemBoxBackgroundColor: dexBoxBackgroundColor
     property color proviewItemBoxBorderColor: 'transparent'
@@ -108,10 +106,12 @@ QtObject {
 
     property color contentColorTop: backgroundColor
     property color contentColorTopBold: backgroundColor
-
+    property color tabBarBackgroudColor: accentColor
+    property color tradeFieldBoxBackgroundColor: backgroundColor
+    property color iconButtonColor: buttonColorEnabled
+    property color iconButtonForegroundColor: buttonColorTextEnabled
 
     property bool portfolioPieGradient: false
-
 
     property color arrowUpColor: redColor
     property color arrowDownColor: greenColor

@@ -286,10 +286,10 @@ Item {
             case "refunding":
                 return Style.colorOrange
             case "successful":
-                return Style.colorGreen
+                return DexTheme.greenColor
             case "failed":
             default:
-                return Style.colorRed
+                return DexTheme.redColor
         }
     }
 

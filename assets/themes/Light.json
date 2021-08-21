@@ -60,5 +60,9 @@
     "arrowDownColor": "#5330DF",
     "arrowUpColor": "#FA5657",
     "portfolioPieGradient": true,
+    "tabBarBackgroudColor": "#EDF3FC",
+    "tradeFieldBoxBackgroundColor": "#FFFFFF",
+    "iconButtonColor": "#DCE8FD",
+    "iconButtonForegroundColor":"#456078",
     "theme":"light"
 }

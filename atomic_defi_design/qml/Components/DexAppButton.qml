@@ -12,6 +12,7 @@ DexRectangle {
     property int horizontalAlignment: Qt.AlignHCenter
     property int verticalPadding: 2
     property int horizontalPadding: 2
+    property int iconSize: _label.font.pixelSize + 2
 
 
     // old button property
@@ -60,7 +61,7 @@ DexRectangle {
         spacing: _icon.visible ? parent.spacing : 0
         Qaterial.ColorIcon {
             id: _icon
-            iconSize: _label.font.pixelSize + 2
+            iconSize: control.iconSize
             visible: control.iconSource === "" ? false : true
             source: control.iconSource
             color: _label.color
