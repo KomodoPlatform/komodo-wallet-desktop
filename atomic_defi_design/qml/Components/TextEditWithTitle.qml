@@ -6,10 +6,14 @@ import App 1.0
 
 ComponentWithTitle {
     id: control
+
     property alias text: text.text_value
     property alias value_color: text.color
     property alias privacy: text.privacy
-    property bool copy: false
+
+    property bool   copy: false
+    property string onCopyNotificationTitle: qsTr("Swap ID")
+    property string onCopyNotificationMsg: qsTr("copied to clipboard")
 
     RowLayout {
         Layout.fillWidth: true
@@ -44,7 +48,7 @@ ComponentWithTitle {
                 hoverEnabled: true
                 onClicked: {
                     Qaterial.Clipboard.text = control.text
-                    app.notifyCopy(qsTr("Swap ID"), qsTr("copied to clipboard"))
+                    app.notifyCopy(onCopyNotificationTitle, onCopyNotificationMsg)
                 }
             }
         }
