@@ -65,7 +65,7 @@ InnerBackground {
     }
 
     //shadowOff: true
-    color: DexTheme.dexBoxBackgroundColor
+    color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
     property alias titleLabel: _texto
 
     Connections {
@@ -147,7 +147,7 @@ InnerBackground {
             width: parent.width
             height: 40
             radius: parent.parent.height < 41 ? parent.parent.radius : 0
-            color: DexTheme.dexBoxBackgroundColor
+            color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
             visible: visibility && !_control.hideHeader
             RowLayout {
                 anchors.fill: parent
