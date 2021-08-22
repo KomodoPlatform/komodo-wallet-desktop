@@ -79,10 +79,11 @@ ColumnLayout {
             text_value: qsTr("Fiat")
         }
 
-        DefaultTooltip {
+        SidebarTooltip {
             enabled: false
             id: fiat_coming_soon
-            text: qsTr("Coming soon !")
+            position: Qaterial.Style.Position.Top
+            text_value: qsTr("Coming soon !")
             visible: parent.mouse_area.containsMouse
         }
     }

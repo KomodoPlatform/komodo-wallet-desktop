@@ -59,6 +59,11 @@ QtObject {
             DexTheme.sideBarRightBorderColor = "transparent"
         }
 
+        if(!("proviewItemBoxBorderColor" in data)) {
+            console.log('[THEME] proviewItemBoxBorderColor type not defined')
+            DexTheme.proviewItemBoxBorderColor = "transparent"
+        }
+
         propertyChecker("tabBarBackgroudColor","buttonColorEnabled", data)
         propertyChecker("contentColorTop", "backgroundColor", data)
         propertyChecker("contentColorTopBold", "backgroundColor", data)
@@ -72,6 +77,7 @@ QtObject {
         propertyChecker("tradeFieldBoxBackgroundColor", "backgroundColor", data)
         propertyChecker("iconButtonColor","buttonColorEnabled", data)
         propertyChecker("iconButtonForegroundColor","buttonColorTextEnabled", data)
+        propertyChecker("proviewItemBoxBackgroundColor","dexBoxBackgroundColor", data)
 	}
 
 	function propertyChecker(name, value, data) {

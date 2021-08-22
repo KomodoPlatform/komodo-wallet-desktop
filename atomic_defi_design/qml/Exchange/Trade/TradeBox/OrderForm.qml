@@ -98,7 +98,7 @@ FloatingBackground {
                         width: parent.width
                         height: parent.height
                         radius: 4
-                        color: Style.colorTheme9
+                        color: DexTheme.contentColorTop
                         opacity: .8
                         visible: !parent.field.enabled
                         MouseArea {
@@ -170,8 +170,8 @@ FloatingBackground {
 
                 Layout.preferredWidth: parent.width - 20
 
-                rangeBackgroundColor: Style.colorTheme7
-                rangeDistanceColor: sell_mode ? Style.colorRed : Style.colorGreen
+                rangeBackgroundColor: Qt.lighter(rangeDistanceColor)
+                rangeDistanceColor: sell_mode ? DexTheme.redColor : DexTheme.greenColor
                 from: API.app.trading_pg.orderbook.current_min_taker_vol
                 to: Math.max(0, parseFloat(max_volume))
 

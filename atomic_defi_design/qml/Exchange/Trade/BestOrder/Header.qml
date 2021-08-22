@@ -15,7 +15,7 @@ Item {
     z: 2
     Rectangle {
         anchors.fill: parent
-        color: DexTheme.dexBoxBackgroundColor
+        color: DexTheme.portfolioPieGradient ? "transparent" : DexTheme.dexBoxBackgroundColor
     }
 
     RowLayout {

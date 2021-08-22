@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 
 SplitView {
     id: splitManager
-    property
-    var itemLists: []
+    spacing: 10
+    property var itemLists: []
 
 }
