@@ -6,6 +6,8 @@ import QtGraphicalEffects 1.0
 
 import App 1.0
 
+import Qaterial 1.0 as Qaterial
+
 import "../../../Components"
 
 // Content
@@ -17,8 +19,10 @@ Item {
     readonly property bool is_placed_order: !details ? false :
         details.order_id !== ''
 
+    
+
     // Base Icon
-    DefaultImage {
+    /*DefaultImage {
         id: base_icon
         source: General.coinIcon(!details ? atomic_app_primary_coin :
             details.base_coin)
@@ -26,9 +30,9 @@ Item {
 
         anchors.left: parent.left
         anchors.leftMargin: parent.width * 0.2
-    }
+    }*/
 
-    // Rel Icon
+    /*// Rel Icon
     DefaultImage {
         id: rel_icon
         source: General.coinIcon(!details ? atomic_app_primary_coin :
@@ -118,5 +122,76 @@ Item {
         anchors.bottom: date.bottom
         text: qsTr("Cancel")
         onClicked: cancelOrder(details.order_id)
+    }*/
+    RowLayout {
+        width: 500
+        height: 66
+        anchors.centerIn: parent
+        spacing: 23
+        DexRectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: DexTheme.contentColorTop
+            RowLayout {
+                width: parent.width - 40
+                height: 50
+                anchors.centerIn: parent
+                spacing: 23
+                DefaultImage {
+                    id: base_icon
+                    source: General.coinIcon(!details ? atomic_app_primary_coin :
+                        details.base_coin)
+                    Layout.preferredWidth: 35
+                    Layout.preferredHeight: 35
+                    Layout.alignment: Qt.AlignVCenter
+                }
+                DexLabel {
+                    id: base_amount
+                    text_value: !details ? "" : "<b><font color='"+DexTheme.getCoinColor(base_ticker)+"'>" +base_ticker+ "</font></b>"+"    %1".arg(General.coinName(base_ticker))+"<br>" + General.formatCrypto("", details.base_amount, details.base_coin).split(" ")[1]
+                    font: DexTypo.body2
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    privacy: is_placed_order
+                    opacity: .9
+                }
+            }
+        }
+
+        Qaterial.Icon {
+            color: DexTheme.foregroundColor
+            icon: Qaterial.Icons.swapHorizontal
+            Layout.alignment: Qt.AlignVCenter
+        }
+
+        DexRectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: DexTheme.contentColorTop
+            RowLayout {
+                width: parent.width - 40
+                height: 50
+                anchors.centerIn: parent
+                spacing: 23
+                DefaultImage {
+                    id: rel_icon
+                    source: General.coinIcon(!details ? atomic_app_primary_coin :
+                        details.rel_coin)
+                    Layout.preferredWidth: 35
+                    Layout.preferredHeight: 35
+                    Layout.alignment: Qt.AlignVCenter
+                }
+                DexLabel {
+                    id: rel_amount
+                    text_value: !details ? "" : "<b><font color='"+DexTheme.getCoinColor(rel_ticker)+"'>" +rel_ticker+ "</font></b>     %1 <br>".arg(General.coinName(rel_ticker)) + General.formatCrypto("", details.rel_amount, details.rel_coin).split(" ")[1]
+                    font: DexTypo.body2
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    privacy: is_placed_order
+                    opacity: .9
+                }
+            }
+        }
     }
 }

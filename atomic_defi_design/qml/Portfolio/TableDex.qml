@@ -340,9 +340,10 @@ Item {
                     anchors.centerIn: parent
                     spacing: 10
                     opacity: .5
-                    Qaterial.ColorIcon {
+                    Qaterial.Icon {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: Qaterial.Icons.plusBox
+                        icon: Qaterial.Icons.plusBox
+                        color: DexTheme.foregroundColor
                     }
                     DexLabel {
                         anchors.verticalCenter: parent.verticalCenter

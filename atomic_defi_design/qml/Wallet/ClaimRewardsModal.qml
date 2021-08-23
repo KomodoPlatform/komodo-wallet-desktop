@@ -418,15 +418,24 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexAppButton {
                 text: qsTr("Cancel")
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 onClicked: root.close()
             },
 
-            PrimaryButton {
-                text: qsTr("Confirm")
+            Item {
                 Layout.fillWidth: true
+            },
+
+            DexAppOutlineButton {
+                text: qsTr("Confirm")
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
+                opacity: enabled ? containsMouse ? .7 : 1 : .5
                 onClicked: claimRewards()
                 enabled: can_confirm
             }

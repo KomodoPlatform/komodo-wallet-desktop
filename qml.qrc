@@ -464,6 +464,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrdersPage.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/PriceLineSimplified.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ProView.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/List.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.qml</file>
