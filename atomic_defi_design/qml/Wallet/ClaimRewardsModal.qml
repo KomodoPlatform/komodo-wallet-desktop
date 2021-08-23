@@ -117,9 +117,8 @@ BasicModal {
             visible: can_claim
 
             Layout.fillWidth: true
-            DefaultText {
+            DexLabel {
                 Layout.fillWidth: true
-                color: can_confirm ? Style.colorText : Style.colorRed
                 text_value: !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                             !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
 
