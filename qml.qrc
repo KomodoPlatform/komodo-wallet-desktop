@@ -509,6 +509,7 @@
         <file>atomic_defi_design/qml/Sidebar/SidebarCenter.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarLine.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/Line.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBook.qml</file>
