@@ -26,6 +26,7 @@ Item {
 
     function togglePrivacyMode() {
         Constants.General.privacy_mode = !Constants.General.privacy_mode
+        switch_input.checked = Constants.General.privacy_mode
     }
 
     height: Constants.Style.sidebarLineHeight
