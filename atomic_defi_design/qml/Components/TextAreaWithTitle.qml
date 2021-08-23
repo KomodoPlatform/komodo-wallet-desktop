@@ -62,7 +62,7 @@ ColumnLayout {
             rightPadding: 10
             anchors.centerIn: parent
             background: DexRectangle {
-                color: DexTheme.backgroundDarkColor1
+                color: DexTheme.dexBoxBackgroundColor
                 opacity: .4
                 radius: 8
             }
