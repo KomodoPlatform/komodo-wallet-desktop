@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import "../Constants"
+import "../Components"
 import App 1.0
 
 ColumnLayout {
@@ -26,12 +27,18 @@ ColumnLayout {
         separator: false
     }
 
-    SidebarLine {
-        dashboard_index: idx_dashboard_privacy_mode
-        text_value: sidebar.expanded? qsTr("Privacy") : ""
-        image: ""
-        Layout.fillWidth: true
-        separator: false
-        checked: General.privacy_mode
+    Line
+    {
+        label.text: qsTr("Privacy")
+        label.visible: sidebar.expanded
+
+        DexSwitch
+        {
+            scale: 0.75
+            anchors.verticalCenter: parent.verticalCenter
+
+            checked: General.privacy_mode
+            onCheckedChanged: General.privacy_mode = checked
+        }
     }
 }
