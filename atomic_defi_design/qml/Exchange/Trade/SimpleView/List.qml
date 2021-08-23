@@ -129,7 +129,7 @@ DexListView {
                     text_value: !details ? "" :
                                 General.formatCrypto("", details.rel_amount, details.rel_coin).replace(" ","<br>")
                     font: Qt.font({
-                        pixelSize: 10,
+                        pixelSize: 11,
                         letterSpacing: 0.4,
                         family: DexTypo.fontFamily,
                         weight: Font.Light

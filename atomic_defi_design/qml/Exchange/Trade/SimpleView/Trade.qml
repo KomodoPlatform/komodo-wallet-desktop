@@ -643,7 +643,7 @@ ClipRRect // Trade Card
                 DexGradientAppButton
                 {
                     enabled: !Constants.API.app.trading_pg.preimage_rpc_busy && !_swapAlert.visible
-                    opacity: enabled ? 1 : .4
+                    opacity: enabled ? 1 : .6
                     radius: 10
                     anchors.fill: parent
                     text: qsTr("Swap Now")
@@ -974,7 +974,7 @@ ClipRRect // Trade Card
             iconSize: 14
             backgroundColor: DexTheme.iconButtonColor
             foregroundColor: DexTheme.iconButtonForegroundColor
-            opacity: containsMouse ? .7 : 1
+            opacity: containsMouse ? .9 : 1
             anchors.verticalCenter: parent.verticalCenter
             width: 35
             height: 25
