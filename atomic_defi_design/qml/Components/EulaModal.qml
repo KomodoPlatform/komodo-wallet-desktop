@@ -58,29 +58,33 @@ BasicModal {
         }
 
         // Buttons
-        footer: [
-            Item {
-                height: 40
-                Row {
-                    height: 50
-                    width: root.width - 40
-                    spacing: 10
-                    layoutDirection: Qt.RightToLeft
-                    anchors.verticalCenter: parent.verticalCenter
-                    DefaultButton {
-                        text: close_only ? qsTr("Close") : qsTr("Cancel")
-                        Layout.fillWidth: true
-                        onClicked: root.close()
-                    }
-                    PrimaryButton {
-                        visible: !close_only
-                        text: qsTr("Confirm")
-                        Layout.fillWidth: true
-                        enabled: accept_eula.checked && accept_tac.checked
-                        onClicked: {
-                            onConfirm()
-                            root.close()
-                        }
+        footer:
+        [
+            Row
+            {
+                width: root.width - 40
+                height: 50
+                spacing: 10
+                layoutDirection: Qt.RightToLeft
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignRight
+                DexAppButton
+                {
+                    text: close_only ? qsTr("Close") : qsTr("Cancel")
+                    Layout.fillWidth: true
+                    onClicked: root.close()
+                }
+
+                DexAppOutlineButton
+                {
+                    visible: !close_only
+                    text: qsTr("Confirm")
+                    Layout.fillWidth: true
+                    enabled: accept_eula.checked && accept_tac.checked
+                    onClicked:
+                    {
+                        onConfirm()
+                        root.close()
                     }
                 }
             }
