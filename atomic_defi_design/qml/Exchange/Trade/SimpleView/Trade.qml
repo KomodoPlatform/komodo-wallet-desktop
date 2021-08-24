@@ -309,7 +309,8 @@ ClipRRect // Trade Card
                     anchors.left: _fromValue.left
                     anchors.leftMargin: 24
                     font.pixelSize: Constants.Style.textSizeSmall1
-                    color: DexTheme.textPlaceHolderColor
+                    color: DexTheme.foregroundColor
+                    opacity: .9
                     text: enabled ? Constants.General.getFiatText(_fromValue.field.text, selectedTicker) : ""
                 }
 
@@ -478,7 +479,8 @@ ClipRRect // Trade Card
                     anchors.left: _toValue.left
                     anchors.leftMargin: 24
                     font.pixelSize: Constants.Style.textSizeSmall1
-                    color: DexTheme.textPlaceHolderColor
+                    color: DexTheme.foregroundColor
+                    opacity: .9
                     text: enabled ? Constants.General.getFiatText(_toValue.field.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
