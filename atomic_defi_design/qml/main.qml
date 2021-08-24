@@ -87,13 +87,14 @@ DexWindow
 				width: parent.width-10
 				height: parent.height-5
 				anchors.centerIn: parent
-				color: logout_area.containsMouse?  DexTheme.surfaceColor :  DexTheme.dexBoxBackgroundColor
+				color: logout_area.containsMouse?  DexTheme.contentColorTopBold :  DexTheme.buttonColorHovered
 				Row {
 					anchors.centerIn: parent
-					Qaterial.ColorIcon {
+					Qaterial.Icon {
 						anchors.verticalCenter: parent.verticalCenter
-						source: Qaterial.Icons.logout
-						iconSize: 11
+						icon: Qaterial.Icons.logout
+						color:  DexTheme.foregroundColor
+						size: 11
 					}
 					spacing: 5
 					DexLabel {
