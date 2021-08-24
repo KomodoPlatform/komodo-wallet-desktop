@@ -106,6 +106,8 @@ Item {
                             background: null
 
                             Layout.fillWidth: true
+
+                            Component.onDestruction: portfolio_coins.setFilterFixedString("")
                         }
                     }
                 }
