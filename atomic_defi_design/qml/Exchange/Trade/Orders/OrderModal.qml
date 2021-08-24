@@ -60,9 +60,6 @@ BasicModal {
             Layout.preferredHeight: 66
             details: root.details
             in_modal: true
-            Qaterial.DebugRectangle {
-                anchors.fill: parent
-            }
         }
 
         HorizontalLine {
