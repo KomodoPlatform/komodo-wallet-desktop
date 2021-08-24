@@ -27,7 +27,8 @@ Item {
         id: _label
         anchors.centerIn: parent
         icon: parent.icon
-        color: _controlMouseArea.containsMouse ? DexTheme.buttonColorTextHovered : DexTheme.buttonColorTextEnabled
+        color: DexTheme.foregroundColor
+        opacity: _controlMouseArea.containsMouse ? 1 : .7
     }
 
     DexMouseArea

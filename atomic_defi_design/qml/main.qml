@@ -363,7 +363,7 @@ DexWindow
 		    }
 
 			DexIconButton {
-				opacity: containsMouse? 1 : .8
+				opacity: containsMouse ? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
                 iconSize: 22
 				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
