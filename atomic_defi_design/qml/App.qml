@@ -70,7 +70,6 @@ DexRectangle
         } else {
             can_open_login = false
         }
-        console.log("WALLET NAME::: %1, logSTATE: %2".arg(selected_wallet_name).arg(can_open_login))
 
         return idx_first_launch
     }
@@ -147,7 +146,6 @@ DexRectangle
             onPostCreateSuccess: () => {
                 openFirstLaunch(false, false)
             }
-            Component.onCompleted: console.log("Initialized new user")
         }
     }
 
@@ -162,7 +160,6 @@ DexRectangle
             onPostLoginSuccess: () => {
                 current_page = idx_initial_loading
             }
-            Component.onCompleted: console.log("Initialized login")
         }
     }
 
@@ -271,7 +268,6 @@ DexRectangle
             {
                 if (!API.app.orders_mdl.recover_fund_busy)
                 {
-                    console.log(JSON.stringify(API.app.orders_mdl.recover_fund_data))
                     recoverFundsResultModal.field.text = General.prettifyJSON(API.app.orders_mdl.recover_fund_data)
                     recoverFundsResultModal.open()
                 }
@@ -430,7 +426,6 @@ DexRectangle
                         Behavior on width {
                             NumberAnimation {
                                 duration: alertPopup.timeout
-                                onFinished: console.log('stoped')
                             }
                         }
                     }
@@ -441,7 +436,6 @@ DexRectangle
                 interval: alertPopup.timeout
                 running: areaAlert.containsMouse ? false : true
                 onTriggered: {
-                    console.log('closing')
                     alertPopup.close()
                 }
             }
