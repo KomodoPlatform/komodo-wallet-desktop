@@ -58,7 +58,6 @@ InnerBackground {
             SplitView.preferredWidth = defaultWidth
             SplitView.minimumWidth = minimumWidth
             SplitView.maximumWidth = maximumWidth
-            console.log(_control.maximumWidth)
             SplitView.fillWidth = true
 
         }
@@ -67,13 +66,6 @@ InnerBackground {
     //shadowOff: true
     color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
     property alias titleLabel: _texto
-
-    Connections {
-        target: _control.parent.parent
-        function onCurrentIndexChanged() {
-            console.log(_control.parent.parent.currentIndex)
-        }
-    }
 
     onExpandedVertChanged: {
         if (expandedVert) {

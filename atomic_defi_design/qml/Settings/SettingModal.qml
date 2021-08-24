@@ -343,7 +343,6 @@ Qaterial.Dialog
                             // Enabled 2FA option. (Disabled on Linux since the feature is not available on this platform yet)
                             RowLayout {
                                 enabled: Qt.platform.os !== "linux" // Disable for Linux.
-                                Component.onCompleted: console.log(Qt.platform.os)
                                 visible: enabled
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter

@@ -94,7 +94,6 @@ Item {
                         onTextChanged: {
                             control.error = false
                             if (text.length > control.max_length) {
-                                console.log("too long! ", text.length)
                                 text = text.substring(0, control.max_length)
                             }
                             if (text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
