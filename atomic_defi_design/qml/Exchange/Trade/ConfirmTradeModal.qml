@@ -197,7 +197,8 @@ BasicModal {
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
                         text_value: qsTr("Required Confirmations") + ": " + required_confirmation_count.value
-                        color: parent.enabled ? Style.colorText : Style.colorTextDisabled
+                        color: DexTheme.foregroundColor
+                        opacity: parent.enabled ? 1 : .6
                     }
 
                     DexSlider {
