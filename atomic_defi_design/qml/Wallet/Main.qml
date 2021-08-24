@@ -186,9 +186,9 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
             Item {
-                Layout.preferredWidth: 150
+                Layout.preferredWidth: send_button.width
                 Layout.preferredHeight: send_button.height
-                DexButton {
+                DexAppButton {
                     id: send_button
                     enabled: API.app.wallet_pg.send_available
                     text: qsTr("Send")
@@ -197,7 +197,8 @@ Item {
                         if (API.app.wallet_pg.current_ticker_fees_coin_enabled) send_modal.open()
                         else enable_fees_coin_modal.open()
                     }
-                    width: parent.width
+                    leftPadding: 40
+                    rightPadding: 40
                     anchors.top: parent.top
                     font.pixelSize: Style.textSize
                     radius: 16
@@ -278,11 +279,12 @@ Item {
                 sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker }
             }
 
-            DexButton {
+            DexAppButton {
                 text: qsTr("Receive")
                 onClicked: receive_modal.open()
                 font.pixelSize: send_button.font.pixelSize
-                Layout.preferredWidth: 150
+                leftPadding: 40
+                rightPadding: 40
                 radius: 16
                 Arrow {
                     up: false
@@ -298,12 +300,13 @@ Item {
                 sourceComponent: ReceiveModal {}
             }
 
-            DexButton {
+            DexAppButton {
                 visible: !is_dex_banned
                 text: qsTr("Swap")
                 onClicked: onClickedSwap()
                 font.pixelSize: send_button.font.pixelSize
-                Layout.preferredWidth: 150
+                leftPadding: 40
+                rightPadding: 40
                 radius: 16
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
@@ -330,11 +333,12 @@ Item {
                 Layout.fillWidth: true
             }
 
-            DexButton {
+            DexAppButton {
                 id: button_claim_rewards
                 text: qsTr("Claim Rewards")
                 font.pixelSize: send_button.font.pixelSize
-                Layout.preferredWidth: 150
+                leftPadding: 30
+                rightPadding: 30
                 radius: 16
                 visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
                 enabled: parseFloat(current_ticker_infos.balance) > 0
@@ -349,10 +353,11 @@ Item {
                 sourceComponent: ClaimRewardsModal {}
             }
 
-            DexButton {
+            DexAppButton {
                 id: button_claim_faucet
                 text: qsTr("Faucet")
-                Layout.fillWidth: true
+                leftPadding: 20
+                rightPadding: 20
                 font.pixelSize: send_button.font.pixelSize
                 visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
