@@ -11,8 +11,7 @@ import "../../../Components"
 BasicModal {
     id: root
 
-    property
-    var details
+    property var details
 
     onDetailsChanged: {
         if (!details) root.close()

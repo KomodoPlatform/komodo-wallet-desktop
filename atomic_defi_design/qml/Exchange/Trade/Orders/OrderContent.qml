@@ -147,7 +147,8 @@ Item {
                 }
                 DexLabel {
                     id: base_amount
-                    text_value: !details ? "" : "<b><font color='"+DexTheme.getCoinColor(base_ticker)+"'>" +base_ticker+ "</font></b>"+"    %1".arg(General.coinName(base_ticker))+"<br>" + General.formatCrypto("", details.base_amount, details.base_coin).split(" ")[1]
+                    text_value: !details ? "" :
+                                           "<b><font color='" +DexTheme.getCoinColor(details.base_coin) + "'>" + details.base_coin + "</font></b>" + "    %1".arg(General.coinName(details.base_coin))+ "<br>" + General.formatCrypto("", details.base_amount, details.base_coin).split(" ")[1]
                     font: DexTypo.body2
 
                     Layout.fillWidth: true
@@ -183,7 +184,7 @@ Item {
                 }
                 DexLabel {
                     id: rel_amount
-                    text_value: !details ? "" : "<b><font color='"+DexTheme.getCoinColor(rel_ticker)+"'>" +rel_ticker+ "</font></b>     %1 <br>".arg(General.coinName(rel_ticker)) + General.formatCrypto("", details.rel_amount, details.rel_coin).split(" ")[1]
+                    text_value: !details ? "" : "<b><font color='" + DexTheme.getCoinColor(details.rel_coin)+"'>" + details.rel_coin + "</font></b>     %1 <br>".arg(General.coinName(details.rel_coin)) + General.formatCrypto("", details.rel_amount, details.rel_coin).split(" ")[1]
                     font: DexTypo.body2
 
                     Layout.fillWidth: true
