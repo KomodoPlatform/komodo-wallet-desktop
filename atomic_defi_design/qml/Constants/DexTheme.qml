@@ -94,6 +94,9 @@ QtObject {
     property color proviewItemBoxIconColor: accentColor
     property int proviewItemBoxBorderWidth: 0
 
+    property color comboBoxBorderColor: rectangleBorderColor
+    property color comboBoxBackgroundColor: dexBoxBackgroundColor
+
 
     property bool walletSidebarShadowVisibility: true
     property color walletSidebarLeftBorderColor: backgroundColorDeep

@@ -624,7 +624,7 @@ ColumnLayout {
             property bool chart_visibility: true
             property bool option_visibility: true
             property bool orderbook_visibility: true
-            property bool best_order_visibility: true
+            property bool best_order_visibility: false
             property bool form_visibility: true
         }
 

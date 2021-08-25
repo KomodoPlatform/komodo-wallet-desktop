@@ -78,6 +78,8 @@ QtObject {
         propertyChecker("iconButtonColor","buttonColorEnabled", data)
         propertyChecker("iconButtonForegroundColor","buttonColorTextEnabled", data)
         propertyChecker("proviewItemBoxBackgroundColor","dexBoxBackgroundColor", data)
+        propertyChecker("comboBoxBorderColor","rectangleBorderColor",data)
+        propertyChecker("comboBoxBackgroundColor","dexBoxBackgroundColor",data)
 	}
 
 	function propertyChecker(name, value, data) {

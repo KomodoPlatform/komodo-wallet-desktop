@@ -44,23 +44,25 @@ DexRectangle {
     property string text: ""
     property string iconSource: ""
     
-    property string foregroundColor: DexTheme.foregroundColor
+    property string foregroundColor: containsMouse ? DexTheme.buttonGradientTextEnabled : DexTheme.foregroundColor
     radius: 12
+
     Gradient {
         id: btnGradient
         orientation: Qt.Horizontal
         GradientStop {
             position: 0.1255
-            color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled1) : DexTheme.buttonGradientEnabled1
+            color: DexTheme.buttonGradientEnabled1
         }
          GradientStop {
             position: 0.933
-            color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled2) : DexTheme.buttonGradientEnabled2
+            color: DexTheme.buttonGradientEnabled2
         }
     }
     color: outlinedColor
     gradient: outlinedColor !== "" ? undefined : btnGradient
     DexRectangle {
+        visible: !parent.containsMouse
         radius: parent.radius - 2
         anchors.centerIn: parent
         width: parent.width - (control.borderWidth*2)
