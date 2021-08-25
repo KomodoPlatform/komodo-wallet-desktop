@@ -77,7 +77,7 @@ BasicModal {
             {
                 anchors.fill: parent
                 onClicked: setCheckState(!parent.checked)
-        }
+            }
         }
 
         DefaultListView {
@@ -147,17 +147,12 @@ BasicModal {
             Layout.fillWidth: true
         }
 
-        DefaultRectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 20
-            border.width: 0
-
-            DefaultText {
-                anchors.centerIn: parent
-                text: qsTr("You can still enable %1 assets. Selected: %2.")
-                        .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length)
-                        .arg(coin_cfg_model.checked_nb)
-            }
+        DexLabel
+        {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("You can still enable %1 assets. Selected: %2.")
+                    .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length)
+                    .arg(coin_cfg_model.checked_nb)
         }
 
         // Buttons
