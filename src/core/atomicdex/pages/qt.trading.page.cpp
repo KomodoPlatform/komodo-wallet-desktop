@@ -97,6 +97,7 @@ namespace atomic_dex
         }
 
         emit mm2MinTradeVolChanged();
+        //SPDLOG_INFO("Reset orderbook with new pair");
         dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
 

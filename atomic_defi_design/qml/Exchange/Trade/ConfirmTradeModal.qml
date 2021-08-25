@@ -195,6 +195,7 @@ BasicModal {
                     }
 
                     DefaultText {
+                        Layout.preferredHeight: 10
                         Layout.alignment: Qt.AlignHCenter
                         text_value: qsTr("Required Confirmations") + ": " + required_confirmation_count.value
                         color: DexTheme.foregroundColor

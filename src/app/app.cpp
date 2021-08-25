@@ -413,8 +413,6 @@ namespace atomic_dex
     bool
     application::disconnect()
     {
-        SPDLOG_INFO("disconnecting every models");
-
         //! Clears pending events
         while (not this->m_actions_queue.empty())
         {

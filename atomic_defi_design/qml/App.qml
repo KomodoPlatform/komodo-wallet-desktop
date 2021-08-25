@@ -44,6 +44,8 @@ DexRectangle
     property bool can_open_login: false
     property bool disconnected: false
 
+    property bool segwit_on: false
+
     onCurrent_pageChanged: {
         if (window.logged !== undefined) {
             if (current_page === idx_dashboard) {

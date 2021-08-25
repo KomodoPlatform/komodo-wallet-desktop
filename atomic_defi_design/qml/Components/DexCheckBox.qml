@@ -55,6 +55,8 @@ CheckBox
             implicitHeight: parent.height - 6
             radius: parent.radius
         }
+
+        opacity: enabled ? 1 : 0.5
     }
 
     DefaultMouseArea
