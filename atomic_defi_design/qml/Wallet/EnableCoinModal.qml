@@ -155,7 +155,7 @@ BasicModal {
         {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("You can still enable %1 assets. Selected: %2.")
-                    .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length)
+                    .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length - coin_cfg_model.checked_nb)
                     .arg(coin_cfg_model.checked_nb)
         }
 
