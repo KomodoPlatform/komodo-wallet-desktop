@@ -377,10 +377,10 @@ ColumnLayout {
                     closable: true
                     title: qsTr("Best Orders")
                     reloadable: true
-                    onReload: {
+                    onReload: API.app.trading_pg.orderbook.refresh_best_orders()
 
-                        API.app.trading_pg.orderbook.refresh_best_orders()
-                    }
+                    Component.onCompleted: visible = false
+
                     Behavior on SplitView.preferredWidth {
                         NumberAnimation {
                             duration: 100
