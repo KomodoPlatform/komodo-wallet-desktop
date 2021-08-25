@@ -35,7 +35,7 @@ Item {
 
     Column
     {
-        width: root.currentSubPage === subPages.Trade? _simpleTrade.best? 600 : 380 : 380
+        width: root.currentSubPage === subPages.Trade? _simpleTrade.best? 600 : 450 : 450
         y: 120
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
@@ -145,7 +145,7 @@ Item {
                 DexRectangle {
                     id: subTradePage
                     height: _simpleTrade.height
-                    width: _simpleTrade.best? 600 : _simpleTrade.coinSelection? 450 : 380
+                    width: _simpleTrade.best? 600 : _simpleTrade.coinSelection ? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
                     color: DexTheme.dexBoxBackgroundColor
@@ -166,7 +166,7 @@ Item {
             }
             Item {
                 DexRectangle {
-                    width: 380
+                    width: 420
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20
@@ -180,7 +180,7 @@ Item {
             }
             Item {
                 DexRectangle {
-                    width: 380
+                    width: 420
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20

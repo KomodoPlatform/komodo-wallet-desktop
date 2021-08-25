@@ -29,7 +29,7 @@ DexListView {
         property bool expanded: order_list_view.currentIndex === index
         width: order_list_view.width - 40
         x: 20
-        height: expanded? colum_order.height + 25 : 50
+        height: expanded? colum_order.height + 25 : 70
         radius: 12
         Rectangle {
             anchors.fill: parent
@@ -54,16 +54,16 @@ DexListView {
             id: colum_order
             width: parent.width
             spacing: 5
-            topPadding: 10
+            topPadding: 0
             RowLayout {
                 width: parent.width
-                height: 30
+                height: 70
                 spacing: 5
                 Item {
-                    Layout.preferredWidth: 30 
+                    Layout.preferredWidth: 40 
                     height: 30
                     BusyIndicator {
-                        width: 25
+                        width: 30
                         height: width
                         anchors.centerIn: parent
                         running: !isSwapDone(details.order_status) && Qt.platform.os != "osx"
@@ -76,80 +76,84 @@ DexListView {
                         }
                     }
                 }
-                DefaultImage {
-                    id: base_icon
-                    source: General.coinIcon(!details ? atomic_app_primary_coin :
-                                                        details.base_coin?? atomic_app_primary_coin)
-                    Layout.preferredWidth: Constants.Style.textSize1
-                    Layout.preferredHeight: Constants.Style.textSize1
-                    Layout.alignment: Qt.AlignVCenter
-                }
-                DefaultText {
-                    id: base_amount
-                    text_value: !details ? "" :
-                                General.formatCrypto("", details.base_amount, details.base_coin).replace(" ","<br>")
-                    //details.base_amount_current_currency, API.app.settings_pg.current_currency
-                    font: rel_amount.font
-
-
+                Row {
+                    Layout.preferredWidth: 100
                     Layout.fillHeight: true
-                    Layout.preferredWidth: 110
-                    verticalAlignment: Label.AlignVCenter
-                    privacy: is_placed_order
+                    Layout.alignment: Label.AlignVCenter
+                    spacing: 5
+                    DefaultImage {
+                        id: base_icon
+                        source: General.coinIcon(!details ? atomic_app_primary_coin :
+                                                            details.base_coin?? atomic_app_primary_coin)
+                        width: Constants.Style.textSize1
+                        height: width
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    DexLabel {
+                        id: base_amount
+                        text_value: !details ? "" :
+                                    General.formatCrypto("", details.base_amount, details.base_coin).replace(" ","<br>")
+                        //details.base_amount_current_currency, API.app.settings_pg.current_currency
+                        font: rel_amount.font
+                        privacy: is_placed_order
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
+                
                 Item {
-                    Layout.fillHeight: true
+                    Layout.preferredWidth: 40
                     Layout.fillWidth: true
                     SwapIcon {
                         //visible: !status_text.visible
                         width: 30
                         height: 30
                         opacity: .6
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.centerIn: parent
                         top_arrow_ticker: !details ? atomic_app_primary_coin :
                                                      details.base_coin?? ""
                         bottom_arrow_ticker: !details ? atomic_app_primary_coin :
                                                         details.rel_coin?? ""
                     }
                 }
-                DefaultImage {
-                    id: rel_icon
-                    source: General.coinIcon(!details ? atomic_app_primary_coin :
-                                                        details.rel_coin?? atomic_app_secondary_coin)
-
-                    width: base_icon.width
-                    Layout.preferredWidth: Constants.Style.textSize1
-                    Layout.preferredHeight: Constants.Style.textSize1
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.leftMargin: 10
-                }
-                DefaultText {
-                    id: rel_amount
-                    text_value: !details ? "" :
-                                General.formatCrypto("", details.rel_amount, details.rel_coin).replace(" ","<br>")
-                    font: Qt.font({
-                        pixelSize: 11,
-                        letterSpacing: 0.4,
-                        family: DexTypo.fontFamily,
-                        weight: Font.Light
-                    })
-
+                Row {
+                    Layout.preferredWidth: 120
                     Layout.fillHeight: true
-                    Layout.preferredWidth: 110
-                    verticalAlignment: Label.AlignVCenter
-                    horizontalAlignment: Label.AlignLeft
-                    privacy: is_placed_order
+                    Layout.alignment: Label.AlignVCenter
+                    spacing: 5
+                    DefaultImage {
+                        id: rel_icon
+                        source: General.coinIcon(!details ? atomic_app_primary_coin :
+                                                            details.rel_coin?? atomic_app_secondary_coin)
+
+                        width: base_icon.width
+                        height: width
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    DefaultText {
+                        id: rel_amount
+                        text_value: !details ? "" :
+                                    General.formatCrypto("", details.rel_amount, details.rel_coin).replace(" ","<br>")
+                        font: Qt.font({
+                            pixelSize: 14,
+                            letterSpacing: 0.4,
+                            family: DexTypo.fontFamily,
+                            weight: Font.Normal
+                        })
+                        anchors.verticalCenter: parent.verticalCenter
+                        privacy: is_placed_order
+                    }
+                }
+                Qaterial.ColorIcon {
+                    Layout.alignment: Qt.AlignVCenter
+                    color: DexTheme.foregroundColor
+                    source:  expanded? Qaterial.Icons.chevronUp : Qaterial.Icons.chevronDown
+                    iconSize: 14
                 }
                 Item {
-                    Layout.fillWidth: true 
+                    Layout.preferredWidth: 10
                     Layout.fillHeight: true
                     opacity: .6
-                    Qaterial.ColorIcon {
-                        anchors.centerIn: parent
-                        source:  expanded? Qaterial.Icons.chevronUp : Qaterial.Icons.chevronDown
-                        iconSize: 14
-                    }
+                    
                 }
 
             }
