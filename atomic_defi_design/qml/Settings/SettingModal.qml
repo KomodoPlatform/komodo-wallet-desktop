@@ -61,8 +61,8 @@ Qaterial.Dialog
     Overlay.modal: Item {
         Rectangle {
             anchors.fill: parent
-            color: 'gray'
-            opacity: .9
+            color: 'black'
+            opacity: .7
         }
     }
     background: DexRectangle {
