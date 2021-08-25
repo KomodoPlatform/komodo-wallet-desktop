@@ -337,6 +337,7 @@
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DexTransparentButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppOutlineButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppPasswordField.qml</file>
