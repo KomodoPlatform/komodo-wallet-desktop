@@ -13,12 +13,23 @@ BasicModal {
 
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
+    property alias max_mount: input_max_amount
     property bool needFix: false
     property bool errorView: false
+    property bool segwit: false
+    property bool segwit_success: false
+    property var segwit_callback
     property var address_data
 
 
-    onClosed: reset()
+    onClosed: {
+        if(segwit) {
+            segwit_callback()
+        }
+        segwit = false
+        reset()
+    }
+
     closePolicy: Popup.NoAutoClose
 
     // Local
@@ -117,7 +128,9 @@ BasicModal {
                 reset()
                 showError(qsTr("Failed to Send"), General.prettifyJSON(broadcast_result))
             }
-            else root.currentIndex = 2
+            else {
+                root.currentIndex = 2
+            }
         }
     }
 
@@ -255,6 +268,8 @@ BasicModal {
             AddressFieldWithTitle {
                 id: input_address
                 Layout.alignment: Qt.AlignLeft
+                title: qsTr("Recipient's address")
+                enabled: !root.segwit
                 Layout.fillHeight: true
                 field.placeholderText: qsTr("Enter address of the recipient")
                 field.enabled: !root.is_send_busy
@@ -527,6 +542,9 @@ BasicModal {
         custom_amount: input_amount.field.text
 
         function onClose() {
+            if(root.segwit) {
+                root.segwit_success = true
+            }
             root.close()
         }
     }

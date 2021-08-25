@@ -239,22 +239,18 @@ QtObject {
         return Style.colorWhite4
     }
 
-    function getCoinTypeColor(type) {
-        switch (type) {
-          case 'ERC-20':
-            return getCoinColor("ETH")
-          case 'QRC-20':
-            return getCoinColor("QTUM")
-          case 'Smart Chain':
-            return getCoinColor("KMD")
-          case 'UTXO':
-            return getCoinColor("BTC")
-          case 'BEP-20':
-            return getCoinColor("BNB")
-          case 'SLP':
-            return getCoinColor("BCH")
-          default:
-            return getCoinColor("BTC")
+    function getCoinTypeColor(type)
+    {
+        switch (type)
+        {
+            case 'ERC-20':      return getCoinColor("ETH")
+            case 'QRC-20':      return getCoinColor("QTUM")
+            case 'Smart Chain': return getCoinColor("KMD")
+            case 'UTXO':        return getCoinColor("BTC")
+            case 'BEP-20':      return getCoinColor("BNB")
+            case 'SLP':         return getCoinColor("BCH")
+            case 'IDO':         return getCoinColor("TKL")
+            default:            return getCoinColor("BTC")
         }
     }
 
@@ -353,8 +349,8 @@ QtObject {
                                           "DAI": "#B68900",
                                           "USDC": "#317BCB",
                                           "USDT": "#26A17B",
-                                          "PAX": "#EDE70A",
-                                          "PAXG": "#E5CB22",
+                                          "PAX": "#408C69",
+                                          "PAXG": "#DABE37",
                                           "SMTF": "#F75836",
                                           "SUSHI": "#E25DA8",
                                           "TRYB": "#0929AA",
@@ -396,7 +392,7 @@ QtObject {
                                           "LINK": "#356CE4",
                                           "LRC": "#32C2F8",
                                           "MANA": "#FF3C6C",
-                                          "MATIC": "#1E61ED",
+                                          "MATIC": "#804EE1",
                                           "MKR": "#1BAF9F",
                                           "NEAR": "#595959",
                                           "NVC": "#FCF96D",
@@ -418,6 +414,7 @@ QtObject {
                                           "STORJ": "#2683FF",
                                           "SXP": "#FD5F3B",
                                           "SYS": "#0084C7",
+                                          "TKL": "#1E2835",
                                           "TRC": "#096432",
                                           "TRX": "#F30031",
                                           "TSL": "#64B082",
