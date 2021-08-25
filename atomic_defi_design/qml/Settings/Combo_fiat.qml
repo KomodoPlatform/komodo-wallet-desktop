@@ -63,7 +63,8 @@ ComboBoxWithTitle {
 
                 delegate: DefaultText {
                     text: modelData
-                    color: fiats_mouse_area.containsMouse ? Style.colorText : Style.colorText2
+                    color: DexTheme.foregroundColor
+                    opacity: fiats_mouse_area.containsMouse ? .7 : 1
 
                     DefaultMouseArea {
                         id: fiats_mouse_area

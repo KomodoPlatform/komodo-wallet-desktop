@@ -50,7 +50,7 @@ DefaultListView
         width: _rowWidth
         height: _rowHeight
         border.color: 'transparent'
-        color: DexTheme.dexBoxBackgroundColor
+        color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
         z: 2
         radius: 0
 
@@ -141,27 +141,27 @@ DefaultListView
                     font.pixelSize: 14
                 }
             }
-            
+
             DefaultText                         // Order Available Quantity
             {
                 Layout.preferredWidth: _quantityColumnSize
                 text: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
-            
+
             DefaultText                         // Order Available Quantity In BASE
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
                 text: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
-            
+
             DefaultText                         // Order Fiat Volume
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 text: price_fiat+Constants.API.app.settings_pg.current_fiat_sign
             }
-            
+
             DefaultText
             {
                 Layout.preferredWidth: _cexRateColumnSize
@@ -242,10 +242,5 @@ DefaultListView
                 _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
             }
         }
-    }
-    DexLabel {
-        anchors.centerIn: parent
-        text: qsTr('No best order.')
-        visible: parent.count==0
     }
 }

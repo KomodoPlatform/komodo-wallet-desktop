@@ -194,7 +194,7 @@ namespace atomic_dex
         }
         nlohmann::json j = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
         m_wallet_cfg = j;
-        SPDLOG_INFO("wallet_cfg: {}", j.dump(4));
+        //SPDLOG_INFO("wallet_cfg: {}", j.dump(4));
         return true;
     }
 

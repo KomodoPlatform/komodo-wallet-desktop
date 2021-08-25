@@ -193,7 +193,6 @@ InnerBackground {
                 hoverEnabled: false
                 onPositionChanged:  {
                     let mx = mouseX
-                    //console.log(mx)
                     let point = Qt.point(mx, mouseY)
                     let p = chart_2.mapToValue(point, area)
                     let idx = API.app.portfolio_pg.get_neareast_point(Math.floor(p.x) / 1000);

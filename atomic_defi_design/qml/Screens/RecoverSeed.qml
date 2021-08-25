@@ -22,12 +22,10 @@ SetupPage {
 
     function onClickedConfirm(password, seed, wallet_name) {
         if (API.app.wallet_mgr.create(password, seed, wallet_name)) {
-            console.log("Success: Import wallet")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
             return true
         } else {
-            console.log("Failed: Import wallet")
             text_error = qsTr("Failed to Import the wallet")
             return false
         }
@@ -99,10 +97,17 @@ SetupPage {
             }
 
             if (_seedField.isValid() && input_wallet_name.field.text !== "") {
-                _seedField.error = false
-                _inputPassword.field.text = ""
-                _inputPasswordConfirm.field.text = ""
-                currentStep++
+                let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
+                if( checkWalletName === "" ) {
+                    _seedField.error = false
+                    _inputPassword.field.text = ""
+                    _inputPasswordConfirm.field.text = ""
+                    currentStep++
+                }
+                else {
+                    input_wallet_name.error = true
+                    text_error = checkWalletName
+                }
             } else {
                 _seedField.error = true
             }
@@ -135,7 +140,7 @@ SetupPage {
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Wallet Name")
                 field.onAccepted: tryPassLevel1()
-
+                field.onTextChanged: text_error = ""
                 DexRectangle {
                     x: 5
                     height: 40
@@ -192,27 +197,27 @@ SetupPage {
             DexCheckBox {
                 id: allow_custom_seed
                 text: qsTr("Allow custom seed")
-                DexMouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        if (!allow_custom_seed.checked) {
-                            let dialog = app.getText({
-                                title: qsTr("<strong>Allow custom seed</strong>"),
-                                text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
-                                placeholderText: qsTr("I understand"),
-                                standardButtons: Dialog.Yes | Dialog.Cancel,
-                                validator: (text) => {
-                                    return text === qsTr("I understand")
-                                },
-                                yesButtonText: qsTr("Enable"),
-                                onAccepted: function() {
-                                    allow_custom_seed.checked = true
-                                    dialog.close()
-                                }
-                            })
-                        } else {
-                            allow_custom_seed.checked = false
-                        }
+                onToggled: {
+                    if (allow_custom_seed.checked) {
+                        let dialog = app.getText({
+                            title: qsTr("<strong>Allow custom seed</strong>"),
+                            text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
+                            placeholderText: qsTr("I understand"),
+                            standardButtons: Dialog.Yes | Dialog.Cancel,
+                            validator: (text) => {
+                                return text === qsTr("I understand")
+                            },
+                            yesButtonText: qsTr("Enable"),
+                            onAccepted: function() {
+                                allow_custom_seed.checked = true
+                                dialog.close()
+                            },
+                            onRejected: function() {
+                                allow_custom_seed.checked = false
+                            }
+                        })
+                    } else {
+                        allow_custom_seed.checked = false
                     }
                 }
             }
@@ -335,17 +340,12 @@ SetupPage {
                     }
                 }
             }
+
             DefaultText {
                 text_value: text_error
                 color: Style.colorRed
                 visible: text !== ''
             }
-        }
-
-        DefaultText {
-            text_value: text_error
-            color: Style.colorRed
-            visible: text !== ''
         }
     }
 }

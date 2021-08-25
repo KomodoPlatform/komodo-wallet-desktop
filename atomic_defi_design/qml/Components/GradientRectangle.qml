@@ -10,8 +10,8 @@ Rectangle {
 
     property color start_color: DexTheme.sideBarGradient1
     property color end_color: DexTheme.sideBarGradient2
-    Behavior on start_color { ColorAnimation { duration: Style.animationDuration } }
-    Behavior on end_color { ColorAnimation { duration: Style.animationDuration } }
+    //Behavior on start_color { ColorAnimation { duration: Style.animationDuration } }
+    //Behavior on end_color { ColorAnimation { duration: Style.animationDuration } }
 
     gradient: Gradient {
         id: gradient

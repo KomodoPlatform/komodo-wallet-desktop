@@ -42,6 +42,8 @@ Item {
         list_model_proxy.is_history = is_history
     }
 
+    Component.onDestruction: reset()
+
     Timer {
         id: buttonDelay
         interval: 200
@@ -222,6 +224,9 @@ Item {
                     to: default_max_date
                     date: default_min_date
                     font.pixelSize: 13
+                    opacity: .8
+                    color: DexTheme.foregroundColor
+                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
                 }
@@ -234,6 +239,9 @@ Item {
                     to: default_max_date
                     date: default_max_date
                     font.pixelSize: 13
+                    opacity: .8
+                    color: DexTheme.foregroundColor
+                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
                 }

@@ -467,6 +467,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "tBLK": {
+    "coin": "tBLK",
+    "name": "BlackCoin (testnet)",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "is_testnet": true,
+    "electrum": [
+      {
+        "url": "electrum1.blackcoin.nl:10012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum2.blackcoin.nl:20012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrum3.blackcoin.nl:30012",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.blackcoin.nl/"
+    ],
+    "explorer_tx_url": "tx/",
+    "explorer_address_url": "address/",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "BNT-BEP20": {
     "coin": "BNT-BEP20",
     "name": "Bancor",
@@ -753,8 +785,8 @@
     "coin": "BTE",
     "name": "Bitweb",
     "type": "UTXO",
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coingecko_id": "bitweb",
+    "coinpaprika_id": "bte-bitweb",
     "electrum": [
       {
         "url": "electrumx.bitwebcore.org:20001"
@@ -1474,12 +1506,12 @@
     "coingecko_id": "fujicoin",
     "electrum": [
       {
-        "url": "electrumx1.fujicoin.org:50003",
-        "protocol": "SSL"
+        "url": "electrumx1.fujicoin.org:50001",
+        "protocol": "TCP"
       },
       {
-        "url": "electrumx2.fujicoin.org:50003",
-        "protocol": "SSL"
+        "url": "electrumx2.fujicoin.org:50001",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
@@ -1884,7 +1916,8 @@
       "https://blockexplorer.one/litecoin/mainnet/"
     ],
     "type": "UTXO",
-    "name": "Litecoin"
+    "name": "Litecoin",
+    "is_segwit_on": false
   },
   "LYNX": {
     "coin": "LYNX",
@@ -3014,6 +3047,15 @@
         "url": "el2.verus.io:17486",
         "protocol": "SSL",
         "disable_cert_verification": false
+      },
+      {
+        "url": "el0.verus.io:17485"
+      },
+      {
+        "url": "el1.verus.io:17485"
+      },
+      {
+        "url": "el2.verus.io:17485"
       }
     ],
     "explorer_url": [
@@ -3204,6 +3246,23 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "NVC-BEP20": {
+      "coin": "NVC-BEP20",
+      "name": "Novacoin",
+      "coinpaprika_id": "nvc-novacoin",
+      "coingecko_id": "novacoin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "OOT": {
     "coin": "OOT",
@@ -3406,6 +3465,27 @@
     "active": false,
     "currently_enabled": false
   },
+  "TKL": {
+    "coin": "TKL",
+    "name": "Tokel",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      
+      {
+        "url": "1.eu.tokel.electrum.dexstats.info:10077"
+      },
+      {
+        "url": "2.eu.tokel.electrum.dexstats.info:10077"
+      }
+    ],
+    "explorer_url": [
+      "https://tokel.explorer.dexstats.info/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  }, 
   "TRC": {
     "coin": "TRC",
     "name": "Terracoin",
@@ -3590,7 +3670,7 @@
     "coin": "WCN",
     "name": "Widecoin",
     "coinpaprika_id": "wcn-widecoin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "widecoin",
     "electrum": [
       {
         "url": "electrumx.widecoin.org:50001"

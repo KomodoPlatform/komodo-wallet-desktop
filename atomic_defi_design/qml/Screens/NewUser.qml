@@ -122,12 +122,10 @@ SetupPage {
 
     function onClickedCreate(password, generated_seed, wallet_name) {
         if (API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
-            console.log("Success: Create wallet")
             selected_wallet_name = wallet_name
             postCreateSuccess()
             return true
         } else {
-            console.log("Failed: Create wallet")
             text_error = qsTr("Failed to create a wallet")
             return false
         }
@@ -243,12 +241,12 @@ SetupPage {
                 opacity: enabled ? 1 : .5
                 background.border.width: 1
                 background.radius: 25
-                background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
                 field.onAccepted: completeForm()
                 field.font: DexTypo.head6
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: "Wallet Name"
+                field.onTextChanged: text_error = ""
 
                 DexRectangle {
                     x: 5
@@ -369,6 +367,12 @@ SetupPage {
                     id: nextButton
                     enabled: input_wallet_name.field.text !== ""
                     onClicked: {
+                        text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+                        if (text_error !== "") {
+                            input_wallet_name.error = true
+                            return
+                        }
+
                         currentStep++
                         input_seed_word.field.text = ""
                         guess_count = 1
@@ -459,8 +463,6 @@ SetupPage {
                             model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
                             delegate: DexAppButton {
                                 width: (_insideFlow2.width - 30) / 4
-                                color: DexTheme.accentColor
-                                opacity: _areaSelect.containsMouse ? 1 : .6
                                 text: modelData ?? ""
                                 onClicked: {
                                     input_seed_word.field.text = modelData

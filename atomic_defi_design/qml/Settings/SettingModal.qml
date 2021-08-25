@@ -33,6 +33,7 @@ Qaterial.Dialog
             yesButtonText: qsTr("Yes"),
             cancelButtonText: qsTr("Cancel"),
             onAccepted: function(text) {
+                app.notifications_list = []
                 app.currentWalletName = ""
                 API.app.disconnect()
                 onDisconnect()
@@ -50,7 +51,7 @@ Qaterial.Dialog
 
 
     id: setting_modal
-    width: 850
+    width: 950
     height: 650
     anchors.centerIn: parent
     dim: true
@@ -60,49 +61,43 @@ Qaterial.Dialog
     Overlay.modal: Item {
         Rectangle {
             anchors.fill: parent
-            color: DexTheme.surfaceColor
+            color: 'black'
             opacity: .7
         }
     }
-    background: FloatingBackground {
-        color: DexTheme.dexBoxBackgroundColor
-        radius: 3
+    background: DexRectangle {
+        color: DexTheme.backgroundColor
+        border.width: 0
+        radius: 16
     }
-    padding: 0
-    topPadding: 0
-    bottomPadding: 0
+    padding: 20
+    topPadding: 30
+    bottomPadding: 30
     Item {
         width: parent.width
         height: 60
-        Qaterial.AppBarButton {
+        DexIconButton {
             anchors.right: parent.right
-            anchors.rightMargin: 10
-            foregroundColor: DexTheme.foregroundColor
-            icon.source: Qaterial.Icons.close
+            anchors.rightMargin: 30
+            iconSize: 30
+            icon: Qaterial.Icons.close
             anchors.verticalCenter: parent.verticalCenter
             onClicked: setting_modal.close()
         }
         Row {
             anchors.verticalCenter: parent.verticalCenter
-            leftPadding: 20
+            leftPadding: 60
             DexLabel {
+                id: settingLabel
                 anchors.verticalCenter: parent.verticalCenter
-                text: "Settings"
-                font: DexTypo.head6
+                text: qsTr("Settings")
+                font: Qt.font({
+                    pixelSize: 20 ,
+                    letterSpacing: 0.15,
+                    family: DexTypo.fontFamily,
+                    weight: Font.Normal
+                })
             }
-            DexLabel {
-                anchors.verticalCenter: parent.verticalCenter
-                text: " - "+qsTr(menu_list.model[menu_list.currentIndex])
-                opacity: .5
-                font: DexTypo.head6
-            }
-        }
-        Rectangle {
-            anchors.bottom: parent.bottom
-            color: DexTheme.foregroundColor
-            opacity: .10
-            width: parent.width
-            height: 1.5
         }
 
         Qaterial.DebugRectangle {
@@ -118,39 +113,58 @@ Qaterial.Dialog
             anchors.fill: parent
             Item {
                 Layout.fillHeight: true
-                Layout.preferredWidth: 240
+                Layout.preferredWidth: 280
                 ListView {
                     id: menu_list
-                    anchors.fill: parent
+                    height: parent.height
+                    width: 200
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.topMargin: 10
-                    spacing: 10
+                    spacing: 5
                     currentIndex: 0
-                    model: [qsTr("General"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About"),qsTr("Version")]
-                    highlight: Item {
-                        width: menu_list.width-20
-                        x: 10
-                        height: 45
-                        DexRectangle {
-                            anchors.fill: parent
-                            height: 45
-                            radius: 8
-                            color: 'transparent'
-                            border.width: 2
-                            border.color: DexTheme.hoverColor
+                    model: [qsTr("General"),qsTr("Language"),qsTr("User Interface"),qsTr("Security"),qsTr("About & Version")]
+                    delegate: DexRectangle {
+                        width: parent.width
+                        height: 60
+                        radius: 22
+                        border.width: 0
+                        gradient: Gradient {
+                            orientation: Qt.Horizontal
+                            GradientStop {
+                                position: 0.0
+                                color: delegateMouseArea.containsMouse ? DexTheme.buttonColorEnabled : menu_list.currentIndex === index ? DexTheme.buttonColorHovered : 'transparent'
+                            }
+                            GradientStop {
+                                position: 1
+                                color: 'transparent'
+                            }
                         }
-                    }
 
-                    delegate: DexSelectableButton {
-                        selected: false
-                        text: modelData
-                        outlined: false
-                        onClicked: menu_list.currentIndex = index
+                        DexLabel {
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: modelData
+                            width: parent.width
+                            leftPadding: 20
+                            font: Qt.font({
+                                pixelSize: 17 ,
+                                letterSpacing: 0.15,
+                                family: DexTypo.fontFamily,
+                                weight: Font.Normal
+                            })
+                        }
+
+                        DexMouseArea {
+                            id: delegateMouseArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onClicked: menu_list.currentIndex = index
+                        }
                     }
                 }
             }
             Rectangle {
                 Layout.fillHeight: true
-                width: 2
+                width: 1
                 color: DexTheme.foregroundColor
                 opacity: .10
             }
@@ -173,6 +187,7 @@ Qaterial.Dialog
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
                                     text: qsTr("Enable Desktop Notifications")
                                 }
                                 DefaultSwitch {
@@ -188,10 +203,13 @@ Qaterial.Dialog
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
                                     text: qsTr("Maximum number of enabled coins")
                                 }
                                 DexComboBox {
                                     id: enableable_coins_count_combo_box
+                                    Layout.preferredWidth: 100
+                                    radius: 20
                                     model: [10, 20, 50, 75, 100, 150, 200]
                                     currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
                                     onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
@@ -199,6 +217,7 @@ Qaterial.Dialog
                             }
 
                             SettingsButton {
+                                noBackground: true
                                 width: parent.width-30
                                 height: 50
                                 title: qsTr("Logs")
@@ -237,9 +256,10 @@ Qaterial.Dialog
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 30
+                                spacing: 10
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
-                                    Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
                                     text: qsTr("Language") + ":"
                                 }
                                 Languages {
@@ -266,17 +286,18 @@ Qaterial.Dialog
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
                                     text: qsTr("Current Font")
                                 }
-                                DexComboBox {
-                                    id: dexFont
-                                    editable: true
-                                    Layout.alignment: Qt.AlignVCenter
-                                    model: ["Ubuntu", "Montserrat", "Roboto"]
-                                    Component.onCompleted: {
-                                        let current = DexTypo.fontFamily
-                                        currentIndex = dexFont.model.indexOf(current)
-                                    }
+                            }
+                            DexComboBox {
+                                id: dexFont
+                                editable: true
+                                width: parent.width - 200
+                                model: ["Ubuntu", "Montserrat", "Roboto"]
+                                Component.onCompleted: {
+                                    let current = DexTypo.fontFamily
+                                    currentIndex = dexFont.model.indexOf(current)
                                 }
                             }
                             RowLayout {
@@ -287,18 +308,18 @@ Qaterial.Dialog
                                 DexLabel {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
                                     text: qsTr("Theme")
                                 }
-
-                                DexComboBox {
-                                    id: dexTheme
-                                    Layout.alignment: Qt.AlignVCenter
-                                    displayText: currentText.replace(".json","")
-                                    model: API.qt_utilities.get_themes_list()
-                                    Component.onCompleted: {
-                                        let current = atomic_settings2.value("CurrentTheme")
-                                        currentIndex = model.indexOf(current)
-                                    }
+                            }
+                            DexComboBox {
+                                id: dexTheme
+                                width: parent.width - 200
+                                displayText: currentText.replace(".json","")
+                                model: API.qt_utilities.get_themes_list()
+                                Component.onCompleted: {
+                                    let current = atomic_settings2.value("CurrentTheme")
+                                    currentIndex = model.indexOf(current)
                                 }
                             }
 
@@ -309,7 +330,7 @@ Qaterial.Dialog
                                 onClicked: {
                                     atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                     atomic_settings2.sync()
-                                    app.load_theme(dexTheme.currentText.replace(".json",""))
+                                    theme_manager.apply(dexTheme.currentText.replace(".json",""))
                                     DexTypo.fontFamily = dexFont.currentText
                                     
                                 }
@@ -342,7 +363,6 @@ Qaterial.Dialog
                             // Enabled 2FA option. (Disabled on Linux since the feature is not available on this platform yet)
                             RowLayout {
                                 enabled: Qt.platform.os !== "linux" // Disable for Linux.
-                                Component.onCompleted: console.log(Qt.platform.os)
                                 visible: enabled
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -350,6 +370,7 @@ Qaterial.Dialog
                                 DexLabel {
                                     Layout.fillWidth: true
                                     Layout.alignment: Qt.AlignVCenter
+                                    font: DexTypo.subtitle1
                                     text: qsTr("Ask system's password before sending coins ? (2FA)")
                                 }
                                 DexSwitch {
@@ -384,17 +405,14 @@ Qaterial.Dialog
                     }
 
                     Item {
-                        
                         Column {
-                            
+                            anchors.fill: parent
+                            topPadding: 10
+                            spacing: 15
                             ModalLoader {
                                 id: delete_wallet_modal
                                 sourceComponent: DeleteWalletModal {}
                             }
-                            
-                            anchors.fill: parent
-                            topPadding: 10
-                            spacing: 15
 
                             SettingsButton {
                                 width: parent.width-30
@@ -404,25 +422,22 @@ Qaterial.Dialog
                                 onClicked: eula_modal.open()
                             }
 
-                        }
-                    }
-                    Item {
-                        Column {
-                            anchors.fill: parent
-                            topPadding: 10
-                            spacing: 15
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
-                                DexLabel {
+                                DexLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     text: qsTr("Application version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_version()
+                                    onCopyNotificationTitle: qsTr("DEX Version")
+                                    onCopyNotificationMsg: qsTr("DEX Version copied to clipboard.")
                                 }
                             }
                             RowLayout {
@@ -434,34 +449,36 @@ Qaterial.Dialog
                                     Layout.fillWidth: true
                                     text: qsTr("MM2 version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_mm2_version()
+                                    onCopyNotificationTitle: qsTr("MM2 Version")
+                                    onCopyNotificationMsg: qsTr("MM2 Version copied to clipboard.")
                                 }
                             }
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
-                                DexLabel {
+                                DexLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     text: qsTr("Qt version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: qtversion
+                                    onCopyNotificationTitle: qsTr("Qt Version")
+                                    onCopyNotificationMsg: qsTr("Qt Version copied to clipboard.")
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-
-        Qaterial.DebugRectangle {
-            anchors.fill: parent
-            visible: false
         }
     }
     Item {
@@ -477,28 +494,36 @@ Qaterial.Dialog
 
             DexAppButton {
                 text: qsTr("Search Update")
-                height: 40
-                iconSource: Qaterial.Icons.update
+                height: 48
+                radius: 20
+                leftPadding: 20
+                rightPadding: 20
+                font: Qt.font({
+                    pixelSize: 19,
+                    letterSpacing: 0.15,
+                    family: DexTypo.fontFamily,
+                    weight: Font.Normal
+                })
                 onClicked: new_update_modal.open()
             }
             
             DexAppButton {
                 text: qsTr("Logout")
-                height: 40
+                color: containsMouse ? DexTheme.buttonColorHovered : 'transparent'
+                height: 48
+                radius: 20
+                font: Qt.font({
+                    pixelSize: 19 ,
+                    letterSpacing: 0.15,
+                    family: DexTypo.fontFamily,
+                    weight: Font.Normal
+                })
                 iconSource: Qaterial.Icons.logout
                 onClicked: {
                     disconnect()
                     setting_modal.close()
                 }
             }
-        }
-
-        Rectangle {
-            anchors.top: parent.top
-            color: DexTheme.foregroundColor
-            opacity: .10
-            width: parent.width
-            height: 1.5
         }
 
     }

@@ -117,9 +117,8 @@ BasicModal {
             visible: can_claim
 
             Layout.fillWidth: true
-            DefaultText {
+            DexLabel {
                 Layout.fillWidth: true
-                color: can_confirm ? Style.colorText : Style.colorRed
                 text_value: !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                             !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
 
@@ -419,15 +418,24 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexAppButton {
                 text: qsTr("Cancel")
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 onClicked: root.close()
             },
 
-            PrimaryButton {
-                text: qsTr("Confirm")
+            Item {
                 Layout.fillWidth: true
+            },
+
+            DexAppOutlineButton {
+                text: qsTr("Confirm")
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
+                opacity: enabled ? containsMouse ? .7 : 1 : .5
                 onClicked: claimRewards()
                 enabled: can_confirm
             }

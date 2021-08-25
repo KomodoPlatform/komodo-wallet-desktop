@@ -102,7 +102,6 @@ Item {
                     id: input_field
                     onTextChanged: {
                         if (text.length > control.max_length) {
-                            console.log("too long! ", text.length)
                             text = text.substring(0, control.max_length)
                         }
                         control.error = false

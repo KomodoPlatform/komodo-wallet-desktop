@@ -38,8 +38,11 @@ DefaultModal
     }
 
     //! Appearance
-    padding: 10
-    width: 900
+    padding: 20
+    leftPadding: 20
+    rightPadding: 20
+    bottomPadding: 15
+    width: 700
     height: column_layout.height + verticalPadding * 2
 
     onOpened: stack_layout.opacity = 1
@@ -68,23 +71,26 @@ DefaultModal
                 model: root.count
                 delegate: Item {
                     id: bundle
-                    property color color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
-                    width: (index === root.count-1 ? 0 : circle.width*2) + circle.width*0.5
+                    property color color: root.currentIndex >= (root.count-1 - index) ? DexTheme.modalStepColor : DexTheme.contentColorTopBold
+                    width: (index === root.count-1 ? 0 : circle.width*3) + circle.width*0.5
                     height: circle.height * 1.5
                     InnerBackground {
                         id: rectangle
-                        height: circle.height/4
+                        height: 2
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: -circle.width*0.5
                         anchors.right: circle.horizontalCenter
-                        color: bundle.color
+                        shadowOff: true
+                        color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
                     }
 
-                    FloatingBackground {
+                    DexRectangle {
                         id: circle
-                        width: 24
+                        width: 20
                         height: width
+                        radius: width/2
+                        border.color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         color: bundle.color

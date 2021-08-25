@@ -194,9 +194,11 @@
         <file>atomic_defi_design/assets/images/coins/sushi.png</file>
         <file>atomic_defi_design/assets/images/coins/sxp.png</file>
         <file>atomic_defi_design/assets/images/coins/sys.png</file>
+        <file>atomic_defi_design/assets/images/coins/tblk.png</file>
         <file>atomic_defi_design/assets/images/coins/tbtc.png</file>
         <file>atomic_defi_design/assets/images/coins/thc.png</file>
         <file>atomic_defi_design/assets/images/coins/thx.png</file>
+        <file>atomic_defi_design/assets/images/coins/tkl.png</file>
         <file>atomic_defi_design/assets/images/coins/tmtg.png</file>
         <file>atomic_defi_design/assets/images/coins/tqtum.png</file>
         <file>atomic_defi_design/assets/images/coins/trac.png</file>
@@ -335,6 +337,8 @@
         <file>atomic_defi_design/qml/Components/DexAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexAmountField.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DexTransparentButton.qml</file>
+        <file>atomic_defi_design/qml/Components/DexAppOutlineButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppPasswordField.qml</file>
         <file>atomic_defi_design/qml/Components/DexBox.qml</file>
@@ -344,12 +348,14 @@
         <file>atomic_defi_design/qml/Components/DexCheckBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexCheckEye.qml</file>
         <file>atomic_defi_design/qml/Components/DexColorOverlay.qml</file>
+        <file>atomic_defi_design/qml/Components/DexCopyableLabel.qml</file>
         <file>atomic_defi_design/qml/Components/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexDialogManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexDialogTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DexFadebehavior.qml</file>
         <file>atomic_defi_design/qml/Components/DexVisibleBehavior.qml</file>
         <file>atomic_defi_design/qml/Components/DexFlickable.qml</file>
+        <file>atomic_defi_design/qml/Components/DexGradientAppButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexIconButton.qml</file>
         <file>atomic_defi_design/qml/Components/DexImage.qml</file>
         <file>atomic_defi_design/qml/Components/DexInnerShadow.qml</file>
@@ -375,6 +381,7 @@
         <file>atomic_defi_design/qml/Components/DexSubstractRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/DexSweetComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DexSwitch.qml</file>
+        <file>atomic_defi_design/qml/Constants/DexThemeManager.qml</file>
         <file>atomic_defi_design/qml/Components/DexText.qml</file>
         <file>atomic_defi_design/qml/Components/DexAppTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DexTextArea.qml</file>
@@ -460,6 +467,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/OrdersPage.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Orders/SwapProgress.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/PriceLineSimplified.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ProView.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/List.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/SimpleView/Main.qml</file>
@@ -505,6 +513,7 @@
         <file>atomic_defi_design/qml/Sidebar/SidebarCenter.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarLine.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarTooltip.qml</file>
+        <file>atomic_defi_design/qml/Sidebar/Line.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Wallet/AddressBook.qml</file>
@@ -527,6 +536,7 @@
         <file>atomic_defi_design/qml/Wallet/SendModalContactList.qml</file>
         <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>
         <file>atomic_defi_design/qml/Wallet/Sidebar.qml</file>
+        <file>atomic_defi_design/qml/Wallet/SidebarItemDelegate.qml</file>
         <file>atomic_defi_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_defi_design/qml/Wallet/Wallet.qml</file>

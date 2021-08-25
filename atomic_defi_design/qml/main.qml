@@ -71,6 +71,7 @@ DexWindow
 		anchors.topMargin: 30
 		anchors.margins: 2
 	}
+	
 	DexPopup
 	{
 		id: userMenu
@@ -87,13 +88,14 @@ DexWindow
 				width: parent.width-10
 				height: parent.height-5
 				anchors.centerIn: parent
-				color: logout_area.containsMouse?  DexTheme.surfaceColor :  DexTheme.dexBoxBackgroundColor
+				color: logout_area.containsMouse?  DexTheme.contentColorTopBold :  DexTheme.buttonColorHovered
 				Row {
 					anchors.centerIn: parent
-					Qaterial.ColorIcon {
+					Qaterial.Icon {
 						anchors.verticalCenter: parent.verticalCenter
-						source: Qaterial.Icons.logout
-						iconSize: 11
+						icon: Qaterial.Icons.logout
+						color:  DexTheme.foregroundColor
+						size: 11
 					}
 					spacing: 5
 					DexLabel {
@@ -118,6 +120,7 @@ DexWindow
                             yesButtonText: qsTr("Yes"),
                             cancelButtonText: qsTr("Cancel"),
                             onAccepted: function(text) {
+                            	app.notifications_list = []
                                 userMenu.close()
 								app.currentWalletName = ""
 								API.app.disconnect()
@@ -310,12 +313,12 @@ DexWindow
 			DexIconButton {
 				opacity: containsMouse? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
-				color: active?  DexTheme.accentColor : containsMouse?  DexTheme.accentColor :  DexTheme.foregroundColor 
-				iconSize: 22
+                iconSize: 22
 				icon: Qaterial.Icons.bellOutline
 				visible: _label.visible
 				active: app.notification_modal.opened
-				AnimatedRectangle {
+                AnimatedRectangle
+                {
 					z: 1
 					anchors.right: parent.right
 					anchors.rightMargin: -3
@@ -326,7 +329,8 @@ DexWindow
 					visible: app.notifications_list !== undefined? app.notifications_list.length > 0 : false
 					color:  DexTheme.redColor
 
-					DefaultText {
+                    DefaultText
+                    {
 						id: count_text
 						anchors.centerIn: parent
 						text_value: _label.visible ? app.notifications_list.length ?? 0 : 0
@@ -335,12 +339,12 @@ DexWindow
 						color:  DexTheme.foregroundColor 
 					}
 				}
-				onClicked: {
-					if(app.notification_modal.visible) {
-						app.notification_modal.close()
-					}else {
-						app.notification_modal.openAt(mapToItem(Overlay.overlay, -165, 18), Item.Top)
-					}
+                onClicked:
+                {
+                    if (app.notification_modal.visible)
+                        app.notification_modal.close()
+                    else
+                        app.notification_modal.openAt(mapToItem(Overlay.overlay, -165, 18), Item.Top)
 				}
 			}
 
@@ -361,19 +365,18 @@ DexWindow
 		    }
 
 			DexIconButton {
-				opacity: containsMouse? 1 : .8
+				opacity: containsMouse ? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
-				color: active?  DexTheme.accentColor : containsMouse ?  DexTheme.accentColor :  DexTheme.foregroundColor 
-				iconSize: 22
+                iconSize: 22
 				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
 				visible: _label.visible && DexTheme.theme !== "undefined"
 				active: app.notification_modal.opened
 				onClicked: {
 					let themeList = API.qt_utilities.get_themes_list()
 			        if(DexTheme.theme === "light") {
-			        	app.load_theme("Dark")
+			        	app.themeManager.apply("Dark")
 			        } else {
-			        	app.load_theme("Light")
+			        	app.themeManager.apply("Light")
 			        }
 				}
 			}

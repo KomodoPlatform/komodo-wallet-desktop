@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Constants"
 as Constants
 import App 1.0
@@ -14,38 +16,45 @@ ComboBox {
         m.modelData :
         !m.modelData ? m[textRole] : m.modelData[textRole]
     property string currentTicker: "All"
-    delegate: ItemDelegate {
+    delegate: ItemDelegate 
+    {
         width: control.width + 50
         highlighted: control.highlightedIndex === index
-        contentItem: DefaultText {
+        contentItem: DefaultText 
+        {
             text_value: control.currentTicker
             color: DexTheme.foregroundColor
         }
     }
 
-    indicator: ColorImage {
-        x: control.mirrored ? control.padding : control.width - width - control.padding
+    indicator: Qaterial.Icon {
+        x: control.mirrored ? control.padding : control.width - width - control.padding - 4
         y: control.topPadding + (control.availableHeight - height) / 2
         color: control.contentItem.color
-        defaultColor: DexTheme.foregroundColor
-        source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
+        icon: Qaterial.Icons.chevronDown
     }
 
-    contentItem: DexLabel {
+    contentItem: DexLabel 
+    {
         leftPadding: 10
-        rightPadding: control.indicator.width + control.spacing
+        verticalAlignment: Text.AlignVCenter
+
+        width: _background.width - leftPadding
+        height: _background.height
+
         color: DexTheme.foregroundColor
         text: control.currentTicker
-
-        verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
+        wrapMode: Text.NoWrap
     }
 
     background: DexRectangle {
+        id: _background
+
         implicitWidth: 120
         implicitHeight: 40
         color: !control.enabled ? DexTheme.backgroundDarkColor0 : control.hovered ? DexTheme.backgroundDarkColor0 : DexTheme.surfaceColor
-        radius: 4
+        radius: 8
     }
 
     popup: Popup {

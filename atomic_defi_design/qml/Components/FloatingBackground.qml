@@ -9,8 +9,8 @@ Item {
     property alias color: rect.color
     property double border_gradient_start_pos: 0.35
     property double border_gradient_end_pos: 0.65
-    property color border_color_start: DexTheme.colorInnerShadowTop
-    property color border_color_end: DexTheme.colorInnerShadowBottom
+    property color border_color_start: DexTheme.theme === "light" ? DexTheme.contentColorTopBold : DexTheme.colorInnerShadowTop
+    property color border_color_end: DexTheme.theme === "light" ? DexTheme.contentColorTopBold : DexTheme.colorInnerShadowBottom
     property alias radius: rect.radius
     property alias border: rect.border
     property alias inner_space: inner_space
@@ -32,7 +32,7 @@ Item {
     DefaultRectangle {
         id: rect
         anchors.fill: parent
-        border.color: "transparent"
+        border.color: DexTheme.contentColorTop
 
         Loader {
             anchors.centerIn: parent

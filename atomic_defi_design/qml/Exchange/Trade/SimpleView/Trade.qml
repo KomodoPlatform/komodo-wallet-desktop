@@ -19,7 +19,9 @@ ClipRRect // Trade Card
 {
     id: _tradeCard
 
-    property string selectedTicker: left_ticker
+    property string selectedTicker: !Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(left_ticker).is_testnet && 
+                                    left_ticker !== "RICK" && left_ticker !== "MORTY" ? 
+                                        left_ticker : ""
     property var    selectedOrder:  undefined
     property bool   best: false
     property bool   coinSelection: false
@@ -140,11 +142,12 @@ ClipRRect // Trade Card
             width: parent.width - 20
             leftPadding: 20
             topPadding: 20
-
-            DefaultText // Title
+            spacing: 15
+            DexLabel // Title
             {
                 text: qsTr("Swap")
-                font.pixelSize: Constants.Style.textSize1
+                font: DexTypo.head6
+                opacity: .85
             }
 
             DefaultText // Description
@@ -186,9 +189,10 @@ ClipRRect // Trade Card
             }
         }
 
-        HorizontalLine
+        Item
         {
             width: _tradeCard.width
+            height: .5
         }
 
         ColumnLayout // Content
@@ -197,13 +201,14 @@ ClipRRect // Trade Card
             
             anchors.horizontalCenter: parent.horizontalCenter
 
-            DefaultRectangle // From
+            DexRectangle // From
             {
                 id: swap_from_card
                 Layout.preferredWidth: _tradeCard.width - 20
                 Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
                 radius: 20
+                color: DexTheme.tradeFieldBoxBackgroundColor
                 visible: !coinSelectorSimplified.visible
 
                 DefaultText // From Text
@@ -222,6 +227,7 @@ ClipRRect // Trade Card
                     readonly property int _maxWidth: 140
 
                     id: _fromBalance
+                    visible: selectedTicker !== ""
                     width: Math.min(_maxWidth, _textMetrics.boundingRect.width + 10)
                     anchors.verticalCenter: _fromTitle.verticalCenter
                     anchors.right: parent.right
@@ -269,13 +275,14 @@ ClipRRect // Trade Card
                 AmountField // Amount
                 {
                     id: _fromValue
+                    enabled: selectedTicker !== ""
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
                     anchors.leftMargin: 2
                     field.placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Minimum: %1").arg(Constants.API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
                     field.font.pixelSize: Constants.Style.textSizeSmall5
-                    field.background: Rectangle { color: DexTheme.backgroundColor }
+                    field.background: Rectangle { color: swap_from_card.color }
                     field.onTextChanged:
                     {
                         if (field.text === "")
@@ -283,10 +290,7 @@ ClipRRect // Trade Card
                             Constants.API.app.trading_pg.volume = 0
                             field.text = ""
                         }
-                        else
-                            Constants.API.app.trading_pg.volume = field.text
-                        //Constants.API.app.trading_pg.determine_fees()
-                        //Constants.API.app.trading_pg.orderbook.refresh_best_orders()
+                        else Constants.API.app.trading_pg.volume = field.text
                     }
                     field.onFocusChanged:
                     {
@@ -306,7 +310,8 @@ ClipRRect // Trade Card
                     anchors.left: _fromValue.left
                     anchors.leftMargin: 24
                     font.pixelSize: Constants.Style.textSizeSmall1
-                    color: DexTheme.buttonColorTextDisabled
+                    color: DexTheme.foregroundColor
+                    opacity: .9
                     text: enabled ? Constants.General.getFiatText(_fromValue.field.text, selectedTicker) : ""
                 }
 
@@ -319,13 +324,13 @@ ClipRRect // Trade Card
                     anchors.right: parent.right
                     anchors.rightMargin: 20
 
-                    width: _selectedTickerIcon.width + Math.max(_selectedTickerText.implicitWidth, _selectedTickerTypeText.implicitWidth) + _selectedTickerArrow.width + 29.5
+                    width: (_selectedTickerIcon.enabled ? _selectedTickerIcon.width : 0) + Math.max(_selectedTickerText.implicitWidth, _selectedTickerTypeText.implicitWidth) + _selectedTickerArrow.width + 29.5
 
                     height: 30
 
                     radius: 10
                     border.width: 0
-                    color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : DexTheme.backgroundColor
+                    color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : swap_from_card.color
 
                     DefaultMouseArea
                     {
@@ -342,6 +347,8 @@ ClipRRect // Trade Card
                     DefaultImage
                     {
                         id: _selectedTickerIcon
+                        enabled: selectedTicker !== ""
+                        visible: enabled
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
                         anchors.left: parent.left
@@ -355,13 +362,13 @@ ClipRRect // Trade Card
                         id: _selectedTickerText
 
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.verticalCenterOffset: -5
+                        anchors.verticalCenterOffset: _selectedTickerIcon.enabled ? -5 : 0
                         anchors.left: _selectedTickerIcon.right
-                        anchors.leftMargin: 10
+                        anchors.leftMargin: _selectedTickerIcon.enabled ? 10 : -10
 
                         width: 60
 
-                        text: atomic_qt_utilities.retrieve_main_ticker(selectedTicker)
+                        text: _selectedTickerIcon.enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedTicker) : qsTr("Pick a coin")
                         font.pixelSize: Constants.Style.textSizeSmall2
 
                         wrapMode: Text.NoWrap
@@ -369,6 +376,9 @@ ClipRRect // Trade Card
                         DefaultText
                         {
                             id: _selectedTickerTypeText
+
+                            enabled: _selectedTickerIcon.enabled
+                            visible: enabled
 
                             anchors.top: parent.bottom
 
@@ -410,6 +420,8 @@ ClipRRect // Trade Card
                     anchors.rightMargin: 5
                     anchors.verticalCenter: _selectTickerBut.verticalCenter
 
+                    visible: selectedTicker !== ""
+
                     width: 40
                     height: 20
 
@@ -434,13 +446,14 @@ ClipRRect // Trade Card
                 }
             }
 
-            DefaultRectangle // To
+            DexRectangle // To
             {
                 Layout.preferredWidth: _tradeCard.width - 20
                 Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 15
                 radius: 20
+                color: DexTheme.tradeFieldBoxBackgroundColor
                 visible: !bestOrderSimplified.visible && !coinSelectorSimplified.visible
 
                 DefaultText
@@ -462,8 +475,8 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 2
                     field.text: Constants.API.app.trading_pg.total_amount
                     field.font.pixelSize: Constants.Style.textSizeSmall5
-                    field.color: DexTheme.buttonColorTextDisabled
-                    field.background: Rectangle { color: DexTheme.backgroundColor }
+                    field.color: DexTheme.textPlaceHolderColor
+                    field.background: Rectangle { color: swap_from_card.color}
                 }
 
                 Text    // Amount In Fiat
@@ -474,7 +487,8 @@ ClipRRect // Trade Card
                     anchors.left: _toValue.left
                     anchors.leftMargin: 24
                     font.pixelSize: Constants.Style.textSizeSmall1
-                    color: DexTheme.buttonColorTextDisabled
+                    color: DexTheme.foregroundColor
+                    opacity: .9
                     text: enabled ? Constants.General.getFiatText(_toValue.field.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
 
@@ -495,7 +509,7 @@ ClipRRect // Trade Card
                     radius: 10
                     border.width: 0
 
-                    color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : DexTheme.backgroundColor
+                    color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : swap_from_card.color
                     opacity: _bestOrdersMouseArea.enabled ? 1 : 0.3
 
                     DefaultMouseArea
@@ -633,13 +647,14 @@ ClipRRect // Trade Card
                 Layout.topMargin: 10
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: _tradeCard.width - 30
-                Layout.preferredHeight: 40
+                Layout.preferredHeight: 50
                 visible: !bestOrderSimplified.visible && !coinSelectorSimplified.visible
 
-                DefaultButton
+                DexGradientAppButton
                 {
                     enabled: !Constants.API.app.trading_pg.preimage_rpc_busy && !_swapAlert.visible
-
+                    opacity: enabled ? 1 : .6
+                    radius: 10
                     anchors.fill: parent
                     text: qsTr("Swap Now")
                     onClicked: _confirmSwapModal.open()
@@ -754,6 +769,7 @@ ClipRRect // Trade Card
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     source: Qaterial.Icons.magnify
+                    color: DexTheme.foregroundColor
                     x: 25 
                     opacity: .7
                 }
@@ -870,6 +886,7 @@ ClipRRect // Trade Card
             } 
             BusyIndicator
             {
+                id: bestOrdersLoading
                 width: 200
                 height: 200
                 visible: Constants.API.app.trading_pg.orderbook.best_orders_busy
@@ -877,8 +894,22 @@ ClipRRect // Trade Card
                 anchors.centerIn: parent
             }
 
-        }
+            DexLabel
+            {
+                visible: _bestOrderList.count === 0 && !bestOrdersLoading.visible
 
+                anchors.centerIn: parent
+                text: qsTr("No buy orders found for %1.").arg(selectedTicker)
+                font.pixelSize: Style.textSize2
+
+                DexLabel
+                {
+                    anchors.top: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("You can check later or try to sell a different coin.")
+                }
+            }
+        }
 
         Item // Swap Info - Details
         {
@@ -941,23 +972,37 @@ ClipRRect // Trade Card
     {
         anchors.rightMargin: 15
         anchors.right: parent.right
+        height: 50
+        spacing: 5
         y: 12
-        Qaterial.AppBarButton 
+        DexAppButton
         {
-            icon.source: Qaterial.Icons.refresh
             visible: _tradeCard.best
-            foregroundColor: DexTheme.foregroundColor
+            iconSource: Qaterial.Icons.refresh
+            iconSize: 14
+            backgroundColor: DexTheme.iconButtonColor
+            foregroundColor: DexTheme.iconButtonForegroundColor
+            opacity: enabled ? containsMouse ? .7 : 1 : .4
+            anchors.verticalCenter: parent.verticalCenter
             enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
+            width: 35
+            height: 25
             onClicked: 
             {
                 Constants.API.app.trading_pg.orderbook.refresh_best_orders()
             }
         }
-        Qaterial.AppBarButton 
+        DexAppButton 
         {
-            icon.source: Qaterial.Icons.close
-            foregroundColor: DexTheme.foregroundColor
             visible: _tradeCard.best || _tradeCard.coinSelection
+            iconSource: Qaterial.Icons.close
+            iconSize: 14
+            backgroundColor: DexTheme.iconButtonColor
+            foregroundColor: DexTheme.iconButtonForegroundColor
+            opacity: containsMouse ? .9 : 1
+            anchors.verticalCenter: parent.verticalCenter
+            width: 35
+            height: 25
             onClicked: 
             {
                 _tradeCard.best = false

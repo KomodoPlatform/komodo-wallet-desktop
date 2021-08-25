@@ -4,13 +4,14 @@ import QtQuick.Controls 2.15
 
 import App 1.0
 
+import Qaterial 1.0 as Qaterial
+
 import "../../../Components"
 
 BasicModal {
     id: root
 
-    property
-    var details
+    property var details
 
     onDetailsChanged: {
         if (!details) root.close()
@@ -54,11 +55,9 @@ BasicModal {
 
         OrderContent {
             Layout.topMargin: 25
-            Layout.fillWidth: true
-            Layout.leftMargin: 20
-            Layout.rightMargin: Layout.leftMargin
-            height: 120
+            Layout.preferredWidth: 500
             Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: 66
             details: root.details
             in_modal: true
         }
@@ -100,6 +99,7 @@ BasicModal {
             title: qsTr("ID")
             text: !details ? "" : details.order_id
             visible: text !== ''
+            copy: true
             privacy: true
         }
 
@@ -153,23 +153,36 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexAppButton {
                 text: qsTr("Close")
-                Layout.fillWidth: true
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
                 onClicked: root.close()
             },
 
             // Cancel button
-            DangerButton {
+            DexAppOutlineButton {
+                id: cancelOrderButton
                 visible: !details ? false : details.cancellable
-                Layout.fillWidth: true
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
                 text: qsTr("Cancel Order")
                 onClicked: cancelOrder(details.order_id)
             },
 
-            // Recover Funds button
-            PrimaryButton {
+            Item {
+                visible: !cancelOrderButton.visible
                 Layout.fillWidth: true
+            },
+
+            // Recover Funds button
+            DexAppButton {
+                id: refundButton
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
                 enabled: !API.app.orders_mdl.recover_fund_busy
                 visible: !details ? false :
                     details.recoverable && details.order_status !== "refunding"
@@ -177,9 +190,17 @@ BasicModal {
                 onClicked: API.app.orders_mdl.recover_fund(details.order_id)
             },
 
-            PrimaryButton {
-                text: qsTr("View on Explorer")
+            Item {
+                visible: !refundButton.visible & !cancelOrderButton.visible
                 Layout.fillWidth: true
+            },
+
+
+            DexAppOutlineButton {
+                text: qsTr("View on Explorer")
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
                 visible: !details ? false : details.maker_payment_id !== '' || details.taker_payment_id !== ''
                 onClicked: {
                     if (!details) return

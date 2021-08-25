@@ -25,11 +25,15 @@ Item
 
     anchors.fill: parent
 
-    function update() {        
+    Component.onDestruction: reset()
+
+    function update()
+    {
         reset()   
     }
 
-    function reset() {
+    function reset()
+    {
         list_model_proxy.is_history = true
         applyFilter()
         applyAllFiltering()
@@ -78,7 +82,8 @@ Item
             DefaultText // Title
             {
                 text: qsTr("Orders")
-                font.pixelSize: Constants.Style.textSize1
+                font: DexTypo.head6
+                opacity: .8
             }
 
             DexLabel // Description
@@ -89,39 +94,35 @@ Item
                 //text: _filterApplied? "" : qsTr("Finished orders")
                 DexLabel {
                     opacity: .4
-                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                    text: qsTr("Filter") + " %1 / %2 <br> %3 %4 - %5"
                                                     .arg(combo_base.currentTicker)
                                                     .arg(combo_rel.currentTicker)
                                                     .arg(qsTr("Date"))
-                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
-                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))    
+                                                    .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy.MM.dd"))
+                                                    .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy.MM.dd"))    
                 }
-                Qaterial.AppBarButton // Reset Form Button
+                DexAppButton 
                 {
-                    width: 50
-                    height: 50
                     anchors.right: parent.right
                     anchors.rightMargin: -5
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: -8
-
-                    foregroundColor: DexTheme.foregroundColor
-
-                    icon.source: _subOrdersRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.filter
-
-                    hoverEnabled: true
-
+                    iconSource: _subOrdersRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.cogBox
+                    iconSize: 14
+                    backgroundColor: DexTheme.iconButtonColor
+                    foregroundColor: DexTheme.iconButtonForegroundColor
+                    opacity: containsMouse ? .7 : 1
+                    width: 35
+                    height: 25
                     ToolTip.delay: 500
                     ToolTip.timeout: 5000
-                    ToolTip.visible: hovered
+                    ToolTip.visible: containsMouse
                     ToolTip.text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filering options.")
-
                     onClicked: _subOrdersRoot.displayFilter = !_subOrdersRoot.displayFilter
                 }
             }
         }
 
-        HorizontalLine
+        Item
         {
             height: 2
             Layout.fillWidth: true
@@ -139,7 +140,7 @@ Item
 
             DexRectangle {
                 anchors.fill: parent 
-                color: DexTheme.dexBoxBackgroundColor
+                color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
                 opacity: .8
                 visible: _subOrdersRoot.displayFilter
                 border.width: 0
@@ -147,10 +148,10 @@ Item
 
             DexRectangle {
                 width: parent.width
-                height: _subOrdersRoot.displayFilter ? 330 : 60
+                height: _subOrdersRoot.displayFilter ? parent.height : 60
                 visible: height > 100
                 sizeAnimation: true
-                color: DexTheme.dexBoxBackgroundColor
+                color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
                 radius: 0
                 y: -20
                 Column {
@@ -162,23 +163,17 @@ Item
                         text: qsTr("Filter settings")
                         topPadding: 10
                         leftPadding: 10
-                        font: DexTypo.body1
+                        font: DexTypo.head6
+                        opacity: .8
                     }
                     RowLayout {
                         width: main_order.width - 30
                         height: 35
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 0
-                        DexLabel {
-                            text: qsTr("Base Ticker")
-                            leftPadding: 10
-                            font: DexTypo.body2
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            opacity: .6
-                        }
                         DefaultSweetComboBox {
                             id: combo_base
+                            Layout.fillWidth: true
                             model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy
                             onCurrentTickerChanged: applyTickerFilter()
                             height: 60
@@ -192,16 +187,9 @@ Item
                         height: 35
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 5
-                        DexLabel {
-                            text: qsTr("Rel Ticker")
-                            leftPadding: 10
-                            font: DexTypo.body2
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            opacity: .6
-                        }
                         DefaultSweetComboBox {
                             id: combo_rel
+                            Layout.fillWidth: true
                             model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
                             onCurrentTickerChanged: applyTickerFilter()
                             height: 60
@@ -211,59 +199,72 @@ Item
                         }
                         
                     }
-                    spacing: 10
-                    Qaterial.TextFieldDatePicker {
-                        id: min_date
-                        title: qsTr("From")
-                        from: default_min_date
-                        to: default_max_date
-                        date: default_min_date
-                        onAccepted: applyDateFilter()
-                        width: parent.width - 50
-                        height: 60
-                        opacity: .8
-                        color: DexTheme.foregroundColor
+
+                    RowLayout {
+                        width: main_order.width - 40
+                        height: 50
                         anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: 5
+                        Qaterial.TextFieldDatePicker {
+                            id: min_date
+                            title: qsTr("From")
+                            from: default_min_date
+                            to: default_max_date
+                            date: default_min_date
+                            onAccepted: applyDateFilter()
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            opacity: .8
+                            color: DexTheme.foregroundColor
+                            backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
+                        }
+
+                        Qaterial.TextFieldDatePicker {
+                            id: max_date
+                            enabled: min_date.enabled
+                            title: qsTr("To")
+                            from: min_date.date
+                            to: default_max_date
+                            date: default_max_date
+                            onAccepted: applyDateFilter()
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            rightInset: 0
+                            opacity: .8
+                            color: DexTheme.foregroundColor
+                            backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
+                        }
+                        
                     }
 
-                    Qaterial.TextFieldDatePicker {
-                        id: max_date
-                        enabled: min_date.enabled
-                        title: qsTr("To")
-                        from: min_date.date
-                        to: default_max_date
-                        date: default_max_date
-                        onAccepted: applyDateFilter()
-                        width: parent.width - 50
-                        rightInset: 0
-                        height: 60
-                        opacity: .8
-                        color: DexTheme.foregroundColor
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
+                    spacing: 10
+
                 }
+
                 Item {
                     anchors.bottom: parent.bottom
-                    width: parent.width
+                    width: parent.width - 40
+                    anchors.horizontalCenter: parent.horizontalCenter
                     height: 60
-                    Row {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
-                        anchors.rightMargin: 20
-                        spacing: 10
+                    RowLayout {
+                        anchors.fill: parent
+                        spacing: 15
                         DexAppButton {
-                            height: 35
-                            anchors.verticalCenter: parent.verticalCenter
+                            Layout.fillWidth: true
+                            radius: 10
+                            Layout.alignment: Qt.AlignVCenter
                             text: qsTr("Cancel")
                             onClicked: {
                                 _subOrdersRoot.displayFilter = false
                             }
                         }
-                        DexAppButton {
+                        DexAppOutlineButton {
                             id: applyButton
                             height: 35
-                            anchors.verticalCenter: parent.verticalCenter
-                            backgroundColor: containsMouse ? Qaterial.Colors.lightGreen500 : Qaterial.Colors.lightGreen700
+                            Layout.fillWidth: true
+                            radius: 10
+                            Layout.alignment: Qt.AlignVCenter
+                            opacity: containsMouse ? .7 : 1
                             text: qsTr("Apply filter")
                             onClicked: {
                                 _subOrdersRoot.displayFilter = false
@@ -274,9 +275,9 @@ Item
                     }
                 }
             }
-            
         }
-        HorizontalLine
+
+        Item
         {
             height: 2
             Layout.fillWidth: true
