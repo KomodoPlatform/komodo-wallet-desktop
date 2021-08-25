@@ -98,9 +98,9 @@ BasicModal {
                 enabled: _selectAllCheckBox.checked ? checked : true
 
                 readonly property bool backend_checked: model.checked
-                onBackend_checkedChanged: if(checked !== backend_checked) checked = backend_checked
+                onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
                 onCheckStateChanged: {
-                    if(checked !== backend_checked)
+                    if (checked !== backend_checked)
                     {
                         var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
                         if ((coin_cfg_model.all_disabled_proxy.setData(data_index, checked, Qt.UserRole + 11)) === false)
