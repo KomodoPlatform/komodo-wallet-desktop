@@ -71,22 +71,13 @@ BasicModal {
             text: qsTr("Select all assets")
             visible: list.visible
 
-            // Handle updates
-            property bool updated_from_backend: false
-            property int checked_count: coin_cfg_model.checked_nb
-            property int target_parent_state: coin_cfg_model.all_disabled_proxy.length === checked_count ? Qt.Checked :
-                                                                checked_count > 0 ? Qt.PartiallyChecked : Qt.Unchecked
-            onTarget_parent_stateChanged: {
-                if(target_parent_state !== checkState) {
-                    updated_from_backend = true
-                    checkState = target_parent_state
-                }
-            }
-            onCheckStateChanged: {
-                // Avoid binding loop
-                if(!updated_from_backend) setCheckState(checked)
-                else updated_from_backend = false
-            }
+            checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
+
+            DexMouseArea
+            {
+                anchors.fill: parent
+                onClicked: setCheckState(!parent.checked)
+        }
         }
 
         DefaultListView {
