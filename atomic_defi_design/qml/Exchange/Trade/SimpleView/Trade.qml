@@ -19,7 +19,9 @@ ClipRRect // Trade Card
 {
     id: _tradeCard
 
-    property string selectedTicker: left_ticker
+    property string selectedTicker: !Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(left_ticker).is_testnet && 
+                                    left_ticker !== "RICK" && left_ticker !== "MORTY" ? 
+                                        left_ticker : ""
     property var    selectedOrder:  undefined
     property bool   best: false
     property bool   coinSelection: false
@@ -222,6 +224,7 @@ ClipRRect // Trade Card
                     readonly property int _maxWidth: 140
 
                     id: _fromBalance
+                    visible: selectedTicker !== ""
                     width: Math.min(_maxWidth, _textMetrics.boundingRect.width + 10)
                     anchors.verticalCenter: _fromTitle.verticalCenter
                     anchors.right: parent.right
@@ -269,6 +272,7 @@ ClipRRect // Trade Card
                 AmountField // Amount
                 {
                     id: _fromValue
+                    enabled: selectedTicker !== ""
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
@@ -283,10 +287,7 @@ ClipRRect // Trade Card
                             Constants.API.app.trading_pg.volume = 0
                             field.text = ""
                         }
-                        else
-                            Constants.API.app.trading_pg.volume = field.text
-                        //Constants.API.app.trading_pg.determine_fees()
-                        //Constants.API.app.trading_pg.orderbook.refresh_best_orders()
+                        else Constants.API.app.trading_pg.volume = field.text
                     }
                     field.onFocusChanged:
                     {
@@ -319,7 +320,7 @@ ClipRRect // Trade Card
                     anchors.right: parent.right
                     anchors.rightMargin: 20
 
-                    width: _selectedTickerIcon.width + Math.max(_selectedTickerText.implicitWidth, _selectedTickerTypeText.implicitWidth) + _selectedTickerArrow.width + 29.5
+                    width: (_selectedTickerIcon.enabled ? _selectedTickerIcon.width : 0) + Math.max(_selectedTickerText.implicitWidth, _selectedTickerTypeText.implicitWidth) + _selectedTickerArrow.width + 29.5
 
                     height: 30
 
@@ -342,6 +343,8 @@ ClipRRect // Trade Card
                     DefaultImage
                     {
                         id: _selectedTickerIcon
+                        enabled: selectedTicker !== ""
+                        visible: enabled
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 5
                         anchors.left: parent.left
@@ -355,13 +358,13 @@ ClipRRect // Trade Card
                         id: _selectedTickerText
 
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.verticalCenterOffset: -5
+                        anchors.verticalCenterOffset: _selectedTickerIcon.enabled ? -5 : 0
                         anchors.left: _selectedTickerIcon.right
-                        anchors.leftMargin: 10
+                        anchors.leftMargin: _selectedTickerIcon.enabled ? 10 : -10
 
                         width: 60
 
-                        text: atomic_qt_utilities.retrieve_main_ticker(selectedTicker)
+                        text: _selectedTickerIcon.enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedTicker) : qsTr("Pick a coin")
                         font.pixelSize: Constants.Style.textSizeSmall2
 
                         wrapMode: Text.NoWrap
@@ -369,6 +372,9 @@ ClipRRect // Trade Card
                         DefaultText
                         {
                             id: _selectedTickerTypeText
+
+                            enabled: _selectedTickerIcon.enabled
+                            visible: enabled
 
                             anchors.top: parent.bottom
 
@@ -409,6 +415,8 @@ ClipRRect // Trade Card
                     anchors.right: _selectTickerBut.left
                     anchors.rightMargin: 5
                     anchors.verticalCenter: _selectTickerBut.verticalCenter
+
+                    visible: selectedTicker !== ""
 
                     width: 40
                     height: 20
@@ -870,6 +878,7 @@ ClipRRect // Trade Card
             } 
             BusyIndicator
             {
+                id: bestOrdersLoading
                 width: 200
                 height: 200
                 visible: Constants.API.app.trading_pg.orderbook.best_orders_busy
@@ -877,8 +886,22 @@ ClipRRect // Trade Card
                 anchors.centerIn: parent
             }
 
-        }
+            DexLabel
+            {
+                visible: _bestOrderList.count === 0 && !bestOrdersLoading.visible
 
+                anchors.centerIn: parent
+                text: qsTr("No buy orders found for %1.").arg(selectedTicker)
+                font.pixelSize: Style.textSize2
+
+                DexLabel
+                {
+                    anchors.top: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("You can check later or try to sell a different coin.")
+                }
+            }
+        }
 
         Item // Swap Info - Details
         {
