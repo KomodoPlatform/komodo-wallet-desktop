@@ -68,6 +68,8 @@ BasicModal {
         }
 
         DexCheckBox {
+            id: _selectAllCheckBox
+
             text: qsTr("Select all assets")
             visible: list.visible
 
@@ -92,6 +94,8 @@ BasicModal {
                 text: "         " + model.name + " (" + model.ticker + ")"
 
                 leftPadding: indicator.width
+
+                enabled: _selectAllCheckBox.checked ? checked : true
 
                 readonly property bool backend_checked: model.checked
                 onBackend_checkedChanged: if(checked !== backend_checked) checked = backend_checked
