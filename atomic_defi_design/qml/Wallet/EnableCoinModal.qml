@@ -44,14 +44,7 @@ BasicModal {
     ModalContent {
         title: qsTr("Enable assets")
 
-        DefaultButton {
-            Layout.fillWidth: true
-            text: qsTr("Add a custom asset to the list")
-            onClicked: {
-                root.close()
-                add_custom_coin_modal.open()
-            }
-        }
+        spacing: 10
 
         HorizontalLine {
             Layout.fillWidth: true
@@ -62,6 +55,7 @@ BasicModal {
             id: input_coin_filter
 
             Layout.fillWidth: true
+            Layout.preferredHeight: 45
             placeholderText: qsTr("Search")
 
             onTextChanged: filterCoins()
@@ -72,7 +66,7 @@ BasicModal {
 
             text: qsTr("Select all assets")
             visible: list.visible
-
+            Layout.leftMargin: indicator.width - 5
             checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
 
             DexMouseArea
@@ -143,12 +137,33 @@ BasicModal {
         // Info text
         DefaultText {
             visible: coin_cfg_model.all_disabled_proxy.length === 0
-
             text_value: qsTr("All assets are already enabled!")
         }
 
         HorizontalLine {
             Layout.fillWidth: true
+        }
+        
+        RowLayout {
+            Layout.fillWidth: true
+
+            DexTransparentButton {
+                text: qsTr("Change assets limit")
+                onClicked: {
+                    setting_modal.selectedMenuIndex = 0; 
+                    setting_modal.open()
+                }
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            DexTransparentButton {
+                text: qsTr("Add a custom asset to the list")
+                onClicked: {
+                    root.close()
+                    add_custom_coin_modal.open()
+                }
+            }
         }
 
         DexLabel
@@ -158,30 +173,28 @@ BasicModal {
                     .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length - coin_cfg_model.checked_nb)
                     .arg(coin_cfg_model.checked_nb)
         }
-
         // Buttons
         footer: [
-            DexButton {
-                property var enableable_coins_count: setting_modal.enableable_coins_count;
-                text: qsTr("Change assets limit")
-                onClicked: { setting_modal.selectedMenuIndex = 0; setting_modal.open() }
-                textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
-                onEnableable_coins_countChanged: setCheckState(false)
-            },
 
-            DexButton {
+            DexAppButton {
                 text: qsTr("Close")
                 textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 20
                 onClicked: root.close()
             },
-
-            DexButton {
+            Item {
+                Layout.fillWidth: true
+            },
+            DexAppOutlineButton {
                 visible: coin_cfg_model.length > 0
                 enabled: coin_cfg_model.checked_nb > 0
                 textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
                 text: qsTr("Enable")
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 20
                 onClicked: {
                     API.app.enable_coins(coin_cfg_model.get_checked_coins())
                     setCheckState(false)

@@ -5,7 +5,7 @@ import App 1.0
 DexRectangle {
     id: control
     signal clicked()
-
+    colorAnimation: false
     property int padding: 12
     property int spacing: 4
     property int verticalAlignment: Qt.AlignVCenter
