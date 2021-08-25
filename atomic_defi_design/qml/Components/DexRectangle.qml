@@ -6,8 +6,8 @@ AnimatedRectangle {
     property bool sizeAnimation: false
     property int sizeAnimationDuration: 150
     radius: DexTheme.rectangleRadius
-    color: DexTheme.backgroundColor
-    border.color: DexTheme.rectangleBorderColor
+    color: DexTheme.contentColorTopBold
+    border.color: DexTheme.contentColorTopBold
     border.width: 1
 
     Behavior on width {

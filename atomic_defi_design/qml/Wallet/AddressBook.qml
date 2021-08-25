@@ -33,20 +33,19 @@ ColumnLayout {
             anchors.left: parent.left 
             anchors.leftMargin: 10
             text_value: qsTr("Address Book")
-            font.weight: Font.Medium
-            font.pixelSize: Style.textSize3
+            font: DexTypo.head6
         }
 
-        DexAppButton {
+        DexGradientAppButton {
             
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
             iconSource: Qaterial.Icons.textBoxPlus
             radius: 40
-            leftPadding: 45
-            rightPadding: 45
-            padding: 20
+            leftPadding: 5
+            rightPadding: 5
+            padding: 16
             text: qsTr("New Contact")
             onClicked: new_contact_modal.open()
         }
@@ -55,45 +54,34 @@ ColumnLayout {
     Item {
         Layout.fillWidth: true 
         Layout.preferredHeight: 60
-
-
-        DexAppTextField {
-            id: searchbar
-            width: 320
-            height: 50
-            opacity: enabled ? 1 : .5
-
-            anchors.left: parent.left
-            anchors.leftMargin: 10
+        DexRectangle {
             anchors.verticalCenter: parent.verticalCenter
-
-            background.border.width: 1
-            background.radius: 25
-            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
-            placeholderText: qsTr("Search a contact by name or tags")
-            field.font: DexTypo.head6
-            field.horizontalAlignment: Qt.AlignLeft
-            field.leftPadding: 75
-            field.placeholderText: ""
-            field.onTextChanged: addressbook_pg.model.proxy.search_exp = field.text
-
-            Component.onDestruction: addressbook_pg.model.proxy.search_exp = ""
-
-            DexRectangle {
-                x: 5
-                height: 40
-                width: 60
-                radius: 20
-                border.color: DexTheme.accentColor
-                color: DexTheme.accentColor
-                anchors.verticalCenter: parent.verticalCenter
-                Qaterial.ColorIcon {
-                    anchors.centerIn: parent
-                    iconSize: 19
-                    source: Qaterial.Icons.magnify
-                    color: DexTheme.buttonColorTextEnabled
+            width: 300
+            opacity: enabled ? 1 : .5
+            height: 50
+            radius: 20
+            x: 10
+            color: DexTheme.contentColorTop
+            DefaultTextField {
+                id: searchbar
+                anchors.fill: parent
+                anchors.margins: 2
+                function reset() {
+                    searchbar.text = ""
                 }
+                Qaterial.Icon {
+                    icon: Qaterial.Icons.magnify
+                    color: searchbar.color
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: 5
+                }
+                leftPadding: 40
+                placeholderText: qsTr("Search a contact by name or tags")
 
+                font: DexTypo.body2
+                onTextChanged: addressbook_pg.model.proxy.search_exp = text
+                Component.onDestruction: addressbook_pg.model.proxy.search_exp = ""
+                background: null
             }
         }
     }

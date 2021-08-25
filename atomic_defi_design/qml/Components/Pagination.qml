@@ -23,7 +23,6 @@ RowLayout {
 
         vPage.clear()
         
-        console.log(totalcount, current_page)
         if (totalcount <= 5) {
           for (let i = 1; i <= totalcount; i++) {
               vPage.push(i);

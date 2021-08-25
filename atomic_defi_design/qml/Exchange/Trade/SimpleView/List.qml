@@ -20,20 +20,23 @@ DexListView {
     model: API.app.orders_mdl.orders_proxy_mdl
     clip: true
     currentIndex: -1
+    spacing: 5
     delegate: ClipRRect {
         property var details: model
         readonly property bool is_placed_order: !details ? false :
                                details.order_id !== ''
 
         property bool expanded: order_list_view.currentIndex === index
-        width: order_list_view.width
-        height: expanded? colum_order.height+10 : 35
-        radius: 1
+        width: order_list_view.width - 40
+        x: 20
+        height: expanded? colum_order.height + 25 : 50
+        radius: 12
         Rectangle {
             anchors.fill: parent
-            color: order_mouse_area.containsMouse? DexTheme.surfaceColor : 'transparent'
+            color: order_mouse_area.containsMouse? DexTheme.surfaceColor : DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
             border.color: DexTheme.surfaceColor
             border.width: expanded? 1 : 0
+            radius: 10
         }
         DexMouseArea {
             id: order_mouse_area
@@ -51,6 +54,7 @@ DexListView {
             id: colum_order
             width: parent.width
             spacing: 5
+            topPadding: 10
             RowLayout {
                 width: parent.width
                 height: 30
@@ -83,9 +87,9 @@ DexListView {
                 DefaultText {
                     id: base_amount
                     text_value: !details ? "" :
-                                General.formatCrypto("", details.base_amount, details.base_coin)
+                                General.formatCrypto("", details.base_amount, details.base_coin).replace(" ","<br>")
                     //details.base_amount_current_currency, API.app.settings_pg.current_currency
-                    font.pixelSize: 11
+                    font: rel_amount.font
 
 
                     Layout.fillHeight: true
@@ -109,19 +113,6 @@ DexListView {
                                                         details.rel_coin?? ""
                     }
                 }
-
-                DefaultText {
-                    id: rel_amount
-                    text_value: !details ? "" :
-                                General.formatCrypto("", details.rel_amount, details.rel_coin)
-                    font.pixelSize: base_amount.font.pixelSize
-
-                    Layout.fillHeight: true
-                    Layout.preferredWidth: 110
-                    verticalAlignment: Label.AlignVCenter
-                    horizontalAlignment: Label.AlignRight
-                    privacy: is_placed_order
-                }
                 DefaultImage {
                     id: rel_icon
                     source: General.coinIcon(!details ? atomic_app_primary_coin :
@@ -131,6 +122,24 @@ DexListView {
                     Layout.preferredWidth: Constants.Style.textSize1
                     Layout.preferredHeight: Constants.Style.textSize1
                     Layout.alignment: Qt.AlignVCenter
+                    Layout.leftMargin: 10
+                }
+                DefaultText {
+                    id: rel_amount
+                    text_value: !details ? "" :
+                                General.formatCrypto("", details.rel_amount, details.rel_coin).replace(" ","<br>")
+                    font: Qt.font({
+                        pixelSize: 11,
+                        letterSpacing: 0.4,
+                        family: DexTypo.fontFamily,
+                        weight: Font.Light
+                    })
+
+                    Layout.fillHeight: true
+                    Layout.preferredWidth: 110
+                    verticalAlignment: Label.AlignVCenter
+                    horizontalAlignment: Label.AlignLeft
+                    privacy: is_placed_order
                 }
                 Item {
                     Layout.fillWidth: true 
@@ -145,6 +154,7 @@ DexListView {
 
             }
             RowLayout {
+                visible: expanded
                 width: parent.width-40
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 20
@@ -166,6 +176,7 @@ DexListView {
                 }
             }
             RowLayout {
+                visible: expanded
                 width: parent.width-40
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 20
@@ -185,6 +196,7 @@ DexListView {
                 }
             }
             RowLayout {
+                visible: expanded
                 width: parent.width-40
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 20
@@ -233,7 +245,8 @@ DexListView {
                     }
                 }
             }
-             RowLayout {
+            RowLayout {
+                visible: expanded
                 width: parent.width-30
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 30

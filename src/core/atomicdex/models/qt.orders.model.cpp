@@ -600,6 +600,7 @@ namespace atomic_dex
         this->beginResetModel();
         reset_backend("reset");
         this->endResetModel();
+        this->set_fetching_busy(false);
     }
 
     void

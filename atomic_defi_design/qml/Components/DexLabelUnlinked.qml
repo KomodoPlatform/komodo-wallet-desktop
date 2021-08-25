@@ -13,7 +13,7 @@ Text {
     }
 
     font: DexTypo.body1
-    color: Style.colorText
+    color: DexTheme.foregroundColor
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap
 

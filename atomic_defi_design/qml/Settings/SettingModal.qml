@@ -66,7 +66,7 @@ Qaterial.Dialog
         }
     }
     background: FloatingBackground {
-        color: DexTheme.dexBoxBackgroundColor
+        color: DexTheme.backgroundColor
         radius: 3
     }
     padding: 0
@@ -310,7 +310,7 @@ Qaterial.Dialog
                                 onClicked: {
                                     atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                     atomic_settings2.sync()
-                                    app.load_theme(dexTheme.currentText.replace(".json",""))
+                                    theme_manager.apply(dexTheme.currentText.replace(".json",""))
                                     DexTypo.fontFamily = dexFont.currentText
                                     
                                 }
@@ -343,7 +343,6 @@ Qaterial.Dialog
                             // Enabled 2FA option. (Disabled on Linux since the feature is not available on this platform yet)
                             RowLayout {
                                 enabled: Qt.platform.os !== "linux" // Disable for Linux.
-                                Component.onCompleted: console.log(Qt.platform.os)
                                 visible: enabled
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -416,14 +415,18 @@ Qaterial.Dialog
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
-                                DexLabel {
+                                DexLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     text: qsTr("Application version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_version()
+                                    onCopyNotificationTitle: qsTr("DEX Version")
+                                    onCopyNotificationMsg: qsTr("DEX Version copied to clipboard.")
                                 }
                             }
                             RowLayout {
@@ -435,23 +438,30 @@ Qaterial.Dialog
                                     Layout.fillWidth: true
                                     text: qsTr("MM2 version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_mm2_version()
+                                    onCopyNotificationTitle: qsTr("MM2 Version")
+                                    onCopyNotificationMsg: qsTr("MM2 Version copied to clipboard.")
                                 }
                             }
                             RowLayout {
                                 width: parent.width-30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
-                                DexLabel {
+                                DexLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     text: qsTr("Qt version")
                                 }
-                                DexLabel {
+                                DexCopyableLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: qtversion
+                                    onCopyNotificationTitle: qsTr("Qt Version")
+                                    onCopyNotificationMsg: qsTr("Qt Version copied to clipboard.")
                                 }
                             }
                         }

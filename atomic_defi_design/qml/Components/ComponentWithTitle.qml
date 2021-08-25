@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import "../Constants"
 import App 1.0
 
 ColumnLayout {
@@ -17,7 +16,7 @@ ColumnLayout {
             id: arrow_icon
             visible: expandable
             up: expanded
-            color: mouse_area.containsMouse ? Style.colorOrange : expanded ? Style.colorRed : Style.colorGreen
+            color: mouse_area.containsMouse ? Style.colorOrange : expanded ? DexTheme.redColor : DexTheme.greenColor
             Layout.alignment: Qt.AlignVCenter
         }
 
@@ -25,7 +24,8 @@ ColumnLayout {
             id: title
             Layout.fillWidth: true
             color: !expandable ? DexTheme.foregroundColorDarkColor4 : DexTheme.foregroundColorLightColor2
-            font.bold: true
+            font: DexTypo.body2
+            opacity: .6
             DefaultMouseArea {
                 id: mouse_area
                 enabled: expandable

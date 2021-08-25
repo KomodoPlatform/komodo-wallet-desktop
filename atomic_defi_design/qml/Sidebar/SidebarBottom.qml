@@ -32,6 +32,5 @@ ColumnLayout {
         image: ""
         Layout.fillWidth: true
         separator: false
-        checked: General.privacy_mode
     }
 }

@@ -45,7 +45,7 @@ Item {
             Layout.fillWidth: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
-
+            color: DexTheme.contentColorTopBold
             content: RowLayout {
                 width: balance_box.width
 
@@ -209,7 +209,7 @@ Item {
                         }
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: name.font.pixelSize
-                        color: Style.getValueColor(current_ticker_infos.change_24h)
+                        color: DexTheme.getValueColor(current_ticker_infos.change_24h)
                     }
                 }
 
@@ -248,10 +248,9 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
             Item {
-                Layout.fillWidth: true
-                Layout.preferredWidth: 100
+                Layout.preferredWidth: send_button.width
                 Layout.preferredHeight: send_button.height
-                DexButton {
+                DexAppButton {
                     id: send_button
                     enabled: API.app.wallet_pg.send_available
                     text: qsTr("Send")
@@ -260,13 +259,15 @@ Item {
                         if (API.app.wallet_pg.current_ticker_fees_coin_enabled) send_modal.open()
                         else enable_fees_coin_modal.open()
                     }
-                    width: parent.width
+                    leftPadding: 40
+                    rightPadding: 40
                     anchors.top: parent.top
                     font.pixelSize: Style.textSize
+                    radius: 16
                     Arrow {
                         id: arrow_send
                         up: true
-                        color: Style.colorRed
+                        color: DexTheme.arrowUpColor
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 12
@@ -340,15 +341,16 @@ Item {
                 sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker }
             }
 
-            DexButton {
+            DexAppButton {
                 text: qsTr("Receive")
                 onClicked: receive_modal.open()
-                Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
-
+                leftPadding: 40
+                rightPadding: 40
+                radius: 16
                 Arrow {
                     up: false
-                    color: Style.colorGreen
+                    color: DexTheme.arrowDownColor
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: arrow_send.anchors.rightMargin
@@ -360,35 +362,46 @@ Item {
                 sourceComponent: ReceiveModal {}
             }
 
-            DexButton {
+            DexAppButton {
                 visible: !is_dex_banned
                 text: qsTr("Swap")
                 onClicked: onClickedSwap()
-                Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
-                Arrow {
-                    up: true
-                    color: Style.colorRed
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: arrow_send.anchors.rightMargin
-                }
-
-                Arrow {
-                    up: false
-                    color: Style.colorGreen
+                leftPadding: 40
+                rightPadding: 40
+                radius: 16
+                Row {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: arrow_send.anchors.rightMargin
+                    spacing: 3
+                    
+                    Arrow {
+                        up: true
+                        color: DexTheme.arrowDownColor
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Arrow {
+                        up: false
+                        color: DexTheme.arrowUpColor
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
+                
             }
 
-            DexButton {
+            Item {
+                Layout.fillWidth: true
+            }
+
+            DexAppButton {
                 id: button_claim_rewards
                 text: qsTr("Claim Rewards")
-                Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
-
+                leftPadding: 30
+                rightPadding: 30
+                radius: 16
                 visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
                 enabled: parseFloat(current_ticker_infos.balance) > 0
                 onClicked: {
@@ -402,10 +415,11 @@ Item {
                 sourceComponent: ClaimRewardsModal {}
             }
 
-            DexButton {
+            DexAppButton {
                 id: button_claim_faucet
                 text: qsTr("Faucet")
-                Layout.fillWidth: true
+                leftPadding: 20
+                rightPadding: 20
                 font.pixelSize: send_button.font.pixelSize
                 visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
@@ -431,12 +445,14 @@ Item {
             Layout.rightMargin: layout_margin
             Layout.bottomMargin: -parent.spacing*0.5
             implicitHeight: wallet.height*0.6
+            shadowOff: true
+            color: DexTheme.contentColorTop
 
             content: Item {
                 property bool ticker_supported: false
                 readonly property bool is_fetching: chart.loadProgress < 100
-                readonly property string chartTheme: Style.dark_theme ? "dark" : "light"
-                property color backgroundColor: DexTheme.chartTradingLineBackgroundColor
+                readonly property string chartTheme: DexTheme.theme ?? "dark"
+                property color backgroundColor: DexTheme.contentColorTop
                 property var ticker: api_wallet_page.ticker
 
                 function loadChart() {
@@ -503,7 +519,7 @@ Item {
                           "height": "100%",
                           "locale": "en",
                           "dateRange": "1D",
-                          "colorTheme": "${chartTheme}",
+                          "colorTheme": "${DexTheme.theme ?? "dark"}",
                           "trendLineColor": "%2",
                           "underLineColor": "%3",
                           "isTransparent": true,
@@ -512,7 +528,7 @@ Item {
                           }
                           </script>
                         </div>
-                        <!-- TradingView Widget END -->`.arg(DexTheme.backgroundColor).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
+                        <!-- TradingView Widget END -->`.arg(DexTheme.theme === "dark" ? DexTheme.backgroundColor : DexTheme.contentColorTopBold).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
                                     }
 
                 width: price_graph_bg.width
@@ -521,6 +537,13 @@ Item {
                 onTickerChanged: loadChart()
                 onChartThemeChanged: loadChart()
                 onBackgroundColorChanged: loadChart()
+
+                Connections {
+                    target: DexTheme
+                    function onBackgroundColorChanged() {
+                        loadChart();
+                    }
+                }
 
                 RowLayout {
                     visible: ticker_supported && !chart.visible
@@ -548,7 +571,7 @@ Item {
                     id: chart
                     anchors.fill: parent
                     anchors.margins: -1
-                    backgroundColor: price_graph_bg.color
+                    backgroundColor: DexTheme.contentColorTop
                     visible: !is_fetching && ticker_supported
                 }
             }
@@ -592,7 +615,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        InnerBackground {
+        DexRectangle {
             id: transactions_bg
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -601,8 +624,10 @@ Item {
             Layout.bottomMargin: !fetching_text_row.visible ? layout_margin : undefined
 
             implicitHeight: wallet.height*0.54
-
-            content: Item {
+            border.width: 0
+            gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
+            ClipRRect {
+                radius: parent.radius
                 width: transactions_bg.width
                 height: transactions_bg.height
 

@@ -1103,14 +1103,14 @@ namespace atomic_dex
             }
 
             //! Post Metrics
-            /*SPDLOG_INFO(
+            SPDLOG_INFO(
                 "Metrics -> [total_swaps: {}, "
                 "active_swaps: {}, "
                 "nb_orders: {}, "
                 "nb_pages: {}, "
                 "current_page: {}, "
                 "total_finished_swaps: {}]",
-                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);*/
+                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);
 
             //! Compute everything
             m_orders_and_swaps = std::move(result);
@@ -1673,6 +1673,9 @@ namespace atomic_dex
         }
         catch (const std::exception& e)
         {
+            if (std::string(e.what()).find("mutex lock failed") != std::string::npos) {
+                return;
+            }
             for (auto&& cur: request) cur["userpass"] = "";
             SPDLOG_ERROR("pplx task error: {} from: {}, request: {}", e.what(), from, request.dump(4));
             this->dispatcher_.trigger<batch_failed>(from, e.what());

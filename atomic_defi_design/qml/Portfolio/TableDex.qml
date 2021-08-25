@@ -26,10 +26,12 @@ Item {
         anchors.margins: 15
         anchors.leftMargin: 40
         anchors.rightMargin: 40
-        Rectangle {
+        DexRectangle {
             width: parent.width
             height: 60
-            color:  Qt.darker(DexTheme.backgroundColor, 0.8)
+            //color:  Qt.darker(DexTheme.backgroundColor, 0.8)
+            color: 'transparent'
+            border.width: 0
             RowLayout {
                 anchors.fill: parent
                 Item {
@@ -141,11 +143,11 @@ Item {
             scrollbar_visible: false
 
             delegate: AnimatedRectangle {
-                color: Qt.lighter(
-                           mouse_area.containsMouse ? DexTheme.hightlightColor : index % 2 !== 0 ? Qt.darker(DexTheme.backgroundColor, 0.8) : "transparent",
-                           mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                color: mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.hoverColor : 'transparent'
                 width: list.width
                 height: 65
+                opacity: mouse_area.containsMouse ? .6 : 1
+                colorAnimation: false
                 AnimatedRectangle {
                     id: main_color
                     color: Style.getCoinColor(ticker)
@@ -269,7 +271,7 @@ Item {
                                                      v)
                             }
                             anchors.horizontalCenter: parent.horizontalCenter
-                            color: Style.getValueColor(change_24h)
+                            color: DexTheme.getValueColor(change_24h)
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
@@ -294,7 +296,7 @@ Item {
 
                             function refresh() {
                                 updateChart(chart, historical,
-                                            Style.getValueColor(change_24h))
+                                            DexTheme.getValueColor(change_24h))
                             }
 
                             property bool dark_theme: Style.dark_theme
@@ -351,9 +353,10 @@ Item {
                     anchors.centerIn: parent
                     spacing: 10
                     opacity: .5
-                    Qaterial.ColorIcon {
+                    Qaterial.Icon {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: Qaterial.Icons.plusBox
+                        icon: Qaterial.Icons.plusBox
+                        color: DexTheme.foregroundColor
                     }
                     DexLabel {
                         anchors.verticalCenter: parent.verticalCenter

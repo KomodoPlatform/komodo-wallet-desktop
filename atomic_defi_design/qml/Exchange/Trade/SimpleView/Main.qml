@@ -48,6 +48,7 @@ Item {
             border.width: 1
             border.color: DexTheme.dexBoxBackgroundColor
             color: DexTheme.surfaceColor
+            shadowOff: true
             radius: 40
 
             FloatingBackground // Selected Tab Rectangle
@@ -80,13 +81,13 @@ Item {
                 show_shadow: false
                 light_gradient.visible: false
 
-                border.width: 2
+                border.width: 3
                 border.color: 'transparent'
-                height: parent.height
+                height: parent.height - 2
                 anchors.verticalCenter: parent.verticalCenter
                 width: (parent.width / 3) 
                 radius: 40
-                color: DexTheme.accentColor
+                color: DexTheme.tabBarBackgroudColor
             }
             RowLayout {
                 anchors.fill: parent
@@ -148,6 +149,8 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
                     color: DexTheme.dexBoxBackgroundColor
+                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
+                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
                     sizeAnimationDuration: 250
                     sizeAnimation: true
                     ClipRRect {
@@ -168,6 +171,8 @@ Item {
                     height: 500 
                     radius: 20
                     color: DexTheme.dexBoxBackgroundColor
+                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
+                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
                     SubOrders {
                         id: orders_view
                     }
@@ -180,6 +185,8 @@ Item {
                     height: 500 
                     radius: 20
                     color: DexTheme.dexBoxBackgroundColor
+                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
+                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
                     SubHistory {
                         id: history_view
                     }
