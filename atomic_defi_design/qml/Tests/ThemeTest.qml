@@ -11,14 +11,19 @@ Item {
 	
 	Rectangle 
 	{
+		id: rect
 		anchors.fill: parent
-		color: DexTheme.surfaceColor
+		color: Qt.rgba(.0, .0, .0,.11)
 	}
 
-	/*Component.onCompleted: {
-		DexTheme.rectangleBorderColor = DexTheme.backgroundDarkColor2
+	function rgba255to1(n) {
+		return (parseInt(n)*1) / 255
 	}
-*/
+
+	Component.onCompleted: {
+		console.log(DexTheme.contentColorTop)
+	}
+
 
 	Flickable {
 
@@ -29,7 +34,13 @@ Item {
 			padding: 10
 			spacing: 20 
 			DexAppButton {
-				text: "enokas"
+				width: 200
+				text: "Prepare"
+			}
+
+			DexAppOutlineButton {
+				width: 200
+				text: "Prepare"
 			}
 
 			DexAppButton {

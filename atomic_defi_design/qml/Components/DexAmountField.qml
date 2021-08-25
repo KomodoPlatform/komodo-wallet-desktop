@@ -65,7 +65,6 @@ Item {
                     onTextChanged: {
                         text = text.trim()
                         if (text.length > control.max_length) {
-                            console.log("too long! ", text.length)
                             text = text.substring(0, control.max_length)
                         }
                     }

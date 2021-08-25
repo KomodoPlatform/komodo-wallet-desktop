@@ -14,6 +14,7 @@ ColumnLayout {
 
     TitleText {
         id: title
+        opacity: .6
     }
 
     ListView {
@@ -27,7 +28,7 @@ ColumnLayout {
         // Row
         delegate: DefaultTextEdit {
             text_value: model.modelData
-            color: Style.modalValueColor
+            color: DexTheme.foregroundColor
             privacy: true
         }
     }

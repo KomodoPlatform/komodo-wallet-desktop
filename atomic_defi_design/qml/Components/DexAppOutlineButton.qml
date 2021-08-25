@@ -5,14 +5,15 @@ import App 1.0
 DexRectangle {
     id: control
     signal clicked()
+
     colorAnimation: false
+
     property int padding: 12
     property int spacing: 4
     property int verticalAlignment: Qt.AlignVCenter
     property int horizontalAlignment: Qt.AlignHCenter
     property int verticalPadding: 2
     property int horizontalPadding: 2
-    property int iconSize: _label.font.pixelSize + 2
 
 
     // old button property
@@ -23,9 +24,15 @@ DexRectangle {
 
     property int minWidth: 90
 
+    property int borderWidth: 3
+
     property real textScale: 1
 
+    property string outlinedColor: ""
+
     property string button_type: "default"
+
+    border.width: 0
     // end
 
 
@@ -38,15 +45,33 @@ DexRectangle {
 
     property string text: ""
     property string iconSource: ""
-    property string backgroundColor: enabled ?
-        _controlMouseArea.containsMouse ?
-        _controlMouseArea.containsPress ?
-        DexTheme.buttonColorPressed :
-        DexTheme.buttonColorHovered :
-        DexTheme.buttonColorEnabled : DexTheme.buttonColorDisabled
-    property string foregroundColor: control.enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ? DexTheme.buttonColorTextPressed :  DexTheme.buttonColorTextHovered : DexTheme.buttonColorTextEnabled : DexTheme.buttonColorTextDisabled
-    radius: 5
-    color: backgroundColor
+    
+    property string foregroundColor: containsMouse ? DexTheme.buttonGradientTextEnabled : DexTheme.foregroundColor
+    radius: 12
+
+    Gradient {
+        id: btnGradient
+        orientation: Qt.Horizontal
+        GradientStop {
+            position: 0.1255
+            color: DexTheme.buttonGradientEnabled1
+        }
+         GradientStop {
+            position: 0.933
+            color: DexTheme.buttonGradientEnabled2
+        }
+    }
+    color: outlinedColor
+    gradient: outlinedColor !== "" ? undefined : btnGradient
+    DexRectangle {
+        visible: !parent.containsMouse
+        radius: parent.radius - 2
+        anchors.centerIn: parent
+        width: parent.width - (control.borderWidth*2)
+        height: parent.height - (control.borderWidth*2)
+        color: DexTheme.contentColorTopBold
+        border.width: 0
+    }
     height: _label.implicitHeight + (padding * verticalPadding)
     width: _contentRow.implicitWidth + (padding * horizontalPadding)
 
@@ -61,7 +86,7 @@ DexRectangle {
         spacing: _icon.visible ? parent.spacing : 0
         Qaterial.ColorIcon {
             id: _icon
-            iconSize: control.iconSize
+            iconSize: _label.font.pixelSize + 2
             visible: control.iconSource === "" ? false : true
             source: control.iconSource
             color: _label.color
@@ -71,7 +96,7 @@ DexRectangle {
         DexLabel {
             id: _label
             anchors.verticalCenter: parent.verticalCenter
-            font: DexTypo.button
+            font: DexTypo.body1
             text: control.text
             color: control.foregroundColor
         }

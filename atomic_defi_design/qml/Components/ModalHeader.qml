@@ -9,10 +9,10 @@ ColumnLayout {
     // Title
     DefaultText {
         id: title
-        font.pixelSize: Style.textSize2
+        font: DexTypo.head6
     }
 
-    HorizontalLine {
+    Item {
         Layout.fillWidth: true
     }
 }

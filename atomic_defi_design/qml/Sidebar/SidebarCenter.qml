@@ -75,15 +75,18 @@ ColumnLayout {
         text_value: sidebar.expanded ? qsTr("Fiat") : ""
         image: General.image_path + "bill.svg"
         Layout.fillWidth: true
-        SidebarTooltip {
-            text_value: qsTr("Fiat")
-        }
 
-        DefaultTooltip {
+        SidebarTooltip { text_value: qsTr("Fiat") }
+
+        DexTooltip
+        {
             enabled: false
             id: fiat_coming_soon
-            text: qsTr("Coming soon !")
             visible: parent.mouse_area.containsMouse
+            contentItem: DexRectangle
+            {
+                DexLabel { text: qsTr("Coming soon !"); anchors.centerIn: parent }
+            }
         }
     }
 }

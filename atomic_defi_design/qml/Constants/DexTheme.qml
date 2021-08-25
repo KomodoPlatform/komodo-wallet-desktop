@@ -86,9 +86,7 @@ QtObject {
     property color foregroundColorDarkColor8: Qt.lighter(foregroundColor, 0.2)
     property color foregroundColorDarkColor9: Qt.lighter(foregroundColor, 0.1)
 
-
     property color headTextColor: accentColor
-
 
     property color proviewItemBoxBackgroundColor: dexBoxBackgroundColor
     property color proviewItemBoxBorderColor: 'transparent'
@@ -96,13 +94,30 @@ QtObject {
     property color proviewItemBoxIconColor: accentColor
     property int proviewItemBoxBorderWidth: 0
 
+    property color comboBoxBorderColor: rectangleBorderColor
+    property color comboBoxBackgroundColor: dexBoxBackgroundColor
+
 
     property bool walletSidebarShadowVisibility: true
     property color walletSidebarLeftBorderColor: backgroundColorDeep
 
 
     property color leftSidebarBorderColor: rectangleBorderColor
+    property color sideBarRightBorderColor: rectangleBorderColor
+    property int sidebarHightLightHeight: 44
 
+
+    property color contentColorTop: backgroundColor
+    property color contentColorTopBold: backgroundColor
+    property color tabBarBackgroudColor: accentColor
+    property color tradeFieldBoxBackgroundColor: backgroundColor
+    property color iconButtonColor: buttonColorEnabled
+    property color iconButtonForegroundColor: buttonColorTextEnabled
+
+    property bool portfolioPieGradient: false
+
+    property color arrowUpColor: redColor
+    property color arrowDownColor: greenColor
 
 
 
@@ -114,7 +129,9 @@ QtObject {
     property color dexBoxBackgroundColor: backgroundDarkColor6//Style.colorTheme9
 
     property color hightlightColor: accentDarkColor3
-    property color hoverColor: accentDarkColor4
+    property color hoverColor: buttonColorHovered
+    property color modalStepColor: accentColor
+    property color modelStepBorderColor: hightlightColor
 
     property int sidebarShadowRadius: 32
 
@@ -133,7 +150,6 @@ QtObject {
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
     
-
     // Button
     property color buttonColorDisabled: DexTheme.accentDarkColor5
     property color buttonColorHovered: DexTheme.accentLightColor4
@@ -143,6 +159,10 @@ QtObject {
     property color buttonColorTextHovered: DexTheme.backgroundDarkColor8
     property color buttonColorTextEnabled: DexTheme.backgroundDarkColor9
     property color buttonColorTextPressed: DexTheme.backgroundDarkColor0
+
+    property color buttonGradientEnabled1: DexTheme.buttonColorEnabled
+    property color buttonGradientEnabled2: DexTheme.buttonColorEnabled
+    property color buttonGradientTextEnabled: DexTheme.foregroundColor
 
 
 
@@ -425,7 +445,7 @@ QtObject {
     function getValueColor(v) {
         v = parseFloat(v)
         if(v !== 0)
-            return v > 0 ? Style.colorGreen : Style.colorRed
+            return v > 0 ? greenColor : redColor
 
         return Style.colorWhite4
     }

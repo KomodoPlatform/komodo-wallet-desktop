@@ -24,9 +24,11 @@ DexRectangle
     property string selected_wallet_name: ""
     property bool debug: debug_bar
     property bool debug_log: false
+    property alias globalGradient: globalGradient
     property var notification_modal: notifications_modal
     property var notifications_list: current_page == idx_dashboard ? loader.item.notifications_list : []
 
+    property alias themeManager: theme_manager
     // Preload Chart
     signal pairChanged(string base, string rel)
     property var chart_component
@@ -41,6 +43,8 @@ DexRectangle
     property int current_page
     property bool can_open_login: false
     property bool disconnected: false
+
+    property bool segwit_on: false
 
     onCurrent_pageChanged: {
         if (window.logged !== undefined) {
@@ -68,7 +72,6 @@ DexRectangle
         } else {
             can_open_login = false
         }
-        console.log("WALLET NAME::: %1, logSTATE: %2".arg(selected_wallet_name).arg(can_open_login))
 
         return idx_first_launch
     }
@@ -145,7 +148,6 @@ DexRectangle
             onPostCreateSuccess: () => {
                 openFirstLaunch(false, false)
             }
-            Component.onCompleted: console.log("Initialized new user")
         }
     }
 
@@ -160,7 +162,6 @@ DexRectangle
             onPostLoginSuccess: () => {
                 current_page = idx_initial_loading
             }
-            Component.onCompleted: console.log("Initialized login")
         }
     }
 
@@ -269,7 +270,6 @@ DexRectangle
             {
                 if (!API.app.orders_mdl.recover_fund_busy)
                 {
-                    console.log(JSON.stringify(API.app.orders_mdl.recover_fund_data))
                     recoverFundsResultModal.field.text = General.prettifyJSON(API.app.orders_mdl.recover_fund_data)
                     recoverFundsResultModal.open()
                 }
@@ -366,7 +366,7 @@ DexRectangle
                 contextMenu.open()
             }
         }
-    }
+    }         
 
     Component {
         id: alertComponent
@@ -428,7 +428,6 @@ DexRectangle
                         Behavior on width {
                             NumberAnimation {
                                 duration: alertPopup.timeout
-                                onFinished: console.log('stoped')
                             }
                         }
                     }
@@ -439,7 +438,6 @@ DexRectangle
                 interval: alertPopup.timeout
                 running: areaAlert.containsMouse ? false : true
                 onTriggered: {
-                    console.log('closing')
                     alertPopup.close()
                 }
             }
@@ -523,12 +521,14 @@ DexRectangle
         property alias fontFamily: _font.fontFamily
     }
 
+    DexThemeManager {
+        id: theme_manager
+    }
+
     function loadTheme() {
-        console.log(JSON.stringify(API.qt_utilities.get_themes_list()))
         atomic_settings2.sync()
         let current = atomic_settings2.value("CurrentTheme")
-        console.log(current)
-        load_theme(current.replace(".json", ""))
+        theme_manager.apply(current.replace(".json", ""))
     }
 
     function showDialog(data) {
@@ -561,57 +561,21 @@ DexRectangle
         running: false
         onTriggered: loadTheme()
     }
+    Gradient {
+        id: globalGradient
+        GradientStop {
+            position: .80
+            color: App.DexTheme.contentColorTop
+        }
+        GradientStop {
+            position: 1
+            color: 'transparent'
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+R"
         onActivated: loadTheme()
-    }
-
-
-    property
-    var global_theme_property: ["primaryColor", "accentColor", "backgroundColor", "backgroundColorDeep", "dexBoxBackgroundColor", "surfaceColor", "barColor", "hightlightColor", "sideBarGradient1", "sideBarGradient2",
-        "navigationSideBarButtonGradient1", "navigationSideBarButtonGradient2", "navigationSideBarButtonGradient3",
-        "navigationSideBarButtonGradient4", "chartTradingLineColor", "chartTradingLineBackgroundColor", "foregroundColor",
-        "colorSidebarDropShadow", "whiteblack", "colorThemeDarkLight", "greenColor", "redColor", "textSelectionColor", "textPlaceHolderColor", "textSelectedColor",
-        "buttonColorDisabled", "buttonColorHovered", "buttonColorEnabled", "buttonColorTextDisabled", "buttonColorTextHovered", "buttonColorTextEnabled",
-        "colorInnerShadowBottom", "colorInnerShadowTop", "innerShadowColor", "colorLineGradient1", "colorLineGradient2", "colorLineGradient3", "colorLineGradient4", "floatShadow1", "floatShadow2", "floatBoxShadowDark"
-    ]
-
-    function save_currentTheme(name) {
-        let data = {}
-        global_theme_property.forEach(function(e) {
-            data[e] = eval("theme." + e).toString()
-        })
-        data["bigSidebarLogo"] = DexTheme.bigSidebarLogo
-        data["smallSidebarLogo"] = DexTheme.smallSidebarLogo
-        data["chartTheme"] = DexTheme.chartTheme
-        let r = API.qt_utilities.save_theme(name + ".json", data, true)
-        console.log(r)
-    }
-
-    function load_theme(name) {
-        let data = API.qt_utilities.load_theme(name)
-        if(!("theme" in data)) {
-            console.log('UNDEFINED')
-            App.DexTheme.theme = "undefined"
-        }else {
-            console.log("DEFINED")
-        }
-        for (let i in data) {
-            if (typeof(data[i]) === "boolean") {
-                eval("App.DexTheme." + i.toString() + " = " + data[i].toString())
-            }
-            else if (i.toString().indexOf("[int]") !== -1) {
-                let real_i = i;
-                i = i.replace("[int]", "")
-                console.log("theme." + i.toString() + " = " + data[real_i] + "")
-                eval("App.DexTheme." + i.toString() + " = " + data[real_i])
-            } else {
-                console.log("theme." + i.toString() + " = '" + data[i] + "'")
-                eval("App.DexTheme." + i.toString() + " = '" + data[i] + "'")
-            }
-        }
-        Qaterial.Style.accentColor = App.DexTheme.accentColor
-        console.log("END APPLY %1".arg(name))
     }
 
     color: App.DexTheme.surfaceColor

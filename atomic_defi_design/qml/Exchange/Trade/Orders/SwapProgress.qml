@@ -99,7 +99,7 @@ ColumnLayout {
     }
 
     function getTimeText(duration, estimated) {
-        return `<font color="${Style.colorGreen}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
+        return `<font color="${DexTheme.greenColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
             `<font color="${DexTheme.foregroundColorLightColor0}">` + General.durationTextShort(duration) + `</font>` +
             `<font color="${DexTheme.foregroundColorLightColor2}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
             General.durationTextShort(estimated) + `</font>`
@@ -151,10 +151,10 @@ ColumnLayout {
                     // Already exists, completed event
                     if (event) {
                         // Red for the Finished if swap failed
-                        if (event.state === "Finished" && details.order_status === "failed") return Style.colorRed
+                        if (event.state === "Finished" && details.order_status === "failed") return DexTheme.redColor
 
                         // Red for error event, green for the others
-                        return details.error_events.indexOf(event.state) === -1 ? Style.colorGreen : Style.colorRed
+                        return details.error_events.indexOf(event.state) === -1 ? DexTheme.greenColor : DexTheme.redColor
                     }
 
                     // In progress one is orange
@@ -194,7 +194,7 @@ ColumnLayout {
                     AnimatedRectangle {
                         width: parent.width * (total_time_passed > 0 ? (time_passed / (total_time_passed + simulated_time)) : 0)
                         height: parent.height
-                        color: Style.colorGreen
+                        color: DexTheme.greenColor
                     }
                 }
 

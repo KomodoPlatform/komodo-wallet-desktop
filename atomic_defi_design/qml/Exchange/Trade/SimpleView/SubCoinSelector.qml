@@ -33,7 +33,7 @@ DefaultListView
         width: _rowWidth
         height: _rowHeight
         border.color: 'transparent'
-        color: DexTheme.dexBoxBackgroundColor
+        color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
         radius: 0
 
         RowLayout                   // Coins Columns Name

@@ -31,6 +31,4 @@ DefaultModal {
             console.log(API.app.trading_pg.preimage_rpc_busy)
         }
     }
-
-
 }

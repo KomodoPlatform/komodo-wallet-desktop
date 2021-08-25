@@ -6,8 +6,7 @@ TextFieldWithTitle {
 
     field.onTextChanged: {
         field.text = field.text.trim()
-        if(field.text.length > max_length) {
-            console.log("too long! ", field.text.length)
+        if (field.text.length > max_length) {
             field.text = field.text.substring(0, max_length)
         }
     }

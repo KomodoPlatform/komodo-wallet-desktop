@@ -25,6 +25,15 @@ QtObject {
         }
     }
 
+    function coinName(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        }else {
+            const name = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).name
+            return name
+        }
+    }
+
     // Returns the icon full path of a coin type.
     // If the given coin type has spaces, it will be replaced by '-' characters.
     // If the given coin type is empty, returns an empty string.

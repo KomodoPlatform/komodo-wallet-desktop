@@ -164,7 +164,7 @@ DexComboBox {
                 width: parent.width
                 y: -5
                 height: parent.height+10
-                color: DexTheme.dexBoxBackgroundColor
+                color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
                 border.width: 1
                 border.color: control.mainBorderColor
                 //radius: Style.rectangleCornerRadius

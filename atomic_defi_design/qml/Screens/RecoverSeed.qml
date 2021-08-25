@@ -22,12 +22,10 @@ SetupPage {
 
     function onClickedConfirm(password, seed, wallet_name) {
         if (API.app.wallet_mgr.create(password, seed, wallet_name)) {
-            console.log("Success: Import wallet")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
             return true
         } else {
-            console.log("Failed: Import wallet")
             text_error = qsTr("Failed to Import the wallet")
             return false
         }

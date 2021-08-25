@@ -25,6 +25,9 @@ BasicModal {
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
+            onCopied: {
+                app.notifyCopy(qsTr("%1 address").arg(api_wallet_page.ticker), qsTr("copied to clipboard"))
+            }
         }
 
         Image {
@@ -38,9 +41,14 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            Item {
+                    Layout.fillWidth: true
+            },
+            DexAppButton {
                 text: qsTr("Close")
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 onClicked: root.close()
             }
         ]

@@ -5,14 +5,13 @@ import App 1.0
 DexRectangle {
     id: control
     signal clicked()
-    colorAnimation: false
+
     property int padding: 12
     property int spacing: 4
     property int verticalAlignment: Qt.AlignVCenter
     property int horizontalAlignment: Qt.AlignHCenter
     property int verticalPadding: 2
     property int horizontalPadding: 2
-    property int iconSize: _label.font.pixelSize + 2
 
 
     // old button property
@@ -38,15 +37,20 @@ DexRectangle {
 
     property string text: ""
     property string iconSource: ""
-    property string backgroundColor: enabled ?
-        _controlMouseArea.containsMouse ?
-        _controlMouseArea.containsPress ?
-        DexTheme.buttonColorPressed :
-        DexTheme.buttonColorHovered :
-        DexTheme.buttonColorEnabled : DexTheme.buttonColorDisabled
-    property string foregroundColor: control.enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ? DexTheme.buttonColorTextPressed :  DexTheme.buttonColorTextHovered : DexTheme.buttonColorTextEnabled : DexTheme.buttonColorTextDisabled
+    
+    property string foregroundColor: DexTheme.buttonGradientTextEnabled
     radius: 5
-    color: backgroundColor
+    gradient: Gradient {
+        orientation: Qt.Horizontal
+        GradientStop {
+            position: 0.1255
+            color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled1) : DexTheme.buttonGradientEnabled1
+        }
+         GradientStop {
+            position: 0.933
+            color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled2) : DexTheme.buttonGradientEnabled2
+        }
+    }
     height: _label.implicitHeight + (padding * verticalPadding)
     width: _contentRow.implicitWidth + (padding * horizontalPadding)
 
@@ -61,7 +65,7 @@ DexRectangle {
         spacing: _icon.visible ? parent.spacing : 0
         Qaterial.ColorIcon {
             id: _icon
-            iconSize: control.iconSize
+            iconSize: _label.font.pixelSize + 2
             visible: control.iconSource === "" ? false : true
             source: control.iconSource
             color: _label.color

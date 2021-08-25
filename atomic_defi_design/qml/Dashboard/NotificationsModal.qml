@@ -163,7 +163,8 @@ DexPopup {
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp) {
         const change = General.formatCrypto("", amount, ticker)
-        newNotification("onBalanceUpdateStatus", {
+        if(!app.segwit_on) {
+            newNotification("onBalanceUpdateStatus", {
                 am_i_sender,
                 amount,
                 ticker,
@@ -175,6 +176,7 @@ DexPopup {
             qsTr("Your wallet balance changed"),
             human_date,
             "open_wallet_page")
+        } else { app.segwit_on = false } 
     }
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
@@ -327,6 +329,7 @@ DexPopup {
                 Qaterial.AppBarButton {
                     enabled: list.count > 0
                     Layout.alignment: Qt.AlignVCenter
+                    foregroundColor: DexTheme.foregroundColor
                     icon.source: Qaterial.Icons.checkAll
                     onClicked: notifications_list = []
                 }
@@ -427,6 +430,7 @@ DexPopup {
                                 anchors.bottom: parent.bottom
                                 anchors.right: parent.right
                                 anchors.bottomMargin: -4
+                                foregroundColor: DexTheme.foregroundColor
                                 icon.source: {
                                     let name
                                     switch (modelData.event_name) {

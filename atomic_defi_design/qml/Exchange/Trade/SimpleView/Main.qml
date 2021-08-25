@@ -35,7 +35,7 @@ Item {
 
     Column
     {
-        width: root.currentSubPage === subPages.Trade? _simpleTrade.best? 600 : 380 : 380
+        width: root.currentSubPage === subPages.Trade? _simpleTrade.best? 600 : 450 : 450
         y: 120
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
@@ -48,6 +48,7 @@ Item {
             border.width: 1
             border.color: DexTheme.dexBoxBackgroundColor
             color: DexTheme.surfaceColor
+            shadowOff: true
             radius: 40
 
             FloatingBackground // Selected Tab Rectangle
@@ -80,13 +81,13 @@ Item {
                 show_shadow: false
                 light_gradient.visible: false
 
-                border.width: 2
+                border.width: 3
                 border.color: 'transparent'
-                height: parent.height
+                height: parent.height - 2
                 anchors.verticalCenter: parent.verticalCenter
                 width: (parent.width / 3) 
                 radius: 40
-                color: DexTheme.accentColor
+                color: DexTheme.tabBarBackgroudColor
             }
             RowLayout {
                 anchors.fill: parent
@@ -144,10 +145,12 @@ Item {
                 DexRectangle {
                     id: subTradePage
                     height: _simpleTrade.height
-                    width: _simpleTrade.best? 600 : _simpleTrade.coinSelection? 450 : 380
+                    width: _simpleTrade.best? 600 : _simpleTrade.coinSelection ? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
                     color: DexTheme.dexBoxBackgroundColor
+                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
+                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
                     sizeAnimationDuration: 250
                     sizeAnimation: true
                     ClipRRect {
@@ -163,11 +166,13 @@ Item {
             }
             Item {
                 DexRectangle {
-                    width: 380
+                    width: 420
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20
                     color: DexTheme.dexBoxBackgroundColor
+                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
+                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
                     SubOrders {
                         id: orders_view
                     }
@@ -175,11 +180,13 @@ Item {
             }
             Item {
                 DexRectangle {
-                    width: 380
+                    width: 420
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 500 
                     radius: 20
                     color: DexTheme.dexBoxBackgroundColor
+                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
+                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
                     SubHistory {
                         id: history_view
                     }

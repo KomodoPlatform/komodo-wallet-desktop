@@ -231,7 +231,7 @@ Item {
 
             anchors.fill: parent
 
-            DefaultBusyIndicator {
+            DexBusyIndicator {
                 anchors.centerIn: parent
                 running: !loader.visible
             }
@@ -286,10 +286,10 @@ Item {
             case "refunding":
                 return Style.colorOrange
             case "successful":
-                return Style.colorGreen
+                return DexTheme.greenColor
             case "failed":
             default:
-                return Style.colorRed
+                return DexTheme.redColor
         }
     }
 

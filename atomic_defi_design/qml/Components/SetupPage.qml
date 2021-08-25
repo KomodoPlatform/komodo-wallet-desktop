@@ -43,8 +43,9 @@ Item {
             background: DexRectangle {
                 color: _control.backgroundColor
                 border {
-                    color: _control.borderColor
+                    color: DexTheme.portfolioPieGradient ? 'transparent' : _control.borderColor
                 }
+                gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
             }
 
             contentChildren: Loader {

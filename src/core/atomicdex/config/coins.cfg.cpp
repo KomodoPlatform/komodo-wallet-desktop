@@ -62,6 +62,13 @@ namespace atomic_dex
             cfg.is_custom_coin = true;
         }
 
+        if (j.contains("is_segwit_on"))
+        {
+            cfg.segwit = true;
+            j.at("is_segwit_on").get_to(cfg.is_segwit_on);
+            SPDLOG_INFO("coin: {} support segwit with current_segwit mode: {}", cfg.ticker, cfg.is_segwit_on);
+        }
+
         j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {

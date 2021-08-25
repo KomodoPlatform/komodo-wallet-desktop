@@ -260,7 +260,7 @@ ColumnLayout {
                             Material.foreground: DexTheme.foregroundColor
                             background: Rectangle {
                                 radius: 0
-                                color: DexTheme.dexBoxBackgroundColor
+                                color: DexTheme.portfolioPieGradient ? "transparent" : DexTheme.dexBoxBackgroundColor
                             }
 
                             y: 5
@@ -415,32 +415,44 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 30
                     Layout.maximumHeight: 35
+                    Gradient {
+                        id: activeGradient
+                        orientation: Qt.Horizontal
+                        GradientStop {
+                            position: 0.1255
+                            color: DexTheme.buttonGradientEnabled1
+                        }
+                         GradientStop {
+                            position: 0.933
+                            color: DexTheme.buttonGradientEnabled2
+                        }
+                    }
+
+                    Gradient {
+                        id: activeRedGradient
+                        orientation: Qt.Horizontal
+                        GradientStop {
+                            position: 0.1255
+                            color: DexTheme.redColor
+                        }
+                         GradientStop {
+                            position: 0.933
+                            color: Qt.darker(DexTheme.redColor, 0.8)
+                        }
+                    }
+
                     Row {
-                        width: parent.width - 80
+                        width: parent.width - 60
+                        spacing: 10
                         anchors.centerIn: parent
                         Rectangle {
                             width: (parent.width / 2)
-                            height: 35
-                            radius: 8
+                            height: 40
+                            radius: 15
                             color: !sell_mode ? Qt.darker(
                                                     DexTheme.greenColor) : Qt.lighter(DexTheme.dexBoxBackgroundColor)
-                            border.color: !sell_mode ? DexTheme.greenColor : color
-                            Rectangle {
-                                anchors.right: parent.right
-                                color: parent.color
-                                height: parent.height
-                                width: parent.radius
-                                border.color: parent.border.color
-                                border.width: parent.border.width
-
-                                Rectangle {
-                                    anchors.left: parent.left
-                                    color: parent.color
-                                    height: parent.height - (parent.border.width * 2)
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    width: 2
-                                }
-                            }
+                            gradient: DexTheme.portfolioPieGradient && !sell_mode ? activeGradient : undefined
+                            border.color: !sell_mode ? "transparent" : DexTheme.greenColor
                             DefaultText {
                                 anchors.centerIn: parent
                                 opacity: !sell_mode ? 1 : .5
@@ -453,28 +465,15 @@ ColumnLayout {
                                 onClicked: setMarketMode(MarketMode.Buy)
                             }
                         }
+
                         Rectangle {
                             width: (parent.width / 2)
-                            height: 35
-                            radius: 8
+                            height: 40
+                            radius: 15
                             color: sell_mode ? Qt.darker(
                                                    DexTheme.redColor) : Qt.lighter(DexTheme.dexBoxBackgroundColor)
-                            border.color: sell_mode ? DexTheme.redColor : color
-                            Rectangle {
-                                anchors.left: parent.left
-                                color: parent.color
-                                height: parent.height
-                                width: parent.radius
-                                border.color: parent.border.color
-                                border.width: parent.border.width
-                                Rectangle {
-                                    anchors.right: parent.right
-                                    color: parent.color
-                                    height: parent.height - (parent.border.width * 2)
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    width: 2
-                                }
-                            }
+                            border.color: sell_mode ? "transparent" : DexTheme.redColor
+                            gradient: DexTheme.portfolioPieGradient && sell_mode ? activeRedGradient : undefined
                             DefaultText {
                                 anchors.centerIn: parent
 
@@ -562,11 +561,12 @@ ColumnLayout {
                                 spacing: 15
 
                                 // Trade button
-                                DefaultButton {
+                                DexGradientAppButton {
                                     width: parent.width - 20
                                     anchors.horizontalCenter: parent.horizontalCenter
 
-                                    button_type: sell_mode ? "danger" : "primary"
+                                    gradient: sell_mode ? activeRedGradient : activeGradient
+                                    opacity: enabled ? containsMouse ? .7: 1 : .5
 
                                     text: qsTr("Start Swap")
                                     font.weight: Font.Medium
@@ -624,7 +624,7 @@ ColumnLayout {
             property bool chart_visibility: true
             property bool option_visibility: true
             property bool orderbook_visibility: true
-            property bool best_order_visibility: true
+            property bool best_order_visibility: false
             property bool form_visibility: true
         }
 

@@ -17,7 +17,7 @@ ScrollBar {
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
 
-            color: DexTheme.backgroundDarkColor7
+            color: DexTheme.portfolioPieGradient ? DexTheme.buttonColorHovered : DexTheme.backgroundDarkColor7
         }
     }
 

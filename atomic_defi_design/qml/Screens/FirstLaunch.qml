@@ -220,7 +220,7 @@ SetupPage {
                 readonly property int row_height: 40
                 Layout.minimumHeight: row_height
                 Layout.preferredHeight: row_height * Math.min(wallets.length, 3)
-
+                color: "transparent"
                 DefaultListView {
                     id: list
                     implicitHeight: bg.Layout.preferredHeight
@@ -228,13 +228,13 @@ SetupPage {
                     model: wallets
 
                     delegate: ClipRRect {
-                        radius: 0
+                        radius: 5
                         width: bg.width
                         height: bg.row_height
-                        GradientRectangle {
+                        DexRectangle {
 
-                            start_color: Style.applyOpacity(Style.colorWalletsHighlightGradient, mouse_area.containsMouse ? "80" : "00")
-                            end_color: Style.applyOpacity(Style.colorWalletsHighlightGradient)
+                            color: "transparent"
+                            border.width: 0
 
                             anchors.fill: parent
 
@@ -247,7 +247,7 @@ SetupPage {
                                         duration: 250
                                     }
                                 }
-                                color: DexTheme.accentColor
+                                color: DexTheme.buttonColorHovered
                                 visible: mouse_area.containsMouse
                             }
                             DefaultMouseArea {
@@ -274,16 +274,6 @@ SetupPage {
                                 text_value: model.modelData
                                 anchors.verticalCenter: parent.verticalCenter
                                 font.pixelSize: Style.textSizeSmall2
-                            }
-
-                            HorizontalLine {
-                                visible: index !== wallets.length - 1
-                                width: parent.width - 4
-
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.bottom: parent.bottom
-                                anchors.bottomMargin: -height / 2
-                                light: true
                             }
                         }
                         Item {

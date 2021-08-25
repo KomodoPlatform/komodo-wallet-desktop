@@ -1916,7 +1916,8 @@
       "https://blockexplorer.one/litecoin/mainnet/"
     ],
     "type": "UTXO",
-    "name": "Litecoin"
+    "name": "Litecoin",
+    "is_segwit_on": false
   },
   "LYNX": {
     "coin": "LYNX",
