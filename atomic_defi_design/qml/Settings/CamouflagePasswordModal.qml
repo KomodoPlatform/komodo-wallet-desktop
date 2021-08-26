@@ -9,7 +9,7 @@ import App 1.0
 BasicModal {
     id: root
 
-    width: 1100
+    width: 800
 
     onClosed: {
         input_password.reset()
@@ -68,15 +68,21 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexAppButton {
                 text: qsTr("Cancel")
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 20
                 onClicked: root.close()
             },
-
-            PrimaryButton {
-                text: qsTr("Save")
+            Item {
                 Layout.fillWidth: true
+            },
+            DexAppOutlineButton {
+                text: qsTr("Save")
+                leftPadding: 40
+                rightPadding: 40
+                radius: 20
                 enabled: input_password.isValid()
                 onClicked: {
                     API.app.wallet_mgr.set_emergency_password(input_password.field.text)
