@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 //! Project Imports
+import Qaterial 1.0 as Qaterial
+
 import AtomicDEX.CoinType 1.0
 import "../Components"
 import "../Constants"
@@ -44,7 +46,7 @@ BasicModal {
     ModalContent {
         title: qsTr("Enable assets")
 
-        spacing: 10
+        spacing: 0
 
         HorizontalLine {
             Layout.fillWidth: true
@@ -55,7 +57,7 @@ BasicModal {
             id: input_coin_filter
 
             Layout.fillWidth: true
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 40
             placeholderText: qsTr("Search")
 
             onTextChanged: filterCoins()
@@ -81,7 +83,7 @@ BasicModal {
             visible: coin_cfg_model.all_disabled_proxy.length > 0
             model: coin_cfg_model.all_disabled_proxy
 
-            Layout.preferredHeight: 375
+            Layout.preferredHeight: 360
             Layout.fillWidth: true
 
             delegate: DexCheckBox {
@@ -146,9 +148,13 @@ BasicModal {
         
         RowLayout {
             Layout.fillWidth: true
+            Layout.preferredHeight: 40
 
             DexTransparentButton {
                 text: qsTr("Change assets limit")
+                topPadding: 5
+                bottomPadding: 5
+                 Layout.preferredHeight: 35
                 onClicked: {
                     setting_modal.selectedMenuIndex = 0; 
                     setting_modal.open()
@@ -159,6 +165,10 @@ BasicModal {
             }
             DexTransparentButton {
                 text: qsTr("Add a custom asset to the list")
+                topPadding: 5
+                bottomPadding: 5
+                Layout.preferredHeight: 35
+                iconSource: Qaterial.Icons.plus
                 onClicked: {
                     root.close()
                     add_custom_coin_modal.open()
