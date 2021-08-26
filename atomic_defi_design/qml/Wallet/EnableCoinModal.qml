@@ -44,7 +44,7 @@ BasicModal {
     ModalContent {
         title: qsTr("Enable assets")
 
-        spacing: 10
+        spacing: 2
 
         HorizontalLine {
             Layout.fillWidth: true
