@@ -3264,6 +3264,18 @@
       "active": false,
       "currently_enabled": false
   },
+  "NVC-QRC20": {
+      "coin": "NVC-QRC20",
+      "name": "Novacoin",
+      "coinpaprika_id": "nvc-novacoin",
+      "coingecko_id": "novacoin",
+      "explorer_url": [
+        "https://explorer.qtum.org/"
+      ],
+      "type": "QRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "OOT": {
     "coin": "OOT",
     "name": "Utrum",
@@ -3817,7 +3829,7 @@
     "coin": "XVC",
     "name": "Vanillacash",
     "coinpaprika_id": "xvc-vcash",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "vcash",
     "electrum": [
       {
         "url": "electrumx.xvc.ewmcx.org:50001",
@@ -3840,7 +3852,7 @@
     "coin": "XVC-BEP20",
     "name": "Vanillacash",
     "coinpaprika_id": "xvc-vcash",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "vcash",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -3852,6 +3864,18 @@
     "type": "BEP-20",
     "active": false,
     "currently_enabled": false
+  },
+  "XVC-QRC20": {
+      "coin": "XVC-QRC20",
+      "name": "Vanillacash",
+      "coinpaprika_id": "xvc-vcash",
+      "coingecko_id": "vcash",
+      "explorer_url": [
+        "https://explorer.qtum.org/"
+      ],
+      "type": "QRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "XVS": {
     "coin": "XVS",
