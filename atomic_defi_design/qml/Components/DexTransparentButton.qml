@@ -16,5 +16,4 @@ DexAppButton {
         underline: true,
         weight: Font.Normal
     })
-    iconSource: Qaterial.Icons.logout
 }
