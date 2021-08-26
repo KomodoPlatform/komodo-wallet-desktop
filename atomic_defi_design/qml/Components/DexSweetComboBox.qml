@@ -51,8 +51,10 @@ ComboBox {
     background: DexRectangle {
         id: _background
 
-        implicitWidth: 120
+        //implicitWidth: 120
+
         implicitHeight: 40
+        colorAnimation: false
         color: !control.enabled ? DexTheme.backgroundDarkColor0 : control.hovered ? DexTheme.backgroundDarkColor0 : DexTheme.surfaceColor
         radius: 8
     }
@@ -78,9 +80,10 @@ ComboBox {
                         anchors.topMargin: -5
                         anchors.rightMargin: -1
                         border.color: "transparent"
-                        color: DexTheme.backgroundDarkColor7
+                        color: DexTheme.backgroundColor
                     }
                 }
+
                 onTextChanged: {
                     control.model.setFilterFixedString(text)
                 }
@@ -136,18 +139,24 @@ ComboBox {
                     model: control.popup.visible ? control.model : null
                     currentIndex: control.highlightedIndex
                     anchors.fill: parent
+                    anchors.bottomMargin: 10
                     anchors.rightMargin: 2
-                    highlight: DexRectangle {}
+                    highlight: DexRectangle {
+                        radius: 0
+                    }
+                    clip: true
                     delegate: ItemDelegate {
                         width: control.width + 50
                         highlighted: control.highlightedIndex === index
+                        //foregroundColor: DexTheme.foregroundColor
                         contentItem: DefaultText {
                             text_value: ticker
                         }
 
                         background: DexRectangle {
+                            colorAnimation: false
                             radius: 0
-                            color: popup_list_view.currentIndex === index ? DexTheme.backgroundDarkColor4 : DexTheme.backgroundDarkColor6
+                            color: popup_list_view.currentIndex === index ? DexTheme.buttonColorHovered : DexTheme.comboBoxBackgroundColor
                             border.color: 'transparent'
                         }
 
@@ -166,13 +175,14 @@ ComboBox {
 
         }
 
-        background: Item {
-            DexRectangle {
-                width: parent.width
-                y: -5
-                height: parent.height
-                color: DexTheme.backgroundDarkColor6
-            }
+        background: DexRectangle {
+            y: -5
+            radius: 0
+            colorAnimation: false
+            width: parent.width
+            height: parent.height
+            color:  DexTheme.comboBoxBackgroundColor
+            border.color: DexTheme.comboBoxBorderColor
         }
     }
     DefaultMouseArea {
