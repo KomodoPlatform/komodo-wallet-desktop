@@ -208,7 +208,7 @@ namespace atomic_dex
         void                          set_preferred_order(QVariantMap price_object);
         std::optional<nlohmann::json> get_raw_preferred_order() const;
         [[nodiscard]] QVariantMap     get_fees() const;
-        void                          set_fees(QVariantMap fees);
+        void                          set_fees(const QVariantMap& fees);
         [[nodiscard]] bool            get_skip_taker() const;
         void                          set_skip_taker(bool skip_taker);
         [[nodiscard]] bool            is_preimage_busy() const;

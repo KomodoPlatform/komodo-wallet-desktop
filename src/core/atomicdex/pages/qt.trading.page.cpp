@@ -316,8 +316,8 @@ namespace atomic_dex
                 orderbook_available_quantity.toStdString());
 
             const auto base_min_vol_orderbook   = m_preferred_order->at("base_min_volume").get<std::string>();
-            t_float_50 base_min_vol_orderbook_f = safe_float(base_min_vol_orderbook);
-            if (cur_min_trade <= base_min_vol_orderbook_f)
+
+            if (t_float_50 base_min_vol_orderbook_f = safe_float(base_min_vol_orderbook); cur_min_trade <= base_min_vol_orderbook_f)
             {
                 SPDLOG_INFO("The selected order min_vol input is too low, using null field instead");
                 req.min_volume = std::optional<std::string>{std::nullopt};
@@ -860,16 +860,14 @@ namespace atomic_dex
          * cap_volume is called only in MarketMode::Buy, and in Sell mode if preferred order
          * if the current volume text field is > the new max_volume then set volume to max_volume
          */
-        if (auto std_volume = this->get_volume().toStdString(); !std_volume.empty())
+        if (auto std_volume = this->get_volume().toStdString();
+            !std_volume.empty() && safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
         {
-            if (safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
+            auto max_volume = this->get_max_volume();
+            if (!max_volume.isEmpty() && max_volume != "0")
             {
-                auto max_volume = this->get_max_volume();
-                if (!max_volume.isEmpty() && max_volume != "0")
-                {
-                    SPDLOG_INFO("capping volume because {} (volume) > {} (max_volume)", std_volume, max_volume.toStdString());
-                    this->set_volume(get_max_volume());
-                }
+                SPDLOG_INFO("capping volume because {} (volume) > {} (max_volume)", std_volume, max_volume.toStdString());
+                this->set_volume(get_max_volume());
             }
         }
     }
@@ -1113,11 +1111,11 @@ namespace atomic_dex
     }
 
     void
-    trading_page::set_fees(QVariantMap fees)
+    trading_page::set_fees(const QVariantMap& fees)
     {
         if (fees != m_fees)
         {
-            m_fees = std::move(fees);
+            m_fees = fees;
             emit feesChanged();
         }
     }
