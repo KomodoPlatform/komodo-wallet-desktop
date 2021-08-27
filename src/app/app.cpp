@@ -545,16 +545,23 @@ namespace atomic_dex
     void
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt)
     {
-        SPDLOG_DEBUG("on_ticker_balance_updated_event");
-        if (not m_event_actions[events_action::about_to_exit_app])
+        SPDLOG_DEBUG("Ticker balance is about to be updated.");
+        if (m_event_actions[events_action::about_to_exit_app])
         {
-            if (not evt.tickers.empty())
-            {
-                if (get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers))
-                {
-                    this->dispatcher_.trigger<update_portfolio_values>(false);
-                }
-            }
+            SPDLOG_DEBUG("Ticker balance not updated because app is exiting.");
+        }
+        else if (evt.tickers.empty())
+        {
+            SPDLOG_DEBUG("Ticker balance not updated because there are not tickers to update");
+        }
+        else if (get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers))
+        {
+            this->dispatcher_.trigger<update_portfolio_values>(false);
+            SPDLOG_DEBUG("Ticker balance updated.");
+        }
+        else
+        {
+            SPDLOG_ERROR("Ticker balance not updated, tickers not found in the registry: {}", fmt::join(evt.tickers, ", "));
         }
     }
 } // namespace atomic_dex
