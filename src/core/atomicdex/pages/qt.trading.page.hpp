@@ -204,7 +204,7 @@ namespace atomic_dex
         [[nodiscard]] QString         get_cex_price_reversed() const;
         [[nodiscard]] QString         get_cex_price_diff() const;
         [[nodiscard]] bool            get_invalid_cex_price() const;
-        [[nodiscard]] QVariantMap     get_preferred_order();
+        [[nodiscard]] QVariantMap     get_preferred_order() const;
         void                          set_preferred_order(QVariantMap price_object);
         std::optional<nlohmann::json> get_raw_preferred_order() const;
         [[nodiscard]] QVariantMap     get_fees() const;

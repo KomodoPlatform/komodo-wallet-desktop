@@ -593,7 +593,7 @@ namespace atomic_dex
             this->m_market_mode = market_mode;
             SPDLOG_INFO("switching market_mode, new mode: {}", m_market_mode == MarketMode::Buy ? "buy" : "sell");
             this->clear_forms("set_market_mode");
-            auto* market_selector_mdl = get_market_pairs_mdl();
+            const auto* market_selector_mdl = get_market_pairs_mdl();
             set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
             emit marketModeChanged();
             if (m_market_mode == MarketMode::Buy)
@@ -701,7 +701,7 @@ namespace atomic_dex
     void
     trading_page::set_volume(QString volume)
     {
-        if (m_volume != volume && not volume.isEmpty())
+        if (m_volume != volume && !volume.isEmpty())
         {
             if (safe_float(volume.toStdString()) < 0)
             {
@@ -747,7 +747,7 @@ namespace atomic_dex
         {
             //! In MarketMode::Sell mode max volume is just the base_max_taker_vol
             const auto max_taker_vol = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
-            if (not max_taker_vol.empty())
+            if (!max_taker_vol.empty())
             {
                 if (safe_float(max_taker_vol) <= 0)
                 {
@@ -797,7 +797,7 @@ namespace atomic_dex
         else
         {
             //! In MarketMode::Buy mode the max volume is rel_max_taker_vol / price
-            if (not m_price.isEmpty())
+            if (!m_price.isEmpty())
             {
                 t_float_50 price_f = safe_float(m_price.toStdString());
                 //! It's selected let's use rat price
@@ -806,8 +806,7 @@ namespace atomic_dex
                     const auto& rel_max_taker_json_obj = get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject();
                     const auto& denom                  = rel_max_taker_json_obj["denom"].toString().toStdString();
                     const auto& numer                  = rel_max_taker_json_obj["numer"].toString().toStdString();
-                    t_float_50  res_f                  = safe_float(rel_max_taker_json_obj["decimal"].toString().toStdString());
-                    if (res_f <= 0)
+                    if (t_float_50 res_f = safe_float(rel_max_taker_json_obj["decimal"].toString().toStdString()); res_f <= 0)
                     {
                         res_f = 0;
                         this->set_max_volume(QString::fromStdString(utils::format_float(res_f)));
@@ -861,7 +860,7 @@ namespace atomic_dex
          * cap_volume is called only in MarketMode::Buy, and in Sell mode if preferred order
          * if the current volume text field is > the new max_volume then set volume to max_volume
          */
-        if (auto std_volume = this->get_volume().toStdString(); not std_volume.empty())
+        if (auto std_volume = this->get_volume().toStdString(); !std_volume.empty())
         {
             if (safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
             {
@@ -955,12 +954,12 @@ namespace atomic_dex
     trading_page::set_pair(bool is_left_side, QString changed_ticker)
     {
         SPDLOG_INFO("Changed ticker: {}", changed_ticker.toStdString());
-        auto* const market_pair = get_market_pairs_mdl();
+        const auto* market_pair = get_market_pairs_mdl();
         auto        base        = market_pair->get_left_selected_coin();
         auto        rel         = market_pair->get_right_selected_coin();
 
         bool is_swap = false;
-        if (not changed_ticker.isEmpty())
+        if (!changed_ticker.isEmpty())
         {
             if (is_left_side)
             {
@@ -1015,7 +1014,7 @@ namespace atomic_dex
     }
 
     QVariantMap
-    trading_page::get_preferred_order()
+    trading_page::get_preferred_order() const
     {
         if (m_preferred_order.has_value())
         {
@@ -1080,7 +1079,7 @@ namespace atomic_dex
     void
     trading_page::determine_total_amount()
     {
-        if (not m_price.isEmpty() && not m_volume.isEmpty())
+        if (!m_price.isEmpty() && !m_volume.isEmpty())
         {
             this->set_total_amount(calculate_total_amount(m_price, m_volume));
             if (const std::string max_dust_str =
@@ -1282,7 +1281,7 @@ namespace atomic_dex
         const auto* market_selector = get_market_pairs_mdl();
         const auto& base            = market_selector->get_left_selected_coin();
         const auto& rel             = market_selector->get_right_selected_coin();
-        if (const auto cex_price = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString())); cex_price != m_cex_price)
+        if (auto cex_price = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString())); cex_price != m_cex_price)
         {
             m_cex_price = std::move(cex_price);
             emit cexPriceChanged();
