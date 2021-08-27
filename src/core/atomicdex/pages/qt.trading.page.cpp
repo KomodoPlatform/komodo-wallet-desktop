@@ -51,7 +51,7 @@ namespace atomic_dex
     void
     trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt)
     {
-        if (not m_about_to_exit_the_app)
+        if (!m_about_to_exit_the_app)
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
             m_models_actions[orderbook_need_a_reset] = evt.is_a_reset;
@@ -75,8 +75,7 @@ namespace atomic_dex
     void
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
-        bool is_wallet_only = m_system_manager.get_system<mm2_service>().get_coin_info(base.toStdString()).wallet_only;
-        if (is_wallet_only)
+        if (bool is_wallet_only = m_system_manager.get_system<mm2_service>().get_coin_info(base.toStdString()).wallet_only; is_wallet_only)
         {
             SPDLOG_WARN("{} is wallet only - skipping", base.toStdString());
             return;
@@ -103,7 +102,7 @@ namespace atomic_dex
     void
     trading_page::swap_market_pair()
     {
-        auto* market_selector_mdl = get_market_pairs_mdl();
+        const auto* market_selector_mdl = get_market_pairs_mdl();
         set_current_orderbook(market_selector_mdl->get_right_selected_coin(), market_selector_mdl->get_left_selected_coin());
     }
 
@@ -1089,7 +1088,7 @@ namespace atomic_dex
                         .toJsonObject()["decimal"]
                         .toString()
                         .toStdString();
-                not max_dust_str.empty())
+                !max_dust_str.empty())
             {
                 this->determine_error_cases();
             }
@@ -1150,7 +1149,7 @@ namespace atomic_dex
         SPDLOG_INFO("request: {}", preimage_request.dump(-1));
 
         this->set_preimage_busy(true);
-        auto answer_functor = [this, &mm2](web::http::http_response resp)
+        auto answer_functor = [this](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             SPDLOG_INFO("preimage answer received: {}", body);
@@ -1283,8 +1282,7 @@ namespace atomic_dex
         const auto* market_selector = get_market_pairs_mdl();
         const auto& base            = market_selector->get_left_selected_coin();
         const auto& rel             = market_selector->get_right_selected_coin();
-        const auto  cex_price       = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString()));
-        if (cex_price != m_cex_price)
+        if (const auto cex_price = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString())); cex_price != m_cex_price)
         {
             m_cex_price = std::move(cex_price);
             emit cexPriceChanged();
@@ -1309,7 +1307,7 @@ namespace atomic_dex
     QString
     trading_page::get_price_reversed() const
     {
-        if (not m_price.isEmpty() && safe_float(m_price.toStdString()) > 0)
+        if (!m_price.isEmpty() && safe_float(m_price.toStdString()) > 0)
         {
             t_float_50 reversed_price = t_float_50(1) / safe_float(m_price.toStdString());
             return QString::fromStdString(utils::format_float(reversed_price));
@@ -1321,7 +1319,7 @@ namespace atomic_dex
     QString
     trading_page::get_cex_price_reversed() const
     {
-        if (not get_invalid_cex_price())
+        if (!get_invalid_cex_price())
         {
             t_float_50 reversed_cex_price = t_float_50(1) / safe_float(m_cex_price.toStdString());
             return QString::fromStdString(utils::format_float(reversed_cex_price));
@@ -1332,8 +1330,7 @@ namespace atomic_dex
     QString
     trading_page::get_cex_price_diff() const
     {
-        bool is_invalid = get_invalid_cex_price();
-        if (is_invalid || safe_float(m_price.toStdString()) <= 0)
+        if (bool is_invalid = get_invalid_cex_price(); is_invalid || safe_float(m_price.toStdString()) <= 0)
         {
             return "0";
         }
@@ -1411,9 +1408,8 @@ namespace atomic_dex
         //! base_min_vol -> 0.0001 KMD
         //! rel_min_vol -> 10 DOGE
         const auto& min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
-        t_float_50  min_vol_f     = safe_float(min_taker_vol);
 
-        if (safe_float(min_trade_vol.toStdString()) <= min_vol_f)
+        if (t_float_50 min_vol_f = safe_float(min_taker_vol); safe_float(min_trade_vol.toStdString()) <= min_vol_f)
         {
             min_trade_vol = QString::fromStdString(min_taker_vol);
         }
@@ -1478,7 +1474,7 @@ namespace atomic_dex
     trading_page::set_preffered_settings()
     {
         QSettings&    settings            = entity_registry_.ctx<QSettings>();
-        auto*         market_selector_mdl = get_market_pairs_mdl();
+        const auto*   market_selector_mdl = get_market_pairs_mdl();
         const auto    left                = market_selector_mdl->get_left_selected_coin();
         const auto    right               = market_selector_mdl->get_right_selected_coin();
         const auto    category_settings   = left + "_" + right;
