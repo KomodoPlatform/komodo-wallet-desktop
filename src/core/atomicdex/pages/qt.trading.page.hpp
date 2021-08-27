@@ -59,7 +59,7 @@ namespace atomic_dex
         Q_PROPERTY(QString base_amount READ get_base_amount NOTIFY baseAmountChanged)
         Q_PROPERTY(QString rel_amount READ get_rel_amount NOTIFY relAmountChanged)
         Q_PROPERTY(QVariantMap fees READ get_fees WRITE set_fees NOTIFY feesChanged)
-        Q_PROPERTY(QVariantMap preffered_order READ get_preffered_order WRITE set_preffered_order NOTIFY prefferedOrderChanged)
+        Q_PROPERTY(QVariantMap preffered_order READ get_preferred_order WRITE set_preferred_order NOTIFY prefferedOrderChanged)
         Q_PROPERTY(SelectedOrderStatus selected_order_status READ get_selected_order_status WRITE set_selected_order_status NOTIFY selectedOrderStatusChanged)
         Q_PROPERTY(QString price_reversed READ get_price_reversed NOTIFY priceReversedChanged)
         Q_PROPERTY(QString cex_price READ get_cex_price NOTIFY cexPriceChanged)
@@ -119,7 +119,7 @@ namespace atomic_dex
         QString                                m_total_amount{"0"};
         QString                                m_cex_price{"0"};
         QString                                m_minimal_trading_amount{"0"};
-        std::optional<nlohmann::json>          m_preffered_order;
+        std::optional<nlohmann::json>          m_preferred_order;
         boost::synchronized_value<QVariantMap> m_fees;
         bool                                   m_skip_taker{false};
 
@@ -130,7 +130,7 @@ namespace atomic_dex
         void                       cap_volume();
         [[nodiscard]] t_float_50   get_max_balance_without_dust(std::optional<QString> trade_with = std::nullopt) const;
         [[nodiscard]] TradingError generate_fees_error(QVariantMap fees) const;
-        void                       set_preffered_settings();
+        void                       set_preferred_settings();
         QString                    calculate_total_amount(QString price, QString volume) const;
 
       public:
@@ -204,9 +204,9 @@ namespace atomic_dex
         [[nodiscard]] QString         get_cex_price_reversed() const;
         [[nodiscard]] QString         get_cex_price_diff() const;
         [[nodiscard]] bool            get_invalid_cex_price() const;
-        [[nodiscard]] QVariantMap     get_preffered_order();
-        void                          set_preffered_order(QVariantMap price_object);
-        std::optional<nlohmann::json> get_raw_preffered_order() const;
+        [[nodiscard]] QVariantMap     get_preferred_order();
+        void                          set_preferred_order(QVariantMap price_object);
+        std::optional<nlohmann::json> get_raw_preferred_order() const;
         [[nodiscard]] QVariantMap     get_fees() const;
         void                          set_fees(QVariantMap fees);
         [[nodiscard]] bool            get_skip_taker() const;
