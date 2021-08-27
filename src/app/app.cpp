@@ -779,8 +779,6 @@ namespace atomic_dex
 
         if (appimage == nullptr || not QString(appimage).contains(DEX_PROJECT_NAME))
         {
-            // qDebug() << qApp->arguments();
-            // SPDLOG_INFO("arg: {}, dir path: {}", qApp->arguments()[0].toStdString(), qApp->applicationDirPath().toStdString());
             bool res = QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
             if (!res)
             {
