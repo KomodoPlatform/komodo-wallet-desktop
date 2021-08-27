@@ -494,7 +494,12 @@ namespace atomic_dex
                     else
                     {
                         const auto base_max_taker_vol = safe_float(wrapper->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
-                        const auto rel_max_taker_vol  = safe_float(wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                        auto rel_max_taker = wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
+                        if (rel_max_taker.empty())
+                        {
+                            rel_max_taker = "0";
+                        }
+                        const auto rel_max_taker_vol  = safe_float(rel_max_taker);
                         t_float_50 min_vol            = safe_float(m_minimal_trading_amount.toStdString());
                         auto       adjust_functor     = [this, wrapper]()
                         {
@@ -1387,6 +1392,10 @@ namespace atomic_dex
                     .toString()
                     .toStdString();
             // assert(not max_dust_str.empty());
+            if (max_dust_str.empty())
+            {
+                return t_float_50(0);
+            }
             t_float_50 max_balance_without_dust = safe_float(max_dust_str);
             return max_balance_without_dust;
         }
