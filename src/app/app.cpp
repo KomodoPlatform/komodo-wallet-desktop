@@ -650,7 +650,7 @@ namespace atomic_dex
     trading_page*
     application::get_trading_page() const
     {
-        trading_page* ptr = const_cast<trading_page*>(std::addressof(system_manager_.get_system<trading_page>()));
+        auto ptr = const_cast<trading_page*>(std::addressof(system_manager_.get_system<trading_page>()));
         assert(ptr != nullptr);
         return ptr;
     }
