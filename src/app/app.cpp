@@ -443,7 +443,6 @@ namespace atomic_dex
 
         //! Mark systems
         system_manager_.mark_system<mm2_service>();
-        // system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<coingecko_provider>();
 
         //! Disconnect signals
