@@ -454,7 +454,6 @@ namespace atomic_dex
         dispatcher_.sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
         dispatcher_.sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
         dispatcher_.sink<process_swaps_and_orders_finished>().disconnect<&application::on_process_orders_and_swaps_finished_event>(*this);
-        // dispatcher_.sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
         m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
 
