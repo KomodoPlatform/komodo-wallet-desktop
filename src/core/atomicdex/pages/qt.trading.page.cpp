@@ -130,14 +130,13 @@ namespace atomic_dex
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
 
-        auto&       mm2_system                   = m_system_manager.get_system<mm2_service>();
-        const auto* market_selector              = get_market_pairs_mdl();
-        const auto& base                         = market_selector->get_left_selected_coin();
-        const auto& rel                          = market_selector->get_right_selected_coin();
-        const bool  is_selected_order            = m_preferred_order.has_value();
-        const bool  is_max                       = m_max_volume == m_volume;
-        QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preferred_order->at("base_max_volume").get<std::string>()) : "";
-        const bool  is_selected_min_max =
+        auto&       mm2_system        = m_system_manager.get_system<mm2_service>();
+        const auto* market_selector   = get_market_pairs_mdl();
+        const auto& base              = market_selector->get_left_selected_coin();
+        const auto& rel               = market_selector->get_right_selected_coin();
+        const bool  is_selected_order = m_preferred_order.has_value();
+        const bool  is_max            = m_max_volume == m_volume;
+        const bool is_selected_min_max =
             is_selected_order && m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>();
         const bool is_selected_max  = is_selected_order && is_max;
         t_float_50 rel_min_trade    = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
@@ -203,10 +202,10 @@ namespace atomic_dex
 
         //! Answer
         SPDLOG_INFO("buy_request is : {}", buy_request.dump(4));
-        auto answer_functor = [this](web::http::http_response resp)
+        auto answer_functor = [this](const web::http::http_response& resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
-            if (resp.status_code() == 200)
+            if (resp.status_code() == web::http::status_codes::OK)
             {
                 if (body.find("error") == std::string::npos)
                 {
@@ -247,7 +246,7 @@ namespace atomic_dex
                     catch (const std::exception& e)
                     {
                         SPDLOG_ERROR("pplx task error: {}", e.what());
-                        auto error_json = QJsonObject({{"error_code", 500}, {"error_message", e.what()}});
+                        auto error_json = QJsonObject({{"error_code", web::http::status_codes::InternalError}, {"error_message", e.what()}});
                         this->set_buy_sell_last_rpc_data(error_json);
                         this->set_buy_sell_rpc_busy(false);
                         this->clear_forms("place_buy_order");
@@ -269,8 +268,7 @@ namespace atomic_dex
         const bool  is_max                       = m_max_volume == m_volume;
         QString     orderbook_available_quantity = is_selected_order ? QString::fromStdString(m_preferred_order->at("base_max_volume").get<std::string>()) : "";
         const bool  is_selected_min_max =
-            is_selected_order ? m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>()
-                               : false;
+            is_selected_order && m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>();
         const bool is_selected_max = is_selected_order && m_volume.toStdString() == utils::extract_large_float(orderbook_available_quantity.toStdString());
         t_float_50 base_min_trade  = safe_float(get_orderbook_wrapper()->get_base_min_taker_vol().toStdString());
         t_float_50 cur_min_trade   = safe_float(get_min_trade_vol().toStdString());
@@ -315,7 +313,7 @@ namespace atomic_dex
                 "The order is a selected order, treating it, input_vol: {} orderbook_max_vol {}", m_volume.toStdString(),
                 orderbook_available_quantity.toStdString());
 
-            const auto base_min_vol_orderbook   = m_preferred_order->at("base_min_volume").get<std::string>();
+            const auto base_min_vol_orderbook = m_preferred_order->at("base_min_volume").get<std::string>();
 
             if (t_float_50 base_min_vol_orderbook_f = safe_float(base_min_vol_orderbook); cur_min_trade <= base_min_vol_orderbook_f)
             {
@@ -437,7 +435,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::clear_models()
+    trading_page::clear_models() const
     {
         get_market_pairs_mdl()->reset();
     }
@@ -569,7 +567,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::set_buy_sell_last_rpc_data(QVariant rpc_data)
+    trading_page::set_buy_sell_last_rpc_data(const QVariant& rpc_data)
     {
         m_rpc_buy_sell_result = rpc_data.toJsonObject();
         emit buySellLastRpcDataChanged();
@@ -813,8 +811,8 @@ namespace atomic_dex
                     }
                     else
                     {
-                        std::string rel_max_vol  = m_preferred_order->at("rel_max_volume").get<std::string>();
-                        std::string base_max_vol = m_preferred_order->at("base_max_volume").get<std::string>();
+                        auto rel_max_vol  = m_preferred_order->at("rel_max_volume").get<std::string>();
+                        auto base_max_vol = m_preferred_order->at("base_max_volume").get<std::string>();
                         if (res_f >= safe_float(rel_max_vol))
                         {
                             this->set_max_volume(QString::fromStdString(utils::extract_large_float(base_max_vol)));
@@ -949,7 +947,7 @@ namespace atomic_dex
     }
 
     bool
-    trading_page::set_pair(bool is_left_side, QString changed_ticker)
+    trading_page::set_pair(bool is_left_side, const QString& changed_ticker)
     {
         SPDLOG_INFO("Changed ticker: {}", changed_ticker.toStdString());
         const auto* market_pair = get_market_pairs_mdl();
@@ -1019,11 +1017,11 @@ namespace atomic_dex
             return nlohmann_json_object_to_qt_json_object(m_preferred_order.value()).toVariantMap();
         }
 
-        return QVariantMap();
+        return {};
     }
 
     void
-    trading_page::set_preferred_order(QVariantMap price_object)
+    trading_page::set_preferred_order(const QVariantMap& price_object)
     {
         if (auto preferred_order = nlohmann::json::parse(QString(QJsonDocument(QJsonObject::fromVariantMap(price_object)).toJson()).toStdString());
             preferred_order != m_preferred_order)
@@ -1150,7 +1148,7 @@ namespace atomic_dex
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             SPDLOG_INFO("preimage answer received: {}", body);
-            if (resp.status_code() == 200)
+            if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
@@ -1215,8 +1213,7 @@ namespace atomic_dex
         const auto        right_cfg                = mm2.get_coin_info(right);
         const bool        has_preferred_order      = m_preferred_order.has_value();
         const bool        is_selected_min_max =
-            has_preferred_order ? m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>()
-                                       : false;
+            has_preferred_order && m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>();
         if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
         {
             const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
@@ -1339,7 +1336,7 @@ namespace atomic_dex
     }
 
     t_float_50
-    trading_page::get_max_balance_without_dust(std::optional<QString> trade_with) const
+    trading_page::get_max_balance_without_dust(const std::optional<QString>& trade_with) const
     {
         if (!trade_with.has_value())
         {
@@ -1459,7 +1456,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
-    trading_page::calculate_total_amount(QString price, QString volume) const
+    trading_page::calculate_total_amount(QString price, QString volume)
     {
         t_float_50 price_f(safe_float(price.toStdString()));
         t_float_50 volume_f(safe_float(volume.toStdString()));
@@ -1470,7 +1467,7 @@ namespace atomic_dex
     void
     trading_page::set_preferred_settings()
     {
-        QSettings&    settings            = entity_registry_.ctx<QSettings>();
+        auto&         settings            = entity_registry_.ctx<QSettings>();
         const auto*   market_selector_mdl = get_market_pairs_mdl();
         const auto    left                = market_selector_mdl->get_left_selected_coin();
         const auto    right               = market_selector_mdl->get_right_selected_coin();

@@ -101,7 +101,7 @@ namespace atomic_dex
         ag::ecs::system_manager& m_system_manager;
         std::atomic_bool&        m_about_to_exit_the_app;
         t_models                 m_models;
-        t_models_actions         m_models_actions;
+        t_models_actions         m_models_actions{};
         t_actions_queue          m_actions_queue{g_max_actions_size};
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_rpc_preimage_busy{false};
@@ -128,10 +128,10 @@ namespace atomic_dex
         void                       determine_total_amount();
         void                       determine_cex_rates();
         void                       cap_volume();
-        [[nodiscard]] t_float_50   get_max_balance_without_dust(std::optional<QString> trade_with = std::nullopt) const;
+        [[nodiscard]] t_float_50   get_max_balance_without_dust(const std::optional<QString>& trade_with = std::nullopt) const;
         [[nodiscard]] TradingError generate_fees_error(QVariantMap fees) const;
         void                       set_preferred_settings();
-        QString                    calculate_total_amount(QString price, QString volume) const;
+        static QString                    calculate_total_amount(QString price, QString volume) ;
 
       public:
         //! Constructor
@@ -147,7 +147,7 @@ namespace atomic_dex
         void process_action();
         void connect_signals();
         void disconnect_signals();
-        void clear_models();
+        void clear_models() const;
         void disable_coins(const QStringList& coins);
 
         //! Public QML API
@@ -158,7 +158,7 @@ namespace atomic_dex
 
         //! Trading business
         Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)
-        Q_INVOKABLE bool set_pair(bool is_left_side, QString changed_ticker);
+        Q_INVOKABLE bool set_pair(bool is_left_side, const QString& changed_ticker);
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
         Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
@@ -205,7 +205,7 @@ namespace atomic_dex
         [[nodiscard]] QString         get_cex_price_diff() const;
         [[nodiscard]] bool            get_invalid_cex_price() const;
         [[nodiscard]] QVariantMap     get_preferred_order() const;
-        void                          set_preferred_order(QVariantMap price_object);
+        void                          set_preferred_order(const QVariantMap& price_object);
         std::optional<nlohmann::json> get_raw_preferred_order() const;
         [[nodiscard]] QVariantMap     get_fees() const;
         void                          set_fees(const QVariantMap& fees);
@@ -214,7 +214,7 @@ namespace atomic_dex
         [[nodiscard]] bool            is_preimage_busy() const;
         void                          set_preimage_busy(bool status);
         [[nodiscard]] QVariant        get_buy_sell_last_rpc_data() const;
-        void                          set_buy_sell_last_rpc_data(QVariant rpc_data);
+        void                          set_buy_sell_last_rpc_data(const QVariant& rpc_data);
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt);
