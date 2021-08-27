@@ -1029,7 +1029,7 @@ namespace atomic_dex
             SPDLOG_INFO("preferred_order: {}", preferred_order.dump(-1));
             m_preferred_order = std::move(preferred_order);
             emit prefferedOrderChanged();
-            if (not m_preferred_order->empty() && m_preferred_order->contains("price"))
+            if (!m_preferred_order->empty() && m_preferred_order->contains("price"))
             {
                 m_preferred_order->operator[]("capped") = false;
                 this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preferred_order->at("price").get<std::string>()))));
