@@ -5,8 +5,9 @@ import Qt.labs.platform 1.1
 
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 import "../../.."
 
 Item {
@@ -15,8 +16,10 @@ Item {
     readonly property date default_min_date: new Date("2019-01-01")
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
 
-    property var list_model: API.app.orders_mdl
-    property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
+    property
+    var list_model: API.app.orders_mdl
+    property
+    var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property int page_index
 
     property alias title: order_list.title
@@ -25,19 +28,35 @@ Item {
 
     property bool is_history: false
 
-    property string recover_funds_result: '{}'
+    function update() {
+        reset()
+        if (combo_base.currentTicker !== "All" | combo_rel.currentTicker !== "All") {
+            buttonDelay.start()
+        }
+    }
 
-    function onRecoverFunds(order_id) {
-        const result = API.app.recover_fund(order_id)
-        console.log("Refund result: ", result)
-        recover_funds_result = result
-        recover_funds_modal.open()
+    function reset() {
+        list_model_proxy.is_history = !is_history
+        applyFilter()
+        list_model_proxy.apply_all_filtering()
+        list_model_proxy.is_history = is_history
+    }
+
+    Component.onDestruction: reset()
+
+    Timer {
+        id: buttonDelay
+        interval: 200
+        onTriggered: {
+            applyFilter()
+            list_model_proxy.apply_all_filtering()
+        }
     }
 
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = min_date.date
 
-        if(max_date.date < min_date.date)
+        if (max_date.date < min_date.date)
             max_date.date = min_date.date
 
         list_model_proxy.filter_maximum_date = max_date.date
@@ -46,6 +65,7 @@ Item {
     function applyTickerFilter() {
         list_model_proxy.set_coin_filter(combo_base.currentValue + "/" + combo_rel.currentValue)
     }
+
     function applyTickerFilter2(ticker1, ticker2) {
         list_model_proxy.set_coin_filter(ticker1 + "/" + ticker2)
     }
@@ -65,7 +85,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
 
         anchors.fill: parent
-        anchors.bottomMargin: is_history? 0 : 10
+        anchors.bottomMargin: is_history ? 0 : 10
         spacing: 15
 
         // Bottom part
@@ -73,7 +93,7 @@ Item {
             id: orders_settings
             property bool displaySetting: false
             Layout.fillWidth: true
-            Layout.preferredHeight: displaySetting? 80 : 30
+            Layout.preferredHeight: displaySetting ? 80 : 30
             Behavior on Layout.preferredHeight {
                 NumberAnimation {
                     duration: 150
@@ -82,7 +102,7 @@ Item {
 
             Rectangle {
                 width: parent.width
-                height: orders_settings.displaySetting? 50 : 10
+                height: orders_settings.displaySetting ? 50 : 10
                 Behavior on height {
                     NumberAnimation {
                         duration: 150
@@ -97,18 +117,31 @@ Item {
             Row {
                 x: 5
                 y: 0
-                spacing: 0
+                spacing: 5
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.filter
-                    text: "Filter"
-                    foregroundColor:Style.colorWhite5
+                    text: qsTr("Filter")
+                    foregroundColor: Style.colorWhite5
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
+
+                DexLabel {
+                    opacity: .4
+                    visible: !orders_settings.displaySetting
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
+                        .arg(combo_base.currentTicker)
+                        .arg(combo_rel.currentTicker)
+                        .arg(qsTr("Date"))
+                        .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                        .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
+                }
+
                 Qaterial.OutlineButton {
                     visible: root.is_history && orders_settings.displaySetting
-                    foregroundColor:Style.colorWhite5
+                    foregroundColor: Style.colorWhite5
                     outlinedColor: Style.colorTheme5
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Export CSV")
@@ -118,18 +151,18 @@ Item {
                         export_csv_dialog.open()
                     }
                 }
-
             }
+
             Row {
                 anchors.right: parent.right
                 y: 0
                 rightPadding: 5
                 Qaterial.OutlineButton {
-                    visible: root.is_history
+                    visible: root.is_history & orders_settings.displaySetting
                     Layout.leftMargin: 30
                     text: qsTr("Apply Filter")
-                    foregroundColor: enabled? Style.colorGreen2 : Style.colorTheme5
-                    outlinedColor: enabled? Style.colorGreen2 : Style.colorTheme5
+                    foregroundColor: enabled ? Style.colorGreen2 : Style.colorTheme5
+                    outlinedColor: enabled ? Style.colorGreen2 : Style.colorTheme5
                     enabled: list_model_proxy.can_i_apply_filtering
                     onClicked: list_model_proxy.apply_all_filtering()
                     anchors.verticalCenter: parent.verticalCenter
@@ -137,7 +170,7 @@ Item {
                 Qaterial.OutlineButton {
                     icon.source: Qaterial.Icons.close
                     text: "Cancel All"
-                    visible: !is_history && API.app.orders_mdl.length>0
+                    visible: !is_history && API.app.orders_mdl.length > 0
                     foregroundColor: Qaterial.Colors.pink
                     anchors.verticalCenter: parent.verticalCenter
                     outlinedColor: Style.colorTheme5
@@ -145,8 +178,8 @@ Item {
                 }
             }
             RowLayout {
-                visible: orders_settings.height>75
-                width: parent.width-20
+                visible: orders_settings.height > 75
+                width: parent.width - 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -15
@@ -155,7 +188,7 @@ Item {
                     id: combo_base
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     onCurrentTickerChanged: applyFilter()
-                    width: 150
+                    Layout.fillWidth: true
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
@@ -177,27 +210,25 @@ Item {
 
                 DefaultSweetComboBox {
                     id: combo_rel
-                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy //combo_base.model
                     onCurrentTickerChanged: applyFilter()
-                    width: 150
+                    Layout.fillWidth: true
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
-
                 }
-                Item {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
-
                 Qaterial.TextFieldDatePicker {
                     id: min_date
                     title: qsTr("From")
                     from: default_min_date
                     to: default_max_date
                     date: default_min_date
+                    font.pixelSize: 13
+                    opacity: .8
+                    color: DexTheme.foregroundColor
+                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
-                    Layout.preferredWidth: 130
+                    Layout.fillWidth: true
                 }
 
                 Qaterial.TextFieldDatePicker {
@@ -207,8 +238,12 @@ Item {
                     from: min_date.date
                     to: default_max_date
                     date: default_max_date
+                    font.pixelSize: 13
+                    opacity: .8
+                    color: DexTheme.foregroundColor
+                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
-                    Layout.preferredWidth: 130
+                    Layout.fillWidth: true
                 }
             }
         }
@@ -238,13 +273,13 @@ Item {
         id: export_csv_dialog
 
         title: qsTr("Please choose the CSV export name and location")
-        fileMode: FileDialog.OpenFile
+        fileMode: FileDialog.SaveFile
 
         defaultSuffix: "csv"
-        nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
+        nameFilters: ["CSV files (*.csv)", "All files (*)"]
 
         onAccepted: {
-            const path = fileUrl.toString()
+            const path = currentFile.toString()
 
             // Export
             console.log("Exporting to CSV: " + path)
@@ -258,14 +293,4 @@ Item {
             console.log("CSV export cancelled")
         }
     }
-    ModalLoader {
-        id: recover_funds_modal
-        sourceComponent: LogModal {
-            header: qsTr("Recover Funds Result")
-            field.text: General.prettifyJSON(recover_funds_result)
-
-            onClosed: recover_funds_result = "{}"
-        }
-    }
 }
-

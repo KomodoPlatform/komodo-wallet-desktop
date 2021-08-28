@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 
 Popup {
     id: root
@@ -29,5 +30,5 @@ Popup {
         to: 1
     }
 
-    background: FloatingBackground { }
+    background: DexRectangle { }
 }

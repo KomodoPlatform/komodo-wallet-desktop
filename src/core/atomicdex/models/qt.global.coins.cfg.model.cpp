@@ -39,7 +39,10 @@ namespace
             {"tx_uri", QString::fromStdString(coin.tx_uri)},
             {"address_uri", QString::fromStdString(coin.address_url)},
             {"is_custom_coin", coin.is_custom_coin},
-            {"is_enabled", coin.currently_enabled}};
+            {"is_enabled", coin.currently_enabled},
+            {"has_parent_fees_ticker", coin.has_parent_fees_ticker},
+            {"is_testnet", coin.is_testnet.value_or(false)},
+            {"fees_ticker", QString::fromStdString(coin.fees_ticker)}};
         return j;
     }
 } // namespace
@@ -300,6 +303,12 @@ namespace atomic_dex
     }
 
     global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_bep20_proxy() const
+    {
+        return m_proxies[CoinType::BEP20];
+    }
+
+    global_coins_cfg_proxy_model*
     global_coins_cfg_model::get_all_smartchains_proxy() const 
     {
         return m_proxies[CoinType::SmartChain];
@@ -362,5 +371,12 @@ namespace atomic_dex
     global_coins_cfg_model::get_enabled_coins() const 
     {
         return m_enabled_coins;
+    }
+
+    QString
+    global_coins_cfg_model::get_parent_coin(const QString& ticker) const
+    {
+        auto cfg = get_coin_info(ticker.toStdString());
+        return QString::fromStdString(cfg.fees_ticker);
     }
 } // namespace atomic_dex

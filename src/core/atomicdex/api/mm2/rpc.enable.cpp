@@ -33,16 +33,18 @@ namespace mm2::api
         {
         case CoinType::ERC20:
         {
-            j["gas_station_url"]       = cfg.gas_station_url;
-            j["urls"]                  = cfg.urls;
-            j["swap_contract_address"] = cfg.is_testnet ? cfg.erc_testnet_swap_contract_address : cfg.erc_swap_contract_address;
+            j["gas_station_url"]        = cfg.gas_station_url;
+            j["urls"]                   = cfg.urls;
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.erc_testnet_swap_contract_address : cfg.erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.erc_testnet_fallback_swap_contract_address : cfg.erc_fallback_swap_contract_address;
             break;
         }
         break;
         case CoinType::BEP20:
         {
-            j["swap_contract_address"] = cfg.is_testnet ? cfg.bnb_testnet_swap_contract_address : cfg.bnb_swap_contract_address;
-            j["urls"]                  = cfg.urls;
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.bnb_testnet_swap_contract_address : cfg.bnb_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.bnb_testnet_fallback_swap_contract_address : cfg.bnb_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
             break;
         }
         default:

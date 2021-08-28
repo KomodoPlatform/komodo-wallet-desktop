@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -135,7 +136,7 @@ BasicModal {
                 DefaultText {
                     Layout.leftMargin: 5
                     Layout.preferredWidth: 100
-                    text: "atomicDex"
+                    text: API.app_name
                     font.pixelSize: Style.textSizeSmall5
                 }
 
@@ -220,16 +221,16 @@ BasicModal {
             Component.onDestruction: portfolio_model.portfolio_proxy_mdl.setFilterFixedString("")
         }
 
-        DefaultListView {
+        DexListView {
             id: coins_list
 
             visible: false
             enabled: false
 
             Layout.fillWidth: true
-            Layout.preferredHeight: 600
+            Layout.fillHeight: true
             model: portfolio_mdl.portfolio_proxy_mdl
-
+            
             delegate: DefaultRectangle {
                 height: seed_container.height
                 width: seed_container.width

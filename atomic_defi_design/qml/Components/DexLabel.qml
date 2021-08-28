@@ -1,29 +1,30 @@
 import QtQuick 2.15
-import "../Constants"
+import "../Constants" as Constants
+import App 1.0
 
 Text {
     property string text_value
     property bool privacy: false
 
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
-    font: try {
-              theme.textType.body1
-          }catch(e) {
-              Qt.font({
-                  pixelSize: 14,
-                  letterSpacing: 0.25,
-                  weight: Font.Normal
-              })
-          }
+    font: Qt.font({
+        pixelSize: 13,
+        letterSpacing: 0.25,
+        weight: Font.Normal
+    })
 
     color: try {
-            theme.foregroundColor?? "white"
-        } catch(e) {
-            "white"
-        }
+        DexTheme.foregroundColor ?? "white"
+    } catch (e) {
+        "white"
+    }
 
-    text: privacy && General.privacy_mode ? General.privacy_text : text_value
+    text: privacy && Constants.General.privacy_mode ? Constants.General.privacy_text : text_value
     wrapMode: Text.WordWrap
 
     onLinkActivated: Qt.openUrlExternally(link)

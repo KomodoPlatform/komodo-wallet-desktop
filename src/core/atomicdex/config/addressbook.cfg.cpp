@@ -13,42 +13,44 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
- 
-//! STD
-#include <fstream> //> std::fstream, std::ifstream, std::ofstream.
+
+//! Qt
+#include <QFile>
 
 //! Project Headers
 #include "addressbook.cfg.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex
 {
     nlohmann::json load_addressbook_cfg(const std::string& wallet_name)
     {
-        const fs::path       source_folder{utils::get_atomic_dex_addressbook_folder()};
-        const fs::path       in_path      {source_folder / wallet_name};
-        std::fstream   input;
+        const fs::path source_folder{utils::get_atomic_dex_addressbook_folder()};
+        const fs::path in_path      {source_folder / wallet_name};
+        QFile          ifs;
+        QString        content;
         nlohmann::json out;
         
         utils::create_if_doesnt_exist(source_folder);
         {
-            //! Creates file if it does not exist.
-            if (!std::ifstream(in_path.string()))
-            {
-                input.open(in_path.string(), std::ios::out);
-                assert(input.is_open());
-                input.close();
-                assert(!input.is_open());
-            }
-            input.open(in_path.string(), std::ios::in);
-            assert(input.is_open());
+            ifs.setFileName(std_path_to_qstring(in_path));
             try
             {
-                input >> out;
+                ifs.open(QIODevice::ReadOnly | QIODevice::Text);
+                content = ifs.readAll();
+                ifs.close();
+                out = nlohmann::json::parse(content.toStdString());
+                SPDLOG_INFO("Addressbook configuration file read.");
             }
             catch ([[maybe_unused]] nlohmann::json::parse_error& ex)
             {
-                //spdlog::warn("Addressbook config file was invalid, its content will be cleaned.");
+                SPDLOG_WARN("Addressbook config file was invalid, use empty configuration: {}. Content was: {}", ex.what(), content.toStdString());
+                out = nlohmann::json::array();
+            }
+            catch (std::exception& ex)
+            {
+                SPDLOG_ERROR(ex.what());
                 out = nlohmann::json::array();
             }
             return out;
@@ -59,13 +61,21 @@ namespace atomic_dex
     {
         const fs::path      out_folder{utils::get_atomic_dex_addressbook_folder()};
         const fs::path      out_path  {out_folder / wallet_name};
-        std::ofstream output;
-        
-        utils::create_if_doesnt_exist(out_path);
+        QFile output;
+
+        utils::create_if_doesnt_exist(out_folder);
         {
-            output.open(out_path.string(), std::ios::trunc);
-            assert(output.is_open());
-            output << in;
+            output.setFileName(std_path_to_qstring(out_path));
+            try
+            {
+                output.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+                output.write(QString::fromStdString(in.dump()).toUtf8());
+                SPDLOG_INFO("Addressbook data successfully wrote in persistent data !");
+            }
+            catch (std::exception& ex)
+            {
+                SPDLOG_ERROR(ex.what());
+            }
         }
     }
 }

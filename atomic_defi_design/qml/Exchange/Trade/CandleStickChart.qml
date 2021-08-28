@@ -6,16 +6,17 @@ import QtCharts 2.3
 import QtWebEngine 1.8
 
 import "../../Components"
-import "../../Constants"
+
+import App 1.0
 
 // List
 
-InnerBackground {
+DexBox {
     id: graph_bg
-
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
+
 
     content: Item {
         id: root
@@ -44,6 +45,9 @@ InnerBackground {
 
         DefaultText {
             visible: !pair_supported
+            onVisibleChanged: if(visible) {
+                dex_chart.visible = false
+            }
             text_value: qsTr("There is no chart data for this pair yet")
             anchors.centerIn: parent
         }
@@ -57,7 +61,7 @@ InnerBackground {
             }
         }
 
-        readonly property string theme: app.globalTheme.chartTheme
+        readonly property string theme: DexTheme.chartTheme
         onThemeChanged:  try{loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin, true)}catch(e){}
 
         property string chart_base

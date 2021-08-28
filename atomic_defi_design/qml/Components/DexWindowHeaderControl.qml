@@ -4,12 +4,12 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
 
-import "../Constants"
+import App 1.0
 
 RowLayout {
-    width: 195
+    width: 120
     anchors.right: parent.right
-    height: 40
+    height: 30
     spacing: 0
     anchors.top: parent.top
     anchors.topMargin: 0
@@ -20,7 +20,9 @@ RowLayout {
         bottomInset: 0
         radius: 0
         opacity: .7
-        foregroundColor: app.globalTheme.foregroundColor
+        Layout.preferredWidth: 40
+        Layout.fillHeight: true
+        foregroundColor: DexTheme.foregroundColor
         icon.source: Qaterial.Icons.windowMinimize
         onClicked: window.showMinimized()
 
@@ -32,16 +34,18 @@ RowLayout {
         bottomInset: 0
         radius: 0
         opacity: .7
-        foregroundColor: app.globalTheme.foregroundColor
+        Layout.preferredWidth: 40
+        Layout.fillHeight: true
+        foregroundColor: DexTheme.foregroundColor
         onClicked: {
-            if(window.visibility==ApplicationWindow.Maximized){
+            if (window.visibility == ApplicationWindow.Maximized) {
                 showNormal()
-            }else {
+            } else {
                 showMaximized()
             }
         }
 
-        icon.source: window.visibility===ApplicationWindow.Maximized? Qaterial.Icons.dockWindow : Qaterial.Icons.windowMaximize
+        icon.source: window.visibility === ApplicationWindow.Maximized ? Qaterial.Icons.dockWindow : Qaterial.Icons.windowMaximize
     }
     Qaterial.FlatButton {
         topInset: 0
@@ -51,7 +55,9 @@ RowLayout {
         radius: 0
         opacity: .7
         accentRipple: Qaterial.Colors.red
-        foregroundColor: app.globalTheme.foregroundColor
+        Layout.preferredWidth: 40
+        Layout.fillHeight: true
+        foregroundColor: DexTheme.foregroundColor
         icon.source: Qaterial.Icons.windowClose
         onClicked: Qt.quit()
     }

@@ -23,11 +23,15 @@
 //! Project
 #include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/models/qt.orders.proxy.model.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
-    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent) {}
+    orders_proxy_model::orders_proxy_model(QObject* parent, ag::ecs::system_manager& system_manager) :
+        QSortFilterProxyModel(parent), m_system_manager(system_manager)
+    {
+    }
 
     bool
     orders_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -88,25 +92,27 @@ namespace atomic_dex
     }
 
     bool
-    orders_proxy_model::am_i_in_history() const 
+    orders_proxy_model::am_i_in_history() const
     {
         return m_is_history;
     }
 
     void
-    orders_proxy_model::set_is_history(bool is_history) 
+    orders_proxy_model::set_is_history(bool is_history)
     {
         if (this->m_is_history != is_history)
         {
             this->m_is_history = is_history;
             emit isHistoryChanged();
             this->invalidate();
-            if (m_is_history == true)
+            if (m_is_history)
             {
+                SPDLOG_INFO("history mode enabled");
                 qobject_cast<orders_model*>(this->sourceModel())->set_current_page(1);
             }
             else
             {
+                SPDLOG_INFO("order mode enabled");
                 emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
             }
         }
@@ -120,9 +126,12 @@ namespace atomic_dex
         {
             return false;
         }
-        auto data      = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
-        auto timestamp = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
-        auto date      = QDateTime::fromMSecsSinceEpoch(timestamp).date();
+        auto       data           = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        const bool is_swap        = this->sourceModel()->data(idx, orders_model::OrdersRoles::IsSwapRole).toBool();
+        const bool is_maker       = this->sourceModel()->data(idx, orders_model::OrdersRoles::IsMakerRole).toBool();
+        auto       timestamp      = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
+        auto       date           = QDateTime::fromMSecsSinceEpoch(timestamp).date();
+        const bool is_simple_view = m_system_manager.get_system<trading_page>().get_current_trading_mode() == TradingModeGadget::Simple;
 
         if (not this->m_is_history && not date_in_range(date))
         {
@@ -144,6 +153,11 @@ namespace atomic_dex
             {
                 return false;
             }
+        }
+
+        if (!this->m_is_history && is_maker && !is_swap && is_simple_view)
+        {
+            return false;
         }
 
         if (not this->m_is_history && this->filterRole() == orders_model::OrdersRoles::TickerPairRole)
@@ -230,7 +244,7 @@ namespace atomic_dex
     }
 
     QStringList
-    orders_proxy_model::get_filtered_ids() const 
+    orders_proxy_model::get_filtered_ids() const
     {
         QStringList out;
         int         nb_items = this->rowCount();
@@ -253,9 +267,9 @@ namespace atomic_dex
         {
             this->set_apply_filtering(true);
         }
-        //else
+        // else
         //{
-            //emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+        // emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
         //}
     }
 
@@ -296,11 +310,17 @@ namespace atomic_dex
         auto* model        = qobject_cast<orders_model*>(this->sourceModel());
         auto  filter_infos = model->get_filtering_infos();
 
-        std::size_t from_timestamp  = m_min_date.startOfDay().toSecsSinceEpoch();
-        filter_infos.from_timestamp = from_timestamp;
+        if (m_min_date.isValid() && !m_min_date.isNull())
+        {
+            std::size_t from_timestamp  = m_min_date.startOfDay().toSecsSinceEpoch();
+            filter_infos.from_timestamp = from_timestamp;
+        }
 
-        std::size_t to_timestamp  = m_max_date.startOfDay().toSecsSinceEpoch();
-        filter_infos.to_timestamp = to_timestamp;
+        if (m_max_date.isValid() && !m_max_date.isNull())
+        {
+            std::size_t to_timestamp  = m_max_date.startOfDay().toSecsSinceEpoch();
+            filter_infos.to_timestamp = to_timestamp;
+        }
 
         const auto pattern = this->filterRegExp().pattern().toStdString();
         if (pattern.find("/") != std::string::npos)
@@ -336,12 +356,12 @@ namespace atomic_dex
     }
 
     bool
-    orders_proxy_model::get_apply_filtering() const 
+    orders_proxy_model::get_apply_filtering() const
     {
         return m_is_filtering_applicable;
     }
     void
-    orders_proxy_model::set_apply_filtering(bool status) 
+    orders_proxy_model::set_apply_filtering(bool status)
     {
         if (m_is_filtering_applicable != status)
         {

@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import App 1.0
 
 Item {
     id: orderBook
@@ -21,15 +22,26 @@ Item {
             color: 'transparent'
             ColumnLayout {
                 anchors.fill: parent
-                spacing: 5
+                spacing: 2
                 List {
                     isAsk: true
                     isVertical: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
+                Item {
+                    Layout.preferredHeight: 4
+                    Layout.fillWidth: true
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        color: DexTheme.surfaceColor
+                    }
+                }
                 List {
                     isAsk: false
+                    hide_header: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }

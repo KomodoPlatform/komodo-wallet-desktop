@@ -38,12 +38,18 @@ namespace atomic_dex
     void
     orderbook_scanner_service::process_best_orders() 
     {
+        if (m_rpc_busy)
+        {
+            //SPDLOG_INFO("process_best_orders is busy - skipping");
+            return;
+        }
+        //SPDLOG_INFO("process_best_orders processing");
         if (m_system_manager.has_system<mm2_service>())
         {
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
             if (mm2_system.is_mm2_running() && mm2_system.is_orderbook_thread_active())
             {
-                SPDLOG_INFO("process_best_orders");
+                //SPDLOG_INFO("process_best_orders");
                 using namespace std::string_literals;
                 const auto&           trading_pg = m_system_manager.get_system<trading_page>();
                 auto                  volume     = trading_pg.get_volume().toStdString();
@@ -57,11 +63,13 @@ namespace atomic_dex
                 to_json(best_orders_req_json, req);
                 batch.push_back(best_orders_req_json);
 
+                best_orders_req_json["userpass"] = "*****";
                 //SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
 
                 this->m_rpc_busy = true;
+                emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                 //! Treat answer
-                auto answer_functor = [this](web::http::http_response resp) {
+                auto answer_functor = [this, &trading_pg](web::http::http_response resp) {
                     std::string body = TO_STD_STR(resp.extract_string(true).get());
                     if (resp.status_code() == 200)
                     {
@@ -74,6 +82,7 @@ namespace atomic_dex
                     }
                     this->m_rpc_busy = false;
                     this->dispatcher_.trigger<process_orderbook_finished>(false);
+                    emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                 };
 
                 mm2_system.get_mm2_client().async_rpc_batch_standalone(batch)

@@ -6,23 +6,24 @@ import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 
 import "../../../Components"
-import "../../../Constants"
 import "../../../Wallet"
+
+import App 1.0
 
 FloatingBackground {
     property alias can_submit_trade: form_base.can_submit_trade
     property alias formBase: form_base
-    Layout.preferredHeight: !sell_mode? 350 : 45
+    Layout.preferredHeight: !sell_mode ? 350 : 45
     Behavior on Layout.preferredHeight {
         NumberAnimation {
             duration: 200
         }
     }
     Layout.fillWidth: true
-    radius: sell_mode? 3 : 4
+    radius: sell_mode ? 3 : 4
     border.color: Style.colorGreen
     color: Style.colorTheme9
-    opacity:mouse_area2.containsMouse? 1 : !sell_mode? 1 : .2
+    opacity: mouse_area2.containsMouse ? 1 : !sell_mode ? 1 : .2
     Rectangle {
         width: parent.width
         height: 45
@@ -30,7 +31,7 @@ FloatingBackground {
         radius: 2
         DefaultText {
             anchors.centerIn: parent
-            text: qsTr("Buy")+" "+ atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+            text: qsTr("Buy") + " " + atomic_qt_utilities.retrieve_main_ticker(left_ticker)
             color: Style.colorTheme9
             font.pixelSize: Style.textSize2
         }
@@ -39,8 +40,8 @@ FloatingBackground {
     OrderForm {
         id: form_base
         y: 45
-        width: parent.width-25
-        height: parent.height-45
+        width: parent.width - 25
+        height: parent.height - 45
         clip: true
         visible: !sell_mode
         border.color: 'transparent'

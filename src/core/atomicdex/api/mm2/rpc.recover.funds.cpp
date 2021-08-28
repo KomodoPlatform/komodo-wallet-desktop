@@ -29,7 +29,7 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, recover_funds_of_swap_answer& answer)
     {
-        if (j.count("error") == 1)
+        if (j.contains("error"))
         {
             answer.error = j.at("error").get<std::string>();
         }

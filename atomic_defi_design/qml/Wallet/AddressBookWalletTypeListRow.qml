@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 ItemDelegate {
     property string ticker
@@ -24,7 +25,7 @@ ItemDelegate {
             Layout.preferredHeight: 32
         }
 
-        DefaultText {
+        DexLabel {
             Layout.topMargin: 10
             text: "    " + name + " (" + ticker + ")"
         }

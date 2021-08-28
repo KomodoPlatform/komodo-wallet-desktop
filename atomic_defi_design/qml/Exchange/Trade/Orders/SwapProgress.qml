@@ -2,36 +2,39 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 
 // Content
 ColumnLayout {
     id: root
 
-    property var details
+    property
+    var details
 
-    readonly property var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
+    readonly property
+    var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
 
     readonly property bool has_error_event: {
-        if(!details) return false
+        if (!details) return false
 
         const events = details.events
 
-        for(let i = events.length - 1; i >= 0; --i)
-            if(details.error_events.indexOf(events[i].state) !== -1)
+        for (let i = events.length - 1; i >= 0; --i)
+            if (details.error_events.indexOf(events[i].state) !== -1)
                 return true
 
         return false
     }
 
     readonly property double total_time_passed: {
-        if(!details) return 0
+        if (!details) return 0
 
         const events = details.events
 
         let sum = 0
-        for(let i = 0; i < events.length; ++i)
+        for (let i = 0; i < events.length; ++i)
             sum += events[i].time_diff
 
         return sum
@@ -41,23 +44,23 @@ ColumnLayout {
         const events = all_events
 
         let sum = 0
-        for(let i = 0; i < events.length; ++i)
+        for (let i = 0; i < events.length; ++i)
             sum += API.app.orders_mdl.average_events_time_registry[events[i]]
 
         return sum
     }
 
     readonly property int current_event_idx: {
-        if(!details) return -1
+        if (!details) return -1
         const events = details.events
-        if(events.length === 0) return -1
-        if(all_events.length === 0) return -1
+        if (events.length === 0) return -1
+        if (all_events.length === 0) return -1
 
-        const last_state = events[events.length-1].state
-        if(last_state === "Finished") return -1
+        const last_state = events[events.length - 1].state
+        if (last_state === "Finished") return -1
 
         const idx = all_events.indexOf(last_state)
-        if(idx === -1) return -1
+        if (idx === -1) return -1
 
         return idx + 1
     }
@@ -65,28 +68,27 @@ ColumnLayout {
     // Simulated time of the running event
     property double simulated_time: 0
     function updateSimulatedTime() {
-        if(!details) {
+        if (!details) {
             simulated_time = 0
             return
         }
 
         const events = details.events
-        if(!events || events.length === 0) {
+        if (!events || events.length === 0) {
             simulated_time = 0
             return
         }
 
         const last_event = events[events.length - 1]
-        if(!last_event.timestamp) {
+        if (!last_event.timestamp) {
             simulated_time = 0
             return
         }
 
-        if(current_event_idx !== -1) {
+        if (current_event_idx !== -1) {
             const diff = Date.now() - last_event.timestamp
             simulated_time = diff - (diff % 1000)
-        }
-        else simulated_time = 0
+        } else simulated_time = 0
     }
 
     Timer {
@@ -97,19 +99,19 @@ ColumnLayout {
     }
 
     function getTimeText(duration, estimated) {
-        return `<font color="${Style.colorGreen}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
-                `<font color="${Style.colorText}">` + General.durationTextShort(duration) + `</font>` +
-                `<font color="${Style.colorTextDisabled}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
-                 General.durationTextShort(estimated) + `</font>`
+        return `<font color="${DexTheme.greenColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
+            `<font color="${DexTheme.foregroundColorLightColor0}">` + General.durationTextShort(duration) + `</font>` +
+            `<font color="${DexTheme.foregroundColorLightColor2}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
+            General.durationTextShort(estimated) + `</font>`
     }
 
     onTotal_time_passedChanged: updateSimulatedTime()
 
     // Title
     DefaultText {
-        text_value: `<font color="${Style.colorText}">` + qsTr("Progress details") + `</font>` +
-                    `<font color="${Style.colorTextDisabled}"> | </font>` +
-                    getTimeText(total_time_passed + simulated_time, total_time_passed_estimated)
+        text_value: `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr("Progress details") + `</font>` +
+            `<font color="${DexTheme.foregroundColorLightColor2}"> | </font>` +
+            getTimeText(total_time_passed + simulated_time, total_time_passed_estimated)
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
@@ -120,10 +122,11 @@ ColumnLayout {
         model: all_events
 
         delegate: Item {
-            readonly property var event: {
-                if(!details) return undefined
+            readonly property
+            var event: {
+                if (!details) return undefined
                 const idx = details.events.map(e => e.state).indexOf(modelData)
-                if(idx === -1) return undefined
+                if (idx === -1) return undefined
 
                 return details.events[idx]
             }
@@ -140,26 +143,26 @@ ColumnLayout {
             DefaultText {
                 id: icon
 
-                text_value: is_active ? "●" :  "○"
+                text_value: is_active ? "●" : "○"
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: col_layout.verticalCenter
                 color: {
                     // Already exists, completed event
-                    if(event) {
+                    if (event) {
                         // Red for the Finished if swap failed
-                        if(event.state === "Finished" && details.order_status === "failed") return Style.colorRed
+                        if (event.state === "Finished" && details.order_status === "failed") return DexTheme.redColor
 
                         // Red for error event, green for the others
-                        return details.error_events.indexOf(event.state) === -1 ? Style.colorGreen : Style.colorRed
+                        return details.error_events.indexOf(event.state) === -1 ? DexTheme.greenColor : DexTheme.redColor
                     }
 
                     // In progress one is orange
-                    if(is_current_event)
+                    if (is_current_event)
                         return Style.colorOrange
 
                     // Passive color for the rest
-                    return Style.colorTextDisabled
+                    return DexTheme.foregroundColorLightColor2
                 }
             }
 
@@ -177,7 +180,7 @@ ColumnLayout {
                     font.pixelSize: Style.textSizeSmall4
 
                     text_value: getEventText(modelData)
-                    color: event ? Style.colorText : is_current_event ? Style.colorText2 : Style.colorTextDisabled
+                    color: event ? DexTheme.foregroundColor : is_current_event ? DexTheme.foregroundColorLightColor0 : DexTheme.foregroundColorLightColor2 
                 }
 
                 AnimatedRectangle {
@@ -186,12 +189,12 @@ ColumnLayout {
                     width: 300
                     height: 2
 
-                    color: Style.colorWhite8
+                    color: DexTheme.foregroundColorDarkColor3 
 
                     AnimatedRectangle {
                         width: parent.width * (total_time_passed > 0 ? (time_passed / (total_time_passed + simulated_time)) : 0)
                         height: parent.height
-                        color: Style.colorGreen
+                        color: DexTheme.greenColor
                     }
                 }
 

@@ -12,6 +12,7 @@ import Qaterial 1.0 as Qaterial
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -92,8 +93,14 @@ BasicModal {
             }
 
             // Addresses Table
-            TableView {
-                id: wallet_info_table
+            TableView
+            {
+                id: walletInfoTable
+
+                property int _typeColWidth: 90
+                property int _keyColWidth: 100
+                property int _addressColWidth: 320
+                property int _actionsColWidth: 60
 
                 model: contactModel.proxy_filter
 
@@ -103,25 +110,28 @@ BasicModal {
                 backgroundVisible: false
                 frameVisible: false
 
-                headerDelegate: RowLayout {
-                    Layout.preferredWidth: styleData.column === 0 ? 90 :
-                                           styleData.column === 1 ? 100 :
-                                           styleData.column === 2 ? 320 :
-                                                                    60
+                headerDelegate: RowLayout
+                {
+                    Layout.preferredWidth: styleData.column === 0 ? walletInfoTable._typeColWidth :
+                                           styleData.column === 1 ? walletInfoTable._keyColWidth :
+                                           styleData.column === 2 ? walletInfoTable._addressColWidth :
+                                                                    walletInfoTable._actionsColWidth
 
-                    AnimatedRectangle {
+                    Item
+                    {
                         Layout.fillWidth: true
                         height: 20
 
-                        color: Style.colorRectangleBorderGradient1
+                        
 
-                        DefaultText {
-                            Layout.topMargin: 5
-                            Layout.leftMargin: 1
+                        DefaultText
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
                             text: styleData.value
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             visible: styleData.column !== 3
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
@@ -129,14 +139,15 @@ BasicModal {
                     }
                 }
 
-                rowDelegate: DefaultRectangle {
-                    height: 37
-                    radius: 0
-                    color: styleData.selected ? Style.colorBlue : styleData.alternate ? Style.colorRectangle : Style.colorRectangleBorderGradient2
+                rowDelegate: DefaultRectangle
+                {
+                    height: 37; radius: 0
+                    color: styleData.selected ? DexTheme.accentLightColor4: styleData.alternate ? DexTheme.accentDarkColor4 : 'transparent'
                 }
 
-                TableViewColumn { // Type Column
-                    width: 90
+                TableViewColumn // Type Column
+                {
+                    width: walletInfoTable._typeColWidth
 
                     role: "address_type"
                     title: qsTr("Type")
@@ -144,22 +155,28 @@ BasicModal {
                     resizable: false
                     movable: false
 
-                    delegate: RowLayout {
-                        DefaultText {
+                    delegate: RowLayout
+                    {
+                        DexLabel
+                        {
+                            Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
+                            elide: Text.ElideRight
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
 
-                TableViewColumn { // Key Column
-                    width: 100
+                TableViewColumn // Key Column
+                {
+                    width: walletInfoTable._keyColWidth
 
                     role: "address_key"
                     title: qsTr("Key")
@@ -167,22 +184,28 @@ BasicModal {
                     resizable: false
                     movable: false
 
-                    delegate: RowLayout {
-                        DefaultText {
+                    delegate: RowLayout
+                    {
+                        DefaultText
+                        {
+                            Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
+                            elide: Text.ElideRight
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
 
-                TableViewColumn { // Address Column
-                    width: 320
+                TableViewColumn
+                {
+                    width: walletInfoTable._addressColWidth
 
                     role: "address_value"
                     title: qsTr("Address")
@@ -190,90 +213,111 @@ BasicModal {
                     resizable: false
                     movable: false
 
-                    delegate: RowLayout {
-                        DefaultText {
+                    delegate: RowLayout
+                    {
+                        DexLabel
+                        {
+                            Layout.preferredWidth: parent.width - 10
                             Layout.leftMargin: 3
                             text: styleData.row >= 0 ? styleData.value : ""
                             font.pixelSize: Style.textSizeSmall3
-                            color: Style.colorText
+                            elide: Text.ElideRight
                         }
 
-                        VerticalLine {
+                        VerticalLine
+                        {
                             Layout.alignment: Qt.AlignRight
                             Layout.fillHeight: true
                         }
                     }
                 }
 
-                TableViewColumn { // Actions Column
-                    width: 80
+                TableViewColumn // Actions Column
+                {
+                    width: walletInfoTable._actionsColWidth
                     title: qsTr("Actions")
 
                     resizable: false
                     movable: false
 
-                    delegate: Row {
+                    delegate: Row
+                    {
                         spacing: 0
 
-                        Qaterial.OutlineButton { // Edit Address Button
+                        Qaterial.OutlineButton // Edit Address Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35
 
                             outlined: false
 
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.leadPencil
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
-                            onClicked: {
-                                address_edition_modal.walletType = model.address_type
-                                address_edition_modal.key = model.address_key
-                                address_edition_modal.value = model.address_value
-                                address_edition_modal.open()
+                            onClicked:
+                            {
+                                address_edition_modal.walletType = model.address_type;
+                                address_edition_modal.key = model.address_key;
+                                address_edition_modal.value = model.address_value;
+                                address_edition_modal.open();
                             }
                         }
 
-                        Qaterial.OutlineButton { // Delete Button
+                        Qaterial.OutlineButton // Delete Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35 
                             outlined: false
 
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.trashCan
-                                color: theme.redColor
+                                color: DexTheme.redColor
                                 opacity: .8
                             }
-                            onClicked: contactModel.remove_address_entry(model.address_type, model.address_key)
+                            onClicked:
+                            {
+                                removeAddressEntryModal.addressKey = model.address_key;
+                                removeAddressEntryModal.addressType = model.address_type;
+                                removeAddressEntryModal.contactModel = contactModel;
+                                removeAddressEntryModal.open();
+                            }
                         }
 
-                        Qaterial.OutlineButton { // Copy Clipboard Button
+                        Qaterial.OutlineButton // Copy Clipboard Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35
 
                             outlined: false
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.contentCopy
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
                             onClicked: API.qt_utilities.copy_text_to_clipboard(model.address_value)
                         }
 
-                        Qaterial.OutlineButton { // Send Button
+                        Qaterial.OutlineButton // Send Button
+                        {
                             implicitHeight: 35
                             implicitWidth: 35
 
                             outlined: false
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 source:  Qaterial.Icons.send
-                                color: theme.foregroundColor
+                                color: DexTheme.foregroundColor
                                 opacity: .8
                             }
 
@@ -336,26 +380,25 @@ BasicModal {
         // Categories (Tags) List
         Flow {
             Layout.fillWidth: true
-
+            spacing: 10
             Repeater {
                 id: category_repeater
                 model: contactModel.categories
 
-                Qaterial.OutlineButton {
+                DexAppButton {
                     Layout.alignment: Qt.AlignLeft
                     Layout.leftMargin: 4
-
+                    border.color: backgroundColor
+                    iconSource: Qaterial.Icons.closeOctagon
                     text: modelData
-                    icon.source: Qaterial.Icons.closeOctagon
-
                     onClicked: contactModel.remove_category(modelData);
                 }
             }
 
             // Category adding form opening button
-            Qaterial.OutlineButton {
+            DexAppButton {
                 Layout.leftMargin: 10
-
+                width: height
                 text: qsTr("+")
 
                 onClicked: add_category_modal.open()
@@ -480,6 +523,31 @@ BasicModal {
                         text: qsTr("Ok")
 
                         onClicked: cannot_send_modal.close()
+                    }
+                }
+            }
+        }
+
+        // Remove address entry modal
+        ModalLoader
+        {
+            id: removeAddressEntryModal
+
+            property var    contactModel
+            property string addressKey
+            property string addressType
+
+            sourceComponent: BasicModal
+            {
+                width: 250
+                ModalContent
+                {
+                    title: qsTr("Remove address ?")
+
+                    RowLayout
+                    {
+                        DexButton { text: qsTr("Yes"); onClicked: { contactModel.remove_address_entry(addressType, addressKey); close(); } }
+                        DexButton { text: qsTr("No"); onClicked: close() }
                     }
                 }
             }

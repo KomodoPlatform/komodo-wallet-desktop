@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "../Constants"
+import App 1.0
 
 Item {
     property int sort_type
@@ -11,29 +12,14 @@ Item {
     height: title.height
 
     // Click area
-    DefaultMouseArea {
-        id: click_area
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
-            if(current_sort === sort_type) {
-                ascending = !ascending
-            }
-            else {
-                current_sort = sort_type
-                ascending = false
-            }
-
-            applyCurrentSort()
-        }
-    }
+    
 
     DefaultText {
         id: title
         anchors.left: icon_at_left ? parent.left : undefined
         anchors.right: icon_at_left ? undefined : parent.right
 
-        //color: Qt.lighter(theme.accentColor, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+        //color: Qt.lighter(DexTheme.accentColor, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
     }
 
 
@@ -59,5 +45,22 @@ Item {
         anchors.fill: arrow_icon
         source: arrow_icon
         color: title.color
+    }
+    DefaultMouseArea {
+        id: click_area
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape:  Qt.PointingHandCursor
+        onClicked: {
+            if(current_sort === sort_type) {
+                ascending = !ascending
+            }
+            else {
+                current_sort = sort_type
+                ascending = false
+            }
+
+            applyCurrentSort()
+        }
     }
 }

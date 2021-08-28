@@ -17,6 +17,6 @@ ColumnLayout {
 
     DexComboBox {
         id: input_field
-        Layout.fillWidth: true
+        Layout.preferredWidth: 300
     }
 }

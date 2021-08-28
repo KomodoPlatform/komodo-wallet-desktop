@@ -2,15 +2,18 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 
 Item {
+    id: _control
     property alias image: image
     property alias image_path: image.source
     property alias image_scale: image.scale
     property alias content: inner_space.sourceComponent
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
-
+    property string backgroundColor: DexTheme.dexBoxBackgroundColor
+    property string borderColor: DexTheme.rectangleBorderColor
     ColumnLayout {
         id: window_layout
 
@@ -35,14 +38,17 @@ Item {
             rightPadding: leftPadding
             topPadding: leftPadding * 0.5
             bottomPadding: topPadding
-
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            background: FloatingBackground {
-                color: theme.backgroundColor
+            background: DexRectangle {
+                color: _control.backgroundColor
+                border {
+                    color: DexTheme.portfolioPieGradient ? 'transparent' : _control.borderColor
+                }
+                gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
             }
 
-            Loader {
+            contentChildren: Loader {
                 id: inner_space
             }
         }

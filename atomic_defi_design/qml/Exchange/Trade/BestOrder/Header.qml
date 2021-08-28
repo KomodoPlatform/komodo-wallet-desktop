@@ -4,8 +4,9 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 
 Item {
     property bool is_horizontal: false
@@ -14,7 +15,7 @@ Item {
     z: 2
     Rectangle {
         anchors.fill: parent
-        color: theme.dexBoxBackgroundColor
+        color: DexTheme.portfolioPieGradient ? "transparent" : DexTheme.dexBoxBackgroundColor
     }
 
     RowLayout {
@@ -23,7 +24,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 140
+            Layout.preferredWidth: 130
             text: sell_mode? qsTr("You get") : qsTr("You send")
             font.family: Style.font_family
             font.pixelSize: 10
@@ -41,10 +42,6 @@ Item {
             font.weight: Font.Black
             horizontalAlignment: Label.AlignRight
 
-        }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter

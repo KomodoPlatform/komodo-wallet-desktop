@@ -3,7 +3,8 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import "../Exchange/Trade/"
-import "../Constants/" as Constants
+import "../Constants/"
+as Constants
 
 InnerBackground {
     id: _control
@@ -11,7 +12,7 @@ InnerBackground {
     signal reload()
 
     property bool hideHeader: false
-    property bool visibility: isVertical? height>=40 ? true : false : width>=40? true : false
+    property bool visibility: isVertical ? height >= 40 ? true : false : width >= 40 ? true : false
     property bool hidden: false
     property bool expandedVert: false
     property bool expandedHort: false
@@ -20,10 +21,10 @@ InnerBackground {
     property bool closable: false
     property bool expandable: true
     property string title: "Default Title"
-    property int minimumHeight: isVertical? 40 : 250
-    property int minimumWidth: isVertical? 40 : 250
+    property int minimumHeight: isVertical ? 40 : 250
+    property int minimumWidth: isVertical ? 40 : 250
     property int maximumHeight: 9999999
-    property int maximumWidth:  9999999
+    property int maximumWidth: 9999999
     property int defaultHeight: 250
     property int defaultWidth: 250
     property bool reloadable: false
@@ -33,57 +34,47 @@ InnerBackground {
     function setHeight(height) {
         SplitView.preferredHeight = height
     }
+
     function setWidth(width) {
         SplitView.preferredWidth = width
     }
 
     onHiddenChanged: {
-        if(isVertical && hidden) {
+        if (isVertical && hidden) {
             SplitView.preferredHeight = 40
             SplitView.minimumHeight = 40
             SplitView.maximumHeight = 40
-        }
-        else if(isVertical && !hidden){
+        } else if (isVertical && !hidden) {
             SplitView.preferredHeight = defaultHeight
             SplitView.minimumHeight = minimumHeight
             SplitView.maximumHeight = maximumHeight
             SplitView.fillHeight = true
             SplitView.view.update()
-        }
-        else if(!isVertical && hidden) {
+        } else if (!isVertical && hidden) {
             SplitView.preferredWidth = 40
             SplitView.minimumWidth = 40
             SplitView.maximumWidth = 40
-        }
-        else if(!isVertical && !hidden){
+        } else if (!isVertical && !hidden) {
             SplitView.preferredWidth = defaultWidth
             SplitView.minimumWidth = minimumWidth
             SplitView.maximumWidth = maximumWidth
-            console.log(_control.maximumWidth)
             SplitView.fillWidth = true
 
         }
     }
 
     //shadowOff: true
-    color: theme.dexBoxBackgroundColor
+    color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
     property alias titleLabel: _texto
 
-    Connections {
-        target: _control.parent.parent
-        function onCurrentIndexChanged(){
-            console.log(_control.parent.parent.currentIndex)
-        }
-    }
-
     onExpandedVertChanged: {
-        if(expandedVert) {
-            if(DefaultSplitView.view!=null){
-                for(var i=0; i< DefaultSplitView.view.children.length;i++){
-                    if (DefaultSplitView.view.children[i]!==_control){
-                        try{
+        if (expandedVert) {
+            if (DefaultSplitView.view != null) {
+                for (var i = 0; i < DefaultSplitView.view.children.length; i++) {
+                    if (DefaultSplitView.view.children[i] !== _control) {
+                        try {
                             DefaultSplitView.view.children[i].expandedVert = false
-                        }catch(e){}
+                        } catch (e) {}
 
                     }
                 }
@@ -94,18 +85,18 @@ InnerBackground {
         }
     }
     onExpandedHortChanged: {
-        if(expandedHort) {
-            if(DefaultSplitView.view!=null){
-                for(var i=0; i<SplitView.view.children.length;i++) {
-                    if (SplitView.view.children[i]!==_control){
-                        try{
+        if (expandedHort) {
+            if (DefaultSplitView.view != null) {
+                for (var i = 0; i < SplitView.view.children.length; i++) {
+                    if (SplitView.view.children[i] !== _control) {
+                        try {
                             SplitView.view.children[i].expandedHort = false
-                        }catch(e){}
+                        } catch (e) {}
                     }
                 }
                 SplitView.fillHeight = true
             }
-        }else {
+        } else {
             SplitView.fillHeight = false
         }
     }
@@ -131,8 +122,8 @@ InnerBackground {
         SplitView.maximumWidth = maximumWidth
         SplitView.preferredHeight = defaultHeight
         SplitView.preferredWidth = defaultWidth
-        SplitView.fillHeight = expandedVert? true: false
-        SplitView.fillWidth = expandedHort? true: false
+        SplitView.fillHeight = expandedVert ? true : false
+        SplitView.fillWidth = expandedHort ? true : false
     }
 
 
@@ -143,11 +134,12 @@ InnerBackground {
     ClipRRect {
         anchors.fill: parent
         radius: parent.radius
+
         Rectangle {
             width: parent.width
             height: 40
-            radius: parent.parent.height<41? parent.parent.radius : 0
-            color: theme.dexBoxBackgroundColor
+            radius: parent.parent.height < 41 ? parent.parent.radius : 0
+            color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
             visible: visibility && !_control.hideHeader
             RowLayout {
                 anchors.fill: parent
@@ -159,7 +151,7 @@ InnerBackground {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                     text: _control.title
-                    color: theme.foregroundColor
+                    color: DexTheme.foregroundColor
                     bottomPadding: 5
                 }
                 Row {
@@ -180,7 +172,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.reloadable
                         icon.source: Qaterial.Icons.refresh
                         onClicked: {
@@ -195,36 +187,36 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
-                        icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
-                        onClicked: _control.hidden =!_control.hidden
+                        foregroundColor: DexTheme.foregroundColor
+                        icon.source: _control.expandable ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        onClicked: _control.hidden = !_control.hidden
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
-                        icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
-                        onClicked: _control.expandedVert =!_control.expandedVert
+                        icon.source: _control.expandedVert ? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
+                        onClicked: _control.expandedVert = !_control.expandedVert
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
-                        icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
-                        onClicked: _control.expandedHort =!_control.expandedHort
+                        icon.source: _control.expandedHort ? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
+                        onClicked: _control.expandedHort = !_control.expandedHort
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -233,7 +225,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                     }
@@ -244,8 +236,8 @@ InnerBackground {
             width: 40
             height: parent.height
             anchors.right: parent.right
-            radius: parent.parent.height<41? parent.parent.radius : 0
-            color: theme.dexBoxBackgroundColor
+            radius: parent.parent.height < 41 ? parent.parent.radius : 0
+            color: DexTheme.dexBoxBackgroundColor
             visible: !isVertical && hidden
             DefaultText {
                 id: _texto2
@@ -253,7 +245,7 @@ InnerBackground {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 text: _control.title
-                color: theme.foregroundColor
+                color: DexTheme.foregroundColor
                 bottomPadding: 5
                 rotation: 90
                 anchors.centerIn: parent
@@ -271,8 +263,8 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
-                        icon.source: _control.expandable? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
+                        foregroundColor: DexTheme.foregroundColor
+                        icon.source: _control.expandable ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                         onClicked: {
                             _control.hidden = !_control.hidden
                         }
@@ -282,27 +274,27 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Vertical
-                        icon.source: _control.expandedVert? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
-                        onClicked: _control.expandedVert =!_control.expandedVert
+                        icon.source: _control.expandedVert ? Qaterial.Icons.unfoldLessHorizontal : Qaterial.Icons.unfoldMoreHorizontal
+                        onClicked: _control.expandedVert = !_control.expandedVert
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.expandable && _control.parent.parent.orientation === Qt.Horizontal
-                        icon.source: _control.expandedHort? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
-                        onClicked: _control.expandedHort =!_control.expandedHort
+                        icon.source: _control.expandedHort ? Qaterial.Icons.unfoldLessVertical : Qaterial.Icons.unfoldMoreVertical
+                        onClicked: _control.expandedHort = !_control.expandedHort
                     }
                     Qaterial.AppBarButton {
                         implicitHeight: 40
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.duplicable
                         icon.source: Qaterial.Icons.plus
                     }
@@ -311,7 +303,7 @@ InnerBackground {
                         implicitWidth: 40
                         icon.height: 17
                         icon.width: 17
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         visible: _control.closable
                         icon.source: Qaterial.Icons.close
                     }

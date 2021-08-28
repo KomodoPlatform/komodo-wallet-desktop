@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 // Open Transaction Details Modal
 BasicModal {
@@ -29,7 +30,7 @@ BasicModal {
             text: !details ? "" :
                     General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.app.settings_pg.current_currency)
             value_color: !details ? "white" :
-                         details.am_i_sender ? Style.colorRed : Style.colorGreen
+                         details.am_i_sender ?  DexTheme.redColor : DexTheme.greenColor
             privacy: true
         }
 
@@ -39,7 +40,7 @@ BasicModal {
             text: !details ? "" :
                     General.formatCrypto(parseFloat(details.fees) < 0, Math.abs(parseFloat(details.fees)), current_ticker_infos.fee_ticker, details.fees_amount_fiat, API.app.settings_pg.current_currency)
             value_color: !details ? "white" :
-                         parseFloat(details.fees) > 0 ? Style.colorRed : Style.colorGreen
+                         parseFloat(details.fees) > 0 ? DexTheme.redColor : DexTheme.greenColor
             privacy: true
         }
 
@@ -72,18 +73,29 @@ BasicModal {
                     details.blockheight
         }
 
-        AddressList {
-            title: qsTr("From")
-            model: !details ? [] :
-                    details.from
-        }
+        DexRectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: addressColumn.height + 10
+            color: DexTheme.contentColorTop
+            Column {
+                id: addressColumn
+                width: parent.width - 10
+                anchors.centerIn: parent
+                AddressList {
+                    width: parent.width
+                    title: qsTr("From")
+                    model: !details ? [] :
+                            details.from
+                }
 
-        AddressList {
-            title: qsTr("To")
-            model: !details ? [] :
-                    details.to
+                AddressList {
+                    width: parent.width
+                    title: qsTr("To")
+                    model: !details ? [] :
+                            details.to
+                }
+            }
         }
-
         // Notes
         TextAreaWithTitle {
             id: notes
@@ -106,33 +118,30 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
-                text: qsTr("Close")
+            Item {
                 Layout.fillWidth: true
+            },
+            DexButton {
+                text: qsTr("Close")
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 onClicked: root.close()
             },
-
-            DangerButton {
-                visible: !details ? false :
-                         !details.am_i_sender
-
-                text: qsTr("Refund")
+            Item {
                 Layout.fillWidth: true
-                onClicked: {
-                    const address = details.from[0]
-                    const amount = details.amount
-                    root.close()
-                    send_modal.open()
-                    send_modal.item.address_field.text = address
-                    send_modal.item.amount_field.text = amount
-                }
             },
-
-            PrimaryButton {
+            DexAppOutlineButton {
                 text: qsTr("View on Explorer")
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, details.tx_hash, false)
+            },
+            Item {
+                Layout.fillWidth: true
             }
+
         ]
     }
 }

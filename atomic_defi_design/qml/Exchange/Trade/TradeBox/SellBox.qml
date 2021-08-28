@@ -7,13 +7,14 @@ import Qt.labs.settings 1.0
 import AtomicDEX.MarketMode 1.0
 
 import "../../../Components"
-import "../../../Constants"
 import "../../../Wallet"
+
+import App 1.0
 
 Item {
     property alias can_submit_trade: form_base.can_submit_trade
     property alias formBase: form_base
-    Layout.preferredHeight: sell_mode? 350 : 45
+    Layout.preferredHeight: sell_mode ? 350 : 45
     Behavior on Layout.preferredHeight {
         NumberAnimation {
             duration: 200
@@ -24,7 +25,7 @@ Item {
     //radius: sell_mode? 4 : 3
     //border.color: Style.colorRed
     //color: Style.colorTheme6
-    opacity: mouse_area.containsMouse? 1 : sell_mode? 1 : .35
+    opacity: mouse_area.containsMouse ? 1 : sell_mode ? 1 : .35
 
     Rectangle {
         visible: false
@@ -42,7 +43,7 @@ Item {
         DefaultText {
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -2
-            text: qsTr("Sell")+" "+ atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+            text: qsTr("Sell") + " " + atomic_qt_utilities.retrieve_main_ticker(left_ticker)
             color: Qaterial.Colors.gray200
             font.pixelSize: Style.textSize1
         }
@@ -50,8 +51,8 @@ Item {
     OrderForm {
         id: form_base
         y: 45
-        width: parent.width-25
-        height: parent.height-45
+        width: parent.width - 25
+        height: parent.height - 45
         //clip: true
         visible: sell_mode
         border.color: 'transparent'

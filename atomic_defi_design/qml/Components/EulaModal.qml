@@ -3,7 +3,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
 // Project Imports
-import "../Constants" //> API.app_name
+import "../Constants"
+import App 1.0 //> API.app_name
 
 BasicModal {
     id: root
@@ -28,12 +29,14 @@ BasicModal {
             DefaultFlickable {
                 anchors.fill: parent
                 anchors.margins: 20
+                anchors.rightMargin: 0
 
-                contentWidth: eula_text.width
+                contentWidth: eula_text.width - 10
                 contentHeight: eula_text.height
 
-                DefaultText {
+                DexLabel {
                     id: eula_text
+                    font: DexTypo.body1
                     text_value: getEula()
 
                     width: eula_rect.width - 40
@@ -42,42 +45,54 @@ BasicModal {
         }
 
         // Checkboxes
-        DefaultCheckBox {
+        DexCheckBox {
             id: accept_eula
             visible: !close_only
             text: qsTr("Accept EULA")
         }
 
-        DefaultCheckBox {
+        DexCheckBox {
             id: accept_tac
             visible: !close_only
             text: qsTr("Accept Terms and Conditions")
         }
 
         // Buttons
-        footer: [
-            DefaultButton {
-                text: close_only ? qsTr("Close") : qsTr("Cancel")
+        footer:
+        [
+            Row
+            {
+                width: root.width - 40
+                height: 50
+                spacing: 10
+                layoutDirection: Qt.RightToLeft
                 Layout.fillWidth: true
-                onClicked: root.close()
-            },
+                Layout.alignment: Qt.AlignRight
+                DexAppButton
+                {
+                    text: close_only ? qsTr("Close") : qsTr("Cancel")
+                    Layout.fillWidth: true
+                    onClicked: root.close()
+                }
 
-            PrimaryButton {
-                visible: !close_only
-                text: qsTr("Confirm")
-                Layout.fillWidth: true
-                enabled: accept_eula.checked && accept_tac.checked
-                onClicked: {
-                    onConfirm()
-                    root.close()
+                DexAppOutlineButton
+                {
+                    visible: !close_only
+                    text: qsTr("Confirm")
+                    Layout.fillWidth: true
+                    enabled: accept_eula.checked && accept_tac.checked
+                    onClicked:
+                    {
+                        onConfirm()
+                        root.close()
+                    }
                 }
             }
         ]
     }
 
     function getEula() {
-        return qsTr(
-"<h2>This End-User License Agreement ('EULA') is a legal agreement between you and Komodo Platform.</h2>
+        return "<h2>This End-User License Agreement ('EULA') is a legal agreement between you and Komodo Platform.</h2>
 
 <p>This EULA agreement governs your acquisition and use of our %1 software ('Software', 'Mobile Application', 'Application' or 'App') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a 'Distributor').</p>
 <p>Please read this EULA agreement carefully before completing the installation process and using the %1 software. It provides a license to use the %1 software and contains warranty information and liability disclaimers.</p>
@@ -111,6 +126,6 @@ BasicModal {
 <p>This EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.</p>
 
 <p><b>This document was last updated on January 31st, 2020</b></p>"
-                    ).arg(API.app_name)
+                    .arg(API.app_name)
     }
 }

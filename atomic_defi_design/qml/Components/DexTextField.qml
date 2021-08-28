@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
+import App 1.0
 
 TextField {
     id: text_field
@@ -8,27 +9,39 @@ TextField {
     property alias left_text: left_text.text_value
     property alias right_text: right_text.text_value
 
-    font: theme.textType.body2
-    placeholderTextColor: theme.textPlaceHolderColor
-    selectedTextColor: theme.textSelectedColor
-    selectionColor: theme.textSelectionColor
-    color: theme.foregroundColor
+    font: DexTypo.body2
+    placeholderTextColor: DexTheme.textPlaceHolderColor
+    selectedTextColor: DexTheme.textSelectedColor
+    selectionColor: DexTheme.textSelectionColor
+    color: DexTheme.foregroundColor
 
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
-    Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on color {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
+    Behavior on placeholderTextColor {
+        ColorAnimation {
+            duration: Style.animationDuration
+        }
+    }
 
     // Right click Context Menu
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground { auto_set_size: false; radius: 10 }
+    background: DexRectangle {
+        color: DexTheme.backgroundDarkColor1
+        opacity: .4
+        radius: height/2
+    }
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)
     topPadding: 7
 
 
-    RightClickMenu { }
+    RightClickMenu {}
 
     DefaultText {
         id: left_text

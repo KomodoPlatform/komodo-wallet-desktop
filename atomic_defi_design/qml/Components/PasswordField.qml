@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import "../Constants"
 
+import App 1.0
+
 ColumnLayout {
     property alias title: pw.title
     property alias field: pw.field
@@ -43,7 +45,7 @@ ColumnLayout {
     }
 
     function hintColor(valid) {
-        return valid ? Style.colorGreen : Style.colorRed
+        return valid ? DexTheme.greenColor : DexTheme.redColor
     }
 
     function hintPrefix(valid) {

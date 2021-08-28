@@ -12,7 +12,8 @@ import ModelHelper 0.1
 import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
-import "../Constants"
+import "../Constants" as Constants
+import App 1.0
 
 // Portfolio
 Item {
@@ -25,17 +26,17 @@ Item {
     property bool isSpline: false
     function getPercent(fiat_amount) {
         const portfolio_balance = parseFloat(
-                                    API.app.portfolio_pg.balance_fiat_all)
+                                    Constants.API.app.portfolio_pg.balance_fiat_all)
         if (fiat_amount <= 0 || portfolio_balance <= 0)
             return "-"
 
-        return General.formatPercent(
+        return Constants.General.formatPercent(
                     (100 * fiat_amount / portfolio_balance).toFixed(2), false)
     }
 
-    property string total: General.formatFiat(
-                               "", API.app.portfolio_pg.balance_fiat_all,
-                               API.app.settings_pg.current_currency)
+    property string total: Constants.General.formatFiat(
+                               "", Constants.API.app.portfolio_pg.balance_fiat_all,
+                               Constants.API.app.settings_pg.current_currency)
     readonly property int sort_by_name: 0
     readonly property int sort_by_value: 1
     readonly property int sort_by_change: 3
@@ -137,11 +138,12 @@ Item {
                         id: willyBG
                         Layout.fillHeight: true
                         Layout.fillWidth: true
+                        visible: false
                     }
 
                     AssetPieChart {
                         id: pie
-                        Layout.preferredWidth: portfolio.isUltraLarge ? 350 : 250
+                        Layout.fillWidth: true
                         Layout.preferredHeight: portfolio.isUltraLarge ? 600 : 350
                         Layout.alignment: Qt.AlignTop
                     }
@@ -158,42 +160,55 @@ Item {
                     anchors.topMargin: 5
                     RowLayout {
                         anchors.fill: parent
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            DefaultSwitch {
-                                anchors.verticalCenter: parent.verticalCenter
-                                text: qsTr("Show only coins with balance")
-                                checked: portfolio_coins.with_balance
-                                onCheckedChanged: portfolio_coins.with_balance = checked
-                            }
-                        }
-                        DexTextField {
-                            id: input_coin_filter
-                            implicitHeight: 45
-                            function reset() {
-                                if (text === "")
-                                    resetCoinFilter()
-                                else
-                                    text = ""
-                            }
 
+                        DexRectangle {
                             Layout.alignment: Qt.AlignVCenter
                             Layout.preferredWidth: 250
-                            height: 60
+                            height: 45
+                            radius: 16
+                            color: DexTheme.contentColorTop
+                            DefaultTextField {
+                                id: input_coin_filter
+                                anchors.fill: parent
+                                anchors.margins: 2
+                                function reset() {
+                                    input_coin_filter.text = ""
+                                }
+                                Qaterial.Icon {
+                                    icon: Qaterial.Icons.magnify
+                                    color: input_coin_filter.color
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    x: 5
+                                }
+                                leftPadding: 40
+                                placeholderText: qsTr("Search")
 
-                            placeholderText: qsTr("Search")
-
-                            onTextChanged: {
-                                portfolio_coins.setFilterFixedString(text)
+                                font.pixelSize: Constants.Style.textSizeSmall3
+                                onTextChanged: portfolio_coins.setFilterFixedString(text)
+                                Component.onDestruction: portfolio_coins.setFilterFixedString("")
+                                background: null
                             }
-
-                            width: 120
+                        }
+                        
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        
+                        DefaultSwitch {
+                            Layout.alignment: Qt.AlignVCenter
+                            text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.innerList.count).arg(portfolio_mdl.length))
+                            checked: portfolio_coins.with_balance
+                            onCheckedChanged: portfolio_coins.with_balance = checked
                         }
                     }
                 }
             }
-            TableDex {}
+
+            TableDex
+            {
+                id: coinsList
+            }
+
             Item {
                 width: 1
                 height: 10
@@ -209,37 +224,32 @@ Item {
             anchors.fill: parent
             anchors.leftMargin: 40
             anchors.rightMargin: 40
+            
             Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                
                 DexLabel {
-                    font: theme.textType.head4
+                    font: DexTypo.head6
                     anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Portfolio")
+                    text: qsTr("Dashboard")
                 }
             }
+
             Item {
 
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    Qaterial.ExtendedFabButton {
+                    
+                    DexGradientAppButton {
                         width: 250
-                        backgroundColor: theme.accentColor
-                        foregroundColor: theme.foregroundColor
-                        Row {
-                            anchors.centerIn: parent
-                            spacing: 6
-                            Qaterial.ColorIcon {
-                                source: Qaterial.Icons.plus
-                                color: theme.foregroundColor
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            DexLabel {
-                                text: qsTr("Add asset")
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
+                        iconSource: Qaterial.Icons.plus
+                        radius: 40
+                        leftPadding: 5
+                        rightPadding: 5
+                        padding: 16
+                        text: qsTr("Add asset")
                         onClicked: enable_coin_modal.open()
                     }
                 }

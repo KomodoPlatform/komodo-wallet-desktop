@@ -14,18 +14,22 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Deps
+#include <antara/app/net/http.code.hpp>
+
 //! Project
 #include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 
 //! Constructor
 namespace atomic_dex
 {
     orders_model::orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new orders_proxy_model(this))
+        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new orders_proxy_model(this, system_manager))
     {
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
@@ -313,10 +317,30 @@ namespace atomic_dex
         }
     }
 
+    QVariant
+    orders_model::get_recover_fund_data() const
+    {
+        return m_recover_funds_data.get();
+    }
+
+    void
+    orders_model::set_recover_fund_data(QVariant rpc_data)
+    {
+        auto json_result = rpc_data.toJsonObject();
+        m_recover_funds_data = json_result;
+        emit recoverFundDataChanged();
+    }
+
     bool
     orders_model::is_fetching_busy() const
     {
         return m_fetching_busy.load();
+    }
+
+    bool
+    orders_model::is_recover_fund_busy() const
+    {
+        return m_recover_funds_busy.load();
     }
 
     void
@@ -326,6 +350,16 @@ namespace atomic_dex
         {
             m_fetching_busy = fetching_status;
             emit fetchingStatusChanged();
+        }
+    }
+
+    void
+    orders_model::set_recover_fund_busy(bool recover_funds_status)
+    {
+        if (recover_funds_status != m_recover_funds_busy)
+        {
+            m_recover_funds_busy = recover_funds_status;
+            emit recoverFundBusyChanged();
         }
     }
 
@@ -388,6 +422,8 @@ namespace atomic_dex
                 const QString& rel_coin  = data(idx, OrdersRoles::RelCoinRole).toString();
                 m_dispatcher.trigger<swap_status_notification>(
                     contents.order_id, prev_value.toString(), new_value.toString(), base_coin, rel_coin, new_value_d.toString());
+                auto& mm2 = m_system_manager.get_system<mm2_service>();
+                mm2.process_orderbook(true);
             }
             update_value(OrdersRoles::MakerPaymentIdRole, contents.maker_payment_id, idx, *this);
             update_value(OrdersRoles::TakerPaymentIdRole, contents.taker_payment_id, idx, *this);
@@ -437,6 +473,11 @@ namespace atomic_dex
         }
         endInsertRows();
         emit lengthChanged();
+        if (m_system_manager.has_system<mm2_service>())
+        {
+            SPDLOG_DEBUG("Swaps inserted, refreshing orderbook to get new max taker vol");
+            this->m_system_manager.get_system<mm2_service>().process_orderbook(true);
+        }
         SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
     }
 
@@ -445,21 +486,24 @@ namespace atomic_dex
     {
         const auto&                     data = contents.orders_and_swaps;
         std::vector<t_order_swaps_data> to_init;
-        std::for_each(begin(data) + contents.nb_orders, end(data), [this, &to_init](auto&& cur) {
-            if (cur.is_swap)
+        std::for_each(
+            begin(data) + contents.nb_orders, end(data),
+            [this, &to_init](auto&& cur)
             {
-                const auto& uuid = cur.order_id.toStdString();
-                if (this->m_swaps_id_registry.contains(uuid))
+                if (cur.is_swap)
                 {
-                    this->update_swap(cur);
+                    const auto& uuid = cur.order_id.toStdString();
+                    if (this->m_swaps_id_registry.contains(uuid))
+                    {
+                        this->update_swap(cur);
+                    }
+                    else
+                    {
+                        to_init.emplace_back(cur);
+                        m_swaps_id_registry.emplace(uuid);
+                    }
                 }
-                else
-                {
-                    to_init.emplace_back(cur);
-                    m_swaps_id_registry.emplace(uuid);
-                }
-            }
-        });
+            });
         if (not to_init.empty())
         {
             this->common_insert(to_init, "swaps");
@@ -474,17 +518,20 @@ namespace atomic_dex
         if (contents.nb_orders > 0)
         {
             std::vector<t_order_swaps_data> to_init;
-            std::for_each(begin(data), begin(data) + contents.nb_orders, [this, &to_init, &are_present](auto&& cur) {
-                if (this->m_orders_id_registry.contains(cur.order_id.toStdString()))
+            std::for_each(
+                begin(data), begin(data) + contents.nb_orders,
+                [this, &to_init, &are_present](auto&& cur)
                 {
-                    this->update_existing_order(cur);
-                }
-                else
-                {
-                    m_orders_id_registry.emplace(to_init.emplace_back(cur).order_id.toStdString());
-                }
-                are_present.emplace(cur.order_id.toStdString());
-            });
+                    if (this->m_orders_id_registry.contains(cur.order_id.toStdString()))
+                    {
+                        this->update_existing_order(cur);
+                    }
+                    else
+                    {
+                        m_orders_id_registry.emplace(to_init.emplace_back(cur).order_id.toStdString());
+                    }
+                    are_present.emplace(cur.order_id.toStdString());
+                });
 
             if (not to_init.empty())
             {
@@ -553,6 +600,7 @@ namespace atomic_dex
         this->beginResetModel();
         reset_backend("reset");
         this->endResetModel();
+        this->set_fetching_busy(false);
     }
 
     void
@@ -626,7 +674,7 @@ namespace atomic_dex
             //! Filtering changed
             this->set_fetching_busy(true);
             this->reset();
-            //this->reset_backend("set_filtering_infos"); ///< We change page, we need to clear, but do not notify the front-end
+            // this->reset_backend("set_filtering_infos"); ///< We change page, we need to clear, but do not notify the front-end
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();
             mm2.set_orders_and_swaps_pagination_infos(
                 static_cast<std::size_t>(m_model_data.current_page), static_cast<std::size_t>(m_model_data.limit), m_model_data.filtering_infos);
@@ -641,5 +689,78 @@ namespace atomic_dex
     orders_model::get_filtering_infos() const
     {
         return m_model_data.filtering_infos;
+    }
+
+    void
+    orders_model::recover_fund(QString uuid)
+    {
+        this->set_recover_fund_busy(true);
+        auto&                                   mm2_system = m_system_manager.get_system<mm2_service>();
+        nlohmann::json                          batch      = nlohmann::json::array();
+        nlohmann::json                          json_data  = ::mm2::api::template_request("recover_funds_of_swap");
+        mm2::api::recover_funds_of_swap_request req{.swap_uuid = uuid.toStdString()};
+        ::mm2::api::to_json(json_data, req);
+        batch.push_back(json_data);
+
+        auto answer_functor = [this](web::http::http_response resp)
+        {
+            nlohmann::json j_out = nlohmann::json::object();
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == web::http::status_codes::OK)
+            {
+                auto answers        = nlohmann::json::parse(body);
+                auto recover_answer = ::mm2::api::rpc_process_answer_batch<t_recover_funds_of_swap_answer>(answers[0], "recover_funds_of_swap");
+                if (recover_answer.result.has_value())
+                {
+                    auto answer = recover_answer.result.value();
+                    j_out["is_valid"] = true;
+                    j_out["coin"] = answer.coin;
+                    j_out["action"] = answer.action;
+                    j_out["tx_hash"] = answer.tx_hash;
+                    j_out["tx_hex"] = answer.tx_hex;
+                }
+                else if (recover_answer.error.has_value())
+                {
+                    j_out["is_valid"] = false;
+                    j_out["error"] = recover_answer.error.value();
+                }
+                else
+                {
+                    j_out["is_valid"] = false;
+                    j_out["error"] = recover_answer.raw_result;
+                }
+            }
+            else if (resp.status_code() == web::http::status_codes::RequestTimeout)
+            {
+                j_out["is_valid"] = false;
+                j_out["error"] = "Request to mm2 timeout - skipping";
+            }
+            else
+            {
+                j_out["is_valid"] = false;
+                j_out["error"] = body;
+            }
+            this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
+            this->set_recover_fund_busy(false);
+        };
+
+        auto error_functor = [this](pplx::task<void> previous_task)
+        {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("pplx task error from orders_model::recover_fund(QString uuid): {}", e.what());
+                nlohmann::json j_out = nlohmann::json::object();
+                j_out["is_valid"] = false;
+                j_out["error"] = e.what();
+                this->set_recover_fund_data(nlohmann_json_object_to_qt_json_object(j_out));
+                this->set_recover_fund_busy(false);
+            };
+        };
+
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 } // namespace atomic_dex

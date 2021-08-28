@@ -20,9 +20,13 @@
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
+#include "atomicdex/api/mm2/rpc.validate.address.hpp"
+#include "atomicdex/api/mm2/rpc.withdraw.hpp"
+#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -165,211 +169,6 @@ namespace
 
 namespace mm2::api
 {
-    void
-    from_json(const nlohmann::json& j, fee_regular_coin& cfg)
-    {
-        j.at("amount").get_to(cfg.amount);
-    }
-
-    void
-    from_json(const nlohmann::json& j, fee_erc_coin& cfg)
-    {
-        j.at("coin").get_to(cfg.coin);
-        j.at("gas").get_to(cfg.gas);
-        j.at("gas_price").get_to(cfg.gas_price);
-        j.at("total_fee").get_to(cfg.total_fee);
-    }
-
-    void
-    from_json(const nlohmann::json& j, fee_qrc_coin& cfg)
-    {
-        j.at("coin").get_to(cfg.coin);
-        j.at("gas_limit").get_to(cfg.gas_limit);
-        j.at("gas_price").get_to(cfg.gas_price);
-        j.at("miner_fee").get_to(cfg.miner_fee);
-        j.at("total_gas_fee").get_to(cfg.total_gas_fee);
-    }
-
-    void
-    from_json(const nlohmann::json& j, fees_data& cfg)
-    {
-        if (j.count("amount") == 1)
-        {
-            cfg.normal_fees = fee_regular_coin{};
-            from_json(j, cfg.normal_fees.value());
-        }
-        else if (auto coin = j.at("coin").get<std::string>(); coin == "ETH" || coin == "BNB" || coin == "BNBT" || coin == "ETHR")
-        {
-            cfg.erc_fees = fee_erc_coin{};
-            from_json(j, cfg.erc_fees.value());
-        }
-        else if (j.at("coin").get<std::string>() == "QTUM" || j.at("coin").get<std::string>() == "tQTUM")
-        {
-            cfg.qrc_fees = fee_qrc_coin{};
-            from_json(j, cfg.qrc_fees.value());
-        }
-    }
-
-    void
-    to_json(nlohmann::json& j, const tx_history_request& cfg)
-    {
-        j["coin"]  = cfg.coin;
-        j["limit"] = cfg.limit;
-    }
-
-    void
-    from_json(const nlohmann::json& j, transaction_data& cfg)
-    {
-        j.at("block_height").get_to(cfg.block_height);
-        j.at("coin").get_to(cfg.coin);
-        if (j.contains("confirmations"))
-        {
-            cfg.confirmations = j.at("confirmations").get<std::size_t>();
-        }
-        j.at("fee_details").get_to(cfg.fee_details);
-        j.at("from").get_to(cfg.from);
-        j.at("internal_id").get_to(cfg.internal_id);
-        j.at("my_balance_change").get_to(cfg.my_balance_change);
-        j.at("received_by_me").get_to(cfg.received_by_me);
-        j.at("spent_by_me").get_to(cfg.spent_by_me);
-        j.at("timestamp").get_to(cfg.timestamp);
-        j.at("to").get_to(cfg.to);
-        j.at("total_amount").get_to(cfg.total_amount);
-        j.at("tx_hash").get_to(cfg.tx_hash);
-        j.at("tx_hex").get_to(cfg.tx_hex);
-
-        std::string s         = atomic_dex::utils::to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %H:%M");
-        cfg.timestamp_as_date = std::move(s);
-    }
-
-    void
-    from_json(const nlohmann::json& j, sync_status_additional_error& answer)
-    {
-        j.at("code").get_to(answer.code);
-        j.at("message").get_to(answer.message);
-    }
-
-
-    void
-    from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer)
-    {
-        j.at("blocks_left").get_to(answer.blocks_left);
-    }
-
-    void
-    from_json(const nlohmann::json& j, sync_status_regular_coins& answer)
-    {
-        j.at("transactions_left").get_to(answer.transactions_left);
-    }
-
-    void
-    from_json(const nlohmann::json& j, sync_status_additional_infos& answer)
-    {
-        if (j.count("error") == 1)
-        {
-            answer.error = j.get<sync_status_additional_error>();
-        }
-        else if (j.count("blocks_left") == 1)
-        {
-            answer.erc_infos = j.get<sync_status_eth_erc_20_coins>();
-        }
-        else if (j.count("transactions_left") == 1)
-        {
-            answer.regular_infos = j.get<sync_status_regular_coins>();
-        }
-    }
-
-    void
-    from_json(const nlohmann::json& j, t_sync_status& answer)
-    {
-        j.at("state").get_to(answer.state);
-        if (j.count("additional_info") == 1)
-        {
-            answer.additional_info = j.at("additional_info").get<sync_status_additional_infos>();
-        }
-    }
-
-    void
-    from_json(const nlohmann::json& j, tx_history_answer_success& answer)
-    {
-        if (j.contains("from_id"))
-        {
-            if (not j.at("from_id").is_null())
-                j.at("from_id").get_to(answer.from_id);
-        }
-        if (j.contains("current_block"))
-        {
-            j.at("current_block").get_to(answer.current_block);
-        }
-        j.at("limit").get_to(answer.limit);
-        j.at("skipped").get_to(answer.skipped);
-        if (j.contains("sync_status"))
-        {
-            j.at("sync_status").get_to(answer.sync_status);
-        }
-        j.at("total").get_to(answer.total);
-        j.at("transactions").get_to(answer.transactions);
-    }
-
-    void
-    from_json(const nlohmann::json& j, tx_history_answer& answer)
-    {
-        if (j.contains("error"))
-        {
-            answer.error = j.at("error").get<std::string>();
-        }
-        else
-        {
-            answer.result = j.at("result").get<tx_history_answer_success>();
-        }
-    }
-
-    void
-    to_json(nlohmann::json& j, const withdraw_fees& cfg)
-    {
-        j["type"] = cfg.type;
-        if (cfg.type == "EthGas")
-        {
-            j["gas"]       = cfg.gas_limit.value_or(55000);
-            j["gas_price"] = cfg.gas_price.value();
-        }
-        else if (cfg.type == "Qrc20Gas")
-        {
-            j["gas_limit"] = cfg.gas_limit.value_or(40);
-            j["gas_price"] = std::stoi(cfg.gas_price.value());
-        }
-        else
-        {
-            j["amount"] = cfg.amount.value();
-        }
-    }
-
-    void
-    to_json(nlohmann::json& j, const withdraw_request& cfg)
-    {
-        j["coin"]   = cfg.coin;
-        j["amount"] = cfg.amount;
-        j["to"]     = cfg.to;
-        j["max"]    = cfg.max;
-        if (cfg.fees.has_value())
-        {
-            j["fee"] = cfg.fees.value();
-        }
-    }
-
-    void
-    from_json(const nlohmann::json& j, withdraw_answer& answer)
-    {
-        if (j.count("error") >= 1)
-        {
-            answer.error = j.at("error").get<std::string>();
-        }
-        else
-        {
-            answer.result = j.get<transaction_data>();
-        }
-    }
-
     void
     to_json(nlohmann::json& j, const send_raw_transaction_request& cfg)
     {
@@ -769,9 +568,14 @@ namespace mm2::api
     }
 
     nlohmann::json
-    template_request(std::string method_name)
+    template_request(std::string method_name, bool is_protocol_v2)
     {
-        return {{"method", std::move(method_name)}, {"userpass", get_rpc_password()}};
+        nlohmann::json request = {{"method", std::move(method_name)}, {"userpass", get_rpc_password()}};
+        if (is_protocol_v2)
+        {
+            request["mmrpc"] = "2.0";
+        }
+        return request;
     }
 
     std::string
@@ -893,17 +697,20 @@ namespace mm2::api
         return answer;
     }
 
-    template mm2::api::withdraw_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::my_orders_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::orderbook_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::trade_fee_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::max_taker_vol_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::min_volume_answer      rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::my_recent_swaps_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::active_swaps_answer    rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::show_priv_key_answer   rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::trade_preimage_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::best_orders_answer     rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::withdraw_answer              rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::my_orders_answer             rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::orderbook_answer             rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::trade_fee_answer             rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::max_taker_vol_answer         rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::min_volume_answer            rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::my_recent_swaps_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::active_swaps_answer          rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::show_priv_key_answer         rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::trade_preimage_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::best_orders_answer           rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::validate_address_answer      rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::convert_address_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
+    template mm2::api::recover_funds_of_swap_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
 
     void
     set_system_manager(ag::ecs::system_manager& system_manager)

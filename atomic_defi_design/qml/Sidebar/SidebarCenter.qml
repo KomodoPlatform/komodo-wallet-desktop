@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../Constants"
+import App 1.0
 import "../Components"
 
 ColumnLayout {
@@ -74,29 +75,18 @@ ColumnLayout {
         text_value: sidebar.expanded ? qsTr("Fiat") : ""
         image: General.image_path + "bill.svg"
         Layout.fillWidth: true
-        SidebarTooltip {
-            text_value: qsTr("Fiat")
-        }
 
-        DefaultTooltip {
+        SidebarTooltip { text_value: qsTr("Fiat") }
+
+        DexTooltip
+        {
             enabled: false
             id: fiat_coming_soon
-            text: qsTr("Coming soon !")
             visible: parent.mouse_area.containsMouse
+            contentItem: DexRectangle
+            {
+                DexLabel { text: qsTr("Coming soon !"); anchors.centerIn: parent }
+            }
         }
     }
-
-//    SidebarLine {
-//        dashboard_index: idx_dashboard_news
-//        text_value: qsTr("News")
-//        image: General.image_path + "menu-news-white.svg"
-//        Layout.fillWidth: true
-//    }
-
-//    SidebarLine {
-//        dashboard_index: idx_dashboard_dapps
-//        text_value: qsTr("Dapps")
-//        image: General.image_path + "menu-dapp-white.svg"
-//        Layout.fillWidth: true
-//    }
 }

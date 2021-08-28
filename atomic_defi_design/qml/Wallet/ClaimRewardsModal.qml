@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -116,9 +117,8 @@ BasicModal {
             visible: can_claim
 
             Layout.fillWidth: true
-            DefaultText {
+            DexLabel {
                 Layout.fillWidth: true
-                color: can_confirm ? Style.colorText : Style.colorRed
                 text_value: !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                             !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
 
@@ -174,7 +174,7 @@ BasicModal {
                 horizontalAlignment: utxo_header.horizontalAlignment
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.075
+                anchors.leftMargin: parent.width * 0.060
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -190,7 +190,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.175
+                anchors.leftMargin: parent.width * 0.225
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -206,7 +206,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.300
+                anchors.leftMargin: parent.width * 0.400
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -222,7 +222,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.450
+                anchors.leftMargin: parent.width * 0.550
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -238,7 +238,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.600
+                anchors.leftMargin: parent.width * 0.700
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -254,7 +254,7 @@ BasicModal {
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.750
+                anchors.leftMargin: parent.width * 0.820
 
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -418,15 +418,24 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexAppButton {
                 text: qsTr("Cancel")
-                Layout.fillWidth: true
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
                 onClicked: root.close()
             },
 
-            PrimaryButton {
-                text: qsTr("Confirm")
+            Item {
                 Layout.fillWidth: true
+            },
+
+            DexAppOutlineButton {
+                text: qsTr("Confirm")
+                leftPadding: 40
+                rightPadding: 40
+                radius: 18
+                opacity: enabled ? containsMouse ? .7 : 1 : .5
                 onClicked: claimRewards()
                 enabled: can_confirm
             }

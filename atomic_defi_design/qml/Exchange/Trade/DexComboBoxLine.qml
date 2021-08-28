@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls.Universal 2.15
 
 import "../../Components"
-import "../../Constants"
+import App 1.0
 
 RowLayout {
     id: root
@@ -30,19 +30,28 @@ RowLayout {
             anchors.left: parent.right
             anchors.leftMargin: 12
             anchors.verticalCenter: parent.verticalCenter
+            width: root.width-40
             DefaultText {
                 text_value: !details ? "" :
-                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${theme.foregroundColor}">${details.name}</font>`
+                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${DexTheme.foregroundColor}">${details.name}</font>`
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }
 
             DexLabel {
                 id: bottom_line
-                text_value: !details ? "" :
-                            details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency) + ")"
-                color: theme.foregroundColor
-                font: theme.textType.body2
+                property string real_value: !details ? "" :
+                            details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_fiat_sign) + ")"
+                text: real_value
+                Layout.fillWidth: true
+                elide: Text.ElideRight
+                color: DexTheme.foregroundColor
+                font: DexTypo.body2
+                wrapMode: Label.NoWrap
+                ToolTip.text: real_value
+                Component.onCompleted: {
+                    font.pixelSize = 11.5
+                }
             }
         }
     }

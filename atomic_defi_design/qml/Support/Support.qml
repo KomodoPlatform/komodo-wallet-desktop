@@ -6,18 +6,19 @@ import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
+import App 1.0
+
 Item {
     id: root
 
-    DefaultFlickable {
+    DexFlickable {
         id: layout_background
 
-        anchors.fill: parent
-        anchors.leftMargin: 20
-        anchors.rightMargin: anchors.leftMargin
-        anchors.bottomMargin: anchors.leftMargin
-
-        contentWidth: width
+        width: parent.width - 20 
+        height: parent.height - 20
+        y: 10
+        x: 20
+        contentWidth: width - 20
         contentHeight: content_layout.height
 
         ColumnLayout {
@@ -149,7 +150,7 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
 
             FAQLine {
                 title: qsTr("Do you provide user support?")
-                text: qsTr('Yes! %1 offers support through the <a href="https://komodoplatform.com/discord">Komodo Discord server</a>. The team and the community are always happy to help!').arg(API.app_name)
+                text: qsTr('Yes! %1 offers support through the <a href="%2">%1 Discord server</a>. The team and the community are always happy to help!').arg(API.app_name).arg(API.app_discord_url)
             }
 
             FAQLine {
@@ -164,7 +165,7 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
 
             FAQLine {
                 title: qsTr("Which devices can I use %1 on?").arg(API.app_name)
-                text: qsTr('%1 is available for mobile on both <a href="https://%1.io/">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.').arg(API.app_name)
+                text: qsTr('%1 is available for mobile on both <a href="%2">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.').arg(API.app_name).arg(API.app_website_url)
             }
 
             FAQLine {

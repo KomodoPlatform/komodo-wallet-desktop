@@ -18,6 +18,7 @@
 
 //! QT
 #include <QAbstractListModel>
+#include <QVariantMap>
 
 //! STD
 #include <unordered_set>
@@ -31,6 +32,8 @@
 
 namespace atomic_dex
 {
+    class trading_page;
+
     class orderbook_model final : public QAbstractListModel
     {
         Q_OBJECT
@@ -64,11 +67,23 @@ namespace atomic_dex
             SendRole,
             PriceFiatRole,
             HaveCEXIDRole,
-            BaseMinVolumeRole
+            BaseMinVolumeRole,
+            BaseMinVolumeDenomRole,
+            BaseMinVolumeNumerRole,
+            BaseMaxVolumeRole,
+            BaseMaxVolumeDenomRole,
+            BaseMaxVolumeNumerRole,
+            RelMinVolumeRole,
+            RelMinVolumeDenomRole,
+            RelMinVolumeNumerRole,
+            RelMaxVolumeRole,
+            RelMaxVolumeDenomRole,
+            RelMaxVolumeNumerRole,
+            NameAndTicker
         };
 
         orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent = nullptr);
-        ~orderbook_model()  final = default;
+        ~orderbook_model() final = default;
 
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
@@ -76,21 +91,24 @@ namespace atomic_dex
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                                 removeRows(int row, int count, const QModelIndex& parent) override;
 
-        void                                 reset_orderbook(const t_orders_contents& orderbook) ;
-        void                                 refresh_orderbook(const t_orders_contents& orderbook) ;
-        void                                 clear_orderbook() ;
-        [[nodiscard]] int                    get_length() const ;
-        [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const ;
+        void                                 reset_orderbook(const t_orders_contents& orderbook);
+        void                                 refresh_orderbook(const t_orders_contents& orderbook);
+        void                                 clear_orderbook();
+        [[nodiscard]] int                    get_length() const;
+        [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const;
         [[nodiscard]] t_order_contents       get_order_content(const QModelIndex& index) const;
         kind                                 get_orderbook_kind() const;
 
       signals:
         void lengthChanged();
         void proxyMdlChanged();
+        void betterOrderDetected(QVariantMap order_object);
 
       private:
-        void initialize_order(const ::mm2::api::order_contents& order) ;
-        void update_order(const ::mm2::api::order_contents& order) ;
+        void        initialize_order(const ::mm2::api::order_contents& order);
+        void        update_order(const ::mm2::api::order_contents& order);
+        QVariantMap get_order_from_uuid(QString uuid);
+        void        check_for_better_order(trading_page& trading_pg, const QVariantMap& preferred_order, std::string uuid);
 
       private:
         kind                            m_current_orderbook_kind{kind::asks};

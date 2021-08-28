@@ -13,6 +13,7 @@ import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 // Portfolio
 InnerBackground {
@@ -21,18 +22,15 @@ InnerBackground {
     function drawChart() {
         areaLine.clear()
         areaLine3.clear()
-        //scatter.clear()
 
-        dateA.min = new Date(API.app.portfolio_pg.charts[0].timestamp*1000)
-        dateA.max = new Date(API.app.portfolio_pg.charts[API.app.portfolio_pg.charts.length-1].timestamp*1000)
+        dateA.min = new Date(API.app.portfolio_pg.charts[0].timestamp * 1000)
+        dateA.max = new Date(API.app.portfolio_pg.charts[API.app.portfolio_pg.charts.length - 1].timestamp*1000)
         chart_2.update()
-        for (let ii =0; ii<API.app.portfolio_pg.charts.length; ii++) {
+        for (let ii = 0; ii < API.app.portfolio_pg.charts.length; ii++) {
             let el = API.app.portfolio_pg.charts[ii]
             try {
-                //console.log("timestamp: " + el.timestamp*1000)
                 areaLine3.append(el.timestamp*1000, parseFloat(el.total))
                 areaLine.append(el.timestamp*1000, parseFloat(el.total))
-                //scatter.append(el.timestamp*1000, parseFloat(el.total))
             }catch(e) {}
         }
         chart_2.update()
@@ -51,8 +49,8 @@ InnerBackground {
         id: chart2Timer
         interval: 500
         onTriggered: {
-            if(parseFloat(API.app.portfolio_pg.balance_fiat_all)>0){
-                if(API.app.portfolio_pg.charts.length===0){
+            if(parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0){
+                if(API.app.portfolio_pg.charts.length === 0){
                     restart()
                 }else {
                     portfolio_asset_chart.isProgress = false
@@ -109,14 +107,14 @@ InnerBackground {
                     gridVisible: false
                     lineVisible: false
                     format: "<br>MMM d"
-                    labelsColor: theme.foregroundColor
+                    labelsColor: DexTheme.foregroundColor
                 }
                 axisY: ValueAxis {
                     lineVisible: false
                     max:  parseFloat(API.app.portfolio_pg.max_total_chart)
                     min:  parseFloat(API.app.portfolio_pg.min_total_chart)
-                    labelsColor: theme.foregroundColor  
-                    gridLineColor: theme.chartGridLineColor
+                    labelsColor: DexTheme.foregroundColor  
+                    gridLineColor: DexTheme.chartGridLineColor
                 }
                 color: Qt.rgba(77,198,255,0.02)
                 borderColor: 'transparent'
@@ -128,7 +126,7 @@ InnerBackground {
                         visible: false
                         max:  parseFloat(API.app.portfolio_pg.max_total_chart)
                         min:  parseFloat(API.app.portfolio_pg.min_total_chart)
-                        color: theme.foregroundColor
+                        color: DexTheme.foregroundColor
                     }
                     axisX: DateTimeAxis {
                         id: dateA2
@@ -151,21 +149,21 @@ InnerBackground {
                     id: verticalLine
                     height: parent.height-84
                     opacity: .7
-                    visible: mouse_area.containsMouse  && mouse_area.mouseX>60
+                    visible: mouse_area.containsMouse  && mouse_area.mouseX > 60
                     anchors.verticalCenterOffset: -6
                     anchors.verticalCenter: parent.verticalCenter
                     width: 3
                     radius: 4
                     
-                    border.color: theme.accentColor
-                    color: theme.foregroundColor
+                    border.color: DexTheme.accentColor
+                    color: DexTheme.foregroundColor
                     x: mouse_area.mouseX-80
                 }
             }
             
             LineSeries {
                 id: areaLine3
-                color: theme.accentColor
+                color: DexTheme.accentColor
                 visible: !isSpline
                 width: 3.0
                 axisY: ValueAxis {
@@ -191,23 +189,23 @@ InnerBackground {
                 width: parent.width+200
                 height: parent.height
                 x: -40
-                hoverEnabled: true
+                enabled: false 
+                hoverEnabled: false
                 onPositionChanged:  {
                     let mx = mouseX
-                    //console.log(mx)
                     let point = Qt.point(mx, mouseY)
                     let p = chart_2.mapToValue(point, area)
                     let idx = API.app.portfolio_pg.get_neareast_point(Math.floor(p.x) / 1000);
                     let pos = areaLine3.at(idx);
                     let chartPosition = chart_2.mapToPosition(pos, areaLine3)
                     
-                    if(mx<170) {
+                    if(mx < 170) {
                          boxi.x = mx
                     }else {
-                        boxi.x = mx-170
+                        boxi.x = mx - 170
                     }
 
-                    boxi.y = chartPosition.y+10
+                    boxi.y = chartPosition.y + 10
                     boxi.value = pos.y
                     boxi.timestamp = pos.x
                 }
@@ -219,7 +217,7 @@ InnerBackground {
         Rectangle {
             anchors.fill: parent
             opacity: .6
-            color: theme.dexBoxBackgroundColor
+            color: DexTheme.dexBoxBackgroundColor
             visible: portfolio_asset_chart.isProgress
             radius: parent.radius
             DexBusyIndicator {
@@ -235,7 +233,7 @@ InnerBackground {
             spacing: 20
             scale: .8
             FloatingBackground {
-                width: rd.width+10
+                width: rd.width + 10
                 height: 50
 
                 Row {
@@ -246,32 +244,32 @@ InnerBackground {
 
                     Qaterial.OutlineButton {
                         text: "YTD"
-                        foregroundColor: theme.foregroundColor
-                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3? theme.accentColor : theme.backgroundColor
+                        foregroundColor: DexTheme.foregroundColor
+                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 3 ? DexTheme.accentColor : DexTheme.backgroundColor
                         onClicked: {
                             API.app.portfolio_pg.chart_category = WalletChartsCategories.Ytd
                         }
                     }
                     Qaterial.OutlineButton {
                         text: "1M"
-                        foregroundColor: theme.foregroundColor
-                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 2? theme.accentColor : theme.backgroundColor
+                        foregroundColor: DexTheme.foregroundColor
+                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 2 ? DexTheme.accentColor : DexTheme.backgroundColor
                         onClicked: {
                             API.app.portfolio_pg.chart_category = WalletChartsCategories.OneMonth
                         }
                     }
                     Qaterial.OutlineButton {
                         text: "7D"
-                        foregroundColor: theme.foregroundColor
-                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 1? theme.accentColor : theme.backgroundColor
+                        foregroundColor: DexTheme.foregroundColor
+                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 1? DexTheme.accentColor : DexTheme.backgroundColor
                         onClicked: API.app.portfolio_pg.chart_category = WalletChartsCategories.OneWeek
                     }
                     Qaterial.OutlineButton {
                         text: "24H"
                         opacity: .4
-                        foregroundColor: theme.foregroundColor
+                        foregroundColor: DexTheme.foregroundColor
                         enabled: false
-                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? theme.accentColor : theme.backgroundColor
+                        outlinedColor: API.app.portfolio_pg.chart_category.valueOf() === 0? DexTheme.accentColor : DexTheme.backgroundColor
                         onClicked: API.app.portfolio_pg.chart_category = 0
                     }
                 }
@@ -306,13 +304,32 @@ InnerBackground {
                 spacing: 5
                 DexLabel {
                     text: "%1 %2".arg( API.app.settings_pg.current_fiat_sign).arg(boxi.value)
-                    color: theme.accentColor
-                    font: theme.textType.subtitle2
+                    color: DexTheme.accentColor
+                    font: DexTypo.subtitle2
                 }
                 DexLabel {
                     text: Qt.formatDate(new Date(boxi.timestamp), "dd MMM yyyy");
-                    font: theme.textType.body2
+                    font: DexTypo.body2
                 }
+            }
+        }
+    }
+    Rectangle {
+        anchors.fill: parent
+        radius: parent.radius
+        opacity: 0.7
+        color: "black"
+        Column {
+            anchors.centerIn: parent
+            spacing: 20
+            Qaterial.ColorIcon {
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: Qaterial.Icons.rocketLaunchOutline
+                color: DexTheme.accentColor
+            }
+            DexLabel {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Work in progress")
             }
         }
     }

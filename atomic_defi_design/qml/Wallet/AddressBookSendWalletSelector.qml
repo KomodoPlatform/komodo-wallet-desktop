@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -18,9 +19,10 @@ BasicModal {
         title: qsTr("Choose a valid ") + coin_type + qsTr(" coin")
 
         Repeater {
-            model: coin_type == "QRC20" ? API.app.portfolio_pg.global_cfg_mdl.all_qrc20_proxy :
-                   coin_type == "ERC20" ? API.app.portfolio_pg.global_cfg_mdl.all_erc20_proxy :
-                                          API.app.portfolio_pg.global_cfg_mdl.all_smartchains_proxy
+            model: coin_type == "QRC-20" ? API.app.portfolio_pg.global_cfg_mdl.all_qrc20_proxy :
+                   coin_type == "ERC-20" ? API.app.portfolio_pg.global_cfg_mdl.all_erc20_proxy :
+                   coin_type == "BEP-20" ? API.app.portfolio_pg.global_cfg_mdl.all_bep20_proxy :
+                                           API.app.portfolio_pg.global_cfg_mdl.all_smartchains_proxy
 
             delegate: AddressBookWalletTypeListRow {
                 Layout.preferredHeight: height

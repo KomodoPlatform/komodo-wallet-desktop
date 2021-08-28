@@ -4,41 +4,47 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 import "../Wallet"
 import "../Exchange"
 import "../Sidebar"
 
 SetupPage {
     // Override
-    property var onLoaded: () => {}
+    property
+    var onLoaded: () => {}
 
     readonly property string current_status: API.app.wallet_mgr.initial_loading_status
 
     onCurrent_statusChanged: {
-        if(current_status === "complete")
+        if (current_status === "complete")
             onLoaded()
     }
 
-    image_path: General.image_path + Style.sidebar_atomicdex_logo
+    image_path: "file:///" + atomic_logo_path + "/" + DexTheme.bigSidebarLogo
     image_margin: 30
+    backgroundColor: 'transparent'
+    borderColor: 'transparent'
     content: ColumnLayout {
+
+        DefaultBusyIndicator {
+            Layout.preferredHeight: 100
+            Layout.preferredWidth: 100
+            Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: -15
+            Layout.rightMargin: Layout.leftMargin * 0.75
+            scale: 0.8
+        }
+
         DefaultText {
             text_value: qsTr("Loading, please wait")
             Layout.bottomMargin: 10
         }
 
-        RowLayout {
-            DefaultBusyIndicator {
-                Layout.alignment: Qt.AlignHCenter
-                Layout.leftMargin: -15
-                Layout.rightMargin: Layout.leftMargin*0.75
-                scale: 0.5
-            }
-
-            DefaultText {
-                text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                             current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
-            }
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
         }
     }
 }

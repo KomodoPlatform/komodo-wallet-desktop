@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 ColumnLayout {
     property alias title: title.text
@@ -13,6 +14,7 @@ ColumnLayout {
 
     TitleText {
         id: title
+        opacity: .6
     }
 
     ListView {
@@ -26,7 +28,7 @@ ColumnLayout {
         // Row
         delegate: DefaultTextEdit {
             text_value: model.modelData
-            color: Style.modalValueColor
+            color: DexTheme.foregroundColor
             privacy: true
         }
     }

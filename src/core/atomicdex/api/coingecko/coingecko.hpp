@@ -44,6 +44,7 @@ namespace atomic_dex::coingecko::api
     {
         std::string    price_change_24h;
         std::string    current_price;
+        std::string    total_volume;
         nlohmann::json sparkline_in_7d{nlohmann::json::array()};
     };
 

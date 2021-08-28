@@ -9,40 +9,14 @@ import ".."
 
 import "Orders/"
 
+import App 1.0
+
 BasicModal {
     id: root
 
-    width: 1100
+    width: 650
 
-    onOpened: reset()
-
-    function reset() {
-        API.app.trading_pg.determine_fees()
-    }
-    function isEmpty(data){
-        console.log(JSON.stringify(data))
-        if(data.length<0) {
-            return true
-        }else {
-            return false
-        }
-    }
-    function isVisible(n){
-
-        return isEmpty(fees_data)? false : parseFloat(n)===0? false: true
-    }
-
-    Connections {
-        target: API.app.trading_pg
-        function onFeesChanged() {
-            fees_data = API.app.trading_pg.fees
-            API.app.trading_pg.determine_error_cases()
-        }
-    }
-
-    onClosed:  {
-        API.app.trading_pg.reset_fees()
-    }
+    readonly property var fees: API.app.trading_pg.fees
 
     ModalContent {
         title: qsTr("Confirm Exchange Details")
@@ -67,9 +41,14 @@ BasicModal {
             in_modal: true
         }
 
-        PriceLine {
+        Column {
             Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 500
+            PriceLineSimplified {
+                width: 500
+            }
         }
+        
 
         HorizontalLine {
             Layout.topMargin: 10
@@ -77,27 +56,23 @@ BasicModal {
             Layout.fillWidth: true
         }
 
-        FloatingBackground {
+        Column {
+            Layout.preferredWidth: 500
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: 10
 
-            color: Style.colorTheme5
-
-            width: warning_texts.width + 20
-            height: warning_texts.height + 20
-
             ColumnLayout {
                 id: warning_texts
-                anchors.centerIn: parent
+                width: 500
 
-                DefaultText {
-                    Layout.alignment: Qt.AlignHCenter
+                DexLabel {
+                    Layout.alignment: Qt.AlignLeft
 
                     text_value: qsTr("This swap request can not be undone and is a final event!")
                 }
 
-                DefaultText {
-                    Layout.alignment: Qt.AlignHCenter
+                DexLabel {
+                    Layout.alignment: Qt.AlignLeft
 
                     text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
                     font.pixelSize: Style.textSizeSmall4
@@ -105,37 +80,31 @@ BasicModal {
             }
         }
 
-        HorizontalLine {
-            Layout.bottomMargin: 10
-            Layout.fillWidth: true
-            visible: !isEmpty(fees_data)
-        }
-
         Item  {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 120
-            visible: !isEmpty(fees_data)
+            Layout.preferredWidth: 500
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: feesColumn.height + 10
+            opacity: .7
             Column {
-                anchors.centerIn: parent
+                id: feesColumn
+                anchors.verticalCenter: parent.verticalCenter
 
-                DefaultListView {
-                  enabled: isVisible(fees_data.total_fees)
-                  model: fees_data.total_fees
+                Repeater {
+                  model: fees.total_fees
                   delegate: DefaultText {
-                    visible: isVisible(modelData.amount)
+                    visible: true
                     text: qsTr("Total %1 fees: %2 (%3)").arg(modelData.coin).arg(parseFloat(modelData.required_balance).toFixed(8) / 1).arg(General.getFiatText(modelData.required_balance, modelData.coin, false))
                   }
                   anchors.horizontalCenter: parent.horizontalCenter
                 }
-
                 Item {width: 1; height: 10}
                 DefaultText {
                     id: errors
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: parent.width
                     horizontalAlignment: DefaultText.AlignHCenter
-                    font.pixelSize: Style.textSizeSmall4
-                    color: Style.colorRed
+                    font: DexTypo.caption
+                    color: DexTheme.redColor
 
                     text_value: General.getTradingError(
                                     last_trading_error,
@@ -143,14 +112,9 @@ BasicModal {
                                     base_ticker,
                                     rel_ticker, left_ticker, right_ticker)
                 }
-                Item {width: 1; height: 10}
             }
         }
 
-        HorizontalLine {
-            Layout.bottomMargin: 10
-            Layout.fillWidth: true
-        }
 
         ColumnLayout {
             id: config_section
@@ -187,7 +151,7 @@ BasicModal {
             }
 
             // Enable custom config
-            DefaultCheckBox {
+            DexCheckBox {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_custom_config
 
@@ -231,12 +195,14 @@ BasicModal {
                     }
 
                     DefaultText {
+                        Layout.preferredHeight: 10
                         Layout.alignment: Qt.AlignHCenter
                         text_value: qsTr("Required Confirmations") + ": " + required_confirmation_count.value
-                        color: parent.enabled ? Style.colorText : Style.colorTextDisabled
+                        color: DexTheme.foregroundColor
+                        opacity: parent.enabled ? 1 : .6
                     }
 
-                    DefaultSlider {
+                    DexSlider {
                         id: required_confirmation_count
                         readonly property int default_confirmation_count: 3
                         Layout.alignment: Qt.AlignHCenter
@@ -277,21 +243,35 @@ BasicModal {
                 Layout.alignment: Qt.AlignCenter
             }
         }
-
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
         // Buttons
         footer: [
-            DefaultButton {
-                text: qsTr("Cancel")
+            Item {
                 Layout.fillWidth: true
+            },
+            DexAppButton {
+                text: qsTr("Cancel")
+                padding: 17
+                leftPadding: 45
+                rightPadding: 45
+                radius: 18
                 onClicked: {
-                    fees_data = []
+                    //fees = []
                     root.close()
                 }
             },
-
-            PrimaryButton {
-                text: qsTr("Confirm")
+            Item {
                 Layout.fillWidth: true
+            },
+            DexGradientAppButton {
+                text: qsTr("Confirm")
+                padding: 17
+                leftPadding: 45
+                rightPadding: 45
+
+                radius: 18
                 enabled: !buy_sell_rpc_busy && last_trading_error === TradingError.None
                 onClicked: {
                     trade({
@@ -301,6 +281,9 @@ BasicModal {
                             required_confirmation_count: required_confirmation_count.value,
                           }, config_section.default_config)
                 }
+            },
+            Item {
+                Layout.fillWidth: true
             }
         ]
     }

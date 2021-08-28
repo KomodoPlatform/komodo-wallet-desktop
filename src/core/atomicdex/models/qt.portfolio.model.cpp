@@ -153,7 +153,7 @@ namespace atomic_dex
     bool
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers)
     {
-        SPDLOG_INFO("update_balance_values");
+        //SPDLOG_INFO("update_balance_values");
         for (auto&& ticker: tickers)
         {
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
@@ -338,6 +338,7 @@ namespace atomic_dex
             break;
         case PrivKey:
             item.priv_key = value.toString();
+            emit dataChanged(index, index, {role});
             break;
         case PercentMainCurrency:
             item.percent_main_currency = value.toString();
@@ -493,7 +494,7 @@ namespace atomic_dex
     void
     portfolio_model::adjust_percent_current_currency(QString balance_all)
     {
-        SPDLOG_INFO("adjust_percent_current_currency");
+        //SPDLOG_INFO("adjust_percent_current_currency");
         const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         for (auto&& [coin, cfg]: coins)
         {

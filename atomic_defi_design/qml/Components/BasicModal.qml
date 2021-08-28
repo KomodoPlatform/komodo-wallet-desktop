@@ -1,39 +1,51 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import "../Constants"
+import App 1.0
 
-DefaultModal {
+DefaultModal
+{
     id: root
 
-    padding: 10
-
-    width: 900
-    height: column_layout.height + verticalPadding * 2
-
-    property alias currentIndex: stack_layout.currentIndex
-    property int targetPageIndex: currentIndex
-    property alias count: stack_layout.count
+    property alias         currentIndex: stack_layout.currentIndex
+    property int           targetPageIndex: currentIndex
+    property alias         count: stack_layout.count
     default property alias pages: stack_layout.data
 
-    function nextPage() {
-        if(currentIndex === count - 1) root.close()
-        else {
+    readonly property int _modalWidth: width
+    readonly property int _modalPadding: padding
+
+    function nextPage()
+    {
+        if (currentIndex === count - 1)
+            root.close()
+        else
+        {
             targetPageIndex = currentIndex + 1
             page_change_animation.start()
         }
     }
 
-    function previousPage() {
-        if(currentIndex === 0) root.close()
-        else {
+    function previousPage()
+    {
+        if (currentIndex === 0)
+            root.close()
+        else
+        {
             targetPageIndex = currentIndex - 1
             page_change_animation.start()
         }
     }
 
-    onOpened: {
-        stack_layout.opacity = 1
-    }
+    //! Appearance
+    padding: 20
+    leftPadding: 20
+    rightPadding: 20
+    bottomPadding: 15
+    width: 700
+    height: column_layout.height + verticalPadding * 2
+
+    onOpened: stack_layout.opacity = 1
 
     SequentialAnimation {
         id: page_change_animation
@@ -59,23 +71,26 @@ DefaultModal {
                 model: root.count
                 delegate: Item {
                     id: bundle
-                    property color color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
-                    width: (index === root.count-1 ? 0 : circle.width*2) + circle.width*0.5
+                    property color color: root.currentIndex >= (root.count-1 - index) ? DexTheme.modalStepColor : DexTheme.contentColorTopBold
+                    width: (index === root.count-1 ? 0 : circle.width*3) + circle.width*0.5
                     height: circle.height * 1.5
                     InnerBackground {
                         id: rectangle
-                        height: circle.height/4
+                        height: 2
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: -circle.width*0.5
                         anchors.right: circle.horizontalCenter
-                        color: bundle.color
+                        shadowOff: true
+                        color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
                     }
 
-                    FloatingBackground {
+                    DexRectangle {
                         id: circle
-                        width: 24
+                        width: 20
                         height: width
+                        radius: width/2
+                        border.color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         color: bundle.color

@@ -5,7 +5,8 @@ import QtQuick.Controls 2.15 //> ProgressBar
 
 // Project imports
 import "../Components" //> BasicModal
-import "../Constants"  //> API.app.self_update_service
+import "../Constants"
+import App 1.0  //> API.app.self_update_service
 
 BasicModal
 {

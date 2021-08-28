@@ -39,7 +39,7 @@ namespace mm2::api
         j["base"]   = request.base;
         j["rel"]    = request.rel;
         j["volume"] = request.volume; //< First take the user input
-        if (request.is_max)           //< It's a real max means user want to sell his base_max_taker_vol let's take the fraction repr
+        if (request.is_max && !request.selected_order_use_input_volume)           //< It's a real max means user want to sell his base_max_taker_vol let's take the fraction repr
         {
             j["volume"] = volume_fraction_functor();
         }
@@ -64,7 +64,7 @@ namespace mm2::api
             price_fraction_repr["numer"]       = request.price_numer;
             price_fraction_repr["denom"]       = request.price_denom;
             j["price"]                         = price_fraction_repr;
-            if (request.is_exact_selected_order_volume)
+            if (request.is_exact_selected_order_volume && !request.selected_order_use_input_volume)
             {
                 j["volume"] = volume_fraction_functor();
             }
@@ -73,6 +73,10 @@ namespace mm2::api
         else
         {
             SPDLOG_INFO("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
+        }
+        if (request.order_type.has_value())
+        {
+            j["order_type"] = request.order_type.value();
         }
     }
 

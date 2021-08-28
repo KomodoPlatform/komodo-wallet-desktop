@@ -28,7 +28,7 @@
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/synchronized_value.hpp>
-#include <reproc++/reproc.hpp>
+//#include <reproc++/reproc.hpp>
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.client.hpp"
@@ -88,7 +88,7 @@ namespace atomic_dex
         mm2_client m_mm2_client;
 
         //! Process
-        reproc::process m_mm2_instance;
+        //reproc::process m_mm2_instance;
 
         //! Current ticker
         t_synchronized_ticker m_current_ticker{g_primary_dex_coin};
@@ -259,6 +259,8 @@ namespace atomic_dex
 
         //! Pagination
         void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});
+
+        void change_segwit_status(std::string ticker, bool status);
     };
 } // namespace atomic_dex
 

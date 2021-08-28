@@ -19,6 +19,7 @@
 #include <QGuiApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QFile>
 
 //! Deps
 #include <QrCode.hpp>
@@ -79,6 +80,17 @@ namespace atomic_dex
         return out;
     }
 
+    QString
+    std_path_to_qstring(const fs::path& path)
+    {
+        QString out;
+#if defined(_WIN32) || defined(WIN32)
+        return QString::fromStdWString(path.wstring());
+#else
+        return QString::fromStdString(path.string());
+#endif
+    }
+
     void
     qt_utilities::copy_text_to_clipboard(const QString& text)
     {
@@ -101,7 +113,7 @@ namespace atomic_dex
     {
         QStringList    out;
         const fs::path theme_path = atomic_dex::utils::get_themes_path();
-        for (auto&& cur: fs::directory_iterator(theme_path)) { out << QString::fromStdString(cur.path().filename().string()); }
+        for (auto&& cur: fs::directory_iterator(theme_path)) { out << std_path_to_qstring(cur.path().filename()); }
         return out;
     }
 
@@ -116,10 +128,12 @@ namespace atomic_dex
         }
         else
         {
-            SPDLOG_INFO("saving new theme: {}", file_path.string());
-            std::ofstream ofs(file_path.string(), std::ios::trunc);
-            ofs << QJsonDocument(QJsonObject::fromVariantMap(theme_object)).toJson(QJsonDocument::Indented).toStdString();
-            ofs.close();
+            LOG_PATH("saving new theme: {}", file_path);
+            QFile file;
+            file.setFileName(std_path_to_qstring(file_path));
+            file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            file.write(QJsonDocument(QJsonObject::fromVariantMap(theme_object)).toJson(QJsonDocument::Indented));
+            file.close();
         }
         return result;
     }
@@ -132,9 +146,13 @@ namespace atomic_dex
         fs::path file_path = atomic_dex::utils::get_themes_path() / (theme_name.toStdString() + ".json"s);
         if (fs::exists(file_path))
         {
-            std::ifstream ifs(file_path.string());
-            std::string   str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-            return QJsonDocument::fromJson(str.data()).object().toVariantMap();
+            LOG_PATH("load theme: {}", file_path);
+            QFile file;
+            file.setFileName(std_path_to_qstring(file_path));
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
+            QString val = file.readAll();
+            file.close();
+            return QJsonDocument::fromJson(val.toUtf8()).object().toVariantMap();
         }
         return out;
     }

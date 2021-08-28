@@ -6,6 +6,7 @@ import QtQuick.Controls 2.15
 // Project Imports
 import "../Components"
 import "../Constants"
+import App 1.0
 
 BasicModal {
     id: root
@@ -31,6 +32,9 @@ BasicModal {
             id: contact_list_bg
 
             Layout.fillWidth: true
+            shadowOff: true
+            radius: 4
+            color: 'transparent'
 
             content: DefaultListView { // Contact List
                 readonly property int rowHeight: 30 // Visual height of a row.
@@ -69,10 +73,9 @@ BasicModal {
                     }
                     implicitWidth: contact_list_bg.width
                     height: 30
-                    color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
-                    radius: contact_list_bg.radius
+                    color: mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.contentColorTopBold : "transparent"
 
-                    DefaultMouseArea {
+                    DexMouseArea {
                         id: mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
@@ -139,12 +142,14 @@ BasicModal {
                 Layout.leftMargin: 5
                 Layout.preferredWidth: 210
                 text: qsTr("Name")
-                color: Style.colorWhite4
+                color: DexTheme.foregroundColor
+                opacity: .7
             }
 
             DefaultText {
                 text: qsTr("Address")
-                color: Style.colorWhite4
+                color: DexTheme.foregroundColor
+                opacity: .7
             }
         }
 
@@ -153,6 +158,9 @@ BasicModal {
             id: address_list_bg
 
             Layout.fillWidth: true
+            shadowOff: true
+            radius: 4
+            color: 'transparent'
 
             content: DefaultListView { // Address List
                 readonly property int rowHeight: 30 // Visual height of a row.
@@ -162,10 +170,10 @@ BasicModal {
                 delegate: AnimatedRectangle { // Address Row
                     implicitWidth: address_list_bg.width
                     height: 30
-                    color: Style.colorOnlyIf(address_mouse_area.containsMouse, Style.colorTheme6)
+                    color: address_mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.contentColorTopBold : "transparent"
                     radius: address_list_bg.radius
 
-                    DefaultMouseArea {
+                    DexMouseArea {
                         id: address_mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
@@ -191,27 +199,15 @@ BasicModal {
                         anchors.rightMargin: 10
                         text: model.address_value
                         elide: Qt.ElideRight
-
-                        VerticalLine {
-                            height: parent.parent.height
-                            width: 2
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.right: parent.left
-                            anchors.rightMargin: 3
-                        }
-                    }
-
-                    HorizontalLine {
-                        width: parent.width
-                        height: 2
-                        anchors.bottom: parent.bottom
                     }
                 }
             }
         }
 
-        DefaultButton {
-            Layout.fillWidth: true
+        DexAppButton {
+            leftPadding: 20
+            rightPadding: 20
+            radius: 16
             Layout.alignment: Qt.AlignBottom
             text: qsTr("Back")
             onClicked: currentIndex = 0

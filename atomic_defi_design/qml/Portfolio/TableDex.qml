@@ -13,8 +13,11 @@ import AtomicDEX.WalletChartsCategories 1.0
 
 import "../Components"
 import "../Constants"
+import App 1.0
 
 Item {
+    property alias innerList: list
+
     width: parent.width
     height: 150+(list.count*65)
     visible: true
@@ -23,10 +26,12 @@ Item {
         anchors.margins: 15
         anchors.leftMargin: 40
         anchors.rightMargin: 40
-        Rectangle {
+        DexRectangle {
             width: parent.width
             height: 60
-            color:  Qt.darker(theme.backgroundColor, 0.8)
+            //color:  Qt.darker(DexTheme.backgroundColor, 0.8)
+            color: 'transparent'
+            border.width: 0
             RowLayout {
                 anchors.fill: parent
                 Item {
@@ -138,11 +143,11 @@ Item {
             scrollbar_visible: false
 
             delegate: AnimatedRectangle {
-                color: Qt.lighter(
-                           mouse_area.containsMouse ? theme.hightlightColor : index % 2 !== 0 ? Qt.darker(theme.backgroundColor, 0.8) : "transparent",
-                           mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                color: mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.hoverColor : 'transparent'
                 width: list.width
                 height: 65
+                opacity: mouse_area.containsMouse ? .6 : 1
+                colorAnimation: false
                 AnimatedRectangle {
                     id: main_color
                     color: Style.getCoinColor(ticker)
@@ -203,7 +208,7 @@ Item {
                             id: coin_name
                             text_value: name
                             bottomPadding: 20
-                            font: theme.textType.body2
+                            font: DexTypo.body2
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DefaultText {
@@ -211,9 +216,22 @@ Item {
                             anchors.bottom: coin_name.bottom
 
                             text: model.type
-                            font: theme.textType.overLine
+                            font: DexTypo.overLine
                             opacity: .7
                             color: Style.getCoinTypeColor(model.type)
+
+                            DefaultText
+                            {
+                                enabled: name === "Tokel"
+                                visible: enabled
+                                anchors.left: parent.right
+                                anchors.leftMargin: 5
+
+                                text: "IDO"
+                                font: DexTypo.overLine
+                                opacity: .7
+                                color: DexTheme.redColor
+                            }
                         }
                     }
                     Item {
@@ -225,13 +243,13 @@ Item {
                         }
                         DefaultText {
                             id: balance_value
-                            font: theme.textType.body2
+                            font: DexTypo.body2
 
                             text_value: General.formatCrypto(
                                             "", balance, ticker,
                                             main_currency_balance,
                                             API.app.settings_pg.current_currency)
-                            color: Qt.darker(theme.foregroundColor, 0.8)
+                            color: Qt.darker(DexTheme.foregroundColor, 0.8)
                             anchors.verticalCenter: parent.verticalCenter
                             privacy: true
                         }
@@ -246,14 +264,14 @@ Item {
                         }
                         DefaultText {
                             id: change_24h_value
-                            font: theme.textType.body2
+                            font: DexTypo.body2
                             text_value: {
                                 const v = parseFloat(change_24h)
                                 return v === 0 ? '-' : General.formatPercent(
                                                      v)
                             }
                             anchors.horizontalCenter: parent.horizontalCenter
-                            color: Style.getValueColor(change_24h)
+                            color: DexTheme.getValueColor(change_24h)
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
@@ -278,7 +296,7 @@ Item {
 
                             function refresh() {
                                 updateChart(chart, historical,
-                                            Style.getValueColor(change_24h))
+                                            DexTheme.getValueColor(change_24h))
                             }
 
                             property bool dark_theme: Style.dark_theme
@@ -296,13 +314,13 @@ Item {
                             id: price_value
                             anchors.right: parent.right
                             anchors.rightMargin: 10
-                            font: theme.textType.body2
+                            font: DexTypo.body2
 
                             text_value: General.formatFiat(
                                             '',
                                             main_currency_price_for_one_unit,
                                             API.app.settings_pg.current_currency)
-                            color: theme.colorThemeDarkLight
+                            color: DexTheme.colorThemeDarkLight
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DefaultImage {
@@ -327,7 +345,7 @@ Item {
                     width: parent.width-2
                     height: parent.height-2
                     color: 'transparent'
-                    border.color: theme.foregroundColor
+                    border.color: DexTheme.foregroundColor
                     opacity: .15
                     radius: 4
                 }
@@ -335,9 +353,10 @@ Item {
                     anchors.centerIn: parent
                     spacing: 10
                     opacity: .5
-                    Qaterial.ColorIcon {
+                    Qaterial.Icon {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: Qaterial.Icons.plusBox
+                        icon: Qaterial.Icons.plusBox
+                        color: DexTheme.foregroundColor
                     }
                     DexLabel {
                         anchors.verticalCenter: parent.verticalCenter

@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
+import App 1.0
 
 import "../Dashboard"
 import "../Portfolio"
@@ -14,7 +15,8 @@ import "../Settings"
 import "../Support"
 import "../Sidebar"
 import "../Fiat"
-import "../Settings" as SettingsPage
+import "../Settings"
+as SettingsPage
 
 
 Item {
@@ -37,22 +39,27 @@ Item {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
-    property var current_ticker
+    property
+    var current_ticker
 
-    property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
     function openLogsFolder() {
         Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
 
-    readonly property var api_wallet_page: API.app.wallet_pg
-    readonly property var current_ticker_infos: api_wallet_page.ticker_infos
+    readonly property
+    var api_wallet_page: API.app.wallet_pg
+    readonly property
+    var current_ticker_infos: api_wallet_page.ticker_infos
     readonly property bool can_change_ticker: !api_wallet_page.tx_fetching_busy
 
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
+    onCurrent_pageChanged: {
+        app.deepPage = current_page * 10
+    }
 
 
     readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
@@ -61,10 +68,13 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    property var notifications_list: ([])
+    property
+    var notifications_list: ([])
 
-    readonly property var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
-    property var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
+    readonly property
+    var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
+    property
+    var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
 
     function resetCoinFilter() {
         portfolio_coins.setFilterFixedString("")
@@ -83,23 +93,24 @@ Item {
 
     // Force restart modal: opened when the user has more coins enabled than specified in its configuration
     ForceRestartModal {
-        reason: qsTr("The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.")
+        reasonMsg: qsTr("The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.")
         Component.onCompleted: {
-            if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled"))
-            {
+            if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled")) {
                 open()
-                task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
+                onTimerEnded = () => {
+                    API.app.settings_pg.reset_coin_cfg()
+                }
             }
         }
     }
 
     // Right side
     AnimatedRectangle {
-        color: theme.backgroundColorDeep
+        color: DexTheme.backgroundColorDeep
         width: parent.width - sidebar.width
-        height: window.isOsx? parent.height : parent.height-40
-        y: !window.isOsx? 40 : 0
+        height: parent.height
         x: sidebar.width
+        border.color: 'transparent'
 
         // Modals
         ModalLoader {
@@ -190,17 +201,27 @@ Item {
             transformOrigin: Item.Center
 
             sourceComponent: {
-                switch(current_page) {
-                case idx_dashboard_portfolio: return portfolio
-                case idx_dashboard_wallet: return wallet
-                case idx_dashboard_exchange: return exchange
-                case idx_dashboard_addressbook: return addressbook
-                case idx_dashboard_news: return news
-                case idx_dashboard_dapps: return dapps
-                case idx_dashboard_settings: return settings
-                case idx_dashboard_support: return support
-                case idx_dashboard_fiat_ramp: return fiat_ramp
-                default: return undefined
+                switch (current_page) {
+                    case idx_dashboard_portfolio:
+                        return portfolio
+                    case idx_dashboard_wallet:
+                        return wallet
+                    case idx_dashboard_exchange:
+                        return exchange
+                    case idx_dashboard_addressbook:
+                        return addressbook
+                    case idx_dashboard_news:
+                        return news
+                    case idx_dashboard_dapps:
+                        return dapps
+                    case idx_dashboard_settings:
+                        return settings
+                    case idx_dashboard_support:
+                        return support
+                    case idx_dashboard_fiat_ramp:
+                        return fiat_ramp
+                    default:
+                        return undefined
                 }
             }
         }
@@ -210,7 +231,7 @@ Item {
 
             anchors.fill: parent
 
-            DefaultBusyIndicator {
+            DexBusyIndicator {
                 anchors.centerIn: parent
                 running: !loader.visible
             }
@@ -220,41 +241,7 @@ Item {
     // Sidebar, left side
     Sidebar {
         id: sidebar
-
-    }
-
-    // Unread notifications count
-    AnimatedRectangle {
-        radius: 1337
-        width: count_text.height * 1.5
-        height: width
-        z: 1
-
-        x: sidebar.app_logo.x + sidebar.app_logo.width - 20
-        y: sidebar.app_logo.y
-        color: Qt.lighter(notifications_list.length > 0 ? Style.colorRed : theme.backgroundColor, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
-
-        DefaultText {
-            id: count_text
-            anchors.centerIn: parent
-            text_value: notifications_list.length
-            font.pixelSize: Style.textSizeSmall1
-            font.weight: Font.Medium
-            color: notifications_list.length > 0 ? theme.foregroundColor : Qt.darker(theme.foregroundColor)
-        }
-    }
-
-    // Notifications panel button
-    DefaultMouseArea {
-        id: notifications_modal_button
-        x: sidebar.app_logo.x
-        y: sidebar.app_logo.y
-        width: sidebar.app_logo.width
-        height: sidebar.app_logo.height
-
-        hoverEnabled: true
-
-        onClicked: notifications_modal.open()
+        y: -30
     }
 
     DropShadow {
@@ -263,19 +250,11 @@ Item {
         cached: false
         horizontalOffset: 0
         verticalOffset: 0
-        radius: theme.sidebarShadowRadius
+        radius: DexTheme.sidebarShadowRadius
         samples: 32
         spread: 0
-        color: theme.colorSidebarDropShadow
+        color: DexTheme.colorSidebarDropShadow
         smooth: true
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        color: '#000'
-        visible: notifications_modal.visible
-        anchors.leftMargin: sidebar.width
-        opacity: .6
     }
 
     ModalLoader {
@@ -298,12 +277,8 @@ Item {
         sourceComponent: RestartModal {}
     }
 
-    NotificationsModal {
-        id: notifications_modal
-    }
-
     function getStatusColor(status) {
-        switch(status) {
+        switch (status) {
             case "matching":
                 return Style.colorYellow
             case "matched":
@@ -311,15 +286,15 @@ Item {
             case "refunding":
                 return Style.colorOrange
             case "successful":
-                return Style.colorGreen
+                return DexTheme.greenColor
             case "failed":
             default:
-                return Style.colorRed
+                return DexTheme.redColor
         }
     }
 
-    function getStatusText(status, short_text=false) {
-        switch(status) {
+    function getStatusText(status, short_text = false) {
+        switch (status) {
             case "matching":
                 return short_text ? qsTr("Matching") : qsTr("Order Matching")
             case "matched":
@@ -338,7 +313,7 @@ Item {
     }
 
     function isSwapDone(status) {
-        switch(status) {
+        switch (status) {
             case "matching":
             case "matched":
             case "ongoing":
@@ -352,7 +327,7 @@ Item {
     }
 
     function getStatusStep(status) {
-        switch(status) {
+        switch (status) {
             case "matching":
                 return "0/3"
             case "matched":
@@ -370,12 +345,12 @@ Item {
         }
     }
 
-    function getStatusTextWithPrefix(status, short_text=false) {
+    function getStatusTextWithPrefix(status, short_text = false) {
         return getStatusStep(status) + " " + getStatusText(status, short_text)
     }
 
     function getEventText(event_name) {
-        switch(event_name) {
+        switch (event_name) {
             case "Started":
                 return qsTr("Started")
             case "Negotiated":

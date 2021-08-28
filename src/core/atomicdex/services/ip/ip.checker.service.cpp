@@ -93,6 +93,7 @@ namespace atomic_dex
             })
             .then(&handle_exception_pplx_task);
 #endif
+        SPDLOG_INFO("ip_service_checker created");
     }
 } // namespace atomic_dex
 

@@ -2,8 +2,11 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import App 1.0
+
+import Qaterial 1.0 as Qaterial
+
 import "../../../Components"
-import "../../../Constants"
 
 BasicModal {
     id: root
@@ -11,7 +14,7 @@ BasicModal {
     property var details
 
     onDetailsChanged: {
-        if(!details) root.close()
+        if (!details) root.close()
     }
 
     onOpened: swap_progress.updateSimulatedTime()
@@ -19,13 +22,11 @@ BasicModal {
     onClosed: details = undefined
 
     ModalContent {
-        title: !details ? "" :
-                details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
+        title: !details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
 
         // Complete image
         DefaultImage {
-            visible: !details ? false :
-                        details.is_swap && details.order_status === "successful"
+            visible: !details ? false : details.is_swap && details.order_status === "successful"
             Layout.alignment: Qt.AlignHCenter
             source: General.image_path + "exchange-trade-complete.svg"
         }
@@ -33,9 +34,9 @@ BasicModal {
         // Loading symbol
         DefaultBusyIndicator {
             running: (!details ? false :
-                        details.is_swap &&
-                        details.order_status !== "successful" &&
-                        details.order_status !== "failed") && Qt.platform.os != "osx"
+                details.is_swap &&
+                details.order_status !== "successful" &&
+                details.order_status !== "failed") && Qt.platform.os != "osx"
             Layout.alignment: Qt.AlignHCenter
         }
 
@@ -45,20 +46,18 @@ BasicModal {
             Layout.topMargin: 20
             font.pixelSize: Style.textSize3
             visible: !details ? false :
-                                details.is_swap || !details.is_maker
+                details.is_swap || !details.is_maker
             color: !details ? "white" :
-                    visible ? getStatusColor(details.order_status) : ''
+                visible ? getStatusColor(details.order_status) : ''
             text_value: !details ? "" :
-                        visible ? getStatusTextWithPrefix(details.order_status) : ''
+                visible ? getStatusTextWithPrefix(details.order_status) : ''
         }
 
         OrderContent {
             Layout.topMargin: 25
-            Layout.fillWidth: true
-            Layout.leftMargin: 20
-            Layout.rightMargin: Layout.leftMargin
-            height: 120
+            Layout.preferredWidth: 500
             Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: 66
             details: root.details
             in_modal: true
         }
@@ -71,8 +70,7 @@ BasicModal {
 
         // Maker/Taker
         DefaultText {
-            text_value: !details ? "" :
-                        details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order")
+            text_value: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
@@ -83,7 +81,7 @@ BasicModal {
 
             title: qsTr("Refund State")
             field.text: !details ? "" :
-                        details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+                details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
             field.readOnly: true
 
             visible: field.text !== ''
@@ -92,36 +90,31 @@ BasicModal {
         // Date
         TextEditWithTitle {
             title: qsTr("Date")
-            text: !details ? "" :
-                details.date
+            text: !details ? "" : details.date
             visible: text !== ''
         }
 
         // ID
         TextEditWithTitle {
             title: qsTr("ID")
-            text: !details ? "" :
-                details.order_id
+            text: !details ? "" : details.order_id
+            visible: text !== ''
+            copy: true
+            privacy: true
+        }
+
+        // Payment ID
+        TextEditWithTitle {
+            title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
+            text: !details ? "" : details.maker_payment_id
             visible: text !== ''
             privacy: true
         }
 
         // Payment ID
         TextEditWithTitle {
-            title: !details ? "" :
-                details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
-            text: !details ? "" :
-                    details.maker_payment_id
-            visible: text !== ''
-            privacy: true
-        }
-
-        // Payment ID
-        TextEditWithTitle {
-            title: !details ? "" :
-                    details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
-            text: !details ? "" :
-                    details.taker_payment_id
+            title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
+            text: !details ? "" : details.taker_payment_id
             visible: text !== ''
             privacy: true
         }
@@ -129,16 +122,14 @@ BasicModal {
         // Error ID
         TextEditWithTitle {
             title: qsTr("Error ID")
-            text: !details ? "" :
-                    details.order_error_state
+            text: !details ? "" : details.order_error_state
             visible: text !== ''
         }
 
         // Error Details
         TextFieldWithTitle {
             title: qsTr("Error Log")
-            field.text: !details ? "" :
-                        details.order_error_message
+            field.text: !details ? "" : details.order_error_message
             field.readOnly: true
             copyable: true
 
@@ -162,43 +153,63 @@ BasicModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexAppButton {
                 text: qsTr("Close")
-                Layout.fillWidth: true
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
                 onClicked: root.close()
             },
 
             // Cancel button
-            DangerButton {
-                visible: !details ? false :
-                                    details.cancellable
-                Layout.fillWidth: true
+            DexAppOutlineButton {
+                id: cancelOrderButton
+                visible: !details ? false : details.cancellable
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
                 text: qsTr("Cancel Order")
                 onClicked: cancelOrder(details.order_id)
             },
 
-            // Recover Funds button
-            PrimaryButton {
-                visible: !details ? false :
-                                    details.recoverable && details.order_status !== "refunding"
+            Item {
+                visible: !cancelOrderButton.visible
                 Layout.fillWidth: true
-                text: qsTr("Recover Funds")
-                onClicked: onRecoverFunds(details.order_id)
             },
 
-            PrimaryButton {
-                text: qsTr("View on Explorer")
-                Layout.fillWidth: true
+            // Recover Funds button
+            DexAppButton {
+                id: refundButton
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
+                enabled: !API.app.orders_mdl.recover_fund_busy
                 visible: !details ? false :
-                                    details.maker_payment_id !== '' || details.taker_payment_id !== ''
+                    details.recoverable && details.order_status !== "refunding"
+                text: enabled ? qsTr("Recover Funds") : qsTr("Refunding...")
+                onClicked: API.app.orders_mdl.recover_fund(details.order_id)
+            },
+
+            Item {
+                visible: !refundButton.visible & !cancelOrderButton.visible
+                Layout.fillWidth: true
+            },
+
+
+            DexAppOutlineButton {
+                text: qsTr("View on Explorer")
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
+                visible: !details ? false : details.maker_payment_id !== '' || details.taker_payment_id !== ''
                 onClicked: {
-                    if(!details) return
+                    if (!details) return
 
                     const maker_id = details.maker_payment_id
                     const taker_id = details.taker_payment_id
 
-                    if(maker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.base_coin : details.rel_coin, maker_id)
-                    if(taker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.rel_coin : details.base_coin, taker_id)
+                    if (maker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.base_coin : details.rel_coin, maker_id)
+                    if (taker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.rel_coin : details.base_coin, taker_id)
                 }
             }
         ]

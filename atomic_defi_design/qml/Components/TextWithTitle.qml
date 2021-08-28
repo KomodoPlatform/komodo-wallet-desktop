@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import "../Constants"
+import App 1.0
 
 ComponentWithTitle {
     property alias text: text.text_value
@@ -12,7 +13,6 @@ ComponentWithTitle {
 
         clip: true
         Layout.fillWidth: true
-        color: Style.modalValueColor
 
         Layout.preferredHeight: show_content ? contentHeight : 0
         Behavior on Layout.preferredHeight { SmoothedAnimation { id: expand_animation; duration: Style.animationDuration * 2; velocity: -1 } }

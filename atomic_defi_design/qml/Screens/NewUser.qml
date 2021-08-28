@@ -2,21 +2,25 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Components"
 import "../Constants"
+import App 1.0
 
 SetupPage {
     id: new_user
 
     // Override
-    property var onClickedBack: () => {}
-    property var postCreateSuccess: () => {}
+    signal clickedBack()
+    signal postCreateSuccess()
 
     property string current_mnemonic
     property string text_error
     property string guess_text_error
 
     property bool form_is_filled: false
+    property int currentStep: 0
     property int current_word_idx: 0
     property int guess_count: 1
 
@@ -32,7 +36,7 @@ SetupPage {
 
     function setRandomGuessWord() {
         const prev_idx = current_word_idx
-        while(current_word_idx === prev_idx)
+        while (current_word_idx === prev_idx)
             current_word_idx = General.getRandomInt(0, getWords().length - 1)
     }
 
@@ -41,25 +45,24 @@ SetupPage {
     }
 
     function submitGuess(field) {
-        if(validGuessField(field)) {
+        if (validGuessField(field)) {
             // Check if it's correct
-            if(field.text === getWords()[current_word_idx]) {
-                if(isFinalGuess()) {
-                    return true
-                }
-                else {
+            if (field.text === getWords()[current_word_idx]) {
+                if (isFinalGuess()) {
+                    return [true, true]
+                } else {
                     ++guess_count
                     setRandomGuessWord()
                 }
                 field.text = ""
                 guess_text_error = ""
-            }
-            else {
+                return [true, false]
+            } else {
                 guess_text_error = qsTr("Wrong word, please check again")
             }
         }
 
-        return false
+        return [false, false]
     }
 
     function isFinalGuess() {
@@ -76,15 +79,53 @@ SetupPage {
         guess_count = 1
     }
 
+    function shuffle(array) {
+        var currentIndex = array.length,
+            randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]
+            ];
+        }
+
+        return array;
+    }
+
+    function getRandom4x(list, keep) {
+
+        // remove keep
+        const index = list.indexOf(keep);
+        if (index > -1) {
+            list.splice(index, 1);
+        }
+
+        // randomlise
+        let randomList = shuffle(list)
+
+        // set keeped word
+        let newList = [randomList[0], randomList[1], randomList[2], keep]
+
+        // randomlise again
+        let finalList = shuffle(newList)
+
+        // return final word list
+        return finalList
+    }
+
     function onClickedCreate(password, generated_seed, wallet_name) {
-        if(API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
-            console.log("Success: Create wallet")
+        if (API.app.wallet_mgr.create(password, generated_seed, wallet_name)) {
             selected_wallet_name = wallet_name
             postCreateSuccess()
             return true
-        }
-        else {
-            console.log("Failed: Create wallet")
+        } else {
             text_error = qsTr("Failed to create a wallet")
             return false
         }
@@ -95,30 +136,64 @@ SetupPage {
     //image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
 
     content: ColumnLayout {
-        width: 600
         spacing: Style.rowSpacing
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+            Qaterial.AppBarButton {
+                icon.source: Qaterial.Icons.arrowLeft
+                foregroundColor: DexTheme.foregroundColor
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: {
+                    if (currentStep === 0) {
+                        reset()
+                        clickedBack()
+                    } else {
+                        if (currentStep == 2) {
+                            currentStep = 0
+                            _inputPassword.field.text = ""
+                            _inputPasswordConfirm.field.text = ""
+                        } else {
+                            input_seed_word.field.text = ""
+                            currentStep--
+                        }
 
-        DefaultText {
-            text_value: qsTr("New Wallet")
+
+                    }
+                }
+            }
+
+            DexLabel {
+                font: DexTypo.head6
+                text_value: if (currentStep === 0) {
+                    qsTr("New Wallet")
+                } else if (currentStep === 1) {
+                    qsTr("Confirm Seed")
+                } else if (currentStep === 2) {
+                    qsTr("Choose Password")
+                }
+                Layout.alignment: Qt.AlignVCenter
+            }
+
         }
 
-        HorizontalLine {
+        Item {
             Layout.fillWidth: true
         }
 
         function reset() {
             new_user.reset()
             input_wallet_name.reset()
-            input_confirm_seed.reset()
-            input_password.reset()
+            _inputPassword.field.text = ""
             input_seed_word.field.text = ""
+            input_generated_seed.text = ""
         }
 
         function completeForm() {
-            if(!continue_button.enabled) return
+            if (!continue_button.enabled) return
 
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
-            if(text_error !== "") return
+            if (text_error !== "") return
 
             input_seed_word.field.text = ""
             guess_text_error = ""
@@ -130,45 +205,70 @@ SetupPage {
 
         function tryGuess() {
             // Open EULA if it's the final one
-            if(submitGuess(input_seed_word.field)) eula_modal.open()
+            let sub = submitGuess(input_seed_word.field)
+            if (sub[0] == true && sub[1] == true) {
+                currentStep++
+            } else if (sub[0] == true && sub[1] == false) {
+                input_seed_word.field.text = ""
+            } else {
+                input_seed_word.field.text = ""
+                input_seed_word.error = true
+                setRandomGuessWord()
+                mmo.model = getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
+            }
         }
 
         ModalLoader {
             id: eula_modal
             sourceComponent: EulaModal {
                 onConfirm: () => {
-                   if(onClickedCreate(input_password.field.text,
-                                       input_generated_seed.field.text,
-                                       input_wallet_name.field.text)) reset()
+                    if (onClickedCreate(_inputPassword.field.text,
+                            input_generated_seed.text,
+                            input_wallet_name.field.text)) reset()
                 }
             }
         }
 
-
-        // First page, fill the form
         ColumnLayout {
-            visible: !form_is_filled
+            visible: currentStep === 0
+            Layout.preferredWidth: 450
             spacing: Style.rowSpacing
 
-            WalletNameField {
+            DexAppTextField {
                 id: input_wallet_name
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                opacity: enabled ? 1 : .5
+                background.border.width: 1
+                background.radius: 25
                 field.onAccepted: completeForm()
-            }
+                field.font: DexTypo.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
+                field.placeholderText: "Wallet Name"
+                field.onTextChanged: text_error = ""
 
-            TextAreaWithTitle {
-                id: input_generated_seed
-                title: qsTr("Generated Seed")
-                field.text: current_mnemonic
-                field.readOnly: true
-                copyable: true
-                onReturn: completeForm
-            }
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: DexTheme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    Qaterial.ColorIcon {
+                        anchors.centerIn: parent
+                        iconSize: 19
+                        source: Qaterial.Icons.wallet
+                        color: DexTheme.surfaceColor
+                    }
 
-            FloatingBackground {
+                }
+            }
+            DexRectangle {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
-                color: Style.colorRed3
+                color: DexTheme.redColor
                 height: warning_texts.height + 20
 
                 Column {
@@ -179,14 +279,15 @@ SetupPage {
 
                     spacing: 10
 
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: qsTr("Important: Back up your seed phrase before proceeding!")
+                        color: Style.colorWhite4
                     }
 
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -196,49 +297,115 @@ SetupPage {
                     }
                 }
             }
-
-            TextAreaWithTitle {
-                id: input_confirm_seed
-                title: qsTr("Confirm Seed")
-                field.placeholderText: qsTr("Enter the generated seed here")
-                onReturn: completeForm
+            TextField {
+                id: input_generated_seed
+                visible: false
+                text: current_mnemonic
+            }
+            Column {
+                Layout.fillWidth: true
+                spacing: 5
+                RowLayout {
+                    width: parent.width
+                    DexLabel {
+                        text: qsTr("Generated Seed")
+                        font: DexTypo.body1
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignVCenter
+                    }
+                    Qaterial.AppBarButton {
+                        icon.source: Qaterial.Icons.contentCopy
+                        Layout.alignment: Qt.AlignVCenter
+                        onClicked: {
+                            input_generated_seed.selectAll()
+                            input_generated_seed.copy()
+                            toast.show(qsTr("Copied to Clipboard"), General.time_toast_basic_info, "", false)
+                        }
+                    }
+                }
+                Item {
+                    width: parent.width
+                    height: _insideFlow.height
+                    Grid {
+                        id: _insideFlow
+                        width: parent.width
+                        spacing: 10
+                        Repeater {
+                            model: current_mnemonic.split(" ")
+                            delegate: DexRectangle {
+                                width: (_insideFlow.width - 30) / 4
+                                height: _insideLabel.implicitHeight + 15
+                                color: DexTheme.accentColor
+                                opacity: .8
+                                DexLabel {
+                                    id: _insideLabel
+                                    text: (index + 1) + ". " + modelData
+                                    font: DexTypo.body2
+                                    color: DexTheme.backgroundColor
+                                    anchors.centerIn: parent
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            PasswordForm {
-                id: input_password
-
-                field.onAccepted: completeForm()
-                confirm_field.onAccepted: completeForm()
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 10
             }
 
             RowLayout {
+                Layout.preferredWidth: 400
                 spacing: Style.buttonSpacing
 
-                DefaultButton {
+                Item {
                     Layout.fillWidth: true
-                    text: qsTr("Back")
-                    onClicked: {
-                        reset()
-                        onClickedBack()
-                    }
+                    Layout.preferredHeight: 10
                 }
+                DexAppButton {
+                    id: nextButton
+                    enabled: input_wallet_name.field.text !== ""
+                    onClicked: {
+                        text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+                        if (text_error !== "") {
+                            input_wallet_name.error = true
+                            return
+                        }
 
-                PrimaryButton {
-                    id: continue_button
-                    Layout.fillWidth: true
-                    text: qsTr("Continue")
-                    onClicked: completeForm()
-                    enabled:    // Fields are not empty
-                                input_wallet_name.field.acceptableInput === true &&
-                                input_password.isValid() &&
-                                // Correct confirm fields
-                                input_generated_seed.field.text === input_confirm_seed.field.text
+                        currentStep++
+                        input_seed_word.field.text = ""
+                        guess_count = 1
+                        setRandomGuessWord()
+                    }
+                    radius: 20
+                    opacity: enabled ? 1 : .4
+                    Layout.preferredWidth: _nextRow.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Next")
+                            font: DexTypo.button
+                            color: nextButton.foregroundColor
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: nextButton.foregroundColor
+                            source: Qaterial.Icons.arrowRight
+                            iconSize: 14
+                        }
+                    }
                 }
             }
 
             DefaultText {
                 text_value: text_error
-                color: Style.colorRed
+                color: DexTheme.redColor
                 visible: text !== ''
             }
         }
@@ -246,13 +413,13 @@ SetupPage {
 
         // Second page, write the seed word
         ColumnLayout {
-            visible: form_is_filled
+            visible: currentStep === 1
 
             FloatingBackground {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
-                height: 160
+                height: 140
 
                 Column {
                     id: warning_texts_2
@@ -260,52 +427,212 @@ SetupPage {
                     anchors.centerIn: parent
                     width: parent.width
 
-                    spacing: 30
+                    spacing: 5
 
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
+                        font {
+                            bold: true
+                        }
                         text_value: qsTr("Let's double check your seed phrase")
                     }
-
-                    DefaultText {
+                    DexLabel {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.")
                         font.pixelSize: Style.textSizeSmall4
-                        color: Style.colorWhite4
+                        color: DexTheme.foregroundColorLightColor2
                     }
                 }
             }
 
+            Column {
+                Layout.fillWidth: true
+                spacing: 5
+                Item {
+                    width: parent.width - 10
+                    height: _insideFlow2.height
+                    Grid {
+                        id: _insideFlow2
+                        width: parent.width
+                        spacing: 10
+                        horizontalItemAlignment: Grid.AlignHCenter
+                        Repeater {
+                            id: mmo
+                            model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
+                            delegate: DexAppButton {
+                                width: (_insideFlow2.width - 30) / 4
+                                text: modelData ?? ""
+                                onClicked: {
+                                    input_seed_word.field.text = modelData
+                                    tryGuess()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-            TextFieldWithTitle {
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 5
+            }
+
+            DexAppTextField {
                 id: input_seed_word
-                title: qsTr("What's the %n. word in your seed phrase?", "", current_word_idx + 1)
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                opacity: enabled ? 1 : .5
+                background.border.width: 1
+                background.radius: 25
+                field.font: DexTypo.head6
+                field.horizontalAlignment: Qt.AlignLeft
+                field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
-                field.validator: RegExpValidator { regExp: /[a-z]+/ }
+                field.validator: RegExpValidator {
+                    regExp: /[a-z]+/
+                }
                 field.onAccepted: tryGuess()
+
+                DexRectangle {
+                    x: 5
+                    height: 40
+                    width: 60
+                    radius: 20
+                    color: DexTheme.accentColor
+                    anchors.verticalCenter: parent.verticalCenter
+                    DexLabel {
+                        anchors.centerIn: parent
+                        font: DexTypo.head6
+                        color: DexTheme.backgroundColor
+                        text: current_word_idx + 1
+                    }
+
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 10
             }
 
             RowLayout {
-                DefaultButton {
-                    Layout.fillWidth: true
-                    text: qsTr("Go back and check again")
-                    onClicked: form_is_filled = false
-                }
+                Layout.preferredWidth: 400
+                spacing: Style.buttonSpacing
 
-                PrimaryButton {
-                    id: submit_button
+                Item {
                     Layout.fillWidth: true
-                    text: qsTr("Continue")
-                    onClicked: tryGuess()
+                    Layout.preferredHeight: 10
+                }
+                DexAppButton {
+                    id: checkForNext
                     enabled: validGuessField(input_seed_word.field)
+                    opacity: enabled ? 1 : .4
+                    onClicked: tryGuess()
+                    radius: 20
+                    Layout.preferredWidth: _nextRow3.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow3
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Check")
+                            font: DexTypo.button
+                            color: checkForNext.foregroundColor
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: checkForNext.foregroundColor
+                            source: Qaterial.Icons.check
+                            iconSize: 14
+                        }
+                    }
                 }
             }
 
             DefaultText {
                 text_value: guess_text_error
-                color: Style.colorRed
+                color: DexTheme.redColor
+                visible: input_seed_word.error
+                DexVisibleBehavior on visible {}
+            }
+        }
+
+        ColumnLayout {
+            visible: currentStep === 2
+            Layout.preferredWidth: 450
+            spacing: Style.rowSpacing
+
+            DexAppPasswordField {
+                id: _inputPassword
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
+            }
+
+            DexKeyChecker {
+                id: _keyChecker
+                field: _inputPassword.field
+                double_validation: true
+                Layout.leftMargin: 20
+                match_password: _inputPasswordConfirm.field.text
+            }
+
+            DexAppPasswordField {
+                id: _inputPasswordConfirm
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            RowLayout {
+                Layout.preferredWidth: 400
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 10
+                }
+
+                DexAppButton {
+                    id: finalRegisterButton
+                    enabled: _keyChecker.isValid()
+                    opacity: enabled ? 1 : .4
+                    onClicked: eula_modal.open()
+                    radius: 20
+                    Layout.preferredWidth: _nextRow2.implicitWidth + 40
+                    Layout.preferredHeight: 45
+                    label.color: 'transparent'
+                    Row {
+                        id: _nextRow2
+                        anchors.centerIn: parent
+                        spacing: 10
+                        DexLabel {
+                            text: qsTr("Continue")
+                            font: DexTypo.button
+                            color: finalRegisterButton.foregroundColor
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Qaterial.ColorIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: Qaterial.Icons.arrowRight
+                            color: finalRegisterButton.foregroundColor
+                            iconSize: 14
+                        }
+                    }
+                }
+            }
+
+            DefaultText {
+                text_value: text_error
+                color: DexTheme.redColor
                 visible: text !== ''
             }
         }
