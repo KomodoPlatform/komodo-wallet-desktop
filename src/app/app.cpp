@@ -341,8 +341,9 @@ namespace atomic_dex
         system_manager_.create_system<band_oracle_price_service>();
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         system_manager_.create_system<coingecko_provider>(system_manager_);
+        auto& self_update_system = system_manager_.create_system<self_update_service>();
 #if !defined(Q_OS_WINDOWS)
-        system_manager_.create_system<self_update_service>();
+        self_update_system.disable();
 #endif
         system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<exporter_service>(system_manager_);
