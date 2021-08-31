@@ -343,7 +343,7 @@ namespace atomic_dex
                     reason                     = tr("%1 address length is invalid, please use a valid address.").arg(json_result["ticker"].toString());
                     json_result["convertible"] = false;
                 }
-                else if (reason.contains("Invalid Address"))
+                else if (reason.toLower().contains("invalid address"))
                 {
                     reason                     = tr("%1 address is invalid.").arg(json_result["ticker"].toString());
                     json_result["convertible"] = false;
