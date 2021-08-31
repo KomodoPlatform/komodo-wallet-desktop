@@ -1103,14 +1103,14 @@ namespace atomic_dex
             }
 
             //! Post Metrics
-            SPDLOG_INFO(
+            /*SPDLOG_INFO(
                 "Metrics -> [total_swaps: {}, "
                 "active_swaps: {}, "
                 "nb_orders: {}, "
                 "nb_pages: {}, "
                 "current_page: {}, "
                 "total_finished_swaps: {}]",
-                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);
+                result.total_swaps, result.active_swaps, result.nb_orders, result.nb_pages, result.current_page, result.total_finished_swaps);*/
 
             //! Compute everything
             m_orders_and_swaps = std::move(result);

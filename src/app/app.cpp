@@ -446,7 +446,6 @@ namespace atomic_dex
 
         //! Mark systems
         system_manager_.mark_system<mm2_service>();
-        // system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<coingecko_provider>();
 
         //! Disconnect signals
@@ -458,7 +457,6 @@ namespace atomic_dex
         dispatcher_.sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
         dispatcher_.sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
         dispatcher_.sink<process_swaps_and_orders_finished>().disconnect<&application::on_process_orders_and_swaps_finished_event>(*this);
-        // dispatcher_.sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
         m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
 
@@ -550,16 +548,23 @@ namespace atomic_dex
     void
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt)
     {
-        SPDLOG_DEBUG("on_ticker_balance_updated_event");
-        if (not m_event_actions[events_action::about_to_exit_app])
+        SPDLOG_DEBUG("Ticker balance is about to be updated.");
+        if (m_event_actions[events_action::about_to_exit_app])
         {
-            if (not evt.tickers.empty())
-            {
-                if (get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers))
-                {
-                    this->dispatcher_.trigger<update_portfolio_values>(false);
-                }
-            }
+            SPDLOG_DEBUG("Ticker balance not updated because app is exiting.");
+        }
+        else if (evt.tickers.empty())
+        {
+            SPDLOG_DEBUG("Ticker balance not updated because there are not tickers to update");
+        }
+        else if (get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers))
+        {
+            this->dispatcher_.trigger<update_portfolio_values>(false);
+            SPDLOG_DEBUG("Ticker balance updated.");
+        }
+        else
+        {
+            SPDLOG_ERROR("Ticker balance not updated, tickers not found in the registry: {}", fmt::join(evt.tickers, ", "));
         }
     }
 } // namespace atomic_dex
@@ -655,7 +660,7 @@ namespace atomic_dex
     trading_page*
     application::get_trading_page() const
     {
-        trading_page* ptr = const_cast<trading_page*>(std::addressof(system_manager_.get_system<trading_page>()));
+        auto ptr = const_cast<trading_page*>(std::addressof(system_manager_.get_system<trading_page>()));
         assert(ptr != nullptr);
         return ptr;
     }
@@ -782,8 +787,6 @@ namespace atomic_dex
 
         if (appimage == nullptr || not QString(appimage).contains(DEX_PROJECT_NAME))
         {
-            // qDebug() << qApp->arguments();
-            // SPDLOG_INFO("arg: {}, dir path: {}", qApp->arguments()[0].toStdString(), qApp->applicationDirPath().toStdString());
             bool res = QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
             if (!res)
             {

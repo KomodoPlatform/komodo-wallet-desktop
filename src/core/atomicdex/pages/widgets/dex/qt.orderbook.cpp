@@ -109,7 +109,7 @@ namespace atomic_dex
         if (m_selected_best_order->has_value())
         {
             SPDLOG_INFO("selected best orders have a value - set preffered order");
-            m_system_manager.get_system<trading_page>().set_preffered_order(m_selected_best_order->value());
+            m_system_manager.get_system<trading_page>().set_preferred_order(m_selected_best_order->value());
             m_selected_best_order = std::nullopt;
         }
         m_best_orders->clear_orderbook();                                                     ///< Remove all elements from the model
@@ -213,7 +213,7 @@ namespace atomic_dex
             if (right_coin == out.value("coin").toString())
             {
                 SPDLOG_INFO("Selected order is from the same pair, overriding preffered_order");
-                trading_pg.set_preffered_order(out);
+                trading_pg.set_preferred_order(out);
             }
             else
             {
@@ -249,7 +249,7 @@ namespace atomic_dex
     {
         QString    cur_taker_vol   = get_base_min_taker_vol();
         auto&      trading_pg      = m_system_manager.get_system<trading_page>();
-        auto       preffered_order = trading_pg.get_raw_preffered_order();
+        auto       preffered_order = trading_pg.get_raw_preferred_order();
         t_float_50 price_f         = safe_float(trading_pg.get_price().toStdString());
         if (preffered_order.has_value())
         {
