@@ -505,12 +505,11 @@ namespace atomic_dex
                             }
 
                             for (auto&& coin: tokens_to_fetch) { process_tx_tokenscan(coin, is_a_reset); }
-                            this->dispatcher_.trigger<ticker_balance_updated>(tickers_idx);
                             SPDLOG_INFO("batch_balance_and_tx, is_during_enabling {}", is_during_enabling);
-                            if (is_during_enabling)
-                            {
-                                dispatcher_.trigger<coin_enabled>(tickers);
-                            }
+                            // if (is_during_enabling)
+                            // {
+                            //     // dispatcher_.trigger<coin_enabled>(tickers);
+                            // }
                         }
                     }
                     catch (const std::exception& error)
@@ -705,8 +704,10 @@ namespace atomic_dex
                                 {
                                     if (tickers == g_default_coins)
                                     {
+                                        SPDLOG_INFO("Trigger default_coins_enabled");
                                         this->dispatcher_.trigger<default_coins_enabled>();
                                     }
+                                    dispatcher_.trigger<coin_enabled>(tickers);
                                     batch_balance_and_tx(false, tickers, true);
                                 }
                             }
