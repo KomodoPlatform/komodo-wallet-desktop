@@ -2733,7 +2733,7 @@
     "coin": "QI",
     "name": "QiSwap",
     "coingecko_id": "qiswap",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "qi-qiswap",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -3701,6 +3701,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "WWCN-ERC20": {
+      "coin": "WWCN-ERC20",
+      "name": "Wrapped Widecoin",
+      "coinpaprika_id": "wwcn-wrapped-widecoin",
+      "coingecko_id": "wrapped-widecoin",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "WLC": {
     "coin": "WLC",
     "name": "Wireless Coin",
@@ -4016,7 +4033,7 @@
     "coin": "ZET",
     "name": "Zetacoin",
     "coinpaprika_id": "zet-zetacoin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "zetacoin",
     "electrum": [
       {
         "url": "failover.zet.ewmci.xyz:50002",
@@ -4254,7 +4271,7 @@
     "coin": "QC",
     "name": "Qcash",
     "coingecko_id": "qcash",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "qc-qcash",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
