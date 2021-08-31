@@ -506,6 +506,7 @@ namespace atomic_dex
 
                             for (auto&& coin: tokens_to_fetch) { process_tx_tokenscan(coin, is_a_reset); }
                             this->dispatcher_.trigger<ticker_balance_updated>(tickers_idx);
+                            SPDLOG_INFO("batch_balance_and_tx, is_during_enabling {}", is_during_enabling);
                             if (is_during_enabling)
                             {
                                 dispatcher_.trigger<coin_enabled>(tickers);
