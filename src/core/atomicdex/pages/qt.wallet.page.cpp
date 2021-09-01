@@ -359,7 +359,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    reason                     = tr("Unknown error.");
+                    reason                     = tr("Backend error: %1").arg(reason);
                     json_result["convertible"] = false;
                 }
                 json_result["reason"] = reason;
