@@ -706,9 +706,10 @@ namespace atomic_dex
                                     {
                                         SPDLOG_INFO("Trigger default_coins_enabled");
                                         this->dispatcher_.trigger<default_coins_enabled>();
+                                        batch_balance_and_tx(false, tickers, true);
                                     }
                                     dispatcher_.trigger<coin_enabled>(tickers);
-                                    batch_balance_and_tx(false, tickers, true);
+                                    //batch_balance_and_tx(false, tickers, true);
                                 }
                             }
                         }
