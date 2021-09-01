@@ -306,6 +306,7 @@ QtObject {
                                           "LBC": "#00775C",
                                           "LTC": "#BFBBBB",
                                           "LYNX": "#0071BA",
+                                          "LTFN": "#0099CC",										  
                                           "XPM": "#A67522",
                                           "XVC": "#B50126",
                                           "ZEC": "#ECB244",

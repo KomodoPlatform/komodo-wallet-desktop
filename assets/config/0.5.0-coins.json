@@ -1959,6 +1959,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "LTFN": {
+    "coin": "LTFN",
+    "name": "Litecoin Finance",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "litecoin-finance",
+    "electrum": [
+      {
+        "url": "eltfnx.scalaris.info:30001"
+      },
+      {
+        "url": "eltfnx6.scalaris.info:30001"
+      },
+      {
+        "url": "eltfnx7.scalaris.info:30001"
+      }
+    ],
+    "explorer_url": [
+      "https://openchains.info/coin/ltfn/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "MATIC-BEP20": {
     "coin": "MATIC-BEP20",
     "name": "Polygon",
