@@ -1512,11 +1512,12 @@ namespace atomic_dex
 
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
         answer_r.balance  = result.str(8, std::ios_base::fixed);
+        //auto copy_coin = answer_r.coin;
         {
             std::unique_lock lock(m_balance_mutex);
             m_balance_informations[answer_r.coin] = std::move(answer_r);
         }
-        m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({answer_r.coin});
+        //m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({copy_coin});
     }
 
     mm2_client&
