@@ -82,7 +82,7 @@ namespace atomic_dex
             if (coin_info.has_parent_fees_ticker && coin_info.ticker != coin_info.fees_ticker)
             {
                 auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
-                if (extra_coins.insert(coin_parent_info.ticker).second)
+                if (!coin_parent_info.currently_enabled && !coin_parent_info.active && extra_coins.insert(coin_parent_info.ticker).second)
                 {
                     SPDLOG_INFO("Adding extra coin: {} to enable", coin_parent_info.ticker);
                 }

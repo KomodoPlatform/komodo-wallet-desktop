@@ -128,7 +128,7 @@ namespace
         const std::string& wallet_name, const std::vector<std::string>& tickers, bool status, atomic_dex::t_coins_registry& registry,
         std::shared_mutex& registry_mtx, std::string field_name = "active")
     {
-        SPDLOG_INFO("Update coins status to: {} - field_name: {}", status, field_name);
+        SPDLOG_INFO("Update coins status to: {} - field_name: {} - tickers: {}", status, field_name, fmt::join(tickers, ", "));
         fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::string custom_tokens_filename = "custom-tokens." + wallet_name + ".json";
@@ -165,6 +165,7 @@ namespace
                 }
                 if (field_name == "active")
                 {
+                    SPDLOG_INFO("ticker: {} status active: {}", ticker, status);
                     registry[ticker].active = status;
                 }
                 else if (field_name == "is_segwit_on")
@@ -687,13 +688,17 @@ namespace atomic_dex
                                 for (auto&& answer: answers)
                                 {
                                     auto [res, error] = this->process_batch_enable_answer(answer);
-                                    if (not res && idx < tickers.size())
+                                    if (!res)
                                     {
                                         SPDLOG_DEBUG(
                                             "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                             tickers.size(), answers.size());
                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
                                         to_remove.emplace(tickers[idx]);
+                                        if (error.find("already initialized") == std::string::npos)
+                                        {
+                                            SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], error);
+                                        }
                                     }
                                     idx += 1;
                                 }
@@ -720,11 +725,15 @@ namespace atomic_dex
                         catch (const std::exception& error)
                         {
                             SPDLOG_ERROR("exception caught in batch_enable_coins: {}", error.what());
+                            //update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                             //! Emit event here
                         }
                     })
-                .then([this, batch_array](pplx::task<void> previous_task)
-                      { this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch_array); });
+                .then([this, tickers, batch_array](pplx::task<void> previous_task)
+                      {
+                          this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch_array);
+                          //update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
+                      });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
