@@ -199,6 +199,8 @@ Item {
                             text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.innerList.count).arg(portfolio_mdl.length))
                             checked: portfolio_coins.with_balance
                             onCheckedChanged: portfolio_coins.with_balance = checked
+
+                            Component.onDestruction: portfolio_coins.with_balance = false
                         }
                     }
                 }
