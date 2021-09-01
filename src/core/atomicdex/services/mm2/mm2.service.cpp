@@ -701,7 +701,10 @@ namespace atomic_dex
                                         }
                                     }
                                     idx += 1;
-                                    this->process_balance_answer(answer);
+                                    if (!res)
+                                    {
+                                        this->process_balance_answer(answer);
+                                    }
                                 }
 
                                 for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
