@@ -50,7 +50,10 @@ namespace atomic_dex
     coingecko_provider::on_coin_enabled(const coin_enabled& evt)
     {
         dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
-        this->update_ticker_and_provider();
+        if (evt.tickers.size() > 1)
+        {
+            this->update_ticker_and_provider();
+        }
     }
 
     void

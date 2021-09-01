@@ -729,9 +729,15 @@ namespace atomic_dex
             functor(btc_kmd_batch, g_default_coins);
         }
 
-        if (not batch_array.empty())
+        if (!batch_array.empty())
         {
-            functor(batch_array, copy_tickers);
+            for (std::size_t idx = 0; idx < batch_array.size(); ++idx)
+            {
+                nlohmann::json single_batch = nlohmann::json::array();
+                single_batch.push_back(batch_array.at(idx));
+                functor(single_batch, {copy_tickers[idx]});
+            }
+            //functor(batch_array, copy_tickers);
         }
     }
 
