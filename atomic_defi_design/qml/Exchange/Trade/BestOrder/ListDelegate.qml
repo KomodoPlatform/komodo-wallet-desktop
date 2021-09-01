@@ -138,6 +138,9 @@ Item {
             }else {
                 app.pairChanged(base_ticker, coin)
                 Constants.API.app.trading_pg.orderbook.select_best_order(uuid)
+                if(order_form.visible === false) {
+                    order_form.visible = true
+                }
             }
             
             //if(is_mine) return
