@@ -701,7 +701,7 @@ namespace atomic_dex
                                         }
                                     }
                                     idx += 1;
-                                    if (!res)
+                                    if (res)
                                     {
                                         this->process_balance_answer(answer);
                                     }
