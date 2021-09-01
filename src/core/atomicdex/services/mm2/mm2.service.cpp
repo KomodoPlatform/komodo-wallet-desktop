@@ -28,6 +28,7 @@
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
@@ -699,7 +700,7 @@ namespace atomic_dex
 
                                 for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
 
-                                if (not tickers.empty())
+                                if (!tickers.empty())
                                 {
                                     if (tickers == g_default_coins)
                                     {
@@ -708,6 +709,10 @@ namespace atomic_dex
                                         batch_balance_and_tx(false, tickers, true);
                                     }
                                     dispatcher_.trigger<coin_enabled>(tickers);
+                                    if (tickers.size() == 1)
+                                    {
+                                        fetch_single_balance(get_coin_info(tickers[0]));
+                                    }
                                     // batch_balance_and_tx(false, tickers, true);
                                 }
                             }
@@ -1511,6 +1516,7 @@ namespace atomic_dex
             std::unique_lock lock(m_balance_mutex);
             m_balance_informations[answer_r.coin] = std::move(answer_r);
         }
+        m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({answer_r.coin});
     }
 
     mm2_client&

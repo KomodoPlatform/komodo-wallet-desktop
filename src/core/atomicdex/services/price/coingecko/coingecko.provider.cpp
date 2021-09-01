@@ -49,6 +49,7 @@ namespace atomic_dex
     void
     coingecko_provider::on_coin_enabled(const coin_enabled& evt)
     {
+        SPDLOG_INFO("coin_enabled: {}", fmt::join(evt.tickers, ", "));
         dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
         if (evt.tickers.size() > 1)
         {

@@ -155,9 +155,13 @@ namespace atomic_dex
     bool
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers)
     {
-        //SPDLOG_INFO("update_balance_values");
+        SPDLOG_INFO("update_balance_values");
         for (auto&& ticker: tickers)
         {
+            if (ticker.empty())
+            {
+                return false;
+            }
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", ticker);
