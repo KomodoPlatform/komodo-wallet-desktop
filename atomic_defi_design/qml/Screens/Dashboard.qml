@@ -199,6 +199,7 @@ Item {
 
             anchors.fill: parent
             transformOrigin: Item.Center
+            asynchronous: true
 
             sourceComponent: {
                 switch (current_page) {

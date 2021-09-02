@@ -388,7 +388,7 @@ namespace atomic_dex
             if (t_ec)
             {
                 ec = t_ec;
-                SPDLOG_ERROR("my_balance error: {}", t_ec.message());
+                //SPDLOG_ERROR("my_balance error: {} {}", t_ec.message(), ticker);
                 return "0.00";
             }
 

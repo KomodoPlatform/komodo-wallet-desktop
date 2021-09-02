@@ -30,6 +30,7 @@
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.portfolio.model.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
@@ -135,10 +136,11 @@ namespace atomic_dex
                     auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
                     const QString display                           = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
-                    if (is_change_b)
-                    {
-                        balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
-                    }
+                    // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
+                    // if (is_change_b && m_system_manager.has_system<qt_wallet_manager>() && m_system_manager.get_system<qt_wallet_manager>().get_status() == "complete")
+                    // {
+                    //     balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
+                    // }
                     QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
                     update_value(Trend7D, trend, idx, *this);
                     // SPDLOG_DEBUG("updated currency values of: {}", ticker);
@@ -153,9 +155,13 @@ namespace atomic_dex
     bool
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers)
     {
-        //SPDLOG_INFO("update_balance_values");
+        SPDLOG_INFO("update_balance_values");
         for (auto&& ticker: tickers)
         {
+            if (ticker.empty())
+            {
+                return false;
+            }
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", ticker);
@@ -185,10 +191,11 @@ namespace atomic_dex
                 update_value(Display, display, idx, *this);
                 QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
                 update_value(Change24H, change24_h, idx, *this);
-                if (is_change_b)
-                {
-                    balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
-                }
+                // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
+                // if (is_change_b && m_system_manager.has_system<qt_wallet_manager>() && m_system_manager.get_system<qt_wallet_manager>().get_status() == "complete")
+                // {
+                //     balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
+                // }
                 QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
                 update_value(Trend7D, trend, idx, *this);
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))

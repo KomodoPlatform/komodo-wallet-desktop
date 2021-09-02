@@ -167,6 +167,7 @@ namespace atomic_dex
     void
     portfolio_page::initialize_portfolio(const std::vector<std::string>& tickers)
     {
+        SPDLOG_INFO("initialize_portfolio with tickers: {}", fmt::join(tickers, ", "));
         m_portfolio_mdl->initialize_portfolio(tickers);
         m_global_cfg_mdl->update_status(tickers, true);
     }
