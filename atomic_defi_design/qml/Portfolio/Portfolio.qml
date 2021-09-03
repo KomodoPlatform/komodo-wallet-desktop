@@ -196,7 +196,7 @@ Item {
                         
                         DefaultSwitch {
                             Layout.alignment: Qt.AlignVCenter
-                            text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.innerList.count).arg(portfolio_mdl.length))
+                            text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
                             checked: portfolio_coins.with_balance
                             onCheckedChanged: portfolio_coins.with_balance = checked
 
@@ -206,9 +206,10 @@ Item {
                 }
             }
 
-            TableDex
+            AssetsList
             {
                 id: coinsList
+                anchors.horizontalCenter: parent.horizontalCenter
             }
 
             Item {
