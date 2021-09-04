@@ -28,7 +28,7 @@ Dex.DefaultListView
     {
         id: columnsHeader
 
-        width: 200
+        width: list.width
         height: 40
 
         Dex.DexLabel
