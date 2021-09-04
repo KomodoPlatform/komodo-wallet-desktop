@@ -137,10 +137,10 @@ namespace atomic_dex
                     const QString display                           = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
                     // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
-                    // if (is_change_b && m_system_manager.has_system<qt_wallet_manager>() && m_system_manager.get_system<qt_wallet_manager>().get_status() == "complete")
-                    // {
-                    //     balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
-                    // }
+                    if (is_change_b)
+                    {
+                        balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
+                    }
                     QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
                     update_value(Trend7D, trend, idx, *this);
                     // SPDLOG_DEBUG("updated currency values of: {}", ticker);
@@ -191,11 +191,10 @@ namespace atomic_dex
                 update_value(Display, display, idx, *this);
                 QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
                 update_value(Change24H, change24_h, idx, *this);
-                // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
-                // if (is_change_b && m_system_manager.has_system<qt_wallet_manager>() && m_system_manager.get_system<qt_wallet_manager>().get_status() == "complete")
-                // {
-                //     balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
-                // }
+                if (is_change_b)
+                {
+                    balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
+                }
                 QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
                 update_value(Trend7D, trend, idx, *this);
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
@@ -203,6 +202,8 @@ namespace atomic_dex
                     m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
                 }
             }
+
+
         }
         return true;
     }
