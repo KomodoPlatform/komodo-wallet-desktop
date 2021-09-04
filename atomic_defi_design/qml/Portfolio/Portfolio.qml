@@ -117,7 +117,6 @@ Item {
         anchors.topMargin: 90
         contentHeight: _column.height
         clip: true
-        onHeightChanged: console.log(height)
         Column {
             id: _column
             topPadding: 10
