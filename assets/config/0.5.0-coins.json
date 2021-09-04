@@ -142,6 +142,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "AXS-BEP20": {
+      "coin": "AXS-BEP20",
+      "name": "Axie Infinity",
+      "coinpaprika_id": "axs-axie-infinity",
+      "coingecko_id": "axie-infinity",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AXS-ERC20": {
+      "coin": "AXS-ERC20",
+      "name": "Axie Infinity",
+      "coinpaprika_id": "axs-axie-infinity",
+      "coingecko_id": "axie-infinity",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BNB": {
     "coin": "BNB",
     "name": "Binance Coin",
