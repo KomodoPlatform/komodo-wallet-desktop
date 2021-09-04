@@ -31,10 +31,12 @@ Dex.DefaultListView
         width: list.width
         height: 40
 
-        Dex.DexLabel
+        Dex.ColumnHeader
         {
             Layout.preferredWidth: _assetNameColumnWidth
             Layout.leftMargin: _assetNameColumnLeftMargin
+            icon_at_left: true
+            sort_type: sort_by_name
             text: qsTr("Asset")
         }
         Dex.ColumnHeader
