@@ -208,6 +208,7 @@ Item {
             AssetsList
             {
                 id: coinsList
+                width: parent.parent.width - 80
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
