@@ -53,9 +53,11 @@ Dex.DefaultListView
             sort_type: sort_by_change
             text: qsTr("Change 24h")
         }
-        Dex.DexLabel
+        Dex.ColumnHeader
         {
             Layout.preferredWidth: _assetPriceColumWidth
+            icon_at_left: true
+            sort_type: sort_by_price
             text: qsTr("Price")
         }
     }
