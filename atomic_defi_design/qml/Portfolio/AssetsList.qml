@@ -66,7 +66,7 @@ Dex.DefaultListView
     {
         width: list.width
         height: _assetRowHeight
-        color: mouseArea.containsMouse ? Dex.DexTheme.buttonColorHovered : Dex.DexTheme.hoverColor
+        color: mouseArea.containsMouse ? Dex.DexTheme.buttonColorHovered : Dex.DexTheme.backgroundColor
 
         RowLayout
         {
