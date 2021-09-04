@@ -41,7 +41,7 @@ Dex.DefaultListView
         {
             Layout.preferredWidth: _assetBalanceColumnWidth
             icon_at_left: true
-            sort_type: sort_by_name
+            sort_type: sort_by_value
             text: qsTr("Balance")
         }
         Dex.DexLabel
