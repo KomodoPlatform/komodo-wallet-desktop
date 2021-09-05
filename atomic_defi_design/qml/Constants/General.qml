@@ -557,6 +557,7 @@ QtObject {
                                                 "ARPA/HUSD": "BINANCE:ARPAUSD",
                                                 "ARPA/DAI": "BINANCE:ARPAUSD",
                                                 "ARPA/PAX": "BINANCE:ARPAUSD",
+                                                "ARPA/TRYB": "BINANCE:ARPATRY",
                                                 "ATOM/BTC": "BINANCE:ATOMBTC",
                                                 "ATOM/ETH": "KRAKEN:ATOMETH",
                                                 "ATOM/USDT": "COINBASE:ATOMUSD",

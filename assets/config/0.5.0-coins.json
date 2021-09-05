@@ -243,22 +243,39 @@
     "active": false,
     "currently_enabled": false
   },
-  "ARPA": {
-    "coin": "ARPA",
-    "name": "ARPA Chain",
-    "coinpaprika_id": "arpa-arpa-chain",
-    "coingecko_id": "arpa-chain",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
+  "ARPA-BEP20": {
+      "coin": "ARPA-BEP20",
+      "name": "ARPA Chain",
+      "coinpaprika_id": "arpa-arpa-chain",
+      "coingecko_id": "arpa-chain",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ARPA-ERC20": {
+      "coin": "ARPA-ERC20",
+      "name": "ARPA Chain",
+      "coinpaprika_id": "arpa-arpa-chain",
+      "coingecko_id": "arpa-chain",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ATOM-BEP20": {
     "coin": "ATOM-BEP20",
