@@ -1869,6 +1869,40 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "KNC-BEP20": {
+      "coin": "KNC-BEP20",
+      "name": "Kyber Network",
+      "coinpaprika_id": "knc-kyber-network",
+      "coingecko_id": "kyber-network-crystal",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "KNC-ERC20": {
+      "coin": "KNC-ERC20",
+      "name": "Kyber Network",
+      "coinpaprika_id": "knc-kyber-network",
+      "coingecko_id": "kyber-network-crystal",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "KOIN": {
     "coin": "KOIN",
     "name": "Koinon",
@@ -4724,23 +4758,6 @@
     "name": "HUSD",
     "coinpaprika_id": "husd-husd",
     "coingecko_id": "husd",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "KNC": {
-    "coin": "KNC",
-    "name": "KyberNetwork",
-    "coinpaprika_id": "knc-kyber-network",
-    "coingecko_id": "kyber-network",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
