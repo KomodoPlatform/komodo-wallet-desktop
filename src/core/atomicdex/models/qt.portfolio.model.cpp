@@ -30,6 +30,7 @@
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.portfolio.model.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
@@ -135,6 +136,7 @@ namespace atomic_dex
                     auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
                     const QString display                           = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
+                    // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
                     if (is_change_b)
                     {
                         balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
@@ -153,9 +155,13 @@ namespace atomic_dex
     bool
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers)
     {
-        //SPDLOG_INFO("update_balance_values");
+        SPDLOG_INFO("update_balance_values");
         for (auto&& ticker: tickers)
         {
+            if (ticker.empty())
+            {
+                return false;
+            }
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", ticker);
@@ -196,6 +202,8 @@ namespace atomic_dex
                     m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
                 }
             }
+
+
         }
         return true;
     }

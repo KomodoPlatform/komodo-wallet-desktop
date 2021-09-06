@@ -343,7 +343,7 @@ namespace atomic_dex
                     reason                     = tr("%1 address length is invalid, please use a valid address.").arg(json_result["ticker"].toString());
                     json_result["convertible"] = false;
                 }
-                else if (reason.contains("Invalid Address"))
+                else if (reason.toLower().contains("invalid address"))
                 {
                     reason                     = tr("%1 address is invalid.").arg(json_result["ticker"].toString());
                     json_result["convertible"] = false;
@@ -359,7 +359,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    reason                     = tr("Unknown error.");
+                    reason                     = tr("Backend error: %1").arg(reason);
                     json_result["convertible"] = false;
                 }
                 json_result["reason"] = reason;
@@ -566,8 +566,22 @@ namespace atomic_dex
             this->set_send_busy(false);
         };
 
+        auto error_functor = [this](pplx::task<void> previous_task) {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("error caught in send: {}", e.what());
+                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", QString::fromStdString(e.what())}});
+                this->set_rpc_send_data(error_json);
+                this->set_send_busy(false);
+            }
+        };
+
         //! Process
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 
     void
@@ -645,7 +659,20 @@ namespace atomic_dex
             this->set_broadcast_busy(false);
         };
 
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+        auto error_functor = [this](pplx::task<void> previous_task) {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("error caught in broadcast finished: {}", e.what());
+                this->set_rpc_broadcast_data(QString::fromStdString(e.what()));
+                this->set_broadcast_busy(false);
+            }
+        };
+
+        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 
     void
@@ -661,36 +688,53 @@ namespace atomic_dex
         batch.push_back(json_data);
         json_data = ::mm2::api::template_request("kmd_rewards_info");
         batch.push_back(json_data);
+
+        auto answer_functor = [this](web::http::http_response resp)
+        {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            // SPDLOG_DEBUG("resp claiming: {}", body);
+            if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok) && body.find("error") == std::string::npos)
+            {
+                auto           answers              = nlohmann::json::parse(body);
+                auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                nlohmann::json j_out                = nlohmann::json::object();
+                j_out["withdraw_answer"]            = answers[0]["result"];
+                j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
+                auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
+                j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
+                this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
+            }
+            else
+            {
+                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                this->set_rpc_claiming_data(error_json);
+            }
+            this->set_claiming_is_busy(false);
+        };
+
+        auto error_functor = [this](pplx::task<void> previous_task) {
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("error caught in claim_rewards: {}", e.what());
+                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", QString::fromStdString(e.what())}});
+                this->set_rpc_claiming_data(error_json);
+                this->set_claiming_is_busy(false);
+            }
+        };
+
         mm2_system.get_mm2_client()
             .async_rpc_batch_standalone(batch)
-            .then(
-                [this](web::http::http_response resp)
-                {
-                    std::string body = TO_STD_STR(resp.extract_string(true).get());
-                    // SPDLOG_DEBUG("resp claiming: {}", body);
-                    if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok) && body.find("error") == std::string::npos)
-                    {
-                        auto           answers              = nlohmann::json::parse(body);
-                        auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
-                        nlohmann::json j_out                = nlohmann::json::object();
-                        j_out["withdraw_answer"]            = answers[0]["result"];
-                        j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
-                        auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
-                        j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
-                        this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
-                    }
-                    else
-                    {
-                        auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
-                        this->set_rpc_claiming_data(error_json);
-                    }
-                    this->set_claiming_is_busy(false);
-                })
-            .then(&handle_exception_pplx_task);
+            .then(answer_functor)
+            .then(error_functor);
     }
 
     void
-    wallet_page::claim_faucet()
+    wallet_page
+        ::claim_faucet()
     {
         const auto&                mm2_system = m_system_manager.get_system<mm2_service>();
         const auto&                ticker     = mm2_system.get_current_ticker();

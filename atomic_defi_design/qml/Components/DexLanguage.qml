@@ -13,6 +13,7 @@ DexComboBox {
     id: control
     model: API.app.settings_pg.get_available_langs()
     displayText: API.app.settings_pg.lang
+    leftPadding: 5
     delegate: ItemDelegate {
         width: control.width
         height: 30
@@ -47,18 +48,10 @@ DexComboBox {
         elide: Text.ElideRight
         DefaultImage {
             id: image
-            height: 14
+            height: 12
             x: 8
             anchors.verticalCenter: parent.verticalCenter
             source: General.image_path + "lang/" + control.displayText + ".png"
         }
-    }
-    indicator: ColorImage {
-        x: control.width - 34
-        y: control.topPadding + (control.availableHeight - height) / 2
-        color: DexTheme.rectangleBorderColor
-        defaultColor: control.contentItem.color
-        scale: .7
-        source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
     }
 }

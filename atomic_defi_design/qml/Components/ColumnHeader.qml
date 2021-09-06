@@ -27,7 +27,7 @@ Item {
     DefaultImage {
         id: arrow_icon
 
-        source: General.image_path + "arrow-" + (ascending ? "up" : "down") + ".svg"
+        source: General.image_path + "arrow-" + (ascending ? "down" : "up") + ".svg"
 
         width: title.font.pixelSize * 0.5
 

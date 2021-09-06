@@ -31,6 +31,7 @@
         <file>atomic_defi_design/assets/images/coins/avax.png</file>
         <file>atomic_defi_design/assets/images/coins/awc.png</file>
         <file>atomic_defi_design/assets/images/coins/axe.png</file>
+        <file>atomic_defi_design/assets/images/coins/axs.png</file>
         <file>atomic_defi_design/assets/images/coins/babydoge.png</file>
         <file>atomic_defi_design/assets/images/coins/bal.png</file>
         <file>atomic_defi_design/assets/images/coins/band.png</file>
@@ -130,6 +131,7 @@
         <file>atomic_defi_design/assets/images/coins/lstr.png</file>
         <file>atomic_defi_design/assets/images/coins/ltc.png</file>
         <file>atomic_defi_design/assets/images/coins/lynx.png</file>
+        <file>atomic_defi_design/assets/images/coins/ltfn.png</file>
         <file>atomic_defi_design/assets/images/coins/mana.png</file>
         <file>atomic_defi_design/assets/images/coins/matic.png</file>
         <file>atomic_defi_design/assets/images/coins/mcl.png</file>
@@ -228,6 +230,7 @@
         <file>atomic_defi_design/assets/images/coins/wcn.png</file>
         <file>atomic_defi_design/assets/images/coins/wlc.png</file>
         <file>atomic_defi_design/assets/images/coins/wsb.png</file>
+        <file>atomic_defi_design/assets/images/coins/wwcn.png</file>
         <file>atomic_defi_design/assets/images/coins/xlm.png</file>
         <file>atomic_defi_design/assets/images/coins/xmy.png</file>
         <file>atomic_defi_design/assets/images/coins/xor.png</file>
@@ -545,6 +548,7 @@
         <file>atomic_defi_design/qml/Portfolio/PieItem.qml</file>
         <file>atomic_defi_design/qml/Portfolio/SmartChartView.qml</file>
         <file>atomic_defi_design/qml/Portfolio/TableDex.qml</file>
+        <file>atomic_defi_design/qml/Portfolio/AssetsList.qml</file>
         <file>atomic_defi_design/qml/main.qml</file>
         <file>qtquickcontrols2.conf</file>
     </qresource>

@@ -338,6 +338,7 @@ namespace atomic_dex
     {
         this->m_current_status = std::move(status);
         emit onStatusChanged();
+        SPDLOG_INFO("Set status: {}", m_current_status.toStdString());
     }
 
     bool

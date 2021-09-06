@@ -15,15 +15,16 @@
 namespace
 {
     //! Constants
-    constexpr const char* g_coingecko_endpoint = "https://api.coingecko.com/api/v3";
-    constexpr const char* g_coingecko_base_uri{"/coins/markets"};
-    web::http::client::http_client_config g_cfg{[]() {
-      web::http::client::http_client_config cfg;
-      cfg.set_validate_certificates(false);
-      cfg.set_timeout(std::chrono::seconds(30));
-      return cfg;
-    }()};
-    t_http_client_ptr     g_coingecko_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coingecko_endpoint), g_cfg);
+    constexpr const char*                 g_coingecko_endpoint = "https://api.coingecko.com/api/v3";
+    constexpr const char*                 g_coingecko_base_uri{"/coins/markets"};
+    web::http::client::http_client_config g_cfg{[]()
+                                                {
+                                                    web::http::client::http_client_config cfg;
+                                                    cfg.set_validate_certificates(false);
+                                                    cfg.set_timeout(std::chrono::seconds(30));
+                                                    return cfg;
+                                                }()};
+    t_http_client_ptr                     g_coingecko_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coingecko_endpoint), g_cfg);
 
 } // namespace
 
@@ -58,7 +59,8 @@ namespace atomic_dex::coingecko::api
         uri.append("&ids=");
         using ranges::views::ints;
         using ranges::views::zip;
-        auto fill_list_functor = [](auto&& container, auto& uri) {
+        auto fill_list_functor = [](auto&& container, auto& uri)
+        {
             for (auto&& [cur_quote, idx]: zip(container, ints(0u, ranges::unreachable)))
             {
                 uri.append(cur_quote);
@@ -71,7 +73,8 @@ namespace atomic_dex::coingecko::api
             }
         };
 
-        auto fill_single_field_functor = [&uri](const std::string& field_name, auto&& value) {
+        auto fill_single_field_functor = [&uri](const std::string& field_name, auto&& value)
+        {
             uri.append(field_name);
             if constexpr (std::is_same_v<std::string, std::remove_cv_t<std::remove_reference_t<decltype(value)>>>)
             {
@@ -124,13 +127,34 @@ namespace atomic_dex::coingecko::api
     void
     from_json(const nlohmann::json& j, single_infos_answer& answer)
     {
-        answer.current_price = std::to_string(j.at("current_price").get<double>());
+        if (!j.at("current_price").is_null())
+        {
+            answer.current_price = std::to_string(j.at("current_price").get<double>());
+        }
+        else
+        {
+            answer.current_price = "0";
+        }
         boost::algorithm::replace_all(answer.current_price, ",", ".");
-        answer.total_volume = std::to_string(j.at("total_volume").get<double>());
+        if (!j.at("total_volume").is_null())
+        {
+            answer.total_volume = std::to_string(j.at("total_volume").get<double>());
+        }
+        else
+        {
+            answer.total_volume = "0";
+        }
         boost::algorithm::replace_all(answer.total_volume, ",", ".");
-        std::ostringstream ss;
-        ss << std::setprecision(2) << j.at("price_change_percentage_24h").get<double>();
-        answer.price_change_24h = ss.str();
+        if (!j.at("price_change_percentage_24h").is_null())
+        {
+            std::ostringstream ss;
+            ss << std::setprecision(2) << j.at("price_change_percentage_24h").get<double>();
+            answer.price_change_24h = ss.str();
+        }
+        else
+        {
+            answer.price_change_24h = "0";
+        }
         boost::algorithm::replace_all(answer.price_change_24h, ",", ".");
         j.at("sparkline_in_7d").at("price").get_to(answer.sparkline_in_7d);
     }
@@ -147,7 +171,7 @@ namespace atomic_dex::coingecko::api
             }
             catch (const std::exception& error)
             {
-                // SPDLOG_ERROR("Error when treating coingecko answer: {} - error: {}", cur_json_obj.dump(1), error.what());
+                SPDLOG_ERROR("Error when treating coingecko answer: {} - error: {}", cur_json_obj.dump(1), error.what());
             }
         }
     }

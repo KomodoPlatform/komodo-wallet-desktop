@@ -427,7 +427,7 @@ namespace atomic_dex
             auto& trading_pg = m_system_mgr.get_system<trading_page>();
             if (trading_pg.get_market_mode() == MarketMode::Sell)
             {
-                const auto preferred_order = trading_pg.get_preffered_order();
+                const auto preferred_order = trading_pg.get_preferred_order();
                 if (!preferred_order.empty())
                 {
                     const t_float_50 price_std       = safe_float(order.price);
@@ -510,7 +510,7 @@ namespace atomic_dex
                 auto& trading_pg = m_system_mgr.get_system<trading_page>();
                 if (trading_pg.get_market_mode() == MarketMode::Sell)
                 {
-                    const auto preferred_order = trading_pg.get_preffered_order();
+                    const auto preferred_order = trading_pg.get_preferred_order();
                     if (!preferred_order.empty())
                     {
                         const t_float_50 price_std       = safe_float(new_price.toString().toStdString());
@@ -597,7 +597,7 @@ namespace atomic_dex
             if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids)
             {
                 auto&      trading_pg      = m_system_mgr.get_system<trading_page>();
-                const auto preffered_order = trading_pg.get_preffered_order();
+                const auto preffered_order = trading_pg.get_preferred_order();
                 if (!preffered_order.empty())
                 {
                     const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();

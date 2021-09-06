@@ -65,5 +65,7 @@
     "iconButtonColor": "#DCE8FD",
     "iconButtonForegroundColor":"#456078",
     "proviewItemBoxBackgroundColor": "#F5F9FF",
+    "comboBoxBackgroundColor":"#F3F5F6",
+    "comboBoxBorderColor":"transparent",
     "theme":"light"
 }
