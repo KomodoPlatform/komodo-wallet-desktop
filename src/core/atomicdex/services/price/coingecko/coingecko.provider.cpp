@@ -157,7 +157,7 @@ namespace atomic_dex
                     }*/
                     {
                         std::unique_lock lock(m_market_mutex);
-                        if (should_move && !answer.raw_result.empty()) ///< Override
+                        if (should_move) ///< Override
                         {
                             m_market_registry = std::move(answer.result);
                         }

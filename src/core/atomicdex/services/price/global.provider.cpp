@@ -39,6 +39,7 @@ namespace
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
         req.set_request_uri(FROM_STD_STR("api/v1/usd_rates"));
+        //SPDLOG_INFO("req: {}", TO_STD_STR(req.to_string()));
         return g_openrates_client->request(req, g_token_source.get_token());
     }
 

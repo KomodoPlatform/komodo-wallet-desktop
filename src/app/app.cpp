@@ -189,7 +189,7 @@ namespace atomic_dex
             system_manager_.create_system<mm2_service>(system_manager_);
 
             // system_manager_.create_system<coinpaprika_provider>(system_manager_);
-            system_manager_.create_system<coingecko_provider>(system_manager_);
+            // system_manager_.create_system<coingecko_provider>(system_manager_);
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
         }
@@ -448,7 +448,7 @@ namespace atomic_dex
 
         //! Mark systems
         system_manager_.mark_system<mm2_service>();
-        system_manager_.mark_system<coingecko_provider>();
+        //system_manager_.mark_system<coingecko_provider>();
 
         //! Disconnect signals
         get_trading_page()->disconnect_signals();
