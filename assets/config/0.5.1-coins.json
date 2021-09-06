@@ -142,6 +142,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "AXS-BEP20": {
+      "coin": "AXS-BEP20",
+      "name": "Axie Infinity",
+      "coinpaprika_id": "axs-axie-infinity",
+      "coingecko_id": "axie-infinity",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AXS-ERC20": {
+      "coin": "AXS-ERC20",
+      "name": "Axie Infinity",
+      "coinpaprika_id": "axs-axie-infinity",
+      "coingecko_id": "axie-infinity",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BNB": {
     "coin": "BNB",
     "name": "Binance Coin",
@@ -209,22 +243,39 @@
     "active": false,
     "currently_enabled": false
   },
-  "ARPA": {
-    "coin": "ARPA",
-    "name": "ARPA Chain",
-    "coinpaprika_id": "arpa-arpa-chain",
-    "coingecko_id": "arpa-chain",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
+  "ARPA-BEP20": {
+      "coin": "ARPA-BEP20",
+      "name": "ARPA Chain",
+      "coinpaprika_id": "arpa-arpa-chain",
+      "coingecko_id": "arpa-chain",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ARPA-ERC20": {
+      "coin": "ARPA-ERC20",
+      "name": "ARPA Chain",
+      "coinpaprika_id": "arpa-arpa-chain",
+      "coingecko_id": "arpa-chain",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "ATOM-BEP20": {
     "coin": "ATOM-BEP20",
@@ -1817,6 +1868,40 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "KNC-BEP20": {
+      "coin": "KNC-BEP20",
+      "name": "Kyber Network",
+      "coinpaprika_id": "knc-kyber-network",
+      "coingecko_id": "kyber-network-crystal",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "KNC-ERC20": {
+      "coin": "KNC-ERC20",
+      "name": "Kyber Network",
+      "coinpaprika_id": "knc-kyber-network",
+      "coingecko_id": "kyber-network-crystal",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "KOIN": {
     "coin": "KOIN",
@@ -4673,23 +4758,6 @@
     "name": "HUSD",
     "coinpaprika_id": "husd-husd",
     "coingecko_id": "husd",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "KNC": {
-    "coin": "KNC",
-    "name": "KyberNetwork",
-    "coinpaprika_id": "knc-kyber-network",
-    "coingecko_id": "kyber-network",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
