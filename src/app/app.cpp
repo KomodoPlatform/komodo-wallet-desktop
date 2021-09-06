@@ -441,8 +441,10 @@ namespace atomic_dex
         orders->reset();
 
         system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
+        system_manager_.get_system<portfolio_page>().set_current_balance_fiat_all("0");
         system_manager_.get_system<trading_page>().clear_models();
         get_wallet_page()->get_transactions_mdl()->reset();
+
 
         //! Mark systems
         system_manager_.mark_system<mm2_service>();

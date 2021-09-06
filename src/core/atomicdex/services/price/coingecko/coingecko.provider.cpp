@@ -81,6 +81,10 @@ namespace atomic_dex
             auto&& [ids, registry] = coingecko::api::from_enabled_coins(coins);
             internal_update(ids, registry);
         }
+        else
+        {
+            SPDLOG_WARN("mm2 not running - skipping update_ticker_and_provider");
+        }
     }
 
     std::string
