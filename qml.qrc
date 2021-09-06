@@ -548,6 +548,7 @@
         <file>atomic_defi_design/qml/Portfolio/PieItem.qml</file>
         <file>atomic_defi_design/qml/Portfolio/SmartChartView.qml</file>
         <file>atomic_defi_design/qml/Portfolio/TableDex.qml</file>
+        <file>atomic_defi_design/qml/Portfolio/AssetsList.qml</file>
         <file>atomic_defi_design/qml/main.qml</file>
         <file>qtquickcontrols2.conf</file>
     </qresource>

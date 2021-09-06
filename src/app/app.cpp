@@ -189,7 +189,7 @@ namespace atomic_dex
             system_manager_.create_system<mm2_service>(system_manager_);
 
             // system_manager_.create_system<coinpaprika_provider>(system_manager_);
-            system_manager_.create_system<coingecko_provider>(system_manager_);
+            // system_manager_.create_system<coingecko_provider>(system_manager_);
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
         }
@@ -441,12 +441,14 @@ namespace atomic_dex
         orders->reset();
 
         system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
+        system_manager_.get_system<portfolio_page>().set_current_balance_fiat_all("0");
         system_manager_.get_system<trading_page>().clear_models();
         get_wallet_page()->get_transactions_mdl()->reset();
 
+
         //! Mark systems
         system_manager_.mark_system<mm2_service>();
-        system_manager_.mark_system<coingecko_provider>();
+        //system_manager_.mark_system<coingecko_provider>();
 
         //! Disconnect signals
         get_trading_page()->disconnect_signals();

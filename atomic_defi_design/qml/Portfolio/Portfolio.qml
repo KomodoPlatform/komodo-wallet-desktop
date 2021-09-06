@@ -117,7 +117,6 @@ Item {
         anchors.topMargin: 90
         contentHeight: _column.height
         clip: true
-        onHeightChanged: console.log(height)
         Column {
             id: _column
             topPadding: 10
@@ -196,7 +195,7 @@ Item {
                         
                         DefaultSwitch {
                             Layout.alignment: Qt.AlignVCenter
-                            text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.innerList.count).arg(portfolio_mdl.length))
+                            text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
                             checked: portfolio_coins.with_balance
                             onCheckedChanged: portfolio_coins.with_balance = checked
 
@@ -206,9 +205,11 @@ Item {
                 }
             }
 
-            TableDex
+            AssetsList
             {
                 id: coinsList
+                width: parent.parent.width - 80
+                anchors.horizontalCenter: parent.horizontalCenter
             }
 
             Item {

@@ -294,25 +294,6 @@ Item {
         }
     }
 
-    function getStatusText(status, short_text = false) {
-        switch (status) {
-            case "matching":
-                return short_text ? qsTr("Matching") : qsTr("Order Matching")
-            case "matched":
-                return short_text ? qsTr("Matched") : qsTr("Order Matched")
-            case "ongoing":
-                return short_text ? qsTr("Ongoing") : qsTr("Swap Ongoing")
-            case "successful":
-                return short_text ? qsTr("Successful") : qsTr("Swap Successful")
-            case "refunding":
-                return short_text ? qsTr("Refunding") : qsTr("Refunding")
-            case "failed":
-                return short_text ? qsTr("Failed") : qsTr("Swap Failed")
-            default:
-                return short_text ? qsTr("Unknown") : qsTr("Unknown State")
-        }
-    }
-
     function isSwapDone(status) {
         switch (status) {
             case "matching":

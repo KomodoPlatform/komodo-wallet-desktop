@@ -144,6 +144,26 @@ DexPopup {
             notifications_list = notifications_list
     }
 
+
+    function getOrderStatusText(status, short_text = false) {
+        switch (status) {
+            case "matching":
+                return short_text ? qsTr("Matching") : qsTr("Order Matching")
+            case "matched":
+                return short_text ? qsTr("Matched") : qsTr("Order Matched")
+            case "ongoing":
+                return short_text ? qsTr("Ongoing") : qsTr("Swap Ongoing")
+            case "successful":
+                return short_text ? qsTr("Successful") : qsTr("Swap Successful")
+            case "refunding":
+                return short_text ? qsTr("Refunding") : qsTr("Refunding")
+            case "failed":
+                return short_text ? qsTr("Failed") : qsTr("Swap Failed")
+            default:
+                return short_text ? qsTr("Unknown") : qsTr("Unknown State")
+        }
+    }
+
     // Events
     function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
         newNotification("onUpdateSwapStatus", {
@@ -156,7 +176,7 @@ DexPopup {
             },
             swap_uuid,
             base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
-            getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + getStatusText(new_swap_status),
+            getOrderStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + getOrderStatusText(new_swap_status),
             human_date,
             "open_swaps_page")
     }
