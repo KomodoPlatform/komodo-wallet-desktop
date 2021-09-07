@@ -3608,7 +3608,7 @@
   "TKL": {
     "coin": "TKL",
     "name": "Tokel",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "tkl-tokel",
     "coingecko_id": "test-coin",
     "electrum": [
       
