@@ -287,6 +287,7 @@ QtObject {
                                           "FTC": "#FFFFFF",
                                           "FTM": "#13B5EC",
                                           "GLEEC": "#8C41FF",
+                                          "GRMS": "#12B690",
                                           "GRS": "#377E96",
                                           "IOTA": "#404040",
                                           "JSTR": "#627EEA",
