@@ -135,9 +135,13 @@ Item {
                 if(order_form.visible === false) {
                     order_form.visible = true
                 }
+                if(order_form.hidden === true) {
+                    order_form.hidden = false
+                    if(order_form.contentVisible === false) {
+                        order_form.contentVisible = true
+                    }
+                }
             }
-
-
         }
     }
 
