@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
+import QtWebEngine 1.10
 import "../Components"
 import "../Constants"
 import App 1.0
@@ -21,6 +22,8 @@ as SettingsPage
 
 Item {
     id: dashboard
+
+    property alias webEngineView: webEngineView
 
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
@@ -192,6 +195,11 @@ Item {
             FiatRamp {
 
             }
+        }
+
+        WebEngineView
+        {
+            id: webEngineView
         }
 
         DefaultLoader {
