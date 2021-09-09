@@ -2,11 +2,10 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-
 import QtGraphicalEffects 1.0
+import Qt.labs.settings 1.0
 
 import Qaterial 1.0 as Qaterial
-import Qt.labs.settings 1.0
 
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
@@ -30,7 +29,7 @@ import "BestOrder/" as BestOrder
 // Orders (orders, history)
 import "Orders/" as OrdersView
 
-import "./" as Here
+import "../../Screens"
 
 ColumnLayout {
     id: form
