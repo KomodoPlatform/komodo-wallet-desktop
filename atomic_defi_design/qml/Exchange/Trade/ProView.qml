@@ -171,6 +171,18 @@ ColumnLayout {
                             color: 'transparent'
                             anchors.fill: parent
                         }
+
+                        Component.onCompleted:
+                        {
+                            dashboard.webEngineView.parent = chart_view;
+                            dashboard.webEngineView.anchors.fill = chart_view;
+                            dashboard.webEngineView.visible = true;
+                        }
+                        Component.onDestruction:
+                        {
+                            dashboard.webEngineView.visible = false;
+                            dashboard.webEngineView.stop();
+                        }
                     }
                 }
                 DexTradeBox {
