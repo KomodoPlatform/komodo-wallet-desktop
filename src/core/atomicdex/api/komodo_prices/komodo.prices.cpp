@@ -21,42 +21,42 @@ namespace
     t_http_client_ptr                     g_komodo_prices_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodo_prices_endpoint), g_komodo_prices_cfg);
 }
 
-namespace atomicdex::komodo_prices::api
+namespace atomic_dex::komodo_prices::api
 {
     void
-    from_json(const nlohmann::json& j, atomicdex::komodo_prices::api::komodo_ticker_infos& x)
+    from_json(const nlohmann::json& j, komodo_ticker_infos& x)
     {
         x.ticker                 = j.at("ticker").get<std::string>();
         x.last_price             = j.at("last_price").get<std::string>();
         x.last_updated           = j.at("last_updated").get<std::string>();
         x.last_updated_timestamp = j.at("last_updated_timestamp").get<int64_t>();
         x.volume24_h             = j.at("volume24h").get<std::string>();
-        x.price_provider         = j.at("price_provider").get<atomicdex::komodo_prices::api::provider>();
-        x.volume_provider        = j.at("volume_provider").get<atomicdex::komodo_prices::api::provider>();
+        x.price_provider         = j.at("price_provider").get<provider>();
+        x.volume_provider        = j.at("volume_provider").get<provider>();
         //x.sparkline_7_d          = atomicdex::komodo_prices::api::get_optional<std::vector<double>>(j, "sparkline_7d");
         //x.sparkline_provider     = j.at("sparkline_provider").get<atomicdex::komodo_prices::api::provider>();
         x.change_24_h            = j.at("change_24h").get<std::string>();
-        x.change_24_h_provider   = j.at("change_24h_provider").get<atomicdex::komodo_prices::api::provider>();
+        x.change_24_h_provider   = j.at("change_24h_provider").get<provider>();
     }
 
     void
-    from_json(const nlohmann::json& j, atomicdex::komodo_prices::api::provider& x)
+    from_json(const nlohmann::json& j, provider& x)
     {
         if (j == "binance")
         {
-            x = atomicdex::komodo_prices::api::provider::binance;
+            x = provider::binance;
         }
         else if (j == "coingecko")
         {
-            x = atomicdex::komodo_prices::api::provider::coingecko;
+            x = provider::coingecko;
         }
         else if (j == "coinpaprika")
         {
-            x = atomicdex::komodo_prices::api::provider::coinpaprika;
+            x = provider::coinpaprika;
         }
         else
         {
-            x = atomicdex::komodo_prices::api::provider::unknown;
+            x = provider::unknown;
         }
     }
 }

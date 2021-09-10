@@ -5,7 +5,7 @@
 
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
-namespace atomicdex::komodo_prices::api
+namespace atomic_dex::komodo_prices::api
 {
     enum class provider : int
     {
@@ -28,8 +28,8 @@ namespace atomicdex::komodo_prices::api
         provider                             change_24_h_provider;
     };
 
-    void from_json(const nlohmann::json& j, atomicdex::komodo_prices::api::komodo_ticker_infos& x);
-    void from_json(const nlohmann::json& j, atomicdex::komodo_prices::api::provider& x);
+    void from_json(const nlohmann::json& j, komodo_ticker_infos& x);
+    void from_json(const nlohmann::json& j, provider& x);
 
     using t_komodo_tickers_price_registry = std::unordered_map<std::string, komodo_ticker_infos>;
 } // namespace atomicdex::komodo_prices::api

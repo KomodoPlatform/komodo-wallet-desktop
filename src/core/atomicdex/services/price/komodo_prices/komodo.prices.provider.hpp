@@ -14,7 +14,7 @@ namespace atomic_dex
     class komodo_prices_provider final : public ag::ecs::pre_update_system<komodo_prices_provider>
     {
         //! private type definition
-        using t_market_registry          = atomicdex::komodo_prices::api::t_komodo_tickers_price_registry;
+        using t_market_registry          = komodo_prices::api::t_komodo_tickers_price_registry;
         using t_komodo_prices_time_point = std::chrono::high_resolution_clock::time_point;
 
         //! private fields

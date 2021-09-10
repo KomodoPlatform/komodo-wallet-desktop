@@ -1,3 +1,6 @@
+//! Deps
+#include <nlohmann/json.hpp>
+
 //! Project Headers
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 
@@ -19,6 +22,38 @@ namespace atomic_dex
     komodo_prices_provider::process_update()
     {
         SPDLOG_INFO("komodo price service tick loop");
+
+        auto answer_functor = [this](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                nlohmann::json j = nlohmann::json::parse(body);
+                t_market_registry answer;
+                answer = j.get<t_market_registry>();
+                {
+                    std::unique_lock lock(m_market_mutex);
+                    m_market_registry = std::move(answer);
+                    SPDLOG_INFO("komodo price registry size: {}", m_market_registry.size());
+                }
+            }
+            else
+            {
+                SPDLOG_ERROR("Error during the rpc call to komodo price provider: {}", body);
+            }
+        };
+
+        auto error_functor = [](pplx::task<void> previous_task){
+            try
+            {
+                previous_task.wait();
+            }
+            catch (const std::exception& e)
+            {
+                SPDLOG_ERROR("error occured when fetching price: {}", e.what());
+            };
+        };
+
+        atomic_dex::komodo_prices::api::async_market_infos().then(answer_functor).then(error_functor);
     }
 } // namespace atomic_dex
 
