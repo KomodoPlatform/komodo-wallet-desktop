@@ -13,7 +13,7 @@
 //! Project Headers
 #include "atomicdex/api/komodo_prices/komodo.prices.hpp"
 
-TEST_CASE("api test")
+TEST_CASE("komodo prices api test")
 {
     auto resp = atomic_dex::komodo_prices::api::async_market_infos().get();
     std::string body = TO_STD_STR(resp.extract_string(true).get());
