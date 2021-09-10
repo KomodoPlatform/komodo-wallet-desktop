@@ -18,6 +18,15 @@ namespace atomic_dex
 //! Private functions
 namespace atomic_dex
 {
+    komodo_prices::api::komodo_ticker_infos
+    komodo_prices_provider::get_info_answer(const std::string& ticker) const
+    {
+        std::shared_lock lock(m_market_mutex);
+        SPDLOG_INFO("Looking for ticker: {}", ticker);
+        const auto it = m_market_registry.find(ticker);
+        return it != m_market_registry.cend() ? it->second : komodo_prices::api::komodo_ticker_infos{.ticker = ticker};
+    }
+
     void
     komodo_prices_provider::process_update()
     {

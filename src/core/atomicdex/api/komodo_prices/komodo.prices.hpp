@@ -1,7 +1,7 @@
 #pragma once
 
-#include <nlohmann/json_fwd.hpp>
 #include <entt/core/attribute.h>
+#include <nlohmann/json_fwd.hpp>
 
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
@@ -18,21 +18,23 @@ namespace atomic_dex::komodo_prices::api
     struct komodo_ticker_infos
     {
         std::string                          ticker;
-        std::string                          last_price;
+        std::string                          last_price{"0.00"};
         std::string                          last_updated;
         int64_t                              last_updated_timestamp;
-        std::string                          volume24_h;
-        provider                             price_provider;
-        provider                             volume_provider;
-        std::string                          change_24_h;
-        provider                             change_24_h_provider;
+        std::string                          volume24_h{"0.00"};
+        provider                             price_provider{provider::unknown};
+        provider                             volume_provider{provider::unknown};
+        std::string                          change_24_h{"0.00"};
+        provider                             change_24_h_provider{provider::unknown};
+        std::shared_ptr<std::vector<double>> sparkline_7_d{nullptr};
+        provider                             sparkline_provider;
     };
 
     void from_json(const nlohmann::json& j, komodo_ticker_infos& x);
     void from_json(const nlohmann::json& j, provider& x);
 
     using t_komodo_tickers_price_registry = std::unordered_map<std::string, komodo_ticker_infos>;
-} // namespace atomicdex::komodo_prices::api
+} // namespace atomic_dex::komodo_prices::api
 
 namespace atomic_dex::komodo_prices::api
 {

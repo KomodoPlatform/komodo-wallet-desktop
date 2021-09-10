@@ -10,16 +10,16 @@
 
 namespace
 {
-    constexpr const char* g_komodo_prices_endpoint = "http://95.217.208.239:1313";
+    constexpr const char*                 g_komodo_prices_endpoint = "http://95.217.208.239:1313";
     web::http::client::http_client_config g_komodo_prices_cfg{[]()
-                                                {
-                                                    web::http::client::http_client_config cfg;
-                                                    cfg.set_validate_certificates(false);
-                                                    cfg.set_timeout(std::chrono::seconds(30));
-                                                    return cfg;
-                                                }()};
-    t_http_client_ptr                     g_komodo_prices_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodo_prices_endpoint), g_komodo_prices_cfg);
-}
+                                                              {
+                                                                  web::http::client::http_client_config cfg;
+                                                                  cfg.set_validate_certificates(false);
+                                                                  cfg.set_timeout(std::chrono::seconds(30));
+                                                                  return cfg;
+                                                              }()};
+    t_http_client_ptr g_komodo_prices_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodo_prices_endpoint), g_komodo_prices_cfg);
+} // namespace
 
 namespace atomic_dex::komodo_prices::api
 {
@@ -33,10 +33,17 @@ namespace atomic_dex::komodo_prices::api
         x.volume24_h             = j.at("volume24h").get<std::string>();
         x.price_provider         = j.at("price_provider").get<provider>();
         x.volume_provider        = j.at("volume_provider").get<provider>();
-        //x.sparkline_7_d          = atomicdex::komodo_prices::api::get_optional<std::vector<double>>(j, "sparkline_7d");
-        //x.sparkline_provider     = j.at("sparkline_provider").get<atomicdex::komodo_prices::api::provider>();
-        x.change_24_h            = j.at("change_24h").get<std::string>();
-        x.change_24_h_provider   = j.at("change_24h_provider").get<provider>();
+        if (j.contains("sparkline_7d") && !j.at("sparkline_7d").is_null())
+        {
+            x.sparkline_7_d = std::make_shared<std::vector<double>>(j.at("sparkline_7d").get<std::vector<double>>());
+        }
+        else
+        {
+            x.sparkline_7_d = nullptr;
+        }
+        x.sparkline_provider   = j.at("sparkline_provider").get<provider>();
+        x.change_24_h          = j.at("change_24h").get<std::string>();
+        x.change_24_h_provider = j.at("change_24h_provider").get<provider>();
     }
 
     void
@@ -59,7 +66,7 @@ namespace atomic_dex::komodo_prices::api
             x = provider::unknown;
         }
     }
-}
+} // namespace atomic_dex::komodo_prices::api
 
 namespace atomic_dex::komodo_prices::api
 {
@@ -72,4 +79,4 @@ namespace atomic_dex::komodo_prices::api
         req.set_request_uri(FROM_STD_STR("/api/v1/tickers"));
         return g_komodo_prices_client->request(req);
     }
-}
+} // namespace atomic_dex::komodo_prices::api
