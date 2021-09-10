@@ -444,6 +444,7 @@ Item {
             {
                 dashboard.webEngineView.parent = price_graph_bg
                 dashboard.webEngineView.anchors.fill = price_graph_bg
+                dashboard.webEngineView.visible = true
             }
 
             Layout.fillWidth: true
