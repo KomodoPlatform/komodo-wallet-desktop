@@ -33,17 +33,10 @@ namespace atomic_dex::komodo_prices::api
         x.volume24_h             = j.at("volume24h").get<std::string>();
         x.price_provider         = j.at("price_provider").get<provider>();
         x.volume_provider        = j.at("volume_provider").get<provider>();
-        if (j.contains("sparkline_7d") && !j.at("sparkline_7d").is_null())
-        {
-            x.sparkline_7_d = std::make_shared<std::vector<double>>(j.at("sparkline_7d").get<std::vector<double>>());
-        }
-        else
-        {
-            x.sparkline_7_d = nullptr;
-        }
-        x.sparkline_provider   = j.at("sparkline_provider").get<provider>();
-        x.change_24_h          = j.at("change_24h").get<std::string>();
-        x.change_24_h_provider = j.at("change_24h_provider").get<provider>();
+        x.sparkline_7_d          = j.at("sparkline_7d");
+        x.sparkline_provider     = j.at("sparkline_provider").get<provider>();
+        x.change_24_h            = j.at("change_24h").get<std::string>();
+        x.change_24_h_provider   = j.at("change_24h_provider").get<provider>();
     }
 
     void

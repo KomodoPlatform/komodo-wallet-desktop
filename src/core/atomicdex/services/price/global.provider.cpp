@@ -18,7 +18,7 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
-#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 
 namespace
@@ -154,7 +154,7 @@ namespace atomic_dex
                     }
                     if (with_update_providers)
                     {
-                        this->m_system_manager.get_system<coingecko_provider>().update_ticker_and_provider();
+                        //this->m_system_manager.get_system<komodo_prices_provider>().update_ticker_and_provider();
                     }
                 })
             .then(error_functor);
@@ -188,20 +188,20 @@ namespace atomic_dex
     std::string
     global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker_in, bool adjusted) const
     {
-        std::string ticker = atomic_dex::utils::retrieve_main_ticker(ticker_in);
+        std::string ticker = ticker_in;
         try
         {
             //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
             if (ticker.empty())
                 return "0";
-            auto&       coingecko       = m_system_manager.get_system<coingecko_provider>();
+            auto&       provider       = m_system_manager.get_system<komodo_prices_provider>();
             auto&       band_service    = m_system_manager.get_system<band_oracle_price_service>();
             std::string current_price   = band_service.retrieve_if_this_ticker_supported(ticker);
             const bool  is_oracle_ready = band_service.is_oracle_ready();
 
             if (current_price.empty())
             {
-                current_price = coingecko.get_rate_conversion(ticker);
+                current_price = provider.get_rate_conversion(ticker);
                 if (!is_this_currency_a_fiat(m_cfg, fiat))
                 {
                     t_float_50 rate(1);

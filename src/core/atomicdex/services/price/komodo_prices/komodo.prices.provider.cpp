@@ -3,6 +3,7 @@
 
 //! Project Headers
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
+#include "atomicdex/events/events.hpp"
 
 //! Constructor
 namespace atomic_dex
@@ -22,7 +23,7 @@ namespace atomic_dex
     komodo_prices_provider::get_info_answer(const std::string& ticker) const
     {
         std::shared_lock lock(m_market_mutex);
-        SPDLOG_INFO("Looking for ticker: {}", ticker);
+        //SPDLOG_INFO("Looking for ticker: {}", ticker);
         const auto it = m_market_registry.find(ticker);
         return it != m_market_registry.cend() ? it->second : komodo_prices::api::komodo_ticker_infos{.ticker = ticker};
     }
@@ -32,11 +33,12 @@ namespace atomic_dex
     {
         SPDLOG_INFO("komodo price service tick loop");
 
-        auto answer_functor = [this](web::http::http_response resp) {
+        auto answer_functor = [this](web::http::http_response resp)
+        {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
-                nlohmann::json j = nlohmann::json::parse(body);
+                nlohmann::json    j = nlohmann::json::parse(body);
                 t_market_registry answer;
                 answer = j.get<t_market_registry>();
                 {
@@ -44,6 +46,7 @@ namespace atomic_dex
                     m_market_registry = std::move(answer);
                     SPDLOG_INFO("komodo price registry size: {}", m_market_registry.size());
                 }
+                dispatcher_.trigger<fiat_rate_updated>("");
             }
             else
             {
@@ -51,7 +54,8 @@ namespace atomic_dex
             }
         };
 
-        auto error_functor = [](pplx::task<void> previous_task){
+        auto error_functor = [](pplx::task<void> previous_task)
+        {
             try
             {
                 previous_task.wait();
@@ -74,13 +78,42 @@ namespace atomic_dex
     {
         using namespace std::chrono_literals;
 
-        const auto now    = std::chrono::high_resolution_clock::now();
-        const auto s      = std::chrono::duration_cast<std::chrono::seconds>(now - m_clock);
+        const auto now = std::chrono::high_resolution_clock::now();
+        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_clock);
 
         if (s >= 30s)
         {
             process_update();
             m_clock = std::chrono::high_resolution_clock::now();
         }
+    }
+
+    std::string
+    komodo_prices_provider::get_total_volume(const std::string& ticker) const
+    {
+        return get_info_answer(ticker).volume24_h;
+    }
+
+    nlohmann::json
+    komodo_prices_provider::get_ticker_historical(const std::string& ticker) const
+    {
+        nlohmann::json j = get_info_answer(ticker).sparkline_7_d;
+        if (j.is_null())
+        {
+            j = nlohmann::json::array();
+        }
+        return j;
+    }
+
+    std::string
+    komodo_prices_provider::get_change_24h(const std::string& ticker) const
+    {
+        return get_info_answer(ticker).change_24_h;
+    }
+
+    std::string
+    komodo_prices_provider::get_rate_conversion(const std::string& ticker) const
+    {
+        return get_info_answer(ticker).last_price;
     }
 } // namespace atomic_dex

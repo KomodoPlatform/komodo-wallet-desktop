@@ -24,7 +24,7 @@ namespace atomic_dex
 
         //! private functions
         void                                    process_update();
-        komodo_prices::api::komodo_ticker_infos get_info_answer(const std::string& ticker) const;;
+        komodo_prices::api::komodo_ticker_infos get_info_answer(const std::string& ticker) const;
 
       public:
         //! Constructor
@@ -35,6 +35,18 @@ namespace atomic_dex
 
         //! Override ag::system functions
         void update() final;
+
+        //! Get the rate conversion for the given ticker.
+        [[nodiscard]] std::string get_rate_conversion(const std::string& ticker) const;;
+
+        //! Get the ticker informations.
+        [[nodiscard]] std::string get_change_24h(const std::string& ticker) const;
+
+        //! Get the volume information
+        [[nodiscard]] std::string get_total_volume(const std::string& ticker) const;
+
+        //! Get the ticker informations.
+        [[nodiscard]] nlohmann::json get_ticker_historical(const std::string& ticker) const;
     };
 } // namespace atomic_dex
 
