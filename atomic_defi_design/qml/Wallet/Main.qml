@@ -456,7 +456,11 @@ Item {
             color: DexTheme.contentColorTop
 
             Component.onCompleted: initGraph()
-            Component.onDestruction: dashboard.webEngineView.visible = false
+            Component.onDestruction:
+            {
+                dashboard.webEngineView.visible = false;
+                dashboard.webEngineView.stop();
+            }
 
             content: Item {
                 property bool ticker_supported: false
@@ -515,7 +519,7 @@ Item {
 
                     console.debug("Wallet: Loading chart for %1".arg(symbol))
 
-                    chart.loadHtml(`
+                    dashboard.webEngineView.loadHtml(`
                         <style>
                         body { margin: 0; background: %1 }
                         </style>
