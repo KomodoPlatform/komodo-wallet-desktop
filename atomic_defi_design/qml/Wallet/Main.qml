@@ -476,37 +476,37 @@ Item {
                     // Normal pair
                     let symbol = General.supported_pairs[pair]
                     if (!symbol) {
-                        console.log("Symbol not found for", pair)
+                        console.warn("Symbol not found for", pair)
                         symbol = General.supported_pairs[pair_reversed]
                     }
 
                     // Reversed pair
                     if (!symbol) {
-                        console.log("Symbol not found for", pair_reversed)
+                        console.warn("Symbol not found for", pair_reversed)
                         symbol = General.supported_pairs[pair_usd]
                     }
 
                     // Pair with USD
                     if (!symbol) {
-                        console.log("Symbol not found for", pair_usd)
+                        console.warn("Symbol not found for", pair_usd)
                         symbol = General.supported_pairs[pair_usd_reversed]
                     }
 
                     // Reversed pair with USD
                     if (!symbol) {
-                        console.log("Symbol not found for", pair_usd_reversed)
+                        console.warn("Symbol not found for", pair_usd_reversed)
                         symbol = General.supported_pairs[pair_busd]
                     }
 
                     // Pair with BUSD
                     if (!symbol) {
-                        console.log("Symbol not found for", pair_busd)
+                        console.warn("Symbol not found for", pair_busd)
                         symbol = General.supported_pairs[pair_busd_reversed]
                     }
 
                     // Reversed pair with BUSD
                     if (!symbol) {
-                        console.log("Symbol not found for", pair_busd_reversed)
+                        console.warn("Symbol not found for", pair_busd_reversed)
                         ticker_supported = false
                         return
                     }
