@@ -267,10 +267,6 @@ namespace atomic_dex
     {
         auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
-        if (mm2_instance.get_coin_info(ticker).coingecko_id == "test-coin")
-        {
-            return "0.00";
-        }
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
         const auto current_price = get_rate_conversion(currency, ticker);
         if (current_price == "0.00")
@@ -293,11 +289,6 @@ namespace atomic_dex
 
             for (auto&& current_coin: coins)
             {
-                if (current_coin.coingecko_id == "test-coin")
-                {
-                    continue;
-                }
-
                 current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
 
                 if (ec)
@@ -337,11 +328,6 @@ namespace atomic_dex
             auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
             const auto ticker_infos = mm2_instance.get_coin_info(ticker);
-            if (ticker_infos.coingecko_id == "test-coin")
-            {
-                return "0.00";
-            }
-
             const auto current_price = get_rate_conversion(currency, ticker);
 
             if (current_price == "0.00")
@@ -364,11 +350,6 @@ namespace atomic_dex
         try
         {
             auto& mm2_instance = m_system_manager.get_system<mm2_service>();
-
-            if (mm2_instance.get_coin_info(ticker).coingecko_id == "test-coin")
-            {
-                return "0.00";
-            }
 
             if (m_supported_fiat_registry.count(fiat) == 0u)
             {
