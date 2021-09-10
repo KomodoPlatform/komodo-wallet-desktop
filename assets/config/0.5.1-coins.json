@@ -5266,6 +5266,25 @@
     "active": false,
     "currently_enabled": false
   },
+  "USBL": {
+    "active": true,
+    "coin": "USBL",
+    "name": "Balanced",
+    "coingecko_id": "balanced",
+    "coinpaprika_id": "balanced-balanced",
+    "currently_enabled": true,
+    "electrum": [
+      {
+        "url": "",
+        "ws_url": ""
+      },
+    ],
+    "explorer_url": [
+      "https://softbalanced.com:3001/insight/"
+    ],
+    "explorer_tx_url": "tx/",
+    "type": "UTXO"
+  },
   "UTK": {
     "coin": "UTK",
     "name": "UTRUST",
