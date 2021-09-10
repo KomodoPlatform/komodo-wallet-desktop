@@ -347,7 +347,7 @@ namespace atomic_dex
 #if !defined(Q_OS_WINDOWS)
         self_update_system.disable();
 #endif
-        //system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
+        system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
