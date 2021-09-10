@@ -98,6 +98,7 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/config/coins.cfg.tests.cpp
         ##! API
         tests/api/coingecko/coingecko.tests.cpp
+        tests/api/komodo_prices/komodo.prices.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
         #tests/api/github/github.api.tests.cpp
