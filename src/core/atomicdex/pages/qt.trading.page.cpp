@@ -939,7 +939,7 @@ namespace atomic_dex
             this->set_market_mode(MarketMode::Sell);
             m_current_trading_mode = trading_mode;
             entity_registry_.template ctx<QSettings>().setValue("DefaultTradingMode", m_current_trading_mode);
-            get_market_pairs_mdl()->get_left_selection_box()->set_with_fiat_balance(m_current_trading_mode == TradingMode::Simple);
+            //get_market_pairs_mdl()->get_left_selection_box()->set_with_fiat_balance(m_current_trading_mode == TradingMode::Simple);
             get_market_pairs_mdl()->get_left_selection_box()->set_with_balance(m_current_trading_mode == TradingMode::Simple);
             SPDLOG_DEBUG("Set trading mode to: {}", QMetaEnum::fromType<TradingMode>().valueToKey(trading_mode));
             emit tradingModeChanged();
