@@ -2,8 +2,8 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/events/events.hpp"
+#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 
 //! Constructor
 namespace atomic_dex
@@ -23,7 +23,7 @@ namespace atomic_dex
     komodo_prices_provider::get_info_answer(const std::string& ticker) const
     {
         std::shared_lock lock(m_market_mutex);
-        //SPDLOG_INFO("Looking for ticker: {}", ticker);
+        // SPDLOG_INFO("Looking for ticker: {}", ticker);
         const auto it = m_market_registry.find(ticker);
         return it != m_market_registry.cend() ? it->second : komodo_prices::api::komodo_ticker_infos{.ticker = ticker};
     }
@@ -115,5 +115,28 @@ namespace atomic_dex
     komodo_prices_provider::get_rate_conversion(const std::string& ticker) const
     {
         return get_info_answer(ticker).last_price;
+    }
+
+    std::string
+    komodo_prices_provider::get_price_provider(const std::string& ticker) const
+    {
+        auto provider = get_info_answer(ticker).price_provider;
+        switch (provider)
+        {
+        case komodo_prices::api::provider::binance:
+            return "binance";
+        case komodo_prices::api::provider::coingecko:
+            return "coingecko";
+        case komodo_prices::api::provider::coinpaprika:
+            return "coinpaprika";
+        default:
+            return "unknown";
+        }
+    }
+
+    int64_t
+    komodo_prices_provider::get_last_price_timestamp(const std::string& ticker) const
+    {
+        return get_info_answer(ticker).last_updated_timestamp;
     }
 } // namespace atomic_dex

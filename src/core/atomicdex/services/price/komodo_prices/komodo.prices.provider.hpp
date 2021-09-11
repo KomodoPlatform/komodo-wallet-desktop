@@ -37,7 +37,8 @@ namespace atomic_dex
         void update() final;
 
         //! Get the rate conversion for the given ticker.
-        [[nodiscard]] std::string get_rate_conversion(const std::string& ticker) const;;
+        [[nodiscard]] std::string get_rate_conversion(const std::string& ticker) const;
+        ;
 
         //! Get the ticker informations.
         [[nodiscard]] std::string get_change_24h(const std::string& ticker) const;
@@ -47,6 +48,12 @@ namespace atomic_dex
 
         //! Get the ticker informations.
         [[nodiscard]] nlohmann::json get_ticker_historical(const std::string& ticker) const;
+
+        //! Get the provider informations for a given ticker.
+        [[nodiscard]] std::string get_price_provider(const std::string& ticker) const;
+
+        //! Get the last timestamp for a given ticker.
+        [[nodiscard]] int64_t get_last_price_timestamp(const std::string& ticker) const;
     };
 } // namespace atomic_dex
 
