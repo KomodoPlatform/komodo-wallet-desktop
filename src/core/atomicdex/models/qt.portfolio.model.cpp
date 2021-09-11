@@ -79,6 +79,8 @@ namespace atomic_dex
                 .main_currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, true)),
                 .main_fiat_price_for_one_unit     = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker)),
                 .trend_7d                         = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(coin.ticker)),
+                .price_provider                   = QString::fromStdString(provider.get_price_provider(coin.ticker)),
+                .price_last_timestamp             = static_cast<int>(provider.get_last_price_timestamp(coin.ticker)),
                 .is_excluded                      = false,
                 .public_address                   = QString::fromStdString(mm2_system.address(coin.ticker, ec))};
             // data.percent_main_currency = percent_functor(data.main_currency_balance);
@@ -130,6 +132,10 @@ namespace atomic_dex
                     update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
                     const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                     update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
+                    const QString price_provider = QString::fromStdString(provider.get_price_provider(ticker));
+                    update_value(PriceProvider, price_provider, idx, *this);
+                    int last_price_timestamp = static_cast<int>(provider.get_last_price_timestamp(ticker));
+                    update_value(LastPriceTimestamp, last_price_timestamp, idx, *this);
                     QString change24_h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
                     update_value(Change24H, change24_h, idx, *this);
                     const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
@@ -187,6 +193,10 @@ namespace atomic_dex
                 auto&& [_3, _4, is_change_mcpfo]                = update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
                 const QString currency_fiat_for_one_unit        = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                 update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
+                const QString price_provider = QString::fromStdString(provider.get_price_provider(ticker));
+                update_value(PriceProvider, price_provider, idx, *this);
+                int last_price_timestamp = static_cast<int>(provider.get_last_price_timestamp(ticker));
+                update_value(LastPriceTimestamp, last_price_timestamp, idx, *this);
                 const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
                 update_value(Display, display, idx, *this);
                 QString change24_h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
@@ -261,6 +271,10 @@ namespace atomic_dex
             return item.priv_key;
         case PercentMainCurrency:
             return item.percent_main_currency;
+        case PriceProvider:
+            return item.price_provider;
+        case LastPriceTimestamp:
+            return item.price_last_timestamp;
         }
         return {};
     }
@@ -344,11 +358,17 @@ namespace atomic_dex
             break;
         case PrivKey:
             item.priv_key = value.toString();
-            //emit dataChanged(index, index, {role});
+            // emit dataChanged(index, index, {role});
             break;
         case PercentMainCurrency:
             item.percent_main_currency = value.toString();
-            //emit dataChanged(index, index, {role});
+            // emit dataChanged(index, index, {role});
+            break;
+        case PriceProvider:
+            item.price_provider = value.toString();
+            break;
+        case LastPriceTimestamp:
+            item.price_last_timestamp = value.toInt();
             break;
         default:
             return false;
