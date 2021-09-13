@@ -15,6 +15,7 @@ QtObject {
     readonly property string image_path: assets_path + "atomic_defi_design/assets/images/"
     readonly property string coin_icons_path: image_path + "coins/"
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
+    readonly property string providerIconsPath: image_path + "providers/"
 
     function coinIcon(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
@@ -42,6 +43,13 @@ QtObject {
 
         var filename = type.toLowerCase().replace(" ", "-");
         return coin_icons_path + filename + ".png"
+    }
+
+    // Returns the full path of a provider icon.
+    function providerIcon(providerName)
+    {
+        if (providerName === "") return ""
+        return providerIconsPath + providerName + ".png";
     }
 
     function qaterialIcon(name) {
