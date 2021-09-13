@@ -294,6 +294,7 @@
         <file>atomic_defi_design/assets/languages/atomic_defi_ru.qm</file>
         <file>atomic_defi_design/assets/languages/atomic_defi_tr.qm</file>
         <file>atomic_defi_design/qml/App.qml</file>
+        <file>atomic_defi_design/qml/String.js</file>
         <file>atomic_defi_design/qml/Components/AddressField.qml</file>
         <file>atomic_defi_design/qml/Components/AddressFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/AmountField.qml</file>
