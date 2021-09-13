@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.12
 
 import "../Constants" as Dex
 import "../Components" as Dex
+import "../String.js" as DexString
 import App 1.0 as Dex
 
 Dex.DefaultListView
@@ -67,6 +68,35 @@ Dex.DefaultListView
         width: list.width
         height: _assetRowHeight
         color: mouseArea.containsMouse ? Dex.DexTheme.buttonColorHovered : Dex.DexTheme.contentColorTopBold
+
+        Dex.DefaultMouseArea
+        {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+            onClicked:
+            {
+                if (!can_change_ticker)
+                    return
+                if (mouse.button === Qt.RightButton)
+                    contextMenu.popup()
+                else
+                {
+                    api_wallet_page.ticker = ticker
+                    dashboard.current_page = idx_dashboard_wallet
+                }
+            }
+            onPressAndHold:
+            {
+                if (!can_change_ticker)
+                    return
+
+                if (mouse.source === Qt.MouseEventNotSynthesized)
+                    contextMenu.popup()
+            }
+        }
 
         RowLayout
         {
@@ -150,45 +180,52 @@ Dex.DefaultListView
                 color: Dex.DexTheme.getValueColor(change_24h)
             }
 
-            Dex.DexLabel // Price.
+            Item // Price Column.
             {
                 Layout.preferredWidth: _assetPriceColumWidth
-                font: Dex.DexTypo.body2
-                text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
-                                                   Dex.API.app.settings_pg.current_currency)
-                color: Dex.DexTheme.colorThemeDarkLight
+
+                Dex.DexLabel // Price.
+                {
+                    id: priceLabel
+
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    font: Dex.DexTypo.body2
+                    text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
+                                                       Dex.API.app.settings_pg.current_currency)
+                    color: Dex.DexTheme.colorThemeDarkLight
+                }
+
+                // Price Provider Icon
+                Image
+                {
+                    id: priceProviderIcon
+
+                    enabled: priceProvider !== "unknown"
+                    visible: enabled
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 26
+                    width: 16
+                    height: 16
+                    source: enabled ? Dex.General.providerIcon(priceProvider) : ""
+
+                    Dex.DefaultMouseArea
+                    {
+                        id: priceProviderIconMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
+
+                    Dex.DexTooltip
+                    {
+                        visible: priceProviderIconMouseArea.containsMouse
+                        text: qsTr("Price provider is: %1").arg(DexString.capitalizeFirstLetter(priceProvider))
+                    }
+                }
             }
 
             Dex.CoinMenu { id: contextMenu }
-        }
-
-        Dex.DefaultMouseArea
-        {
-            id: mouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-            onClicked:
-            {
-                if (!can_change_ticker)
-                    return
-                if (mouse.button === Qt.RightButton)
-                    contextMenu.popup()
-                else
-                {
-                    api_wallet_page.ticker = ticker
-                    dashboard.current_page = idx_dashboard_wallet
-                }
-            }
-            onPressAndHold:
-            {
-                if (!can_change_ticker)
-                    return
-
-                if (mouse.source === Qt.MouseEventNotSynthesized)
-                    contextMenu.popup()
-            }
         }
     }
 }
