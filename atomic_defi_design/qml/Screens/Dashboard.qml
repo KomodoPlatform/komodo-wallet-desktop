@@ -57,6 +57,7 @@ Item {
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
+
     onCurrent_pageChanged: {
         app.deepPage = current_page * 10
     }
@@ -66,6 +67,14 @@ Item {
 
     function inCurrentPage() {
         return app.current_page === idx_dashboard
+    }
+
+    function switchPage(page)
+    {
+        if (loader.status === Loader.Ready)
+            current_page = page
+        else
+            console.warn("Tried to switch to page %1 when loader is not ready yet.".arg(page))
     }
 
     property
