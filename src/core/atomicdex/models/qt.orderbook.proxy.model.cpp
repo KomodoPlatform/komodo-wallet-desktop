@@ -113,7 +113,18 @@ namespace atomic_dex
                 }
                 return left > right;
             }
-            return left < right;
+            else
+            {
+                if (left.is_zero())
+                {
+                    return false;
+                }
+                if (right.is_zero())
+                {
+                    return true;
+                }
+                return left < right;
+            }
         }
         case orderbook_model::SendRole:
             break;
