@@ -438,7 +438,9 @@ namespace atomic_dex
             {MultiTickerFeesInfo, "multi_ticker_fees_info"},
             {Address, "public_address"},
             {PrivKey, "priv_key"},
-            {PercentMainCurrency, "percent_main_currency"}};
+            {PercentMainCurrency, "percent_main_currency"},
+            {LastPriceTimestamp, "lastPriceTimestamp"},
+            {PriceProvider, "priceProvider"}};
     }
 
     portfolio_proxy_model*
