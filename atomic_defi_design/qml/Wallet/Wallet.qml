@@ -22,7 +22,7 @@ RowLayout
     // Local
     function onClickedSwap()
     {
-        dashboard.current_page = idx_dashboard_exchange
+        dashboard.switchPage(idx_dashboard_exchange)
         dashboard.current_ticker = api_wallet_page.ticker
         API.app.trading_pg.set_pair(true, api_wallet_page.ticker)
     }

@@ -62,10 +62,10 @@ DexPopup {
                 break
             case "open_wallet_page":
                 api_wallet_page.ticker = notification.params.ticker
-                dashboard.current_page = idx_dashboard_wallet
+                dashboard.switchPage(idx_dashboard_wallet)
                 break
             case "open_swaps_page":
-                dashboard.current_page = idx_dashboard_exchange
+                dashboard.switchPage(idx_dashboard_exchange)
 
                 dashboard.loader.onLoadComplete = () => {
                     dashboard.current_component.current_page = dashboard.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
