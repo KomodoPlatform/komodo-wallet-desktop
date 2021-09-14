@@ -10,7 +10,7 @@
 
 namespace
 {
-    constexpr const char*                 g_komodo_prices_endpoint = "http://95.217.208.239:1313";
+    constexpr const char*                 g_komodo_prices_endpoint = "https://prices.komodo.live:1313";
     web::http::client::http_client_config g_komodo_prices_cfg{[]()
                                                               {
                                                                   web::http::client::http_client_config cfg;
