@@ -206,6 +206,7 @@ Item {
         WebEngineView
         {
             id: webEngineView
+            backgroundColor: "transparent"
         }
 
         DefaultLoader {
