@@ -133,11 +133,21 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
+            console.log(order_form.visible)
             if(!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled){
                 _tooltip.open()
             }else {
                 app.pairChanged(base_ticker, coin)
                 Constants.API.app.trading_pg.orderbook.select_best_order(uuid)
+                if(order_form.visible === false) {
+                    order_form.visible = true
+                }
+                if(order_form.hidden === true) {
+                    order_form.hidden = false
+                    if(order_form.contentVisible === false) {
+                        order_form.contentVisible = true
+                    }
+                }
             }
             
             //if(is_mine) return
