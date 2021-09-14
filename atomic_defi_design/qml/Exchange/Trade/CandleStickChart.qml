@@ -27,6 +27,8 @@ DexBox {
         property bool pair_supported: false
         readonly property bool is_fetching: dashboard.webEngineView.loadProgress < 100
 
+        onIs_fetchingChanged: dashboard.webEngineView.visible = !is_fetching && pair_supported
+
         RowLayout {
             visible: pair_supported && !dashboard.webEngineView.visible
             anchors.centerIn: parent
@@ -102,31 +104,31 @@ DexBox {
             chart_rel = atomic_qt_utilities.retrieve_main_ticker(rel)
 
             dashboard.webEngineView.loadHtml(`
-    <style>
-    body { margin: 0; background: ${ graph_bg.color } }
-    </style>
+                <style>
+                body { margin: 0; background: ${ graph_bg.color } }
+                </style>
 
-    <!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container">
-    <div id="tradingview_af406"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <script type="text/javascript">
-    new TradingView.widget(
-    {
-    "timezone": "Etc/UTC",
-    "locale": "en",
-    "autosize": true,
-    "symbol": "${symbol}",
-    "interval": "D",
-    "theme": "${theme}",
-    "style": "1",
-    "enable_publishing": false,
-    "save_image": false
-    }
-    );
-    </script>
-    </div>
-    <!-- TradingView Widget END -->`)
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container">
+                <div id="tradingview_af406"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                <script type="text/javascript">
+                new TradingView.widget(
+                {
+                "timezone": "Etc/UTC",
+                "locale": "en",
+                "autosize": true,
+                "symbol": "${symbol}",
+                "interval": "D",
+                "theme": "${theme}",
+                "style": "1",
+                "enable_publishing": false,
+                "save_image": false
+                }
+                );
+                </script>
+                </div>
+                <!-- TradingView Widget END -->`);
         }
     }
 }
