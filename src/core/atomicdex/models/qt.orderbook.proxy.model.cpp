@@ -169,7 +169,7 @@ namespace atomic_dex
                 t_float_50  limit("10000");
                 bool        is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
 
-                if (coin_info.ticker.empty()) //< this means it's not present in our cfg - skipping
+                if (coin_info.ticker.empty() || coin_info.wallet_only) //< this means it's not present in our cfg - skipping
                 {
                     return false;
                 }
