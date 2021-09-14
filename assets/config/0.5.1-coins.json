@@ -932,7 +932,7 @@
       {
         "url": "woolloomooloo.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": true
       },
       {
         "url": "lenoir.ecoincore.com:34333",
@@ -3608,7 +3608,7 @@
   "TKL": {
     "coin": "TKL",
     "name": "Tokel",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "tkl-tokel",
     "coingecko_id": "test-coin",
     "electrum": [
       
