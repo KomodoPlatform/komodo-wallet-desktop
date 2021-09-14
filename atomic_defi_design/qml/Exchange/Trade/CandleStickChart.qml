@@ -25,10 +25,10 @@ DexBox {
         height: graph_bg.height
 
         property bool pair_supported: false
-        readonly property bool is_fetching: chart.loadProgress < 100
+        readonly property bool is_fetching: dashboard.webEngineView.loadProgress < 100
 
         RowLayout {
-            visible: pair_supported && !chart.visible
+            visible: pair_supported && !dashboard.webEngineView.visible
             anchors.centerIn: parent
 
             DefaultBusyIndicator {
@@ -101,7 +101,7 @@ DexBox {
             chart_base = atomic_qt_utilities.retrieve_main_ticker(base)
             chart_rel = atomic_qt_utilities.retrieve_main_ticker(rel)
 
-            chart.loadHtml(`
+            dashboard.webEngineView.loadHtml(`
     <style>
     body { margin: 0; background: ${ graph_bg.color } }
     </style>
@@ -127,13 +127,6 @@ DexBox {
     </script>
     </div>
     <!-- TradingView Widget END -->`)
-        }
-
-        WebEngineView {
-            id: chart
-            anchors.fill: parent
-            anchors.margins: -1
-            visible: !is_fetching && pair_supported
         }
     }
 }
