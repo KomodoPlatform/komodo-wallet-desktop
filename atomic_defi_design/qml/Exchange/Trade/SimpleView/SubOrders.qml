@@ -295,4 +295,11 @@ Item
         }
         
     }
+
+    DexLabel
+    {
+        visible: !_subOrdersRoot.displayFilter && order_list_view.count === 0
+        anchors.centerIn: parent
+        text: qsTr("No results found")
+    }
 }
