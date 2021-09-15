@@ -19,7 +19,7 @@ Dex.DefaultListView
 
     model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
-    width: parent.width - 50
+    width: _assetNameColumnWidth + _assetNameColumnLeftMargin + _assetBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
     height: (count * _assetRowHeight) + 30
     interactive: false
     scrollbar_visible: false
@@ -34,7 +34,7 @@ Dex.DefaultListView
 
         Dex.ColumnHeader
         {
-            Layout.preferredWidth: _assetNameColumnWidth
+            Layout.preferredWidth: _assetNameColumnWidth - _assetNameColumnLeftMargin
             Layout.leftMargin: _assetNameColumnLeftMargin
             icon_at_left: true
             sort_type: sort_by_name
