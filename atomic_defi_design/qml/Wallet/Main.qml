@@ -440,11 +440,17 @@ Item {
         InnerBackground {
             id: price_graph_bg
 
-            function initGraph()
+            Connections
             {
-                dashboard.webEngineView.parent = price_graph_bg
-                dashboard.webEngineView.anchors.fill = price_graph_bg
-                dashboard.webEngineView.visible = true
+                enabled: true
+                target: dashboard.webEngineView
+                function onLoadingChanged()
+                {
+                    if (dashboard.webEngineView.loading === false)
+                        dashboard.webEngineView.visible = true;
+                    else
+                        dashboard.webEngineView.visible = false;
+                }
             }
 
             Layout.fillWidth: true
@@ -456,7 +462,12 @@ Item {
             shadowOff: true
             color: DexTheme.contentColorTop
 
-            Component.onCompleted: initGraph()
+            Component.onCompleted:
+            {
+                dashboard.webEngineView.parent = price_graph_bg
+                dashboard.webEngineView.anchors.fill = price_graph_bg
+            }
+
             Component.onDestruction:
             {
                 dashboard.webEngineView.visible = false;
@@ -513,6 +524,7 @@ Item {
                     if (!symbol) {
                         console.warn("Symbol not found for", pair_busd_reversed)
                         ticker_supported = false
+                        dashboard.webEngineView.visible = false;
                         return
                     }
 
@@ -544,7 +556,9 @@ Item {
                           </script>
                         </div>
                         <!-- TradingView Widget END -->`.arg(DexTheme.theme === "dark" ? DexTheme.backgroundColor : DexTheme.contentColorTopBold).arg(DexTheme.chartTradingLineColor).arg(DexTheme.chartTradingLineBackgroundColor))
-                                    }
+
+                    dashboard.webEngineView.visible = true;
+                }
 
                 width: price_graph_bg.width
                 height: price_graph_bg.height

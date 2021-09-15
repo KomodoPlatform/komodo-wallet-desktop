@@ -175,7 +175,6 @@ ColumnLayout {
                         {
                             dashboard.webEngineView.parent = chart_view;
                             dashboard.webEngineView.anchors.fill = chart_view;
-                            dashboard.webEngineView.visible = true;
                         }
                         Component.onDestruction:
                         {
