@@ -59,7 +59,7 @@ Dex.DefaultListView
             Layout.preferredWidth: _assetPriceColumWidth
             icon_at_left: true
             sort_type: sort_by_price
-            text: qsTr("Price")
+            text: qsTr("Price (Provider)")
         }
     }
 
