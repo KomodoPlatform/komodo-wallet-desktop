@@ -16,7 +16,7 @@ Dex.DefaultListView
     property real _assetBalanceColumnWidth: 380
     property real _assetChange24hColumnWidth: 120
     property real _assetPriceColumWidth: 140
-    property real _assetProviderColumnWidth: 100
+    property real _assetProviderColumnWidth: 42
 
     model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
