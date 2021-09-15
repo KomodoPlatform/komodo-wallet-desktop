@@ -5275,9 +5275,14 @@
     "currently_enabled": true,
     "electrum": [
       {
-        "url": "",
-        "ws_url": ""
+        "url": "swap.softbalanced.com:50001",
+        "protocol": "TCP"
       },
+      {
+        "url": "swap.softbalanced.com:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
     ],
     "explorer_url": [
       "https://softbalanced.com:3001/insight/"
