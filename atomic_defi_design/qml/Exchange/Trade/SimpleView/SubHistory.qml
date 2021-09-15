@@ -123,7 +123,7 @@ Item {
                     ToolTip.delay: 500
                     ToolTip.timeout: 5000
                     ToolTip.visible: containsMouse
-                    ToolTip.text: _subHistoryRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filering options.")
+                    ToolTip.text: _subHistoryRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
                     onClicked: _subHistoryRoot.displayFilter = !_subHistoryRoot.displayFilter
                 }
             }
