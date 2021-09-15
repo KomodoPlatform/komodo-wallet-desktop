@@ -186,8 +186,6 @@ Dex.DefaultListView
 
                 Dex.DexLabel // Price.
                 {
-                    id: priceLabel
-
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     font: Dex.DexTypo.body2
