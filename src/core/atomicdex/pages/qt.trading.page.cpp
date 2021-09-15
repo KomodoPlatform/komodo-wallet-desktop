@@ -136,7 +136,7 @@ namespace atomic_dex
         const auto& rel               = market_selector->get_right_selected_coin();
         const bool  is_selected_order = m_preferred_order.has_value();
         const bool  is_max            = m_max_volume == m_volume;
-        const bool is_selected_min_max =
+        const bool  is_selected_min_max =
             is_selected_order && m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>();
         const bool is_selected_max  = is_selected_order && is_max;
         t_float_50 rel_min_trade    = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
@@ -744,10 +744,15 @@ namespace atomic_dex
         if (this->m_market_mode == MarketMode::Sell)
         {
             //! In MarketMode::Sell mode max volume is just the base_max_taker_vol
-            const auto max_taker_vol = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
+            const auto max_taker_vol_obj  = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
+            const auto max_taker_vol      = max_taker_vol_obj["decimal"].toString().toStdString();
+            const auto max_taker_vol_coin = max_taker_vol_obj["coin"].toString().toStdString();
+            const auto base               = get_market_pairs_mdl()->get_left_selected_coin().toStdString();
+
+
             if (!max_taker_vol.empty())
             {
-                if (safe_float(max_taker_vol) <= 0)
+                if (safe_float(max_taker_vol) <= 0 || base != max_taker_vol_coin)
                 {
                     this->set_max_volume("0");
                 }
@@ -939,7 +944,7 @@ namespace atomic_dex
             this->set_market_mode(MarketMode::Sell);
             m_current_trading_mode = trading_mode;
             entity_registry_.template ctx<QSettings>().setValue("DefaultTradingMode", m_current_trading_mode);
-            get_market_pairs_mdl()->get_left_selection_box()->set_with_fiat_balance(m_current_trading_mode == TradingMode::Simple);
+            // get_market_pairs_mdl()->get_left_selection_box()->set_with_fiat_balance(m_current_trading_mode == TradingMode::Simple);
             get_market_pairs_mdl()->get_left_selection_box()->set_with_balance(m_current_trading_mode == TradingMode::Simple);
             SPDLOG_DEBUG("Set trading mode to: {}", QMetaEnum::fromType<TradingMode>().valueToKey(trading_mode));
             emit tradingModeChanged();

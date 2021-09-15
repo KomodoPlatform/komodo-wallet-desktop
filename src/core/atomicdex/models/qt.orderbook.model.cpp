@@ -238,7 +238,8 @@ namespace atomic_dex
         case HaveCEXIDRole:
         {
             const auto* global_cfg = m_system_mgr.get_system<portfolio_page>().get_global_cfg();
-            return global_cfg->get_coin_info(data(index, CoinRole).toString().toStdString()).coingecko_id != "test-coin";
+            auto infos = global_cfg->get_coin_info(data(index, CoinRole).toString().toStdString());
+            return infos.coingecko_id != "test-coin" || infos.coinpaprika_id != "test-coin";
         }
         }
     }

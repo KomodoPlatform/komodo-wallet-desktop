@@ -10,6 +10,7 @@ DEX_NEW_LIB(core INTERFACE
         INTERFACE_DEFS
             $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG> $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
             $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+            $<$<PLATFORM_ID:Windows>:NOMINMAX>
             $<$<PLATFORM_ID:Windows>:SPDLOG_WCHAR_TO_UTF8_SUPPORT>
             _TURN_OFF_PLATFORM_STRING
             DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
@@ -83,7 +84,7 @@ set_target_properties(${PROJECT_NAME}
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 
-set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+#set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 if (APPLE)
     set_property(SOURCE core/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
@@ -98,6 +99,7 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/config/coins.cfg.tests.cpp
         ##! API
         tests/api/coingecko/coingecko.tests.cpp
+        tests/api/komodo_prices/komodo.prices.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
         #tests/api/github/github.api.tests.cpp

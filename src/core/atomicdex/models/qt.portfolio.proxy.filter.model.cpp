@@ -69,6 +69,8 @@ namespace atomic_dex
         case portfolio_model::Address:
         case portfolio_model::PrivKey:
         case portfolio_model::PercentMainCurrency:
+        case portfolio_model::PriceProvider:
+        case portfolio_model::LastPriceTimestamp:
             return false;
         }
     }

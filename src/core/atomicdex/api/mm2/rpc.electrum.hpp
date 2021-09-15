@@ -17,7 +17,7 @@
 #pragma once
 
 //! Deps
-#include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project Headers
 #include "atomicdex/config/electrum.cfg.hpp"

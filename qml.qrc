@@ -248,6 +248,9 @@
         <file>atomic_defi_design/assets/images/coins/zil.png</file>
         <file>atomic_defi_design/assets/images/coins/zilla.png</file>
         <file>atomic_defi_design/assets/images/coins/zrx.png</file>
+        <file>atomic_defi_design/assets/images/providers/binance.png</file>
+        <file>atomic_defi_design/assets/images/providers/coingecko.png</file>
+        <file>atomic_defi_design/assets/images/providers/coinpaprika.png</file>
         <file>atomic_defi_design/assets/images/dashboard-copy.svg</file>
         <file>atomic_defi_design/assets/images/dashboard-eye-hide.svg</file>
         <file>atomic_defi_design/assets/images/dashboard-eye.svg</file>
@@ -291,6 +294,7 @@
         <file>atomic_defi_design/assets/languages/atomic_defi_ru.qm</file>
         <file>atomic_defi_design/assets/languages/atomic_defi_tr.qm</file>
         <file>atomic_defi_design/qml/App.qml</file>
+        <file>atomic_defi_design/qml/String.js</file>
         <file>atomic_defi_design/qml/Components/AddressField.qml</file>
         <file>atomic_defi_design/qml/Components/AddressFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/AmountField.qml</file>

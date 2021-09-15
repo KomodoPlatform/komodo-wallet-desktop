@@ -20,9 +20,10 @@
 //! Project
 #include "atomicdex/models/qt.orderbook.model.hpp"
 #include "atomicdex/models/qt.orderbook.proxy.model.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
-#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
+#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -97,10 +98,33 @@ namespace atomic_dex
             break;
         case orderbook_model::CEXRatesRole:
         {
-            t_float_50 left  = safe_float(left_data.toString().toStdString());
-            t_float_50 right = safe_float(right_data.toString().toStdString());
+            t_float_50 left   = safe_float(left_data.toString().toStdString());
+            t_float_50 right  = safe_float(right_data.toString().toStdString());
             const bool is_buy = this->m_system_mgr.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
-            return !is_buy ? left > right : left < right;
+            if (!is_buy)
+            {
+                if (left.is_zero()) //< NA
+                {
+                    return true;
+                }
+                if (right.is_zero())
+                {
+                    return false;
+                }
+                return left > right;
+            }
+            else
+            {
+                if (left.is_zero())
+                {
+                    return false;
+                }
+                if (right.is_zero())
+                {
+                    return true;
+                }
+                return left < right;
+            }
         }
         case orderbook_model::SendRole:
             break;
@@ -137,13 +161,19 @@ namespace atomic_dex
             case orderbook_model::kind::bids:
                 break;
             case orderbook_model::kind::best_orders:
-                t_float_50  rates          = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
-                t_float_50  fiat_price     = safe_float(this->sourceModel()->data(idx, orderbook_model::PriceFiatRole).toString().toStdString());
-                std::string ticker         = this->sourceModel()->data(idx, orderbook_model::CoinRole).toString().toStdString();
-                const auto& gecko_provider = this->m_system_mgr.get_system<coingecko_provider>();
+                t_float_50  rates      = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
+                t_float_50  fiat_price = safe_float(this->sourceModel()->data(idx, orderbook_model::PriceFiatRole).toString().toStdString());
+                std::string ticker     = this->sourceModel()->data(idx, orderbook_model::CoinRole).toString().toStdString();
+                const auto& provider   = this->m_system_mgr.get_system<komodo_prices_provider>();
+                const auto  coin_info  = this->m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker);
                 t_float_50  limit("10000");
+                bool        is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
 
-                if (rates > 100 || fiat_price <= 0 || safe_float(gecko_provider.get_total_volume(ticker)) < limit)
+                if (coin_info.ticker.empty() || coin_info.wallet_only) //< this means it's not present in our cfg - skipping
+                {
+                    return false;
+                }
+                if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || safe_float(provider.get_total_volume(ticker)) < limit))
                 {
                     return false;
                 }
@@ -151,14 +181,14 @@ namespace atomic_dex
             }
         }
 
-        if (orderbook != nullptr && orderbook->get_orderbook_kind() == orderbook_model::kind::best_orders)
+        /*if (orderbook != nullptr && orderbook->get_orderbook_kind() == orderbook_model::kind::best_orders)
         {
             bool is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
             if (!is_cex_id_available)
             {
                 return false;
             }
-        }
+        }*/
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 } // namespace atomic_dex
