@@ -32,14 +32,14 @@ namespace atomic_dex
         m_left_selection_box->is_a_market_selector(true);
         m_left_selection_box->setSourceModel(portfolio_mdl);
         m_left_selection_box->setDynamicSortFilter(true);
-        m_left_selection_box->sort_by_name(true);
+        m_left_selection_box->sort_by_currency_balance(false);
         this->m_left_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameAndTicker);
         this->m_left_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
         m_right_selection_box->is_a_market_selector(true);
         m_right_selection_box->setSourceModel(portfolio_mdl);
         m_right_selection_box->setDynamicSortFilter(true);
-        m_right_selection_box->sort_by_name(true);
+        m_right_selection_box->sort_by_currency_balance(false);
         this->m_right_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameAndTicker);
         this->m_right_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
 

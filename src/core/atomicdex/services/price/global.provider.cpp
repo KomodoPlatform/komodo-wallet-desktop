@@ -188,6 +188,10 @@ namespace atomic_dex
     std::string
     global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker_in, bool adjusted) const
     {
+        if (fiat == utils::retrieve_main_ticker(ticker_in))
+        {
+            return "1";
+        }
         std::string ticker = ticker_in;
         try
         {
@@ -265,8 +269,6 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx) const
     {
-        auto& mm2_instance = m_system_manager.get_system<mm2_service>();
-
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
         const auto current_price = get_rate_conversion(currency, ticker);
         if (current_price == "0.00")
