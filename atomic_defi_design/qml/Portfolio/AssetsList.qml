@@ -11,11 +11,12 @@ Dex.DefaultListView
     id: list
 
     property real _assetRowHeight: 65
-    property real _assetNameColumnWidth: 400
+    property real _assetNameColumnWidth: 160
     property real _assetNameColumnLeftMargin: 15
-    property real _assetBalanceColumnWidth: 320
-    property real _assetChange24hColumnWidth: 130
-    property real _assetPriceColumWidth: 120
+    property real _assetBalanceColumnWidth: 380
+    property real _assetChange24hColumnWidth: 120
+    property real _assetPriceColumWidth: 140
+    property real _assetProviderColumnWidth: 100
 
     model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
@@ -59,7 +60,12 @@ Dex.DefaultListView
             Layout.preferredWidth: _assetPriceColumWidth
             icon_at_left: true
             sort_type: sort_by_price
-            text: qsTr("Price (Provider)")
+            text: qsTr("Price")
+        }
+        Dex.DexLabel
+        {
+            Layout.preferredWidth: _assetProviderColumnWidth
+            text: qsTr("Source")
         }
     }
 
@@ -180,30 +186,26 @@ Dex.DefaultListView
                 color: Dex.DexTheme.getValueColor(change_24h)
             }
 
-            Item // Price Column.
+            Dex.DexLabel // Price Column.
             {
                 Layout.preferredWidth: _assetPriceColumWidth
+                font: Dex.DexTypo.body2
+                text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
+                                                   Dex.API.app.settings_pg.current_currency)
+                color: Dex.DexTheme.colorThemeDarkLight
+            }
 
-                Dex.DexLabel // Price.
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    font: Dex.DexTypo.body2
-                    text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
-                                                       Dex.API.app.settings_pg.current_currency)
-                    color: Dex.DexTheme.colorThemeDarkLight
-                }
+            Item // Price Provider
+            {
+                Layout.preferredWidth: _assetProviderColumnWidth
 
-                // Price Provider Icon
-                Image
+                Image // Price Provider Icon.
                 {
                     id: priceProviderIcon
 
                     enabled: priceProvider !== "unknown"
                     visible: enabled
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 26
+                    anchors.centerIn: parent
                     width: 16
                     height: 16
                     source: enabled ? Dex.General.providerIcon(priceProvider) : ""
