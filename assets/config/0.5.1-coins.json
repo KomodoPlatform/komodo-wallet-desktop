@@ -1708,7 +1708,7 @@
     "type": "Smart Chain",
     "name": "GRMS",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "grms-grms",
     "electrum": [
       {
         "url": "89.108.102.188:17485"
@@ -1718,7 +1718,7 @@
       }
     ],
     "explorer_url": [
-      "http://91.231.187.20:3006/"
+      "https://explorer.grms.pw/"
     ],
     "active": false,
     "currently_enabled": false
