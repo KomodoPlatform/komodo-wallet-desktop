@@ -259,7 +259,7 @@ QtObject {
         switch (type)
         {
             case 'BEP-20':      return '#232323'
-            default:            return '#D5D5D5'
+            default:            return '#F9F9F9'
         }
     }
 
@@ -280,11 +280,11 @@ QtObject {
                                           "AVAX": "#E84142",
                                           "AXS": "#0055D5",
                                           "BAL": "#4D4D4D",
-                                          "BNB": "#FFD46A",
+                                          "BNB": "#F9D987",
                                           "BCH": "#8DC351",
                                           "BIDR": "#F0B90B",
                                           "BSTY": "#78570D",
-                                          "BTC": "#F7931A",
+                                          "BTC": "#E9983C",
                                           "BTT": "#666666",
                                           "BTE": "#FFE201",
                                           "CAKE": "#D1884F",
@@ -302,9 +302,9 @@ QtObject {
                                           "JSTR": "#627EEA",
                                           "DOGE": "#C3A634",
                                           "ETC": "#328432",
-                                          "ETH": "#627EEA",
+                                          "ETH": "#687DE3",
                                           "ETHR": "#627EEA",
-                                          "KMD": "#2B6680",
+                                          "KMD": "#7490AA",
                                           "MORTY": "#A4764D",
                                           "RICK": "#A5CBDD",
                                           "EMC2": "#00CCFF",
@@ -317,7 +317,7 @@ QtObject {
                                           "LBC": "#00775C",
                                           "LTC": "#BFBBBB",
                                           "LYNX": "#0071BA",
-                                          "LTFN": "#0099CC",										  
+                                          "LTFN": "#0099CC",  
                                           "XPM": "#A67522",
                                           "XVC": "#B50126",
                                           "ZEC": "#ECB244",
