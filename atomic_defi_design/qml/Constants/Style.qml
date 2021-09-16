@@ -254,6 +254,15 @@ QtObject {
         }
     }
 
+    function getCoinTypeTextColor(type)
+    {
+        switch (type)
+        {
+            case 'BEP-20':      return '#232323'
+            default:            return '#D5D5D5'
+        }
+    }
+
     function getCoinColor(ticker) {
         const c = colorCoin[atomic_qt_utilities.retrieve_main_ticker(ticker)]
         return c || Style.colorTheme2
@@ -271,7 +280,7 @@ QtObject {
                                           "AVAX": "#E84142",
                                           "AXS": "#0055D5",
                                           "BAL": "#4D4D4D",
-                                          "BNB": "#F3BA2F",
+                                          "BNB": "#FFD46A",
                                           "BCH": "#8DC351",
                                           "BIDR": "#F0B90B",
                                           "BSTY": "#78570D",
