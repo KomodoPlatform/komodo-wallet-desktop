@@ -440,5 +440,6 @@ QtObject {
                                           "ZIL": "#42BBB9",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A"
+                                          "USBL": "#279553"
                                       })
 }
