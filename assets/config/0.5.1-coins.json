@@ -2107,7 +2107,7 @@
   "MATICTEST": {
     "coin": "MATICTEST",
     "name": "Matic Testnet",
-    "is_tesnet": true,
+    "is_testnet": true,
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "nodes": [
