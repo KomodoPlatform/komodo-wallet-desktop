@@ -36,6 +36,7 @@ namespace atomic_dex
     {
       public:
         static constexpr const char* erc_gas_stations = "https://ethgasstation.info/json/ethgasAPI.json";
+        static constexpr const char* matic_gas_stations = "https://gasstation-mainnet.matic.network/";
         using electrum_servers                        = std::vector<electrum_server>;
         using nodes                                   = std::vector<std::string>;
         std::string                     ticker;

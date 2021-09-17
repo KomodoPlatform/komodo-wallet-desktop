@@ -528,7 +528,7 @@ namespace atomic_dex
         std::vector<std::string> tickers_idx;
         std::vector<std::string> tokens_to_fetch;
         const auto&              ticker = get_current_ticker();
-        if (auto coin_type = get_coin_info(ticker).coin_type; coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20)
+        if (auto coin_type = get_coin_info(ticker).coin_type; coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20 && coin_type != CoinType::Matic)
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -625,7 +625,7 @@ namespace atomic_dex
                 continue;
             }
 
-            if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20)
+            if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20 && coin_info.coin_type != CoinType::Matic)
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
@@ -1044,7 +1044,7 @@ namespace atomic_dex
         // SPDLOG_DEBUG("asking history of ticker: {}", ticker);
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
         const auto coin_type                 = get_coin_info(ticker).coin_type;
-        const auto it                        = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20) ? underlying_tx_history_map->find("result")
+        const auto it                        = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20 || coin_type == CoinType::Matic) ? underlying_tx_history_map->find("result")
                                                                                                                : underlying_tx_history_map->find(ticker);
         if (it == underlying_tx_history_map->cend())
         {

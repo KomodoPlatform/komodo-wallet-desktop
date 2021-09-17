@@ -106,6 +106,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::SLP;
         }
+        else if (cfg.type == "Matic")
+        {
+            cfg.coin_type = CoinType::Matic;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();

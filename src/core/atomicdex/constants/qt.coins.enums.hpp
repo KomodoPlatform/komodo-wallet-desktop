@@ -37,9 +37,10 @@ namespace atomic_dex
             UTXO       = 3,
             SmartChain = 4,
             SLP        = 5,
-            Disabled   = 6,
-            All        = 7,
-            Size       = 8
+            Matic      = 6,
+            Disabled   = 7,
+            All        = 8,
+            Size       = 9
         };
 
         Q_ENUM(CoinTypeEnum)

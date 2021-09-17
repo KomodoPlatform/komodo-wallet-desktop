@@ -250,6 +250,7 @@ QtObject {
             case 'BEP-20':      return getCoinColor("BNB")
             case 'SLP':         return getCoinColor("BCH")
             case 'IDO':         return getCoinColor("TKL")
+            case 'Matic':       return getCoinColor("MATIC")
             default:            return getCoinColor("BTC")
         }
     }

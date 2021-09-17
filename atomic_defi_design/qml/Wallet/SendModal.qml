@@ -162,7 +162,7 @@ BasicModal {
     }
 
     function isERC20() {
-        return current_ticker_infos.type === "ERC-20" || current_ticker_infos.type === "BEP-20"
+        return current_ticker_infos.type === "ERC-20" || current_ticker_infos.type === "BEP-20" || current_ticker_infos.type == "Matic"
     }
 
     function hasErc20CaseIssue(addr) {

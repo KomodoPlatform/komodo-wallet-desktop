@@ -2104,6 +2104,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "MATICTEST": {
+    "coin": "MATICTEST",
+    "name": "Matic Testnet",
+    "is_tesnet": true,
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nodes": [
+      "https://rpc-mumbai.matic.today",
+      "https://matic-mumbai.chainstacklabs.com",
+      "https://rpc-mumbai.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://mumbai.polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "MATIC-BEP20": {
     "coin": "MATIC-BEP20",
     "name": "Polygon",
