@@ -5283,6 +5283,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "USBL": {
+    "active": false,
+    "coin": "USBL",
+    "name": "Balanced",
+    "coingecko_id": "balanced",
+    "coinpaprika_id": "balanced-balanced",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "swap.softbalanced.com:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "swap.softbalanced.com:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://softbalanced.com:3001/insight/"
+    ],
+    "explorer_tx_url": "tx/",
+    "type": "UTXO"
+  },
   "UTK": {
     "coin": "UTK",
     "name": "UTRUST",
