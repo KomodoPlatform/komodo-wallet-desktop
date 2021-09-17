@@ -129,6 +129,10 @@ namespace atomic_dex
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "BNBT" : "BNB";
             break;
+        case CoinType::Matic:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "MATICTEST" : "MATIC";
+            break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = "BCH";
