@@ -274,6 +274,7 @@ QtObject {
                                           "ADX": "#1B75BC",
                                           "ANKR": "#2075E8",
                                           "ARPA": "#CCD9E2",
+                                          "ARRR": "#C7A34C",
                                           "ATOM": "#474B6C",
                                           "AUR": "#0A6C5E",
                                           "AVA": "#5B567F",
