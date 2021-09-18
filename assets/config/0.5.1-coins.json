@@ -2122,6 +2122,26 @@
     "active": false,
     "currently_enabled": false
   },
+  "MATIC": {
+    "coin": "MATIC",
+    "name": "Polygon",
+    "is_testnet": true,
+    "coinpaprika_id": "matic-matic-network",
+    "coingecko_id": "matic-network",
+    "nodes": [
+      "https://rpc-mainnet.matic.network",
+      "https://matic-mainnet.chainstacklabs.com",
+      "https://rpc-mainnet.maticvigil.com",
+      "https://rpc-mainnet.matic.quiknode.pro",
+      "https://matic-mainnet-full-rpc.bwarelabs.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "MATIC-BEP20": {
     "coin": "MATIC-BEP20",
     "name": "Polygon",
