@@ -45,6 +45,7 @@ namespace mm2::api
             j["urls"]                   = cfg.urls;
             j["swap_contract_address"]  = cfg.matic_erc_testnet_swap_contract_address;
             j["fallback_swap_contract"] = cfg.matic_erc_testnet_fallback_swap_contract_address;
+            break;
         }
         case CoinType::BEP20:
         {
