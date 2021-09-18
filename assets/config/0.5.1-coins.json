@@ -2414,6 +2414,22 @@
     "type": "Optimism",
     "name": "EthKovan Optimism (Testnet)"
   },
+  "ETHR-ARB20": {
+    "active": false,
+    "coin": "ETHR-ARB20",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "is_testnet": true,
+    "nodes": [
+      "https://rinkeby.arbitrum.io/rpc"
+    ],
+    "explorer_url": [
+      "https://rinkeby-explorer.arbitrum.io/#/"
+    ],
+    "type": "Arbitrum",
+    "name": "EthRinkeby Arbitrum (Testnet)"
+  },
   "ETHR": {
     "active": false,
     "coin": "ETHR",

@@ -39,9 +39,10 @@ namespace atomic_dex
             SLP        = 5,
             Matic      = 6,
             Optimism   = 7,
-            Disabled   = 8,
-            All        = 9,
-            Size       = 10
+            Arbitrum   = 8,
+            Disabled   = 9,
+            All        = 10,
+            Size       = 11
         };
 
         Q_ENUM(CoinTypeEnum)

@@ -114,6 +114,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::Optimism;
         }
+        else if (cfg.type == "Arbitrum")
+        {
+            cfg.coin_type = CoinType::Arbitrum;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -140,6 +144,10 @@ namespace atomic_dex
         case CoinType::Optimism:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHK-OPT20" : "ETH-OPT20";
+            break;
+        case CoinType::Arbitrum:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR-ARB20" : "ETH-ARB20";
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;

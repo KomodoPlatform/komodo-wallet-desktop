@@ -514,7 +514,7 @@ namespace atomic_dex
                     catch (const std::exception& error)
                     {
                         SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
-                        //this->dispatcher_.trigger<tx_fetch_finished>(true);
+                        // this->dispatcher_.trigger<tx_fetch_finished>(true);
                     }
                 })
             .then([this, batch = batch_array](pplx::task<void> previous_task)
@@ -528,12 +528,13 @@ namespace atomic_dex
         nlohmann::json           batch_array   = nlohmann::json::array();
         std::vector<std::string> tickers_idx;
         std::vector<std::string> tokens_to_fetch;
-        const auto&              ticker = get_current_ticker();
-        auto coin_type = get_coin_info(ticker).coin_type;
+        const auto&              ticker    = get_current_ticker();
+        auto                     coin_type = get_coin_info(ticker).coin_type;
         /*if (coin_type == CoinType::Optimism) {
             return std::make_tuple(batch_array, tickers_idx, tokens_to_fetch);
         }*/
-        if (coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20 && coin_type != CoinType::Matic && coin_type != CoinType::Optimism)
+        if (coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20 && coin_type != CoinType::Matic && coin_type != CoinType::Optimism &&
+            coin_type != CoinType::Arbitrum)
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -630,8 +631,8 @@ namespace atomic_dex
                 continue;
             }
 
-            if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20 && coin_info.coin_type != CoinType::Matic
-                && coin_info.coin_type != CoinType::Optimism)
+            if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20 && coin_info.coin_type != CoinType::Matic &&
+                coin_info.coin_type != CoinType::Optimism && coin_info.coin_type != CoinType::Arbitrum)
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
@@ -1051,7 +1052,8 @@ namespace atomic_dex
         // SPDLOG_DEBUG("asking history of ticker: {}", ticker);
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
         const auto coin_type                 = get_coin_info(ticker).coin_type;
-        const auto it = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20 || coin_type == CoinType::Matic || coin_type == CoinType::Optimism)
+        const auto it = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20 || coin_type == CoinType::Matic || coin_type == CoinType::Optimism ||
+                          coin_type == CoinType::Arbitrum)
                             ? underlying_tx_history_map->find("result")
                             : underlying_tx_history_map->find(ticker);
         if (it == underlying_tx_history_map->cend())
