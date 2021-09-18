@@ -147,7 +147,7 @@ Dex.DefaultListView
 
                     Dex.DexLabel
                     {
-                        enabled: name === "Tokel"
+                        enabled: Dex.General.isIDO(ticker)
                         visible: enabled
                         anchors.left: parent.right
                         anchors.leftMargin: 5

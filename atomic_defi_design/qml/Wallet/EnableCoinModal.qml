@@ -129,7 +129,7 @@ BasicModal {
                     anchors.left: typeTag.right
                     anchors.leftMargin: 3
                     anchors.verticalCenter: parent.verticalCenter
-                    enabled: model.ticker === "TKL"
+                    enabled: General.isIDO(ticker)
                     visible: enabled
                     type: "IDO"
                 }
