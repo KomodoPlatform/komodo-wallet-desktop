@@ -110,6 +110,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::Matic;
         }
+        else if (cfg.type == "Optimism")
+        {
+            cfg.coin_type = CoinType::Optimism;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -132,6 +136,10 @@ namespace atomic_dex
         case CoinType::Matic:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "MATICTEST" : "MATIC";
+            break;
+        case CoinType::Optimism:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHK-OPT20" : "ETH-OPT20";
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;

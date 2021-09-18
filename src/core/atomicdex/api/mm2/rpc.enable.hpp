@@ -37,6 +37,10 @@ namespace mm2::api
         const std::string        matic_erc_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        matic_erc_testnet_swap_contract_address{"0x73c1Dd989218c3A154C71Fc08Eb55A24Bd2B3A10"};
         const std::string        matic_erc_testnet_fallback_swap_contract_address{"0x73c1Dd989218c3A154C71Fc08Eb55A24Bd2B3A10"};
+        const std::string        optimism_erc_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
+        const std::string        optimism_erc_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
+        const std::string        optimism_erc_testnet_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
+        const std::string        optimism_erc_testnet_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
         const std::string        bnb_testnet_swap_contract_address{"0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150"};
         const std::string        bnb_swap_contract_address{"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"};
         const std::string        erc_fallback_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};

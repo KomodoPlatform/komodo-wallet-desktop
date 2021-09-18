@@ -2398,6 +2398,22 @@
     "type": "ERC-20",
     "name": "Ethereum"
   },
+  "ETHK-OPT20": {
+    "active": false,
+    "coin": "ETHK-OPT20",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "is_testnet": true,
+    "nodes": [
+      "https://kovan.optimism.io"
+    ],
+    "explorer_url": [
+      "https://kovan-optimistic.etherscan.io/"
+    ],
+    "type": "Optimism",
+    "name": "EthKovan Optimism (Testnet)"
+  },
   "ETHR": {
     "active": false,
     "coin": "ETHR",
