@@ -43,8 +43,8 @@ namespace mm2::api
         {
             j["gas_station_url"]        = cfg.is_testnet ? cfg.testnet_matic_gas_station_url : cfg.matic_gas_station_url;
             j["urls"]                   = cfg.urls;
-            j["swap_contract_address"]  = cfg.matic_erc_testnet_swap_contract_address;
-            j["fallback_swap_contract"] = cfg.matic_erc_testnet_fallback_swap_contract_address;
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.matic_erc_testnet_swap_contract_address : cfg.matic_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.matic_erc_testnet_fallback_swap_contract_address : cfg.matic_erc_fallback_swap_contract_address;
             break;
         }
         case CoinType::BEP20:
