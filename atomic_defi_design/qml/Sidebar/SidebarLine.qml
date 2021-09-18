@@ -127,7 +127,7 @@ Item {
             else if(dashboard_index === idx_dashboard_privacy_mode) {
                 togglePrivacyMode()
             }
-            else dashboard.current_page = dashboard_index
+            else dashboard.switchPage(dashboard_index)
         }
     }
 

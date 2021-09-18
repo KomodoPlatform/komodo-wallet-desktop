@@ -62,7 +62,7 @@ namespace atomic_dex
                     from_json(j, result);
                     this->m_oracle_price_result = result;
                     using namespace std::chrono_literals;
-                    auto       last_oracle_timestamp     = result.band_oracle_data.at("BTC").timestamp;
+                    auto       last_oracle_timestamp     = result.band_oracle_data.at("BAND").timestamp;
                     const auto now                       = std::chrono::system_clock::now();
                     const auto last_oracle_timestamp_std = std::chrono::system_clock::from_time_t(last_oracle_timestamp);
                     const auto s                         = std::chrono::duration_cast<std::chrono::seconds>(now - last_oracle_timestamp_std);

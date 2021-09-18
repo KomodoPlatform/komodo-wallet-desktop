@@ -228,14 +228,14 @@ Qaterial.Dialog
                             SettingsButton {
                                 width: parent.width-30
                                 height: 50
-                                title: qsTr("Reset assets configuration")
+                                title: qsTr("Reset wallet configuration")
                                 buttonText: qsTr("Reset")
                                 onClicked: {
                                     dialog = app.showText({
-                                            title: qsTr("Reset assets configuration"),
-                                            text: qsTr("This will reset your wallet config to default"),
+                                            title: qsTr("Reset wallet configuration"),
+                                            text: qsTr("This will restart your wallet with default settings"),
                                             standardButtons: Dialog.Yes | Dialog.Cancel,
-                                            yesButtonText: qsTr("Yes"),
+                                            yesButtonText: qsTr("Confirm"),
                                             cancelButtonText: qsTr("Cancel"),
                                             onAccepted: function() {
                                                 restart_modal.open()

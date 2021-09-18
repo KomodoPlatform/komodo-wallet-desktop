@@ -36,7 +36,9 @@ namespace atomic_dex
         remove_update_files();
         dispatcher_.sink<download_release_finished>().connect<&self_update_service::on_download_release_finished>(*this);
         dispatcher_.sink<qt_download_progressed>().connect<&self_update_service::on_download_release_progressed>(*this);
+#if !defined (Q_OS_WINDOWS)
         fetch_last_release_info();
+#endif
     }
 
     void

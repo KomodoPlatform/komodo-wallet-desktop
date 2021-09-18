@@ -22,11 +22,12 @@
 
 //! Project Headers
 #include "atomicdex/events/qt.events.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
-#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.portfolio.model.hpp"
@@ -62,12 +63,12 @@ namespace atomic_dex
                 continue;
             const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
             const auto& price_service = this->m_system_manager.get_system<global_price_service>();
-            const auto& coingecko     = this->m_system_manager.get_system<coingecko_provider>();
+            const auto& provider      = this->m_system_manager.get_system<komodo_prices_provider>();
             auto        coin          = mm2_system.get_coin_info(ticker);
 
             std::error_code ec;
-            const QString   change_24h      = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
-            portfolio_data data{
+            const QString   change_24h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
+            portfolio_data  data{
                 .ticker                           = QString::fromStdString(coin.ticker),
                 .gui_ticker                       = QString::fromStdString(coin.gui_ticker),
                 .coin_type                        = QString::fromStdString(coin.type),
@@ -77,12 +78,14 @@ namespace atomic_dex
                 .change_24h                       = change_24h,
                 .main_currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, true)),
                 .main_fiat_price_for_one_unit     = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker)),
-                .trend_7d                         = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(coin.ticker)),
+                .trend_7d                         = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(coin.ticker)),
+                .price_provider                   = QString::fromStdString(provider.get_price_provider(coin.ticker)),
+                .price_last_timestamp             = static_cast<int>(provider.get_last_price_timestamp(coin.ticker)),
                 .is_excluded                      = false,
                 .public_address                   = QString::fromStdString(mm2_system.address(coin.ticker, ec))};
-            //data.percent_main_currency = percent_functor(data.main_currency_balance);
-            data.display               = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
-            data.ticker_and_name       = QString::fromStdString(coin.gui_ticker) + data.name;
+            // data.percent_main_currency = percent_functor(data.main_currency_balance);
+            data.display         = QString::fromStdString(coin.gui_ticker) + " (" + data.balance + ")";
+            data.ticker_and_name = QString::fromStdString(coin.gui_ticker) + data.name;
             datas.push_back(std::move(data));
             m_ticker_registry.emplace(ticker);
         }
@@ -102,7 +105,7 @@ namespace atomic_dex
         SPDLOG_INFO("update_currency_values");
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
-        const auto&        coingecko     = this->m_system_manager.get_system<coingecko_provider>();
+        const auto&        provider      = this->m_system_manager.get_system<komodo_prices_provider>();
         const auto         coins         = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         const std::string& currency      = m_config->current_currency;
         const std::string& fiat          = m_config->current_fiat;
@@ -115,7 +118,7 @@ namespace atomic_dex
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 return false;
             }
-            auto update_functor = [coin = std::move(coin), &coingecko, &mm2_system, &price_service, currency, fiat, this]()
+            auto update_functor = [coin = std::move(coin), &provider, &mm2_system, &price_service, currency, fiat, this]()
             {
                 const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly);
@@ -129,17 +132,22 @@ namespace atomic_dex
                     update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
                     const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                     update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
-                    QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
+                    const QString price_provider = QString::fromStdString(provider.get_price_provider(ticker));
+                    update_value(PriceProvider, price_provider, idx, *this);
+                    int last_price_timestamp = static_cast<int>(provider.get_last_price_timestamp(ticker));
+                    update_value(LastPriceTimestamp, last_price_timestamp, idx, *this);
+                    QString change24_h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
                     update_value(Change24H, change24_h, idx, *this);
                     const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
                     auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
                     const QString display                           = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
+                    // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
                     if (is_change_b)
                     {
                         balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                     }
-                    QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
+                    QJsonArray trend = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
                     update_value(Trend7D, trend, idx, *this);
                     // SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
@@ -153,9 +161,13 @@ namespace atomic_dex
     bool
     portfolio_model::update_balance_values(const std::vector<std::string>& tickers)
     {
-        //SPDLOG_INFO("update_balance_values");
+        SPDLOG_INFO("update_balance_values");
         for (auto&& ticker: tickers)
         {
+            if (ticker.empty())
+            {
+                return false;
+            }
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", ticker);
@@ -168,7 +180,7 @@ namespace atomic_dex
                 const auto*        global_cfg    = this->m_system_manager.get_system<portfolio_page>().get_global_cfg();
                 const auto         coin          = global_cfg->get_coin_info(ticker);
                 const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
-                const auto&        coingecko     = this->m_system_manager.get_system<coingecko_provider>();
+                const auto&        provider      = this->m_system_manager.get_system<komodo_prices_provider>();
                 std::error_code    ec;
                 const std::string& currency                     = m_config->current_currency;
                 const std::string& fiat                         = m_config->current_fiat;
@@ -181,15 +193,19 @@ namespace atomic_dex
                 auto&& [_3, _4, is_change_mcpfo]                = update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
                 const QString currency_fiat_for_one_unit        = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
                 update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
+                const QString price_provider = QString::fromStdString(provider.get_price_provider(ticker));
+                update_value(PriceProvider, price_provider, idx, *this);
+                int last_price_timestamp = static_cast<int>(provider.get_last_price_timestamp(ticker));
+                update_value(LastPriceTimestamp, last_price_timestamp, idx, *this);
                 const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
                 update_value(Display, display, idx, *this);
-                QString change24_h = retrieve_change_24h(coingecko, coin, *m_config, m_system_manager);
+                QString change24_h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
                 update_value(Change24H, change24_h, idx, *this);
                 if (is_change_b)
                 {
                     balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                 }
-                QJsonArray trend = nlohmann_json_array_to_qt_json_array(coingecko.get_ticker_historical(ticker));
+                QJsonArray trend = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
                 update_value(Trend7D, trend, idx, *this);
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {
@@ -255,6 +271,10 @@ namespace atomic_dex
             return item.priv_key;
         case PercentMainCurrency:
             return item.percent_main_currency;
+        case PriceProvider:
+            return item.price_provider;
+        case LastPriceTimestamp:
+            return item.price_last_timestamp;
         }
         return {};
     }
@@ -338,17 +358,23 @@ namespace atomic_dex
             break;
         case PrivKey:
             item.priv_key = value.toString();
-            emit dataChanged(index, index, {role});
+            // emit dataChanged(index, index, {role});
             break;
         case PercentMainCurrency:
             item.percent_main_currency = value.toString();
-            emit dataChanged(index, index, {role});
+            // emit dataChanged(index, index, {role});
+            break;
+        case PriceProvider:
+            item.price_provider = value.toString();
+            break;
+        case LastPriceTimestamp:
+            item.price_last_timestamp = value.toInt();
             break;
         default:
             return false;
         }
 
-        // emit dataChanged(index, index, {role});
+        emit dataChanged(index, index, {role});
         return true;
     }
 
@@ -412,7 +438,9 @@ namespace atomic_dex
             {MultiTickerFeesInfo, "multi_ticker_fees_info"},
             {Address, "public_address"},
             {PrivKey, "priv_key"},
-            {PercentMainCurrency, "percent_main_currency"}};
+            {PercentMainCurrency, "percent_main_currency"},
+            {LastPriceTimestamp, "lastPriceTimestamp"},
+            {PriceProvider, "priceProvider"}};
     }
 
     portfolio_proxy_model*
@@ -494,7 +522,7 @@ namespace atomic_dex
     void
     portfolio_model::adjust_percent_current_currency(QString balance_all)
     {
-        //SPDLOG_INFO("adjust_percent_current_currency");
+        // SPDLOG_INFO("adjust_percent_current_currency");
         const auto coins = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         for (auto&& [coin, cfg]: coins)
         {

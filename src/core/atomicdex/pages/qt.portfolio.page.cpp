@@ -100,7 +100,7 @@ namespace atomic_dex
     void
     portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt)
     {
-        //SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
+        SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
 
         bool res = true;
         if (evt.with_update_model)
@@ -167,6 +167,7 @@ namespace atomic_dex
     void
     portfolio_page::initialize_portfolio(const std::vector<std::string>& tickers)
     {
+        SPDLOG_INFO("initialize_portfolio with tickers: {}", fmt::join(tickers, ", "));
         m_portfolio_mdl->initialize_portfolio(tickers);
         m_global_cfg_mdl->update_status(tickers, true);
     }

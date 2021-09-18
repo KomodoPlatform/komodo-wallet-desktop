@@ -172,7 +172,7 @@ Item {
                             context_menu.popup()
                         else {
                             api_wallet_page.ticker = ticker
-                            dashboard.current_page = idx_dashboard_wallet
+                            dashboard.switchPage(idx_dashboard_wallet)
                         }
                     }
                     onPressAndHold: {

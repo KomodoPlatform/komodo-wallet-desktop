@@ -132,9 +132,16 @@ Item {
                 }else {
                     selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
                 }
+                if(order_form.visible === false) {
+                    order_form.visible = true
+                }
+                if(order_form.hidden === true) {
+                    order_form.hidden = false
+                    if(order_form.contentVisible === false) {
+                        order_form.contentVisible = true
+                    }
+                }
             }
-
-
         }
     }
 

@@ -12,7 +12,7 @@ import Qaterial 1.0 as Qaterial
 
 Item {
     id: sidebar
-    property bool expanded: dashboard.current_page===dashboard.idx_dashboard_exchange? false : true
+    property bool expanded: dashboard.current_page === dashboard.idx_dashboard_exchange ? false : true
     readonly property alias app_logo: app_logo
 
     x: -top_rect.radius

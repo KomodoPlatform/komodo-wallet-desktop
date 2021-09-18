@@ -18,7 +18,7 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
-#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
 
 namespace
@@ -39,6 +39,7 @@ namespace
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
         req.set_request_uri(FROM_STD_STR("api/v1/usd_rates"));
+        //SPDLOG_INFO("req: {}", TO_STD_STR(req.to_string()));
         return g_openrates_client->request(req, g_token_source.get_token());
     }
 
@@ -153,7 +154,7 @@ namespace atomic_dex
                     }
                     if (with_update_providers)
                     {
-                        this->m_system_manager.get_system<coingecko_provider>().update_ticker_and_provider();
+                        //this->m_system_manager.get_system<komodo_prices_provider>().update_ticker_and_provider();
                     }
                 })
             .then(error_functor);
@@ -187,20 +188,24 @@ namespace atomic_dex
     std::string
     global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker_in, bool adjusted) const
     {
-        std::string ticker = atomic_dex::utils::retrieve_main_ticker(ticker_in);
+        if (fiat == utils::retrieve_main_ticker(ticker_in))
+        {
+            return "1";
+        }
+        std::string ticker = ticker_in;
         try
         {
             //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
             if (ticker.empty())
                 return "0";
-            auto&       coingecko       = m_system_manager.get_system<coingecko_provider>();
+            auto&       provider       = m_system_manager.get_system<komodo_prices_provider>();
             auto&       band_service    = m_system_manager.get_system<band_oracle_price_service>();
             std::string current_price   = band_service.retrieve_if_this_ticker_supported(ticker);
             const bool  is_oracle_ready = band_service.is_oracle_ready();
 
             if (current_price.empty())
             {
-                current_price = coingecko.get_rate_conversion(ticker);
+                current_price = provider.get_rate_conversion(ticker);
                 if (!is_this_currency_a_fiat(m_cfg, fiat))
                 {
                     t_float_50 rate(1);
@@ -264,12 +269,6 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx) const
     {
-        auto& mm2_instance = m_system_manager.get_system<mm2_service>();
-
-        if (mm2_instance.get_coin_info(ticker).coingecko_id == "test-coin")
-        {
-            return "0.00";
-        }
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
         const auto current_price = get_rate_conversion(currency, ticker);
         if (current_price == "0.00")
@@ -292,11 +291,6 @@ namespace atomic_dex
 
             for (auto&& current_coin: coins)
             {
-                if (current_coin.coingecko_id == "test-coin")
-                {
-                    continue;
-                }
-
                 current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
 
                 if (ec)
@@ -336,11 +330,6 @@ namespace atomic_dex
             auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
             const auto ticker_infos = mm2_instance.get_coin_info(ticker);
-            if (ticker_infos.coingecko_id == "test-coin")
-            {
-                return "0.00";
-            }
-
             const auto current_price = get_rate_conversion(currency, ticker);
 
             if (current_price == "0.00")
@@ -364,11 +353,6 @@ namespace atomic_dex
         {
             auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
-            if (mm2_instance.get_coin_info(ticker).coingecko_id == "test-coin")
-            {
-                return "0.00";
-            }
-
             if (m_supported_fiat_registry.count(fiat) == 0u)
             {
                 ec = dextop_error::invalid_fiat_for_rate_conversion;
@@ -388,7 +372,7 @@ namespace atomic_dex
             if (t_ec)
             {
                 ec = t_ec;
-                SPDLOG_ERROR("my_balance error: {}", t_ec.message());
+                //SPDLOG_ERROR("my_balance error: {} {}", t_ec.message(), ticker);
                 return "0.00";
             }
 

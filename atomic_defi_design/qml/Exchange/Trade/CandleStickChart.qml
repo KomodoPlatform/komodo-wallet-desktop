@@ -25,10 +25,12 @@ DexBox {
         height: graph_bg.height
 
         property bool pair_supported: false
-        readonly property bool is_fetching: chart.loadProgress < 100
+        readonly property bool is_fetching: dashboard.webEngineView.loadProgress < 100
+
+        onIs_fetchingChanged: dashboard.webEngineView.visible = !is_fetching && pair_supported
 
         RowLayout {
-            visible: pair_supported && !chart.visible
+            visible: pair_supported && !dashboard.webEngineView.visible
             anchors.centerIn: parent
 
             DefaultBusyIndicator {
@@ -101,39 +103,32 @@ DexBox {
             chart_base = atomic_qt_utilities.retrieve_main_ticker(base)
             chart_rel = atomic_qt_utilities.retrieve_main_ticker(rel)
 
-            chart.loadHtml(`
-    <style>
-    body { margin: 0; background: ${ graph_bg.color } }
-    </style>
+            dashboard.webEngineView.loadHtml(`
+                <style>
+                body { margin: 0; background: ${ graph_bg.color } }
+                </style>
 
-    <!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container">
-    <div id="tradingview_af406"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <script type="text/javascript">
-    new TradingView.widget(
-    {
-    "timezone": "Etc/UTC",
-    "locale": "en",
-    "autosize": true,
-    "symbol": "${symbol}",
-    "interval": "D",
-    "theme": "${theme}",
-    "style": "1",
-    "enable_publishing": false,
-    "save_image": false
-    }
-    );
-    </script>
-    </div>
-    <!-- TradingView Widget END -->`)
-        }
-
-        WebEngineView {
-            id: chart
-            anchors.fill: parent
-            anchors.margins: -1
-            visible: !is_fetching && pair_supported
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container">
+                <div id="tradingview_af406"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                <script type="text/javascript">
+                new TradingView.widget(
+                {
+                "timezone": "Etc/UTC",
+                "locale": "en",
+                "autosize": true,
+                "symbol": "${symbol}",
+                "interval": "D",
+                "theme": "${theme}",
+                "style": "1",
+                "enable_publishing": false,
+                "save_image": false
+                }
+                );
+                </script>
+                </div>
+                <!-- TradingView Widget END -->`);
         }
     }
 }

@@ -261,7 +261,7 @@ DexListView {
                     bottomInset: 0
                     topInset: 0
                     outlinedColor: DexTheme.redColor
-                    visible: (!main_order.is_history? details.cancellable?? false : false)===true? (order_mouse_area.containsMouse || hovered)? true : false : false
+                    visible: !main_order.is_history && details.cancellable
                     onClicked: { if(details) cancelOrder(details.order_id) }
                     Row {
                         anchors.centerIn: parent

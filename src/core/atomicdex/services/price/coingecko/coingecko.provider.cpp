@@ -43,14 +43,20 @@ namespace atomic_dex
     void
     coingecko_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt)
     {
+        SPDLOG_INFO("on_mm2_started");
         update_ticker_and_provider();
     }
 
     void
     coingecko_provider::on_coin_enabled(const coin_enabled& evt)
     {
+        SPDLOG_INFO("coin_enabled: {}", fmt::join(evt.tickers, ", "));
         dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
-        this->update_ticker_and_provider();
+        if (evt.tickers.size() > 1)
+        {
+            SPDLOG_INFO("on_coin_enabled size() > 1");
+            this->update_ticker_and_provider();
+        }
     }
 
     void
@@ -69,9 +75,16 @@ namespace atomic_dex
     coingecko_provider::update_ticker_and_provider()
     {
         SPDLOG_INFO("update_ticker_and_provider");
-        const auto coins       = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_model_data();
-        auto&& [ids, registry] = coingecko::api::from_enabled_coins(coins);
-        internal_update(ids, registry);
+        if (m_system_manager.has_system<mm2_service>() && m_system_manager.get_system<mm2_service>().is_mm2_running())
+        {
+            const auto coins       = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_model_data();
+            auto&& [ids, registry] = coingecko::api::from_enabled_coins(coins);
+            internal_update(ids, registry);
+        }
+        else
+        {
+            SPDLOG_WARN("mm2 not running - skipping update_ticker_and_provider");
+        }
     }
 
     std::string
@@ -137,6 +150,11 @@ namespace atomic_dex
                     t_coingecko_market_infos_answer answer;
                     coingecko::api::from_json(j, answer, registry);
                     std::size_t nb_coins = 0;
+                    /*if (answer.raw_result.empty())
+                    {
+                        SPDLOG_ERROR("Coingecko answer not available - skipping");
+                        return;
+                    }*/
                     {
                         std::unique_lock lock(m_market_mutex);
                         if (should_move) ///< Override

@@ -109,7 +109,7 @@ namespace atomic_dex
         if (m_selected_best_order->has_value())
         {
             SPDLOG_INFO("selected best orders have a value - set preffered order");
-            m_system_manager.get_system<trading_page>().set_preffered_order(m_selected_best_order->value());
+            m_system_manager.get_system<trading_page>().set_preferred_order(m_selected_best_order->value());
             m_selected_best_order = std::nullopt;
         }
         m_best_orders->clear_orderbook();                                                     ///< Remove all elements from the model
@@ -141,10 +141,16 @@ namespace atomic_dex
     {
         auto&& [base, rel]         = m_system_manager.get_system<mm2_service>().get_taker_vol();
         this->m_base_max_taker_vol = QJsonObject{
-            {"denom", QString::fromStdString(base.denom)}, {"numer", QString::fromStdString(base.numer)}, {"decimal", QString::fromStdString(base.decimal)}};
+            {"denom", QString::fromStdString(base.denom)},
+            {"numer", QString::fromStdString(base.numer)},
+            {"decimal", QString::fromStdString(base.decimal)},
+            {"coin", QString::fromStdString(base.coin)}};
         emit baseMaxTakerVolChanged();
         this->m_rel_max_taker_vol = QJsonObject{
-            {"denom", QString::fromStdString(rel.denom)}, {"numer", QString::fromStdString(rel.numer)}, {"decimal", QString::fromStdString(rel.decimal)}};
+            {"denom", QString::fromStdString(rel.denom)},
+            {"numer", QString::fromStdString(rel.numer)},
+            {"decimal", QString::fromStdString(rel.decimal)},
+            {"coin", QString::fromStdString(rel.coin)}};
         emit relMaxTakerVolChanged();
 
         auto&& [min_base, min_rel] = m_system_manager.get_system<mm2_service>().get_min_vol();
@@ -206,14 +212,14 @@ namespace atomic_dex
             {
                 out["initial_input_volume"] = trading_pg.get_volume();
             }
-            m_selected_best_order        = out;
+            m_selected_best_order = out;
 
 
             auto right_coin = trading_pg.get_market_pairs_mdl()->get_right_selected_coin();
             if (right_coin == out.value("coin").toString())
             {
                 SPDLOG_INFO("Selected order is from the same pair, overriding preffered_order");
-                trading_pg.set_preffered_order(out);
+                trading_pg.set_preferred_order(out);
             }
             else
             {
@@ -249,7 +255,7 @@ namespace atomic_dex
     {
         QString    cur_taker_vol   = get_base_min_taker_vol();
         auto&      trading_pg      = m_system_manager.get_system<trading_page>();
-        auto       preffered_order = trading_pg.get_raw_preffered_order();
+        auto       preffered_order = trading_pg.get_raw_preferred_order();
         t_float_50 price_f         = safe_float(trading_pg.get_price().toStdString());
         if (preffered_order.has_value())
         {

@@ -31,6 +31,7 @@
         <file>atomic_defi_design/assets/images/coins/avax.png</file>
         <file>atomic_defi_design/assets/images/coins/awc.png</file>
         <file>atomic_defi_design/assets/images/coins/axe.png</file>
+        <file>atomic_defi_design/assets/images/coins/axs.png</file>
         <file>atomic_defi_design/assets/images/coins/babydoge.png</file>
         <file>atomic_defi_design/assets/images/coins/bal.png</file>
         <file>atomic_defi_design/assets/images/coins/band.png</file>
@@ -102,6 +103,7 @@
         <file>atomic_defi_design/assets/images/coins/gleec.png</file>
         <file>atomic_defi_design/assets/images/coins/gno.png</file>
         <file>atomic_defi_design/assets/images/coins/grs.png</file>
+        <file>atomic_defi_design/assets/images/coins/grms.png</file>
         <file>atomic_defi_design/assets/images/coins/hex.png</file>
         <file>atomic_defi_design/assets/images/coins/hlc.png</file>
         <file>atomic_defi_design/assets/images/coins/hodl.png</file>
@@ -130,6 +132,7 @@
         <file>atomic_defi_design/assets/images/coins/lstr.png</file>
         <file>atomic_defi_design/assets/images/coins/ltc.png</file>
         <file>atomic_defi_design/assets/images/coins/lynx.png</file>
+        <file>atomic_defi_design/assets/images/coins/ltfn.png</file>
         <file>atomic_defi_design/assets/images/coins/mana.png</file>
         <file>atomic_defi_design/assets/images/coins/matic.png</file>
         <file>atomic_defi_design/assets/images/coins/mcl.png</file>
@@ -215,6 +218,7 @@
         <file>atomic_defi_design/assets/images/coins/uno.png</file>
         <file>atomic_defi_design/assets/images/coins/uos.png</file>
         <file>atomic_defi_design/assets/images/coins/uqc.png</file>
+        <file>atomic_defi_design/assets/images/coins/usbl.png</file>
         <file>atomic_defi_design/assets/images/coins/usdc.png</file>
         <file>atomic_defi_design/assets/images/coins/usdt.png</file>
         <file>atomic_defi_design/assets/images/coins/utk.png</file>
@@ -228,6 +232,7 @@
         <file>atomic_defi_design/assets/images/coins/wcn.png</file>
         <file>atomic_defi_design/assets/images/coins/wlc.png</file>
         <file>atomic_defi_design/assets/images/coins/wsb.png</file>
+        <file>atomic_defi_design/assets/images/coins/wwcn.png</file>
         <file>atomic_defi_design/assets/images/coins/xlm.png</file>
         <file>atomic_defi_design/assets/images/coins/xmy.png</file>
         <file>atomic_defi_design/assets/images/coins/xor.png</file>
@@ -244,6 +249,9 @@
         <file>atomic_defi_design/assets/images/coins/zil.png</file>
         <file>atomic_defi_design/assets/images/coins/zilla.png</file>
         <file>atomic_defi_design/assets/images/coins/zrx.png</file>
+        <file>atomic_defi_design/assets/images/providers/binance.png</file>
+        <file>atomic_defi_design/assets/images/providers/coingecko.png</file>
+        <file>atomic_defi_design/assets/images/providers/coinpaprika.png</file>
         <file>atomic_defi_design/assets/images/dashboard-copy.svg</file>
         <file>atomic_defi_design/assets/images/dashboard-eye-hide.svg</file>
         <file>atomic_defi_design/assets/images/dashboard-eye.svg</file>
@@ -287,6 +295,7 @@
         <file>atomic_defi_design/assets/languages/atomic_defi_ru.qm</file>
         <file>atomic_defi_design/assets/languages/atomic_defi_tr.qm</file>
         <file>atomic_defi_design/qml/App.qml</file>
+        <file>atomic_defi_design/qml/String.js</file>
         <file>atomic_defi_design/qml/Components/AddressField.qml</file>
         <file>atomic_defi_design/qml/Components/AddressFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/AmountField.qml</file>
@@ -545,6 +554,7 @@
         <file>atomic_defi_design/qml/Portfolio/PieItem.qml</file>
         <file>atomic_defi_design/qml/Portfolio/SmartChartView.qml</file>
         <file>atomic_defi_design/qml/Portfolio/TableDex.qml</file>
+        <file>atomic_defi_design/qml/Portfolio/AssetsList.qml</file>
         <file>atomic_defi_design/qml/main.qml</file>
         <file>qtquickcontrols2.conf</file>
     </qresource>

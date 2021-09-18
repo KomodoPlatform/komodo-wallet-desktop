@@ -17,7 +17,7 @@ SetupPage {
     readonly property string current_status: API.app.wallet_mgr.initial_loading_status
 
     onCurrent_statusChanged: {
-        if (current_status === "complete")
+        if (current_status === "enabling_coins")
             onLoaded()
     }
 
