@@ -1237,6 +1237,18 @@ namespace atomic_dex
                     const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
                     out                                = "/api/v2/bep_tx_history/" + contract_address + "/" + address;
                 }
+                break;
+            case CoinTypeGadget::Matic:
+                if (ticker == "MATIC" || ticker == "MATICTEST")
+                {
+                    out = "/api/v1/plg_tx_history/" + address;
+                }
+                else
+                {
+                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
+                    out                                = "/api/v2/plg_tx_history/" + contract_address + "/" + address;
+                }
+                break;
             default:
                 break;
             }
@@ -1247,6 +1259,7 @@ namespace atomic_dex
             return out;
         };
         std::string url = retrieve_api_functor(ticker, address(ticker, ec));
+        SPDLOG_INFO("url scan: {}", url);
         ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "tx_history", url)
             .then(
                 [this, ticker](web::http::http_response resp)
@@ -1315,7 +1328,10 @@ namespace atomic_dex
                         this->dispatcher_.trigger<tx_fetch_finished>();
                     }
                 })
-            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {}); });
+            .then([this](pplx::task<void> previous_task) {
+                      this->dispatcher_.trigger<tx_fetch_finished>();
+                      this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {});
+                  });
     }
 
     void
