@@ -11,7 +11,7 @@ Item {
     id: root
 
     property bool section_enabled: true
-    property alias mouse_area: mouse_area
+    property alias mouse_area: mouseArea
 
     property int dashboard_index
     property alias image: img.source
@@ -90,7 +90,7 @@ Item {
         style: Text.Normal
         color: !section_enabled ? Constants.Style.colorTextDisabled :
                 selected ? Constants.Style.colorSidebarSelectedText :
-                mouse_area.containsMouse ? Constants.Style.colorThemePassiveLight :
+                mouseArea.containsMouse ? Constants.Style.colorThemePassiveLight :
                                            Constants.Style.colorThemePassive
     }
     DropShadow {
@@ -108,8 +108,9 @@ Item {
         smooth: true
     }
 
-    DefaultMouseArea {
-        id: mouse_area
+    DefaultMouseArea
+    {
+        id: mouseArea
         hoverEnabled: true
         width: parent.width
         height: parent.height
