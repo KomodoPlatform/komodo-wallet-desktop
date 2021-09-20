@@ -89,10 +89,10 @@ Item {
             weight: Font.Normal
         })
         style: Text.Normal
-        color: !section_enabled ? Constants.Style.colorTextDisabled :
-                selected ? Constants.Style.colorSidebarSelectedText :
-                mouseArea.containsMouse ? Constants.Style.colorThemePassiveLight :
-                                           Constants.Style.colorThemePassive
+        color: !section_enabled ? DexTheme.buttonColorTextDisabled :
+               selected ? Constants.Style.colorSidebarSelectedText :
+               mouseArea.containsMouse ? DexTheme.buttonColorTextHovered :
+               DexTheme.buttonColorTextEnabled
     }
     DropShadow {
         visible: false
