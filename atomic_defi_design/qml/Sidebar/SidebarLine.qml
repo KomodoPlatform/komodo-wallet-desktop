@@ -75,7 +75,8 @@ Item {
         color: txt.font.weight === Font.Medium ? DexTheme.foregroundColor : txt.color
     }
 
-    DexLabel {
+    DexLabel
+    {
         id: txt
         anchors.left: parent.left
         anchors.leftMargin: 70
