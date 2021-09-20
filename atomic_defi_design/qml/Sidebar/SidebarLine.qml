@@ -52,7 +52,7 @@ Item {
     }
     
     DropShadow {
-        visible: false//selected
+        visible: false
         anchors.fill: img
         source: img
         cached: false
@@ -94,7 +94,7 @@ Item {
                                            Constants.Style.colorThemePassive
     }
     DropShadow {
-        visible: false//selected
+        visible: false
         anchors.fill: txt
         source: txt
         cached: false
