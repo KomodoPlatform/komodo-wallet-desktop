@@ -1611,8 +1611,8 @@
   "FJCB": {
     "coin": "FJCB",
     "name": "FJCB Fujicoin",
-    "coinpaprika_id": "fjc-fujicoin",
-    "coingecko_id": "fujicoin",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
