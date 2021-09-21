@@ -157,7 +157,8 @@
       ],
       "type": "BEP-20",
       "active": false,
-      "currently_enabled": false
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "AXS-BEP20": {
       "coin": "AXS-BEP20",
