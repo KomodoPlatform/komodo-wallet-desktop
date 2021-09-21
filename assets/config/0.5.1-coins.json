@@ -2415,6 +2415,21 @@
     "type": "ERC-20",
     "name": "Ethereum"
   },
+  "ETH-ARB20": {
+    "active": false,
+    "coin": "ETH-ARB20",
+    "coingecko_id": "ethereum",
+    "coinpaprika_id": "eth-ethereum",
+    "currently_enabled": false,
+    "nodes": [
+      "https://arb1.arbitrum.io/rpc"
+    ],
+    "explorer_url": [
+      "https://arbiscan.io/"
+    ],
+    "type": "Arbitrum",
+    "name": "Ethereum Arbitrum"
+  },
   "ETHK-OPT20": {
     "active": false,
     "coin": "ETHK-OPT20",
