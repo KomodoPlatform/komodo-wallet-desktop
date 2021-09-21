@@ -447,11 +447,11 @@ run_app(int argc, char** argv)
 
     engine.addImportPath("qrc:/imports");
     engine.addImportPath("qrc:/Constants");
-    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/DexTheme.qml"), "App", 1, 0, "DexTheme");
-    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/DexTypo.qml"), "App", 1, 0, "DexTypo");
-    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/General.qml"), "App", 1, 0, "General");
-    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/Style.qml"), "App", 1, 0, "Style");
-    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/API.qml"), "App", 1, 0, "API");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/DexTheme.qml"), "App", 1, 0, "DexTheme");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/DexTypo.qml"), "App", 1, 0, "DexTypo");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/General.qml"), "App", 1, 0, "General");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/Style.qml"), "App", 1, 0, "Style");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/API.qml"), "App", 1, 0, "API");
     qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
     SPDLOG_INFO("QML singleton created");
 
@@ -468,7 +468,7 @@ run_app(int argc, char** argv)
 #else
     SPDLOG_INFO("Load qml engine");
     engine.rootContext()->setContextProperty("debug_bar", QVariant(false));
-    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/Dex/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),
         [url](QObject* obj, const QUrl& objUrl)
