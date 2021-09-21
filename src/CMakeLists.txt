@@ -73,7 +73,7 @@ add_executable(${PROJECT_NAME}
         ${CMAKE_SOURCE_DIR}/cmake/install/windows/dex.rc
 
         ##! QRC
-        ${CMAKE_SOURCE_DIR}/qml.qrc
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml.qrc
 
         ##! Linguistic
         ${QM_FILES}

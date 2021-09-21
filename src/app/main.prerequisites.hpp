@@ -388,7 +388,7 @@ run_app(int argc, char** argv)
     QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
 
-    app->setWindowIcon(QIcon(":/atomic_defi_design/assets/images/logo/dex-logo.png"));
+    app->setWindowIcon(QIcon(":/assets/images/logo/dex-logo.png"));
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
     QQmlApplicationEngine engine;
@@ -445,13 +445,13 @@ run_app(int argc, char** argv)
     //  SPDLOG_INFO("{}",  QQuickStyle::ge))
     SPDLOG_INFO("Qaterial type created");
 
-    engine.addImportPath("qrc:/atomic_defi_design/imports");
-    engine.addImportPath("qrc:/atomic_defi_design/Constants");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/DexTheme.qml"), "App", 1, 0, "DexTheme");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/DexTypo.qml"), "App", 1, 0, "DexTypo");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
+    engine.addImportPath("qrc:/imports");
+    engine.addImportPath("qrc:/Constants");
+    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/DexTheme.qml"), "App", 1, 0, "DexTheme");
+    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/DexTypo.qml"), "App", 1, 0, "DexTypo");
+    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/General.qml"), "App", 1, 0, "General");
+    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/Style.qml"), "App", 1, 0, "Style");
+    qmlRegisterSingletonType(QUrl("qrc:/qml/Constants/API.qml"), "App", 1, 0, "API");
     qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
     SPDLOG_INFO("QML singleton created");
 
@@ -468,7 +468,7 @@ run_app(int argc, char** argv)
 #else
     SPDLOG_INFO("Load qml engine");
     engine.rootContext()->setContextProperty("debug_bar", QVariant(false));
-    const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),
         [url](QObject* obj, const QUrl& objUrl)

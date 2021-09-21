@@ -12,7 +12,7 @@ QtObject {
 
     readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
     readonly property string assets_path: "qrc:///"
-    readonly property string image_path: assets_path + "atomic_defi_design/assets/images/"
+    readonly property string image_path: assets_path + "assets/images/"
     readonly property string coin_icons_path: image_path + "coins/"
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
     readonly property string providerIconsPath: image_path + "providers/"

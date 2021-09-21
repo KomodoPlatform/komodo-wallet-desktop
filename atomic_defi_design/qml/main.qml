@@ -148,7 +148,7 @@ DexWindow
 		spacing: 5
 
 		Image {
-			source: "qrc:/atomic_defi_design/assets/images/dex-tray-icon.png"
+            source: "qrc:/assets/images/dex-tray-icon.png"
 			width: 15
 			height: 15
 			smooth: true
