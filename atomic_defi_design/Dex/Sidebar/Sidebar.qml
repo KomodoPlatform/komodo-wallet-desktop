@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
 import Qaterial 1.0 as Qaterial
+
 import "../Constants" as Constants
 import App 1.0
 import "../Components"
