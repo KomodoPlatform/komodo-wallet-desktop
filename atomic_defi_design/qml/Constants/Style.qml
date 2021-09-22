@@ -397,6 +397,7 @@ QtObject {
                                           "EURS": "#2F77ED",
                                           "FIL": "#4CCAD2",
                                           "FJC": "#00AFEC",
+                                          "FJCB": "#FFCC33",
                                           "FUN": "#EF1C70",
                                           "GNO": "#00B0CC",
                                           "HOT": "#983EFF",
