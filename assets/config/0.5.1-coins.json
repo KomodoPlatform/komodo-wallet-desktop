@@ -376,6 +376,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "AVAX": {
+    "coin": "AVAX",
+    "name": "Avalanche",
+    "coinpaprika_id": "avax-avalanche",
+    "coingecko_id": "avalanche-2",
+    "nodes": [
+      "https://api.avax.network/ext/bc/C/rpc"
+    ],
+    "explorer_url": [
+      "https://cchain.explorer.avax.network/"
+    ],
+    "type": "AVX-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "AVAXT": {
     "coin": "AVAXT",
     "name": "Avalanche Testnet",
@@ -386,7 +401,7 @@
       "https://api.avax-test.network/ext/bc/C/rpc"
     ],
     "explorer_url": [
-      "https://cchain.explorer.avax-test.network"
+      "https://cchain.explorer.avax-test.network/"
     ],
     "type": "AVX-20",
     "active": false,
@@ -2447,6 +2462,38 @@
     "type": "ERC-20",
     "name": "Ethereum"
   },
+  "ETH-BEP20": {
+    "coin": "ETH-BEP20",
+    "name": "Ethereum",
+    "coinpaprika_id": "eth-ethereum",
+    "coingecko_id": "ethereum",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ETH-AVX20": {
+    "coin": "ETH-AVX20",
+    "name": "Ethereum Avalanche",
+    "coinpaprika_id": "eth-ethereum",
+    "coingecko_id": "ethereum",
+    "nodes": [
+      "https://api.avax.network/ext/bc/C/rpc"
+    ],
+    "explorer_url": [
+      "https://cchain.explorer.avax.network/"
+    ],
+    "type": "AVX-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "ETH-ARB20": {
     "active": false,
     "coin": "ETH-ARB20",
@@ -2509,23 +2556,6 @@
     ],
     "type": "ERC-20",
     "name": "Ethereum Ropsten (Testnet)"
-  },
-  "ETH-BEP20": {
-    "coin": "ETH-BEP20",
-    "name": "Ethereum",
-    "coinpaprika_id": "eth-ethereum",
-    "coingecko_id": "ethereum",
-    "nodes": [
-      "http://bsc1.cipig.net:8655",
-      "http://bsc2.cipig.net:8655",
-      "http://bsc3.cipig.net:8655"
-    ],
-    "explorer_url": [
-      "https://bscscan.com/"
-    ],
-    "type": "BEP-20",
-    "active": false,
-    "currently_enabled": false
   },
   "UIS": {
     "coin": "UIS",
@@ -2609,9 +2639,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDT-AVX20": {
+    "coin": "USDT-AVX20",
+    "name": "Tether Avalanche",
+    "coinpaprika_id": "usdt-tether",
+    "coingecko_id": "tether",
+    "nodes": [
+      "https://api.avax.network/ext/bc/C/rpc"
+    ],
+    "explorer_url": [
+      "https://cchain.explorer.avax.network/"
+    ],
+    "type": "AVX-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "USDT-PLG20": {
     "coin": "USDT-PLG20",
-    "name": "Tether",
+    "name": "Tether Polygon",
     "coinpaprika_id": "usdt-tether",
     "coingecko_id": "tether",
     "nodes": [
