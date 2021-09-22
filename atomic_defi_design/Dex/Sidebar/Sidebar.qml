@@ -17,8 +17,11 @@ Item
 
     x: -top_rect.radius
     width: expanded? 200 - x : 80 - x
-    Behavior on width {
-        NumberAnimation {
+
+    Behavior on width
+    {
+        NumberAnimation
+        {
             duration: 300
         }
     }
