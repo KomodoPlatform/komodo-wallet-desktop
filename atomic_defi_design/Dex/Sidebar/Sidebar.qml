@@ -1,16 +1,15 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-
 import QtGraphicalEffects 1.0
 
+import Qaterial 1.0 as Qaterial
 import "../Constants" as Constants
 import App 1.0
 import "../Components"
 
-import Qaterial 1.0 as Qaterial
-
-Item {
+Item
+{
     id: sidebar
     property bool expanded: dashboard.current_page === dashboard.idx_dashboard_exchange ? false : true
     readonly property alias app_logo: app_logo
