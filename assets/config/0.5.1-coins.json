@@ -1667,6 +1667,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "FTMT": {
+    "coin": "FTMT",
+    "name": "Fantom Testnet",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "is_testnet": true,
+    "nodes": [
+      "https://rpc.testnet.fantom.network/"
+    ],
+    "explorer_url": [
+      "https://testnet.ftmscan.com/"
+    ],
+    "type": "FTM-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "FTM-BEP20": {
     "coin": "FTM-BEP20",
     "name": "Fantom",

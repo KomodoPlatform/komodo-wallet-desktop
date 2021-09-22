@@ -254,6 +254,7 @@ QtObject {
             case 'Optimism':    return "#BB2100"
             case 'Arbitrum':    return getCoinColor("ETH")
             case 'AVX-20':      return getCoinColor("AVAX")
+            case 'FTM-20':      return getCoinColor("FTM")
             default:            return getCoinColor("BTC")
         }
     }
