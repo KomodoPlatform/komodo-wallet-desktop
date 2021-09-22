@@ -40,9 +40,10 @@ namespace atomic_dex
             Matic      = 6,
             Optimism   = 7,
             Arbitrum   = 8,
-            Disabled   = 9,
-            All        = 10,
-            Size       = 11
+            AVX20      = 9,
+            Disabled   = 10,
+            All        = 11,
+            Size       = 12
         };
 
         Q_ENUM(CoinTypeEnum)

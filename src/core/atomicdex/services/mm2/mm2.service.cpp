@@ -534,7 +534,7 @@ namespace atomic_dex
             return std::make_tuple(batch_array, tickers_idx, tokens_to_fetch);
         }*/
         if (coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20 && coin_type != CoinType::Matic && coin_type != CoinType::Optimism &&
-            coin_type != CoinType::Arbitrum)
+            coin_type != CoinType::Arbitrum && coin_type != CoinType::AVX20)
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -632,7 +632,7 @@ namespace atomic_dex
             }
 
             if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20 && coin_info.coin_type != CoinType::Matic &&
-                coin_info.coin_type != CoinType::Optimism && coin_info.coin_type != CoinType::Arbitrum)
+                coin_info.coin_type != CoinType::Optimism && coin_info.coin_type != CoinType::Arbitrum && coin_info.coin_type != CoinType::AVX20)
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
@@ -1053,7 +1053,7 @@ namespace atomic_dex
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
         const auto coin_type                 = get_coin_info(ticker).coin_type;
         const auto it = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20 || coin_type == CoinType::Matic || coin_type == CoinType::Optimism ||
-                          coin_type == CoinType::Arbitrum)
+                          coin_type == CoinType::Arbitrum || coin_type == CoinType::AVX20)
                             ? underlying_tx_history_map->find("result")
                             : underlying_tx_history_map->find(ticker);
         if (it == underlying_tx_history_map->cend())
@@ -1328,10 +1328,12 @@ namespace atomic_dex
                         this->dispatcher_.trigger<tx_fetch_finished>();
                     }
                 })
-            .then([this](pplx::task<void> previous_task) {
-                      this->dispatcher_.trigger<tx_fetch_finished>();
-                      this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {});
-                  });
+            .then(
+                [this](pplx::task<void> previous_task)
+                {
+                    this->dispatcher_.trigger<tx_fetch_finished>();
+                    this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {});
+                });
     }
 
     void

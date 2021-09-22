@@ -33,6 +33,10 @@ namespace mm2::api
         bool                     is_testnet{false};
         const std::string        erc_swap_contract_address{"0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80"};
         const std::string        erc_testnet_swap_contract_address{"0x6b5A52217006B965BB190864D62dc3d270F7AaFD"};
+        const std::string        avax_erc_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
+        const std::string        avax_erc_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
+        const std::string        avax_erc_testnet_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
+        const std::string        avax_erc_testnet_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        matic_erc_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        matic_erc_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        matic_erc_testnet_swap_contract_address{"0x73c1Dd989218c3A154C71Fc08Eb55A24Bd2B3A10"};
