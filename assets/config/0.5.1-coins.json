@@ -2517,6 +2517,7 @@
   },
   "ETH-ARB20": {
     "active": false,
+    "wallet_only": true,
     "coin": "ETH-ARB20",
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
@@ -2532,6 +2533,7 @@
   },
   "ETHK-OPT20": {
     "active": false,
+    "wallet_only": true,
     "coin": "ETHK-OPT20",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
@@ -2548,6 +2550,7 @@
   },
   "ETHR-ARB20": {
     "active": false,
+    "wallet_only": true,
     "coin": "ETHR-ARB20",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
