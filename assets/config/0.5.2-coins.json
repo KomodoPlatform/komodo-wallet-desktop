@@ -157,7 +157,8 @@
       ],
       "type": "BEP-20",
       "active": false,
-      "currently_enabled": false
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "AXS-BEP20": {
       "coin": "AXS-BEP20",
@@ -1627,6 +1628,23 @@
     "name": "Fujicoin",
     "coinpaprika_id": "fjc-fujicoin",
     "coingecko_id": "fujicoin",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "FJCB": {
+    "coin": "FJCB",
+    "name": "FJCB Fujicoin",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",

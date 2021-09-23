@@ -222,7 +222,7 @@ Item {
 
                             DefaultText
                             {
-                                enabled: name === "Tokel"
+                                enabled: General.isIDO(ticker)
                                 visible: enabled
                                 anchors.left: parent.right
                                 anchors.leftMargin: 5
