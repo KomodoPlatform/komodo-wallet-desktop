@@ -391,7 +391,6 @@
         <file>Dex/Components/DexSubstractRectangle.qml</file>
         <file>Dex/Components/DexSweetComboBox.qml</file>
         <file>Dex/Components/DexSwitch.qml</file>
-        <file>Dex/Constants/DexThemeManager.qml</file>
         <file>Dex/Components/DexText.qml</file>
         <file>Dex/Components/DexAppTextArea.qml</file>
         <file>Dex/Components/DexTextArea.qml</file>
