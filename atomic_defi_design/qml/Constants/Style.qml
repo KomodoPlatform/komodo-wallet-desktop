@@ -255,6 +255,7 @@ QtObject {
             case 'Arbitrum':    return getCoinColor("ETH")
             case 'AVX-20':      return getCoinColor("AVAX")
             case 'FTM-20':      return getCoinColor("FTM")
+            case 'HRC-20':      return getCoinColor("ONE")
             default:            return getCoinColor("BTC")
         }
     }
@@ -417,6 +418,7 @@ QtObject {
                                           "NEAR": "#595959",
                                           "NVC": "#FCF96D",
                                           "OCEAN": "#595959",
+                                          "ONE": "#33D4D3",
                                           "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
                                           "QI": "#FFFFFF",

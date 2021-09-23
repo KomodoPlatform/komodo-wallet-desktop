@@ -126,6 +126,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::FTM20;
         }
+        else if (cfg.type == "HRC-20")
+        {
+            cfg.coin_type = CoinType::HRC20;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -164,6 +168,10 @@ namespace atomic_dex
         case CoinType::FTM20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "FTMT" : "FTM";
+            break;
+        case CoinType::HRC20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ONET" : "ONE";
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;

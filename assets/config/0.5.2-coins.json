@@ -2379,6 +2379,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "ONE": {
+    "active": false,
+    "coin": "ONE",
+    "coingecko_id": "harmony",
+    "coinpaprika_id": "one-harmony",
+    "currently_enabled": false,
+    "nodes": [
+      "https://api.harmony.one"
+    ],
+    "explorer_url": [
+      "https://explorer.harmony.one"
+    ],
+    "type": "HRC-20",
+    "name": "Harmony"
+  },
   "ONT-BEP20": {
     "coin": "ONT-BEP20",
     "name": "Ontology",

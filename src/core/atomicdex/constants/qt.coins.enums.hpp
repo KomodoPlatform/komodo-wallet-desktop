@@ -42,9 +42,10 @@ namespace atomic_dex
             Arbitrum   = 8,
             AVX20      = 9,
             FTM20      = 10,
-            Disabled   = 11,
-            All        = 12,
-            Size       = 13
+            HRC20      = 11,
+            Disabled   = 12,
+            All        = 13,
+            Size       = 14
         };
 
         Q_ENUM(CoinTypeEnum)
