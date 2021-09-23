@@ -1716,6 +1716,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "FTM": {
+    "coin": "FTM",
+    "name": "Fantom",
+    "coinpaprika_id": "ftm-fantom",
+    "coingecko_id": "fantom",
+    "nodes": [
+      "https://rpcapi.fantom.network/"
+    ],
+    "explorer_url": [
+      "https://ftmscan.com/"
+    ],
+    "type": "FTM-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "FTM-BEP20": {
     "coin": "FTM-BEP20",
     "name": "Fantom",
@@ -2659,6 +2674,21 @@
     "explorer_tx_url": "tx.dws?",
     "explorer_address_url": "address.dws?",
     "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "USDC-FTM20": {
+    "coin": "USDC-FTM20",
+    "name": "USD Coin Fantom",
+    "coinpaprika_id": "usdc-usd-coin",
+    "coingecko_id": "usd-coin",
+    "nodes": [
+      "https://rpcapi.fantom.network/"
+    ],
+    "explorer_url": [
+      "https://ftmscan.com/"
+    ],
+    "type": "FTM-20",
     "active": false,
     "currently_enabled": false
   },
