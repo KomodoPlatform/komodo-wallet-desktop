@@ -1722,7 +1722,7 @@
     "coinpaprika_id": "ftm-fantom",
     "coingecko_id": "fantom",
     "nodes": [
-      "https://rpcapi.fantom.network/"
+      "https://rpc.ftm.tools/"
     ],
     "explorer_url": [
       "https://ftmscan.com/"
@@ -2683,7 +2683,7 @@
     "coinpaprika_id": "usdc-usd-coin",
     "coingecko_id": "usd-coin",
     "nodes": [
-      "https://rpcapi.fantom.network/"
+      "https://rpc.ftm.tools/"
     ],
     "explorer_url": [
       "https://ftmscan.com/"
