@@ -29,7 +29,7 @@
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/wallet.cfg.hpp"
-#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 
 namespace atomic_dex
 {
@@ -51,7 +51,7 @@ namespace atomic_dex
     QJsonArray           nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
     QJsonObject          nlohmann_json_object_to_qt_json_object(const nlohmann::json& j);
     QString              retrieve_change_24h(
-                     const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
+                     const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
                      const ag::ecs::system_manager& system_manager);
     
     [[nodiscard]] QString

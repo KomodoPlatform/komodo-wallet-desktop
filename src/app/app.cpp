@@ -39,7 +39,8 @@
 #include "app.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
-#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+//#include "atomicdex/services/price/coingecko/coingecko.provider.hpp"
+#include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/oracle/band.provider.hpp"
@@ -340,7 +341,8 @@ namespace atomic_dex
         system_manager_.create_system<orderbook_scanner_service>(system_manager_);
         system_manager_.create_system<band_oracle_price_service>();
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
-        system_manager_.create_system<coingecko_provider>(system_manager_);
+        //system_manager_.create_system<coingecko_provider>(system_manager_);
+        system_manager_.create_system<komodo_prices_provider>();
         auto& self_update_system = system_manager_.create_system<self_update_service>();
 #if !defined(Q_OS_WINDOWS)
         self_update_system.disable();

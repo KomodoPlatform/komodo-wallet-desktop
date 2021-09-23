@@ -1,12 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-
 import QtGraphicalEffects 1.0
+import QtWebEngine 1.10
+
 import "../Components"
 import "../Constants"
 import App 1.0
-
 import "../Dashboard"
 import "../Portfolio"
 import "../Wallet"
@@ -15,12 +15,13 @@ import "../Settings"
 import "../Support"
 import "../Sidebar"
 import "../Fiat"
-import "../Settings"
-as SettingsPage
+import "../Settings" as SettingsPage
 
 
 Item {
     id: dashboard
+
+    property alias webEngineView: webEngineView
 
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
@@ -39,8 +40,7 @@ Item {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
-    property
-    var current_ticker
+    property var current_ticker
 
     Layout.fillWidth: true
 
@@ -57,6 +57,7 @@ Item {
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
     property int current_page: idx_dashboard_portfolio
+
     onCurrent_pageChanged: {
         app.deepPage = current_page * 10
     }
@@ -66,6 +67,14 @@ Item {
 
     function inCurrentPage() {
         return app.current_page === idx_dashboard
+    }
+
+    function switchPage(page)
+    {
+        if (loader.status === Loader.Ready)
+            current_page = page
+        else
+            console.warn("Tried to switch to page %1 when loader is not ready yet.".arg(page))
     }
 
     property
@@ -192,6 +201,12 @@ Item {
             FiatRamp {
 
             }
+        }
+
+        WebEngineView
+        {
+            id: webEngineView
+            backgroundColor: "transparent"
         }
 
         DefaultLoader {
@@ -324,6 +339,25 @@ Item {
                 return Style.failureCharacter
             default:
                 return "?"
+        }
+    }
+
+    function getStatusText(status, short_text=false) {
+        switch(status) {
+            case "matching":
+                return short_text ? qsTr("Matching") : qsTr("Order Matching")
+            case "matched":
+                return short_text ? qsTr("Matched") : qsTr("Order Matched")
+            case "ongoing":
+                return short_text ? qsTr("Ongoing") : qsTr("Swap Ongoing")
+            case "successful":
+                return short_text ? qsTr("Successful") : qsTr("Swap Successful")
+            case "refunding":
+                return short_text ? qsTr("Refunding") : qsTr("Refunding")
+            case "failed":
+                return short_text ? qsTr("Failed") : qsTr("Swap Failed")
+            default:
+                return short_text ? qsTr("Unknown") : qsTr("Unknown State")
         }
     }
 

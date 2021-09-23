@@ -15,6 +15,7 @@ QtObject {
     readonly property string image_path: assets_path + "atomic_defi_design/assets/images/"
     readonly property string coin_icons_path: image_path + "coins/"
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
+    readonly property string providerIconsPath: image_path + "providers/"
 
     function coinIcon(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
@@ -34,6 +35,11 @@ QtObject {
         }
     }
 
+    function isIDO(ticker) {
+        let IDO_chains = []
+        return IDO_chains.includes(ticker)
+    }
+
     // Returns the icon full path of a coin type.
     // If the given coin type has spaces, it will be replaced by '-' characters.
     // If the given coin type is empty, returns an empty string.
@@ -42,6 +48,13 @@ QtObject {
 
         var filename = type.toLowerCase().replace(" ", "-");
         return coin_icons_path + filename + ".png"
+    }
+
+    // Returns the full path of a provider icon.
+    function providerIcon(providerName)
+    {
+        if (providerName === "") return ""
+        return providerIconsPath + providerName + ".png";
     }
 
     function qaterialIcon(name) {
@@ -558,6 +571,14 @@ QtObject {
                                                 "ARPA/DAI": "BINANCE:ARPAUSD",
                                                 "ARPA/PAX": "BINANCE:ARPAUSD",
                                                 "ARPA/TRYB": "BINANCE:ARPATRY",
+                                                "ARRR/BTC": "KUCOIN:ARRRBTC",
+                                                "ARRR/USDT": "KUCOIN:ARRRUSDT",
+                                                "ARRR/BUSD": "KUCOIN:ARRRUSDT",
+                                                "ARRR/USDC": "KUCOIN:ARRRUSDT",
+                                                "ARRR/TUSD": "KUCOIN:ARRRUSDT",
+                                                "ARRR/HUSD": "KUCOIN:ARRRUSDT",
+                                                "ARRR/DAI": "KUCOIN:ARRRUSDT",
+                                                "ARRR/PAX": "KUCOIN:ARRRUSDT",
                                                 "ATOM/BTC": "BINANCE:ATOMBTC",
                                                 "ATOM/ETH": "KRAKEN:ATOMETH",
                                                 "ATOM/USDT": "COINBASE:ATOMUSD",

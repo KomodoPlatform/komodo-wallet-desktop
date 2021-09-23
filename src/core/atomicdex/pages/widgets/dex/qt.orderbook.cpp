@@ -141,10 +141,16 @@ namespace atomic_dex
     {
         auto&& [base, rel]         = m_system_manager.get_system<mm2_service>().get_taker_vol();
         this->m_base_max_taker_vol = QJsonObject{
-            {"denom", QString::fromStdString(base.denom)}, {"numer", QString::fromStdString(base.numer)}, {"decimal", QString::fromStdString(base.decimal)}};
+            {"denom", QString::fromStdString(base.denom)},
+            {"numer", QString::fromStdString(base.numer)},
+            {"decimal", QString::fromStdString(base.decimal)},
+            {"coin", QString::fromStdString(base.coin)}};
         emit baseMaxTakerVolChanged();
         this->m_rel_max_taker_vol = QJsonObject{
-            {"denom", QString::fromStdString(rel.denom)}, {"numer", QString::fromStdString(rel.numer)}, {"decimal", QString::fromStdString(rel.decimal)}};
+            {"denom", QString::fromStdString(rel.denom)},
+            {"numer", QString::fromStdString(rel.numer)},
+            {"decimal", QString::fromStdString(rel.decimal)},
+            {"coin", QString::fromStdString(rel.coin)}};
         emit relMaxTakerVolChanged();
 
         auto&& [min_base, min_rel] = m_system_manager.get_system<mm2_service>().get_min_vol();
@@ -206,7 +212,7 @@ namespace atomic_dex
             {
                 out["initial_input_volume"] = trading_pg.get_volume();
             }
-            m_selected_best_order        = out;
+            m_selected_best_order = out;
 
 
             auto right_coin = trading_pg.get_market_pairs_mdl()->get_right_selected_coin();

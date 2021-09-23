@@ -142,6 +142,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "ARRR-BEP20": {
+      "coin": "ARRR-BEP20",
+      "name": "Pirate",
+      "coinpaprika_id": "arrr-pirate",
+      "coingecko_id": "pirate-chain",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false,
+      "wallet_only": true
+  },
   "AXS-BEP20": {
       "coin": "AXS-BEP20",
       "name": "Axie Infinity",
@@ -932,7 +950,7 @@
       {
         "url": "woolloomooloo.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": true
       },
       {
         "url": "lenoir.ecoincore.com:34333",
@@ -1574,6 +1592,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "FJC-BEP20": {
+    "coin": "FJC-BEP20",
+    "name": "Fujicoin",
+    "coinpaprika_id": "fjc-fujicoin",
+    "coingecko_id": "fujicoin",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "FJCB": {
+    "coin": "FJCB",
+    "name": "FJCB Fujicoin",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "STFIRO": {
     "coin": "STFIRO",
     "name": "StakedFIRO",
@@ -1701,6 +1753,26 @@
     ],
     "type": "UTXO",
     "active": true,
+    "currently_enabled": false
+  },
+  "GRMS": {
+    "coin": "GRMS",
+    "type": "Smart Chain",
+    "name": "GRMS",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "grms-grms",
+    "electrum": [
+      {
+        "url": "89.108.102.188:17485"
+      },
+      {
+        "url": "31.31.199.13:17485"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.grms.pw/"
+    ],
+    "active": false,
     "currently_enabled": false
   },
   "GRS": {
@@ -3588,7 +3660,7 @@
   "TKL": {
     "coin": "TKL",
     "name": "Tokel",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "tkl-tokel",
     "coingecko_id": "test-coin",
     "electrum": [
       
@@ -5245,6 +5317,30 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "USBL": {
+    "active": false,
+    "coin": "USBL",
+    "name": "Balanced",
+    "coingecko_id": "balanced",
+    "coinpaprika_id": "balanced-balanced",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "swap.softbalanced.com:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "swap.softbalanced.com:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://softbalanced.com:3001/insight/"
+    ],
+    "explorer_tx_url": "tx/",
+    "type": "UTXO"
   },
   "UTK": {
     "coin": "UTK",

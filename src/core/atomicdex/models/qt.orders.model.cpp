@@ -676,8 +676,15 @@ namespace atomic_dex
             this->set_fetching_busy(true);
             this->reset();
             // this->reset_backend("set_filtering_infos"); ///< We change page, we need to clear, but do not notify the front-end
-            auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-            mm2.set_orders_and_swaps_pagination_infos(m_model_data.current_page, m_model_data.limit, m_model_data.filtering_infos);
+            if (this->m_system_manager.has_system<mm2_service>())
+            {
+                auto& mm2 = this->m_system_manager.get_system<mm2_service>();
+                mm2.set_orders_and_swaps_pagination_infos(m_model_data.current_page, m_model_data.limit, m_model_data.filtering_infos);
+            }
+            else
+            {
+                SPDLOG_WARN("MM2 is not available, skipping orders and swaps pagination reset");
+            }
         }
         else
         {

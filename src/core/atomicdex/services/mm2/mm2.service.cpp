@@ -717,7 +717,7 @@ namespace atomic_dex
                                         this->dispatcher_.trigger<default_coins_enabled>();
                                         batch_balance_and_tx(false, tickers, true);
                                     }
-                                    dispatcher_.trigger<coin_enabled>(tickers);
+                                    dispatcher_.trigger<coin_fully_initialized>(tickers);
                                     if (tickers.size() == 1)
                                     {
                                         fetch_single_balance(get_coin_info(tickers[0]));

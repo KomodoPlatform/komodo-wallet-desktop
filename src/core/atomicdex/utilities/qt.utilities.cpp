@@ -50,13 +50,13 @@ namespace atomic_dex
 
     QString
     retrieve_change_24h(
-        const atomic_dex::coingecko_provider& coingecko, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
+        const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
         [[maybe_unused]] const ag::ecs::system_manager& system_manager)
     {
         QString change_24h = "0";
         if (is_this_currency_a_fiat(config, config.current_currency))
         {
-            change_24h = QString::fromStdString(coingecko.get_change_24h(coin.ticker));
+            change_24h = QString::fromStdString(provider.get_change_24h(coin.ticker));
         }
         return change_24h;
     }

@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.12
 
 import "../Constants" as Dex
 import "../Components" as Dex
+import "../String.js" as DexString
 import App 1.0 as Dex
 
 Dex.DefaultListView
@@ -10,15 +11,16 @@ Dex.DefaultListView
     id: list
 
     property real _assetRowHeight: 65
-    property real _assetNameColumnWidth: 400
+    property real _assetNameColumnWidth: 160
     property real _assetNameColumnLeftMargin: 15
-    property real _assetBalanceColumnWidth: 320
-    property real _assetChange24hColumnWidth: 130
-    property real _assetPriceColumWidth: 120
+    property real _assetBalanceColumnWidth: 380
+    property real _assetChange24hColumnWidth: 120
+    property real _assetPriceColumWidth: 140
+    property real _assetProviderColumnWidth: 42
 
     model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
-    width: parent.width - 50
+    width: _assetNameColumnWidth + _assetNameColumnLeftMargin + _assetBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
     height: (count * _assetRowHeight) + 30
     interactive: false
     scrollbar_visible: false
@@ -33,7 +35,7 @@ Dex.DefaultListView
 
         Dex.ColumnHeader
         {
-            Layout.preferredWidth: _assetNameColumnWidth
+            Layout.preferredWidth: _assetNameColumnWidth - _assetNameColumnLeftMargin
             Layout.leftMargin: _assetNameColumnLeftMargin
             icon_at_left: true
             sort_type: sort_by_name
@@ -60,6 +62,11 @@ Dex.DefaultListView
             sort_type: sort_by_price
             text: qsTr("Price")
         }
+        Dex.DexLabel
+        {
+            Layout.preferredWidth: _assetProviderColumnWidth
+            text: qsTr("Source")
+        }
     }
 
     delegate: Dex.DexRectangle
@@ -67,6 +74,35 @@ Dex.DefaultListView
         width: list.width
         height: _assetRowHeight
         color: mouseArea.containsMouse ? Dex.DexTheme.buttonColorHovered : Dex.DexTheme.contentColorTopBold
+
+        Dex.DefaultMouseArea
+        {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+            onClicked:
+            {
+                if (!can_change_ticker)
+                    return
+                if (mouse.button === Qt.RightButton)
+                    contextMenu.popup()
+                else
+                {
+                    api_wallet_page.ticker = ticker
+                    dashboard.switchPage(idx_dashboard_wallet)
+                }
+            }
+            onPressAndHold:
+            {
+                if (!can_change_ticker)
+                    return
+
+                if (mouse.source === Qt.MouseEventNotSynthesized)
+                    contextMenu.popup()
+            }
+        }
 
         RowLayout
         {
@@ -111,7 +147,7 @@ Dex.DefaultListView
 
                     Dex.DexLabel
                     {
-                        enabled: name === "Tokel"
+                        enabled: Dex.General.isIDO(ticker)
                         visible: enabled
                         anchors.left: parent.right
                         anchors.leftMargin: 5
@@ -150,7 +186,7 @@ Dex.DefaultListView
                 color: Dex.DexTheme.getValueColor(change_24h)
             }
 
-            Dex.DexLabel // Price.
+            Dex.DexLabel // Price Column.
             {
                 Layout.preferredWidth: _assetPriceColumWidth
                 font: Dex.DexTypo.body2
@@ -159,36 +195,42 @@ Dex.DefaultListView
                 color: Dex.DexTheme.colorThemeDarkLight
             }
 
-            Dex.CoinMenu { id: contextMenu }
-        }
-
-        Dex.DefaultMouseArea
-        {
-            id: mouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-            onClicked:
+            Item // Price Provider
             {
-                if (!can_change_ticker)
-                    return
-                if (mouse.button === Qt.RightButton)
-                    contextMenu.popup()
-                else
+                Layout.preferredWidth: _assetProviderColumnWidth
+
+                Image // Price Provider Icon.
                 {
-                    api_wallet_page.ticker = ticker
-                    dashboard.current_page = idx_dashboard_wallet
+                    id: priceProviderIcon
+
+                    enabled: priceProvider !== "unknown"
+                    visible: enabled
+                    anchors.centerIn: parent
+                    width: 16
+                    height: 16
+                    source: enabled ? Dex.General.providerIcon(priceProvider) : ""
+
+                    Dex.DefaultMouseArea
+                    {
+                        id: priceProviderIconMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
+
+                    Dex.DexTooltip
+                    {
+                        contentItem: Dex.DexLabel {
+                           text: qsTr("Price provider is: %1").arg(DexString.capitalizeFirstLetter(priceProvider))
+                           font: Dex.DexTypo.caption
+                           color: Dex.DexTheme.colorWhite7
+                           padding: 5
+                        }
+                        visible: priceProviderIconMouseArea.containsMouse
+                    }
                 }
             }
-            onPressAndHold:
-            {
-                if (!can_change_ticker)
-                    return
 
-                if (mouse.source === Qt.MouseEventNotSynthesized)
-                    contextMenu.popup()
-            }
+            Dex.CoinMenu { id: contextMenu }
         }
     }
 }

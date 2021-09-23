@@ -172,7 +172,7 @@ Item {
                             context_menu.popup()
                         else {
                             api_wallet_page.ticker = ticker
-                            dashboard.current_page = idx_dashboard_wallet
+                            dashboard.switchPage(idx_dashboard_wallet)
                         }
                     }
                     onPressAndHold: {
@@ -222,7 +222,7 @@ Item {
 
                             DefaultText
                             {
-                                enabled: name === "Tokel"
+                                enabled: General.isIDO(ticker)
                                 visible: enabled
                                 anchors.left: parent.right
                                 anchors.leftMargin: 5

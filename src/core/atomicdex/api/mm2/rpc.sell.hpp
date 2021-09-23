@@ -21,7 +21,7 @@
 #include <string>
 
 //! Deps
-#include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project Headers
 #include "atomicdex/api/mm2/trading.order.contents.hpp"
