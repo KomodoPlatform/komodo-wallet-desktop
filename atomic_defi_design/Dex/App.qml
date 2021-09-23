@@ -14,6 +14,8 @@ import "Dashboard"
 
 import App 1.0 as App
 
+import Dex.Themes 1.0 as Dex
+
 DexRectangle
 {
     id: app
@@ -28,7 +30,6 @@ DexRectangle
     property var notification_modal: notifications_modal
     property var notifications_list: current_page == idx_dashboard ? loader.item.notifications_list : []
 
-    property alias themeManager: theme_manager
     // Preload Chart
     signal pairChanged(string base, string rel)
     property var chart_component
@@ -521,14 +522,11 @@ DexRectangle
         property alias fontFamily: _font.fontFamily
     }
 
-    DexThemeManager {
-        id: theme_manager
-    }
-
-    function loadTheme() {
+    function loadTheme()
+    {
         atomic_settings2.sync()
         let current = atomic_settings2.value("CurrentTheme")
-        theme_manager.apply(current.replace(".json", ""))
+        Dex.CurrentTheme.loadFromFilesystem(current.replace(".json", ""))
     }
 
     function showDialog(data) {

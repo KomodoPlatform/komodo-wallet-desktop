@@ -2,15 +2,17 @@ pragma Singleton
 
 import QtQuick 2.15
 
+import Dex.Themes 1.0 as Dex
+
 QtObject {
 
     // Main Color 
 
     property string theme: "dark"
 
-    property color accentColor: Style.colorTheme4
-    property color backgroundColor: Style.colorTheme7
-    property color foregroundColor: Style.colorText
+    property color accentColor: Dex.CurrentTheme.accentColor
+    property color backgroundColor: Dex.CurrentTheme.backgroundColor
+    property color foregroundColor: Dex.CurrentTheme.foregroundColor
     property color primaryColor: accentColor
 
 
@@ -121,12 +123,12 @@ QtObject {
 
 
 
- // Old Theme
+    // Old Theme
     property string chartTheme: Style.dark_theme ? "dark" : "light"
     
     property color surfaceColor: backgroundDarkColor2
     property color backgroundColorDeep: backgroundDarkColor2
-    property color dexBoxBackgroundColor: backgroundDarkColor6//Style.colorTheme9
+    property color dexBoxBackgroundColor: backgroundDarkColor6
 
     property color hightlightColor: accentDarkColor3
     property color hoverColor: buttonColorHovered
@@ -135,30 +137,29 @@ QtObject {
 
     property int sidebarShadowRadius: 32
 
-    property color sideBarGradient1: DexTheme.primaryColorDarkColor8
-    property color sideBarGradient2: DexTheme.primaryColorDarkColor4
+    property color sideBarGradient1: Dex.CurrentTheme.sidebarBgStartColor
+    property color sideBarGradient2: Dex.CurrentTheme.sidebarBgEndColor
     property real sideBarAnimationDuration: Style.animationDuration
 
-    property color navigationSideBarButtonGradient1: DexTheme.accentLightColor2
-    property color navigationSideBarButtonGradient2: DexTheme.accentLightColor1
-    property color navigationSideBarButtonGradient3: DexTheme.accentDarkColor2
-    property color navigationSideBarButtonGradient4: Style.colorSidebarHighlightGradient4
+    property color navigationSideBarButtonGradient1: Dex.CurrentTheme.navigationSideBarButtonGradient1
+    property color navigationSideBarButtonGradient2: Dex.CurrentTheme.navigationSideBarButtonGradient2
+    property color navigationSideBarButtonGradient3: Dex.CurrentTheme.navigationSideBarButtonGradient3
+    property color navigationSideBarButtonGradient4: Dex.CurrentTheme.navigationSideBarButtonGradient4
 
-    property color chartTradingLineColor: Style.colorTrendingLine
-    property color chartTradingLineBackgroundColor: Style.colorTrendingUnderLine
+    property color chartTradingLineColor: Dex.CurrentTheme.chartTradingLineColor
+    property color chartTradingLineBackgroundColor: Dex.CurrentTheme.chartTradingLineBackgroundColor
     property color lineChartColor: accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
-    
     // Button
-    property color buttonColorDisabled: DexTheme.accentDarkColor5
-    property color buttonColorHovered: DexTheme.accentLightColor4
-    property color buttonColorPressed: DexTheme.accentDarkColor4
-    property color buttonColorEnabled: DexTheme.accentLightColor2
-    property color buttonColorTextDisabled: DexTheme.backgroundDarkColor7
-    property color buttonColorTextHovered: DexTheme.backgroundDarkColor8
-    property color buttonColorTextEnabled: DexTheme.backgroundDarkColor9
-    property color buttonColorTextPressed: DexTheme.backgroundDarkColor0
+    property color buttonColorDisabled: Dex.CurrentTheme.buttonColorDisabled
+    property color buttonColorHovered: Dex.CurrentTheme.buttonColorHovered
+    property color buttonColorPressed: Dex.CurrentTheme.buttonColorPressed
+    property color buttonColorEnabled: Dex.CurrentTheme.buttonColorEnabled
+    property color buttonColorTextDisabled: Dex.CurrentTheme.buttonTextDisabledColor
+    property color buttonColorTextHovered: Dex.CurrentTheme.buttonTextHoveredColor
+    property color buttonColorTextEnabled: Dex.CurrentTheme.buttonTextEnabledColor
+    property color buttonColorTextPressed: Dex.CurrentTheme.buttonTextPressedColor
 
     property color buttonGradientEnabled1: DexTheme.buttonColorEnabled
     property color buttonGradientEnabled2: DexTheme.buttonColorEnabled
@@ -167,25 +168,23 @@ QtObject {
 
 
 
-    property color colorInnerShadowBottom: Style.colorRectangleBorderGradient1
-    property color colorInnerShadowTop: Style.colorRectangleBorderGradient2
+    property color colorInnerShadowBottom: Dex.CurrentTheme.colorInnerShadowBottom
+    property color colorInnerShadowTop: Dex.CurrentTheme.colorInnerShadowTop
 
-    property color colorSidebarDropShadow: Style.colorSidebarDropShadow
+    property color colorSidebarDropShadow: Dex.CurrentTheme.sidebarDropShadowColor
 
-    property color barColor: Style.colorTheme5
+    property color colorLineGradient1: Dex.CurrentTheme.colorLineGradient1
+    property color colorLineGradient2: Dex.CurrentTheme.colorLineGradient2
+    property color colorLineGradient3: Dex.CurrentTheme.colorLineGradient3
+    property color colorLineGradient4: Dex.CurrentTheme.colorLineGradient4
 
-    property color colorLineGradient1: Style.colorLineGradient1
-    property color colorLineGradient2: Style.colorLineGradient2
-    property color colorLineGradient3: Style.colorLineGradient3
-    property color colorLineGradient4: Style.colorLineGradient4
+    property color floatShadow1: Dex.CurrentTheme.floatingBackgroundShadowColor1
+    property color floatShadow2: Dex.CurrentTheme.floatingBackgroundShadowColor2
+    property color floatBoxShadowDark: Dex.CurrentTheme.floatingBackgroundShadowDarkColor
 
-    property color floatShadow1: Style.colorDropShadowLight
-    property color floatShadow2: Style.colorDropShadowLight2
-    property color floatBoxShadowDark: Style.colorDropShadowDark
-
-    property color textSelectionColor: Style.colorSelection
-    property color textPlaceHolderColor: Style.colorPlaceholderText
-    property color textSelectedColor: Style.colorSelectedText
+    property color textSelectionColor: Dex.CurrentTheme.textSelectionColor
+    property color textPlaceHolderColor: Dex.CurrentTheme.textPlaceholderColor
+    property color textSelectedColor: Dex.CurrentTheme.textSelectedColor
     property color innerShadowColor: Style.colorInnerShadow
 
     property color whiteblack: Style.colorWhite1
@@ -196,8 +195,8 @@ QtObject {
     property color colorScrollbarGradient1: Style.colorScrollbarGradient1
     property color colorScrollbarGradient2: Style.colorScrollbarGradient2
 
-    property color greenColor: Style.colorGreen
-    property color redColor: Style.colorRed
+    property color greenColor: Dex.CurrentTheme.okColor
+    property color redColor: Dex.CurrentTheme.noColor
 
     // Widget settings 
 

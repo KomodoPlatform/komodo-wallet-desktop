@@ -12,6 +12,7 @@ import Qaterial 1.0 as Qaterial
 import App 1.0
 import "Screens"
 import "Components"
+import Dex.Themes 1.0 as Dex
 
 DexWindow
 {
@@ -39,7 +40,7 @@ DexWindow
     {
 		anchors.fill: parent
 		color: "transparent"
-		border.color: DexTheme.dexBoxBackgroundColor
+        border.color: Dex.CurrentTheme.floatingBackgroundColor
 		border.width: 1
 		radius: 0
 	}

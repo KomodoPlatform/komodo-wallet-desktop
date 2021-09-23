@@ -16,6 +16,8 @@ import "../Components"
 import "../Constants" as Constants
 import App 1.0
 
+import Dex.Themes 1.0 as Dex
+
 
 Qaterial.Dialog
 {
@@ -330,7 +332,7 @@ Qaterial.Dialog
                                 onClicked: {
                                     atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
                                     atomic_settings2.sync()
-                                    theme_manager.apply(dexTheme.currentText.replace(".json",""))
+                                    Dex.CurrentTheme.loadFromFilesystem(dexTheme.currentText.replace(".json",""))
                                     DexTypo.fontFamily = dexFont.currentText
                                     
                                 }
