@@ -256,7 +256,7 @@ QtObject {
             case 'AVX-20':      return getCoinColor("AVAX")
             case 'FTM-20':      return getCoinColor("FTM")
             case 'HRC-20':      return getCoinColor("ONE")
-            case 'Ubiq':        return getCoinColor("UBIQ")
+            case 'Ubiq':        return getCoinColor("UBQ")
             default:            return getCoinColor("BTC")
         }
     }
@@ -334,7 +334,7 @@ QtObject {
                                           "DP": "#E41D25",
                                           "ECA": "#A915DC",
                                           "QTUM": "#2E9AD0",
-                                          "UBIQ": "#00EB90",
+                                          "UBQ": "#00EB90",
                                           "CHIPS": "#598182",
                                           "CIPHS": "#ECD900",
                                           "AXE": "#C63877",

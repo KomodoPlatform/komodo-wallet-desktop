@@ -187,7 +187,7 @@ namespace atomic_dex
             break;
         case CoinType::Ubiq:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "UBIQT" : "UBIQ";
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "UBQT" : "UBQ";
             cfg.is_erc_family          = true;
             break;
         case CoinType::SLP:

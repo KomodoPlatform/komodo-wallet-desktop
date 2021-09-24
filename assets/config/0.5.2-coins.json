@@ -5466,8 +5466,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "UBIQ": {
-    "coin": "UBIQ",
+  "UBQ": {
+    "coin": "UBQ",
     "name": "Ubiq",
     "coinpaprika_id": "ubq-ubiq",
     "coingecko_id": "ubiq",
