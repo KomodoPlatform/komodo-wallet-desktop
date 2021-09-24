@@ -414,7 +414,7 @@ namespace atomic_dex
                     "ETH"s, "ERC20"s);
             case CoinTypeGadget::BEP20:
                 return std::make_tuple(
-                    &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "ETH"s, "BEP-20"s,
+                    &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "BNB"s, "BEP-20"s,
                     "BNB"s, "ERC20"s);
             default:
                 return std::make_tuple(&::mm2::api::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s, ""s);
