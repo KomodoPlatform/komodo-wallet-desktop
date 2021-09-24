@@ -35,6 +35,11 @@ QtObject {
         }
     }
 
+    function isIDO(ticker) {
+        let IDO_chains = []
+        return IDO_chains.includes(ticker)
+    }
+
     // Returns the icon full path of a coin type.
     // If the given coin type has spaces, it will be replaced by '-' characters.
     // If the given coin type is empty, returns an empty string.
@@ -566,6 +571,14 @@ QtObject {
                                                 "ARPA/DAI": "BINANCE:ARPAUSD",
                                                 "ARPA/PAX": "BINANCE:ARPAUSD",
                                                 "ARPA/TRYB": "BINANCE:ARPATRY",
+                                                "ARRR/BTC": "KUCOIN:ARRRBTC",
+                                                "ARRR/USDT": "KUCOIN:ARRRUSDT",
+                                                "ARRR/BUSD": "KUCOIN:ARRRUSDT",
+                                                "ARRR/USDC": "KUCOIN:ARRRUSDT",
+                                                "ARRR/TUSD": "KUCOIN:ARRRUSDT",
+                                                "ARRR/HUSD": "KUCOIN:ARRRUSDT",
+                                                "ARRR/DAI": "KUCOIN:ARRRUSDT",
+                                                "ARRR/PAX": "KUCOIN:ARRRUSDT",
                                                 "ATOM/BTC": "BINANCE:ATOMBTC",
                                                 "ATOM/ETH": "KRAKEN:ATOMETH",
                                                 "ATOM/USDT": "COINBASE:ATOMUSD",

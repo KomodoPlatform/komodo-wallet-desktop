@@ -147,7 +147,7 @@ Dex.DefaultListView
 
                     Dex.DexLabel
                     {
-                        enabled: name === "Tokel"
+                        enabled: Dex.General.isIDO(ticker)
                         visible: enabled
                         anchors.left: parent.right
                         anchors.leftMargin: 5
@@ -219,8 +219,13 @@ Dex.DefaultListView
 
                     Dex.DexTooltip
                     {
+                        contentItem: Dex.DexLabel {
+                           text: qsTr("Price provider is: %1").arg(DexString.capitalizeFirstLetter(priceProvider))
+                           font: Dex.DexTypo.caption
+                           color: Dex.DexTheme.colorWhite7
+                           padding: 5
+                        }
                         visible: priceProviderIconMouseArea.containsMouse
-                        text: qsTr("Price provider is: %1").arg(DexString.capitalizeFirstLetter(priceProvider))
                     }
                 }
             }
