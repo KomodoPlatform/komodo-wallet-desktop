@@ -5466,6 +5466,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "UBIQ": {
+    "coin": "UBIQ",
+    "name": "Ubiq",
+    "coinpaprika_id": "ubq-ubiq",
+    "coingecko_id": "ubiq",
+    "nodes": [
+     "https://rpc.octano.dev/"
+    ],
+    "explorer_url": [
+      "https://ubiqscan.io/"
+    ],
+    "type": "Ubiq",
+    "active": false,
+    "currently_enabled": false
+  },
   "UBT": {
     "coin": "UBT",
     "name": "UniBright",

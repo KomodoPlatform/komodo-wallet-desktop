@@ -91,6 +91,13 @@ namespace mm2::api
             j["urls"]                   = cfg.urls;
             break;
         }
+        case CoinType::Ubiq:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.ubiq_erc_testnet_swap_contract_address : cfg.ubiq_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.ubiq_erc_testnet_fallback_swap_contract_address : cfg.ubiq_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
         default:
             break;
         }

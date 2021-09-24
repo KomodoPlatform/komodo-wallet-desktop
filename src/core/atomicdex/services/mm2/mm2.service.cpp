@@ -529,9 +529,8 @@ namespace atomic_dex
         std::vector<std::string> tickers_idx;
         std::vector<std::string> tokens_to_fetch;
         const auto&              ticker    = get_current_ticker();
-        auto                     coin_type = get_coin_info(ticker).coin_type;
-        if (coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20 && coin_type != CoinType::Matic && coin_type != CoinType::Optimism &&
-            coin_type != CoinType::Arbitrum && coin_type != CoinType::AVX20 && coin_type != CoinType::FTM20 && coin_type != CoinType::HRC20)
+        auto                     coin_info = get_coin_info(ticker);
+        if (!coin_info.is_erc_family)
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -628,9 +627,7 @@ namespace atomic_dex
                 continue;
             }
 
-            if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20 && coin_info.coin_type != CoinType::Matic &&
-                coin_info.coin_type != CoinType::Optimism && coin_info.coin_type != CoinType::Arbitrum && coin_info.coin_type != CoinType::AVX20 &&
-                coin_info.coin_type != CoinType::FTM20 && coin_info.coin_type != CoinType::HRC20)
+            if (!coin_info.is_erc_family)
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
@@ -657,7 +654,7 @@ namespace atomic_dex
                     .with_tx_history = false};
                 nlohmann::json j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
-                SPDLOG_INFO("enable request: {}", j.dump(4));
+                //SPDLOG_INFO("enable request: {}", j.dump(4));
                 batch_array.push_back(j);
             }
             //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
@@ -1049,11 +1046,8 @@ namespace atomic_dex
         const auto& ticker = get_current_ticker();
         // SPDLOG_DEBUG("asking history of ticker: {}", ticker);
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
-        const auto coin_type                 = get_coin_info(ticker).coin_type;
-        const auto it = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20 || coin_type == CoinType::Matic || coin_type == CoinType::Optimism ||
-                          coin_type == CoinType::Arbitrum || coin_type == CoinType::AVX20 || coin_type == CoinType::FTM20 || coin_type == CoinType::HRC20)
-                            ? underlying_tx_history_map->find("result")
-                            : underlying_tx_history_map->find(ticker);
+        const auto coin_info                 = get_coin_info(ticker);
+        const auto it                        = !(coin_info.is_erc_family) ? underlying_tx_history_map->find("result") : underlying_tx_history_map->find(ticker);
         if (it == underlying_tx_history_map->cend())
         {
             ec = dextop_error::tx_history_of_a_non_enabled_coin;

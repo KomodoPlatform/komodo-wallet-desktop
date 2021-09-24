@@ -64,6 +64,7 @@ namespace atomic_dex
         std::string                     fees_ticker;
         bool                            segwit{false};
         bool                            is_segwit_on{false};
+        bool                            is_erc_family{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);

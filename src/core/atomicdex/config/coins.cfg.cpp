@@ -130,6 +130,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::HRC20;
         }
+        else if (cfg.type == "Ubiq")
+        {
+            cfg.coin_type = CoinType::Ubiq;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -144,34 +148,47 @@ namespace atomic_dex
         case CoinType::ERC20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR" : "ETH";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::BEP20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "BNBT" : "BNB";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::Matic:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "MATICTEST" : "MATIC";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::Optimism:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHK-OPT20" : "ETH-OPT20";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::Arbitrum:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR-ARB20" : "ETH-ARB20";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::AVX20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "AVAXT" : "AVAX";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::FTM20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "FTMT" : "FTM";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::HRC20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "ONET" : "ONE";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::Ubiq:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "UBIQT" : "UBIQ";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
