@@ -2758,6 +2758,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDT-ARB20": {
+    "coin": "USDT-ARB20",
+    "name": "Tether Arbitrum",
+    "wallet_only": true,
+    "coinpaprika_id": "usdt-tether",
+    "coingecko_id": "tether",
+    "nodes": [
+      "https://arb1.arbitrum.io/rpc"
+    ],
+    "explorer_url": [
+      "https://arbiscan.io/"
+    ],
+    "type": "Arbitrum",
+    "active": false,
+    "currently_enabled": false
+  },
   "USDT-AVX20": {
     "coin": "USDT-AVX20",
     "name": "Tether Avalanche",
