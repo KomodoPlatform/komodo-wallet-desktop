@@ -257,6 +257,7 @@ QtObject {
             case 'FTM-20':      return getCoinColor("FTM")
             case 'HRC-20':      return getCoinColor("ONE")
             case 'Ubiq':        return getCoinColor("UBQ")
+            case 'KRC-20':      return getCoinColor("KCS")
             default:            return getCoinColor("BTC")
         }
     }
@@ -313,6 +314,7 @@ QtObject {
                                           "ETH": "#687DE3",
                                           "ETHR": "#627EEA",
                                           "KMD": "#7490AA",
+                                          "KCS": "#25AF90",
                                           "MORTY": "#A4764D",
                                           "RICK": "#A5CBDD",
                                           "EMC2": "#00CCFF",

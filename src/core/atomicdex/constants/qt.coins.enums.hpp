@@ -44,9 +44,10 @@ namespace atomic_dex
             FTM20      = 10,
             HRC20      = 11,
             Ubiq       = 12,
-            Disabled   = 13,
-            All        = 14,
-            Size       = 15
+            KRC20      = 13,
+            Disabled   = 14,
+            All        = 15,
+            Size       = 16
         };
 
         Q_ENUM(CoinTypeEnum)

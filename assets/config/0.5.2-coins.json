@@ -2494,6 +2494,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "KCS": {
+    "active": false,
+    "coin": "KCS",
+    "wallet_only": true,
+    "coingecko_id": "kucoin-shares",
+    "coinpaprika_id": "kcs-kucoin-token",
+    "currently_enabled": false,
+    "nodes": [
+      "https://rpc-mainnet.kcc.network"
+    ],
+    "explorer_url": [
+      "https://explorer.kcc.io/en/"
+    ],
+    "type": "KRC-20",
+    "name": "KuCoin Token"
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",

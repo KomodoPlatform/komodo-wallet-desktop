@@ -98,6 +98,13 @@ namespace mm2::api
             j["urls"]                   = cfg.urls;
             break;
         }
+        case CoinType::KRC20:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.krc_erc_testnet_swap_contract_address : cfg.krc_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.krc_erc_testnet_fallback_swap_contract_address : cfg.krc_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
         default:
             break;
         }

@@ -134,6 +134,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::Ubiq;
         }
+        else if (cfg.type == "KRC-20")
+        {
+            cfg.coin_type = CoinType::KRC20;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -188,6 +192,11 @@ namespace atomic_dex
         case CoinType::Ubiq:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "UBQT" : "UBQ";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::KRC20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "KCST" : "KCS";
             cfg.is_erc_family          = true;
             break;
         case CoinType::SLP:
