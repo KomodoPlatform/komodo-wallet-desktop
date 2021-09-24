@@ -2742,6 +2742,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDT-KRC20": {
+    "coin": "USDT-KRC20",
+    "name": "Tether KuCoin Chain",
+    "wallet_only": true,
+    "coinpaprika_id": "usdt-tether",
+    "coingecko_id": "tether",
+    "nodes": [
+      "https://rpc-mainnet.kcc.network"
+    ],
+    "explorer_url": [
+      "https://explorer.kcc.io/en/"
+    ],
+    "type": "KRC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "USDT-AVX20": {
     "coin": "USDT-AVX20",
     "name": "Tether Avalanche",
