@@ -2709,7 +2709,7 @@
   },
   "USDC-BEP20": {
     "coin": "USDC-BEP20",
-    "name": "USD Coin",
+    "name": "USD Coin Binance",
     "coinpaprika_id": "usdc-usd-coin",
     "coingecko_id": "usd-coin",
     "nodes": [
@@ -2726,7 +2726,7 @@
   },
   "USDC-ERC20": {
     "coin": "USDC-ERC20",
-    "name": "USD Coin",
+    "name": "USD Coin Ethereum",
     "coinpaprika_id": "usdc-usd-coin",
     "coingecko_id": "usd-coin",
     "nodes": [
@@ -2824,7 +2824,7 @@
   },
   "USDT-BEP20": {
     "coin": "USDT-BEP20",
-    "name": "Tether",
+    "name": "Tether Binance",
     "coinpaprika_id": "usdt-tether",
     "coingecko_id": "tether",
     "nodes": [
@@ -2841,7 +2841,7 @@
   },
   "USDT-ERC20": {
     "coin": "USDT-ERC20",
-    "name": "Tether",
+    "name": "Tether Ethereum",
     "coinpaprika_id": "usdt-tether",
     "coingecko_id": "tether",
     "nodes": [
