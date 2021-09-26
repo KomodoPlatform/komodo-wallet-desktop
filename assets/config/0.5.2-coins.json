@@ -847,9 +847,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "BUSD-MVR20": {
+    "coin": "BUSD-MVR20",
+    "name": "Binance USD Moonriver",
+    "coinpaprika_id": "busd-binance-usd",
+    "coingecko_id": "binance-usd",
+    "nodes": [
+      "https://rpc.moonriver.moonbeam.network"
+    ],
+    "explorer_url": [
+      "https://blockscout.moonriver.moonbeam.network/"
+    ],
+    "type": "Moonriver",
+    "active": false,
+    "currently_enabled": false
+  },
   "BUSD-ERC20": {
     "coin": "BUSD-ERC20",
-    "name": "Binance USD",
+    "name": "Binance USD Ethereum",
     "coinpaprika_id": "busd-binance-usd",
     "coingecko_id": "binance-usd",
     "nodes": [
@@ -866,7 +881,7 @@
   },
   "BUSD-BEP20": {
     "coin": "BUSD-BEP20",
-    "name": "Binance USD",
+    "name": "Binance USD Binance",
     "coinpaprika_id": "busd-binance-usd",
     "coingecko_id": "binance-usd",
     "nodes": [
@@ -2707,6 +2722,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDC-MVR20": {
+    "coin": "USDC-MVR20",
+    "name": "USD Coin Moonriver",
+    "coinpaprika_id": "usdc-usd-coin",
+    "coingecko_id": "usd-coin",
+    "nodes": [
+      "https://rpc.moonriver.moonbeam.network"
+    ],
+    "explorer_url": [
+      "https://blockscout.moonriver.moonbeam.network/"
+    ],
+    "type": "Moonriver",
+    "active": false,
+    "currently_enabled": false
+  },
   "USDC-FTM20": {
     "coin": "USDC-FTM20",
     "name": "USD Coin Fantom",
@@ -2768,6 +2798,21 @@
       "https://explorer.kcc.io/en/"
     ],
     "type": "KRC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "USDT-MVR20": {
+    "coin": "USDT-MVR20",
+    "name": "Tether Moonriver",
+    "coinpaprika_id": "usdt-tether",
+    "coingecko_id": "tether",
+    "nodes": [
+      "https://rpc.moonriver.moonbeam.network"
+    ],
+    "explorer_url": [
+      "https://blockscout.moonriver.moonbeam.network/"
+    ],
+    "type": "Moonriver",
     "active": false,
     "currently_enabled": false
   },
