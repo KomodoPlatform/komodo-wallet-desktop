@@ -259,6 +259,7 @@ QtObject {
             case 'Ubiq':        return getCoinColor("UBQ")
             case 'KRC-20':      return getCoinColor("KCS")
             case 'Moonriver':   return getCoinColor("MOVR")
+            case 'HecoChain':   return getCoinColor("HECO")
             default:            return getCoinColor("BTC")
         }
     }
@@ -413,6 +414,7 @@ QtObject {
                                           "FUN": "#EF1C70",
                                           "GNO": "#00B0CC",
                                           "HOT": "#983EFF",
+                                          "HECO": "#00953F",
                                           "IOTX": "#00CDCE",
                                           "KNC": "#117980",
                                           "LEO": "#F79B2C",

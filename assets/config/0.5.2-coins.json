@@ -5180,8 +5180,23 @@
     "currently_enabled": false
   },
   "HT": {
+    "active": false,
     "coin": "HT",
-    "name": "HuobiToken",
+    "coingecko_id": "huobi-token",
+    "coinpaprika_id": "ht-huobi-token",
+    "currently_enabled": false,
+    "nodes": [
+      "https://http-mainnet.hecochain.com"
+    ],
+    "explorer_url": [
+      "https://hecoinfo.com/"
+    ],
+    "type": "HecoChain",
+    "name": "Huobi Token"
+  },
+  "HT-ERC20": {
+    "coin": "HT-ERC20",
+    "name": "HuobiToken Ethereum",
     "coinpaprika_id": "ht-huobi-token",
     "coingecko_id": "huobi-token",
     "nodes": [

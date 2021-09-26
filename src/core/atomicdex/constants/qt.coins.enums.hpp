@@ -46,9 +46,10 @@ namespace atomic_dex
             Ubiq       = 12,
             KRC20      = 13,
             Moonriver  = 14,
-            Disabled   = 15,
-            All        = 16,
-            Size       = 17
+            HecoChain  = 15,
+            Disabled   = 16,
+            All        = 17,
+            Size       = 18
         };
 
         Q_ENUM(CoinTypeEnum)
