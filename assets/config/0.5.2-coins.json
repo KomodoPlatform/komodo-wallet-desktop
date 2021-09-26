@@ -2801,6 +2801,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDC-HCO20": {
+    "coin": "USDC-HCO20",
+    "name": "USD Coin HecoChain",
+    "coinpaprika_id": "usdt-tether",
+    "coingecko_id": "tether",
+    "nodes": [
+      "https://http-mainnet.hecochain.com"
+    ],
+    "explorer_url": [
+      "https://hecoinfo.com/"
+    ],
+    "type": "HecoChain",
+    "active": false,
+    "currently_enabled": false
+  },
   "USDT-MVR20": {
     "coin": "USDT-MVR20",
     "name": "Tether Moonriver",
@@ -2813,6 +2828,21 @@
       "https://blockscout.moonriver.moonbeam.network/"
     ],
     "type": "Moonriver",
+    "active": false,
+    "currently_enabled": false
+  },
+  "USDT-HCO20": {
+    "coin": "USDT-HCO20",
+    "name": "Tether HecoChain",
+    "coinpaprika_id": "usdt-tether",
+    "coingecko_id": "tether",
+    "nodes": [
+      "https://http-mainnet.hecochain.com"
+    ],
+    "explorer_url": [
+      "https://hecoinfo.com/"
+    ],
+    "type": "HecoChain",
     "active": false,
     "currently_enabled": false
   },
