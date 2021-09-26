@@ -105,6 +105,13 @@ namespace mm2::api
             j["urls"]                   = cfg.urls;
             break;
         }
+        case CoinType::Moonriver:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.movr_erc_testnet_swap_contract_address : cfg.movr_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.movr_erc_testnet_fallback_swap_contract_address : cfg.movr_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
         default:
             break;
         }

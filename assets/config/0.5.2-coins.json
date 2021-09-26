@@ -2509,6 +2509,21 @@
     "type": "KRC-20",
     "name": "KuCoin Token"
   },
+  "MOVR": {
+    "active": false,
+    "coin": "MOVR",
+    "coingecko_id": "moonriver",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "nodes": [
+      "https://rpc.moonriver.moonbeam.network"
+    ],
+    "explorer_url": [
+      "https://blockscout.moonriver.moonbeam.network/"
+    ],
+    "type": "Moonriver",
+    "name": "Moonriver"
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",

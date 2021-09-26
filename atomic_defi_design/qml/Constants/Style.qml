@@ -258,6 +258,7 @@ QtObject {
             case 'HRC-20':      return getCoinColor("ONE")
             case 'Ubiq':        return getCoinColor("UBQ")
             case 'KRC-20':      return getCoinColor("KCS")
+            case 'Moonriver':   return getCoinColor("MOVR")
             default:            return getCoinColor("BTC")
         }
     }
@@ -350,6 +351,7 @@ QtObject {
                                           "MESH": "#0098DA",
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
+                                          "MOVR": "#52CCC9",
                                           "NMC": "#186C9D",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
