@@ -24,6 +24,9 @@ ThemeData
         buttonTextHoveredColor              = themeData.buttonTextHoveredColor;
         buttonTextPressedColor              = themeData.buttonTextPressedColor;
 
+        gradientButtonStartColor            = themeData.gradientButtonStartColor;
+        gradientButtonEndColor              = themeData.gradientButtonEndColor;
+
         textSelectionColor                  = themeData.textSelectionColor;
         textPlaceholderColor                = themeData.textPlaceholderColor;
         textSelectedColor                   = themeData.textSelectedColor;
@@ -78,6 +81,9 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.buttonTextEnabledColor : %1".arg(buttonTextEnabledColor));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonTextHoveredColor : %1".arg(buttonTextHoveredColor));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonTextPressedColor : %1".arg(buttonTextPressedColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonStartColor : %1".arg(gradientButtonStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonEndColor : %1".arg(gradientButtonEndColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectionColor : %1".arg(textSelectionColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textPlaceholderColor : %1".arg(textPlaceholderColor));

@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import Qaterial 1.0 as Qaterial
+
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 DexRectangle
 {
@@ -25,7 +27,6 @@ DexRectangle
     property real textScale: 1
 
     property string button_type: "default"
-    // end
 
     property alias label: _label
     property alias font: _label.font
@@ -48,12 +49,12 @@ DexRectangle
         GradientStop
         {
             position: 0.1255
-            color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled1) : DexTheme.buttonGradientEnabled1
+            color: control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonStartColor) : Dex.CurrentTheme.gradientButtonStartColor
         }
         GradientStop
         {
             position: 0.933
-            color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled2) : DexTheme.buttonGradientEnabled2
+            color: control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonEndColor) : Dex.CurrentTheme.gradientButtonEndColor
         }
     }
     height: _label.implicitHeight + (padding * verticalPadding)

@@ -12,6 +12,9 @@ QtObject
     property color  buttonColorHovered
     property color  buttonColorPressed
 
+    property color  gradientButtonStartColor
+    property color  gradientButtonEndColor
+
     property color  buttonTextDisabledColor
     property color  buttonTextEnabledColor
     property color  buttonTextHoveredColor
