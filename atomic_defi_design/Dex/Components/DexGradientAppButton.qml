@@ -2,9 +2,9 @@ import QtQuick 2.15
 import Qaterial 1.0 as Qaterial
 import App 1.0
 
-DexRectangle {
+DexRectangle
+{
     id: control
-    signal clicked()
 
     property int padding: 12
     property int spacing: 4
@@ -27,7 +27,6 @@ DexRectangle {
     property string button_type: "default"
     // end
 
-
     property alias label: _label
     property alias font: _label.font
     property alias leftPadding: _contentRow.leftPadding
@@ -39,14 +38,20 @@ DexRectangle {
     property string iconSource: ""
     
     property string foregroundColor: DexTheme.buttonGradientTextEnabled
+
+    signal clicked()
+
     radius: 5
-    gradient: Gradient {
+    gradient: Gradient
+    {
         orientation: Qt.Horizontal
-        GradientStop {
+        GradientStop
+        {
             position: 0.1255
             color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled1) : DexTheme.buttonGradientEnabled1
         }
-         GradientStop {
+        GradientStop
+        {
             position: 0.933
             color: control.containsMouse ? Qt.lighter(DexTheme.buttonGradientEnabled2) : DexTheme.buttonGradientEnabled2
         }
@@ -54,16 +59,20 @@ DexRectangle {
     height: _label.implicitHeight + (padding * verticalPadding)
     width: _contentRow.implicitWidth + (padding * horizontalPadding)
 
-    Row {
+    Row
+    {
         id: _contentRow
 
-        anchors {
+        anchors
+        {
             horizontalCenter: parent.horizontalAlignment == Qt.AlignHCenter ? parent.horizontalCenter : undefined
             verticalCenter: parent.verticalAlignment == Qt.AlignVCenter ? parent.verticalCenter : undefined
         }
 
         spacing: _icon.visible ? parent.spacing : 0
-        Qaterial.ColorIcon {
+
+        Qaterial.ColorIcon
+        {
             id: _icon
             iconSize: _label.font.pixelSize + 2
             visible: control.iconSource === "" ? false : true
@@ -72,7 +81,8 @@ DexRectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        DexLabel {
+        DexLabel
+        {
             id: _label
             anchors.verticalCenter: parent.verticalCenter
             font: DexTypo.button
@@ -80,7 +90,8 @@ DexRectangle {
             color: control.foregroundColor
         }
     }
-    DexMouseArea {
+    DexMouseArea
+    {
         id: _controlMouseArea
         anchors.fill: parent
         hoverEnabled: true
