@@ -3924,6 +3924,26 @@
     "active": false,
     "currently_enabled": false
   },
+  "XEC": {
+    "active": false,
+    "coin": "XEC",
+    "coingecko_id": "ecash",
+    "coinpaprika_id": "xec-ecash",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum.bitcoinabc.org:50002"
+      },
+      {
+        "url": "efulcrum.pepipierre.fr:50002"
+      }      
+    ],
+    "explorer_url": [
+      "https://blockchair.com/ecash/"
+    ],
+    "type": "UTXO",
+    "name": "eCash"
+  },
   "XLM-BEP20": {
     "coin": "XLM-BEP20",
     "name": "Stellar",
