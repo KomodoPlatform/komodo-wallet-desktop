@@ -106,7 +106,7 @@ Item {
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
             horizontalAlignment: Label.AlignRight
             font.family: DexTypo.fontFamily
-            font.pixelSize: 13
+            font.pixelSize: 12
             opacity: 1
 
         }
