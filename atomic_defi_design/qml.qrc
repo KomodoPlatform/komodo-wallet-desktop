@@ -500,6 +500,8 @@
         <file>Dex/Exchange/Trade/Trading/Items/TotalView.qml</file>
         <file>Dex/Exchange/Trade/Trading/TradeViewHeader.qml</file>
         <file>Dex/Fiat/FiatRamp.qml</file>
+        <file>Dex/Graphics/Color.js</file>
+        <file>Dex/Graphics/qmldir</file>
         <file>Dex/NoConnection.qml</file>
         <file>Dex/Portfolio/Portfolio.qml</file>
         <file>Dex/Screens/Dashboard.qml</file>
