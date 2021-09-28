@@ -49,7 +49,6 @@ Item {
                 duration: 1000
             }
         }
-        //anchors.verticalCenter: parent.verticalCenter
     }
     RowLayout {
         id: row
