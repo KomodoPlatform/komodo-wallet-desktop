@@ -4,7 +4,7 @@ ThemeData
 {
     function loadFromFilesystem(fileName)
     {
-        console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: l˜SJDKoading %1..."
+        console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: loading %1..."
                         .arg(fileName))
 
         let themeData = atomic_qt_utilities.load_theme(fileName);
