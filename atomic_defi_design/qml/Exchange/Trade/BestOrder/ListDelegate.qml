@@ -59,7 +59,7 @@ Item {
                 leftPadding: 2
                 text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
                 font.family: App.DexTypo.fontFamily
-                font.pixelSize: 10
+                font.pixelSize: 12
 
             }
         }
@@ -102,7 +102,7 @@ Item {
             Layout.preferredWidth: 70
             text: price_fiat + Constants.API.app.settings_pg.current_fiat_sign
             font.family: App.DexTypo.fontFamily
-            font.pixelSize: 10
+            font.pixelSize: 12
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
@@ -112,7 +112,7 @@ Item {
             
             text: cex_rates==="0"? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             font.family: App.DexTypo.fontFamily
-            font.pixelSize: 10
+            font.pixelSize: 12
 
             Behavior on rightPadding {
                 NumberAnimation {
