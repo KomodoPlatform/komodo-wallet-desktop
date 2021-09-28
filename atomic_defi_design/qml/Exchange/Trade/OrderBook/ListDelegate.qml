@@ -61,7 +61,7 @@ Item {
             visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume
             source: Qaterial.Icons.alert
             Layout.alignment: Qt.AlignVCenter
-            iconSize: 13
+            iconSize: 12
             color: Qaterial.Colors.amber
         }
         DefaultTooltip {
@@ -80,7 +80,7 @@ Item {
             text: parseFloat(General.formatDouble(
                                  price, General.amountPrecision, true)).toFixed(8)
             font.family: DexTypo.fontFamily
-            font.pixelSize: 13
+            font.pixelSize: 12
             color: isAsk? DexTheme.redColor : DexTheme.greenColor
 
         }
@@ -89,7 +89,7 @@ Item {
             Layout.preferredWidth: 100
             text: parseFloat(quantity).toFixed(6)
             font.family: DexTypo.fontFamily
-            font.pixelSize: 13
+            font.pixelSize: 12
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
