@@ -1,5 +1,7 @@
 pragma Singleton
 
+import Dex.Graphics 1.0 as Dex
+
 ThemeData
 {
     function loadFromFilesystem(fileName)
@@ -9,54 +11,54 @@ ThemeData
 
         let themeData = atomic_qt_utilities.load_theme(fileName);
 
-        accentColor                         = themeData.accentColor;
-        foregroundColor                     = themeData.foregroundColor;
-        backgroundColor                     = themeData.backgroundColor;
-        backgroundColorDeep                 = themeData.backgroundColorDeep;
+        accentColor                         = Dex.Color.argbStrFromRgbaStr(themeData.accentColor);
+        foregroundColor                     = Dex.Color.argbStrFromRgbaStr(themeData.foregroundColor);
+        backgroundColor                     = Dex.Color.argbStrFromRgbaStr(themeData.backgroundColor);
+        backgroundColorDeep                 = Dex.Color.argbStrFromRgbaStr(themeData.backgroundColorDeep);
 
-        buttonColorDisabled                 = themeData.buttonColorDisabled;
-        buttonColorEnabled                  = themeData.buttonColorEnabled;
-        buttonColorHovered                  = themeData.buttonColorHovered;
-        buttonColorPressed                  = themeData.buttonColorPressed;
+        buttonColorDisabled                 = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorDisabled);
+        buttonColorEnabled                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorEnabled);
+        buttonColorHovered                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorHovered);
+        buttonColorPressed                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorPressed);
 
-        buttonTextDisabledColor             = themeData.buttonTextDisabledColor;
-        buttonTextEnabledColor              = themeData.buttonTextEnabledColor;
-        buttonTextHoveredColor              = themeData.buttonTextHoveredColor;
-        buttonTextPressedColor              = themeData.buttonTextPressedColor;
+        buttonTextDisabledColor             = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextDisabledColor);
+        buttonTextEnabledColor              = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextEnabledColor);
+        buttonTextHoveredColor              = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextHoveredColor);
+        buttonTextPressedColor              = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextPressedColor);
 
-        gradientButtonStartColor            = themeData.gradientButtonStartColor;
-        gradientButtonEndColor              = themeData.gradientButtonEndColor;
+        gradientButtonStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonStartColor);
+        gradientButtonEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonEndColor);
 
-        textSelectionColor                  = themeData.textSelectionColor;
-        textPlaceholderColor                = themeData.textPlaceholderColor;
-        textSelectedColor                   = themeData.textSelectedColor;
+        textSelectionColor                  = Dex.Color.argbStrFromRgbaStr(themeData.textSelectionColor);
+        textPlaceholderColor                = Dex.Color.argbStrFromRgbaStr(themeData.textPlaceholderColor);
+        textSelectedColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textSelectedColor);
 
-        chartTradingLineBackgroundColor     = themeData.chartTradingLineBackgroundColor;
-        chartTradingLineColor               = themeData.chartTradingLineColor;
+        chartTradingLineBackgroundColor     = Dex.Color.argbStrFromRgbaStr(themeData.chartTradingLineBackgroundColor);
+        chartTradingLineColor               = Dex.Color.argbStrFromRgbaStr(themeData.chartTradingLineColor);
 
-        colorInnerShadowBottom              = themeData.colorInnerShadowBottom;
-        colorInnerShadowTop                 = themeData.colorInnerShadowTop;
+        colorInnerShadowBottom              = Dex.Color.argbStrFromRgbaStr(themeData.colorInnerShadowBottom);
+        colorInnerShadowTop                 = Dex.Color.argbStrFromRgbaStr(themeData.colorInnerShadowTop);
 
-        colorLineGradient1                  = themeData.colorLineGradient1;
-        colorLineGradient2                  = themeData.colorLineGradient2;
-        colorLineGradient3                  = themeData.colorLineGradient3;
-        colorLineGradient4                  = themeData.colorLineGradient4;
+        colorLineGradient1                  = Dex.Color.argbStrFromRgbaStr(themeData.colorLineGradient1);
+        colorLineGradient2                  = Dex.Color.argbStrFromRgbaStr(themeData.colorLineGradient2);
+        colorLineGradient3                  = Dex.Color.argbStrFromRgbaStr(themeData.colorLineGradient3);
+        colorLineGradient4                  = Dex.Color.argbStrFromRgbaStr(themeData.colorLineGradient4);
 
-        floatingBackgroundColor             = themeData.floatingBackgroundColor;
-        floatingBackgroundShadowColor1      = themeData.floatingBackgroundShadowColor1;
-        floatingBackgroundShadowColor2      = themeData.floatingBackgroundShadowColor2;
-        floatingBackgroundShadowDarkColor   = themeData.floatingBackgroundShadowDarkColor;
+        floatingBackgroundColor             = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundColor);
+        floatingBackgroundShadowColor1      = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundShadowColor1);
+        floatingBackgroundShadowColor2      = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundShadowColor2);
+        floatingBackgroundShadowDarkColor   = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundShadowDarkColor);
 
-        sidebarDropShadowColor              = themeData.sidebarDropShadowColor;
-        sidebarBgStartColor                 = themeData.sidebarBgStartColor;
-        sidebarBgEndColor                   = themeData.sidebarBgEndColor;
-        navigationSideBarButtonGradient1    = themeData.navigationSideBarButtonGradient1;
-        navigationSideBarButtonGradient2    = themeData.navigationSideBarButtonGradient2;
-        navigationSideBarButtonGradient3    = themeData.navigationSideBarButtonGradient3;
-        navigationSideBarButtonGradient4    = themeData.navigationSideBarButtonGradient4;
+        sidebarDropShadowColor              = Dex.Color.argbStrFromRgbaStr(themeData.sidebarDropShadowColor);
+        sidebarBgStartColor                 = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgStartColor);
+        sidebarBgEndColor                   = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgEndColor);
+        navigationSideBarButtonGradient1    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient1);
+        navigationSideBarButtonGradient2    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient2);
+        navigationSideBarButtonGradient3    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient3);
+        navigationSideBarButtonGradient4    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient4);
 
-        okColor                             = themeData.okColor;
-        noColor                             = themeData.noColor;
+        okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor);
+        noColor                             = Dex.Color.argbStrFromRgbaStr(themeData.noColor);
 
         printCurrentValues();
 
