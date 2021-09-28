@@ -33,23 +33,20 @@ Rectangle {
         anchors.fill: parent
         anchors.leftMargin: 10
         anchors.rightMargin: 10
-        RowLayout {
-            id: status_text
-            Layout.fillHeight: true
-            Layout.preferredWidth: 15
 
-            spacing: 5
+        DefaultText
+        {
+            id: status_text
+            Layout.preferredWidth: 15
             visible: clickable ? !details ? false :
                 (details.is_swap || !details.is_maker) : false
-
-            DefaultText {
-                Layout.alignment: Qt.AlignVCenter
-                font.pixelSize: base_amount.font.pixelSize
-                color: !details ? "white" : getStatusColor(details.order_status)
-                text_value: !details ? "" :
-                    visible ? getStatusStep(details.order_status) : ''
-            }
+            Layout.alignment: Qt.AlignVCenter
+            font.pixelSize: base_amount.font.pixelSize
+            color: !details ? "white" : getStatusColor(details.order_status)
+            text_value: !details ? "" :
+                visible ? getStatusStep(details.order_status) : ''
         }
+
         Item {
             Layout.fillHeight: true
             Layout.preferredWidth: 20
@@ -70,7 +67,8 @@ Rectangle {
             text_value: !details ? "" : details.date ?? ""
             Layout.fillHeight: true
             verticalAlignment: Label.AlignVCenter
-            Layout.preferredWidth: 120
+            horizontalAlignment: Text.AlignHCenter
+            Layout.preferredWidth: 80
         }
 
         DefaultImage {
@@ -80,11 +78,12 @@ Rectangle {
             Layout.preferredWidth: Style.textSize1
             Layout.preferredHeight: Style.textSize1
             Layout.alignment: Qt.AlignVCenter
+            Layout.leftMargin: 2
         }
         DefaultText {
             id: base_amount
             text_value: !details ? "" : General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: 11
+            font.pixelSize: 12
 
 
             Layout.fillHeight: true
