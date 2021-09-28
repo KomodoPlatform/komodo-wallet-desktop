@@ -58,7 +58,7 @@ Item {
         onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
         spacing: 10
         Qaterial.ColorIcon {
-            visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume //(min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
+            visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume
             source: Qaterial.Icons.alert
             Layout.alignment: Qt.AlignVCenter
             iconSize: 13
