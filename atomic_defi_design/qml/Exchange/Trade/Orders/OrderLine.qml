@@ -83,7 +83,7 @@ Rectangle {
         DefaultText {
             id: base_amount
             text_value: !details ? "" : General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: 12
+            font.pixelSize: 11
 
 
             Layout.fillHeight: true
