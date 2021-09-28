@@ -76,11 +76,11 @@ Item {
         }
         DexLabel {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 60
+            Layout.preferredWidth: 70
             text: parseFloat(General.formatDouble(
                                  price, General.amountPrecision, true)).toFixed(8)
             font.family: DexTypo.fontFamily
-            font.pixelSize: 11
+            font.pixelSize: 13
             color: isAsk? DexTheme.redColor : DexTheme.greenColor
 
         }
@@ -89,7 +89,7 @@ Item {
             Layout.preferredWidth: 100
             text: parseFloat(quantity).toFixed(6)
             font.family: DexTypo.fontFamily
-            font.pixelSize: 11
+            font.pixelSize: 13
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
@@ -106,7 +106,7 @@ Item {
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
             horizontalAlignment: Label.AlignRight
             font.family: DexTypo.fontFamily
-            font.pixelSize: 11
+            font.pixelSize: 13
             opacity: 1
 
         }

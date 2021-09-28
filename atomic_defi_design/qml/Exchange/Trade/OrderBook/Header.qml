@@ -25,7 +25,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 60
+            Layout.preferredWidth: 70
             text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
             font.family: DexTypo.fontFamily
             font.pixelSize: 9
