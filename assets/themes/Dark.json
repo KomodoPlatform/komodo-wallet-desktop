@@ -15,7 +15,7 @@
     "buttonTextPressedColor": "#ffffff",
 
     "gradientButtonStartColor": "#5A68E6",
-    "gradientButtonEndColor": "#4986EA",
+    "gradientButtonEndColor": "#4986EAAD",
 
     "textSelectionColor": "#14bca6",
     "textPlaceholderColor": "#444444",
