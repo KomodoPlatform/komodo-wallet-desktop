@@ -49,7 +49,8 @@ Item
             height: DexTheme.sidebarHightLightHeight
             width: parent.width + 100
             radius: 10
-            AnimatedRectangle {
+            AnimatedRectangle
+            {
                 id: cursor
                 width: 185
                 height: Constants.Style.sidebarLineHeight + top_rect.radius*2
