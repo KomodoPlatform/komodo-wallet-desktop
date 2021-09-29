@@ -4336,7 +4336,7 @@
         "url": "electrum.bitcoinabc.org:50002"
       },
       {
-        "url": "efulcrum.pepipierre.fr:50002"
+        "url": "fulcrum.pepipierre.fr:50002"
       }      
     ],
     "explorer_url": [
@@ -4430,15 +4430,16 @@
     "coin": "XRG",
     "active": false,
     "coinpaprika_id": "xrg-ergon",
+    "coingecko_id": "test-coin",
     "currently_enabled": false,
     "electrum": [
       {
         "url": "fulcrum.ergon.network:52138",
-        "protocol": "SSL",
+        "protocol": "SSL"
       },
       {
         "url": "blackie.c3-soft.com:52138",
-        "protocol": "SSL",
+        "protocol": "SSL"
       }
     ],
     "explorer_url": [

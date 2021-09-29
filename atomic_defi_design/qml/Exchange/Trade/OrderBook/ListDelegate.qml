@@ -49,7 +49,6 @@ Item {
                 duration: 1000
             }
         }
-        //anchors.verticalCenter: parent.verticalCenter
     }
     RowLayout {
         id: row
@@ -59,14 +58,14 @@ Item {
         onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
         spacing: 10
         Qaterial.ColorIcon {
-            visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume //(min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
+            visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume
             source: Qaterial.Icons.alert
             Layout.alignment: Qt.AlignVCenter
-            iconSize: 13
+            iconSize: 12
             color: Qaterial.Colors.amber
         }
         DefaultTooltip {
-            visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume //(min_volume > 0 && API.app.trading_pg.orderbook.base_max_taker_vol.decimal < min_volume) && min_volume !== API.app.trading_pg.mm2_min_volume
+            visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume
             width: 300
             contentItem: DefaultText {
                 text_value: qsTr("This order require a minimum amount of %1 %2 <br>You don't have enough funds.<br> Your max balance after fees is: (%3)").arg(min_volume).arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin).arg(isAsk ? API.app.trading_pg.orderbook.rel_max_taker_vol.decimal : API.app.trading_pg.orderbook.base_max_taker_vol.decimal)
@@ -77,11 +76,11 @@ Item {
         }
         DexLabel {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 60
+            Layout.preferredWidth: 70
             text: parseFloat(General.formatDouble(
                                  price, General.amountPrecision, true)).toFixed(8)
             font.family: DexTypo.fontFamily
-            font.pixelSize: 11
+            font.pixelSize: 12
             color: isAsk? DexTheme.redColor : DexTheme.greenColor
 
         }
@@ -90,7 +89,7 @@ Item {
             Layout.preferredWidth: 100
             text: parseFloat(quantity).toFixed(6)
             font.family: DexTypo.fontFamily
-            font.pixelSize: 11
+            font.pixelSize: 12
             horizontalAlignment: Label.AlignRight
             opacity: 1
 
@@ -107,7 +106,7 @@ Item {
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
             horizontalAlignment: Label.AlignRight
             font.family: DexTypo.fontFamily
-            font.pixelSize: 11
+            font.pixelSize: 12
             opacity: 1
 
         }
