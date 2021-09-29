@@ -54,26 +54,6 @@ Item
                 width: 185
                 height: Constants.Style.sidebarLineHeight + top_rect.radius*2
                 opacity: .7
-                gradient: Gradient {
-                    orientation: Qt.Horizontal
-
-                    GradientStop {
-                        position: 0.1255
-                        color: DexTheme.navigationSideBarButtonGradient1
-                    }
-                    GradientStop {
-                        position: 0.4283
-                        color: DexTheme.navigationSideBarButtonGradient2
-                    }
-                    GradientStop {
-                        position: 0.7143
-                        color: DexTheme.navigationSideBarButtonGradient3
-                    }
-                    GradientStop {
-                        position: 1
-                        color: DexTheme.navigationSideBarButtonGradient4 
-                    }
-                }
             }
         }
 
