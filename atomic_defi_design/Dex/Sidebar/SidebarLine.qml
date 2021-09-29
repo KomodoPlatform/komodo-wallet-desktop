@@ -50,22 +50,6 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         visible: false
     }
-    
-    DropShadow {
-        visible: false
-        anchors.fill: img
-        source: img
-        cached: false
-        horizontalOffset: 0
-        verticalOffset: 3
-        radius: 3
-        //scale: 
-        samples: 6
-        antialiasing: true
-        spread: 0
-        color: "#40000000"
-        smooth: true
-    }
 
     DefaultColorOverlay {
         id: img_color
@@ -93,20 +77,6 @@ Item {
                selected ? Constants.Style.colorSidebarSelectedText :
                mouseArea.containsMouse ? DexTheme.buttonColorTextHovered :
                DexTheme.buttonColorTextEnabled
-    }
-    DropShadow {
-        visible: false
-        anchors.fill: txt
-        source: txt
-        cached: false
-        horizontalOffset: 0
-        verticalOffset: 1
-        radius: 0
-        samples: 4
-        spread: 0
-        scale: txt.scale
-        color: "#40000000"
-        smooth: true
     }
 
     DefaultMouseArea
