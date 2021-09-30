@@ -3924,6 +3924,26 @@
     "active": false,
     "currently_enabled": false
   },
+  "XEC": {
+    "active": false,
+    "coin": "XEC",
+    "coingecko_id": "ecash",
+    "coinpaprika_id": "xec-ecash",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum.bitcoinabc.org:50002"
+      },
+      {
+        "url": "fulcrum.pepipierre.fr:50002"
+      }      
+    ],
+    "explorer_url": [
+      "https://blockchair.com/ecash/"
+    ],
+    "type": "UTXO",
+    "name": "eCash"
+  },
   "XLM-BEP20": {
     "coin": "XLM-BEP20",
     "name": "Stellar",
@@ -4004,6 +4024,28 @@
     "type": "BEP-20",
     "active": false,
     "currently_enabled": false
+  },
+    "XRG": {
+    "coin": "XRG",
+    "active": false,
+    "coinpaprika_id": "xrg-ergon",
+    "coingecko_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "fulcrum.ergon.network:52138",
+        "protocol": "SSL"
+      },
+      {
+        "url": "blackie.c3-soft.com:52138",
+        "protocol": "SSL"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.ergon.network/"
+    ],
+    "type": "UTXO",
+    "name": "Ergon"
   },
   "XTZ-BEP20": {
     "coin": "XTZ-BEP20",

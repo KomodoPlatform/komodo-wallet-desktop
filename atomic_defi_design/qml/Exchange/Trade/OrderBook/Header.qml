@@ -25,10 +25,10 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 60
+            Layout.preferredWidth: 70
             text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
             font.family: DexTypo.fontFamily
-            font.pixelSize: 9
+            font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
             color: is_ask? DexTheme.redColor : DexTheme.greenColor
@@ -39,7 +39,7 @@ Item {
 
             text: qsTr("Quantity") + " ("+  atomic_qt_utilities.retrieve_main_ticker(left_ticker) +")"
             font.family: DexTypo.fontFamily
-            font.pixelSize: 9
+            font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
             horizontalAlignment: Label.AlignRight
@@ -51,7 +51,7 @@ Item {
             text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"
             horizontalAlignment: Label.AlignRight
             font.family: DexTypo.fontFamily
-            font.pixelSize: 9
+            font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
         }
