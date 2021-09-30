@@ -14,6 +14,7 @@ Switch
     property alias switchButtonWidth: indicator.width
     property alias switchButtonHeight: indicator.height
     property alias switchButtonRadius: indicator.radius
+    property alias mouseArea: _mouseArea
 
     Universal.accent: DexTheme.accent
     Universal.foreground: DexTheme.foregroundColor
@@ -64,6 +65,7 @@ Switch
 
     DefaultMouseArea
     {
+        id: _mouseArea
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
     }
