@@ -4038,7 +4038,8 @@
     "electrum": [
       {
         "url": "fulcrum.ergon.network:52138",
-        "protocol": "SSL"
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
         "url": "blackie.c3-soft.com:52138",
