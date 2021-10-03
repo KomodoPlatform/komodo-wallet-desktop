@@ -3932,10 +3932,14 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum.bitcoinabc.org:50002"
+        "url": "electrum.bitcoinabc.org:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
-        "url": "fulcrum.pepipierre.fr:50002"
+        "url": "fulcrum.pepipierre.fr:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }      
     ],
     "explorer_url": [
