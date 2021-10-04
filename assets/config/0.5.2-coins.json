@@ -2240,12 +2240,7 @@
     "coinpaprika_id": "matic-matic-network",
     "coingecko_id": "matic-network",
     "nodes": [
-      "https://polygon-rpc.com",
-      "https://rpc-mainnet.matic.network",
-      "https://matic-mainnet.chainstacklabs.com",
-      "https://rpc-mainnet.maticvigil.com",
-      "https://rpc-mainnet.matic.quiknode.pro",
-      "https://matic-mainnet-full-rpc.bwarelabs.com"
+      "https://polygon-rpc.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -2594,12 +2589,7 @@
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
     "nodes": [
-      "https://polygon-rpc.com",
-      "https://rpc-mainnet.matic.network",
-      "https://matic-mainnet.chainstacklabs.com",
-      "https://rpc-mainnet.maticvigil.com",
-      "https://rpc-mainnet.matic.quiknode.pro",
-      "https://matic-mainnet-full-rpc.bwarelabs.com"
+      "https://polygon-rpc.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -2898,12 +2888,7 @@
     "coinpaprika_id": "usdt-tether",
     "coingecko_id": "tether",
     "nodes": [
-      "https://polygon-rpc.com",
-      "https://rpc-mainnet.matic.network",
-      "https://matic-mainnet.chainstacklabs.com",
-      "https://rpc-mainnet.maticvigil.com",
-      "https://rpc-mainnet.matic.quiknode.pro",
-      "https://matic-mainnet-full-rpc.bwarelabs.com"
+      "https://polygon-rpc.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
