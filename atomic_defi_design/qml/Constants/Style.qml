@@ -294,6 +294,7 @@ QtObject {
                                           "BNB": "#F9D987",
                                           "BCH": "#8DC351",
                                           "BIDR": "#F0B90B",
+                                          "BRZ": "#B5DEC3",
                                           "BSTY": "#78570D",
                                           "BTC": "#E9983C",
                                           "BTT": "#666666",
