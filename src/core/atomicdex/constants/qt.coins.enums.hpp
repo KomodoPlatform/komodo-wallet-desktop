@@ -37,9 +37,19 @@ namespace atomic_dex
             UTXO       = 3,
             SmartChain = 4,
             SLP        = 5,
-            Disabled   = 6,
-            All        = 7,
-            Size       = 8
+            Matic      = 6,
+            Optimism   = 7,
+            Arbitrum   = 8,
+            AVX20      = 9,
+            FTM20      = 10,
+            HRC20      = 11,
+            Ubiq       = 12,
+            KRC20      = 13,
+            Moonriver  = 14,
+            HecoChain  = 15,
+            Disabled   = 16,
+            All        = 17,
+            Size       = 18
         };
 
         Q_ENUM(CoinTypeEnum)

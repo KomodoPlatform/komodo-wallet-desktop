@@ -250,6 +250,16 @@ QtObject {
             case 'BEP-20':      return getCoinColor("BNB")
             case 'SLP':         return getCoinColor("BCH")
             case 'IDO':         return getCoinColor("TKL")
+            case 'Matic':       return getCoinColor("MATIC")
+            case 'Optimism':    return "#BB2100"
+            case 'Arbitrum':    return getCoinColor("ETH")
+            case 'AVX-20':      return getCoinColor("AVAX")
+            case 'FTM-20':      return getCoinColor("FTM")
+            case 'HRC-20':      return getCoinColor("ONE")
+            case 'Ubiq':        return getCoinColor("UBQ")
+            case 'KRC-20':      return getCoinColor("KCS")
+            case 'Moonriver':   return getCoinColor("MOVR")
+            case 'HecoChain':   return getCoinColor("HECO")
             default:            return getCoinColor("BTC")
         }
     }
@@ -306,6 +316,7 @@ QtObject {
                                           "ETH": "#687DE3",
                                           "ETHR": "#627EEA",
                                           "KMD": "#7490AA",
+                                          "KCS": "#25AF90",
                                           "MORTY": "#A4764D",
                                           "RICK": "#A5CBDD",
                                           "EMC2": "#00CCFF",
@@ -327,6 +338,7 @@ QtObject {
                                           "DP": "#E41D25",
                                           "ECA": "#A915DC",
                                           "QTUM": "#2E9AD0",
+                                          "UBQ": "#00EB90",
                                           "CHIPS": "#598182",
                                           "CIPHS": "#ECD900",
                                           "AXE": "#C63877",
@@ -340,6 +352,7 @@ QtObject {
                                           "MESH": "#0098DA",
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
+                                          "MOVR": "#52CCC9",
                                           "NMC": "#186C9D",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
@@ -401,6 +414,7 @@ QtObject {
                                           "FUN": "#EF1C70",
                                           "GNO": "#00B0CC",
                                           "HOT": "#983EFF",
+                                          "HECO": "#00953F",
                                           "IOTX": "#00CDCE",
                                           "KNC": "#117980",
                                           "LEO": "#F79B2C",
@@ -412,6 +426,7 @@ QtObject {
                                           "NEAR": "#595959",
                                           "NVC": "#FCF96D",
                                           "OCEAN": "#595959",
+                                          "ONE": "#33D4D3",
                                           "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
                                           "QI": "#FFFFFF",
