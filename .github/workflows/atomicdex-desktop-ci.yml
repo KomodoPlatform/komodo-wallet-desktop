@@ -126,11 +126,13 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           export DEBIAN_FRONTEND=noninteractive
+          export SHELL=/bin/bash
           echo "CHOOSENIM_CHOOSE_VERSION=1.4.0" >> $GITHUB_ENV
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
+          chmod +x /home/runner/.choosenim/toolchains/nim-1.4.8/bin/*
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
