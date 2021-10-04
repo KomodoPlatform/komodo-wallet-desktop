@@ -4365,6 +4365,7 @@
     "explorer_url": [
       "https://blockchair.com/ecash/"
     ],
+    "explorer_tx_url": "transaction/",
     "type": "UTXO",
     "name": "eCash"
   },
