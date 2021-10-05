@@ -484,7 +484,7 @@ QtObject {
         }
     }
 
-    
+    readonly property var supported_pairs: ({
                                                 "1INCH/BTC": "BINANCE:1INCHBTC",
                                                 "1INCH/ETH": "HUOBI:1INCHETH",
                                                 "1INCH/USDT": "BINANCE:1INCHUSD",
