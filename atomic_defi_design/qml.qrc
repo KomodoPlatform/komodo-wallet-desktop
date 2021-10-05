@@ -519,12 +519,13 @@
         <file>Dex/Settings/SettingsButton.qml</file>
         <file>Dex/Settings/SettingModal.qml</file>
         <file>Dex/Settings/Settings.qml</file>
-        <file>Dex/Sidebar/Sidebar.qml</file>
-        <file>Dex/Sidebar/SidebarBottom.qml</file>
-        <file>Dex/Sidebar/SidebarCenter.qml</file>
-        <file>Dex/Sidebar/SidebarLine.qml</file>
-        <file>Dex/Sidebar/SidebarTooltip.qml</file>
+        <file>Dex/Sidebar/Bottom.qml</file>
+        <file>Dex/Sidebar/Center.qml</file>
+        <file>Dex/Sidebar/FigurativeLine.qml</file>
         <file>Dex/Sidebar/Line.qml</file>
+        <file>Dex/Sidebar/Main.qml</file>
+        <file>Dex/Sidebar/qmldir</file>
+        <file>Dex/Sidebar/Top.qml</file>
         <file>Dex/Support/FAQLine.qml</file>
         <file>Dex/Support/Support.qml</file>
         <file>Dex/Themes/CurrentTheme.qml</file>

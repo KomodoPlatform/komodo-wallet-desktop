@@ -29,6 +29,7 @@ ThemeData
         gradientButtonStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonStartColor);
         gradientButtonEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonEndColor);
 
+        textDisabledColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textDisabledColor);
         textSelectionColor                  = Dex.Color.argbStrFromRgbaStr(themeData.textSelectionColor);
         textPlaceholderColor                = Dex.Color.argbStrFromRgbaStr(themeData.textPlaceholderColor);
         textSelectedColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textSelectedColor);
@@ -45,17 +46,12 @@ ThemeData
         colorLineGradient4                  = Dex.Color.argbStrFromRgbaStr(themeData.colorLineGradient4);
 
         floatingBackgroundColor             = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundColor);
-        floatingBackgroundShadowColor1      = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundShadowColor1);
-        floatingBackgroundShadowColor2      = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundShadowColor2);
-        floatingBackgroundShadowDarkColor   = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundShadowDarkColor);
 
-        sidebarDropShadowColor              = Dex.Color.argbStrFromRgbaStr(themeData.sidebarDropShadowColor);
-        sidebarBgStartColor                 = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgStartColor);
-        sidebarBgEndColor                   = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgEndColor);
-        navigationSideBarButtonGradient1    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient1);
-        navigationSideBarButtonGradient2    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient2);
-        navigationSideBarButtonGradient3    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient3);
-        navigationSideBarButtonGradient4    = Dex.Color.argbStrFromRgbaStr(themeData.navigationSideBarButtonGradient4);
+        sidebarBgColor                      = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgColor);
+        sidebarVersionTextColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarVersionTextColor);
+        sidebarCursorStartColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorStartColor);
+        sidebarCursorEndColor               = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorEndColor);
+        sidebarLineTextHovered              = Dex.Color.argbStrFromRgbaStr(themeData.sidebarLineTextHovered);
 
         okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor);
         noColor                             = Dex.Color.argbStrFromRgbaStr(themeData.noColor);
@@ -103,17 +99,12 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.colorLineGradient4 : %1".arg(colorLineGradient4));
 
         console.info("Dex.Themes.CurrentTheme.printValues.floatingBackgroundColor : %1".arg(floatingBackgroundColor));
-        console.info("Dex.Themes.CurrentTheme.printValues.floatingBackgroundShadowColor1 : %1".arg(floatingBackgroundShadowColor1));
-        console.info("Dex.Themes.CurrentTheme.printValues.floatingBackgroundShadowColor2 : %1".arg(floatingBackgroundShadowColor2));
-        console.info("Dex.Themes.CurrentTheme.printValues.floatingBackgroundShadowDarkColor : %1".arg(floatingBackgroundShadowDarkColor));
 
-        console.info("Dex.Themes.CurrentTheme.printValues.sidebarDropShadowColor : %1".arg(sidebarDropShadowColor));
-        console.info("Dex.Themes.CurrentTheme.printValues.sidebarBgStartColor : %1".arg(sidebarBgStartColor));
-        console.info("Dex.Themes.CurrentTheme.printValues.sidebarBgEndColor : %1".arg(sidebarBgEndColor));
-        console.info("Dex.Themes.CurrentTheme.printValues.navigationSideBarButtonGradient1 : %1".arg(navigationSideBarButtonGradient1));
-        console.info("Dex.Themes.CurrentTheme.printValues.navigationSideBarButtonGradient2 : %1".arg(navigationSideBarButtonGradient2));
-        console.info("Dex.Themes.CurrentTheme.printValues.navigationSideBarButtonGradient3 : %1".arg(navigationSideBarButtonGradient3));
-        console.info("Dex.Themes.CurrentTheme.printValues.navigationSideBarButtonGradient4 : %1".arg(navigationSideBarButtonGradient4));
+        console.info("Dex.Themes.CurrentTheme.printValues.sidebarBgColor : %1".arg(sidebarBgColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.sidebarVersionTextColor : %1".arg(sidebarVersionTextColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.sidebarCursorStartColor : %1".arg(sidebarCursorStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.sidebarCursorEndColor : %1".arg(sidebarCursorEndColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.sidebarLineTextHovered : %1".arg(sidebarLineTextHovered));
 
         console.info("Dex.Themes.CurrentTheme.printValues.okColor : %1".arg(okColor));
         console.info("Dex.Themes.CurrentTheme.printValues.noColor : %1".arg(noColor));

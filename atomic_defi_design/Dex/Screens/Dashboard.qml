@@ -13,9 +13,10 @@ import "../Wallet"
 import "../Exchange"
 import "../Settings"
 import "../Support"
-import "../Sidebar"
+import "../Sidebar" as Sidebar
 import "../Fiat"
 import "../Settings" as SettingsPage
+//import Dex.Sidebar 1.0 as Dex
 
 
 Item {
@@ -255,22 +256,39 @@ Item {
     }
 
     // Sidebar, left side
-    Sidebar {
+    Sidebar.Main
+    {
         id: sidebar
-        y: -30
-    }
 
-    DropShadow {
-        anchors.fill: sidebar
-        source: sidebar
-        cached: false
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: DexTheme.sidebarShadowRadius
-        samples: 32
-        spread: 0
-        color: DexTheme.colorSidebarDropShadow
-        smooth: true
+        enabled: loader.status === Loader.Ready
+
+        onLineSelected:
+        {
+            isExpanded = true;
+            switch (lineType)
+            {
+                case Sidebar.Main.LineType.Portfolio:
+                    switchPage(idx_dashboard_portfolio);
+                    break;
+                case Sidebar.Main.LineType.Wallet:
+                    switchPage(idx_dashboard_wallet);
+                    break;
+                case Sidebar.Main.LineType.DEX:
+                    isExpanded = false;
+                    switchPage(idx_dashboard_exchange);
+                    break;
+                case Sidebar.Main.LineType.Addressbook:
+                    switchPage(idx_dashboard_addressbook);
+                    break;
+                case Sidebar.Main.LineType.Portfolio:
+                    switchPage(idx_dashboard_portfolio);
+                    break;
+                case Sidebar.Main.LineType.Support:
+                    switchPage(idx_dashboard_support);
+                    break;
+            }
+        }
+        onSettingsClicked: setting_modal.open()
     }
 
     ModalLoader {

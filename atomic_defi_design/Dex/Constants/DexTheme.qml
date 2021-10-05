@@ -136,15 +136,7 @@ QtObject {
     property color modelStepBorderColor: hightlightColor
 
     property int sidebarShadowRadius: 32
-
-    property color sideBarGradient1: Dex.CurrentTheme.sidebarBgStartColor
-    property color sideBarGradient2: Dex.CurrentTheme.sidebarBgEndColor
     property real sideBarAnimationDuration: Style.animationDuration
-
-    property color navigationSideBarButtonGradient1: Dex.CurrentTheme.navigationSideBarButtonGradient1
-    property color navigationSideBarButtonGradient2: Dex.CurrentTheme.navigationSideBarButtonGradient2
-    property color navigationSideBarButtonGradient3: Dex.CurrentTheme.navigationSideBarButtonGradient3
-    property color navigationSideBarButtonGradient4: Dex.CurrentTheme.navigationSideBarButtonGradient4
 
     property color chartTradingLineColor: Dex.CurrentTheme.chartTradingLineColor
     property color chartTradingLineBackgroundColor: Dex.CurrentTheme.chartTradingLineBackgroundColor
@@ -170,8 +162,6 @@ QtObject {
 
     property color colorInnerShadowBottom: Dex.CurrentTheme.colorInnerShadowBottom
     property color colorInnerShadowTop: Dex.CurrentTheme.colorInnerShadowTop
-
-    property color colorSidebarDropShadow: Dex.CurrentTheme.sidebarDropShadowColor
 
     property color colorLineGradient1: Dex.CurrentTheme.colorLineGradient1
     property color colorLineGradient2: Dex.CurrentTheme.colorLineGradient2

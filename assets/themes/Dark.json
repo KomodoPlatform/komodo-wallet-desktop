@@ -1,7 +1,7 @@
  {
     "accentColor": "#2b6680",
     "foregroundColor": "#ffffff",
-    "backgroundColor": "#15182a",
+    "backgroundColor": "#202337",
     "backgroundColorDeep": "#171a2c",
 
     "buttonColorDisabled": "#0e1021",
@@ -14,9 +14,10 @@
     "buttonTextHoveredColor": "#ffffff",
     "buttonTextPressedColor": "#ffffff",
 
-    "gradientButtonStartColor": "#5A68E6",
-    "gradientButtonEndColor": "#4986EAAD",
+    "gradientButtonStartColor": "#4986EAAD",
+    "gradientButtonEndColor": "#5A68E6",
 
+    "textDisabledColor": "#555555",
     "textSelectionColor": "#14bca6",
     "textPlaceholderColor": "#444444",
     "textSelectedColor": "#0e1021",
@@ -32,30 +33,14 @@
     "colorLineGradient3": "#090910",
     "colorLineGradient4": "#24283b",
     
-    "floatingBackgroundColor": "#0e1021",
-    "floatingBackgroundShadowColor1": "#216975a4",
-    "floatingBackgroundShadowColor2": "#606975a4",
-    "floatingBackgroundShadowDarkColor": "#050615",
+    "floatingBackgroundColor": "#24273D",
 
-    "sidebarDropShadowColor": "#90000000",
-    "sidebarBgStartColor": "#202337",
-    "sidebarBgEndColor": "#202337",
-    "navigationSideBarButtonGradient1": "#1b5e7d",
-    "navigationSideBarButtonGradient2": "#ba1b5e7d",
-    "navigationSideBarButtonGradient3": "#5f1b5e7d",
-    "navigationSideBarButtonGradient4": "#001b5e7d",
+    "sidebarBgColor": "#202337",
+    "sidebarVersionTextColor": "#2F5688",
+    "sidebarCursorStartColor": "#31B1F0",
+    "sidebarCursorEndColor": "#5B69E600",
+    "sidebarLineTextHovered": "#2C87B9",
 
     "okColor": "#74fbee",
-    "noColor": "#d13990",
-
-    "hightlightColor": "#23273c",
-    "innerShadowColor": "#a0000000",
-    "sideBarGradient1": "#0e1021",
-    "sideBarGradient2": "#23273c",
-    "smallSidebarLogo": "dex-logo.png",
-    "surfaceColor": "#171a2c",
-    "whiteblack": "#ffffff",
-    "rectangleBorderColor": "#23273c",
-    "leftSidebarBorderColor": "transparent",
-    "theme":"dark"
+    "noColor": "#d13990"
 }

@@ -20,6 +20,7 @@ QtObject
     property color  buttonTextHoveredColor
     property color  buttonTextPressedColor
 
+    property color  textDisabledColor
     property color  textSelectionColor
     property color  textPlaceholderColor
     property color  textSelectedColor
@@ -36,18 +37,13 @@ QtObject
     property color  colorLineGradient4
 
     property color  floatingBackgroundColor
-    property color  floatingBackgroundShadowColor1
-    property color  floatingBackgroundShadowColor2
-    property color  floatingBackgroundShadowDarkColor
 
     // Sidebar related
-    property color  sidebarDropShadowColor
-    property color  sidebarBgStartColor
-    property color  sidebarBgEndColor
-    property color  navigationSideBarButtonGradient1
-    property color  navigationSideBarButtonGradient2
-    property color  navigationSideBarButtonGradient3
-    property color  navigationSideBarButtonGradient4
+    property color  sidebarBgColor
+    property color  sidebarVersionTextColor
+    property color  sidebarCursorStartColor
+    property color  sidebarCursorEndColor
+    property color  sidebarLineTextHovered
 
     // Colors used to tell when something is good or wrong.
     property color  okColor
