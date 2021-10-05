@@ -1459,11 +1459,6 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrum4.egulden.org:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
-      },
-      {
         "url": "electrum5.egulden.org:11017",
         "protocol": "SSL",
         "disable_cert_verification": true
@@ -4289,9 +4284,6 @@
       },
       {
         "url": "electrumx2.widecoin.org:50001"
-      },
-      {
-        "url": "electrumx3.widecoin.org:50001"
       }
     ],
     "explorer_url": [
