@@ -1,11 +1,10 @@
 import QtQuick 2.15
-import App 1.0
 
-AnimatedRectangle {
+import Dex.Themes 1.0 as Dex
+
+AnimatedRectangle
+{
     id: rect
-    radius: DexTheme.rectangleRadius
-    color: DexTheme.backgroundColor
-    border.color: DexTheme.rectangleBorderColor
-    border.width: 1
+    color: Dex.CurrentTheme.backgroundColor
 }
 
