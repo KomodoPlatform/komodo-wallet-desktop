@@ -13,7 +13,8 @@ Item {
     height: 40
     width: parent.width
     z: 2
-    Rectangle {
+    Rectangle
+    {
         anchors.fill: parent
         color: DexTheme.portfolioPieGradient ? "transparent" : DexTheme.dexBoxBackgroundColor
     }
@@ -27,7 +28,7 @@ Item {
             Layout.preferredWidth: 130
             text: sell_mode? qsTr("You get") : qsTr("You send")
             font.family: Style.font_family
-            font.pixelSize: 10
+            font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
         }
@@ -37,7 +38,7 @@ Item {
 
             text: qsTr("Fiat Price")
             font.family: Style.font_family
-            font.pixelSize: 10
+            font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
             horizontalAlignment: Label.AlignRight
@@ -45,11 +46,10 @@ Item {
         }
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            //Layout.preferredWidth: 120
             text: qsTr("CEX rate")
             horizontalAlignment: Label.AlignRight
             font.family: Style.font_family
-            font.pixelSize: 10
+            font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
         }
