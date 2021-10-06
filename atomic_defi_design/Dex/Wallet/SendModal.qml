@@ -283,8 +283,6 @@ BasicModal {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredWidth: 150
                 text: qsTr("Address Book")
-                backgroundColor: DexTheme.contentColorTopBold
-                foregroundColor: DexTheme.foregroundColor
                 opacity: containsMouse ? .6 : 1
                 onClicked: contact_list.open()
                 enabled: !root.is_send_busy

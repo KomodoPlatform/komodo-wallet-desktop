@@ -73,7 +73,6 @@ ColumnLayout {
         DexAppButton {
             anchors.verticalCenter: parent.verticalCenter
             id: save_button
-            button_type: input_field.enabled ? "danger" : "primary"
             anchors.right: parent.right
             anchors.rightMargin: 8
             text: input_field.enabled ? qsTr("Save") : qsTr("Edit")
@@ -83,7 +82,6 @@ ColumnLayout {
                 input_field.enabled = !input_field.enabled
             }
             font.pixelSize: Style.textSizeSmall
-            minWidth: 0
             height: 20
         }
     }

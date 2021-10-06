@@ -199,7 +199,6 @@ SetupPage {
                 enabled: input_password.isValid()
                 onClicked: trySubmit()
                 radius: 20
-                backgroundColor: DexTheme.accentColor
                 Layout.preferredWidth: _nextRow.implicitWidth + 40
                 Layout.preferredHeight: 45
                 label.color: 'transparent'

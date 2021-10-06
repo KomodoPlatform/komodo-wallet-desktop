@@ -188,7 +188,6 @@ BasicModal {
 
             DexAppButton {
                 text: qsTr("Close")
-                textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
                 leftPadding: 40
                 rightPadding: 40
                 radius: 20
@@ -200,7 +199,6 @@ BasicModal {
             DexAppOutlineButton {
                 visible: coin_cfg_model.length > 0
                 enabled: coin_cfg_model.checked_nb > 0
-                textScale: API.app.settings_pg.lang == "fr" ? 0.82 : 0.99
                 text: qsTr("Enable")
                 leftPadding: 40
                 rightPadding: 40
