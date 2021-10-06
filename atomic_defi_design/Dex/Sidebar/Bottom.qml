@@ -47,6 +47,7 @@ ColumnLayout
         Layout.fillWidth: true
         label.text: qsTr("Privacy")
         label.visible: isExpanded
+
         onClicked:
         {
             General.privacy_mode = !General.privacy_mode;
@@ -61,12 +62,14 @@ ColumnLayout
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
             scale: 0.75
+            mouseArea.hoverEnabled: true
+
             onClicked: parent.clicked()
         }
 
         DexTooltip
         {
-            visible: !isExpanded && parent.mouseArea.containsMouse
+            visible: !isExpanded && (privacySwitch.mouseArea.containsMouse || parent.mouseArea.containsMouse)
             text: qsTr("Privacy")
         }
     }
