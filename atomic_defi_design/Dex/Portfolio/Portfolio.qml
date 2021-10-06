@@ -235,7 +235,7 @@ Item {
                 DexLabel {
                     font: DexTypo.head6
                     anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Dashboard")
+                    text: qsTr("Portfolio")
                 }
             }
 
