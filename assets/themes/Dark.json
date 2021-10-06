@@ -5,9 +5,9 @@
     "backgroundColorDeep": "#171a2c",
 
     "buttonColorDisabled": "#0e1021",
-    "buttonColorEnabled": "#2b6680",
-    "buttonColorHovered": "#22263a",
-    "buttonColorPressed": "#2b6680",
+    "buttonColorEnabled": "#2D4572",
+    "buttonColorHovered": "#2D4572AD",
+    "buttonColorPressed": "#2649756C",
 
     "buttonTextDisabledColor": "#555555",
     "buttonTextEnabledColor": "#ffffff",
