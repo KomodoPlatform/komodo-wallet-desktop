@@ -738,32 +738,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "BTCH": {
-    "coin": "BTCH",
-    "name": "Bitcoin Hush",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10020",
-        "ws_url": "electrum1.cipig.net:30020"
-      },
-      {
-        "url": "electrum2.cipig.net:10020",
-        "ws_url": "electrum2.cipig.net:30020"
-      },
-      {
-        "url": "electrum3.cipig.net:10020",
-        "ws_url": "electrum3.cipig.net:30020"
-      }
-    ],
-    "explorer_url": [
-      "https://btch.explorer.dexstats.info/"
-    ],
-    "type": "Smart Chain",
-    "active": false,
-    "currently_enabled": false
-  },
   "BTCZ": {
     "coin": "BTCZ",
     "name": "BitcoinZ",
@@ -1098,32 +1072,6 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "COQUI": {
-    "coin": "COQUI",
-    "name": "Coqui Cash",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10011",
-        "ws_url": "electrum1.cipig.net:30011"
-      },
-      {
-        "url": "electrum2.cipig.net:10011",
-        "ws_url": "electrum2.cipig.net:30011"
-      },
-      {
-        "url": "electrum3.cipig.net:10011",
-        "ws_url": "electrum3.cipig.net:30011"
-      }
-    ],
-    "explorer_url": [
-      "https://coquicash.explorer.dexstats.info/"
-    ],
-    "type": "Smart Chain",
     "active": false,
     "currently_enabled": false
   },
@@ -2823,8 +2771,8 @@
   "USDC-HCO20": {
     "coin": "USDC-HCO20",
     "name": "USD Coin HecoChain",
-    "coinpaprika_id": "usdt-tether",
-    "coingecko_id": "tether",
+    "coinpaprika_id": "usdc-usd-coin",
+    "coingecko_id": "usd-coin",
     "nodes": [
       "https://http-mainnet.hecochain.com"
     ],
@@ -3871,29 +3819,6 @@
       "active": false,
       "currently_enabled": false
   },
-  "OOT": {
-    "coin": "OOT",
-    "name": "Utrum",
-    "coinpaprika_id": "oot-utrum",
-    "coingecko_id": "test-coin",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10021"
-      },
-      {
-        "url": "electrum2.cipig.net:10021"
-      },
-      {
-        "url": "electrum3.cipig.net:10021"
-      }
-    ],
-    "explorer_url": [
-      "https://explorer.utrum.io/"
-    ],
-    "type": "Smart Chain",
-    "active": false,
-    "currently_enabled": false
-  },
   "QKC-BEP20": {
     "coin": "QKC-BEP20",
     "name": "QuarkChain",
@@ -4309,32 +4234,6 @@
       "type": "ERC-20",
       "active": false,
       "currently_enabled": false
-  },
-  "WLC": {
-    "coin": "WLC",
-    "name": "Wireless Coin",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10014",
-        "ws_url": "electrum1.cipig.net:30014"
-      },
-      {
-        "url": "electrum2.cipig.net:10014",
-        "ws_url": "electrum2.cipig.net:30014"
-      },
-      {
-        "url": "electrum3.cipig.net:10014",
-        "ws_url": "electrum3.cipig.net:30014"
-      }
-    ],
-    "explorer_url": [
-      "https://wlc21.explorer.dexstats.info/"
-    ],
-    "type": "Smart Chain",
-    "active": false,
-    "currently_enabled": false
   },
   "XEC": {
     "active": false,
@@ -5812,8 +5711,8 @@
     "active": false,
     "coin": "USBL",
     "name": "Balanced",
-    "coingecko_id": "balanced",
-    "coinpaprika_id": "balanced-balanced",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
     "currently_enabled": false,
     "electrum": [
       {
