@@ -9,7 +9,7 @@
     "buttonColorHovered": "#2D4572AD",
     "buttonColorPressed": "#2649756C",
 
-    "buttonTextDisabledColor": "#555555",
+    "buttonTextDisabledColor": "#444444",
     "buttonTextEnabledColor": "#ffffff",
     "buttonTextHoveredColor": "#ffffff",
     "buttonTextPressedColor": "#ffffff",
@@ -17,9 +17,9 @@
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6",
 
-    "textDisabledColor": "#555555",
+    "textDisabledColor": "#444444",
     "textSelectionColor": "#14bca6",
-    "textPlaceholderColor": "#444444",
+    "textPlaceholderColor": "#666666",
     "textSelectedColor": "#0e1021",
 
     "chartTradingLineBackgroundColor": "#24283d",
