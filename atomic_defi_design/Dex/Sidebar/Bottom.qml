@@ -46,6 +46,7 @@ ColumnLayout
     {
         Layout.fillWidth: true
         label.text: qsTr("Privacy")
+        label.visible: isExpanded
         onClicked:
         {
             General.privacy_mode = !General.privacy_mode;
