@@ -1,52 +1,56 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.0
 
 import Qaterial 1.0 as Qaterial
 
-import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants" as Constants
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 // Coins bar at left side
-Item {
+Item
+{
     id: root
 
-    function reset() {
-        resetted()
-    }
+    function reset() { resetted() }
 
     signal resetted()
 
     Layout.alignment: Qt.AlignLeft
-    width: 175
     Layout.fillHeight: true
-    Layout.topMargin: - 40 
+    Layout.preferredWidth: 175
 
     // Background
-    SidebarPanel {
+    DefaultRectangle
+    {
         id: background
         anchors.right: parent.right
-        width: sidebar.width + parent.width
+        width: parent.width
 
         height: parent.height 
 
         // Panel contents
-        Item {
+        Item
+        {
             id: coins_bar
             width: 175
             height: parent.height
             anchors.right: parent.right
 
-            ColumnLayout {
+            ColumnLayout
+            {
                 anchors.fill: parent
                 anchors.topMargin: 30
                 anchors.bottomMargin: 30
                 anchors.leftMargin: 10
                 anchors.rightMargin: 20
                 spacing: 40
-                InnerBackground {
+
+                InnerBackground
+                {
                     id: search_row_bg
                     Layout.preferredWidth: 145
                     radius: 14
@@ -54,50 +58,45 @@ Item {
                     color: DexTheme.contentColorTop
                     shadowOff: true
 
-                    content: RowLayout {
+                    content: RowLayout
+                    {
                         id: search_row
 
-                        width: search_row_bg.width
-
-                        // Search button
-                        Item {
+                        // Search icon
+                        Item
+                        {
                             Layout.alignment: Qt.AlignLeft
                             Layout.leftMargin: search_button.width
                             Layout.rightMargin: -Layout.leftMargin
                             width: search_button.width
                             height: search_button.height
-                            DefaultImage {
+
+                            DefaultImage
+                            {
                                 id: search_button
 
-                                source: Constants.General.image_path + "exchange-search.svg"
+                                source: General.image_path + "exchange-search.svg"
 
                                 width: input_coin_filter.font.pixelSize; height: width
 
                                 visible: false
                             }
-                            DefaultColorOverlay {
+
+                            DefaultColorOverlay
+                            {
                                 id: search_button_overlay
 
                                 anchors.fill: search_button
                                 source: search_button
-                                color: DexTheme.foregroundColor
+                                color: Dex.CurrentTheme.foregroundColor
                             }
                         }
 
                         // Search input
-                        DefaultTextField {
+                        DefaultTextField
+                        {
                             id: input_coin_filter
 
-                            Connections {
-                                target: root
-
-                                function onResetted() {
-                                    if(input_coin_filter.text === "") resetCoinFilter()
-                                    else input_coin_filter.text = ""
-
-                                    //portfolio_coins.sort_by_name(true)
-                                }
-                            }
                             placeholderText: qsTr("Search coin")
 
                             onTextChanged: portfolio_coins.setFilterFixedString(text)
@@ -108,12 +107,20 @@ Item {
                             Layout.fillWidth: true
 
                             Component.onDestruction: portfolio_coins.setFilterFixedString("")
+
+                            Connections
+                            {
+                                target: root
+
+                                function onResetted()
+                                {
+                                    if (input_coin_filter.text === "") resetCoinFilter()
+                                    else input_coin_filter.text = ""
+                                }
+                            }
                         }
                     }
                 }
-
-                // Add button
-                
 
                 // Coins list
                 InnerBackground {
@@ -138,9 +145,10 @@ Item {
                             radius: 8
                             opacity: .5
                             visible: list.position < (.98 - list.scrollVert.visualSize) ? true : false
-                            Qaterial.Icon {
+                            Qaterial.Icon
+                            {
                                 anchors.centerIn: parent
-                                color: DexTheme.foregroundColor
+                                color: Dex.CurrentTheme.foregroundColor
                                 icon: Qaterial.Icons.arrowDownCircleOutline
                             }
                         }
@@ -207,19 +215,5 @@ Item {
         width: 1
         color: DexTheme.sideBarRightBorderColor
         border.width: 0
-    }
-
-    DropShadow {
-        anchors.fill: background
-        source: background
-        cached: false
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 32
-        samples: 32
-        spread: 0
-        visible: DexTheme.walletSidebarShadowVisibility
-        color: Constants.Style.colorWalletsSidebarDropShadow
-        smooth: true
     }
 }
