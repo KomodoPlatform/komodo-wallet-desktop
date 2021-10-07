@@ -2,8 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
-import "../Constants"
-as Constants
+import "../Constants" as Constants
 import App 1.0
 
 RowLayout {
@@ -120,7 +119,6 @@ RowLayout {
             Layout.preferredHeight: 32
             Layout.alignment: Qt.AlignVCenter
             color: modelData.number === currentValue ? 'transparent' : backgroundColor
-            foregroundColor: modelData.number === currentValue ? DexTheme.accentColor : DexTheme.buttonColorTextEnabled
             onClicked: {
                 if (currentValue !== model.modelData) {
                     Constants.API.app.orders_mdl.current_page = btnGroup.model[index].number
