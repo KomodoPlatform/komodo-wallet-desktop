@@ -115,8 +115,6 @@ Item {
                     anchors.bottom: parent.bottom
                     iconSource: _subHistoryRoot.displayFilter ? Qaterial.Icons.close : Qaterial.Icons.cogBox
                     iconSize: 14
-                    backgroundColor: DexTheme.iconButtonColor
-                    foregroundColor: DexTheme.iconButtonForegroundColor
                     opacity: containsMouse ? .7 : 1
                     width: 35
                     height: 25

@@ -980,8 +980,6 @@ ClipRRect // Trade Card
             visible: _tradeCard.best
             iconSource: Qaterial.Icons.refresh
             iconSize: 14
-            backgroundColor: DexTheme.iconButtonColor
-            foregroundColor: DexTheme.iconButtonForegroundColor
             opacity: enabled ? containsMouse ? .7 : 1 : .4
             anchors.verticalCenter: parent.verticalCenter
             enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
@@ -997,8 +995,6 @@ ClipRRect // Trade Card
             visible: _tradeCard.best || _tradeCard.coinSelection
             iconSource: Qaterial.Icons.close
             iconSize: 14
-            backgroundColor: DexTheme.iconButtonColor
-            foregroundColor: DexTheme.iconButtonForegroundColor
             opacity: containsMouse ? .9 : 1
             anchors.verticalCenter: parent.verticalCenter
             width: 35
