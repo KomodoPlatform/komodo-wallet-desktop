@@ -1023,6 +1023,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "BUSD-HRC20": {
+      "coin": "BUSD-HRC20",
+      "name": "Binance USD",
+      "coinpaprika_id": "busd-binance-usd",
+      "coingecko_id": "binance-usd",
+      "nodes": [
+        "https://api.harmony.one"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BUSD-PLG20": {
     "coin": "BUSD-PLG20",
     "name": "Binance USD",
