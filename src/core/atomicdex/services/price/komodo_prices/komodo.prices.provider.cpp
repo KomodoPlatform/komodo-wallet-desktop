@@ -54,7 +54,7 @@ namespace atomic_dex
             dispatcher_.trigger<fiat_rate_updated>("");
         };
 
-        auto error_functor = [](pplx::task<void> previous_task)
+        auto error_functor = [this](pplx::task<void> previous_task)
         {
             try
             {
