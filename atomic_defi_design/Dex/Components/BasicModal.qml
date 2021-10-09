@@ -81,7 +81,6 @@ DefaultModal
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: -circle.width*0.5
                         anchors.right: circle.horizontalCenter
-                        shadowOff: true
                         color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
                     }
 

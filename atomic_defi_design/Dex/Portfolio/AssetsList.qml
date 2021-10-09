@@ -5,6 +5,7 @@ import "../Constants" as Dex
 import "../Components" as Dex
 import "../String.js" as DexString
 import App 1.0 as Dex
+import Dex.Themes 1.0 as Dex
 
 Dex.DefaultListView
 {
@@ -69,11 +70,13 @@ Dex.DefaultListView
         }
     }
 
-    delegate: Dex.DexRectangle
+    delegate: Rectangle
     {
+        property color _idleColor: index % 2 === 0 ? Dex.CurrentTheme.backgroundColor : Dex.CurrentTheme.floatingBackgroundColor
+
         width: list.width
         height: _assetRowHeight
-        color: mouseArea.containsMouse ? Dex.DexTheme.buttonColorHovered : Dex.DexTheme.contentColorTopBold
+        color: mouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : _idleColor
 
         Dex.DefaultMouseArea
         {

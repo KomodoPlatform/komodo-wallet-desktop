@@ -438,6 +438,7 @@
         <file>Dex/Components/PrimaryButton.qml</file>
         <file>Dex/Components/RestartModal.qml</file>
         <file>Dex/Components/RightClickMenu.qml</file>
+        <file>Dex/Components/SearchField.qml</file>
         <file>Dex/Components/Separator.qml</file>
         <file>Dex/Components/SetupPage.qml</file>
         <file>Dex/Components/SidebarPanel.qml</file>

@@ -4,6 +4,8 @@ import Dex.Graphics 1.0 as Dex
 
 ThemeData
 {
+    signal themeChanged()
+
     function loadFromFilesystem(fileName)
     {
         console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: loading %1..."
@@ -56,7 +58,14 @@ ThemeData
         okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor);
         noColor                             = Dex.Color.argbStrFromRgbaStr(themeData.noColor);
 
+        arrowUpColor                        = Dex.Color.argbStrFromRgbaStr(themeData.arrowUpColor);
+        arrowDownColor                      = Dex.Color.argbStrFromRgbaStr(themeData.arrowDownColor);
+
+        lineSeparatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor);
+
         printCurrentValues();
+
+        themeChanged();
 
         console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: %1 is loaded"
                         .arg(fileName));
@@ -108,5 +117,10 @@ ThemeData
 
         console.info("Dex.Themes.CurrentTheme.printValues.okColor : %1".arg(okColor));
         console.info("Dex.Themes.CurrentTheme.printValues.noColor : %1".arg(noColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.arrowUpColor : %1".arg(arrowUpColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.arrowDownColor : %1".arg(arrowDownColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.lineSeparatorColor : %1".arg(lineSeparatorColor));
     }
 }

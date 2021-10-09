@@ -13,7 +13,6 @@ import App 1.0
 FloatingBackground {
     id: root
     radius: 0
-    show_shadow: false
     function focusVolumeField() {
         input_volume.field.forceActiveFocus()
     }

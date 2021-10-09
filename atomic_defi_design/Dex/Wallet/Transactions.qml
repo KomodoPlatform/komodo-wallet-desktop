@@ -4,39 +4,45 @@ import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
-import App 1.0
+import Dex.Themes 1.0 as Dex
 
-DefaultListView {
+DefaultListView
+{
     id: list
 
     readonly property int row_height: 45
 
-    ModalLoader {
+    ModalLoader
+    {
         id: tx_details_modal
         sourceComponent: TransactionDetailsModal {}
     }
 
     // Row
-    delegate: DexRectangle {
+    delegate: DexRectangle
+    {
         id: rectangle
         implicitWidth: list.width
         height: row_height
         radius: 0
         border.width: 0
         colorAnimation: false
-        color: mouse_area.containsMouse? DexTheme.buttonColorHovered : 'transparent'
+        color: mouse_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
 
-        DexMouseArea {
+        DexMouseArea
+        {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: {
+            onClicked:
+            {
                 tx_details_modal.open()
                 tx_details_modal.item.details = model
             }
         }
 
-        Circle {
+        Circle
+        {
             id: note_tag
             width: 6
             color: Style.colorOrange
@@ -46,17 +52,19 @@ DefaultListView {
             visible: transaction_note !== ""
         }
 
-        Arrow {
+        Arrow
+        {
             id: received_icon
             up: am_i_sender ? true : false
-            color: !am_i_sender ? DexTheme.arrowUpColor : DexTheme.arrowDownColor
+            color: !am_i_sender ? Dex.CurrentTheme.arrowUpColor : Dex.CurrentTheme.arrowDownColor
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: note_tag.right
             anchors.leftMargin: 10
         }
 
         // Description
-        DefaultText {
+        DefaultText
+        {
             id: description
             text_value: am_i_sender ? qsTr("Sent") : qsTr("Received")
             font.pixelSize: Style.textSizeSmall3
@@ -66,19 +74,21 @@ DefaultListView {
         }
 
         // Crypto
-        DefaultText {
+        DefaultText
+        {
             id: crypto_amount
             text_value: General.formatCrypto(!am_i_sender, amount, api_wallet_page.ticker)
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.2
-            color: am_i_sender ? DexTheme.redColor : DexTheme.greenColor
+            color: am_i_sender ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
             privacy: true
         }
 
         // Fiat
-        DefaultText {
+        DefaultText
+        {
             text_value: General.formatFiat(!am_i_sender, amount_fiat, API.app.settings_pg.current_currency)
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
@@ -89,7 +99,8 @@ DefaultListView {
         }
 
         // Fee
-        DefaultText {
+        DefaultText
+        {
             text_value: General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees)),
                                                                        current_ticker_infos.fee_ticker + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
@@ -100,7 +111,8 @@ DefaultListView {
         }
 
         // Date
-        DefaultText {
+        DefaultText
+        {
             font.pixelSize: description.font.pixelSize
             text_value: !date || unconfirmed ? qsTr("Unconfirmed") : date
             anchors.verticalCenter: parent.verticalCenter

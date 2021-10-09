@@ -30,7 +30,7 @@ Item
         anchors.right: parent.right
         width: parent.width
 
-        height: parent.height 
+        height: parent.height
 
         // Panel contents
         Item
@@ -47,83 +47,37 @@ Item
                 anchors.bottomMargin: 30
                 anchors.leftMargin: 10
                 anchors.rightMargin: 20
-                spacing: 40
+                spacing: 20
 
-                InnerBackground
+                // Searchbar
+                SearchField
                 {
-                    id: search_row_bg
-                    Layout.preferredWidth: 145
-                    radius: 14
+                    id: searchCoinField
+
                     Layout.alignment: Qt.AlignHCenter
-                    color: DexTheme.contentColorTop
-                    shadowOff: true
+                    Layout.preferredWidth: 150
+                    Layout.preferredHeight: 38
 
-                    content: RowLayout
+                    textField.placeholderText: qsTr("Search coin")
+
+                    textField.onTextChanged: portfolio_coins.setFilterFixedString(textField.text)
+                    Component.onDestruction: portfolio_coins.setFilterFixedString("")
+
+                    Connections
                     {
-                        id: search_row
+                        target: root
 
-                        // Search icon
-                        Item
+                        function onResetted()
                         {
-                            Layout.alignment: Qt.AlignLeft
-                            Layout.leftMargin: search_button.width
-                            Layout.rightMargin: -Layout.leftMargin
-                            width: search_button.width
-                            height: search_button.height
-
-                            DefaultImage
-                            {
-                                id: search_button
-
-                                source: General.image_path + "exchange-search.svg"
-
-                                width: input_coin_filter.font.pixelSize; height: width
-
-                                visible: false
-                            }
-
-                            DefaultColorOverlay
-                            {
-                                id: search_button_overlay
-
-                                anchors.fill: search_button
-                                source: search_button
-                                color: Dex.CurrentTheme.foregroundColor
-                            }
-                        }
-
-                        // Search input
-                        DefaultTextField
-                        {
-                            id: input_coin_filter
-
-                            placeholderText: qsTr("Search coin")
-
-                            onTextChanged: portfolio_coins.setFilterFixedString(text)
-                            font.pixelSize: Constants.Style.textSizeSmall3
-
-                            background: null
-
-                            Layout.fillWidth: true
-
-                            Component.onDestruction: portfolio_coins.setFilterFixedString("")
-
-                            Connections
-                            {
-                                target: root
-
-                                function onResetted()
-                                {
-                                    if (input_coin_filter.text === "") resetCoinFilter()
-                                    else input_coin_filter.text = ""
-                                }
-                            }
+                            if (searchCoinField.textField.text === "") resetCoinFilter()
+                            else searchCoinField.textField.text = ""
                         }
                     }
                 }
 
                 // Coins list
-                InnerBackground {
+                InnerBackground
+                {
                     id: list_bg
                     Layout.preferredWidth: 145
                     Layout.fillHeight: true
@@ -194,26 +148,13 @@ Item
 
                 }
             }
-
-            VerticalLine {
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 1
-                opacity: .3
-                anchors.topMargin: anchors.bottomMargin
-                color: DexTheme.walletSidebarLeftBorderColor
-            }
-
-            
         }
     }
 
-     DexRectangle {
+    // Right separator
+    VerticalLine
+    {
         anchors.right: parent.right
         height: parent.height
-        width: 1
-        color: DexTheme.sideBarRightBorderColor
-        border.width: 0
     }
 }

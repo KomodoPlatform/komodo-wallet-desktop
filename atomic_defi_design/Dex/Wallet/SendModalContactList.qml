@@ -32,11 +32,10 @@ BasicModal {
             id: contact_list_bg
 
             Layout.fillWidth: true
-            shadowOff: true
             radius: 4
             color: 'transparent'
 
-            content: DefaultListView { // Contact List
+            DefaultListView { // Contact List
                 readonly property int rowHeight: 30 // Visual height of a row.
 
                 height: rowHeight * 6
@@ -158,11 +157,10 @@ BasicModal {
             id: address_list_bg
 
             Layout.fillWidth: true
-            shadowOff: true
             radius: 4
             color: 'transparent'
 
-            content: DefaultListView { // Address List
+            DefaultListView { // Address List
                 readonly property int rowHeight: 30 // Visual height of a row.
 
                 height: rowHeight * 6

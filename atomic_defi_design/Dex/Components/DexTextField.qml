@@ -2,26 +2,32 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-TextField {
+TextField
+{
     id: text_field
 
     property alias left_text: left_text.text_value
     property alias right_text: right_text.text_value
 
     font: DexTypo.body2
-    placeholderTextColor: DexTheme.textPlaceHolderColor
-    selectedTextColor: DexTheme.textSelectedColor
-    selectionColor: DexTheme.textSelectionColor
-    color: DexTheme.foregroundColor
+    placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
+    selectedTextColor: Dex.CurrentTheme.textSelectedColor
+    selectionColor: Dex.CurrentTheme.textSelectionColor
+    color: Dex.CurrentTheme.foregroundColor
 
-    Behavior on color {
-        ColorAnimation {
+    Behavior on color
+    {
+        ColorAnimation
+        {
             duration: Style.animationDuration
         }
     }
-    Behavior on placeholderTextColor {
-        ColorAnimation {
+    Behavior on placeholderTextColor
+    {
+        ColorAnimation
+        {
             duration: Style.animationDuration
         }
     }
@@ -30,20 +36,22 @@ TextField {
     selectByMouse: true
     persistentSelection: true
 
-    background: DexRectangle {
-        color: DexTheme.backgroundDarkColor1
+    background: DexRectangle
+    {
+        color: Dex.CurrentTheme.accentColor
         opacity: .4
-        radius: height/2
+        radius: height / 2
+        anchors.fill: parent
     }
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)
     topPadding: 7
 
-
     RightClickMenu {}
 
-    DefaultText {
+    DefaultText
+    {
         id: left_text
         visible: text_value !== ""
         anchors.left: parent.left
@@ -53,7 +61,8 @@ TextField {
         font.pixelSize: text_field.font.pixelSize
     }
 
-    DefaultText {
+    DefaultText
+    {
         id: right_text
         visible: text_value !== ""
         anchors.right: parent.right

@@ -340,7 +340,6 @@ SetupPage {
 
 
         HorizontalLine {
-            light: true
         }
 
     }

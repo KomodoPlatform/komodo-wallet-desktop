@@ -1,13 +1,10 @@
 import QtQuick 2.15
-import "../Constants"
-import App 1.0
 
-AnimatedRectangle {
-    width: 2
+import Dex.Themes 1.0 as Dex
 
-    gradient: Gradient {
-        orientation: Qt.Horizontal
-        GradientStop { position: 0.0; color: Style.colorLineGradient1 }
-        GradientStop { position: 1.0; color: Style.colorLineGradient2 }
-    }
+Rectangle
+{
+    width: 1
+
+    color: Dex.CurrentTheme.lineSeparatorColor
 }

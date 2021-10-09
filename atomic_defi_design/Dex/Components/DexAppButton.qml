@@ -24,6 +24,7 @@ DexRectangle
 
     property alias label: _label
     property alias font: _label.font
+    property alias content: _contentRow
     property alias leftPadding: _contentRow.leftPadding
     property alias rightPadding: _contentRow.rightPadding
     property alias topPadding: _contentRow.topPadding

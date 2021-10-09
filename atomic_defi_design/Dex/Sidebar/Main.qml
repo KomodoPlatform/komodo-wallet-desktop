@@ -112,4 +112,10 @@ Item
         }
         onSettingsClicked: root.settingsClicked()
     }
+
+    VerticalLine
+    {
+        height: parent.height
+        anchors.right: parent.right
+    }
 }

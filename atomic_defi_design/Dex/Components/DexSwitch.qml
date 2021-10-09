@@ -6,6 +6,7 @@ import QtQuick.Controls.Universal 2.15
 //! Projects Imports.
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 Switch
 {
@@ -16,9 +17,8 @@ Switch
     property alias switchButtonRadius: indicator.radius
     property alias mouseArea: _mouseArea
 
-    Universal.accent: DexTheme.accent
-    Universal.foreground: DexTheme.foregroundColor
-    Universal.background: DexTheme.backgroundColor
+    Universal.foreground: Dex.CurrentTheme.foregroundColor
+    Universal.background: Dex.CurrentTheme.backgroundColor
 
     font.family: DexTypo.fontFamily
     indicator: DexRectangle
@@ -32,8 +32,8 @@ Switch
         gradient: Gradient
         {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: DexTheme.buttonGradientEnabled1 }
-            GradientStop { position: 0.7; color: DexTheme.buttonGradientEnabled2 }
+            GradientStop { position: 0.7; color: Dex.CurrentTheme.gradientButtonStartColor }
+            GradientStop { position: 0.9; color: Dex.CurrentTheme.gradientButtonEndColor }
         }
 
         DexRectangle
@@ -43,23 +43,17 @@ Switch
             width: parent.width - 6
             height: parent.height - 6
             radius: parent.radius
-            color: DexTheme.backgroundColor
+            color: Dex.CurrentTheme.backgroundColor
         }
 
-        DexRectangle
+        Rectangle
         {
             x: control.checked ? parent.width - width - 4 : 4
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width / 2 - 2
             height: parent.height - 6
             radius: parent.radius + 2
-
-            gradient: Gradient
-            {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0.0; color: control.checked ? DexTheme.backgroundColor : DexTheme.buttonGradientEnabled1 }
-                GradientStop { position: 0.7; color: control.checked ? DexTheme.backgroundColor : DexTheme.buttonGradientEnabled2 }
-            }
+            color: Dex.CurrentTheme.foregroundColor
         }
     }
 

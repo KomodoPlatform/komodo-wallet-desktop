@@ -48,4 +48,9 @@ QtObject
     // Colors used to tell when something is good or wrong.
     property color  okColor
     property color  noColor
+
+    property color  arrowUpColor
+    property color  arrowDownColor
+
+    property color  lineSeparatorColor
 }

@@ -218,37 +218,45 @@ Item {
             }
         }
     }
-    Item {
+    Item
+    {
         width: parent.width
         height: 80
         visible: true
 
-        RowLayout {
+        RowLayout
+        {
             anchors.fill: parent
             anchors.leftMargin: 40
             anchors.rightMargin: 40
+            anchors.topMargin: 30
             
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 
-                DexLabel {
+                DexLabel
+                {
                     font: DexTypo.head6
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Portfolio")
                 }
             }
 
-            Item {
-
-                Row {
+            Item
+            {
+                Row
+                {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     
-                    DexGradientAppButton {
-                        width: 250
+                    DexGradientAppButton
+                    {
+                        width: 213
+                        height: 61.5
                         iconSource: Qaterial.Icons.plus
-                        radius: 40
+                        radius: 18
                         leftPadding: 5
                         rightPadding: 5
                         padding: 16

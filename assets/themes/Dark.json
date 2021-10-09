@@ -1,13 +1,13 @@
  {
-    "accentColor": "#2b6680",
+    "accentColor": "#2C3D66",
     "foregroundColor": "#ffffff",
     "backgroundColor": "#202337",
     "backgroundColorDeep": "#171a2c",
 
     "buttonColorDisabled": "#0e1021",
-    "buttonColorEnabled": "#2D4572",
-    "buttonColorHovered": "#2D4572AD",
-    "buttonColorPressed": "#2649756C",
+    "buttonColorEnabled": "#293254",
+    "buttonColorHovered": "#264975",
+    "buttonColorPressed": "#2932546C",
 
     "buttonTextDisabledColor": "#444444",
     "buttonTextEnabledColor": "#ffffff",
@@ -19,7 +19,7 @@
 
     "textDisabledColor": "#444444",
     "textSelectionColor": "#14bca6",
-    "textPlaceholderColor": "#666666",
+    "textPlaceholderColor": "#91A8E8",
     "textSelectedColor": "#0e1021",
 
     "chartTradingLineBackgroundColor": "#24283d",
@@ -33,7 +33,7 @@
     "colorLineGradient3": "#090910",
     "colorLineGradient4": "#24283b",
     
-    "floatingBackgroundColor": "#24273D",
+    "floatingBackgroundColor": "#1F263F",
 
     "sidebarBgColor": "#202337",
     "sidebarVersionTextColor": "#2F5688",
@@ -41,6 +41,11 @@
     "sidebarCursorEndColor": "#5B69E600",
     "sidebarLineTextHovered": "#2C87B9",
 
-    "okColor": "#74fbee",
-    "noColor": "#d13990"
+    "okColor": "#00C058",
+    "noColor": "#E52167",
+
+    "arrowUpColor": "#F85757",
+    "arrowDownColor": "#845FEF",
+
+    "lineSeparatorColor": "#262941"
 }
