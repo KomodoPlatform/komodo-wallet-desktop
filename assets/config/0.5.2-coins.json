@@ -1979,6 +1979,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "GRT-ERC20": {
+      "coin": "GRT-ERC20",
+      "name": "The Graph",
+      "coinpaprika_id": "grt-the-graph",
+      "coingecko_id": "the-graph",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "GRT-PLG20": {
+      "coin": "GRT-PLG20",
+      "name": "The Graph",
+      "coinpaprika_id": "grt-the-graph",
+      "coingecko_id": "the-graph",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "HODL": {
     "coin": "HODL",
     "name": "HODL",
