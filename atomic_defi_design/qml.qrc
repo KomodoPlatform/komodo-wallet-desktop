@@ -570,7 +570,6 @@
         <file>Dex/Portfolio/AssetPieChart.qml</file>
         <file>Dex/Portfolio/PieItem.qml</file>
         <file>Dex/Portfolio/SmartChartView.qml</file>
-        <file>Dex/Portfolio/TableDex.qml</file>
         <file>Dex/Portfolio/AssetsList.qml</file>
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
