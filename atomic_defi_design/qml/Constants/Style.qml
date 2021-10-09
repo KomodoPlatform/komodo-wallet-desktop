@@ -389,7 +389,7 @@ QtObject {
                                           "PBC": "#64A3CB",
                                           "AAVE": "#9C64A6",
                                           "ANT": "#33DAE6",
-                                          "AGI": "#6815FF",
+                                          "AGIX": "#6815FF",
                                           "BAND": "#526BFF",
                                           "BLK": "#595959",
                                           "IL8P": "#696969",
