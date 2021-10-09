@@ -556,7 +556,6 @@
         <file>Dex/Wallet/ClaimRewardsModal.qml</file>
         <file>Dex/Wallet/EnableCoinModal.qml</file>
         <file>Dex/Wallet/Main.qml</file>
-        <file>Dex/Wallet/PriceGraph.qml</file>
         <file>Dex/Wallet/ReceiveModal.qml</file>
         <file>Dex/Wallet/SendModal.qml</file>
         <file>Dex/Wallet/SendModalContactList.qml</file>
