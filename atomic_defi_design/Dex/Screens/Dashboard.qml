@@ -115,8 +115,8 @@ Item {
     }
 
     // Right side
-    AnimatedRectangle {
-        color: DexTheme.backgroundColorDeep
+    AnimatedRectangle
+    {
         width: parent.width - sidebar.width
         height: parent.height
         x: sidebar.width
