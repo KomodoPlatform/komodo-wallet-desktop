@@ -495,6 +495,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "BAL-PLG20": {
+    "coin": "BAL-PLG20",
+    "name": "Balancer",
+    "coinpaprika_id": "bal-balancer",
+    "coingecko_id": "balancer",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "BAND-BEP20": {
     "coin": "BAND-BEP20",
     "name": "Band Protocol",
@@ -894,6 +909,38 @@
     "type": "BEP-20",
     "active": false,
     "currently_enabled": false
+  },
+  "BTU-ERC20": {
+      "coin": "BTU-ERC20",
+      "name": "BTU Protocol",
+      "coinpaprika_id": "btu-btu-protocol",
+      "coingecko_id": "btu-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BTU-PLG20": {
+      "coin": "BTU-PLG20",
+      "name": "BTU Protocol",
+      "coinpaprika_id": "btu-btu-protocol",
+      "coingecko_id": "btu-protocol",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
   },
   "BUSD-MVR20": {
     "coin": "BUSD-MVR20",
@@ -2456,6 +2503,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "OCEAN-PLG20": {
+      "coin": "OCEAN-PLG20",
+      "name": "Ocean Protocol",
+      "coinpaprika_id": "ocean-ocean-protocol",
+      "coingecko_id": "ocean-protocol",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
   },
   "ONE": {
     "active": false,
@@ -5111,23 +5173,6 @@
     "name": "Bitpanda Ecosystem Token",
     "coinpaprika_id": "best-bitpanda-ecosystem-token",
     "coingecko_id": "bitpanda-ecosystem-token",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "BTU": {
-    "coin": "BTU",
-    "name": "BTU Protocol",
-    "coinpaprika_id": "btu-btu-protocol",
-    "coingecko_id": "btu-protocol",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
