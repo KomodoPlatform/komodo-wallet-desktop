@@ -425,6 +425,7 @@ QtObject {
                                           "NEAR": "#595959",
                                           "NVC": "#FCF96D",
                                           "OCEAN": "#595959",
+                                          "OMG": "#595959",
                                           "ONE": "#33D4D3",
                                           "ONT": "#2692AF",
                                           "POWR": "#05BCAA",

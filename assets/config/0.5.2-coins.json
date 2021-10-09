@@ -3985,6 +3985,38 @@
       "active": false,
       "currently_enabled": false
   },
+  "OMG-ERC20": {
+      "coin": "OMG-ERC20",
+      "name": "OMG Network",
+      "coinpaprika_id": "omg-omg-network",
+      "coingecko_id": "omisego",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "OMG-PLG20": {
+      "coin": "OMG-PLG20",
+      "name": "OMG Network",
+      "coinpaprika_id": "omg-omg-network",
+      "coingecko_id": "omisego",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "QKC-BEP20": {
     "coin": "QKC-BEP20",
     "name": "QuarkChain",
