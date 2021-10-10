@@ -168,10 +168,6 @@ QtObject {
     property color colorLineGradient3: Dex.CurrentTheme.colorLineGradient3
     property color colorLineGradient4: Dex.CurrentTheme.colorLineGradient4
 
-    property color floatShadow1: Dex.CurrentTheme.floatingBackgroundShadowColor1
-    property color floatShadow2: Dex.CurrentTheme.floatingBackgroundShadowColor2
-    property color floatBoxShadowDark: Dex.CurrentTheme.floatingBackgroundShadowDarkColor
-
     property color textSelectionColor: Dex.CurrentTheme.textSelectionColor
     property color textPlaceHolderColor: Dex.CurrentTheme.textPlaceholderColor
     property color textSelectedColor: Dex.CurrentTheme.textSelectedColor
