@@ -30,20 +30,15 @@ DexWindow
 
 	minimumWidth: General.minimumWidth
 	minimumHeight: General.minimumHeight
-	
-	Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light
-	Universal.accent: Style.colorQtThemeAccent
-	Universal.foreground: Style.colorQtThemeForeground
-	Universal.background: Style.colorQtThemeBackground
 
     background: DexRectangle
     {
 		anchors.fill: parent
-		color: "transparent"
-        border.color: Dex.CurrentTheme.floatingBackgroundColor
-		border.width: 1
-		radius: 0
+        color: "transparent"
 	}
+
+    Universal.background: Dex.CurrentTheme.backgroundColor
+    Universal.foreground: Dex.CurrentTheme.foregroundColor
 
     onVisibilityChanged:
     {
@@ -57,16 +52,18 @@ DexWindow
 	
 	DexWindowControl { visible: !isOsx }
 
-	DexRectangle {
+    DexRectangle
+    {
 		radius: 0
 		width: parent.width-2
 		height: 30
 		anchors.horizontalCenter: parent.horizontalCenter
-		color:  DexTheme.surfaceColor
+        color:  Dex.CurrentTheme.backgroundColorDeep
 		visible: isOsx 
 	}
 
-	App {
+    App
+    {
 		id: app
 		anchors.fill: parent
 		anchors.topMargin: 30
@@ -139,8 +136,8 @@ DexWindow
 		}
 	}
 
-	DexMacControl { visible: isOsx }
-	Row {
+    DexMacControl { visible: isOsx }
+    Row {
 		height: 30
 		leftPadding: 8
 		anchors.right: isOsx? parent.right : undefined
@@ -148,16 +145,16 @@ DexWindow
 		layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
 		spacing: 5
 
-		Image {
+        Image {
             source: "qrc:/assets/images/dex-tray-icon.png"
 			width: 15
 			height: 15
 			smooth: true
 			antialiasing: true
-			visible: !_label.visible
+            visible: !_label.visible
 			anchors.verticalCenter: parent.verticalCenter
 		}
-		DexLabel {
+        DexLabel {
 			text: atomic_app_name
 			font.family: 'Montserrat'
 			font.weight: Font.Medium
@@ -169,7 +166,7 @@ DexWindow
 		} 
 
 	}
-	Item {
+    Item {
 		width: _row.width
 		height: 30
 		Behavior on x {
@@ -301,17 +298,18 @@ DexWindow
 				}
 			}
 
-			DexLabel {
-				text: " | "
-				opacity: .1
-				font.family: 'Montserrat'
-				font.weight: Font.Medium
-				visible: _label.visible
-				color:  DexTheme.foregroundColor
-				anchors.verticalCenter: parent.verticalCenter
-				leftPadding: 2
-			}
-			DexIconButton {
+            DexLabel {
+                text: " | "
+                opacity: .1
+                font.family: 'Montserrat'
+                font.weight: Font.Medium
+                visible: _label.visible
+                color:  DexTheme.foregroundColor
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
+            }
+            DexIconButton
+            {
 				opacity: containsMouse? 1 : .8
 				anchors.verticalCenter: parent.verticalCenter
                 iconSize: 22
@@ -349,38 +347,11 @@ DexWindow
 				}
 			}
 
-			DexLabel {
-				text: " | "
-				opacity: .1
-				font.family: 'Montserrat'
-				font.weight: Font.Medium
-				visible: _label.visible && DexTheme.theme !== "undefined"
-				color:  DexTheme.foregroundColor
-				anchors.verticalCenter: parent.verticalCenter
-				leftPadding: 2
-			}
-
-			Settings {
+            Settings
+            {
 		        id: atomic_settings0
 		        fileName: atomic_cfg_file
 		    }
-
-			DexIconButton {
-				opacity: containsMouse ? 1 : .8
-				anchors.verticalCenter: parent.verticalCenter
-                iconSize: 22
-				icon: DexTheme.theme !== "dark" ? Qaterial.Icons.moonWaxingCrescent : Qaterial.Icons.whiteBalanceSunny
-				visible: _label.visible && DexTheme.theme !== "undefined"
-				active: app.notification_modal.opened
-				onClicked: {
-					let themeList = API.qt_utilities.get_themes_list()
-			        if(DexTheme.theme === "light") {
-			        	app.themeManager.apply("Dark")
-			        } else {
-			        	app.themeManager.apply("Light")
-			        }
-				}
-			}
 		}
 	}
 }
