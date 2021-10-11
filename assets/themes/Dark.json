@@ -20,6 +20,9 @@
     "checkBoxGradientStartColor": "#8892EB",
     "checkBoxGradientEndColor": "#9DD4F3",
 
+    "switchGradientStartColor": "#1D80B0",
+    "switchGradientEndColor": "#5B69E6",
+
     "textDisabledColor": "#444444",
     "textSelectionColor": "#14bca6",
     "textPlaceholderColor": "#91A8E8",

@@ -32,8 +32,8 @@ Switch
         gradient: Gradient
         {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.7; color: Dex.CurrentTheme.gradientButtonStartColor }
-            GradientStop { position: 0.9; color: Dex.CurrentTheme.gradientButtonEndColor }
+            GradientStop { position: 0.2; color: Dex.CurrentTheme.switchGradientStartColor }
+            GradientStop { position: 0.8; color: Dex.CurrentTheme.switchGradientEndColor }
         }
 
         DexRectangle

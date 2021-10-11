@@ -18,6 +18,9 @@ QtObject
     property color  checkBoxGradientStartColor
     property color  checkBoxGradientEndColor
 
+    property color  switchGradientStartColor
+    property color  switchGradientEndColor
+
     property color  buttonTextDisabledColor
     property color  buttonTextEnabledColor
     property color  buttonTextHoveredColor
