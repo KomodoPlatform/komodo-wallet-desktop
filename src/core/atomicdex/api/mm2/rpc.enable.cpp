@@ -39,11 +39,83 @@ namespace mm2::api
             j["fallback_swap_contract"] = cfg.is_testnet ? cfg.erc_testnet_fallback_swap_contract_address : cfg.erc_fallback_swap_contract_address;
             break;
         }
-        break;
+        case CoinType::Matic:
+        {
+            j["gas_station_url"]        = cfg.is_testnet ? cfg.testnet_matic_gas_station_url : cfg.matic_gas_station_url;
+            j["urls"]                   = cfg.urls;
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.matic_erc_testnet_swap_contract_address : cfg.matic_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.matic_erc_testnet_fallback_swap_contract_address : cfg.matic_erc_fallback_swap_contract_address;
+            break;
+        }
+        case CoinType::Optimism:
+        {
+            j["urls"]                  = cfg.urls;
+            j["swap_contract_address"] = cfg.is_testnet ? cfg.optimism_erc_testnet_swap_contract_address : cfg.optimism_erc_swap_contract_address;
+            j["fallback_swap_contract"] =
+                cfg.is_testnet ? cfg.optimism_erc_testnet_fallback_swap_contract_address : cfg.optimism_erc_fallback_swap_contract_address;
+            break;
+        }
+        case CoinType::Arbitrum:
+        {
+            j["urls"]                  = cfg.urls;
+            j["swap_contract_address"] = cfg.is_testnet ? cfg.arbitrum_erc_testnet_swap_contract_address : cfg.arbitrum_erc_swap_contract_address;
+            j["fallback_swap_contract"] =
+                cfg.is_testnet ? cfg.arbitrum_erc_testnet_fallback_swap_contract_address : cfg.arbitrum_erc_fallback_swap_contract_address;
+            break;
+        }
         case CoinType::BEP20:
         {
             j["swap_contract_address"]  = cfg.is_testnet ? cfg.bnb_testnet_swap_contract_address : cfg.bnb_swap_contract_address;
             j["fallback_swap_contract"] = cfg.is_testnet ? cfg.bnb_testnet_fallback_swap_contract_address : cfg.bnb_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::AVX20:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.avax_erc_testnet_swap_contract_address : cfg.avax_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.avax_erc_testnet_fallback_swap_contract_address : cfg.avax_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::FTM20:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.ftm_erc_testnet_swap_contract_address : cfg.ftm_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.ftm_erc_testnet_fallback_swap_contract_address : cfg.ftm_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::HRC20:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.one_erc_testnet_swap_contract_address : cfg.one_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.one_erc_testnet_fallback_swap_contract_address : cfg.one_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::Ubiq:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.ubiq_erc_testnet_swap_contract_address : cfg.ubiq_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.ubiq_erc_testnet_fallback_swap_contract_address : cfg.ubiq_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::KRC20:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.krc_erc_testnet_swap_contract_address : cfg.krc_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.krc_erc_testnet_fallback_swap_contract_address : cfg.krc_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::Moonriver:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.movr_erc_testnet_swap_contract_address : cfg.movr_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.movr_erc_testnet_fallback_swap_contract_address : cfg.movr_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::HecoChain:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.hco_erc_testnet_swap_contract_address : cfg.hco_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.hco_erc_testnet_fallback_swap_contract_address : cfg.hco_erc_fallback_swap_contract_address;
             j["urls"]                   = cfg.urls;
             break;
         }

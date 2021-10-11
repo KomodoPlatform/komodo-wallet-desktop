@@ -46,15 +46,15 @@ namespace atomic_dex
                     m_market_registry = std::move(answer);
                     SPDLOG_INFO("komodo price registry size: {}", m_market_registry.size());
                 }
-                dispatcher_.trigger<fiat_rate_updated>("");
             }
             else
             {
                 SPDLOG_ERROR("Error during the rpc call to komodo price provider: {}", body);
             }
+            dispatcher_.trigger<fiat_rate_updated>("");
         };
 
-        auto error_functor = [](pplx::task<void> previous_task)
+        auto error_functor = [this](pplx::task<void> previous_task)
         {
             try
             {
@@ -62,6 +62,7 @@ namespace atomic_dex
             }
             catch (const std::exception& e)
             {
+                dispatcher_.trigger<fiat_rate_updated>("");
                 SPDLOG_ERROR("error occured when fetching price: {}", e.what());
             };
         };

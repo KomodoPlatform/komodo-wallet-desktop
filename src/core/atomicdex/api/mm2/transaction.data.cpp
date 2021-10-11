@@ -44,15 +44,15 @@ namespace mm2::api
             cfg.normal_fees = fee_regular_coin{};
             from_json(j, cfg.normal_fees.value());
         }
-        else if (auto coin = j.at("coin").get<std::string>(); coin == "ETH" || coin == "BNB" || coin == "BNBT" || coin == "ETHR")
-        {
-            cfg.erc_fees = fee_erc_coin{};
-            from_json(j, cfg.erc_fees.value());
-        }
         else if (j.at("coin").get<std::string>() == "QTUM" || j.at("coin").get<std::string>() == "tQTUM")
         {
             cfg.qrc_fees = fee_qrc_coin{};
             from_json(j, cfg.qrc_fees.value());
+        }
+        else
+        {
+            cfg.erc_fees = fee_erc_coin{};
+            from_json(j, cfg.erc_fees.value());
         }
     }
 
