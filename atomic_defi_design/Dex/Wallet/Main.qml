@@ -320,9 +320,6 @@ Item
                     anchors.verticalCenter: parent.verticalCenter
                     source: Qaterial.Icons.alert
 
-                    ToolTip.visible: send_alert_mouse_area.containsMouse
-                    ToolTip.text: API.app.wallet_pg.send_availability_state
-
                     DefaultColorOverlay
                     {
                         anchors.fill: parent
@@ -334,6 +331,12 @@ Item
                         id: send_alert_mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
+                    }
+
+                    DefaultTooltip
+                    {
+                        visible: send_alert_mouse_area.containsMouse
+                        text: API.app.wallet_pg.send_availability_state
                     }
                 }
             }
