@@ -17,6 +17,9 @@
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6",
 
+    "checkBoxGradientStartColor": "#8892EB",
+    "checkBoxGradientEndColor": "#9DD4F3",
+
     "textDisabledColor": "#444444",
     "textSelectionColor": "#14bca6",
     "textPlaceholderColor": "#91A8E8",

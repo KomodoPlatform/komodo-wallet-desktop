@@ -5,6 +5,7 @@ import QtQuick.Controls.Universal 2.15
 
 //! Project Imports.
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 CheckBox
 {
@@ -13,9 +14,9 @@ CheckBox
     property alias boxWidth: _indicator.implicitWidth
     property alias boxHeight: _indicator.implicitHeight
 
-    Universal.accent: DexTheme.accentColor
-    Universal.foreground: DexTheme.foregroundColor
-    Universal.background: DexTheme.backgroundColor
+    Universal.accent: Dex.CurrentTheme.accentColor
+    Universal.foreground: Dex.CurrentTheme.foregroundColor
+    Universal.background: Dex.CurrentTheme.backgroundColor
 
     font.family: Style.font_family
 
@@ -23,7 +24,6 @@ CheckBox
     {
         text: control.text
         font: control.font
-        color: DexTheme.foregroundColor
         horizontalAlignment: DexLabel.AlignLeft
         verticalAlignment: DexLabel.AlignVCenter
         leftPadding: control.indicator.width + control.spacing
@@ -43,8 +43,8 @@ CheckBox
         gradient: Gradient
         {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: DexTheme.buttonGradientEnabled1 }
-            GradientStop { position: 0.7; color: DexTheme.buttonGradientEnabled2 }
+            GradientStop { position: 0.1; color: Dex.CurrentTheme.checkBoxGradientStartColor }
+            GradientStop { position: 0.6; color: Dex.CurrentTheme.checkBoxGradientEndColor }
         }
 
         DexRectangle
