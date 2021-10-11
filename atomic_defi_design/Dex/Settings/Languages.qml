@@ -51,7 +51,8 @@ ColumnLayout {
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
                             hoverEnabled: true
                             onClicked: {
-                                API.app.settings_pg.lang = model.modelData
+                                API.app.settings_pg.lang = model.modelData;
+                                console.info("Switched language to %1".arg(API.app.settings_pg.lang));
                             }
                         }
                     }
