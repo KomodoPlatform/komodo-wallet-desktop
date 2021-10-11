@@ -72,13 +72,6 @@ Item {
         pie.refresh()
         pie.pieTimer2.restart()
     }
-    Component.onCompleted: {
-        reset()
-    }
-
-    function reset() {
-        input_coin_filter.reset()
-    }
 
     function updateChart(chart, historical, color) {
         chart.removeAllSeries()
@@ -160,33 +153,17 @@ Item {
                     RowLayout {
                         anchors.fill: parent
 
-                        DexRectangle {
+                        SearchField
+                        {
                             Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredWidth: 250
-                            height: 45
-                            radius: 16
-                            color: DexTheme.contentColorTop
-                            DefaultTextField {
-                                id: input_coin_filter
-                                anchors.fill: parent
-                                anchors.margins: 2
-                                function reset() {
-                                    input_coin_filter.text = ""
-                                }
-                                Qaterial.Icon {
-                                    icon: Qaterial.Icons.magnify
-                                    color: input_coin_filter.color
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    x: 5
-                                }
-                                leftPadding: 40
-                                placeholderText: qsTr("Search")
+                            Layout.preferredWidth: 206
+                            Layout.preferredHeight: 42
 
-                                font.pixelSize: Constants.Style.textSizeSmall3
-                                onTextChanged: portfolio_coins.setFilterFixedString(text)
-                                Component.onDestruction: portfolio_coins.setFilterFixedString("")
-                                background: null
-                            }
+                            textField.placeholderText: qsTr("Search asset")
+
+                            textField.font.pixelSize: Constants.Style.textSizeSmall3
+                            textField.onTextChanged: portfolio_coins.setFilterFixedString(textField.text)
+                            Component.onDestruction: portfolio_coins.setFilterFixedString("")
                         }
                         
                         Item {
