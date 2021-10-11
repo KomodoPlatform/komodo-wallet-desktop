@@ -4829,7 +4829,7 @@
   },
   "XSGD-ERC20": {
       "coin": "XSGD-ERC20",
-      "name": "StraitsX Singapore Dollar",
+      "name": "StraitsX SGD",
       "coinpaprika_id": "xsgd-xsgd",
       "coingecko_id": "xsgd",
       "nodes": [
@@ -4846,7 +4846,7 @@
   },
   "XSGD-PLG20": {
       "coin": "XSGD-PLG20",
-      "name": "StraitsX Singapore Dollar",
+      "name": "StraitsX SGD",
       "coinpaprika_id": "xsgd-xsgd",
       "coingecko_id": "xsgd",
       "nodes": [
