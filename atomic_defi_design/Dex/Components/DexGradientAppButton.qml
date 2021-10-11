@@ -37,8 +37,6 @@ DexRectangle
 
     property string text: ""
     property string iconSource: ""
-    
-    property string foregroundColor: DexTheme.buttonGradientTextEnabled
 
     signal clicked()
 
@@ -88,7 +86,7 @@ DexRectangle
             anchors.verticalCenter: parent.verticalCenter
             font: DexTypo.button
             text: control.text
-            color: control.foregroundColor
+            color: Dex.CurrentTheme.foregroundColor
         }
     }
     DexMouseArea
