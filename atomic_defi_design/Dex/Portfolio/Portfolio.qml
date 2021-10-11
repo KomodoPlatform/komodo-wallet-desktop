@@ -253,7 +253,6 @@ Item {
                     
                     DexGradientAppButton
                     {
-                        width: 213
                         height: 61.5
                         iconSource: Qaterial.Icons.plus
                         radius: 18
