@@ -1177,6 +1177,7 @@ QtObject {
                                                 "IOTA/BNB": "BINANCE:IOTABNB",
                                                 "IOTA/EURS": "BITPANDAPRO:MIOTAEUR",
                                                 "IOTA/JPYC": "BITFINEX:IOTJPY",
+                                                "IOTA/BIDR": "BITFINEX:IOTIDR",
                                                 "IOTX/BTC": "BINANCE:IOTXBTC",
                                                 "IOTX/ETH": "BINANCE:IOTXETH",
                                                 "IOTX/USDT": "BINANCE:IOTXUSD",

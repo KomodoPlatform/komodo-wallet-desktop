@@ -4119,6 +4119,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "NAV-BEP20": {
+      "coin": "NAV-BEP20",
+      "name": "Navcoin",
+      "coinpaprika_id": "nav-navcoin",
+      "coingecko_id": "nav-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "NMC": {
     "coin": "NMC",
     "name": "Namecoin",
