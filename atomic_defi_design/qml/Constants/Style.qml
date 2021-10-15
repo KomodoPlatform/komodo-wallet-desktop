@@ -398,6 +398,7 @@ QtObject {
                                           "BNT": "#0000FF",
                                           "BTCZ": "#F5B036",
                                           "CEL": "#4055A6",
+                                          "CELR": "#595959",
                                           "CENNZ": "#2E87F1",
                                           "COMP": "#00DBA3",
                                           "CRO": "#243565",

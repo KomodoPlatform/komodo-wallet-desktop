@@ -1207,6 +1207,55 @@
     "active": false,
     "currently_enabled": false
   },
+  "CELR-ERC20": {
+      "coin": "CELR-ERC20",
+      "name": "Celer Network",
+      "coinpaprika_id": "celr-celer-network",
+      "coingecko_id": "celer-network",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "CELR-BEP20": {
+      "coin": "CELR-BEP20",
+      "name": "Celer Network",
+      "coinpaprika_id": "celr-celer-network",
+      "coingecko_id": "celer-network",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "CELR-ARB20": {
+      "coin": "CELR-ARB20",
+      "name": "Celer Network",
+      "coinpaprika_id": "celr-celer-network",
+      "coingecko_id": "celer-network",
+      "nodes": [
+        "https://arb1.arbitrum.io/rpc"
+      ],
+      "explorer_url": [
+        "https://arbiscan.io/"
+      ],
+      "type": "Arbitrum",
+      "active": false,
+      "currently_enabled": false
+  },
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",
