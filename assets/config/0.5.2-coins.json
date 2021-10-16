@@ -1091,6 +1091,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "CADC-ERC20": {
+      "coin": "CADC-ERC20",
+      "name": "CAD Coin",
+      "coinpaprika_id": "cadc-cad-coin",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "CADC-PLG20": {
+      "coin": "CADC-PLG20",
+      "name": "CAD Coin",
+      "coinpaprika_id": "cadc-cad-coin",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "CAKE": {
     "coin": "CAKE",
     "name": "PancakeSwap",
@@ -1174,6 +1206,55 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "CELR-ERC20": {
+      "coin": "CELR-ERC20",
+      "name": "Celer Network",
+      "coinpaprika_id": "celr-celer-network",
+      "coingecko_id": "celer-network",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "CELR-BEP20": {
+      "coin": "CELR-BEP20",
+      "name": "Celer Network",
+      "coinpaprika_id": "celr-celer-network",
+      "coingecko_id": "celer-network",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "CELR-ARB20": {
+      "coin": "CELR-ARB20",
+      "name": "Celer Network",
+      "coinpaprika_id": "celr-celer-network",
+      "coingecko_id": "celer-network",
+      "nodes": [
+        "https://arb1.arbitrum.io/rpc"
+      ],
+      "explorer_url": [
+        "https://arbiscan.io/"
+      ],
+      "type": "Arbitrum",
+      "active": false,
+      "currently_enabled": false
   },
   "CLC": {
     "coin": "CLC",
@@ -4087,6 +4168,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "NAV-BEP20": {
+      "coin": "NAV-BEP20",
+      "name": "Navcoin",
+      "coinpaprika_id": "nav-navcoin",
+      "coingecko_id": "nav-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "NMC": {
     "coin": "NMC",
     "name": "Namecoin",
@@ -4691,6 +4789,23 @@
     "type": "UTXO",
     "name": "eCash"
   },
+  "XEP-BEP20": {
+      "coin": "XEP-BEP20",
+      "name": "Electra Protocol",
+      "coinpaprika_id": "xep-electra-protocol",
+      "coingecko_id": "electra-protocol",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "XLM-BEP20": {
     "coin": "XLM-BEP20",
     "name": "Stellar",
@@ -4794,6 +4909,38 @@
     ],
     "type": "UTXO",
     "name": "Ergon"
+  },
+  "XSGD-ERC20": {
+      "coin": "XSGD-ERC20",
+      "name": "StraitsX SGD",
+      "coinpaprika_id": "xsgd-xsgd",
+      "coingecko_id": "xsgd",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "XSGD-PLG20": {
+      "coin": "XSGD-PLG20",
+      "name": "StraitsX SGD",
+      "coinpaprika_id": "xsgd-xsgd",
+      "coingecko_id": "xsgd",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
   },
   "XTZ-BEP20": {
     "coin": "XTZ-BEP20",
