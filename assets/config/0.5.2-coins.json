@@ -867,8 +867,9 @@
       "coingecko_id": "bitcore",
       "electrum": [
         {
-          "url": "btx-electrumx.coinsmunity.com:50001",
-          "protocol": "TCP"
+          "url": "btx-electrumx.coinsmunity.com:50002",
+          "protocol": "SSL",
+          "disable_cert_verification": true
         }
       ],
       "explorer_url": [
@@ -4415,6 +4416,28 @@
         "https://etherscan.io/"
       ],
       "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "RTM": {
+      "coin": "RTM",
+      "name": "Raptoreum",
+      "coinpaprika_id": "rtm-raptoreum",
+      "coingecko_id": "raptoreum",
+      "electrum": [
+        {
+          "url": "209.151.151.21:50001",
+          "protocol": "TCP"
+        },
+        {
+          "url": "209.50.52.239:50001",
+          "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://explorer.raptoreum.com/"
+      ],
+      "type": "UTXO",
       "active": false,
       "currently_enabled": false
   },
