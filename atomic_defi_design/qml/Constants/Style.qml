@@ -299,6 +299,7 @@ QtObject {
                                           "BTC": "#E9983C",
                                           "BTT": "#666666",
                                           "BTE": "#FFE201",
+                                          "BTX": "#FB30A6",
                                           "CAKE": "#D1884F",
                                           "CDN": "#90191C",
                                           "CLC": "#0970DC",

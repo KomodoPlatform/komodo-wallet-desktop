@@ -860,6 +860,43 @@
     "active": false,
     "currently_enabled": false
   },
+  "BTX": {
+      "coin": "BTX",
+      "name": "BitCore",
+      "coinpaprika_id": "btx-bitcore",
+      "coingecko_id": "bitcore",
+      "electrum": [
+        {
+          "url": "btx-electrumx.coinsmunity.com:50001",
+          "protocol": "TCP"
+        }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/btx/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BTX-BEP20": {
+      "coin": "BTX-BEP20",
+      "name": "BitCore",
+      "coinpaprika_id": "btx-bitcore",
+      "coingecko_id": "bitcore",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BCH": {
     "active": false,
     "coin": "BCH",
