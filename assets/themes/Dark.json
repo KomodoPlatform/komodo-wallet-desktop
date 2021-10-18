@@ -23,6 +23,8 @@
     "switchGradientStartColor": "#1D80B0",
     "switchGradientEndColor": "#5B69E6",
 
+    "tabSelectedColor": "#2C3D66",
+
     "textDisabledColor": "#444444",
     "textSelectionColor": "#14bca6",
     "textPlaceholderColor": "#91A8E8",

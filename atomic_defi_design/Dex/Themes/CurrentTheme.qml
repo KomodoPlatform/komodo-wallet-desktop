@@ -37,6 +37,8 @@ ThemeData
         switchGradientStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientStartColor);
         switchGradientEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientEndColor);
 
+        tabSelectedColor                    = Dex.Color.argbStrFromRgbaStr(themeData.tabSelectedColor);
+
         textDisabledColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textDisabledColor);
         textSelectionColor                  = Dex.Color.argbStrFromRgbaStr(themeData.textSelectionColor);
         textPlaceholderColor                = Dex.Color.argbStrFromRgbaStr(themeData.textPlaceholderColor);
@@ -103,6 +105,8 @@ ThemeData
 
         console.info("Dex.Themes.CurrentTheme.printValues.switchGradientStartColor : %1".arg(switchGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.switchGradientEndColor : %1".arg(switchGradientEndColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.tabSelectedColor : %1".arg(tabSelectedColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectionColor : %1".arg(textSelectionColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textPlaceholderColor : %1".arg(textPlaceholderColor));

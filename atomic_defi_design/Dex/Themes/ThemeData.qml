@@ -21,6 +21,8 @@ QtObject
     property color  switchGradientStartColor
     property color  switchGradientEndColor
 
+    property color  tabSelectedColor
+
     property color  buttonTextDisabledColor
     property color  buttonTextEnabledColor
     property color  buttonTextHoveredColor
