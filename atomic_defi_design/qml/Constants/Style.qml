@@ -431,7 +431,7 @@ QtObject {
                                           "NVC": "#FCF96D",
                                           "OCEAN": "#595959",
                                           "OMG": "#595959",
-                                          "ONE": "#33D4D3",
+                                          "ONE": "#00BEEE",
                                           "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
                                           "QI": "#FFFFFF",
