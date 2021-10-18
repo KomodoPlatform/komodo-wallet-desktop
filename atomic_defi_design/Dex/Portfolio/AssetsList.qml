@@ -72,7 +72,7 @@ Dex.DefaultListView
 
     delegate: Rectangle
     {
-        property color _idleColor: index % 2 === 0 ? Dex.CurrentTheme.backgroundColor : Dex.CurrentTheme.floatingBackgroundColor
+        property color _idleColor: index % 2 === 1 ? Dex.CurrentTheme.backgroundColor : Dex.CurrentTheme.innerBackgroundColor
 
         width: list.width
         height: _assetRowHeight
