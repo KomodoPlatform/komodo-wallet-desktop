@@ -10,8 +10,10 @@ import AtomicDEX.CoinType 1.0
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-BasicModal {
+BasicModal
+{
     id: root
 
     property var coin_cfg_model: API.app.portfolio_pg.global_cfg_mdl
@@ -23,10 +25,11 @@ BasicModal {
 
     function filterCoins(text) 
     {
-        coin_cfg_model.all_disabled_proxy.setFilterFixedString(text === undefined ? input_coin_filter.text : text)
+        coin_cfg_model.all_disabled_proxy.setFilterFixedString(text === undefined ? input_coin_filter.textField.text : text)
     }
 
-    width: 600
+    width: 676
+    height: 750
 
     onOpened: 
     {
@@ -43,59 +46,78 @@ BasicModal {
         coin_cfg_model.checked_nb = 0;
     }
 
-    ModalContent {
+    ModalContent
+    {
         title: qsTr("Enable assets")
-
-        spacing: 0
-
-        HorizontalLine {
-            Layout.fillWidth: true
-        }
+        titleAlignment: Qt.AlignHCenter
 
         // Search input
-        DefaultTextField {
+        SearchField
+        {
             id: input_coin_filter
 
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            placeholderText: qsTr("Search")
+            searchIconLeftMargin: 20
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 10
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 44
+            textField.placeholderText: qsTr("Search asset")
 
-            onTextChanged: filterCoins()
+            textField.onTextChanged: filterCoins()
         }
 
-        DexCheckBox {
-            id: _selectAllCheckBox
+        Item
+        {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 5
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 25
 
-            text: qsTr("Select all assets")
-            visible: list.visible
-            Layout.leftMargin: indicator.width - 5
-            checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
-
-            DexMouseArea
+            DexCheckBox
             {
-                anchors.fill: parent
-                onClicked: setCheckState(!parent.checked)
+                id: _selectAllCheckBox
+
+                text: qsTr("Select all assets")
+                visible: list.visible
+                checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
+                anchors.left: parent.left
+                boxWidth: 24
+                boxHeight: 24
+
+                DexMouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: setCheckState(!parent.checked)
+                }
             }
         }
 
-        DefaultListView {
+        HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.preferredWidth: 500 }
+
+        DefaultListView
+        {
             id: list
             visible: coin_cfg_model.all_disabled_proxy.length > 0
             model: coin_cfg_model.all_disabled_proxy
 
-            Layout.preferredHeight: 360
-            Layout.fillWidth: true
+            Layout.topMargin: -5
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: 350
+            Layout.preferredWidth: 515
 
-            delegate: DexCheckBox {
-                text: "         " + model.name + " (" + model.ticker + ")"
-
-                leftPadding: indicator.width
-
-                enabled: _selectAllCheckBox.checked ? checked : true
-
+            delegate: DexCheckBox
+            {
                 readonly property bool backend_checked: model.checked
+
+                text: "         " + model.name + " (" + model.ticker + ")"
+                enabled: _selectAllCheckBox.checked ? checked : true
+                boxWidth: 24
+                boxHeight: 24
+                spacing: 0
+
                 onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
-                onCheckStateChanged: {
+                onCheckStateChanged:
+                {
                     if (checked !== backend_checked)
                     {
                         var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
@@ -107,16 +129,19 @@ BasicModal {
                 }
 
                 // Icon
-                DefaultImage {
+                DefaultImage
+                {
                     id: icon
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.leftPadding + 28
+                    anchors.leftMargin: parent.leftPadding + 34
                     anchors.verticalCenter: parent.verticalCenter
                     source: General.coinIcon(model.ticker)
-                    width: Style.textSize2
+                    width: 18
+                    height: 18
                 }
 
-                CoinTypeTag {
+                CoinTypeTag
+                {
                     id: typeTag
                     anchors.left: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -136,34 +161,50 @@ BasicModal {
             }
         }
 
-        // Info text
-        DefaultText {
-            visible: coin_cfg_model.all_disabled_proxy.length === 0
-            text_value: qsTr("All assets are already enabled!")
+        Item
+        {
+            Layout.topMargin: 6
+            Layout.preferredWidth: 500
+            Layout.alignment: Qt.AlignHCenter
+
+            DexLabel
+            {
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                text: coin_cfg_model.all_disabled_proxy.length > 0 ?
+                          qsTr("You can still enable %1 assets. Selected: %2.")
+                              .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length - coin_cfg_model.checked_nb)
+                              .arg(coin_cfg_model.checked_nb) :
+                          qsTr("All assets are already enabled!")
+
+                color: Dex.CurrentTheme.textPlaceholderColor
+            }
         }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-        }
+        HorizontalLine { Layout.preferredWidth: 500; Layout.alignment: Qt.AlignHCenter }
         
-        RowLayout {
-            Layout.fillWidth: true
+        Item
+        {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 500
             Layout.preferredHeight: 40
 
-            DexTransparentButton {
+            DexTransparentButton
+            {
+                anchors.left: parent.left
                 text: qsTr("Change assets limit")
                 topPadding: 5
                 bottomPadding: 5
-                 Layout.preferredHeight: 35
-                onClicked: {
+                Layout.preferredHeight: 35
+                onClicked:
+                {
                     setting_modal.selectedMenuIndex = 0; 
                     setting_modal.open()
                 }
             }
-            Item {
-                Layout.fillWidth: true
-            }
-            DexTransparentButton {
+            DexTransparentButton
+            {
+                anchors.right: parent.right
                 text: qsTr("Add a custom asset to the list")
                 topPadding: 5
                 bottomPadding: 5
@@ -176,40 +217,37 @@ BasicModal {
             }
         }
 
-        DexLabel
+        Item
         {
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 40
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr("You can still enable %1 assets. Selected: %2.")
-                    .arg(setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length - coin_cfg_model.checked_nb)
-                    .arg(coin_cfg_model.checked_nb)
-        }
-        // Buttons
-        footer: [
 
-            DexAppButton {
+            DefaultButton
+            {
+                anchors.left: parent.left
+                width: 199
                 text: qsTr("Close")
-                leftPadding: 40
-                rightPadding: 40
                 radius: 20
                 onClicked: root.close()
-            },
-            Item {
-                Layout.fillWidth: true
-            },
-            DexAppOutlineButton {
+            }
+
+            DexGradientAppButton
+            {
+                anchors.right: parent.right
+                width: 199
                 visible: coin_cfg_model.length > 0
                 enabled: coin_cfg_model.checked_nb > 0
                 text: qsTr("Enable")
-                leftPadding: 40
-                rightPadding: 40
                 radius: 20
-                onClicked: {
+                onClicked:
+                {
                     API.app.enable_coins(coin_cfg_model.get_checked_coins())
                     setCheckState(false)
                     coin_cfg_model.checked_nb = 0
                     root.close()
                 }
             }
-        ]
+        }
     }
 }

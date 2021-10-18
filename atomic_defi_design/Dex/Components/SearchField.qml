@@ -6,6 +6,8 @@ import Dex.Themes 1.0 as Dex
 
 Rectangle
 {
+    property int   searchIconLeftMargin: 13
+
     property alias searchIcon: _searchIcon
     property alias textField: _textField
 
@@ -16,7 +18,7 @@ Rectangle
     {
         id: _searchIcon
         anchors.left: parent.left
-        anchors.leftMargin: 13
+        anchors.leftMargin: searchIconLeftMargin
         anchors.verticalCenter: parent.verticalCenter
 
         width: 12

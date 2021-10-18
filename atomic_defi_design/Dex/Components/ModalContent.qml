@@ -9,22 +9,29 @@ import App 1.0
 // The content of a modal. Must be a child of a `BasicModal` component.
 ColumnLayout
 {
-    Layout.fillWidth: true
-    property alias         title: _header.title
+    property var           titleAlignment: Qt.AlignLeft
+    property int           titleTopMargin: 30
+
+    property alias         title: _title.text
     default property alias content: _innerLayout.data
     property alias         footer: _footer.data
+
+    Layout.fillWidth: true
     spacing: 10
 
-    ModalHeader { 
-        id: _header
-        Layout.leftMargin: 30
+    DefaultText
+    {
+        id: _title
+        Layout.topMargin: parent.titleTopMargin
+        Layout.alignment: parent.titleAlignment
+        font: DexTypo.head6
     }
 
     DexFlickable
     {
         id: _flickable
 
-       readonly property int padding: 25
+        readonly property int padding: 25
 
         flickableDirection: Flickable.VerticalFlick
 
