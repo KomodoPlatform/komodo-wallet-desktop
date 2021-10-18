@@ -3,13 +3,11 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import "../Components"
-
 import "./Trade"
-
 import App 1.0
 
-Item {
-    
+Item
+{
     id: exchange
     readonly property int layout_margin: 15
 
@@ -30,7 +28,8 @@ Item {
 
     Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
 
-    ColumnLayout {
+    ColumnLayout
+    {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
@@ -39,7 +38,8 @@ Item {
 
         spacing: layout_margin
 
-        Trade {
+        Trade
+        {
             id: trade
             Layout.fillWidth: true
             Layout.fillHeight: true
