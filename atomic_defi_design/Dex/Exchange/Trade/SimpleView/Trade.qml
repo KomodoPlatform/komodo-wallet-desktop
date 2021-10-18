@@ -280,7 +280,7 @@ ClipRRect // Trade Card
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
                     anchors.leftMargin: 2
-                    field.placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Minimum: %1").arg(Constants.API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
+                    field.placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Min: %1").arg(Constants.API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
                     field.font.pixelSize: Constants.Style.textSizeSmall5
                     field.background: Rectangle { color: swap_from_card.color }
                     field.onTextChanged:
