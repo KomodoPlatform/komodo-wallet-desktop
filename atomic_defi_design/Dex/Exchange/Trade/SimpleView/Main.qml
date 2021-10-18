@@ -6,13 +6,13 @@ import QtQuick.Controls 2.15
 //! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
 
-import App 1.0
-
 //! Project Imports
 import "../../../Components"
 import "../../../Constants"  as Constants 
 import "../Orders" as Orders
 import "Main.js" as Main
+import App 1.0
+import Dex.Themes 1.0 as Dex
 
 Item
 {
@@ -41,18 +41,13 @@ Item
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
 
-        InnerBackground // Sub-pages Tabs Selector
+        Item // Sub-pages Tabs Selector
         {
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 250
-            height: 40
-            border.width: 1
-            border.color: DexTheme.dexBoxBackgroundColor
-            color: DexTheme.surfaceColor
-            shadowOff: true
-            radius: 40
+            width: _selectedTabMarker.width * 3
+            height: 47
 
-            FloatingBackground // Selected Tab Rectangle
+            Rectangle // Selected Tab Rectangle
             {
                 id: _selectedTabMarker
 
@@ -74,62 +69,49 @@ Item
                     }
                 }
 
-                Behavior on x {
-                    NumberAnimation {
-                        duration: 150
-                    }
-                }
-
-                border.width: 3
-                border.color: 'transparent'
-                height: parent.height - 2
                 anchors.verticalCenter: parent.verticalCenter
-                width: (parent.width / 3) 
-                radius: 40
-                color: DexTheme.tabBarBackgroudColor
+                height: parent.height
+                width: 108
+                radius: 18
+                color: Dex.CurrentTheme.tabSelectedColor
+
+                Behavior on x { NumberAnimation { duration: 150 } }
             }
-            RowLayout {
+            RowLayout
+            {
                 anchors.fill: parent
                 spacing: 0
 
-                NavigationLabel
+                ClickableText
                 {
                     id: _tradeText
-                    currentPage: currentSubPage
-                    selectedPage: subPages.Trade
-                    Layout.preferredWidth: parent.width/3
+                    Layout.preferredWidth: parent.width / 3
                     Layout.fillHeight: true
                     text: qsTr("Trade")
                     font.pixelSize: Constants.Style.textSize
                     onClicked: if (currentSubPage !== subPages.Trade) currentSubPage = subPages.Trade
                 }
 
-                NavigationLabel
+                ClickableText
                 {
                     id: _ordersText
-                    currentPage: currentSubPage
-                    selectedPage: subPages.Orders
-                    Layout.preferredWidth: parent.width/3
+                    Layout.preferredWidth: parent.width / 3
                     Layout.fillHeight: true
                     text: qsTr("Orders")
                     font.pixelSize: Constants.Style.textSize
                     onClicked: if (currentSubPage !== subPages.Orders) currentSubPage = subPages.Orders
                 }
 
-                NavigationLabel
+                ClickableText
                 {
                     id: _historyText
-                    currentPage: currentSubPage
-                    selectedPage: subPages.History
-                    Layout.preferredWidth: parent.width/3
+                    Layout.preferredWidth: parent.width / 3
                     Layout.fillHeight: true
                     text: qsTr("History")
                     font.pixelSize: Constants.Style.textSize
                     onClicked: if (currentSubPage !== subPages.History) currentSubPage = subPages.History
                 }
-                
             }
-            
         }
 
         SwipeView {
