@@ -10,37 +10,39 @@ import Qaterial 1.0 as Qaterial
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 import AtomicDEX.TradingMode 1.0
-
 import "../../Components"
 import "../../Wallet"
-
 import "Trading/"
-
 import "SimpleView" as SimpleView
-
 import App 1.0
 
-Item {
+Item
+{
     id: exchange_trade
+
     readonly property string total_amount: API.app.trading_pg.total_amount
     property bool orderSelected: false
-    //property var form_base: sell_mode? form_base.formBase : buyBox.formBase
-    Component.onCompleted: {
+    property bool isUltraLarge: true // width > 1400
+    property bool isBigScreen: width > 1400
+
+    Component.onCompleted:
+    {
         API.app.trading_pg.on_gui_enter_dex()
-        if(dashboard.current_ticker!==undefined){
+        if (dashboard.current_ticker!==undefined)
+        {
             onOpened(dashboard.current_ticker)
-        }else {
+        }
+        else
+        {
             onOpened()
         }
         dashboard.current_ticker = undefined
     }
 
-    Component.onDestruction: {
-        API.app.trading_pg.on_gui_leave_dex()
-    }
-    property bool isUltraLarge: true // width > 1400
-    property bool isBigScreen: width > 1400
-    onIsUltraLargeChanged: {
+    Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
+
+    onIsUltraLargeChanged:
+    {
         if (isUltraLarge) {
             API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
                         0, Qt.DescendingOrder)
@@ -82,7 +84,8 @@ Item {
     readonly property string base_amount: API.app.trading_pg.base_amount
     readonly property string rel_amount: API.app.trading_pg.rel_amount
 
-    Timer {
+    Timer
+    {
         id: swap_cooldown
         repeat: false
         interval: 1000
@@ -103,9 +106,10 @@ Item {
     property var fees_data: []
 
     // Trade
-    function onOpened(ticker) {
-
-        if (!General.initialized_orderbook_pair) {
+    function onOpened(ticker)
+    {
+        if (!General.initialized_orderbook_pair)
+        {
             General.initialized_orderbook_pair = true
             API.app.trading_pg.set_current_orderbook(General.default_base,
                                                      General.default_rel)
@@ -165,6 +169,5 @@ Item {
         source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView/Main.qml"
     }
 
-    TradeViewHeader {
-    }
+    TradeViewHeader { }
 }
