@@ -42,7 +42,7 @@ DefaultModal
     leftPadding: 20
     rightPadding: 20
     bottomPadding: 15
-    width: 700
+    width: 676
     height: column_layout.height + verticalPadding * 2
 
     onOpened: stack_layout.opacity = 1
