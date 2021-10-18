@@ -47,12 +47,14 @@ DexRectangle
         GradientStop
         {
             position: 0.1255
-            color: control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonStartColor) : Dex.CurrentTheme.gradientButtonStartColor
+            color: !enabled ? Dex.CurrentTheme.buttonColorDisabled :
+                              control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonStartColor) : Dex.CurrentTheme.gradientButtonStartColor
         }
         GradientStop
         {
             position: 0.933
-            color: control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonEndColor) : Dex.CurrentTheme.gradientButtonEndColor
+            color: !enabled ? Dex.CurrentTheme.buttonColorDisabled :
+                              control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonEndColor) : Dex.CurrentTheme.gradientButtonEndColor
         }
     }
     height: _label.implicitHeight + (padding * verticalPadding)
