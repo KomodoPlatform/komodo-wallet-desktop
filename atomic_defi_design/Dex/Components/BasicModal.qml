@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 DefaultModal
 {
@@ -60,46 +61,61 @@ DefaultModal
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
 
-        Row {
+        Row
+        {
             id: page_indicator
             visible: root.count > 1
             anchors.horizontalCenter: parent.horizontalCenter
 
             layoutDirection: Qt.RightToLeft
 
-            Repeater {
+            Repeater
+            {
                 model: root.count
-                delegate: Item {
-                    id: bundle
-                    property color color: root.currentIndex >= (root.count-1 - index) ? DexTheme.modalStepColor : DexTheme.contentColorTopBold
-                    width: (index === root.count-1 ? 0 : circle.width*3) + circle.width*0.5
-                    height: circle.height * 1.5
-                    InnerBackground {
-                        id: rectangle
-                        height: 2
-                        anchors.left: parent.left
+                delegate: Item
+                {
+                    width: 50
+                    height: 35
+
+                    // Border
+                    Rectangle
+                    {
+                        width: 24
+                        height: 24
+                        radius: width / 2
+                        anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.leftMargin: -circle.width*0.5
-                        anchors.right: circle.horizontalCenter
-                        color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
+                        gradient: Gradient
+                        {
+                            orientation: Qt.Horizontal
+                            GradientStop { color: Dex.CurrentTheme.modalPageCounterGradientStartColor; position: 0.5 }
+                            GradientStop { color: Dex.CurrentTheme.modalPageCounterGradientEndColor; position: 0.9 }
+                        }
                     }
 
-                    DexRectangle {
-                        id: circle
+                    Rectangle
+                    {
                         width: 20
-                        height: width
-                        radius: width/2
-                        border.color: root.currentIndex >= (root.count-1 - index) ? bundle.color : DexTheme.hightlightColor
-                        anchors.right: parent.right
+                        height: 20
+                        radius: width / 2
+                        anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
-                        color: bundle.color
+                        gradient: Gradient
+                        {
+                            orientation: Qt.Horizontal
+                            GradientStop { color: root.currentIndex >= (root.count - 1 - index) ?
+                                                      Dex.CurrentTheme.modalPageCounterGradientStartColor : Dex.CurrentTheme.backgroundColor; position: 0.5 }
+                            GradientStop { color: root.currentIndex >= (root.count - 1 - index) ?
+                                                      Dex.CurrentTheme.modalPageCounterGradientEndColor : Dex.CurrentTheme.backgroundColor; position: 0.9 }
+                        }
                     }
                 }
             }
         }
 
         // Inside modal
-        StackLayout {
+        StackLayout
+        {
             id: stack_layout
             width: parent.width
             height: stack_layout.children[stack_layout.currentIndex].height

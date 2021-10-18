@@ -23,6 +23,9 @@
     "switchGradientStartColor": "#1D80B0",
     "switchGradientEndColor": "#5B69E6",
 
+    "modalPageCounterGradientStartColor": "#1D80B0",
+    "modalPageCounterGradientEndColor": "#5B69E6",
+
     "tabSelectedColor": "#2C3D66",
 
     "textDisabledColor": "#444444",

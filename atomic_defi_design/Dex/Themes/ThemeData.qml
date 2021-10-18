@@ -21,6 +21,9 @@ QtObject
     property color  switchGradientStartColor
     property color  switchGradientEndColor
 
+    property color  modalPageCounterGradientStartColor
+    property color  modalPageCounterGradientEndColor
+
     property color  tabSelectedColor
 
     property color  buttonTextDisabledColor

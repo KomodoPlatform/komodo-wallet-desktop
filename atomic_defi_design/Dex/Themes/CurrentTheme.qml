@@ -37,6 +37,9 @@ ThemeData
         switchGradientStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientStartColor);
         switchGradientEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientEndColor);
 
+        modalPageCounterGradientStartColor  = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientStartColor);
+        modalPageCounterGradientEndColor    = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientEndColor);
+
         tabSelectedColor                    = Dex.Color.argbStrFromRgbaStr(themeData.tabSelectedColor);
 
         textDisabledColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textDisabledColor);
@@ -106,6 +109,9 @@ ThemeData
 
         console.info("Dex.Themes.CurrentTheme.printValues.switchGradientStartColor : %1".arg(switchGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.switchGradientEndColor : %1".arg(switchGradientEndColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientStartColor : %1".arg(modalPageCounterGradientStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientEndColor : %1".arg(modalPageCounterGradientEndColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.tabSelectedColor : %1".arg(tabSelectedColor));
 
