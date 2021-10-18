@@ -29,7 +29,7 @@ BasicModal
     }
 
     width: 676
-    height: 750
+    height: 720
 
     onOpened: 
     {
@@ -102,7 +102,7 @@ BasicModal
 
             Layout.topMargin: -5
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: 350
+            Layout.preferredHeight: 300
             Layout.preferredWidth: 515
 
             delegate: DexCheckBox
