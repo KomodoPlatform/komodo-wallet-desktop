@@ -1390,6 +1390,36 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "DAI-AVX20": {
+      "coin": "DAI-AVX20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://api.avax.network/ext/bc/C/rpc"
+      ],
+      "explorer_url": [
+        "https://cchain.explorer.avax.network/"
+      ],
+      "type": "AVX-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "DAI-FTM20": {
+      "coin": "DAI-FTM20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "DAI-BEP20": {
     "coin": "DAI-BEP20",
     "name": "Dai",
