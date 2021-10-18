@@ -256,7 +256,7 @@ ClipRRect // Trade Card
                         anchors.top: _fromBalance.top
                         anchors.bottom: _fromBalance.bottom
                         hoverEnabled: true
-                        ToolTip
+                        DefaultTooltip
                         {
                             visible: parent.containsMouse
                             text: qsTr("Tradable: ") + parent.parent.text
