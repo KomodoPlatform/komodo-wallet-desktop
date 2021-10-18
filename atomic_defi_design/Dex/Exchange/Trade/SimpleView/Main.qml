@@ -14,7 +14,8 @@ import "../../../Constants"  as Constants
 import "../Orders" as Orders
 import "Main.js" as Main
 
-Item {
+Item
+{
     id: root
 
     readonly property var subPages: Main.getSubPages()
@@ -35,7 +36,7 @@ Item {
 
     Column
     {
-        width: root.currentSubPage === subPages.Trade? _simpleTrade.best? 600 : 450 : 450
+        width: root.currentSubPage === subPages.Trade ? _simpleTrade.best ? 600 : 450 : 450
         y: 120
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
