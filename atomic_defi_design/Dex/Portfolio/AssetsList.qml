@@ -222,10 +222,10 @@ Dex.DefaultListView
 
                     Dex.DexTooltip
                     {
-                        contentItem: Dex.DexLabel {
+                        contentItem: Dex.DefaultText
+                        {
                            text: qsTr("Price provider is: %1").arg(DexString.capitalizeFirstLetter(priceProvider))
                            font: Dex.DexTypo.caption
-                           color: Dex.DexTheme.colorWhite7
                            padding: 5
                         }
                         visible: priceProviderIconMouseArea.containsMouse
