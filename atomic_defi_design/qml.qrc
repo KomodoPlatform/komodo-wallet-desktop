@@ -495,8 +495,6 @@
         <file>Dex/Exchange/Trade/SimpleView/Main.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/Main.js</file>
         <file>Dex/Exchange/Trade/SimpleView/Trade.qml</file>
-        <file>Dex/Exchange/Trade/SimpleView/CoinsListModal.qml</file>
-        <file>Dex/Exchange/Trade/SimpleView/BestOrdersModal.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/SubBestOrder.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/SubCoinSelector.qml</file>

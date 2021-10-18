@@ -397,20 +397,6 @@ ClipRRect // Trade Card
 
                         up: false
                     }
-
-                    ModalLoader
-                    {
-                        property string selectedTicker
-                        onSelectedTickerChanged: _tradeCard.selectedTicker = selectedTicker
-                        id: coinsListModalLoader
-                        sourceComponent: CoinsListModal {}
-                    }
-
-                    Connections
-                    {
-                        target: coinsListModalLoader
-                        function onLoaded() { coinsListModalLoader.item.selectedTickerChanged.connect(function() { _tradeCard.selectedTicker = coinsListModalLoader.item.selectedTicker }) }
-                    }
                 }
 
                 DexRectangle // MAX Button
@@ -600,12 +586,6 @@ ClipRRect // Trade Card
                         color: DexTheme.foregroundColor
 
                         up: false
-                    }
-
-                    ModalLoader
-                    {
-                        id: _bestOrdersModalLoader
-                        sourceComponent: BestOrdersModal {}
                     }
                 }
             }
