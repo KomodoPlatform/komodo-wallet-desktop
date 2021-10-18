@@ -321,6 +321,7 @@
         <file>Dex/Components/CexInfoModal.qml</file>
         <file>Dex/Components/CexInfoTrigger.qml</file>
         <file>Dex/Components/Circle.qml</file>
+        <file>Dex/Components/ClickableText.qml</file>
         <file>Dex/Components/ClipRRect.qml</file>
         <file>Dex/Components/CoinMenu.qml</file>
         <file>Dex/Components/CoinTypeTag.qml</file>
