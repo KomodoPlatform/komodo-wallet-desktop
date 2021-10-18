@@ -43,7 +43,7 @@ Item
         spacing: 30
 
         // Balance box
-        FloatingBackground
+        InnerBackground
         {
             id: balance_box
 
@@ -508,7 +508,7 @@ Item
         }
 
         // Price Graph
-        Rectangle
+        InnerBackground
         {
             visible: false
             id: price_graph_bg
@@ -524,7 +524,6 @@ Item
             Layout.bottomMargin: -parent.spacing * 0.5
             Layout.preferredHeight: wallet.height * 0.6
 
-            color: Dex.CurrentTheme.floatingBackgroundColor
             radius: 18
 
             onTickerChanged: loadChart()
@@ -710,7 +709,7 @@ Item
                     gradient: Gradient
                     {
                         orientation: Gradient.Vertical
-                        GradientStop { position: 0.001; color: Dex.CurrentTheme.floatingBackgroundColor }
+                        GradientStop { position: 0.001; color: Dex.CurrentTheme.innerBackgroundColor }
                         GradientStop { position: 1; color: Dex.CurrentTheme.backgroundColor }
                     }
                 }

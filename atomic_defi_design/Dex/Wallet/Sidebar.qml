@@ -83,7 +83,6 @@ Item
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignHCenter
                     color: 'transparent'
-                    shadowOff: true
                     content: DexListView {
                         id: list
                         height: list_bg.height

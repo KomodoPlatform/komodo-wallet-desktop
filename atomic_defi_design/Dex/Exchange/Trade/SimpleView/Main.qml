@@ -114,7 +114,8 @@ Item
             }
         }
 
-        SwipeView {
+        SwipeView
+        {
             id: _swipeSimplifiedView
             currentIndex: root.currentSubPage
             anchors.horizontalCenter: parent.horizontalCenter
@@ -122,60 +123,62 @@ Item
             height: 650
             clip: true
             interactive: false
-            Item {
-                DexRectangle {
+
+            Item
+            {
+                FloatingBackground
+                {
                     id: subTradePage
                     height: _simpleTrade.height
-                    width: _simpleTrade.best? 600 : _simpleTrade.coinSelection ? 450 : 380
+                    width: _simpleTrade.best ? 600 : _simpleTrade.coinSelection ? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
-                    color: DexTheme.dexBoxBackgroundColor
-                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
-                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
-                    sizeAnimationDuration: 250
-                    sizeAnimation: true
-                    ClipRRect {
-                        anchors.fill: parent
-                        radius: 20 
-                        Trade
-                        {
-                            id: _simpleTrade
-                            width: parent.width
-                        }
+
+                    Behavior on width { NumberAnimation { duration: 250 } }
+                    Behavior on height { NumberAnimation { duration: 250 } }
+
+                    Trade
+                    {
+                        id: _simpleTrade
+                        width: parent.width
                     }
                 }
             }
-            Item {
-                DexRectangle {
-                    width: 420
+            Item
+            {
+                FloatingBackground
+                {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    height: 500 
+                    width: 420
+                    height: 500
                     radius: 20
-                    color: DexTheme.dexBoxBackgroundColor
-                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
-                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
-                    SubOrders {
-                        id: orders_view
-                    }
+
+                    Behavior on width { NumberAnimation { duration: 250 } }
+                    Behavior on height { NumberAnimation { duration: 250 } }
+
+                    SubOrders { id: orders_view }
                 }
             }
-            Item {
-                DexRectangle {
-                    width: 420
+            Item
+            {
+                FloatingBackground
+                {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    height: 500 
+                    width: 420
+                    height: 500
                     radius: 20
-                    color: DexTheme.dexBoxBackgroundColor
-                    border.width: DexTheme.portfolioPieGradient ? 0 : 1
-                    gradient: DexTheme.portfolioPieGradient ? app.globalGradient : undefined
-                    SubHistory {
-                        id: history_view
-                    }
+
+                    Behavior on width { NumberAnimation { duration: 250 } }
+                    Behavior on height { NumberAnimation { duration: 250 } }
+
+                    SubHistory { id: history_view }
                 }
             }
         }
     }
-    ModalLoader {
+
+    ModalLoader
+    {
         id: order_modal
         sourceComponent: Orders.OrderModal {}
     }

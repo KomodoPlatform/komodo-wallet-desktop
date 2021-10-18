@@ -12,15 +12,15 @@ import AtomicDEX.SelectedOrderStatus 1.0
 import "../../../Components"
 import "../../../Constants" as Constants
 import "../"
-
+import Dex.Themes 1.0 as Dex
 import App 1.0
 
 ClipRRect // Trade Card
 {
     id: _tradeCard
 
-    property string selectedTicker: !Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(left_ticker).is_testnet && 
-                                    left_ticker !== "RICK" && left_ticker !== "MORTY" ? 
+    property string selectedTicker: !Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(left_ticker).is_testnet &&
+                                    left_ticker !== "RICK" && left_ticker !== "MORTY" ?
                                         left_ticker : ""
     property var    selectedOrder:  undefined
     property bool   best: false
@@ -48,7 +48,7 @@ ClipRRect // Trade Card
     {
         enabled: parent.enabled
         target: Constants.API.app.trading_pg
-        
+
         function onSelectedOrderStatusChanged() // When the selected order status has changed.
         {
             if (Constants.API.app.trading_pg.selected_order_status == SelectedOrderStatus.OrderNotExistingAnymore)
@@ -198,7 +198,7 @@ ClipRRect // Trade Card
         ColumnLayout // Content
         {
             width: parent.width
-            
+
             anchors.horizontalCenter: parent.horizontalCenter
 
             DexRectangle // From
@@ -208,7 +208,6 @@ ClipRRect // Trade Card
                 Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
                 radius: 20
-                color: DexTheme.tradeFieldBoxBackgroundColor
                 visible: !coinSelectorSimplified.visible
 
                 DefaultText // From Text
@@ -438,7 +437,7 @@ ClipRRect // Trade Card
                     DexLabel
                     {
                         anchors.centerIn: parent
-                        color: _maxButMouseArea.containsMouse ? 
+                        color: _maxButMouseArea.containsMouse ?
                                     _maxButMouseArea.pressed ? "#173948" : "#204c61"
                                     : DexTheme.accentColor
                         text: qsTr("MAX")
@@ -474,12 +473,12 @@ ClipRRect // Trade Card
                     anchors.left: parent.left
                     anchors.leftMargin: 2
                     field.text: Constants.API.app.trading_pg.total_amount
+                    field.color: Dex.CurrentTheme.textDisabledColor
                     field.font.pixelSize: Constants.Style.textSizeSmall5
-                    field.color: DexTheme.textPlaceHolderColor
                     field.background: Rectangle { color: swap_from_card.color}
                 }
 
-                Text    // Amount In Fiat
+                DefaultText // Amount In Fiat
                 {
                     enabled: parseFloat(_toValue.field.text) > 0
                     anchors.top: _toValue.bottom
@@ -487,7 +486,6 @@ ClipRRect // Trade Card
                     anchors.left: _toValue.left
                     anchors.leftMargin: 24
                     font.pixelSize: Constants.Style.textSizeSmall1
-                    color: DexTheme.foregroundColor
                     opacity: .9
                     text: enabled ? Constants.General.getFiatText(_toValue.field.text, _tradeCard.selectedOrder.coin?? "") : ""
                 }
@@ -755,25 +753,25 @@ ClipRRect // Trade Card
                 }
             }
         }
-        Item 
+        Item
         {
             id: coinSelectorSimplified
             width: parent.width
             height: 300
-            visible: _tradeCard.coinSelection 
-            Item 
+            visible: _tradeCard.coinSelection
+            Item
             {
                 width: parent.width
                 height: 50
-                Qaterial.ColorIcon 
+                Qaterial.ColorIcon
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     source: Qaterial.Icons.magnify
                     color: DexTheme.foregroundColor
-                    x: 25 
+                    x: 25
                     opacity: .7
                 }
-                DexTextField 
+                DexTextField
                 {
                     id: _coinSearchField
                     width: parent.width-70
@@ -781,12 +779,12 @@ ClipRRect // Trade Card
                     font.pixelSize: 16
                     x: 45
                     placeholderText: qsTr("Search")
-                    background: DexRectangle 
+                    background: DexRectangle
                     {
                         border.width: 0
                         color: 'transparent'
                     }
-                    onTextChanged: 
+                    onTextChanged:
                     {
                       _coinList.model.setFilterFixedString(text)
                     }
@@ -799,7 +797,7 @@ ClipRRect // Trade Card
                 }
             }
 
-            SubCoinSelector 
+            SubCoinSelector
             {
                 id: _coinList
 
@@ -815,27 +813,27 @@ ClipRRect // Trade Card
                 anchors.leftMargin: 20
                 anchors.bottomMargin: 10
                 anchors.topMargin: 50
-            } 
+            }
 
         }
-        Item 
+        Item
         {
             id: bestOrderSimplified
             width: parent.width
             height: 300
-            visible: _tradeCard.best 
-            Item 
+            visible: _tradeCard.best
+            Item
             {
                 width: parent.width
                 height: 50
-                Qaterial.ColorIcon 
+                Qaterial.ColorIcon
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     source: Qaterial.Icons.magnify
-                    x: 25 
+                    x: 25
                     opacity: .7
                 }
-                DexTextField 
+                DexTextField
                 {
                     id: _bestOrderSearchField
                     width: parent.width-70
@@ -843,12 +841,12 @@ ClipRRect // Trade Card
                     font.pixelSize: 16
                     x: 45
                     placeholderText: qsTr("Search")
-                    background: DexRectangle 
+                    background: DexRectangle
                     {
                         border.width: 0
                         color: 'transparent'
                     }
-                    onTextChanged: 
+                    onTextChanged:
                     {
                       Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
                     }
@@ -860,19 +858,19 @@ ClipRRect // Trade Card
                     _bestOrderSearchField.text = ""
                 }
             }
-            SubBestOrder 
+            SubBestOrder
             {
                 id: _bestOrderList
                 tradeCard: _tradeCard
-                onSelectedOrderChanged: 
+                onSelectedOrderChanged:
                 {
                     _tradeCard.selectedOrder = selectedOrder
                     _bestOrderSearchField.text = ""
                     _fromValue.field.forceActiveFocus()
                 }
-                onBestChanged: 
+                onBestChanged:
                 {
-                    if(!best) 
+                    if(!best)
                     {
                         _tradeCard.best = false
                     }
@@ -883,7 +881,7 @@ ClipRRect // Trade Card
                 anchors.bottomMargin: 10
                 anchors.topMargin: 50
                 visible: _tradeCard.width == 600
-            } 
+            }
             BusyIndicator
             {
                 id: bestOrdersLoading
@@ -922,7 +920,7 @@ ClipRRect // Trade Card
             visible: _feesList.count !== 0 & _tradeCard.selectedOrder !== undefined &  parseFloat(_fromValue.field.text) > 0 & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
 
             DexRectangle {
-                radius: 25 
+                radius: 25
                 anchors.fill: parent
             }
 
@@ -968,7 +966,7 @@ ClipRRect // Trade Card
             }
         }
     }
-    Row 
+    Row
     {
         anchors.rightMargin: 15
         anchors.right: parent.right
@@ -985,12 +983,12 @@ ClipRRect // Trade Card
             enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
             width: 35
             height: 25
-            onClicked: 
+            onClicked:
             {
                 Constants.API.app.trading_pg.orderbook.refresh_best_orders()
             }
         }
-        DexAppButton 
+        DexAppButton
         {
             visible: _tradeCard.best || _tradeCard.coinSelection
             iconSource: Qaterial.Icons.close
@@ -999,7 +997,7 @@ ClipRRect // Trade Card
             anchors.verticalCenter: parent.verticalCenter
             width: 35
             height: 25
-            onClicked: 
+            onClicked:
             {
                 _tradeCard.best = false
                 _tradeCard.coinSelection = false

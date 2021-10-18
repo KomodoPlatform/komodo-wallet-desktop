@@ -3,7 +3,8 @@ import QtQuick.Controls 2.15
 import "../Constants"
 import App 1.0
 
-TextArea {
+TextArea
+{
     id: text_field
 
     font.family: Style.font_family
@@ -45,7 +46,7 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground { auto_set_size: false }
+    background: InnerBackground { }
 
     RightClickMenu { }
 }

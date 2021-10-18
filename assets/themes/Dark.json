@@ -35,13 +35,14 @@
 
     "colorInnerShadowBottom": "#2a2f48",
     "colorInnerShadowTop": "#0d1021",
+    "innerBackgroundColor": "#1F263F",
 
     "colorLineGradient1": "#2c2f3c",
     "colorLineGradient2": "#06070c",
     "colorLineGradient3": "#090910",
     "colorLineGradient4": "#24283b",
     
-    "floatingBackgroundColor": "#1F263F",
+    "floatingBackgroundColor": "#24273D",
 
     "sidebarBgColor": "#202337",
     "sidebarVersionTextColor": "#2F5688",

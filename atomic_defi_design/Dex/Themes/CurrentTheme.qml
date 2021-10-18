@@ -49,6 +49,7 @@ ThemeData
 
         colorInnerShadowBottom              = Dex.Color.argbStrFromRgbaStr(themeData.colorInnerShadowBottom);
         colorInnerShadowTop                 = Dex.Color.argbStrFromRgbaStr(themeData.colorInnerShadowTop);
+        innerBackgroundColor                = Dex.Color.argbStrFromRgbaStr(themeData.innerBackgroundColor);
 
         colorLineGradient1                  = Dex.Color.argbStrFromRgbaStr(themeData.colorLineGradient1);
         colorLineGradient2                  = Dex.Color.argbStrFromRgbaStr(themeData.colorLineGradient2);
@@ -117,6 +118,7 @@ ThemeData
 
         console.info("Dex.Themes.CurrentTheme.printValues.colorInnerShadowBottom : %1".arg(colorInnerShadowBottom));
         console.info("Dex.Themes.CurrentTheme.printValues.colorInnerShadowTop : %1".arg(colorInnerShadowTop));
+        console.info("Dex.Themes.CurrentTheme.printValues.innerBackgroundColor : %1".arg(innerBackgroundColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.colorLineGradient1 : %1".arg(colorLineGradient1));
         console.info("Dex.Themes.CurrentTheme.printValues.colorLineGradient2 : %1".arg(colorLineGradient2));

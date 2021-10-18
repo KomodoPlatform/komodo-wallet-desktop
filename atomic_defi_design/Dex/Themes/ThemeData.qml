@@ -38,6 +38,7 @@ QtObject
 
     property color  colorInnerShadowBottom
     property color  colorInnerShadowTop
+    property color  innerBackgroundColor
 
     property color  colorLineGradient1
     property color  colorLineGradient2
