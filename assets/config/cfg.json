@@ -41,7 +41,9 @@
     "KMD": "KMD",
     "BTC": "₿",
     "BTC_ALT": "฿",
-    "LTC": "Ł"
+    "LTC": "Ł",
+    "FIRO": "FIRO",
+    "ETH": "ETH"
   },
   "available_fiat": [
     "USD",
@@ -81,7 +83,7 @@
   "possible_currencies": [
     "USD",
     "BTC",
-    "KMD",
-    "LTC"
+    "FIRO",
+    "ETH"
   ]
 }

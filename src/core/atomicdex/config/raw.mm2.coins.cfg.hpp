@@ -103,7 +103,7 @@ namespace atomic_dex
         std::optional<bool>           requires_notarization{std::nullopt};
         std::optional<int64_t>        is_po_s{std::nullopt};
         std::optional<bool>           segwit{std::nullopt};
-        std::optional<address_format> address_format{std::nullopt};
+        std::optional<atomic_dex::address_format> address_format{std::nullopt};
         std::optional<std::string>    estimate_fee_mode{std::nullopt};
         std::optional<int64_t>        taddr{std::nullopt};
         std::optional<int64_t>        decimals{std::nullopt};
