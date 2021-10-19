@@ -1085,7 +1085,7 @@
         "https://api.harmony.one"
       ],
       "explorer_url": [
-        "https://explorer.harmony.one"
+        "https://explorer.harmony.one/"
       ],
       "type": "HRC-20",
       "active": false,
@@ -2477,7 +2477,7 @@
         "url": "spv1.lbry.com:50001"
       },
       {
-        "url": "spv13.lbry.com:50001"
+        "url": "spv25.lbry.com:50001"
       },
       {
         "url": "spv15.lbry.com:50001"
