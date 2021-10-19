@@ -1755,7 +1755,7 @@
       "https://explorer.firo.org/"
     ],
     "type": "UTXO",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "FIRO-BEP20": {
@@ -2367,7 +2367,7 @@
     "currently_enabled": false
   },
   "LTC": {
-    "active": true,
+    "active": false,
     "coin": "LTC",
     "coingecko_id": "litecoin",
     "coinpaprika_id": "ltc-litecoin",
@@ -2806,7 +2806,7 @@
     "name": "Moonriver"
   },
   "ETH": {
-    "active": false,
+    "active": true,
     "coin": "ETH",
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
@@ -3326,7 +3326,7 @@
     "explorer_url": [
       "https://kmdexplorer.io/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   },
   "KMD-BEP20": {
