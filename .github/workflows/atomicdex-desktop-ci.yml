@@ -128,6 +128,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           export SHELL=/bin/bash
           echo "CHOOSENIM_CHOOSE_VERSION=1.4.8" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.4.8
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
