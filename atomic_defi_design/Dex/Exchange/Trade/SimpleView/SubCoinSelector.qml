@@ -11,6 +11,7 @@ import App 1.0
 //! Project Imports
 import "../../../Components" //> BasicModal
 import "../../../Constants" as Constants //> API
+import Dex.Themes 1.0 as Dex
 
 DefaultListView
 {
@@ -27,14 +28,11 @@ DefaultListView
     reuseItems: true
     cacheBuffer: 40
 
-    header: DexRectangle
+    header: DefaultRectangle
     {
-        z: 2
         width: _rowWidth
         height: _rowHeight
-        border.color: 'transparent'
-        color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
-        radius: 0
+        color: Dex.CurrentTheme.floatingBackgroundColor
 
         RowLayout                   // Coins Columns Name
         {
