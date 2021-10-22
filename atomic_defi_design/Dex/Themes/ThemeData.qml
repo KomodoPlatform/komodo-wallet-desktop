@@ -39,8 +39,6 @@ QtObject
     property color  chartTradingLineBackgroundColor
     property color  chartTradingLineColor
 
-    property color  colorInnerShadowBottom
-    property color  colorInnerShadowTop
     property color  innerBackgroundColor
 
     property color  floatingBackgroundColor

@@ -160,13 +160,9 @@ QtObject {
 
 
 
-    property color colorInnerShadowBottom: Dex.CurrentTheme.colorInnerShadowBottom
-    property color colorInnerShadowTop: Dex.CurrentTheme.colorInnerShadowTop
-
     property color textSelectionColor: Dex.CurrentTheme.textSelectionColor
     property color textPlaceHolderColor: Dex.CurrentTheme.textPlaceholderColor
     property color textSelectedColor: Dex.CurrentTheme.textSelectedColor
-    property color innerShadowColor: Style.colorInnerShadow
 
     property color whiteblack: Style.colorWhite1
     property color colorThemeDarkLight: Style.colorThemeDarkLight
@@ -340,8 +336,6 @@ QtObject {
     readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#BECDE2"
     readonly property string colorBorder:  dark_theme ? "#23273B" : "#DAE1EC"
     readonly property string colorBorder2:  dark_theme ? "#1C1F32" : "#DAE1EC"
-
-    readonly property string colorInnerShadow:  dark_theme ? "#A0000000" : "#BECDE2"
 
     readonly property string colorGradientLine1:  dark_theme ? "#00FFFFFF" : "#00CFD4DB"
     readonly property string colorGradientLine2:  dark_theme ? "#0FFFFFFF" : "#FFCFD4DB"

@@ -18,10 +18,9 @@ Item {
     property alias border: rect.border
     property bool shadowOff: false
     property bool auto_set_size: true
+
     implicitWidth: auto_set_size ? inner_space.width : 0
     implicitHeight: auto_set_size ? inner_space.height : 0
-    property color bottomBorderColor: DexTheme.colorInnerShadowBottom
-    property color topBorderColor: DexTheme.colorInnerShadowTop
 
     Item {
         id: rect_with_shadow

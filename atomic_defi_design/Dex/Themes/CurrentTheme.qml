@@ -50,8 +50,6 @@ ThemeData
         chartTradingLineBackgroundColor     = Dex.Color.argbStrFromRgbaStr(themeData.chartTradingLineBackgroundColor);
         chartTradingLineColor               = Dex.Color.argbStrFromRgbaStr(themeData.chartTradingLineColor);
 
-        colorInnerShadowBottom              = Dex.Color.argbStrFromRgbaStr(themeData.colorInnerShadowBottom);
-        colorInnerShadowTop                 = Dex.Color.argbStrFromRgbaStr(themeData.colorInnerShadowTop);
         innerBackgroundColor                = Dex.Color.argbStrFromRgbaStr(themeData.innerBackgroundColor);
 
         floatingBackgroundColor             = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundColor);
@@ -117,8 +115,6 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineBackgroundColor : %1".arg(chartTradingLineBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineColor : %1".arg(chartTradingLineColor));
 
-        console.info("Dex.Themes.CurrentTheme.printValues.colorInnerShadowBottom : %1".arg(colorInnerShadowBottom));
-        console.info("Dex.Themes.CurrentTheme.printValues.colorInnerShadowTop : %1".arg(colorInnerShadowTop));
         console.info("Dex.Themes.CurrentTheme.printValues.innerBackgroundColor : %1".arg(innerBackgroundColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.floatingBackgroundColor : %1".arg(floatingBackgroundColor));
