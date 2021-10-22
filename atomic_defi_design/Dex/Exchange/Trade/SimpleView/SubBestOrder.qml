@@ -8,6 +8,7 @@ import App 1.0
 //! Project Imports
 import "../../../Components" //> BasicModal
 import "../../../Constants" as Constants  //> API
+import Dex.Themes 1.0 as Dex
 
 DefaultListView
 {
@@ -45,14 +46,11 @@ DefaultListView
 
     onVisibleChanged: currentLeftToken = _tradeCard.selectedTicker
 
-    header: DexRectangle // Best orders list header
+    header: DefaultRectangle // Best orders list header
     {
         width: _rowWidth
         height: _rowHeight
-        border.color: 'transparent'
-        color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
-        z: 2
-        radius: 0
+        color: Dex.CurrentTheme.floatingBackgroundColor
 
         MouseArea { anchors.fill: parent }
         RowLayout                   // Order Columns Name
