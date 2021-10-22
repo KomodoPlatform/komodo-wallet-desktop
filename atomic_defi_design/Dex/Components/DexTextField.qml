@@ -15,7 +15,7 @@ TextField
     placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
     selectedTextColor: Dex.CurrentTheme.textSelectedColor
     selectionColor: Dex.CurrentTheme.textSelectionColor
-    color: Dex.CurrentTheme.foregroundColor
+    color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
 
     Behavior on color
     {
