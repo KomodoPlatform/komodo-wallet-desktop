@@ -111,10 +111,15 @@ Item
                     opacity: containsMouse ? .7 : 1
                     width: 35
                     height: 25
-                    ToolTip.delay: 500
-                    ToolTip.timeout: 5000
-                    ToolTip.visible: containsMouse
-                    ToolTip.text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
+
+                    DefaultTooltip
+                    {
+                        delay: 500
+                        timeout: 5000
+                        visible: parent.containsMouse
+                        text: _subOrdersRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
+                    }
+
                     onClicked: _subOrdersRoot.displayFilter = !_subOrdersRoot.displayFilter
                 }
             }
