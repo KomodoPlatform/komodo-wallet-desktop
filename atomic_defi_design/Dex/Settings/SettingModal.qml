@@ -292,49 +292,58 @@ Qaterial.Dialog
                                     text: qsTr("Current Font")
                                 }
                             }
-                            DexComboBox {
-                                id: dexFont
+                            DexComboBox
+                            {
                                 editable: true
                                 width: parent.width - 200
                                 model: ["Ubuntu", "Montserrat", "Roboto"]
-                                Component.onCompleted: {
+
+                                onCurrentTextChanged:
+                                {
+                                    DexTypo.fontFamily = currentText
+                                    console.info(qsTr("Current font changed to %1.").arg(currentText))
+                                }
+
+                                Component.onCompleted:
+                                {
                                     let current = DexTypo.fontFamily
-                                    currentIndex = dexFont.model.indexOf(current)
+                                    currentIndex = model.indexOf(current)
                                 }
                             }
-                            RowLayout {
-                                width: parent.width-30
+
+                            RowLayout
+                            {
+                                width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 30
 
-                                DexLabel {
+                                DexLabel
+                                {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     font: DexTypo.subtitle1
                                     text: qsTr("Theme")
                                 }
                             }
-                            DexComboBox {
-                                id: dexTheme
+
+                            DexComboBox
+                            {
                                 width: parent.width - 200
-                                displayText: currentText.replace(".json","")
+
                                 model: API.qt_utilities.get_themes_list()
-                                Component.onCompleted: {
+
+                                onCurrentTextChanged:
+                                {
+                                    console.info(qsTr("Changing theme to %1").arg(currentText))
+                                    atomic_settings2.setValue("CurrentTheme", currentText)
+                                    atomic_settings2.sync()
+                                    Dex.CurrentTheme.loadFromFilesystem(currentText)
+                                }
+
+                                Component.onCompleted:
+                                {
                                     let current = atomic_settings2.value("CurrentTheme")
                                     currentIndex = model.indexOf(current)
-                                }
-                            }
-
-                            SettingsButton {
-                                width: parent.width-30
-                                height: 50
-                                buttonText: qsTr("Apply Changes")
-                                onClicked: {
-                                    atomic_settings2.setValue("CurrentTheme", dexTheme.currentText)
-                                    atomic_settings2.sync()
-                                    Dex.CurrentTheme.loadFromFilesystem(dexTheme.currentText.replace(".json",""))
-                                    DexTypo.fontFamily = dexFont.currentText
-                                    
                                 }
                             }
                         }

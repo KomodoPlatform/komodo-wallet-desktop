@@ -143,7 +143,7 @@ namespace atomic_dex
     {
         QVariantMap out;
         using namespace std::string_literals;
-        fs::path file_path = atomic_dex::utils::get_themes_path() / (theme_name.toStdString() + ".json"s);
+        fs::path file_path = atomic_dex::utils::get_themes_path() / (theme_name.toStdString());
         if (fs::exists(file_path))
         {
             LOG_PATH("load theme: {}", file_path);
