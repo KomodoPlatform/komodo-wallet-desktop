@@ -118,10 +118,15 @@ Item {
                     opacity: containsMouse ? .7 : 1
                     width: 35
                     height: 25
-                    ToolTip.delay: 500
-                    ToolTip.timeout: 5000
-                    ToolTip.visible: containsMouse
-                    ToolTip.text: _subHistoryRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
+
+                    DefaultTooltip
+                    {
+                        delay: 500
+                        timeout: 5000
+                        visible: parent.containsMouse
+                        text: _subHistoryRoot.displayFilter ? qsTr("Close filtering options.") : qsTr("Open filtering options.")
+                    }
+
                     onClicked: _subHistoryRoot.displayFilter = !_subHistoryRoot.displayFilter
                 }
             }
@@ -288,7 +293,7 @@ Item {
                 width: parent.width
                 height: 50
                 y: -20
-                DexComboBox {
+                DefaultComboBox {
                     readonly property int item_count: API.app.orders_mdl.limit_nb_elements
                     readonly property var options: [5, 10, 25, 50, 100, 200]
                     anchors.verticalCenter: parent.verticalCenter
