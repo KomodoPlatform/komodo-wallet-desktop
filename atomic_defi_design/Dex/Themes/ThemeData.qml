@@ -43,11 +43,6 @@ QtObject
     property color  colorInnerShadowTop
     property color  innerBackgroundColor
 
-    property color  colorLineGradient1
-    property color  colorLineGradient2
-    property color  colorLineGradient3
-    property color  colorLineGradient4
-
     property color  floatingBackgroundColor
 
     // Sidebar related

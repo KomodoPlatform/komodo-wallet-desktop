@@ -142,10 +142,6 @@ QtObject {
     readonly property string colorGradient2:  dark_theme ? colorTheme5 : colorTheme5
     readonly property string colorGradient3:  dark_theme ? "#24283D" : "#24283D"
     readonly property string colorGradient4:  dark_theme ? "#0D0F21" : "#0D0F21"
-    readonly property string colorLineGradient1:  dark_theme ? "#2c2f3c" : "#EEF1F7"
-    readonly property string colorLineGradient2:  dark_theme ? "#06070c" : "#DCE1E8"
-    readonly property string colorLineGradient3:  dark_theme ? "#090910" : "#EEF1F7"
-    readonly property string colorLineGradient4:  dark_theme ? "#24283b" : "#DCE1E8"
     readonly property string colorDropShadowLight:  dark_theme ? "#216975a4" : "#21FFFFFF"
     readonly property string colorDropShadowLight2:  dark_theme ? "#606975a4" : "#60FFFFFF"
     readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#BECDE2"
