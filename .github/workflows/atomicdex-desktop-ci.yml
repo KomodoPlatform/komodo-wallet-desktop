@@ -70,10 +70,10 @@ jobs:
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt'
           #mirror: https://qt-mirror.dannhauer.de
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          mirror: https://ftp.fau.de/qtproject
+          #mirror: https://ftp.fau.de/qtproject
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
@@ -85,10 +85,10 @@ jobs:
           version: ${{ matrix.qt }}
           host: 'mac'
           target: 'desktop'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt'
           #mirror: https://qt-mirror.dannhauer.de
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          mirror: https://ftp.fau.de/qtproject
+          #mirror: https://ftp.fau.de/qtproject
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
@@ -106,10 +106,10 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt'
           #mirror: https://qt-mirror.dannhauer.de
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          mirror: https://ftp.fau.de/qtproject
+          #mirror: https://ftp.fau.de/qtproject
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
@@ -127,11 +127,13 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           export SHELL=/bin/bash
-          echo "CHOOSENIM_CHOOSE_VERSION=1.4.0" >> $GITHUB_ENV
+          echo "CHOOSENIM_CHOOSE_VERSION=1.4.8" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.4.8
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
+          ls /home/runner/.choosenim/toolchains
           chmod +x /home/runner/.choosenim/toolchains/nim-1.4.8/bin/*
 
       - name: Install deps (Linux)
