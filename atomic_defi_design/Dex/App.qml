@@ -526,7 +526,7 @@ DexRectangle
     {
         atomic_settings2.sync()
         let current = atomic_settings2.value("CurrentTheme")
-        Dex.CurrentTheme.loadFromFilesystem(current.replace(".json", ""))
+        Dex.CurrentTheme.loadFromFilesystem(current)
     }
 
     function showDialog(data) {
