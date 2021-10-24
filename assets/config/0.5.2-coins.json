@@ -1082,7 +1082,8 @@
       "coinpaprika_id": "busd-binance-usd",
       "coingecko_id": "binance-usd",
       "nodes": [
-        "https://api.harmony.one"
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
       ],
       "explorer_url": [
         "https://explorer.harmony.one/"
@@ -2929,7 +2930,8 @@
     "coinpaprika_id": "one-harmony",
     "currently_enabled": false,
     "nodes": [
-      "https://api.harmony.one"
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
     ],
     "explorer_url": [
       "https://explorer.harmony.one/"
