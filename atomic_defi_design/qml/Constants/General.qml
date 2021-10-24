@@ -1214,6 +1214,7 @@ QtObject {
                                                 "JPYC/QC": "FX_IDC:JPYCNY",
                                                 "JPYC/BRZ": "FX_IDC:JPYBRL",
                                                 "JPYC/TRYB": "FX_IDC:JPYTRY",
+                                                "JRT/ETH": "UNISWAP:JRTWETH",
                                                 "KMD/BTC": "BINANCE:KMDBTC",
                                                 "KMD/ETH": "BINANCE:KMDETH",
                                                 "KMD/USDT": "BINANCE:KMDUSD",

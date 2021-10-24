@@ -2364,6 +2364,38 @@
       "active": false,
       "currently_enabled": false
   },
+  "JRT-ERC20": {
+      "coin": "JRT-ERC20",
+      "name": "Jarvis Reward Token",
+      "coinpaprika_id": "jrt-jarvis-reward-token",
+      "coingecko_id": "jarvis-reward-token",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "JRT-PLG20": {
+      "coin": "JRT-PLG20",
+      "name": "Jarvis Reward Token",
+      "coinpaprika_id": "jrt-jarvis-reward-token",
+      "coingecko_id": "jarvis-reward-token",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "JSTR": {
     "coin": "JSTR",
     "name": "Ropsten test ERC20",
@@ -3383,23 +3415,6 @@
     ],
     "type": "ERC-20",
     "name": "Atomic Wallet Coin"
-  },
-  "JRT-ERC20": {
-    "coin": "JRT-ERC20",
-    "name": "Jarvis Reward Token",
-    "coinpaprika_id": "jrt-jarvis-reward-token",
-    "coingecko_id": "jarvis-reward-token",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
   },
   "BAT-ERC20": {
     "coin": "BAT-ERC20",
