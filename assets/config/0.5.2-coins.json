@@ -2332,6 +2332,102 @@
     "active": false,
     "currently_enabled": false
   },
+  "JCHF-ERC20": {
+      "coin": "JCHF-ERC20",
+      "name": "Jarvis Swiss Franc",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "jarvis-synthetic-swiss-franc",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "JCHF-PLG20": {
+      "coin": "JCHF-PLG20",
+      "name": "Jarvis Swiss Franc",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "jarvis-synthetic-swiss-franc",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
+  "JEUR-ERC20": {
+      "coin": "JEUR-ERC20",
+      "name": "Jarvis Euro",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "jarvis-synthetic-euro",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "JEUR-PLG20": {
+      "coin": "JEUR-PLG20",
+      "name": "Jarvis Euro",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "jarvis-synthetic-euro",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
+  "JGBP-ERC20": {
+      "coin": "JGBP-ERC20",
+      "name": "Jarvis British Pound",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "jarvis-synthetic-british-pound",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "JGBP-PLG20": {
+      "coin": "JGBP-PLG20",
+      "name": "Jarvis British Pound",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "jarvis-synthetic-british-pound",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "JPYC-ERC20": {
       "coin": "JPYC-ERC20",
       "name": "JPY Coin",
