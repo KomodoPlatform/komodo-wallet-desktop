@@ -54,7 +54,7 @@ DexWindow
     DexRectangle
     {
 		radius: 0
-		width: parent.width-2
+        width: parent.width
 		height: 30
 		anchors.horizontalCenter: parent.horizontalCenter
         color:  Dex.CurrentTheme.backgroundColorDeep
@@ -65,8 +65,7 @@ DexWindow
     {
 		id: app
 		anchors.fill: parent
-		anchors.topMargin: 30
-		anchors.margins: 2
+        anchors.topMargin: 30
 	}
 	
 	DexPopup
