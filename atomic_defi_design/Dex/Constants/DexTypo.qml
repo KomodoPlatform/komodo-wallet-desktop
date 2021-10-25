@@ -89,9 +89,8 @@ QtObject {
         weight: Font.Normal
     })
     property font button: Qt.font({
-        pixelSize: 14 * fontDensity,
+        pixelSize: 16 * fontDensity,
         letterSpacing: 1.25,
-        capitalization: Font.AllUppercase,
         family: fontFamily,
         weight: Font.Medium
     })
