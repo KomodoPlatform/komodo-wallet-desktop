@@ -11,9 +11,23 @@ QtObject
     property color  buttonColorEnabled
     property color  buttonColorHovered
     property color  buttonColorPressed
+    property color  buttonTextDisabledColor
+    property color  buttonTextEnabledColor
+    property color  buttonTextHoveredColor
+    property color  buttonTextPressedColor
 
     property color  gradientButtonStartColor
     property color  gradientButtonEndColor
+    property color  gradientButtonDisabledStartColor
+    property color  gradientButtonDisabledEndColor
+    property color  gradientButtonHoveredStartColor
+    property color  gradientButtonHoveredEndColor
+    property color  gradientButtonPressedStartColor
+    property color  gradientButtonPressedEndColor
+    property color  gradientButtonTextEnabledColor
+    property color  gradientButtonTextDisabledColor
+    property color  gradientButtonTextHoveredColor
+    property color  gradientButtonTextPressedColor
 
     property color  checkBoxGradientStartColor
     property color  checkBoxGradientEndColor
@@ -25,11 +39,6 @@ QtObject
     property color  modalPageCounterGradientEndColor
 
     property color  tabSelectedColor
-
-    property color  buttonTextDisabledColor
-    property color  buttonTextEnabledColor
-    property color  buttonTextHoveredColor
-    property color  buttonTextPressedColor
 
     property color  textDisabledColor
     property color  textSelectionColor

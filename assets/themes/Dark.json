@@ -8,7 +8,6 @@
     "buttonColorEnabled": "#293254",
     "buttonColorHovered": "#264975",
     "buttonColorPressed": "#2932546C",
-
     "buttonTextDisabledColor": "#444444",
     "buttonTextEnabledColor": "#ffffff",
     "buttonTextHoveredColor": "#ffffff",
@@ -16,6 +15,16 @@
 
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6",
+    "gradientButtonDisabledStartColor": "#BBB",
+    "gradientButtonDisabledEndColor": "#BBB",
+    "gradientButtonHoveredStartColor": "#4986EAAD",
+    "gradientButtonHoveredEndColor": "#4986EAAD",
+    "gradientButtonPressedStartColor": "#4986EA",
+    "gradientButtonPressedEndColor": "#4986EA",
+    "gradientButtonTextEnabledColor": "#FFF",
+    "gradientButtonTextDisabledColor": "#FFF",
+    "gradientButtonTextHoveredColor": "#FFF",
+    "gradientButtonTextPressedColor": "#FFF",
 
     "checkBoxGradientStartColor": "#8892EB",
     "checkBoxGradientEndColor": "#9DD4F3",

@@ -420,6 +420,7 @@
         <file>Dex/Components/EulaModal.qml</file>
         <file>Dex/Components/FloatingBackground.qml</file>
         <file>Dex/Components/ForceRestartModal.qml</file>
+        <file>Dex/Components/GradientButton.qml</file>
         <file>Dex/Components/GradientRectangle.qml</file>
         <file>Dex/Components/HelpModal.qml</file>
         <file>Dex/Components/HideFieldButton.qml</file>

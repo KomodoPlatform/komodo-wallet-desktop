@@ -47,14 +47,20 @@ DexRectangle
         GradientStop
         {
             position: 0.1255
-            color: !enabled ? Dex.CurrentTheme.buttonColorDisabled :
-                              control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonStartColor) : Dex.CurrentTheme.gradientButtonStartColor
+            color: enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ?
+                    Dex.CurrentTheme.gradientButtonPressedStartColor :
+                    Dex.CurrentTheme.gradientButtonHoveredStartColor :
+                    Dex.CurrentTheme.gradientButtonStartColor :
+                    Dex.CurrentTheme.gradientButtonDisabledStartColor
         }
         GradientStop
         {
             position: 0.933
-            color: !enabled ? Dex.CurrentTheme.buttonColorDisabled :
-                              control.containsMouse ? Qt.lighter(Dex.CurrentTheme.gradientButtonEndColor) : Dex.CurrentTheme.gradientButtonEndColor
+            color: enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ?
+                    Dex.CurrentTheme.gradientButtonPressedEndColor :
+                    Dex.CurrentTheme.gradientButtonHoveredEndColor :
+                    Dex.CurrentTheme.gradientButtonEndColor :
+                    Dex.CurrentTheme.gradientButtonDisabledEndColor
         }
     }
     height: _label.implicitHeight + (padding * verticalPadding)
@@ -88,7 +94,11 @@ DexRectangle
             anchors.verticalCenter: parent.verticalCenter
             font: DexTypo.button
             text: control.text
-            color: Dex.CurrentTheme.foregroundColor
+            color: enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ?
+                    Dex.CurrentTheme.gradientButtonTextPressedColor :
+                    Dex.CurrentTheme.gradientButtonTextHoveredColor :
+                    Dex.CurrentTheme.gradientButtonTextEnabledColor :
+                    Dex.CurrentTheme.gradientButtonTextDisabledColor
         }
     }
     DexMouseArea

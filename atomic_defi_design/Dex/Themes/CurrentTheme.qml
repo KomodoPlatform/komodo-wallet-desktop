@@ -22,7 +22,6 @@ ThemeData
         buttonColorEnabled                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorEnabled);
         buttonColorHovered                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorHovered);
         buttonColorPressed                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorPressed);
-
         buttonTextDisabledColor             = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextDisabledColor);
         buttonTextEnabledColor              = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextEnabledColor);
         buttonTextHoveredColor              = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextHoveredColor);
@@ -30,6 +29,16 @@ ThemeData
 
         gradientButtonStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonStartColor);
         gradientButtonEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonEndColor);
+        gradientButtonDisabledStartColor    = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonDisabledStartColor);
+        gradientButtonDisabledEndColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonDisabledEndColor);
+        gradientButtonHoveredStartColor     = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonHoveredStartColor);
+        gradientButtonHoveredEndColor       = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonHoveredEndColor);
+        gradientButtonPressedStartColor     = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonPressedStartColor);
+        gradientButtonPressedEndColor       = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonPressedEndColor);
+        gradientButtonTextEnabledColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextEnabledColor);
+        gradientButtonTextDisabledColor     = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextDisabledColor);
+        gradientButtonTextHoveredColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextHoveredColor);
+        gradientButtonTextPressedColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextPressedColor);
 
         checkBoxGradientStartColor          = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxGradientStartColor);
         checkBoxGradientEndColor            = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxGradientEndColor);
@@ -88,7 +97,6 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.buttonColorEnabled : %1".arg(buttonColorEnabled));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonColorHovered : %1".arg(buttonColorHovered));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonColorPressed : %1".arg(buttonColorPressed));
-
         console.info("Dex.Themes.CurrentTheme.printValues.buttonTextDisabledColor : %1".arg(buttonTextDisabledColor));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonTextEnabledColor : %1".arg(buttonTextEnabledColor));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonTextHoveredColor : %1".arg(buttonTextHoveredColor));
@@ -96,6 +104,16 @@ ThemeData
 
         console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonStartColor : %1".arg(gradientButtonStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonEndColor : %1".arg(gradientButtonEndColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonDisabledStartColor : %1".arg(gradientButtonDisabledStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonDisabledEndColor : %1".arg(gradientButtonDisabledEndColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonHoveredStartColor : %1".arg(gradientButtonHoveredStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonHoveredEndColor : %1".arg(gradientButtonHoveredEndColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonPressedStartColor : %1".arg(gradientButtonPressedStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonPressedEndColor : %1".arg(gradientButtonPressedEndColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextEnabledColor : %1".arg(gradientButtonTextEnabledColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextDisabledColor : %1".arg(gradientButtonTextDisabledColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextHoveredColor : %1".arg(gradientButtonTextHoveredColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextPressedColor : %1".arg(gradientButtonTextPressedColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.checkBoxGradientStartColor : %1".arg(checkBoxGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.checkBoxGradientEndColor : %1".arg(checkBoxGradientEndColor));
