@@ -47,10 +47,9 @@ DexWindow
             real_visibility = visibility
 
         API.app.change_state(visibility)
-
     }
 	
-	DexWindowControl { visible: !isOsx }
+    DexWindowControl { visible: !isOsx }
 
     DexRectangle
     {
@@ -59,7 +58,7 @@ DexWindow
 		height: 30
 		anchors.horizontalCenter: parent.horizontalCenter
         color:  Dex.CurrentTheme.backgroundColorDeep
-		visible: isOsx 
+        visible: isOsx
 	}
 
     App
@@ -76,37 +75,46 @@ DexWindow
 
 		spacing: 8 
 		padding: 2
-		backgroundColor:  DexTheme.dexBoxBackgroundColor
+        backgroundColor:  DexTheme.dexBoxBackgroundColor
 
 		contentItem: Item
 		{
 			implicitWidth: 130
 			implicitHeight: 30
-			Rectangle {
-				width: parent.width-10
-				height: parent.height-5
+            Rectangle
+            {
+                width: parent.width - 10
+                height: parent.height - 5
 				anchors.centerIn: parent
 				color: logout_area.containsMouse?  DexTheme.contentColorTopBold :  DexTheme.buttonColorHovered
-				Row {
+                Row
+                {
 					anchors.centerIn: parent
-					Qaterial.Icon {
+                    spacing: 5
+
+                    Qaterial.Icon
+                    {
 						anchors.verticalCenter: parent.verticalCenter
 						icon: Qaterial.Icons.logout
 						color:  DexTheme.foregroundColor
 						size: 11
-					}
-					spacing: 5
-					DexLabel {
+                    }
+
+                    DexLabel
+                    {
 						anchors.verticalCenter: parent.verticalCenter
 						color:  DexTheme.foregroundColor
 						text: qsTr('Logout')
 					}
 				}
-				DexMouseArea {
+
+                DexMouseArea
+                {
 					id: logout_area
 					hoverEnabled: true
 					anchors.fill: parent
-					onClicked:  {
+                    onClicked:
+                    {
 						let dialog = app.showText({
                             "title": qsTr("Confirm Logout"),
                             text: qsTr("Are you sure you want to log out?") ,
@@ -137,7 +145,9 @@ DexWindow
 	}
 
     DexMacControl { visible: isOsx }
-    Row {
+
+    Row
+    {
 		height: 30
 		leftPadding: 8
 		anchors.right: isOsx? parent.right : undefined
@@ -145,7 +155,8 @@ DexWindow
 		layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
 		spacing: 5
 
-        Image {
+        Image
+        {
             source: "qrc:/assets/images/dex-tray-icon.png"
 			width: 15
 			height: 15
@@ -154,7 +165,9 @@ DexWindow
             visible: !_label.visible
 			anchors.verticalCenter: parent.verticalCenter
 		}
-        DexLabel {
+
+        DexLabel
+        {
 			text: atomic_app_name
 			font.family: 'Montserrat'
 			font.weight: Font.Medium
@@ -169,20 +182,24 @@ DexWindow
     Item {
 		width: _row.width
 		height: 30
-		Behavior on x {
-			NumberAnimation {
+        Behavior on x
+        {
+            NumberAnimation
+            {
 				duration: 200
 			}
 		}
 		anchors.right: parent.right
 		anchors.rightMargin: isOsx? 10 : 120
 
-		Row {
+        Row
+        {
 			id: _row
 			anchors.verticalCenter: parent.verticalCenter
 			layoutDirection: Qt.RightToLeft 
 			spacing: 6
-			DexLabel {
+            DexLabel
+            {
 				text: " | "
 				opacity: .1
 				font.family: 'Montserrat'
@@ -192,26 +209,29 @@ DexWindow
 				anchors.verticalCenter: parent.verticalCenter
 				leftPadding: 2
 			}
-			Rectangle {
+            Rectangle
+            {
 				width: __row.width + 10
 				height: __row.height + 5
-				anchors.verticalCenter: parent.verticalCenter
-				//visible: _label.visible
+                anchors.verticalCenter: parent.verticalCenter
 				radius: 3
 				color: _area.containsMouse?  DexTheme.dexBoxBackgroundColor : "transparent"
-				Row {
+                Row
+                {
 					id: __row
 					anchors.centerIn: parent
 					layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
 					spacing: 6
-					Qaterial.ColorIcon {
+                    Qaterial.ColorIcon
+                    {
 						source: Qaterial.Icons.accountCircle
 						iconSize: 18
 						visible: _label.visible
 						color:  DexTheme.foregroundColor
 						anchors.verticalCenter: parent.verticalCenter
 					}
-					DexLabel {
+                    DexLabel
+                    {
 						id: _label
 						text: API.app.wallet_mgr.wallet_default_name?? ""
 						font.family: 'Montserrat'
@@ -221,7 +241,8 @@ DexWindow
 						color:  DexTheme.foregroundColor
 						anchors.verticalCenter: parent.verticalCenter
 					}
-					Qaterial.ColorIcon {
+                    Qaterial.ColorIcon
+                    {
 						source: Qaterial.Icons.menuDown
 						iconSize: 14
 						visible: _label.visible
@@ -229,7 +250,8 @@ DexWindow
 						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-				DexMouseArea {
+                DexMouseArea
+                {
 					id: _area
 					anchors.fill: parent
 					onClicked: {
@@ -241,7 +263,8 @@ DexWindow
 					}
 				}
 			}
-			DexLabel {
+            DexLabel
+            {
 				text: " | "
 				opacity: .1
 				font.family: 'Montserrat'
@@ -251,18 +274,19 @@ DexWindow
 				anchors.verticalCenter: parent.verticalCenter
 				leftPadding: 2
 			}
-			Row {
+            Row
+            {
 				anchors.verticalCenter: parent.verticalCenter
 				spacing: 6
 				
-				DexLabel {
+                DexLabel
+                {
 					leftPadding: 2
 					text: qsTr("Balance")
 					font.family: 'Montserrat'
 					font.weight: Font.Medium
 					opacity: .7
-					visible: _label.visible
-					color:  DexTheme.foregroundColor
+                    visible: _label.visible
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				DexLabel {
@@ -270,21 +294,22 @@ DexWindow
 					opacity: .7
 					font.family: 'Montserrat'
 					font.weight: Font.Medium
-					visible: _label.visible
-					color:  DexTheme.foregroundColor
+                    visible: _label.visible
 					anchors.verticalCenter: parent.verticalCenter
 				}
-				DexLabel {
+                DexLabel
+                {
 					text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all,API.app.settings_pg.current_currency)
 					font.family: 'lato'
 					font.weight: Font.Medium
-					visible: _label.visible
-					color: DexTheme.accentColor
+                    visible: _label.visible
 					privacy: true
 					anchors.verticalCenter: parent.verticalCenter
-					DexMouseArea {
+                    DexMouseArea
+                    {
 						anchors.fill: parent
-						onClicked: {
+                        onClicked:
+                        {
 							const current_fiat = API.app.settings_pg.current_currency
 							const available_fiats = API.app.settings_pg.get_available_currencies()
 							const current_index = available_fiats.indexOf(
@@ -298,13 +323,13 @@ DexWindow
 				}
 			}
 
-            DexLabel {
+            DefaultText
+            {
                 text: " | "
                 opacity: .1
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible
-                color:  DexTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
             }
@@ -334,8 +359,7 @@ DexWindow
 						anchors.centerIn: parent
 						text_value: _label.visible ? app.notifications_list.length ?? 0 : 0
 						font.pixelSize: 8
-						font.family: 'Lato'
-						color:  DexTheme.foregroundColor 
+                        font.family: 'Lato'
 					}
 				}
                 onClicked:
