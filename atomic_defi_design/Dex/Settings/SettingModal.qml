@@ -332,12 +332,16 @@ Qaterial.Dialog
 
                                 model: API.qt_utilities.get_themes_list()
 
-                                onCurrentTextChanged:
+                                currentIndex: model.indexOf(atomic_settings2.value("CurrentTheme"))
+
+                                onActivated:
                                 {
-                                    console.info(qsTr("Changing theme to %1").arg(currentText))
-                                    atomic_settings2.setValue("CurrentTheme", currentText)
-                                    atomic_settings2.sync()
-                                    Dex.CurrentTheme.loadFromFilesystem(currentText)
+                                    let chosenTheme = model[index];
+
+                                    console.info(qsTr("Changing theme to %1").arg(chosenTheme));
+                                    atomic_settings2.setValue("CurrentTheme", chosenTheme);
+                                    atomic_settings2.sync();
+                                    Dex.CurrentTheme.loadFromFilesystem(chosenTheme);
                                 }
 
                                 Component.onCompleted:
