@@ -178,7 +178,9 @@ DexWindow
 		} 
 
 	}
-    Item {
+
+    Item
+    {
 		width: _row.width
 		height: 30
         Behavior on x

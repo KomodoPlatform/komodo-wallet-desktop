@@ -17,7 +17,7 @@ Item
 
         Rectangle
         {
-            width: parent.width - 2
+            width: parent.width
             height: 30
             border.color: Dex.CurrentTheme.lineSeparatorColor
             border.width: 1.5
