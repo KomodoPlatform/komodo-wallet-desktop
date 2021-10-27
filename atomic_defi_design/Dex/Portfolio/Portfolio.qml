@@ -170,7 +170,8 @@ Item {
                             Layout.fillWidth: true
                         }
                         
-                        DefaultSwitch {
+                        DefaultCheckBox
+                        {
                             Layout.alignment: Qt.AlignVCenter
                             text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
                             checked: portfolio_coins.with_balance
