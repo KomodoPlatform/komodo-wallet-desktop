@@ -31,6 +31,8 @@
 
   "switchGradientStartColor": "#cb9800",
   "switchGradientEndColor": "#EBB514",
+  "switchGradientStartColor2": "#FFF",
+  "switchGradientEndColor2": "#FFF",
 
   "modalPageCounterGradientStartColor": "#cb9800",
   "modalPageCounterGradientEndColor": "#EBB514",

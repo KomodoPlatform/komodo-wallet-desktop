@@ -32,18 +32,24 @@ Switch
         gradient: Gradient
         {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.2; color: Dex.CurrentTheme.switchGradientStartColor }
-            GradientStop { position: 0.8; color: Dex.CurrentTheme.switchGradientEndColor }
+            GradientStop { position: 0; color: Dex.CurrentTheme.switchGradientStartColor }
+            GradientStop { position: 0.9311; color: Dex.CurrentTheme.switchGradientEndColor }
         }
 
-        DexRectangle
+        Rectangle
         {
             visible: !control.checked
             anchors.centerIn: parent
-            width: parent.width - 6
-            height: parent.height - 6
+            width: parent.width - 4
+            height: parent.height - 4
             radius: parent.radius
-            color: Dex.CurrentTheme.backgroundColor
+
+            gradient: Gradient
+            {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0; color: control.checked ? Dex.CurrentTheme.switchGradientStartColor : Dex.CurrentTheme.switchGradientStartColor2 }
+                GradientStop { position: 0.9311; color: control.checked ? Dex.CurrentTheme.switchGradientEndColor : Dex.CurrentTheme.switchGradientEndColor2 }
+            }
         }
 
         Rectangle
@@ -53,7 +59,13 @@ Switch
             width: parent.width / 2 - 2
             height: parent.height - 6
             radius: parent.radius + 2
-            color: Dex.CurrentTheme.foregroundColor
+
+            gradient: Gradient
+            {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0; color: control.checked ? Dex.CurrentTheme.switchGradientStartColor2 : Dex.CurrentTheme.switchGradientStartColor }
+                GradientStop { position: 0.9311; color: control.checked ? Dex.CurrentTheme.switchGradientEndColor2 : Dex.CurrentTheme.switchGradientEndColor }
+            }
         }
     }
 

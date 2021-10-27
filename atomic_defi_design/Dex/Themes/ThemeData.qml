@@ -34,6 +34,8 @@ QtObject
 
     property color  switchGradientStartColor
     property color  switchGradientEndColor
+    property color  switchGradientStartColor2
+    property color  switchGradientEndColor2
 
     property color  modalPageCounterGradientStartColor
     property color  modalPageCounterGradientEndColor
