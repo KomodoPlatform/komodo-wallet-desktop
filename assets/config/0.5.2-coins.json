@@ -573,6 +573,81 @@
     "active": false,
     "currently_enabled": false
   },
+  "BCH": {
+    "coin": "BCH",
+    "coingecko_id": "bitcoin-cash",
+    "coinpaprika_id": "bch-bitcoin-cash",
+    "active": false,
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10055",
+        "ws_url": "electrum1.cipig.net:30055"
+      },
+      {
+        "url": "electrum2.cipig.net:10055",
+        "ws_url": "electrum2.cipig.net:30055"
+      },
+      {
+        "url": "electrum3.cipig.net:10055",
+        "ws_url": "electrum3.cipig.net:30055"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.bitcoin.com/bch/"
+    ],
+    "type": "UTXO",
+    "name": "Bitcoin Cash"
+  },
+  "BCH-ERC20": {
+      "coin": "BCH-ERC20",
+      "name": "Bitcoin Cash",
+      "coinpaprika_id": "bch-bitcoin-cash",
+      "coingecko_id": "bitcoin-cash",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BCH-BEP20": {
+      "coin": "BCH-BEP20",
+      "name": "Bitcoin Cash",
+      "coinpaprika_id": "bch-bitcoin-cash",
+      "coingecko_id": "bitcoin-cash",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "BCH-HCO20": {
+    "coin": "BCH-HCO20",
+    "name": "Bitcoin Cash,
+    "coinpaprika_id": "bch-bitcoin-cash",
+    "coingecko_id": "bitcoin-cash",
+    "nodes": [
+      "https://http-mainnet.hecochain.com"
+    ],
+    "explorer_url": [
+      "https://hecoinfo.com/"
+    ],
+    "type": "HecoChain",
+    "active": false,
+    "currently_enabled": false
+  },
   "BIDR-BEP20": {
     "coin": "BIDR-BEP20",
     "name": "BIDR",
@@ -897,32 +972,6 @@
       "type": "BEP-20",
       "active": false,
       "currently_enabled": false
-  },
-  "BCH": {
-    "active": false,
-    "coin": "BCH",
-    "coingecko_id": "bitcoin-cash",
-    "coinpaprika_id": "bch-bitcoin-cash",
-    "currently_enabled": false,
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10055",
-        "ws_url": "electrum1.cipig.net:30055"
-      },
-      {
-        "url": "electrum2.cipig.net:10055",
-        "ws_url": "electrum2.cipig.net:30055"
-      },
-      {
-        "url": "electrum3.cipig.net:10055",
-        "ws_url": "electrum3.cipig.net:30055"
-      }
-    ],
-    "explorer_url": [
-      "https://explorer.bitcoin.com/bch/"
-    ],
-    "type": "UTXO",
-    "name": "Bitcoin Cash"
   },
   "BET": {
     "coin": "BET",
