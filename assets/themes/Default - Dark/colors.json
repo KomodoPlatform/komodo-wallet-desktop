@@ -4,7 +4,7 @@
     "backgroundColor": "#202337",
     "backgroundColorDeep": "#171a2c",
 
-    "buttonColorDisabled": "#0e1021",
+    "buttonColorDisabled": "#28375A",
     "buttonColorEnabled": "#293254",
     "buttonColorHovered": "#264975",
     "buttonColorPressed": "#2932546C",
@@ -15,8 +15,8 @@
 
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6",
-    "gradientButtonDisabledStartColor": "#BBB",
-    "gradientButtonDisabledEndColor": "#BBB",
+    "gradientButtonDisabledStartColor": "#303769",
+    "gradientButtonDisabledEndColor": "#28375A",
     "gradientButtonHoveredStartColor": "#4986EAAD",
     "gradientButtonHoveredEndColor": "#4986EAAD",
     "gradientButtonPressedStartColor": "#4986EA",
