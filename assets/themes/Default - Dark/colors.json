@@ -1,4 +1,4 @@
- {
+{
     "accentColor": "#2C3D66",
     "foregroundColor": "#ffffff",
     "backgroundColor": "#202337",
@@ -15,8 +15,8 @@
 
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6",
-    "gradientButtonDisabledStartColor": "#303769",
-    "gradientButtonDisabledEndColor": "#28375A",
+    "gradientButtonDisabledStartColor": "#5A68E64D",
+    "gradientButtonDisabledEndColor": "#4986EA34",
     "gradientButtonHoveredStartColor": "#4986EAAD",
     "gradientButtonHoveredEndColor": "#4986EAAD",
     "gradientButtonPressedStartColor": "#4986EA",
