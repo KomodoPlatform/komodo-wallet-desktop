@@ -3,14 +3,15 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.12
 
-import Qaterial 1.0 as Qaterial
-
 import QtQuick.Window 2.15
+
+import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
 import App 1.0
 import "../Settings"
+import Dex.Themes 1.0 as Dex
 
 SetupPage {
     // Override
@@ -41,7 +42,7 @@ SetupPage {
     property
     var wallets: ([])
 
-    image_path: (bottomDrawer.y === 0 && bottomDrawer.visible) ? "" : "file:///" + atomic_logo_path + "/" + DexTheme.bigSidebarLogo
+    image_path: (bottomDrawer.y === 0 && bottomDrawer.visible) ? "" : Dex.CurrentTheme.bigLogoPath
     image_margin: 30
     Drawer {
         id: bottomDrawer
@@ -67,7 +68,7 @@ SetupPage {
                 Image {
                     /*width: 200 
                     height: 130*/
-                    source: "file:///" + atomic_logo_path + "/" + DexTheme.bigSidebarLogo
+                    source: Dex.CurrentTheme.bigLogoPath
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 DexLabel {

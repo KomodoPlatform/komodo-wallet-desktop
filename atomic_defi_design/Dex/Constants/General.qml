@@ -10,9 +10,6 @@ QtObject {
     readonly property int minimumHeight: 800
     readonly property double delta_time: 1000/60
 
-    property string bigSidebarLogo: "dex-logo-sidebar.png"
-    property string smallSidebarLogo: "dex-logo.png"
-
     readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
     readonly property string assets_path: "qrc:///"
     readonly property string image_path: assets_path + "assets/images/"

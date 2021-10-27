@@ -60,7 +60,7 @@
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/utilities/kill.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-
+#include "atomicdex/filesystem.qml.hpp"
 #include "atomicdex/utilities/log.prerequisites.hpp"
 
 #ifdef __APPLE__
@@ -382,6 +382,7 @@ run_app(int argc, char** argv)
 
     //! Qt utilities declaration.
     atomic_dex::qt_utilities qt_utilities;
+    atomic_dex::filesystem qml_filesystem;
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
@@ -436,6 +437,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
     engine.rootContext()->setContextProperty("dex_current_version", QString::fromStdString(atomic_dex::get_version()));
     engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
+    engine.rootContext()->setContextProperty("DexFilesystem", &qml_filesystem);
     SPDLOG_INFO("QML context properties created");
     // Load Qaterial.
 

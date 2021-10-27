@@ -8,6 +8,7 @@ import App 1.0
 import "../Wallet"
 import "../Exchange"
 import "../Sidebar"
+import Dex.Themes 1.0 as Dex
 
 SetupPage {
     // Override
@@ -21,7 +22,7 @@ SetupPage {
             onLoaded()
     }
 
-    image_path: "file:///" + atomic_logo_path + "/" + DexTheme.bigSidebarLogo
+    image_path: Dex.CurrentTheme.bigLogoPath
     image_margin: 30
     backgroundColor: 'transparent'
     borderColor: 'transparent'

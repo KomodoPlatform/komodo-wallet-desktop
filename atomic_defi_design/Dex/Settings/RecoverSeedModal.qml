@@ -7,6 +7,7 @@ import Qaterial 1.0 as Qaterial
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 BasicModal {
     id: root
@@ -128,7 +129,7 @@ BasicModal {
 
                 DefaultImage {
                     Layout.leftMargin: 10
-                    source: General.image_path + "dex-logo-sidebar.png"
+                    source: Dex.CurrentTheme.bigLogoPath
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: 32
                 }

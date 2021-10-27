@@ -3,7 +3,7 @@ import QtQuick 2.12
 QtObject
 {
     property color  accentColor
-    property color  foregroundColor
+    property color  foregroundColor: "#FFF"
     property color  backgroundColor
     property color  backgroundColorDeep
 
@@ -12,7 +12,7 @@ QtObject
     property color  buttonColorHovered
     property color  buttonColorPressed
     property color  buttonTextDisabledColor
-    property color  buttonTextEnabledColor
+    property color  buttonTextEnabledColor: "#FFF"
     property color  buttonTextHoveredColor
     property color  buttonTextPressedColor
 
@@ -24,7 +24,7 @@ QtObject
     property color  gradientButtonHoveredEndColor
     property color  gradientButtonPressedStartColor
     property color  gradientButtonPressedEndColor
-    property color  gradientButtonTextEnabledColor
+    property color  gradientButtonTextEnabledColor: "#FFF"
     property color  gradientButtonTextDisabledColor
     property color  gradientButtonTextHoveredColor
     property color  gradientButtonTextPressedColor
@@ -42,7 +42,7 @@ QtObject
 
     property color  textDisabledColor
     property color  textSelectionColor
-    property color  textPlaceholderColor
+    property color  textPlaceholderColor: "#FFF"
     property color  textSelectedColor
 
     property color  chartTradingLineBackgroundColor
@@ -67,4 +67,8 @@ QtObject
     property color  arrowDownColor
 
     property color  lineSeparatorColor
+
+    // Logos
+    property string logoPath
+    property string bigLogoPath
 }

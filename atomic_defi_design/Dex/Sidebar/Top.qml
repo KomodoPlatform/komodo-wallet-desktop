@@ -7,8 +7,7 @@ import Dex.Themes 1.0 as Dex
 
 DefaultImage
 {
-    source: isExpanded ? "file:///" + atomic_logo_path + "/" + General.bigSidebarLogo :
-                         "file:///" + atomic_logo_path + "/" + General.smallSidebarLogo
+    source: isExpanded ? Dex.CurrentTheme.bigLogoPath : Dex.CurrentTheme.logoPath
 
     scale: isExpanded ? .8 : .6
 

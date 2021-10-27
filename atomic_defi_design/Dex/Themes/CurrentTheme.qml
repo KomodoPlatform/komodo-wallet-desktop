@@ -6,12 +6,18 @@ ThemeData
 {
     signal themeChanged()
 
-    function loadFromFilesystem(fileName)
+    function loadFromFilesystem(themeName)
     {
         console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: loading %1..."
-                        .arg(fileName))
+                        .arg(themeName))
 
-        let themeData = atomic_qt_utilities.load_theme(fileName);
+        if (!DexFilesystem.exists(DexFilesystem.getThemeFolder(themeName)))
+        {
+            console.error(`${themeName} does not exist in the filesystem. Skipping...`);
+            return;
+        }
+
+        let themeData = atomic_qt_utilities.load_theme(themeName);
 
         accentColor                         = Dex.Color.argbStrFromRgbaStr(themeData.accentColor);
         foregroundColor                     = Dex.Color.argbStrFromRgbaStr(themeData.foregroundColor);
@@ -77,12 +83,25 @@ ThemeData
 
         lineSeparatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor);
 
+        loadLogo(themeName);
+
         printCurrentValues();
 
         themeChanged();
 
-        console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: %1 is loaded"
-                        .arg(fileName));
+        console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: %1 is loaded".arg(themeName));
+    }
+
+    function loadLogo(themeName)
+    {
+        let themePath   = DexFilesystem.getThemeFolder(themeName);
+        let _logoPath    = `${themePath}/dex-logo.png`;
+        let _bigLogoPath = `${themePath}/dex-logo-big.png`;
+
+        logoPath    = DexFilesystem.exists(_logoPath) ? `file:///${_logoPath}` : "qrc:///assets/images/logo/dex-logo.png";
+        bigLogoPath = DexFilesystem.exists(_bigLogoPath) ? `file:///${_bigLogoPath}` : "qrc:///assets/images/dex-logo-big.png";
+        console.log(logoPath);
+        console.log(bigLogoPath);
     }
 
     // Prints current loaded theme values.
@@ -150,5 +169,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.arrowDownColor : %1".arg(arrowDownColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.lineSeparatorColor : %1".arg(lineSeparatorColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.logoPath : %1".arg(logoPath));
+        console.info("Dex.Themes.CurrentTheme.printValues.bigLogoPath : %1".arg(bigLogoPath));
     }
 }
