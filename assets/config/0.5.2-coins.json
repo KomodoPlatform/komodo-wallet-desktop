@@ -635,7 +635,7 @@
   },
   "BCH-HCO20": {
     "coin": "BCH-HCO20",
-    "name": "Bitcoin Cash,
+    "name": "Bitcoin Cash",
     "coinpaprika_id": "bch-bitcoin-cash",
     "coingecko_id": "bitcoin-cash",
     "nodes": [
