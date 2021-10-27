@@ -3,10 +3,11 @@ import QtQuick.Layouts 1.15
 import "../Constants"
 import App 1.0
 
-Circle {
+Circle
+{
     property string link
     property alias source: icon.source
-    property alias text: tooltip_text.text_value
+    property alias text: tooltip_text.text
 
     Layout.preferredWidth: 60
     Layout.preferredHeight: Layout.preferredWidth
@@ -15,7 +16,8 @@ Circle {
 
     radius: 100
 
-    DefaultImage {
+    DefaultImage
+    {
         id: icon
 
         width: parent.width * 0.9
@@ -23,21 +25,18 @@ Circle {
 
         anchors.centerIn: parent
 
-        DefaultMouseArea {
+        DefaultMouseArea
+        {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true
             onClicked: Qt.openUrlExternally(link)
         }
 
-        DefaultTooltip {
+        DefaultTooltip
+        {
             visible: mouse_area.containsMouse
-
-            contentItem: ColumnLayout {
-                DefaultText {
-                    id: tooltip_text
-                }
-            }
+            id: tooltip_text
         }
     }
 }

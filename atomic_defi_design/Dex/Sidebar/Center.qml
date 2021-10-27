@@ -77,7 +77,7 @@ Item
             icon.source: General.image_path + "menu-news-white.svg"
             onClicked: lineSelected(this)
 
-            DexTooltip
+            DefaultTooltip
             {
                 visible: !isExpanded && parent.mouseArea.containsMouse
                 text: qsTr("Address Book")
@@ -91,7 +91,7 @@ Item
             label.text: isExpanded ? qsTr("Fiat") : ""
             icon.source: General.image_path + "bill.svg"
 
-            DexTooltip
+            DefaultTooltip
             {
                 visible: parent.mouseArea.containsMouse
                 text: isExpanded ? qsTr("Coming soon !") : qsTr("Fiat")
