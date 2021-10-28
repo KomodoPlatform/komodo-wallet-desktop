@@ -5,18 +5,20 @@ import QtQuick.Controls.impl 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import "../Constants"
-as Constants
+import "../Constants" as Constants
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-ComboBox {
+ComboBox
+{
     id: control
-    property
-    var dropdownLineText: m => textRole === "" ?
-        m.modelData :
-        !m.modelData ? m[textRole] : m.modelData[textRole]
+
+    property var dropdownLineText: m => textRole === "" ?
+                                       m.modelData : !m.modelData ?
+                                           m[textRole] : m.modelData[textRole]
     property string currentTicker: "All"
-    delegate: ItemDelegate 
+
+    delegate: ItemDelegate
     {
         width: control.width + 50
         highlighted: control.highlightedIndex === index
@@ -27,79 +29,84 @@ ComboBox {
         }
     }
 
-    indicator: Qaterial.Icon {
+    indicator: Qaterial.Icon
+    {
         x: control.mirrored ? control.padding : control.width - width - control.padding - 4
         y: control.topPadding + (control.availableHeight - height) / 2
-        color: control.contentItem.color
+        color: Dex.CurrentTheme.foregroundColor
         icon: Qaterial.Icons.chevronDown
     }
 
-    contentItem: DexLabel 
+    contentItem: DefaultText
     {
         leftPadding: 10
         verticalAlignment: Text.AlignVCenter
-
         width: _background.width - leftPadding
         height: _background.height
-
-        color: DexTheme.foregroundColor
         text: control.currentTicker
         elide: Text.ElideRight
         wrapMode: Text.NoWrap
     }
 
-    background: DexRectangle {
+    background: DefaultRectangle
+    {
         id: _background
-
-        //implicitWidth: 120
 
         implicitHeight: 40
         colorAnimation: false
-        color: !control.enabled ? DexTheme.backgroundDarkColor0 : control.hovered ? DexTheme.backgroundDarkColor0 : DexTheme.surfaceColor
+        color: Dex.CurrentTheme.floatingBackgroundColor
         radius: 8
     }
 
-    popup: Popup {
+    popup: Popup
+    {
         id: comboPopup
+
         readonly property double max_height: 350
+
         y: control.height - 1
         width: control.width + 50
         height: Math.min(contentItem.implicitHeight, popup.max_height)
         padding: 1
 
-        contentItem: ColumnLayout {
+        contentItem: ColumnLayout
+        {
             anchors.rightMargin: 5
 
-            DefaultTextField {
+            DefaultTextField
+            {
                 id: input_coin_filter
                 placeholderText: qsTr("Search")
 
-                background: Item {
-                    Rectangle {
+                background: Item
+                {
+                    DefaultRectangle
+                    {
                         anchors.fill: parent
                         anchors.topMargin: -5
                         anchors.rightMargin: -1
-                        border.color: "transparent"
-                        color: DexTheme.backgroundColor
+                        color: Dex.CurrentTheme.floatingBackgroundColor
                     }
                 }
 
-                onTextChanged: {
-                    control.model.setFilterFixedString(text)
-                }
+                onTextChanged: control.model.setFilterFixedString(text)
 
-                function reset() {
+                function reset()
+                {
                     text = ""
                 }
 
-                Connections {
+                Connections
+                {
                     target: popup
-                    function onOpened() {
+                    function onOpened()
+                    {
                         input_coin_filter.reset()
                         input_coin_filter.forceActiveFocus()
                     }
 
-                    function onClosed() {
+                    function onClosed()
+                    {
                         input_coin_filter.reset()
                     }
                 }
@@ -110,55 +117,57 @@ ComboBox {
                 Layout.fillWidth: true
                 Layout.leftMargin: 0
                 Layout.preferredHeight: 40
-                Layout.rightMargin: 2 //Layout.leftMargin
+                Layout.rightMargin: 2
                 Layout.topMargin: Layout.leftMargin
-                Keys.onDownPressed: {
-                    control.incrementCurrentIndex()
-                }
-                Keys.onUpPressed: {
-                    control.decrementCurrentIndex()
-                }
+                Keys.onDownPressed: control.incrementCurrentIndex()
+                Keys.onUpPressed: control.decrementCurrentIndex()
 
-                Keys.onPressed: {
-                    if (event.key === Qt.Key_Return) {
-                        if (control.count > 0) {
-                            control.currentIndex = 0 //control.highlightedIndex
-                            control.currentTicker = control.currentText
+                Keys.onPressed:
+                {
+                    if (event.key === Qt.Key_Return)
+                    {
+                        if (control.count > 0)
+                        {
+                            control.currentIndex = 0;
+                            control.currentTicker = control.currentText;
                         }
-                        popup.close()
-                        event.accepted = true
+                        popup.close();
+                        event.accepted = true;
                     }
                 }
             }
-            Item {
+            Item
+            {
                 Layout.maximumHeight: popup.max_height - 100
                 Layout.fillWidth: true
                 implicitHeight: popup_list_view.contentHeight + 5
-                DexListView {
+                DexListView
+                {
                     id: popup_list_view
                     model: control.popup.visible ? control.model : null
                     currentIndex: control.highlightedIndex
                     anchors.fill: parent
                     anchors.bottomMargin: 10
                     anchors.rightMargin: 2
-                    highlight: DexRectangle {
+                    highlight: DefaultRectangle
+                    {
                         radius: 0
                     }
                     clip: true
-                    delegate: ItemDelegate {
+                    delegate: ItemDelegate
+                    {
                         width: control.width + 50
                         highlighted: control.highlightedIndex === index
-                        //foregroundColor: DexTheme.foregroundColor
-                        contentItem: DefaultText {
+                        contentItem: DefaultText
+                        {
                             text_value: "<b><font color='" + DexTheme.getCoinColor(ticker) + "'>" + ticker + "</font></b>" + "    %1".arg(General.coinName(ticker)) 
-                            
                         }
 
-                        background: DexRectangle {
+                        background: DefaultRectangle
+                        {
                             colorAnimation: false
                             radius: 0
-                            color: popup_list_view.currentIndex === index ? DexTheme.buttonColorHovered : DexTheme.comboBoxBackgroundColor
-                            border.color: 'transparent'
+                            color: popup_list_view.currentIndex === index ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.floatingBackgroundColor
                         }
 
                         onClicked: {
@@ -167,7 +176,8 @@ ComboBox {
                         }
                     }
 
-                    DexMouseArea {
+                    DexMouseArea
+                    {
                         anchors.fill: parent
                         acceptedButtons: Qt.NoButton
                     }
@@ -176,17 +186,18 @@ ComboBox {
 
         }
 
-        background: DexRectangle {
+        background: DefaultRectangle
+        {
             y: -5
             radius: 0
             colorAnimation: false
             width: parent.width
             height: parent.height
-            color:  DexTheme.comboBoxBackgroundColor
-            border.color: DexTheme.comboBoxBorderColor
+            color: Dex.CurrentTheme.floatingBackgroundColor
         }
     }
-    DefaultMouseArea {
+    DefaultMouseArea
+    {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
     }

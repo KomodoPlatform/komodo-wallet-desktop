@@ -13,17 +13,14 @@ Item {
     height: 40
     width: parent.width
     z: 2
-    Rectangle
-    {
-        anchors.fill: parent
-        color: DexTheme.portfolioPieGradient ? "transparent" : DexTheme.dexBoxBackgroundColor
-    }
 
-    RowLayout {
+    RowLayout
+    {
         width: parent.width - 30
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 130
             text: sell_mode? qsTr("You get") : qsTr("You send")
@@ -32,7 +29,8 @@ Item {
             font.bold: true
             font.weight: Font.Black
         }
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
 
@@ -44,7 +42,8 @@ Item {
             horizontalAlignment: Label.AlignRight
 
         }
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignVCenter
             text: qsTr("CEX rate")
             horizontalAlignment: Label.AlignRight

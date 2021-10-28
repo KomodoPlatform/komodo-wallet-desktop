@@ -6,26 +6,31 @@ import QtGraphicalEffects 1.0
 import "../../Components"
 import "../../Constants"
 
-RowLayout {
+RowLayout
+{
     id: root
-
-    spacing: 5
-    layoutDirection: left_side ? Qt.LeftToRight : Qt.RightToLeft
 
     property bool left_side: false
     property var ticker_list
     property string ticker
 
-    function renewIndex() {
+    function renewIndex()
+    {
         combo.currentIndex = combo.indexOfValue(ticker)
     }
 
-    onTickerChanged: renewIndex()
+    spacing: 5
+    layoutDirection: left_side ? Qt.LeftToRight : Qt.RightToLeft
 
+    onTickerChanged: renewIndex()
     Component.onCompleted: renewIndex()
 
-    SweetDexComboBox {
+    SweetDexComboBox
+    {
         id: combo
+
+        // Indicates user input, when list changes, index stays the same so we know it's not user input
+        property bool index_changed: false
 
         enabled: !block_everything
 
@@ -33,12 +38,11 @@ RowLayout {
 
         valueRole: "ticker"
 
-        // Indicates user input, when list changes, index stays the same so we know it's not user input
-        property bool index_changed: false
         height: parent.height
-        onCurrentIndexChanged: combo.index_changed = true
 
-        onCurrentValueChanged: {
+        onCurrentIndexChanged: combo.index_changed = true
+        onCurrentValueChanged:
+        {
             // User input
             if(combo.index_changed) {
                 combo.index_changed = false

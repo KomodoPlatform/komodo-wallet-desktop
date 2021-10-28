@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 import "../../Components"
 import "../../Constants"
+import Dex.Themes 1.0 as Dex
 
 // Price
 RowLayout {
@@ -28,25 +29,29 @@ RowLayout {
         return parseFloat(General.formatDouble(value, 2))
     }
 
-    DefaultText {
+    DefaultText
+    {
         visible: !price_entered && invalid_cex_price
         Layout.alignment: Qt.AlignHCenter
         text_value: qsTr("Set swap price for evaluation")
         font.pixelSize: fontSizeBigger
     }
 
-    ColumnLayout {
+    ColumnLayout
+    {
         visible: price_entered
         Layout.alignment: Qt.AlignHCenter
 
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignHCenter
             text_value: qsTr("Exchange rate") + (preffered_order.price !== undefined ? (" (" + qsTr("Selected") + ")") : "")
             font.pixelSize: fontSize
         }
 
         // Price reversed
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", price_reversed, left_ticker)
             font.pixelSize: fontSizeBigger
@@ -54,7 +59,8 @@ RowLayout {
         }
 
         // Price
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
             font.pixelSize: fontSize
@@ -62,33 +68,38 @@ RowLayout {
     }
 
     // Price Comparison
-    ColumnLayout {
+    ColumnLayout
+    {
         visible: price_entered && !invalid_cex_price
         Layout.alignment: Qt.AlignHCenter
 
-        DefaultText {
+        DefaultText
+        {
             id: price_diff_text
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
-            color: parseFloat(cex_price_diff) <= 0 ? Style.colorGreen : Style.colorRed
+            color: parseFloat(cex_price_diff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.noColor
             text_value: (parseFloat(cex_price_diff) > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(limitDigits(cex_price_diff)) + "</b>")
             font.pixelSize: fontSize
         }
 
-        RowLayout {
+        RowLayout
+        {
             Layout.alignment: Qt.AlignHCenter
-            DefaultText {
+            DefaultText
+            {
                 text_value: General.formatPercent(line_scale)
                 font.pixelSize: fontSize
             }
 
-            GradientRectangle {
+            GradientRectangle
+            {
                 width: 125
                 height: 6
 
-                start_color: Style.colorGreen
-                end_color: Style.colorRed
+                start_color: Dex.CurrentTheme.okColor
+                end_color: Dex.CurrentTheme.noColor
 
                 AnimatedRectangle {
                     width: 4
@@ -99,7 +110,8 @@ RowLayout {
                 }
             }
 
-            DefaultText {
+            DefaultText
+            {
                 text_value: General.formatPercent(-line_scale)
                 font.pixelSize: fontSize
             }
@@ -107,7 +119,8 @@ RowLayout {
     }
 
     // CEXchange
-    ColumnLayout {
+    ColumnLayout
+    {
         visible: !invalid_cex_price
         Layout.alignment: Qt.AlignHCenter
 
@@ -120,7 +133,8 @@ RowLayout {
         }
 
         // Price reversed
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", cex_price_reversed, left_ticker)
             font.pixelSize: fontSizeBigger
@@ -128,7 +142,8 @@ RowLayout {
         }
 
         // Price
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", cex_price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
             font.pixelSize: fontSize

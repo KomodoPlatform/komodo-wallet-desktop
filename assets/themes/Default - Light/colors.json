@@ -8,10 +8,10 @@
     "buttonColorEnabled": "#F0F6FF",
     "buttonColorHovered": "#D7E7FF",
     "buttonColorPressed": "#B8D2F9",
-    "buttonTextDisabledColor": "#000000",
-    "buttonTextEnabledColor": "#000000",
-    "buttonTextHoveredColor": "#000000",
-    "buttonTextPressedColor": "#000000",
+    "buttonTextDisabledColor": "#D1D4DC",
+    "buttonTextEnabledColor": "#456078",
+    "buttonTextHoveredColor": "#2F5678",
+    "buttonTextPressedColor": "#3A5B78",
 
     "gradientButtonStartColor": "#5A68E6",
     "gradientButtonEndColor": "#4986EAAB",
@@ -47,9 +47,9 @@
     "chartTradingLineBackgroundColor": "#C5F2EF",
     "chartTradingLineColor": "#53EBD7",
 
-    "innerBackgroundColor": "#f7faff",
+    "innerBackgroundColor": "#F5F9FF",
 
-    "floatingBackgroundColor": "#f7faff",
+    "floatingBackgroundColor": "#F5F9FF",
 
     "sidebarBgColor": "#FCFCFC",
     "sidebarVersionTextColor": "#456078",

@@ -1,21 +1,24 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+
 import Qaterial 1.0 as Qaterial
+
 import "../Constants" as Constants
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-RowLayout {
+RowLayout
+{
     id: root
 
     spacing: 6
 
-    property
-    var pageSize: Constants.API.app.orders_mdl.nb_pages
-    property
-    var currentValue: Constants.API.app.orders_mdl.current_page
+    property var pageSize: Constants.API.app.orders_mdl.nb_pages
+    property var currentValue: Constants.API.app.orders_mdl.current_page
 
-    function refreshBtn() {
+    function refreshBtn()
+    {
         currentValue = Constants.API.app.orders_mdl.current_page
         var model = []
         if (pageSize < 10) {
@@ -56,14 +59,17 @@ RowLayout {
         btnGroup.model = model
     }
 
-    onPageSizeChanged: {
+    onPageSizeChanged:
+    {
         currentValue = 1
         if (pageSize < 1) {
             pageSize = 1
         }
         refreshBtn()
     }
-    DefaultComboBox {
+
+    DefaultComboBox
+    {
         readonly property int item_count: Constants.API.app.orders_mdl.limit_nb_elements
         readonly property
         var options: [5, 10, 25, 50, 100, 200]
@@ -77,25 +83,29 @@ RowLayout {
         onCurrentValueChanged: Constants.API.app.orders_mdl.limit_nb_elements = currentValue
     }
 
-    DefaultText {
+    DefaultText
+    {
         Layout.alignment: Qt.AlignCenter
         font.pixelSize: 11
         text_value: qsTr("items per page")
     }
-    Item {
+    Item
+    {
         Layout.fillWidth: true
         Layout.fillHeight: true
     }
 
-    PaginationButton {
+    PaginationButton
+    {
         Layout.preferredWidth: 32
         Layout.preferredHeight: 32
         radius: 20
         opacity: enabled ? 1 : .5
-        Qaterial.ColorIcon {
+        Qaterial.ColorIcon
+        {
             anchors.centerIn: parent
             iconSize: 14
-            color: DexTheme.foregroundColor
+            color: Dex.CurrentTheme.foregroundColor
             source: Qaterial.Icons.skipPreviousOutline
         }
         enabled: currentValue > 1
@@ -106,19 +116,22 @@ RowLayout {
     }
 
 
-    Repeater {
+    Repeater
+    {
         id: btnGroup
-        model: [{
+        model:
+        [{
             number: 1,
             selected: true
         }]
-        delegate: PaginationButton {
+        delegate: PaginationButton
+        {
             text: modelData.number === -1 ? "..." : ("" + modelData.number)
             radius: 30
             Layout.preferredWidth: 32
             Layout.preferredHeight: 32
             Layout.alignment: Qt.AlignVCenter
-            color: modelData.number === currentValue ? 'transparent' : backgroundColor
+            color: modelData.number === currentValue ? 'transparent' : Dex.CurrentTheme.buttonColorEnabled
             onClicked: {
                 if (currentValue !== model.modelData) {
                     Constants.API.app.orders_mdl.current_page = btnGroup.model[index].number
@@ -127,15 +140,17 @@ RowLayout {
             }
         }
     }
-    PaginationButton {
+    PaginationButton
+    {
         Layout.preferredWidth: 32
         Layout.preferredHeight: 32
         radius: 20
         opacity: enabled ? 1 : .5
-        Qaterial.ColorIcon {
+        Qaterial.ColorIcon
+        {
             anchors.centerIn: parent
             iconSize: 14
-            color: DexTheme.foregroundColor
+            color: Dex.CurrentTheme.foregroundColor
             source: Qaterial.Icons.skipNextOutline
         }
         enabled: pageSize > 1 && currentValue < pageSize
@@ -145,5 +160,4 @@ RowLayout {
         }
 
     }
-
 }

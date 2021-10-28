@@ -6,9 +6,9 @@ import Qt.labs.platform 1.1
 import Qaterial 1.0 as Qaterial
 
 import App 1.0
-
 import "../../../Components"
 import "../../.."
+import Dex.Themes 1.0 as Dex
 
 Item {
     id: root
@@ -81,7 +81,8 @@ Item {
         list_model_proxy.apply_all_filtering()
     }
 
-    ColumnLayout {
+    ColumnLayout
+    {
         anchors.horizontalCenter: parent.horizontalCenter
 
         anchors.fill: parent
@@ -89,45 +90,58 @@ Item {
         spacing: 15
 
         // Bottom part
-        Item {
+        Item
+        {
             id: orders_settings
+
             property bool displaySetting: false
+
             Layout.fillWidth: true
             Layout.preferredHeight: displaySetting ? 80 : 30
-            Behavior on Layout.preferredHeight {
-                NumberAnimation {
+
+            Behavior on Layout.preferredHeight
+            {
+                NumberAnimation
+                {
                     duration: 150
                 }
             }
 
-            Rectangle {
+            Rectangle
+            {
                 width: parent.width
                 height: orders_settings.displaySetting ? 50 : 10
-                Behavior on height {
-                    NumberAnimation {
-                        duration: 150
-                    }
-                }
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -15
                 visible: false
-                color: Style.colorTheme5
+                color: Dex.CurrentTheme.foregroundColor
+
+                Behavior on height
+                {
+                    NumberAnimation
+                    {
+                        duration: 150
+                    }
+                }
             }
 
-            Row {
+            Row
+            {
                 x: 5
                 y: 0
                 spacing: 5
-                Qaterial.OutlineButton {
+                Qaterial.OutlineButton
+                {
                     icon.source: Qaterial.Icons.filter
                     text: qsTr("Filter")
-                    foregroundColor: Style.colorWhite5
                     anchors.verticalCenter: parent.verticalCenter
-                    outlinedColor: Style.colorTheme5
+                    outlinedColor: Dex.CurrentTheme.foregroundColor
+                    foregroundColor: Dex.CurrentTheme.foregroundColor
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
 
-                DexLabel {
+                DexLabel
+                {
                     opacity: .4
                     visible: !orders_settings.displaySetting
                     anchors.verticalCenter: parent.verticalCenter
@@ -139,52 +153,59 @@ Item {
                         .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
                 }
 
-                Qaterial.OutlineButton {
+                Qaterial.OutlineButton
+                {
                     visible: root.is_history && orders_settings.displaySetting
-                    foregroundColor: Style.colorWhite5
-                    outlinedColor: Style.colorTheme5
+                    foregroundColor: Dex.CurrentTheme.foregroundColor
+                    outlinedColor: Dex.CurrentTheme.foregroundColor
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Export CSV")
                     enabled: list_model.length > 0
-                    onClicked: {
+                    onClicked:
+                    {
                         export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
                         export_csv_dialog.open()
                     }
                 }
             }
 
-            Row {
+            Row
+            {
                 anchors.right: parent.right
                 y: 0
                 rightPadding: 5
-                Qaterial.OutlineButton {
+                Qaterial.OutlineButton
+                {
                     visible: root.is_history & orders_settings.displaySetting
                     Layout.leftMargin: 30
                     text: qsTr("Apply Filter")
-                    foregroundColor: enabled ? Style.colorGreen2 : Style.colorTheme5
-                    outlinedColor: enabled ? Style.colorGreen2 : Style.colorTheme5
+                    foregroundColor: enabled ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.buttonColorDisabled
+                    outlinedColor: enabled ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.buttonColorDisabled
                     enabled: list_model_proxy.can_i_apply_filtering
                     onClicked: list_model_proxy.apply_all_filtering()
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                Qaterial.OutlineButton {
+                Qaterial.OutlineButton
+                {
                     icon.source: Qaterial.Icons.close
                     text: "Cancel All"
                     visible: !is_history && API.app.orders_mdl.length > 0
-                    foregroundColor: Qaterial.Colors.pink
                     anchors.verticalCenter: parent.verticalCenter
-                    outlinedColor: Style.colorTheme5
+                    outlinedColor: Dex.CurrentTheme.noColor
+                    foregroundColor: Dex.CurrentTheme.noColor
                     onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())
                 }
             }
-            RowLayout {
+            RowLayout
+            {
                 visible: orders_settings.height > 75
                 width: parent.width - 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -15
                 spacing: 10
-                DefaultSweetComboBox {
+                DefaultSweetComboBox
+                {
                     id: combo_base
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     onCurrentTickerChanged: applyFilter()
@@ -193,14 +214,18 @@ Item {
                     valueRole: "ticker"
                     textRole: 'ticker'
                 }
-                Qaterial.ColorIcon {
+                Qaterial.ColorIcon
+                {
                     Layout.alignment: Qt.AlignVCenter
                     source: Qaterial.Icons.swapHorizontal
-                    DefaultMouseArea {
+                    color: Dex.CurrentTheme.foregroundColor
+                    DefaultMouseArea
+                    {
                         id: swap_button
                         anchors.fill: parent
                         hoverEnabled: true
-                        onClicked: {
+                        onClicked:
+                        {
                             const base_idx = combo_base.currentIndex
                             combo_base.currentIndex = combo_rel.currentIndex
                             combo_rel.currentIndex = base_idx
@@ -208,16 +233,18 @@ Item {
                     }
                 }
 
-                DefaultSweetComboBox {
+                DefaultSweetComboBox
+                {
                     id: combo_rel
-                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy //combo_base.model
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     onCurrentTickerChanged: applyFilter()
                     Layout.fillWidth: true
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
                 }
-                Qaterial.TextFieldDatePicker {
+                Qaterial.TextFieldDatePicker
+                {
                     id: min_date
                     title: qsTr("From")
                     from: default_min_date
@@ -231,7 +258,8 @@ Item {
                     Layout.fillWidth: true
                 }
 
-                Qaterial.TextFieldDatePicker {
+                Qaterial.TextFieldDatePicker
+                {
                     id: max_date
                     enabled: min_date.enabled
                     title: qsTr("To")
@@ -248,13 +276,15 @@ Item {
             }
         }
 
-        RowLayout {
+        RowLayout
+        {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
             spacing: parent.spacing
 
-            OrderList {
+            OrderList
+            {
                 id: order_list
                 items: list_model
                 is_history: root.is_history
@@ -264,12 +294,14 @@ Item {
 
         }
     }
-    ModalLoader {
+    ModalLoader
+    {
         id: order_modal
         sourceComponent: OrderModal {}
     }
 
-    FileDialog {
+    FileDialog
+    {
         id: export_csv_dialog
 
         title: qsTr("Please choose the CSV export name and location")

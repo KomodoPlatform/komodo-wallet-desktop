@@ -9,37 +9,45 @@ import App 1.0
 
 Item {
     id: _control
+
     property bool hide_header: false
     property bool isAsk
     property bool isVertical: false
-    Header {
+
+    Header
+    {
         visible: !hide_header
         is_ask: isAsk
     }
 
-    ListView {
+    ListView
+    {
         id: orderList
-        anchors.topMargin: hide_header? 0 : 40
+        anchors.topMargin: hide_header ? 0 : 40
         anchors.fill: parent
-        model: isAsk? API.app.trading_pg.orderbook.asks.proxy_mdl : API.app.trading_pg.orderbook.bids.proxy_mdl
+        model: isAsk ? API.app.trading_pg.orderbook.asks.proxy_mdl : API.app.trading_pg.orderbook.bids.proxy_mdl
         clip: true
         reuseItems: true
 
-        Timer {
+        Timer
+        {
             id: _tm
             interval: 2000
-            onTriggered: {
+            onTriggered:
+            {
                 orderList.positionViewAtEnd()
             }
         }
-        onContentHeightChanged : {
+        onContentHeightChanged :
+        {
             if(isVertical) {
                 _tm.start()
             }
         }
 
-        delegate: ListDelegate {
-            isAsk: _control.isAsk? true : false
+        delegate: ListDelegate
+        {
+            isAsk: _control.isAsk ? true : false
         }
     }
 }

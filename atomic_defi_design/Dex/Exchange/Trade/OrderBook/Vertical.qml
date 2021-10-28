@@ -6,40 +6,48 @@ import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-Item {
+Item
+{
     id: orderBook
     visible: isUltraLarge
 
-    ColumnLayout {
+    ColumnLayout
+    {
         anchors.fill: parent
         spacing: 10
 
-        InnerBackground {
+        InnerBackground
+        {
             Layout.fillWidth: true
             Layout.fillHeight: true
             radius: 2
-            color: 'transparent'
-            ColumnLayout {
+            ColumnLayout
+            {
                 anchors.fill: parent
                 spacing: 2
-                List {
+                List
+                {
                     isAsk: true
                     isVertical: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
-                Item {
+                Item
+                {
                     Layout.preferredHeight: 4
                     Layout.fillWidth: true
-                    Rectangle {
+                    Rectangle
+                    {
                         width: parent.width
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: DexTheme.surfaceColor
+                        color: Dex.CurrentTheme.floatingBackgroundColor
                     }
                 }
-                List {
+                List
+                {
                     isAsk: false
                     hide_header: true
                     Layout.fillHeight: true

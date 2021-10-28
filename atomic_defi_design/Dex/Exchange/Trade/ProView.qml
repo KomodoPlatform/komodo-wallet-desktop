@@ -30,6 +30,7 @@ import "BestOrder/" as BestOrder
 import "Orders/" as OrdersView
 
 import "../../Screens"
+import Dex.Themes 1.0 as Dex
 
 ColumnLayout {
     id: form
@@ -183,18 +184,21 @@ ColumnLayout {
                         }
                     }
                 }
-                DexTradeBox {
+                DexTradeBox
+                {
                     canBeFull: true
                     hideHeader: true
                     maximumHeight: 80
                     minimumHeight: 75
-                    RowLayout {
+                    RowLayout
+                    {
                         id: selectors
                         spacing: 20
                         anchors.fill: parent
                         anchors.rightMargin: 10
                         anchors.leftMargin: 10
-                        TickerSelector {
+                        TickerSelector
+                        {
                             id: selector_left
                             left_side: true
                             Layout.fillHeight: true
@@ -204,7 +208,8 @@ ColumnLayout {
                             Layout.fillWidth: true
                         }
 
-                        SwapIcon {
+                        SwapIcon
+                        {
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                             Layout.preferredHeight: selector_left.height * 0.65
 
@@ -212,17 +217,21 @@ ColumnLayout {
                             bottom_arrow_ticker: selector_right.ticker
                             hovered: swap_button.containsMouse
 
-                            DefaultMouseArea {
+                            DefaultMouseArea
+                            {
                                 id: swap_button
                                 anchors.fill: parent
                                 hoverEnabled: true
-                                onClicked: {
+                                onClicked:
+                                {
                                     if (!block_everything)
                                         setPair(true, right_ticker)
                                 }
                             }
                         }
-                        TickerSelector {
+
+                        TickerSelector
+                        {
                             id: selector_right
                             left_side: false
                             ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
@@ -235,12 +244,17 @@ ColumnLayout {
                 }
 
                 
-                DexTradeBox {
+                DexTradeBox
+                {
                     id: optionBox
                     expandedVert: dex_chart.visible? false : true
                     expandable: true
                     defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270
-                    Connections {
+                    closable: true
+                    title: qsTr("Trading Information")
+
+                    Connections
+                    {
                         target: tabView
                         function onCurrentIndexChanged() {
                             if (tabView.currentIndex !== 0) {
@@ -250,84 +264,82 @@ ColumnLayout {
                             }
                         }
                     }
-                    closable: true
-                    title: qsTr("Trading Information")
-                    Column {
+
+                    Column
+                    {
                         topPadding: 40
                         width: parent.width
                         height: parent.height
                         clip: !parent.contentVisible
                         anchors.horizontalCenter: parent.horizontalCenter
-                        Qaterial.LatoTabBar {
-                            z: 4
-                            id: tabView
+                        Qaterial.LatoTabBar
+                        {
                             property int taux_exchange: 0
                             property int order_idx: 1
                             property int history_idx: 2
+
+                            z: 4
+                            id: tabView
                             width: parent.width
                             currentIndex: tabView.currentIndex
                             anchors.horizontalCenter: parent.horizontalCenter
                             Material.foreground: DexTheme.foregroundColor
-                            background: Rectangle {
-                                radius: 0
-                                color: DexTheme.portfolioPieGradient ? "transparent" : DexTheme.dexBoxBackgroundColor
-                            }
-
+                            background: null
                             y: 5
                             leftPadding: 15
-                            Qaterial.LatoTabButton {
+
+                            Qaterial.LatoTabButton
+                            {
                                 width: 150
                                 text: qsTr("Exchange Rates")
                                 font.pixelSize: 14
-                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : Dex.CurrentTheme.foregroundColor
                                 textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
-                            Qaterial.LatoTabButton {
+                            Qaterial.LatoTabButton
+                            {
                                 width: 120
                                 text: qsTr("Orders")
                                 font.pixelSize: 14
-                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : Dex.CurrentTheme.foregroundColor
                                 textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
-                            Qaterial.LatoTabButton {
+                            Qaterial.LatoTabButton
+                            {
                                 width: 120
                                 text: qsTr("History")
                                 font.pixelSize: 14
-                                textColor: checked ? Qaterial.Style.buttonAccentColor : DexTheme.foregroundColor
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : Dex.CurrentTheme.foregroundColor
                                 textSecondaryColor: DexTheme.foregroundColorLightColor0
                                 opacity: checked ? 1 : .6
                             }
                         }
-                        Item {
+                        Item
+                        {
                             anchors.horizontalCenter: parent.horizontalCenter
                             width: parent.width
                             height: optionBox.height - (tabView.height + 40)
-                            SwipeView {
+                            SwipeView
+                            {
                                 id: swipeView
                                 clip: true
                                 interactive: false
                                 currentIndex: tabView.currentIndex
                                 anchors.fill: parent
-                                onCurrentIndexChanged: {
-                                    swipeView.currentItem.update()
-                                    if(currentIndex===2) {
-                                        history_component.list_model_proxy.is_history = true
-                                    } else {
-                                        history_component.list_model_proxy.is_history = false
-                                    }
+                                onCurrentIndexChanged:
+                                {
+                                    swipeView.currentItem.update();
+                                    if (currentIndex === 2) history_component.list_model_proxy.is_history = true;
+                                    else history_component.list_model_proxy.is_history = false;
                                 }
 
-                                PriceLine {
-                                    id: price_line_obj
-                                }
+                                PriceLine { id: price_line_obj }
 
-                                OrdersView.OrdersPage {
-                                    id: order_component
-                                    clip: true
-                                }
-                                OrdersView.OrdersPage {
+                                OrdersView.OrdersPage { id: order_component; clip: true }
+                                OrdersView.OrdersPage
+                                {
                                     id: history_component
                                     is_history: true
                                     clip: true
@@ -336,9 +348,7 @@ ColumnLayout {
                         }
                     }
                 }
-                Item {
-                    SplitView.maximumHeight: 1
-                }
+                Item { SplitView.maximumHeight: 1 }
             }
         }
         Item {
@@ -362,18 +372,22 @@ ColumnLayout {
                     }
                 }
                 itemLists: [_orderbook_box, _best_order_box]
-                DexTradeBox {
+                DexTradeBox
+                {
                     id: _orderbook_box
                     SplitView.fillWidth: true
                     closable: true
                     title: qsTr("Order Book")
                     expandedVert: true
-                    Behavior on SplitView.preferredWidth {
-                        NumberAnimation {
+                    Behavior on SplitView.preferredWidth
+                    {
+                        NumberAnimation
+                        {
                             duration: 100
                         }
                     }
-                    OrderBook.Vertical {
+                    OrderBook.Vertical
+                    {
                         clip: !parent.contentVisible
                         visible: parent.contentVisible
                         anchors.topMargin: 40
@@ -382,21 +396,24 @@ ColumnLayout {
                 }
                 DexTradeBox {
                     id: _best_order_box
+
                     defaultHeight: 250
                     minimumHeight: 130
                     closable: true
                     title: qsTr("Best Orders")
                     reloadable: true
-                    onReload: {
+                    onReload: API.app.trading_pg.orderbook.refresh_best_orders()
 
-                        API.app.trading_pg.orderbook.refresh_best_orders()
-                    }
-                    Behavior on SplitView.preferredWidth {
-                        NumberAnimation {
+                    Behavior on SplitView.preferredWidth
+                    {
+                        NumberAnimation
+                        {
                             duration: 100
                         }
                     }
-                    BestOrder.List {
+
+                    BestOrder.List
+                    {
                         clip: !parent.contentVisible
                         id: best_order_list
                         visible: parent.contentVisible

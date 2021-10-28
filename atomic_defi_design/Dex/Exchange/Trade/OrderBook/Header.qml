@@ -8,22 +8,21 @@ import App 1.0
 
 import "../../../Components"
 
-Item {
+Item
+{
     property bool is_ask: false
     property bool is_horizontal: false
     height: 40
     width: parent.width
     z: 2
-    Rectangle {
-        anchors.fill: parent
-        color: DexTheme.portfolioPieGradient ? "transparent" : DexTheme.dexBoxBackgroundColor
-    }
 
-    RowLayout {
+    RowLayout
+    {
         width: parent.width - 30
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 70
             text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
@@ -33,7 +32,8 @@ Item {
             font.weight: Font.Black
             color: is_ask? DexTheme.redColor : DexTheme.greenColor
         }
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: 100
 
@@ -45,7 +45,8 @@ Item {
             horizontalAlignment: Label.AlignRight
 
         }
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
             text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"

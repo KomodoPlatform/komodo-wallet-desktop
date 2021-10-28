@@ -6,17 +6,21 @@ import QtQuick.Controls.Universal 2.15
 
 import "../../Components"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-RowLayout {
+RowLayout
+{
     id: root
 
     property int padding: 0
     property var details
     property color color: !details ? "white" : Style.getCoinColor(details.ticker)
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     property alias bottom_text: bottom_line.text_value
 
-    DefaultImage {
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+
+    DefaultImage
+    {
         id: icon
         source: General.coinIcon(ticker)
         Layout.preferredWidth: 32
@@ -26,22 +30,27 @@ RowLayout {
         Layout.topMargin: Layout.leftMargin
         Layout.bottomMargin: Layout.leftMargin
 
-        ColumnLayout {
+        ColumnLayout
+        {
             anchors.left: parent.right
             anchors.leftMargin: 12
             anchors.verticalCenter: parent.verticalCenter
-            width: root.width-40
-            DefaultText {
+            width: root.width - 40
+
+            DefaultText
+            {
                 text_value: !details ? "" :
-                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${DexTheme.foregroundColor}">${details.name}</font>`
+                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Dex.CurrentTheme.foregroundColor}">${details.name}</font>`
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }
 
-            DexLabel {
+            DexLabel
+            {
                 id: bottom_line
                 property string real_value: !details ? "" :
                             details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_fiat_sign) + ")"
+
                 text: real_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
@@ -49,9 +58,7 @@ RowLayout {
                 font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: real_value
-                Component.onCompleted: {
-                    font.pixelSize = 11.5
-                }
+                Component.onCompleted: font.pixelSize = 11.5
             }
         }
     }
