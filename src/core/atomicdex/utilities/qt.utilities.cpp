@@ -114,9 +114,7 @@ namespace atomic_dex
         QStringList    out;
         const fs::path theme_path = atomic_dex::utils::get_themes_path();
         for (auto&& cur: fs::directory_iterator(theme_path)) 
-        { 
-            if (cur.symlink_status().type() != fs::file_type::directory) continue;
-
+        {
             if (!fs::exists(cur.path() / "colors.json")) continue;
 
             out << std_path_to_qstring(cur.path().filename()); 
