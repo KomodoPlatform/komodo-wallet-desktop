@@ -18,7 +18,7 @@ Item
         anchors.fill: parent
         spacing: 10
 
-        InnerBackground
+        FloatingBackground
         {
             Layout.fillWidth: true
             Layout.fillHeight: true
