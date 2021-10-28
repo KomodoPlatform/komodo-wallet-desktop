@@ -50,7 +50,8 @@ DefaultListView
     {
         width: _rowWidth
         height: _rowHeight
-        color: Dex.CurrentTheme.floatingBackgroundColor
+        radius: 5
+        z: 2
 
         MouseArea { anchors.fill: parent }
         RowLayout                   // Order Columns Name
