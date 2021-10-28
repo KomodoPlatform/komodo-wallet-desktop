@@ -1,6 +1,7 @@
 pragma Singleton
 
 import Dex.Graphics 1.0 as Dex
+import "DefaultTheme.js" as DexDefaultTheme
 
 ThemeData
 {
@@ -8,17 +9,38 @@ ThemeData
 
     function loadFromFilesystem(themeName)
     {
-        console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: loading %1..."
-                        .arg(themeName))
+        console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: loading %1...".arg(themeName))
 
-        if (!DexFilesystem.exists(DexFilesystem.getThemeFolder(themeName)))
+        try
         {
-            console.error(`${themeName} does not exist in the filesystem. Skipping...`);
-            return;
+            if (!DexFilesystem.exists(DexFilesystem.getThemeFolder(themeName))) throw `${themeName} does not exist in the filesystem.`;
+
+            let themeData = atomic_qt_utilities.load_theme(themeName);
+            loadColors(themeData);
+            loadLogo(themeName);
+
+            printCurrentValues();
+
+            themeChanged();
+
+            console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: %1 is loaded".arg(themeName));
         }
+        catch (error)
+        {
+            console.error(`${themeName} is broken: ${error}. Trying to load a default theme.`);
+            if (!DexFilesystem.exists(DexFilesystem.getThemeFolder("Default - Light")))
+            {
+                console.error("Default themes have been moved... Why did you do that ? I need to load an hardcoded one now.")
+                loadColors(DexDefaultTheme.getHardcoded());
+                loadLogo();
+                themeChanged();
+            }
+            else loadFromFilesystem("Default - Light");
+        }
+    }
 
-        let themeData = atomic_qt_utilities.load_theme(themeName);
-
+    function loadColors(themeData)
+    {
         accentColor                         = Dex.Color.argbStrFromRgbaStr(themeData.accentColor);
         foregroundColor                     = Dex.Color.argbStrFromRgbaStr(themeData.foregroundColor);
         backgroundColor                     = Dex.Color.argbStrFromRgbaStr(themeData.backgroundColor);
@@ -84,14 +106,6 @@ ThemeData
         arrowDownColor                      = Dex.Color.argbStrFromRgbaStr(themeData.arrowDownColor);
 
         lineSeparatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor);
-
-        loadLogo(themeName);
-
-        printCurrentValues();
-
-        themeChanged();
-
-        console.info("Dex.Themes.CurrentTheme.loadFromFilesystem: %1 is loaded".arg(themeName));
     }
 
     function loadLogo(themeName)
@@ -102,8 +116,6 @@ ThemeData
 
         logoPath    = DexFilesystem.exists(_logoPath) ? `file:///${_logoPath}` : "qrc:///assets/images/logo/dex-logo.png";
         bigLogoPath = DexFilesystem.exists(_bigLogoPath) ? `file:///${_bigLogoPath}` : "qrc:///assets/images/dex-logo-big.png";
-        console.log(logoPath);
-        console.log(bigLogoPath);
     }
 
     // Prints current loaded theme values.

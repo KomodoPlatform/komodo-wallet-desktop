@@ -543,6 +543,7 @@
         <file>Dex/Support/FAQLine.qml</file>
         <file>Dex/Support/Support.qml</file>
         <file>Dex/Themes/CurrentTheme.qml</file>
+        <file>Dex/Themes/DefaultTheme.js</file>
         <file>Dex/Themes/qmldir</file>
         <file>Dex/Themes/ThemeData.qml</file>
         <file>Dex/Wallet/AddressBook.qml</file>
