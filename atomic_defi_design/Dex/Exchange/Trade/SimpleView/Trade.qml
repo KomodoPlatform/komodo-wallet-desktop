@@ -400,34 +400,29 @@ ClipRRect // Trade Card
                     }
                 }
 
-                DexRectangle // MAX Button
+                DefaultRectangle
                 {
                     anchors.right: _selectTickerBut.left
                     anchors.rightMargin: 5
                     anchors.verticalCenter: _selectTickerBut.verticalCenter
-
-                    visible: selectedTicker !== ""
-
                     width: 40
                     height: 20
+                    radius: width / 2
 
-                    border.width: 0
+                    color: _maxClickableLabel.containsPress ? Dex.CurrentTheme.buttonColorPressed :
+                               _maxClickableLabel.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.innerBackgroundColor
 
-                    DefaultMouseArea
+                    ClickableText // MAX Button
                     {
-                        id: _maxButMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: _fromValue.text = Constants.API.app.trading_pg.max_volume
-                    }
+                        id: _maxClickableLabel
 
-                    DexLabel
-                    {
                         anchors.centerIn: parent
-                        color: _maxButMouseArea.containsMouse ?
-                                    _maxButMouseArea.pressed ? "#173948" : "#204c61"
-                                    : DexTheme.accentColor
+
+                        visible: selectedTicker !== ""
+
                         text: qsTr("MAX")
+
+                        onClicked: _fromValue.text = Constants.API.app.trading_pg.max_volume
                     }
                 }
             }
