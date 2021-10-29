@@ -5566,7 +5566,7 @@
         "ws_url": "electrum3.cipig.net:30058"
       }
     ],
-    "explorer_tx_url": "transaction/",
+    "explorer_tx_url": "transactions/",
     "explorer_url": [
       "https://explorer.zcha.in/"
     ],
