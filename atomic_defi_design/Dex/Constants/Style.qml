@@ -375,7 +375,7 @@ QtObject {
                                           "PAXG": "#DABE37",
                                           "SMTF": "#F75836",
                                           "SMTF-OLD": "#F75836",
-                                          "SMTFv1": "#F75836",
+                                          "SMTF-v2": "#F75836",
                                           "SUSHI": "#E25DA8",
                                           "TRYB": "#0929AA",
                                           "TUSD": "#2E3181",
