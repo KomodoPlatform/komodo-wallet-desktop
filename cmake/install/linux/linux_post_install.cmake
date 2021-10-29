@@ -12,7 +12,7 @@ if (EXISTS ${PROJECT_ROOT_DIR}/build-Release)
 endif ()
 
 message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
-set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/qml)
+set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/Dex)
 message(STATUS "PROJECT_QML_DIR -> ${PROJECT_QML_DIR}")
 set(PROJECT_APP_DIR AntaraAtomicDexAppDir)
 set(PROJECT_APP_PATH ${CMAKE_SOURCE_DIR}/bin/${PROJECT_APP_DIR})
