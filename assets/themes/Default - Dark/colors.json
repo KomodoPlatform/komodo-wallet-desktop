@@ -1,0 +1,67 @@
+{
+    "accentColor": "#2C3D66",
+    "foregroundColor": "#ffffff",
+    "backgroundColor": "#202337",
+    "backgroundColorDeep": "#171a2c",
+
+    "buttonColorDisabled": "#28375A",
+    "buttonColorEnabled": "#293254",
+    "buttonColorHovered": "#4068B929",
+    "buttonColorPressed": "#2932546C",
+    "buttonTextDisabledColor": "#444444",
+    "buttonTextEnabledColor": "#ffffff",
+    "buttonTextHoveredColor": "#ffffff",
+    "buttonTextPressedColor": "#ffffff",
+
+    "gradientButtonStartColor": "#4986EAAD",
+    "gradientButtonEndColor": "#5A68E6",
+    "gradientButtonDisabledStartColor": "#5A68E64D",
+    "gradientButtonDisabledEndColor": "#4986EA34",
+    "gradientButtonHoveredStartColor": "#4986EAAD",
+    "gradientButtonHoveredEndColor": "#4986EAAD",
+    "gradientButtonPressedStartColor": "#4986EA",
+    "gradientButtonPressedEndColor": "#4986EA",
+    "gradientButtonTextEnabledColor": "#FFF",
+    "gradientButtonTextDisabledColor": "#FFF",
+    "gradientButtonTextHoveredColor": "#FFF",
+    "gradientButtonTextPressedColor": "#FFF",
+
+    "checkBoxGradientStartColor": "#8892EB",
+    "checkBoxGradientEndColor": "#9DD4F3",
+
+    "switchGradientStartColor": "#1D80B0",
+    "switchGradientEndColor": "#5B69E6",
+    "switchGradientStartColor2": "#FFF",
+    "switchGradientEndColor2": "#FFF",
+
+    "modalPageCounterGradientStartColor": "#1D80B0",
+    "modalPageCounterGradientEndColor": "#5B69E6",
+
+    "tabSelectedColor": "#2C3D66",
+
+    "textDisabledColor": "#444444",
+    "textSelectionColor": "#14bca6",
+    "textPlaceholderColor": "#91A8E8",
+    "textSelectedColor": "#0e1021",
+
+    "chartTradingLineBackgroundColor": "#24283d",
+    "chartTradingLineColor": "#74fbee",
+
+    "innerBackgroundColor": "#1F263F",
+
+    "floatingBackgroundColor": "#24273D",
+
+    "sidebarBgColor": "#202337",
+    "sidebarVersionTextColor": "#2F5688",
+    "sidebarCursorStartColor": "#31B1F0",
+    "sidebarCursorEndColor": "#5B69E600",
+    "sidebarLineTextHovered": "#2C87B9",
+
+    "okColor": "#00C058",
+    "noColor": "#E52167",
+
+    "arrowUpColor": "#F85757",
+    "arrowDownColor": "#845FEF",
+
+    "lineSeparatorColor": "#262941"
+}
