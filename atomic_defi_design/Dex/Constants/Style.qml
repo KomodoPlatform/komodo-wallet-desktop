@@ -455,6 +455,7 @@ QtObject {
                                           "TSL": "#64B082",
                                           "UIS": "#008DCD",
                                           "UNO": "#2F87BB",
+                                          "UST": "#5493F7",
                                           "VAL": "#1EEC84",
                                           "VITE": "#007AFF",
                                           "VRM": "#586A7A",
