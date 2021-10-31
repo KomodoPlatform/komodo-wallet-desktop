@@ -79,6 +79,7 @@ namespace mm2::api
         const std::string        bnb_swap_contract_address{"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"};
         const std::string        bnb_fallback_swap_contract_address{bnb_swap_contract_address};
         const std::string        bnb_testnet_fallback_swap_contract_address{bnb_testnet_swap_contract_address};
+        const std::size_t        matic_gas_station_decimals{9};
         std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
         std::string              matic_gas_station_url{"https://gasstation-mainnet.matic.network/"};
         std::string              testnet_matic_gas_station_url{"https://gasstation-mumbai.matic.today/"};
