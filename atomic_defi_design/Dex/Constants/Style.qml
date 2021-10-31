@@ -440,6 +440,7 @@ QtObject {
                                           "REV": "#78034D",
                                           "RLC": "#FFE100",
                                           "RTM": "#B74427",
+                                          "SIBM": "#0C4855",
                                           "SFUSD": "#9881B8",
                                           "SNT": "#596BED",
                                           "SNX": "#00D1FF",
