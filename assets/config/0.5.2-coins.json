@@ -48,6 +48,22 @@
       "active": false,
       "currently_enabled": false
   },
+  "1INCH-HRC20": {
+      "coin": "1INCH-HRC20",
+      "name": "1inch",
+      "coinpaprika_id": "1inch-1inch",
+      "coingecko_id": "1inch",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "1INCH-PLG20": {
       "coin": "1INCH-PLG20",
       "name": "1inch",
@@ -124,6 +140,22 @@
         "https://ftmscan.com/"
       ],
       "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AAVE-HRC20": {
+      "coin": "AAVE-HRC20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -1560,6 +1592,22 @@
       "active": false,
       "currently_enabled": false
   },
+  "DAI-HRC20": {
+      "coin": "DAI-HRC20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "DAI-BEP20": {
     "coin": "DAI-BEP20",
     "name": "Dai",
@@ -2941,6 +2989,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "MATIC-HRC20": {
+      "coin": "MATIC-HRC20",
+      "name": "Polygon",
+      "coinpaprika_id": "matic-matic-network",
+      "coingecko_id": "matic-network",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MCL": {
     "active": false,
     "coin": "MCL",
@@ -3302,6 +3366,22 @@
       "active": false,
       "currently_enabled": false
   },
+  "ETH-HRC20": {
+      "coin": "ETH-HRC20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ETH-PLG20": {
     "coin": "ETH-PLG20",
     "name": "Ethereum",
@@ -3540,6 +3620,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDC-HRC20": {
+      "coin": "USDC-HRC20",
+      "name": "USD Coin",
+      "coinpaprika_id": "usdc-usd-coin",
+      "coingecko_id": "usd-coin",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "USDC-PLG20": {
     "coin": "USDC-PLG20",
     "name": "USD Coin",
@@ -3680,6 +3776,22 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "USDT-HRC20": {
+      "coin": "USDT-HRC20",
+      "name": "Tether",
+      "coinpaprika_id": "usdt-tether",
+      "coingecko_id": "tether",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "AWC": {
     "active": false,
@@ -3894,6 +4006,22 @@
         "https://ftmscan.com/"
       ],
       "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LINK-HRC20": {
+      "coin": "LINK-HRC20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -4443,6 +4571,22 @@
         "https://ftmscan.com/"
       ],
       "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "SUSHI-HRC20": {
+      "coin": "SUSHI-HRC20",
+      "name": "Sushi",
+      "coinpaprika_id": "sushi-sushi",
+      "coingecko_id": "sushi",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -5244,7 +5388,7 @@
         "https://api.s0.t.hmny.io"
       ],
       "explorer_url": [
-        "https://explorer.harmony.one"
+        "https://explorer.harmony.one/"
       ],
       "type": "HRC-20",
       "active": false,
