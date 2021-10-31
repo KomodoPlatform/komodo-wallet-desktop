@@ -112,6 +112,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "AAVE-FTM20": {
+      "coin": "AAVE-FTM20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "AAVE-PLG20": {
     "coin": "AAVE-PLG20",
     "name": "Aave",
@@ -587,6 +602,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "BAND-FTM20": {
+      "coin": "BAND-FTM20",
+      "name": "Band Protocol",
+      "coinpaprika_id": "band-band-protocol",
+      "coingecko_id": "band-protocol",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
   },
   "BAND-PLG20": {
     "coin": "BAND-PLG20",
@@ -3244,7 +3274,7 @@
   },
   "ETH-AVX20": {
     "coin": "ETH-AVX20",
-    "name": "Ethereum Avalanche",
+    "name": "Ethereum",
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
     "nodes": [
@@ -3257,9 +3287,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "ETH-FTM20": {
+      "coin": "ETH-FTM20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ETH-PLG20": {
     "coin": "ETH-PLG20",
-    "name": "Ethereum Polygon",
+    "name": "Ethereum",
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
     "nodes": [
@@ -3286,7 +3331,7 @@
       "https://arbiscan.io/"
     ],
     "type": "Arbitrum",
-    "name": "Ethereum Arbitrum"
+    "name": "Ethereum"
   },
   "ETHK-OPT20": {
     "active": false,
@@ -3837,6 +3882,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "LINK-FTM20": {
+      "coin": "LINK-FTM20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "LINK-PLG20": {
     "coin": "LINK-PLG20",
     "name": "Chainlink",
@@ -4371,6 +4431,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "SUSHI-FTM20": {
+      "coin": "SUSHI-FTM20",
+      "name": "Sushi",
+      "coinpaprika_id": "sushi-sushi",
+      "coingecko_id": "sushi",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SUSHI-PLG20": {
     "coin": "SUSHI-PLG20",
     "name": "Sushi",
@@ -4891,6 +4966,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "SNX-FTM20": {
+      "coin": "SNX-FTM20",
+      "name": "Synthetix",
+      "coinpaprika_id": "snx-synthetix-network-token",
+      "coingecko_id": "havven",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
   },
   "SNX-PLG20": {
     "coin": "SNX-PLG20",
@@ -5593,6 +5683,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "YFI-FTM20": {
+      "coin": "YFI-FTM20",
+      "name": "yearn.finance",
+      "coinpaprika_id": "yfi-yearnfinance",
+      "coingecko_id": "yearn-finance",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "YFII-BEP20": {
     "coin": "YFII-BEP20",
     "name": "DFI.Money",
@@ -6195,6 +6300,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "CRV-FTM20": {
+      "coin": "CRV-FTM20",
+      "name": "Curve DAO Token",
+      "coinpaprika_id": "crv-curve-dao-token",
+      "coingecko_id": "curve-dao-token",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
   },
   "CRV-PLG20": {
     "coin": "CRV-PLG20",
