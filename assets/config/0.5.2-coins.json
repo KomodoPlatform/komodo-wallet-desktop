@@ -48,6 +48,22 @@
       "active": false,
       "currently_enabled": false
   },
+  "1INCH-HRC20": {
+      "coin": "1INCH-HRC20",
+      "name": "1inch",
+      "coinpaprika_id": "1inch-1inch",
+      "coingecko_id": "1inch",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "1INCH-PLG20": {
       "coin": "1INCH-PLG20",
       "name": "1inch",
@@ -111,6 +127,52 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "AAVE-FTM20": {
+      "coin": "AAVE-FTM20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AAVE-HCO20": {
+      "coin": "AAVE-HCO20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AAVE-HRC20": {
+      "coin": "AAVE-HRC20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "AAVE-PLG20": {
     "coin": "AAVE-PLG20",
@@ -587,6 +649,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "BAND-FTM20": {
+      "coin": "BAND-FTM20",
+      "name": "Band Protocol",
+      "coinpaprika_id": "band-band-protocol",
+      "coingecko_id": "band-protocol",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
   },
   "BAND-PLG20": {
     "coin": "BAND-PLG20",
@@ -1530,6 +1607,37 @@
       "active": false,
       "currently_enabled": false
   },
+  "DAI-HCO20": {
+      "coin": "DAI-HCO20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
+  "DAI-HRC20": {
+      "coin": "DAI-HRC20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "DAI-BEP20": {
     "coin": "DAI-BEP20",
     "name": "Dai",
@@ -1775,6 +1883,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "DOT-HCO20": {
+      "coin": "DOT-HCO20",
+      "name": "Polkadot",
+      "coinpaprika_id": "dot-polkadot",
+      "coingecko_id": "polkadot",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
   "DP": {
     "coin": "DP",
     "name": "DigitalPrice",
@@ -1993,6 +2116,21 @@
     "type": "BEP-20",
     "active": false,
     "currently_enabled": false
+  },
+  "FIL-HCO20": {
+      "coin": "FIL-HCO20",
+      "name": "Filecoin",
+      "coinpaprika_id": "fil-filecoin",
+      "coingecko_id": "filecoin",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
   },
   "FIRO": {
     "coin": "FIRO",
@@ -2795,6 +2933,71 @@
     "name": "Litecoin",
     "is_segwit_on": false
   },
+  "LUNA-ERC20": {
+      "coin": "LUNA-ERC20",
+      "name": "Terra",
+      "coinpaprika_id": "luna-terra",
+      "coingecko_id": "terra-luna",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LUNA-BEP20": {
+      "coin": "LUNA-BEP20",
+      "name": "Terra",
+      "coinpaprika_id": "luna-terra",
+      "coingecko_id": "terra-luna",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LUNA-HRC20": {
+      "coin": "LUNA-HRC20",
+      "name": "Terra",
+      "coinpaprika_id": "luna-terra",
+      "coingecko_id": "terra-luna",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LUNA-PLG20": {
+      "coin": "LUNA-PLG20",
+      "name": "Terra",
+      "coinpaprika_id": "luna-terra",
+      "coingecko_id": "terra-luna",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "LYNX": {
     "coin": "LYNX",
     "name": "Lynx",
@@ -2911,6 +3114,37 @@
     "active": false,
     "currently_enabled": false
   },
+  "MATIC-HCO20": {
+      "coin": "MATIC-HCO20",
+      "name": "Polygon",
+      "coinpaprika_id": "matic-matic-network",
+      "coingecko_id": "matic-network",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
+  "MATIC-HRC20": {
+      "coin": "MATIC-HRC20",
+      "name": "Polygon",
+      "coinpaprika_id": "matic-matic-network",
+      "coingecko_id": "matic-network",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MCL": {
     "active": false,
     "coin": "MCL",
@@ -2936,6 +3170,40 @@
     ],
     "type": "Smart Chain",
     "name": "MCL"
+  },
+  "MIR-ERC20": {
+      "coin": "MIR-ERC20",
+      "name": "Mirror Protocol",
+      "coinpaprika_id": "mir-mirror-protocol",
+      "coingecko_id": "mirror-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "MIR-BEP20": {
+      "coin": "MIR-BEP20",
+      "name": "Mirror Protocol",
+      "coinpaprika_id": "mir-mirror-protocol",
+      "coingecko_id": "mirror-protocol",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "MM-ERC20": {
     "coin": "MM-ERC20",
@@ -3161,7 +3429,8 @@
     ],
     "type": "ERC-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "PAXG-PLG20": {
     "coin": "PAXG-PLG20",
@@ -3244,7 +3513,7 @@
   },
   "ETH-AVX20": {
     "coin": "ETH-AVX20",
-    "name": "Ethereum Avalanche",
+    "name": "Ethereum",
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
     "nodes": [
@@ -3257,9 +3526,70 @@
     "active": false,
     "currently_enabled": false
   },
+  "ETH-FTM20": {
+      "coin": "ETH-FTM20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ETH-HCO20": {
+      "coin": "ETH-HCO20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ETH-HRC20": {
+      "coin": "ETH-HRC20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "ETH-KRC20": {
+      "coin": "ETH-KRC20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ETH-PLG20": {
     "coin": "ETH-PLG20",
-    "name": "Ethereum Polygon",
+    "name": "Ethereum",
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
     "nodes": [
@@ -3286,7 +3616,7 @@
       "https://arbiscan.io/"
     ],
     "type": "Arbitrum",
-    "name": "Ethereum Arbitrum"
+    "name": "Ethereum"
   },
   "ETHK-OPT20": {
     "active": false,
@@ -3495,6 +3825,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDC-HRC20": {
+      "coin": "USDC-HRC20",
+      "name": "USD Coin",
+      "coinpaprika_id": "usdc-usd-coin",
+      "coingecko_id": "usd-coin",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "USDC-PLG20": {
     "coin": "USDC-PLG20",
     "name": "USD Coin",
@@ -3635,6 +3981,22 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "USDT-HRC20": {
+      "coin": "USDT-HRC20",
+      "name": "Tether",
+      "coinpaprika_id": "usdt-tether",
+      "coingecko_id": "tether",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "AWC": {
     "active": false,
@@ -3836,6 +4198,52 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "LINK-FTM20": {
+      "coin": "LINK-FTM20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LINK-HCO20": {
+      "coin": "LINK-HCO20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LINK-HRC20": {
+      "coin": "LINK-HRC20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "LINK-PLG20": {
     "coin": "LINK-PLG20",
@@ -4371,6 +4779,37 @@
     "active": false,
     "currently_enabled": false
   },
+  "SUSHI-FTM20": {
+      "coin": "SUSHI-FTM20",
+      "name": "Sushi",
+      "coinpaprika_id": "sushi-sushi",
+      "coingecko_id": "sushi",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "SUSHI-HRC20": {
+      "coin": "SUSHI-HRC20",
+      "name": "Sushi",
+      "coinpaprika_id": "sushi-sushi",
+      "coingecko_id": "sushi",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SUSHI-PLG20": {
     "coin": "SUSHI-PLG20",
     "name": "Sushi",
@@ -4599,6 +5038,38 @@
       "active": false,
       "currently_enabled": false
   },
+  "NEXO-ERC20": {
+      "coin": "NEXO-ERC20",
+      "name": "Nexo",
+      "coinpaprika_id": "nexo-nexo",
+      "coingecko_id": "nexo",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "NEXO-PLG20": {
+      "coin": "NEXO-PLG20",
+      "name": "Nexo",
+      "coinpaprika_id": "nexo-nexo",
+      "coingecko_id": "nexo",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "NMC": {
     "coin": "NMC",
     "name": "Namecoin",
@@ -4795,6 +5266,54 @@
       "active": false,
       "currently_enabled": false
   },
+  "REN-ERC20": {
+      "coin": "REN-ERC20",
+      "name": "Ren",
+      "coinpaprika_id": "ren-republic-protocol",
+      "coingecko_id": "republic-protocol",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "REN-HRC20": {
+      "coin": "REN-HRC20",
+      "name": "Ren",
+      "coinpaprika_id": "ren-republic-protocol",
+      "coingecko_id": "republic-protocol",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "REN-HCO20": {
+      "coin": "REN-HCO20",
+      "name": "Ren",
+      "coinpaprika_id": "ren-republic-protocol",
+      "coingecko_id": "republic-protocol",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
   "RTM": {
       "coin": "RTM",
       "name": "Raptoreum",
@@ -4891,6 +5410,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "SNX-FTM20": {
+      "coin": "SNX-FTM20",
+      "name": "Synthetix",
+      "coinpaprika_id": "snx-synthetix-network-token",
+      "coingecko_id": "havven",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
   },
   "SNX-PLG20": {
     "coin": "SNX-PLG20",
@@ -5095,6 +5629,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "TUSD-HCO20": {
+      "coin": "TUSD-HCO20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
   "TUSD-PLG20": {
     "coin": "TUSD-PLG20",
     "name": "TrueUSD",
@@ -5109,6 +5658,71 @@
     "type": "Matic",
     "active": false,
     "currently_enabled": false
+  },
+  "UST-ERC20": {
+      "coin": "UST-ERC20",
+      "name": "TerraUSD",
+      "coinpaprika_id": "ust-terrausd",
+      "coingecko_id": "terrausd",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "UST-BEP20": {
+      "coin": "UST-BEP20",
+      "name": "TerraUSD",
+      "coinpaprika_id": "ust-terrausd",
+      "coingecko_id": "terrausd",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "UST-HRC20": {
+      "coin": "UST-HRC20",
+      "name": "TerraUSD",
+      "coinpaprika_id": "ust-terrausd",
+      "coingecko_id": "terrausd",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "UST-PLG20": {
+      "coin": "UST-PLG20",
+      "name": "TerraUSD",
+      "coinpaprika_id": "ust-terrausd",
+      "coingecko_id": "terrausd",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
   },
   "VAL": {
     "coin": "VAL",
@@ -5527,6 +6141,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "YFI-FTM20": {
+      "coin": "YFI-FTM20",
+      "name": "yearn.finance",
+      "coinpaprika_id": "yfi-yearnfinance",
+      "coingecko_id": "yearn-finance",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
   },
   "YFII-BEP20": {
     "coin": "YFII-BEP20",
@@ -6131,6 +6760,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "CRV-FTM20": {
+      "coin": "CRV-FTM20",
+      "name": "Curve DAO Token",
+      "coinpaprika_id": "crv-curve-dao-token",
+      "coingecko_id": "curve-dao-token",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "CRV-PLG20": {
     "coin": "CRV-PLG20",
     "name": "Curve DAO Token",
@@ -6423,6 +7067,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "HUSD-HCO20": {
+      "coin": "HUSD-HCO20",
+      "name": "HUSD",
+      "coinpaprika_id": "husd-husd",
+      "coingecko_id": "husd",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
   "HUSD-PLG20": {
     "coin": "HUSD-PLG20",
     "name": "HUSD",
@@ -6622,23 +7281,6 @@
     "name": "Quant",
     "coinpaprika_id": "qnt-quant",
     "coingecko_id": "quant-network",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
-  },
-  "REN": {
-    "coin": "REN",
-    "name": "Republic",
-    "coinpaprika_id": "ren-republic-protocol",
-    "coingecko_id": "republic-protocol",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -7044,6 +7686,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "UNI-HCO20": {
+      "coin": "UNI-HCO20",
+      "name": "Uniswap",
+      "coinpaprika_id": "uni-uniswap",
+      "coingecko_id": "uniswap",
+      "nodes": [
+        "https://http-mainnet.hecochain.com"
+      ],
+      "explorer_url": [
+        "https://hecoinfo.com/"
+      ],
+      "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
   },
   "UNI-PLG20": {
     "coin": "UNI-PLG20",
