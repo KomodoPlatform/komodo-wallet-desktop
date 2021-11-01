@@ -1963,11 +1963,6 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrum2.egulden.org:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
-      },
-      {
         "url": "electrum3.egulden.org:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
@@ -2868,7 +2863,7 @@
         "url": "spv1.lbry.com:50001"
       },
       {
-        "url": "spv25.lbry.com:50001"
+        "url": "spv13.lbry.com:50001"
       },
       {
         "url": "spv15.lbry.com:50001"
@@ -3005,14 +3000,19 @@
     "coingecko_id": "lynx",
     "electrum": [
       {
-        "url": "electrum1.logware.net:50002",
+        "url": "electrum.getlynx.io:50002",
         "protocol": "SSL",
         "disable_cert_verification": false
       },
       {
-        "url": "electrum2.logware.us:50002",
+        "url": "electrum.logware.us:50002",
         "protocol": "SSL",
         "disable_cert_verification": false
+      },
+      {
+        "url": "electrum.logware.io:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
