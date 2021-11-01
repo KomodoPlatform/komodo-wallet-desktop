@@ -326,6 +326,7 @@ QtObject {
                                           "FIRO": "#BB2100",
                                           "LBC": "#00775C",
                                           "LTC": "#BFBBBB",
+                                          "LUNA": "#FFD83D",
                                           "LYNX": "#0071BA",
                                           "LTFN": "#0099CC",  
                                           "XPM": "#A67522",
