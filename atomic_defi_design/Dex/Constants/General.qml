@@ -1731,6 +1731,8 @@ QtObject {
                                                 "REN/PAX": "BINANCE:RENUSD",
                                                 "REN/EURS": "BITTREX:RENEUR",
                                                 "REN/JEUR": "BITTREX:RENEUR",
+                                                "REN/JGBP": "KRAKEN:RENGBP",
+                                                "REN/BRZ": "MERCADO:RENBRL",
                                                 "REP/BTC": "BINANCE:REPBTC",
                                                 "REP/ETH": "BINANCE:REPETH",
                                                 "REP/USDT": "COINBASE:REPUSD",
