@@ -1536,7 +1536,7 @@ QtObject {
                                                 "MIR/PAX": "COINBASE:MIRUSD",
                                                 "MIR/EURS": "COINBASE:MIREUR",
                                                 "MIR/JEUR": "COINBASE:MIREUR",
-                                                "MIR/JGBP": "COINBASE:MIRGBP,
+                                                "MIR/JGBP": "COINBASE:MIRGBP",
                                                 "MKR/BTC": "BINANCE:MKRBTC",
                                                 "MKR/ETH": "BITFINEX:MKRETH",
                                                 "MKR/BNB": "BINANCE:MKRBNB",
