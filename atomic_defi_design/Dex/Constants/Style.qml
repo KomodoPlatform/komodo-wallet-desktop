@@ -430,6 +430,7 @@ QtObject {
                                           "MATIC": "#804EE1",
                                           "MKR": "#1BAF9F",
                                           "NEAR": "#595959",
+                                          "NEXO": "#A3B3D6",
                                           "NVC": "#FCF96D",
                                           "OCEAN": "#595959",
                                           "OMG": "#595959",
