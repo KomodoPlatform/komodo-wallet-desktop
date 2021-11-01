@@ -329,6 +329,7 @@ QtObject {
                                           "LUNA": "#FFD83D",
                                           "LYNX": "#0071BA",
                                           "LTFN": "#0099CC",  
+                                          "MIR": "#2C9FEF",
                                           "XPM": "#A67522",
                                           "XVC": "#B50126",
                                           "ZEC": "#ECB244",
