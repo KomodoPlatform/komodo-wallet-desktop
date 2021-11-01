@@ -3482,6 +3482,21 @@
       "active": false,
       "currently_enabled": false
   },
+  "ETH-KRC20": {
+      "coin": "ETH-KRC20",
+      "name": "Ethereum",
+      "coinpaprika_id": "eth-ethereum",
+      "coingecko_id": "ethereum",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ETH-PLG20": {
     "coin": "ETH-PLG20",
     "name": "Ethereum",
