@@ -145,7 +145,7 @@
   },
   "AAVE-HCO20": {
       "coin": "AAVE-HCO20",
-      "name": "Aave,
+      "name": "Aave",
       "coinpaprika_id": "aave-new",
       "coingecko_id": "aave",
       "nodes": [
