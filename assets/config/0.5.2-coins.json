@@ -4868,15 +4868,6 @@
         "url": "el2.verus.io:17486",
         "protocol": "SSL",
         "disable_cert_verification": false
-      },
-      {
-        "url": "el0.verus.io:17485"
-      },
-      {
-        "url": "el1.verus.io:17485"
-      },
-      {
-        "url": "el2.verus.io:17485"
       }
     ],
     "explorer_url": [
