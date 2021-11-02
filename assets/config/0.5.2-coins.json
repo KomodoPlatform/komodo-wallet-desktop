@@ -1963,11 +1963,6 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrum2.egulden.org:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
-      },
-      {
         "url": "electrum3.egulden.org:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
@@ -2868,7 +2863,7 @@
         "url": "spv1.lbry.com:50001"
       },
       {
-        "url": "spv25.lbry.com:50001"
+        "url": "spv13.lbry.com:50001"
       },
       {
         "url": "spv15.lbry.com:50001"
@@ -3005,14 +3000,24 @@
     "coingecko_id": "lynx",
     "electrum": [
       {
-        "url": "electrum1.logware.net:50002",
+        "url": "electrum.getlynx.io:50002",
         "protocol": "SSL",
         "disable_cert_verification": false
       },
       {
-        "url": "electrum2.logware.us:50002",
+        "url": "electrum.logware.us:50002",
         "protocol": "SSL",
         "disable_cert_verification": false
+      },
+      {
+        "url": "electrum.logware.club:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": false
+      },
+      {
+        "url": "electrum.logware.io:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       }
     ],
     "explorer_url": [
@@ -4998,6 +5003,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "MTSLA-ERC20": {
+      "coin": "MTSLA-ERC20",
+      "name": "Mirrored Tesla",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "mirrored-tesla",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "MTSLA-BEP20": {
+      "coin": "MTSLA-BEP20",
+      "name": "Mirrored Tesla",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "mirrored-tesla",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "NAV": {
     "coin": "NAV",
     "name": "NavCoin",
@@ -6251,6 +6290,10 @@
         "url": "failover.zet.ewmci.xyz:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx.zet.ewmcx.info:50001",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
