@@ -3892,6 +3892,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "USDT-FTM20": {
+      "coin": "USDT-FTM20",
+      "name": "Tether",
+      "coinpaprika_id": "usdt-tether",
+      "coingecko_id": "tether",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "USDT-KRC20": {
     "coin": "USDT-KRC20",
     "name": "Tether",
