@@ -1464,7 +1464,8 @@
       ],
       "type": "Arbitrum",
       "active": false,
-      "currently_enabled": false
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "CLC": {
     "coin": "CLC",
