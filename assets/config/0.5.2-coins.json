@@ -6761,6 +6761,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "CRV-AVX20": {
+      "coin": "CRV-AVX20",
+      "name": "Curve DAO Token",
+      "coinpaprika_id": "crv-curve-dao-token",
+      "coingecko_id": "curve-dao-token",
+      "nodes": [
+        "https://api.avax.network/ext/bc/C/rpc"
+      ],
+      "explorer_url": [
+        "https://cchain.explorer.avax.network/"
+      ],
+      "type": "AVX-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "CRV-FTM20": {
       "coin": "CRV-FTM20",
       "name": "Curve DAO Token",

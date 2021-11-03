@@ -941,6 +941,8 @@ QtObject {
                                                 "CRV/BNB": "BINANCE:CRVBNB",
                                                 "CRV/EURS": "KRAKEN:CRVEUR",
                                                 "CRV/JEUR": "KRAKEN:CRVEUR",
+                                                "CRV/JGBP": "COINBASE:CRVGBP",
+                                                "CRV/BRZ": "MERCADO:CRVBRL",
                                                 "CVC/BTC": "BINANCE:CVCBTC",
                                                 "CVC/ETH": "BINANCE:CVCETH",
                                                 "CVC/USDT": "BINANCE:CVCUSD",
