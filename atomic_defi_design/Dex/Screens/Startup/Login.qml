@@ -4,70 +4,80 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import "../Components"
-import "../Constants"
+import "../../Components"
+import "../../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-SetupPage {
+SetupPage
+{
     id: login
 
-    // Override
-    signal clickedBack()
-    signal postLoginSuccess()
+    property string text_error
+    property string walletName
 
-    // Local
-    function reset() {
-        text_error = ""
-    }
+    signal backClicked()
+    signal loginSucceeded()
 
-    function onClickedLogin(password) {
-        if (API.app.wallet_mgr.login(password, selected_wallet_name)) {
-            console.log("Success: Login")
-            app.currentWalletName = selected_wallet_name
-            postLoginSuccess()
-            return true
-        } else {
-            console.log("Failed: Login")
-            text_error = qsTr("Incorrect Password")
-            return false
+    function reset() { text_error = "" }
+
+    function onClickedLogin(password)
+    {
+        if (API.app.wallet_mgr.login(password, walletName))
+        {
+            console.info("Success: Login");
+            app.currentWalletName = walletName;
+            loginSucceeded();
+            return true;
+        }
+        else
+        {
+            console.info("Failed: Login");
+            text_error = qsTr("Incorrect Password");
+            return false;
         }
     }
 
-    property string text_error
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
 
-    content: ColumnLayout {
+    content: ColumnLayout
+    {
         spacing: Style.rowSpacing
 
-        function reset() {
+        function reset()
+        {
             login.reset()
             input_password.reset()
         }
 
-        function trySubmit() {
+        function trySubmit()
+        {
             if (!submit_button.enabled) return
 
-            if (onClickedLogin(input_password.field.text))
-                reset()
+            if (onClickedLogin(input_password.field.text)) reset()
         }
 
         width: 400
 
-        RowLayout {
+        RowLayout
+        {
             Layout.fillWidth: true
             spacing: 10
-            Qaterial.AppBarButton {
+            Qaterial.AppBarButton
+            {
                 icon.source: Qaterial.Icons.arrowLeft
                 Layout.alignment: Qt.AlignVCenter
-                onClicked: {
+                onClicked:
+                {
                     reset()
-                    onClickedBack()
+                    backClicked()
                 }
             }
 
-            DexLabel {
+            DefaultText
+            {
                 font: DexTypo.head6
                 text_value: qsTr("Login")
                 Layout.alignment: Qt.AlignVCenter
@@ -75,46 +85,50 @@ SetupPage {
 
         }
 
-        Item {
+        Item
+        {
             Layout.fillWidth: true
             Layout.preferredHeight: 5
         }
 
-        DexAppTextField {
+        DexAppTextField
+        {
             Layout.fillWidth: true
             Layout.preferredHeight: 50
             background.border.width: 1
             background.radius: 25
             enabled: false
             opacity: enabled ? 1 : .5
-            background.border.color: field.focus ? DexTheme.accentColor : Style.colorBorder
+            background.border.color: Dex.CurrentTheme.accentColor
             field.font: DexTypo.head6
             field.horizontalAlignment: Qt.AlignLeft
             field.leftPadding: 75
-            field.text: selected_wallet_name
+            field.text: walletName
 
-            DexRectangle {
+            DefaultRectangle
+            {
                 x: 5
                 height: 40
                 width: 60
                 radius: 20
-                color: DexTheme.accentColor
+                color: Dex.CurrentTheme.accentColor
                 anchors.verticalCenter: parent.verticalCenter
-                Qaterial.ColorIcon {
+                Qaterial.ColorIcon
+                {
                     anchors.centerIn: parent
                     iconSize: 19
                     source: Qaterial.Icons.account
-                    color: DexTheme.surfaceColor
+                    color: Dex.CurrentTheme.foregroundColor
                 }
 
             }
         }
 
-        Item {
+        Item
+        {
             Layout.fillWidth: true
             Layout.preferredHeight: 5
             opacity: .8
-
         }
 
         DexAppTextField {
@@ -130,38 +144,40 @@ SetupPage {
             field.leftPadding: 75
             field.placeholderText: qsTr("Type password")
             field.onAccepted: trySubmit()
-            DexRectangle {
+            DexRectangle
+            {
                 x: 5
                 height: 40
                 width: 60
                 radius: 20
                 color: DexTheme.accentColor
                 anchors.verticalCenter: parent.verticalCenter
-                Qaterial.ColorIcon {
+                Qaterial.ColorIcon
+                {
                     anchors.centerIn: parent
                     iconSize: 19
                     source: Qaterial.Icons.keyVariant
                     color: DexTheme.surfaceColor
                 }
-
             }
-            Qaterial.AppBarButton {
+            Qaterial.AppBarButton
+            {
                 opacity: .8
-                icon {
+                icon
+                {
                     source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOutline : Qaterial.Icons.eyeOffOutline
                     color: DexTheme.accentColor
                 }
-                anchors {
+                anchors
+                {
                     verticalCenter: parent.verticalCenter
                     right: parent.right
                     rightMargin: 10
                 }
-                onClicked: {
-                    if (_inputPassword.field.echoMode === TextField.Password) {
-                        _inputPassword.field.echoMode = TextField.Normal
-                    } else {
-                        _inputPassword.field.echoMode = TextField.Password
-                    }
+                onClicked:
+                {
+                    if (_inputPassword.field.echoMode === TextField.Password) _inputPassword.field.echoMode = TextField.Normal
+                    else _inputPassword.field.echoMode = TextField.Password
                 }
             }
         }
@@ -186,14 +202,15 @@ SetupPage {
                 Layout.preferredHeight: 10
             }
 
-            DexButton {
+            DefaultButton {
                 id: _back
                 text: qsTr("Back")
                 visible: false
 
             }
 
-            DexAppButton {
+            DexAppButton
+            {
                 id: submit_button
                 text: qsTr("Login")
                 enabled: input_password.isValid()
@@ -202,17 +219,23 @@ SetupPage {
                 Layout.preferredWidth: _nextRow.implicitWidth + 40
                 Layout.preferredHeight: 45
                 label.color: 'transparent'
-                Row {
+
+                Row
+                {
                     id: _nextRow
+
                     anchors.centerIn: parent
                     spacing: 10
                     opacity: submit_button.enabled ? 1 : .6
-                    DexLabel {
+
+                    DexLabel
+                    {
                         text: qsTr("Connect")
                         font: DexTypo.button
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    Qaterial.ColorIcon {
+                    Qaterial.ColorIcon
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         source: Qaterial.Icons.arrowRight
                         iconSize: 14
@@ -221,9 +244,10 @@ SetupPage {
             }
         }
 
-        DefaultText {
+        DefaultText
+        {
             text_value: text_error
-            color: Style.colorRed
+            color: Dex.CurrentTheme.noColor
             visible: text !== ''
         }
     }

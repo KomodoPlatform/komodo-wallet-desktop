@@ -521,11 +521,12 @@
         <file>Dex/NoConnection.qml</file>
         <file>Dex/Portfolio/Portfolio.qml</file>
         <file>Dex/Screens/Dashboard.qml</file>
-        <file>Dex/Screens/FirstLaunch.qml</file>
-        <file>Dex/Screens/InitialLoading.qml</file>
-        <file>Dex/Screens/Login.qml</file>
-        <file>Dex/Screens/NewUser.qml</file>
-        <file>Dex/Screens/RecoverSeed.qml</file>
+        <file>Dex/Screens/qmldir</file>
+        <file>Dex/Screens/Startup/ImportWallet.qml</file>
+        <file>Dex/Screens/Startup/Logging.qml</file>
+        <file>Dex/Screens/Startup/Login.qml</file>
+        <file>Dex/Screens/Startup/NewWallet.qml</file>
+        <file>Dex/Screens/Startup/WalletsView.qml</file>
         <file>Dex/Settings/AddCustomCoinModal.qml</file>
         <file>Dex/Settings/CamouflagePasswordModal.qml</file>
         <file>Dex/Settings/Combo_fiat.qml</file>
