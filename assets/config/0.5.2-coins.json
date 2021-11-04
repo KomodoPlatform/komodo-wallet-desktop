@@ -1464,7 +1464,8 @@
       ],
       "type": "Arbitrum",
       "active": false,
-      "currently_enabled": false
+      "currently_enabled": false,
+      "wallet_only": true
   },
   "CLC": {
     "coin": "CLC",
@@ -1671,6 +1672,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "DAI-MVR20": {
+      "coin": "DAI-MVR20",
+      "name": "Dai",
+      "coinpaprika_id": "dai-dai",
+      "coingecko_id": "dai",
+      "nodes": [
+        "https://rpc.moonriver.moonbeam.network"
+      ],
+      "explorer_url": [
+        "https://blockscout.moonriver.moonbeam.network/"
+      ],
+      "type": "Moonriver",
+      "active": false,
+      "currently_enabled": false
   },
   "DAI-PLG20": {
     "coin": "DAI-PLG20",
@@ -3213,7 +3229,7 @@
   "MM-ERC20": {
     "coin": "MM-ERC20",
     "name": "Million",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "mm-million",
     "coingecko_id": "million",
     "nodes": [
       "http://eth1.cipig.net:8555",
@@ -3226,6 +3242,68 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "MM-AVX20": {
+      "coin": "MM-AVX20",
+      "name": "Million",
+      "coinpaprika_id": "mm-million",
+      "coingecko_id": "million",
+      "nodes": [
+        "https://api.avax.network/ext/bc/C/rpc"
+      ],
+      "explorer_url": [
+        "https://cchain.explorer.avax.network/"
+      ],
+      "type": "AVX-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "MM-BEP20": {
+      "coin": "MM-BEP20",
+      "name": "Million",
+      "coinpaprika_id": "mm-million",
+      "coingecko_id": "million",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "MM-MVR20": {
+      "coin": "MM-MVR20",
+      "name": "Million",
+      "coinpaprika_id": "mm-million",
+      "coingecko_id": "million",
+      "nodes": [
+        "https://rpc.moonriver.moonbeam.network"
+      ],
+      "explorer_url": [
+        "https://blockscout.moonriver.moonbeam.network/"
+      ],
+      "type": "Moonriver",
+      "active": false,
+      "currently_enabled": false
+  },
+  "MM-PLG20": {
+      "coin": "MM-PLG20",
+      "name": "Million",
+      "coinpaprika_id": "mm-million",
+      "coingecko_id": "million",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
   },
   "MSHARK": {
     "coin": "MSHARK",
@@ -3890,6 +3968,21 @@
     "type": "HecoChain",
     "active": false,
     "currently_enabled": false
+  },
+  "USDT-FTM20": {
+      "coin": "USDT-FTM20",
+      "name": "Tether",
+      "coinpaprika_id": "usdt-tether",
+      "coingecko_id": "tether",
+      "nodes": [
+        "https://rpc.ftm.tools/"
+      ],
+      "explorer_url": [
+        "https://ftmscan.com/"
+      ],
+      "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
   },
   "USDT-KRC20": {
     "coin": "USDT-KRC20",
@@ -4868,15 +4961,6 @@
         "url": "el2.verus.io:17486",
         "protocol": "SSL",
         "disable_cert_verification": false
-      },
-      {
-        "url": "el0.verus.io:17485"
-      },
-      {
-        "url": "el1.verus.io:17485"
-      },
-      {
-        "url": "el2.verus.io:17485"
       }
     ],
     "explorer_url": [
@@ -5002,40 +5086,6 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
-  },
-  "MTSLA-ERC20": {
-      "coin": "MTSLA-ERC20",
-      "name": "Mirrored Tesla",
-      "coinpaprika_id": "test-coin",
-      "coingecko_id": "mirrored-tesla",
-      "nodes": [
-        "http://eth1.cipig.net:8555",
-        "http://eth2.cipig.net:8555",
-        "http://eth3.cipig.net:8555"
-      ],
-      "explorer_url": [
-        "https://etherscan.io/"
-      ],
-      "type": "ERC-20",
-      "active": false,
-      "currently_enabled": false
-  },
-  "MTSLA-BEP20": {
-      "coin": "MTSLA-BEP20",
-      "name": "Mirrored Tesla",
-      "coinpaprika_id": "test-coin",
-      "coingecko_id": "mirrored-tesla",
-      "nodes": [
-        "http://bsc1.cipig.net:8655",
-        "http://bsc2.cipig.net:8655",
-        "http://bsc3.cipig.net:8655"
-      ],
-      "explorer_url": [
-        "https://bscscan.com/"
-      ],
-      "type": "BEP-20",
-      "active": false,
-      "currently_enabled": false
   },
   "NAV": {
     "coin": "NAV",
@@ -6802,6 +6852,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "CRV-AVX20": {
+      "coin": "CRV-AVX20",
+      "name": "Curve DAO Token",
+      "coinpaprika_id": "crv-curve-dao-token",
+      "coingecko_id": "curve-dao-token",
+      "nodes": [
+        "https://api.avax.network/ext/bc/C/rpc"
+      ],
+      "explorer_url": [
+        "https://cchain.explorer.avax.network/"
+      ],
+      "type": "AVX-20",
+      "active": false,
+      "currently_enabled": false
   },
   "CRV-FTM20": {
       "coin": "CRV-FTM20",
