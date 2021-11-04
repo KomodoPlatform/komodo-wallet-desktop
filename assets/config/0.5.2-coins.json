@@ -2111,6 +2111,55 @@
     "active": false,
     "currently_enabled": false
   },
+  "FET-ERC20": {
+      "coin": "FET-ERC20",
+      "name": "Fetch.ai",
+      "coinpaprika_id": "fetch-ai",
+      "coingecko_id": "fetch-ai",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "FET-BEP20": {
+      "coin": "FET-BEP20",
+      "name": "Fetch.ai",
+      "coinpaprika_id": "fetch-ai",
+      "coingecko_id": "fetch-ai",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "FET-PLG20": {
+      "coin": "FET-PLG20",
+      "name": "Fetch.ai",
+      "coinpaprika_id": "fetch-ai",
+      "coingecko_id": "fetch-ai",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
   "FIL-BEP20": {
     "coin": "FIL-BEP20",
     "name": "Filecoin",
