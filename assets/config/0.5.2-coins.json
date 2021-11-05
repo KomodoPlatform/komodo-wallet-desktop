@@ -4587,6 +4587,21 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "SBCH": {
+    "coin": "SBCH",
+    "name": "SmartBCH",
+    "coinpaprika_id": "bch-bitcoin-cash",
+    "coingecko_id": "bitcoin-cash",
+    "nodes": [
+      "https://smartbch.fountainhead.cash/mainnet"
+    ],
+    "explorer_url": [
+      "https://www.smartscan.cash/"
+    ],
+    "type": "SmartBCH",
+    "active": false,
+    "currently_enabled": false
+  },
   "SIBM-BEP20": {
       "coin": "SIBM-BEP20",
       "name": "SibMining",
