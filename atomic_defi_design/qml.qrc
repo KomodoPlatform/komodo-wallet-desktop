@@ -525,6 +525,7 @@
         <file>Dex/Screens/Startup/ImportWallet.qml</file>
         <file>Dex/Screens/Startup/Logging.qml</file>
         <file>Dex/Screens/Startup/Login.qml</file>
+        <file>Dex/Screens/Startup/Main.qml</file>
         <file>Dex/Screens/Startup/NewWallet.qml</file>
         <file>Dex/Screens/Startup/WalletsView.qml</file>
         <file>Dex/Settings/AddCustomCoinModal.qml</file>
