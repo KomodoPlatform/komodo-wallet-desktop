@@ -75,6 +75,10 @@ namespace mm2::api
         const std::string        arbitrum_erc_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
         const std::string        arbitrum_erc_testnet_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
         const std::string        arbitrum_erc_testnet_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
+        const std::string        sbch_erc_swap_contract_address{"0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"};
+        const std::string        sbch_erc_fallback_swap_contract_address{"0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"};
+        const std::string        sbch_erc_testnet_swap_contract_address{"0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"};
+        const std::string        sbch_erc_testnet_fallback_swap_contract_address{"0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"};
         const std::string        bnb_testnet_swap_contract_address{"0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150"};
         const std::string        bnb_swap_contract_address{"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"};
         const std::string        bnb_fallback_swap_contract_address{bnb_swap_contract_address};

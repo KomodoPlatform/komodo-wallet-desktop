@@ -253,6 +253,7 @@ QtObject {
             case 'KRC-20':      return getCoinColor("KCS")
             case 'Moonriver':   return getCoinColor("MOVR")
             case 'HecoChain':   return getCoinColor("HECO")
+            case 'SmartBCH':    return getCoinColor("SBCH")
             default:            return getCoinColor("BTC")
         }
     }
@@ -446,6 +447,7 @@ QtObject {
                                           "REV": "#78034D",
                                           "RLC": "#FFE100",
                                           "RTM": "#B74427",
+                                          "SBCH": "#74dd54",
                                           "SIBM": "#0C4855",
                                           "SFUSD": "#9881B8",
                                           "SNT": "#596BED",
