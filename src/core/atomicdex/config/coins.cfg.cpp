@@ -150,6 +150,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::SmartBCH;
         }
+        else if (cfg.type == "Ethereum Classic")
+        {
+            cfg.coin_type = CoinType::EthereumClassic;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -224,6 +228,11 @@ namespace atomic_dex
         case CoinType::SmartBCH:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "SBCHT" : "SBCH";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::EthereumClassic:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETCT" : "ETC";
             cfg.is_erc_family          = true;
             break;
         case CoinType::SLP:

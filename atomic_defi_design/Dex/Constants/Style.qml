@@ -254,6 +254,7 @@ QtObject {
             case 'Moonriver':   return getCoinColor("MOVR")
             case 'HecoChain':   return getCoinColor("HECO")
             case 'SmartBCH':    return getCoinColor("SBCH")
+            case 'Ethereum Classic': return getCoinColor("ETC")
             default:            return getCoinColor("BTC")
         }
     }

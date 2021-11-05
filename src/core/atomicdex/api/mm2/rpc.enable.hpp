@@ -35,6 +35,10 @@ namespace mm2::api
         const std::string        erc_testnet_swap_contract_address{"0x6b5A52217006B965BB190864D62dc3d270F7AaFD"};
         const std::string        erc_fallback_swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
         const std::string        erc_testnet_fallback_swap_contract_address{"0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94"};
+        const std::string        etc_erc_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
+        const std::string        etc_erc_testnet_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
+        const std::string        etc_erc_fallback_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
+        const std::string        etc_erc_testnet_fallback_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
         const std::string        ubiq_erc_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        ubiq_erc_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        ubiq_erc_testnet_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
