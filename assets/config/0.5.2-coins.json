@@ -1814,6 +1814,7 @@
     "name": "Diminutive Coin",
     "coinpaprika_id": "dimi-diminutive-coin",
     "coingecko_id": "diminutive-coin",
+    "nomics_id": "DIMI",
     "electrum": [
       {
         "url": "electrumx1.diminutivecoin.com:50012",
@@ -1947,6 +1948,7 @@
     "name": "DigitalPrice",
     "coinpaprika_id": "dp-digitalprice",
     "coingecko_id": "digitalprice",
+    "nomics_id": "DP",
     "electrum": [
       {
         "url": "1.eu.dp.electrum.dexstats.info:10021"
@@ -1964,6 +1966,7 @@
     "name": "Electra",
     "coinpaprika_id": "eca-electra",
     "coingecko_id": "electra",
+    "nomics_id": "ECA",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10052",
@@ -1990,6 +1993,7 @@
     "name": "e-Gulden",
     "coinpaprika_id": "efl-e-gulden",
     "coingecko_id": "electronicgulden",
+    "nomics_id": "EFL",
     "electrum": [
       {
         "url": "holland.ecoincore.com:11017",
@@ -2240,6 +2244,7 @@
     "name": "Firo",
     "coinpaprika_id": "firo-firo",
     "coingecko_id": "zcoin",
+    "nomics_id": "FIRO",
     "electrum": [
       {
         "url": "electrumx01.firo.org:50001"
@@ -2263,6 +2268,7 @@
     "name": "Firo",
     "coinpaprika_id": "firo-firo",
     "coingecko_id": "zcoin",
+    "nomics_id": "FIRO",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -2945,6 +2951,7 @@
     "name": "Koinon",
     "coinpaprika_id": "koin-koinon",
     "coingecko_id": "koinon",
+    "nomics_id": "KOIN",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10024",
@@ -3000,6 +3007,7 @@
     "name": "Litecoin Cash",
     "coinpaprika_id": "lcc-litecoin-cash",
     "coingecko_id": "litecoin-cash",
+    "nomics_id": "LCC",
     "electrum": [
       {
         "url": "188.166.117.139:50001"
@@ -3873,6 +3881,7 @@
     "name": "Unitus",
     "coinpaprika_id": "uis-unitus",
     "coingecko_id": "unitus",
+    "nomics_id": "UIS",
     "electrum": [
       {
         "url": "failover.trc-uis.ewmcx.biz:50002",
@@ -3895,6 +3904,7 @@
     "name": "Unobtanium",
     "coinpaprika_id": "uno-unobtanium",
     "coingecko_id": "unobtanium",
+    "nomics_id": "UNO",
     "electrum": [
       {
         "url": "uno-main.coinmunity.gold:50002",
@@ -4718,6 +4728,7 @@
     "name": "SmartBCH",
     "coinpaprika_id": "bch-bitcoin-cash",
     "coingecko_id": "bitcoin-cash",
+    "nomics_id": "BCH",
     "nodes": [
       "https://smartbch.fountainhead.cash/mainnet"
     ],
@@ -5212,6 +5223,7 @@
     "name": "MonaCoin",
     "coinpaprika_id": "mona-monacoin",
     "coingecko_id": "monacoin",
+    "nomics_id": "MONA",
     "electrum": [
       {
         "url": "electrumx3.monacoin.nl:50001"
@@ -5307,6 +5319,7 @@
     "name": "Namecoin",
     "coinpaprika_id": "nmc-namecoin",
     "coingecko_id": "namecoin",
+    "nomics_id": "NMC",
     "electrum": [
       {
         "url": "82.119.233.36:50001"
@@ -5339,6 +5352,7 @@
     "name": "Novacoin",
     "coinpaprika_id": "nvc-novacoin",
     "coingecko_id": "novacoin",
+    "nomics_id": "NVC",
     "electrum": [
       {
         "url": "electrumx.nvc.ewmcx.org:50002",
@@ -5364,6 +5378,7 @@
       "name": "Novacoin",
       "coinpaprika_id": "nvc-novacoin",
       "coingecko_id": "novacoin",
+      "nomics_id": "NVC",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -5381,6 +5396,7 @@
       "name": "Novacoin",
       "coinpaprika_id": "nvc-novacoin",
       "coingecko_id": "novacoin",
+      "nomics_id": "NVC",
       "explorer_url": [
         "https://explorer.qtum.org/"
       ],
@@ -5551,6 +5567,7 @@
       "name": "Raptoreum",
       "coinpaprika_id": "rtm-raptoreum",
       "coingecko_id": "raptoreum",
+      "nomics_id": "RTM",
       "electrum": [
         {
           "url": "209.151.151.21:50001",
@@ -5963,6 +5980,7 @@
     "name": "Validity",
     "coinpaprika_id": "val-validity",
     "coingecko_id": "radium",
+    "nomics_id": "RADS",
     "electrum": [
       {
         "url": "e1.validitytech.com:11002",
@@ -6032,6 +6050,7 @@
     "name": "Widecoin",
     "coinpaprika_id": "wcn-widecoin",
     "coingecko_id": "widecoin",
+    "nomics_id": "WCN2",
     "electrum": [
       {
         "url": "electrumx.widecoin.org:50001"
@@ -6052,6 +6071,7 @@
       "name": "Wrapped Widecoin",
       "coinpaprika_id": "wwcn-wrapped-widecoin",
       "coingecko_id": "wrapped-widecoin",
+      "nomics_id": "WWCN",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -6094,6 +6114,7 @@
       "name": "Electra Protocol",
       "coinpaprika_id": "xep-electra-protocol",
       "coingecko_id": "electra-protocol",
+      "nomics_id": "XEP",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -6149,6 +6170,7 @@
     "name": "Primecoin",
     "coinpaprika_id": "xpm-primecoin",
     "coingecko_id": "primecoin",
+    "nomics_id": "XPM",
     "electrum": [
       {
         "url": "electrumx.primecoin.org:50001",
@@ -6265,6 +6287,7 @@
     "name": "Vanillacash",
     "coinpaprika_id": "xvc-vcash",
     "coingecko_id": "vcash",
+    "nomics_id": "XVC",
     "electrum": [
       {
         "url": "electrumx.xvc.ewmcx.org:50001",
@@ -6288,6 +6311,7 @@
     "name": "Vanillacash",
     "coinpaprika_id": "xvc-vcash",
     "coingecko_id": "vcash",
+    "nomics_id": "XVC",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -6305,6 +6329,7 @@
       "name": "Vanillacash",
       "coinpaprika_id": "xvc-vcash",
       "coingecko_id": "vcash",
+      "nomics_id": "XVC",
       "explorer_url": [
         "https://explorer.qtum.org/"
       ],
