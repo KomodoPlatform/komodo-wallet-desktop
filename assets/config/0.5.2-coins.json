@@ -4716,6 +4716,7 @@
   "SBCH": {
     "coin": "SBCH",
     "name": "SmartBCH",
+    "alias_ticker": "BCH",
     "coinpaprika_id": "bch-bitcoin-cash",
     "coingecko_id": "bitcoin-cash",
     "nodes": [
