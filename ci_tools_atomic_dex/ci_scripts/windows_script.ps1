@@ -32,5 +32,4 @@ $Env:QT_ROOT = "C:\Qt"
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../ 
-cmake --build . --config Release --target atomicdex-desktop
-ninja install
+ninja
