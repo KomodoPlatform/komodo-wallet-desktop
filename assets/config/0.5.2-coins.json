@@ -798,6 +798,7 @@
     "name": "BlackCoin",
     "coinpaprika_id": "blk-blackcoin",
     "coingecko_id": "blackcoin",
+    "nomics_id": "BLK",
     "electrum": [
       {
         "url": "electrum1.blackcoin.nl:10002",
@@ -977,6 +978,7 @@
     "name": "GlobalBoost-Y",
     "coinpaprika_id": "bsty-globalboost-y",
     "coingecko_id": "globalboost",
+    "nomics_id": "BSTY",
     "electrum": [
       {
         "url": "66.172.33.175:50001",
@@ -1032,6 +1034,7 @@
     "name": "Bitcoin",
     "coinpaprika_id": "btc-bitcoin",
     "coingecko_id": "bitcoin",
+    "nomics_id": "BTC",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -1049,6 +1052,7 @@
     "name": "BitcoinZ",
     "coinpaprika_id": "btcz-bitcoinz",
     "coingecko_id": "bitcoinz",
+    "nomics_id": "BTCZ",
     "electrum": [
       {
         "url": "electrum1.btcz.rocks:50001"
@@ -1069,6 +1073,7 @@
       "name": "BitCore",
       "coinpaprika_id": "btx-bitcore",
       "coingecko_id": "bitcore",
+      "nomics_id": "BTX",
       "electrum": [
         {
           "url": "btx-electrumx.coinsmunity.com:50002",
@@ -1090,6 +1095,7 @@
       "name": "BitCore",
       "coinpaprika_id": "btx-bitcore",
       "coingecko_id": "bitcore",
+      "nomics_id": "BTX",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -1789,6 +1795,7 @@
     "name": "Digitalcoin",
     "coinpaprika_id": "dgc-digitalcoin",
     "coingecko_id": "digitalcoin",
+    "nomics_id": "DGC",
     "electrum": [
       {
         "url": "electrumx.dgc.ewmcx.org:50001",
@@ -2086,6 +2093,7 @@
     "name": "Einsteinium",
     "coinpaprika_id": "emc2-einsteinium",
     "coingecko_id": "einsteinium",
+    "nomics_id": "EMC2",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10062",
@@ -2529,6 +2537,7 @@
     "name": "Groestlcoin",
     "coinpaprika_id": "grs-groestlcoin",
     "coingecko_id": "groestlcoin",
+    "nomics_id": "GRS",
     "electrum": [
       {
         "url": "electrum10.groestlcoin.org:50001"
@@ -2842,6 +2851,7 @@
       "name": "Jarvis Reward Token",
       "coinpaprika_id": "jrt-jarvis-reward-token",
       "coingecko_id": "jarvis-reward-token",
+      "nomics_id": "JRT",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -2859,6 +2869,7 @@
       "name": "Jarvis Reward Token",
       "coinpaprika_id": "jrt-jarvis-reward-token",
       "coingecko_id": "jarvis-reward-token",
+      "nomics_id": "JRT",
       "nodes": [
         "https://polygon-rpc.com"
       ],
@@ -2978,6 +2989,7 @@
     "name": "LBRY Credits",
     "coinpaprika_id": "lbc-lbry-credits",
     "coingecko_id": "lbry-credits",
+    "nomics_id": "LBC",
     "electrum": [
       {
         "url": "spv1.lbry.com:50001"
@@ -5248,6 +5260,7 @@
     "name": "NavCoin",
     "coinpaprika_id": "nav-navcoin",
     "coingecko_id": "nav-coin",
+    "nomics_id": "NAV",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10056"
@@ -5271,6 +5284,7 @@
       "name": "Navcoin",
       "coinpaprika_id": "nav-navcoin",
       "coingecko_id": "nav-coin",
+      "nomics_id": "NAV",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -6802,6 +6816,7 @@
     "name": "Qcash",
     "coingecko_id": "qcash",
     "coinpaprika_id": "qc-qcash",
+    "nomics_id": "QC",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
