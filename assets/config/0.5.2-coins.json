@@ -2094,6 +2094,21 @@
     "active": false,
     "currently_enabled": false
   },
+  "ETC": {
+    "coin": "ETC",
+    "name": "Ethereum Classic",
+    "coinpaprika_id": "etc-ethereum-classic",
+    "coingecko_id": "ethereum-classic",
+    "nodes": [
+      "https://www.ethercluster.com/etc"
+    ],
+    "explorer_url": [
+      "https://blockscout.com/etc/mainnet/"
+    ],
+    "type": "Ethereum Classic",
+    "active": false,
+    "currently_enabled": false
+  },
   "ETC-BEP20": {
     "coin": "ETC-BEP20",
     "name": "Ethereum Classic",
@@ -4635,6 +4650,21 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "SBCH": {
+    "coin": "SBCH",
+    "name": "SmartBCH",
+    "coinpaprika_id": "bch-bitcoin-cash",
+    "coingecko_id": "bitcoin-cash",
+    "nodes": [
+      "https://smartbch.fountainhead.cash/mainnet"
+    ],
+    "explorer_url": [
+      "https://www.smartscan.cash/"
+    ],
+    "type": "SmartBCH",
+    "active": false,
+    "currently_enabled": false
   },
   "SIBM-BEP20": {
       "coin": "SIBM-BEP20",

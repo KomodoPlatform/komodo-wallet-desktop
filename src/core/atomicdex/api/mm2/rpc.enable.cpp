@@ -120,6 +120,20 @@ namespace mm2::api
             j["urls"]                   = cfg.urls;
             break;
         }
+        case CoinType::SmartBCH:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.sbch_erc_testnet_swap_contract_address : cfg.sbch_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.sbch_erc_testnet_fallback_swap_contract_address : cfg.sbch_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
+        case CoinType::EthereumClassic:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.etc_erc_testnet_swap_contract_address : cfg.etc_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.etc_erc_testnet_fallback_swap_contract_address : cfg.etc_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
         default:
             break;
         }
