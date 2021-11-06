@@ -6451,7 +6451,7 @@
     "explorer_url": [
       "https://explorer.zcha.in/"
     ],
-    "type": "UTXO"
+    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   },
