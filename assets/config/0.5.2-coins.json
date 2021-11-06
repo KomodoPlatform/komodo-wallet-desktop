@@ -4,6 +4,7 @@
       "name": "1inch",
       "coinpaprika_id": "1inch-1inch",
       "coingecko_id": "1inch",
+      "nomics_id": "1INCH",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -19,6 +20,7 @@
       "name": "1inch",
       "coinpaprika_id": "1inch-1inch",
       "coingecko_id": "1inch",
+      "nomics_id": "1INCH",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -36,6 +38,7 @@
       "name": "1inch",
       "coinpaprika_id": "1inch-1inch",
       "coingecko_id": "1inch",
+      "nomics_id": "1INCH",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -53,6 +56,7 @@
       "name": "1inch",
       "coinpaprika_id": "1inch-1inch",
       "coingecko_id": "1inch",
+      "nomics_id": "1INCH",
       "nodes": [
         "https://api.harmony.one",
         "https://api.s0.t.hmny.io"
@@ -69,6 +73,7 @@
       "name": "1inch",
       "coinpaprika_id": "1inch-1inch",
       "coingecko_id": "1inch",
+      "nomics_id": "1INCH",
       "nodes": [
         "https://polygon-rpc.com"
       ],
@@ -84,6 +89,7 @@
       "name": "Aave",
       "coinpaprika_id": "aave-new",
       "coingecko_id": "aave",
+      "nomics_id": "AAVE",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -99,6 +105,7 @@
     "name": "Aave",
     "coinpaprika_id": "aave-new",
     "coingecko_id": "aave",
+    "nomics_id": "AAVE",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -116,6 +123,7 @@
     "name": "Aave",
     "coinpaprika_id": "aave-new",
     "coingecko_id": "aave",
+    "nomics_id": "AAVE",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -133,6 +141,7 @@
       "name": "Aave",
       "coinpaprika_id": "aave-new",
       "coingecko_id": "aave",
+      "nomics_id": "AAVE",
       "nodes": [
         "https://rpc.ftm.tools/"
       ],
@@ -148,6 +157,7 @@
       "name": "Aave",
       "coinpaprika_id": "aave-new",
       "coingecko_id": "aave",
+      "nomics_id": "AAVE",
       "nodes": [
         "https://http-mainnet.hecochain.com"
       ],
@@ -163,6 +173,7 @@
       "name": "Aave",
       "coinpaprika_id": "aave-new",
       "coingecko_id": "aave",
+      "nomics_id": "AAVE",
       "nodes": [
         "https://api.harmony.one",
         "https://api.s0.t.hmny.io"
@@ -175,19 +186,20 @@
       "currently_enabled": false
   },
   "AAVE-PLG20": {
-    "coin": "AAVE-PLG20",
-    "name": "Aave",
-    "coinpaprika_id": "aave-new",
-    "coingecko_id": "aave",
-    "nodes": [
-      "https://polygon-rpc.com"
-    ],
-    "explorer_url": [
-      "https://polygonscan.com/"
-    ],
-    "type": "Matic",
-    "active": false,
-    "currently_enabled": false
+      "coin": "AAVE-PLG20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nomics_id": "AAVE",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
   },
   "ABY": {
     "coin": "ABY",
@@ -218,6 +230,7 @@
     "name": "Cardano",
     "coinpaprika_id": "ada-cardano",
     "coingecko_id": "cardano",
+    "nomics_id": "ADA",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -235,6 +248,7 @@
     "name": "AdEx",
     "coinpaprika_id": "adx-adex",
     "coingecko_id": "adex",
+    "nomics_id": "ADX",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -252,6 +266,7 @@
     "name": "AdEx",
     "coinpaprika_id": "adx-adex",
     "coingecko_id": "adex",
+    "nomics_id": "ADX",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -404,6 +419,7 @@
     "name": "Auroracoin",
     "coinpaprika_id": "aur-auroracoin",
     "coingecko_id": "auroracoin",
+    "nomics_id": "AUR",
     "electrum": [
       {
         "url": "electrumx.aur.ewmcx.info:50002",
@@ -495,6 +511,7 @@
     "name": "Axe",
     "coinpaprika_id": "axe-axe",
     "coingecko_id": "axe",
+    "nomics_id": "AXE",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10057",
@@ -684,6 +701,7 @@
     "coin": "BCH",
     "coingecko_id": "bitcoin-cash",
     "coinpaprika_id": "bch-bitcoin-cash",
+    "nomics_id": "BCH",
     "active": false,
     "currently_enabled": false,
     "electrum": [
@@ -711,6 +729,7 @@
       "name": "Bitcoin Cash",
       "coinpaprika_id": "bch-bitcoin-cash",
       "coingecko_id": "bitcoin-cash",
+      "nomics_id": "BCH",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -728,6 +747,7 @@
       "name": "Bitcoin Cash",
       "coinpaprika_id": "bch-bitcoin-cash",
       "coingecko_id": "bitcoin-cash",
+      "nomics_id": "BCH",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -745,6 +765,7 @@
     "name": "Bitcoin Cash",
     "coinpaprika_id": "bch-bitcoin-cash",
     "coingecko_id": "bitcoin-cash",
+    "nomics_id": "BCH",
     "nodes": [
       "https://http-mainnet.hecochain.com"
     ],
@@ -985,6 +1006,7 @@
     "type": "UTXO",
     "coingecko_id": "bitcoin",
     "coinpaprika_id": "btc-bitcoin",
+    "nomics_id": "BTC",
     "electrum": [
       {
         "url": "electrum3.cipig.net:10000",
@@ -1284,6 +1306,7 @@
     "type": "UTXO",
     "coingecko_id": "bitweb",
     "coinpaprika_id": "bte-bitweb",
+    "nomics_id": "BTE3",
     "electrum": [
       {
         "url": "electrumx.bitwebcore.org:20001"
@@ -1306,6 +1329,7 @@
       "name": "CAD Coin",
       "coinpaprika_id": "cadc-cad-coin",
       "coingecko_id": "test-coin",
+      "nomics_id": "CADC",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -1323,6 +1347,7 @@
       "name": "CAD Coin",
       "coinpaprika_id": "cadc-cad-coin",
       "coingecko_id": "test-coin",
+      "nomics_id": "CADC",
       "nodes": [
         "https://polygon-rpc.com"
       ],
@@ -1381,6 +1406,7 @@
     "name": "Canada eCoin",
     "coinpaprika_id": "cdn-canada-ecoin",
     "coingecko_id": "test-coin",
+    "nomics_id": "CDN",
     "electrum": [
       {
         "url": "mumbai.ecoincore.com:34333",
@@ -1709,6 +1735,7 @@
     "name": "Dash",
     "coingecko_id": "dash",
     "coinpaprika_id": "dash-dash",
+    "nomics_id": "DASH",
     "currently_enabled": false,
     "electrum": [
       {
@@ -1736,6 +1763,7 @@
     "name": "DigiByte",
     "coinpaprika_id": "dgb-digibyte",
     "coingecko_id": "digibyte",
+    "nomics_id": "DGB",
     "currently_enabled": false,
     "electrum": [
       {
@@ -2252,6 +2280,7 @@
     "name": "Fujicoin",
     "coinpaprika_id": "fjc-fujicoin",
     "coingecko_id": "fujicoin",
+    "nomics_id": "FJC",
     "electrum": [
       {
         "url": "electrumx1.fujicoin.org:50001",
@@ -2276,6 +2305,7 @@
     "name": "Fujicoin",
     "coinpaprika_id": "fjc-fujicoin",
     "coingecko_id": "fujicoin",
+    "nomics_id": "FJC",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -2327,6 +2357,7 @@
     "name": "Feathercoin",
     "coinpaprika_id": "ftc-feathercoin",
     "coingecko_id": "feathercoin",
+    "nomics_id": "FTC",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10054",
@@ -2418,6 +2449,7 @@
     "name": "Gleec",
     "coinpaprika_id": "gleec-gleec-coin",
     "coingecko_id": "gleec-coin",
+    "nomics_id": "GLEEC",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10022",
@@ -2444,6 +2476,7 @@
     "name": "Gleec",
     "coinpaprika_id": "gleec-gleec-coin",
     "coingecko_id": "gleec-coin",
+    "nomics_id": "GLEEC",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10069",
@@ -2986,6 +3019,7 @@
     "coin": "LTC",
     "coingecko_id": "litecoin",
     "coinpaprika_id": "ltc-litecoin",
+    "nomics_id": "LTC",
     "currently_enabled": false,
     "electrum": [
       {
@@ -3078,6 +3112,7 @@
     "name": "Lynx",
     "coinpaprika_id": "lynx-lynx",
     "coingecko_id": "lynx",
+    "nomics_id": "LYNX",
     "electrum": [
       {
         "url": "electrum.getlynx.io:50002",
@@ -3114,6 +3149,7 @@
     "name": "Litecoin Finance",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "litecoin-finance",
+    "nomics_id": "LTFN",
     "electrum": [
       {
         "url": "eltfnx.scalaris.info:30001"
@@ -3155,6 +3191,7 @@
     "name": "Polygon",
     "coinpaprika_id": "matic-matic-network",
     "coingecko_id": "matic-network",
+    "nomics_id": "MATIC",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -3170,6 +3207,7 @@
     "name": "Polygon",
     "coinpaprika_id": "matic-matic-network",
     "coingecko_id": "matic-network",
+    "nomics_id": "MATIC",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -3187,6 +3225,7 @@
     "name": "Polygon",
     "coinpaprika_id": "matic-matic-network",
     "coingecko_id": "matic-network",
+    "nomics_id": "MATIC",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -3204,6 +3243,7 @@
       "name": "Polygon",
       "coinpaprika_id": "matic-matic-network",
       "coingecko_id": "matic-network",
+      "nomics_id": "MATIC",
       "nodes": [
         "https://http-mainnet.hecochain.com"
       ],
@@ -3219,6 +3259,7 @@
       "name": "Polygon",
       "coinpaprika_id": "matic-matic-network",
       "coingecko_id": "matic-network",
+      "nomics_id": "MATIC",
       "nodes": [
         "https://api.harmony.one",
         "https://api.s0.t.hmny.io"
@@ -3231,11 +3272,11 @@
       "currently_enabled": false
   },
   "MCL": {
-    "active": false,
     "coin": "MCL",
+    "name": "Marmara Credit Loops",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "mcl-marmara-credit-loops",
-    "currently_enabled": false,
+    "nomics_id": "MCL",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10023",
@@ -3254,13 +3295,15 @@
       "http://explorer.marmara.io/"
     ],
     "type": "Smart Chain",
-    "name": "MCL"
+    "active": false,
+    "currently_enabled": false
   },
   "MIR-ERC20": {
       "coin": "MIR-ERC20",
       "name": "Mirror Protocol",
       "coinpaprika_id": "mir-mirror-protocol",
       "coingecko_id": "mirror-protocol",
+      "nomics_id": "MIRROR",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -3278,6 +3321,7 @@
       "name": "Mirror Protocol",
       "coinpaprika_id": "mir-mirror-protocol",
       "coingecko_id": "mirror-protocol",
+      "nomics_id": "MIRROR",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -3629,6 +3673,7 @@
     "coin": "ETH",
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
+    "nomics_id": "ETH",
     "currently_enabled": false,
     "nodes": [
       "http://eth1.cipig.net:8555",
@@ -3646,6 +3691,7 @@
     "name": "Ethereum",
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
+    "nomics_id": "ETH",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -3663,6 +3709,7 @@
     "name": "Ethereum",
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
+    "nomics_id": "ETH",
     "nodes": [
       "https://api.avax.network/ext/bc/C/rpc"
     ],
@@ -3678,6 +3725,7 @@
       "name": "Ethereum",
       "coinpaprika_id": "eth-ethereum",
       "coingecko_id": "ethereum",
+      "nomics_id": "ETH",
       "nodes": [
         "https://rpc.ftm.tools/"
       ],
@@ -3693,6 +3741,7 @@
       "name": "Ethereum",
       "coinpaprika_id": "eth-ethereum",
       "coingecko_id": "ethereum",
+      "nomics_id": "ETH",
       "nodes": [
         "https://http-mainnet.hecochain.com"
       ],
@@ -3708,6 +3757,7 @@
       "name": "Ethereum",
       "coinpaprika_id": "eth-ethereum",
       "coingecko_id": "ethereum",
+      "nomics_id": "ETH",
       "nodes": [
         "https://api.harmony.one",
         "https://api.s0.t.hmny.io"
@@ -3724,6 +3774,7 @@
       "name": "Ethereum",
       "coinpaprika_id": "eth-ethereum",
       "coingecko_id": "ethereum",
+      "nomics_id": "ETH",
       "nodes": [
         "https://rpc-mainnet.kcc.network"
       ],
@@ -3739,6 +3790,7 @@
     "name": "Ethereum",
     "coinpaprika_id": "eth-ethereum",
     "coingecko_id": "ethereum",
+    "nomics_id": "ETH",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -3755,6 +3807,7 @@
     "coin": "ETH-ARB20",
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
+    "nomics_id": "ETH",
     "currently_enabled": false,
     "nodes": [
       "https://arb1.arbitrum.io/rpc"
@@ -4249,6 +4302,7 @@
     "minimal_claim_amount": "10",
     "coingecko_id": "komodo",
     "coinpaprika_id": "kmd-komodo",
+    "nomics_id": "KMD",
     "electrum": [
       {
         "url": "electrum3.cipig.net:10001",
@@ -4274,6 +4328,7 @@
     "name": "Komodo",
     "coinpaprika_id": "kmd-komodo",
     "coingecko_id": "komodo",
+    "nomics_id": "KMD",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -4317,6 +4372,7 @@
       "name": "Chainlink",
       "coinpaprika_id": "link-chainlink",
       "coingecko_id": "chainlink",
+      "nomics_id": "LINK",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -4332,6 +4388,7 @@
     "name": "Chainlink",
     "coinpaprika_id": "link-chainlink",
     "coingecko_id": "chainlink",
+    "nomics_id": "LINK",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -4349,6 +4406,7 @@
     "name": "Chainlink",
     "coinpaprika_id": "link-chainlink",
     "coingecko_id": "chainlink",
+    "nomics_id": "LINK",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -4366,6 +4424,7 @@
       "name": "Chainlink",
       "coinpaprika_id": "link-chainlink",
       "coingecko_id": "chainlink",
+      "nomics_id": "LINK",
       "nodes": [
         "https://rpc.ftm.tools/"
       ],
@@ -4381,6 +4440,7 @@
       "name": "Chainlink",
       "coinpaprika_id": "link-chainlink",
       "coingecko_id": "chainlink",
+      "nomics_id": "LINK",
       "nodes": [
         "https://http-mainnet.hecochain.com"
       ],
@@ -4396,6 +4456,7 @@
       "name": "Chainlink",
       "coinpaprika_id": "link-chainlink",
       "coingecko_id": "chainlink",
+      "nomics_id": "LINK",
       "nodes": [
         "https://api.harmony.one",
         "https://api.s0.t.hmny.io"
@@ -4412,6 +4473,7 @@
     "name": "Chainlink",
     "coinpaprika_id": "link-chainlink",
     "coingecko_id": "chainlink",
+    "nomics_id": "LINK",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -4580,7 +4642,7 @@
     "currently_enabled": false,
     "wallet_only": true
   },
-    "PIC": {
+  "PIC": {
     "coin": "PIC",
     "name": "Picacoin",
     "coinpaprika_id": "pic-picacoin",
@@ -4885,7 +4947,8 @@
     "name": "Supernet",
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "unity-supernet",
+    "nomics_id": "UNITY",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10005",
@@ -5025,6 +5088,7 @@
     "name": "Verus Coin",
     "coingecko_id": "verus-coin",
     "coinpaprika_id": "vrsc-verus-coin",
+    "nomics_id": "VRSC",
     "electrum": [
       {
         "url": "el0.verus.io:17486",
@@ -5634,6 +5698,7 @@
     "name": "HempCoin",
     "coinpaprika_id": "thc-hempcoin",
     "coingecko_id": "hempcoin-thc",
+    "nomics_id": "THC",
     "electrum": [
       {
         "url": "1.eu.thc.electrum.dexstats.info:10020"
@@ -5675,6 +5740,7 @@
     "name": "Terracoin",
     "coinpaprika_id": "trc-terracoin",
     "coingecko_id": "terracoin",
+    "nomics_id": "TRC",
     "electrum": [
       {
         "url": "failover.trc-uis.ewmcx.biz:50006",
@@ -5945,6 +6011,7 @@
     "name": "Verium Reserve",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "vrm-veriumreserve",
+    "nomics_id": "VRM",
     "electrum": [
       {
         "url": "electrum01-vrm.vericonomy.com:50001"
@@ -6061,6 +6128,7 @@
     "name": "Myriad",
     "coinpaprika_id": "xmy-myriad",
     "coingecko_id": "myriadcoin",
+    "nomics_id": "XMY",
     "electrum": [
       {
         "url": "lenoir.ecoincore.com:10892",
@@ -6120,7 +6188,7 @@
     "active": false,
     "currently_enabled": false
   },
-    "XRG": {
+  "XRG": {
     "coin": "XRG",
     "active": false,
     "coinpaprika_id": "xrg-ergon",
@@ -6360,12 +6428,11 @@
     "currently_enabled": false
   },
   "ZEC": {
-    "active": false,
     "coin": "ZEC",
     "name": "Zcash",
     "coinpaprika_id": "zec-zcash",
     "coingecko_id": "zcash",
-    "currently_enabled": false,
+    "nomics_id": "ZEC",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10058",
@@ -6385,12 +6452,15 @@
       "https://explorer.zcha.in/"
     ],
     "type": "UTXO"
+    "active": false,
+    "currently_enabled": false
   },
   "ZER": {
     "coin": "ZER",
     "name": "Zero",
     "coinpaprika_id": "zer-zero",
     "coingecko_id": "zero",
+    "nomics_id": "ZER",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10065"
@@ -6414,6 +6484,7 @@
     "name": "Zetacoin",
     "coinpaprika_id": "zet-zetacoin",
     "coingecko_id": "zetacoin",
+    "nomics_id": "ZET",
     "electrum": [
       {
         "url": "failover.zet.ewmci.xyz:50002",
@@ -6439,6 +6510,7 @@
     "name": "Zilliqa",
     "coinpaprika_id": "zil-zilliqa",
     "coingecko_id": "zilliqa",
+    "nomics_id": "ZIL",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -6456,6 +6528,7 @@
     "name": "ChainZilla",
     "coinpaprika_id": "zilla-chainzilla",
     "coingecko_id": "test-coin",
+    "nomics_id": "ZILLA",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10028",
