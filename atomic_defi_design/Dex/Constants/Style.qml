@@ -459,6 +459,7 @@ QtObject {
                                           "STORJ": "#2683FF",
                                           "SXP": "#FD5F3B",
                                           "SYS": "#0084C7",
+                                          "TEL": "#1BD8FF",
                                           "TKL": "#1E2835",
                                           "TRC": "#096432",
                                           "TRX": "#F30031",
