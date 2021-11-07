@@ -54,6 +54,10 @@ namespace atomic_dex::komodo_prices::api
         {
             x = provider::coinpaprika;
         }
+        else if (j == "nomics")
+        {
+            x = provider::nomics;
+        }
         else
         {
             x = provider::unknown;
