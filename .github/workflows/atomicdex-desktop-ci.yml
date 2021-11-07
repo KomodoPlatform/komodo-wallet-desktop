@@ -274,16 +274,13 @@ jobs:
 
       - name: Running Tests (Windows)
         shell: powershell
-        working-directory: ci_tools_atomic_dex
         if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
           echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
-          cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
-          cd build-Release
-          cd bin
-          ls
+          cd build\bin
+          ./atomicdex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
 
