@@ -1248,6 +1248,12 @@ namespace atomic_dex
             case CoinTypeGadget::Optimism:
                 out = construct_url_functor("ETH-OPT20", "ETHK-OPT20", "optimism_tx_history", "optimism_tx_history", ticker, address);
                 break;
+            case CoinTypeGadget::EthereumClassic:
+                out = construct_url_functor("ETC", "ETCT", "etc_tx_history", "etc_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::AVX20:
+                out = construct_url_functor("AVAX", "AVAXT", "avx_tx_history", "avx_tx_history", ticker, address);
+                break;
             default:
                 break;
             }
