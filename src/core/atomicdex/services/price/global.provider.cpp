@@ -192,7 +192,7 @@ namespace atomic_dex
         {
             return "1";
         }
-        std::string ticker = ticker_in;
+        std::string ticker =  utils::retrieve_main_ticker(ticker_in);
         try
         {
             //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
