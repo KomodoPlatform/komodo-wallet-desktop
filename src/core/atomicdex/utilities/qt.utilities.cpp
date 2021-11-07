@@ -56,7 +56,7 @@ namespace atomic_dex
         QString change_24h = "0";
         if (is_this_currency_a_fiat(config, config.current_currency))
         {
-            change_24h = QString::fromStdString(provider.get_change_24h(coin.ticker));
+            change_24h = QString::fromStdString(provider.get_change_24h(utils::retrieve_main_ticker(coin.ticker)));
         }
         return change_24h;
     }

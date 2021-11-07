@@ -4,6 +4,7 @@
 //! Project Headers
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 //! Constructor
 namespace atomic_dex
@@ -121,7 +122,7 @@ namespace atomic_dex
     std::string
     komodo_prices_provider::get_price_provider(const std::string& ticker) const
     {
-        auto provider = get_info_answer(ticker).price_provider;
+        auto provider = get_info_answer(utils::retrieve_main_ticker(ticker)).price_provider;
         switch (provider)
         {
         case komodo_prices::api::provider::binance:
