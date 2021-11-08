@@ -445,7 +445,7 @@ QtObject {
                                           "QI": "#FFFFFF",
                                           "QIAIR": "#FEFEFE",
                                           "QKC": "#2175B4",
-                                          "QNT": "#46DDC8",
+                                          "QNT": "#000000",
                                           "REP": "#0E0E21",
                                           "REV": "#78034D",
                                           "RLC": "#FFE100",
