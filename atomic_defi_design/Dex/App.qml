@@ -32,7 +32,7 @@ DexRectangle
     property var            notifications_list: _currentPage === App.ScreenType.Dashboard ? loader.item.notifications_list : []
     property bool           segwit_on: false
 
-    property var            _currentPage: App.ScreenType.Startup
+    property var            _currentPage: API.app.wallet_mgr.log_status() ? App.ScreenType.Dashboard : App.ScreenType.Startup
     property var            _availablePages: [ _startup, dashboard ]
 
     property alias globalGradient: globalGradient
