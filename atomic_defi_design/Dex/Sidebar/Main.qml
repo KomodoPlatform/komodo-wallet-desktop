@@ -94,6 +94,9 @@ Item
                 return;
             currentLineType = lineType;
             root.lineSelected(lineType);
+
+            if (lineType === Main.LineType.DEX) isExpanded = false;
+            else isExpanded = true;
         }
     }
 
