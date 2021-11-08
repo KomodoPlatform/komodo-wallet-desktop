@@ -55,7 +55,7 @@ Item
 
         anchors.right: parent.right
         radius: 18
-        width: isExpanded ? 185 : 80
+        width: isExpanded ? 185 : 76
         height: lineHeight
 
         opacity: .7
@@ -64,7 +64,7 @@ Item
         {
             orientation: Gradient.Horizontal
             GradientStop { position: 0.125; color: Dex.CurrentTheme.sidebarCursorStartColor }
-            GradientStop { position: 0.900; color: Dex.CurrentTheme.sidebarCursorEndColor }
+            GradientStop { position: 0.933; color: Dex.CurrentTheme.sidebarCursorEndColor }
         }
 
         Behavior on y
