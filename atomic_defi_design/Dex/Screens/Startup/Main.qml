@@ -36,8 +36,11 @@ Item
         {
             onNewWalletClicked: currentPage = Main.StartupPage.NewWallet
             onImportWalletClicked: currentPage = Main.StartupPage.ImportWallet
-            onLogging: currentPage = Main.StartupPage.Logging
-            onSelectedWalletChanged: _selectedWalletName = selectedWallet
+            onWalletSelected:
+            {
+                _selectedWalletName = walletName;
+                currentPage = Main.StartupPage.Login;
+            }
         }
     }
 

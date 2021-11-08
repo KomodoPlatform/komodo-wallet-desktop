@@ -29,10 +29,9 @@ DexWindow
 	minimumWidth: General.minimumWidth
 	minimumHeight: General.minimumHeight
 
-    background: DexRectangle
+    background: DefaultRectangle
     {
-		anchors.fill: parent
-        color: "transparent"
+        anchors.fill: parent
 	}
 
     Universal.background: Dex.CurrentTheme.backgroundColor

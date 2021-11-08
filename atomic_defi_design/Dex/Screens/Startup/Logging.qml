@@ -16,6 +16,8 @@ SetupPage
 
     image_path: Dex.CurrentTheme.bigLogoPath
     image_margin: 30
+    backgroundColor: 'transparent'
+
     content: ColumnLayout
     {
         DefaultBusyIndicator

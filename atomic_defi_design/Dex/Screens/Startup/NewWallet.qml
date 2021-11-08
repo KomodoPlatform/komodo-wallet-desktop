@@ -563,7 +563,6 @@ SetupPage
                     {
                         anchors.centerIn: parent
                         font: DexTypo.head6
-                        color: Dex.CurrentTheme.backgroundColor
                         text: current_word_idx + 1
                     }
 

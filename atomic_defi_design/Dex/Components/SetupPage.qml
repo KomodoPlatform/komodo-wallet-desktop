@@ -16,6 +16,7 @@ Item
     property alias content: inner_space.sourceComponent
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
+    property color backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
 
     ColumnLayout
     {
@@ -49,7 +50,7 @@ Item
             background: DefaultRectangle
             {
                 radius: 20
-                color: Dex.CurrentTheme.floatingBackgroundColor
+                color: _control.backgroundColor
             }
 
             contentChildren: Loader
