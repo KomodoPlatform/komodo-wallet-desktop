@@ -7,8 +7,8 @@ import App 1.0
 ColumnLayout {
 
     id: control
-    property
-    var field
+
+    property var field
     property bool hide_hint: false
     property bool new_password: true
     property bool double_validation: false

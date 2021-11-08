@@ -97,7 +97,7 @@ Item {
                 anchors.topMargin: 1
                 anchors.bottomMargin: 1
                 radius: _background.radius
-                color: DexTheme.surfaceColor
+                color: background.color
                 DexTextField {
                     id: input_field
                     onTextChanged: {

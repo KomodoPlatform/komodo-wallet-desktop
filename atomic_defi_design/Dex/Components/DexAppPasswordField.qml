@@ -1,15 +1,19 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
+
 import Qaterial 1.0 as Qaterial
+
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-
-DexAppTextField {
-
+DexAppTextField
+{
     id: _inputPassword
 
     property string leftIcon: Qaterial.Icons.keyVariant
+    property color  leftIconColor: Dex.CurrentTheme.foregroundColor
+    property alias  hideFieldButton: _hideFieldButton
 
     height: 50
     width: 300
@@ -27,38 +31,44 @@ DexAppTextField {
     field.leftPadding: 75
     field.rightPadding: 60
     field.placeholderText: qsTr("Type password")
-    DexRectangle {
+
+    DefaultRectangle
+    {
         x: 5
         height: 40
         width: 60
         radius: 20
         color: _inputPassword.field.focus ? _inputPassword.background.border.color : DexTheme.accentColor
         anchors.verticalCenter: parent.verticalCenter
-        Qaterial.ColorIcon {
+        Qaterial.ColorIcon
+        {
             anchors.centerIn: parent
             iconSize: 19
-            color: DexTheme.backgroundColor
+            color: leftIconColor
             source: _inputPassword.leftIcon
         }
-
     }
-    Qaterial.AppBarButton {
+
+    Qaterial.AppBarButton
+    {
+        id: _hideFieldButton
+
         opacity: .8
-        icon {
+        icon
+        {
             source: _inputPassword.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-            color: _inputPassword.field.focus ? _inputPassword.background.border.color : DexTheme.accentColor
+            color: Dex.CurrentTheme.foregroundColor
         }
-        anchors {
+        anchors
+        {
             verticalCenter: parent.verticalCenter
             right: parent.right
             rightMargin: 10
         }
-        onClicked: {
-            if (_inputPassword.field.echoMode === TextField.Password) {
-                _inputPassword.field.echoMode = TextField.Normal
-            } else {
-                _inputPassword.field.echoMode = TextField.Password
-            }
+        onClicked:
+        {
+            if (_inputPassword.field.echoMode === TextField.Password) _inputPassword.field.echoMode = TextField.Normal;
+            else _inputPassword.field.echoMode = TextField.Password;
         }
     }
 }
