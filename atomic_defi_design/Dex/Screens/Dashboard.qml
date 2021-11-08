@@ -16,90 +16,77 @@ import "../Support"
 import "../Sidebar" as Sidebar
 import "../Fiat"
 import "../Settings" as SettingsPage
+import "../Screens"
 //import Dex.Sidebar 1.0 as Dex
 
 
 Item {
     id: dashboard
 
+    enum PageType
+    {
+        Portfolio,
+        Wallet,
+        DEX,            // DEX == Trading page
+        Addressbook,
+        Support
+    }
+
+    property var currentPage: Dashboard.PageType.Portfolio
+    property var availablePages: [portfolio, wallet, exchange, addressbook, support]
+
     property alias webEngineView: webEngineView
 
-    readonly property int idx_dashboard_portfolio: 0
-    readonly property int idx_dashboard_wallet: 1
-    readonly property int idx_dashboard_exchange: 2
-    readonly property int idx_dashboard_addressbook: 3
-    readonly property int idx_dashboard_news: 4
-    readonly property int idx_dashboard_dapps: 5
-    readonly property int idx_dashboard_settings: 6
-    readonly property int idx_dashboard_support: 7
-    readonly property int idx_dashboard_light_ui: 8
-    readonly property int idx_dashboard_privacy_mode: 9
-    readonly property int idx_dashboard_fiat_ramp: 10
-
-    //readonly property int idx_exchange_trade: 3
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
     property var current_ticker
 
-    Layout.fillWidth: true
+    property var notifications_list: ([])
 
-    function openLogsFolder() {
-        Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
-    }
+    readonly property var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
+    property var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
 
-    readonly property
-    var api_wallet_page: API.app.wallet_pg
-    readonly property
-    var current_ticker_infos: api_wallet_page.ticker_infos
-    readonly property bool can_change_ticker: !api_wallet_page.tx_fetching_busy
+    readonly property var   api_wallet_page: API.app.wallet_pg
+    readonly property var   current_ticker_infos: api_wallet_page.ticker_infos
+    readonly property bool  can_change_ticker: !api_wallet_page.tx_fetching_busy
+    readonly property bool  is_dex_banned: !API.app.ip_checker.ip_authorized
 
     readonly property alias loader: loader
     readonly property alias current_component: loader.item
-    property int current_page: idx_dashboard_portfolio
 
-    onCurrent_pageChanged: {
-        app.deepPage = current_page * 10
+
+    function openLogsFolder()
+    {
+        Qt.openUrlExternally(General.os_file_prefix + API.app.settings_pg.get_log_folder())
     }
 
-
-    readonly property bool is_dex_banned: !API.app.ip_checker.ip_authorized
-
-    function inCurrentPage() {
-        return app.current_page === idx_dashboard
-    }
+    function inCurrentPage() { return app.current_page === idx_dashboard }
 
     function switchPage(page)
     {
         if (loader.status === Loader.Ready)
-            current_page = page
+            currentPage = page
         else
             console.warn("Tried to switch to page %1 when loader is not ready yet.".arg(page))
     }
 
-    property
-    var notifications_list: ([])
+    function resetCoinFilter() { portfolio_coins.setFilterFixedString("") }
 
-    readonly property
-    var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
-    property
-    var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
-
-    function resetCoinFilter() {
-        portfolio_coins.setFilterFixedString("")
-    }
-
-
-    function openTradeViewWithTicker() {
+    function openTradeViewWithTicker()
+    {
         dashboard.loader.onLoadComplete = () => {
             dashboard.current_component.openTradeView(api_wallet_page.ticker)
         }
     }
+
+    Layout.fillWidth: true
+
+    onCurrentPageChanged: sidebar.currentLineType = currentPage
+
     // Al settings depends this modal
-    SettingsPage.SettingModal {
-        id: setting_modal
-    }
+    SettingsPage.SettingModal { id: setting_modal }
 
     // Force restart modal: opened when the user has more coins enabled than specified in its configuration
     ForceRestartModal {
@@ -123,84 +110,60 @@ Item {
         border.color: 'transparent'
 
         // Modals
-        ModalLoader {
+        ModalLoader
+        {
             id: enable_coin_modal
-            sourceComponent: EnableCoinModal {
+            sourceComponent: EnableCoinModal
+            {
                 anchors.centerIn: Overlay.overlay
             }
         }
 
-        Component {
+        Component
+        {
             id: portfolio
 
             Portfolio {}
         }
 
-        Component {
+        Component
+        {
             id: wallet
 
             Wallet {}
         }
 
-        Component {
+        Component
+        {
             id: exchange
 
             Exchange {}
         }
 
-        Component {
+        Component
+        {
             id: addressbook
 
             AddressBook {}
         }
 
-        Component {
-            id: news
-
-            Item {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                DefaultText {
-                    anchors.centerIn: parent
-                    text_value: qsTr("Content for this section will be added later. Stay tuned!")
-                }
-            }
-        }
-
-        Component {
-            id: dapps
-
-            Item {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                DefaultText {
-                    anchors.centerIn: parent
-                    text_value: qsTr("Content for this section will be added later. Stay tuned!")
-                }
-            }
-        }
-
-        Component {
+        Component
+        {
             id: settings
 
-            Settings {
+            Settings
+            {
                 Layout.alignment: Qt.AlignCenter
             }
         }
 
-        Component {
+        Component
+        {
             id: support
 
-            Support {
+            Support
+            {
                 Layout.alignment: Qt.AlignCenter
-            }
-        }
-
-        Component {
-            id: fiat_ramp
-
-            FiatRamp {
-
             }
         }
 
@@ -210,45 +173,25 @@ Item {
             backgroundColor: "transparent"
         }
 
-        DefaultLoader {
+        DefaultLoader
+        {
             id: loader
 
             anchors.fill: parent
             transformOrigin: Item.Center
             asynchronous: true
 
-            sourceComponent: {
-                switch (current_page) {
-                    case idx_dashboard_portfolio:
-                        return portfolio
-                    case idx_dashboard_wallet:
-                        return wallet
-                    case idx_dashboard_exchange:
-                        return exchange
-                    case idx_dashboard_addressbook:
-                        return addressbook
-                    case idx_dashboard_news:
-                        return news
-                    case idx_dashboard_dapps:
-                        return dapps
-                    case idx_dashboard_settings:
-                        return settings
-                    case idx_dashboard_support:
-                        return support
-                    case idx_dashboard_fiat_ramp:
-                        return fiat_ramp
-                    default:
-                        return undefined
-                }
-            }
+            sourceComponent: availablePages[currentPage]
         }
 
-        Item {
+        Item
+        {
             visible: !loader.visible
 
             anchors.fill: parent
 
-            DexBusyIndicator {
+            DexBusyIndicator
+            {
                 anchors.centerIn: parent
                 running: !loader.visible
             }
@@ -265,53 +208,37 @@ Item {
         onLineSelected:
         {
             isExpanded = true;
-            switch (lineType)
-            {
-                case Sidebar.Main.LineType.Portfolio:
-                    switchPage(idx_dashboard_portfolio);
-                    break;
-                case Sidebar.Main.LineType.Wallet:
-                    switchPage(idx_dashboard_wallet);
-                    break;
-                case Sidebar.Main.LineType.DEX:
-                    isExpanded = false;
-                    switchPage(idx_dashboard_exchange);
-                    break;
-                case Sidebar.Main.LineType.Addressbook:
-                    switchPage(idx_dashboard_addressbook);
-                    break;
-                case Sidebar.Main.LineType.Portfolio:
-                    switchPage(idx_dashboard_portfolio);
-                    break;
-                case Sidebar.Main.LineType.Support:
-                    switchPage(idx_dashboard_support);
-                    break;
-            }
+            currentPage = lineType;
         }
         onSettingsClicked: setting_modal.open()
     }
 
-    ModalLoader {
+    ModalLoader
+    {
         id: add_custom_coin_modal
         sourceComponent: AddCustomCoinModal {}
     }
 
     // CEX Rates info
-    ModalLoader {
+    ModalLoader
+    {
         id: cex_rates_modal
         sourceComponent: CexInfoModal {}
     }
-    ModalLoader {
+    ModalLoader
+    {
         id: min_trade_modal
         sourceComponent: MinTradeModal {}
     }
 
-    ModalLoader {
+    ModalLoader
+    {
         id: restart_modal
         sourceComponent: RestartModal {}
     }
 
-    function getStatusColor(status) {
+    function getStatusColor(status)
+    {
         switch (status) {
             case "matching":
                 return Style.colorYellow
@@ -327,7 +254,8 @@ Item {
         }
     }
 
-    function isSwapDone(status) {
+    function isSwapDone(status)
+    {
         switch (status) {
             case "matching":
             case "matched":
@@ -341,7 +269,8 @@ Item {
         }
     }
 
-    function getStatusStep(status) {
+    function getStatusStep(status)
+    {
         switch (status) {
             case "matching":
                 return "0/3"
@@ -360,7 +289,8 @@ Item {
         }
     }
 
-    function getStatusText(status, short_text=false) {
+    function getStatusText(status, short_text=false)
+    {
         switch(status) {
             case "matching":
                 return short_text ? qsTr("Matching") : qsTr("Order Matching")
@@ -379,12 +309,15 @@ Item {
         }
     }
 
-    function getStatusTextWithPrefix(status, short_text = false) {
+    function getStatusTextWithPrefix(status, short_text = false)
+    {
         return getStatusStep(status) + " " + getStatusText(status, short_text)
     }
 
-    function getEventText(event_name) {
-        switch (event_name) {
+    function getEventText(event_name)
+    {
+        switch (event_name)
+        {
             case "Started":
                 return qsTr("Started")
             case "Negotiated":
