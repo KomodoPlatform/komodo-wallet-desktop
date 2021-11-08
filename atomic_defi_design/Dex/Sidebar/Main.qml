@@ -90,7 +90,6 @@ Item
         anchors.topMargin: 69.5
         onLineSelected:
         {
-            console.info(lineType)
             if (currentLineType === lineType)
                 return;
             currentLineType = lineType;
