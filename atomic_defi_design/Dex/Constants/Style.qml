@@ -430,6 +430,7 @@ QtObject {
                                           "LEO": "#F79B2C",
                                           "LINK": "#356CE4",
                                           "LRC": "#32C2F8",
+                                          "LSTR": "#7E3193",
                                           "MANA": "#FF3C6C",
                                           "MATIC": "#804EE1",
                                           "MKR": "#1BAF9F",

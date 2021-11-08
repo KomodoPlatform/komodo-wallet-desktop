@@ -4886,6 +4886,7 @@
     "name": "QiSwap",
     "coingecko_id": "qiswap",
     "coinpaprika_id": "qi-qiswap",
+    "nomics_id": "QI",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -5769,6 +5770,7 @@
     "name": "Qtum",
     "coinpaprika_id": "qtum-qtum",
     "coingecko_id": "qtum",
+    "nomics_id": "QTUM",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10050",
@@ -5795,6 +5797,7 @@
       "name": "Qtum",
       "coinpaprika_id": "qtum-qtum",
       "coingecko_id": "qtum",
+      "nomics_id": "QTUM",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -7092,6 +7095,7 @@
     "name": "Ink",
     "coingecko_id": "ink",
     "coinpaprika_id": "ink-ink",
+    "nomics_id": "INK",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7102,8 +7106,9 @@
   "SPC": {
     "coin": "SPC",
     "name": "SpaceChain",
-    "coingecko_id": "spacechain",
+    "coingecko_id": "spacechain-erc-20",
     "coinpaprika_id": "spc-spacechain",
+    "nomics_id": "SPC",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7116,6 +7121,7 @@
     "name": "Hyper Pay",
     "coingecko_id": "hyper-pay",
     "coinpaprika_id": "hpy-hyper-pay",
+    "nomics_id": "HPY",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7128,6 +7134,7 @@
     "name": "HalalChain",
     "coingecko_id": "halalchain",
     "coinpaprika_id": "hlc-halalchain",
+    "nomics_id": "HLC",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7140,6 +7147,7 @@
     "name": "Luna Stars",
     "coingecko_id": "meetluna",
     "coinpaprika_id": "lstr-luna-stars",
+    "nomics_id": "LSTR",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7152,6 +7160,7 @@
     "name": "Qbao",
     "coingecko_id": "qbao",
     "coinpaprika_id": "qbt-qbao",
+    "nomics_id": "QBT",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7164,6 +7173,7 @@
     "name": "OceanChain",
     "coingecko_id": "oceanchain",
     "coinpaprika_id": "oc-oceanchain",
+    "nomics_id": "OC",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7176,6 +7186,7 @@
     "name": "Profile Utility Token",
     "coingecko_id": "profile-utility-token",
     "coinpaprika_id": "put-profile-utility-token",
+    "nomics_id": "PUT",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -7188,6 +7199,7 @@
     "name": "Energo",
     "coingecko_id": "energo",
     "coinpaprika_id": "tsl-energo",
+    "nomics_id": "TSL",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
