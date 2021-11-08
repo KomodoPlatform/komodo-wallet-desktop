@@ -68,6 +68,22 @@
       "active": false,
       "currently_enabled": false
   },
+  "1INCH-KRC20": {
+      "coin": "1INCH-KRC20",
+      "name": "1inch",
+      "coinpaprika_id": "1inch-1inch",
+      "coingecko_id": "1inch",
+      "nomics_id": "1INCH",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "1INCH-PLG20": {
       "coin": "1INCH-PLG20",
       "name": "1inch",
@@ -182,6 +198,22 @@
         "https://explorer.harmony.one/"
       ],
       "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "AAVE-KRC20": {
+      "coin": "AAVE-KRC20",
+      "name": "Aave",
+      "coinpaprika_id": "aave-new",
+      "coingecko_id": "aave",
+      "nomics_id": "AAVE",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -590,6 +622,7 @@
     "name": "Balancer",
     "coinpaprika_id": "bal-balancer",
     "coingecko_id": "balancer",
+    "nomics_id": "BAL",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -607,6 +640,7 @@
     "name": "Balancer",
     "coinpaprika_id": "bal-balancer",
     "coingecko_id": "balancer",
+    "nomics_id": "BAL",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -619,11 +653,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "BAL-KRC20": {
+      "coin": "BAL-KRC20",
+      "name": "Balancer",
+      "coinpaprika_id": "bal-balancer",
+      "coingecko_id": "balancer",
+      "nomics_id": "BAL",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BAL-PLG20": {
-    "coin": "BAL-PLG20",
-    "name": "Balancer",
-    "coinpaprika_id": "bal-balancer",
-    "coingecko_id": "balancer",
+      "coin": "BAL-PLG20",
+      "name": "Balancer",
+      "coinpaprika_id": "bal-balancer",
+      "coingecko_id": "balancer",
+      "nomics_id": "BAL",
       "nodes": [
         "https://polygon-rpc.com"
       ],
@@ -1527,6 +1578,7 @@
       "name": "Compound",
       "coinpaprika_id": "comp-compoundd",
       "coingecko_id": "compound-governance-token",
+      "nomics_id": "COMP",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -1542,6 +1594,7 @@
     "name": "Compound",
     "coinpaprika_id": "comp-compoundd",
     "coingecko_id": "compound-governance-token",
+    "nomics_id": "COMP",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -1559,6 +1612,7 @@
     "name": "Compound",
     "coinpaprika_id": "comp-compoundd",
     "coingecko_id": "compound-governance-token",
+    "nomics_id": "COMP",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -1571,11 +1625,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "COMP-KRC20": {
+      "coin": "COMP-KRC20",
+      "name": "Compound",
+      "coinpaprika_id": "comp-compoundd",
+      "coingecko_id": "compound-governance-token",
+      "nomics_id": "COMP",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "COMP-PLG20": {
     "coin": "COMP-PLG20",
     "name": "Compound",
     "coinpaprika_id": "comp-compoundd",
     "coingecko_id": "compound-governance-token",
+    "nomics_id": "COMP",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -1849,6 +1920,7 @@
     "name": "DODO",
     "coinpaprika_id": "dodo-dodo",
     "coingecko_id": "dodo",
+    "nomics_id": "DODO",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -1866,6 +1938,7 @@
     "name": "DODO",
     "coinpaprika_id": "dodo-dodo",
     "coingecko_id": "dodo",
+    "nomics_id": "DODO",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -1877,6 +1950,22 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "DODO-KRC20": {
+      "coin": "DODO-KRC20",
+      "name": "DODO",
+      "coinpaprika_id": "dodo-dodo",
+      "coingecko_id": "dodo",
+      "nomics_id": "DODO",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "DOGE": {
     "coin": "DOGE",
@@ -2569,6 +2658,7 @@
       "name": "The Graph",
       "coinpaprika_id": "grt-the-graph",
       "coingecko_id": "the-graph",
+      "nomics_id": "GRT",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -2584,6 +2674,7 @@
       "name": "The Graph",
       "coinpaprika_id": "grt-the-graph",
       "coingecko_id": "the-graph",
+      "nomics_id": "GRT",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -2596,11 +2687,28 @@
       "active": false,
       "currently_enabled": false
   },
+  "GRT-KRC20": {
+      "coin": "GRT-KRC20",
+      "name": "The Graph",
+      "coinpaprika_id": "grt-the-graph",
+      "coingecko_id": "the-graph",
+      "nomics_id": "GRT",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "GRT-PLG20": {
       "coin": "GRT-PLG20",
       "name": "The Graph",
       "coinpaprika_id": "grt-the-graph",
       "coingecko_id": "the-graph",
+      "nomics_id": "GRT",
       "nodes": [
         "https://polygon-rpc.com"
       ],
@@ -3294,6 +3402,22 @@
       "active": false,
       "currently_enabled": false
   },
+  "MATIC-KRC20": {
+      "coin": "MATIC-KRC20",
+      "name": "Polygon",
+      "coinpaprika_id": "matic-matic-network",
+      "coingecko_id": "matic-network",
+      "nomics_id": "MATIC",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MCL": {
     "coin": "MCL",
     "name": "Marmara Credit Loops",
@@ -3600,6 +3724,21 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "PAX-KRC20": {
+      "coin": "PAX-KRC20",
+      "name": "Paxos Standard",
+      "coinpaprika_id": "pax-paxos-standard-token",
+      "coingecko_id": "paxos-standard",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "PAX-PLG20": {
     "coin": "PAX-PLG20",
@@ -4263,10 +4402,11 @@
     "name": "Atomic Wallet Coin"
   },
   "BAT-AVX20": {
-    "coin": "BAT-AVX20",
-    "name": "Basic Attention Token",
-    "coinpaprika_id": "bat-basic-attention-token",
-    "coingecko_id": "basic-attention-token",
+      "coin": "BAT-AVX20",
+      "name": "Basic Attention Token",
+      "coinpaprika_id": "bat-basic-attention-token",
+      "coingecko_id": "basic-attention-token",
+      "nomics_id": "BAT",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -4282,6 +4422,7 @@
     "name": "Basic Attention Token",
     "coinpaprika_id": "bat-basic-attention-token",
     "coingecko_id": "basic-attention-token",
+    "nomics_id": "BAT",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -4299,6 +4440,7 @@
     "name": "Basic Attention Token",
     "coinpaprika_id": "bat-basic-attention-token",
     "coingecko_id": "basic-attention-token",
+    "nomics_id": "BAT",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -4311,11 +4453,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "BAT-KRC20": {
+      "coin": "BAT-KRC20",
+      "name": "Basic Attention Token",
+      "coinpaprika_id": "bat-basic-attention-token",
+      "coingecko_id": "basic-attention-token",
+      "nomics_id": "BAT",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "BAT-PLG20": {
     "coin": "BAT-PLG20",
     "name": "Basic Attention Token",
     "coinpaprika_id": "bat-basic-attention-token",
     "coingecko_id": "basic-attention-token",
+    "nomics_id": "BAT",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -4497,6 +4656,22 @@
         "https://explorer.harmony.one/"
       ],
       "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "LINK-KRC20": {
+      "coin": "LINK-KRC20",
+      "name": "Chainlink",
+      "coinpaprika_id": "link-chainlink",
+      "coingecko_id": "chainlink",
+      "nomics_id": "LINK",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -4711,12 +4886,47 @@
     "name": "QiSwap",
     "coingecko_id": "qiswap",
     "coinpaprika_id": "qi-qiswap",
+    "nomics_id": "QI",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
       "https://explorer.qtum.org/"
     ],
     "type": "QRC-20"
+  },
+  "QNT-ERC20": {
+      "coin": "QNT-ERC20",
+      "name": "Quant",
+      "coinpaprika_id": "qnt-quant",
+      "coingecko_id": "quant-network",
+      "nomics_id": "QNT",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "QNT-KRC20": {
+      "coin": "QNT-KRC20",
+      "name": "Quant",
+      "coinpaprika_id": "qnt-quant",
+      "coingecko_id": "quant-network",
+      "nomics_id": "QNT",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "REVS": {
     "coin": "REVS",
@@ -5009,6 +5219,7 @@
       "name": "Sushi",
       "coinpaprika_id": "sushi-sushi",
       "coingecko_id": "sushi",
+      "nomics_id": "SUSHI",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -5024,6 +5235,7 @@
     "name": "Sushi",
     "coinpaprika_id": "sushi-sushi",
     "coingecko_id": "sushi",
+    "nomics_id": "SUSHI",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -5041,6 +5253,7 @@
     "name": "Sushi",
     "coinpaprika_id": "sushi-sushi",
     "coingecko_id": "sushi",
+    "nomics_id": "SUSHI",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -5058,6 +5271,7 @@
       "name": "Sushi",
       "coinpaprika_id": "sushi-sushi",
       "coingecko_id": "sushi",
+      "nomics_id": "SUSHI",
       "nodes": [
         "https://rpc.ftm.tools/"
       ],
@@ -5073,6 +5287,7 @@
       "name": "Sushi",
       "coinpaprika_id": "sushi-sushi",
       "coingecko_id": "sushi",
+      "nomics_id": "SUSHI",
       "nodes": [
         "https://api.harmony.one",
         "https://api.s0.t.hmny.io"
@@ -5084,11 +5299,28 @@
       "active": false,
       "currently_enabled": false
   },
+  "SUSHI-KRC20": {
+      "coin": "SUSHI-KRC20",
+      "name": "Sushi",
+      "coinpaprika_id": "sushi-sushi",
+      "coingecko_id": "sushi",
+      "nomics_id": "SUSHI",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SUSHI-PLG20": {
     "coin": "SUSHI-PLG20",
     "name": "Sushi",
     "coinpaprika_id": "sushi-sushi",
     "coingecko_id": "sushi",
+    "nomics_id": "SUSHI",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -5197,6 +5429,7 @@
       "name": "Maker",
       "coinpaprika_id": "mkr-maker",
       "coingecko_id": "maker",
+      "nomics_id": "MKR",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -5212,6 +5445,7 @@
     "name": "Maker",
     "coinpaprika_id": "mkr-maker",
     "coingecko_id": "maker",
+    "nomics_id": "MKR",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -5229,6 +5463,7 @@
     "name": "Maker",
     "coinpaprika_id": "mkr-maker",
     "coingecko_id": "maker",
+    "nomics_id": "MKR",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -5240,6 +5475,22 @@
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
+  },
+  "MKR-KRC20": {
+      "coin": "MKR-KRC20",
+      "name": "Maker",
+      "coinpaprika_id": "mkr-maker",
+      "coingecko_id": "maker",
+      "nomics_id": "MKR",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "MONA": {
     "coin": "MONA",
@@ -5322,6 +5573,22 @@
         "https://etherscan.io/"
       ],
       "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "NEXO-KRC20": {
+      "coin": "NEXO-KRC20",
+      "name": "Nexo",
+      "coinpaprika_id": "nexo-nexo",
+      "coingecko_id": "nexo",
+      "nomics_id": "NEXO",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -5503,6 +5770,7 @@
     "name": "Qtum",
     "coinpaprika_id": "qtum-qtum",
     "coingecko_id": "qtum",
+    "nomics_id": "QTUM",
     "electrum": [
       {
         "url": "electrum1.cipig.net:10050",
@@ -5529,6 +5797,7 @@
       "name": "Qtum",
       "coinpaprika_id": "qtum-qtum",
       "coingecko_id": "qtum",
+      "nomics_id": "QTUM",
       "nodes": [
         "http://eth1.cipig.net:8555",
         "http://eth2.cipig.net:8555",
@@ -5643,6 +5912,7 @@
       "name": "Synthetix",
       "coinpaprika_id": "snx-synthetix-network-token",
       "coingecko_id": "havven",
+      "nomics_id": "SNX",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -5658,6 +5928,7 @@
     "name": "Synthetix",
     "coinpaprika_id": "snx-synthetix-network-token",
     "coingecko_id": "havven",
+    "nomics_id": "SNX",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -5675,6 +5946,7 @@
     "name": "Synthetix",
     "coinpaprika_id": "snx-synthetix-network-token",
     "coingecko_id": "havven",
+    "nomics_id": "SNX",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -5692,6 +5964,7 @@
       "name": "Synthetix",
       "coinpaprika_id": "snx-synthetix-network-token",
       "coingecko_id": "havven",
+      "nomics_id": "SNX",
       "nodes": [
         "https://rpc.ftm.tools/"
       ],
@@ -5702,11 +5975,28 @@
       "active": false,
       "currently_enabled": false
   },
+  "SNX-KRC20": {
+      "coin": "SNX-KRC20",
+      "name": "Synthetix",
+      "coinpaprika_id": "snx-synthetix-network-token",
+      "coingecko_id": "havven",
+      "nomics_id": "SNX",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "SNX-PLG20": {
     "coin": "SNX-PLG20",
     "name": "Synthetix",
     "coinpaprika_id": "snx-synthetix-network-token",
     "coingecko_id": "havven",
+    "nomics_id": "SNX",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -5736,6 +6026,56 @@
     "type": "Smart Chain",
     "active": false,
     "currently_enabled": false
+  },
+  "TEL-ERC20": {
+      "coin": "TEL-ERC20",
+      "name": "Telcoin",
+      "coinpaprika_id": "tel-telcoin",
+      "coingecko_id": "telcoin",
+      "nomics_id": "TEL",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TEL-PLG20": {
+      "coin": "TEL-PLG20",
+      "name": "Telcoin",
+      "coinpaprika_id": "tel-telcoin",
+      "coingecko_id": "telcoin",
+      "nomics_id": "TEL",
+      "nodes": [
+        "https://polygon-rpc.com"
+      ],
+      "explorer_url": [
+        "https://polygonscan.com/"
+      ],
+      "type": "Matic",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TEL-KRC20": {
+      "coin": "TEL-KRC20",
+      "name": "Telcoin",
+      "coinpaprika_id": "tel-telcoin",
+      "coingecko_id": "telcoin",
+      "nomics_id": "TEL",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "THC": {
     "coin": "THC",
@@ -5919,6 +6259,21 @@
         "https://hecoinfo.com/"
       ],
       "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
+  "TUSD-KRC20": {
+      "coin": "TUSD-KRC20",
+      "name": "TrueUSD",
+      "coinpaprika_id": "tusd-trueusd",
+      "coingecko_id": "true-usd",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -6382,10 +6737,11 @@
     "currently_enabled": false
   },
   "YFI-AVX20": {
-    "coin": "YFI-AVX20",
-    "name": "yearn.finance",
-    "coinpaprika_id": "yfi-yearnfinance",
-    "coingecko_id": "yearn-finance",
+      "coin": "YFI-AVX20",
+      "name": "yearn.finance",
+      "coinpaprika_id": "yfi-yearnfinance",
+      "coingecko_id": "yearn-finance",
+      "nomics_id": "YFI",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -6401,6 +6757,7 @@
     "name": "yearn.finance",
     "coinpaprika_id": "yfi-yearnfinance",
     "coingecko_id": "yearn-finance",
+    "nomics_id": "YFI",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -6418,6 +6775,7 @@
     "name": "yearn.finance",
     "coinpaprika_id": "yfi-yearnfinance",
     "coingecko_id": "yearn-finance",
+    "nomics_id": "YFI",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -6435,6 +6793,7 @@
       "name": "yearn.finance",
       "coinpaprika_id": "yfi-yearnfinance",
       "coingecko_id": "yearn-finance",
+      "nomics_id": "YFI",
       "nodes": [
         "https://rpc.ftm.tools/"
       ],
@@ -6442,6 +6801,22 @@
         "https://ftmscan.com/"
       ],
       "type": "FTM-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "YFI-KRC20": {
+      "coin": "YFI-KRC20",
+      "name": "yearn.finance",
+      "coinpaprika_id": "yfi-yearnfinance",
+      "coingecko_id": "yearn-finance",
+      "nomics_id": "YFI",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
       "active": false,
       "currently_enabled": false
   },
@@ -6720,6 +7095,7 @@
     "name": "Ink",
     "coingecko_id": "ink",
     "coinpaprika_id": "ink-ink",
+    "nomics_id": "INK",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6730,8 +7106,9 @@
   "SPC": {
     "coin": "SPC",
     "name": "SpaceChain",
-    "coingecko_id": "spacechain",
+    "coingecko_id": "spacechain-erc-20",
     "coinpaprika_id": "spc-spacechain",
+    "nomics_id": "SPC",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6744,6 +7121,7 @@
     "name": "Hyper Pay",
     "coingecko_id": "hyper-pay",
     "coinpaprika_id": "hpy-hyper-pay",
+    "nomics_id": "HPY",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6756,6 +7134,7 @@
     "name": "HalalChain",
     "coingecko_id": "halalchain",
     "coinpaprika_id": "hlc-halalchain",
+    "nomics_id": "HLC",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6768,6 +7147,7 @@
     "name": "Luna Stars",
     "coingecko_id": "meetluna",
     "coinpaprika_id": "lstr-luna-stars",
+    "nomics_id": "LSTR",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6780,6 +7160,7 @@
     "name": "Qbao",
     "coingecko_id": "qbao",
     "coinpaprika_id": "qbt-qbao",
+    "nomics_id": "QBT",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6792,6 +7173,7 @@
     "name": "OceanChain",
     "coingecko_id": "oceanchain",
     "coinpaprika_id": "oc-oceanchain",
+    "nomics_id": "OC",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6804,6 +7186,7 @@
     "name": "Profile Utility Token",
     "coingecko_id": "profile-utility-token",
     "coinpaprika_id": "put-profile-utility-token",
+    "nomics_id": "PUT",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6816,6 +7199,7 @@
     "name": "Energo",
     "coingecko_id": "energo",
     "coinpaprika_id": "tsl-energo",
+    "nomics_id": "TSL",
     "active": false,
     "currently_enabled": false,
     "explorer_url": [
@@ -6984,6 +7368,7 @@
     "name": "chiliZ",
     "coinpaprika_id": "chz-chiliz",
     "coingecko_id": "chiliz",
+    "nomics_id": "CHZ",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -6996,11 +7381,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "CHZ-KRC20": {
+      "coin": "CHZ-KRC20",
+      "name": "chiliZ",
+      "coinpaprika_id": "chz-chiliz",
+      "coingecko_id": "chiliz",
+      "nomics_id": "CHZ",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "CHZ-PLG20": {
     "coin": "CHZ-PLG20",
     "name": "chiliZ",
     "coinpaprika_id": "chz-chiliz",
     "coingecko_id": "chiliz",
+    "nomics_id": "CHZ",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -7029,6 +7431,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "CRO-KRC20": {
+      "coin": "CRO-KRC20",
+      "name": "Crypto.com",
+      "coinpaprika_id": "cro-cryptocom-chain",
+      "coingecko_id": "crypto-com-chain",
+      "nomics_id": "CRO",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "CRO-PLG20": {
     "coin": "CRO-PLG20",
     "name": "Crypto.com",
@@ -7050,6 +7468,7 @@
     "name": "Curve DAO Token",
     "coinpaprika_id": "crv-curve-dao-token",
     "coingecko_id": "curve-dao-token",
+    "nomics_id": "CRV",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -7067,6 +7486,7 @@
       "name": "Curve DAO Token",
       "coinpaprika_id": "crv-curve-dao-token",
       "coingecko_id": "curve-dao-token",
+      "nomics_id": "CRV",
       "nodes": [
         "https://api.avax.network/ext/bc/C/rpc"
       ],
@@ -7082,6 +7502,7 @@
       "name": "Curve DAO Token",
       "coinpaprika_id": "crv-curve-dao-token",
       "coingecko_id": "curve-dao-token",
+      "nomics_id": "CRV",
       "nodes": [
         "https://rpc.ftm.tools/"
       ],
@@ -7092,11 +7513,28 @@
       "active": false,
       "currently_enabled": false
   },
+  "CRV-KRC20": {
+      "coin": "CRV-KRC20",
+      "name": "Curve DAO Token",
+      "coinpaprika_id": "crv-curve-dao-token",
+      "coingecko_id": "curve-dao-token",
+      "nomics_id": "CRV",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "CRV-PLG20": {
     "coin": "CRV-PLG20",
     "name": "Curve DAO Token",
     "coinpaprika_id": "crv-curve-dao-token",
     "coingecko_id": "curve-dao-token",
+    "nomics_id": "CRV",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -7180,6 +7618,7 @@
     "name": "Enjin Coin",
     "coinpaprika_id": "enj-enjin-coin",
     "coingecko_id": "enjincoin",
+    "nomics_id": "ENJ",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -7192,11 +7631,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "ENJ-KRC20": {
+      "coin": "ENJ-KRC20",
+      "name": "Enjin Coin",
+      "coinpaprika_id": "enj-enjin-coin",
+      "coingecko_id": "enjincoin",
+      "nomics_id": "ENJ",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "ENJ-PLG20": {
     "coin": "ENJ-PLG20",
     "name": "Enjin Coin",
     "coinpaprika_id": "enj-enjin-coin",
     "coingecko_id": "enjincoin",
+    "nomics_id": "ENJ",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -7403,6 +7859,21 @@
       "active": false,
       "currently_enabled": false
   },
+  "HUSD-KRC20": {
+      "coin": "HUSD-KRC20",
+      "name": "HUSD",
+      "coinpaprika_id": "husd-husd",
+      "coingecko_id": "husd",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "HUSD-PLG20": {
     "coin": "HUSD-PLG20",
     "name": "HUSD",
@@ -7487,6 +7958,7 @@
     "name": "Decentraland",
     "coinpaprika_id": "mana-decentraland",
     "coingecko_id": "decentraland",
+    "nomics_id": "MANA",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -7499,11 +7971,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "MANA-KRC20": {
+      "coin": "MANA-KRC20",
+      "name": "Decentraland",
+      "coinpaprika_id": "mana-decentraland",
+      "coingecko_id": "decentraland",
+      "nomics_id": "MANA",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "MANA-PLG20": {
     "coin": "MANA-PLG20",
     "name": "Decentraland",
     "coinpaprika_id": "mana-decentraland",
     "coingecko_id": "decentraland",
+    "nomics_id": "MANA",
     "nodes": [
       "https://polygon-rpc.com"
     ],
@@ -7596,23 +8085,6 @@
       "https://polygonscan.com/"
     ],
     "type": "Matic",
-    "active": false,
-    "currently_enabled": false
-  },
-  "QNT": {
-    "coin": "QNT",
-    "name": "Quant",
-    "coinpaprika_id": "qnt-quant",
-    "coingecko_id": "quant-network",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
     "active": false,
     "currently_enabled": false
   },
@@ -8022,6 +8494,21 @@
         "https://hecoinfo.com/"
       ],
       "type": "HecoChain",
+      "active": false,
+      "currently_enabled": false
+  },
+  "UNI-KRC20": {
+      "coin": "UNI-KRC20",
+      "name": "Uniswap",
+      "coinpaprika_id": "uni-uniswap",
+      "coingecko_id": "uniswap",
+      "nodes": [
+        "https://rpc-mainnet.kcc.network"
+      ],
+      "explorer_url": [
+        "https://explorer.kcc.io/en/"
+      ],
+      "type": "KRC-20",
       "active": false,
       "currently_enabled": false
   },
