@@ -29,6 +29,9 @@ Item
     width: isExpanded ? 200 : 80
     height: parent.height
 
+    onCurrentLineTypeChanged: if (currentLineType === Main.LineType.DEX) isExpanded = false
+                              else isExpanded = true
+
     // Background Rectangle
     Rectangle
     {
@@ -94,9 +97,6 @@ Item
                 return;
             currentLineType = lineType;
             root.lineSelected(lineType);
-
-            if (lineType === Main.LineType.DEX) isExpanded = false;
-            else isExpanded = true;
         }
     }
 
