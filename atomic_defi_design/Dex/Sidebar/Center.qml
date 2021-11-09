@@ -8,13 +8,16 @@ import Dex.Themes 1.0 as Dex
 
 Item
 {
-    signal lineSelected(Line lineObj)
+    property alias spacing: _columnLayout.spacing
+
+    signal lineSelected(var lineType)
 
     height: lineHeight * 5
 
     // Selection List
     ColumnLayout
     {
+        id: _columnLayout
         anchors.fill: parent
         FigurativeLine
         {
@@ -24,7 +27,7 @@ Item
             type: Main.LineType.Portfolio
             label.text: isExpanded ? qsTr("Portfolio") : ""
             icon.source: General.image_path + "menu-assets-portfolio.svg"
-            onClicked: lineSelected(this)
+            onClicked: lineSelected(type)
 
             DexTooltip
             {
@@ -41,7 +44,7 @@ Item
             type: Main.LineType.Wallet
             label.text: isExpanded ? qsTr("Wallet") : ""
             icon.source: General.image_path + "menu-assets-white.svg"
-            onClicked: lineSelected(this)
+            onClicked: lineSelected(type)
 
             DexTooltip
             {
@@ -58,7 +61,7 @@ Item
             type: Main.LineType.DEX
             label.text: isExpanded ? qsTr("DEX") : ""
             icon.source: General.image_path + "menu-exchange-white.svg"
-            onClicked: lineSelected(this)
+            onClicked: lineSelected(type)
 
             DexTooltip
             {
@@ -75,7 +78,7 @@ Item
             type: Main.LineType.Addressbook
             label.text: isExpanded ? qsTr("Address Book") : ""
             icon.source: General.image_path + "menu-news-white.svg"
-            onClicked: lineSelected(this)
+            onClicked: lineSelected(type)
 
             DefaultTooltip
             {

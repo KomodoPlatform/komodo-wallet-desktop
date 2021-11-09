@@ -10,7 +10,6 @@ Item
 
     enum LineType
     {
-        None,
         Portfolio,
         Wallet,
         DEX,         // DEX == Trading page
@@ -20,8 +19,7 @@ Item
 
     property bool   isExpanded: true
     property real   lineHeight: 44
-
-    property var    _currentLineType: Main.LineType.Portfolio
+    property var    currentLineType: Main.LineType.Portfolio
     property alias  _selectionCursor: _selectionCursor
 
     signal lineSelected(var lineType)
@@ -30,6 +28,9 @@ Item
 
     width: isExpanded ? 200 : 80
     height: parent.height
+
+    onCurrentLineTypeChanged: if (currentLineType === Main.LineType.DEX) isExpanded = false
+                              else isExpanded = true
 
     // Background Rectangle
     Rectangle
@@ -49,10 +50,15 @@ Item
     {
         id: _selectionCursor
 
-        y: center.y
+        y:
+        {
+            if (currentLineType === Main.LineType.Support) return bottom.y + lineHeight + bottom.spacing;
+            else return center.y + currentLineType * (lineHeight + center.spacing);
+        }
+
         anchors.right: parent.right
         radius: 18
-        width: isExpanded ? 185 : 80
+        width: isExpanded ? 185 : 76
         height: lineHeight
 
         opacity: .7
@@ -61,7 +67,7 @@ Item
         {
             orientation: Gradient.Horizontal
             GradientStop { position: 0.125; color: Dex.CurrentTheme.sidebarCursorStartColor }
-            GradientStop { position: 0.900; color: Dex.CurrentTheme.sidebarCursorEndColor }
+            GradientStop { position: 0.933; color: Dex.CurrentTheme.sidebarCursorEndColor }
         }
 
         Behavior on y
@@ -87,28 +93,26 @@ Item
         anchors.topMargin: 69.5
         onLineSelected:
         {
-            if (_currentLineType === lineObj.type)
+            if (currentLineType === lineType)
                 return;
-            _currentLineType = lineObj.type;
-            root.lineSelected(lineObj.type);
-            _selectionCursor.y = y + lineObj.y;
+            currentLineType = lineType;
+            root.lineSelected(lineType);
         }
     }
 
     Bottom
     {
-        id: botton
+        id: bottom
         width: parent.width
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 62
 
         onSupportLineSelected:
         {
-            if (_currentLineType === lineObj.type)
+            if (currentLineType === lineType)
                 return;
-            _currentLineType = lineObj.type;
-            root.lineSelected(lineObj.type);
-            _selectionCursor.y = y + lineObj.y;
+            currentLineType = lineType;
+            root.lineSelected(lineType);
         }
         onSettingsClicked: root.settingsClicked()
     }

@@ -7,6 +7,7 @@ import Qaterial 1.0 as Qaterial
 import "../Constants"
 import App 1.0
 import "../Components"
+import "../Screens"
 
 DexPopup {
     id: root
@@ -62,10 +63,10 @@ DexPopup {
                 break
             case "open_wallet_page":
                 api_wallet_page.ticker = notification.params.ticker
-                dashboard.switchPage(idx_dashboard_wallet)
+                dashboard.switchPage(Dashboard.PageType.Wallet)
                 break
             case "open_swaps_page":
-                dashboard.switchPage(idx_dashboard_exchange)
+                dashboard.switchPage(Dashboard.PageType.DEX)
 
                 dashboard.loader.onLoadComplete = () => {
                     dashboard.current_component.current_page = dashboard.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
@@ -196,7 +197,7 @@ DexPopup {
             qsTr("Your wallet balance changed"),
             human_date,
             "open_wallet_page")
-        } else { app.segwit_on = false } 
+        } else { app.segwit_on = false }
     }
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")

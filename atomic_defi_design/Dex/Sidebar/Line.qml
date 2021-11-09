@@ -36,7 +36,7 @@ Item
         })
         style: Text.Normal
         color: !enabled ?                                              Dex.CurrentTheme.textDisabledColor :
-               _mouseArea.containsMouse && _currentLineType !== type ? Dex.CurrentTheme.sidebarLineTextHovered :
+               _mouseArea.containsMouse && currentLineType !== type ? Dex.CurrentTheme.sidebarLineTextHovered :
                                                                        Dex.CurrentTheme.foregroundColor
     }
 
