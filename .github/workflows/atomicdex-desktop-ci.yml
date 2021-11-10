@@ -126,11 +126,14 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           export DEBIAN_FRONTEND=noninteractive
-          echo "CHOOSENIM_CHOOSE_VERSION=1.4.0" >> $GITHUB_ENV
+          echo "CHOOSENIM_CHOOSE_VERSION=1.4.8" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.4.8
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
+          ls /home/runner/.choosenim/toolchains
+          chmod +x /home/runner/.choosenim/toolchains/nim-1.4.8/bin/*
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
@@ -270,18 +273,16 @@ jobs:
 
       - name: Running Tests (Windows)
         shell: powershell
-        working-directory: ci_tools_atomic_dex
         if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
           echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
-          cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
-          cd build-Release
-          cd bin
-          ls
+          cd build\bin
+          ./atomicdex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+
 
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'

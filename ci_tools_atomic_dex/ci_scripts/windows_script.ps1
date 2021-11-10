@@ -21,11 +21,8 @@ scoop cache rm llvm
 scoop cache rm nim
 $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\$Env:QT_VERSION\msvc2019_64"
 $Env:QT_ROOT = "C:\Qt"
-cd ci_tools_atomic_dex
-#$file = 'src\generate.nim'
-#$regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
-#(Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
-nimble build -y
-#cmd /c '.\ci_tools_atomic_dex.exe build release 2>&1'
-cmd /c '.\ci_tools_atomic_dex.exe bundle release 2>&1'
-#ls bundle-Release/bundle.zip
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../ 
+ninja
+ninja install
