@@ -37,8 +37,15 @@ QtObject
     property color  switchGradientStartColor2
     property color  switchGradientEndColor2
 
+    property color  comboBoxBackgroundColor
+    property color  comboBoxArrowsColor
+    property color  comboBoxDropdownItemHighlightedColor
+
     property color  modalPageCounterGradientStartColor
     property color  modalPageCounterGradientEndColor
+
+    property color  scrollBarIndicatorColor
+    property color  scrollBarBackgroundColor
 
     property color  tabSelectedColor
 

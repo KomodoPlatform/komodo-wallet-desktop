@@ -208,10 +208,12 @@ Qaterial.Dialog
                                     font: DexTypo.subtitle1
                                     text: qsTr("Maximum number of enabled coins")
                                 }
-                                DexComboBox {
+                                DefaultComboBox
+                                {
                                     id: enableable_coins_count_combo_box
-                                    Layout.preferredWidth: 100
-                                    radius: 20
+                                    Layout.preferredWidth: 62
+                                    Layout.preferredHeight: 35
+                                    radius: 18
                                     model: [10, 20, 50, 75, 100, 150, 200]
                                     currentIndex: model.indexOf(parseInt(atomic_settings2.value("MaximumNbCoinsEnabled")))
                                     onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])

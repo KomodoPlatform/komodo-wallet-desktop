@@ -10,12 +10,11 @@ import "../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-DefaultComboBox
+ComboBox
 {
     id: control
 
-    mainBorderColor: Style.getCoinColor(ticker)
-    radius: 10
+    //radius: 10
 
     contentItem: DexComboBoxLine
     {
@@ -174,7 +173,6 @@ DefaultComboBox
             y: -5
             height: parent.height + 10
             border.width: 1
-            border.color: control.mainBorderColor
         }
     }
 }

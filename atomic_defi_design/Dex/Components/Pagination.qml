@@ -51,7 +51,8 @@ RowLayout {
     onCurrent_pageChanged: paginator()
     onPage_countChanged: paginator()
 
-    DefaultComboBox {
+    DefaultComboBox
+    {
         readonly property int item_count: API.app.orders_mdl.limit_nb_elements
         readonly property var options: [5, 10, 25, 50, 100, 200]
 

@@ -78,8 +78,15 @@ ThemeData
         switchGradientStartColor2           = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientStartColor2 || defaultTheme.switchGradientStartColor2);
         switchGradientEndColor2             = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientEndColor2 || defaultTheme.switchGradientEndColor2);
 
+        comboBoxBackgroundColor             = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxBackgroundColor || defaultTheme.comboBoxBackgroundColor);
+        comboBoxArrowsColor                 = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxArrowsColor || defaultTheme.comboBoxArrowsColor);
+        comboBoxDropdownItemHighlightedColor = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxDropdownItemHighlightedColor || defaultTheme.comboBoxDropdownItemHighlightedColor);
+
         modalPageCounterGradientStartColor  = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientStartColor || defaultTheme.modalPageCounterGradientStartColor);
         modalPageCounterGradientEndColor    = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientEndColor || defaultTheme.modalPageCounterGradientEndColor);
+
+        scrollBarIndicatorColor             = Dex.Color.argbStrFromRgbaStr(themeData.scrollBarIndicatorColor || defaultTheme.scrollBarIndicatorColor);
+        scrollBarBackgroundColor            = Dex.Color.argbStrFromRgbaStr(themeData.scrollBarBackgroundColor || defaultTheme.scrollBarBackgroundColor);
 
         tabSelectedColor                    = Dex.Color.argbStrFromRgbaStr(themeData.tabSelectedColor || defaultTheme.tabSelectedColor);
 
@@ -158,8 +165,15 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.switchGradientStartColor2 : %1".arg(switchGradientStartColor2));
         console.info("Dex.Themes.CurrentTheme.printValues.switchGradientEndColor2 : %1".arg(switchGradientEndColor2));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.comboBoxBackgroundColor : %1".arg(comboBoxBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.comboBoxArrowsColor : %1".arg(comboBoxArrowsColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.comboBoxDropdownItemHighlightedColor : %1".arg(comboBoxDropdownItemHighlightedColor));
+
         console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientStartColor : %1".arg(modalPageCounterGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientEndColor : %1".arg(modalPageCounterGradientEndColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.scrollBarIndicatorColor : %1".arg(scrollBarIndicatorColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.scrollBarBackgroundColor : %1".arg(scrollBarBackgroundColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.tabSelectedColor : %1".arg(tabSelectedColor));
 

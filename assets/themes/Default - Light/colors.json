@@ -34,8 +34,15 @@
     "switchGradientStartColor2": "#FFF",
     "switchGradientEndColor2": "#FFF",
 
+    "comboBoxBackgroundColor": "#FFFFFFFF",
+    "comboBoxArrowsColor": "#456078FF",
+    "comboBoxDropdownItemHighlightedColor": "#456078FF",
+
     "modalPageCounterGradientStartColor": "#9DD4F3",
     "modalPageCounterGradientEndColor": "#9DD4F3",
+
+    "scrollBarIndicatorColor": "#DBE0E4FF",
+    "scrollBarBackgroundColor": "#93A3B1FF",
 
     "tabSelectedColor": "#DCE8FD",
 
