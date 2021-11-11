@@ -8,42 +8,39 @@ ColumnLayout
 {
     id: root
 
-    height: lineHeight * 3
+    property bool containsMouse: settingsLine.mouseArea.containsMouse || supportLine.mouseArea.containsMouse ||
+                                 privacyLine.mouseArea.containsMouse || privacySwitch.mouseArea.containsMouse
 
     signal supportLineSelected(var lineType)
     signal settingsClicked()
 
+    height: lineHeight * 3
+
     FigurativeLine
     {
+        id: settingsLine
+
         Layout.fillWidth: true
         label.text: isExpanded ? qsTr("Settings") : ""
         icon.source: General.image_path + "menu-settings-white.svg"
         onClicked: settingsClicked()
-
-        DexTooltip
-        {
-            visible: !isExpanded && parent.mouseArea.containsMouse
-            text: qsTr("Settings")
-        }
     }
 
     FigurativeLine
     {
+        id: supportLine
+
         Layout.fillWidth: true
         label.text: isExpanded ? qsTr("Support") : ""
         icon.source: General.image_path + "menu-support-white.png"
         type: Main.LineType.Support
         onClicked: supportLineSelected(type)
-
-        DexTooltip
-        {
-            visible: !isExpanded && parent.mouseArea.containsMouse
-            text: qsTr("Support")
-        }
     }
 
     Line
     {
+        id: privacyLine
+
         Layout.fillWidth: true
         label.text: qsTr("Privacy")
         label.visible: isExpanded
@@ -65,12 +62,6 @@ ColumnLayout
             mouseArea.hoverEnabled: true
 
             onClicked: parent.clicked()
-        }
-
-        DexTooltip
-        {
-            visible: !isExpanded && (privacySwitch.mouseArea.containsMouse || parent.mouseArea.containsMouse)
-            text: qsTr("Privacy")
         }
     }
 }

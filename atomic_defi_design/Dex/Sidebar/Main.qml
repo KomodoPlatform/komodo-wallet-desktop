@@ -21,6 +21,7 @@ Item
     property real   lineHeight: 44
     property var    currentLineType: Main.LineType.Portfolio
     property alias  _selectionCursor: _selectionCursor
+    property bool   containsMouse: bgMouseArea.containsMouse || center.containsMouse || bottom.containsMouse
 
     signal lineSelected(var lineType)
     signal settingsClicked()
@@ -31,18 +32,34 @@ Item
 
     onCurrentLineTypeChanged: if (currentLineType === Main.LineType.DEX) isExpanded = false
                               else isExpanded = true
+    onContainsMouseChanged:
+    {
+        if (currentLineType === Main.LineType.DEX)
+        {
+            if (containsMouse) isExpanded = true;
+            else isExpanded = false;
+        }
+    }
 
     // Background Rectangle
     Rectangle
     {
         anchors.fill: parent
         color: Dex.CurrentTheme.sidebarBgColor
+
+        MouseArea
+        {
+            id: bgMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            propagateComposedEvents: true
+        }
     }
 
     // Animation when changing width.
     Behavior on width
     {
-        NumberAnimation { duration: 300 }
+        NumberAnimation { duration: 300; targets: [width, _selectionCursor.width]; properties: "width" }
     }
 
     // Selection Cursor
@@ -56,9 +73,10 @@ Item
             else return center.y + currentLineType * (lineHeight + center.spacing);
         }
 
-        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.leftMargin: 12
         radius: 18
-        width: isExpanded ? 185 : 76
+        width: parent.width - 14
         height: lineHeight
 
         opacity: .7

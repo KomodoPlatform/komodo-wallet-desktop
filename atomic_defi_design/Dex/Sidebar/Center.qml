@@ -9,6 +9,11 @@ import Dex.Themes 1.0 as Dex
 Item
 {
     property alias spacing: _columnLayout.spacing
+    property bool  containsMouse: _portfolioLine.mouseArea.containsMouse ||
+                                  _walletLine.mouseArea.containsMouse ||
+                                  _dexLine.mouseArea.containsMouse ||
+                                  _addressBookLine.mouseArea.containsMouse ||
+                                  _fiatLine.mouseArea.containsMouse
 
     signal lineSelected(var lineType)
 
@@ -28,12 +33,6 @@ Item
             label.text: isExpanded ? qsTr("Portfolio") : ""
             icon.source: General.image_path + "menu-assets-portfolio.svg"
             onClicked: lineSelected(type)
-
-            DexTooltip
-            {
-                visible: !isExpanded && parent.mouseArea.containsMouse
-                text: qsTr("Portfolio")
-            }
         }
 
         FigurativeLine
@@ -45,12 +44,6 @@ Item
             label.text: isExpanded ? qsTr("Wallet") : ""
             icon.source: General.image_path + "menu-assets-white.svg"
             onClicked: lineSelected(type)
-
-            DexTooltip
-            {
-                visible: !isExpanded && parent.mouseArea.containsMouse
-                text: qsTr("Wallet")
-            }
         }
 
         FigurativeLine
@@ -62,12 +55,6 @@ Item
             label.text: isExpanded ? qsTr("DEX") : ""
             icon.source: General.image_path + "menu-exchange-white.svg"
             onClicked: lineSelected(type)
-
-            DexTooltip
-            {
-                visible: !isExpanded && parent.mouseArea.containsMouse
-                text: qsTr("DEX")
-            }
         }
 
         FigurativeLine
@@ -79,16 +66,12 @@ Item
             label.text: isExpanded ? qsTr("Address Book") : ""
             icon.source: General.image_path + "menu-news-white.svg"
             onClicked: lineSelected(type)
-
-            DefaultTooltip
-            {
-                visible: !isExpanded && parent.mouseArea.containsMouse
-                text: qsTr("Address Book")
-            }
         }
 
         FigurativeLine
         {
+            id: _fiatLine
+
             label.enabled: false
             icon.enabled: false
             Layout.fillWidth: true
@@ -97,8 +80,8 @@ Item
 
             DefaultTooltip
             {
-                visible: parent.mouseArea.containsMouse
-                text: isExpanded ? qsTr("Coming soon !") : qsTr("Fiat")
+                visible: parent.mouseArea.containsMouse && isExpanded
+                text: qsTr("Coming soon !")
             }
         }
     }
