@@ -97,7 +97,7 @@ ColumnLayout {
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text_value: hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same")
+            text_value: hintPrefix(passwordsDoMatch()) + qsTr(high_security ? "Password and Confirm Password have to be same" : "Suffix and confirm suffix have to be the same")
             color: hintColor(passwordsDoMatch())
         }
     }
