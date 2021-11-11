@@ -171,11 +171,6 @@ ClipRRect // Trade Card
 
                     hoverEnabled: true
 
-                    ToolTip.delay: 500
-                    ToolTip.timeout: 5000
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Reset form.")
-
                     onClicked: selectedOrder = undefined
 
                     Qaterial.ColorIcon
@@ -184,6 +179,14 @@ ClipRRect // Trade Card
                         source:  Qaterial.Icons.broom
                         color: DexTheme.foregroundColor
                         opacity: .8
+                    }
+
+                    DefaultTooltip
+                    {
+                        delay: 500
+                        timeout: 5000
+                        visible: parent.hovered
+                        text: qsTr("Reset form.")
                     }
                 }
             }
