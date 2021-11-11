@@ -21,9 +21,8 @@ Line
     {
         anchors.fill: _icon
         source: _icon
-        color: enabled ?
-                   mouseArea.containsMouse && currentLineType !== type ?
-                       Dex.CurrentTheme.sidebarLineTextHovered :
-                       Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
+        color: !_icon.enabled ? Dex.CurrentTheme.textDisabledColor :
+               mouseArea.containsMouse && currentLineType !== type ? Dex.CurrentTheme.sidebarLineTextHovered :
+                                                                      Dex.CurrentTheme.foregroundColor
     }
 }

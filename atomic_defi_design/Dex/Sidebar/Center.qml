@@ -90,6 +90,7 @@ Item
         FigurativeLine
         {
             label.enabled: false
+            icon.enabled: false
             Layout.fillWidth: true
             label.text: isExpanded ? qsTr("Fiat") : ""
             icon.source: General.image_path + "bill.svg"
