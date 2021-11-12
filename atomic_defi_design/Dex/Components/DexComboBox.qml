@@ -9,7 +9,6 @@ import Qaterial 1.0 as Qaterial
 import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
-import Dex 1.0 as Dex
 
 ComboBox
 {
