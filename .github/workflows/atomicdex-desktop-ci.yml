@@ -95,8 +95,10 @@ jobs:
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-          python3  -m aqt tool mac tools_ifw 4.1.1-202105261132 qt.tools.ifw.41 --outputdir ${{ github.workspace }}/Qt
+          python3  -m aqt tool mac tools_ifw 4.2.0-0-202111080927 qt.tools.ifw.42 --outputdir ${{ github.workspace }}/Qt
           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
+          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.1/bin" >> $GITHUB_PATH
+          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.2/bin" >> $GITHUB_PATH
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
