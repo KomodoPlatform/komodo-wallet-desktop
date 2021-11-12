@@ -77,17 +77,25 @@ BasicModal
             {
                 id: _selectAllCheckBox
 
-                text: qsTr("Select all assets")
                 visible: list.visible
                 checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
                 anchors.left: parent.left
-                boxWidth: 24
-                boxHeight: 24
+                boxWidth: 20
+                boxHeight: 20
+                width: 20
 
-                DexMouseArea
+                DefaultMouseArea
                 {
                     anchors.fill: parent
                     onClicked: setCheckState(!parent.checked)
+                }
+
+                DefaultText
+                {
+                    anchors.left: parent.right
+                    anchors.leftMargin: 5
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Select all assets")
                 }
             }
         }
@@ -109,10 +117,9 @@ BasicModal
             {
                 readonly property bool backend_checked: model.checked
 
-                text: "         " + model.name + " (" + model.ticker + ")"
                 enabled: _selectAllCheckBox.checked ? checked : true
-                boxWidth: 24
-                boxHeight: 24
+                boxWidth: 20
+                boxHeight: 20
                 spacing: 0
 
                 onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
@@ -132,31 +139,39 @@ BasicModal
                 DefaultImage
                 {
                     id: icon
-                    anchors.left: parent.left
-                    anchors.leftMargin: parent.leftPadding + 34
+                    anchors.left: parent.right
+                    anchors.leftMargin: 8
                     anchors.verticalCenter: parent.verticalCenter
                     source: General.coinIcon(model.ticker)
                     width: 18
                     height: 18
-                }
 
-                CoinTypeTag
-                {
-                    id: typeTag
-                    anchors.left: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
+                    DefaultText
+                    {
+                        anchors.left: parent.right
+                        anchors.leftMargin: 4
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: model.name + " (" + model.ticker + ")"
 
-                    type: model.type
-                }
+                        CoinTypeTag
+                        {
+                            id: typeTag
+                            anchors.left: parent.right
+                            anchors.leftMargin: 6
+                            anchors.verticalCenter: parent.verticalCenter
+                            type: model.type
+                        }
 
-                CoinTypeTag
-                {
-                    anchors.left: typeTag.right
-                    anchors.leftMargin: 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    enabled: General.isIDO(ticker)
-                    visible: enabled
-                    type: "IDO"
+                        CoinTypeTag
+                        {
+                            anchors.left: typeTag.right
+                            anchors.leftMargin: 6
+                            anchors.verticalCenter: parent.verticalCenter
+                            enabled: General.isIDO(model.ticker)
+                            visible: enabled
+                            type: "IDO"
+                        }
+                    }
                 }
             }
         }
