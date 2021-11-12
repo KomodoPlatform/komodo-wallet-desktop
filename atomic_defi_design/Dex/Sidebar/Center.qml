@@ -6,18 +6,53 @@ import "../Components"
 import "../Constants"
 import Dex.Themes 1.0 as Dex
 
-Item
+MouseArea
 {
     property alias spacing: _columnLayout.spacing
-    property bool  containsMouse: _portfolioLine.mouseArea.containsMouse ||
-                                  _walletLine.mouseArea.containsMouse ||
-                                  _dexLine.mouseArea.containsMouse ||
-                                  _addressBookLine.mouseArea.containsMouse ||
-                                  _fiatLine.mouseArea.containsMouse
 
     signal lineSelected(var lineType)
 
     height: lineHeight * 5
+    hoverEnabled: true
+
+    Connections
+    {
+        target: parent.parent
+
+        function onIsExpandedChanged()
+        {
+            if (isExpanded) waitForSidebarExpansionAnimation.start();
+            else
+            {
+                _portfolioLine.label.opacity = 0;
+                _walletLine.label.opacity = 0;
+                _dexLine.label.opacity = 0;
+                _addressBookLine.label.opacity = 0;
+                _fiatLine.label.opacity = 0;
+            }
+        }
+    }
+
+    NumberAnimation
+    {
+        id: waitForSidebarExpansionAnimation
+        targets: [_portfolioLine.label, _walletLine.label, _dexLine.label, _addressBookLine.label, _fiatLine.label]
+        properties: "opacity"
+        duration: 200
+        from: 0
+        to: 0
+        onFinished: labelsOpacityAnimation.start()
+    }
+
+    NumberAnimation
+    {
+        id: labelsOpacityAnimation
+        targets: [_portfolioLine.label, _walletLine.label, _dexLine.label, _addressBookLine.label, _fiatLine.label]
+        properties: "opacity"
+        duration: 350
+        from: 0.0
+        to: 1
+    }
 
     // Selection List
     ColumnLayout
