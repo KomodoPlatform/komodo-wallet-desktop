@@ -14,15 +14,15 @@ ComboBox
 {
     id: control
 
-    property alias radius: bg_rect.radius
-    property color lineHoverColor: DexTheme.hoverColor
-    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property color dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-
-    property string mainLineText: control.displayText
-    property var dropdownLineText: m => textRole === "" ?
+    property alias  radius: bg_rect.radius
+    property color  lineHoverColor: DexTheme.hoverColor
+    property color  mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property int    dropDownMaxHeight: 300
+    property color  dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property var    dropdownLineText: m => textRole === "" ?
         m.modelData :
         !m.modelData ? m[textRole] : m.modelData[textRole]
+    property string mainLineText: control.displayText
 
     readonly property bool disabled: !enabled
 
@@ -64,7 +64,7 @@ ComboBox
     popup: Popup
     {
         width: control.width
-        height: _list.contentHeight
+        height: _list.contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
         leftPadding: 0
         rightPadding: 0
         topPadding: 16
