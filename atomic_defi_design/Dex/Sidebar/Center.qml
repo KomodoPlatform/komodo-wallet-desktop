@@ -112,12 +112,6 @@ MouseArea
             Layout.fillWidth: true
             label.text: isExpanded ? qsTr("Fiat") : ""
             icon.source: General.image_path + "bill.svg"
-
-            DefaultTooltip
-            {
-                visible: parent.mouseArea.containsMouse && isExpanded
-                text: qsTr("Coming soon !")
-            }
         }
     }
 }
