@@ -2339,6 +2339,31 @@
       "active": false,
       "currently_enabled": false
   },
+  "FLUX": {
+    "coin": "FLUX",
+    "name": "Flux",
+    "coinpaprika_id": "zel-zelcash",
+    "coingecko_id": "flux-zelcash",
+    "nomics_id": "FLUX",
+    "electrum": [
+      {
+        "url": "electrumx.runonflux.io:50001",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx2.runonflux.io:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.runonflux.io/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "FIRO": {
     "coin": "FIRO",
     "name": "Firo",
