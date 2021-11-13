@@ -79,8 +79,8 @@ namespace atomic_dex
 
     struct address_format
     {
-        std::string format;
-        std::string network;
+        std::string                format;
+        std::optional<std::string> network{std::nullopt};
     };
 
     struct coin_element
@@ -139,7 +139,7 @@ namespace atomic_dex
     from_json(const json& j, atomic_dex::address_format& x)
     {
         x.format  = j.at("format").get<std::string>();
-        x.network = j.at("network").get<std::string>();
+        x.network = atomic_dex::get_optional<std::string>(j, "network");
     }
 
     inline void
@@ -147,7 +147,10 @@ namespace atomic_dex
     {
         j            = json::object();
         j["format"]  = x.format;
-        j["network"] = x.network;
+        if (x.network.has_value())
+        {
+            j["network"] = x.network.value();
+        }
     }
 
     inline void
@@ -190,7 +193,8 @@ namespace atomic_dex
     to_json(json& j, const atomic_dex::coin_element& x)
     {
         j                    = json::object();
-        auto to_json_functor = [&j](const std::string field_name, const auto& field) {
+        auto to_json_functor = [&j](const std::string field_name, const auto& field)
+        {
             if (field.has_value())
             {
                 j[field_name] = field.value();
@@ -255,7 +259,7 @@ namespace atomic_dex
         try
         {
             nlohmann::json j = nlohmann::json::parse(val.toStdString());
-            //ifs >> j;
+            // ifs >> j;
             t_mm2_raw_coins coins = j;
             out.reserve(coins.size());
             for (auto&& coin: coins) { out[coin.coin] = coin; }
@@ -264,6 +268,7 @@ namespace atomic_dex
         }
         catch (const std::exception& error)
         {
+            SPDLOG_ERROR("parse error: {}", error.what());
             LOG_PATH("cannot parse mm2 raw cfg file: {}", file_path);
         }
         return out;
