@@ -2353,9 +2353,8 @@
         "ws_url": "electrumx.runonflux.io:50004"
       },
       {
-        "url": "electrumx2.runonflux.io:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true,
+        "url": "electrumx2.runonflux.io:50001",
+        "protocol": "TCP",
         "ws_url": "electrumx2.runonflux.io:50004"
       }
     ],
@@ -5378,6 +5377,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "SUSHI-MVR20": {
+      "coin": "SUSHI-MVR20",
+      "name": "Sushi",
+      "coinpaprika_id": "sushi-sushi",
+      "coingecko_id": "sushi",
+      "nomics_id": "SUSHI",
+      "nodes": [
+        "https://rpc.moonriver.moonbeam.network"
+      ],
+      "explorer_url": [
+        "https://blockscout.moonriver.moonbeam.network/"
+      ],
+      "type": "Moonriver",
+      "active": false,
+      "currently_enabled": false
+  },
   "SUSHI-PLG20": {
     "coin": "SUSHI-PLG20",
     "name": "Sushi",
@@ -6488,6 +6503,41 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "WBTC-ERC20": {
+      "coin": "WBTC-ERC20",
+      "name": "Wrapped Bitcoin",
+      "coinpaprika_id": "wbtc-wrapped-bitcoin",
+      "coingecko_id": "wrapped-bitcoin",
+      "nomics_id": "WBTC",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
+  },
+  "WBTC-HRC20": {
+      "coin": "WBTC-HRC20",
+      "name": "Wrapped Bitcoin",
+      "coinpaprika_id": "wbtc-wrapped-bitcoin",
+      "coingecko_id": "wrapped-bitcoin",
+      "nomics_id": "WBTC",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "WCN": {
     "coin": "WCN",
@@ -8693,23 +8743,6 @@
       "https://polygonscan.com/"
     ],
     "type": "Matic",
-    "active": false,
-    "currently_enabled": false
-  },
-  "WBTC": {
-    "coin": "WBTC",
-    "name": "Wrapped BTC",
-    "coinpaprika_id": "wbtc-wrapped-bitcoin",
-    "coingecko_id": "wrapped-bitcoin",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
     "active": false,
     "currently_enabled": false
   },
