@@ -514,11 +514,13 @@ namespace atomic_dex
                     catch (const std::exception& error)
                     {
                         SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
-                        // this->dispatcher_.trigger<tx_fetch_finished>(true);
+                        this->dispatcher_.trigger<tx_fetch_finished>(true);
                     }
                 })
             .then([this, batch = batch_array](pplx::task<void> previous_task)
-                  { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch); });
+                  {
+                      this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch);
+                  });
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>

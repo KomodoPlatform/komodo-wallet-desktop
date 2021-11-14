@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import "../Constants" as Dex
 import "../Components" as Dex
 import "../String.js" as DexString
+import "../Screens"
 import App 1.0 as Dex
 import Dex.Themes 1.0 as Dex
 
@@ -94,7 +95,7 @@ Dex.DefaultListView
                 else
                 {
                     api_wallet_page.ticker = ticker
-                    dashboard.switchPage(idx_dashboard_wallet)
+                    dashboard.switchPage(Dashboard.PageType.Wallet)
                 }
             }
             onPressAndHold:

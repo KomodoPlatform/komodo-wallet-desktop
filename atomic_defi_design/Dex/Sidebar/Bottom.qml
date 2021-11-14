@@ -10,7 +10,7 @@ ColumnLayout
 
     height: lineHeight * 3
 
-    signal supportLineSelected(var lineObj)
+    signal supportLineSelected(var lineType)
     signal settingsClicked()
 
     FigurativeLine
@@ -33,7 +33,7 @@ ColumnLayout
         label.text: isExpanded ? qsTr("Support") : ""
         icon.source: General.image_path + "menu-support-white.png"
         type: Main.LineType.Support
-        onClicked: supportLineSelected(this)
+        onClicked: supportLineSelected(type)
 
         DexTooltip
         {

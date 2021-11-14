@@ -13,6 +13,7 @@ DefaultImage
 
     DefaultText
     {
+        visible: isExpanded
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.bottom
         anchors.topMargin: 35

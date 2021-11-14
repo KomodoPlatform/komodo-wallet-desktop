@@ -327,6 +327,7 @@ QtObject {
                                           "CADC": "#FF6666",
                                           "DGB": "#006AD2",
                                           "DOT": "#E80082",
+                                          "FLUX": "#2B61D1",
                                           "FIRO": "#BB2100",
                                           "LBC": "#00775C",
                                           "LTC": "#BFBBBB",
