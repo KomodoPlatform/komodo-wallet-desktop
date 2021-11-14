@@ -2371,7 +2371,7 @@
     "name": "Flux",
     "coinpaprika_id": "zel-zelcash",
     "coingecko_id": "flux-zelcash",
-    "nomics_id": "FLUX",
+    "nomics_id": "ZEL",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -2389,7 +2389,7 @@
     "name": "Flux",
     "coinpaprika_id": "zel-zelcash",
     "coingecko_id": "flux-zelcash",
-    "nomics_id": "FLUX",
+    "nomics_id": "ZEL",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
