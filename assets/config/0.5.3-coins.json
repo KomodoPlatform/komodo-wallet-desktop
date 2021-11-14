@@ -2354,8 +2354,7 @@
       },
       {
         "url": "electrumx2.runonflux.io:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true,
+        "protocol": "TCP",
         "ws_url": "electrumx2.runonflux.io:50004"
       }
     ],
