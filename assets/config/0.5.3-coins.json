@@ -2344,7 +2344,7 @@
     "name": "Flux",
     "coinpaprika_id": "zel-zelcash",
     "coingecko_id": "flux-zelcash",
-    "nomics_id": "FLUX",
+    "nomics_id": "ZEL",
     "electrum": [
       {
         "url": "electrumx.runonflux.io:50002",
