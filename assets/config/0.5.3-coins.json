@@ -2353,7 +2353,7 @@
         "ws_url": "electrumx.runonflux.io:50004"
       },
       {
-        "url": "electrumx2.runonflux.io:50002",
+        "url": "electrumx2.runonflux.io:50001",
         "protocol": "TCP",
         "ws_url": "electrumx2.runonflux.io:50004"
       }
