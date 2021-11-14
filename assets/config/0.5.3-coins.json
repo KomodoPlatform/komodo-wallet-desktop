@@ -2343,7 +2343,7 @@
     "coin": "FLUX",
     "name": "Flux",
     "coinpaprika_id": "zel-zelcash",
-    "coingecko_id": "flux-zelcash",
+    "coingecko_id": "zelcash",
     "nomics_id": "ZEL",
     "electrum": [
       {
@@ -2370,7 +2370,7 @@
     "coin": "FLUX-ERC20",
     "name": "Flux",
     "coinpaprika_id": "zel-zelcash",
-    "coingecko_id": "flux-zelcash",
+    "coingecko_id": "zelcash",
     "nomics_id": "ZEL",
     "nodes": [
       "http://eth1.cipig.net:8555",
@@ -2388,7 +2388,7 @@
     "coin": "FLUX-BEP20",
     "name": "Flux",
     "coinpaprika_id": "zel-zelcash",
-    "coingecko_id": "flux-zelcash",
+    "coingecko_id": "zelcash",
     "nomics_id": "ZEL",
     "nodes": [
       "http://bsc1.cipig.net:8655",
