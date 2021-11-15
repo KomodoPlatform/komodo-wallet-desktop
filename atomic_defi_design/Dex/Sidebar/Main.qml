@@ -17,7 +17,7 @@ Item
         Support
     }
 
-    property bool   isExpanded: true
+    property bool   isExpanded: containsMouse
     property real   lineHeight: 44
     property var    currentLineType: Main.LineType.Portfolio
     property alias  _selectionCursor: _selectionCursor
@@ -29,15 +29,6 @@ Item
 
     width: isExpanded ? 200 : 80
     height: parent.height
-
-    onContainsMouseChanged:
-    {
-        if (currentLineType === Main.LineType.DEX)
-        {
-            if (containsMouse) isExpanded = true;
-            else isExpanded = false;
-        }
-    }
 
     // Background Rectangle
     Rectangle

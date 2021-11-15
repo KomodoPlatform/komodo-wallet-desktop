@@ -205,11 +205,7 @@ Item {
 
         enabled: loader.status === Loader.Ready
 
-        onLineSelected:
-        {
-            isExpanded = true;
-            currentPage = lineType;
-        }
+        onLineSelected: currentPage = lineType;
         onSettingsClicked: setting_modal.open()
     }
 
