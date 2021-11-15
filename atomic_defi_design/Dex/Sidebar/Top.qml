@@ -15,10 +15,14 @@ MouseArea
 
         function onIsExpandedChanged()
         {
-            if (isExpanded) waitForSidebarExpansionTimer.start();
+            if (isExpanded)
+            {
+                waitForSidebarExpansionTimer.start();
+            }
             else
             {
                 versionLabel.opacity = 0;
+                waitForSidebarExpansionTimer.stop();
                 dexLogo.source = Dex.CurrentTheme.logoPath;
                 dexLogo.scale = .5;
             }
@@ -44,24 +48,6 @@ MouseArea
         properties: "opacity"
         duration: 350
         to: 1
-    }
-
-    NumberAnimation
-    {
-        id: fadeOutDexLogoAnimation
-        target: dexLogo
-        properties: "opacity"
-        duration: 200
-        to: 0.2
-    }
-
-    NumberAnimation
-    {
-        id: fadeInDexLogoAnimation
-        target: dexLogo
-        properties: "opacity"
-        duration: 200
-        to: 0.2
     }
 
     Image
