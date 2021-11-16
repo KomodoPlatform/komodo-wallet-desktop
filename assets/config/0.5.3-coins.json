@@ -831,6 +831,7 @@
   "BIDR-BEP20": {
     "coin": "BIDR-BEP20",
     "name": "BIDR",
+    "forex_id": "IDR",
     "coinpaprika_id": "bidr-binanceidr",
     "coingecko_id": "binanceidr",
     "nodes": [
@@ -994,6 +995,7 @@
   "BRZ-BEP20": {
     "coin": "BRZ-BEP20",
     "name": "Brazilian Digital Token",
+    "forex_id": "BRL",
     "coinpaprika_id": "brz-brazilian-digital-token",
     "coingecko_id": "brz",
     "nodes": [
@@ -1011,6 +1013,7 @@
   "BRZ-ERC20": {
     "coin": "BRZ-ERC20",
     "name": "Brazilian Digital Token",
+    "forex_id": "BRL",
     "coinpaprika_id": "brz-brazilian-digital-token",
     "coingecko_id": "brz",
     "nodes": [
@@ -1387,6 +1390,7 @@
   "CADC-ERC20": {
     "coin": "CADC-ERC20",
     "name": "CAD Coin",
+    "forex_id": "CAD",
     "coinpaprika_id": "cadc-cad-coin",
     "coingecko_id": "test-coin",
     "nomics_id": "CADC",
@@ -1405,6 +1409,7 @@
   "CADC-PLG20": {
     "coin": "CADC-PLG20",
     "name": "CAD Coin",
+    "forex_id": "CAD",
     "coinpaprika_id": "cadc-cad-coin",
     "coingecko_id": "test-coin",
     "nomics_id": "CADC",
@@ -2894,6 +2899,7 @@
   "JCHF-ERC20": {
     "coin": "JCHF-ERC20",
     "name": "Jarvis Swiss Franc",
+    "forex_id": "CHF",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jarvis-synthetic-swiss-franc",
     "nodes": [
@@ -2911,6 +2917,7 @@
   "JCHF-PLG20": {
     "coin": "JCHF-PLG20",
     "name": "Jarvis Swiss Franc",
+    "forex_id": "CHF",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jarvis-synthetic-swiss-franc",
     "nodes": [
@@ -2926,6 +2933,7 @@
   "JEUR-ERC20": {
     "coin": "JEUR-ERC20",
     "name": "Jarvis Euro",
+    "forex_id": "EUR",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jarvis-synthetic-euro",
     "nodes": [
@@ -2943,6 +2951,7 @@
   "JEUR-PLG20": {
     "coin": "JEUR-PLG20",
     "name": "Jarvis Euro",
+    "forex_id": "EUR",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jarvis-synthetic-euro",
     "nodes": [
@@ -2958,6 +2967,7 @@
   "JGBP-ERC20": {
     "coin": "JGBP-ERC20",
     "name": "Jarvis British Pound",
+    "forex_id": "GBP",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jarvis-synthetic-british-pound",
     "nodes": [
@@ -2975,6 +2985,7 @@
   "JGBP-PLG20": {
     "coin": "JGBP-PLG20",
     "name": "Jarvis British Pound",
+    "forex_id": "GBP",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jarvis-synthetic-british-pound",
     "nodes": [
@@ -2990,6 +3001,7 @@
   "JPYC-ERC20": {
     "coin": "JPYC-ERC20",
     "name": "JPY Coin",
+    "forex_id": "JPY",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jpyc",
     "nodes": [
@@ -3007,6 +3019,7 @@
   "JPYC-PLG20": {
     "coin": "JPYC-PLG20",
     "name": "JPY Coin",
+    "forex_id": "JPY",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "jpyc",
     "nodes": [
@@ -6244,6 +6257,7 @@
   "TRYB-AVX20": {
     "coin": "TRYB-AVX20",
     "name": "BiLira",
+    "forex_id": "TRY",
     "coinpaprika_id": "tryb-bilira",
     "coingecko_id": "bilira",
     "nodes": [
@@ -6259,6 +6273,7 @@
   "TRYB-BEP20": {
     "coin": "TRYB-BEP20",
     "name": "BiLira",
+    "forex_id": "TRY",
     "coinpaprika_id": "tryb-bilira",
     "coingecko_id": "bilira",
     "nodes": [
@@ -6276,6 +6291,7 @@
   "TRYB-ERC20": {
     "coin": "TRYB-ERC20",
     "name": "BiLira",
+    "forex_id": "TRY",
     "coinpaprika_id": "tryb-bilira",
     "coingecko_id": "bilira",
     "nodes": [
@@ -6730,6 +6746,7 @@
   "XSGD-ERC20": {
     "coin": "XSGD-ERC20",
     "name": "StraitsX SGD",
+    "forex_id": "SGD",
     "coinpaprika_id": "xsgd-xsgd",
     "coingecko_id": "xsgd",
     "nodes": [
@@ -6747,6 +6764,7 @@
   "XSGD-PLG20": {
     "coin": "XSGD-PLG20",
     "name": "StraitsX SGD",
+    "forex_id": "SGD",
     "coinpaprika_id": "xsgd-xsgd",
     "coingecko_id": "xsgd",
     "nodes": [
@@ -7322,6 +7340,7 @@
   "QC": {
     "coin": "QC",
     "name": "Qcash",
+    "forex_id": "CNY",
     "coingecko_id": "qcash",
     "coinpaprika_id": "qc-qcash",
     "nomics_id": "QC",
@@ -7335,6 +7354,7 @@
   "SFUSD": {
     "coin": "SFUSD",
     "name": "SmartUSD",
+    "forex_id": "USD",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "electrum": [
@@ -7778,6 +7798,7 @@
   "EURS-ERC20": {
     "coin": "EURS-ERC20",
     "name": "STASIS EURO",
+    "forex_id": "EUR",
     "coinpaprika_id": "eurs-stasis-eurs",
     "coingecko_id": "stasis-eurs",
     "nodes": [
@@ -7795,6 +7816,7 @@
   "EURS-PLG20": {
     "coin": "EURS-PLG20",
     "name": "STASIS EURO",
+    "forex_id": "EUR",
     "coinpaprika_id": "eurs-stasis-eurs",
     "coingecko_id": "stasis-eurs",
     "nodes": [
