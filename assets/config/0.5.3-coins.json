@@ -4944,6 +4944,33 @@
     "active": false,
     "currently_enabled": false
   },
+  "PPC": {
+      "coin": "PPC",
+      "name": "Peercoin",
+      "coinpaprika_id": "ppc-peercoin",
+      "coingecko_id": "peercoin",
+      "nomics_id": "PPC",
+      "electrum": [
+      {
+        "url": "electrum.peercoinexplorer.net:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": false
+      },
+      {
+        "url": "allingas.peercoinexplorer.net:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": false
+      }
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/ppc/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "QIAIR": {
     "coin": "QIAIR",
     "name": "Qi Airdrop Token",
