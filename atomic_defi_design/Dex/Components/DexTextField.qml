@@ -10,6 +10,7 @@ TextField
 
     property alias left_text: left_text.text_value
     property alias right_text: right_text.text_value
+    property alias radius: background.radius
 
     font: DexTypo.body2
     placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
@@ -36,11 +37,12 @@ TextField
     selectByMouse: true
     persistentSelection: true
 
-    background: DexRectangle
+    background: Rectangle
     {
-        color: Dex.CurrentTheme.accentColor
+        id: background
+        color: Dex.CurrentTheme.backgroundColor
         opacity: .4
-        radius: height / 2
+        radius: 18
         anchors.fill: parent
     }
 
@@ -57,7 +59,7 @@ TextField
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.verticalCenter: parent.verticalCenter
-
+        color: Dex.CurrentTheme.textFieldPrefixColor
         font.pixelSize: text_field.font.pixelSize
     }
 
@@ -68,7 +70,7 @@ TextField
         anchors.right: parent.right
         anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
-
+        color: Dex.CurrentTheme.textFieldSuffixColor
         font.pixelSize: text_field.font.pixelSize
     }
 }

@@ -4,6 +4,8 @@ QtObject
 {
     property color  accentColor
     property color  foregroundColor
+    property color  foregroundColor2
+    property color  foregroundColor3
     property color  backgroundColor
     property color  backgroundColorDeep
 
@@ -54,6 +56,9 @@ QtObject
     property color  textPlaceholderColor
     property color  textSelectedColor
 
+    property color  textFieldPrefixColor
+    property color  textFieldSuffixColor
+
     property color  chartTradingLineBackgroundColor
     property color  chartTradingLineColor
 
@@ -67,6 +72,13 @@ QtObject
     property color  sidebarCursorStartColor
     property color  sidebarCursorEndColor
     property color  sidebarLineTextHovered
+
+    // Trading page related
+    property color  tradeBuyModeSelectorBackgroundColorStart
+    property color  tradeBuyModeSelectorBackgroundColorEnd
+    property color  tradeSellModeSelectorBackgroundColorStart
+    property color  tradeSellModeSelectorBackgroundColorEnd
+    property color  tradeMarketModeSelectorNotSelectedBackgroundColor
 
     // Colors used to tell when something is good or wrong.
     property color  okColor

@@ -5,6 +5,8 @@ function getHardcoded()
     return {
         accentColor: "#F0F2FF",
         foregroundColor: "#456078",
+        foregroundColor2: "#7A8EA1",
+        foregroundColor3: "#8FA0B1B2",
         backgroundColor: "#FCFCFC",
         backgroundColorDeep: "#FCFCFC",
 
@@ -55,6 +57,9 @@ function getHardcoded()
         textPlaceholderColor: "#91A8E8",
         textSelectedColor: "#f9f9fb",
 
+        textFieldPrefixColor: "#45607894",
+        textFieldSuffixColor: "#456078",
+
         chartTradingLineBackgroundColor: "#C5F2EF",
         chartTradingLineColor: "#53EBD7",
 
@@ -67,6 +72,12 @@ function getHardcoded()
         sidebarCursorStartColor: "#5A68E6",
         sidebarCursorEndColor: "#2CB9F000",
         sidebarLineTextHovered: "#2C87B9",
+
+        tradeBuyModeSelectorBackgroundColorStart: "#6A4DE3FF",
+        tradeBuyModeSelectorBackgroundColorEnd: "#2279F1FF",
+        tradeSellModeSelectorBackgroundColorStart: "#E52167FF",
+        tradeSellModeSelectorBackgroundColorEnd: "#E216A9FF",
+        tradeMarketModeSelectorNotSelectedBackgroundColor: "#89B6FF21",
 
         okColor: "#00C058",
         noColor: "#E52167",

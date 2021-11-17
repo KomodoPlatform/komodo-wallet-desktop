@@ -5,16 +5,18 @@ import QtGraphicalEffects 1.0
 
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
-
 import "../../../Components"
-
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-FloatingBackground {
+FloatingBackground
+{
     id: root
-    radius: 0
-    function focusVolumeField() {
-        input_volume.field.forceActiveFocus()
+    radius: 10
+
+    function focusVolumeField()
+    {
+        input_volume.forceActiveFocus()
     }
 
     readonly property string total_amount: API.app.trading_pg.total_amount
@@ -22,7 +24,8 @@ FloatingBackground {
     readonly property bool can_submit_trade: last_trading_error === TradingError.None
 
     // Will move to backend: Minimum Fee
-    function getMaxBalance() {
+    function getMaxBalance()
+    {
         if (General.isFilled(base_ticker))
             return API.app.get_balance(base_ticker)
 
@@ -30,7 +33,8 @@ FloatingBackground {
     }
 
     // Will move to backend: Minimum Fee
-    function getMaxVolume() {
+    function getMaxVolume()
+    {
         // base in this orderbook is always the left side, so when it's buy, we want the right side balance (rel in the backend)
         const value = sell_mode ? API.app.trading_pg.orderbook.base_max_taker_vol.decimal :
             API.app.trading_pg.orderbook.rel_max_taker_vol.decimal
@@ -41,131 +45,109 @@ FloatingBackground {
         return getMaxBalance()
     }
 
-    function setMinimumAmount(value) {
-        API.app.trading_pg.min_trade_vol = value
-    }
+    function setMinimumAmount(value) { API.app.trading_pg.min_trade_vol = value }
 
-    function reset() {}
-
-    //implicitHeight: form_layout.height
-    Connections {
+    Connections
+    {
         target: exchange_trade
-        function onBackend_priceChanged() {
-            input_price.field.text = exchange_trade.backend_price
-        }
-
-        function onBackend_volumeChanged() {
-            input_volume.field.text = exchange_trade.backend_volume
-        }
+        function onBackend_priceChanged() { input_price.text = exchange_trade.backend_price; }
+        function onBackend_volumeChanged() { input_volume.text = exchange_trade.backend_volume; }
     }
-    ColumnLayout {
+
+    ColumnLayout
+    {
         id: form_layout
         width: parent.width
 
-        ColumnLayout {
+        ColumnLayout
+        {
             Layout.alignment: Qt.AlignTop
-
             Layout.fillWidth: true
-            spacing: 15
             Layout.topMargin: 20
-            Item {
+            spacing: 15
+
+            Item
+            {
                 Layout.fillWidth: true
-                Layout.bottomMargin: input_volume.field.font.pixelSize
+                Layout.bottomMargin: input_volume.font.pixelSize
                 height: input_volume.height
 
-                DexAmountField {
+                AmountField
+                {
                     id: input_price
 
-                    width: parent.width
-                    leftText: qsTr("Price")
-                    rightText: atomic_qt_utilities.retrieve_main_ticker(right_ticker)
-                    field.enabled: !(API.app.trading_pg.preffered_order.price !== undefined)
-                    field.text: backend_price
-                    field.onTextChanged: setPrice(value)
+                    left_text: qsTr("Price")
+                    right_text: atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+                    enabled: !(API.app.trading_pg.preffered_order.price !== undefined)
+                    text: backend_price
+                    width: 261
+                    height: 41
+                    radius: 18
 
-                    DefaultTooltip {
-                        visible: handler.containsMouse
-                        width: 200
-                        contentItem: DefaultText {
-                            text_value: qsTr("Cancel selected order to change price")
-                            wrapMode: DefaultText.Wrap
-                            width: 200
-                        }
-                        delay: 200
-                    }
-                    Rectangle {
-                        width: parent.width
-                        height: parent.height
-                        radius: 4
-                        color: DexTheme.contentColorTop
-                        opacity: .8
-                        visible: !parent.field.enabled
-                        MouseArea {
-                            id: handler
-                            anchors.fill: parent
-                            hoverEnabled: true
-                        }
-                    }
-
+                    onTextChanged: setPrice(text)
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     id: price_usd_value
                     anchors.right: input_price.right
                     anchors.top: input_price.bottom
                     anchors.topMargin: 7
 
                     text_value: General.getFiatText(non_null_price, right_ticker)
-                    font.pixelSize: input_price.field.font.pixelSize
+                    font.pixelSize: input_price.font.pixelSize
+                    color: Dex.CurrentTheme.foregroundColor2
 
                     CexInfoTrigger {}
                 }
             }
 
 
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
-                Layout.bottomMargin: input_volume.field.font.pixelSize
+                Layout.bottomMargin: input_volume.font.pixelSize
                 height: input_volume.height
 
-                DexAmountField {
+                AmountField
+                {
                     id: input_volume
-                    width: parent.width
-                    leftText: qsTr("Volume")
-                    rightText: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-                    field.placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
-
-                    field.text: API.app.trading_pg.volume
-                    field.onTextChanged: setVolume(value)
+                    width: 261
+                    height: 41
+                    radius: 18
+                    left_text: qsTr("Volume")
+                    right_text: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+                    placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
+                    text: API.app.trading_pg.volume
+                    onTextChanged: setVolume(text)
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     anchors.right: input_volume.right
                     anchors.top: input_volume.bottom
                     anchors.topMargin: price_usd_value.anchors.topMargin
 
                     text_value: General.getFiatText(non_null_volume, left_ticker)
-                    font.pixelSize: input_volume.field.font.pixelSize
+                    font.pixelSize: input_volume.font.pixelSize
+                    color: Dex.CurrentTheme.foregroundColor2
 
                     CexInfoTrigger {}
                 }
             }
 
-            DexRangeSlider {
+            DexRangeSlider
+            {
                 id: _volumeRange
 
                 property real oldSecondValue: 0
                 property real oldFirstValue: 0
 
-                function getRealValue() {
-                    return first.position * (first.to - first.from)
-                }
+                function getRealValue() { return first.position * (first.to - first.from); }
 
-                function getRealValue2() {
-                    return second.position * (second.to - second.from)
-                }
+                function getRealValue2() { return second.position * (second.to - second.from); }
 
-                enabled: input_volume.field.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
+                enabled: input_volume.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
 
                 Layout.preferredWidth: parent.width - 20
 
@@ -187,34 +169,26 @@ FloatingBackground {
                 second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
                 second.onPressedChanged: if (second.pressed) oldSecondValue = second.value
 
-                DexLabel {
+                DefaultText
+                {
                     anchors.left: parent.right
                     anchors.leftMargin: 8
                     anchors.verticalCenter: parent.verticalCenter
 
                     text: General.cex_icon
+                    color: Dex.CurrentTheme.foregroundColor3
 
-                    DefaultMouseArea {
+                    DefaultMouseArea
+                    {
                         anchors.fill: parent
-                        hoverEnabled: true
-
                         onClicked: _sliderHelpModal.open()
-
-                        DefaultTooltip {
-                            visible: parent.containsMouse
-                            delay: 500
-
-                            contentItem: DefaultText {
-                                text_value: qsTr("How it works ?")
-                                wrapMode: DefaultText.Wrap
-                                width: 300
-                            }
-                        }
                     }
 
-                    ModalLoader {
+                    ModalLoader
+                    {
                         id: _sliderHelpModal
-                        sourceComponent: HelpModal {
+                        sourceComponent: HelpModal
+                        {
                             title: qsTr("How to use the pro-view slider ?")
                             helpSentence: qsTr("This slider is used to setup the order requirements you need.\nLeft slider: Sets the minimum amount required to process a trade.\nRight slider: Sets the volume you want to trade.")
                         }
@@ -222,21 +196,26 @@ FloatingBackground {
                 }
             }
 
-            DexCheckBox {
+            DexCheckBox
+            {
                 id: _useCustomMinTradeAmountCheckbox
 
                 Layout.topMargin: 15
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
 
+                boxWidth: 20.76
+                boxHeight: 20.76
                 text: qsTr("Use custom minimum trade amount")
+                textColor: Dex.CurrentTheme.foregroundColor3
                 font.pixelSize: 13
-                onPressed: {
-                    if (!checked) {
-                        _volumeRange.oldFirstValue = _volumeRange.defaultFirstValue
-                    } else {
-                        _volumeRange.defaultFirstValue = API.app.trading_pg.orderbook.current_min_taker_vol
-                        _volumeRange.first.value = API.app.trading_pg.orderbook.current_min_taker_vol
+                onPressed:
+                {
+                    if (!checked) _volumeRange.oldFirstValue = _volumeRange.defaultFirstValue;
+                    else
+                    {
+                        _volumeRange.defaultFirstValue = API.app.trading_pg.orderbook.current_min_taker_vol;
+                        _volumeRange.first.value = API.app.trading_pg.orderbook.current_min_taker_vol;
                     }
                 }
             }

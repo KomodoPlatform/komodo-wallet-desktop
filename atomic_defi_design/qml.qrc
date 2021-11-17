@@ -487,6 +487,7 @@
         <file>Dex/Exchange/Exchange.qml</file>
         <file>Dex/Exchange/History/History.qml</file>
         <file>Dex/Exchange/Orders/Orders.qml</file>
+        <file>Dex/Exchange/ProView/MarketModeSelector.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/Header.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/List.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/ListDelegate.qml</file>

@@ -6,83 +6,87 @@ import QtQuick.Controls.Material 2.15
 import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
 
-import AtomicDEX.MarketMode 1.0
-import AtomicDEX.TradingError 1.0
-
-
 import "../../../../Components"
-import App 1.0
+import "../../../../Constants"
+import Dex.Themes 1.0 as Dex
 
-
-Item {
+Item
+{
     anchors.fill: parent
     anchors.topMargin: 0
-    Item {
+    Item
+    {
         width: parent.width
         height: 140
-        Column {
+        Column
+        {
             width: parent.width-15
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
             leftPadding: 10
             rightPadding: 10
-            RowLayout {
+            RowLayout
+            {
                 width: parent.width
                 height: 30
-                DefaultText {
-                    color: DexTheme.foregroundColor
-                    text: "TOTAL "+API.app.settings_pg.current_fiat+" "+General.cex_icon
+                DefaultText
+                {
+                    color: Dex.CurrentTheme.foregroundColor3
+                    text: "Total " + API.app.settings_pg.current_fiat + " " + General.cex_icon
                     font.pixelSize:  14
                     font.weight: Font.Normal
                     opacity: .6
                     CexInfoTrigger {}
                 }
-                Item {
+                Item
+                {
                     height: 30
                     Layout.fillWidth: true
-                    DefaultText {
+                    DefaultText
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.rightMargin: 20
                         anchors.right: parent.right
                         font.weight: Font.DemiBold
                         font.pixelSize: 16
                         font.family: 'lato'
-                        color: DexTheme.accentColor
-                        text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon,"")
+                        text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon, "")
                     }
                 }
             }
             
-            Rectangle {
-                color: DexTheme.foregroundColor
-                opacity: .2
-                height: 1.5
-                width:parent.width-20
+            HorizontalLine
+            {
+                color: Dex.CurrentTheme.lineSeparatorColor
+                width: parent.width - 20
                 anchors.horizontalCenter: parent.horizontalCenter
             }
             
-            RowLayout {
+            RowLayout
+            {
                 width: parent.width
                 height: 30
-                DexLabel {
-                    color: DexTheme.foregroundColor
-                    text:  "TOTAL "+ atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+                DexLabel
+                {
+                    color: Dex.CurrentTheme.foregroundColor3
+                    text:  "Total " + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
                     font.pixelSize:  14
                     opacity: .6
                     font.weight: Font.Normal
                 }
-                Item {
+                Item
+                {
                     height: 30
                     Layout.fillWidth: true
-                    DefaultText {
+                    DefaultText
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.rightMargin: 20
                         anchors.right: parent.right
                         font.weight: Font.DemiBold
                         font.pixelSize: 16
                         font.family: 'lato'
-                        color: DexTheme.accentColor
-                        text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker,"")
+                        text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker, "")
                     }
                 }
             }
