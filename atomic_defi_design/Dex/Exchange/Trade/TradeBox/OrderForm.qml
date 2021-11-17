@@ -202,13 +202,13 @@ FloatingBackground
 
                 Layout.topMargin: 15
                 Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: true
 
                 boxWidth: 20.76
                 boxHeight: 20.76
                 text: qsTr("Use custom minimum trade amount")
                 textColor: Dex.CurrentTheme.foregroundColor3
                 font.pixelSize: 13
+                spacing: 3
                 onPressed:
                 {
                     if (!checked) _volumeRange.oldFirstValue = _volumeRange.defaultFirstValue;
