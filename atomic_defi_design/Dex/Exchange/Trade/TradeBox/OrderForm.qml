@@ -63,14 +63,12 @@ FloatingBackground
         {
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
-            Layout.topMargin: 20
-            spacing: 15
+            Layout.topMargin: 12
 
             Item
             {
                 Layout.fillWidth: true
-                Layout.bottomMargin: input_volume.font.pixelSize
-                height: input_volume.height
+                height: input_price.height + price_usd_value.height + price_usd_value.anchors.topMargin
 
                 AmountField
                 {
@@ -106,8 +104,8 @@ FloatingBackground
             Item
             {
                 Layout.fillWidth: true
-                Layout.bottomMargin: input_volume.font.pixelSize
-                height: input_volume.height
+                Layout.topMargin: 10
+                height: input_volume.height + inputVolumePrice.height + inputVolumePrice.anchors.topMargin
 
                 AmountField
                 {
@@ -124,6 +122,7 @@ FloatingBackground
 
                 DefaultText
                 {
+                    id: inputVolumePrice
                     anchors.right: input_volume.right
                     anchors.top: input_volume.bottom
                     anchors.topMargin: price_usd_value.anchors.topMargin
@@ -136,38 +135,12 @@ FloatingBackground
                 }
             }
 
-            DexRangeSlider
+            DefaultText
             {
-                id: _volumeRange
-
-                property real oldSecondValue: 0
-                property real oldFirstValue: 0
-
-                function getRealValue() { return first.position * (first.to - first.from); }
-
-                function getRealValue2() { return second.position * (second.to - second.from); }
-
-                enabled: input_volume.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
-
-                Layout.preferredWidth: parent.width - 20
-
-                rangeBackgroundColor: Qt.lighter(rangeDistanceColor)
-                rangeDistanceColor: sell_mode ? DexTheme.redColor : DexTheme.greenColor
-                from: API.app.trading_pg.orderbook.current_min_taker_vol
-                to: Math.max(0, parseFloat(max_volume))
-
-                first.value: parseFloat(API.app.trading_pg.min_trade_vol)
-
-                firstDisabled: !_useCustomMinTradeAmountCheckbox.checked
-                defaultFirstValue: parseFloat(API.app.trading_pg.min_trade_vol)
-
-                firstTooltip.text: qsTr("Minimum volume: %1").arg(General.formatDouble(first.value, General.getRecommendedPrecision(second.value)))
-                second.value: parseFloat(non_null_volume)
-                secondTooltip.text: qsTr("Volume: %1").arg(General.formatDouble(second.value, General.getRecommendedPrecision(to)))
-
-                first.onValueChanged: if (first.pressed) setMinimumAmount(General.formatDouble(first.value))
-                second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
-                second.onPressedChanged: if (second.pressed) oldSecondValue = second.value
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 6
+                font.pixelSize: 13
+                text: qsTr("Min volume: ") + API.app.trading_pg.min_trade_vol
 
                 DefaultText
                 {
@@ -196,6 +169,31 @@ FloatingBackground
                 }
             }
 
+            DefaultRangeSlider
+            {
+                id: _volumeRange
+
+                function getRealValue() { return first.position * (first.to - first.from); }
+                function getRealValue2() { return second.position * (second.to - second.from); }
+
+                enabled: input_volume.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
+
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: parent.width - 20
+
+                from: API.app.trading_pg.orderbook.current_min_taker_vol
+                to: Math.max(0, parseFloat(max_volume))
+
+                first.value: parseFloat(API.app.trading_pg.min_trade_vol)
+
+                firstDisabled: !_useCustomMinTradeAmountCheckbox.checked
+
+                second.value: parseFloat(non_null_volume)
+
+                first.onValueChanged: if (first.pressed) setMinimumAmount(General.formatDouble(first.value))
+                second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
+            }
+
             DexCheckBox
             {
                 id: _useCustomMinTradeAmountCheckbox
@@ -209,15 +207,6 @@ FloatingBackground
                 textColor: Dex.CurrentTheme.foregroundColor3
                 font.pixelSize: 13
                 spacing: 3
-                onPressed:
-                {
-                    if (!checked) _volumeRange.oldFirstValue = _volumeRange.defaultFirstValue;
-                    else
-                    {
-                        _volumeRange.defaultFirstValue = API.app.trading_pg.orderbook.current_min_taker_vol;
-                        _volumeRange.first.value = API.app.trading_pg.orderbook.current_min_taker_vol;
-                    }
-                }
             }
         }
     }

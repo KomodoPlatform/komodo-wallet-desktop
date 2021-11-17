@@ -547,7 +547,7 @@ ColumnLayout {
                                     height: 44
                                     radius: 18
 
-                                    text: qsTr("Start Swap")
+                                    text: qsTr("START SWAP")
                                     font.weight: Font.Medium
                                     enabled: form_base.can_submit_trade
                                     onClicked: confirm_trade_modal.open()

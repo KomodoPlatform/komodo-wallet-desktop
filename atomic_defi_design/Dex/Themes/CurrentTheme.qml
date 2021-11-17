@@ -80,9 +80,9 @@ ThemeData
         switchGradientStartColor2           = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientStartColor2 || defaultTheme.switchGradientStartColor2);
         switchGradientEndColor2             = Dex.Color.argbStrFromRgbaStr(themeData.switchGradientEndColor2 || defaultTheme.switchGradientEndColor2);
 
-        comboBoxBackgroundColor             = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxBackgroundColor || defaultTheme.comboBoxBackgroundColor);
-        comboBoxArrowsColor                 = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxArrowsColor || defaultTheme.comboBoxArrowsColor);
-        comboBoxDropdownItemHighlightedColor = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxDropdownItemHighlightedColor || defaultTheme.comboBoxDropdownItemHighlightedColor);
+        comboBoxBackgroundColor                 = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxBackgroundColor || defaultTheme.comboBoxBackgroundColor);
+        comboBoxArrowsColor                     = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxArrowsColor || defaultTheme.comboBoxArrowsColor);
+        comboBoxDropdownItemHighlightedColor    = Dex.Color.argbStrFromRgbaStr(themeData.comboBoxDropdownItemHighlightedColor || defaultTheme.comboBoxDropdownItemHighlightedColor);
 
         modalPageCounterGradientStartColor  = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientStartColor || defaultTheme.modalPageCounterGradientStartColor);
         modalPageCounterGradientEndColor    = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientEndColor || defaultTheme.modalPageCounterGradientEndColor);
@@ -107,17 +107,22 @@ ThemeData
 
         floatingBackgroundColor             = Dex.Color.argbStrFromRgbaStr(themeData.floatingBackgroundColor || defaultTheme.floatingBackgroundColor);
 
+        rangeSliderBackgroundColor                  = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderBackgroundColor || defaultTheme.rangeSliderBackgroundColor);
+        rangeSliderDistanceColor                    = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderDistanceColor || defaultTheme.rangeSliderDistanceColor);
+        rangeSliderIndicatorBackgroundStartColor    = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundStartColor || defaultTheme.rangeSliderIndicatorBackgroundStartColor);
+        rangeSliderIndicatorBackgroundEndColor      = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundEndColor || defaultTheme.rangeSliderIndicatorBackgroundEndColor);
+
         sidebarBgColor                      = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgColor || defaultTheme.sidebarBgColor);
         sidebarVersionTextColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarVersionTextColor || defaultTheme.sidebarVersionTextColor);
         sidebarCursorStartColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorStartColor || defaultTheme.sidebarCursorStartColor);
         sidebarCursorEndColor               = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorEndColor || defaultTheme.sidebarCursorEndColor);
         sidebarLineTextHovered              = Dex.Color.argbStrFromRgbaStr(themeData.sidebarLineTextHovered || defaultTheme.sidebarLineTextHovered);
 
-        tradeBuyModeSelectorBackgroundColorStart    = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorStart || defaultTheme.tradeBuyModeSelectorBackgroundColorStart);
-        tradeBuyModeSelectorBackgroundColorEnd      = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorEnd || defaultTheme.tradeBuyModeSelectorBackgroundColorEnd);
-        tradeSellModeSelectorBackgroundColorStart   = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorStart || defaultTheme.tradeSellModeSelectorBackgroundColorStart);
-        tradeSellModeSelectorBackgroundColorEnd     = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorEnd || defaultTheme.tradeSellModeSelectorBackgroundColorEnd);
-        tradeMarketModeSelectorNotSelectedBackgroundColor = Dex.Color.argbStrFromRgbaStr(themeData.tradeMarketModeSelectorNotSelectedBackgroundColor || defaultTheme.tradeMarketModeSelectorNotSelectedBackgroundColor);
+        tradeBuyModeSelectorBackgroundColorStart            = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorStart || defaultTheme.tradeBuyModeSelectorBackgroundColorStart);
+        tradeBuyModeSelectorBackgroundColorEnd              = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorEnd || defaultTheme.tradeBuyModeSelectorBackgroundColorEnd);
+        tradeSellModeSelectorBackgroundColorStart           = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorStart || defaultTheme.tradeSellModeSelectorBackgroundColorStart);
+        tradeSellModeSelectorBackgroundColorEnd             = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorEnd || defaultTheme.tradeSellModeSelectorBackgroundColorEnd);
+        tradeMarketModeSelectorNotSelectedBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.tradeMarketModeSelectorNotSelectedBackgroundColor || defaultTheme.tradeMarketModeSelectorNotSelectedBackgroundColor);
 
         okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
         noColor                             = Dex.Color.argbStrFromRgbaStr(themeData.noColor || defaultTheme.noColor);
@@ -198,6 +203,11 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.innerBackgroundColor : %1".arg(innerBackgroundColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.floatingBackgroundColor : %1".arg(floatingBackgroundColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderBackgroundColor : %1".arg(rangeSliderBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderDistanceColor : %1".arg(rangeSliderDistanceColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundStartColor : %1".arg(rangeSliderIndicatorBackgroundStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundEndColor : %1".arg(rangeSliderIndicatorBackgroundEndColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarBgColor : %1".arg(sidebarBgColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarVersionTextColor : %1".arg(sidebarVersionTextColor));

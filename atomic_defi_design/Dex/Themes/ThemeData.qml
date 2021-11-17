@@ -66,6 +66,11 @@ QtObject
 
     property color  floatingBackgroundColor
 
+    property color  rangeSliderBackgroundColor
+    property color  rangeSliderDistanceColor
+    property color  rangeSliderIndicatorBackgroundStartColor
+    property color  rangeSliderIndicatorBackgroundEndColor
+
     // Sidebar related
     property color  sidebarBgColor
     property color  sidebarVersionTextColor

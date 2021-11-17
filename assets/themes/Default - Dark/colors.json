@@ -64,6 +64,11 @@
 
     "floatingBackgroundColor": "#24273D",
 
+    "rangeSliderBackgroundColor": "#5A68E6FF",
+    "rangeSliderDistanceColor": "#4986EA3B",
+    "rangeSliderIndicatorBackgroundStartColor": "#5A68E6FF",
+    "rangeSliderIndicatorBackgroundEndColor": "#4986EAFF",
+
     "sidebarBgColor": "#202337",
     "sidebarVersionTextColor": "#2F5688",
     "sidebarCursorStartColor": "#31B1F0",

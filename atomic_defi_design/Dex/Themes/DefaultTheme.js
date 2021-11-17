@@ -67,6 +67,11 @@ function getHardcoded()
 
         floatingBackgroundColor: "#f7faff",
 
+        rangeSliderBackgroundColor: "#5A68E6FF",
+        rangeSliderDistanceColor: "#4986EA3B",
+        rangeSliderIndicatorBackgroundStartColor: "#5A68E6FF",
+        rangeSliderIndicatorBackgroundEndColor: "#4986EAAD",
+
         sidebarBgColor: "#FCFCFC",
         sidebarVersionTextColor: "#456078",
         sidebarCursorStartColor: "#5A68E6",
