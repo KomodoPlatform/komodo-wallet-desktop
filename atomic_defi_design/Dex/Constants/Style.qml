@@ -443,6 +443,7 @@ QtObject {
                                           "ONE": "#00BEEE",
                                           "ONT": "#2692AF",
                                           "POWR": "#05BCAA",
+                                          "PPC": "#46BC60",
                                           "QI": "#FFFFFF",
                                           "QIAIR": "#FEFEFE",
                                           "QKC": "#2175B4",
