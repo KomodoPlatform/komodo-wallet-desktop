@@ -131,6 +131,8 @@ namespace atomic_dex
             return "coingecko";
         case komodo_prices::api::provider::coinpaprika:
             return "coinpaprika";
+        case komodo_prices::api::provider::forex:
+            return "forex";
         case komodo_prices::api::provider::nomics:
             return "nomics";
         default:
