@@ -47,20 +47,18 @@ DexRectangle
         GradientStop
         {
             position: 0.1255
-            color: enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ?
-                    Dex.CurrentTheme.gradientButtonPressedStartColor :
-                    Dex.CurrentTheme.gradientButtonHoveredStartColor :
-                    Dex.CurrentTheme.gradientButtonStartColor :
-                    Dex.CurrentTheme.gradientButtonDisabledStartColor
+            color: enabled ? 
+                    Dex.CurrentTheme.gradientButtonPressedStartColor : _controlMouseArea.containsMouse ?
+                    Dex.CurrentTheme.gradientButtonHoveredStartColor : _controlMouseArea.containsPress ?
+                    Dex.CurrentTheme.gradientButtonStartColor : Dex.CurrentTheme.gradientButtonDisabledStartColor
         }
         GradientStop
         {
             position: 0.933
-            color: enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ?
-                    Dex.CurrentTheme.gradientButtonPressedEndColor :
-                    Dex.CurrentTheme.gradientButtonHoveredEndColor :
-                    Dex.CurrentTheme.gradientButtonEndColor :
-                    Dex.CurrentTheme.gradientButtonDisabledEndColor
+            color: enabled ? 
+                    Dex.CurrentTheme.gradientButtonPressedEndColor : _controlMouseArea.containsMouse ?
+                    Dex.CurrentTheme.gradientButtonHoveredEndColor : _controlMouseArea.containsPress ?
+                    Dex.CurrentTheme.gradientButtonEndColor : Dex.CurrentTheme.gradientButtonDisabledEndColor
         }
     }
     height: _label.implicitHeight + (padding * verticalPadding)

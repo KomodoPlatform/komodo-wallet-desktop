@@ -15,8 +15,8 @@
 
     "gradientButtonStartColor": "#5A68E6",
     "gradientButtonEndColor": "#4986EAAB",
-    "gradientButtonDisabledStartColor": "#BBB",
-    "gradientButtonDisabledEndColor": "#BBB",
+    "gradientButtonDisabledStartColor": "#CDD0F6",
+    "gradientButtonDisabledEndColor": "#DAE5F9",
     "gradientButtonHoveredStartColor": "#5A68E6",
     "gradientButtonHoveredEndColor": "#5A68E6",
     "gradientButtonPressedStartColor": "#6A4DE3",
