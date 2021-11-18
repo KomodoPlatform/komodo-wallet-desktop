@@ -23,16 +23,18 @@ BasicModal {
 
     ModalContent {
         title: !details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
+        titleAlignment: Qt.AlignHCenter
 
         // Complete image
         DefaultImage {
             visible: !details ? false : details.is_swap && details.order_status === "successful"
             Layout.alignment: Qt.AlignHCenter
-            source: General.image_path + "exchange-trade-complete.svg"
+            source: General.image_path + "exchange-trade-complete.png"
         }
 
         // Loading symbol
         DefaultBusyIndicator {
+            visible: !details ? false : details.is_swap && details.order_status !== "successful"
             running: (!details ? false :
                 details.is_swap &&
                 details.order_status !== "successful" &&
@@ -43,14 +45,15 @@ BasicModal {
         // Status Text
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 20
-            font.pixelSize: Style.textSize3
+            Layout.topMargin: 5
+            font.pixelSize: Style.textSize1
+            font.bold: true 
             visible: !details ? false :
                 details.is_swap || !details.is_maker
             color: !details ? "white" :
                 visible ? getStatusColor(details.order_status) : ''
             text_value: !details ? "" :
-                visible ? getStatusTextWithPrefix(details.order_status) : ''
+                visible ? getStatusText(details.order_status) : ''
         }
 
         OrderContent {

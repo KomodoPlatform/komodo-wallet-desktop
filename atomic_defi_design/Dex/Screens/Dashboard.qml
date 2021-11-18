@@ -17,6 +17,7 @@ import "../Sidebar" as Sidebar
 import "../Fiat"
 import "../Settings" as SettingsPage
 import "../Screens"
+import Dex.Themes 1.0 as Dex
 //import Dex.Sidebar 1.0 as Dex
 
 
@@ -243,7 +244,7 @@ Item {
             case "refunding":
                 return Style.colorOrange
             case "successful":
-                return DexTheme.greenColor
+                return Dex.CurrentTheme.sidebarLineTextHovered
             case "failed":
             default:
                 return DexTheme.redColor

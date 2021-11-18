@@ -633,7 +633,7 @@ ClipRRect // Trade Card
                     opacity: enabled ? 1 : .6
                     radius: 10
                     anchors.fill: parent
-                    text: qsTr("Swap Now")
+                    text: qsTr("SWAP NOW")
                     onClicked: _confirmSwapModal.open()
 
                     ModalLoader
