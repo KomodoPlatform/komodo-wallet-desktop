@@ -58,7 +58,7 @@ Item {
         width: parent.width
         height: parent.height
         radius: 4
-        color: DexTheme.surfaceColor
+        color: DexTheme.backgroundColor
         border.color: control.error ? DexTheme.redColor : input_field.focus ? DexTheme.accentColor : DexTheme.rectangleBorderColor
         border.width: input_field.focus ? 1 : 0
         Behavior on x {

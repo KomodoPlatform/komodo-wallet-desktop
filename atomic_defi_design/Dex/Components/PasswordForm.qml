@@ -20,6 +20,7 @@ ColumnLayout {
         const valid_cpw = input_confirm_password.isValid()
         const matching = input_password.field.text === input_confirm_password.field.text
         return valid_pw && valid_cpw && matching
+
     }
 
     function reset() {
