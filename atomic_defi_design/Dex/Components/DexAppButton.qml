@@ -45,6 +45,8 @@ DexRectangle
                Dex.CurrentTheme.buttonColorHovered :
                Dex.CurrentTheme.buttonColorEnabled :
                Dex.CurrentTheme.buttonColorDisabled
+    opacity: _controlMouseArea.containsMouse ? 1 : .8
+
 
     Row
     {

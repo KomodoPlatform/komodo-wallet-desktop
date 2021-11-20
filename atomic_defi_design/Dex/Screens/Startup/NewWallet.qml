@@ -420,7 +420,7 @@ SetupPage
                     rightPadding: 5
                     padding: 16
                     enabled: input_wallet_name.field.text !== ""
-                    opacity: enabled ? 1 : .4
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
                     anchors.verticalCenter: parent.verticalCenter
                     iconSourceRight: Qaterial.Icons.arrowRight
@@ -456,12 +456,13 @@ SetupPage
         {
             visible: currentStep === 1
 
-            FloatingBackground
+            Rectangle
             {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
                 height: 140
+                radius: 20
 
                 Column
                 {
@@ -515,7 +516,7 @@ SetupPage
                                 width: (_insideFlow2.width - 30) / 4
                                 text: modelData ?? ""
                                 radius: 20
-                                color: Dex.CurrentTheme.colorWhite0
+                                color: Dex.CurrentTheme.accentColor
                                 font: DexTypo.body2
 
                                 onClicked:
@@ -543,7 +544,7 @@ SetupPage
                 opacity: enabled ? 1 : .5
                 background.border.width: 1
                 background.radius: 25
-                field.font: DexTypo.body1
+                field.font: DexTypo.body2
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
@@ -586,37 +587,20 @@ SetupPage
                     Layout.preferredHeight: 10
                 }
 
-                DexAppButton
+                DexGradientAppButton
                 {
                     id: checkForNext
-                    enabled: validGuessField(input_seed_word.field)
-                    opacity: enabled ? 1 : .4
-                    onClicked: tryGuess()
+                    text: qsTr("Check")
                     radius: 20
-                    Layout.preferredWidth: _nextRow3.implicitWidth + 40
+                    leftPadding: 5
+                    rightPadding: 5
+                    padding: 16
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    label.color: 'transparent'
-                    Row
-                    {
-                        id: _nextRow3
-                        anchors.centerIn: parent
-                        spacing: 10
-                        DefaultText
-                        {
-                            text: qsTr("Check")
-                            font: DexTypo.button
-                            color: Dex.CurrentTheme.foregroundColor
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        Qaterial.ColorIcon
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: Dex.CurrentTheme.foregroundColor
-                            source: Qaterial.Icons.check
-                            iconSize: 14
-                        }
-                    }
+                    anchors.verticalCenter: parent.verticalCenter
+                    iconSourceRight: Qaterial.Icons.check
+                    enabled: validGuessField(input_seed_word.field)
+                    onClicked: tryGuess()
                 }
             }
 
@@ -672,36 +656,22 @@ SetupPage
                     Layout.preferredHeight: 10
                 }
 
-                DexAppButton
+
+
+                DexGradientAppButton
                 {
                     id: finalRegisterButton
-                    enabled: _keyChecker.isValid()
-                    opacity: enabled ? 1 : .4
+                    text: qsTr("Continue")
                     radius: 20
-                    Layout.preferredWidth: _nextRow2.implicitWidth + 40
+                    leftPadding: 5
+                    rightPadding: 5
+                    padding: 16
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    label.color: 'transparent'
+                    anchors.verticalCenter: parent.verticalCenter
+                    iconSourceRight: Qaterial.Icons.arrowRight
+                    enabled: _keyChecker.isValid()
                     onClicked: eula_modal.open()
-
-                    Row
-                    {
-                        id: _nextRow2
-                        anchors.centerIn: parent
-                        spacing: 10
-                        DefaultText
-                        {
-                            text: qsTr("Continue")
-                            font: DexTypo.button
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Qaterial.ColorIcon
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: Qaterial.Icons.arrowRight
-                            color: Dex.CurrentTheme.foregroundColor
-                            iconSize: 14
-                        }
-                    }
                 }
             }
 
