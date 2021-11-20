@@ -254,7 +254,8 @@ QtObject {
             case 'Moonriver':   return getCoinColor("MOVR")
             case 'HecoChain':   return getCoinColor("HECO")
             case 'SmartBCH':    return getCoinColor("SBCH")
-            case 'Ethereum Classic': return getCoinColor("ETC")
+            case 'Ethereum Classic':  return getCoinColor("ETC")
+            case 'RSK Smart Bitcoin': return getCoinColor("BTC")
             default:            return getCoinColor("BTC")
         }
     }
@@ -292,6 +293,7 @@ QtObject {
                                           "BRZ": "#B5DEC3",
                                           "BSTY": "#78570D",
                                           "BTC": "#E9983C",
+                                          "RBTC": "#E9983C",
                                           "BTT": "#666666",
                                           "BTE": "#FFE201",
                                           "BTX": "#FB30A6",

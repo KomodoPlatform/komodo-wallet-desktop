@@ -1062,6 +1062,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "RBTC": {
+    "coin": "RBTC",
+    "name": "RSK Smart Bitcoin",
+    "alias_ticker": "BTC",
+    "coinpaprika_id": "rbtc-smart-bitcoin",
+    "coingecko_id": "rootstock",
+    "nodes": [
+      "https://public-node.rsk.co"
+    ],
+    "explorer_url": [
+      "https://explorer.rsk.co"
+    ],
+    "type": "RSK Smart Bitcoin",
+    "active": false,
+    "currently_enabled": false
+  },
   "BTC": {
     "coin": "BTC",
     "name": "Bitcoin",
