@@ -641,6 +641,7 @@ SetupPage
                 id: _inputPasswordConfirm
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
+                field.placeholderText: qsTr("Enter the same password to confirm")
                 field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
             }
 
