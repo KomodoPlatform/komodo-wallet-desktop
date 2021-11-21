@@ -256,7 +256,6 @@ SetupPage
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 opacity: enabled ? 1 : .5
-                background.border.width: 1
                 background.radius: 25
                 field.onAccepted: completeForm()
                 field.font: DexTypo.body1
@@ -378,7 +377,7 @@ SetupPage
                             {
                                 width: (_insideFlow.width - 30) / 4
                                 height: _insideLabel.implicitHeight + 10
-                                color: Dex.CurrentTheme.colorWhite0
+                                color: Style.colorWhite0
                                 radius: 10
                                 opacity: .8
                                 DefaultText
@@ -422,7 +421,6 @@ SetupPage
                     enabled: input_wallet_name.field.text !== ""
                     opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    anchors.verticalCenter: parent.verticalCenter
                     iconSourceRight: Qaterial.Icons.arrowRight
 
                     onClicked:
@@ -542,7 +540,6 @@ SetupPage
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 opacity: enabled ? 1 : .5
-                background.border.width: 1
                 background.radius: 25
                 field.font: DexTypo.body2
                 field.horizontalAlignment: Qt.AlignLeft
@@ -597,7 +594,6 @@ SetupPage
                     padding: 16
                     opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    anchors.verticalCenter: parent.verticalCenter
                     iconSourceRight: Qaterial.Icons.check
                     enabled: validGuessField(input_seed_word.field)
                     onClicked: tryGuess()
@@ -669,7 +665,6 @@ SetupPage
                     padding: 16
                     opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    anchors.verticalCenter: parent.verticalCenter
                     iconSourceRight: Qaterial.Icons.arrowRight
                     enabled: _keyChecker.isValid()
                     onClicked: eula_modal.open()

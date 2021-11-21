@@ -142,7 +142,6 @@ SetupPage
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 opacity: enabled ? 1 : .5
-                background.border.width: 1
                 background.radius: 25
                 field.font: DexTypo.body2
                 field.horizontalAlignment: Qt.AlignLeft
@@ -166,12 +165,6 @@ SetupPage
                         color: Dex.CurrentTheme.foregroundColor
                     }
                 }
-            }
-
-            DexLabel
-            {
-                text: qsTr("Enter seed")
-                font: DexTypo.body1
             }
 
             DexAppPasswordField
@@ -268,7 +261,6 @@ SetupPage
                     padding: 16
                     opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    anchors.verticalCenter: parent.verticalCenter
                     iconSourceRight: Qaterial.Icons.arrowRight
                 }
             }
@@ -339,7 +331,6 @@ SetupPage
                     padding: 16
                     opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    anchors.verticalCenter: parent.verticalCenter
                     iconSourceRight: Qaterial.Icons.arrowRight
                     onClicked: trySubmit()
                 }
