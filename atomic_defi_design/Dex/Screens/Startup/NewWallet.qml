@@ -256,10 +256,9 @@ SetupPage
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 opacity: enabled ? 1 : .5
-                background.border.width: 1
                 background.radius: 25
                 field.onAccepted: completeForm()
-                field.font: DexTypo.head6
+                field.font: DexTypo.body1
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: "Wallet Name"
@@ -290,6 +289,7 @@ SetupPage
                 Layout.fillWidth: true
                 color: Dex.CurrentTheme.noColor
                 height: warning_texts.height + 20
+                radius: 20
 
                 Column
                 {
@@ -303,6 +303,7 @@ SetupPage
                     DefaultText
                     {
                         width: parent.width - 40
+                        color: Style.colorWhite0
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: qsTr("Important: Back up your seed phrase before proceeding!")
@@ -310,6 +311,7 @@ SetupPage
 
                     DefaultText {
                         width: parent.width - 40
+                        color: Style.colorWhite0
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         text_value: qsTr("We recommend storing it offline.")
@@ -339,15 +341,24 @@ SetupPage
                         Layout.alignment: Qt.AlignVCenter
                     }
 
-                    Qaterial.AppBarButton
+                    Qaterial.RawMaterialButton
                     {
+                        implicitWidth: 45
+                        backgroundColor: "transparent"
                         icon.source: Qaterial.Icons.contentCopy
+                        icon.color: Dex.CurrentTheme.foregroundColor
                         Layout.alignment: Qt.AlignVCenter
-                        onClicked: {
-                            input_generated_seed.selectAll()
-                            input_generated_seed.copy()
-                            toast.show(qsTr("Copied to Clipboard"), General.time_toast_basic_info, "", false)
-                        }
+
+                        DefaultMouseArea
+                        {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked:
+                            {
+                                API.qt_utilities.copy_text_to_clipboard(input_generated_seed.text)
+                                app.notifyCopy(qsTr("Seed phrase"), qsTr("copied to clipboard"))
+                            }
+                        }                            
                     }
                 }
                 Item
@@ -362,12 +373,13 @@ SetupPage
                         Repeater
                         {
                             model: current_mnemonic.split(" ")
-                            delegate: DefaultRectangle
+                            delegate: DexAppButton
                             {
                                 width: (_insideFlow.width - 30) / 4
-                                height: _insideLabel.implicitHeight + 15
-                                color: Dex.CurrentTheme.innerBackgroundColor
+                                height: _insideLabel.implicitHeight + 10
+                                radius: 10
                                 opacity: .8
+                                color: Dex.CurrentTheme.backgroundColor
                                 DefaultText
                                 {
                                     id: _insideLabel
@@ -398,16 +410,18 @@ SetupPage
                     Layout.preferredHeight: 10
                 }
 
-                DexAppButton
+                DexGradientAppButton
                 {
                     id: nextButton
-
-                    enabled: input_wallet_name.field.text !== ""
+                    text: qsTr("Next")
                     radius: 20
-                    opacity: enabled ? 1 : .4
-                    Layout.preferredWidth: _nextRow.implicitWidth + 40
+                    leftPadding: 5
+                    rightPadding: 5
+                    padding: 16
+                    enabled: input_wallet_name.field.text !== ""
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    label.color: 'transparent'
+                    iconSourceRight: Qaterial.Icons.arrowRight
 
                     onClicked:
                     {
@@ -422,27 +436,6 @@ SetupPage
                         input_seed_word.field.text = ""
                         guess_count = 1
                         setRandomGuessWord()
-                    }
-
-                    Row
-                    {
-                        id: _nextRow
-                        anchors.centerIn: parent
-                        spacing: 10
-                        DefaultText
-                        {
-                            text: qsTr("Next")
-                            font: DexTypo.button
-                            color: Dex.CurrentTheme.foregroundColor
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Qaterial.ColorIcon
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: Dex.CurrentTheme.foregroundColor
-                            source: Qaterial.Icons.arrowRight
-                            iconSize: 14
-                        }
                     }
                 }
             }
@@ -461,12 +454,13 @@ SetupPage
         {
             visible: currentStep === 1
 
-            FloatingBackground
+            Rectangle
             {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
                 height: 140
+                radius: 20
 
                 Column
                 {
@@ -514,10 +508,15 @@ SetupPage
                         {
                             id: mmo
                             model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
+
                             delegate: DexAppButton
                             {
                                 width: (_insideFlow2.width - 30) / 4
                                 text: modelData ?? ""
+                                radius: 20
+                                color: Dex.CurrentTheme.accentColor
+                                font: DexTypo.body2
+
                                 onClicked:
                                 {
                                     input_seed_word.field.text = modelData
@@ -541,9 +540,8 @@ SetupPage
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 opacity: enabled ? 1 : .5
-                background.border.width: 1
                 background.radius: 25
-                field.font: DexTypo.head6
+                field.font: DexTypo.body2
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
@@ -562,7 +560,7 @@ SetupPage
                     DefaultText
                     {
                         anchors.centerIn: parent
-                        font: DexTypo.head6
+                        font: DexTypo.body1
                         text: current_word_idx + 1
                     }
 
@@ -586,37 +584,19 @@ SetupPage
                     Layout.preferredHeight: 10
                 }
 
-                DexAppButton
+                DexGradientAppButton
                 {
                     id: checkForNext
-                    enabled: validGuessField(input_seed_word.field)
-                    opacity: enabled ? 1 : .4
-                    onClicked: tryGuess()
+                    text: qsTr("Check")
                     radius: 20
-                    Layout.preferredWidth: _nextRow3.implicitWidth + 40
+                    leftPadding: 5
+                    rightPadding: 5
+                    padding: 16
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    label.color: 'transparent'
-                    Row
-                    {
-                        id: _nextRow3
-                        anchors.centerIn: parent
-                        spacing: 10
-                        DefaultText
-                        {
-                            text: qsTr("Check")
-                            font: DexTypo.button
-                            color: Dex.CurrentTheme.foregroundColor
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        Qaterial.ColorIcon
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: Dex.CurrentTheme.foregroundColor
-                            source: Qaterial.Icons.check
-                            iconSize: 14
-                        }
-                    }
+                    iconSourceRight: Qaterial.Icons.check
+                    enabled: validGuessField(input_seed_word.field)
+                    onClicked: tryGuess()
                 }
             }
 
@@ -657,6 +637,7 @@ SetupPage
                 id: _inputPasswordConfirm
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
+                field.placeholderText: qsTr("Enter the same password to confirm")
                 field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
             }
 
@@ -672,36 +653,21 @@ SetupPage
                     Layout.preferredHeight: 10
                 }
 
-                DexAppButton
+
+
+                DexGradientAppButton
                 {
                     id: finalRegisterButton
-                    enabled: _keyChecker.isValid()
-                    opacity: enabled ? 1 : .4
+                    text: qsTr("Continue")
                     radius: 20
-                    Layout.preferredWidth: _nextRow2.implicitWidth + 40
+                    leftPadding: 5
+                    rightPadding: 5
+                    padding: 16
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    label.color: 'transparent'
+                    iconSourceRight: Qaterial.Icons.arrowRight
+                    enabled: _keyChecker.isValid()
                     onClicked: eula_modal.open()
-
-                    Row
-                    {
-                        id: _nextRow2
-                        anchors.centerIn: parent
-                        spacing: 10
-                        DefaultText
-                        {
-                            text: qsTr("Continue")
-                            font: DexTypo.button
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Qaterial.ColorIcon
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: Qaterial.Icons.arrowRight
-                            color: Dex.CurrentTheme.foregroundColor
-                            iconSize: 14
-                        }
-                    }
                 }
             }
 

@@ -142,9 +142,8 @@ SetupPage
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 opacity: enabled ? 1 : .5
-                background.border.width: 1
                 background.radius: 25
-                field.font: DexTypo.head6
+                field.font: DexTypo.body2
                 field.horizontalAlignment: Qt.AlignLeft
                 field.leftPadding: 75
                 field.placeholderText: qsTr("Wallet Name")
@@ -168,18 +167,13 @@ SetupPage
                 }
             }
 
-            DexLabel
-            {
-                text: qsTr("Enter seed")
-                font: DexTypo.body1
-            }
-
             DexAppPasswordField
             {
                 id: _seedField
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 leftIcon: Qaterial.Icons.fileKey
+                field.font: DexTypo.body2
                 field.placeholderText: qsTr('Enter seed')
                 field.onAccepted: tryPassLevel1()
                 field.onTextChanged:
@@ -253,35 +247,21 @@ SetupPage
                     Layout.preferredHeight: 10
                 }
 
-                DexAppButton
+
+                DexGradientAppButton
                 {
                     id: nextButton
                     enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== ""
                     onClicked: tryPassLevel1()
                     radius: 20
-                    opacity: enabled ? 1 : .4
-                    Layout.preferredWidth: _nextRow.implicitWidth + 40
+
+                    text: qsTr("Next")
+                    leftPadding: 5
+                    rightPadding: 5
+                    padding: 16
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    label.color: 'transparent'
-                    Row
-                    {
-                        id: _nextRow
-                        anchors.centerIn: parent
-                        spacing: 10
-                        DexLabel
-                        {
-                            text: qsTr("Next")
-                            font: DexTypo.button
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Qaterial.ColorIcon
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: Dex.CurrentTheme.foregroundColor
-                            source: Qaterial.Icons.arrowRight
-                            iconSize: 14
-                        }
-                    }
+                    iconSourceRight: Qaterial.Icons.arrowRight
                 }
             }
 
@@ -303,6 +283,7 @@ SetupPage
             DexAppPasswordField
             {
                 id: _inputPassword
+                field.font: DexTypo.body2
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 field.onAccepted: trySubmit()
@@ -320,6 +301,8 @@ SetupPage
             DexAppPasswordField
             {
                 id: _inputPasswordConfirm
+                field.font: DexTypo.body2
+                field.placeholderText: qsTr("Enter the same password to confirm")
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 field.onAccepted: trySubmit()
@@ -336,35 +319,20 @@ SetupPage
                     Layout.preferredHeight: 10
                 }
 
-                DexAppButton
+
+                DexGradientAppButton
                 {
                     id: submit_button
                     enabled: _keyChecker.isValid()
-                    opacity: enabled ? 1 : .4
-                    onClicked: trySubmit()
+                    text: qsTr("Continue")
                     radius: 20
-                    Layout.preferredWidth: _nextRow2.implicitWidth + 40
+                    leftPadding: 5
+                    rightPadding: 5
+                    padding: 16
+                    opacity: enabled ? 1 : .7
                     Layout.preferredHeight: 45
-                    label.color: 'transparent'
-                    Row
-                    {
-                        id: _nextRow2
-                        anchors.centerIn: parent
-                        spacing: 10
-                        DefaultText
-                        {
-                            text: qsTr("Continue")
-                            font: DexTypo.button
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Qaterial.ColorIcon
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: Qaterial.Icons.arrowRight
-                            color: Dex.CurrentTheme.foregroundColor
-                            iconSize: 14
-                        }
-                    }
+                    iconSourceRight: Qaterial.Icons.arrowRight
+                    onClicked: trySubmit()
                 }
             }
 

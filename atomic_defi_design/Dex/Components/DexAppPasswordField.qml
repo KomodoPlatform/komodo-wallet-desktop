@@ -17,7 +17,6 @@ DexAppTextField
 
     height: 50
     width: 300
-    background.border.width: 1
     background.radius: 25
     max_length: 1000
     field.echoMode: TextField.Password
@@ -38,7 +37,10 @@ DexAppTextField
         height: 40
         width: 60
         radius: 20
-        color: _inputPassword.field.focus ? _inputPassword.background.border.color : DexTheme.accentColor
+        color: Dex.CurrentTheme.accentColor
+        border.color: _inputPassword.focus ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.rectangleBorderColor
+        border.width: _inputPassword.focus ? 2 : 0
+
         anchors.verticalCenter: parent.verticalCenter
         Qaterial.ColorIcon
         {

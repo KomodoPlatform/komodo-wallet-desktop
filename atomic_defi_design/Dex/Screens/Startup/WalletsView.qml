@@ -51,7 +51,7 @@ SetupPage
 
         Item { Layout.fillWidth: true }
 
-        DefaultButton
+        DexAppButton
         {
             Layout.fillWidth: true
             horizontalAlignment: Qt.AlignLeft
@@ -63,7 +63,7 @@ SetupPage
             onClicked: newWalletClicked()
         }
 
-        DefaultButton
+        DexAppButton
         {
             text: qsTr("Import wallet")
             horizontalAlignment: Qt.AlignLeft
