@@ -4,6 +4,7 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts 1.5
 
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 Item {
     id: control
@@ -58,8 +59,8 @@ Item {
         width: parent.width
         height: parent.height
         radius: 4
-        color: DexTheme.backgroundColor
-        border.color: control.error ? DexTheme.redColor : input_field.focus ? DexTheme.accentColor : DexTheme.rectangleBorderColor
+        color: Dex.CurrentTheme.backgroundColor
+        border.color: control.error ? Dex.CurrentTheme.redColor : input_field.focus ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.rectangleBorderColor
         border.width: input_field.focus ? 2 : 0
         Behavior on x {
             NumberAnimation {
@@ -83,7 +84,7 @@ Item {
                 leftPadding: 5
                 horizontalAlignment: DexLabel.AlignHCenter
                 text: leftText
-                color: DexTheme.foregroundColor
+                color: Dex.CurrentTheme.foregroundColor
                 opacity: .4
                 font.pixelSize: 14
                 font.weight: Font.Medium
@@ -118,7 +119,7 @@ Item {
                     text: control.placeholderText
                     anchors.verticalCenter: parent.verticalCenter
                     leftPadding: input_field.leftPadding
-                    color: DexTheme.foregroundColor
+                    color: Dex.CurrentTheme.foregroundColor
                     font: DexTypo.body1
                     elide: DexLabel.ElideRight
                     width: parent.width - 10

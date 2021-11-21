@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import Qaterial 1.0 as Qaterial
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 ColumnLayout {
     id: control
@@ -38,7 +39,7 @@ ColumnLayout {
                 x: title_text.implicitWidth + 10
                 size: 16
                 icon: Qaterial.Icons.contentCopy
-                color: copyArea.containsMouse ? DexTheme.accentColor : DexTheme.foregroundColor
+                color: copyArea.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.foregroundColor
                 DexMouseArea {
                     id: copyArea
                     anchors.fill: parent
@@ -62,10 +63,10 @@ ColumnLayout {
             rightPadding: 10
             anchors.centerIn: parent
             background: DexRectangle {
-                color: DexTheme.accentColor
+                color: Dex.CurrentTheme.accentColor
                 opacity: .7
                 radius: 8
-                border.color: input_field.focus ? DexTheme.accentColor : DexTheme.rectangleBorderColor
+                border.color: input_field.focus ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.rectangleBorderColor
                 border.width: input_field.focus ? 2 : 0
             }
             HideFieldButton {

@@ -373,13 +373,13 @@ SetupPage
                         Repeater
                         {
                             model: current_mnemonic.split(" ")
-                            delegate: DefaultRectangle
+                            delegate: DexAppButton
                             {
                                 width: (_insideFlow.width - 30) / 4
                                 height: _insideLabel.implicitHeight + 10
-                                color: Style.colorWhite0
                                 radius: 10
                                 opacity: .8
+                                color: Dex.CurrentTheme.backgroundColor
                                 DefaultText
                                 {
                                     id: _insideLabel
