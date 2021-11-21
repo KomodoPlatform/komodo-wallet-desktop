@@ -11,7 +11,7 @@ CheckBox
 {
     id: control
 
-    property color textColor
+    property color textColor: Dex.CurrentTheme.foregroundColor
 
     property alias boxWidth: _indicator.implicitWidth
     property alias boxHeight: _indicator.implicitHeight

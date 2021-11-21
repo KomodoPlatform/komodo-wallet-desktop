@@ -346,7 +346,7 @@ SetupPage
                         implicitWidth: 45
                         backgroundColor: "transparent"
                         icon.source: Qaterial.Icons.contentCopy
-                        icon.color: DexTheme.foregroundColor
+                        icon.color: Dex.CurrentTheme.foregroundColor
                         Layout.alignment: Qt.AlignVCenter
 
                         DefaultMouseArea

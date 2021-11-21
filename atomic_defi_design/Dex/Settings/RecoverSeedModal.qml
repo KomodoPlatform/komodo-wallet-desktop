@@ -174,7 +174,7 @@ BasicModal
                             implicitWidth: 45
                             backgroundColor: "transparent"
                             icon.source: Qaterial.Icons.qrcodeScan
-                            icon.color: DexTheme.foregroundColor
+                            icon.color: Dex.CurrentTheme.foregroundColor
 
                             DefaultMouseArea
                             {
@@ -194,7 +194,7 @@ BasicModal
                             implicitWidth: 45
                             backgroundColor: "transparent"
                             icon.source: Qaterial.Icons.contentCopy
-                            icon.color: DexTheme.foregroundColor
+                            icon.color: Dex.CurrentTheme.foregroundColor
 
                             DefaultMouseArea
                             {
@@ -215,7 +215,7 @@ BasicModal
                             implicitWidth: 45
                             backgroundColor: "transparent"
                             icon.source: Qaterial.Icons.qrcodeScan
-                            icon.color: DexTheme.foregroundColor
+                            icon.color: Dex.CurrentTheme.foregroundColor
 
                             DefaultMouseArea
                             {
@@ -235,13 +235,14 @@ BasicModal
                             implicitWidth: 45
                             backgroundColor: "transparent"
                             icon.source: Qaterial.Icons.contentCopy
-                            icon.color: DexTheme.foregroundColor
+                            icon.color: Dex.CurrentTheme.foregroundColor
 
                             DefaultMouseArea
                             {
                                 anchors.fill: parent
                                 hoverEnabled: true
-                                onClicked: {
+                                onClicked:
+                                {
                                     API.qt_utilities.copy_text_to_clipboard(rpc_pw.text)
                                     app.notifyCopy(qsTr("RPC password"), qsTr("phrase key copied to clipboard"))
                                 }
@@ -344,7 +345,7 @@ BasicModal
                                 implicitWidth: 45
                                 backgroundColor: "transparent"
                                 icon.source: Qaterial.Icons.qrcodeScan
-                                icon.color: DexTheme.foregroundColor
+                                icon.color: Dex.CurrentTheme.foregroundColor
 
                                 DefaultMouseArea
                                 {
@@ -365,7 +366,7 @@ BasicModal
                                 implicitWidth: 45
                                 backgroundColor: "transparent"
                                 icon.source: Qaterial.Icons.contentCopy
-                                icon.color: DexTheme.foregroundColor
+                                icon.color: Dex.CurrentTheme.foregroundColor
 
                                 DefaultMouseArea
                                 {
@@ -387,7 +388,7 @@ BasicModal
                                 implicitWidth: 45
                                 backgroundColor: "transparent"
                                 icon.source: Qaterial.Icons.qrcodeScan
-                                icon.color: DexTheme.foregroundColor
+                                icon.color: Dex.CurrentTheme.foregroundColor
 
                                 DefaultMouseArea
                                 {
@@ -408,13 +409,14 @@ BasicModal
                                 implicitWidth: 45
                                 backgroundColor: "transparent"
                                 icon.source: Qaterial.Icons.contentCopy
-                                icon.color: DexTheme.foregroundColor
+                                icon.color: Dex.CurrentTheme.foregroundColor
 
                                 DefaultMouseArea
                                 {
                                     anchors.fill: parent
                                     hoverEnabled: true
-                                    onClicked: {
+                                    onClicked:
+                                    {
                                         API.qt_utilities.copy_text_to_clipboard(model.priv_key)
                                         app.notifyCopy(qsTr("%1 private key").arg(model.ticker), qsTr("copied to clipboard"))
                                     }

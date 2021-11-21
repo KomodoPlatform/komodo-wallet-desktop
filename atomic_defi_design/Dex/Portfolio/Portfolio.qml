@@ -170,7 +170,7 @@ Item {
                             Layout.fillWidth: true
                         }
                         
-                        DefaultCheckBox
+                        DexCheckBox
                         {
                             Layout.alignment: Qt.AlignVCenter
                             text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))

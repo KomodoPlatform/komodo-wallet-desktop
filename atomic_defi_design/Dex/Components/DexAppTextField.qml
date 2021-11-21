@@ -138,7 +138,7 @@ Item {
                 anchors.centerIn: parent
                 horizontalAlignment: DexLabel.AlignHCenter
                 text: rightText
-                color: DexTheme.foregroundColor
+                color: Dex.CurrentTheme.foregroundColor
                 opacity: .4
                 font.pixelSize: 14
                 font.weight: Font.Medium
