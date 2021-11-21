@@ -62,9 +62,11 @@ ColumnLayout {
             rightPadding: 10
             anchors.centerIn: parent
             background: DexRectangle {
-                color: DexTheme.dexBoxBackgroundColor
-                opacity: .4
+                color: DexTheme.accentColor
+                opacity: .7
                 radius: 8
+                border.color: input_field.focus ? DexTheme.accentColor : DexTheme.rectangleBorderColor
+                border.width: input_field.focus ? 2 : 0
             }
             HideFieldButton {
                 id: hide_button
