@@ -39,7 +39,7 @@ SetupPage
     }
 
 
-    image_scale: 0.7
+    image_scale: 1
     backgroundColor: 'transparent'
     image_path: Dex.CurrentTheme.bigLogoPath
 
@@ -88,11 +88,12 @@ SetupPage
             field: _inputPassword.field
         }
 
-        DefaultButton
+        DexGradientAppButton
         {
             Layout.alignment: Qt.AlignHCenter
-            radius: width
-            width: 150
+            width: 300
+            radius: 20
+            opacity: enabled ? 1 : .7
             text: qsTr("connect")
             enabled: _passwordChecker.isValid()
             onClicked: _inputPassword.field.accepted()
