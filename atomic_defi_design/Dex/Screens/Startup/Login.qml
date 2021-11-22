@@ -88,7 +88,7 @@ SetupPage
             field: _inputPassword.field
         }
 
-        DexGradientAppButton
+        DefaultButton
         {
             Layout.alignment: Qt.AlignHCenter
             width: 300
