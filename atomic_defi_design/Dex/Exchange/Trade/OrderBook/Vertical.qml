@@ -17,13 +17,13 @@ FloatingBackground
     ColumnLayout
     {
         anchors.fill: parent
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
         spacing: 10
 
         DefaultText
         {
-            Layout.leftMargin: 10
-            Layout.topMargin: 10
-            font: DexTypo.subtitle1
+            font: DexTypo.subtitle3
             text: qsTr("Order Book")
         }
 
