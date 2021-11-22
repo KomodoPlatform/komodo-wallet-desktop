@@ -5115,27 +5115,10 @@
     "active": false,
     "currently_enabled": false
   },
-  "SMTF-OLD": {
-    "coin": "SMTF-OLD",
-    "name": "SmartFi",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nodes": [
-      "http://bsc1.cipig.net:8655",
-      "http://bsc2.cipig.net:8655",
-      "http://bsc3.cipig.net:8655"
-    ],
-    "explorer_url": [
-      "https://bscscan.com/"
-    ],
-    "type": "BEP-20",
-    "active": false,
-    "currently_enabled": false
-  },
   "SMTF-v2": {
     "coin": "SMTF-v2",
     "name": "SmartFi",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "smtf-smartfi",
     "coingecko_id": "test-coin",
     "nodes": [
       "http://bsc1.cipig.net:8655",
@@ -6250,6 +6233,7 @@
     "name": "Tokel",
     "coinpaprika_id": "tkl-tokel",
     "coingecko_id": "test-coin",
+    "nomics_id": "TKL2",
     "electrum": [
       {
         "url": "1.eu.tokel.electrum.dexstats.info:10077"
