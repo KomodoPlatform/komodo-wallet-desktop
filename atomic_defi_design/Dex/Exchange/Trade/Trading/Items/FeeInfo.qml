@@ -15,16 +15,17 @@ import "../../../../Constants"
 import "../../../../Wallet"
 
 
-Column {
+Column
+{
     id: bg
-    width: parent.width
-
-    Row {
+    Row
+    {
         width: bg.width
         height: tx_fee_text.implicitHeight+25
         visible: false
 
-        ColumnLayout {
+        ColumnLayout
+        {
             id: fees
             visible: valid_fee_info && !General.isZero(non_null_volume)
 
@@ -32,7 +33,8 @@ Column {
             Layout.rightMargin: Layout.leftMargin
             Layout.alignment: Qt.AlignLeft
 
-            DefaultText {
+            DefaultText
+            {
                 id: tx_fee_text
                 text_value: General.feeText(curr_fee_info, base_ticker, true, true)
                 font.pixelSize: Style.textSizeSmall1
@@ -43,7 +45,8 @@ Column {
         }
 
 
-        DefaultText {
+        DefaultText
+        {
             //visible: !fees.visible
             visible: false
             text_value: !visible ? "" :
