@@ -166,8 +166,6 @@ Item
     {
         id: _viewLoader
         anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
         source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView/Main.qml"
     }
 

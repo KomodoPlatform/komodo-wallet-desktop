@@ -6,8 +6,6 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
 import QtQuick.Controls.Universal 2.15
 
-import Qaterial 1.0 as Qaterial
-
 import "../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
@@ -16,12 +14,15 @@ ComboBox
 {
     id: control
 
+    //radius: 10
+
     contentItem: DexComboBoxLine
     {
         id: line
+        padding: 10
 
-        property int update_count: 0
-        property var prev_details
+        Component.onCompleted: portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
+        Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
 
         function forceUpdateDetails()
         {
@@ -29,7 +30,9 @@ ComboBox
             ++update_count
         }
 
-        padding: 10
+        property int update_count: 0
+        property var prev_details
+
         details:
         {
             const idx = combo.currentIndex
@@ -49,19 +52,10 @@ ComboBox
             prev_details = new_details
 
             return new_details
-        }
-
-        Component.onCompleted: portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
-        Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
+         }
     }
 
     height: 80
-
-    background: DefaultRectangle
-    {
-        color: Dex.CurrentTheme.floatingBackgroundColor
-        radius: 10
-    }
 
     // Each dropdown item
     delegate: ItemDelegate
@@ -179,22 +173,6 @@ ComboBox
             y: -5
             height: parent.height + 10
             border.width: 1
-        }
-    }
-
-    indicator: Column
-    {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        anchors.rightMargin: 8
-        spacing: -12
-
-        Qaterial.Icon
-        {
-            width: 30
-            height: 30
-            color: Dex.CurrentTheme.comboBoxArrowsColor
-            icon: Qaterial.Icons.chevronDown
         }
     }
 }
