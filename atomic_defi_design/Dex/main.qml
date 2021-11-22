@@ -65,7 +65,7 @@ DexWindow
 
         spacing: 8
         padding: 2
-        backgroundColor:  Dex.CurrentTheme.dexBoxBackgroundColor
+        backgroundColor:  DexTheme.dexBoxBackgroundColor
 
         contentItem: Item
         {
@@ -343,7 +343,7 @@ DexWindow
                     width: count_text.height * 1.4
                     height: width
                     visible: app.notifications_list !== undefined? app.notifications_list.length > 0 : false
-                    color:  Dex.CurrentTheme.redColor
+                    color:  DexTheme.redColor
 
                     DefaultText
                     {

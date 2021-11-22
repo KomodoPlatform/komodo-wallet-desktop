@@ -66,7 +66,7 @@ ColumnLayout {
                 color: Dex.CurrentTheme.accentColor
                 opacity: .7
                 radius: 8
-                border.color: input_field.focus ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.rectangleBorderColor
+                border.color: input_field.focus ? Dex.CurrentTheme.accentColor : DexTheme.rectangleBorderColor
                 border.width: input_field.focus ? 2 : 0
             }
             HideFieldButton {
