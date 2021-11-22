@@ -215,7 +215,6 @@ SetupPage
                                         text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet"),
                                         standardButtons: Dialog.Yes | Dialog.Cancel,
                                         warning: true,
-                                        width: 300,
                                         iconColor: Dex.CurrentTheme.noColor,
                                         isPassword: true,
                                         placeholderText: qsTr("Type password"),

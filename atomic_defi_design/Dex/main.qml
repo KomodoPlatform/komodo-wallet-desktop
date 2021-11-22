@@ -110,9 +110,7 @@ DexWindow
                             text: qsTr("Are you sure you want to log out?") ,
                             standardButtons: Dialog.Yes | Dialog.Cancel,
                             warning: true,
-                            width: 300,
-                            iconSource: Qaterial.Icons.logout,
-                            iconColor: DexTheme.accentColor,
+                            height: 230,
                             yesButtonText: qsTr("Yes"),
                             cancelButtonText: qsTr("Cancel"),
                             onAccepted: function(text) {

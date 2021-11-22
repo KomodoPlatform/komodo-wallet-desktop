@@ -91,6 +91,12 @@ DexRectangle
         DexDialogManager { }
     }
 
+    Component
+    {
+        id: popupManager
+        DexPopupManager { }
+    }
+
     Loader
     {
         id: loader
@@ -446,7 +452,7 @@ DexRectangle
 
     function showDialog(data)
     {
-        let dialog = dialogManager.createObject(window, data)
+        let dialog = popupManager.createObject(window, data)
         for (var i in data)
         {
             if(i.startsWith('on')) eval('dialog.%1.connect(data[i])'.arg(i));

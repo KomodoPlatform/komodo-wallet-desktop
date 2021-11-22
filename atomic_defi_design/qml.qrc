@@ -595,5 +595,6 @@
         <file>Dex/Portfolio/AssetsList.qml</file>
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>Dex/Components/DexPopupManager.qml</file>
     </qresource>
 </RCC>
