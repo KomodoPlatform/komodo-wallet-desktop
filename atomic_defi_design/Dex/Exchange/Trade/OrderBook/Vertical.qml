@@ -17,8 +17,10 @@ FloatingBackground
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
+        anchors.leftMargin: 20
+        anchors.rightMargin: 20
+        anchors.topMargin: 20
+        anchors.bottomMargin: 20
         spacing: 10
 
         DefaultText
