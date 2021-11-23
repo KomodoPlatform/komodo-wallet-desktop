@@ -1866,6 +1866,32 @@
     "explorer_tx_url": "transaction/",
     "type": "UTXO"
   },
+  "DUST": {
+    "coin": "DUST",
+    "name": "Dragonfairy",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "51.222.85.227:10001",
+        "ws_url": "51.222.85.227:9001"
+      },
+      {
+        "url": "78.141.233.64:10001",
+        "ws_url": "78.141.233.64:9001"
+      },
+      {
+	"url": "192.248.166.207:10001",
+        "ws_url": "192.248.166.207:9001"
+      }
+    ],
+    "explorer_url": [
+      "http://dragonfairy.gives/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
   "DGB": {
     "active": false,
     "coin": "DGB",
