@@ -5,7 +5,8 @@ import QtQuick.Layouts 1.12
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-Popup {
+Popup
+{
 
     property color backgroundColor: Dex.CurrentTheme.backgroundColor
     id: dialog
@@ -19,8 +20,10 @@ Popup {
     leftPadding: 0
     rightPadding: 0
 
-    Overlay.modal: Item {
-        DexRectangle {
+    Overlay.modal: Item
+    {
+        DexRectangle
+        {
             anchors.fill: parent
             color: 'black'
             opacity: .7
@@ -55,9 +58,11 @@ Popup {
     property bool isPassword: false
     property bool enableAcceptButton: validator === undefined ? true : validator(_insideField.field.text)
 
-    background: Qaterial.ClipRRect {
+    background: Qaterial.ClipRRect
+    {
         radius: 4
-        DexRectangle {
+        DexRectangle
+        {
             anchors.fill: parent
             radius: 18
             color: dialog.backgroundColor
@@ -66,12 +71,14 @@ Popup {
 
     focus: true
 
-    contentItem: Qaterial.ClipRRect {
+    contentItem: Qaterial.ClipRRect
+    {
         width: dialog.width
         height: _insideColumn.height >  dialog.height ? _insideColumn.height + 120 : dialog.height
         radius: 18
         focus: true
-        Column {
+        Column
+        {
             id: _insideColumn
             width: parent.width - 80
             anchors.horizontalCenter: parent.horizontalCenter
@@ -80,13 +87,15 @@ Popup {
             spacing: 0
             bottomPadding: 3
             anchors.verticalCenter: parent.verticalCenter
-            Item {
+            Item
+            {
                 id: _header
                 height: _label.height + 10
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                DexLabel {
+                DexLabel
+                {
                     id: _label
                     width: parent.width
                     wrapMode: Label.Wrap
@@ -97,13 +106,16 @@ Popup {
                 }
             }
 
-            Container {
+            Container
+            {
                 id: _col
                 width: parent.width
                 bottomPadding: 10
                 topPadding: 10
-                contentItem: Column {
-                    Qaterial.IconLabel {
+                contentItem: Column
+                {
+                    Qaterial.IconLabel
+                    {
                         id: _insideLabel
                         icon.source: dialog.iconSource
                         icon.width: dialog.iconSource === "" ? 0 : 48
@@ -120,13 +132,15 @@ Popup {
                         display: dialog.iconSource === "" ? AbstractButton.TextOnly : AbstractButton.TextBesideIcon
                     }
 
-                    Item {
+                    Item
+                    {
                         height: 10
                         width: 10
                         visible: _insideField.visible
                     }
 
-                    DexDialogTextField {
+                    DexDialogTextField
+                    {
                         id: _insideField
                         width: parent.width
                         height: 45
@@ -141,13 +155,16 @@ Popup {
                         field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
 
-                        field.onAccepted: {
-                            if(dialog.enableAcceptButton) {
+                        field.onAccepted:
+                        {
+                            if(dialog.enableAcceptButton)
+                            {
                                 dialog.accepted(field.text)
                             }
                         }
 
-                        DexRectangle {
+                        DexRectangle
+                        {
                             x: 3
                             visible: dialog.isPassword
                             height: 40
@@ -155,7 +172,8 @@ Popup {
                             radius: 20
                             color: DexTheme.accentColor
                             anchors.verticalCenter: parent.verticalCenter
-                            Qaterial.ColorIcon {
+                            Qaterial.ColorIcon
+                            {
                                 anchors.centerIn: parent
                                 iconSize: 19
                                 source: Qaterial.Icons.keyVariant
@@ -163,22 +181,28 @@ Popup {
                             }
 
                         }
-                        Qaterial.AppBarButton {
+                        Qaterial.AppBarButton
+                        {
                             visible: dialog.isPassword
                             opacity: .8
-                            icon {
+                            icon
+                            {
                                 source: _insideField.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
                                 color: _insideField.field.focus ? _insideField.background.border.color : DexTheme.accentColor
                             }
-                            anchors {
+                            anchors
+                            {
                                 verticalCenter: parent.verticalCenter
                                 right: parent.right
                                 rightMargin: 10
                             }
-                            onClicked: {
-                                if (_insideField.field.echoMode === TextField.Password) {
+                            onClicked:
+                            {
+                                if (_insideField.field.echoMode === TextField.Password)
+                                {
                                     _insideField.field.echoMode = TextField.Normal
-                                } else {
+                                } else
+                                {
                                     _insideField.field.echoMode = TextField.Password
                                 }
                             }
@@ -187,40 +211,48 @@ Popup {
                 }
             }
 
-            Container {
+            Container
+            {
                 width: parent.width - 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 60
-                background:  Rectangle {
+                background:  Rectangle
+                {
                     color: dialog.backgroundColor
                 }
-                contentItem:  RowLayout {
+                contentItem:  RowLayout
+                {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: parent.width - 80
-                    DexAppButton {
+                    DexAppButton
+                    {
                         id: cancelBtn
                         text: dialog.cancelButtonText !== "" ? dialog.cancelButtonText : "Cancel"
                         height: 40
                         leftPadding: 20
                         rightPadding: 20
                         radius: 18
-                        onClicked: {
+                        onClicked:
+                        {
                             dialog.rejected()
                             dialog.close()
                         }
                     }
-                    Item {
+                    Item
+                    {
                         Layout.fillWidth: true
                     }
-                    DexGradientAppButton {
+                    DexGradientAppButton
+                    {
                         text: dialog.yesButtonText !== "" ? dialog.yesButtonText : "Yes"
                         height: 40
                         width: cancelBtn.width
                         leftPadding: 20
                         rightPadding: 20
                         radius: 18
-                        onClicked: {
+                        onClicked:
+                        {
                             dialog.accepted('')
                             dialog.close()
                         }
@@ -228,7 +260,8 @@ Popup {
                 }
             }
 
-            DialogButtonBox {
+            DialogButtonBox
+            {
                 id: _dialogButtonBox
                 visible: false
                 standardButtons: dialog.standardButtons
@@ -237,33 +270,41 @@ Popup {
                 height: 60
                 alignment: Qt.AlignRight
                 buttonLayout: DialogButtonBox.AndroidLayout
-                onAccepted: {
-                    if (dialog.getText) {
+                onAccepted:
+                {
+                    if (dialog.getText)
+                    {
                         dialog.accepted(_insideField.field.text)
-                    } else {
+                    } else
+                    {
                         dialog.accepted(undefined)
                     }
                     dialog.close()
                 }
-                onApplied: {
+                onApplied:
+                {
                     dialog.applied()
                     dialog.close()
                 }
-                onDiscarded: {
+                onDiscarded:
+                {
                     dialog.discarded()
                     dialog.close()
                 }
                 onHelpRequested: dialog.helpRequested()
-                onRejected: {
+                onRejected:
+                {
                     dialog.rejected()
                     dialog.close()
                 }
                 onReset: dialog.reset()
                 topPadding: 25
-                background: Rectangle {
+                background: Rectangle
+                {
                     color: DexTheme.dexBoxBackgroundColor
                 }
-                delegate: Qaterial.Button {
+                delegate: Qaterial.Button
+                {
                     id: _dialogManagerButton
                     flat: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole
                     bottomInset: 0
@@ -272,15 +313,19 @@ Popup {
                     enabled: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? true : dialog.enableAcceptButton
                     backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? DexTheme.redColor : DexTheme.accentColor
                     property alias cursorShape: mouseArea.cursorShape
-                    Component.onCompleted: {
-                        if (text === "Yes" && dialog.yesButtonText !== "") {
+                    Component.onCompleted:
+                    {
+                        if (text === "Yes" && dialog.yesButtonText !== "")
+                        {
                             text = dialog.yesButtonText
-                        } else if (text === "Cancel" && dialog.cancelButtonText !== "") {
+                        } else if (text === "Cancel" && dialog.cancelButtonText !== "")
+                        {
                             text = dialog.cancelButtonText
                         }
                     }
 
-                    MouseArea {
+                    MouseArea
+                    {
                         id: mouseArea
                         anchors.fill: parent
                         cursorShape: "PointingHandCursor"

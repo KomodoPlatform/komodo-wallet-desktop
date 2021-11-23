@@ -94,7 +94,7 @@ DexRectangle
     Component
     {
         id: popupManager
-        DexPopupManager { }
+        PopupManager { }
     }
 
     Loader
