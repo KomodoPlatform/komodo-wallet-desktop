@@ -111,6 +111,7 @@ DexWindow
                             standardButtons: Dialog.Yes | Dialog.Cancel,
                             warning: true,
                             height: 230,
+                            centerAlign: true,
                             yesButtonText: qsTr("Yes"),
                             cancelButtonText: qsTr("Cancel"),
                             onAccepted: function(text) {

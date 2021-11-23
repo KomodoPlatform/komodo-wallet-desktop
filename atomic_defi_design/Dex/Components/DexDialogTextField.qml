@@ -67,8 +67,8 @@ Item {
 
     RowLayout {
         anchors.fill: parent
-        anchors.leftMargin: 5
-        anchors.rightMargin: 5
+        anchors.leftMargin: 2
+        anchors.rightMargin: 2
         spacing: 2
         Item {
             visible: leftText !== ""

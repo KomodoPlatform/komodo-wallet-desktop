@@ -30,5 +30,7 @@ Popup {
         to: 1
     }
 
-    background: DexRectangle { }
+    background: DexRectangle {
+        radius: 18
+    }
 }

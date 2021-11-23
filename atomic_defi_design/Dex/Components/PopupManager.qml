@@ -8,7 +8,7 @@ import Dex.Themes 1.0 as Dex
 Popup
 {
 
-    property color backgroundColor: Dex.CurrentTheme.backgroundColor
+
     id: dialog
     width: 420
     height: _insideColumn.height >  dialog.height ? _insideColumn.height + 120 : dialog.height
@@ -56,6 +56,9 @@ Popup
     property string cancelButtonText: ""
     property bool getText: false
     property bool isPassword: false
+    property bool centerAlign: false
+    property color backgroundColor: Dex.CurrentTheme.backgroundColor
+    property bool titleBold: false
     property bool enableAcceptButton: validator === undefined ? true : validator(_insideField.field.text)
 
     background: Qaterial.ClipRRect
@@ -101,8 +104,11 @@ Popup
                     wrapMode: Label.Wrap
                     font: DexTypo.body1
                     color: DexTheme.foregroundColor
-                    anchors.verticalCenter: parent.verticalCenter
+                    horizontalAlignment: dialog.centerAlign ? Text.AlignHCenter : Text.AlignLeft
                     text: dialog.title
+                    Component.onCompleted: {
+                        font.bold = dialog.titleBold
+                    }
                 }
             }
 
@@ -127,7 +133,7 @@ Popup
 
                         text: dialog.text
                         wrapMode: Text.WordWrap
-                        horizontalAlignment: Label.AlignLeft
+                        horizontalAlignment: dialog.centerAlign ? Text.AlignHCenter : Text.AlignLeft
 
                         display: dialog.iconSource === "" ? AbstractButton.TextOnly : AbstractButton.TextBesideIcon
                     }
@@ -169,7 +175,7 @@ Popup
                             visible: dialog.isPassword
                             height: 40
                             width: 60
-                            radius: 20
+                            radius: _insideField.background.radius
                             color: DexTheme.accentColor
                             anchors.verticalCenter: parent.verticalCenter
                             Qaterial.ColorIcon
