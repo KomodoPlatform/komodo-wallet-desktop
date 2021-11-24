@@ -144,6 +144,16 @@ namespace atomic_dex
         return g_regex_password_policy;
     }
 
+    bool
+    is_valid_generated_rpc_password(const std::string& pass)
+    {
+        auto lower_case_functor = [&pass]() { return std::any_of(begin(pass), end(pass), [](unsigned char c) { return std::islower(c); }); };
+        auto upper_case_functor = [&pass]() { return std::any_of(begin(pass), end(pass), [](unsigned char c) { return std::isupper(c); }); };
+        auto digit_functor      = [&pass]() { return std::any_of(begin(pass), end(pass), [](unsigned char c) { return std::isdigit(c); }); };
+        auto is_acceptable_len  = pass.size() > 8 && pass.size() < 32;
+        return lower_case_functor() && upper_case_functor() && digit_functor() && is_acceptable_len;
+    }
+
     std::string
     gen_random_password()
     {
@@ -164,6 +174,6 @@ namespace atomic_dex
             ss << digit[index_dist_digit(rng)];
             ss << special_chars[index_dist_special_chars(rng)];
         }
-        return ss.str();
+        return is_valid_generated_rpc_password(ss.str()) ? ss.str() : gen_random_password();
     }
 } // namespace atomic_dex
