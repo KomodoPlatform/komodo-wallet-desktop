@@ -150,7 +150,7 @@ namespace atomic_dex
         std::string                               lower_case("abcdefghijklmnopqrstuvwxyz");
         std::string                               upper_case("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         std::string                               digit("1234567890");
-        std::string                               special_chars("!@#$%^&*()`~-_=+{{|;:,<.>/?");
+        std::string                               special_chars("*.!@#$%^&(){}:;'<>,?/~`_+-=|");
         boost::random::random_device              rng;
         boost::random::uniform_int_distribution<> index_dist_lower(0, lower_case.size() - 1);
         boost::random::uniform_int_distribution<> index_dist_upper(0, upper_case.size() - 1);
