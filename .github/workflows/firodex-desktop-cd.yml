@@ -1,4 +1,4 @@
-name: AtomicDex-Desktop CD releases
+name: FiroDex-Desktop CD releases
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
     - temporary_disabled
 
 env:
-  DEX_PROJECT_NAME: "atomicdex-desktop"
-  DEX_DISPLAY_NAME: "AtomicDex Desktop"
+  DEX_PROJECT_NAME: "firodex-desktop"
+  DEX_DISPLAY_NAME: "FiroDex Desktop"
   DEX_COMPANY: "KomodoPlatform"
   DEX_WEBSITE: "https://atomicdex.io/"
 

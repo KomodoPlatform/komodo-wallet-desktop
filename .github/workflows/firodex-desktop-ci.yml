@@ -1,17 +1,17 @@
-name: AtomicDex-Desktop CI
+name: FiroDex-Desktop CI
 
 on:
   pull_request:
     types: [ opened, synchronize, reopened ]
   push:
     branches:
-      - master
+      - temporary_disabled
   schedule:
     - cron: '0 0 * * 1'
 
 env:
-  DEX_PROJECT_NAME: "atomicdex-desktop"
-  DEX_DISPLAY_NAME: "AtomicDex Desktop"
+  DEX_PROJECT_NAME: "firodex-desktop"
+  DEX_DISPLAY_NAME: "FiroDex Desktop"
   DEX_COMPANY: "KomodoPlatform"
   DEX_WEBSITE: "https://atomicdex.io/"
 
@@ -70,10 +70,10 @@ jobs:
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
           #mirror: https://qt-mirror.dannhauer.de
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
+          mirror: https://ftp.fau.de/qtproject
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
@@ -85,10 +85,10 @@ jobs:
           version: ${{ matrix.qt }}
           host: 'mac'
           target: 'desktop'
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
           #mirror: https://qt-mirror.dannhauer.de
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
+          mirror: https://ftp.fau.de/qtproject
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
@@ -106,10 +106,10 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt'
+          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
           #mirror: https://qt-mirror.dannhauer.de
           #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
+          mirror: https://ftp.fau.de/qtproject
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
@@ -126,12 +126,13 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           export DEBIAN_FRONTEND=noninteractive
-          export SHELL=/bin/bash
-          echo "CHOOSENIM_CHOOSE_VERSION=1.4.0" >> $GITHUB_ENV
+          echo "CHOOSENIM_CHOOSE_VERSION=1.4.8" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.4.8
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
+          ls /home/runner/.choosenim/toolchains
           chmod +x /home/runner/.choosenim/toolchains/nim-1.4.8/bin/*
 
       - name: Install deps (Linux)
@@ -167,7 +168,7 @@ jobs:
           echo "CXX=/usr/local/opt/llvm/bin/clang++" >> $GITHUB_ENV
           echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
 
-      - name: Build AtomicDEX (Linux)
+      - name: Build FiroDEX (Linux)
         if: runner.os == 'Linux'
         run: |
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
@@ -203,7 +204,7 @@ jobs:
           p12-file-base64: ${{ secrets.CERTIFICATES_INSTALLER_P12 }}
           p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
-      - name: Build AtomicDEX (MacOS)
+      - name: Build FiroDEX (MacOS)
         if: runner.os == 'macOS'
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
@@ -219,7 +220,7 @@ jobs:
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
-      - name: Build AtomicDEX (Windows)
+      - name: Build FiroDEX (Windows)
         if: runner.os == 'Windows'
         shell: powershell
         run: |
@@ -272,18 +273,16 @@ jobs:
 
       - name: Running Tests (Windows)
         shell: powershell
-        working-directory: ci_tools_atomic_dex
         if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
           echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
-          cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
-          cd build-Release
-          cd bin
-          ls
+          cd build\bin
+          ./atomicdex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+
 
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
@@ -365,5 +364,5 @@ jobs:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
           retention-days: 7
-      
-      
+          
+               
