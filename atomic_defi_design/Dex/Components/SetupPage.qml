@@ -16,7 +16,7 @@ Item
     property alias content: inner_space.sourceComponent
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
-    property color backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color backgroundColor: 'transparent'//Dex.CurrentTheme.floatingBackgroundColor
 
     ColumnLayout
     {

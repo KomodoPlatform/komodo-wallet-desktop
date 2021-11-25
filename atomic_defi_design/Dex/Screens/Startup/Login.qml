@@ -47,7 +47,7 @@ SetupPage
     {
         id: content
 
-        spacing: 20
+        spacing: 10
 
         DexLabel
         {
@@ -56,6 +56,11 @@ SetupPage
             color: Dex.CurrentTheme.foregroundColor
             font: DexTypo.body1
             topPadding: 10
+        }
+
+        Item {
+            height: 20
+            width: 1
         }
 
         DexAppPasswordField
@@ -87,13 +92,16 @@ SetupPage
             visible: false
             field: _inputPassword.field
         }
+        Item {
+            height: 1
+            width: 1
+        }
 
-        DefaultButton
+        GradientButton
         {
             Layout.alignment: Qt.AlignHCenter
+            radius: width
             width: 300
-            radius: 20
-            opacity: enabled ? 1 : .7
             text: qsTr("connect")
             enabled: _passwordChecker.isValid()
             onClicked: _inputPassword.field.accepted()
@@ -107,15 +115,20 @@ SetupPage
             visible: false
         }
 
-        Qaterial.AppBarButton
-        {
+        DexAppButton {
+            text: qsTr("Cancel")
+            color: containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
+            height: 25
+            radius: 20
+            width: 100
+            border.color: 'transparent'
             Layout.alignment: Qt.AlignHCenter
-            width: 80
-            icon.width: 40
-            icon.height: 40
-            icon.source: Qaterial.Icons.close
-            icon.color: Dex.CurrentTheme.foregroundColor
-            backgroundColor: 'transparent'
+            font: Qt.font({
+                pixelSize: 14 ,
+                letterSpacing: 0.15,
+                family: DexTypo.fontFamily,
+                weight: Font.Normal
+            })
             onClicked: backClicked()
         }
     }

@@ -27,10 +27,12 @@ SetupPage
     image_path: Dex.CurrentTheme.bigLogoPath
     image_margin: 30
 
+    backgroundColor: Dex.CurrentTheme.backgroundColor
+
     content: ColumnLayout
     {
         id: content_column
-        width: 400
+        width: 270
         spacing: Style.rowSpacing
         RowLayout
         {
@@ -41,36 +43,33 @@ SetupPage
                 text_value: qsTr("Welcome")
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
+                horizontalAlignment: Label.AlignHCenter
             }
-            DexLanguage
-            {
-                Layout.preferredWidth: 55
-                Layout.alignment: Qt.AlignVCenter
-            }
+//            DexLanguage
+//            {
+//                Layout.preferredWidth: 55
+//                Layout.alignment: Qt.AlignVCenter
+//            }
         }
 
         Item { Layout.fillWidth: true }
 
-        DexAppButton
+        GradientButton
         {
             Layout.fillWidth: true
-            horizontalAlignment: Qt.AlignLeft
-            Layout.minimumWidth: 350
-            leftPadding: 20
-            text: qsTr("New Wallet")
-            Layout.preferredHeight: 50
-            radius: 8
+            Layout.minimumWidth: 269
+            text: qsTr("New wallet")
+            Layout.preferredHeight: 40
+            radius: 18
             onClicked: newWalletClicked()
         }
 
-        DexAppButton
+        OutlineButton
         {
             text: qsTr("Import wallet")
-            horizontalAlignment: Qt.AlignLeft
-            leftPadding: 20
-            radius: 8
+            radius: 18
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
             onClicked: importWalletClicked()
         }
 
@@ -81,32 +80,32 @@ SetupPage
 
             visible: wallets.length > 0
 
-            DexLabel
-            {
-                text_value: qsTr("My Wallets")
-                font.pixelSize: Style.textSizeSmall2
-                Layout.alignment: Qt.AlignHCenter
-            }
-
-            Item
-            {
-                height: 15
+            RowLayout {
                 Layout.fillWidth: true
-                Rectangle
+                spacing: 10
+                Rectangle {
+                    Layout.fillWidth: true
+                    height: 1
+                    color: Dex.CurrentTheme.floatingBackgroundColor
+                    Layout.alignment: Qt.AlignVCenter
+                    opacity: .5
+                }
+                DexLabel
                 {
-                    height: 2
-                    width: parent.width
-                    color: Dex.CurrentTheme.accentColor
-                    Rectangle
-                    {
-                        anchors.centerIn: parent
-                        width: 9
-                        height: 9
-                        radius: 6
-                        color: Dex.CurrentTheme.accentColor
-                    }
+                    text_value: qsTr("My Wallets")
+                    font.pixelSize: Style.textSizeSmall2
+                    font.bold: true
+                    Layout.alignment: Qt.AlignHCenter
+                }
+                Rectangle {
+                    Layout.fillWidth: true
+                    height: 1
+                    color: Dex.CurrentTheme.floatingBackgroundColor
+                    Layout.alignment: Qt.AlignVCenter
+                    opacity: .5
                 }
             }
+
 
             DexRectangle
             {
@@ -116,47 +115,45 @@ SetupPage
 
                 width: content_column.width
                 Layout.minimumHeight: row_height
-                Layout.preferredHeight: row_height * Math.min(wallets.length, 3)
-                color: "transparent"
+                Layout.preferredHeight: 50 * Math.min(wallets.length, 3)
+                color: Dex.CurrentTheme.floatingBackgroundColor
+                radius: 18
 
 
                 DefaultListView
                 {
                     id: list
                     implicitHeight: bg.Layout.preferredHeight
+                    anchors.fill: parent
+                    anchors.margins: 10
 
                     model: wallets
 
                     delegate: ClipRRect
                     {
-                        radius: 5
-                        width: bg.width
+                        radius: 18
+                        width: bg.width - 20
                         height: bg.row_height
+                        anchors.horizontalCenter: parent.horizontalCenter
 
                         DefaultRectangle
                         {
                             color: "transparent"
                             border.width: 0
                             anchors.fill: parent
+                            radius: 18
 
                             Rectangle
                             {
                                 height: parent.height
-                                width: mouse_area.containsMouse ? parent.width : 0
-                                opacity: .4
-                                color: Dex.CurrentTheme.buttonColorHovered
+                                width: parent.width
+                                opacity: 1
+                                color: Dex.CurrentTheme.backgroundColor
                                 visible: mouse_area.containsMouse
-
-                                Behavior on width
-                                {
-                                    NumberAnimation
-                                    {
-                                        duration: 250
-                                    }
-                                }
+                                radius: 18
                             }
 
-                            DefaultMouseArea
+                            DexMouseArea
                             {
                                 id: mouse_area
                                 anchors.fill: parent
@@ -167,23 +164,33 @@ SetupPage
                                 }
                             }
 
-                            Qaterial.ColorIcon
-                            {
+                            Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
-                                color: Dex.CurrentTheme.foregroundColor
-                                source: Qaterial.Icons.account
-                                iconSize: 16
-                                x: 20
+                                x: 5
+                                width: 30
+                                height: width
+                                radius: 18
+                                color: mouse_area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : 'transparent'
+                                Qaterial.ColorIcon
+                                {
+                                    anchors.centerIn: parent
+                                    color: Dex.CurrentTheme.foregroundColor
+                                    source: Qaterial.Icons.account
+                                    iconSize: 16
+
+                                }
                             }
 
                             DefaultText
                             {
                                 anchors.left: parent.left
-                                anchors.leftMargin: 45
+                                anchors.leftMargin: 40
 
                                 text_value: model.modelData
                                 anchors.verticalCenter: parent.verticalCenter
                                 font.pixelSize: Style.textSizeSmall2
+                                font.family: 'Ubuntu'
+                                font.weight: Font.Medium
                             }
                         }
 
@@ -195,7 +202,7 @@ SetupPage
                             width: 30
                             Qaterial.ColorIcon
                             {
-                                source: Qaterial.Icons.delete_
+                                source: Qaterial.Icons.close
                                 iconSize: 18
                                 anchors.centerIn: parent
                                 opacity: .8
