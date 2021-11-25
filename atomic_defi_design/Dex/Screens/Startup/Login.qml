@@ -115,7 +115,8 @@ SetupPage
             visible: false
         }
 
-        DexAppButton {
+        DexAppButton 
+        {
             text: qsTr("Cancel")
             color: containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
             height: 25
