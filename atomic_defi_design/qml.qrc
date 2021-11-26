@@ -86,6 +86,7 @@
         <file>assets/images/coins/doge.png</file>
         <file>assets/images/coins/dot.png</file>
         <file>assets/images/coins/dp.png</file>
+        <file>assets/images/coins/dust.png</file>
         <file>assets/images/coins/dx.png</file>
         <file>assets/images/coins/eca.png</file>
         <file>assets/images/coins/efl.png</file>
@@ -101,6 +102,7 @@
         <file>assets/images/coins/ethr.png</file>
         <file>assets/images/coins/eurs.png</file>
         <file>assets/images/coins/fet.png</file>
+        <file>assets/images/coins/flux.png</file>
         <file>assets/images/coins/fil.png</file>
         <file>assets/images/coins/firo.png</file>
         <file>assets/images/coins/fjc.png</file>
@@ -179,6 +181,7 @@
         <file>assets/images/coins/pic.png</file>
         <file>assets/images/coins/pnk.png</file>
         <file>assets/images/coins/powr.png</file>
+        <file>assets/images/coins/ppc.png</file>
         <file>assets/images/coins/put.png</file>
         <file>assets/images/coins/qbt.png</file>
         <file>assets/images/coins/qc.png</file>
@@ -189,6 +192,7 @@
         <file>assets/images/coins/qrc-20.png</file>
         <file>assets/images/coins/qrc20.png</file>
         <file>assets/images/coins/qtum.png</file>
+        <file>assets/images/coins/rbtc.png</file>
         <file>assets/images/coins/ren.png</file>
         <file>assets/images/coins/rep.png</file>
         <file>assets/images/coins/rev.png</file>
@@ -205,8 +209,6 @@
         <file>assets/images/coins/sibm.png</file>
         <file>assets/images/coins/skl.png</file>
         <file>assets/images/coins/smart-chain.png</file>
-        <file>assets/images/coins/smtf-old.png</file>
-        <file>assets/images/coins/smtf-v2.png</file>
         <file>assets/images/coins/smtf.png</file>
         <file>assets/images/coins/snt.png</file>
         <file>assets/images/coins/snx.png</file>
@@ -282,6 +284,7 @@
         <file>assets/images/providers/binance.png</file>
         <file>assets/images/providers/coingecko.png</file>
         <file>assets/images/providers/coinpaprika.png</file>
+        <file>assets/images/providers/forex.png</file>
         <file>assets/images/providers/nomics.png</file>
         <file>assets/images/dashboard-copy.svg</file>
         <file>assets/images/dashboard-eye-hide.svg</file>
