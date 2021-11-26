@@ -37,9 +37,10 @@ else()
 endif()
 
 message(STATUS "Creating Installer")
-set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.1/bin)
+set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.2/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
+	message(STATUS "command is: [${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z .]")
 	execute_process(COMMAND ${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z .
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 		ECHO_OUTPUT_VARIABLE
@@ -47,6 +48,7 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
 		RESULT_VARIABLE ARCHIVE_RESULT
 		OUTPUT_VARIABLE ARCHIVE_OUTPUT
 		ERROR_VARIABLE ARCHIVE_ERROR)
+	message(STATUS "archivegen output: ${ARCHIVE_OUTPUT} ${ARCHIVE_ERROR}")
 else()
 	message(STATUS "${DEX_PROJECT_NAME}.7z already exists skipping")
 endif()
