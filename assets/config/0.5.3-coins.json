@@ -5851,6 +5851,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "NZDS-ERC20": {
+    "coin": "NZDS-ERC20",
+    "name": "NZD Stablecoin",
+    "forex_id": "NZD",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "nzd-stablecoin",
+    "nomics_id": "NZDS",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "NZDS-PLG20": {
+    "coin": "NZDS-PLG20",
+    "name": "NZD Stablecoin",
+    "forex_id": "NZD",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "nzd-stablecoin",
+    "nomics_id": "NZDS",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "OMG-ERC20": {
     "coin": "OMG-ERC20",
     "name": "OMG Network",
@@ -6351,6 +6387,22 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "TRYB-PLG20": {
+    "coin": "TRYB-PLG20",
+    "name": "BiLira",
+    "forex_id": "TRY",
+    "coinpaprika_id": "tryb-bilira",
+    "coingecko_id": "bilira",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
     "active": false,
     "currently_enabled": false
   },

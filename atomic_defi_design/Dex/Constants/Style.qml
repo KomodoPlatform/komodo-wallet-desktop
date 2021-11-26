@@ -361,6 +361,7 @@ QtObject {
                                           "MONA": "#DEC799",
                                           "MOVR": "#52CCC9",
                                           "NMC": "#186C9D",
+                                          "NZDS": "#1B3044",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
                                           "MCL": "#EA0000",
