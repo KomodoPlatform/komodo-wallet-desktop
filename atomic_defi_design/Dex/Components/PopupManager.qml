@@ -152,8 +152,9 @@ Popup
                         height: 45
                         error: false
                         visible: dialog.getText
-                        defaultBorderColor: DexTheme.dexBoxBackgroundColor
+                        defaultBorderColor: background.color
                         background.border.width: 1
+                        background.color: Dex.CurrentTheme.floatingBackgroundColor
                         field.font: DexTypo.body2
                         placeholderText: dialog.placeholderText
                         field.placeholderText: ""
