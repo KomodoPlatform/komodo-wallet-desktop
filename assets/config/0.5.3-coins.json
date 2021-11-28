@@ -5540,6 +5540,7 @@
     "name": "InfiniLooP",
     "coinpaprika_id": "il8p-infiniloop",
     "coingecko_id": "test-coin",
+    "nomics_id": "IL8P",
     "electrum": [
       {
         "url": "il8p.electrumx.transcenders.name:50002",
