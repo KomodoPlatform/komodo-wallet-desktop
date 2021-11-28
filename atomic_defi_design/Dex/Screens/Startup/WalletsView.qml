@@ -45,11 +45,6 @@ SetupPage
                 Layout.alignment: Qt.AlignVCenter
                 horizontalAlignment: Label.AlignHCenter
             }
-//            DexLanguage
-//            {
-//                Layout.preferredWidth: 55
-//                Layout.alignment: Qt.AlignVCenter
-//            }
         }
 
         Item { Layout.fillWidth: true }
@@ -260,8 +255,21 @@ SetupPage
                     }
                 }
             }
+
+            
         }
+            
+        
         HorizontalLine { }
+    }
+
+    LinksRow {
+        Layout.alignment: Qt.AlignHCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 40
+        
+        anchors.horizontalCenter: parent.horizontalCenter
+        
     }
 
     GaussianBlur
