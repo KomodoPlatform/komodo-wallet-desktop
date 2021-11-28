@@ -5281,6 +5281,7 @@
     "name": "Chips",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chips",
+    "nomics_id": "CHIPS6",
     "electrum": [
       {
         "url": "electrum3.cipig.net:10053",
