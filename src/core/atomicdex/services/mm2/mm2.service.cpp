@@ -514,7 +514,7 @@ namespace atomic_dex
                     catch (const std::exception& error)
                     {
                         SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
-                        // this->dispatcher_.trigger<tx_fetch_finished>(true);
+                        this->dispatcher_.trigger<tx_fetch_finished>(true);
                     }
                 })
             .then([this, batch = batch_array](pplx::task<void> previous_task)
@@ -1202,9 +1202,9 @@ namespace atomic_dex
         SPDLOG_DEBUG("process_tx ticker: {}", ticker);
         std::error_code ec;
         using namespace std::string_literals;
-        auto construct_url_functor =
-            [this](
-                const std::string& main_ticker, const std::string& test_ticker, const std::string& url, const std::string& token_url, const std::string& ticker, const std::string& address)
+        auto construct_url_functor = [this](
+                                         const std::string& main_ticker, const std::string& test_ticker, const std::string& url, const std::string& token_url,
+                                         const std::string& ticker, const std::string& address)
         {
             std::string out;
             if (ticker == main_ticker || ticker == test_ticker)
@@ -1250,6 +1250,9 @@ namespace atomic_dex
                 break;
             case CoinTypeGadget::EthereumClassic:
                 out = construct_url_functor("ETC", "ETCT", "etc_tx_history", "etc_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::RSK:
+                out = construct_url_functor("RBTC", "RBTCT", "rsk_tx_history", "rsk_tx_history", ticker, address);
                 break;
             case CoinTypeGadget::AVX20:
                 out = construct_url_functor("AVAX", "AVAXT", "avx_tx_history", "avx_tx_history", ticker, address);
