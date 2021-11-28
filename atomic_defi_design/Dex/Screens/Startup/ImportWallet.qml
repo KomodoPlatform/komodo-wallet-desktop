@@ -43,6 +43,47 @@ SetupPage
         width: column_layout.width + 50
         height: column_layout.height + 60
         radius: 18
+        function reset()
+        {
+            recover_seed.reset();
+            input_wallet_name.reset();
+            _seedField.field.text = "";
+            _inputPassword.field.text = "";
+        }
+
+        function trySubmit()
+        {
+            if (!submit_button.enabled) return;
+
+            text_error = General.checkIfWalletExists(input_wallet_name.field.text);
+            if (text_error !== "") return;
+
+            eula_modal.open();
+        }
+
+        function tryPassLevel1()
+        {
+            if (input_wallet_name.field.text == "") input_wallet_name.error = true;
+
+            if (_seedField.isValid() && input_wallet_name.field.text !== "")
+            {
+                let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
+                if (checkWalletName === "" )
+                {
+                    _seedField.error = false;
+                    _inputPassword.field.text = "";
+                    _inputPasswordConfirm.field.text = "";
+                    currentStep++;
+                }
+                else
+                {
+                    input_wallet_name.error = true;
+                    text_error = checkWalletName;
+                }
+            }
+            else _seedField.error = true;
+        }
+
         ColumnLayout
         {
             id: column_layout
@@ -86,47 +127,7 @@ SetupPage
 
             }
 
-            function reset()
-            {
-                recover_seed.reset();
-                input_wallet_name.reset();
-                _seedField.field.text = "";
-                _inputPassword.field.text = "";
-            }
-
-            function trySubmit()
-            {
-                if (!submit_button.enabled) return;
-
-                text_error = General.checkIfWalletExists(input_wallet_name.field.text);
-                if (text_error !== "") return;
-
-                eula_modal.open();
-            }
-
-            function tryPassLevel1()
-            {
-                if (input_wallet_name.field.text == "") input_wallet_name.error = true;
-
-                if (_seedField.isValid() && input_wallet_name.field.text !== "")
-                {
-                    let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
-                    if (checkWalletName === "" )
-                    {
-                        _seedField.error = false;
-                        _inputPassword.field.text = "";
-                        _inputPasswordConfirm.field.text = "";
-                        currentStep++;
-                    }
-                    else
-                    {
-                        input_wallet_name.error = true;
-                        text_error = checkWalletName;
-                    }
-                }
-                else _seedField.error = true;
-            }
-
+            
 
             ModalLoader
             {

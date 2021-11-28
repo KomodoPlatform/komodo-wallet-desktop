@@ -141,6 +141,50 @@ SetupPage
         width: column_layout.width + 50
         height: column_layout.height + 60
         radius: 18
+        function reset()
+        {
+            new_user.reset()
+            input_wallet_name.reset()
+            _inputPassword.field.text = ""
+            input_seed_word.field.text = ""
+            input_generated_seed.text = ""
+        }
+
+        function completeForm()
+        {
+            if (!continue_button.enabled) return
+
+            text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+            if (text_error !== "") return
+
+            input_seed_word.field.text = ""
+            guess_text_error = ""
+            guess_count = 1
+            setRandomGuessWord()
+
+            form_is_filled = true
+        }
+
+        function tryGuess()
+        {
+            // Open EULA if it's the final one
+            let sub = submitGuess(input_seed_word.field)
+            if (sub[0] == true && sub[1] == true)
+            {
+                currentStep++
+            }
+            else if (sub[0] == true && sub[1] == false)
+            {
+                input_seed_word.field.text = ""
+            }
+            else
+            {
+                input_seed_word.field.text = ""
+                input_seed_word.error = true
+                setRandomGuessWord()
+                mmo.model = getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
+            }
+        }
         ColumnLayout
         {
             id: column_layout
@@ -196,50 +240,7 @@ SetupPage
 
             Item { Layout.fillWidth: true }
 
-            function reset()
-            {
-                new_user.reset()
-                input_wallet_name.reset()
-                _inputPassword.field.text = ""
-                input_seed_word.field.text = ""
-                input_generated_seed.text = ""
-            }
-
-            function completeForm()
-            {
-                if (!continue_button.enabled) return
-
-                text_error = General.checkIfWalletExists(input_wallet_name.field.text)
-                if (text_error !== "") return
-
-                input_seed_word.field.text = ""
-                guess_text_error = ""
-                guess_count = 1
-                setRandomGuessWord()
-
-                form_is_filled = true
-            }
-
-            function tryGuess()
-            {
-                // Open EULA if it's the final one
-                let sub = submitGuess(input_seed_word.field)
-                if (sub[0] == true && sub[1] == true)
-                {
-                    currentStep++
-                }
-                else if (sub[0] == true && sub[1] == false)
-                {
-                    input_seed_word.field.text = ""
-                }
-                else
-                {
-                    input_seed_word.field.text = ""
-                    input_seed_word.error = true
-                    setRandomGuessWord()
-                    mmo.model = getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
-                }
-            }
+            
 
             ModalLoader
             {
@@ -530,7 +531,7 @@ SetupPage
                                     onClicked:
                                     {
                                         input_seed_word.field.text = modelData
-                                        column_layout.tryGuess()
+                                        tryGuess()
                                     }
                                 }
                             }
