@@ -466,6 +466,7 @@
         <file>Dex/Components/Separator.qml</file>
         <file>Dex/Components/SetupPage.qml</file>
         <file>Dex/Components/SidebarPanel.qml</file>
+        <file>Dex/Components/SquareButton.qml</file>
         <file>Dex/Components/SwapIcon.qml</file>
         <file>Dex/Components/TextAreaWithTitle.qml</file>
         <file>Dex/Components/TextEditWithTitle.qml</file>

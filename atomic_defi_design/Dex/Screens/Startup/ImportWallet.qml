@@ -54,10 +54,9 @@ SetupPage
             {
                 Layout.fillWidth: true
                 spacing: 10
-                Qaterial.AppBarButton
+                SquareButton
                 {
-                    icon.source: Qaterial.Icons.arrowLeft
-                    foregroundColor: Dex.CurrentTheme.foregroundColor
+                    icon.source: Qaterial.Icons.chevronLeft
                     Layout.alignment: Qt.AlignVCenter
                     onClicked:
                     {
