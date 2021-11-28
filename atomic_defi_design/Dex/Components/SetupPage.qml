@@ -66,4 +66,12 @@ Item
             Layout.alignment: Qt.AlignHCenter
         }
     }
+
+    DexLanguage {
+        y: 52
+        anchors.right: parent.right
+        anchors.rightMargin: 52
+        width: 72
+    }
+
 }
