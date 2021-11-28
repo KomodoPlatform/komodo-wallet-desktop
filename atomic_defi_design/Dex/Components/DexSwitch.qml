@@ -75,4 +75,5 @@ Switch
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
     }
+
 }

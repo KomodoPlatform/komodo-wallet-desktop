@@ -54,4 +54,9 @@ DexComboBox {
             source: General.image_path + "lang/" + control.displayText + ".png"
         }
     }
+
+    DexMouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+    }
 }
