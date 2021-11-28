@@ -214,6 +214,7 @@ SetupPage
                 {
                     id: allow_custom_seed
                     text: qsTr("Allow custom seed")
+                    leftPadding: 15
                     onToggled:
                     {
                         if (allow_custom_seed.checked)
