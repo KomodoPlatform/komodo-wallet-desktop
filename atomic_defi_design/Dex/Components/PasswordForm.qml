@@ -9,6 +9,8 @@ ColumnLayout {
 
     property alias field: input_password.field
     property alias confirm_field: input_confirm_password.field
+    property alias field_title: input_password.title
+    property alias confirm_field_title: input_confirm_password.title
     property bool confirm: true
     property bool new_password: true
     property bool high_security: true
@@ -32,6 +34,7 @@ ColumnLayout {
         id: input_password
         new_password: form.new_password
         hide_hint: !confirm
+        title: qsTr("Password")
         match_password: input_confirm_password.field.text
         high_security: form.high_security
     }

@@ -76,7 +76,7 @@ DexWindow
                 width: parent.width - 10
                 height: parent.height - 5
                 anchors.centerIn: parent
-                color: logout_area.containsMouse?  DexTheme.contentColorTopBold :  DexTheme.buttonColorHovered
+                color: logout_area.containsMouse?  Dex.CurrentTheme.contentColorTopBold :  Dex.CurrentTheme.buttonColorHovered
                 Row
                 {
                     anchors.centerIn: parent
@@ -86,14 +86,14 @@ DexWindow
                     {
                         anchors.verticalCenter: parent.verticalCenter
                         icon: Qaterial.Icons.logout
-                        color:  DexTheme.foregroundColor
+                        color:  Dex.CurrentTheme.foregroundColor
                         size: 11
                     }
 
                     DexLabel
                     {
                         anchors.verticalCenter: parent.verticalCenter
-                        color:  DexTheme.foregroundColor
+                        color:  Dex.CurrentTheme.foregroundColor
                         text: qsTr('Logout')
                     }
                 }
@@ -162,7 +162,7 @@ DexWindow
             font.weight: Font.Medium
             opacity: .5
             leftPadding: 5
-            color:  DexTheme.foregroundColor
+            color:  Dex.CurrentTheme.foregroundColor
             visible: !_label.visible
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -196,7 +196,7 @@ DexWindow
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible & !isOsx
-                color:  DexTheme.foregroundColor
+                color:  Dex.CurrentTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
             }
@@ -206,7 +206,7 @@ DexWindow
                 height: __row.height + 5
                 anchors.verticalCenter: parent.verticalCenter
                 radius: 3
-                color: _area.containsMouse?  DexTheme.dexBoxBackgroundColor : "transparent"
+                color: _area.containsMouse?  Dex.CurrentTheme.dexBoxBackgroundColor : "transparent"
                 Row
                 {
                     id: __row
@@ -218,7 +218,7 @@ DexWindow
                         source: Qaterial.Icons.accountCircle
                         iconSize: 18
                         visible: _label.visible
-                        color:  DexTheme.foregroundColor
+                        color:  Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     DexLabel
@@ -261,7 +261,7 @@ DexWindow
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible
-                color:  DexTheme.foregroundColor
+                color:  Dex.CurrentTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
             }
@@ -373,6 +373,7 @@ DexWindow
     App
     {
         id: app
+        color: Dex.CurrentTheme.backgroundColor
         anchors.fill: parent
         anchors.topMargin: 30
     }
