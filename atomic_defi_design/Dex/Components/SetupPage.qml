@@ -17,13 +17,14 @@ Item
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
     property color backgroundColor: 'transparent'//Dex.CurrentTheme.floatingBackgroundColor
-
+    property int verticalCenterOffset: -100
     ColumnLayout
     {
         id: window_layout
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: _control.verticalCenterOffset
         transformOrigin: Item.Center
         spacing: image_margin
 

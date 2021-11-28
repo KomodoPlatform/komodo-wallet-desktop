@@ -25,6 +25,7 @@ SetupPage
     property int currentStep: 0
     property int current_word_idx: 0
     property int guess_count: 1
+    verticalCenterOffset: 0
 
     function onOpened() { current_mnemonic = API.app.get_mnemonic() }
 
