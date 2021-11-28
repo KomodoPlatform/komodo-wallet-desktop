@@ -7,6 +7,7 @@ import Dex.Themes 1.0 as Dex
 ToolTip
 {
     id: control
+    
     contentItem: DexLabel {
         text: control.text
         font: control.font

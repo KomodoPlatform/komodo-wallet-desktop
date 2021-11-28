@@ -60,7 +60,7 @@ Item {
         height: parent.height
         radius: 4
         color: Dex.CurrentTheme.backgroundColor
-        border.color: control.error ? DexTheme.redColor : input_field.focus ? Dex.CurrentTheme.accentColor : DexTheme.rectangleBorderColor
+        border.color: control.error ? Dex.CurrentTheme.noColor : input_field.focus ? Dex.CurrentTheme.accentColor : color
         border.width: input_field.focus ? 2 : 0
         Behavior on x {
             NumberAnimation {
