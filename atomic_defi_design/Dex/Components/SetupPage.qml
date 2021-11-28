@@ -17,7 +17,7 @@ Item
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
     property color backgroundColor: 'transparent'//Dex.CurrentTheme.floatingBackgroundColor
-    property int verticalCenterOffset: -100
+    property int verticalCenterOffset: 0
     ColumnLayout
     {
         id: window_layout
