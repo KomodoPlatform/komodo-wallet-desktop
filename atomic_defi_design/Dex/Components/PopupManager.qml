@@ -184,7 +184,7 @@ Popup
                                 anchors.centerIn: parent
                                 iconSize: 19
                                 source: Qaterial.Icons.keyVariant
-                                color: DexTheme.surfaceColor
+                                color: Dex.CurrentTheme.foregroundColor
                             }
 
                         }
@@ -195,13 +195,17 @@ Popup
                             icon
                             {
                                 source: _insideField.field.echoMode === TextField.Password ? Qaterial.Icons.eyeOffOutline : Qaterial.Icons.eyeOutline
-                                color: _insideField.field.focus ? _insideField.background.border.color : DexTheme.accentColor
+                                color: Dex.CurrentTheme.foregroundColor
                             }
                             anchors
                             {
                                 verticalCenter: parent.verticalCenter
                                 right: parent.right
                                 rightMargin: 10
+                            }
+
+                            HoverHandler {
+                                cursorShape: "PointingHandCursor"
                             }
                             onClicked:
                             {
