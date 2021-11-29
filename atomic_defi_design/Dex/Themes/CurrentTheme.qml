@@ -5,9 +5,60 @@ import "DefaultTheme.js" as DexDefaultTheme
 
 ThemeData
 {
+    enum ColorMode
+    {
+        None,
+        Light,
+        Dark
+    }
+
     readonly property var defaultTheme: DexDefaultTheme.getHardcoded()
 
+    property string _themeName
+
     signal themeChanged()
+
+    function getColorMode()
+    {
+        if (_themeName.endsWith(" - Light")) return CurrentTheme.ColorMode.Light;
+        if (_themeName.endsWith(" - Dark")) return CurrentTheme.ColorMode.Dark;
+        return CurrentTheme.ColorMode.None;
+    }
+
+    function hasColorMode(colorMode)
+    {
+        let currentColorMode = getColorMode();
+        let colorModeStr = _themeName;
+
+        if (currentColorMode !== colorMode && colorMode === CurrentTheme.ColorMode.Light)
+            colorModeStr = colorModeStr.replace(" - Dark", " - Light");
+        else if (currentColorMode !== colorMode && colorMode === CurrentTheme.ColorMode.Dark)
+            colorModeStr = colorModeStr.replace(" - Light", " - Dark");
+
+        return DexFilesystem.exists(DexFilesystem.getThemeFolder(colorModeStr))
+    }
+
+    function hasDarkAndLightMode() { return hasColorMode(CurrentTheme.ColorMode.Light) && hasColorMode(CurrentTheme.ColorMode.Dark); }
+
+    function switchColorMode()
+    {
+        let colorMode = getColorMode();
+        let colorModeStr = _themeName;
+
+        console.log(colorMode);
+        console.log(colorModeStr);
+        if (colorMode === CurrentTheme.ColorMode.Light)
+        {
+            colorModeStr = colorModeStr.replace(" - Light", " - Dark");
+        }
+        else if (colorMode === CurrentTheme.ColorMode.Dark)
+        {
+            colorModeStr = colorModeStr.replace(" - Dark", " - Light");
+        }
+        else return;
+        console.log(colorModeStr);
+        loadFromFilesystem(colorModeStr);
+    }
 
     function loadFromFilesystem(themeName)
     {
@@ -16,6 +67,8 @@ ThemeData
         try
         {
             if (!DexFilesystem.exists(DexFilesystem.getThemeFolder(themeName))) throw `${themeName} does not exist in the filesystem.`;
+
+            _themeName = themeName
 
             let themeData = atomic_qt_utilities.load_theme(themeName);
             loadColors(themeData);

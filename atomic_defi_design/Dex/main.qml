@@ -363,10 +363,41 @@ DexWindow
                 }
             }
 
+            DefaultText
+            {
+                text: " | "
+                opacity: .1
+                font.family: 'Montserrat'
+                font.weight: Font.Medium
+                visible: themeSwitchBut.visible
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 2
+            }
+
             Settings
             {
                 id: atomic_settings0
                 fileName: atomic_cfg_file
+            }
+
+            DexIconButton
+            {
+                id: themeSwitchBut
+                visible: _label.visible && Dex.CurrentTheme.hasDarkAndLightMode() && Dex.CurrentTheme.getColorMode() !== Dex.CurrentTheme.ColorMode.None
+                active: app.notification_modal.opened
+
+                anchors.verticalCenter: parent.verticalCenter
+                opacity: containsMouse ? 1 : .8
+                iconSize: 22
+                icon:
+                {
+                    if (Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Light)
+                        return Qaterial.Icons.moonWaxingCrescent;
+                    else if (Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark)
+                        return Qaterial.Icons.whiteBalanceSunny;
+                }
+
+                onClicked: Dex.CurrentTheme.switchColorMode()
             }
         }
     }
