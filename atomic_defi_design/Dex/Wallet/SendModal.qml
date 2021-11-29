@@ -344,6 +344,8 @@ BasicModal
                     Layout.preferredWidth: 385
                     Layout.preferredHeight: 44
 
+                    Component.onCompleted: console.log(backgroundColor)
+
                     placeholderText: qsTr("Amount to send")
                 }
 
@@ -360,10 +362,8 @@ BasicModal
 
                     onCheckStateChanged:
                     {
-                        if (checked)
-                            input_amount.text = parseFloat(current_ticker_infos.balance);
-                        else
-                            input_amount.text = "";
+                        if (checked) input_amount.text = parseFloat(current_ticker_infos.balance);
+                        else input_amount.text = "";
                     }
                 }
             }
@@ -380,7 +380,6 @@ BasicModal
                 text: qsTr("Enable Custom Fees")
 
                 onCheckedChanged: input_custom_fees.text = ""
-
 
                 // Custom fees warning
                 DefaultText
@@ -474,7 +473,7 @@ BasicModal
                 wrapMode: Text.Wrap
                 visible: !fee_error.visible && fieldAreFilled() && !hasFunds()
 
-                color: Style.colorRed
+                color: Dex.CurrentTheme.noColor
 
                 text_value: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
             }

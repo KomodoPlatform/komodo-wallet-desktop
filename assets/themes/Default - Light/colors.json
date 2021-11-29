@@ -51,6 +51,10 @@
     "textPlaceholderColor": "#91A8E8",
     "textSelectedColor": "#f9f9fb",
 
+    "textFieldBackgroundColor": "#F3F5F6FF",
+    "textFieldPrefixColor": "#45607894",
+    "textFieldSuffixColor": "#456078FF",
+
     "chartTradingLineBackgroundColor": "#C5F2EF",
     "chartTradingLineColor": "#53EBD7",
 

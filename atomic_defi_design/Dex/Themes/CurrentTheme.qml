@@ -97,6 +97,7 @@ ThemeData
         textPlaceholderColor                = Dex.Color.argbStrFromRgbaStr(themeData.textPlaceholderColor || defaultTheme.textPlaceholderColor);
         textSelectedColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textSelectedColor || defaultTheme.textSelectedColor);
 
+        textFieldBackgroundColor            = Dex.Color.argbStrFromRgbaStr(themeData.textFieldBackgroundColor || defaultTheme.textFieldBackgroundColor);
         textFieldPrefixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldPrefixColor || defaultTheme.textFieldPrefixColor);
         textFieldSuffixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldSuffixColor || defaultTheme.textFieldSuffixColor);
 
@@ -196,6 +197,10 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectionColor : %1".arg(textSelectionColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textPlaceholderColor : %1".arg(textPlaceholderColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectedColor : %1".arg(textSelectedColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldBackgroundColor : %1".arg(textFieldBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldPrefixColor : %1".arg(textFieldPrefixColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldSuffixColor : %1".arg(textFieldSuffixColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineBackgroundColor : %1".arg(chartTradingLineBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineColor : %1".arg(chartTradingLineColor));

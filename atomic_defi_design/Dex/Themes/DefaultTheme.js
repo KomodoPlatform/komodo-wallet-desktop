@@ -53,12 +53,13 @@ function getHardcoded()
         tabSelectedColor: "#DCE8FD",
 
         textDisabledColor: "#C5CFD8",
-        textSelectionColor: "#14bca6",
+        textSelectionColor: "#14BCA6FF",
         textPlaceholderColor: "#91A8E8",
         textSelectedColor: "#f9f9fb",
 
+        textFieldBackgroundColor: "#F3F5F6FF",
         textFieldPrefixColor: "#45607894",
-        textFieldSuffixColor: "#456078",
+        textFieldSuffixColor: "#456078FF",
 
         chartTradingLineBackgroundColor: "#C5F2EF",
         chartTradingLineColor: "#53EBD7",
