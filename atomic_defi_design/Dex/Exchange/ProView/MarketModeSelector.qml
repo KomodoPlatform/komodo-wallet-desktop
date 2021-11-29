@@ -41,7 +41,7 @@ Rectangle
         width: parent.width - 2
         height: parent.height - 2
         radius: parent.radius - 1
-        color: 'white'
+        color: Dex.CurrentTheme.backgroundColor
         visible: marketMode != API.app.trading_pg.market_mode
     }
 
