@@ -39,15 +39,20 @@ RowLayout
 
             DefaultText
             {
+                Layout.preferredWidth: parent.width - 15
+
                 text_value: !details ? "" :
                             `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Dex.CurrentTheme.foregroundColor}">${details.name}</font>`
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
+                elide: Text.ElideRight
+                wrapMode: Text.NoWrap
             }
 
-            DexLabel
+            DefaultText
             {
                 id: bottom_line
+
                 property string real_value: !details ? "" :
                             details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_fiat_sign) + ")"
 

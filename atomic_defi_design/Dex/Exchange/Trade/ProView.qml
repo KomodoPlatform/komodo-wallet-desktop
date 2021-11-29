@@ -192,6 +192,7 @@ ColumnLayout {
                     hideHeader: true
                     maximumHeight: 80
                     minimumHeight: 75
+                    color: 'transparent'
                     RowLayout
                     {
                         id: selectors
@@ -203,7 +204,6 @@ ColumnLayout {
                         {
                             id: selector_left
                             left_side: true
-                            Layout.fillHeight: true
                             ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
                             ticker: left_ticker
                             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
