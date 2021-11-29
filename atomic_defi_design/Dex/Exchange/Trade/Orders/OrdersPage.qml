@@ -140,9 +140,9 @@ Item {
                     onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
                 }
 
-                DexLabel
+                DefaultText
                 {
-                    opacity: .4
+                    color: Dex.CurrentTheme.foregroundColor2
                     visible: !orders_settings.displaySetting
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
@@ -204,6 +204,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -15
                 spacing: 10
+
                 DefaultSweetComboBox
                 {
                     id: combo_base
@@ -213,7 +214,11 @@ Item {
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
+
+                    backgroundColor: Dex.CurrentTheme.backgroundColor
+                    popupBackgroundColor: Dex.CurrentTheme.backgroundColor
                 }
+
                 Qaterial.ColorIcon
                 {
                     Layout.alignment: Qt.AlignVCenter
@@ -242,7 +247,11 @@ Item {
                     height: 100
                     valueRole: "ticker"
                     textRole: 'ticker'
+
+                    backgroundColor: Dex.CurrentTheme.backgroundColor
+                    popupBackgroundColor: Dex.CurrentTheme.backgroundColor
                 }
+
                 Qaterial.TextFieldDatePicker
                 {
                     id: min_date
@@ -252,7 +261,7 @@ Item {
                     date: default_min_date
                     font.pixelSize: 13
                     opacity: .8
-                    color: DexTheme.foregroundColor
+                    color: Dex.CurrentTheme.foregroundColor
                     backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
@@ -268,7 +277,7 @@ Item {
                     date: default_max_date
                     font.pixelSize: 13
                     opacity: .8
-                    color: DexTheme.foregroundColor
+                    color: Dex.CurrentTheme.foregroundColor
                     backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
