@@ -178,7 +178,7 @@ ComboBox
 
                     ScrollBar.vertical: ScrollBar
                     {
-                        anchors.right: _list.right
+                        anchors.right: popup_list_view.right
                         anchors.rightMargin: 2
                         width: 7
                         background: DefaultRectangle

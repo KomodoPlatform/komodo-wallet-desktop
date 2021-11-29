@@ -63,9 +63,9 @@ function getHardcoded()
         chartTradingLineBackgroundColor: "#C5F2EF",
         chartTradingLineColor: "#53EBD7",
 
-        innerBackgroundColor: "#f7faff",
+        innerBackgroundColor: "#edf4ff",
 
-        floatingBackgroundColor: "#f7faff",
+        floatingBackgroundColor: "#edf4ff",
 
         rangeSliderBackgroundColor: "#5A68E6FF",
         rangeSliderDistanceColor: "#4986EA3B",

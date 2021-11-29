@@ -54,9 +54,9 @@
     "chartTradingLineBackgroundColor": "#C5F2EF",
     "chartTradingLineColor": "#53EBD7",
 
-    "innerBackgroundColor": "#F5F9FF",
+    "innerBackgroundColor": "#edf4ff",
 
-    "floatingBackgroundColor": "#F5F9FF",
+    "floatingBackgroundColor": "#edf4ff",
 
     "rangeSliderBackgroundColor": "#5A68E6FF",
     "rangeSliderDistanceColor": "#4986EA3B",
