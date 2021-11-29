@@ -65,7 +65,7 @@ DexWindow
 
         spacing: 8
         padding: 2
-        backgroundColor:  DexTheme.dexBoxBackgroundColor
+        backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
 
         contentItem: Item
         {
@@ -76,7 +76,7 @@ DexWindow
                 width: parent.width - 10
                 height: parent.height - 5
                 anchors.centerIn: parent
-                color: logout_area.containsMouse?  Dex.CurrentTheme.contentColorTopBold :  Dex.CurrentTheme.buttonColorHovered
+                color: logout_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.floatingBackgroundColor
                 Row
                 {
                     anchors.centerIn: parent
@@ -207,13 +207,14 @@ DexWindow
                 height: __row.height + 5
                 anchors.verticalCenter: parent.verticalCenter
                 radius: 3
-                color: _area.containsMouse?  Dex.CurrentTheme.dexBoxBackgroundColor : "transparent"
+                color: _area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : "transparent"
                 Row
                 {
                     id: __row
                     anchors.centerIn: parent
-                    layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
+                    layoutDirection: isOsx ? Qt.RightToLeft : Qt.LeftToRight
                     spacing: 6
+
                     Qaterial.ColorIcon
                     {
                         source: Qaterial.Icons.accountCircle
@@ -222,7 +223,8 @@ DexWindow
                         color:  Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    DexLabel
+
+                    DefaultText
                     {
                         id: _label
                         text: API.app.wallet_mgr.wallet_default_name?? ""
@@ -233,6 +235,7 @@ DexWindow
                         color:  Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
+
                     Qaterial.ColorIcon
                     {
                         source: Qaterial.Icons.menuDown
@@ -246,10 +249,14 @@ DexWindow
                 {
                     id: _area
                     anchors.fill: parent
-                    onClicked: {
-                        if(userMenu.visible){
+                    onClicked:
+                    {
+                        if (userMenu.visible)
+                        {
                             userMenu.close()
-                        }else {
+                        }
+                        else
+                        {
                             userMenu.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
                         }
                     }
