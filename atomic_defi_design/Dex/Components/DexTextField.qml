@@ -37,11 +37,10 @@ TextField
     selectByMouse: true
     persistentSelection: true
 
-    background: Rectangle
+    background: DefaultRectangle
     {
         id: background
         color: Dex.CurrentTheme.backgroundColor
-        opacity: .4
         radius: 18
         anchors.fill: parent
     }
