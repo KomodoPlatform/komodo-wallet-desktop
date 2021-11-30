@@ -39,6 +39,7 @@ Qaterial.Dialog
                 app.currentWalletName = ""
                 API.app.disconnect()
                 onDisconnect()
+                window.logged = false
                 dialog.close()
                 dialog.destroy()
             }

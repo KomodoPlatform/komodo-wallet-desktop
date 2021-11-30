@@ -110,7 +110,7 @@ SetupPage
 
                 width: content_column.width
                 Layout.minimumHeight: row_height
-                Layout.preferredHeight: 50 * Math.min(wallets.length, 3)
+                Layout.preferredHeight: ( 50 * Math.min(wallets.length, 3)) + 10
                 color: Dex.CurrentTheme.floatingBackgroundColor
                 radius: 18
 
@@ -121,6 +121,7 @@ SetupPage
                     implicitHeight: bg.Layout.preferredHeight
                     anchors.fill: parent
                     anchors.margins: 10
+                    spacing: 5
 
                     model: wallets
 
