@@ -208,7 +208,7 @@ DexWindow
                 height: __row.height + 5
                 anchors.verticalCenter: parent.verticalCenter
                 radius: 3
-                color: _area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : "transparent"
+                color: _area.containsMouse?  Dex.CurrentTheme.backgroundColor : "transparent"
                 Row
                 {
                     id: __row
