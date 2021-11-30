@@ -30,7 +30,6 @@ Item
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
-            color: is_ask? DexTheme.redColor : DexTheme.greenColor
         }
         DefaultText
         {
