@@ -5,8 +5,8 @@ set(DEX_MAINTENANCE_TOOL_NAME "FiroDEX Maintenance Tool")
 set(DEX_COMPANY "KomodoPlatform")
 set(DEX_WEBSITE "https://atomicdex.io/")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
-set(DEX_DISCORD "https://komodoplatform.com/discord")
-set(DEX_TWITTER "https://twitter.com/AtomicDEX")
+set(DEX_DISCORD "https://discord.com/invite/TGZPRbRT3Y")
+set(DEX_TWITTER "https://twitter.com/firoorg")
 set(DEX_PRIMARY_COIN "FIRO")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
 set(DEX_SECOND_PRIMARY_COIN "BTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" ON)

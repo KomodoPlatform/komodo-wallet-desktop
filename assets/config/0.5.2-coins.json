@@ -667,7 +667,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BNBT": {
@@ -1035,7 +1035,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BUSD-HRC20": {
@@ -1366,7 +1366,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "DAI-ERC20": {
@@ -1853,7 +1853,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "FJC": {
@@ -3108,7 +3108,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "USDC-ERC20": {
@@ -3278,7 +3278,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "USDT-ERC20": {
