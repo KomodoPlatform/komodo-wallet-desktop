@@ -57,14 +57,14 @@ ComboBox
         implicitWidth: 120
         implicitHeight: 45
         color: control.mainBackgroundColor
-        radius: 20
+        radius: 18
     }
 
     // Dropdown itself
     popup: Popup
     {
         width: control.width
-        height: _list.contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
+        height: _list.contentHeight + 32 // > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
         leftPadding: 0
         rightPadding: 0
         topPadding: 16
