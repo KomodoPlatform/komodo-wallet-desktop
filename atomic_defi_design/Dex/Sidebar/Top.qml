@@ -54,8 +54,17 @@ MouseArea
     {
         id: dexLogo
         anchors.horizontalCenter: parent.horizontalCenter
-        scale: .8
-        source: Dex.CurrentTheme.bigLogoPath
+        scale: isExpanded ? .8 : .5
+        source: isExpanded ? Dex.CurrentTheme.bigLogoPath : Dex.CurrentTheme.logoPath
+
+        Connections
+        {
+            target: Dex.CurrentTheme
+            function onThemeChanged()
+            {
+                dexLogo.source = isExpanded ? Dex.CurrentTheme.bigLogoPath : Dex.CurrentTheme.logoPath
+            }
+        }
 
         DefaultText
         {

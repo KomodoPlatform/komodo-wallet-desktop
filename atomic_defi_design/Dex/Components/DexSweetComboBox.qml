@@ -17,6 +17,8 @@ ComboBox
                                        m.modelData : !m.modelData ?
                                            m[textRole] : m.modelData[textRole]
     property string currentTicker: "All"
+    property color  backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color  popupBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
 
     delegate: ItemDelegate
     {
@@ -25,7 +27,7 @@ ComboBox
         contentItem: DefaultText 
         {
             text_value: control.currentTicker
-            color: DexTheme.foregroundColor
+            color: Dex.CurrentTheme.foregroundColor
         }
     }
 
@@ -54,8 +56,8 @@ ComboBox
 
         implicitHeight: 40
         colorAnimation: false
-        color: Dex.CurrentTheme.floatingBackgroundColor
-        radius: 8
+        color: control.backgroundColor
+        radius: 20
     }
 
     popup: Popup
@@ -66,7 +68,7 @@ ComboBox
 
         y: control.height - 1
         width: control.width + 50
-        height: Math.min(contentItem.implicitHeight, popup.max_height)
+        height: Math.min(contentItem.implicitHeight, popup.max_height) + 20
         padding: 1
 
         contentItem: ColumnLayout
@@ -78,15 +80,13 @@ ComboBox
                 id: input_coin_filter
                 placeholderText: qsTr("Search")
 
-                background: Item
+                background: DefaultRectangle
                 {
-                    DefaultRectangle
-                    {
-                        anchors.fill: parent
-                        anchors.topMargin: -5
-                        anchors.rightMargin: -1
-                        color: Dex.CurrentTheme.floatingBackgroundColor
-                    }
+                    anchors.fill: parent
+                    anchors.topMargin: -5
+                    anchors.rightMargin: -1
+                    radius: 20
+                    color: control.popupBackgroundColor
                 }
 
                 onTextChanged: control.model.setFilterFixedString(text)
@@ -166,13 +166,30 @@ ComboBox
                         background: DefaultRectangle
                         {
                             colorAnimation: false
-                            radius: 0
-                            color: popup_list_view.currentIndex === index ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.floatingBackgroundColor
+                            color: popup_list_view.currentIndex === index ? Dex.CurrentTheme.buttonColorHovered : control.popupBackgroundColor
                         }
 
-                        onClicked: {
+                        onClicked:
+                        {
                             control.currentTicker = ticker
                             popup.close()
+                        }
+                    }
+
+                    ScrollBar.vertical: ScrollBar
+                    {
+                        anchors.right: popup_list_view.right
+                        anchors.rightMargin: 2
+                        width: 7
+                        background: DefaultRectangle
+                        {
+                            radius: 12
+                            color: Dex.CurrentTheme.scrollBarBackgroundColor
+                        }
+                        contentItem: DefaultRectangle
+                        {
+                            radius: 12
+                            color: Dex.CurrentTheme.scrollBarIndicatorColor
                         }
                     }
 
@@ -189,13 +206,14 @@ ComboBox
         background: DefaultRectangle
         {
             y: -5
-            radius: 0
+            radius: 20
             colorAnimation: false
             width: parent.width
             height: parent.height
-            color: Dex.CurrentTheme.floatingBackgroundColor
+            color: control.popupBackgroundColor
         }
     }
+
     DefaultMouseArea
     {
         anchors.fill: parent

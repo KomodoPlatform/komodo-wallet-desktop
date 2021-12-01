@@ -54,6 +54,7 @@
     "textPlaceholderColor": "#91A8E8",
     "textSelectedColor": "#0e1021",
 
+    "textFieldBackgroundColor": "#313555FF",
     "textFieldPrefixColor": "#8790B2FF",
     "textFieldSuffixColor": "#456078FF#",
 

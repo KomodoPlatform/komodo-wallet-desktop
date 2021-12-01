@@ -34,20 +34,32 @@ Rectangle
         }
     }
 
+    // Background on topover of gradient to hide it when the market mode is different
     DefaultRectangle
     {
         anchors.centerIn: parent
         width: parent.width - 2
         height: parent.height - 2
         radius: parent.radius - 1
-        //color: Dex.CurrentTheme.tradeMarketModeSelectorNotSelectedBackgroundColor
-        visible: API.app.trading_pg.market_mode != marketMode
+        color: Dex.CurrentTheme.backgroundColor
+        visible: marketMode != API.app.trading_pg.market_mode
+    }
+
+    // Background when market mode is different
+    DefaultRectangle
+    {
+        anchors.centerIn: parent
+        width: parent.width - 2
+        height: parent.height - 2
+        radius: parent.radius - 1
+        color: Dex.CurrentTheme.tradeMarketModeSelectorNotSelectedBackgroundColor
+        visible: marketMode != API.app.trading_pg.market_mode
     }
 
     DefaultText
     {
         anchors.centerIn: parent
-        opacity: API.app.trading_pg.market_mode == marketMode ? 1 : 0.69
+        color: API.app.trading_pg.market_mode == marketMode ? Dex.CurrentTheme.gradientButtonTextEnabledColor : Dex.CurrentTheme.foregroundColor
         text: (marketMode == Dex.MarketMode.Sell ? qsTr("Sell") : qsTr("Buy")) + ` ${ticker}`
     }
 

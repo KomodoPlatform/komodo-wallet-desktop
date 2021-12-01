@@ -4,27 +4,28 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+
 import "../../../Components"
-import "../../../Constants"
 
 Item
 {
     property bool is_ask: false
     property bool is_horizontal: false
+    height: 40
+    width: parent.width
+    z: 2
 
     RowLayout
     {
-        anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-
+        width: parent.width - 30
+        height: parent.height
+        anchors.horizontalCenter: parent.horizontalCenter
         DefaultText
         {
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-
-            text: is_ask ?
-                      qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")" :
-                      qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: 70
+            text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             font.bold: true
@@ -32,20 +33,23 @@ Item
         }
         DefaultText
         {
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: 100
 
             text: qsTr("Quantity") + " ("+  atomic_qt_utilities.retrieve_main_ticker(left_ticker) +")"
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
+            horizontalAlignment: Label.AlignRight
 
         }
         DefaultText
         {
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-            text: qsTr("Total") + "(" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+            text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"
+            horizontalAlignment: Label.AlignRight
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             font.bold: true

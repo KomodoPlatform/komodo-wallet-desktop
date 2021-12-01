@@ -56,6 +56,7 @@ QtObject
     property color  textPlaceholderColor
     property color  textSelectedColor
 
+    property color  textFieldBackgroundColor
     property color  textFieldPrefixColor
     property color  textFieldSuffixColor
 

@@ -8,9 +8,7 @@ import App 1.0 as App
 
 QtObject {
     id: _font
-
     property real fontDensity: 1.0
-
     property real languageDensity: {
         switch (App.API.app.settings_pg.lang) {
             case "en":
@@ -26,7 +24,6 @@ QtObject {
         }
     }
     property string fontFamily: "Ubuntu"
-
     property font head1: Qt.font({
         pixelSize: 96 * fontDensity,
         letterSpacing: -1.5,
@@ -106,11 +103,4 @@ QtObject {
         family: fontFamily,
         weight: Font.Normal
     })
-
-    property font subtitle3: Qt.font({
-                                         pixelSize: 16 * fontDensity,
-                                         letterSpacing: 0.1,
-                                         family: fontFamily,
-                                         weight: 500
-                                     })
 }

@@ -6,8 +6,8 @@ import Qaterial 1.0 as Qaterial
 
 import App 1.0
 
-Item
-{
+
+Item {
     id: _control
 
     property bool hide_header: false
@@ -18,8 +18,6 @@ Item
     {
         visible: !hide_header
         is_ask: isAsk
-        width: parent.width
-        height: 40
     }
 
     ListView
@@ -49,9 +47,7 @@ Item
 
         delegate: ListDelegate
         {
-            width: orderList.width
-            height: 36
-            isAsk: _control.isAsk
+            isAsk: _control.isAsk ? true : false
         }
     }
 }

@@ -11,7 +11,6 @@ import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 
 import "../../Components"
-import "../../Constants"
 import "../../Wallet"
 
 import App 1.0
@@ -35,12 +34,10 @@ import Dex.Themes 1.0 as Dex
 
 import "../ProView"
 
-GridLayout
-{
+ColumnLayout {
     id: form
-
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
-    {
+    property alias dexConfig: dex_config_popup
+    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = {
@@ -60,32 +57,18 @@ GridLayout
             "base_max_volume_numer": base_max_volume_numer,
             "uuid": uuid
         }
+
         form_base.focusVolumeField()
     }
-
-    function prefWidth(item) { return (width / columns) * item.Layout.columnSpan; }
-    function prefHeight(item) { return (height / rows) * item.Layout.rowSpan; }
-
-    anchors.topMargin: 20
-    anchors.leftMargin: 10
-    anchors.fill: parent
-
-    rows: 12
-    columns: 12
-
-    columnSpacing: 20
-
-    Connections
-    {
+    Connections {
         target: exchange_trade
-        function onBuy_sell_rpc_busyChanged()
-        {
+        function onBuy_sell_rpc_busyChanged() {
             if (buy_sell_rpc_busy)
                 return
 
             const response = General.clone(buy_sell_last_rpc_data)
-            if (response.error_code)
-            {
+
+            if (response.error_code) {
                 confirm_trade_modal.close()
 
                 toast.show(qsTr("Failed to place the order"),
@@ -93,9 +76,7 @@ GridLayout
                            response.error_message)
 
                 return
-            }
-            else if (response.result && response.result.uuid)
-            {
+            } else if (response.result && response.result.uuid) {
                 // Make sure there is information
                 confirm_trade_modal.close()
 
@@ -107,380 +88,582 @@ GridLayout
             }
         }
     }
-
-    Connections
-    {
+    spacing: 10
+    anchors.topMargin: 20
+    anchors.leftMargin: 10
+    anchors.fill: parent
+    Connections {
         target: app
-        function onPairChanged(base, rel) { dex_chart.visible = true }
+        function onPairChanged(base, rel) {
+            dex_chart.visible = true
+        }
     }
 
-    // Ticker selectors.
-    RowLayout
-    {
-        id: selectors
-        spacing: 20
-        Layout.rowSpan: 1
-        Layout.columnSpan: 5
-        Layout.preferredWidth: prefWidth(this)
-        Layout.preferredHeight: prefHeight(this)
+    DexBoxManager {
+        id: splitView
         Layout.fillWidth: true
         Layout.fillHeight: true
-
-        TickerSelector
-        {
-            id: selector_left
-            Layout.alignment: Qt.AlignLeft
-            Layout.fillWidth: true
-
-            left_side: true
-            ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
-            ticker: left_ticker
+        itemLists: [left_section, order_form]
+        spacing: 15
+        handle: Item {
+            implicitWidth: 2
+            implicitHeight: 4
+            Rectangle {
+                implicitWidth: 2
+                implicitHeight: 4
+                anchors.centerIn: parent
+                opacity: 0
+                color: 'transparent'
+            }
         }
 
-        SwapIcon
-        {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: selector_left.height * 0.65
-            Layout.fillWidth: true
-
-            top_arrow_ticker: selector_left.ticker
-            bottom_arrow_ticker: selector_right.ticker
-            hovered: swap_button.containsMouse
-
-            DefaultMouseArea
-            {
-                id: swap_button
+        DexTradeBox {
+            id: left_section
+            minimumWidth: 550
+            defaultWidth: 560
+            expandedHort: true
+            hideHeader: true
+            SplitView.fillHeight: true
+            color: 'transparent'
+            DexBoxManager {
                 anchors.fill: parent
-                hoverEnabled: true
-                onClicked:
-                {
-                    if (!block_everything)
-                        setPair(true, right_ticker)
+                anchors.margins: 0
+                anchors.rightMargin: 0
+                orientation: Qt.Vertical
+                handle: Item {
+                    implicitWidth: 40
+                    implicitHeight: 6
+                    InnerBackground {
+                        implicitWidth: 40
+                        implicitHeight: 6
+                        anchors.centerIn: parent
+                        opacity: 0.4
+                    }
                 }
-            }
-        }
+                itemLists: [dex_chart, optionBox]
+                DexTradeBox {
+                    id: dex_chart
+                    title: qsTr("Chart")
+                    expandedVert: dex_chart.visible? true : false
+                    onVisibleChanged: {
+                        if(visible) {
+                            expandedVert = true
+                        }
+                    }
+                    canBeFull: true
+                    onFullScreenChanged: {
+                        if(fullScreen){
+                            _best_order_box.visible = false 
+                            _orderbook_box.visible = false
+                            optionBox.visible = false
+                            order_form.visible = false
+                        } else {
+                            _best_order_box.visible = true 
+                            _orderbook_box.visible = true
+                            optionBox.visible = true
+                            order_form.visible = true
+                        }
+                    }
+                    Item {
+                        id: chart_view
+                        anchors.fill: parent
+                        anchors.topMargin: 40
+                        CandleStickChart {
+                            id: candleChart
+                            color: 'transparent'
+                            anchors.fill: parent
+                        }
 
-        TickerSelector
-        {
-            id: selector_right
-            Layout.alignment: Qt.AlignRight
-            Layout.fillWidth: true
+                        Component.onCompleted:
+                        {
+                            dashboard.webEngineView.parent = chart_view;
+                            dashboard.webEngineView.anchors.fill = chart_view;
+                        }
+                        Component.onDestruction:
+                        {
+                            dashboard.webEngineView.visible = false;
+                            dashboard.webEngineView.stop();
+                        }
+                    }
+                }
+                DexTradeBox
+                {
+                    canBeFull: true
+                    hideHeader: true
+                    maximumHeight: 80
+                    minimumHeight: 75
+                    color: 'transparent'
+                    RowLayout
+                    {
+                        id: selectors
+                        spacing: 20
+                        anchors.fill: parent
+                        anchors.rightMargin: 10
+                        anchors.leftMargin: 10
+                        TickerSelector
+                        {
+                            id: selector_left
+                            left_side: true
+                            ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
+                            ticker: left_ticker
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                            Layout.fillWidth: true
+                        }
 
-            left_side: false
-            ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
-            ticker: right_ticker
-        }
-    }
+                        SwapIcon
+                        {
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                            Layout.preferredHeight: selector_left.height * 0.65
 
-    DexTradeBox
-    {
-        visible: false
-        enabled: false
-        id: dex_chart
-        title: qsTr("Chart")
-        expandedVert: dex_chart.visible? true : false
-        onVisibleChanged: {
-            if(visible) {
-                expandedVert = true
-            }
-        }
-        canBeFull: true
-        onFullScreenChanged: {
-            if(fullScreen){
-                _best_order_box.visible = false
-                _orderbook_box.visible = false
-                optionBox.visible = false
-                order_form.visible = false
-            } else {
-                _best_order_box.visible = true
-                _orderbook_box.visible = true
-                optionBox.visible = true
-                order_form.visible = true
+                            top_arrow_ticker: selector_left.ticker
+                            bottom_arrow_ticker: selector_right.ticker
+                            hovered: swap_button.containsMouse
+
+                            DefaultMouseArea
+                            {
+                                id: swap_button
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                onClicked:
+                                {
+                                    if (!block_everything)
+                                        setPair(true, right_ticker)
+                                }
+                            }
+                        }
+
+                        TickerSelector
+                        {
+                            id: selector_right
+                            left_side: false
+                            ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
+                            ticker: right_ticker
+                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                }
+
+                
+                DexTradeBox
+                {
+                    id: optionBox
+                    expandedVert: dex_chart.visible? false : true
+                    expandable: true
+                    defaultHeight: tabView.currentIndex === 0 ? 200 : isUltraLarge? 400 : 270
+                    closable: true
+                    title: qsTr("Trading Information")
+
+                    Connections
+                    {
+                        target: tabView
+                        function onCurrentIndexChanged() {
+                            if (tabView.currentIndex !== 0) {
+                                optionBox.setHeight(isUltraLarge? 400 : 270)
+                            } else {
+                                optionBox.setHeight(200)
+                            }
+                        }
+                    }
+
+                    Column
+                    {
+                        topPadding: 40
+                        width: parent.width
+                        height: parent.height
+                        clip: !parent.contentVisible
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        Qaterial.LatoTabBar
+                        {
+                            property int taux_exchange: 0
+                            property int order_idx: 1
+                            property int history_idx: 2
+
+                            z: 4
+                            id: tabView
+                            width: parent.width
+                            currentIndex: tabView.currentIndex
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            Material.foreground: DexTheme.foregroundColor
+                            background: null
+                            y: 5
+                            leftPadding: 15
+
+                            Qaterial.LatoTabButton
+                            {
+                                width: 150
+                                text: qsTr("Exchange Rates")
+                                font.pixelSize: 14
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                opacity: checked ? 1 : .6
+                            }
+                            Qaterial.LatoTabButton
+                            {
+                                width: 120
+                                text: qsTr("Orders")
+                                font.pixelSize: 14
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                opacity: checked ? 1 : .6
+                            }
+                            Qaterial.LatoTabButton
+                            {
+                                width: 120
+                                text: qsTr("History")
+                                font.pixelSize: 14
+                                textColor: checked ? Qaterial.Style.buttonAccentColor : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                opacity: checked ? 1 : .6
+                            }
+                        }
+                        Item
+                        {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: parent.width
+                            height: optionBox.height - (tabView.height + 40)
+                            SwipeView
+                            {
+                                id: swipeView
+                                clip: true
+                                interactive: false
+                                currentIndex: tabView.currentIndex
+                                anchors.fill: parent
+                                onCurrentIndexChanged:
+                                {
+                                    swipeView.currentItem.update();
+                                    if (currentIndex === 2) history_component.list_model_proxy.is_history = true;
+                                    else history_component.list_model_proxy.is_history = false;
+                                }
+
+                                PriceLine { id: price_line_obj }
+
+                                OrdersView.OrdersPage { id: order_component; clip: true }
+                                OrdersView.OrdersPage
+                                {
+                                    id: history_component
+                                    is_history: true
+                                    clip: true
+                                }
+                            }
+                        }
+                    }
+                }
+                Item { SplitView.maximumHeight: 1 }
             }
         }
         Item {
-            id: chart_view
-            anchors.fill: parent
-            anchors.topMargin: 40
-            CandleStickChart {
-                id: candleChart
-                color: 'transparent'
+            id: _book_and_best
+            property bool showing: (_best_order_box.visible || _orderbook_box.visible)
+            SplitView.minimumWidth: showing? 320 : 0
+            SplitView.maximumWidth: showing? 330 : 0
+            SplitView.preferredWidth: showing? 280 : 0
+            clip: true
+            DexBoxManager {
                 anchors.fill: parent
-            }
+                orientation: Qt.Vertical
+                handle: Item {
+                    implicitWidth: 40
+                    implicitHeight: 6
+                    InnerBackground {
+                        implicitWidth: 40
+                        implicitHeight: 6
+                        anchors.centerIn: parent
+                        opacity: 0.4
+                    }
+                }
+                itemLists: [_orderbook_box, _best_order_box]
+                DexTradeBox
+                {
+                    id: _orderbook_box
+                    SplitView.fillWidth: true
+                    closable: true
+                    title: qsTr("Order Book")
+                    expandedVert: true
+                    Behavior on SplitView.preferredWidth
+                    {
+                        NumberAnimation
+                        {
+                            duration: 100
+                        }
+                    }
+                    OrderBook.Vertical
+                    {
+                        clip: !parent.contentVisible
+                        visible: parent.contentVisible
+                        anchors.topMargin: 40
+                        anchors.fill: parent
+                    }
+                }
+                DexTradeBox {
+                    id: _best_order_box
 
-            Component.onCompleted:
-            {
-                dashboard.webEngineView.parent = chart_view;
-                dashboard.webEngineView.anchors.fill = chart_view;
-            }
-            Component.onDestruction:
-            {
-                dashboard.webEngineView.visible = false;
-                dashboard.webEngineView.stop();
+                    defaultHeight: 250
+                    minimumHeight: 130
+                    closable: true
+                    title: qsTr("Best Orders")
+                    reloadable: true
+                    onReload: API.app.trading_pg.orderbook.refresh_best_orders()
+
+                    Behavior on SplitView.preferredWidth
+                    {
+                        NumberAnimation
+                        {
+                            duration: 100
+                        }
+                    }
+
+                    BestOrder.List
+                    {
+                        clip: !parent.contentVisible
+                        id: best_order_list
+                        visible: parent.contentVisible
+                        y: 40
+                        width: parent.width
+                        height: parent.height-40
+                    }
+                }
             }
         }
-    }
 
-    OrderBook.Vertical
-    {
-        Layout.columnSpan: 4
-        Layout.rowSpan: 5
-        Layout.preferredWidth: prefWidth(this)
-        Layout.preferredHeight: prefHeight(this)
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-    }
-
-    // Place order form.
-    Rectangle
-    {
-        Layout.columnSpan: 3
-        Layout.rowSpan: 6
-        Layout.preferredWidth: prefWidth(this)
-        Layout.preferredHeight: prefHeight(this)
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        radius: 10
-        color: Dex.CurrentTheme.floatingBackgroundColor
-
-        ColumnLayout
+        DexTradeBox
         {
-            anchors.fill: parent
-            spacing: 10
-
-            DefaultText
-            {
-                Layout.topMargin: 20
-                Layout.leftMargin: 20
-                text: qsTr("Place Order")
-                font: DexTypo.subtitle3
-            }
-
-            // Market mode selector
-            RowLayout
-            {
-                spacing: 10
-                Layout.topMargin: 10
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: true
-                MarketModeSelector
-                {
-                    Layout.alignment: Qt.AlignHCenter
-                    marketMode: MarketMode.Buy
-                    ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-                }
-                MarketModeSelector
-                {
-                    Layout.alignment: Qt.AlignHCenter
-                    ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-                }
-            }
-
-            // Order selected indicator
-            Rectangle
-            {
-                visible: API.app.trading_pg.preffered_order.price !== undefined
-                Layout.preferredWidth: parent.width - 20
-                Layout.preferredHeight: 40
-                Layout.alignment: Qt.AlignHCenter
-                radius: 8
-                color: 'transparent'
-                border.color: Dex.CurrentTheme.noColor
-
-                DefaultText
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    leftPadding: 15
-                    color: Dex.CurrentTheme.noColor
-                    text: qsTr("Order Selected")
-                }
-
-                Qaterial.FlatButton
-                {
-                    foregroundColor: Dex.CurrentTheme.noColor
-                    icon.source: Qaterial.Icons.close
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: 40
-                    width: 40
-                    anchors.rightMargin: 15
-                    onClicked: API.app.trading_pg.reset_order()
-                }
-            }
-
-            OrderForm
-            {
-                id: form_base
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 10
-                Layout.rightMargin: 10
-                Layout.alignment: Qt.AlignHCenter
-            }
-
-            TotalView
-            {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 10
-                Layout.rightMargin: 10
-                Layout.alignment: Qt.AlignHCenter
-            }
-
-            FeeInfo
-            {
-                id: bg
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 10
-                Layout.rightMargin: 10
-                visible: false
-            }
-
-            DexGradientAppButton
-            {
-                Layout.preferredHeight: 40
-                Layout.preferredWidth: parent.width - 20
-                Layout.alignment: Qt.AlignHCenter
-                radius: 18
-
-                text: qsTr("START SWAP")
-                font.weight: Font.Medium
-                enabled: form_base.can_submit_trade
-                onClicked: confirm_trade_modal.open()
-            }
-
+            id: order_form
+            closable: true
+            title: qsTr("Place Order")
+            defaultWidth: isBigScreen ? 300 : 280
+            maximumWidth: isBigScreen ? 310 : 280
+            minimumWidth: isBigScreen ? 290 : 280
+            expandable: false
+            SplitView.fillHeight: true
             ColumnLayout
             {
-                spacing: parent.spacing
-                visible: errors.text_value !== ""
-                Layout.fillWidth: true
-                Layout.preferredWidth: parent.width
-
-                HorizontalLine
-                {
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: parent.width
-                }
-
-                // Show errors
-                DefaultText
-                {
-                    id: errors
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.fillWidth: true
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: Style.textSizeSmall4
-                    color: Dex.CurrentTheme.noColor
-                    text_value: General.getTradingError(
-                                    last_trading_error,
-                                    curr_fee_info,
-                                    base_ticker,
-                                    rel_ticker, left_ticker, right_ticker)
-                }
-            }
-        }
-    }
-
-    Column
-    {
-        Layout.topMargin: 20
-        Layout.rowSpan: 5
-        Layout.columnSpan: 5
-        Layout.preferredWidth: prefWidth(this)
-        Layout.preferredHeight: prefHeight(this)
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-        DefaultText { font: DexTypo.subtitle3; text: qsTr("Trading Information") }
-        Qaterial.LatoTabBar
-        {
-            id: tabView
-            property int taux_exchange: 0
-            property int order_idx: 1
-            property int history_idx: 2
-
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            Material.foreground: Dex.CurrentTheme.foregroundColor
-            background: null
-            topPadding: 15
-            leftPadding: 5
-
-            Qaterial.LatoTabButton
-            {
-                width: 150
-                text: qsTr("Exchange Rates")
-                font.pixelSize: 14
-                textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-                opacity: checked ? 1 : .6
-            }
-            Qaterial.LatoTabButton
-            {
-                width: 120
-                text: qsTr("Orders")
-                font.pixelSize: 14
-                textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-                opacity: checked ? 1 : .6
-            }
-            Qaterial.LatoTabButton
-            {
-                width: 120
-                text: qsTr("History")
-                font.pixelSize: 14
-                textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-                opacity: checked ? 1 : .6
-            }
-        }
-        Rectangle
-        {
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
-            height: 436
-            color: Dex.CurrentTheme.floatingBackgroundColor
-            radius: 10
-
-            Qaterial.SwipeView
-            {
-                id: swipeView
-                clip: true
-                interactive: false
-                currentIndex: tabView.currentIndex
+                visible: parent.contentVisible
+                anchors.topMargin: 60
                 anchors.fill: parent
-                onCurrentIndexChanged:
+                Row
                 {
-                    swipeView.currentItem.update();
-                    if (currentIndex === 2) history_component.list_model_proxy.is_history = true;
-                    else history_component.list_model_proxy.is_history = false;
+                    width: parent.width
+                    spacing: 10
+                    Layout.alignment: Qt.AlignHCenter
+                    MarketModeSelector
+                    {
+                        marketMode: MarketMode.Buy
+                        ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+                    }
+                    MarketModeSelector
+                    {
+                        ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+                    }
                 }
-
-                PriceLine { id: price_line_obj }
-
-                OrdersView.OrdersPage { id: order_component; clip: true }
-                OrdersView.OrdersPage
+                Item
                 {
-                    id: history_component
-                    is_history: true
-                    clip: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    ColumnLayout
+                    {
+                        property int space: 10
+                        anchors.fill: parent
+                        anchors.topMargin: 5
+                        spacing: 10
+                        Item
+                        {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 40
+                            visible: API.app.trading_pg.preffered_order.price !== undefined
+                            Rectangle
+                            {
+                                width: parent.width - 20
+                                height: 40
+                                radius: 8
+                                color: 'transparent'
+                                border.color: Dex.CurrentTheme.noColor
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                y: 5
+
+                                DefaultText
+                                {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    leftPadding: 15
+                                    color: Dex.CurrentTheme.noColor
+                                    text: qsTr("Order Selected")
+                                }
+
+                                Qaterial.FlatButton
+                                {
+                                    foregroundColor: Dex.CurrentTheme.noColor
+                                    icon.source: Qaterial.Icons.close
+                                    anchors.right: parent.right
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    height: 40
+                                    width: 40
+                                    anchors.rightMargin: 15
+                                    onClicked: API.app.trading_pg.reset_order()
+                                }
+                            }
+                        }
+
+                        OrderForm
+                        {
+                            id: form_base
+                            Layout.fillWidth: true
+                            Layout.leftMargin: 10
+                            Layout.rightMargin: 10
+                            Layout.preferredHeight: 270
+                            Layout.alignment: Qt.AlignHCenter
+                        }
+
+                        Item
+                        {
+                            Layout.preferredHeight: 90
+                            Layout.fillWidth: true
+                            TotalView {}
+                        }
+
+                        Item
+                        {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            Layout.leftMargin: 10
+                            Layout.rightMargin: 10
+                            Column
+                            {
+                                anchors.fill: parent
+                                anchors.leftMargin: 5
+                                anchors.rightMargin: 5
+                                FeeInfo
+                                {
+                                    id: bg
+                                    visible: false
+                                }
+                                spacing: 15
+
+                                // Trade button
+                                DexGradientAppButton
+                                {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    width: 262
+                                    height: 44
+                                    radius: 18
+
+                                    text: qsTr("START SWAP")
+                                    font.weight: Font.Medium
+                                    enabled: form_base.can_submit_trade
+                                    onClicked: confirm_trade_modal.open()
+                                }
+
+                                Column
+                                {
+                                    spacing: parent.spacing
+                                    visible: errors.text_value !== ""
+                                    width: parent.width
+                                    bottomPadding: 10
+                                    HorizontalLine
+                                    {
+                                        Layout.fillWidth: true
+                                        Layout.bottomMargin: layout_margin
+                                    }
+
+                                    // Show errors
+                                    DefaultText
+                                    {
+                                        id: errors
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        width: parent.width
+                                        horizontalAlignment: DefaultText.AlignHCenter
+                                        font.pixelSize: Style.textSizeSmall4
+                                        color: DexTheme.redColor
+
+                                        text_value: General.getTradingError(
+                                                        last_trading_error,
+                                                        curr_fee_info,
+                                                        base_ticker,
+                                                        rel_ticker, left_ticker, right_ticker)
+                                    }
+                                }
+                            }
+                        }
+                        Item {}
+                    }
                 }
             }
         }
     }
 
-    BestOrder.List
-    {
-        Layout.rowSpan: 5
-        Layout.columnSpan: 4
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-        id: best_order_list
-    }
-
-    ModalLoader
-    {
+    ModalLoader {
         id: confirm_trade_modal
         sourceComponent: ConfirmTradeModal {}
     }
+    DexPopup {
+        id: dex_config_popup
+        spacing: 8
+        padding: 4
+        arrowXDecalage: 75
+        backgroundColor: DexTheme.dexBoxBackgroundColor
+        Settings {
+            id: proview_settings
+            property bool chart_visibility: true
+            property bool option_visibility: true
+            property bool orderbook_visibility: true
+            property bool best_order_visibility: false
+            property bool form_visibility: true
+        }
+
+        contentItem: Item {
+            implicitWidth: 350
+            implicitHeight: 190
+            Column {
+                anchors.fill: parent
+                rightPadding: 20
+                padding: 10
+                spacing: 8
+                DexLabel {
+                    text: "Display Settings"
+                    font: DexTypo.body2
+                }
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
+                    text: "Trading Information"
+                    targetProperty: "visible"
+                    target: optionBox
+                }
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
+                    text: "Order Book"
+                    targetProperty: "visible"
+                    target: _orderbook_box
+                }
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
+                    text: "Best Order"
+                    targetProperty: "visible"
+                    target: _best_order_box
+                }
+                HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+                DexCheckEye {
+                    id: place_visibility
+                    text: "Place Order"
+                    targetProperty: "visible"
+                    target: order_form
+                }
+            }
+            Component.onCompleted: {
+                dex_chart.visible = proview_settings.chart_visibility
+                optionBox.visible = proview_settings.option_visibility
+                _orderbook_box.visible = proview_settings.orderbook_visibility
+                _best_order_box.visible = proview_settings.best_order_visibility
+                order_form.visible = proview_settings.form_visibility
+            }
+            Component.onDestruction: {
+                proview_settings.form_visibility = order_form.visible
+                proview_settings.chart_visibility = dex_chart.visible
+                proview_settings.option_visibility = optionBox.visible
+                proview_settings.orderbook_visibility = _orderbook_box.visible 
+                proview_settings.best_order_visibility = _best_order_box.visible
+            }
+        }
+    }
+
+
 }

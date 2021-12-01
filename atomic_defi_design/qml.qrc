@@ -498,7 +498,7 @@
         <file>Dex/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>Dex/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>Dex/Exchange/Trade/DefaultSweetModal.qml</file>
-        <file>Dex/Exchange/ProView/DexComboBoxLine.qml</file>
+        <file>Dex/Exchange/Trade/DexComboBoxLine.qml</file>
         <file>Dex/Exchange/Trade/FeeIcon.qml</file>
         <file>Dex/Exchange/Trade/MultiOrder.qml</file>
         <file>Dex/Exchange/Trade/OrderBook/Header.qml</file>
@@ -524,8 +524,8 @@
         <file>Dex/Exchange/Trade/SimpleView/SubCoinSelector.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/SubOrders.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/SubHistory.qml</file>
-        <file>Dex/Exchange/ProView/SweetDexComboBox.qml</file>
-        <file>Dex/Exchange/ProView/TickerSelector.qml</file>
+        <file>Dex/Exchange/Trade/SweetDexComboBox.qml</file>
+        <file>Dex/Exchange/Trade/TickerSelector.qml</file>
         <file>Dex/Exchange/Trade/Trade.qml</file>
         <file>Dex/Exchange/Trade/TradeBox/BuyBox.qml</file>
         <file>Dex/Exchange/Trade/TradeBox/OrderForm.qml</file>
