@@ -66,8 +66,7 @@ ComboBox
 
         readonly property double max_height: 350
 
-        y: control.height - 1
-        width: control.width + 50
+        width: control.width
         height: Math.min(contentItem.implicitHeight, popup.max_height) + 20
         padding: 1
 
