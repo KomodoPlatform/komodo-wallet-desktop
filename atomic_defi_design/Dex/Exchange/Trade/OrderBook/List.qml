@@ -7,27 +7,39 @@ import Qaterial 1.0 as Qaterial
 import App 1.0
 
 
-Item {
+Item
+{
     id: _control
 
-    property bool hide_header: false
     property bool isAsk
     property bool isVertical: false
-
-    Header
-    {
-        visible: !hide_header
-        is_ask: isAsk
-    }
 
     ListView
     {
         id: orderList
-        anchors.topMargin: hide_header ? 0 : 40
         anchors.fill: parent
         model: isAsk ? API.app.trading_pg.orderbook.asks.proxy_mdl : API.app.trading_pg.orderbook.bids.proxy_mdl
         clip: true
         reuseItems: true
+        spacing: 8
+
+        onContentHeightChanged :
+        {
+            if (isVertical) _tm.start();
+        }
+
+        delegate: Item
+        {
+            width: orderList.width
+            height: 24
+            ListDelegate
+            {
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                isAsk: _control.isAsk ? true : false
+            }
+        }
 
         Timer
         {
@@ -37,17 +49,6 @@ Item {
             {
                 orderList.positionViewAtEnd()
             }
-        }
-        onContentHeightChanged :
-        {
-            if(isVertical) {
-                _tm.start()
-            }
-        }
-
-        delegate: ListDelegate
-        {
-            isAsk: _control.isAsk ? true : false
         }
     }
 }

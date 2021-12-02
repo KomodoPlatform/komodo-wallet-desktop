@@ -5,111 +5,118 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
-
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-Item {
+Item
+{
     property bool isAsk
-    width: visible? orderList.width : 0
-    height: 36
 
-    AnimatedRectangle {
+    AnimatedRectangle
+    {
         visible: mouse_are.containsMouse
         width: parent.width
         height: parent.height
-        color: DexTheme.foregroundColor
+        color: Dex.CurrentTheme.foregroundColor
         opacity: 0.1
     }
 
-    Rectangle {
+    Rectangle
+    {
         anchors.verticalCenter: parent.verticalCenter
         width: 6
         height: 6
-        radius: width/2
-        x: 3
+        radius: width / 2
         visible: is_mine
-        color: isAsk? DexTheme.redColor : DexTheme.greenColor
+        color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
     }
-    HorizontalLine {
-        width: parent.width
-        opacity: .4
-    }
-    Rectangle {
-        id: progress
-        height: 2
+
+    // Progress bar
+    Rectangle
+    {
         anchors.bottom: parent.bottom
+        height: 2
         radius: 3
-        x: 10
-        color: isAsk? DexTheme.redColor : DexTheme.greenColor
-        width: 0
-        Component.onCompleted: width =((depth * 100) * (parent.width + 40)) / 100
-        opacity: 0.8
-        Behavior on width {
-            NumberAnimation {
-                duration: 1000
-            }
+        color: Dex.CurrentTheme.backgroundColor
+        width: parent.width
+
+        Rectangle
+        {
+            anchors.top: parent.top
+            height: 2
+            radius: 3
+            color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+            width: 0
+            Component.onCompleted: width = ((depth * 100) * (parent.parent.width + 40)) / 100
+            opacity: 0.8
+            Behavior on width { NumberAnimation { duration: 1000 } }
         }
     }
-    RowLayout {
+
+    RowLayout
+    {
         id: row
-        width:  mouse_are.containsMouse?  parent.width - 15 : parent.width - 30
-        height: parent.height
+        anchors.fill: parent
         anchors.horizontalCenter: parent.horizontalCenter
         onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
-        spacing: 10
-        Qaterial.ColorIcon {
-            visible: mouse_are.containsMouse &&  !enough_funds_to_pay_min_volume
+
+        Qaterial.ColorIcon
+        {
+            visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume
             source: Qaterial.Icons.alert
             Layout.alignment: Qt.AlignVCenter
             iconSize: 12
             color: Qaterial.Colors.amber
         }
-        DefaultTooltip {
-            visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume
-            width: 300
-            contentItem: DefaultText {
-                text_value: qsTr("This order require a minimum amount of %1 %2 <br>You don't have enough funds.<br> Your max balance after fees is: (%3)").arg(min_volume).arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin).arg(isAsk ? API.app.trading_pg.orderbook.rel_max_taker_vol.decimal : API.app.trading_pg.orderbook.base_max_taker_vol.decimal)
-                wrapMode: DefaultText.Wrap
-                width: 300
-            }
-            delay: 200
-        }
-        DexLabel {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 70
-            text: parseFloat(General.formatDouble(
-                                 price, General.amountPrecision, true)).toFixed(8)
+
+        // Price
+        DefaultText
+        {
+            Layout.preferredWidth: (parent.width / 100) * 30
+            text: parseFloat(General.formatDouble(price, General.amountPrecision, true)).toFixed(8)
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
-            color: isAsk? DexTheme.redColor : DexTheme.greenColor
-
+            color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+            elide: Text.ElideRight
         }
-        DexLabel {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 100
+
+        // Quantity
+        DefaultText
+        {
+            Layout.preferredWidth: (parent.width / 100) * 30
             text: parseFloat(quantity).toFixed(6)
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
-            horizontalAlignment: Label.AlignRight
-            opacity: 1
-
+            elide: Text.ElideRight
         }
-        DexLabel {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
-            text: parseFloat(total).toFixed(8)
-            Behavior on rightPadding {
-                NumberAnimation {
-                    duration: 150
-                }
-            }
+
+        // Total
+        DefaultText
+        {
+            Layout.preferredWidth: (parent.width / 100) * 30
             rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
-            horizontalAlignment: Label.AlignRight
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
-            opacity: 1
+            text: parseFloat(total).toFixed(8)
+            elide: Text.ElideRight
 
+            Behavior on rightPadding { NumberAnimation { duration: 150 } }
         }
+    }
+
+    DefaultTooltip
+    {
+        visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume
+        width: 300
+        contentItem: DefaultText
+        {
+            text_value: qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> Your max balance after fees is: (%3)")
+                            .arg(parseFloat(min_volume).toFixed(8))
+                            .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
+                            .arg(isAsk ? parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal).toFixed(8) : parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal).toFixed(8))
+            width: 300
+        }
+        delay: 200
     }
 
 
@@ -178,12 +185,12 @@ Item {
             }
         }
     }
-    AnimatedRectangle {
+
+    AnimatedRectangle
+    {
         visible: !enough_funds_to_pay_min_volume && mouse_are.containsMouse
         color: DexTheme.dexBoxBackgroundColor
         anchors.fill: parent
         opacity: .3
     }
-
-    
 }
