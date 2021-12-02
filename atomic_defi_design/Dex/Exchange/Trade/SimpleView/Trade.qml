@@ -811,6 +811,7 @@ ClipRRect // Trade Card
                     source: Qaterial.Icons.magnify
                     x: 25
                     opacity: .7
+                    color: Dex.CurrentTheme.textPlaceholderColor
                 }
                 DexTextField
                 {
@@ -827,7 +828,7 @@ ClipRRect // Trade Card
                     }
                     onTextChanged:
                     {
-                      Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
+                        Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
                     }
                 }
             }
