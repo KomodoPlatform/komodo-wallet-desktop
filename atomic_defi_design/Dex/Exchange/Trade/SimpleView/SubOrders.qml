@@ -11,7 +11,7 @@ import "../../../Components"
 import "../../../Constants" as Constants  //> Style
 import "../Orders" as Orders
 import "Main.js" as Main
-
+import Dex.Themes 1.0 as Dex
 import App 1.0
 
 Item
@@ -131,7 +131,8 @@ Item
             Layout.fillWidth: true
         }
 
-        Item {
+        Item
+        {
             id: main_order
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -141,40 +142,39 @@ Item
 
             List { id: order_list_view }
 
-            DexRectangle {
-                anchors.fill: parent 
-                color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
-                opacity: .8
-                visible: _subOrdersRoot.displayFilter
-                border.width: 0
-            }
-
-            DexRectangle {
-                width: parent.width
+            DefaultRectangle
+            {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width - 20
                 height: _subOrdersRoot.displayFilter ? parent.height : 60
                 visible: height > 100
-                sizeAnimation: true
-                color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
-                radius: 0
-                y: -20
-                Column {
+                radius: 18
+
+                Column
+                {
                     anchors.horizontalCenter: parent.horizontalCenter
                     leftPadding: 15 
                     rightPadding: 15
                     visible: parent.height > 250
-                    DexLabel {
+
+                    DexLabel
+                    {
                         text: qsTr("Filter settings")
                         topPadding: 10
                         leftPadding: 10
                         font: DexTypo.head6
                         opacity: .8
                     }
-                    RowLayout {
+
+                    RowLayout
+                    {
                         width: main_order.width - 30
                         height: 35
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 0
-                        DefaultSweetComboBox {
+
+                        DefaultSweetComboBox
+                        {
                             id: combo_base
                             Layout.fillWidth: true
                             model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy
@@ -185,12 +185,15 @@ Item
                         }
                         
                     }
-                    RowLayout {
+                    RowLayout
+                    {
                         width: main_order.width - 30
                         height: 35
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 5
-                        DefaultSweetComboBox {
+
+                        DefaultSweetComboBox
+                        {
                             id: combo_rel
                             Layout.fillWidth: true
                             model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
@@ -198,17 +201,17 @@ Item
                             height: 60
                             valueRole: "ticker"
                             textRole: 'ticker'
-
                         }
-                        
                     }
 
-                    RowLayout {
+                    RowLayout
+                    {
                         width: main_order.width - 40
                         height: 50
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 5
-                        Qaterial.TextFieldDatePicker {
+                        Qaterial.TextFieldDatePicker
+                        {
                             id: min_date
                             title: qsTr("From")
                             from: default_min_date
@@ -222,7 +225,8 @@ Item
                             backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                         }
 
-                        Qaterial.TextFieldDatePicker {
+                        Qaterial.TextFieldDatePicker
+                        {
                             id: max_date
                             enabled: min_date.enabled
                             title: qsTr("To")
@@ -234,45 +238,43 @@ Item
                             Layout.fillHeight: true
                             rightInset: 0
                             opacity: .8
-                            color: DexTheme.foregroundColor
+                            color: Dex.CurrentTheme.foregroundColor
                             backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                         }
                         
                     }
-
                     spacing: 10
-
                 }
 
-                Item {
+                Item
+                {
                     anchors.bottom: parent.bottom
                     width: parent.width - 40
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 60
-                    RowLayout {
+                    RowLayout
+                    {
                         anchors.fill: parent
                         spacing: 15
-                        DexAppButton {
+                        DefaultButton
+                        {
                             Layout.fillWidth: true
-                            radius: 10
                             Layout.alignment: Qt.AlignVCenter
+                            radius: 10
                             text: qsTr("Cancel")
-                            onClicked: {
-                                _subOrdersRoot.displayFilter = false
-                            }
+                            onClicked: _subOrdersRoot.displayFilter = false
                         }
-                        DexAppOutlineButton {
-                            id: applyButton
-                            height: 35
+                        DefaultButton
+                        {
                             Layout.fillWidth: true
-                            radius: 10
                             Layout.alignment: Qt.AlignVCenter
-                            opacity: containsMouse ? .7 : 1
+                            radius: 10
                             text: qsTr("Apply filter")
-                            onClicked: {
-                                _subOrdersRoot.displayFilter = false
-                                _subOrdersRoot.applyFilter()
-                                _subOrdersRoot.applyAllFiltering()
+                            onClicked:
+                            {
+                                _subOrdersRoot.displayFilter = false;
+                                _subOrdersRoot.applyFilter();
+                                _subOrdersRoot.applyAllFiltering();
                             }
                         }
                     }
@@ -285,7 +287,8 @@ Item
             height: 2
             Layout.fillWidth: true
         }
-        Item {
+        Item
+        {
             Layout.fillWidth: true
             Layout.preferredHeight: 15
             DexLabel // Title
@@ -293,7 +296,6 @@ Item
                 text: order_list_view.count + " " + qsTr("Orders")
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: -10
-                //anchors.verticalCenterOffset: -4
             }
         }
         

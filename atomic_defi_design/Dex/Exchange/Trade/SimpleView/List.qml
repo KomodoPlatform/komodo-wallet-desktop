@@ -13,32 +13,38 @@ import "../../../Components"
 import "../../../Constants" as Constants  //> Style
 import "../Orders" as Orders
 import "Main.js" as Main
+import Dex.Themes 1.0 as Dex
 
-DexListView {
+DexListView
+{
     id: order_list_view
     anchors.fill: parent
     model: API.app.orders_mdl.orders_proxy_mdl
     clip: true
     currentIndex: -1
     spacing: 5
-    delegate: ClipRRect {
+
+    delegate: ClipRRect
+    {
         property var details: model
         readonly property bool is_placed_order: !details ? false :
                                details.order_id !== ''
 
         property bool expanded: order_list_view.currentIndex === index
+
         width: order_list_view.width - 40
         x: 20
         height: expanded? colum_order.height + 25 : 70
         radius: 12
-        Rectangle {
+
+        DefaultRectangle
+        {
             anchors.fill: parent
-            color: order_mouse_area.containsMouse? DexTheme.surfaceColor : DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
-            border.color: DexTheme.surfaceColor
-            border.width: expanded? 1 : 0
             radius: 10
         }
-        DexMouseArea {
+
+        DefaultMouseArea
+        {
             id: order_mouse_area
             anchors.fill: parent
             hoverEnabled: true
@@ -50,24 +56,30 @@ DexListView {
                 }
             }
         }
-        Column {
+
+        Column
+        {
             id: colum_order
             width: parent.width
             spacing: 5
             topPadding: 0
-            RowLayout {
+            RowLayout
+            {
                 width: parent.width
                 height: 70
                 spacing: 5
-                Item {
+                Item
+                {
                     Layout.preferredWidth: 40 
                     height: 30
-                    BusyIndicator {
+                    BusyIndicator
+                    {
                         width: 30
                         height: width
                         anchors.centerIn: parent
                         running: !isSwapDone(details.order_status) && Qt.platform.os != "osx"
-                        DefaultText {
+                        DefaultText
+                        {
                             anchors.centerIn: parent
                             font.pixelSize: 9
                             color: !details ? "white" : getStatusColor(details.order_status)
@@ -76,12 +88,15 @@ DexListView {
                         }
                     }
                 }
-                Row {
+
+                Row
+                {
                     Layout.preferredWidth: 100
                     Layout.fillHeight: true
                     Layout.alignment: Label.AlignVCenter
                     spacing: 5
-                    DefaultImage {
+                    DefaultImage
+                    {
                         id: base_icon
                         source: General.coinIcon(!details ? atomic_app_primary_coin :
                                                             details.base_coin?? atomic_app_primary_coin)
@@ -89,22 +104,25 @@ DexListView {
                         height: width
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    DexLabel {
+
+                    DefaultText
+                    {
                         id: base_amount
                         text_value: !details ? "" :
                                     General.formatCrypto("", details.base_amount, details.base_coin).replace(" ","<br>")
-                        //details.base_amount_current_currency, API.app.settings_pg.current_currency
                         font: rel_amount.font
                         privacy: is_placed_order
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
                 
-                Item {
+                Item
+                {
                     Layout.preferredWidth: 40
                     Layout.fillWidth: true
-                    SwapIcon {
-                        //visible: !status_text.visible
+
+                    SwapIcon
+                    {
                         width: 30
                         height: 30
                         opacity: .6
@@ -115,12 +133,15 @@ DexListView {
                                                         details.rel_coin?? ""
                     }
                 }
-                Row {
+
+                Row
+                {
                     Layout.preferredWidth: 120
                     Layout.fillHeight: true
                     Layout.alignment: Label.AlignVCenter
                     spacing: 5
-                    DefaultImage {
+                    DefaultImage
+                    {
                         id: rel_icon
                         source: General.coinIcon(!details ? atomic_app_primary_coin :
                                                             details.rel_coin?? atomic_app_secondary_coin)
@@ -129,7 +150,8 @@ DexListView {
                         height: width
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    DefaultText {
+                    DefaultText
+                    {
                         id: rel_amount
                         text_value: !details ? "" :
                                     General.formatCrypto("", details.rel_amount, details.rel_coin).replace(" ","<br>")
@@ -143,34 +165,40 @@ DexListView {
                         privacy: is_placed_order
                     }
                 }
-                Qaterial.ColorIcon {
+
+                Qaterial.ColorIcon
+                {
                     Layout.alignment: Qt.AlignVCenter
-                    color: DexTheme.foregroundColor
+                    color: Dex.CurrentTheme.foregroundColor
                     source:  expanded? Qaterial.Icons.chevronUp : Qaterial.Icons.chevronDown
                     iconSize: 14
                 }
-                Item {
+                Item
+                {
                     Layout.preferredWidth: 10
                     Layout.fillHeight: true
                     opacity: .6
-                    
                 }
 
             }
-            RowLayout {
+
+            RowLayout
+            {
                 visible: expanded
                 width: parent.width-40
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 20
                 opacity: .6
-                DexLabel {
+                DexLabel
+                {
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
                     text: !details ? "" :
                                 General.formatCrypto("", details.base_amount, details.base_coin)
                 }
-                DexLabel {
+                DexLabel
+                {
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
@@ -179,19 +207,23 @@ DexListView {
                                 General.formatCrypto("", details.rel_amount, details.rel_coin)
                 }
             }
-            RowLayout {
+
+            RowLayout
+            {
                 visible: expanded
                 width: parent.width-40
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 20
                 opacity: .6
-                DexLabel {
+                DefaultText
+                {
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
                     text: "%1 %2".arg(API.app.settings_pg.current_currency).arg(details.base_amount_current_currency)
                 }
-                DexLabel {
+                DefaultText
+                {
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
@@ -199,49 +231,59 @@ DexListView {
                     text: "%1 %2".arg(API.app.settings_pg.current_currency).arg(details.rel_amount_current_currency)
                 }
             }
-            RowLayout {
+
+            RowLayout
+            {
                 visible: expanded
                 width: parent.width-40
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 20
                 opacity: .6
-                DexLabel {
+                DexLabel
+                {
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
                     text: !details ? "" : details.date?? ""
                 }
-                Item {
+                Item
+                {
                     Layout.preferredWidth: 100
                     Layout.fillHeight: true 
                     visible: !details || details.recoverable === undefined ? false : details.recoverable && details.order_status !== "refunding"
-                    Row {
+                    Row
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 0
                         spacing: 5
-                        Qaterial.ColorIcon {
+                        Qaterial.ColorIcon
+                        {
                             anchors.verticalCenter: parent.verticalCenter
                             source: Qaterial.Icons.alert
                             iconSize: 15
                             color: Qaterial.Colors.amber
                         }
-                        DexLabel {
+                        DexLabel
+                        {
                             anchors.verticalCenter: parent.verticalCenter
                             text: "Refund "
                             color: Qaterial.Colors.amber
                         }
                     }
-                    MouseArea {
+                    MouseArea
+                    {
                         id: refund_hover
                         anchors.fill: parent
                         hoverEnabled: true 
                     }
-                    DefaultTooltip {
+                    DefaultTooltip
+                    {
                         visible: (parent.visible && refund_hover.containsMouse) ?? false
 
-                        contentItem: ColumnLayout {
-                            DexLabel {
+                        contentItem: ColumnLayout
+                        {
+                            DefaultText {
                                 text_value: qsTr("Funds are recoverable")
                                 font.pixelSize: Constants.Style.textSizeSmall4
                             }
