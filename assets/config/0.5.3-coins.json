@@ -3571,6 +3571,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "GMS": {
+    "coin": "GMS",
+    "type": "Smart Chain",
+    "name": "GMSmining",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum.gmsmining.pw:17485"
+      },
+	  {
+        "url": "electrum1.gmsmining.pw:17485"
+      },
+      {
+        "url": "electrum2.gmsmining.pw:17485"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.gmsmining.pw/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "MIR-ERC20": {
     "coin": "MIR-ERC20",
     "name": "Mirror Protocol",
