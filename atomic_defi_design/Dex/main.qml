@@ -68,7 +68,7 @@ DexWindow
 
         spacing: 8
         padding: 2
-        backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+        backgroundColor: Dex.CurrentTheme.backgroundColor
 
         contentItem: Item
         {
@@ -79,7 +79,8 @@ DexWindow
                 width: parent.width - 10
                 height: parent.height - 5
                 anchors.centerIn: parent
-                color: logout_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.floatingBackgroundColor
+                radius: 18
+                color: logout_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.backgroundColor
                 Row
                 {
                     anchors.centerIn: parent
@@ -200,16 +201,10 @@ DexWindow
             anchors.verticalCenter: parent.verticalCenter
             layoutDirection: Qt.RightToLeft
             spacing: 6
-            DexLabel
+            Item
             {
-                text: " | "
-                opacity: .1
-                font.family: 'Montserrat'
-                font.weight: Font.Medium
-                visible: _label.visible & !isOsx
-                color: Dex.CurrentTheme.foregroundColor
-                anchors.verticalCenter: parent.verticalCenter
-                leftPadding: 2
+                width: 15
+                height: 1
             }
             Rectangle
             {
@@ -227,8 +222,8 @@ DexWindow
 
                     Qaterial.ColorIcon
                     {
-                        source: Qaterial.Icons.accountCircle
-                        iconSize: 18
+                        source: Qaterial.Icons.menuDown
+                        iconSize: 14
                         visible: _label.visible
                         color: Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
@@ -240,7 +235,6 @@ DexWindow
                         text: API.app.wallet_mgr.wallet_default_name ?? ""
                         font.family: 'Montserrat'
                         font.weight: Font.Medium
-                        opacity: .7
                         visible: window.logged
                         color: Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
@@ -248,12 +242,14 @@ DexWindow
 
                     Qaterial.ColorIcon
                     {
-                        source: Qaterial.Icons.menuDown
-                        iconSize: 14
+                        source: Qaterial.Icons.account
+                        iconSize: 18
                         visible: _label.visible
-                        color: Dex.CurrentTheme.foregroundColor
+                        color: _area.containsMouse ? Dex.CurrentTheme.gradientButtonPressedStartColor : Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
+
+
                 }
                 DexMouseArea
                 {
@@ -272,36 +268,20 @@ DexWindow
                     }
                 }
             }
-            DexLabel
+            Item
             {
-                text: " | "
-                opacity: .1
-                font.family: 'Montserrat'
-                font.weight: Font.Medium
-                visible: _label.visible
-                color: Dex.CurrentTheme.foregroundColor
-                anchors.verticalCenter: parent.verticalCenter
-                leftPadding: 2
+                width: 10
+                height: 1
             }
             Row
             {
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 6
+                spacing: 10
 
                 DexLabel
                 {
                     leftPadding: 2
                     text: qsTr("Balance")
-                    font.family: 'Montserrat'
-                    font.weight: Font.Medium
-                    opacity: .7
-                    visible: _label.visible
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-                DexLabel
-                {
-                    text: ":"
-                    opacity: .7
                     font.family: 'Montserrat'
                     font.weight: Font.Medium
                     visible: _label.visible
@@ -311,7 +291,7 @@ DexWindow
                 {
                     text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                     font.family: 'lato'
-                    font.weight: Font.Medium
+                    font.weight: Font.Bold
                     visible: _label.visible
                     privacy: true
                     anchors.verticalCenter: parent.verticalCenter
@@ -333,63 +313,46 @@ DexWindow
                 }
             }
 
-            DefaultText
+            Item
             {
-                text: " | "
-                opacity: .1
-                font.family: 'Montserrat'
-                font.weight: Font.Medium
-                visible: _label.visible
-                anchors.verticalCenter: parent.verticalCenter
-                leftPadding: 2
+                width: 15
+                height: 1
             }
+
             DexIconButton
             {
-                opacity: containsMouse ? 1 : .8
+                color: containsMouse ? Dex.CurrentTheme.gradientButtonPressedStartColor : Dex.CurrentTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
-                iconSize: 22
+                iconSize: 24
                 icon: Qaterial.Icons.bellOutline
                 visible: _label.visible
                 active: app.notification_modal.opened
                 AnimatedRectangle
                 {
-                    z: 1
-                    anchors.right: parent.right
                     anchors.rightMargin: -3
-                    y: -3
-                    radius: width / 2
-                    width: count_text.height * 1.4
+                    anchors.right: parent.right
+                    y: 8
+                    width: 13
                     height: width
+                    color: Dex.CurrentTheme.gradientButtonPressedStartColor
+                    opacity: 0.8
+                    radius: width / 2
                     visible: app.notifications_list !== undefined ? app.notifications_list.length > 0 : false
-                    color: DexTheme.redColor
-
-                    DefaultText
-                    {
-                        id: count_text
-                        anchors.centerIn: parent
-                        text_value: _label.visible ? app.notifications_list.length ?? 0 : 0
-                        font.pixelSize: 8
-                        font.family: 'Lato'
-                    }
+                    z: 1
                 }
                 onClicked:
                 {
                     if (app.notification_modal.visible)
                         app.notification_modal.close()
                     else
-                        app.notification_modal.openAt(mapToItem(Overlay.overlay, -165, 18), Item.Top)
+                        app.notification_modal.openAt(mapToItem(Overlay.overlay, -90, 18), Item.Top)
                 }
             }
 
-            DefaultText
+            Item
             {
-                text: " | "
-                opacity: .1
-                font.family: 'Montserrat'
-                font.weight: Font.Medium
-                visible: themeSwitchBut.visible
-                anchors.verticalCenter: parent.verticalCenter
-                leftPadding: 2
+                width: 15
+                height: 1
             }
 
             Settings
@@ -403,14 +366,14 @@ DexWindow
                 id: themeSwitchBut
                 visible: _label.visible && Dex.CurrentTheme.hasDarkAndLightMode() && Dex.CurrentTheme.getColorMode() !== Dex.CurrentTheme.ColorMode.None
                 active: app.notification_modal.opened
-
+                rotation: -45
                 anchors.verticalCenter: parent.verticalCenter
-                opacity: containsMouse ? 1 : .8
-                iconSize: 22
+                color: containsMouse ? Dex.CurrentTheme.gradientButtonPressedStartColor : Dex.CurrentTheme.foregroundColor
+                iconSize: 24
                 icon:
                 {
                     if (Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Light)
-                        return Qaterial.Icons.moonWaxingCrescent;
+                        return Qaterial.Icons.moonWaningCrescent;
                     else if (Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark)
                         return Qaterial.Icons.whiteBalanceSunny;
                 }
