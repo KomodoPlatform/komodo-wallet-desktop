@@ -130,7 +130,6 @@ SetupPage
                         radius: 18
                         width: bg.width - 20
                         height: bg.row_height
-                        anchors.horizontalCenter: parent.horizontalCenter
 
                         DefaultRectangle
                         {
