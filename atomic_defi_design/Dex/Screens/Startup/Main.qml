@@ -67,7 +67,7 @@ Item
             onPostConfirmSuccess:
             {
                 _selectedWalletName = walletName;
-                currentPage = Main.StartupPage.Logging;
+                currentPage = Main.StartupPage.Login;
             }
         }
     }

@@ -1413,7 +1413,7 @@
     "name": "CAD Coin",
     "forex_id": "CAD",
     "coinpaprika_id": "cadc-cad-coin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "cad-coin",
     "nomics_id": "CADC",
     "nodes": [
       "http://eth1.cipig.net:8555",
@@ -1432,7 +1432,7 @@
     "name": "CAD Coin",
     "forex_id": "CAD",
     "coinpaprika_id": "cadc-cad-coin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "cad-coin",
     "nomics_id": "CADC",
     "nodes": [
       "https://polygon-rpc.com"
@@ -1587,6 +1587,7 @@
     "name": "Collider Coin",
     "coinpaprika_id": "clc-collider-coin",
     "coingecko_id": "test-coin",
+    "nomics_id": "CLC2",
     "electrum": [
       {
         "url": "electrumx.cryptocollider.com:10001"
@@ -3570,6 +3571,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "GMS": {
+    "coin": "GMS",
+    "type": "Smart Chain",
+    "name": "GMSmining",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum.gmsmining.pw:17485"
+      },
+	  {
+        "url": "electrum1.gmsmining.pw:17485"
+      },
+      {
+        "url": "electrum2.gmsmining.pw:17485"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.gmsmining.pw/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "MIR-ERC20": {
     "coin": "MIR-ERC20",
     "name": "Mirror Protocol",
@@ -5146,6 +5170,7 @@
     "name": "SmartFi",
     "coinpaprika_id": "smtf-smartfi",
     "coingecko_id": "test-coin",
+    "nomics_id": "SMTF",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -5279,6 +5304,7 @@
     "name": "Chips",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chips",
+    "nomics_id": "CHIPS6",
     "electrum": [
       {
         "url": "electrum3.cipig.net:10053",
@@ -5305,6 +5331,7 @@
     "type": "UTXO",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "sca-scalaris",
+    "nomics_id": "SCA2",
     "electrum": [
       {
         "url": "electrum1.scalaris.info:10001"
@@ -5536,6 +5563,7 @@
     "name": "InfiniLooP",
     "coinpaprika_id": "il8p-infiniloop",
     "coingecko_id": "test-coin",
+    "nomics_id": "IL8P",
     "electrum": [
       {
         "url": "il8p.electrumx.transcenders.name:50002",
@@ -5851,6 +5879,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "NZDS-ERC20": {
+    "coin": "NZDS-ERC20",
+    "name": "NZD Stablecoin",
+    "forex_id": "NZD",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "nzd-stablecoin",
+    "nomics_id": "NZDS",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "NZDS-PLG20": {
+    "coin": "NZDS-PLG20",
+    "name": "NZD Stablecoin",
+    "forex_id": "NZD",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "nzd-stablecoin",
+    "nomics_id": "NZDS",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "OMG-ERC20": {
     "coin": "OMG-ERC20",
     "name": "OMG Network",
@@ -5890,6 +5954,7 @@
     "name": "QuarkChain",
     "coinpaprika_id": "qkc-quarkchain",
     "coingecko_id": "quark-chain",
+    "nomics_id": "QKC",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -5907,6 +5972,7 @@
     "name": "QuarkChain",
     "coinpaprika_id": "qkc-quarkchain",
     "coingecko_id": "quark-chain",
+    "nomics_id": "QKC",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -6351,6 +6417,22 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "TRYB-PLG20": {
+    "coin": "TRYB-PLG20",
+    "name": "BiLira",
+    "forex_id": "TRY",
+    "coinpaprika_id": "tryb-bilira",
+    "coingecko_id": "bilira",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
     "active": false,
     "currently_enabled": false
   },
