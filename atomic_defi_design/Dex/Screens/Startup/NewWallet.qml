@@ -152,13 +152,17 @@ SetupPage
 
         function completeForm()
         {
-            if (!continue_button.enabled) return
-
+            
+            if (!nextButton.enabled) return
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
-            if (text_error !== "") return
+            if (text_error !== "")
+            {
+                input_wallet_name.error = true
+                return
+            }
 
+            currentStep++
             input_seed_word.field.text = ""
-            guess_text_error = ""
             guess_count = 1
             setRandomGuessWord()
 

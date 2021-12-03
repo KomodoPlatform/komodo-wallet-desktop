@@ -78,6 +78,7 @@ SetupPage
                 }
                 else
                 {
+                    _inputPassword.error = true
                     _keyChecker.visible = true
                 }
             }
