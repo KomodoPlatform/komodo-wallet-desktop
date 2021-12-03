@@ -67,8 +67,8 @@ Item {
 
     RowLayout {
         anchors.fill: parent
-        anchors.leftMargin: 5
-        anchors.rightMargin: 5
+        anchors.leftMargin: 2
+        anchors.rightMargin: 2
         spacing: 2
         Item {
             visible: leftText !== ""
@@ -94,7 +94,7 @@ Item {
                 anchors.topMargin: 1
                 anchors.bottomMargin: 1
                 radius: _background.radius
-                color: DexTheme.surfaceColor
+                color: _background.color
                 DexTextField {
                     id: input_field
                     onTextChanged: {

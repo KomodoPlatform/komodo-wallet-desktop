@@ -9,7 +9,7 @@ Popup
 {
     id: root
 
-    property alias radius: background.radius
+    property int radius: 18
 
     anchors.centerIn: Overlay.overlay
     modal: true
@@ -40,5 +40,7 @@ Popup
         to: 1
     }
 
-    background: DefaultRectangle { id: background; radius: 18 }
+    background: DexRectangle {
+        radius: 18
+    }
 }

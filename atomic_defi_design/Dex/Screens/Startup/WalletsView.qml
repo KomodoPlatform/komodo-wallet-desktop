@@ -215,7 +215,6 @@ SetupPage
                                         text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet"),
                                         standardButtons: Dialog.Yes | Dialog.Cancel,
                                         warning: true,
-                                        width: 300,
                                         iconColor: Dex.CurrentTheme.noColor,
                                         isPassword: true,
                                         placeholderText: qsTr("Type password"),
@@ -229,6 +228,7 @@ SetupPage
                                                 app.showText({
                                                     title: qsTr("Wallet status"),
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet deleted successfully"),
+                                                    yesButtonText: qsTr("Ok"), titleBold: true,
                                                     standardButtons: Dialog.Ok
                                                 })
                                                 _setup.wallets = API.app.wallet_mgr.get_wallets()
@@ -236,11 +236,10 @@ SetupPage
                                             {
                                                 app.showText({
                                                     title: qsTr("Wallet status"),
-                                                    text: "%1 ".arg(wallet_name) + qsTr("wallet password entered is incorrect"),
-                                                    iconSource: Qaterial.Icons.alert,
-                                                    iconColor: Dex.CurrentTheme.noColor,
+                                                    text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
                                                     warning: true,
-                                                    standardButtons: Dialog.Ok
+                                                    standardButtons: Dialog.Ok, titleBold: true,
+                                                    yesButtonText: qsTr("Ok"),
                                                 })
                                             }
                                             dialog.close()
