@@ -16,6 +16,8 @@ SetupPage
     property string text_error
     property string walletName
 
+    property bool   _isPasswordWrong: false
+
     signal backClicked()
     signal loginSucceeded()
 
@@ -36,7 +38,7 @@ SetupPage
         else
         {
             console.info("Failed: Login");
-            text_error = qsTr("Incorrect Password");
+            _isPasswordWrong = true;
             return false;
         }
     }
@@ -97,6 +99,15 @@ SetupPage
             visible: false
             field: _inputPassword.field
         }
+
+        DefaultText
+        {
+            Layout.alignment: Qt.AlignHCenter
+            visible: _isPasswordWrong
+            text: qsTr("Incorrect Password")
+            color: Dex.CurrentTheme.noColor
+        }
+
         Item
         {
             height: 1
