@@ -81,7 +81,7 @@ ComboBox
                 anchors.right: _list.right
                 anchors.rightMargin: 2
                 width: 7
-                visible: false
+                visible: true
                 background: DefaultRectangle
                 {
                     radius: 12
