@@ -1729,12 +1729,12 @@
     <message>
         <location filename="../../Dex/Screens/Startup/Login.qml" line="111"/>
         <source>connect</source>
-        <translation type="unfinished">Connection</translation>
+        <translation>connexion</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/Login.qml" line="126"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -2106,7 +2106,7 @@
     <message>
         <location filename="../../Dex/NoConnection.qml" line="19"/>
         <source>No connection</source>
-        <translation>Pas de connéction</translation>
+        <translation>Pas de connexion</translation>
     </message>
     <message>
         <location filename="../../Dex/NoConnection.qml" line="25"/>
@@ -3388,7 +3388,7 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
     <message>
         <location filename="../../Dex/Settings/Settings.qml" line="249"/>
         <source>Log out</source>
-        <translation>Déconnection</translation>
+        <translation>Déconnexion</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/Settings.qml" line="260"/>
