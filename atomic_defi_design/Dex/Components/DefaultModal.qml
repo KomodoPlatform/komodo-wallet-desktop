@@ -9,7 +9,7 @@ Popup
 {
     id: root
 
-    property alias radius: background.radius
+    property alias radius: 18
 
     anchors.centerIn: Overlay.overlay
     modal: true
