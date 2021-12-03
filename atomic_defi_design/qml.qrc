@@ -464,10 +464,12 @@
         <file>Dex/Components/PrimaryButton.qml</file>
         <file>Dex/Components/RestartModal.qml</file>
         <file>Dex/Components/RightClickMenu.qml</file>
+        <file>Dex/Components/RoundComboBox.qml</file>
         <file>Dex/Components/SearchField.qml</file>
         <file>Dex/Components/Separator.qml</file>
         <file>Dex/Components/SetupPage.qml</file>
         <file>Dex/Components/SidebarPanel.qml</file>
+        <file>Dex/Components/SquareButton.qml</file>
         <file>Dex/Components/SwapIcon.qml</file>
         <file>Dex/Components/TextAreaWithTitle.qml</file>
         <file>Dex/Components/TextEditWithTitle.qml</file>
