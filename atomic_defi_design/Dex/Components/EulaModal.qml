@@ -60,26 +60,39 @@ BasicModal {
         // Buttons
         footer:
         [
-            Row
+            RowLayout
             {
                 width: root.width - 40
                 height: 50
                 spacing: 10
-                layoutDirection: Qt.RightToLeft
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
-                DexAppButton
+                
+                
+                DefaultButton
                 {
                     text: close_only ? qsTr("Close") : qsTr("Cancel")
-                    Layout.fillWidth: true
+                    radius: 18
+                    leftPadding: 30
+                    rightPadding: 30
                     onClicked: root.close()
                 }
 
-                DexAppOutlineButton
+                Item 
+                {    
+                    height: 1
+                    Layout.fillWidth: true
+                    
+                }
+
+                GradientButton
                 {
                     visible: !close_only
                     text: qsTr("Confirm")
-                    Layout.fillWidth: true
+                    radius: 18
+                    height: 40
+                    leftPadding: 30
+                    rightPadding: 30
                     enabled: accept_eula.checked && accept_tac.checked
                     onClicked:
                     {
@@ -87,6 +100,8 @@ BasicModal {
                         root.close()
                     }
                 }
+
+                
             }
         ]
     }
