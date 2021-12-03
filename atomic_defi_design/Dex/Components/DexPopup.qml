@@ -43,7 +43,7 @@ Qaterial.Popup {
         Rectangle {
             anchors.fill: parent
 
-            radius: 4
+            radius: 18
             color: root.backgroundColor
             layer.enabled: true
             layer.effect: Qaterial.ElevationEffect {

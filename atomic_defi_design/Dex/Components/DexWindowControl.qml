@@ -19,10 +19,9 @@ Item
         {
             width: parent.width
             height: 30
-            border.color: Dex.CurrentTheme.lineSeparatorColor
-            border.width: 1.5
             anchors.horizontalCenter: parent.horizontalCenter
             color: Dex.CurrentTheme.backgroundColor
+            visible: false
         }
 
         MouseArea
