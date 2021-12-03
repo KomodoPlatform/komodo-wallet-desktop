@@ -18,7 +18,8 @@ SetupPage
     // Override
     id: _setup
 
-    property var    wallets: API.app.wallet_mgr.get_wallets()
+    property
+    var wallets: API.app.wallet_mgr.get_wallets()
 
     signal newWalletClicked()
     signal importWalletClicked();
@@ -47,7 +48,10 @@ SetupPage
             }
         }
 
-        Item { Layout.fillWidth: true }
+        Item
+        {
+            Layout.fillWidth: true
+        }
 
         GradientButton
         {
@@ -75,10 +79,12 @@ SetupPage
 
             visible: wallets.length > 0
 
-            RowLayout {
+            RowLayout
+            {
                 Layout.fillWidth: true
                 spacing: 10
-                Rectangle {
+                Rectangle
+                {
                     Layout.fillWidth: true
                     height: 1
                     color: Dex.CurrentTheme.floatingBackgroundColor
@@ -92,7 +98,8 @@ SetupPage
                     font.bold: true
                     Layout.alignment: Qt.AlignHCenter
                 }
-                Rectangle {
+                Rectangle
+                {
                     Layout.fillWidth: true
                     height: 1
                     color: Dex.CurrentTheme.floatingBackgroundColor
@@ -110,7 +117,7 @@ SetupPage
 
                 width: content_column.width
                 Layout.minimumHeight: row_height
-                Layout.preferredHeight: ( 50 * Math.min(wallets.length, 3)) + 10
+                Layout.preferredHeight: (50 * Math.min(wallets.length, 3)) + 10
                 color: Dex.CurrentTheme.floatingBackgroundColor
                 radius: 18
 
@@ -159,7 +166,8 @@ SetupPage
                                 }
                             }
 
-                            Rectangle {
+                            Rectangle
+                            {
                                 anchors.verticalCenter: parent.verticalCenter
                                 x: 5
                                 width: 30
@@ -212,7 +220,8 @@ SetupPage
                                 onClicked:
                                 {
                                     let wallet_name = model.modelData;
-                                    let dialog = app.getText({
+                                    let dialog = app.getText(
+                                    {
                                         "title": qsTr("Delete") + " %1 ".arg(wallet_name) + ("wallet?"),
                                         text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet"),
                                         standardButtons: Dialog.Yes | Dialog.Cancel,
@@ -228,15 +237,18 @@ SetupPage
                                             if (API.app.wallet_mgr.confirm_password(wallet_name, text))
                                             {
                                                 API.app.wallet_mgr.delete_wallet(wallet_name);
-                                                app.showText({
+                                                app.showText(
+                                                {
                                                     title: qsTr("Wallet status"),
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet deleted successfully"),
                                                     standardButtons: Dialog.Ok
                                                 })
                                                 _setup.wallets = API.app.wallet_mgr.get_wallets()
-                                            } else
+                                            }
+                                            else
                                             {
-                                                app.showText({
+                                                app.showText(
+                                                {
                                                     title: qsTr("Wallet status"),
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet password entered is incorrect"),
                                                     iconSource: Qaterial.Icons.alert,
@@ -256,20 +268,22 @@ SetupPage
                 }
             }
 
-            
+
         }
-            
-        
-        HorizontalLine { }
+
+
+        HorizontalLine
+        {}
     }
 
-    LinksRow {
+    LinksRow
+    {
         Layout.alignment: Qt.AlignHCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 40
-        
+
         anchors.horizontalCenter: parent.horizontalCenter
-        
+
     }
 
     GaussianBlur

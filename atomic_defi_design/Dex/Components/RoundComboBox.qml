@@ -14,12 +14,13 @@ ComboBox
 {
     id: control
 
-    property alias  radius: bg_rect.radius
-    property color  lineHoverColor: DexTheme.hoverColor
-    property color  mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property int    dropDownMaxHeight: 300
-    property color  dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property var    dropdownLineText: m => textRole === "" ?
+    property alias radius: bg_rect.radius
+    property color lineHoverColor: DexTheme.hoverColor
+    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property int dropDownMaxHeight: 300
+    property color dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property
+    var dropdownLineText: m => textRole === "" ?
         m.modelData :
         !m.modelData ? m[textRole] : m.modelData[textRole]
     property string mainLineText: control.displayText
@@ -30,7 +31,10 @@ ComboBox
 
     Behavior on lineHoverColor
     {
-        ColorAnimation { duration: Style.animationDuration }
+        ColorAnimation
+        {
+            duration: Style.animationDuration
+        }
     }
 
     hoverEnabled: true

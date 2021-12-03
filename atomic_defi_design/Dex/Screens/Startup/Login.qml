@@ -19,7 +19,10 @@ SetupPage
     signal backClicked()
     signal loginSucceeded()
 
-    function reset() { text_error = "" }
+    function reset()
+    {
+        text_error = ""
+    }
 
     function onClickedLogin(password)
     {
@@ -58,7 +61,8 @@ SetupPage
             topPadding: 10
         }
 
-        Item {
+        Item
+        {
             height: 20
             width: 1
         }
@@ -93,7 +97,8 @@ SetupPage
             visible: false
             field: _inputPassword.field
         }
-        Item {
+        Item
+        {
             height: 1
             width: 1
         }
@@ -116,7 +121,7 @@ SetupPage
             visible: false
         }
 
-        DexAppButton 
+        DexAppButton
         {
             text: qsTr("Cancel")
             color: containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
@@ -125,8 +130,9 @@ SetupPage
             width: 100
             border.color: 'transparent'
             Layout.alignment: Qt.AlignHCenter
-            font: Qt.font({
-                pixelSize: 14 ,
+            font: Qt.font(
+            {
+                pixelSize: 14,
                 letterSpacing: 0.15,
                 family: DexTypo.fontFamily,
                 weight: Font.Normal

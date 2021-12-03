@@ -12,15 +12,16 @@ DexAppTextField
     id: _inputPassword
 
     property string leftIcon: Qaterial.Icons.keyVariant
-    property color  leftIconColor: Dex.CurrentTheme.foregroundColor
-    property alias  hideFieldButton: _hideFieldButton
+    property color leftIconColor: Dex.CurrentTheme.foregroundColor
+    property alias hideFieldButton: _hideFieldButton
 
     height: 50
     width: 300
     background.radius: 25
     max_length: 1000
     field.echoMode: TextField.Password
-    field.font: Qt.font({
+    field.font: Qt.font(
+    {
         pixelSize: (16 * DexTypo.fontDensity) * (Screen.pixelDensity / 160),
         letterSpacing: 0.5,
         family: DexTypo.fontFamily,
@@ -38,7 +39,7 @@ DexAppTextField
         width: 60
         radius: 20
         color: Dex.CurrentTheme.accentColor
-        border.color: Dex.CurrentTheme.accentColor 
+        border.color: Dex.CurrentTheme.accentColor
         border.width: _inputPassword.focus ? 2 : 0
 
         anchors.verticalCenter: parent.verticalCenter

@@ -13,13 +13,16 @@ SetupPage
 {
     id: recover_seed
 
-    property int    currentStep: 0
+    property int currentStep: 0
     property string text_error
 
     signal backClicked()
     signal postConfirmSuccess(string walletName)
 
-    function reset() { text_error = ""; }
+    function reset()
+    {
+        text_error = "";
+    }
 
     function onClickedConfirm(password, seed, wallet_name)
     {
@@ -37,7 +40,7 @@ SetupPage
 
     image_scale: 0.7
 
-    content: DexRectangle 
+    content: DexRectangle
     {
         color: Dex.CurrentTheme.floatingBackgroundColor
         width: column_layout.width + 50
@@ -68,7 +71,7 @@ SetupPage
             if (_seedField.isValid() && input_wallet_name.field.text !== "")
             {
                 let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
-                if (checkWalletName === "" )
+                if (checkWalletName === "")
                 {
                     _seedField.error = false;
                     _inputPassword.field.text = "";
@@ -87,9 +90,9 @@ SetupPage
         ColumnLayout
         {
             id: column_layout
-            
+
             anchors.centerIn: parent
-            
+
             spacing: Style.rowSpacing
             RowLayout
             {
@@ -121,20 +124,21 @@ SetupPage
                     rightPadding: 20
                     wrapMode: Label.Wrap
                     text_value: if (currentStep === 0) qsTr("Import wallet - Setup")
-                                else if (currentStep === 1) qsTr("Import wallet - Choose password")
+                    else if (currentStep === 1) qsTr("Import wallet - Choose password")
                     Layout.alignment: Qt.AlignVCenter
                 }
 
             }
 
-            
+
 
             ModalLoader
             {
                 id: eula_modal
                 sourceComponent: EulaModal
                 {
-                    onConfirm: () => {
+                    onConfirm: () =>
+                    {
                         if (onClickedConfirm(_inputPassword.field.text, _seedField.field.text, input_wallet_name.field.text))
                             reset();
                     }
@@ -200,7 +204,8 @@ SetupPage
                     }
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     id: _seedError
                     visible: _seedField.error
                     text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
@@ -219,20 +224,24 @@ SetupPage
                     {
                         if (allow_custom_seed.checked)
                         {
-                            let dialog = app.getText({
+                            let dialog = app.getText(
+                            {
                                 title: qsTr("<strong>Allow custom seed</strong>"),
                                 text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
                                 placeholderText: qsTr("I understand"),
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
-                                validator: (text) => {
+                                validator: (text) =>
+                                {
                                     return text === qsTr("I understand")
                                 },
                                 yesButtonText: qsTr("Enable"),
-                                onAccepted: function() {
+                                onAccepted: function()
+                                {
                                     allow_custom_seed.checked = true;
                                     dialog.close()
                                 },
-                                onRejected: function() {
+                                onRejected: function()
+                                {
                                     allow_custom_seed.checked = false;
                                 }
                             })
@@ -319,7 +328,10 @@ SetupPage
                     field.onAccepted: trySubmit()
                 }
 
-                Item { Layout.fillWidth: true }
+                Item
+                {
+                    Layout.fillWidth: true
+                }
 
                 RowLayout
                 {

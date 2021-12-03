@@ -5,16 +5,19 @@ import App 1.0
 import Dex.Themes 1.0 as Dex
 
 
-ScrollBar {
+ScrollBar
+{
     id: control
 
     anchors.right: root.right
     anchors.rightMargin: 0
     policy: scrollbar_visible ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     property bool visibleBackground: true
-    width:  6
-    contentItem: Item {
-        DexRectangle {
+    width: 6
+    contentItem: Item
+    {
+        DexRectangle
+        {
             width: parent.width
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
@@ -23,10 +26,12 @@ ScrollBar {
         }
     }
 
-    background: Item {
+    background: Item
+    {
         width: 6
         x: 0
-        DexRectangle {
+        DexRectangle
+        {
             visible: control.visibleBackground
             width: parent.width
             height: parent.height

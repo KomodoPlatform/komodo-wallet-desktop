@@ -27,9 +27,15 @@ SetupPage
     property int guess_count: 1
     verticalCenterOffset: 0
 
-    function onOpened() { current_mnemonic = API.app.get_mnemonic() }
+    function onOpened()
+    {
+        current_mnemonic = API.app.get_mnemonic()
+    }
 
-    function getWords() { return current_mnemonic.split(" ") }
+    function getWords()
+    {
+        return current_mnemonic.split(" ")
+    }
 
     function setRandomGuessWord()
     {
@@ -68,7 +74,10 @@ SetupPage
         return [false, false];
     }
 
-    function isFinalGuess() { return guess_count === 3 }
+    function isFinalGuess()
+    {
+        return guess_count === 3
+    }
 
     function reset()
     {
@@ -135,7 +144,7 @@ SetupPage
 
     image_scale: 0.7
 
-    content: DexRectangle 
+    content: DexRectangle
     {
         color: Dex.CurrentTheme.floatingBackgroundColor
         width: column_layout.width + 50
@@ -152,7 +161,7 @@ SetupPage
 
         function completeForm()
         {
-            
+
             if (!nextButton.enabled) return
             text_error = General.checkIfWalletExists(input_wallet_name.field.text)
             if (text_error !== "")
@@ -193,9 +202,9 @@ SetupPage
         {
             id: column_layout
             spacing: Style.rowSpacing
-            
+
             anchors.centerIn: parent
-            
+
             RowLayout
             {
                 Layout.fillWidth: true
@@ -228,13 +237,19 @@ SetupPage
                     }
                 }
 
-                DexLabel {
+                DexLabel
+                {
                     font: DexTypo.head6
-                    text_value: if (currentStep === 0) {
+                    text_value: if (currentStep === 0)
+                    {
                         qsTr("New Wallet")
-                    } else if (currentStep === 1) {
+                    }
+                    else if (currentStep === 1)
+                    {
                         qsTr("Confirm Seed")
-                    } else if (currentStep === 2) {
+                    }
+                    else if (currentStep === 2)
+                    {
                         qsTr("Choose Password")
                     }
                     Layout.alignment: Qt.AlignVCenter
@@ -242,16 +257,20 @@ SetupPage
 
             }
 
-            Item { Layout.fillWidth: true }
+            Item
+            {
+                Layout.fillWidth: true
+            }
 
-            
+
 
             ModalLoader
             {
                 id: eula_modal
                 sourceComponent: EulaModal
                 {
-                    onConfirm: () => {
+                    onConfirm: () =>
+                    {
                         if (onClickedCreate(_inputPassword.field.text,
                                 input_generated_seed.text,
                                 input_wallet_name.field.text)) reset()
@@ -324,7 +343,8 @@ SetupPage
                             text_value: qsTr("Important: Back up your seed phrase before proceeding!")
                         }
 
-                        DefaultText {
+                        DefaultText
+                        {
                             width: parent.width - 40
                             color: Style.colorWhite0
                             horizontalAlignment: Text.AlignHCenter
@@ -373,7 +393,7 @@ SetupPage
                                     API.qt_utilities.copy_text_to_clipboard(input_generated_seed.text)
                                     app.notifyCopy(qsTr("Seed phrase"), qsTr("copied to clipboard"))
                                 }
-                            }                            
+                            }
                         }
                     }
                     Item
@@ -490,7 +510,10 @@ SetupPage
                         {
                             width: parent.width - 40
                             anchors.horizontalCenter: parent.horizontalCenter
-                            font { bold: true }
+                            font
+                            {
+                                bold: true
+                            }
                             text_value: qsTr("Let's double check your seed phrase")
                         }
 
@@ -560,7 +583,10 @@ SetupPage
                     field.horizontalAlignment: Qt.AlignLeft
                     field.leftPadding: 75
                     field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
-                    field.validator: RegExpValidator { regExp: /[a-z]+/ }
+                    field.validator: RegExpValidator
+                    {
+                        regExp: /[a-z]+/
+                    }
                     field.onAccepted: tryGuess()
 
                     DefaultRectangle
@@ -620,7 +646,8 @@ SetupPage
                     text_value: guess_text_error
                     color: Dex.CurrentTheme.noColor
                     visible: input_seed_word.error
-                    DexVisibleBehavior on visible {}
+                    DexVisibleBehavior on visible
+                    {}
                 }
             }
 
@@ -656,7 +683,10 @@ SetupPage
                     field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
                 }
 
-                Item { Layout.fillWidth: true }
+                Item
+                {
+                    Layout.fillWidth: true
+                }
 
                 RowLayout
                 {

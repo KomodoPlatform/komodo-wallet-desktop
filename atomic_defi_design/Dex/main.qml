@@ -17,22 +17,22 @@ DexWindow
 {
     id: window
 
-    property int    previousX: 0
-    property int    previousY: 0
-    property int    real_visibility
-    property bool   isOsx: Qt.platform.os == "osx"
-    property bool   logged: false
+    property int previousX: 0
+    property int previousY: 0
+    property int real_visibility
+    property bool isOsx: Qt.platform.os == "osx"
+    property bool logged: false
 
     title: API.app_name
     visible: true
 
-	minimumWidth: General.minimumWidth
-	minimumHeight: General.minimumHeight
+    minimumWidth: General.minimumWidth
+    minimumHeight: General.minimumHeight
 
     background: DefaultRectangle
     {
         anchors.fill: parent
-	}
+    }
 
     Universal.background: Dex.CurrentTheme.backgroundColor
     Universal.foreground: Dex.CurrentTheme.foregroundColor
@@ -45,18 +45,21 @@ DexWindow
 
         API.app.change_state(visibility)
     }
-	
-    DexWindowControl { visible: !isOsx }
+
+    DexWindowControl
+    {
+        visible: !isOsx
+    }
 
     DexRectangle
     {
-		radius: 0
+        radius: 0
         width: parent.width
-		height: 30
-		anchors.horizontalCenter: parent.horizontalCenter
-        color:  Dex.CurrentTheme.backgroundColorDeep
+        height: 30
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: Dex.CurrentTheme.backgroundColorDeep
         visible: isOsx
-	}
+    }
 
 
     DexPopup
@@ -86,14 +89,14 @@ DexWindow
                     {
                         anchors.verticalCenter: parent.verticalCenter
                         icon: Qaterial.Icons.logout
-                        color:  Dex.CurrentTheme.foregroundColor
+                        color: Dex.CurrentTheme.foregroundColor
                         size: 11
                     }
 
                     DexLabel
                     {
                         anchors.verticalCenter: parent.verticalCenter
-                        color:  Dex.CurrentTheme.foregroundColor
+                        color: Dex.CurrentTheme.foregroundColor
                         text: qsTr('Logout')
                     }
                 }
@@ -105,9 +108,10 @@ DexWindow
                     anchors.fill: parent
                     onClicked:
                     {
-                        let dialog = app.showText({
+                        let dialog = app.showText(
+                        {
                             "title": qsTr("Confirm Logout"),
-                            text: qsTr("Are you sure you want to log out?") ,
+                            text: qsTr("Are you sure you want to log out?"),
                             standardButtons: Dialog.Yes | Dialog.Cancel,
                             warning: true,
                             width: 300,
@@ -115,7 +119,8 @@ DexWindow
                             iconColor: Dex.CurrentTheme.accentColor,
                             yesButtonText: qsTr("Yes"),
                             cancelButtonText: qsTr("Cancel"),
-                            onAccepted: function(text) {
+                            onAccepted: function(text)
+                            {
                                 app.notifications_list = []
                                 userMenu.close()
                                 app.currentWalletName = ""
@@ -125,7 +130,8 @@ DexWindow
                                 dialog.close()
                                 dialog.destroy()
                             },
-                            onRejected: function() {
+                            onRejected: function()
+                            {
                                 userMenu.close()
                             }
                         })
@@ -135,15 +141,18 @@ DexWindow
         }
     }
 
-    DexMacControl { visible: isOsx }
+    DexMacControl
+    {
+        visible: isOsx
+    }
 
     Row
     {
         height: 30
         leftPadding: 8
-        anchors.right: isOsx? parent.right : undefined
-        anchors.rightMargin: isOsx? 8 : 0
-        layoutDirection: isOsx? Qt.RightToLeft : Qt.LeftToRight
+        anchors.right: isOsx ? parent.right : undefined
+        anchors.rightMargin: isOsx ? 8 : 0
+        layoutDirection: isOsx ? Qt.RightToLeft : Qt.LeftToRight
         spacing: 5
 
         Image
@@ -164,7 +173,7 @@ DexWindow
             font.weight: Font.Medium
             opacity: .5
             leftPadding: 5
-            color:  Dex.CurrentTheme.foregroundColor
+            color: Dex.CurrentTheme.foregroundColor
             visible: !_label.visible
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -183,7 +192,7 @@ DexWindow
             }
         }
         anchors.right: parent.right
-        anchors.rightMargin: isOsx? 10 : 120
+        anchors.rightMargin: isOsx ? 10 : 120
 
         Row
         {
@@ -198,7 +207,7 @@ DexWindow
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible & !isOsx
-                color:  Dex.CurrentTheme.foregroundColor
+                color: Dex.CurrentTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
             }
@@ -208,7 +217,7 @@ DexWindow
                 height: __row.height + 5
                 anchors.verticalCenter: parent.verticalCenter
                 radius: 3
-                color: _area.containsMouse?  Dex.CurrentTheme.floatingBackgroundColor : "transparent"
+                color: _area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : "transparent"
                 Row
                 {
                     id: __row
@@ -221,7 +230,7 @@ DexWindow
                         source: Qaterial.Icons.accountCircle
                         iconSize: 18
                         visible: _label.visible
-                        color:  Dex.CurrentTheme.foregroundColor
+                        color: Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -233,7 +242,7 @@ DexWindow
                         font.weight: Font.Medium
                         opacity: .7
                         visible: window.logged
-                        color:  Dex.CurrentTheme.foregroundColor
+                        color: Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -242,7 +251,7 @@ DexWindow
                         source: Qaterial.Icons.menuDown
                         iconSize: 14
                         visible: _label.visible
-                        color:  Dex.CurrentTheme.foregroundColor
+                        color: Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
@@ -270,7 +279,7 @@ DexWindow
                 font.family: 'Montserrat'
                 font.weight: Font.Medium
                 visible: _label.visible
-                color:  Dex.CurrentTheme.foregroundColor
+                color: Dex.CurrentTheme.foregroundColor
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 2
             }
@@ -289,7 +298,8 @@ DexWindow
                     visible: _label.visible
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                DexLabel {
+                DexLabel
+                {
                     text: ":"
                     opacity: .7
                     font.family: 'Montserrat'
@@ -299,7 +309,7 @@ DexWindow
                 }
                 DexLabel
                 {
-                    text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all,API.app.settings_pg.current_currency)
+                    text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                     font.family: 'lato'
                     font.weight: Font.Medium
                     visible: _label.visible
@@ -313,9 +323,9 @@ DexWindow
                             const current_fiat = API.app.settings_pg.current_currency
                             const available_fiats = API.app.settings_pg.get_available_currencies()
                             const current_index = available_fiats.indexOf(
-                                                    current_fiat)
-                            const next_index = (current_index + 1)
-                                             % available_fiats.length
+                                current_fiat)
+                            const next_index = (current_index + 1) %
+                                available_fiats.length
                             const next_fiat = available_fiats[next_index]
                             API.app.settings_pg.current_currency = next_fiat
                         }
@@ -335,7 +345,7 @@ DexWindow
             }
             DexIconButton
             {
-                opacity: containsMouse? 1 : .8
+                opacity: containsMouse ? 1 : .8
                 anchors.verticalCenter: parent.verticalCenter
                 iconSize: 22
                 icon: Qaterial.Icons.bellOutline
@@ -347,11 +357,11 @@ DexWindow
                     anchors.right: parent.right
                     anchors.rightMargin: -3
                     y: -3
-                    radius: width/2
+                    radius: width / 2
                     width: count_text.height * 1.4
                     height: width
-                    visible: app.notifications_list !== undefined? app.notifications_list.length > 0 : false
-                    color:  DexTheme.redColor
+                    visible: app.notifications_list !== undefined ? app.notifications_list.length > 0 : false
+                    color: DexTheme.redColor
 
                     DefaultText
                     {
