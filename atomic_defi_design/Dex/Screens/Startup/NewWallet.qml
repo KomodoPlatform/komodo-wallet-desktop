@@ -489,7 +489,7 @@ SetupPage
             {
                 visible: currentStep === 1
 
-                Rectangle
+                DefaultRectangle
                 {
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
