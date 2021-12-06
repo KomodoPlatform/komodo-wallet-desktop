@@ -7185,9 +7185,9 @@
     "active": false,
     "currently_enabled": false
   },
-  "ZET": {
-    "coin": "ZET",
-    "name": "Zetacoin",
+  "ZET-OLD": {
+    "coin": "ZET-OLD",
+    "name": "Zetacoin (OLD)",
     "coinpaprika_id": "zet-zetacoin",
     "coingecko_id": "zetacoin",
     "nomics_id": "ZET",
@@ -7196,9 +7196,26 @@
         "url": "failover.zet.ewmci.xyz:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
-      },
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/zet-old/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ZET": {
+    "coin": "ZET",
+    "name": "Zetacoin",
+    "coinpaprika_id": "zet-zetacoin",
+    "coingecko_id": "zetacoin",
+    "nomics_id": "ZET",
+    "electrum": [
       {
-        "url": "electrumx.zet.ewmcx.info:50001",
+        "url": "207.180.252.200:50011",
         "protocol": "TCP"
       }
     ],
