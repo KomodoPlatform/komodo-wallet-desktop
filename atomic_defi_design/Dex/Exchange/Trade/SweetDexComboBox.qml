@@ -93,37 +93,26 @@ ComboBox
             anchors.rightMargin: 5
 
             // Search input
-            DefaultTextField
+            SearchField
             {
-                id: input_coin_filter
-                background: Item
-                {
-                    DefaultRectangle
-                    {
-                        anchors.fill: parent
-                        anchors.rightMargin: 2
-                    }
-                }
+                id: tickerSearchField
 
                 function reset()
                 {
-                    text = ""
+                    textField.text = ""
                     renewIndex()
                 }
 
-                placeholderText: qsTr("Search")
+                Layout.preferredWidth: parent.width - 10
+                Layout.preferredHeight: 30
+                Layout.alignment: Qt.AlignHCenter
 
-                font.pixelSize: 16
+                color: Dex.CurrentTheme.backgroundColor
 
-                Layout.fillWidth: true
-                Layout.leftMargin: 0
-                Layout.preferredHeight: 60
-                Layout.rightMargin: 2
-                Layout.topMargin: Layout.leftMargin
-
-                onTextChanged:
+                textField.font.pixelSize: 16
+                textField.onTextChanged:
                 {
-                    ticker_list.setFilterFixedString(text)
+                    ticker_list.setFilterFixedString(textField.text)
                     renewIndex()
                 }
 
@@ -144,31 +133,25 @@ ComboBox
                     target: popup
                     function onOpened()
                     {
-                        input_coin_filter.reset();
-                        input_coin_filter.forceActiveFocus();
+                        tickerSearchField.reset();
+                        tickerSearchField.forceActiveFocus();
                     }
-                    function onClosed() { input_coin_filter.reset() }
+                    function onClosed() { tickerSearchField.reset() }
                 }
             }
-            Item
+
+            DefaultListView
             {
                 Layout.maximumHeight: popup.max_height - 100
                 Layout.fillWidth: true
-                implicitHeight: popup_list_view.contentHeight + 5
-                DefaultListView
-                {
-                    id: popup_list_view
-                     // Scrollbar appears if this extra space is not added
-                    model: control.popup.visible ? control.delegateModel : null
-                    currentIndex: control.highlightedIndex
-                    anchors.fill: parent
-                    anchors.rightMargin: 2
 
-                    DefaultMouseArea
-                    {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.NoButton
-                    }
+                model: control.popup.visible ? control.delegateModel : null
+                currentIndex: control.highlightedIndex
+
+                DefaultMouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
                 }
             }
         }
@@ -178,7 +161,7 @@ ComboBox
             width: parent.width
             y: -5
             height: parent.height + 10
-            border.width: 1
+            radius: 10
         }
     }
 
