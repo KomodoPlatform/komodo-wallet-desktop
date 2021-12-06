@@ -15,5 +15,6 @@ $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\$Env:QT_VERSION\msvc2019_64"
 $Env:QT_ROOT = "C:\Qt"
 mkdir build
 cd build
+cmake --version
 cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
 cmake --build . --config Release --target INSTALL
