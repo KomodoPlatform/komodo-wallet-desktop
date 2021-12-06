@@ -1,6 +1,6 @@
 {
   "name": "atomicdex-desktop",
-  "version-string": "0.5.2",
+  "version-string": "0.5.3",
   "dependencies": [
     "entt",
     "boost-multiprecision",

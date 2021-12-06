@@ -12,8 +12,8 @@ on:
 env:
   DEX_PROJECT_NAME: "firodex-desktop"
   DEX_DISPLAY_NAME: "FiroDex Desktop"
-  DEX_COMPANY: "KomodoPlatform"
-  DEX_WEBSITE: "https://atomicdex.io/"
+  DEX_COMPANY: "Firo Core Team"
+  DEX_WEBSITE: "https://firo.org/"
 
 jobs:
 
@@ -287,6 +287,7 @@ jobs:
           ./atomicdex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+
 
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'

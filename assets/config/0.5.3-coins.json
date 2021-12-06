@@ -3731,8 +3731,8 @@
     "currently_enabled": false,
     "wallet_only": true
   },
-  "SMTF": {
-    "coin": "SMTF",
+  "SMTF-v2": {
+    "coin": "SMTF-v2",
     "name": "SmartFi",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",

@@ -8,8 +8,8 @@ on:
 env:
   DEX_PROJECT_NAME: "firodex-desktop"
   DEX_DISPLAY_NAME: "FiroDex Desktop"
-  DEX_COMPANY: "KomodoPlatform"
-  DEX_WEBSITE: "https://atomicdex.io/"
+  DEX_COMPANY: "Firo Core Team"
+  DEX_WEBSITE: "https://firo.org/"
 
 jobs:
 

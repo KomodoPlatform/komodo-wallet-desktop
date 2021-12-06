@@ -33,9 +33,9 @@ namespace atomic_dex
 
         ag::ecs::system_manager&  m_system_manager;
         atomic_dex::cfg&          m_cfg;
-        t_supported_fiat_registry m_supported_fiat_registry{"USD", "EUR", "BTC", "KMD", "GBP", "HKD", "IDR", "ILS", "DKK", "INR", "CHF", "MXN", "ETH"
-                                                            "CZK", "SGD", "THB", "HRK", "MYR", "NOK", "CNY", "BGN", "PHP", "PLN", "ZAR", "CAD", "FIRO"
-                                                            "ISK", "BRL", "RON", "NZD", "TRY", "JPY", "RUB", "KRW", "AUD", "HUF", "SEK", "LTC", "DOGE"};
+        t_supported_fiat_registry m_supported_fiat_registry{"USD", "EUR", "BTC", "KMD", "GBP", "HKD", "IDR", "ILS", "DKK", "INR", "CHF", "MXN", "ETH",  "BUSD",
+                                                            "CZK", "SGD", "THB", "HRK", "MYR", "NOK", "CNY", "BGN", "PHP", "PLN", "ZAR", "CAD", "BNB", "FIRO", "USDT",
+                                                            "ISK", "BRL", "RON", "NZD", "TRY", "JPY", "RUB", "KRW", "AUD", "HUF", "SEK", "LTC", "DAI", "DOGE", "USDC"};
         t_providers_registry      m_coin_rate_providers{};
         t_json_synchronized       m_other_fiats_rates;
         t_update_time_point       m_update_clock;
