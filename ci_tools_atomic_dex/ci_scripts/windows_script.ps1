@@ -17,4 +17,4 @@ mkdir b
 cd b
 cmake --version
 cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
-cmake --build . --config Release --target INSTALL
+ninja install

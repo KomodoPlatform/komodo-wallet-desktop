@@ -156,9 +156,10 @@ jobs:
           echo "CC=clang-12" >> $GITHUB_ENV
 
       - name: vcpkg deps (All)
-        uses: lukka/run-vcpkg@v10
+        uses: KomodoPlatform/run-vcpkg@v7
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          setupOnly: true
           appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
 
       - name: Install deps (MacOS)
