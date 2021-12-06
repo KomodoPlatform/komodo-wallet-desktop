@@ -3,15 +3,16 @@ import QtQuick.Controls 2.12
 
 import Qaterial 1.0 as Qaterial
 
-Qaterial.Popup {
+Qaterial.Popup
+{
     id: root
 
     parent: Overlay.overlay
 
     spacing: 8
     padding: 4
-    property int arrowXDecalage: 0
 
+    property int arrowXDecalage: 0
     property int _arrowOrigin
     property color backgroundColor: Qaterial.Style.dialogColor
 
@@ -36,22 +37,26 @@ Qaterial.Popup {
         open()
     }
 
-    background: Item {
+    background: Item
+    {
         implicitWidth: 50
         implicitHeight: Qaterial.Style.menu.implicitHeight
 
-        Rectangle {
+        Rectangle
+        {
             anchors.fill: parent
 
             radius: 18
             color: root.backgroundColor
             layer.enabled: true
-            layer.effect: Qaterial.ElevationEffect {
+            layer.effect: Qaterial.ElevationEffect
+            {
                 elevation: Qaterial.Style.menu.elevation
             } // ElevationEffect
         }
 
-        Rectangle {
+        Rectangle
+        {
             x: {
                 if (root._arrowOrigin === Item.Top || root._arrowOrigin === Item.Bottom)
                     return ((parent.width - width) / 2) + root.arrowXDecalage

@@ -595,13 +595,16 @@ ColumnLayout {
         id: confirm_trade_modal
         sourceComponent: ConfirmTradeModal {}
     }
-    DexPopup {
+    DexPopup
+    {
         id: dex_config_popup
         spacing: 8
         padding: 4
         arrowXDecalage: 75
-        backgroundColor: DexTheme.dexBoxBackgroundColor
-        Settings {
+        backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+
+        Settings
+        {
             id: proview_settings
             property bool chart_visibility: true
             property bool option_visibility: true
@@ -610,26 +613,31 @@ ColumnLayout {
             property bool form_visibility: true
         }
 
-        contentItem: Item {
-            implicitWidth: 350
+        contentItem: Item
+        {
+            implicitWidth: 320
             implicitHeight: 190
-            Column {
+            Column
+            {
                 anchors.fill: parent
                 rightPadding: 20
                 padding: 10
                 spacing: 8
-                DexLabel {
+                DefaultText
+                {
                     text: "Display Settings"
                     font: DexTypo.body2
                 }
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
-                DexCheckEye {
+                DexCheckEye
+                {
                     text: "Trading Information"
                     targetProperty: "visible"
                     target: optionBox
                 }
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
-                DexCheckEye {
+                DexCheckEye
+                {
                     text: "Order Book"
                     targetProperty: "visible"
                     target: _orderbook_box
