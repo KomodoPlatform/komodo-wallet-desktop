@@ -34,16 +34,19 @@ SweetDexComboBox
     onCurrentValueChanged:
     {
         // User input
-        if(combo.index_changed) {
+        if(combo.index_changed)
+        {
             combo.index_changed = false
             // Set the ticker
-            if(currentValue !== undefined)
+            if (currentValue !== undefined)
                 setPair(left_side, currentValue)
         }
         // List change
-        else {
+        else
+        {
             // Correct the index
-            if(currentText.indexOf(ticker) === -1) {
+            if (currentText.indexOf(ticker) === -1)
+            {
                 const target_index = indexOfValue(ticker)
                 if(currentIndex !== target_index)
                     currentIndex = target_index
