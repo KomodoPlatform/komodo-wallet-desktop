@@ -264,7 +264,13 @@ Popup
                         radius: 18
                         onClicked:
                         {
-                            dialog.accepted('')
+                            if (dialog.getText)
+                            {
+                                dialog.accepted(_insideField.field.text)
+                            } else
+                            {
+                                dialog.accepted(undefined)
+                            }
                             dialog.close()
                         }
                     }
