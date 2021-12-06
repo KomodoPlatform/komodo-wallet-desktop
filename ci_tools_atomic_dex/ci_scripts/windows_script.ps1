@@ -16,5 +16,5 @@ $Env:QT_ROOT = "C:\Qt"
 mkdir build
 cd build
 cmake --version
-cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
+cmake -DCMAKE_BUILD_TYPE=Release ../
 cmake --build . --config Release --target INSTALL
