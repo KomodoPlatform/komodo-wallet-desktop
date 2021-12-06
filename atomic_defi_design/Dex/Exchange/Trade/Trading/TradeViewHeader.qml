@@ -23,16 +23,6 @@ Item
         anchors.fill: parent
         spacing: 50
 
-        // Page title present in simple mode
-        DexLabel
-        {
-            visible: API.app.trading_pg.current_trading_mode == TradingMode.Simple
-            Layout.topMargin: 10
-            Layout.leftMargin: 30
-            font: DexTypo.head6
-            text: qsTr("DEX")
-        }
-
         // Simple/Pro toggle group
         Item
         {
