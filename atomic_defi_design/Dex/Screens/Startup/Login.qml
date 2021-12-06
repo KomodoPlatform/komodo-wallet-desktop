@@ -119,7 +119,7 @@ SetupPage
             Layout.alignment: Qt.AlignHCenter
             radius: width
             width: 300
-            text: qsTr("connect")
+            text: qsTr("Connect")
             enabled: _passwordChecker.isValid()
             onClicked: _inputPassword.field.accepted()
         }
