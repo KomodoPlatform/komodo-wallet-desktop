@@ -119,7 +119,7 @@ SetupPage
             Layout.alignment: Qt.AlignHCenter
             radius: width
             width: 300
-            text: DexTypo.capitalizeString(qsTr("connect"))
+            text: qsTr("connect")
             enabled: _passwordChecker.isValid()
             onClicked: _inputPassword.field.accepted()
         }
