@@ -110,10 +110,16 @@ Item
         width: 300
         contentItem: DefaultText
         {
-            text_value: qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> Your max balance after fees is: (%3)")
-                            .arg(parseFloat(min_volume).toFixed(8))
-                            .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
-                            .arg(isAsk ? parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal).toFixed(8) : parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal).toFixed(8))
+            text_value:
+            {
+                let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
+                let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
+
+                qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
+                    .arg(parseFloat(min_volume).toFixed(8))
+                    .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
+                    .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ? "Your max balance after fees is: %1".arg(isAsk ? relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+            }
             width: 300
         }
         delay: 200
