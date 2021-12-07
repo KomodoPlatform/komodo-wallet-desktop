@@ -61,7 +61,6 @@ DexWindow
         visible: isOsx
     }
 
-
     DexPopup
     {
         id: userMenu
@@ -247,8 +246,6 @@ DexWindow
                         color: _area.containsMouse ? Dex.CurrentTheme.gradientButtonPressedStartColor : Dex.CurrentTheme.foregroundColor
                         anchors.verticalCenter: parent.verticalCenter
                     }
-
-
                 }
                 DexMouseArea
                 {
