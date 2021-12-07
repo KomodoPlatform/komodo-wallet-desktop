@@ -171,11 +171,6 @@ ClipRRect // Trade Card
 
                     hoverEnabled: true
 
-                    ToolTip.delay: 500
-                    ToolTip.timeout: 5000
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Reset form.")
-
                     onClicked: selectedOrder = undefined
 
                     Qaterial.ColorIcon
@@ -184,6 +179,14 @@ ClipRRect // Trade Card
                         source:  Qaterial.Icons.broom
                         color: DexTheme.foregroundColor
                         opacity: .8
+                    }
+
+                    DefaultTooltip
+                    {
+                        delay: 500
+                        timeout: 5000
+                        visible: parent.hovered
+                        text: qsTr("Reset form.")
                     }
                 }
             }
@@ -630,7 +633,7 @@ ClipRRect // Trade Card
                     opacity: enabled ? 1 : .6
                     radius: 10
                     anchors.fill: parent
-                    text: qsTr("Swap Now")
+                    text: qsTr("SWAP NOW")
                     onClicked: _confirmSwapModal.open()
 
                     ModalLoader
@@ -808,6 +811,7 @@ ClipRRect // Trade Card
                     source: Qaterial.Icons.magnify
                     x: 25
                     opacity: .7
+                    color: Dex.CurrentTheme.textPlaceholderColor
                 }
                 DexTextField
                 {
@@ -824,7 +828,7 @@ ClipRRect // Trade Card
                     }
                     onTextChanged:
                     {
-                      Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
+                        Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
                     }
                 }
             }

@@ -36,8 +36,12 @@ Item {
             width: layout_background.width
             height: layout_background.height
 
-            ComboBoxWithTitle {
+            ComboBoxWithTitle
+            {
                 id: combo_fiat
+
+                property bool initialized: false
+
                 title: qsTr("Fiat")
                 Layout.fillWidth: true
                 Layout.leftMargin: 30
@@ -45,15 +49,17 @@ Item {
 
                 model: fiats
 
-                property bool initialized: false
-                onCurrentIndexChanged: {
-                    if(initialized) {
+                onCurrentIndexChanged:
+                {
+                    if (initialized)
+                    {
                         const new_fiat = fiats[currentIndex]
                         API.app.settings_pg.current_fiat = new_fiat
                         API.app.settings_pg.current_currency = new_fiat
                     }
                 }
-                Component.onCompleted: {
+                Component.onCompleted:
+                {
                     currentIndex = model.indexOf(API.app.settings_pg.current_fiat)
                     initialized = true
                 }

@@ -1,11 +1,15 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+
 import Qaterial 1.0 as Qaterial
+
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-RowLayout {
+RowLayout
+{
     id: control
     property int visible_page: API.app.orders_mdl.current_page
     property int page_count: API.app.orders_mdl.nb_pages
@@ -51,7 +55,8 @@ RowLayout {
     onCurrent_pageChanged: paginator()
     onPage_countChanged: paginator()
 
-    DefaultComboBox {
+    DefaultComboBox
+    {
         readonly property int item_count: API.app.orders_mdl.limit_nb_elements
         readonly property var options: [5, 10, 25, 50, 100, 200]
 
@@ -61,6 +66,8 @@ RowLayout {
         model: options
         currentIndex: options.indexOf(item_count)
         onCurrentValueChanged: API.app.orders_mdl.limit_nb_elements = currentValue
+        mainBackgroundColor: Dex.CurrentTheme.backgroundColor
+        dropdownBackgroundColor: Dex.CurrentTheme.backgroundColor
     }
 
     DefaultText {

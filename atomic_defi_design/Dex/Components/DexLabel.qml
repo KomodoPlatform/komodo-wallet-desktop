@@ -21,7 +21,7 @@ Text
 
     font: Qt.font
     ({
-        pixelSize: 13,
+        pixelSize: 14,
         letterSpacing: 0.25,
         weight: Font.Normal
     })

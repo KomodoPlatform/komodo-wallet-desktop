@@ -11,6 +11,8 @@ CheckBox
 {
     id: control
 
+    property color textColor: Dex.CurrentTheme.foregroundColor
+
     property alias boxWidth: _indicator.implicitWidth
     property alias boxHeight: _indicator.implicitHeight
 
@@ -20,10 +22,11 @@ CheckBox
 
     font.family: Style.font_family
 
-    contentItem: DexLabel
+    contentItem: DefaultText
     {
         text: control.text
         font: control.font
+        color: control.textColor
         horizontalAlignment: DexLabel.AlignLeft
         verticalAlignment: DexLabel.AlignVCenter
         leftPadding: control.indicator.width + control.spacing

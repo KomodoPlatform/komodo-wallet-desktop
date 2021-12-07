@@ -1,8 +1,12 @@
+.pragma library
+
 function getHardcoded()
 {
     return {
         accentColor: "#F0F2FF",
         foregroundColor: "#456078",
+        foregroundColor2: "#7A8EA1",
+        foregroundColor3: "#8FA0B1B2",
         backgroundColor: "#FCFCFC",
         backgroundColorDeep: "#FCFCFC",
 
@@ -17,8 +21,8 @@ function getHardcoded()
 
         gradientButtonStartColor: "#5A68E6",
         gradientButtonEndColor: "#4986EAAB",
-        gradientButtonDisabledStartColor: "#BBB",
-        gradientButtonDisabledEndColor: "#BBB",
+        gradientButtonDisabledStartColor: "#CDD0F6",
+        gradientButtonDisabledEndColor: "#DAE5F9",
         gradientButtonHoveredStartColor: "#5A68E6",
         gradientButtonHoveredEndColor: "#5A68E6",
         gradientButtonPressedStartColor: "#6A4DE3",
@@ -36,28 +40,50 @@ function getHardcoded()
         switchGradientStartColor2: "#FFF",
         switchGradientEndColor2: "#FFF",
 
+        comboBoxBackgroundColor: "#FFFFFFFF",
+        comboBoxArrowsColor: "#456078FF",
+        comboBoxDropdownItemHighlightedColor: "#456078FF",
+
         modalPageCounterGradientStartColor: "#9DD4F3",
         modalPageCounterGradientEndColor: "#9DD4F3",
+
+        scrollBarIndicatorColor: "#DBE0E4FF",
+        scrollBarBackgroundColor: "#93A3B1FF",
 
         tabSelectedColor: "#DCE8FD",
 
         textDisabledColor: "#C5CFD8",
-        textSelectionColor: "#14bca6",
+        textSelectionColor: "#14BCA6FF",
         textPlaceholderColor: "#91A8E8",
         textSelectedColor: "#f9f9fb",
+
+        textFieldBackgroundColor: "#F3F5F6FF",
+        textFieldPrefixColor: "#45607894",
+        textFieldSuffixColor: "#456078FF",
 
         chartTradingLineBackgroundColor: "#C5F2EF",
         chartTradingLineColor: "#53EBD7",
 
-        innerBackgroundColor: "#f7faff",
+        innerBackgroundColor: "#edf4ff",
 
-        floatingBackgroundColor: "#f7faff",
+        floatingBackgroundColor: "#edf4ff",
+
+        rangeSliderBackgroundColor: "#5A68E6FF",
+        rangeSliderDistanceColor: "#4986EA3B",
+        rangeSliderIndicatorBackgroundStartColor: "#5A68E6FF",
+        rangeSliderIndicatorBackgroundEndColor: "#4986EAAD",
 
         sidebarBgColor: "#FCFCFC",
         sidebarVersionTextColor: "#456078",
         sidebarCursorStartColor: "#5A68E6",
         sidebarCursorEndColor: "#2CB9F000",
         sidebarLineTextHovered: "#2C87B9",
+
+        tradeBuyModeSelectorBackgroundColorStart: "#6A4DE3FF",
+        tradeBuyModeSelectorBackgroundColorEnd: "#2279F1FF",
+        tradeSellModeSelectorBackgroundColorStart: "#E52167FF",
+        tradeSellModeSelectorBackgroundColorEnd: "#E216A9FF",
+        tradeMarketModeSelectorNotSelectedBackgroundColor: "#89B6FF21",
 
         okColor: "#00C058",
         noColor: "#E52167",

@@ -296,7 +296,7 @@
         <file>assets/images/dex-tray-icon.png</file>
         <file>assets/images/exchange-exchange.svg</file>
         <file>assets/images/exchange-search.svg</file>
-        <file>assets/images/exchange-trade-complete.svg</file>
+        <file>assets/images/exchange-trade-complete.png</file>
         <file>assets/images/guide_coingecko_id.gif</file>
         <file>assets/images/guide_contract_address_erc.gif</file>
         <file>assets/images/guide_contract_address_qrc.gif</file>
@@ -464,10 +464,12 @@
         <file>Dex/Components/PrimaryButton.qml</file>
         <file>Dex/Components/RestartModal.qml</file>
         <file>Dex/Components/RightClickMenu.qml</file>
+        <file>Dex/Components/RoundComboBox.qml</file>
         <file>Dex/Components/SearchField.qml</file>
         <file>Dex/Components/Separator.qml</file>
         <file>Dex/Components/SetupPage.qml</file>
         <file>Dex/Components/SidebarPanel.qml</file>
+        <file>Dex/Components/SquareButton.qml</file>
         <file>Dex/Components/SwapIcon.qml</file>
         <file>Dex/Components/TextAreaWithTitle.qml</file>
         <file>Dex/Components/TextEditWithTitle.qml</file>
@@ -492,6 +494,7 @@
         <file>Dex/Exchange/Exchange.qml</file>
         <file>Dex/Exchange/History/History.qml</file>
         <file>Dex/Exchange/Orders/Orders.qml</file>
+        <file>Dex/Exchange/ProView/MarketModeSelector.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/Header.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/List.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/ListDelegate.qml</file>
@@ -599,5 +602,6 @@
         <file>Dex/Portfolio/AssetsList.qml</file>
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>Dex/Components/PopupManager.qml</file>
     </qresource>
 </RCC>

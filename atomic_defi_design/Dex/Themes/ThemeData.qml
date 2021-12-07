@@ -4,6 +4,8 @@ QtObject
 {
     property color  accentColor
     property color  foregroundColor
+    property color  foregroundColor2
+    property color  foregroundColor3
     property color  backgroundColor
     property color  backgroundColorDeep
 
@@ -37,8 +39,15 @@ QtObject
     property color  switchGradientStartColor2
     property color  switchGradientEndColor2
 
+    property color  comboBoxBackgroundColor
+    property color  comboBoxArrowsColor
+    property color  comboBoxDropdownItemHighlightedColor
+
     property color  modalPageCounterGradientStartColor
     property color  modalPageCounterGradientEndColor
+
+    property color  scrollBarIndicatorColor
+    property color  scrollBarBackgroundColor
 
     property color  tabSelectedColor
 
@@ -47,6 +56,10 @@ QtObject
     property color  textPlaceholderColor
     property color  textSelectedColor
 
+    property color  textFieldBackgroundColor
+    property color  textFieldPrefixColor
+    property color  textFieldSuffixColor
+
     property color  chartTradingLineBackgroundColor
     property color  chartTradingLineColor
 
@@ -54,12 +67,24 @@ QtObject
 
     property color  floatingBackgroundColor
 
+    property color  rangeSliderBackgroundColor
+    property color  rangeSliderDistanceColor
+    property color  rangeSliderIndicatorBackgroundStartColor
+    property color  rangeSliderIndicatorBackgroundEndColor
+
     // Sidebar related
     property color  sidebarBgColor
     property color  sidebarVersionTextColor
     property color  sidebarCursorStartColor
     property color  sidebarCursorEndColor
     property color  sidebarLineTextHovered
+
+    // Trading page related
+    property color  tradeBuyModeSelectorBackgroundColorStart
+    property color  tradeBuyModeSelectorBackgroundColorEnd
+    property color  tradeSellModeSelectorBackgroundColorStart
+    property color  tradeSellModeSelectorBackgroundColorEnd
+    property color  tradeMarketModeSelectorNotSelectedBackgroundColor
 
     // Colors used to tell when something is good or wrong.
     property color  okColor

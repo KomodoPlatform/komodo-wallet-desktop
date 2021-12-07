@@ -16,10 +16,15 @@ SetupPage
     property string text_error
     property string walletName
 
+    property bool   _isPasswordWrong: false
+
     signal backClicked()
     signal loginSucceeded()
 
-    function reset() { text_error = "" }
+    function reset()
+    {
+        text_error = ""
+    }
 
     function onClickedLogin(password)
     {
@@ -33,13 +38,13 @@ SetupPage
         else
         {
             console.info("Failed: Login");
-            text_error = qsTr("Incorrect Password");
+            _isPasswordWrong = true;
             return false;
         }
     }
 
 
-    image_scale: 0.7
+    image_scale: 1
     backgroundColor: 'transparent'
     image_path: Dex.CurrentTheme.bigLogoPath
 
@@ -47,7 +52,7 @@ SetupPage
     {
         id: content
 
-        spacing: 20
+        spacing: 10
 
         DexLabel
         {
@@ -56,6 +61,12 @@ SetupPage
             color: Dex.CurrentTheme.foregroundColor
             font: DexTypo.body1
             topPadding: 10
+        }
+
+        Item
+        {
+            height: 20
+            width: 1
         }
 
         DexAppPasswordField
@@ -73,6 +84,7 @@ SetupPage
                 }
                 else
                 {
+                    _inputPassword.error = true
                     _keyChecker.visible = true
                 }
             }
@@ -88,12 +100,26 @@ SetupPage
             field: _inputPassword.field
         }
 
-        DefaultButton
+        DefaultText
+        {
+            Layout.alignment: Qt.AlignHCenter
+            visible: _isPasswordWrong
+            text: qsTr("Incorrect Password")
+            color: Dex.CurrentTheme.noColor
+        }
+
+        Item
+        {
+            height: 1
+            width: 1
+        }
+
+        GradientButton
         {
             Layout.alignment: Qt.AlignHCenter
             radius: width
-            width: 150
-            text: qsTr("connect")
+            width: 300
+            text: qsTr("Connect")
             enabled: _passwordChecker.isValid()
             onClicked: _inputPassword.field.accepted()
         }
@@ -106,15 +132,22 @@ SetupPage
             visible: false
         }
 
-        Qaterial.AppBarButton
+        DexAppButton
         {
+            text: qsTr("Cancel")
+            color: containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
+            height: 25
+            radius: 20
+            width: 100
+            border.color: 'transparent'
             Layout.alignment: Qt.AlignHCenter
-            width: 80
-            icon.width: 40
-            icon.height: 40
-            icon.source: Qaterial.Icons.close
-            icon.color: Dex.CurrentTheme.foregroundColor
-            backgroundColor: 'transparent'
+            font: Qt.font(
+            {
+                pixelSize: 14,
+                letterSpacing: 0.15,
+                family: DexTypo.fontFamily,
+                weight: Font.Normal
+            })
             onClicked: backClicked()
         }
     }

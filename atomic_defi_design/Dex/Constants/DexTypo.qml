@@ -13,16 +13,12 @@ QtObject {
         switch (App.API.app.settings_pg.lang) {
             case "en":
                 return 0.99999
-                break
             case "fr":
                 return 0.99999
-                break
             case "tr":
                 return 0.99999
-                break
             case "ru":
                 return 0.99999
-                break
             default:
                 return 0.99999
         }

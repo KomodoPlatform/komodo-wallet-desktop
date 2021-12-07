@@ -16,14 +16,15 @@ Item
     property alias content: inner_space.sourceComponent
     property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
-    property color backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-
+    property color backgroundColor: 'transparent' //Dex.CurrentTheme.floatingBackgroundColor
+    property int verticalCenterOffset: 0
     ColumnLayout
     {
         id: window_layout
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: _control.verticalCenterOffset
         transformOrigin: Item.Center
         spacing: image_margin
 
@@ -31,7 +32,7 @@ Item
         {
             id: image
             Layout.maximumWidth: 300
-            Layout.maximumHeight: Layout.maximumWidth * paintedHeight/paintedWidth
+            Layout.maximumHeight: Layout.maximumWidth * paintedHeight / paintedWidth
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             antialiasing: true
@@ -65,4 +66,13 @@ Item
             Layout.alignment: Qt.AlignHCenter
         }
     }
+
+    DexLanguage
+    {
+        y: 52
+        anchors.right: parent.right
+        anchors.rightMargin: 52
+        width: 72
+    }
+
 }

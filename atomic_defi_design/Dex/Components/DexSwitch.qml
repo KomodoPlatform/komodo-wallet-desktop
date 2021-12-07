@@ -32,8 +32,14 @@ Switch
         gradient: Gradient
         {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0; color: Dex.CurrentTheme.switchGradientStartColor }
-            GradientStop { position: 0.9311; color: Dex.CurrentTheme.switchGradientEndColor }
+            GradientStop
+            {
+                position: 0;color: Dex.CurrentTheme.switchGradientStartColor
+            }
+            GradientStop
+            {
+                position: 0.9311;color: Dex.CurrentTheme.switchGradientEndColor
+            }
         }
 
         Rectangle
@@ -47,8 +53,14 @@ Switch
             gradient: Gradient
             {
                 orientation: Gradient.Horizontal
-                GradientStop { position: 0; color: control.checked ? Dex.CurrentTheme.switchGradientStartColor : Dex.CurrentTheme.switchGradientStartColor2 }
-                GradientStop { position: 0.9311; color: control.checked ? Dex.CurrentTheme.switchGradientEndColor : Dex.CurrentTheme.switchGradientEndColor2 }
+                GradientStop
+                {
+                    position: 0;color: control.checked ? Dex.CurrentTheme.switchGradientStartColor : Dex.CurrentTheme.switchGradientStartColor2
+                }
+                GradientStop
+                {
+                    position: 0.9311;color: control.checked ? Dex.CurrentTheme.switchGradientEndColor : Dex.CurrentTheme.switchGradientEndColor2
+                }
             }
         }
 
@@ -63,8 +75,14 @@ Switch
             gradient: Gradient
             {
                 orientation: Gradient.Horizontal
-                GradientStop { position: 0; color: control.checked ? Dex.CurrentTheme.switchGradientStartColor2 : Dex.CurrentTheme.switchGradientStartColor }
-                GradientStop { position: 0.9311; color: control.checked ? Dex.CurrentTheme.switchGradientEndColor2 : Dex.CurrentTheme.switchGradientEndColor }
+                GradientStop
+                {
+                    position: 0;color: control.checked ? Dex.CurrentTheme.switchGradientStartColor2 : Dex.CurrentTheme.switchGradientStartColor
+                }
+                GradientStop
+                {
+                    position: 0.9311;color: control.checked ? Dex.CurrentTheme.switchGradientEndColor2 : Dex.CurrentTheme.switchGradientEndColor
+                }
             }
         }
     }
@@ -75,4 +93,5 @@ Switch
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
     }
+
 }

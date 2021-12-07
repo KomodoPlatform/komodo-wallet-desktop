@@ -17,10 +17,11 @@ Item
         Support
     }
 
-    property bool   isExpanded: true
+    property bool   isExpanded: containsMouse
     property real   lineHeight: 44
     property var    currentLineType: Main.LineType.Portfolio
     property alias  _selectionCursor: _selectionCursor
+    property bool   containsMouse: mouseArea.containsMouse
 
     signal lineSelected(var lineType)
     signal settingsClicked()
@@ -28,9 +29,6 @@ Item
 
     width: isExpanded ? 200 : 80
     height: parent.height
-
-    onCurrentLineTypeChanged: if (currentLineType === Main.LineType.DEX) isExpanded = false
-                              else isExpanded = true
 
     // Background Rectangle
     Rectangle
@@ -42,7 +40,7 @@ Item
     // Animation when changing width.
     Behavior on width
     {
-        NumberAnimation { duration: 300 }
+        NumberAnimation { duration: 300; targets: [width, _selectionCursor.width]; properties: "width" }
     }
 
     // Selection Cursor
@@ -56,9 +54,10 @@ Item
             else return center.y + currentLineType * (lineHeight + center.spacing);
         }
 
-        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.leftMargin: 12
         radius: 18
-        width: isExpanded ? 185 : 76
+        width: parent.width - 14
         height: lineHeight
 
         opacity: .7
@@ -76,50 +75,57 @@ Item
         }
     }
 
-    Top
+    MouseArea
     {
-        id: top
-        width: parent.width
-        height: 180
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-    }
-
-    Center
-    {
-        id: center
-        width: parent.width
-        anchors.top: top.bottom
-        anchors.topMargin: 69.5
-        onLineSelected:
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        Top
         {
-            if (currentLineType === lineType)
-                return;
-            currentLineType = lineType;
-            root.lineSelected(lineType);
+            id: top
+            width: parent.width
+            height: 180
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 16
         }
-    }
 
-    Bottom
-    {
-        id: bottom
-        width: parent.width
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 62
-
-        onSupportLineSelected:
+        Center
         {
-            if (currentLineType === lineType)
-                return;
-            currentLineType = lineType;
-            root.lineSelected(lineType);
+            id: center
+            width: parent.width
+            anchors.top: top.bottom
+            anchors.topMargin: 69.5
+            onLineSelected:
+            {
+                if (currentLineType === lineType)
+                    return;
+                currentLineType = lineType;
+                root.lineSelected(lineType);
+            }
         }
-        onSettingsClicked: root.settingsClicked()
-    }
 
-    VerticalLine
-    {
-        height: parent.height
-        anchors.right: parent.right
+        Bottom
+        {
+            id: bottom
+            width: parent.width
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 62
+
+            onSupportLineSelected:
+            {
+                if (currentLineType === lineType)
+                    return;
+                currentLineType = lineType;
+                root.lineSelected(lineType);
+            }
+            onSettingsClicked: root.settingsClicked()
+        }
+
+        VerticalLine
+        {
+            height: parent.height
+            anchors.right: parent.right
+        }
     }
 }

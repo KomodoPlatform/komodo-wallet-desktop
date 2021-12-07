@@ -13,7 +13,8 @@ import "Components"
 import "Dashboard"
 import App 1.0
 import Dex.Themes 1.0 as Dex
-import "Screens/Startup" as Startup
+import "Screens/Startup"
+as Startup
 
 DexRectangle
 {
@@ -22,18 +23,22 @@ DexRectangle
     // This enumeration represents every possible visual state (commonly named "screen") of the application
     enum ScreenType
     {
-        Startup,    // Wallets selection, login, create wallet, import wallet, etc.
-        Dashboard   // After logged to a wallet.
+        Startup, // Wallets selection, login, create wallet, import wallet, etc.
+        Dashboard // After logged to a wallet.
     }
 
-    property string         currentWalletName: API.app.wallet_mgr.wallet_default_name
-    property bool           debug: debug_bar
-    property var            notification_modal: notifications_modal
-    property var            notifications_list: _currentPage === App.ScreenType.Dashboard ? loader.item.notifications_list : []
-    property bool           segwit_on: false
+    property string currentWalletName: API.app.wallet_mgr.wallet_default_name
+    property bool debug: debug_bar
+    property
+    var notification_modal: notifications_modal
+    property
+    var notifications_list: _currentPage === App.ScreenType.Dashboard ? loader.item.notifications_list : []
+    property bool segwit_on: false
 
-    property var            _currentPage: API.app.wallet_mgr.log_status() ? App.ScreenType.Dashboard : App.ScreenType.Startup
-    property var            _availablePages: [ _startup, dashboard ]
+    property
+    var _currentPage: API.app.wallet_mgr.log_status() ? App.ScreenType.Dashboard : App.ScreenType.Startup
+    property
+    var _availablePages: [_startup, dashboard]
 
     property alias globalGradient: globalGradient
 
@@ -58,10 +63,14 @@ DexRectangle
     {
         id: no_connection
 
-        NoConnection {}
+        NoConnection
+        {}
     }
 
-    NotificationsModal { id: notifications_modal }
+    NotificationsModal
+    {
+        id: notifications_modal
+    }
 
     Component
     {
@@ -82,13 +91,21 @@ DexRectangle
     {
         id: dashboard
 
-        Dashboard {}
+        Dashboard
+        {}
     }
 
     Component
     {
         id: dialogManager
-        DexDialogManager { }
+        DexDialogManager
+        {}
+    }
+
+    Component
+    {
+        id: popupManager
+        PopupManager { }
     }
 
     Loader
@@ -108,7 +125,8 @@ DexRectangle
     ModalLoader
     {
         id: error_log_modal
-        sourceComponent: LogModal {}
+        sourceComponent: LogModal
+        {}
     }
 
     function showError(title, content)
@@ -120,7 +138,10 @@ DexRectangle
     }
 
     // Toast
-    ToastManager { id: toast }
+    ToastManager
+    {
+        id: toast
+    }
 
     // Update Modal
     NewUpdateModal
@@ -168,103 +189,6 @@ DexRectangle
         }
     }
 
-    Item
-    {
-        id: debug_control
-
-        property var splitViewState
-
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        width: 110
-        height: 20
-        visible: app.debug
-
-        Menu
-        {
-            id: contextMenu
-            Action
-            {
-                text: "Display Normal"
-                onTriggered:
-                {
-                    treeView.parent.visible = true
-                    _statusView.visible = true
-                    flow.parent.parent.visible = true
-                    app.parent.width = app.parent.parent.width - treeView.width
-                    app.parent.height = app.parent.parent.height
-                    app.parent.parent.update()
-                }
-            }
-            Action
-            {
-                text: "Show Full"
-                onTriggered:
-                {
-                    app.parent.width = app.parent.parent.width - treeView.width
-                    app.parent.height = app.parent.parent.height
-                    treeView.parent.visible = false
-                    _statusView.visible = false
-                    flow.parent.parent.visible = false
-                }
-            }
-            Action
-            {
-                text: "Show Minimum"
-                onTriggered:
-                {
-                    app.parent.width = General.minimumWidth
-                    app.parent.height = General.minimumHeight
-
-                }
-            }
-            Action
-            {
-                text: "Show FullScreen"
-                onTriggered: { window.showFullScreen(); }
-            }
-            Action
-            {
-                text: "Clean Cache"
-                onTriggered: _statusView.children[0].contentItem.children[0].clear()
-            }
-        }
-
-        Rectangle
-        {
-            width: parent.width
-            radius: 1
-            height: 20
-            color: Qaterial.Colors.blueGray600
-        }
-
-        Row
-        {
-            anchors.centerIn: parent
-            spacing: 10
-            anchors.bottomMargin: 5
-            DefaultText
-            {
-                text: "%1x%2".arg(app.width).arg(app.height)
-                color: 'white'
-                font.pixelSize: 13
-                layer.enabled: true
-                DropShadow { color: 'black' }
-            }
-            Qaterial.ColorIcon
-            {
-                source: Qaterial.Icons.tools
-                iconSize: 12
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
-        DefaultMouseArea
-        {
-            anchors.fill: parent
-            onClicked: contextMenu.open()
-        }
-    }         
-
     Component
     {
         id: alertComponent
@@ -278,32 +202,39 @@ DexRectangle
             property string icon: Qaterial.Icons.checkCircleOutline
             property real iconSize: 50
             property real timeout: 3000
-            x:  parent.width - width - 40
+            x: parent.width - width - 40
             y: 40
             width: 300
             height: col.height + 25
-            function show(data) {
-                if ("backgroundColor" in data) {
+            function show(data)
+            {
+                if ("backgroundColor" in data)
+                {
                     alertPopup.backgroundColor = data.backgroundColor
                 }
 
-                if ("foregroundColor" in data) {
+                if ("foregroundColor" in data)
+                {
                     alertPopup.foregroundColor = data.foregroundColor
                 }
 
-                if ("title" in data) {
+                if ("title" in data)
+                {
                     alertPopup.title = data.title
                 }
 
-                if ("subTitle" in data) {
+                if ("subTitle" in data)
+                {
                     alertPopup.subTitle = data.subTitle
                 }
 
-                if ("icon" in data) {
+                if ("icon" in data)
+                {
                     alertPopup.icon = data.icon
                 }
 
-                if ("timeout" in data) {
+                if ("timeout" in data)
+                {
                     alertPopup.timeout = data.timeout
                 }
                 alertPopup.open()
@@ -350,7 +281,7 @@ DexRectangle
                 anchors.fill: parent
                 Item
                 {
-                    Layout.fillHeight: true 
+                    Layout.fillHeight: true
                     width: 60
                     Qaterial.Icon
                     {
@@ -367,7 +298,7 @@ DexRectangle
                     Column
                     {
                         id: col
-                        width: parent.width 
+                        width: parent.width
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 6
                         DexLabel
@@ -401,7 +332,8 @@ DexRectangle
 
     function notifyCopy(title, subTitle)
     {
-        app.notify({
+        app.notify(
+        {
             title: title,
             subTitle: subTitle,
             backgroundColor: Qaterial.Colors.gray400,
@@ -427,7 +359,7 @@ DexRectangle
     {
         id: _font
         property real fontDensity: DexTypo.fontDensity
-        property string fontFamily:  DexTypo.fontFamily
+        property string fontFamily: DexTypo.fontFamily
     }
 
     Settings
@@ -446,16 +378,19 @@ DexRectangle
 
     function showDialog(data)
     {
-        let dialog = dialogManager.createObject(window, data)
+        let dialog = popupManager.createObject(window, data)
         for (var i in data)
         {
-            if(i.startsWith('on')) eval('dialog.%1.connect(data[i])'.arg(i));
+            if (i.startsWith('on')) eval('dialog.%1.connect(data[i])'.arg(i));
         }
         dialog.open()
         return dialog
     }
 
-    function showText(data) { return showDialog(data); }
+    function showText(data)
+    {
+        return showDialog(data);
+    }
 
     function getText(data)
     {
@@ -463,7 +398,14 @@ DexRectangle
         return showText(data);
     }
 
-    Component.onCompleted: loadTheme()
+    Component.onCompleted: 
+    {
+        loadTheme()
+        if(API.app.wallet_mgr.log_status()) 
+        {
+            window.logged = true
+        }
+    }
 
     Timer
     {
@@ -494,7 +436,7 @@ DexRectangle
         onActivated: loadTheme()
     }
 
-    color: DexTheme.surfaceColor
+    color: Dex.CurrentTheme.backgroundColor
     radius: 0
     border.width: 0
     border.color: 'transparent'

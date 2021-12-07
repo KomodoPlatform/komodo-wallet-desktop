@@ -37,6 +37,7 @@ DexRectangle
 
     property string text: ""
     property string iconSource: ""
+    property string iconSourceRight: ""
 
     signal clicked()
 
@@ -99,6 +100,16 @@ DexRectangle
                     Dex.CurrentTheme.gradientButtonTextHoveredColor :
                     Dex.CurrentTheme.gradientButtonTextEnabledColor :
                     Dex.CurrentTheme.gradientButtonTextDisabledColor
+        }
+
+        Qaterial.ColorIcon
+        {
+            id: _iconRight
+            iconSize: _label.font.pixelSize + 2
+            visible: control.iconSourceRight === "" ? false : true
+            source: control.iconSourceRight
+            color: _label.color
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
     DexMouseArea

@@ -11,51 +11,37 @@ import "../../../Components"
 Item
 {
     property bool is_ask: false
-    property bool is_horizontal: false
-    height: 40
-    width: parent.width
-    z: 2
-
     RowLayout
     {
-        width: parent.width - 30
-        height: parent.height
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.fill: parent
         DefaultText
         {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 70
-            text: is_ask? qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")" : qsTr("Price") + " ("+atomic_qt_utilities.retrieve_main_ticker(right_ticker)+")"
+            Layout.preferredWidth: (parent.width / 100) * 30
+            text: is_ask ? qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")" :
+                           qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
-            color: is_ask? DexTheme.redColor : DexTheme.greenColor
         }
         DefaultText
         {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 100
-
-            text: qsTr("Quantity") + " ("+  atomic_qt_utilities.retrieve_main_ticker(left_ticker) +")"
+            Layout.preferredWidth: (parent.width / 100) * 30
+            text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
-            horizontalAlignment: Label.AlignRight
 
         }
         DefaultText
         {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
-            text: qsTr("Total") + "("+  atomic_qt_utilities.retrieve_main_ticker(right_ticker) +")"
-            horizontalAlignment: Label.AlignRight
+            Layout.preferredWidth: (parent.width / 100) * 30
+            text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
         }
     }
-
 }

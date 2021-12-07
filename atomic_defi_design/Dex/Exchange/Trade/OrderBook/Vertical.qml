@@ -8,52 +8,43 @@ import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-Item
+FloatingBackground
 {
-    id: orderBook
     visible: isUltraLarge
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+    radius: 10
 
     ColumnLayout
     {
         anchors.fill: parent
-        spacing: 10
+        anchors.margins: 20
+        spacing: 12
 
-        FloatingBackground
+        Header
         {
             Layout.fillWidth: true
+            Layout.preferredHeight: 30
+        }
+
+        List
+        {
+            isAsk: true
+            isVertical: true
             Layout.fillHeight: true
-            radius: 2
-            ColumnLayout
-            {
-                anchors.fill: parent
-                spacing: 2
-                List
-                {
-                    isAsk: true
-                    isVertical: true
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                }
-                Item
-                {
-                    Layout.preferredHeight: 4
-                    Layout.fillWidth: true
-                    Rectangle
-                    {
-                        width: parent.width
-                        height: parent.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: Dex.CurrentTheme.floatingBackgroundColor
-                    }
-                }
-                List
-                {
-                    isAsk: false
-                    hide_header: true
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                }
-            }
+            Layout.fillWidth: true
+        }
+        Item
+        {
+            Layout.preferredHeight: 8
+            Layout.fillWidth: true
+        }
+
+        List
+        {
+            isAsk: false
+            Layout.fillHeight: true
+            Layout.fillWidth: true
         }
     }
 }
