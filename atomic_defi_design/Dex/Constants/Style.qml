@@ -298,6 +298,7 @@ QtObject {
                                           "BTE": "#FFE201",
                                           "BTX": "#FB30A6",
                                           "CAKE": "#D1884F",
+                                          "CASE": "#FFFF12",
                                           "CDN": "#90191C",
                                           "CLC": "#0970DC",
                                           "CRV": "#517AB5",
