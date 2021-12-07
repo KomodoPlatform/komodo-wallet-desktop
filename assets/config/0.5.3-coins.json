@@ -7218,6 +7218,11 @@
       {
         "url": "207.180.252.200:50011",
         "protocol": "TCP"
+      },
+      {
+        "url": "zeta-seed-c.zetacoin.tech:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       }
     ],
     "explorer_url": [
