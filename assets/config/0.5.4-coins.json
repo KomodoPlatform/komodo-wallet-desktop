@@ -1461,6 +1461,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "CASE": {
+      "coin": "CASE",
+      "name": "Case Token",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "test-coin",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
+  },
   "CCL": {
     "coin": "CCL",
     "name": "CoinCollect",
@@ -2547,6 +2564,7 @@
     "name": "FJCB Fujicoin",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
+    "nomics_id": "FJCB",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -7217,6 +7235,11 @@
       {
         "url": "207.180.252.200:50011",
         "protocol": "TCP"
+      },
+      {
+        "url": "zeta-seed-c.zetacoin.tech:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": false
       }
     ],
     "explorer_url": [
