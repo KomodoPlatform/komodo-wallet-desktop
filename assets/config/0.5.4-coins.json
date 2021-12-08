@@ -5818,7 +5818,9 @@
         "url": "82.119.233.36:50001"
       },
       {
-        "url": "nmc.bitcoins.sk:50001"
+        "url": "nmc2.bitcoins.sk:57002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
       },
       {
         "url": "electrumx1.nmc.bitclc.net:50001"
