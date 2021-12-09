@@ -37,8 +37,7 @@ else()
 endif()
 
 message(STATUS "Embedding the manifest")
-execute_process(COMMAND "mt.exe"
-		-manifest \"${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\"\;\#1
+execute_process(COMMAND "mt.exe" -manifest \"${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\"\;\#1
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 		ECHO_ERROR_VARIABLE
 		RESULT_VARIABLE MANIFEST_RESULT
