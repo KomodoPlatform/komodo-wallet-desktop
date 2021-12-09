@@ -36,6 +36,9 @@ else()
 	message(STATUS "${TARGET_APP_PATH}/${DEX_PROJECT_NAME}.zip exists - skipping")
 endif()
 
+message(STATUS "Embedding the manifest")
+execute_process(COMMAND "mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.exe\"\;\#1)
+
 message(STATUS "Creating Installer")
 set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.2/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
