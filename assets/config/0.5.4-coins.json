@@ -8906,12 +8906,11 @@
     "currently_enabled": false
   },
   "USBL": {
-    "active": false,
     "coin": "USBL",
-    "name": "Balanced",
+    "name": "Balanced Dollar",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
+    "nomics_id": "USBL",
     "electrum": [
       {
         "url": "swap.softbalanced.com:50001",
@@ -8927,7 +8926,9 @@
       "https://softbalanced.com:3001/insight/"
     ],
     "explorer_tx_url": "tx/",
-    "type": "UTXO"
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
   },
   "UTK": {
     "coin": "UTK",
