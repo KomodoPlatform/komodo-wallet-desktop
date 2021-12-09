@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>Oui</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>Non</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
+    </message>
+</context>
+<context>
     <name>AddCustomCoinModal</name>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="118"/>
@@ -2724,21 +2739,6 @@ Curseur droit : définit le volume que vous souhaitez trader.</translation>
         <location filename="../../Dex/Exchange/Trade/ProView.qml" line="490"/>
         <source>Order Selected</source>
         <translation>Ordre séléctionné</translation>
-    </message>
-</context>
-<context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>&amp;Yes</source>
-        <translation type="vanished">Oui</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation type="vanished">Non</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Annuler</translation>
     </message>
 </context>
 <context>

@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
     <name>AddCustomCoinModal</name>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="82"/>
@@ -2718,21 +2731,6 @@ Right slider: Sets the volume you want to trade.</source>
         <location filename="../../Dex/Exchange/Trade/ProView.qml" line="490"/>
         <source>Order Selected</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>&amp;Yes</source>
-        <translation type="vanished">Yes</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation type="vanished">No</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancel</translation>
     </message>
 </context>
 <context>

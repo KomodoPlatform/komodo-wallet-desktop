@@ -1690,10 +1690,6 @@
         <translation> %1 не активирован -Вы хотите активировать этот %2 актив чтобы видеть лучшие ордеры для него ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Да&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Нет&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>This order requires a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; Your max balance after fees is: (%3)</source>
-        <translation type="vanished">Для этого ордера нужно минимум %1 %2 &lt;br&gt;У вас недостаточно средств.&lt;br&gt; Ваш баланс за вычетом комиссий: (%3)</translation>
-    </message>
-    <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="118"/>
         <source>This order requires a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; %3</source>
         <translation type="unfinished"></translation>
@@ -1741,10 +1737,6 @@
         <location filename="../../Dex/Screens/Startup/Login.qml" line="122"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>connect</source>
-        <translation type="vanished">подключиться</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/Login.qml" line="137"/>
@@ -3986,13 +3978,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="940"/>
         <source>%2 (%3)</source>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>TradeViewHeader</name>
-    <message>
-        <source>DEX</source>
-        <translation type="vanished">DEX</translation>
     </message>
 </context>
 <context>
