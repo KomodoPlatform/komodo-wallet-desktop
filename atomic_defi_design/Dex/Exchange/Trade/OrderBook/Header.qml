@@ -23,6 +23,7 @@ Item
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
+            horizontalAlignment: Text.AlignRight
         }
         DefaultText
         {
@@ -32,7 +33,7 @@ Item
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
-
+            horizontalAlignment: Text.AlignRight
         }
         DefaultText
         {
@@ -42,6 +43,7 @@ Item
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
+            horizontalAlignment: Text.AlignRight
         }
     }
 }

@@ -78,6 +78,7 @@ Item
             font.pixelSize: 12
             color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
             elide: Text.ElideRight
+            horizontalAlignment: Text.AlignRight
         }
 
         // Quantity
@@ -88,6 +89,7 @@ Item
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             elide: Text.ElideRight
+            horizontalAlignment: Text.AlignRight
         }
 
         // Total
@@ -99,6 +101,7 @@ Item
             font.pixelSize: 12
             text: parseFloat(total).toFixed(8)
             elide: Text.ElideRight
+            horizontalAlignment: Text.AlignRight
 
             Behavior on rightPadding { NumberAnimation { duration: 150 } }
         }
