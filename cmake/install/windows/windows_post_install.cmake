@@ -41,6 +41,8 @@ if (NOT EXISTS ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/package
 	message(WARNING "${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest doesn't exist - aborting")
 endif()
 file(COPY  ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+FILE(GLOB CURDIR RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/ ${CMAKE_CURRENT_SOURCE_DIR}/bin/*)
+message(STATUS "curdir: ${CURDIR}")
 message(STATUS "Executing: [mt.exe -manifest \"${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\";\#1] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
 execute_process(COMMAND "mt.exe" -manifest "${DEX_PROJECT_NAME}.exe.manifest" -outputresource:${DEX_PROJECT_NAME}.exe;
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
