@@ -41,10 +41,15 @@ if (NOT EXISTS ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/package
 	message(WARNING "${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest doesn't exist - aborting")
 endif()
 file(COPY  ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-FILE(GLOB CURDIR RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/ ${CMAKE_CURRENT_SOURCE_DIR}/bin/*)
-message(STATUS "curdir: ${CURDIR}")
-message(STATUS "Executing: [mt.exe -manifest \"${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\";\#1] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
-execute_process(COMMAND "mt.exe" -manifest "${DEX_PROJECT_NAME}.exe.manifest" -outputresource:${DEX_PROJECT_NAME}.exe;
+#FILE(GLOB CURDIR RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/ ${CMAKE_CURRENT_SOURCE_DIR}/bin/*)
+#message(STATUS "curdir: ${CURDIR}")
+#message(STATUS "Executing: [mt.exe -manifest \"${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\";\#1] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+set(DEX_OUT "${CMAKE_CURRENT_SOURCE_DIR}\\bin\\${DEX_PROJECT_NAME}.exe")
+set(DEX_IN "${CMAKE_CURRENT_SOURCE_DIR}\\bin\\${DEX_PROJECT_NAME}.exe.manifest")
+cmake_path(CONVERT ${DEX_OUT} TO_NATIVE_PATH_LIST DEX_OUT_NATIVE)
+cmake_path(CONVERT ${DEX_IN} TO_NATIVE_PATH_LIST DEX_IN_NATIVE)
+message(STATUS "mt.exe -manifest ${DEX_IN_NATIVE} -outputresource:${DEX_OUT_NATIVE}")
+execute_process(COMMAND "mt.exe" -manifest ${DEX_IN_NATIVE} -outputresource:${DEX_OUT_NATIVE}
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 		ECHO_ERROR_VARIABLE
 		RESULT_VARIABLE MANIFEST_RESULT
