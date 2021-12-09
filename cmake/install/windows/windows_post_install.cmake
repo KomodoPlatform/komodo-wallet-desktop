@@ -40,8 +40,9 @@ message(STATUS "Embedding the manifest")
 if (NOT EXISTS ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest)
 	message(WARNING "${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest doesn't exist - aborting")
 endif()
-message(STATUS "Executing: [mt.exe -manifest \"${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\"\;\#1] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
-execute_process(COMMAND "mt.exe" -manifest \"${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\"\;\#1
+file(COPY  ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data/${DEX_PROJECT_NAME}.exe.manifest DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+message(STATUS "Executing: [mt.exe -manifest \"${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\";\#1] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+execute_process(COMMAND "mt.exe" -manifest "${DEX_PROJECT_NAME}.exe.manifest" -outputresource:${DEX_PROJECT_NAME}.exe;
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 		ECHO_ERROR_VARIABLE
 		RESULT_VARIABLE MANIFEST_RESULT
