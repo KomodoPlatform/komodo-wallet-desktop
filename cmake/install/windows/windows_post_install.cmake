@@ -37,7 +37,14 @@ else()
 endif()
 
 message(STATUS "Embedding the manifest")
-execute_process(COMMAND "mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.exe\"\;\#1)
+execute_process(COMMAND "mt.exe"
+		-manifest \"${DEX_PROJECT_NAME}.exe.manifest\" -outputresource:\"${DEX_PROJECT_NAME}.exe\"\;\#1
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
+		ECHO_ERROR_VARIABLE
+		RESULT_VARIABLE MANIFEST_RESULT
+		OUTPUT_VARIABLE MANIFEST_OUTPUT
+		ERROR_VARIABLE MANIFEST_ERROR)
+message(STATUS "manifest output: ${MANIFEST_RESULT} ${MANIFEST_OUTPUT} ${MANIFEST_ERROR}")
 
 message(STATUS "Creating Installer")
 set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.2/bin)
