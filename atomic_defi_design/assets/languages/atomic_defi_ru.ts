@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>&amp;Да</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>&amp;Нет</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отменить</translation>
+    </message>
+</context>
+<context>
     <name>AddCustomCoinModal</name>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="118"/>
@@ -968,177 +983,177 @@
         <translation>Текущее количество включенных монет не совпадает с конфигурацией. Ваша конфигурация активов будет сброшена.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="301"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="293"/>
         <source>Matching</source>
         <translation>Матчинг</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="301"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="293"/>
         <source>Order Matching</source>
         <translation>Матчинг ордеров</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="303"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="295"/>
         <source>Matched</source>
         <translation>Сматчен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="303"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="295"/>
         <source>Order Matched</source>
         <translation>Ордер сматчен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="305"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="297"/>
         <source>Ongoing</source>
         <translation>В процессе</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="305"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="297"/>
         <source>Swap Ongoing</source>
         <translation>Своп продолжается</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="307"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="299"/>
         <source>Successful</source>
         <translation>Успешно</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="307"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="299"/>
         <source>Swap Successful</source>
         <translation>Своп успешно завершен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="309"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="301"/>
         <source>Refunding</source>
         <translation>Проводится возврат</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="311"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="303"/>
         <source>Failed</source>
         <translation>Не завершено</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="311"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="303"/>
         <source>Swap Failed</source>
         <translation>Своп не был завершен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="313"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="305"/>
         <source>Unknown</source>
         <translation>Неизвестно</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="313"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="305"/>
         <source>Unknown State</source>
         <translation>Статус неизвестен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="327"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="319"/>
         <source>Started</source>
         <translation>Начат</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="329"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="321"/>
         <source>Negotiated</source>
         <translation>Согласован</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="331"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="323"/>
         <source>Taker fee sent</source>
         <translation>Комиссия тейкера отправлена</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="333"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="325"/>
         <source>Maker payment received</source>
         <translation>Платеж мейкера получен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="335"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="327"/>
         <source>Maker payment wait confirm started</source>
         <translation>Ожидание платежа мейкера</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="337"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="329"/>
         <source>Maker payment validated and confirmed</source>
         <translation>Платеж мейкера валидирован и подтвержден</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="339"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="331"/>
         <source>Taker payment sent</source>
         <translation>Платеж тейкера отправлен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="341"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="333"/>
         <source>Taker payment spent</source>
         <translation>Платеж тейкера потрачен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="343"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="335"/>
         <source>Maker payment spent</source>
         <translation>Платеж мейкера потрачен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="345"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="337"/>
         <source>Finished</source>
         <translation>Завершено</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="347"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="339"/>
         <source>Start failed</source>
         <translation>Не удалось начать</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="349"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="341"/>
         <source>Negotiate failed</source>
         <translation>Согласование не прошло</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="351"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="343"/>
         <source>Taker fee validate failed</source>
         <translation>Валидация комиссии тейкера не прошла</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="353"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="345"/>
         <source>Maker payment transaction failed</source>
         <translation>Платежная транзакция мейкера не прошла</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="355"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="347"/>
         <source>Maker payment Data send failed</source>
         <translation>Отправка платежных данных мейкера не прошла</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="357"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="349"/>
         <source>Maker payment wait confirm failed</source>
         <translation>Платежная транзакция мейкера не была подтверждена</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="359"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="351"/>
         <source>Taker payment validate failed</source>
         <translation>Не прошла валидация платежа тейкера</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="361"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="353"/>
         <source>Taker payment wait confirm failed</source>
         <translation>Платежная транзакция тейкера не была подтверждена</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="363"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="355"/>
         <source>Taker payment spend failed</source>
         <translation>Spend платежа тейкера не прошел</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="365"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="357"/>
         <source>Maker payment wait refund started</source>
         <translation>Ожидание возврата платежа мейкера</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="367"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="359"/>
         <source>Maker payment refunded</source>
         <translation>Платеж мейкера возвращен</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="369"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="361"/>
         <source>Maker payment refund failed</source>
         <translation>Возврат платежа мейкера не выполнен</translation>
     </message>
@@ -1243,7 +1258,7 @@
 <context>
     <name>DexPaginator</name>
     <message>
-        <location filename="../../Dex/Components/DexPaginator.qml" line="92"/>
+        <location filename="../../Dex/Components/DexPaginator.qml" line="90"/>
         <source>items per page</source>
         <translation>элементов на странице</translation>
     </message>
@@ -1675,9 +1690,13 @@
         <translation> %1 не активирован -Вы хотите активировать этот %2 актив чтобы видеть лучшие ордеры для него ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Да&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Нет&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="113"/>
         <source>This order requires a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; Your max balance after fees is: (%3)</source>
-        <translation>Для этого ордера нужно минимум %1 %2 &lt;br&gt;У вас недостаточно средств.&lt;br&gt; Ваш баланс за вычетом комиссий: (%3)</translation>
+        <translation type="vanished">Для этого ордера нужно минимум %1 %2 &lt;br&gt;У вас недостаточно средств.&lt;br&gt; Ваш баланс за вычетом комиссий: (%3)</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="118"/>
+        <source>This order requires a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; %3</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1714,17 +1733,21 @@
 <context>
     <name>Login</name>
     <message>
-        <location filename="../../Dex/Screens/Startup/Login.qml" line="39"/>
+        <location filename="../../Dex/Screens/Startup/Login.qml" line="107"/>
         <source>Incorrect Password</source>
         <translation>Неправильный пароль</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/Login.qml" line="111"/>
-        <source>connect</source>
-        <translation>подключиться</translation>
+        <location filename="../../Dex/Screens/Startup/Login.qml" line="122"/>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/Login.qml" line="126"/>
+        <source>connect</source>
+        <translation type="vanished">подключиться</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Screens/Startup/Login.qml" line="137"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
@@ -2890,7 +2913,7 @@ Right slider: Sets the volume you want to trade.</source>
 <context>
     <name>SearchField</name>
     <message>
-        <location filename="../../Dex/Components/SearchField.qml" line="49"/>
+        <location filename="../../Dex/Components/SearchField.qml" line="51"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
@@ -3968,9 +3991,8 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>TradeViewHeader</name>
     <message>
-        <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="33"/>
         <source>DEX</source>
-        <translation>DEX</translation>
+        <translation type="vanished">DEX</translation>
     </message>
 </context>
 <context>
@@ -4223,32 +4245,32 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../../Dex/main.qml" line="101"/>
+        <location filename="../../Dex/main.qml" line="100"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../../Dex/main.qml" line="114"/>
+        <location filename="../../Dex/main.qml" line="113"/>
         <source>Confirm Logout</source>
         <translation>Подтверждение выхода</translation>
     </message>
     <message>
-        <location filename="../../Dex/main.qml" line="115"/>
+        <location filename="../../Dex/main.qml" line="114"/>
         <source>Are you sure you want to log out?</source>
         <translation>Вы действительно хотите выйти?</translation>
     </message>
     <message>
-        <location filename="../../Dex/main.qml" line="120"/>
+        <location filename="../../Dex/main.qml" line="119"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../../Dex/main.qml" line="121"/>
+        <location filename="../../Dex/main.qml" line="120"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../Dex/main.qml" line="283"/>
+        <location filename="../../Dex/main.qml" line="280"/>
         <source>Balance</source>
         <translation>Баланс</translation>
     </message>
