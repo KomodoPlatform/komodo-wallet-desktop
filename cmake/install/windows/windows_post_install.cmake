@@ -48,8 +48,8 @@ set(DEX_OUT "${CMAKE_CURRENT_SOURCE_DIR}\\bin\\${DEX_PROJECT_NAME}.exe")
 set(DEX_IN "${CMAKE_CURRENT_SOURCE_DIR}\\bin\\${DEX_PROJECT_NAME}.exe.manifest")
 cmake_path(CONVERT ${DEX_OUT} TO_NATIVE_PATH_LIST DEX_OUT_NATIVE)
 cmake_path(CONVERT ${DEX_IN} TO_NATIVE_PATH_LIST DEX_IN_NATIVE)
-message(STATUS "mt.exe -manifest ${DEX_IN_NATIVE} -outputresource:${DEX_OUT_NATIVE}")
-execute_process(COMMAND "mt.exe" -manifest ${DEX_IN_NATIVE} -outputresource:${DEX_OUT_NATIVE}
+#message(STATUS "mt.exe -manifest ${DEX_IN_NATIVE} -outputresource:${DEX_OUT_NATIVE}")
+execute_process(COMMAND powershell.exe -File ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/ci_scripts/mt_wrapper.ps1 ${DEX_IN} ${DEX_OUT}
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 		ECHO_ERROR_VARIABLE
 		RESULT_VARIABLE MANIFEST_RESULT
