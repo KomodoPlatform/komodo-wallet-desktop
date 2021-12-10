@@ -55,7 +55,7 @@ set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_ru.ts)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages)
 qt5_create_translation(QM_FILES
-        ${PROJECT_SOURCE_DIR}/atomic_defi_design/qml
+        ${PROJECT_SOURCE_DIR}/atomic_defi_design/Dex
         ${PROJECT_SOURCE_DIR}/src
         ${TS_FILES}
         OPTIONS -source-language en_US -no-obsolete)
@@ -73,7 +73,7 @@ add_executable(${PROJECT_NAME}
         ${CMAKE_SOURCE_DIR}/cmake/install/windows/dex.rc
 
         ##! QRC
-        ${CMAKE_SOURCE_DIR}/qml.qrc
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml.qrc
 
         ##! Linguistic
         ${QM_FILES}
@@ -183,10 +183,10 @@ if (WIN32)
     add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:${PROJECT_NAME}>)
-    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
+    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex")
     add_custom_command(TARGET ${PROJECT_NAME}
             POST_BUILD
-            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
+            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex
             )
     include(${CMAKE_SOURCE_DIR}/cmake/install/windows/dex_install.cmake)
 

@@ -114,7 +114,7 @@ namespace atomic_dex
         SPDLOG_INFO("Locale before parsing AtomicDEX settings: {}", QLocale().name().toStdString());
         QLocale::setDefault(get_locale(new_lang.toStdString()));
         SPDLOG_INFO("Locale after parsing AtomicDEX settings: {}", QLocale().name().toStdString());
-        [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/atomic_defi_design/assets/languages"));
+        [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
         this->m_qml_engine->retranslate();
