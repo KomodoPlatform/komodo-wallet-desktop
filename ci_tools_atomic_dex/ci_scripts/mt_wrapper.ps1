@@ -3,7 +3,8 @@ $output=$args[1]
 
 
 $path=${Env:ProgramFiles(x86)}
-Get-ChildItem $path -recurse -include "mt.exe" | Foreach-Object { 
+$kit_path=$path+"\Windows Kits"
+Get-ChildItem $kit_path -recurse -include "mt.exe" | Foreach-Object { 
     if($_.FullName -like '*x86\*') 
     { 
         echo $_.FullName
