@@ -16,7 +16,7 @@ Item
         anchors.fill: parent
         DefaultText
         {
-            Layout.preferredWidth: (parent.width / 100) * 30
+            Layout.preferredWidth: (parent.width / 100) * 33
             text: is_ask ? qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")" :
                            qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
             font.family: DexTypo.fontFamily
