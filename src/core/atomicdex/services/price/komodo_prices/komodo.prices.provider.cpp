@@ -30,7 +30,7 @@ namespace atomic_dex
     }
 
     void
-    komodo_prices_provider::process_update()
+    komodo_prices_provider::process_update(bool fallback)
     {
         SPDLOG_INFO("komodo price service tick loop");
 
@@ -51,6 +51,7 @@ namespace atomic_dex
             else
             {
                 SPDLOG_ERROR("Error during the rpc call to komodo price provider: {}", body);
+                process_update(true);
             }
             dispatcher_.trigger<fiat_rate_updated>("");
         };
@@ -65,10 +66,11 @@ namespace atomic_dex
             {
                 dispatcher_.trigger<fiat_rate_updated>("");
                 SPDLOG_ERROR("error occured when fetching price: {}", e.what());
+                process_update(true);
             };
         };
 
-        atomic_dex::komodo_prices::api::async_market_infos().then(answer_functor).then(error_functor);
+        atomic_dex::komodo_prices::api::async_market_infos(fallback).then(answer_functor).then(error_functor);
     }
 } // namespace atomic_dex
 
