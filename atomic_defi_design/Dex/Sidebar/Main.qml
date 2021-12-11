@@ -26,6 +26,8 @@ Item
     signal lineSelected(var lineType)
     signal settingsClicked()
     signal privacySwitched(var checked)
+    signal expanded(var isExpanded)
+    signal expandStarted(var isExpanding)
 
     width: isExpanded ? 200 : 80
     height: parent.height
@@ -40,7 +42,7 @@ Item
     // Animation when changing width.
     Behavior on width
     {
-        NumberAnimation { duration: 300; targets: [width, _selectionCursor.width]; properties: "width" }
+        NumberAnimation { duration: 300; targets: [width, _selectionCursor.width]; properties: "width"; onRunningChanged: { if (!running) expanded(isExpanded); else expandStarted(isExpanded); } }
     }
 
     // Selection Cursor
