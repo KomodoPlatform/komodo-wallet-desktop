@@ -2495,7 +2495,7 @@
       "https://explorer.firo.org/"
     ],
     "type": "UTXO",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "FIRO-BEP20": {
@@ -2513,7 +2513,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "FJC": {
@@ -2591,7 +2591,7 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "FTC": {
