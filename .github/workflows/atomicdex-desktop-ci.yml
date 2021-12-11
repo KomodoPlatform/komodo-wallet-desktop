@@ -284,7 +284,7 @@ jobs:
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
           cd b\bin
-          ./atomicdex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
+          ./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
 
