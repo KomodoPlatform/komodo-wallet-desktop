@@ -440,6 +440,7 @@ QtObject {
                                           "MANA": "#FF3C6C",
                                           "MATIC": "#804EE1",
                                           "MKR": "#1BAF9F",
+                                          "MINDS": "#687DE3",
                                           "NEAR": "#595959",
                                           "NEXO": "#A3B3D6",
                                           "NVC": "#FCF96D",
