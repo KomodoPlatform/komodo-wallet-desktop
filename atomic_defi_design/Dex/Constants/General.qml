@@ -1550,6 +1550,7 @@ QtObject {
                                                 "MATIC/TRYB": "BINANCE:MATICTRY",
                                                 "MATIC/BIDR": "BINANCE:MATICBIDR",
                                                 "MATIC/BRZ": "BINANCE:MATICBRL",
+                                                "MINDS/ETH": "UNISWAP:MINDSWETH",
                                                 "MIR/BTC": "BINANCE:MIRBTC",
                                                 "MIR/ETH": "HUOBI:MIRETH",
                                                 "MIR/USDT": "COINBASE:MIRUSD",
