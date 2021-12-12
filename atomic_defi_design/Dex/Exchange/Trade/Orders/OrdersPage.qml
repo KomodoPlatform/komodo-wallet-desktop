@@ -243,9 +243,9 @@ Item {
                             hoverEnabled: true
                             onClicked:
                             {
-                                const base_idx = combo_base.currentIndex
-                                combo_base.currentIndex = combo_rel.currentIndex
-                                combo_rel.currentIndex = base_idx
+                                const base_idx = combo_base.currentTicker
+                                combo_base.currentTicker = combo_rel.currentTicker
+                                combo_rel.currentTicker = base_idx
                             }
                         }
                     }
