@@ -80,6 +80,7 @@ MouseArea
         text_value: General.version_string
         font: DexTypo.caption
         color: Dex.CurrentTheme.sidebarVersionTextColor
+        visible: root.width > 120
 
         Component.onCompleted: opacity = isExpanded ? 1 : 0
     }
