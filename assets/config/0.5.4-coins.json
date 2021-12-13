@@ -1988,6 +1988,37 @@
     "active": false,
     "currently_enabled": false
   },
+  "DIMI-BEP20": {
+    "coin": "DIMI-BEP20",
+    "name": "DiminutiveCoin",
+    "coinpaprika_id": "dimi-diminutive-coin",
+    "coingecko_id": "diminutive-coin",
+    "nomics_id": "DIMI",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "DIMI-QRC20": {
+    "coin": "DIMI-QRC20",
+    "name": "DiminutiveCoin",
+    "coinpaprika_id": "dimi-diminutive-coin",
+    "coingecko_id": "diminutive-coin",
+    "nomics_id": "DIMI",
+    "explorer_url": [
+      "https://explorer.qtum.org/"
+    ],
+    "type": "QRC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "DODO-BEP20": {
     "coin": "DODO-BEP20",
     "name": "DODO",
