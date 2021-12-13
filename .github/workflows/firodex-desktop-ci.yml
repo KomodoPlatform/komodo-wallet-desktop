@@ -234,11 +234,8 @@ jobs:
 
       - name: Running Tests (Linux)
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Linux' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        if: runner.os == 'Linux' && 'firoorg/FiroDEX-Desktop' == github.repository
         run: |
-          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
-          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
-          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
@@ -258,11 +255,8 @@ jobs:
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
-        if: runner.os == 'macOS' &&  'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        if: runner.os == 'macOS' &&  'firoorg/FiroDEX-Desktop' == github.repository
         run: |
-          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
-          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
-          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export CC=clang
@@ -278,13 +272,12 @@ jobs:
 
       - name: Running Tests (Windows)
         shell: powershell
-        if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        if: runner.os == 'Windows' && 'firoorg/FiroDEX-Desktop' == github.repository
         run: |
           echo "Running tests"
-          $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
           cd build\bin
-          ./atomicdex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
+          ./firodex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
 
@@ -293,20 +286,10 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           ls ./bundled/linux/
-          echo "artifact_name_zstd=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "artifact_name_appimage=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
-          echo "target_name_zstd=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "target_name_zip=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
-
-      - name: Upload bundle artifact (Linux ZSTD)
-        if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.artifact_name_zstd }}
-          path: ./bundled/linux/${{ env.target_name_zstd }}
-          retention-days: 7
 
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
