@@ -119,8 +119,8 @@ ColumnLayout {
 
         DexTradeBox {
             id: left_section
-            minimumWidth: 550
-            defaultWidth: 560
+            minimumWidth: 500
+            defaultWidth: 520
             expandedHort: true
             hideHeader: true
             SplitView.fillHeight: true
