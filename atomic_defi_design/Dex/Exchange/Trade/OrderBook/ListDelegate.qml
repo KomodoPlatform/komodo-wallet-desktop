@@ -7,6 +7,7 @@ import Qaterial 1.0 as Qaterial
 import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import bignumberjs 1.0
 
 Item
 {
@@ -141,9 +142,9 @@ Item
             DefaultText
             {
                 Layout.preferredWidth: (parent.width / 100) * 33
-                text: parseFloat(General.formatDouble(price, General.amountPrecision, true)).toFixed(6)
+                text: { new BigNumber(price).toFixed(10) }
                 font.family: DexTypo.fontFamily
-                font.pixelSize: 10
+                font.pixelSize: 12
                 color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
@@ -152,10 +153,10 @@ Item
             // Quantity
             DefaultText
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
-                text: parseFloat(quantity).toFixed(6)
+                Layout.preferredWidth: (parent.width / 100) * 33
+                text: { new BigNumber(quantity).toFixed(8) }
                 font.family: DexTypo.fontFamily
-                font.pixelSize: 10
+                font.pixelSize: 12
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
             }
@@ -163,11 +164,11 @@ Item
             // Total
             DefaultText
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                Layout.preferredWidth: (parent.width / 100) * 33
                 rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
                 font.family: DexTypo.fontFamily
-                font.pixelSize: 10
-                text: parseFloat(total).toFixed(6)
+                font.pixelSize: 12
+                text: { new BigNumber(total).toFixed(8) }
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
 
