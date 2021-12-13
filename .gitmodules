@@ -6,4 +6,4 @@
 	url = https://github.com/KomodoPlatform/vcpkg-custom-ports
 [submodule "atomic_defi_design/imports/bignumberjs/bignumber.js"]
 	path = atomic_defi_design/imports/bignumberjs/bignumber.js
-	url = https://github.com/MikeMcl/bignumber.js.git
+	url = https://github.com/KomodoPlatform/bignumber.js.git
