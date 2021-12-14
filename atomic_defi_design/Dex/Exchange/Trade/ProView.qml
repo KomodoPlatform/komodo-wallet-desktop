@@ -119,8 +119,8 @@ ColumnLayout {
 
         DexTradeBox {
             id: left_section
-            minimumWidth: 550
-            defaultWidth: 560
+            minimumWidth: 500
+            defaultWidth: 520
             expandedHort: true
             hideHeader: true
             SplitView.fillHeight: true
@@ -359,9 +359,9 @@ ColumnLayout {
         Item {
             id: _book_and_best
             property bool showing: (_best_order_box.visible || _orderbook_box.visible)
-            SplitView.minimumWidth: showing? 320 : 0
-            SplitView.maximumWidth: showing? 330 : 0
-            SplitView.preferredWidth: showing? 280 : 0
+            SplitView.minimumWidth: showing ? 390 : 0
+            SplitView.maximumWidth: showing ? 430 : 0
+            SplitView.preferredWidth: showing ? 390 : 0
             clip: true
             DexBoxManager {
                 anchors.fill: parent
